@@ -91,50 +91,66 @@ namespace BaseClasses.Helpers
 
             if (bDrawBasicDimensions)
             {
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D>();
+
                 CMember m1 = model.m_arrMembers[0]; // Lavy stlp vpredu
                 CMember m2 = model.m_arrMembers[3]; // Pravy stlp vpredu
 
                 CMember m3 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn); // Pravy stlp vzadu
-
-                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
-                    0.6, 0.6, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
-
-                // stlp vpravo - vyskova kota
-                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m2.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, 1,
-                    0.6, 0.6, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), true);
-
-                CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
-                    0.6, 0.6, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
-
                 CMember m4 = model.m_arrMembers[9]; // Pravy stlp v 2 rame
 
-                CDimensionLinear3D dimPOKUSNA4 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
-                    0.5, 0.5, 0.05, 0.15, (model.fL1_frame * 1000).ToString("F0"), true);
+                if (m1 != null && m2 != null && m3 != null && m4 != null)
+                {
+                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
+                    0.6, 0.6, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
 
-                // TODO Ondrej - prevadzam pole na list lebo neviem ako najst elegantne index v poli objektov
-                List<CMember> listOfMembers = model.m_arrMembers.ToList();
+                    // stlp vpravo - vyskova kota
+                    CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m2.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, 1,
+                        0.6, 0.6, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), true);
 
-                // Girts
+                    CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                        0.6, 0.6, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
+                    
+                    CDimensionLinear3D dimPOKUSNA4 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                        0.5, 0.5, 0.05, 0.15, (model.fL1_frame * 1000).ToString("F0"), true);
+
+                    listOfDimensions.Add(dimPOKUSNA1);
+                    listOfDimensions.Add(dimPOKUSNA2);
+                    listOfDimensions.Add(dimPOKUSNA3);
+                    listOfDimensions.Add(dimPOKUSNA4);
+                }
+                
+
+                
+                // Girts                
                 CMember m6 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.Girt); // Prvy girt vlavo
-                int index = listOfMembers.IndexOf(m6);
-                CMember m7 = model.m_arrMembers[index+1]; // Nasledujuci girt vlavo
+                if (m6 != null)
+                {
+                    int index = Array.IndexOf(model.m_arrMembers, m6);
+                    CMember m7 = model.m_arrMembers[index + 1]; // Nasledujuci girt vlavo
 
-                CDimensionLinear3D dimPOKUSNA5 = new CDimensionLinear3D(m6.NodeStart.GetPoint3D(), m7.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
-                   0.6, 0.6, 0.05, 0.15, (model.fDist_Girt * 1000).ToString("F0"), false);
+                    CDimensionLinear3D dimPOKUSNA5 = new CDimensionLinear3D(m6.NodeStart.GetPoint3D(), m7.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                       0.6, 0.6, 0.05, 0.15, (model.fDist_Girt * 1000).ToString("F0"), false);
+                    listOfDimensions.Add(dimPOKUSNA5);
 
+                    // Bottom Girt
+                    CDimensionLinear3D dimPOKUSNA7 = new CDimensionLinear3D(new Point3D(0, 0, 0), m6.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                       0.6, 0.6, 0.05, 0.15, (model.fBottomGirtPosition * 1000).ToString("F0"), false);
+
+                    listOfDimensions.Add(dimPOKUSNA7);
+                }
+                
                 // Purlins
                 CMember m8 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.Purlin); // Prva purlin vlavo
-                index = listOfMembers.IndexOf(m8);
-                CMember m9 = model.m_arrMembers[index + 1]; // Nasledujuca purlin vlavo
+                if (m8 != null)
+                {
+                    int index = Array.IndexOf(model.m_arrMembers, m8);
+                    CMember m9 = model.m_arrMembers[index + 1]; // Nasledujuca purlin vlavo
 
-                CDimensionLinear3D dimPOKUSNA6 = new CDimensionLinear3D(m8.NodeStart.GetPoint3D(), m9.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
-                   0.6, 0.6, 0.05, 0.15, (model.fDist_Purlin * 1000).ToString("F0"), false);
-
-                // Bottom Girt
-                CDimensionLinear3D dimPOKUSNA7 = new CDimensionLinear3D(new Point3D(0,0,0), m6.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
-                   0.6, 0.6, 0.05, 0.15, (model.fBottomGirtPosition * 1000).ToString("F0"), false);
-
-                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA3, dimPOKUSNA4, dimPOKUSNA5, dimPOKUSNA6, dimPOKUSNA7 };
+                    CDimensionLinear3D dimPOKUSNA6 = new CDimensionLinear3D(m8.NodeStart.GetPoint3D(), m9.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+                       0.6, 0.6, 0.05, 0.15, (model.fDist_Purlin * 1000).ToString("F0"), false);
+                    listOfDimensions.Add(dimPOKUSNA6);
+                }
 
                 DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
             }

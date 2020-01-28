@@ -764,9 +764,9 @@ namespace PFD
             RafterFlyBracingPosition_Items = items;
 
             CComponentInfo MR = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
-            if (MR != null) { MR.IsSetFromCode = true; MR.ILS_Items = items; /*MR.ILS = items.First();*/ MR.IsSetFromCode = false; }
+            if (MR != null) { MR.IsSetFromCode = true; MR.ILS_Items = items; MR.ILS = items.First(); MR.IsSetFromCode = false; }
             CComponentInfo ER = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
-            if (ER != null) { ER.IsSetFromCode = true; ER.ILS_Items = items; /*ER.ILS = items.First();*/ ER.IsSetFromCode = false; }
+            if (ER != null) { ER.IsSetFromCode = true; ER.ILS_Items = items; ER.ILS = items.First(); ER.IsSetFromCode = false; }
         }
         
         public void SetColumnFlyBracingPosition_Items(int iGirtsNum)
@@ -784,9 +784,9 @@ namespace PFD
             ColumnFlyBracingPosition_Items = items;
 
             CComponentInfo MC = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
-            if (MC != null) { MC.IsSetFromCode = true; MC.ILS_Items = items; /*MC.ILS = items.First();*/ MC.IsSetFromCode = false; }
+            if (MC != null) { MC.IsSetFromCode = true; MC.ILS_Items = items; MC.ILS = items.First(); MC.IsSetFromCode = false; }
             CComponentInfo EC = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-            if (EC != null) { EC.IsSetFromCode = true; EC.ILS_Items = items; /*EC.ILS = items.First();*/ EC.IsSetFromCode = false; }
+            if (EC != null) { EC.IsSetFromCode = true; EC.ILS_Items = items; EC.ILS = items.First(); EC.IsSetFromCode = false; }
         }
         public void SetFrontColumnFlyBracingPosition_Items(int iFrontColumnGirtsNum)
         {
@@ -802,7 +802,7 @@ namespace PFD
             }
             ColumnFlyBracingPosition_Items = items;
             CComponentInfo CFS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide);            
-            if (CFS != null) { CFS.IsSetFromCode = true; CFS.ILS_Items = items; /*CFS.ILS = items.First();*/ CFS.IsSetFromCode = false; }
+            if (CFS != null) { CFS.IsSetFromCode = true; CFS.ILS_Items = items; CFS.ILS = items.First(); CFS.IsSetFromCode = false; }
         }
         public void SetBackColumnFlyBracingPosition_Items(int iBackColumnGirtsNum)
         {
@@ -818,7 +818,7 @@ namespace PFD
             }
             ColumnFlyBracingPosition_Items = items;
             CComponentInfo CBS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide);            
-            if (CBS != null) { CBS.IsSetFromCode = true; CBS.ILS_Items = items; /*CBS.ILS = items.First();*/ CBS.IsSetFromCode = false; }
+            if (CBS != null) { CBS.IsSetFromCode = true; CBS.ILS_Items = items; CBS.ILS = items.First(); CBS.IsSetFromCode = false; }
         }
     }
 }
