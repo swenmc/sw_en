@@ -241,6 +241,8 @@ namespace PFD
                 }
                 if (e.PropertyName == "Generate")
                 {
+                    vm.RecreateFoundations = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruju Foundations
+                    vm.RecreateFloorSlab = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruje FloorSlab
                     vm.RecreateJoints = true; //need to recreate joint when generate was changed
                     vm.RecreateModel = true;
                 }
