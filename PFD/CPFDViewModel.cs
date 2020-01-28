@@ -2268,7 +2268,8 @@ namespace PFD
             {
                 m_GeneralOptionsChanged = value;
 
-                RecreateModel = true;
+                SetResultsAreNotValid();
+                RecreateModel = true;                
                 
                 if (MSynchronizeGUI) NotifyPropertyChanged("GeneralOptionsChanged");
             }
