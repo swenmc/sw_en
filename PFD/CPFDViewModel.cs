@@ -284,9 +284,6 @@ namespace PFD
                 FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
                 FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
 
-                //WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
-                //BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-                
                 RecreateJoints = true;
                 RecreateFoundations = true;
                 RecreateFloorSlab = true;
@@ -3099,6 +3096,12 @@ namespace PFD
                 sDisplayOptions.ReinforcementBarColor_Bottom_x = FootingVM.LongReinBottom_x_Color;
                 sDisplayOptions.ReinforcementBarColor_Bottom_y = FootingVM.LongReinBottom_y_Color;
             }
+
+            sDisplayOptions.PlateColor = _displayOptionsVM.PlateColor;
+            sDisplayOptions.ScrewColor = _displayOptionsVM.ScrewColor;
+            sDisplayOptions.AnchorColor = _displayOptionsVM.AnchorColor;
+            sDisplayOptions.WasherColor = _displayOptionsVM.WasherColor;
+            sDisplayOptions.NutColor = _displayOptionsVM.NutColor;
 
             sDisplayOptions.fMemberSolidModelOpacity = _displayOptionsVM.MemberSolidModelOpacity;
             sDisplayOptions.fPlateSolidModelOpacity = _displayOptionsVM.PlateSolidModelOpacity;

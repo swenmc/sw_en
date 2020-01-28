@@ -506,6 +506,12 @@ namespace EXPIMP
             opts.ReinforcementBarColor_Bottom_x = System.Windows.Media.Colors.Black;
             opts.ReinforcementBarColor_Bottom_y = System.Windows.Media.Colors.Black;
 
+            opts.PlateColor = System.Windows.Media.Colors.White;
+            opts.ScrewColor = System.Windows.Media.Colors.Black;
+            opts.AnchorColor = System.Windows.Media.Colors.Black;
+            opts.WasherColor = System.Windows.Media.Colors.Black;
+            opts.NutColor = System.Windows.Media.Colors.Black;
+
             opts.fFoundationSolidModelOpacity = 0;
             opts.fFloorSlabSolidModelOpacity = 0;
             opts.fSlabRebateSolidModelOpacity = 0;

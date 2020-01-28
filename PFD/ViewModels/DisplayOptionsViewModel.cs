@@ -175,6 +175,21 @@ namespace PFD
         private Color m_SlabRebateColor = Colors.OrangeRed;
         private int m_SlabRebateColorIndex;
 
+        private int m_PlateColorIndex;
+        private Color m_PlateColor = Colors.Gray;
+
+        private int m_ScrewColorIndex;
+        private Color m_ScrewColor = Colors.Blue;
+
+        private int m_AnchorColorIndex;
+        private Color m_AnchorColor = Colors.LightGoldenrodYellow;
+
+        private int m_WasherColorIndex;
+        private Color m_WasherColor = Colors.LightGreen;
+
+        private int m_NutColorIndex;
+        private Color m_NutColor = Colors.LightPink;
+
         private int m_BackgroundColorIndex;
         private Color m_BackgroundColor = Colors.Black;
 
@@ -1825,6 +1840,161 @@ namespace PFD
             }
         }
 
+        public int PlateColorIndex
+        {
+            get
+            {
+                return m_PlateColorIndex;
+            }
+
+            set
+            {
+                m_PlateColorIndex = value;
+
+                PlateColor = CComboBoxHelper.ColorList[m_PlateColorIndex].Color.Value;
+
+                NotifyPropertyChanged("PlateColorIndex");
+            }
+        }
+
+        public Color PlateColor
+        {
+            get
+            {
+                return m_PlateColor;
+            }
+
+            set
+            {
+                m_PlateColor = value;
+                NotifyPropertyChanged("PlateColor");
+            }
+        }
+
+        public int ScrewColorIndex
+        {
+            get
+            {
+                return m_ScrewColorIndex;
+            }
+
+            set
+            {
+                m_ScrewColorIndex = value;
+
+                ScrewColor = CComboBoxHelper.ColorList[m_ScrewColorIndex].Color.Value;
+
+                NotifyPropertyChanged("ScrewColorIndex");
+            }
+        }
+
+        public Color ScrewColor
+        {
+            get
+            {
+                return m_ScrewColor;
+            }
+
+            set
+            {
+                m_ScrewColor = value;
+                NotifyPropertyChanged("ScrewColor");
+            }
+        }
+
+        public int AnchorColorIndex
+        {
+            get
+            {
+                return m_AnchorColorIndex;
+            }
+
+            set
+            {
+                m_AnchorColorIndex = value;
+
+                AnchorColor = CComboBoxHelper.ColorList[m_AnchorColorIndex].Color.Value;
+
+                NotifyPropertyChanged("AnchorColorIndex");
+            }
+        }
+
+        public Color AnchorColor
+        {
+            get
+            {
+                return m_AnchorColor;
+            }
+
+            set
+            {
+                m_AnchorColor = value;
+                NotifyPropertyChanged("AnchorColor");
+            }
+        }
+
+        public int WasherColorIndex
+        {
+            get
+            {
+                return m_WasherColorIndex;
+            }
+
+            set
+            {
+                m_WasherColorIndex = value;
+
+                WasherColor = CComboBoxHelper.ColorList[m_WasherColorIndex].Color.Value;
+
+                NotifyPropertyChanged("WasherColorIndex");
+            }
+        }
+
+        public Color WasherColor
+        {
+            get
+            {
+                return m_WasherColor;
+            }
+
+            set
+            {
+                m_WasherColor = value;
+                NotifyPropertyChanged("WasherColor");
+            }
+        }
+
+        public int NutColorIndex
+        {
+            get
+            {
+                return m_NutColorIndex;
+            }
+
+            set
+            {
+                m_NutColorIndex = value;
+
+                NutColor = CComboBoxHelper.ColorList[m_NutColorIndex].Color.Value;
+
+                NotifyPropertyChanged("NutColorIndex");
+            }
+        }
+
+        public Color NutColor
+        {
+            get
+            {
+                return m_NutColor;
+            }
+
+            set
+            {
+                m_NutColor = value;
+                NotifyPropertyChanged("NutColor");
+            }
+        }
+
         public List<CComboColor> ColorList
         {
             get
@@ -1882,7 +2052,6 @@ namespace PFD
                 NotifyPropertyChanged("BackgroundColor");
             }
         }
-
 
         public bool ShowLoads
         {
@@ -2441,6 +2610,12 @@ namespace PFD
             FoundationColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkGray);
             FloorSlabColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGray);
             SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkOrange);
+
+            PlateColorIndex = CComboBoxHelper.GetColorIndex(Colors.Gray);
+            ScrewColorIndex = CComboBoxHelper.GetColorIndex(Colors.Blue);
+            AnchorColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGoldenrodYellow);
+            WasherColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
+            NutColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
 
             MemberSolidModelOpacity = 0.8f;
             PlateSolidModelOpacity = 0.5f;

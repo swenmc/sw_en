@@ -882,6 +882,12 @@ namespace BaseClasses
         public System.Windows.Media.Color ReinforcementBarColor_Bottom_x;
         public System.Windows.Media.Color ReinforcementBarColor_Bottom_y;
 
+        public System.Windows.Media.Color PlateColor;
+        public System.Windows.Media.Color ScrewColor;
+        public System.Windows.Media.Color AnchorColor;
+        public System.Windows.Media.Color WasherColor;
+        public System.Windows.Media.Color NutColor;
+
         public float fMemberSolidModelOpacity;
         public float fPlateSolidModelOpacity;
         public float fScrewSolidModelOpacity;

@@ -563,8 +563,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=SlabRebateSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-
-                        <TextBlock Grid.Row="10" Grid.Column="2" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <TextBlock Grid.Row="10" Grid.Column="2" Text="Background Color:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <ComboBox Grid.Row="10" Grid.Column="3" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
@@ -578,6 +577,75 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
+                        <TextBlock Grid.Row="11" Grid.Column="2" Text="Plate Color:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="11" Grid.Column="3" Name ="Combobox_PlateColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                         SelectedIndex="{Binding Path=PlateColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                         ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="12" Grid.Column="2" Text="Screw Color:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="12" Grid.Column="3" Name ="Combobox_ScrewColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                         SelectedIndex="{Binding Path=ScrewColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                         ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="13" Grid.Column="2" Text="Anchor Color:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="13" Grid.Column="3" Name ="Combobox_AnchorColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                         SelectedIndex="{Binding Path=AnchorColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                         ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="14" Grid.Column="2" Text="Washer Color:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="14" Grid.Column="3" Name ="Combobox_WasherColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                         SelectedIndex="{Binding Path=WasherColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                         ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="15" Grid.Column="2" Text="Nut Color:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="15" Grid.Column="3" Name ="Combobox_NutColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                         SelectedIndex="{Binding Path=NutColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                         ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
                 </ScrollViewer>
 

@@ -1494,14 +1494,14 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Connection joints model 3d group
-        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions, SolidColorBrush brushPlates = null, SolidColorBrush brushScrews = null, SolidColorBrush brushAnchors = null, SolidColorBrush brushWashers = null, SolidColorBrush brushNuts = null, SolidColorBrush brushWelds = null)
+        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions, SolidColorBrush brushWelds = null)
         {
-            if (brushPlates == null) brushPlates = new SolidColorBrush(Colors.Gray);
-            if (brushScrews == null) brushScrews = new SolidColorBrush(Colors.Red);
-            if (brushAnchors == null) brushAnchors = new SolidColorBrush(Colors.Plum);
-            if (brushWashers == null) brushWashers = new SolidColorBrush(Colors.Beige);
-            if (brushNuts == null) brushNuts = new SolidColorBrush(Colors.Yellow);
-            if (brushWelds == null) brushWelds = new SolidColorBrush(Colors.Orange);
+            SolidColorBrush brushPlates = new SolidColorBrush(sDisplayOptions.PlateColor);
+            SolidColorBrush brushScrews = new SolidColorBrush(sDisplayOptions.ScrewColor);
+            SolidColorBrush brushAnchors = new SolidColorBrush(sDisplayOptions.AnchorColor);
+            SolidColorBrush brushWashers = new SolidColorBrush(sDisplayOptions.WasherColor);
+            SolidColorBrush brushNuts = new SolidColorBrush(sDisplayOptions.NutColor);
+            if (brushWelds == null) brushWelds = new SolidColorBrush(Colors.Orange); // TODO - zapracovat do options ak budu implementovane zvary
 
             Model3DGroup JointsModel3DGroup = null;
 
@@ -1514,8 +1514,8 @@ namespace BaseClasses
                         cmodel.m_arrConnectionJoints[i].BIsDisplayed)
                     {
                         // Set different colors of plates in joints defined in LCS of member and GCS of model
-                        if (cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
-                            brushPlates = new SolidColorBrush(Colors.DeepSkyBlue);
+                        //if (cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
+                        //    brushPlates = new SolidColorBrush(Colors.DeepSkyBlue);
 
                         // Models3D or ModelGroups Components
                         Model3DGroup JointModelGroup = new Model3DGroup();
@@ -1605,9 +1605,6 @@ namespace BaseClasses
                                 }
                             }
                         }
-
-                        // Set plates color to default
-                        brushPlates = new SolidColorBrush(Colors.Gray);
 
                         // Connectors
                         bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj pomocou screws priamo medzi nosnikmi bez plechu (tiahla - bracing)
