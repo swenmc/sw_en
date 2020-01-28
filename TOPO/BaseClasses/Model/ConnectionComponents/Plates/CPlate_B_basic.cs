@@ -322,7 +322,7 @@ namespace BaseClasses
             e_min_y = 0;
             e_min_z = 0;
 
-            if (screwArrangement.HolesCentersPoints2D != null && screwArrangement.HolesCentersPoints2D.Length > 0)
+            if (screwArrangement != null && screwArrangement.HolesCentersPoints2D != null && screwArrangement.HolesCentersPoints2D.Length > 0)
             {
                 // Minimum edge distances - zadane v suradnicovom smere plechu
                 e_min_y = (float)screwArrangement.HolesCentersPoints2D[0].Y;

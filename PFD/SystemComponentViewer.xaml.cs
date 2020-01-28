@@ -287,6 +287,8 @@ namespace PFD
                             case 7: // BF
                             case 11: // BJ
                             case 12: // BJ
+                            case 9:  // BH
+                            case 10: // BI
                             default:
                                 {
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
