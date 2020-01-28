@@ -102,7 +102,7 @@ namespace PFD.Infrastructure
             {
                 WindowProperties windowProps = new WindowProperties();
                 windowProps.sBuildingSide = "Left"; // "Front"
-                windowProps.iBayNumber = 1;
+                windowProps.iBayNumber = 2;
                 windowProps.fWindowsHeight = 0.6f;
                 windowProps.fWindowsWidth = 0.6f;
                 windowProps.fWindowCoordinateXinBay = 0.4f;
