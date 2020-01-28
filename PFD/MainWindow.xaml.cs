@@ -1145,7 +1145,7 @@ namespace PFD
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFootingDesign)
             {
                 CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
-                if (Footing_Design.Content == null) Footing_Design.Content = new UC_FootingDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.FootingVM, vm.JointDesignResults_ULS);
+                if (Footing_Design.Content == null) Footing_Design.Content = new UC_FootingDesign(vm.UseCRSCGeometricalAxes, vm, compListVM, vm.JointDesignResults_ULS);
                 else
                 {
                     ////setuje sa v public void UpdateResults()
@@ -1236,9 +1236,9 @@ namespace PFD
                 if (Footing_Design.Content != null)
                 {
                     UC_FootingDesign uc_footingDesign = Footing_Design.Content as UC_FootingDesign;
-                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
-                    UC_FootingInput uc_footingInput = Footing_Input.Content as UC_FootingInput;
-                    uc_footingDesign.FootingVM = uc_footingInput.DataContext as CFootingInputVM;
+                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;                    
+                    //UC_FootingInput uc_footingInput = Footing_Input.Content as UC_FootingInput;
+                    //uc_footingDesign.FootingVM = uc_footingInput.DataContext as CFootingInputVM;
                     CPFDFootingDesign vmFD = uc_footingDesign.DataContext as CPFDFootingDesign;
                     vmFD.IsSetFromCode = true;
                     vmFD.LimitStateIndex = 0;

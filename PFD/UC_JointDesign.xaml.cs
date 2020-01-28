@@ -14,7 +14,7 @@ namespace PFD
     public partial class UC_JointDesign : UserControl
     {
         bool UseCRSCGeometricalAxes;
-        CModel_PFD Model;
+        //CModel_PFD Model;
         CPFDViewModel _pfdVM;
         CalculationSettingsFoundation FootingCalcSettings;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
@@ -26,11 +26,11 @@ namespace PFD
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
             DesignResults_ULS = designResults_ULS;
             _pfdVM = pfdVM;
-            Model = pfdVM.Model;
+            //Model = pfdVM.Model;
             //FootingCalcSettings = pfdVM.FootingVM.GetCalcSettings();
 
             // Joint Design
-            CPFDJointsDesign vm = new CPFDJointsDesign(Model.m_arrLimitStates, Model.m_arrLoadCombs, compList.ComponentList);
+            CPFDJointsDesign vm = new CPFDJointsDesign(_pfdVM.Model.m_arrLimitStates, _pfdVM.Model.m_arrLoadCombs, compList.ComponentList);
             vm.PropertyChanged += HandleJointDesignPropertyChangedEvent;
             this.DataContext = vm;
 
@@ -44,7 +44,7 @@ namespace PFD
             if (vm != null && vm.IsSetFromCode) return;
             if (vm.ComponentTypeIndex == -1) return;
 
-            CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
+            CMemberGroup GroupOfMembersWithSelectedType = _pfdVM.Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
 
             // Calculate governing member design ratio in member group
             CCalculJoint cGoverningMemberStartJointResults;
@@ -90,7 +90,7 @@ namespace PFD
                 {
                     CConnectionJointTypes cjStart = null;
                     CConnectionJointTypes cjEnd = null;
-                    Model.GetModelMemberStartEndConnectionJoints(m, out cjStart, out cjEnd);
+                    _pfdVM.Model.GetModelMemberStartEndConnectionJoints(m, out cjStart, out cjEnd);
 
                     CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
                     CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
@@ -109,8 +109,8 @@ namespace PFD
                     //FootingCalcSettings.FloorSlabThickness = 0.125f;
                     ////-------------------------------------------------------------------------------------------------------------
 
-                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces);
-                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces);
+                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces);
+                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces);
 
                     // Find member in the group of members with maximum start or end joint design ratio
                     if (cJointStart.fEta_max > fMaximumDesignRatio || cJointEnd.fEta_max > fMaximumDesignRatio)
@@ -125,11 +125,11 @@ namespace PFD
                         // One joint is joint with maximum design ratio, the other joint is corresponding joint for selected member and load combination
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces, true);
+                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
+                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
                         cGoverningMemberEndJointResults = cJointEnd;
                     }
                 }
