@@ -177,6 +177,7 @@ namespace PFD
             {
                 if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(new ComboItem(lc.ID, $"{lc.Name}\t{lc.CombinationKey}"));
             }
+            loadCombinations.Add(new ComboItem(-1, "Envelope"));
             LoadCombinations = loadCombinations;
         }
 

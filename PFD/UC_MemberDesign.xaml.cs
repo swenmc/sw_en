@@ -19,10 +19,11 @@ namespace PFD
         CModel_PFD Model;
         public List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
+        public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
 
         public DesignOptionsViewModel designOptionsVM;
 
-        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, DesignOptionsViewModel doVM,  /*bool bShearDesignAccording334, bool bIgnoreWebStiffeners, */CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
+        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, DesignOptionsViewModel doVM,  /*bool bShearDesignAccording334, bool bIgnoreWebStiffeners, */CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS, sDesignResults designResults_ULSandSLS)
         {
             InitializeComponent();
 
@@ -34,7 +35,8 @@ namespace PFD
             Model = model;
             DesignResults_ULS = designResults_ULS;
             DesignResults_SLS = designResults_SLS;
-            
+            sDesignResults_ULSandSLS = designResults_ULSandSLS;
+
             // Member Design
             CPFDMemberDesign vm = new CPFDMemberDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             vm.PropertyChanged += HandleLoadInputPropertyChangedEvent;
@@ -90,11 +92,17 @@ namespace PFD
 
             // Calculate governing member design ratio in member group
             CCalculMember cGoverningMemberResults;
+
+            int loadCombID = vm.SelectedLoadCombinationID;
+            if (vm.SelectedLoadCombinationID == -1) //"envelope"
+            {
+                loadCombID = sDesignResults_ULSandSLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+            }
             
             if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, designOptionsVM.ShearDesignAccording334, designOptionsVM.IgnoreWebStiffeners, DesignResults_ULS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, designOptionsVM.ShearDesignAccording334, designOptionsVM.IgnoreWebStiffeners, DesignResults_ULS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             else
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
         }
 
         // Calculate governing member design ratio
