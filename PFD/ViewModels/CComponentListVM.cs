@@ -580,41 +580,49 @@ namespace PFD
         {
             //TO Mato - lepsie ak by z Db chodila hned hodnota a nie index do nejakeho pola
             CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iMainColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iMainColumnFlyBracingEveryXXGirt); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iMainColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iMainColumnFlyBracingEveryXXGirt); ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iRafterFlyBracingEveryXXPurlin]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iRafterFlyBracingEveryXXPurlin]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iEdgePurlin_ILS_Number]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iEdgePurlin_ILS_Number); ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iGirt_ILS_Number]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iGirt_ILS_Number); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iPurlin_ILS_Number]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iPurlin_ILS_Number); ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iFrontColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iFrontColumnFlyBracingEveryXXGirt); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iBackColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iBackColumnFlyBracingEveryXXGirt); ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iGirtFrontSide_ILS_Number]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iGirtFrontSide_ILS_Number); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iGirtBackSide_ILS_Number]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iGirtBackSide_ILS_Number); ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[0]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[0]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsFrontSide);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[0]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsBackSide);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[0]; ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
+        }
+
+        private void SetComponentInfoILS(CComponentInfo ci, int index)
+        {
+            if (ci == null) return;
+            string ils = ci.ILS_Items.ElementAtOrDefault(index);
+            if (ils == null) ils = ci.ILS_Items.FirstOrDefault();
+            ci.ILS = ils;
         }
 
         //-------------------------------------------------------------------------------------------------------------
