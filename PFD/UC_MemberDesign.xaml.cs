@@ -94,15 +94,54 @@ namespace PFD
             CCalculMember cGoverningMemberResults;
 
             int loadCombID = vm.SelectedLoadCombinationID;
-            if (vm.SelectedLoadCombinationID == -1) //"envelope"
-            {
-                loadCombID = sDesignResults_ULSandSLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
-            }
-            
+
+            // TODO 511
+            // TO Ondrej - toto som Ti zakomentoval
+            //if (vm.SelectedLoadCombinationID == -1) //"envelope"
+            //{
+            //    loadCombID = sDesignResults_ULSandSLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+            //}
+
+
+            // TODO 511 To Ondrej - podla mna by to malo byt nejako takto, asi to da napisat aj krajsie, tak to prosim uprav
+            // Teoreticky sa to da urobit aj tak, ze sa do CalculateGoverningMemberDesignDetails prida dalsi cyklus cez vsetky load combinations a potom cez vsetky members v skupine a ked je loadcombID = -1 tak sa prejde cely ten cyklus cez vsetky load combinations
+
+            // Podobne to treba implementovat aj pre 
+
             if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
+            {
+                if (vm.SelectedLoadCombinationID == -1) //"envelope"
+                {
+                    // ULS
+                    // Vysledky vsetkych prutov daneho typu zo vsetkych kombinacii daneho limit state
+                    List<CMemberLoadCombinationRatio_ULS> allSpecificMemberTypeResults = DesignResults_ULS.FindAll(i => i.Member.EMemberTypePosition == GroupOfMembersWithSelectedType.MemberType_FS_Position);
+                    // Najdi maximalne vyuzitie z vysledkov
+                    float fMaxDesignRatio = allSpecificMemberTypeResults.Max(f => f.MaximumDesignRatio);
+                    // Nacitaj vysledkovy zaznam pre maximalne vyuzitie
+                    var governingResults = allSpecificMemberTypeResults.First(x=> MATH.MathF.d_equal(x.MaximumDesignRatio, fMaxDesignRatio));
+                    // Nastav load combination pre maximalne vyuzitie (vsetky load combinations vo vybranom limit state)
+                    loadCombID = governingResults.LoadCombination.ID;
+                }
+
                 CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, designOptionsVM.ShearDesignAccording334, designOptionsVM.IgnoreWebStiffeners, DesignResults_ULS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+            }
             else
+            {
+                if (vm.SelectedLoadCombinationID == -1) //"envelope"
+                {
+                    // SLS
+                    // Vysledky vsetkych prutov daneho typu zo vsetkych kombinacii daneho limit state
+                    List<CMemberLoadCombinationRatio_SLS> allSpecificMemberTypeResults = DesignResults_SLS.FindAll(i => i.Member.EMemberTypePosition == GroupOfMembersWithSelectedType.MemberType_FS_Position);
+                    // Najdi maximalne vyuzitie z vysledkov
+                    float fMaxDesignRatio = allSpecificMemberTypeResults.Max(f => f.MaximumDesignRatio);
+                    // Nacitaj vysledkovy zaznam pre maximalne vyuzitie
+                    var governingResults = allSpecificMemberTypeResults.First(x => MATH.MathF.d_equal(x.MaximumDesignRatio, fMaxDesignRatio));
+                    // Nastav load combination pre maximalne vyuzitie v ramci obalky (vsetky load combinations vo vybranom limit state)
+                    loadCombID = governingResults.LoadCombination.ID;
+                }
+
                 CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+            }
         }
 
         // Calculate governing member design ratio
