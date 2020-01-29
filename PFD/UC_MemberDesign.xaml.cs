@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using BaseClasses;
 using M_AS4600;
+using System.Text;
 
 namespace PFD
 {
@@ -19,23 +20,25 @@ namespace PFD
         CModel_PFD Model;
         public List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
-        public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
+        //public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
+        public sDesignResults sDesignResults_SLS = new sDesignResults();
+        public sDesignResults sDesignResults_ULS = new sDesignResults();
 
         public DesignOptionsViewModel designOptionsVM;
 
-        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, DesignOptionsViewModel doVM,  /*bool bShearDesignAccording334, bool bIgnoreWebStiffeners, */CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS, sDesignResults designResults_ULSandSLS)
+        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, DesignOptionsViewModel doVM, CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> listDesignResults_ULS, List<CMemberLoadCombinationRatio_SLS> listDesignResults_SLS, sDesignResults designResults_ULS, sDesignResults designResults_SLS)
         {
             InitializeComponent();
 
             designOptionsVM = doVM;
 
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
-            //ShearDesignAccording334 = bShearDesignAccording334;
-            //IgnoreWebStiffeners = bIgnoreWebStiffeners;
+            
             Model = model;
-            DesignResults_ULS = designResults_ULS;
-            DesignResults_SLS = designResults_SLS;
-            sDesignResults_ULSandSLS = designResults_ULSandSLS;
+            DesignResults_ULS = listDesignResults_ULS;
+            DesignResults_SLS = listDesignResults_SLS;
+            sDesignResults_ULS = designResults_ULS;
+            sDesignResults_SLS = designResults_SLS;
 
             // Member Design
             CPFDMemberDesign vm = new CPFDMemberDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
@@ -51,7 +54,33 @@ namespace PFD
             if (vm != null && vm.IsSetFromCode) return;
             if (vm.ComponentTypeIndex == -1) return;
 
-            CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
+            CMemberGroup GroupOfMembersWithSelectedType = null;
+
+            if (vm.ComponentList[vm.ComponentTypeIndex] == "All") //All
+            {
+                if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
+                {
+                    CMemberGroup gr = Model.listOfModelMemberGroups.FirstOrDefault(c => c.MemberType_FS_Position == sDesignResults_ULS.MaximumDesignRatioWholeStructureMember.EMemberTypePosition);
+                    if (gr != null) gr = gr.Clone();
+                    gr.ListOfMembers = new List<CMember> { sDesignResults_ULS.MaximumDesignRatioWholeStructureMember };
+                    GroupOfMembersWithSelectedType = gr;
+                    textInfo.Text = GetInfoText(sDesignResults_ULS.MaximumDesignRatioWholeStructureMember, sDesignResults_ULS.GoverningLoadCombinationStructure);
+                }
+                else
+                {
+                    CMemberGroup gr = Model.listOfModelMemberGroups.FirstOrDefault(c => c.MemberType_FS_Position == sDesignResults_SLS.MaximumDesignRatioWholeStructureMember.EMemberTypePosition);
+                    if (gr != null) gr = gr.Clone();
+                    gr.ListOfMembers = new List<CMember> { sDesignResults_SLS.MaximumDesignRatioWholeStructureMember };
+                    GroupOfMembersWithSelectedType = gr;
+                    textInfo.Text = GetInfoText(sDesignResults_SLS.MaximumDesignRatioWholeStructureMember, sDesignResults_SLS.GoverningLoadCombinationStructure);
+                }
+            }
+            else
+            {
+                GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
+                textInfo.Text = "";
+            } 
+                
 
             // Prepiseme defaultne hodnoty limitov hodnotami z GUI - design options
             // TODO - ak budu v design options vsetky potrebne limity, mozu sa defaulty odstranit
@@ -85,6 +114,7 @@ namespace PFD
             }
             else
             {
+                //a co ak je ALL???
             }
 
             // Prepocitame limitne hodnoty
@@ -94,18 +124,9 @@ namespace PFD
             CCalculMember cGoverningMemberResults;
 
             int loadCombID = vm.SelectedLoadCombinationID;
-
-            // TODO 511
-            // TO Ondrej - toto som Ti zakomentoval
-            //if (vm.SelectedLoadCombinationID == -1) //"envelope"
-            //{
-            //    loadCombID = sDesignResults_ULSandSLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
-            //}
-
-
+                        
             // TODO 511 To Ondrej - podla mna by to malo byt nejako takto, asi to da napisat aj krajsie, tak to prosim uprav
             // Teoreticky sa to da urobit aj tak, ze sa do CalculateGoverningMemberDesignDetails prida dalsi cyklus cez vsetky load combinations a potom cez vsetky members v skupine a ked je loadcombID = -1 tak sa prejde cely ten cyklus cez vsetky load combinations
-
             // Nejako obdobne to treba implementovat aj pre joint design a footing pad design
             // Tam by mali rozhodovat design ratia pre zaciatocny alebo koncovy uzol na prute, vyberie sa najhorsi a k nemu sa zobrazuje myslim odpovedajuci z toho isteho pruta
 
@@ -114,14 +135,17 @@ namespace PFD
                 if (vm.SelectedLoadCombinationID == -1) //"envelope"
                 {
                     // ULS
-                    // Vysledky vsetkych prutov daneho typu zo vsetkych kombinacii daneho limit state
-                    List<CMemberLoadCombinationRatio_ULS> allSpecificMemberTypeResults = DesignResults_ULS.FindAll(i => i.Member.EMemberTypePosition == GroupOfMembersWithSelectedType.MemberType_FS_Position);
-                    // Najdi maximalne vyuzitie z vysledkov
-                    float fMaxDesignRatio = allSpecificMemberTypeResults.Max(f => f.MaximumDesignRatio);
-                    // Nacitaj vysledkovy zaznam pre maximalne vyuzitie
-                    var governingResults = allSpecificMemberTypeResults.First(x=> MATH.MathF.d_equal(x.MaximumDesignRatio, fMaxDesignRatio));
-                    // Nastav load combination pre maximalne vyuzitie (vsetky load combinations vo vybranom limit state)
-                    loadCombID = governingResults.LoadCombination.ID;
+                    loadCombID = sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+                    textInfo.Text = GetInfoText(sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].MemberWithMaximumDesignRatio, sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
+
+                    //// Vysledky vsetkych prutov daneho typu zo vsetkych kombinacii daneho limit state
+                    //List<CMemberLoadCombinationRatio_ULS> allSpecificMemberTypeResults = DesignResults_ULS.FindAll(i => i.Member.EMemberTypePosition == GroupOfMembersWithSelectedType.MemberType_FS_Position);
+                    //// Najdi maximalne vyuzitie z vysledkov
+                    //float fMaxDesignRatio = allSpecificMemberTypeResults.Max(f => f.MaximumDesignRatio);
+                    //// Nacitaj vysledkovy zaznam pre maximalne vyuzitie
+                    //var governingResults = allSpecificMemberTypeResults.First(x=> MATH.MathF.d_equal(x.MaximumDesignRatio, fMaxDesignRatio));
+                    //// Nastav load combination pre maximalne vyuzitie (vsetky load combinations vo vybranom limit state)
+                    //loadCombID = governingResults.LoadCombination.ID;
                 }
 
                 CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, designOptionsVM.ShearDesignAccording334, designOptionsVM.IgnoreWebStiffeners, DesignResults_ULS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
@@ -131,18 +155,35 @@ namespace PFD
                 if (vm.SelectedLoadCombinationID == -1) //"envelope"
                 {
                     // SLS
-                    // Vysledky vsetkych prutov daneho typu zo vsetkych kombinacii daneho limit state
-                    List<CMemberLoadCombinationRatio_SLS> allSpecificMemberTypeResults = DesignResults_SLS.FindAll(i => i.Member.EMemberTypePosition == GroupOfMembersWithSelectedType.MemberType_FS_Position);
-                    // Najdi maximalne vyuzitie z vysledkov
-                    float fMaxDesignRatio = allSpecificMemberTypeResults.Max(f => f.MaximumDesignRatio);
-                    // Nacitaj vysledkovy zaznam pre maximalne vyuzitie
-                    var governingResults = allSpecificMemberTypeResults.First(x => MATH.MathF.d_equal(x.MaximumDesignRatio, fMaxDesignRatio));
-                    // Nastav load combination pre maximalne vyuzitie v ramci obalky (vsetky load combinations vo vybranom limit state)
-                    loadCombID = governingResults.LoadCombination.ID;
+                    loadCombID = sDesignResults_SLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+                    textInfo.Text = GetInfoText(sDesignResults_SLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].MemberWithMaximumDesignRatio, sDesignResults_SLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
+                    //// Vysledky vsetkych prutov daneho typu zo vsetkych kombinacii daneho limit state
+                    //List<CMemberLoadCombinationRatio_SLS> allSpecificMemberTypeResults = DesignResults_SLS.FindAll(i => i.Member.EMemberTypePosition == GroupOfMembersWithSelectedType.MemberType_FS_Position);
+                    //// Najdi maximalne vyuzitie z vysledkov
+                    //float fMaxDesignRatio = allSpecificMemberTypeResults.Max(f => f.MaximumDesignRatio);
+                    //// Nacitaj vysledkovy zaznam pre maximalne vyuzitie
+                    //var governingResults = allSpecificMemberTypeResults.First(x => MATH.MathF.d_equal(x.MaximumDesignRatio, fMaxDesignRatio));
+                    //// Nastav load combination pre maximalne vyuzitie v ramci obalky (vsetky load combinations vo vybranom limit state)
+                    //loadCombID = governingResults.LoadCombination.ID;
                 }
 
                 CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             }
+        }
+
+        private string GetInfoText(CMember m, CLoadCombination loadComb)
+        {
+            if (m == null) return "";
+            if (loadComb == null) return "";
+
+            StringBuilder sb = new StringBuilder();
+            if (loadComb.eLComType == ELSType.eLS_SLS) sb.Append("Governing Limit State: SLS");
+            else sb.Append("Governing Limit State: ULS");
+
+            sb.Append($" / Governing Load Combination: { loadComb.Name} { loadComb.CombinationKey}");
+            sb.Append($" / Governing Member Type: {m.EMemberTypePosition.GetFriendlyName()}");
+
+            return sb.ToString();
         }
 
         // Calculate governing member design ratio

@@ -142,6 +142,8 @@ namespace PFD
             ComponentList = componentList.Where(s => s.MemberTypePosition == EMemberType_FS_Position.MainColumn || s.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
                                             s.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || s.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide
                                             ).Select(s => s.ComponentName).ToList();
+
+            ComponentList.Add("All");
         }
 
         private void SetLimitStates(CLimitState[] modelLimitStates)

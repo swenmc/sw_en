@@ -14,20 +14,18 @@ namespace PFD
     public partial class UC_JointDesign : UserControl
     {
         bool UseCRSCGeometricalAxes;
-        //CModel_PFD Model;
+        
         CPFDViewModel _pfdVM;
         CalculationSettingsFoundation FootingCalcSettings;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
-        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, CPFDViewModel pfdVM, CComponentListVM compList, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
+        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, CPFDViewModel pfdVM, CComponentListVM compList)
         {
             InitializeComponent();
 
-            UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
-            DesignResults_ULS = designResults_ULS;
+            UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;            
             _pfdVM = pfdVM;
-            //Model = pfdVM.Model;
-            //FootingCalcSettings = pfdVM.FootingVM.GetCalcSettings();
+            DesignResults_ULS = _pfdVM.JointDesignResults_ULS;
 
             // Joint Design
             CPFDJointsDesign vm = new CPFDJointsDesign(_pfdVM.Model.m_arrLimitStates, _pfdVM.Model.m_arrLoadCombs, compList.ComponentList);
@@ -92,6 +90,11 @@ namespace PFD
                     CConnectionJointTypes cjEnd = null;
                     _pfdVM.Model.GetModelMemberStartEndConnectionJoints(m, out cjStart, out cjEnd);
 
+                    if (loadCombinationID == -1) //envelope
+                    {
+                        loadCombinationID = _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+                    }
+
                     CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
                     CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
                     if (resStart == null) continue;
@@ -125,6 +128,7 @@ namespace PFD
                         // One joint is joint with maximum design ratio, the other joint is corresponding joint for selected member and load combination
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
+                        //To Mato - toto mi musis vsvetlit preco sa to tu prepocitava znovu akurat jeden bool na konci je zmeneny
                         cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
 

@@ -155,6 +155,7 @@ namespace PFD
         public void SetComponentList(ObservableCollection<CComponentInfo> componentList)
         {
             ComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true && s.Design == true).Select(s => s.ComponentName).ToList();
+            ComponentList.Add("All");
         }
 
         private void SetLimitStates(CLimitState[] modelLimitStates)
