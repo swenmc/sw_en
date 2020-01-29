@@ -653,6 +653,7 @@ namespace M_AS4600
 
             float fUnitFactor_ComponentDimension = 1000f; // m to mm
             float fUnitFactor_ComponentArea = 1000000f; // m^2 to mm^2
+            float fUnitFactor_ComponentSectionModulus = 1000000000f; // m^3 to mm^3
             float fUnitFactor_ComponentVolume = 1000000000f; // m^3 to mm^3
 
             float fUnitFactor_Density = 1f; // kg/m^3 to kg/m^3
@@ -679,6 +680,7 @@ namespace M_AS4600
 
             string sUnit_ComponentDimension = "[mm]";
             string sUnit_ComponentArea = "[mm²]";
+            string sUnit_ComponentSectionModulus = "[mm³]";
             string sUnit_ComponentVolume = "[mm³]";
 
             string sUnit_Factor = "[-]";
@@ -1923,6 +1925,9 @@ namespace M_AS4600
                 DisplayBasicValues_IF(calc);
                 DisplayBasicValues_ComponentProperties_OnePlate_MM_SM(calc);
 
+                // Plate design
+
+                // Plate tension
                 listPhysicalQuantity_Symbols.Add("Φplate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_plate, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
@@ -1939,6 +1944,24 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
+                // Plate compression - bearing
+                listPhysicalQuantity_Symbols.Add("Φc.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_c_Plate, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Ac.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_c_plate* fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("Nc.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_s_plate* fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Nc.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_341a_plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Plate shear resistance
                 listPhysicalQuantity_Symbols.Add("Av.y.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
@@ -1951,6 +1974,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_yv_3341_plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
+                // Plate bending resistance
                 listPhysicalQuantity_Symbols.Add("M.b.x.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fM_xu_resistance_plate * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Moment);
@@ -2060,6 +2084,31 @@ namespace M_AS4600
                 listPhysicalQuantity_Symbols.Add("η Nt.m1");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Plate local bending - uplift tension force
+                listPhysicalQuantity_Symbols.Add("Φb.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_CrSc, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("a");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fa_force * fUnitFactor_BasicDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_BasicDimension);
+
+                listPhysicalQuantity_Symbols.Add("M*y.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fM_y_asterix_plate * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("Zy.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fZ_pl_y_plate * fUnitFactor_ComponentSectionModulus, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_ComponentSectionModulus);
+
+                listPhysicalQuantity_Symbols.Add("Ms.y.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fM_s_y_plate * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("η Ms.y.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_M_s_y_331_1_plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
             else
             {
@@ -2069,7 +2118,7 @@ namespace M_AS4600
 
             // Maximum design ratio
             listPhysicalQuantity_Symbols.Add("η max");
-            listPhysicalQuantity_Values.Add(Math.Round(calc.fEta_max, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+            listPhysicalQuantity_Values.Add(Math.Round(calc.fEta_max_joint, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
             listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
         }
 
@@ -2087,6 +2136,7 @@ namespace M_AS4600
 
             float fUnitFactor_ComponentDimension = 1000f; // m to mm
             float fUnitFactor_ComponentArea = 1000000f; // m^2 to mm^2
+            float fUnitFactor_ComponentSectionModulus = 1000000000f; // m^3 to mm^3
             float fUnitFactor_ComponentVolume = 1000000000f; // m^3 to mm^3
 
             float fUnitFactor_Density = 1f; // kg/m^3 to kg/m^3
@@ -2113,6 +2163,7 @@ namespace M_AS4600
 
             string sUnit_ComponentDimension = "[mm]";
             string sUnit_ComponentArea = "[mm²]";
+            string sUnit_ComponentSectionModulus = "[mm³]";
             string sUnit_ComponentVolume = "[mm³]";
 
             string sUnit_Factor = "[-]";
@@ -2127,11 +2178,11 @@ namespace M_AS4600
 
                 // Anchors
                 listPhysicalQuantity_Symbols.Add("N*joint.up");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_asterix_joint_uplif * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF_AS4600.fN_t * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("N*joint.brg");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_asterix_joint_bearing * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF_AS4600.fN_c * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("V*x.joint");
@@ -2313,6 +2364,36 @@ namespace M_AS4600
 
                 listPhysicalQuantity_Symbols.Add("η");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5353, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Plate bearing - local compression in concrete
+
+                listPhysicalQuantity_Symbols.Add("Alc");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_contact * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("Zx.lc");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fZ_y_contact * fUnitFactor_ComponentSectionModulus, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_ComponentSectionModulus);
+
+                listPhysicalQuantity_Symbols.Add("plc.N");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_N * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                listPhysicalQuantity_Symbols.Add("plc.Mx");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_My * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                listPhysicalQuantity_Symbols.Add("plc.NMx");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_N_My * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                listPhysicalQuantity_Symbols.Add("Φc");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_c_ConcreteLocalPressure, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("η pN.Mx");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_p_N_My, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // NZS 3101.1 - 2006
@@ -2935,7 +3016,7 @@ namespace M_AS4600
 
             // Maximum design ratio
             listPhysicalQuantity_Symbols.Add("η max");
-            listPhysicalQuantity_Values.Add(Math.Round(calc.fEta_max, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+            listPhysicalQuantity_Values.Add(Math.Round(calc.fEta_max_footing, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
             listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
         }
 

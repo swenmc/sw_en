@@ -1655,7 +1655,7 @@ namespace EXPIMP
                 if (calculEnd != null && calculEnd.footing != null)
                 {
                     if (calcul == null) calcul = calculEnd;
-                    else if (calcul.fEta_max_Footing < calculEnd.fEta_max_Footing) calcul = calculEnd;
+                    else if (calcul.fEta_max_footing < calculEnd.fEta_max_footing) calcul = calculEnd;
                 }
                 
                 if (calcul != null)

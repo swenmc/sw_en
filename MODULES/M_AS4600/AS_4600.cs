@@ -7,6 +7,20 @@ namespace M_AS4600
 {
     public class AS_4600
     {
+        // 3.3 MEMBERS SUBJECT TO BENDING
+        public float Eq_331_1___(float fM_asterix, float fPhi_b, float fM_s)
+        {
+            return Math.Abs(fM_asterix) / (fPhi_b * fM_s); // Eq. (3.3.1(1)) // fM_s design ratio
+        }
+        public float Eq_331_2___(float fM_asterix, float fPhi_b, float fM_b)
+        {
+            return Math.Abs(fM_asterix) / (fPhi_b * fM_b); // Eq. (3.3.1(2)) // fM_b design ratio
+        }
+        public float Eq_3322____(float fZ_e, float ff_y)
+        {
+            return fZ_e * ff_y; // Eq. (3.3.2.2) // fM_s
+        }
+
         // 3.4 SHEAR
         public float Eq_3341____(float fV_asterix, float fPhi_v, float fV_v)
         {
@@ -55,6 +69,20 @@ namespace M_AS4600
                 else
                     return Eq_334_5___(fa, fd_1);
             }
+        }
+
+        // 3.4 CONCENTRICALLY LOADED COMPRESSION MEMBERS
+        public float Eq_341_a___(float fN_asterix, float fPhi_c, float fN_s)
+        {
+            return Math.Abs(fN_asterix) / (fPhi_c * fN_s); // Eq. (3.4.1(a)) // fN_s design ratio
+        }
+        public float Eq_341_b___(float fN_asterix, float fPhi_c, float fN_c)
+        {
+            return Math.Abs(fN_asterix) / (fPhi_c * fN_c); // Eq. (3.4.1(b)) // fN_c design ratio
+        }
+        public float Eq_341_1___(float fA_e, float ff_y)
+        {
+            return fA_e * ff_y; // Eq. (3.4.1(1)) // fN_s
         }
 
         // 5.3 BOLTED CONNECTIONS

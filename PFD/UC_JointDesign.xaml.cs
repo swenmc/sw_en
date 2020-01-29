@@ -113,13 +113,13 @@ namespace PFD
                     CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces);
 
                     // Find member in the group of members with maximum start or end joint design ratio
-                    if (cJointStart.fEta_max > fMaximumDesignRatio || cJointEnd.fEta_max > fMaximumDesignRatio)
+                    if (cJointStart.fEta_max_joint > fMaximumDesignRatio || cJointEnd.fEta_max_joint > fMaximumDesignRatio)
                     {
                         // Set new maximum design ratio
-                        if (cJointStart.fEta_max > fMaximumDesignRatio)
-                            fMaximumDesignRatio = cJointStart.fEta_max;
+                        if (cJointStart.fEta_max_joint > fMaximumDesignRatio)
+                            fMaximumDesignRatio = cJointStart.fEta_max_joint;
                         else
-                            fMaximumDesignRatio = cJointEnd.fEta_max;
+                            fMaximumDesignRatio = cJointEnd.fEta_max_joint;
 
                         // Set start joint and end joint design details
                         // One joint is joint with maximum design ratio, the other joint is corresponding joint for selected member and load combination

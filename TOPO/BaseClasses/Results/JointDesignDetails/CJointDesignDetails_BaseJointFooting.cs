@@ -11,9 +11,6 @@ namespace BaseClasses
         // Anchors
         public bool bIsCastInHeadedStud;
 
-        public float fN_asterix_joint_uplif;
-        public float fN_asterix_joint_bearing;
-
         public float fV_asterix_x_joint;
         public float fV_asterix_y_joint;
         public float fV_asterix_res_joint;
@@ -77,6 +74,16 @@ namespace BaseClasses
         public float fEta_5352_1;
 
         public float fEta_5353;
+
+        // Plate bearing - local compression in concrete
+        public float fA_contact;
+        public float fZ_y_contact;
+        public float fLocalCompressionStress_p_N;
+        public float fLocalCompressionStress_p_My;
+        public float fLocalCompressionStress_p_N_My;
+
+        public float fPhi_c_ConcreteLocalPressure;
+        public float fEta_p_N_My;
 
         // NZS 3101.1 - 2006
         public float fElasticityFactor_1764;

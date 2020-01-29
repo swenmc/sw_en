@@ -8,17 +8,29 @@ namespace BaseClasses
 {
     public class CJointDesignDetails_BaseJoint : CJointDesignDetails
     {
+        public float fN_asterix_joint_uplif;
+        public float fN_asterix_joint_bearing;
+
         // Plate design
 
+        // Plate tension design
         public float fPhi_plate;
         public float fA_n_plate;
         public float fN_t_plate;
         public float fEta_N_t_5423_plate;
 
+        // Plate compression - bearing
+        public float fPhi_c_Plate;
+        public float fA_c_plate;
+        public float fN_s_plate;
+        public float fEta_341a_plate;
+
+        // Plate shear resistance
         public float fA_vn_yv_plate;
         public float fV_y_yv_plate;
         public float fEta_V_yv_3341_plate;
 
+        // Plate bending resistance
         public float fM_xu_resistance_plate;
         public float fEta_Mb_plate;
 
@@ -59,6 +71,14 @@ namespace BaseClasses
         public float fA_n_MainMember;
         public float fN_t_section_MainMember;
         public float fEta_N_t_5423_MainMember;
+
+        // Plate local bending - uplift tension force
+        public float fPhi_b_Plate;
+        public float fa_force;
+        public float fM_y_asterix_plate;
+        public float fZ_pl_y_plate;
+        public float fM_s_y_plate;
+        public float fEta_M_s_y_331_1_plate;
 
         public CJointDesignDetails_BaseJoint()
         {

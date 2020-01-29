@@ -61,7 +61,7 @@ namespace M_BASE
 
                         // Design joint
                         obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointStart, model, FootingCalcSettings, sjointStartDIF_x);
-                        fDesignRatio_Start = obj_CalcDesign.fEta_max;
+                        fDesignRatio_Start = obj_CalcDesign.fEta_max_joint;
                     }
                     else // End Joint Design
                     {
@@ -70,7 +70,7 @@ namespace M_BASE
 
                         // Design joint
                         obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointEnd, model, FootingCalcSettings, sjointEndDIF_x);
-                        fDesignRatio_End = obj_CalcDesign.fEta_max;
+                        fDesignRatio_End = obj_CalcDesign.fEta_max_joint;
                     }
                 }
             }
