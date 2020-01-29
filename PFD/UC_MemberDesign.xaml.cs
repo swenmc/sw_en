@@ -106,7 +106,8 @@ namespace PFD
             // TODO 511 To Ondrej - podla mna by to malo byt nejako takto, asi to da napisat aj krajsie, tak to prosim uprav
             // Teoreticky sa to da urobit aj tak, ze sa do CalculateGoverningMemberDesignDetails prida dalsi cyklus cez vsetky load combinations a potom cez vsetky members v skupine a ked je loadcombID = -1 tak sa prejde cely ten cyklus cez vsetky load combinations
 
-            // Podobne to treba implementovat aj pre 
+            // Nejako obdobne to treba implementovat aj pre joint design a footing pad design
+            // Tam by mali rozhodovat design ratia pre zaciatocny alebo koncovy uzol na prute, vyberie sa najhorsi a k nemu sa zobrazuje myslim odpovedajuci z toho isteho pruta
 
             if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
             {
