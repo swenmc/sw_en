@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using BaseClasses;
 using M_AS4600;
+using System.Text;
 
 namespace PFD
 {
@@ -53,7 +54,33 @@ namespace PFD
             if (vm != null && vm.IsSetFromCode) return;
             if (vm.ComponentTypeIndex == -1) return;
 
-            CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
+            CMemberGroup GroupOfMembersWithSelectedType = null;
+
+            if (vm.ComponentList[vm.ComponentTypeIndex] == "All") //All
+            {
+                if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
+                {
+                    CMemberGroup gr = Model.listOfModelMemberGroups.FirstOrDefault(c => c.MemberType_FS_Position == sDesignResults_ULS.MaximumDesignRatioWholeStructureMember.EMemberTypePosition);
+                    if (gr != null) gr = gr.Clone();
+                    gr.ListOfMembers = new List<CMember> { sDesignResults_ULS.MaximumDesignRatioWholeStructureMember };
+                    GroupOfMembersWithSelectedType = gr;
+                    textInfo.Text = GetInfoText(sDesignResults_ULS.MaximumDesignRatioWholeStructureMember, sDesignResults_ULS.GoverningLoadCombinationStructure);
+                }
+                else
+                {
+                    CMemberGroup gr = Model.listOfModelMemberGroups.FirstOrDefault(c => c.MemberType_FS_Position == sDesignResults_SLS.MaximumDesignRatioWholeStructureMember.EMemberTypePosition);
+                    if (gr != null) gr = gr.Clone();
+                    gr.ListOfMembers = new List<CMember> { sDesignResults_SLS.MaximumDesignRatioWholeStructureMember };
+                    GroupOfMembersWithSelectedType = gr;
+                    textInfo.Text = GetInfoText(sDesignResults_SLS.MaximumDesignRatioWholeStructureMember, sDesignResults_SLS.GoverningLoadCombinationStructure);
+                }
+            }
+            else
+            {
+                GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
+                textInfo.Text = "";
+            } 
+                
 
             // Prepiseme defaultne hodnoty limitov hodnotami z GUI - design options
             // TODO - ak budu v design options vsetky potrebne limity, mozu sa defaulty odstranit
@@ -87,6 +114,7 @@ namespace PFD
             }
             else
             {
+                //a co ak je ALL???
             }
 
             // Prepocitame limitne hodnoty
@@ -108,6 +136,7 @@ namespace PFD
                 {
                     // ULS
                     loadCombID = sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+                    textInfo.Text = GetInfoText(sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].MemberWithMaximumDesignRatio, sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
 
                     //// Vysledky vsetkych prutov daneho typu zo vsetkych kombinacii daneho limit state
                     //List<CMemberLoadCombinationRatio_ULS> allSpecificMemberTypeResults = DesignResults_ULS.FindAll(i => i.Member.EMemberTypePosition == GroupOfMembersWithSelectedType.MemberType_FS_Position);
@@ -127,7 +156,7 @@ namespace PFD
                 {
                     // SLS
                     loadCombID = sDesignResults_SLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
-
+                    textInfo.Text = GetInfoText(sDesignResults_SLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].MemberWithMaximumDesignRatio, sDesignResults_SLS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
                     //// Vysledky vsetkych prutov daneho typu zo vsetkych kombinacii daneho limit state
                     //List<CMemberLoadCombinationRatio_SLS> allSpecificMemberTypeResults = DesignResults_SLS.FindAll(i => i.Member.EMemberTypePosition == GroupOfMembersWithSelectedType.MemberType_FS_Position);
                     //// Najdi maximalne vyuzitie z vysledkov
@@ -140,6 +169,21 @@ namespace PFD
 
                 CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             }
+        }
+
+        private string GetInfoText(CMember m, CLoadCombination loadComb)
+        {
+            if (m == null) return "";
+            if (loadComb == null) return "";
+
+            StringBuilder sb = new StringBuilder();
+            if (loadComb.eLComType == ELSType.eLS_SLS) sb.Append("Governing Limit State: SLS");
+            else sb.Append("Governing Limit State: ULS");
+
+            sb.Append($" / Governing Load Combination: { loadComb.Name} { loadComb.CombinationKey}");
+            sb.Append($" / Governing Member Type: {m.EMemberTypePosition.GetFriendlyName()}");
+
+            return sb.ToString();
         }
 
         // Calculate governing member design ratio
