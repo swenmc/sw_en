@@ -21,16 +21,14 @@ namespace PFD
         //public CFootingInputVM FootingVM;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
-        public UC_FootingDesign(bool bUseCRSCGeometricalAxes_temp, CPFDViewModel pfdVM, CComponentListVM compList, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
+        public UC_FootingDesign(bool bUseCRSCGeometricalAxes_temp, CPFDViewModel pfdVM, CComponentListVM compList)
         {
             InitializeComponent();
 
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
             _pfdVM = pfdVM;
 
-            DesignResults_ULS = designResults_ULS;
-            //Model = model;
-            //FootingVM = footingVM;
+            DesignResults_ULS = _pfdVM.JointDesignResults_ULS;            
 
             // Footing Design
             vm = new CPFDFootingDesign(_pfdVM.Model.m_arrLimitStates, _pfdVM.Model.m_arrLoadCombs, compList.ComponentList);
@@ -75,6 +73,11 @@ namespace PFD
                     CFoundation f = _pfdVM.Model.GetFoundationForJointFromModel(joint);
                     if (f == null) { f = _pfdVM.Model.GetFoundationForJointFromModel(cjEnd); joint = cjEnd; }
                     if (f == null) continue;
+
+                    if (loadCombinationID == -1) //envelope
+                    {
+                        loadCombinationID = _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+                    }
 
                     CJointLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == joint.m_Node.ID);
                     if (res == null) continue;
