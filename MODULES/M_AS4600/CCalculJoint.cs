@@ -222,6 +222,7 @@ namespace M_AS4600
             designDetails.fEta_N_t_5423_plate = eq.Eq_5423_1__(Math.Abs(fN_oneside), designDetails.fPhi_Plate, designDetails.fN_t_plate);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5423_plate);
 
+            // Section 7 - Direct Strength Design Method
             // Plate shear resistance
             designDetails.fA_vn_yv_plate = plate.fA_vn_zv;
             designDetails.fV_y_yv_plate = eq.Eq_723_5___(designDetails.fA_vn_yv_plate, ff_yk_1_plate);
@@ -1203,7 +1204,56 @@ namespace M_AS4600
             designDetails.fEta_N_t_5423_MainMember = eq.Eq_5423_1__(sDIF_temp.fN_t, designDetails.fPhi_CrSc, designDetails.fN_t_section_MainMember);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5423_MainMember);
 
-            // TODO - tu este chybaju posudenia samotnej dosky na napati betonu pod nou na lokalny tlak betonu pod plechom, ohyb, oslabeny prierez v ohybe , tahu, tlaku, smyku atd vid xls
+            // TODO - Dorobit Base Plate Design
+            // TODO - tu este chybaju posudenia samotnej dosky na napatie betonu pod nou na lokalny tlak betonu pod plechom, ohyb, oslabeny prierez v ohybe , tahu, tlaku, smyku atd vid xls
+
+            // TODO - implementovat kontrolu pre minimalne vzdialenosti medzi skrutkami a od kraja
+
+
+
+
+
+
+
+            // IN WORK
+
+            // Minimalne vzdialenosti p1.min = 3.0*df a e1.min = 1.5*df
+            /*
+            // Plate bearing
+            designDetails.fPhi_c_Plate = 0.85f; // TODO - overit ci je to spravne
+            designDetails.fA_c_plate = plate.fA_n;
+            designDetails.fN_s_plate = eq. plate.fA_n;
+
+            // Plate local bending - uplif tension force
+            designDetails.fPhi_b_Plate = 0.95f;
+
+            float fa_force = 0.0f; // Moment arm of force
+
+            float fs2 = basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1[0]; // TODO - nacitavat nejako krajsie ak je kotiev v rade viac ako 2 a s roznymi vzdialenostami
+
+            if(fs2 == 0) // Ak je hodnota s2 = 0
+                fa_force = (plate.Width_bx - basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx) / 2f;
+            else
+                fa_force = (plate.Width_bx - fs2 - 0.5f * basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx - 0.5f * basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx) / 2f;
+
+            float fDesignMoment = fN_oneside * fa_force;
+
+            float fNominalCapacity_Ms_plate = 0.25f * basePlate.Height_hy * MathF.Pow2(ft_1_plate) * ff_yk_1_plate;
+
+            designDetails.fEta_M_plate = eq.Eq_5423_1__(fDesignMoment, designDetails.fPhi_b_Plate, designDetails.fNominalCapacity_Ms_plate_t_plate);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_M_plate);
+            */
+            // Plate bearing - local compression in concrete
+            // Todo sa ani nema aplikovat ak je stlp na doraz tak sa prenasa o obvode prierezu, mal by to byt obvod prierezu * (hrubka prierezu + 2 * hrubka base plate) - roznos 45 stupnov
+
+
+
+
+
+
+
+
+
 
             // Validation - negative design ratio
             if (designDetails.fEta_N_t_5423_plate < 0 ||
