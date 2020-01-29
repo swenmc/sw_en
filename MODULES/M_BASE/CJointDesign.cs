@@ -14,7 +14,7 @@ namespace M_BASE
         bool bDebugging;
         public float fDesignRatio_Start = 0;
         public float fDesignRatio_End = 0;
-        public float fDesignRatio_Footing = 0;
+        //public float fDesignRatio_footing = 0; // Neviem ci to tu potrebujeme ,potrebovali by sme nejako krajsie oddelit vypocet footing od joints
         public bool BUseCRSCGeometricalAxes;
         CalculationSettingsFoundation FootingCalcSettings;
 

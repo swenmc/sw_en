@@ -2076,7 +2076,7 @@ namespace M_AS4600
             }
 
             // Validation - infinity design ratio
-            if (fEta_max_footing > 9e+10)
+            if (fEta_max_footing > 1e+10)
             {
                 throw new Exception("Design ratio is invalid!");
             }
