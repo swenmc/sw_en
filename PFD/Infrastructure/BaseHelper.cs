@@ -28,18 +28,20 @@ namespace PFD
         public static string GetGoverningMemberText(CMember m)
         {
             if (m == null) return "";
-            return $"Governing Member Type: {m.EMemberTypePosition.GetFriendlyName()}";
+            return $"Governing: {m.EMemberTypePosition.GetFriendlyName()}";
+            //return $"Governing Member Type: {m.EMemberTypePosition.GetFriendlyName()}";
         }
         public static string GetGoverningLoadCombText(CLoadCombination loadComb)
         {            
             if (loadComb == null) return "";
-            return $"Governing Load Combination: { loadComb.Name} { loadComb.CombinationKey}";
+            return $"Governing: { loadComb.Name} { loadComb.CombinationKey}";
+            //return $"Governing Load Combination: { loadComb.Name} { loadComb.CombinationKey}";
         }
 
         public static string GetGoverningLimitStateText(ELSType t)
         {
-            if (t == ELSType.eLS_SLS) return "Governing Limit State: SLS";
-            else if (t == ELSType.eLS_ULS) return "Governing Limit State: ULS";
+            if (t == ELSType.eLS_SLS) return "Governing: SLS"; //return "Governing Limit State: SLS";
+            else if (t == ELSType.eLS_ULS) return "Governing: ULS"; //return "Governing Limit State: ULS";
             else return "All";
         }
 
