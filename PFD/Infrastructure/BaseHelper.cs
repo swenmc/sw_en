@@ -36,12 +36,11 @@ namespace PFD
             return $"Governing Load Combination: { loadComb.Name} { loadComb.CombinationKey}";
         }
 
-        public static string GetGoverningLimitStateText(CLoadCombination loadComb)
+        public static string GetGoverningLimitStateText(ELSType t)
         {
-            if (loadComb == null) return "";
-                        
-            if (loadComb.eLComType == ELSType.eLS_SLS) return "Governing Limit State: SLS";
-            else return "Governing Limit State: ULS";
+            if (t == ELSType.eLS_SLS) return "Governing Limit State: SLS";
+            else if (t == ELSType.eLS_ULS) return "Governing Limit State: ULS";
+            else return "All";
         }
 
     }

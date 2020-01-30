@@ -82,13 +82,13 @@ namespace PFD
                     if (gr != null) gr = gr.Clone();
                     gr.ListOfMembers = new List<CMember> { sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember };
                     GroupOfMembersWithSelectedType = gr;
-                    textGoverningMember.Text = BaseHelper.GetGoverningMemberText(sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember);
+                    textGoverningMember.Text = BaseHelper.GetGoverningMemberText(sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember);                    
                 }
             }
             else
             {
                 GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);                
-                textGoverningMember.Text = "";
+                textGoverningMember.Text = "";                
             } 
                 
 
@@ -134,12 +134,13 @@ namespace PFD
             CCalculMember cGoverningMemberResults;
 
             int loadCombID = vm.SelectedLoadCombinationID;
-                        
+
             // TODO 511 To Ondrej - podla mna by to malo byt nejako takto, asi to da napisat aj krajsie, tak to prosim uprav
             // Teoreticky sa to da urobit aj tak, ze sa do CalculateGoverningMemberDesignDetails prida dalsi cyklus cez vsetky load combinations a potom cez vsetky members v skupine a ked je loadcombID = -1 tak sa prejde cely ten cyklus cez vsetky load combinations
             // Nejako obdobne to treba implementovat aj pre joint design a footing pad design
             // Tam by mali rozhodovat design ratia pre zaciatocny alebo koncovy uzol na prute, vyberie sa najhorsi a k nemu sa zobrazuje myslim odpovedajuci z toho isteho pruta
 
+            textGoverningLimitState.Text = "";
             if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
             {
                 if (vm.SelectedLoadCombinationID == -1) //"envelope"
@@ -327,8 +328,16 @@ namespace PFD
 
                 if (cGoverningMemberResults != null)
                 {
-                    if(isULS) cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView);
-                    else cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_SLS, Results_GridView);
+                    if (isULS)
+                    {
+                        cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView);
+                        textGoverningLimitState.Text = BaseHelper.GetGoverningLimitStateText(ELSType.eLS_ULS);
+                    }
+                    else
+                    {
+                        cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_SLS, Results_GridView);
+                        textGoverningLimitState.Text = BaseHelper.GetGoverningLimitStateText(ELSType.eLS_SLS);
+                    }
                 }                    
                 else
                 {

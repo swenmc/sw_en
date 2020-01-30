@@ -154,7 +154,7 @@ namespace PFD
             List<ComboItem> loadCombinations = new List<ComboItem>();
             foreach (CLoadCombination lc in m_allLoadCombinations)
             {
-                if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(new ComboItem(lc.ID, $"{lc.Name}\t{lc.CombinationKey}"));
+                if (lc.eLComType == limitState.eLS_Type || limitState.eLS_Type == ELSType.eLS_ALL) loadCombinations.Add(new ComboItem(lc.ID, $"{lc.Name}\t{lc.CombinationKey}"));
             }
 
             loadCombinations.Add(new ComboItem(-1, "Envelope"));

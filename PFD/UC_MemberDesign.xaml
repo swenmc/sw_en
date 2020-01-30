@@ -13,9 +13,9 @@
     </UserControl.Resources>
     <Grid Margin="5,10,5,5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="3*"/>
             
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="5"/>
 
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>            
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
