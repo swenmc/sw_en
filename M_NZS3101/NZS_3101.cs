@@ -156,11 +156,21 @@ namespace M_NZS3101
         }
         public float Eq_17_9____(float fk, float fLambda, float ff_apostrophe_c, float fh_ef)
         {
-            return (float)(fk * fLambda * Math.Sqrt(ff_apostrophe_c) * Math.Pow(fh_ef, 1.5f)); // Eq. (17-9) // fN_b
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat silu v [N]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+            float fh_ef_mm = fh_ef * 1000f;  // consider value in mm 
+
+            //return (float)(fk * fLambda * Math.Sqrt(ff_apostrophe_c) * Math.Pow(fh_ef, 1.5f)); // Eq. (17-9) // fN_b
+            return (float)(fk * fLambda * Math.Sqrt(ff_apostrophe_c_MPa) * Math.Pow(fh_ef_mm, 1.5f)); // Eq. (17-9) // fN_b
         }
         public float Eq_17_9a___(float fLambda, float ff_apostrophe_c, float fh_ef)
         {
-            return (float)(3.9f * fLambda * Math.Sqrt(ff_apostrophe_c) * Math.Pow(fh_ef, 5f/3f)); // Eq. (17-9(a)) // fN_b
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat silu v [N]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+            float fh_ef_mm = fh_ef * 1000f;  // consider value in mm 
+
+            //return (float)(3.9f * fLambda * Math.Sqrt(ff_apostrophe_c) * Math.Pow(fh_ef, 5f/3f)); // Eq. (17-9(a)) // fN_b
+            return (float)(3.9f * fLambda * Math.Sqrt(ff_apostrophe_c_MPa) * Math.Pow(fh_ef_mm, 5f / 3f)); // Eq. (17-9(a)) // fN_b
         }
         public float Eq_17_10___(float fPsi_4, float fN_p)
         {
@@ -179,7 +189,13 @@ namespace M_NZS3101
         }
         public float Eq_17_13___(float fk_1, float fc_1, float fLambda, float fA_brg, float ff_apostrophe_c)
         {
-            return 13.3f * fk_1 * fc_1 * fLambda * MathF.Sqrt(fA_brg * ff_apostrophe_c); // Eq. (17-13) // fN_sb
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat silu v [N]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+            float fc_1_mm = fc_1 * 1000f;  // consider value in mm 
+            float fA_brg_mm2 = fA_brg * 1000000f;  // consider value in mm^2
+
+            //return 13.3f * fk_1 * fc_1 * fLambda * MathF.Sqrt(fA_brg * ff_apostrophe_c); // Eq. (17-13) // fN_sb
+            return 13.3f * fk_1 * fc_1_mm * fLambda * MathF.Sqrt(fA_brg_mm2 * ff_apostrophe_c_MPa); // Eq. (17-13) // fN_sb
         }
         public float Get_k_1____(float fc_1, float fc_2)
         {

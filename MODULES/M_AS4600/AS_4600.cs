@@ -157,7 +157,12 @@ namespace M_AS4600
         }
         public float Eq_5343____(float fd_f, float ft, float ff_u)
         {
-            return (0.183f * ft + 1.53f) * fd_f * ft * ff_u; // Eq. (5.3.4.3) // fV_b
+            // Oprava 30.1.2020 - nesedeli vysledky - malo by to vracat silu v [N]
+            float fd_f_mm = fd_f * 1000f;  // consider value in mm 
+            float ft_mm = ft * 1000f;  // consider value in mm 
+            float ff_u_MPa = ff_u / 1000000f;  // consider value in MPa 
+            //return (0.183f * ft + 1.53f) * fd_f * ft * ff_u; // Eq. (5.3.4.3) // fV_b
+            return (0.183f * ft_mm + 1.53f) * fd_f_mm * ft_mm * ff_u_MPa; // Eq. (5.3.4.3) // fV_b
         }
         public float Eq_5351_1__(float fV_asterix_fv, float fPhi, float fV_fv)
         {

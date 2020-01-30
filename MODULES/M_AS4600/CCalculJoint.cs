@@ -1391,7 +1391,7 @@ namespace M_AS4600
             {
                 pe_x_min_AnchorToPlateEdge = pe_x_plus_min_AnchorToPlateEdge;
                 fe_x_min_AnchorToFootingEdge = fe_x_plus_min_AnchorToFootingEdge;
-             }
+            }
             else
             {
                 pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
@@ -1410,7 +1410,7 @@ namespace M_AS4600
             }
 
             // Pre stlpy ramu na pravej strane treba hodnoty prehodit - nie som si uplne isty ci je znamienko hodnoty Vyv_yy spravne
-            if((joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn || joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn)
+            if ((joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn || joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn)
                 && joint.m_MainMember.NodeEnd.ID == joint.m_Node.ID) // TODO polohu stlpov by trebalo urcit nejako krajsie
             {
                 // Stlpy hlavneho ramu vlavo maju os x smerujucu nahor, stply na pravej strane maju os x smerujucu nadol
@@ -1474,7 +1474,7 @@ namespace M_AS4600
 
             ValidateDimensionValue(designDetails.fc_2_x);
             ValidateDimensionValue(designDetails.fc_1_y);
- 
+
             // Material properties
             CMat_02_00 materialConcrete = new CMat_02_00();
             materialConcrete = (CMat_02_00)foundation.m_Mat;
@@ -1496,7 +1496,7 @@ namespace M_AS4600
             // Base plate design
             // 5.3.2 Tearout
             designDetails.fPhi_v_532 = 0.7f;
-            designDetails.fV_f_532 = eq.Eq_532_2___(ft_1_plate, designDetails.fe_y_AnchorToPlateEdge, ff_uk_1_plate);
+            designDetails.fV_f_532 = eq.Eq_532_2___(ft_1_plate, Math.Min(designDetails.fe_x_AnchorToPlateEdge, designDetails.fe_y_AnchorToPlateEdge), ff_uk_1_plate); // Todo - minimum alebo smer y
             designDetails.fEta_532_1 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_v_532, designDetails.fV_f_532);
             fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_532_1);
 
@@ -1571,7 +1571,12 @@ namespace M_AS4600
             fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_p_N_My);
 
             // NZS 3101.1 - 2006
-            designDetails.fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
+            bool bIsEarthquakeCombination = true; // TODO - napojit typ kombinacie
+
+            designDetails.fElasticityFactor_1764 = 1.0f;
+
+            if (bIsEarthquakeCombination)
+              designDetails.fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
 
             // 17.5.6 Strength of cast -in anchors
 
@@ -1609,8 +1614,11 @@ namespace M_AS4600
             designDetails.fPsi_3 = 1.25f; // modification factor or cracking of concrete
             designDetails.fA_no_group = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
 
-            float fAn_Length_x_group = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef + ((iNumberAnchors_x - 1) * designDetails.fs_2_x);
-            float fAn_Length_y_group = Math.Min(designDetails.fc_1_y, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef + ((iNumberAnchors_y - 1) * designDetails.fs_1_y);
+            float fDistanceOfAnchorFromEdge_OtherSide_x = designDetails.fFootingDimension_x - designDetails.fc_2_x - (iNumberAnchors_x - 1) * designDetails.fs_2_x;
+            float fDistanceOfAnchorFromEdge_OtherSide_y = designDetails.fFootingDimension_y - designDetails.fc_1_y - (iNumberAnchors_y - 1) * designDetails.fs_1_y;
+
+            float fAn_Length_x_group = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_x) + ((iNumberAnchors_x - 1) * designDetails.fs_2_x);
+            float fAn_Length_y_group = Math.Min(designDetails.fc_1_y, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_y) + ((iNumberAnchors_y - 1) * designDetails.fs_1_y);
             designDetails.fA_n_group = Math.Min(fAn_Length_x_group * fAn_Length_y_group, designDetails.iNumberAnchors_t * designDetails.fA_no_group);
 
             designDetails.fN_b_179_group = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
@@ -1671,6 +1679,9 @@ namespace M_AS4600
             {
                 // 17.5.7.4 Lower characteristic concrete side face blowout strength
                 // Single anchor - edge
+                // c1 = distance from the centre of an anchor shaft to the edge of the concrete in the direction in which
+                // the load is applied, mm. If tension is applied to the anchor then c1 = cmin. Where anchors subject
+                // to shear are located in narrow sections of limited thickness, c1 shall not exceed the largest of c2 / 1.5, h / 1.5, or s/ 3
                 designDetails.fc_1_17574 = designDetails.fc_1_y;
 
                 if (designDetails.fN_asterix_anchor_uplif > 0) // Tension in anchor
