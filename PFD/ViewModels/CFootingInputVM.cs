@@ -37,6 +37,7 @@ namespace PFD
         private List<CComboColor> m_ColorList;
 
         private int m_FootingPadMemberTypeIndex;
+        private List<ComboItem> m_FootingPadMemberTypes;
         private string m_ConcreteGrade;
         private string m_AggregateSize;
         private float m_ConcreteDensity;
@@ -307,6 +308,26 @@ namespace PFD
             }
         }
 
+
+        //-------------------------------------------------------------------------------------------------------------
+        public List<ComboItem> FootingPadMemberTypes
+        {
+            get
+            {
+                if (m_FootingPadMemberTypes == null) m_FootingPadMemberTypes = new List<ComboItem> {
+                    new ComboItem((int)EMemberType_FS_Position.MainColumn, EMemberType_FS_Position.MainColumn.GetFriendlyName()),
+                    new ComboItem((int)EMemberType_FS_Position.EdgeColumn, EMemberType_FS_Position.EdgeColumn.GetFriendlyName()),
+                    new ComboItem((int)EMemberType_FS_Position.ColumnFrontSide, EMemberType_FS_Position.ColumnFrontSide.GetFriendlyName()),
+                    new ComboItem((int)EMemberType_FS_Position.ColumnBackSide, EMemberType_FS_Position.ColumnBackSide.GetFriendlyName()) };
+                return m_FootingPadMemberTypes;
+            }
+
+            set
+            {
+                m_FootingPadMemberTypes = value;
+                NotifyPropertyChanged("FootingPadMemberTypes");
+            }
+        }
         //-------------------------------------------------------------------------------------------------------------
         public int FootingPadMemberTypeIndex
         {

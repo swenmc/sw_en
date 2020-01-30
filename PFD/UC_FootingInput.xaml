@@ -66,12 +66,12 @@
                     </TabControl>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
-                    <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ComponentType" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
-                  SelectedIndex="{Binding Path=FootingPadMemberTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
-                        <ComboBoxItem Content="Main Column"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ComponentType" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" DisplayMemberPath="Name"
+                  SelectedIndex="{Binding Path=FootingPadMemberTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=FootingPadMemberTypes}" >
+                        <!--<ComboBoxItem Content="Main Column"/>
                         <ComboBoxItem Content="Edge Column"/>
                         <ComboBoxItem Content="Wind Post - Front"/>
-                        <ComboBoxItem Content="Wind Post - Back"/>
+                        <ComboBoxItem Content="Wind Post - Back"/>-->
                     </ComboBox>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Concrete Grade:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
