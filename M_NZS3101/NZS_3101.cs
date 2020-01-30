@@ -208,11 +208,20 @@ namespace M_NZS3101
         }
         public float Eq_17_17a__(float fk_2, float fl, float fd_o, float fLambda, float ff_apostrophe_c, float fc_1)
         {
-            return (float)(fk_2 * Math.Pow(fl / fd_o, 0.2f) * fLambda * Math.Sqrt(fd_o * ff_apostrophe_c) * Math.Pow(fc_1, 1.5f)); // Eq. (17-17(a)) // fV_b
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat silu v [N]
+
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+            float fdiameterForSQRT_mm = fd_o * 1000f; // consider value in mm
+            float fc_1_mm = fc_1 * 1000f;  // consider value in mm 
+            return (float)(fk_2 * Math.Pow(fl / fd_o, 0.2f) * fLambda * Math.Sqrt(/*fd_o * ff_apostrophe_c*/ fdiameterForSQRT_mm * ff_apostrophe_c_MPa) * Math.Pow(/*fc_1*/ fc_1_mm, 1.5f)); // Eq. (17-17(a)) // fV_b
         }
         public float Eq_17_17b__(float fLambda, float ff_apostrophe_c, float fc_1)
         {
-            return (float)(3.8f * fLambda * Math.Sqrt(ff_apostrophe_c) * Math.Pow(fc_1, 1.5f)); // Eq. (17-17(b)) // fV_b
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat silu v [N]
+            //float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+            float fc_1_mm = fc_1 * 1000f;  // consider value in mm 
+
+            return (float)(3.8f * fLambda * Math.Sqrt(ff_apostrophe_c) * Math.Pow(/*fc_1*/ fc_1_mm, 1.5f)); // Eq. (17-17(b)) // fV_b
         }
         public float Eq_17_18___(float fc_1, float fe_apostrophe_v, float fs)
         {
