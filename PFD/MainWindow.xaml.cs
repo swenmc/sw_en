@@ -1114,7 +1114,7 @@ namespace PFD
 
                 if (Member_Design.Content == null)
                 {
-                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm._designOptionsVM, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS, vm.sDesignResults_ULS, vm.sDesignResults_SLS);
+                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm._designOptionsVM, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS, vm.sDesignResults_ULSandSLS, vm.sDesignResults_ULS, vm.sDesignResults_SLS);
                 }
                 else
                 {
@@ -1212,6 +1212,7 @@ namespace PFD
                     UC_MemberDesign uc_memberDesign = Member_Design.Content as UC_MemberDesign;
                     uc_memberDesign.DesignResults_SLS = vm.MemberDesignResults_SLS;
                     uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
+                    uc_memberDesign.sDesignResults_ULSandSLS = vm.sDesignResults_ULSandSLS;
                     uc_memberDesign.sDesignResults_ULS = vm.sDesignResults_ULS;
                     uc_memberDesign.sDesignResults_SLS = vm.sDesignResults_SLS;
                     ////uc_memberDesign.IgnoreWebStiffeners = vm._designOptionsVM.IgnoreWebStiffeners;

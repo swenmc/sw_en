@@ -134,7 +134,10 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CPFDMemberDesign(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
-            MLimitStates = limitStates;
+            List<CLimitState> listLimitStates = limitStates.ToList();
+            listLimitStates.Add(new CLimitState("All", ELSType.eLS_ALL));
+            MLimitStates = listLimitStates.ToArray();            
+
             SetComponentList(componentList);            
             m_allLoadCombinations = allLoadCombinations;
 

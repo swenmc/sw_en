@@ -140,6 +140,7 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="Infrastructure\BaseHelper.cs" />
     <Compile Include="WindPressureCoefficients.xaml.cs">
       <DependentUpon>WindPressureCoefficients.xaml</DependentUpon>
     </Compile>

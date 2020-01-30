@@ -15,6 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -28,15 +29,18 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitState" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-
+        
+        
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Load Combination:" HorizontalAlignment="Left" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" />
         <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_LoadCombination" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=LoadCombinations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=SelectedLoadCombinationID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+        <TextBlock Name="textGoverningLoadComb" Grid.Row="1" Grid.Column="2" Text="" HorizontalAlignment="Left" Margin="5,0,0,5" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ComponentType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=ComponentList}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Name="textGoverningMember" Grid.Row="2" Grid.Column="2" Text="" HorizontalAlignment="Left" Margin="5,0,0,5" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Design Details - Footing Pad" HorizontalAlignment="Left" Margin="5,0,0,5" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <DataGrid Grid.Row="5" Grid.Column="0" Name ="Results_FootingPad_GridView" ItemsSource="{Binding}" AutoGenerateColumns="False" 
