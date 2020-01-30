@@ -1745,7 +1745,7 @@ namespace M_AS4600
             designDetails.fPsi_7 = 1.0f;
 
             designDetails.fA_vo = 2 * (1.5f * designDetails.fc_1_y) * (1.5f * designDetails.fc_1_y); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
-            float fAv_Length_x_group = 1.5f * designDetails.fc_1_y + Math.Min(1.5f * designDetails.fc_1_y, designDetails.fc_2_x) + (iNumberAnchors_x - 1) * designDetails.fs_2_x;
+            float fAv_Length_x_group = Math.Min(1.5f * designDetails.fc_1_y, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y, designDetails.fc_2_x) + (iNumberAnchors_x - 1) * designDetails.fs_2_x;
             float fAv_Depth_h = Math.Min(1.5f * designDetails.fc_1_y, designDetails.fFootingHeight);
             designDetails.fA_v_group = fAv_Length_x_group * fAv_Depth_h; // projected concrete failure area of an anchor or group of anchors in shear
             designDetails.fd_o = designDetails.fd_f;
@@ -1767,7 +1767,7 @@ namespace M_AS4600
             // Single of anchor - edge
 
             designDetails.fPsi_5_single = 1.0f;
-            float fAv_Length_x_single = (1.5f * designDetails.fc_1_y + Math.Min(1.5f * designDetails.fc_1_y, 0.5f * designDetails.fFootingDimension_x));
+            float fAv_Length_x_single = Math.Min(1.5f * designDetails.fc_1_y, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y, designDetails.fc_2_x);
             designDetails.fA_v_single = fAv_Length_x_single * fAv_Depth_h;
             designDetails.fV_cb_1716_single = eq_concrete.Eq_17_16___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 
@@ -1786,7 +1786,7 @@ namespace M_AS4600
             // Single anchor - edge
             designDetails.fV_cb_1721_single = eq_concrete.Eq_17_21___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            designDetails.fEta_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_single);
+            designDetails.fEta_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_single);
             fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17583_single);
 
             // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
@@ -1796,7 +1796,7 @@ namespace M_AS4600
             designDetails.fk_cp_17584 = eq_concrete.Get_k_cp___(designDetails.fh_ef);
             designDetails.fV_cp_1722_group = eq_concrete.Eq_17_22___(designDetails.fk_cp_17584, designDetails.fN_cb_17584_group);
 
-            designDetails.fEta_17584_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cp_1722_group);
+            designDetails.fEta_17584_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cp_1722_group);
             fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17584_group);
 
             // Lower characteristic strength in shear
@@ -1837,9 +1837,6 @@ namespace M_AS4600
             // Footings
             designDetails.fGamma_F_uplift = 0.9f; // Load Factor - uplift
             designDetails.fGamma_F_bearing = 1.2f; // Load Factor - bearing
-
-            //float fN_asterix_joint_uplif =
-            //float fN_asterix_joint_bearing 
 
             designDetails.fc_nominal_soil_bearing_capacity = foundationCalcSettings.SoilBearingCapacity; // Pa - soil bearing capacity - TODO - user defined
 
