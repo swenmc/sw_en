@@ -37,7 +37,7 @@ namespace PFD
         public UC_FootingInput(CPFDViewModel pfdVM/*, CJointsVM jointsVM*/)
         {
             InitializeComponent();
-            
+
             _pfdVM = pfdVM;
             _pfdVM.PropertyChanged += _pfdVM_PropertyChanged;
 
@@ -49,10 +49,23 @@ namespace PFD
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (sender is CComponentInfo)
+            {
+                if (e.PropertyName == "Generate")
+                {
+                    CComponentInfo ci = sender as CComponentInfo;
+                    if (ci.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || ci.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                    {
+                        vm.SetFootingPadMemberTypes();                        
+                    }
+                }
+                else return;
+            }
+
             if (!(sender is CPFDViewModel)) return;
             CPFDViewModel pfdVM = sender as CPFDViewModel;
             if (pfdVM.IsSetFromCode) return;
-            
+
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
             if (joint == null) return; // Ak je to foundation pad a nebol najdeny odpovedajuci joint tak je to nevalidne
@@ -361,7 +374,7 @@ namespace PFD
                 throw new ArgumentNullException("Error. Invalid size of canvas frame.");
             }
 
-            DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefault();            
+            DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefault();
             // Create 2D page
             Canvas page2D = GetFootingPad2DPreview(pad, joint, floorSlab, opts2D);
 

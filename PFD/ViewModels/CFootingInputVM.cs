@@ -1863,7 +1863,7 @@ namespace PFD
             }
         }
 
-        CPFDViewModel _pfdVM;
+        CPFDViewModel _pfdVM;        
         //CModel_PFD_01_GR _model;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -1871,7 +1871,7 @@ namespace PFD
         public CFootingInputVM(CPFDViewModel pfdVM)
         {
             IsSetFromCode = true;
-            _pfdVM = pfdVM;
+            _pfdVM = pfdVM;            
             //_model = pfdVM.Model as CModel_PFD_01_GR;
             // Fill dictionaries
             ConcreteGrades = CMaterialManager.LoadMaterialPropertiesRC();
@@ -1898,6 +1898,7 @@ namespace PFD
             ColorList = CComboBoxHelper.ColorList;
 
             // Set default GUI
+            SetFootingPadMemberTypes();
             FootingPadMemberTypeIndex = 1;
 
             ConcreteGrade = "30"; // MPa
@@ -1918,8 +1919,24 @@ namespace PFD
             SoilBearingCapacity = 200f; // kPa (konverovat kPa na Pa)
 
             UpdateFloorSlabViewModelFromModel();
-
+            
             IsSetFromCode = false;
+        }
+
+        public void SetFootingPadMemberTypes()
+        {
+            List<ComboItem> footingPadMemberTypes = new List<ComboItem> {
+                    new ComboItem((int)EMemberType_FS_Position.MainColumn, EMemberType_FS_Position.MainColumn.GetFriendlyName()),
+                    new ComboItem((int)EMemberType_FS_Position.EdgeColumn, EMemberType_FS_Position.EdgeColumn.GetFriendlyName())};
+            
+            CComponentInfo ciFC = _pfdVM.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide && c.Generate == true);
+            if (ciFC != null) footingPadMemberTypes.Add(new ComboItem((int)EMemberType_FS_Position.ColumnFrontSide, EMemberType_FS_Position.ColumnFrontSide.GetFriendlyName()));
+
+            CComponentInfo ciBC = _pfdVM.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide && c.Generate == true);
+            if (ciBC != null) footingPadMemberTypes.Add(new ComboItem((int)EMemberType_FS_Position.ColumnBackSide, EMemberType_FS_Position.ColumnBackSide.GetFriendlyName()));
+
+            FootingPadMemberTypes = footingPadMemberTypes;
+            FootingPadMemberTypeIndex = 0;
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -2051,20 +2068,13 @@ namespace PFD
 
         private EMemberType_FS_Position GetSelectedFootingPadMemberType()
         {
-            EMemberType_FS_Position memberType;
-            if (FootingPadMemberTypeIndex == 0) // TODO - porovnavam s indexom v comboboxe 0-3, asi by bolo istejsie zobrazovat v comboboxe items naviazane na EMemberType_FS_Position, aby sa to neznicilo ked co comboboxu pridam nejaky dalsi typ alebo zmenim poradie
-                memberType = EMemberType_FS_Position.MainColumn;
-            else if (FootingPadMemberTypeIndex == 1)
-                memberType = EMemberType_FS_Position.EdgeColumn;
-            else if (FootingPadMemberTypeIndex == 2)
-                memberType = EMemberType_FS_Position.ColumnFrontSide;
-            else if (FootingPadMemberTypeIndex == 3)
-                memberType = EMemberType_FS_Position.ColumnBackSide;
+
+            ComboItem item = FootingPadMemberTypes.ElementAtOrDefault(FootingPadMemberTypeIndex);
+            if (item != null) return (EMemberType_FS_Position)item.ID;
             else
             {
-                throw new Exception("Not defined member type!");
+                return EMemberType_FS_Position.MainColumn;
             }
-            return memberType;
         }
 
         private List<string> GetReinforcementBarsCountList()
@@ -2295,6 +2305,7 @@ namespace PFD
         private void UpdateValuesInGUIFromSelectedFootingPad()
         {
             CFoundation pad = GetSelectedFootingPad();
+            if (pad == null) return;
 
             //toto vsetko treba nastavit z objektu CFoundation pad do GUI
 
