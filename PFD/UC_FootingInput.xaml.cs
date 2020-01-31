@@ -29,12 +29,8 @@ namespace PFD
         CFootingInputVM vm;
         double Frame2DWidth;
         double Frame2DHeight;
-
-        //CFoundation pad;
-        //CConnectionJointTypes joint;
-        //CSlab floorSlab;
-
-        public UC_FootingInput(CPFDViewModel pfdVM/*, CJointsVM jointsVM*/)
+        
+        public UC_FootingInput(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
