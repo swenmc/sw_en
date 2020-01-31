@@ -41,6 +41,8 @@ using PFD.Infrastructure;
 using System.Collections.ObjectModel;
 using System.IO;
 using HelixToolkit.Wpf;
+using Microsoft.Win32;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PFD
 {
@@ -2133,5 +2135,55 @@ namespace PFD
             DesignOptionsWindow w = new DesignOptionsWindow(vm);
             w.ShowDialog();
         }
+        
+        private void BtnLoadModel_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Data Files (*.cnx)|*.cnx";
+            ofd.DefaultExt = "cnx";
+            ofd.AddExtension = true;
+
+            if (ofd.ShowDialog() == true)
+            {
+                OpenModelFile(ofd.FileName);
+            }
+        }
+
+        private void BtnSaveModel_Click(object sender, RoutedEventArgs e)
+        {
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+            
+            string modelName = Combobox_Models.Items[vm.ModelIndex].ToString();  //vm.Model.m_sConstObjectName
+            
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Data Files (*.cnx)|*.cnx";
+            sfd.DefaultExt = "cnx";
+            sfd.AddExtension = true;
+            sfd.FileName = modelName;
+
+            if (sfd.ShowDialog() == true)
+            {
+                using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(stream, vm);
+                    stream.Close();
+                }
+            }
+        }
+
+        private void OpenModelFile(string fileName)
+        {
+            CPFDViewModel deserializedPfdVM = null;
+            
+            using (Stream stream = File.Open(fileName, FileMode.Open))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                deserializedPfdVM = (CPFDViewModel)binaryFormatter.Deserialize(stream);
+            }
+            this.DataContext = deserializedPfdVM;            
+        }
+
     }
 }

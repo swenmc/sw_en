@@ -25,7 +25,7 @@ using DATABASE;
 using System.Globalization;
 
 namespace PFD
-{
+{    
     public class CPFDViewModel : INotifyPropertyChanged
     {
         private bool debugging = true;

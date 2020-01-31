@@ -715,12 +715,17 @@
 
         <ToggleButton Grid.Row="0" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Name="BtnSynchronizeGUI" IsChecked="{Binding Path=SynchronizeGUI}">Synchronize GUI</ToggleButton>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
-            <!--<StackPanel Orientation="Horizontal">
-                <ProgressBar Name="progressBar" Width="200" HorizontalAlignment="Left" Margin="15 5 0 0" Height="20" Minimum="0" Maximum="100" Value="0" Visibility="Visible" IsIndeterminate="False" />
-                <Label Name="progressBarLabel" Margin="10 0 0 0" ></Label>
-            </StackPanel>-->
-            <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <!--Base Grid 2 columns and 4 rows-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />                
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0 20 0 0">
                 <Button Name="View_2D" Content ="View 2D" Height="20" Width="70" Margin="0 0 10 0" Click="View_2D_Click"/>
                 <Button Name="Clear3DModel" Content="Clear" Width="70" Margin="0 0 10 0" Click="Clear3DModel_Click" Height="20" />
                 <!--<Button Name="WindSpeedChart" Content="WindSpeed" Width="70" Margin="0 0 10 0" Click="WindSpeedChart_Click" Height="20" />-->
@@ -729,17 +734,18 @@
                 <Button Name="ExportDXF_3D" Content="Export DXF" Height="20" Width="100" Margin="0 0 10 0" Click="ExportDXF_3D_Click"/>
 
                 <!--Temporary-->
-                <Button Content="Wind Pressure" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="WindPressureButton_Click"/>
-                <Button Content="Purlin Designer" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="PurlinDesignerButton_Click"/>
+                <Button Content="Wind Pressure" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Height="20" Click="WindPressureButton_Click"/>
+                <Button Content="Purlin Designer" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Height="20" Click="PurlinDesignerButton_Click"/>
 
-                <Button Name="ExportPDF" Content="Export Layouts" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportPDF_Click"/>
-                <Button Name="ExportWord" Content="Export Report" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportWord_Click"/>
-                <Button Name="ExportQuotation" Content="Export Quotation" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportQuotation_Click"/>
-
-
+                <Button Name="ExportPDF" Content="Export Layouts" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Height="20" Click="ExportPDF_Click"/>
+                <Button Name="ExportWord" Content="Export Report" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Height="20" Click="ExportWord_Click"/>
+                <Button Name="ExportQuotation" Content="Export Quotation" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Height="20" Click="ExportQuotation_Click"/>
 
             </StackPanel>
-        </StackPanel>
-
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0 20 0 0" HorizontalAlignment="Right">
+                <Button Name="BtnLoadModel" Content="Load Model" HorizontalAlignment="Right" Margin="0 0 10 0" Width="100" Height="20" Click="BtnLoadModel_Click"/>
+                <Button Name="BtnSaveModel" Content="Save Model" HorizontalAlignment="Right" Margin="0 0 10 0" Width="100" Height="20" Click="BtnSaveModel_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
