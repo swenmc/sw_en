@@ -102,19 +102,20 @@ namespace PFD
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
                 float fMaximumDesignRatio = float.MinValue;
+
+                if (loadCombinationID == -1) //envelope
+                {
+                    loadCombinationID = _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+                    textGoverningLoadComb.Text = BaseHelper.GetGoverningLoadCombText(_pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
+                }
+                else { textGoverningLoadComb.Text = ""; }
+
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
                     CConnectionJointTypes cjStart = null;
                     CConnectionJointTypes cjEnd = null;
                     _pfdVM.Model.GetModelMemberStartEndConnectionJoints(m, out cjStart, out cjEnd);
-
-                    if (loadCombinationID == -1) //envelope
-                    {
-                        loadCombinationID = _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
-                        textGoverningLoadComb.Text = BaseHelper.GetGoverningLoadCombText(_pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
-                    }
-                    else { textGoverningLoadComb.Text = ""; }
-
+                    
                     CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
                     CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
                     if (resStart == null) continue;

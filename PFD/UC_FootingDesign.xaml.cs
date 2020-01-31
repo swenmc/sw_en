@@ -77,6 +77,14 @@ namespace PFD
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
                 float fMaximumDesignRatio = float.MinValue;
+
+                if (loadCombinationID == -1) //envelope
+                {
+                    loadCombinationID = _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+                    textGoverningLoadComb.Text = BaseHelper.GetGoverningLoadCombText(_pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
+                }
+                else { textGoverningLoadComb.Text = ""; }
+
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
                     CConnectionJointTypes cjStart = null;
@@ -87,13 +95,7 @@ namespace PFD
                     CFoundation f = _pfdVM.Model.GetFoundationForJointFromModel(joint);
                     if (f == null) { f = _pfdVM.Model.GetFoundationForJointFromModel(cjEnd); joint = cjEnd; }
                     if (f == null) continue;
-
-                    if (loadCombinationID == -1) //envelope
-                    {
-                        loadCombinationID = _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
-                        textGoverningLoadComb.Text = BaseHelper.GetGoverningLoadCombText(_pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
-                    }
-                    else { textGoverningLoadComb.Text = ""; }
+                    
 
                     CJointLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == joint.m_Node.ID);
                     if (res == null) continue;
