@@ -280,6 +280,8 @@ namespace BaseClasses
         public float fM_b_footing_xDirection;
         public float fEta_bending_M_footing;
 
+        public float fd_effective_yDirection;
+
         // Minimum longitudinal reinforcement ratio
         public float fp_ratio_xDirection;
         public float fp_ratio_limit_minimum_xDirection;

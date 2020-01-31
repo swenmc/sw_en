@@ -13,6 +13,11 @@ namespace BaseClasses
 
         // Plate design
 
+        // Plate tension design 3.2.1
+        //public float fA_g_plate;
+        //public float fN_t_plate_321;
+        //public float fEta_N_t_plate_321;
+
         // Plate tension design
         public float fPhi_plate;
         public float fA_n_plate;
@@ -20,17 +25,21 @@ namespace BaseClasses
         public float fEta_N_t_5423_plate;
 
         // Plate compression - bearing
-        public float fPhi_c_Plate;
+        public float fPhi_c_plate;
         public float fA_c_plate;
         public float fN_s_plate;
         public float fEta_341a_plate;
 
         // Plate shear resistance
+        public float fPhi_v_plate;
         public float fA_vn_yv_plate;
         public float fV_y_yv_plate;
         public float fEta_V_yv_3341_plate;
 
+        public float fEta_V_yv_723_11_plate;
+
         // Plate bending resistance
+        public float fPhi_b_plate;
         public float fM_xu_resistance_plate;
         public float fEta_Mb_plate;
 

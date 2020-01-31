@@ -31,7 +31,12 @@ namespace M_NZS3101
         }
         public float Eq_9_1_ratio(float ff_apostrophe_c, float ff_y)
         {
-            return Math.Min((MathF.Sqrt(ff_apostrophe_c) / (4f * ff_y)), 1.4f / ff_y); // Eq. (9-1) // Minimum reinforcement ratio
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat bezrozmerne cislo [-]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+            float ff_y_MPa = ff_y / 1000000f; // consider value in MPa
+
+            //return Math.Min((MathF.Sqrt(ff_apostrophe_c) / (4f * ff_y)), 1.4f / ff_y); // Eq. (9-1) // Minimum reinforcement ratio
+            return Math.Min((MathF.Sqrt(ff_apostrophe_c_MPa) / (4f * ff_y_MPa)), 1.4f / ff_y_MPa); // Eq. (9-1) // Minimum reinforcement ratio
         }
         public float Eq_9_4_____(float  fv_c, float fA_cv)
         {
@@ -44,7 +49,13 @@ namespace M_NZS3101
         public float Get_v_b_93934(float fp_w, float ff_apostrophe_c)
         {
             float ff_apostrophe_c_reduced = Math.Min(ff_apostrophe_c, 50e+6f);
-            return Math.Max(MathF.Min((0.07f + 10f * fp_w) * MathF.Sqrt(ff_apostrophe_c_reduced), 0.2f * MathF.Sqrt(ff_apostrophe_c_reduced)), 0.08f * MathF.Sqrt(ff_apostrophe_c_reduced)); // fv_b
+
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat napatie v [Pa]
+            float ff_apostrophe_c_reduced_MPa = ff_apostrophe_c_reduced / 1000000f; // consider value in MPa
+
+            //return Math.Max(MathF.Min((0.07f + 10f * fp_w) * MathF.Sqrt(ff_apostrophe_c_reduced), 0.2f * MathF.Sqrt(ff_apostrophe_c_reduced)), 0.08f * MathF.Sqrt(ff_apostrophe_c_reduced)); // fv_b
+            float res = Math.Max(MathF.Min((0.07f + 10f * fp_w) * MathF.Sqrt(ff_apostrophe_c_reduced_MPa), 0.2f * MathF.Sqrt(ff_apostrophe_c_reduced_MPa)), 0.08f * MathF.Sqrt(ff_apostrophe_c_reduced_MPa)); // fv_b
+            return res * 1000000f;
         }
         public float Get_k_a_93934(float fMaximumAgregateSize_meter)
         {
@@ -60,9 +71,15 @@ namespace M_NZS3101
             // TODO - dopracovat podla roznych podmienok a) - e) v 9.3.9.3.4
             return 1.00f;
         }
-        public float Eq_9_10____(float ff_apostrophe_c, float ff_y, float fb_w, float fd)
+        public float Eq_9_10____(float ff_apostrophe_c, float fb_w, float fd)
         {
-            return 1f / 16f * MathF.Sqrt(ff_apostrophe_c) * fb_w * fd; // Eq. (9-10) // fV_s_min
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat napatie v [N]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+            float fb_w_mm = fb_w * 1000f; // consider value in mm
+            float fd_mm = fd * 1000f; // consider value in mm
+
+            //return 1f / 16f * MathF.Sqrt(ff_apostrophe_c) * fb_w * fd; // Eq. (9-10) // fV_s_min
+            return 1f / 16f * MathF.Sqrt(ff_apostrophe_c_MPa) * fb_w_mm * fd_mm; // Eq. (9-10) // fV_s_min
         }
         public float Eq_12_4____(float fV_s, float fV_c)
         {
@@ -78,19 +95,38 @@ namespace M_NZS3101
         }
         public float Eq_12_6____(float fk_ds, float fBeta_c, float ff_apostrophe_c)
         {
-            return 1f / 6f * fk_ds * (1f + (2f / fBeta_c)) * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-6) // fv_c
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat napatie v [Pa]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+            //return 1f / 6f * fk_ds * (1f + (2f / fBeta_c)) * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-6) // fv_c
+            float res = 1f / 6f * fk_ds * (1f + (2f / fBeta_c)) * MathF.Sqrt(ff_apostrophe_c_MPa); // Eq. (12-6) // fv_c
+            return res * 1000000f;
         }
         public float Eq_12_7____(float fk_ds, float fAlpha_s, float fd, float fb_0, float ff_apostrophe_c)
         {
-            return 1f / 6f * fk_ds * ((fAlpha_s * fd / fb_0) + 1f) * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-7) // fv_c
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat napatie v [Pa]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+
+            //return 1f / 6f * fk_ds * ((fAlpha_s * fd / fb_0) + 1f) * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-7) // fv_c
+            float res = 1f / 6f * fk_ds * ((fAlpha_s * fd / fb_0) + 1f) * MathF.Sqrt(ff_apostrophe_c_MPa); // Eq. (12-7) // fv_c
+            return res * 1000000f;
         }
         public float Eq_12_8____(float fk_ds, float ff_apostrophe_c)
         {
-            return 1f / 3f * fk_ds * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-8) // fv_c
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat napatie v [Pa]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+
+            //return 1f / 3f * fk_ds * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-8) // fv_c
+            float res = 1f / 3f * fk_ds * MathF.Sqrt(ff_apostrophe_c_MPa); // Eq. (12-8) // fv_c
+            return res * 1000000f;
         }
         public float Eq_12_9____(float ff_apostrophe_c)
         {
-            return 1 / 6f * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-9) // fv_c
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat napatie v [Pa]
+            float ff_apostrophe_c_MPa = ff_apostrophe_c / 1000000f; // consider value in MPa
+
+            //return 1 / 6f * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-9) // fv_c
+            float res = 1 / 6f * MathF.Sqrt(ff_apostrophe_c_MPa); // Eq. (12-9) // fv_c
+            return res * 1000000f;
         }
         public float Eq_12_9____(float fv_n, float fv_c, float fb_x, float fd)
         {

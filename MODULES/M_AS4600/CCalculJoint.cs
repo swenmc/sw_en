@@ -22,7 +22,7 @@ namespace M_AS4600
         bool bIsDebugging;
 
         public CalculationSettingsFoundation foundationCalcSettings;
-
+        public bool ShearDesignAccording334; // TODO - priviest sem celu sadu nastaveni vypoctu
         CScrew screw;
         CPlate plate;
         CCrSc_TW crsc_mainMember;
@@ -44,7 +44,7 @@ namespace M_AS4600
         public float fEta_max_joint = 0;
         public float fEta_max_footing = 0;
 
-        public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, CConnectionJointTypes joint_temp, CModel model, CalculationSettingsFoundation calcSettingsFoundation, designInternalForces sDIF_temp, bool bSaveDetails = false)
+        public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, CConnectionJointTypes joint_temp, CModel model, CalculationSettingsFoundation calcSettingsFoundation, designInternalForces sDIF_temp, bool bSaveDetails = false)
         {
             if (joint_temp == null)
             {
@@ -76,6 +76,8 @@ namespace M_AS4600
                 sDIF_AS4600.fM_xu_xx = sDIF_temp.fM_yu;
                 sDIF_AS4600.fM_yv_yy = sDIF_temp.fM_zv;
             }
+
+            ShearDesignAccording334 = bShearDesignAccording334;
 
             footing = model.GetFoundationForJointFromModel(joint);
             CalculateDesignRatio(bIsDebugging, joint, footing, sDIF_AS4600, bSaveDetails);
@@ -1058,15 +1060,25 @@ namespace M_AS4600
 
             int iNumberOfPlatesInJoint = joint.m_arrPlates.Length;
 
-            float fN = 1f / iNumberOfPlatesInJoint * sDIF_temp.fN;
-            float fM_xu = 1f / iNumberOfPlatesInJoint * sDIF_temp.fM_xu_xx;
-            float fV_yv = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_yv_yy;
+            //float fN = 1f / iNumberOfPlatesInJoint * sDIF_temp.fN;
+            //float fM_xu = 1f / iNumberOfPlatesInJoint * sDIF_temp.fM_xu_xx;
+            //float fV_yv = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_yv_yy;
 
-            designDetails.fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
-            designDetails.fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
+            //designDetails.fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
+            //designDetails.fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
+
+            designDetails.fN_asterix_joint_uplif = sDIF_temp.fN_t; // Tension in column - positive
+            designDetails.fN_asterix_joint_bearing = sDIF_temp.fN_c; // Compression in column - positive
 
             // Plate design
             designDetails.fPhi_plate = 0.65f; // TODO - overit ci je to spravne
+
+            // Plate tension design
+            //designDetails.fPhi_t_plate = 0.9;
+            //designDetails.fA_g_plate = plate.fA_g;
+            //designDetails.fN_t_plate_321 = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, designDetails.fA_g_plate, ff_yk_1_plate);
+            //designDetails.fEta_N_t_plate_321 = eq.Eq_5423_1__(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_t_plate, designDetails.fN_t_plate_321);
+            //fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_N_t_plate_321);
 
             // Plate tension design
             designDetails.fA_n_plate = plate.fA_n;
@@ -1075,22 +1087,34 @@ namespace M_AS4600
             fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_N_t_5423_plate);
 
             // Plate compression - bearing
-            designDetails.fPhi_c_Plate = 0.85f; // TODO - overit ci je to spravne
+            designDetails.fPhi_c_plate = 0.85f; // TODO - overit ci je to spravne
             designDetails.fA_c_plate = plate.fA_n;
             designDetails.fN_s_plate = eq.Eq_341_1___(plate.fA_n, ff_yk_1_plate);
-            designDetails.fEta_341a_plate = eq.Eq_341_a___(designDetails.fN_asterix_joint_bearing, designDetails.fPhi_c_Plate, designDetails.fN_s_plate);
+            designDetails.fEta_341a_plate = eq.Eq_341_a___(designDetails.fN_asterix_joint_bearing, designDetails.fPhi_c_plate, designDetails.fN_s_plate);
             fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_341a_plate);
 
             // Plate shear resistance
+            designDetails.fPhi_v_plate = 0.95f;
             designDetails.fA_vn_yv_plate = plate.fA_vn_zv;
-            designDetails.fV_y_yv_plate = eq.Eq_723_5___(designDetails.fA_vn_yv_plate, ff_yk_1_plate);
-            designDetails.fEta_V_yv_3341_plate = eq.Eq_3341____(fV_yv, designDetails.fPhi_plate, designDetails.fV_y_yv_plate);
-            fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_V_yv_3341_plate);
+
+            if (ShearDesignAccording334)
+            {
+                designDetails.fV_y_yv_plate = eq.Eq_334_1___(designDetails.fA_vn_yv_plate, ff_yk_1_plate);
+                designDetails.fEta_V_yv_3341_plate = eq.Eq_3341____(sDIF_temp.fV_yv_yy, designDetails.fPhi_v_plate, designDetails.fV_y_yv_plate);
+                fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_V_yv_3341_plate);
+            }
+            else
+            {
+                designDetails.fV_y_yv_plate = eq.Eq_723_5___(designDetails.fA_vn_yv_plate, ff_yk_1_plate);
+                designDetails.fEta_V_yv_723_11_plate = eq.Eq_723_11__(sDIF_temp.fV_yv_yy, designDetails.fPhi_v_plate, designDetails.fV_y_yv_plate);
+                fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_V_yv_723_11_plate);
+            }
 
             // Plate bending resistance
+            designDetails.fPhi_b_plate = 0.95f;
             designDetails.fM_xu_resistance_plate = eq.Eq_7222_4__(joint.m_arrPlates[0].fW_el_yu, ff_yk_1_plate);
             float fDesignReistance_M_plate;
-            eq.Eq_723_10__(Math.Abs(fM_xu), designDetails.fPhi_plate, designDetails.fM_xu_resistance_plate, out fDesignReistance_M_plate, out designDetails.fEta_Mb_plate);
+            eq.Eq_723_10__(Math.Abs(sDIF_temp.fM_xu_xx), designDetails.fPhi_b_plate, designDetails.fM_xu_resistance_plate, out fDesignReistance_M_plate, out designDetails.fEta_Mb_plate);
             fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_Mb_plate);
 
             // Connection -shear force design
@@ -1142,7 +1166,7 @@ namespace M_AS4600
                 fSumri2tormax += MathF.Pow2(fHolesCentersRadiiInOneGroup[i]) / fr_max;
             }
 
-            float fN_oneside = sDIF_temp.fN / 2f;
+            float fN_oneside = sDIF_temp.fN_t / 2f; // Pre namahanie skrutiek uvazovat len tahovu silu, tlak sa prenasa cez plochu stlpa
             float fM_xu_oneside = sDIF_temp.fM_xu_xx / 2f; // Divided by Number of sides
             float fV_yv_oneside = sDIF_temp.fV_yv_yy / 2f;
 
@@ -1214,9 +1238,6 @@ namespace M_AS4600
             designDetails.fEta_N_t_5423_MainMember = eq.Eq_5423_1__(sDIF_temp.fN_t, designDetails.fPhi_CrSc, designDetails.fN_t_section_MainMember);
             fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_N_t_5423_MainMember);
 
-            // TODO - Dorobit Base Plate Design
-            // TODO - tu este chybaju posudenia samotnej dosky na napatie betonu pod nou na lokalny tlak betonu pod plechom, ohyb, oslabeny prierez v ohybe , tahu, tlaku, smyku atd vid xls
-
             // TODO - implementovat kontrolu pre minimalne vzdialenosti medzi skrutkami a od kraja
 
             // Minimalne vzdialenosti p1.min = 3.0*df a e1.min = 1.5*df
@@ -1242,7 +1263,9 @@ namespace M_AS4600
 
             // Validation - negative design ratio
             if (designDetails.fEta_N_t_5423_plate < 0 ||
+                designDetails.fEta_341a_plate < 0 ||
                 designDetails.fEta_V_yv_3341_plate < 0 ||
+                designDetails.fEta_V_yv_723_11_plate <0 ||
                 designDetails.fEta_Mb_plate < 0 ||
                 designDetails.fEta_MainMember < 0 ||
                 designDetails.fEta_Mb_MainMember_oneside_plastic < 0 ||
@@ -1250,7 +1273,8 @@ namespace M_AS4600
                 designDetails.fEta_V_fv_5425_MainMember < 0 ||
                 designDetails.fEta_V_fv_5425_Plate < 0 ||
                 designDetails.fEta_V_w_5426 < 0 ||
-                designDetails.fEta_N_t_5423_MainMember < 0)
+                designDetails.fEta_N_t_5423_MainMember < 0 ||
+                designDetails.fEta_M_s_y_331_1_plate < 0)
             {
                 throw new Exception("Design ratio is invalid!");
             }
@@ -1571,7 +1595,7 @@ namespace M_AS4600
             fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_p_N_My);
 
             // NZS 3101.1 - 2006
-            bool bIsEarthquakeCombination = true; // TODO - napojit typ kombinacie
+            bool bIsEarthquakeCombination = true; // TODO - napojit typ kombinacie alebo vstup z GUI
 
             designDetails.fElasticityFactor_1764 = 1.0f;
 
@@ -1844,7 +1868,7 @@ namespace M_AS4600
             designDetails.fA_footing = designDetails.fFootingDimension_x * designDetails.fFootingDimension_y; // Area of footing pad
             designDetails.fV_footing = designDetails.fA_footing * designDetails.fFootingHeight;  // Volume of footing pad
             float fRho_c_footing = materialConcrete.m_fRho; // Density of dry concrete - foundations
-            designDetails.fG_footing = designDetails.fV_footing * fRho_c_footing; // Self-weight [N] - footing pad
+            designDetails.fG_footing = designDetails.fV_footing * fRho_c_footing * GlobalConstants.G_ACCELERATION; // Self-weight [N] - footing pad
 
             // Tributary floor volume
             float ft_floor = foundationCalcSettings.FloorSlabThickness; // TODO - user-defined
@@ -1870,17 +1894,17 @@ namespace M_AS4600
             float fV_tributary_floor = fA_tributary_floor * ft_floor;
             // TODO - chceme mat hustotu betonu zakladu a dosky rovnaku alebo rozdielnu? Pre dosku je potrebne zaviest samostanu polozku
             float fRho_c_floor = foundationCalcSettings.ConcreteDensity; // Density of dry concrete - concrete floor
-            designDetails.fG_tributary_floor = fV_tributary_floor * fRho_c_floor; // Self-weight [N] - tributary concrete floor
+            designDetails.fG_tributary_floor = fV_tributary_floor * fRho_c_floor * GlobalConstants.G_ACCELERATION; // Self-weight [N] - tributary concrete floor
 
             // Additional material above the footing
             float ft_additional_material = 0.0f; // User-defined
             float fRho_additional_material = 2200f; // Can be concrete or soil
             float fVolume_additional_material = designDetails.fA_footing * ft_additional_material;
-            designDetails.fG_additional_material = fVolume_additional_material * fRho_additional_material; // Self-weight [N]
+            designDetails.fG_additional_material = fVolume_additional_material * fRho_additional_material * GlobalConstants.G_ACCELERATION; // Self-weight [N]
 
             // Uplift
             float fG_design_footing_uplift = designDetails.fGamma_F_uplift * designDetails.fG_footing;
-            float fG_design_tributary_floor_uplift = designDetails.fGamma_F_uplift * fG_design_footing_uplift;
+            float fG_design_tributary_floor_uplift = designDetails.fGamma_F_uplift * designDetails.fG_tributary_floor;
             float fG_design_additional_material_uplift = designDetails.fGamma_F_uplift * designDetails.fG_additional_material;
             designDetails.fG_design_uplift = fG_design_footing_uplift + fG_design_tributary_floor_uplift + fG_design_additional_material_uplift;
 
@@ -1893,8 +1917,41 @@ namespace M_AS4600
             designDetails.fEta_footing_uplift = sDIF_temp.fN_t / designDetails.fG_design_uplift;
             fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_footing_uplift);
 
+            // Bearing
             designDetails.fN_design_bearing_total = sDIF_temp.fN_c + designDetails.fG_design_bearing;
-            designDetails.fPressure_bearing = Math.Abs(designDetails.fN_design_bearing_total) / designDetails.fA_footing;
+
+            // Resulting moment
+            // Znamienka !!!
+            float fM_tot = sDIF_temp.fN * footing.Eccentricity_y + sDIF_temp.fM_xu_xx + sDIF_temp.fV_yv_yy * designDetails.fFootingHeight;
+
+            // Eccentricity
+            float fe_t_y = Math.Abs(fM_tot) / designDetails.fN_design_bearing_total; // ???? Rozlisovat znamienko momentu a znamienko excentricity
+
+            // Eccentricity limit
+            float fe_limit_b6 = designDetails.fFootingDimension_y / 6f;
+
+            float fPressure_bearing_N_uniform = designDetails.fN_design_bearing_total / designDetails.fA_footing;
+            float fPressure_bearing_M = (6 * designDetails.fN_design_bearing_total * fe_t_y) / (MathF.Pow2(designDetails.fFootingDimension_y) * designDetails.fFootingDimension_x);
+
+            // Minimum bearing pressure
+            float fPressure_bearing_min = 0;
+
+            if (fe_t_y < fe_limit_b6)
+                fPressure_bearing_min = fPressure_bearing_N_uniform - fPressure_bearing_M;
+            else
+                fPressure_bearing_min = 0;
+
+            // Maximum bearing pressure
+            float fPressure_bearing_max;
+            if (fe_t_y < fe_limit_b6)
+                fPressure_bearing_max = fPressure_bearing_N_uniform + fPressure_bearing_M;
+            else
+            {
+                float fLength_bearing = 3 * (designDetails.fFootingDimension_y / 2 - fe_t_y);
+                fPressure_bearing_max = (2 * designDetails.fN_design_bearing_total) / (designDetails.fFootingDimension_x * fLength_bearing);
+            }
+
+            designDetails.fPressure_bearing = Math.Max(fPressure_bearing_min, fPressure_bearing_max);
 
             // Urcit faktor podla typu kombinacie
 
@@ -1949,9 +2006,11 @@ namespace M_AS4600
             designDetails.fAlpha_c = 0.85f;
             designDetails.fPhi_b_foundations = 0.85f;
 
+            // Footing Pad Section yz (width = y, height = z)
+            // Bottom Reinforcement in x-direction is above the y-direction bars
             designDetails.fConcreteCover_reinforcement_xDirection = foundation.ConcreteCover + designDetails.fd_reinforcement_yDirection_bottom;
             designDetails.fd_effective_xDirection = designDetails.fFootingHeight - designDetails.fConcreteCover_reinforcement_xDirection - 0.5f * designDetails.fd_reinforcement_xDirection_bottom;
-            designDetails.fx_u_xDirection = (designDetails.fA_s1_Xdirection_bottom * fReinforcementStrength_fy) / (designDetails.fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y);
+            designDetails.fx_u_xDirection = (designDetails.fA_s_tot_Xdirection_bottom * fReinforcementStrength_fy) / (designDetails.fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y);
             float fM_b_Reincorcement_xDirection = designDetails.fA_s_tot_Xdirection_bottom * fReinforcementStrength_fy * (designDetails.fd_effective_xDirection - (0.5f * designDetails.fx_u_xDirection));
             float fM_b_Concrete_xDirection = designDetails.fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y * designDetails.fx_u_xDirection * (designDetails.fd_effective_xDirection - (0.5f * designDetails.fx_u_xDirection));
             designDetails.fM_b_footing_xDirection = Math.Min(fM_b_Reincorcement_xDirection, fM_b_Concrete_xDirection); // Note: Values should be identical.
@@ -1961,7 +2020,7 @@ namespace M_AS4600
 
             // TODO - ohyb okolo osy x (vyztuz v smere y)
             float fConcreteCover_reinforcement_yDirection = foundation.ConcreteCover;
-            float fd_effective_yDirection = designDetails.fFootingHeight - fConcreteCover_reinforcement_yDirection - 0.5f * designDetails.fd_reinforcement_yDirection_bottom;
+            designDetails.fd_effective_yDirection = designDetails.fFootingHeight - fConcreteCover_reinforcement_yDirection - 0.5f * designDetails.fd_reinforcement_yDirection_bottom;
 
             // TODO - zapracovat Winklerov nosnik na pruznom podlozi je jednotlive patky, suvisly zakladovy pas zatazeny viacerymi stlpmi
 
@@ -1974,7 +2033,8 @@ namespace M_AS4600
             // | 50        | 0.0059       | 0.0035       |
 
             // Minimum longitudinal reinforcement ratio
-            designDetails.fp_ratio_xDirection = (designDetails.fA_s_tot_Xdirection_bottom + designDetails.fA_s1_Xdirection_top) / (designDetails.fFootingDimension_y * designDetails.fFootingHeight); // Sum of the bottom and top surface
+            // Footing Pad Section yz (width = y, height = z)
+            designDetails.fp_ratio_xDirection = (designDetails.fA_s_tot_Xdirection_bottom + designDetails.fA_s_tot_Xdirection_top) / (designDetails.fFootingDimension_y * designDetails.fFootingHeight); // Sum of the bottom and top surface
             designDetails.fp_ratio_limit_minimum_xDirection = eq_concrete.Eq_9_1_ratio(designDetails.ff_apostrophe_c, fReinforcementStrength_fy);
 
             designDetails.fEta_MinimumReinforcement_xDirection = designDetails.fp_ratio_limit_minimum_xDirection / designDetails.fp_ratio_xDirection;
@@ -2000,8 +2060,8 @@ namespace M_AS4600
             float fReactionArea_dimension_x = designDetails.fplateWidth_x;
             float fReactionArea_dimension_y = designDetails.fplateWidth_y;
 
-            float fcriticalPerimeterDimension_x = 2f * Math.Min(designDetails.fd_effective_xDirection, designDetails.fe_x_BasePlateToFootingEdge) + fReactionArea_dimension_x;
-            float fcriticalPerimeterDimension_y = 2f * Math.Min(fd_effective_yDirection, designDetails.fe_y_BasePlateToFootingEdge) + fReactionArea_dimension_y; // TODO - Zohladnit ak je stlp blizsie k okraju nez fd
+            float fcriticalPerimeterDimension_x = Math.Min(designDetails.fd_effective_xDirection, basePlate.x_minus_plateEdge_to_pad) + Math.Min(designDetails.fd_effective_xDirection, basePlate.x_plus_plateEdge_to_pad) + fReactionArea_dimension_x;
+            float fcriticalPerimeterDimension_y = Math.Min(designDetails.fd_effective_yDirection, basePlate.y_minus_plateEdge_to_pad) + Math.Min(designDetails.fd_effective_yDirection, basePlate.y_plus_plateEdge_to_pad) + fReactionArea_dimension_y;
 
             designDetails.fcriticalPerimeter_b0 = 2 * fcriticalPerimeterDimension_x + 2 * fcriticalPerimeterDimension_y;
 
@@ -2017,7 +2077,7 @@ namespace M_AS4600
             else
                 designDetails.fAlpha_s = 15;
 
-            designDetails.fd_average = (designDetails.fd_effective_xDirection + fd_effective_yDirection) / 2f;
+            designDetails.fd_average = (designDetails.fd_effective_xDirection + designDetails.fd_effective_yDirection) / 2f;
             designDetails.fk_ds = eq_concrete.Get_k_ds_12732(designDetails.fd_average);
 
             // Nominal shear stress resisted by the concrete
@@ -2028,7 +2088,9 @@ namespace M_AS4600
             designDetails.fv_c_12732 = MathF.Min(designDetails.fv_c_126, designDetails.fv_c_127, designDetails.fv_c_128);
 
             // 12.7.3.4 Maximum nominal shear stress
-            float fv_c_max = 0.5f * MathF.Sqrt(designDetails.ff_apostrophe_c);
+            //float fv_c_max = 0.5f * MathF.Sqrt(designDetails.ff_apostrophe_c);
+            // Oprava 30.1.2020 - nesedeli vysledky po odmocneni a mocneni - malo by to vracat napatie v [Pa]
+            float fv_c_max = 0.5f * MathF.Sqrt(designDetails.ff_apostrophe_c / 1000000f) * 1000000f;
             if (designDetails.fv_c_12732 > fv_c_max)
                 designDetails.fv_c_12732 = fv_c_max;
 
@@ -2041,7 +2103,7 @@ namespace M_AS4600
             float ff_yv = fReinforcementStrength_fy;
 
             designDetails.fV_s_xDirection = fReinforcementArea_A_v_xDirection * ff_yv * designDetails.fd_effective_xDirection / designDetails.fSpacing_yDirection_top;
-            designDetails.fV_s_yDirection = fReinforcementArea_A_v_yDirection * ff_yv * fd_effective_yDirection / designDetails.fSpacing_xDirection_top;
+            designDetails.fV_s_yDirection = fReinforcementArea_A_v_yDirection * ff_yv * designDetails.fd_effective_yDirection / designDetails.fSpacing_xDirection_top;
 
             // 12.7.3.1 Nominal shear strength for punching shear
             designDetails.fV_n_12731_xDirection = eq_concrete.Eq_12_4____(designDetails.fV_s_xDirection, designDetails.fV_c_12731);

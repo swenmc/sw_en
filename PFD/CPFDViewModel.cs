@@ -2948,8 +2948,8 @@ namespace PFD
 
                 CalculationSettingsFoundation FootingCalcSettings = FootingVM.GetCalcSettings();
 
-                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces, true);
-                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
 
                 dictStartJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberStartJointResults);
                 dictEndJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberEndJointResults);

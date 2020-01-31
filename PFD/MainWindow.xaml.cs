@@ -1133,7 +1133,7 @@ namespace PFD
                 //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
                 //UC_ComponentList component = Member_Input.Content as UC_ComponentList;
                 CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
-                if (Joint_Design.Content == null) Joint_Design.Content = new UC_JointDesign(vm.UseCRSCGeometricalAxes, vm, compListVM);
+                if (Joint_Design.Content == null) Joint_Design.Content = new UC_JointDesign(vm.UseCRSCGeometricalAxes, vm._designOptionsVM.ShearDesignAccording334, vm, compListVM);
                 else
                 {
                     ////setuje sa v public void UpdateResults()

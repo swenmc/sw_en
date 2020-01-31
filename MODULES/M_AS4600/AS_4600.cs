@@ -30,6 +30,10 @@ namespace M_AS4600
         {
             return 0.64f * ff_y * fd_1 * ft_w; // Eq. (3.3.4(1)) // fV_v
         }
+        public float Eq_334_1___(float fA_v, float ff_y)
+        {
+            return 0.64f * ff_y * fA_v; // Eq. (3.3.4(1)) // fV_v
+        }
         public float Eq_334_2___(float ft_w, float fE, float fk_v, float ff_y)
         {
             return 0.64f * MathF.Pow2(ft_w) * MathF.Sqrt(fE * fk_v * ff_y); // Eq. (3.3.4(2)) // fV_v
@@ -737,6 +741,11 @@ namespace M_AS4600
         {
             fResistance_V = fPhi_v * fV_v;
             fRatio = Math.Abs(fV_asterix) / fResistance_V; // Eq. (7.2.3(11))
+        }
+        public float Eq_723_11__(float fV_asterix, float fPhi_v, float fV_v)
+        {
+            float fResistance_V = fPhi_v * fV_v;
+            return Math.Abs(fV_asterix) / fResistance_V; // Eq. (7.2.3(11))
         }
         public void Eq_723_12__(float fM_asterix, float fPhi_b, float fM_s, float fV_asterix, float fPhi_v, float fV_v, out float fPortion_M, out float fPortion_V, out float fRatio_13, out float fRatio_10)
         {

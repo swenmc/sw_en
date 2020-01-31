@@ -2568,7 +2568,7 @@ namespace PFD
         }
 
         private void OpenDataFile(string fileName)
-        {   
+        {
             CPlate deserializedPlate = null;
             CProductionInfo pInfo = null;
             using (Stream stream = File.Open(fileName, FileMode.Open))

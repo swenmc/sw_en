@@ -14,16 +14,18 @@ namespace PFD
     public partial class UC_JointDesign : UserControl
     {
         bool UseCRSCGeometricalAxes;
-        
+        bool ShearDesignAccording334;
+
         CPFDViewModel _pfdVM;
         CalculationSettingsFoundation FootingCalcSettings;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
-        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, CPFDViewModel pfdVM, CComponentListVM compList)
+        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, bool bShearDesignAccording334_temp, CPFDViewModel pfdVM, CComponentListVM compList)
         {
             InitializeComponent();
 
-            UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;            
+            UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
+            ShearDesignAccording334 = bShearDesignAccording334_temp;
             _pfdVM = pfdVM;
             DesignResults_ULS = _pfdVM.JointDesignResults_ULS;
 
@@ -130,8 +132,8 @@ namespace PFD
                     //FootingCalcSettings.FloorSlabThickness = 0.125f;
                     ////-------------------------------------------------------------------------------------------------------------
 
-                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces);
-                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces);
+                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces);
+                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces);
 
                     // Find member in the group of members with maximum start or end joint design ratio
                     if (cJointStart.fEta_max_joint > fMaximumDesignRatio || cJointEnd.fEta_max_joint > fMaximumDesignRatio)
@@ -147,11 +149,11 @@ namespace PFD
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
                         //To Mato - toto mi musis vsvetlit preco sa to tu prepocitava znovu akurat jeden bool na konci je zmeneny
-                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces, true);
+                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
+                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
                         cGoverningMemberEndJointResults = cJointEnd;
                     }
                 }

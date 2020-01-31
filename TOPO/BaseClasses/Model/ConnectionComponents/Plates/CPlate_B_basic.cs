@@ -293,6 +293,12 @@ namespace BaseClasses
             fA_g = Get_A_rect(2 * Ft, Fh_Y);
             int iNumberOfScrewsInSection = 6; // Jedna strana plechu TODO, temporary - zavisi na rozmiestneni skrutiek
 
+            if (screwArrangement is CScrewArrangement_BX_1)
+                iNumberOfScrewsInSection = ((CScrewArrangement_BX_1)screwArrangement).iNumberOfScrewsInColumn_yDirection_SQ1 + ((CScrewArrangement_BX_1)screwArrangement).iNumberOfScrewsInColumn_yDirection_SQ2;
+
+            if (screwArrangement is CScrewArrangement_BX_2)
+                iNumberOfScrewsInSection = ((CScrewArrangement_BX_2)screwArrangement).iNumberOfScrewsInColumn_yDirection_SQ1 + ((CScrewArrangement_BX_2)screwArrangement).iNumberOfScrewsInColumn_yDirection_SQ2 + ((CScrewArrangement_BX_2)screwArrangement).iNumberOfScrewsInColumn_yDirection_SQ3;
+
             fA_n = fA_g;
 
             if (screwArrangement != null)
@@ -306,7 +312,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                fA_v_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * 2 * Ft;
+                fA_vn_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * 2 * Ft;
             }
 
             fI_yu = 2 * Get_I_yu_rect(Ft, Fh_Y); // Moment of inertia of plate

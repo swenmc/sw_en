@@ -454,7 +454,7 @@ namespace PFD.Infrastructure
                         CConnectionJointTypes jointStart;
                         CConnectionJointTypes jointEnd;
 
-                        jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, Model, m, FootingCalcSettings, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
+                        jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, MShearDesignAccording334, Model, m, FootingCalcSettings, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
 
                         // Validation - Main member of joint must be defined
                         if (jointStart.m_MainMember == null)

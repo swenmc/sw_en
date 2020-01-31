@@ -186,7 +186,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                fA_v_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * 2 * Ft;
+                fA_vn_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * 2 * Ft;
             }
 
             fI_yu = 2 * Get_I_yu_rect(Ft, Fh_Y); // Moment of inertia of plate

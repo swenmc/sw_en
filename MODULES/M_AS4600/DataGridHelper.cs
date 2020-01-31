@@ -1386,7 +1386,7 @@ namespace M_AS4600
                     {
                         // Rozdielne plechy - lavy G a pravy H
                         // Plechy sa posudzuju len v strihu / smyku
- 
+
                         listPhysicalQuantity_Symbols.Add(""); // TODO - umoznit zlucenie buniek v riadku
                         listPhysicalQuantity_Values.Add("");
                         listPhysicalQuantity_Units.Add("");
@@ -1946,15 +1946,15 @@ namespace M_AS4600
 
                 // Plate compression - bearing
                 listPhysicalQuantity_Symbols.Add("Φc.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_c_Plate, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_c_plate, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("Ac.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_c_plate* fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_c_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("Nc.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_s_plate* fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_s_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Nc.plate");
@@ -1962,6 +1962,10 @@ namespace M_AS4600
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Plate shear resistance
+                listPhysicalQuantity_Symbols.Add("Φv.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_v_plate, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
                 listPhysicalQuantity_Symbols.Add("Av.y.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
@@ -1970,11 +1974,24 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
-                listPhysicalQuantity_Symbols.Add("η Vy.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_yv_3341_plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+                if (det.fEta_V_yv_3341_plate > 0.0001)
+                {
+                    listPhysicalQuantity_Symbols.Add("η Vy.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_yv_3341_plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+                }
+                else if (det.fEta_V_yv_723_11_plate > 0.0001)
+                {
+                    listPhysicalQuantity_Symbols.Add("η Vy.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_yv_723_11_plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+                }
 
                 // Plate bending resistance
+                listPhysicalQuantity_Symbols.Add("Φb.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_b_plate, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
                 listPhysicalQuantity_Symbols.Add("M.b.x.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fM_xu_resistance_plate * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Moment);
