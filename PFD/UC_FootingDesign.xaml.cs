@@ -105,6 +105,7 @@ namespace PFD
                     // Find member in the group of members with maximum joint design ratio
                     if (cJoint.fEta_max_footing > fMaximumDesignRatio)
                     {
+                        fMaximumDesignRatio = cJoint.fEta_max_footing;
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
                         cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces, true);
                         cGoverningMemberFootingResults = cJoint;

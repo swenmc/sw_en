@@ -25,15 +25,18 @@ using DATABASE;
 using System.Globalization;
 
 namespace PFD
-{    
+{   
+    [Serializable]
     public class CPFDViewModel : INotifyPropertyChanged
     {
         private bool debugging = true;
 
-
+        [NonSerialized]
         private readonly BackgroundWorker _worker = new BackgroundWorker();
 
+        [NonSerialized]
         public MainWindow PFDMainWindow;
+        [NonSerialized]
         public Solver SolverWindow;
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
