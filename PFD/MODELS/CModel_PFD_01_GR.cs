@@ -1178,7 +1178,7 @@ namespace PFD
             else m_arrConnectionJoints = joints;
             #endregion
 
-            CountPlates_ValidationPurpose();
+            CountPlates_ValidationPurpose(false);
 
             #region Blocks
 
@@ -1277,7 +1277,7 @@ namespace PFD
                 //}
             }
 
-            CountPlates_ValidationPurpose();
+            CountPlates_ValidationPurpose(false);
 
             // Validation - check that all created joints have assigned Main Member
             // Check all joints after definition of doors and windows members and joints
@@ -1341,7 +1341,7 @@ namespace PFD
             }
             //------------------------------------------------------------
 
-            CountPlates_ValidationPurpose();
+            CountPlates_ValidationPurpose(false);
 
             // End of blocks
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3675,59 +3675,62 @@ namespace PFD
             }
         }
 
-        private void CountPlates_ValidationPurpose()
+        private void CountPlates_ValidationPurpose(bool bIsDebbuging)
         {
-            int iNumberOfJoints = 0;
-            int iNumberOfJointsGenerateTrue = 0;
-            int iNumberOfJointsGenerateFalse = 0;
-
-            int iNumberOfPlates = 0;
-            int iNumberOfPlateGenerateTrue = 0;
-            int iNumberOfPlateGenerateFalse = 0;
-            int iNumberOfPlateMatListTrue = 0;
-            int iNumberOfPlateMatlistFalse = 0;
-
-            foreach (CConnectionJointTypes joint in m_arrConnectionJoints)
+            if (bIsDebbuging)
             {
-                iNumberOfJoints++;
-                if (joint.BIsGenerated) iNumberOfJointsGenerateTrue++; else iNumberOfJointsGenerateFalse++;
+                int iNumberOfJoints = 0;
+                int iNumberOfJointsGenerateTrue = 0;
+                int iNumberOfJointsGenerateFalse = 0;
 
-                foreach (CPlate plate in joint.m_arrPlates)
+                int iNumberOfPlates = 0;
+                int iNumberOfPlateGenerateTrue = 0;
+                int iNumberOfPlateGenerateFalse = 0;
+                int iNumberOfPlateMatListTrue = 0;
+                int iNumberOfPlateMatlistFalse = 0;
+
+                foreach (CConnectionJointTypes joint in m_arrConnectionJoints)
                 {
-                    iNumberOfPlates++;
+                    iNumberOfJoints++;
+                    if (joint.BIsGenerated) iNumberOfJointsGenerateTrue++; else iNumberOfJointsGenerateFalse++;
 
-                    if (plate.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
-                    if (plate.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
-
-                    if (plate is CConCom_Plate_B_basic)
+                    foreach (CPlate plate in joint.m_arrPlates)
                     {
-                        CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                        iNumberOfPlates++;
 
-                        foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+                        if (plate.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
+                        if (plate.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
+
+                        if (plate is CConCom_Plate_B_basic)
                         {
-                            iNumberOfPlates++; // anchor.WasherBearing
-                            iNumberOfPlates++; // anchor.WasherPlateTop
+                            CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
 
-                            if (anchor.WasherBearing.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
-                            if (anchor.WasherBearing.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
+                            foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+                            {
+                                iNumberOfPlates++; // anchor.WasherBearing
+                                iNumberOfPlates++; // anchor.WasherPlateTop
 
-                            if (anchor.WasherPlateTop.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
-                            if (anchor.WasherPlateTop.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
+                                if (anchor.WasherBearing.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
+                                if (anchor.WasherBearing.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
+
+                                if (anchor.WasherPlateTop.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
+                                if (anchor.WasherPlateTop.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
+                            }
                         }
                     }
                 }
-            }
 
-            Console.WriteLine(
-                "Total number of joints: " + iNumberOfJoints.ToString() + "\n" +
-                "Number of joints - Generate - True: " + iNumberOfJointsGenerateTrue.ToString() + "\n" +
-                "Number of joints - Generate - False: " + iNumberOfJointsGenerateFalse.ToString() + "\n" +
-                "\n" +
-                "Total number of plates: " + iNumberOfPlates.ToString() + "\n" +
-                "Number of plates - Generate - True: " + iNumberOfPlateGenerateTrue.ToString() + "\n" +
-                "Number of plates - Generate - False: " + iNumberOfPlateGenerateFalse.ToString() + "\n" +
-                "Number of plates - Material List - True: " + iNumberOfPlateMatListTrue.ToString() + "\n" +
-                "Number of plates - Material List - False: " + iNumberOfPlateMatlistFalse.ToString() + "\n");
+                Console.WriteLine(
+                    "Total number of joints: " + iNumberOfJoints.ToString() + "\n" +
+                    "Number of joints - Generate - True: " + iNumberOfJointsGenerateTrue.ToString() + "\n" +
+                    "Number of joints - Generate - False: " + iNumberOfJointsGenerateFalse.ToString() + "\n" +
+                    "\n" +
+                    "Total number of plates: " + iNumberOfPlates.ToString() + "\n" +
+                    "Number of plates - Generate - True: " + iNumberOfPlateGenerateTrue.ToString() + "\n" +
+                    "Number of plates - Generate - False: " + iNumberOfPlateGenerateFalse.ToString() + "\n" +
+                    "Number of plates - Material List - True: " + iNumberOfPlateMatListTrue.ToString() + "\n" +
+                    "Number of plates - Material List - False: " + iNumberOfPlateMatlistFalse.ToString() + "\n");
+            }
         }
     }
 }
