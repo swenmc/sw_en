@@ -52,11 +52,6 @@ namespace BaseClasses
             m_arrWelds = arrWeldsSize != 0 ? new CWeld[arrWeldsSize] : null;
 
             m_Mat = new CMat();
-
-            // Joint is generated
-            BIsGenerated = true;
-            // Set as default property that joint should be displayed
-            BIsDisplayed = true;
         }
 
         public CConnectionJointTypes(CPlate[] arrPlatesTemp, CBolt[] arrBoltsTemp, CWeld[] arrWeldsTemp)
@@ -81,11 +76,6 @@ namespace BaseClasses
             {
                 m_arrWelds[i] = arrWeldsTemp[i];
             }
-
-            // Joint is generated
-            BIsGenerated = true;
-            // Set as default property that joint should be displayed
-            BIsDisplayed = true;
         }
 
         // Pomocna funkcia pre base plates - nastavenie typu plechu podla prierezu a nastavenie screwArrangement
@@ -97,7 +87,7 @@ namespace BaseClasses
             plateProp = null;
 
             string washerPlateTopName;
-            washerBearing = new CWasher_W("WA", new Point3D(0,0,0), 0, -90, 0, true); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
+            washerBearing = new CWasher_W("WA", new Point3D(0,0,0), 0, -90, 0); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
 
             if (sSectionNameDatabase == "10075")
             {
@@ -172,7 +162,7 @@ namespace BaseClasses
             {
                 plateProp = DATABASE.CJointsManager.GetPlate_B_Properties(platePrefix);
                 screwArrangement = GetBasePlateArrangement(platePrefix, referenceScrew, (float)plateProp.dim2y); // Set base plate screw arrangement
-                washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, -90, 0, true); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
+                washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, -90, 0); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
             }
         }
 

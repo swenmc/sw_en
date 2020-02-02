@@ -551,13 +551,10 @@ namespace PFD
             // Plates
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
             {
-                //toto by podla mna uz malo byt nastavene a nie tu to checkovat
-                joint.BIsSelectedForMaterialList = CJointHelper.IsJointSelectedForMaterialList(joint);
-
                 if (!joint.BIsSelectedForMaterialList) continue;
 
                 foreach (CPlate plate in joint.m_arrPlates) // For each plate
-                {                    
+                {
                     // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
                     // Nie vsetky plechy budu mat parametre definovane v databaze
                     // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie

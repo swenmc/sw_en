@@ -105,25 +105,5 @@ namespace BaseClasses.Helpers
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
             }
         }
-
-        public static bool IsJointSelectedForMaterialList(CConnectionJointTypes joint)
-        {
-            bool IsSelectedForMaterialList = true;
-            if (joint.m_MainMember != null)
-            {
-                if (!joint.m_MainMember.BIsGenerated) IsSelectedForMaterialList = false;
-                if (!joint.m_MainMember.BIsSelectedForMaterialList) IsSelectedForMaterialList = false;
-            }
-            if (joint.m_SecondaryMembers != null)
-            {
-                foreach (CMember m in joint.m_SecondaryMembers)
-                {
-                    if (!m.BIsGenerated) IsSelectedForMaterialList = false;
-                    if (!m.BIsSelectedForMaterialList) IsSelectedForMaterialList = false;
-                }
-            }
-            return IsSelectedForMaterialList;
-        }
-
     }
 }

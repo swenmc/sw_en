@@ -387,7 +387,7 @@ namespace BaseClasses
         {
         }
 
-        public CAnchor(string name_temp, float fLength_temp, /*CWasher_W washerPlateTop, CWasher_W washerBearing,*/ bool bIsDisplayed)
+        public CAnchor(string name_temp, float fLength_temp /*CWasher_W washerPlateTop, CWasher_W washerBearing,*/)
         {
             Prefix = "Anchor";
             Name = name_temp;
@@ -422,8 +422,6 @@ namespace BaseClasses
             ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
             Mass = GetMass();
-
-            BIsDisplayed = bIsDisplayed;
 
             m_fRotationX_deg = 0;
             m_fRotationY_deg = 90;
@@ -517,7 +515,7 @@ namespace BaseClasses
 
                 m_Nuts = new List<CNut>();
 
-                CNut nut = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0, true);
+                CNut nut = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0);
                 float fWasherTopPlateNutPosition = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness - m_WasherPlateTop.Ft - fOffsetFor3D;
                 nut.m_pControlPoint.X = fWasherTopPlateNutPosition;
 
@@ -537,8 +535,8 @@ namespace BaseClasses
                 if (m_Nuts == null)
                     m_Nuts = new List<CNut>();
 
-                CNut nutTop = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0, true);
-                CNut nutBottom = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0, true);
+                CNut nutTop = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0);
+                CNut nutBottom = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0);
                 float fWasherBearingTopNutPosition = (float)m_WasherBearing.m_pControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
                 float fWasherBearingBottomNutPosition = (float)m_WasherBearing.m_pControlPoint.X + nutBottom.Thickness_max + fOffsetFor3D;
                 nutTop.m_pControlPoint.X = fWasherBearingTopNutPosition;

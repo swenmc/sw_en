@@ -20,20 +20,24 @@ namespace BaseClasses
         short iEdgesOutBasic = 4;
         short iNumberOfSegmentsPerSideOut = 4;
 
+        public CWasher_W()
+        {
+            eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_W;
+        }
+
         public CWasher_W(string sName_temp,
-            Point3D controlpoint,
-            //float fbx_1_temp,
-            //float fhy_1_temp,
-            //float ft_platethickness,
-            float fRotation_x_deg,
-            float fRotation_y_deg,
-            float fRotation_z_deg,
-            bool bIsDisplayed)
+        Point3D controlpoint,
+        //float fbx_1_temp,
+        //float fhy_1_temp,
+        //float ft_platethickness,
+        float fRotation_x_deg,
+        float fRotation_y_deg,
+        float fRotation_z_deg)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_W;
-            BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 4;
             INoPoints2Dfor3D = 16 + 16;

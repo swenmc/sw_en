@@ -16,15 +16,13 @@ namespace BaseClasses
 
         public CConnectionJoint_TB01() { }
 
-        public CConnectionJoint_TB01(CNode Node_temp, CMember Column_temp, bool bIsDisplayed_temp)
+        public CConnectionJoint_TB01(CNode Node_temp, CMember Column_temp)
         {
             bIsJointDefinedinGCS = false;
 
             m_Node = Node_temp;
             m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = Column_temp;
-            BIsGenerated = true;
-            BIsDisplayed = bIsDisplayed_temp;
 
             Name = "Wind Post Base Joint";
 
@@ -64,19 +62,19 @@ namespace BaseClasses
             Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft, -0.5f * fh_plate + flocaleccentricity_z);
 
             m_arrPlates = new CPlate[1];
-            m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, referenceAnchor, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, referenceAnchor, screwArrangement); // Rotation angle in degrees
 
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new Point3D(m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft, -0.5f * fh_plate + flocaleccentricity_z);
-                m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, referenceAnchor, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
+                m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, referenceAnchor, screwArrangement); // Rotation angle in degrees
             }
         }
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_TB01(m_Node, m_MainMember, BIsDisplayed);
+            return new CConnectionJoint_TB01(m_Node, m_MainMember);
         }
     }
 }

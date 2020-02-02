@@ -389,9 +389,9 @@ namespace BaseClasses
                 Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
 
                 if(i < IHolesNumber / 2) // Left side (rotation 0 deg about y-axis)
-                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 0, 0, true);
+                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 0, 0);
                 else // Right side (rotation 180 deg about y-axis)
-                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 180, 0, true);
+                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 180, 0);
             }
         }
 

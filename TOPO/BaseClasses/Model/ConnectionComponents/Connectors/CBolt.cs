@@ -10,10 +10,9 @@ namespace BaseClasses
         public CBolt()
         { }
 
-        public CBolt(Point3D controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fMass_temp, bool bIsDisplayed)
+        public CBolt(Point3D controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fMass_temp)
         {
             m_pControlPoint = controlpoint;
-            BIsDisplayed = bIsDisplayed;
             Length = fLength_temp;
             Diameter_thread = fDiameter_temp;
             Mass = fMass_temp;

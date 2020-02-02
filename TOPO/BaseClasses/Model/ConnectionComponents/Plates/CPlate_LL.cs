@@ -134,7 +134,6 @@ namespace BaseClasses
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_LL;
-            BIsDisplayed = true;
         }
 
         public CConCom_Plate_LL(string sName_temp,
@@ -147,14 +146,11 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement_LL screwArrangement_temp,
-            bool bIsDisplayed)
+            CScrewArrangement_LL screwArrangement_temp)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_LL;
-
-            BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 12;
             ITotNoPointsin3D = 26;
@@ -498,22 +494,22 @@ namespace BaseClasses
                     if (i < screwArrangement.IHolesNumber / 4) // Left
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0);
                     }
                     else if (i < screwArrangement.IHolesNumber * 2 / 4) // Front Left
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 0, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 0, 0);
                     }
                     else if (i < screwArrangement.IHolesNumber * 3 / 4) // Front Right
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 180, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 180, 0);
                     }
                     else // Right
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0);
                     }
                 }
             }

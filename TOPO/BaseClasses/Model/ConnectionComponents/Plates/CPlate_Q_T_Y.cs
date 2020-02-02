@@ -74,15 +74,13 @@ namespace BaseClasses
         public CConCom_Plate_Q_T_Y()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
-            BIsDisplayed = true;
         }
 
-        public CConCom_Plate_Q_T_Y(string sName_temp, Point3D controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float fl_Z2_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_Q_T_Y(string sName_temp, Point3D controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float fl_Z2_temp, float ft_platethickness, int iHolesNumber)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_Q;
-            BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 8;
             ITotNoPointsin3D = 16;
@@ -118,11 +116,10 @@ namespace BaseClasses
             fMass = GetMassIgnoringHoles();
         }
 
-        public CConCom_Plate_Q_T_Y(string sName_temp, Point3D controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_Q_T_Y(string sName_temp, Point3D controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float ft_platethickness, int iHolesNumber)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
-            BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 8;
             ITotNoPointsin3D = 16;

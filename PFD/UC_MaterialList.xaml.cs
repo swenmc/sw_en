@@ -97,8 +97,6 @@ namespace PFD
             int count = 0;
             for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
             {
-                model.m_arrConnectionJoints[i].BIsSelectedForMaterialList = IsJointSelectedForMaterialList(model.m_arrConnectionJoints[i]);
-
                 if (model.m_arrConnectionJoints[i].BIsSelectedForMaterialList)
                 {
                     count++;
@@ -710,25 +708,6 @@ namespace PFD
         private void MaterialListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
 
-        }
-
-        private bool IsJointSelectedForMaterialList(CConnectionJointTypes joint)
-        {
-            bool IsSelectedForMaterialList = true;
-            if (joint.m_MainMember != null)
-            {
-                if (!joint.m_MainMember.BIsGenerated) IsSelectedForMaterialList = false;
-                if (!joint.m_MainMember.BIsSelectedForMaterialList) IsSelectedForMaterialList = false;
-            }
-            if (joint.m_SecondaryMembers != null)
-            {
-                foreach (CMember m in joint.m_SecondaryMembers)
-                {
-                    if (!m.BIsGenerated) IsSelectedForMaterialList = false;
-                    if (!m.BIsSelectedForMaterialList) IsSelectedForMaterialList = false;
-                }
-            }
-            return IsSelectedForMaterialList;
         }
 
         private void DeleteAllLists()

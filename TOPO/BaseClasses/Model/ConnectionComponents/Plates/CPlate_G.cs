@@ -164,7 +164,7 @@ namespace BaseClasses
         public CConCom_Plate_G()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
-            BIsDisplayed = true;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_G;
         }
 
         public CConCom_Plate_G(string sName_temp,
@@ -179,13 +179,11 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement_G screwArrangement_temp,  // TODO
-            bool bIsDisplayed)
+            CScrewArrangement_G screwArrangement_temp)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_G;
-            BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 7;
             ITotNoPointsin3D = 14;
@@ -406,12 +404,12 @@ namespace BaseClasses
                     if (i < iNumberOfScrewsInLeftLeg) // Left Leg
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, fRotationAngleAboutYAxis, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, fRotationAngleAboutYAxis, 0);
                     }
                     else
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0);
                     }
                 }
             }

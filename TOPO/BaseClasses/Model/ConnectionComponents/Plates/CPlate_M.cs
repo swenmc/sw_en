@@ -135,7 +135,6 @@ namespace BaseClasses
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_M;
-            BIsDisplayed = true;
         }
 
         public CConCom_Plate_M(string sName_temp,
@@ -150,13 +149,11 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement_M screwArrangement_temp,
-            bool bIsDisplayed)
+            CScrewArrangement_M screwArrangement_temp)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_M;
-            BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 8;
             ITotNoPointsin3D = 16;
@@ -465,7 +462,7 @@ namespace BaseClasses
                         fAngle_z_deg = -90 + (float)Geom2D.RadiansToDegrees(m_fRoofPitch_rad);
                     }
 
-                    screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, fAngle_y_deg, fAngle_z_deg, true);
+                    screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, fAngle_y_deg, fAngle_z_deg);
                 }
             }
         }

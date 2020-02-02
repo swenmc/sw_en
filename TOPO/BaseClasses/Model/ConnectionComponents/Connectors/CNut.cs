@@ -176,7 +176,7 @@ namespace BaseClasses
         {
         }
 
-        public CNut(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CNut(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg)
         {
             Prefix = "HEX Nut";
             m_Name = name_temp;
@@ -219,8 +219,6 @@ namespace BaseClasses
 
             ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
             ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
-
-            BIsDisplayed = bIsDisplayed;
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;

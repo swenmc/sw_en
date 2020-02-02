@@ -105,7 +105,6 @@ namespace BaseClasses
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
-            BIsDisplayed = true;
         }
 
         public CConCom_Plate_JB(string sName_temp,
@@ -119,14 +118,11 @@ namespace BaseClasses
             float fRotation_y_deg,
             float fRotation_z_deg,
             bool bScrewInPlusZDirection,
-            CScrewArrangement screwArrangement,
-            bool bIsDisplayed)
+            CScrewArrangement screwArrangement)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
-
-            BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 12;
             ITotNoPointsin3D = 26;

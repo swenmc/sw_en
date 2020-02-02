@@ -166,7 +166,7 @@ namespace BaseClasses
         public CConCom_Plate_H()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
-            BIsDisplayed = true;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_H;
         }
 
         public CConCom_Plate_H(string sName_temp,
@@ -180,13 +180,11 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement_H screwArrangement_temp,  // TODO
-            bool bIsDisplayed)
+            CScrewArrangement_H screwArrangement_temp)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_H;
-            BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 6;
             ITotNoPointsin3D = 12;
@@ -400,12 +398,12 @@ namespace BaseClasses
                     if (i < iNumberOfScrewsInBottomPart) // Bottom Part
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0);
                     }
                     else // Top Part
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, m_fSlope_rad * 180 / MATH.MathF.fPI, 90, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, m_fSlope_rad * 180 / MATH.MathF.fPI, 90);
                     }
                 }
             }
