@@ -14,9 +14,11 @@ using System.Windows.Media.Media3D;
 
 namespace PFD
 {
+    [Serializable]
     public class SolverOptionsViewModel : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Load Combination - options

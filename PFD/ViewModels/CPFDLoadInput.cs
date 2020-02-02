@@ -14,6 +14,7 @@ using DATABASE.DTO;
 
 namespace PFD
 {
+    [Serializable]
     public class CPFDLoadInput : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------

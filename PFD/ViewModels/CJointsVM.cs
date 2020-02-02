@@ -8,6 +8,7 @@ using System.Windows.Controls;
 
 namespace PFD
 {
+    [Serializable]
     public class CJointsVM : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ namespace PFD
         private List<CConnectionDescription> m_AllJointTypes;
         private Dictionary<CConnectionDescription, CConnectionJointTypes> m_DictJoints;
 
+        [NonSerialized]
         private List<TabItem> m_TabItems;
         
         private int m_SelectedTabIndex;

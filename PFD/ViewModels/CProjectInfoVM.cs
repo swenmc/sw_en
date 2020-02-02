@@ -15,6 +15,7 @@ using System.Windows.Media;
 
 namespace PFD
 {
+    [Serializable]
     public class CProjectInfoVM : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------

@@ -16,6 +16,7 @@ using BaseClasses.Helpers;
 
 namespace PFD
 {
+    [Serializable]
     public class CComponentListVM : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------

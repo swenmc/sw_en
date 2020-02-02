@@ -1,5 +1,8 @@
-﻿namespace BaseClasses
+﻿using System;
+
+namespace BaseClasses
 {
+    [Serializable]
     public class CMemberEccentricity : CEntity
     {
         private float m_fy_local;

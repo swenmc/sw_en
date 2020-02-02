@@ -8,6 +8,7 @@ using M_EC1.AS_NZS;
 
 namespace PFD
 {
+    [Serializable]
     public class CModel_PFD : CExample
     {
         public List<CEntity3D> componentList;

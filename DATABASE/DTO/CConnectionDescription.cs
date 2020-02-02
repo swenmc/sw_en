@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DATABASE.DTO
 {
+    [Serializable]
     public class CConnectionDescription
     {
         private int m_ID;

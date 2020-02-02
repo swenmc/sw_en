@@ -8,6 +8,7 @@ using DATABASE.DTO;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CAccessories_LengthItemProperties : INotifyPropertyChanged
     {
         // Flashing / Gutter
