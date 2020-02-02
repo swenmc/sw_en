@@ -15,6 +15,7 @@ namespace BaseClasses
     {
         [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
+
         private string m_sBuildingSide;
         private int m_iBayNumber;
         private List<int> m_Bays;

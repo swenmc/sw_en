@@ -13,6 +13,7 @@ namespace BaseClasses
     [Serializable]
     public class DoorProperties : INotifyPropertyChanged
     {
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string m_sBuildingSide;

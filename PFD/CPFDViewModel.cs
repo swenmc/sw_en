@@ -148,16 +148,14 @@ namespace PFD
         //private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
 
 
-        [NonSerialized]
-        private ObservableCollection<DoorProperties> MDoorBlocksProperties;
-        [NonSerialized]
+        
+        private ObservableCollection<DoorProperties> MDoorBlocksProperties;        
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
         private List<string> MModelViews;
         private List<string> MViewModelMemberFilters;
-
-        [NonSerialized]
+                
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
         private bool MRecreateJoints;
@@ -2096,10 +2094,8 @@ namespace PFD
 
         [NonSerialized]
         public CPFDLoadInput _loadInput;
-
-        [NonSerialized]
+                
         private ObservableCollection<CAccessories_LengthItemProperties> m_Flashings;
-        [NonSerialized]
         private List<string> m_FlashingsNames;        
         public ObservableCollection<CAccessories_LengthItemProperties> Flashings
         {
@@ -2199,9 +2195,8 @@ namespace PFD
             PropertyChanged(sender, e);
         }
 
-        [NonSerialized]
-        private ObservableCollection<CAccessories_LengthItemProperties> m_Gutters;
-        [NonSerialized]
+        
+        private ObservableCollection<CAccessories_LengthItemProperties> m_Gutters;        
         private List<string> m_GuttersNames;
         public ObservableCollection<CAccessories_LengthItemProperties> Gutters
         {
@@ -2232,8 +2227,7 @@ namespace PFD
                 RecreateQuotation = true;
             }
         }
-
-        [NonSerialized]
+                
         private ObservableCollection<CAccessories_DownpipeProperties> m_Downpipes;
         public ObservableCollection<CAccessories_DownpipeProperties> Downpipes
         {

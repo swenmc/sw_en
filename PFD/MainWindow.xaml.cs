@@ -142,13 +142,13 @@ namespace PFD
                 CPFDViewModel viewModel = sender as CPFDViewModel;
                 if (viewModel == null) return;
                 if (viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
-                
+
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "IsEnabledLocalMembersAxis") return;
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
 
-                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility();  } return; }
+                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility(); } return; }
 
                 //if (e.PropertyName == "DoorBlocksProperties_Add") { vm.RecreateJoints = true; }
                 //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged") { vm.RecreateJoints = true; }
@@ -329,7 +329,7 @@ namespace PFD
                 if (d.sBuildingSide == sBuildingSide) doorsToRemoveCount++;
                 else doorsProps.Add(d);
             }
-            
+
             int windowsToRemoveCount = 0;
             List<WindowProperties> windowsProps = new List<WindowProperties>();
             foreach (WindowProperties w in vm.WindowBlocksProperties)
@@ -596,7 +596,7 @@ namespace PFD
             CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y);
         }
 
-        
+
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
         {
             vm.GeneralLoad = new CCalcul_1170_1(
@@ -774,7 +774,7 @@ namespace PFD
                 MessageBox.Show("Joints will be recreated and changed to defaults.");
                 this.IsEnabled = true;
             }
-            
+
             List<CFoundation> foundations = null;
             if (!vm.RecreateFoundations) foundations = vm.Model.m_arrFoundations;
             //else if (vm.Model != null) MessageBox.Show("Foundations will be recreated and changed to defaults.");
@@ -933,7 +933,7 @@ namespace PFD
         private void SetUIElementsVisibility()
         {
             // TO Ondrej - tu som taketo nieco pridal, neviem ci je to dobry napad :)
-            if(bRelease) // Disablujeme prvky ktore nemaju byt v release verzii
+            if (bRelease) // Disablujeme prvky ktore nemaju byt v release verzii
             {
                 View_2D.IsEnabled = false;
                 Clear3DModel.IsEnabled = false;
@@ -1003,7 +1003,7 @@ namespace PFD
             else btnAddDownpipe.IsEnabled = true;
         }
 
-            private void Clear3DModel_Click(object sender, RoutedEventArgs e)
+        private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel page3D = (Page3Dmodel)Frame1.Content;
             ClearViewPort(page3D._trackport.ViewPort);
@@ -1160,7 +1160,7 @@ namespace PFD
                 Part_List.Content = new UC_MaterialList(vm.Model);
                 //if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm.Model);
             }
-            else if(MainTabControl.SelectedIndex == (int)ETabNames.eQuoation)
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eQuoation)
             {
                 //Quotation.Content = new UC_Quotation(vm);
                 if (Quotation.Content == null) Quotation.Content = new UC_Quotation(vm);
@@ -1198,7 +1198,7 @@ namespace PFD
                     uc_intForces.MemberDesignResults_SLS = vm.MemberDesignResults_SLS;
                     uc_intForces.MemberDesignResults_ULS = vm.MemberDesignResults_ULS;
                     uc_intForces.ListMemberInternalForcesInLoadCombinations = vm.MemberInternalForcesInLoadCombinations;
-                    uc_intForces.ListMemberDeflectionsInLoadCombinations = vm.MemberDeflectionsInLoadCombinations;                    
+                    uc_intForces.ListMemberDeflectionsInLoadCombinations = vm.MemberDeflectionsInLoadCombinations;
                     uc_intForces.FrameModels = vm.frameModels;
 
                     CPFDMemberInternalForces vmIF = uc_intForces.DataContext as CPFDMemberInternalForces;
@@ -1243,7 +1243,7 @@ namespace PFD
                 if (Footing_Design.Content != null)
                 {
                     UC_FootingDesign uc_footingDesign = Footing_Design.Content as UC_FootingDesign;
-                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;                    
+                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
                     //UC_FootingInput uc_footingInput = Footing_Input.Content as UC_FootingInput;
                     //uc_footingDesign.FootingVM = uc_footingInput.DataContext as CFootingInputVM;
                     CPFDFootingDesign vmFD = uc_footingDesign.DataContext as CPFDFootingDesign;
@@ -1790,7 +1790,7 @@ namespace PFD
             e.Handled = true;
         }
 
-        
+
 
         private void BtnDoorGenerator_Click(object sender, RoutedEventArgs e)
         {
@@ -1809,7 +1809,7 @@ namespace PFD
                     dp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
                     if (!dp.ValidateDoorInsideBay())
                     {
-                        if(!errorOccurs) MessageBox.Show("Door is defined out of frame bay.");
+                        if (!errorOccurs) MessageBox.Show("Door is defined out of frame bay.");
                         errorOccurs = true;
                         continue;
                     }
@@ -1820,7 +1820,7 @@ namespace PFD
 
                 if (doorProperties.Count == 0) return;
 
-                
+
                 foreach (DoorProperties dp in vm.DoorBlocksProperties)
                 {
                     //dp.PropertyChanged -= null;
@@ -1933,14 +1933,14 @@ namespace PFD
             }
 
 
-            
+
         }
 
         private void ExportQuotation_Click(object sender, RoutedEventArgs e)
         {
             QuotationExportOptionsWindow exportOptions = new QuotationExportOptionsWindow(vm);
             var result = exportOptions.ShowDialog();
-            
+
             if (result.HasValue && result.Value == true)
             {
                 WaitWindow ww = new WaitWindow("DOC");
@@ -2055,7 +2055,7 @@ namespace PFD
                 if (ww != null) ww.Close();
             }
         }
-        
+
         private void btnAddFlashing_Click(object sender, RoutedEventArgs e)
         {
             string flashingName = FindNotUsedFlashingName();
@@ -2095,7 +2095,7 @@ namespace PFD
             float fGuttersTotalLength = 2 * vm.Model.fL_tot; // na dvoch okrajoch strechy
             CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
             item.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
-            vm.Gutters.Add(item);            
+            vm.Gutters.Add(item);
             vm.RecreateQuotation = true;
         }
 
@@ -2135,7 +2135,7 @@ namespace PFD
             DesignOptionsWindow w = new DesignOptionsWindow(vm);
             w.ShowDialog();
         }
-        
+
         private void BtnLoadModel_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -2152,10 +2152,9 @@ namespace PFD
         private void BtnSaveModel_Click(object sender, RoutedEventArgs e)
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
-            
+
             string modelName = Combobox_Models.Items[vm.ModelIndex].ToString();  //vm.Model.m_sConstObjectName
             
-
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Data Files (*.cnx)|*.cnx";
             sfd.DefaultExt = "cnx";
@@ -2176,13 +2175,53 @@ namespace PFD
         private void OpenModelFile(string fileName)
         {
             CPFDViewModel deserializedPfdVM = null;
-            
+
             using (Stream stream = File.Open(fileName, FileMode.Open))
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 deserializedPfdVM = (CPFDViewModel)binaryFormatter.Deserialize(stream);
             }
-            this.DataContext = deserializedPfdVM;            
+            ChangeActualViewModelWithLoadedViewModel(deserializedPfdVM);            
+        }
+
+        private void ChangeActualViewModelWithLoadedViewModel(CPFDViewModel newVM)
+        {
+            if (newVM == null) return;
+            vm.IsSetFromCode = true;
+            vm.ModelIndex = newVM.ModelIndex;
+            vm.IsSetFromCode = true;
+            vm.GableWidth = newVM.GableWidth;
+            vm.Length = newVM.Length;
+            vm.WallHeight = newVM.WallHeight;
+            vm.RoofPitch_deg = newVM.RoofPitch_deg;
+            vm.Frames = newVM.Frames;
+            vm.GirtDistance = newVM.GirtDistance;
+            vm.PurlinDistance = newVM.PurlinDistance;
+            vm.ColumnDistance = newVM.ColumnDistance;
+            vm.BottomGirtPosition = newVM.BottomGirtPosition;
+            vm.FrontFrameRakeAngle = newVM.FrontFrameRakeAngle;
+            vm.BackFrameRakeAngle = newVM.BackFrameRakeAngle;
+            vm.RoofCladdingIndex = newVM.RoofCladdingIndex;
+            vm.RoofCladdingID = newVM.RoofCladdingID;
+            vm.RoofCladdingCoatingIndex = newVM.RoofCladdingCoatingIndex;
+            vm.RoofCladdingCoatingID = newVM.RoofCladdingCoatingID;
+            vm.RoofCladdingColorIndex = newVM.RoofCladdingColorIndex;
+            vm.RoofCladdingThicknessIndex = newVM.RoofCladdingThicknessIndex;
+            vm.WallCladdingIndex = newVM.WallCladdingIndex;
+            vm.WallCladdingID = newVM.WallCladdingID;
+            vm.WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
+            vm.WallCladdingCoatingID = newVM.WallCladdingCoatingID;
+            vm.WallCladdingColorIndex = newVM.WallCladdingColorIndex;
+            vm.WallCladdingThicknessIndex = newVM.WallCladdingThicknessIndex;
+            vm.RoofFibreglassThicknessIndex = newVM.RoofFibreglassThicknessIndex;
+            vm.WallFibreglassThicknessIndex = newVM.WallFibreglassThicknessIndex;
+            vm.SupportTypeIndex = newVM.SupportTypeIndex;
+            vm.FibreglassAreaRoof = newVM.FibreglassAreaRoof;
+            vm.FibreglassAreaWall = newVM.FibreglassAreaWall;
+            vm.IsSetFromCode = false;
+
+            //just to fire some change
+            vm.GableWidth = vm.GableWidth;            
         }
 
     }

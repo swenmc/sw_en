@@ -8,6 +8,7 @@ using System.Windows;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class RebateProperties
     {
         private float m_RebateWidth;      // Distance from the slab edge

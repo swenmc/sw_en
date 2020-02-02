@@ -15,6 +15,8 @@ namespace BaseClasses.Helpers
         string MCodeRGB;
         string MCodeHEX;
         string MCodeHSV;
+
+        [NonSerialized]
         Color? MColor;
 
         public int ID

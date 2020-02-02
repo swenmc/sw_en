@@ -7,10 +7,11 @@ using DATABASE.DTO;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CAccessories_DownpipeProperties : INotifyPropertyChanged
     {
         // Downpipe
-
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string m_Name;

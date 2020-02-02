@@ -12,7 +12,7 @@ namespace BaseClasses
     public class CAccessories_LengthItemProperties : INotifyPropertyChanged
     {
         // Flashing / Gutter
-
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string m_Name;
