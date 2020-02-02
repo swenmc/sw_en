@@ -4,6 +4,7 @@ using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CConnectionJointTypes : CEntity3D
     {
         private EJointType m_JointType;

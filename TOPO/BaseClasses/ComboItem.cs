@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class ComboItem
     {
         private int m_ID;

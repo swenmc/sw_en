@@ -8,6 +8,7 @@ using System.Windows.Controls;
 
 namespace PFD
 {
+    [Serializable]
     public class QuotationViewModel : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------

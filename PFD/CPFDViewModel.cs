@@ -39,6 +39,7 @@ namespace PFD
         [NonSerialized]
         public Solver SolverWindow;
         //-------------------------------------------------------------------------------------------------------------
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
         public bool IsSetFromCode = false;
 
@@ -146,15 +147,17 @@ namespace PFD
         private bool MUseCRSCGeometricalAxes = true;
         //private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
 
-        
 
+        [NonSerialized]
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
+        [NonSerialized]
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
         private List<string> MModelViews;
         private List<string> MViewModelMemberFilters;
 
+        [NonSerialized]
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
         private bool MRecreateJoints;
@@ -193,6 +196,7 @@ namespace PFD
         // Door trimmers bude potrebne pridat do zoznamov typov prutov ktore su zatazene surface loads, tu je komplikacia ze kazdy prut moze mat inu zatazovaciu sirku
         // vid FreeSurfaceLoadsMemberTypeData
 
+        [NonSerialized]
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
@@ -201,27 +205,42 @@ namespace PFD
         public float fRoofPitch_radians;
         public float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov)
 
+        [NonSerialized]
         public CCalcul_1170_1 GeneralLoad;
+        [NonSerialized]
         public CCalcul_1170_2 Wind;
+        [NonSerialized]
         public CCalcul_1170_3 Snow;
+        [NonSerialized]
         public CCalcul_1170_5 Eq;
+        [NonSerialized]
         public CPFDLoadInput Loadinput;
 
+        [NonSerialized]
         public List<CMemberInternalForcesInLoadCases> MemberInternalForcesInLoadCases;
+        [NonSerialized]
         public List<CMemberDeflectionsInLoadCases> MemberDeflectionsInLoadCases;
-
+        [NonSerialized]
         public List<CMemberInternalForcesInLoadCombinations> MemberInternalForcesInLoadCombinations;
+        [NonSerialized]
         public List<CMemberDeflectionsInLoadCombinations> MemberDeflectionsInLoadCombinations;
-
+        [NonSerialized]
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
+        [NonSerialized]
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
+        [NonSerialized]
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
 
+        [NonSerialized]
         public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
+        [NonSerialized]
         public sDesignResults sDesignResults_ULS = new sDesignResults();
+        [NonSerialized]
         public sDesignResults sDesignResults_SLS = new sDesignResults();
 
+        [NonSerialized]
         public List<CFrame> frameModels;
+        [NonSerialized]
         public List<CBeam_Simple> beamSimpleModels;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -2054,9 +2073,13 @@ namespace PFD
             }
         }
 
+        [NonSerialized]
         private CComponentListVM _componentVM;
+        [NonSerialized]
         private CProjectInfoVM _projectInfoVM;
+        [NonSerialized]
         private CJointsVM _jointsVM;
+        [NonSerialized]
         private CFootingInputVM _footingVM;
 
         public DisplayOptionsViewModel _displayOptionsVM;
@@ -2064,17 +2087,20 @@ namespace PFD
         public SolverOptionsViewModel _solverOptionsVM;
         public DesignOptionsViewModel _designOptionsVM;
 
+        [NonSerialized]
         public QuotationViewModel _quotationViewModel;
+        [NonSerialized]
         public QuotationDisplayOptionsViewModel _quotationDisplayOptionsVM;
+        [NonSerialized]
         public QuotationDisplayOptionsViewModel _quotationExportOptionsVM;
-        //public QuotationDisplayOptions _quotationDisplayOptions;
-        //public QuotationExportOptions _quotationExportOptions;
 
-        //public FlashingsViewModel _flashigsVM;
+        [NonSerialized]
         public CPFDLoadInput _loadInput;
 
+        [NonSerialized]
         private ObservableCollection<CAccessories_LengthItemProperties> m_Flashings;
-        private List<string> m_FlashingsNames;
+        [NonSerialized]
+        private List<string> m_FlashingsNames;        
         public ObservableCollection<CAccessories_LengthItemProperties> Flashings
         {
             get
@@ -2173,7 +2199,9 @@ namespace PFD
             PropertyChanged(sender, e);
         }
 
+        [NonSerialized]
         private ObservableCollection<CAccessories_LengthItemProperties> m_Gutters;
+        [NonSerialized]
         private List<string> m_GuttersNames;
         public ObservableCollection<CAccessories_LengthItemProperties> Gutters
         {
@@ -2205,6 +2233,7 @@ namespace PFD
             }
         }
 
+        [NonSerialized]
         private ObservableCollection<CAccessories_DownpipeProperties> m_Downpipes;
         public ObservableCollection<CAccessories_DownpipeProperties> Downpipes
         {

@@ -14,6 +14,7 @@ using System.Windows.Media.Media3D;
 
 namespace PFD
 {
+    [Serializable]
     public class CFootingInputVM : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------

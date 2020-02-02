@@ -10,8 +10,10 @@ using DATABASE.DTO;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class WindowProperties : INotifyPropertyChanged
     {
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
         private string m_sBuildingSide;
         private int m_iBayNumber;

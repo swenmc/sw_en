@@ -14,9 +14,11 @@ using System.Windows.Media.Media3D;
 
 namespace PFD
 {
+    [Serializable]
     public class DisplayOptionsViewModel : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -100,11 +102,12 @@ namespace PFD
 
 
 
-
+        [NonSerialized]
         private Color m_WireframeColor;
         private int m_WireframeColorIndex;
         private float m_WireFrameLineThickness;
 
+        [NonSerialized]
         private Color m_MemberCenterlineColor;
         private int m_MemberCenterlineColorIndex;
         private float m_MemberCenterlineThickness;
@@ -122,75 +125,104 @@ namespace PFD
         private float m_FoundationTextFontSize;
         private float m_FloorSlabTextFontSize;
 
+        [NonSerialized]
         private Color m_NodeColor;
         private int m_NodeColorIndex;
+        [NonSerialized]
         private Color m_NodeDescriptionTextColor = Colors.Cyan;
         private int m_NodeDescriptionTextColorIndex;
+        [NonSerialized]
         private Color m_MemberDescriptionTextColor = Colors.Beige;
         private int m_MemberDescriptionTextColorIndex;
+        [NonSerialized]
         private Color m_DimensionTextColor = Colors.LightGreen;
         private int m_DimensionTextColorIndex;
+        [NonSerialized]
         private Color m_DimensionLineColor = Colors.LightGreen;
         private int m_DimensionLineColorIndex;
 
+        [NonSerialized]
         private Color m_GridLineLabelTextColor = Colors.Coral;
         private int m_GridLineLabelTextColorIndex;
+        [NonSerialized]
         private Color m_GridLineColor = Colors.Coral;
         private int m_GridLineColorIndex;
         private int m_GridLinePatternType = (int)ELinePatternType.DASHDOTTED;
 
+        [NonSerialized]
         private Color m_SectionSymbolLabelTextColor = Colors.Cyan;
         private int m_SectionSymbolLabelTextColorIndex;
+        [NonSerialized]
         private Color m_SectionSymbolColor = Colors.Cyan;
         private int m_SectionSymbolColorIndex;
 
+        [NonSerialized]
         private Color m_DetailSymbolLabelTextColor = Colors.LightPink;
+
+        [NonSerialized]
         private Color? m_DetailSymbolLabelBackColor = Colors.White;
         private int m_DetailSymbolLabelTextColorIndex;
         private int m_DetailSymbolLabelBackColorIndex;
+        [NonSerialized]
         private Color m_DetailSymbolColor = Colors.LightPink;
         private int m_DetailSymbolColorIndex;
 
+
+        [NonSerialized]
         private Color m_SawCutTextColor = Colors.Goldenrod;
         private int m_SawCutTextColorIndex;
+        [NonSerialized]
         private Color m_SawCutLineColor = Colors.Goldenrod;
         private int m_SawCutLineColorIndex;
         private int m_SawCutLinePatternType = (int)ELinePatternType.DOTTED;
 
+        [NonSerialized]
         private Color m_ControlJointTextColor = Colors.BlueViolet;
         private int m_ControlJointTextColorIndex;
+        [NonSerialized]
         private Color m_ControlJointLineColor = Colors.BlueViolet;
         private int m_ControlJointLineColorIndex;
         private int m_ControlJointLinePatternType = (int)ELinePatternType.DIVIDE;
 
+        [NonSerialized]
         private Color m_FoundationTextColor = Colors.HotPink;
         private int m_FoundationTextColorIndex;
+        [NonSerialized]
         private Color m_FloorSlabTextColor = Colors.HotPink;
         private int m_FloorSlabTextColorIndex;
 
+        [NonSerialized]
         private Color m_FoundationColor = Colors.DarkGray;
         private int m_FoundationColorIndex;
+        [NonSerialized]
         private Color m_FloorSlabColor = Colors.LightGray;
         private int m_FloorSlabColorIndex;
+        [NonSerialized]
         private Color m_SlabRebateColor = Colors.OrangeRed;
         private int m_SlabRebateColorIndex;
 
         private int m_PlateColorIndex;
+        [NonSerialized]
         private Color m_PlateColor = Colors.Gray;
 
         private int m_ScrewColorIndex;
+        [NonSerialized]
         private Color m_ScrewColor = Colors.Blue;
 
         private int m_AnchorColorIndex;
+        [NonSerialized]
         private Color m_AnchorColor = Colors.LightGoldenrodYellow;
 
         private int m_WasherColorIndex;
+        [NonSerialized]
         private Color m_WasherColor = Colors.LightGreen;
 
         private int m_NutColorIndex;
+        [NonSerialized]
         private Color m_NutColor = Colors.LightPink;
 
         private int m_BackgroundColorIndex;
+        [NonSerialized]
         private Color m_BackgroundColor = Colors.Black;
 
         private float m_MemberSolidModelOpacity = 0.8f;

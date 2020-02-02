@@ -7,6 +7,7 @@ using System.Windows.Media;
 
 namespace BaseClasses.Helpers
 {
+    [Serializable]
     public class CComboColor
     {
         int MID;

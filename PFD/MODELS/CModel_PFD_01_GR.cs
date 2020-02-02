@@ -14,6 +14,7 @@ using BaseClasses.Helpers;
 
 namespace PFD
 {
+    [Serializable]
     public class CModel_PFD_01_GR : CModel_PFD
     {
         public float fRoofPitch_rad;
