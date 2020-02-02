@@ -1178,7 +1178,7 @@ namespace PFD
             else m_arrConnectionJoints = joints;
             #endregion
 
-            CountPlates_ValidationPurpose(false);
+            CountPlates_ValidationPurpose(true);
 
             #region Blocks
 
@@ -1277,7 +1277,7 @@ namespace PFD
                 //}
             }
 
-            CountPlates_ValidationPurpose(false);
+            CountPlates_ValidationPurpose(true);
 
             // Validation - check that all created joints have assigned Main Member
             // Check all joints after definition of doors and windows members and joints
@@ -1341,7 +1341,7 @@ namespace PFD
             }
             //------------------------------------------------------------
 
-            CountPlates_ValidationPurpose(false);
+            CountPlates_ValidationPurpose(true);
 
             // End of blocks
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2384,8 +2384,39 @@ namespace PFD
             }
 
             // Add block member connections to the main model connections
+
+            // Validation
+            // Number of added joints
+            int iNumberOfAddedJoints = 0;
+            // Number of added plates
+            int iNumberOfAddedPlates = 0;
+
             foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
-                m_arrConnectionJoints.Add(joint);
+            {
+                m_arrConnectionJoints.Add(joint); // Add joint
+
+                iNumberOfAddedJoints++;
+
+                foreach (CPlate plate in joint.m_arrPlates)
+                {
+                    iNumberOfAddedPlates++;
+
+                    if (plate is CConCom_Plate_B_basic)
+                    {
+                        CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+
+                        foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+                        {
+                            iNumberOfAddedPlates++; // anchor.WasherBearing
+                            iNumberOfAddedPlates++; // anchor.WasherPlateTop
+                        }
+                    }
+                }
+            }
+
+            System.Diagnostics.Trace.WriteLine(
+                "Number of added joints: " + iNumberOfAddedJoints + "\n" +
+                "Number of added plates and washers: " + iNumberOfAddedPlates);
         }
 
         private void DeactivateMemberBracingBlocks(CMember m, CBlock block, List<Point3D> openningPointsInGCS)
@@ -3138,6 +3169,7 @@ namespace PFD
                 CConnectionJointTypes jEnd;
                 GetModelMemberStartEndConnectionJoints(m, out jStart, out jEnd);
 
+                // Tu stoji za zvazenie ci sa maju spoje deaktivovat alebo aj zmazat
                 DeactivateJoint(ref jStart);
                 DeactivateJoint(ref jEnd);
             }
@@ -3801,7 +3833,7 @@ namespace PFD
                     }
                 }
 
-                Console.WriteLine(
+                System.Diagnostics.Trace.WriteLine(
                     "Total number of joints: " + iNumberOfJoints.ToString() + "\n" +
                     "Number of joints - Generate - True: " + iNumberOfJointsGenerateTrue.ToString() + "\n" +
                     "Number of joints - Generate - False: " + iNumberOfJointsGenerateFalse.ToString() + "\n" +

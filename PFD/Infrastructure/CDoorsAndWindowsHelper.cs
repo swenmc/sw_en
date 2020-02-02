@@ -28,45 +28,45 @@ namespace PFD.Infrastructure
                 doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
                 DoorBlocks.Add(doorProps);
 
-                doorProps = new DoorProperties();
-                doorProps.sBuildingSide = "Left";
-                doorProps.iBayNumber = 1;
-                doorProps.sDoorType = "Roller Door";
-                doorProps.fDoorsHeight = 2.1f;
-                doorProps.fDoorsWidth = 2.2f;
-                doorProps.fDoorCoordinateXinBlock = 0.5f;
-                doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
-                DoorBlocks.Add(doorProps);
-
-                doorProps = new DoorProperties();
-                doorProps.sBuildingSide = "Right";
-                doorProps.iBayNumber = 3;
-                doorProps.sDoorType = "Roller Door";
-                doorProps.fDoorsHeight = 1.1f;
-                doorProps.fDoorsWidth = 1.8f;
-                doorProps.fDoorCoordinateXinBlock = 0.6f;
-                doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
-                DoorBlocks.Add(doorProps);
-
-                doorProps = new DoorProperties();
-                doorProps.sBuildingSide = "Back";
-                doorProps.iBayNumber = 2;
-                doorProps.sDoorType = "Roller Door";
-                doorProps.fDoorsHeight = 1.1f;
-                doorProps.fDoorsWidth = 0.9f;
-                doorProps.fDoorCoordinateXinBlock = 0.4f;
-                doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
-                DoorBlocks.Add(doorProps);
-
-                doorProps = new DoorProperties();
-                doorProps.sBuildingSide = "Back";
-                doorProps.iBayNumber = 3;
-                doorProps.sDoorType = "Roller Door";
-                doorProps.fDoorsHeight = 2.1f;
-                doorProps.fDoorsWidth = 0.8f;
-                doorProps.fDoorCoordinateXinBlock = 0.5f;
-                doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
-                DoorBlocks.Add(doorProps);
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Left";
+                //doorProps.iBayNumber = 1;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 2.1f;
+                //doorProps.fDoorsWidth = 2.2f;
+                //doorProps.fDoorCoordinateXinBlock = 0.5f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
+                //
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Right";
+                //doorProps.iBayNumber = 3;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 1.1f;
+                //doorProps.fDoorsWidth = 1.8f;
+                //doorProps.fDoorCoordinateXinBlock = 0.6f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
+                //
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Back";
+                //doorProps.iBayNumber = 2;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 1.1f;
+                //doorProps.fDoorsWidth = 0.9f;
+                //doorProps.fDoorCoordinateXinBlock = 0.4f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
+                //
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Back";
+                //doorProps.iBayNumber = 3;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 2.1f;
+                //doorProps.fDoorsWidth = 0.8f;
+                //doorProps.fDoorCoordinateXinBlock = 0.5f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
             }
 
             return DoorBlocks;
@@ -100,16 +100,16 @@ namespace PFD.Infrastructure
 
             if (!bRelease) // To Ondrej - v release verzii tu mam vratit prazdnu kolekciu alebo null?
             {
-                WindowProperties windowProps = new WindowProperties();
-                windowProps.sBuildingSide = "Left"; // "Front"
-                windowProps.iBayNumber = 2;
-                windowProps.fWindowsHeight = 0.6f;
-                windowProps.fWindowsWidth = 0.6f;
-                windowProps.fWindowCoordinateXinBay = 0.4f;
-                windowProps.fWindowCoordinateZinBay = 0.8f;
-                windowProps.iNumberOfWindowColumns = 2;
-                windowProps.CoatingColor = windowProps.CoatingColors.FirstOrDefault();
-                WindowBlocks.Add(windowProps);
+                //WindowProperties windowProps = new WindowProperties();
+                //windowProps.sBuildingSide = "Left"; // "Front"
+                //windowProps.iBayNumber = 2;
+                //windowProps.fWindowsHeight = 0.6f;
+                //windowProps.fWindowsWidth = 0.6f;
+                //windowProps.fWindowCoordinateXinBay = 0.4f;
+                //windowProps.fWindowCoordinateZinBay = 0.8f;
+                //windowProps.iNumberOfWindowColumns = 2;
+                //windowProps.CoatingColor = windowProps.CoatingColors.FirstOrDefault();
+                //WindowBlocks.Add(windowProps);
             }
             return WindowBlocks;
         }
