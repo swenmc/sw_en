@@ -180,7 +180,7 @@ namespace BaseClasses
             SetScrewValuesFromDatabase(screwProperties);
         }
 
-        public CScrew(CScrew referenceScrew, Point3D controlpoint, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CScrew(CScrew referenceScrew, Point3D controlpoint, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg)
         {
             m_Mat.Name = referenceScrew.m_Mat.Name;
             Prefix = referenceScrew.Prefix;
@@ -211,7 +211,6 @@ namespace BaseClasses
             Length = referenceScrew.Length;
 
             m_pControlPoint = controlpoint;
-            BIsDisplayed = bIsDisplayed;
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;

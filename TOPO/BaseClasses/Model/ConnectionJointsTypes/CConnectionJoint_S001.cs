@@ -23,7 +23,7 @@ namespace BaseClasses
 
         public CConnectionJoint_S001() { }
 
-        public CConnectionJoint_S001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float fRoofPitch_rad, bool bWindPostEndUnderRafter, bool bSwitchConnectedSide_Z, bool bIsDisplayed_temp)
+        public CConnectionJoint_S001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float fRoofPitch_rad, bool bWindPostEndUnderRafter, bool bSwitchConnectedSide_Z)
         {
             bIsJointDefinedinGCS = false;
 
@@ -35,8 +35,6 @@ namespace BaseClasses
             m_fRoofPitch_rad = fRoofPitch_rad;
             m_bWindPostEndUnderRafter = bWindPostEndUnderRafter;
             m_bSwitchConnectedSide_Z = bSwitchConnectedSide_Z;
-            BIsGenerated = true;
-            BIsDisplayed = bIsDisplayed_temp;
             m_ft = 0.002f;
 
             // Joint is defined in start point and LCS of secondary member [0,y,z]
@@ -81,8 +79,8 @@ namespace BaseClasses
                 CScrew referenceScrew = new CScrew("TEK", "14");
                 CScrewArrangement_N screwArrangement = new CScrewArrangement_N(iConnectorNumberinOnePlate, referenceScrew);
 
-                CConCom_Plate_N pPlate1 = new CConCom_Plate_N("N", ControlPoint_P1, fbX1, (float)m_SecondaryMembers[0].CrScStart.b, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
-                CConCom_Plate_N pPlate2 = new CConCom_Plate_N("N", ControlPoint_P2, fbX1, (float)m_SecondaryMembers[0].CrScStart.b, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+                CConCom_Plate_N pPlate1 = new CConCom_Plate_N("N", ControlPoint_P1, fbX1, (float)m_SecondaryMembers[0].CrScStart.b, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 90, screwArrangement); // Rotation angle in degrees
+                CConCom_Plate_N pPlate2 = new CConCom_Plate_N("N", ControlPoint_P2, fbX1, (float)m_SecondaryMembers[0].CrScStart.b, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 90, screwArrangement); // Rotation angle in degrees
 
                 // Identification of current joint node location (start or end definition node of secondary member)
                 if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -91,8 +89,8 @@ namespace BaseClasses
                     ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, fControlPointPosition_y_end, fControlPointPosition_z_start);
                     ControlPoint_P2 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x - fPlateCenterDistanceInx, fControlPointPosition_y_end, fControlPointPosition_z_start);
 
-                    pPlate1 = new CConCom_Plate_N("N", ControlPoint_P1, fbX1, fbX3, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
-                    pPlate2 = new CConCom_Plate_N("N", ControlPoint_P2, fbX1, fbX3, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+                    pPlate1 = new CConCom_Plate_N("N", ControlPoint_P1, fbX1, fbX3, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement); // Rotation angle in degrees
+                    pPlate2 = new CConCom_Plate_N("N", ControlPoint_P2, fbX1, fbX3, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement); // Rotation angle in degrees
                 }
 
                 int iPlateNumber = 2; // Number of plates (metal strips) in the connection
@@ -201,10 +199,10 @@ namespace BaseClasses
                 CScrewArrangement_M screwArrangement = new CScrewArrangement_M(iConnectorNumberinOnePlate, referenceScrew);
                 CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16, referenceScrew);
 
-                CConCom_Plate_M pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1_Plate1, fbX1_Plate1, fh_Plate1, ft_Plate1, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+                CConCom_Plate_M pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1_Plate1, fbX1_Plate1, fh_Plate1, ft_Plate1, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 90, screwArrangement); // Rotation angle in degrees
 
-                CConCom_Plate_F_or_L pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L, true);
-                CConCom_Plate_F_or_L pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation3AboutLCS_y_deg, fRotation3AboutLCS_z_deg, screwArrangement_L, true);
+                CConCom_Plate_F_or_L pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L);
+                CConCom_Plate_F_or_L pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation3AboutLCS_y_deg, fRotation3AboutLCS_z_deg, screwArrangement_L);
 
                 // Identification of current joint node location (start or end definition node of secondary member)
                 if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -215,10 +213,10 @@ namespace BaseClasses
                     ControlPoint_P2 = new Point3D(fControlPoint2Position_x_end, fControlPoint2Position_y_end, fControlPoint2Position_z_end);
                     ControlPoint_P3 = new Point3D(fControlPoint3Position_x_end, fControlPoint3Position_y_end, fControlPoint3Position_z_end);
 
-                    pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1_Plate1, fbX1_Plate1, fh_Plate1, ft_Plate1, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+                    pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1_Plate1, fbX1_Plate1, fh_Plate1, ft_Plate1, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement); // Rotation angle in degrees
 
-                    pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L, true);
-                    pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation3AboutLCS_y_deg, fRotation3AboutLCS_z_deg, screwArrangement_L, true);
+                    pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L);
+                    pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation3AboutLCS_y_deg, fRotation3AboutLCS_z_deg, screwArrangement_L);
                 }
 
                 m_arrPlates = new CPlate[3]; // Three plates in joint (1 + 2)
@@ -303,8 +301,8 @@ namespace BaseClasses
                 CScrewArrangement_G screwArrangement_G1 = new CScrewArrangement_G(referenceScrew);
                 CScrewArrangement_G screwArrangement_G2 = new CScrewArrangement_G(referenceScrew);
 
-                CConCom_Plate_G pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation1AboutLCS_y_deg_start, fRotation1AboutLCS_z_deg_start, screwArrangement_G1, true);
-                CConCom_Plate_G pPlate2 = new CConCom_Plate_G("G - RH", ControlPoint_P2, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation2AboutLCS_y_deg_start, fRotation2AboutLCS_z_deg_start, screwArrangement_G2, true);
+                CConCom_Plate_G pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation1AboutLCS_y_deg_start, fRotation1AboutLCS_z_deg_start, screwArrangement_G1);
+                CConCom_Plate_G pPlate2 = new CConCom_Plate_G("G - RH", ControlPoint_P2, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation2AboutLCS_y_deg_start, fRotation2AboutLCS_z_deg_start, screwArrangement_G2);
 
                 // Identification of current joint node location (start or end definition node of secondary member)
                 if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -313,8 +311,8 @@ namespace BaseClasses
                     ControlPoint_P1 = new Point3D(fControlPoint1Position_x_end, fControlPoint1Position_y_end, fControlPoint1Position_z_end);
                     ControlPoint_P2 = new Point3D(fControlPoint2Position_x_end, fControlPoint2Position_y_end, fControlPoint2Position_z_end);
 
-                    pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation1AboutLCS_y_deg_end, fRotation1AboutLCS_z_deg_end, screwArrangement_G1, true);
-                    pPlate2 = new CConCom_Plate_G("G - RH", ControlPoint_P2, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation2AboutLCS_y_deg_end, fRotation2AboutLCS_z_deg_end, screwArrangement_G2, true);
+                    pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation1AboutLCS_y_deg_end, fRotation1AboutLCS_z_deg_end, screwArrangement_G1);
+                    pPlate2 = new CConCom_Plate_G("G - RH", ControlPoint_P2, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation2AboutLCS_y_deg_end, fRotation2AboutLCS_z_deg_end, screwArrangement_G2);
                 }
 
                 m_arrPlates = new CPlate[2];
@@ -404,10 +402,10 @@ namespace BaseClasses
                 CScrewArrangement_G screwArrangement_G1 = new CScrewArrangement_G(referenceScrew);
                 CScrewArrangement_H screwArrangement_H2 = new CScrewArrangement_H(referenceScrew);
 
-                CConCom_Plate_G pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate1, fb2_Plate1, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation1AboutLCS_y_deg_start, fRotation1AboutLCS_z_deg_start, screwArrangement_G1, true);
+                CConCom_Plate_G pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate1, fb2_Plate1, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation1AboutLCS_y_deg_start, fRotation1AboutLCS_z_deg_start, screwArrangement_G1);
 
                 string plate2Name = "H - LH"; //m_fRoofPitch_rad > 0 ? "H - LH" : "H - RH";
-                CConCom_Plate_H pPlate2 = new CConCom_Plate_H(plate2Name, ControlPoint_P2, fb_Plate2, fhY1_Plate2, fhY2_Plate2, (float)m_MainMember.CrScStart.b, m_ft, m_fRoofPitch_rad, 0, fRotation2AboutLCS_y_deg_start, fRotation2AboutLCS_z_deg_start, screwArrangement_H2, true);
+                CConCom_Plate_H pPlate2 = new CConCom_Plate_H(plate2Name, ControlPoint_P2, fb_Plate2, fhY1_Plate2, fhY2_Plate2, (float)m_MainMember.CrScStart.b, m_ft, m_fRoofPitch_rad, 0, fRotation2AboutLCS_y_deg_start, fRotation2AboutLCS_z_deg_start, screwArrangement_H2);
 
                 // Identification of current joint node location (start or end definition node of secondary member)
                 if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -416,10 +414,10 @@ namespace BaseClasses
                     ControlPoint_P1 = new Point3D(fControlPoint1Position_x_end, fControlPoint1Position_y_end, fControlPoint1Position_z_end);
                     ControlPoint_P2 = new Point3D(fControlPoint2Position_x_end, fControlPoint2Position_y_end, fControlPoint2Position_z_end);
 
-                    pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate1, fb2_Plate1, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation1AboutLCS_y_deg_end, fRotation1AboutLCS_z_deg_end, screwArrangement_G1, true);
+                    pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate1, fb2_Plate1, fhY1_Plate, fhY2_Plate, flZ_Plate, (float)m_MainMember.CrScStart.h, m_ft, 0, fRotation1AboutLCS_y_deg_end, fRotation1AboutLCS_z_deg_end, screwArrangement_G1);
 
                     plate2Name = "H - RH";
-                    pPlate2 = new CConCom_Plate_H(plate2Name, ControlPoint_P2, fb_Plate2, fhY1_Plate2, fhY2_Plate2, (float)m_MainMember.CrScStart.b, m_ft, m_fRoofPitch_rad, 0, fRotation2AboutLCS_y_deg_end, fRotation2AboutLCS_z_deg_end, screwArrangement_H2, true);
+                    pPlate2 = new CConCom_Plate_H(plate2Name, ControlPoint_P2, fb_Plate2, fhY1_Plate2, fhY2_Plate2, (float)m_MainMember.CrScStart.b, m_ft, m_fRoofPitch_rad, 0, fRotation2AboutLCS_y_deg_end, fRotation2AboutLCS_z_deg_end, screwArrangement_H2);
                 }
 
                 m_arrPlates = new CPlate[2];
@@ -430,7 +428,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_S001(m_Node, m_MainMember,m_SecondaryMembers[0], m_fRoofPitch_rad, m_bWindPostEndUnderRafter, m_bSwitchConnectedSide_Z, BIsDisplayed);
+            return new CConnectionJoint_S001(m_Node, m_MainMember,m_SecondaryMembers[0], m_fRoofPitch_rad, m_bWindPostEndUnderRafter, m_bSwitchConnectedSide_Z);
         }
     }
 }

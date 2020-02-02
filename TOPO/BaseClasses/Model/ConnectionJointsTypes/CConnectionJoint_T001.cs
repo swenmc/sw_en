@@ -21,7 +21,7 @@ namespace BaseClasses
 
         public CConnectionJoint_T001() { }
 
-        public CConnectionJoint_T001(string sPlateType_ForL, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float ft_temp_main_plate, EPlateNumberAndPositionInJoint ePlateNumberAndPosition, bool bIsDisplayed_temp)
+        public CConnectionJoint_T001(string sPlateType_ForL, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float ft_temp_main_plate, EPlateNumberAndPositionInJoint ePlateNumberAndPosition)
         {
             bIsJointDefinedinGCS = false;
 
@@ -33,8 +33,6 @@ namespace BaseClasses
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;
             m_ft_main_plate = ft_temp_main_plate; // Thickness of plate in knee joint of the frame (main column and rafter)
-            BIsGenerated = true;
-            BIsDisplayed = bIsDisplayed_temp;
 
             m_ft = 0.001f; // Plate serie L
             m_fPlate_Angle_Leg = 0.05f;
@@ -72,8 +70,8 @@ namespace BaseClasses
             // Update 2
             // Po tomto vlozeni plechov a ich skrutiek do spoja by sa mali suradnice vsetkych plechov a skrutiek v spoji prepocitat z povodnych suradnic plechov, v ktorych su plechy zadane do suradnicoveho systemu spoja a ulozit
 
-            CConCom_Plate_F_or_L pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 0, screwArrangement, BIsDisplayed); // Rotation angle in degrees
-            CConCom_Plate_F_or_L pRightPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+            CConCom_Plate_F_or_L pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 0, screwArrangement); // Rotation angle in degrees
+            CConCom_Plate_F_or_L pRightPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 90, screwArrangement); // Rotation angle in degrees
 
             // Identification of current joint node location (start or end definition node of secondary member)
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -85,8 +83,8 @@ namespace BaseClasses
                 ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
                 ControlPoint_P2 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
 
-                pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 180 + 0, screwArrangement, BIsDisplayed); // Rotation angle in degrees
-                pRightPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+                pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 180 + 0, screwArrangement); // Rotation angle in degrees
+                pRightPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 180 + 90, screwArrangement); // Rotation angle in degrees
             }
 
             if (ePlateNumberAndPosition == EPlateNumberAndPositionInJoint.eTwoPlates)
@@ -118,7 +116,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_T001(m_sPlateType_ForL, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition, BIsDisplayed);
+            return new CConnectionJoint_T001(m_sPlateType_ForL, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition);
         }
     }
 }

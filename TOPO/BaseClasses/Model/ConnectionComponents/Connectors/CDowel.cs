@@ -10,10 +10,9 @@ namespace BaseClasses
         public CDowel()
         { }
 
-        public CDowel(Point3D controlpoint, float fDiameter_temp, float fLength_temp, float fMass_temp, bool bIsDisplayed)
+        public CDowel(Point3D controlpoint, float fDiameter_temp, float fLength_temp, float fMass_temp)
         {
             m_pControlPoint = controlpoint;
-            BIsDisplayed = bIsDisplayed;
             Length = fLength_temp;
             Diameter_shank = fDiameter_temp;
             Mass = fMass_temp;

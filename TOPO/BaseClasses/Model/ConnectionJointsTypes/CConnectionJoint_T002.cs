@@ -18,7 +18,7 @@ namespace BaseClasses
 
         public CConnectionJoint_T002() { }
 
-        public CConnectionJoint_T002(CNode Node_temp, CMember MainFrameColumn_temp, CMember EavesPurlin_temp, float ft_temp_main_plate, bool bIsDisplayed_temp)
+        public CConnectionJoint_T002(CNode Node_temp, CMember MainFrameColumn_temp, CMember EavesPurlin_temp, float ft_temp_main_plate)
         {
             bIsJointDefinedinGCS = false;
 
@@ -28,8 +28,6 @@ namespace BaseClasses
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = EavesPurlin_temp;
             m_ft_main_plate = ft_temp_main_plate; // Thickness of plate in knee joint of the frame (main column and rafter)
-            BIsGenerated = true;
-            BIsDisplayed = bIsDisplayed_temp;
 
             m_ft = 0.001f; // Plate serie LL ???
             m_fPlate_Angle_Leg = 0.05f;
@@ -63,7 +61,7 @@ namespace BaseClasses
             CScrewArrangement_LL screwArrangement = new CScrewArrangement_LL(iConnectorNumberinOnePlate, referenceScrew);
 
             m_arrPlates = new CPlate[1];
-            m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, screwArrangement); // Rotation angle in degrees
 
             // Identification of current joint node location (start or end definition node of secondary member)
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
@@ -74,13 +72,13 @@ namespace BaseClasses
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + m_fPlate_Angle_Leg + flocaleccentricity_y), m_SecondaryMembers[0].CrScStart.z_min /* -0.5f * m_SecondaryMembers[0].CrScStart.h*/ - m_ft + flocaleccentricity_z);
 
-                m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+                m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180 + 90, screwArrangement); // Rotation angle in degrees
             }
         }
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_T002(m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, BIsDisplayed);
+            return new CConnectionJoint_T002(m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate);
         }
     }
 }

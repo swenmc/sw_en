@@ -21,7 +21,7 @@ namespace BaseClasses
 
         public CConnectionJoint_A001() { }
 
-        public CConnectionJoint_A001(CNode Node_temp, CMember MainRafter_temp, CMember SecondaryRafter_temp, float fSLope_rad_temp, float fb_temp, float ft, float fJointAngleAboutZ_deg, bool bIsDisplayed_temp)
+        public CConnectionJoint_A001(CNode Node_temp, CMember MainRafter_temp, CMember SecondaryRafter_temp, float fSLope_rad_temp, float fb_temp, float ft, float fJointAngleAboutZ_deg)
         {
             bIsJointDefinedinGCS = true;
 
@@ -37,9 +37,6 @@ namespace BaseClasses
             m_fh_1 = (float)m_MainMember.CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             m_fh_2 = m_fh_1 + (float)Math.Tan(m_fSlope_rad) * 0.5f * m_fb;
             m_ft = ft;
-
-            BIsGenerated = true;
-            BIsDisplayed = bIsDisplayed_temp;
 
             Name = "Rafter Apex Joint";
 
@@ -74,13 +71,13 @@ namespace BaseClasses
             CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, false, screwArrangement, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_JB("JB", ControlPoint_P2, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 0 + fJointAngleAboutZ_deg, true, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, false, screwArrangement); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_JB("JB", ControlPoint_P2, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 0 + fJointAngleAboutZ_deg, true, screwArrangement); // Rotation angle in degrees
         }
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_A001(m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb, m_ft, m_fJointAngleAboutZ_deg, BIsDisplayed);
+            return new CConnectionJoint_A001(m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb, m_ft, m_fJointAngleAboutZ_deg);
         }
     }
 }

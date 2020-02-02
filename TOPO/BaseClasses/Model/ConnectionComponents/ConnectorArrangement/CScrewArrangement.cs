@@ -149,9 +149,9 @@ namespace BaseClasses
                 Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
 
                 if (bScrewInPlusZDirection)
-                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, -90, 0, true);
+                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, -90, 0);
                 else
-                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 90, 0, true);
+                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 90, 0);
             }
         }
 

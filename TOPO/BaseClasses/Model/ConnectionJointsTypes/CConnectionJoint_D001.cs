@@ -11,7 +11,7 @@ namespace BaseClasses
 
         public CConnectionJoint_D001() { }
 
-        public CConnectionJoint_D001(CNode Node_temp, CMember MainFrameColumn_temp, CMember Girt_temp, bool bIsDisplayed_temp)
+        public CConnectionJoint_D001(CNode Node_temp, CMember MainFrameColumn_temp, CMember Girt_temp)
         {
             bIsJointDefinedinGCS = true;
 
@@ -22,9 +22,6 @@ namespace BaseClasses
             m_SecondaryMembers[0] = Girt_temp;
 
             m_ft = 0.003f;
-
-            BIsGenerated = true;
-            BIsDisplayed = bIsDisplayed_temp;
 
             float fGirtVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg
             float fRotatePlatesInJointAngle = fGirtVectorDirection > 0 ? 270 : 90;
@@ -49,13 +46,13 @@ namespace BaseClasses
             CScrewArrangement_L screwArrangement = new CScrewArrangement_L(0, referenceScrew);
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_F_or_L("LH", ControlPoint_P1, 0.05f, (float)m_SecondaryMembers[0].CrScStart.h, 0.05f, 0.003f, (float)m_SecondaryMembers[0].CrScStart.h, 0, 0, fRotatePlatesInJointAngle, screwArrangement, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, 0.05f, (float)m_SecondaryMembers[0].CrScStart.h, 0.05f, 0.003f, (float)m_SecondaryMembers[0].CrScStart.h, 0, 180, 180+fRotatePlatesInJointAngle, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_F_or_L("LH", ControlPoint_P1, 0.05f, (float)m_SecondaryMembers[0].CrScStart.h, 0.05f, 0.003f, (float)m_SecondaryMembers[0].CrScStart.h, 0, 0, fRotatePlatesInJointAngle, screwArrangement); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, 0.05f, (float)m_SecondaryMembers[0].CrScStart.h, 0.05f, 0.003f, (float)m_SecondaryMembers[0].CrScStart.h, 0, 180, 180+fRotatePlatesInJointAngle, screwArrangement); // Rotation angle in degrees
         }
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_D001(m_Node, m_MainMember, m_SecondaryMembers[0], BIsDisplayed);
+            return new CConnectionJoint_D001(m_Node, m_MainMember, m_SecondaryMembers[0]);
         }
     }
 }

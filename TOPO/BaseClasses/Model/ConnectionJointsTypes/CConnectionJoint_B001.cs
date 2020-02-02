@@ -25,7 +25,7 @@ namespace BaseClasses
 
         public CConnectionJoint_B001() { }
 
-        public CConnectionJoint_B001(CNode Node_temp, CMember MainFrameColumn_temp, CMember MainFrameRafter_temp, float fSLope_rad_temp, float fb_2_temp, float fh_1_temp, float ft, float ft_rafter, float fJointAngleAboutZ_deg, bool bIsDisplayed_temp)
+        public CConnectionJoint_B001(CNode Node_temp, CMember MainFrameColumn_temp, CMember MainFrameRafter_temp, float fSLope_rad_temp, float fb_2_temp, float fh_1_temp, float ft, float ft_rafter, float fJointAngleAboutZ_deg)
         {
             bIsJointDefinedinGCS = true;
 
@@ -48,9 +48,6 @@ namespace BaseClasses
 
             float ftemp_a = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             float ftemp_b = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
-
-            BIsGenerated = true;
-            BIsDisplayed = bIsDisplayed_temp;
 
             Name = "Column to Rafter Knee Joint";
 
@@ -131,8 +128,8 @@ namespace BaseClasses
             bool bScrewInPlusZDirection2 = m_Node == m_MainMember.NodeStart ? false : true;
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, bScrewInPlusZDirection1, screwArrangement1, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, bScrewInPlusZDirection2, screwArrangement2, BIsDisplayed);  // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, bScrewInPlusZDirection1, screwArrangement1); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, bScrewInPlusZDirection2, screwArrangement2);  // Rotation angle in degrees
         }
 
         public static Point ? Intersection(Point start1, Point end1, Point start2, Point end2)
@@ -159,7 +156,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_B001(m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb_2, m_fh_1, m_ft, m_ft_rafter, m_fJointAngleAboutZ_deg, BIsDisplayed);
+            return new CConnectionJoint_B001(m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb_2, m_fh_1, m_ft, m_ft_rafter, m_fJointAngleAboutZ_deg);
         }
     }
 }

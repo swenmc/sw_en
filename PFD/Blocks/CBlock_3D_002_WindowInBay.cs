@@ -239,11 +239,6 @@ namespace PFD
                     }
 
                     m_arrMembers[i * INumberOfGirtsToDeactivate + j] = new CMember(i * INumberOfGirtsToDeactivate + j + 1, m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2], m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2 + 1], m_arrCrSc[0], ReferenceGirt.EMemberType, ReferenceGirt.EMemberTypePosition, eccentricityGirtStart_temp, eccentricityGirtEnd_temp, fGirtStartTemp, fGirtEndTemp, fGirtsRotation, 0);
-
-                    // Set position type (same as reference girt)
-                    m_arrMembers[i * INumberOfGirtsToDeactivate + j].EMemberTypePosition = ReferenceGirt.EMemberTypePosition;
-
-                    //m_arrMembers[i * INumberOfGirtsToDeactivate + j].BIsDisplayed = true;
                 }
             }
 
@@ -312,10 +307,6 @@ namespace PFD
             for (int i = 0; i < prop.iNumberOfWindowColumns; i++)
             {
                 m_arrMembers[iMembersGirts + i] = new CMember(iMembersGirts + i + 1, m_arrNodes[iNodesForGirts + i * 2], m_arrNodes[iNodesForGirts + i * 2 + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowColumnStart, feccentricityWindowColumnEnd, fWindowColumnStart, fWindowColumnEnd, fWindowColumnRotation, 0);
-
-                // Set position type
-                //m_arrMembers[iMembersGirts + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
-                //m_arrMembers[iMembersGirts + i].BIsDisplayed = true;
             }
 
             // Window (header)
@@ -338,11 +329,6 @@ namespace PFD
             for (int i = 0; i < iNumberOfHeaders; i++)
             {
                 m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
-
-                // Set position type
-                //m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
-
-                //m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i].BIsDisplayed = true;
             }
 
             // Window (Sills)
@@ -365,11 +351,6 @@ namespace PFD
             for (int i = 0; i < iNumberOfSills; i++)
             {
                 m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
-
-                // Set position type
-                //m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
-
-                //m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i].BIsDisplayed = true;
             }
 
             // Connection Joints
@@ -390,8 +371,8 @@ namespace PFD
                         currentColumnToConnectEnd = ColumnRight;
                     }
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
                 }
             }
 
@@ -403,7 +384,7 @@ namespace PFD
 
                 // Bottom - columns is connected to the concrete foundation or girt (use different type of plate ???)
                 CMember mainMemberForColumnJoint_Bottom = GirtToConnectWindowColumns_Bottom;
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, mainMemberForColumnJoint_Bottom, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, mainMemberForColumnJoint_Bottom, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
                 
                 // Top
                 CMember mainMemberForColumnJoint_Top = GirtToConnectWindowColumns_Top;
@@ -413,23 +394,23 @@ namespace PFD
                     mainMemberForColumnJoint_Top = referenceEavePurlin;
                 }
 
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint_Top, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint_Top, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
             }
 
             // Window Header Joint
             for (int i = 0; i < iNumberOfHeaders; i++) // Each created header
             {
                 CMember current_member = m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i];
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
             }
 
             // Window Sill Joint
             for (int i = 0; i < iNumberOfSills; i++) // Each created sill
             {
                 CMember current_member = m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i];
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
             }
 
             /*
