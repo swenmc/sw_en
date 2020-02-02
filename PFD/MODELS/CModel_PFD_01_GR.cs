@@ -3041,7 +3041,6 @@ namespace PFD
             {
                 j.BIsGenerated = false;
                 j.BIsDisplayed = false;
-                j.BIsSelectedForIFCalculation = false;
                 j.BIsSelectedForDesign = false;
                 j.BIsSelectedForMaterialList = false;
             }

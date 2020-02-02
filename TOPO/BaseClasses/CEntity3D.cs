@@ -20,7 +20,31 @@ namespace BaseClasses
             set { mObject3DModel = value; }
         }
         */
-        
+
+        bool m_bIsDisplayed;
+
+        public bool BIsDisplayed
+        {
+            get { return m_bIsDisplayed; }
+            set { m_bIsDisplayed = value; }
+        }
+
+        bool m_bIsSelectedForDesign;
+
+        public bool BIsSelectedForDesign
+        {
+            get { return m_bIsSelectedForDesign; }
+            set { m_bIsSelectedForDesign = value; }
+        }
+
+        bool m_bIsSelectedForMaterialList;
+
+        public bool BIsSelectedForMaterialList
+        {
+            get { return m_bIsSelectedForMaterialList; }
+            set { m_bIsSelectedForMaterialList = value; }
+        }
+
         public Point3D m_pControlPoint = new Point3D();
         public CMat m_Mat;
         [NonSerialized]
@@ -30,7 +54,15 @@ namespace BaseClasses
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
-        public CEntity3D() { }
+        public CEntity3D()
+        {
+            // Set as default property that object is displayed
+            m_bIsDisplayed = true;
+            // Set as default property that object is selected for design
+            m_bIsSelectedForDesign = true;
+            // Set as default property that object is selected for material list
+            m_bIsSelectedForMaterialList = true;
+        }
 
         public Model3DGroup Transform3D_OnMemberEntity_fromLCStoGCS(Model3DGroup modelgroup_original, CMember member, bool bConsiderRotationAboutLCS_xAxis = false)
         {

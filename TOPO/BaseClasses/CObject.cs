@@ -29,38 +29,6 @@ namespace BaseClasses
             set { m_bIsGenerated = value; }
         }
 
-        bool m_bIsDisplayed;
-
-        public bool BIsDisplayed
-        {
-            get { return m_bIsDisplayed; }
-            set { m_bIsDisplayed = value; }
-        }
-
-        bool m_bIsSelectedForIFCalculation;
-
-        public bool BIsSelectedForIFCalculation
-        {
-            get { return m_bIsSelectedForIFCalculation; }
-            set { m_bIsSelectedForIFCalculation = value; }
-        }
-
-        bool m_bIsSelectedForDesign;
-
-        public bool BIsSelectedForDesign
-        {
-            get { return m_bIsSelectedForDesign; }
-            set { m_bIsSelectedForDesign = value; }
-        }
-
-        bool m_bIsSelectedForMaterialList;
-
-        public bool BIsSelectedForMaterialList
-        {
-            get { return m_bIsSelectedForMaterialList; }
-            set { m_bIsSelectedForMaterialList = value; }
-        }
-
         private bool m_bIsDebugging;
 
         public bool BIsDebugging
@@ -88,7 +56,11 @@ namespace BaseClasses
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
-        public CObject() { }
+        public CObject()
+        {
+            // Set as default property that object is generated
+            m_bIsGenerated = true;
+        }
 
         //----------------------------------------------------------------------------------------------------------------
         public void Delete()

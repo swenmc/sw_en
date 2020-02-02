@@ -283,6 +283,15 @@ namespace BaseClasses
                 m_IntermediateNodes = value;
             }
         }
+
+        bool m_bIsSelectedForIFCalculation;
+
+        public bool BIsSelectedForIFCalculation
+        {
+            get { return m_bIsSelectedForIFCalculation; }
+            set { m_bIsSelectedForIFCalculation = value; }
+        }
+
         //public List<Point3D> WireFramePoints;
 
         //----------------------------------------------------------------------------
@@ -516,10 +525,8 @@ namespace BaseClasses
             Prefix = component.ComponentPrefix;
             Name = component.ComponentName;
 
-            // Member is generated
-            BIsGenerated = true;
-            // Set as default property that member should be displayed
-            BIsDisplayed = true;
+            // Set as default property that member is calculated
+            m_bIsSelectedForIFCalculation = true;
         }
 
         public void SetStartPoint3DCoord()
