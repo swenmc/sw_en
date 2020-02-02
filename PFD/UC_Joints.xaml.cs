@@ -169,7 +169,7 @@ namespace PFD
             if (modelJointsCount != jointsIdentified)
             {
                 System.Diagnostics.Trace.WriteLine($"JOINTS VALIDATION ERROR: Not all joints were identified. Identified joints count: [{jointsIdentified}]. Model joints count: [{modelJointsCount}]");
-                
+
                 //throw new Exception($"Not all joints were identified. Identified joints count: [{jointsIdentified}]. Model joints count: [{modelJointsCount}]");
             }
         }
