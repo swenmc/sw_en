@@ -1184,7 +1184,7 @@ namespace PFD
                 // Nie som si uplne isty preco sem idu vsetky realne spoje, nemali by to byt len "referencne" typy,
                 // ktore su v comboboxe v Joint Type UC_Joints a tie by sa mali "nalepit" na uzly nodes v modeli, teda vygenerovat realne spoje
                 
-                if(false)
+                if(true)
                    m_arrConnectionJoints = joints; // Povodny kod
                 else // Docasne vygenerujem spoje nanovo
                    CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
