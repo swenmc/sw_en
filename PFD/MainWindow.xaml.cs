@@ -2218,10 +2218,29 @@ namespace PFD
             vm.SupportTypeIndex = newVM.SupportTypeIndex;
             vm.FibreglassAreaRoof = newVM.FibreglassAreaRoof;
             vm.FibreglassAreaWall = newVM.FibreglassAreaWall;
+
+            vm.DoorBlocksProperties = newVM.DoorBlocksProperties;
+            vm.WindowBlocksProperties = newVM.WindowBlocksProperties;
+
+            vm.Flashings = newVM.Flashings;
+            vm.Gutters = newVM.Gutters;
+            vm.Downpipes = newVM.Downpipes;
+
+            vm._displayOptionsVM = newVM._displayOptionsVM;
+            vm._generalOptionsVM = newVM._generalOptionsVM;
+            vm._solverOptionsVM = newVM._solverOptionsVM;
+            vm._designOptionsVM = newVM._designOptionsVM;
+
             vm.IsSetFromCode = false;
 
+            vm.RecreateModel = true;
+            vm.RecreateJoints = true;
+            vm.RecreateFoundations = true;
+            vm.RecreateFloorSlab = true;
+            vm.RecreateQuotation = true;
+
             //just to fire some change
-            vm.GableWidth = vm.GableWidth;            
+            vm.GableWidth = vm.GableWidth;
         }
 
     }
