@@ -1217,7 +1217,7 @@ namespace PFD
                     if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
                     else if (dp.Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
                     {
-                        AddDoorBlock(dp, 0.5f, fH1_frame);
+                        AddDoorBlock(dp, 0.5f, fH1_frame, vm.RecreateJoints);
 
                         // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
                         // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
@@ -1276,7 +1276,7 @@ namespace PFD
                     if (!wp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
 
                     if(!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (wp.Validate()) AddWindowBlock(wp, 0.5f);
+                    else if (wp.Validate()) AddWindowBlock(wp, 0.5f, vm.RecreateJoints);
                 }
                 //refaktoring 24.1.2020
                 //for (int i = 0; i < windowBlocksProperties.Count; i++)
@@ -2063,7 +2063,7 @@ namespace PFD
             allignment_knee_rafter = (0.5f * fh_column - (0.5f * x)) / cosAlpha;
         }
 
-        public void AddDoorBlock(DoorProperties prop, float fLimitDistanceFromColumn, float fSideWallHeight)
+        public void AddDoorBlock(DoorProperties prop, float fLimitDistanceFromColumn, float fSideWallHeight, bool addJoints)
         {
             CMember mReferenceGirt;
             CMember mColumnLeft;
@@ -2101,12 +2101,12 @@ namespace PFD
                 bIsFirstBayInFrontorBackSide,
                 bIsLastBayInFrontorBackSide);
 
-            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, door);
+            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, door, addJoints);
 
             DoorsModels.Add(door);
         }
 
-        public void AddWindowBlock(WindowProperties prop, float fLimitDistanceFromColumn)
+        public void AddWindowBlock(WindowProperties prop, float fLimitDistanceFromColumn, bool addJoints)
         {
             CMember mReferenceGirt;
             CMember mColumnLeft;
@@ -2163,7 +2163,7 @@ namespace PFD
 
             iFirstMemberToDeactivate = iFirstGirtInBay + window.iNumberOfGirtsUnderWindow;
 
-            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, window);
+            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, window, addJoints);
 
             WindowsModels.Add(window);
         }
@@ -2312,7 +2312,7 @@ namespace PFD
         //tie moje "patlacky" ako sa to tam dolepuje do poli atd by som nebral velmi vazne
         //Malo by ty to fungovat tak, ze ked pridam prve dvere tak sa tie prierezy pridaju a ked pridavam dalsie, tak uz sa pridavaju len uzly a pruty a prierez sa len nastavi
         //uz by sa nemal vytvarat novy
-        public void AddDoorOrWindowBlockProperties(Point3D pControlPointBlock, int iFirstMemberToDeactivate, CBlock block)
+        public void AddDoorOrWindowBlockProperties(Point3D pControlPointBlock, int iFirstMemberToDeactivate, CBlock block, bool addJoints = true)
         {
             float fBlockRotationAboutZaxis_rad = 0;
 
@@ -2405,28 +2405,32 @@ namespace PFD
             // Number of added plates
             int iNumberOfAddedPlates = 0;
 
-            foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
+            if (addJoints)
             {
-                m_arrConnectionJoints.Add(joint); // Add joint
-
-                iNumberOfAddedJoints++;
-
-                foreach (CPlate plate in joint.m_arrPlates)
+                foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
                 {
-                    iNumberOfAddedPlates++;
+                    m_arrConnectionJoints.Add(joint); // Add joint
 
-                    if (plate is CConCom_Plate_B_basic)
+                    iNumberOfAddedJoints++;
+
+                    foreach (CPlate plate in joint.m_arrPlates)
                     {
-                        CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                        iNumberOfAddedPlates++;
 
-                        foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+                        if (plate is CConCom_Plate_B_basic)
                         {
-                            iNumberOfAddedPlates++; // anchor.WasherBearing
-                            iNumberOfAddedPlates++; // anchor.WasherPlateTop
+                            CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+
+                            foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+                            {
+                                iNumberOfAddedPlates++; // anchor.WasherBearing
+                                iNumberOfAddedPlates++; // anchor.WasherPlateTop
+                            }
                         }
                     }
                 }
             }
+            
 
             System.Diagnostics.Trace.WriteLine(
                 "Number of added joints: " + iNumberOfAddedJoints + "\n" +
