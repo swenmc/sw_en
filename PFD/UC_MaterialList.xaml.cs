@@ -24,28 +24,30 @@ namespace PFD
     /// Interaction logic for MaterialList.xaml
     /// </summary>
     public partial class UC_MaterialList : UserControl
-    {
-        bool debugging = true;
+    {        
+        double dBuildingMass = 0;
+        double dBuildingNetPrice_WithoutMargin_WithoutGST = 0;
+
         DataSet ds;
 
-        List<string> listPlatePrefix = new List<string>(1);
-        List<int> listPlateQuantity = new List<int>(1);
-        List<string> listPlateMaterialName = new List<string>(1);
-        List<double> dlistPlateWidth_bx = new List<double>(1);
-        List<double> dlistPlateHeight_hy = new List<double>(1);
-        List<double> dlistPlateThickness_tz = new List<double>(1);
-        List<double> dlistPlateArea = new List<double>(1);
-        List<double> dlistPlateMassPerPiece = new List<double>(1);
-        List<double> listPlateTotalArea = new List<double>(1);
-        List<double> listPlateTotalMass = new List<double>(1);
-        List<double> listPlateTotalPrice = new List<double>(1);
+        //List<string> listPlatePrefix = new List<string>(1);
+        //List<int> listPlateQuantity = new List<int>(1);
+        //List<string> listPlateMaterialName = new List<string>(1);
+        //List<double> dlistPlateWidth_bx = new List<double>(1);
+        //List<double> dlistPlateHeight_hy = new List<double>(1);
+        //List<double> dlistPlateThickness_tz = new List<double>(1);
+        //List<double> dlistPlateArea = new List<double>(1);
+        //List<double> dlistPlateMassPerPiece = new List<double>(1);
+        //List<double> listPlateTotalArea = new List<double>(1);
+        //List<double> listPlateTotalMass = new List<double>(1);
+        //List<double> listPlateTotalPrice = new List<double>(1);
 
         // For output
-        List<string> listPlateWidth_bx = new List<string>(1);
-        List<string> listPlateHeight_hy = new List<string>(1);
-        List<string> listPlateThickness_tz = new List<string>(1);
-        List<string> listPlateArea = new List<string>(1);
-        List<string> listPlateMassPerPiece = new List<string>(1);
+        //List<string> listPlateWidth_bx = new List<string>(1);
+        //List<string> listPlateHeight_hy = new List<string>(1);
+        //List<string> listPlateThickness_tz = new List<string>(1);
+        //List<string> listPlateArea = new List<string>(1);
+        //List<string> listPlateMassPerPiece = new List<string>(1);
 
         List<string> listConnectorPrefix = new List<string>(1);
         List<int> listConnectorQuantity = new List<int>(1);
@@ -77,337 +79,22 @@ namespace PFD
             // Clear all lists
             DeleteAllLists();
 
-            int iNumberOfDecimalPlacesPlateDim = 3;
-            int iNumberOfDecimalPlacesArea = 5;
-            int iNumberOfDecimalPlacesVolume = 5;
-            int iNumberOfDecimalPlacesMass = 4;
-            int iNumberOfDecimalPlacesPrice = 3;
+            //int iNumberOfDecimalPlacesPlateDim = 3;
+            //int iNumberOfDecimalPlacesArea = 5;
+            //int iNumberOfDecimalPlacesVolume = 5;
+            //int iNumberOfDecimalPlacesMass = 4;
+            //int iNumberOfDecimalPlacesPrice = 3;
 
-            const float fCFS_PricePerKg_Plates_Material = 1.698f;    // NZD / kg
-            const float fCFS_PricePerKg_Plates_Manufacture = 0.0f;   // NZD / kg
+            //const float fCFS_PricePerKg_Plates_Material = 1.698f;    // NZD / kg
+            //const float fCFS_PricePerKg_Plates_Manufacture = 0.0f;   // NZD / kg
 
             float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece / !!! priblizna cena - nezohladnuje priemer skrutky
             float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce
-            float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
+            //float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
             // Plates
-
-            List<CPlate> ListOfPlateGroups = new List<CPlate>();
-            //System.Diagnostics.Trace.WriteLine("model.m_arrConnectionJoints.Count: " + model.m_arrConnectionJoints.Count);
-            int count = 0;
-            for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
-            {
-                if (model.m_arrConnectionJoints[i].BIsSelectedForMaterialList)
-                {
-                    count++;
-                    for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
-                    {
-                        // Define current plate properties
-                        // Not used - could be used to compare names in database with user-defined in the future
-
-                        //string[] sPlateNames;
-                        //ESerieTypePlate ePlateSerieType_FS = model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS;
-                        //switch (ePlateSerieType_FS)
-                        //{
-                        //    case ESerieTypePlate.eSerie_B:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_B_Names;
-
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_L:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_L_Names;
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_LL:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_LL_Names;
-
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_F:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_F_Names;
-
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_Q:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_Q_Names;
-
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_S:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_S_Names;
-
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_T:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_T_Names;
-
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_X:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_X_Names;
-
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_Y:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_Y_Names;
-
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_J:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_J_Names;
-                        //            break;
-                        //        }
-                        //    case ESerieTypePlate.eSerie_K:
-                        //        {
-                        //            sPlateNames = databaseCopm.arr_Serie_K_Names;
-                        //            break;
-                        //        }
-                        //    default:
-                        //        {
-                        //            // Not implemented
-                        //            break;
-                        //        }
-                        //}
-
-                        // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
-                        // Nie vsetky plechy budu mat parametre definovane v databaze
-                        // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
-                        //TO Mato - a preco sa to nedeje uz pri vytvarani plechov? Nacitavanie dat z databazy stale je sprostost, lebo to spomaluje
-
-
-                        //System.Diagnostics.Trace.WriteLine($"before model.m_arrConnectionJoints[{i}].m_arrPlates[{j}].SetParams: " + (DateTime.Now - start).TotalMilliseconds);
-                        try
-                        {
-                            model.m_arrConnectionJoints[i].m_arrPlates[j].SetParams(model.m_arrConnectionJoints[i].m_arrPlates[j].Name, model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS);
-                        }
-                        catch (Exception ex)
-                        {
-                            //System.Diagnostics.Trace.WriteLine($"{ex.Message}" + (DateTime.Now - start).TotalMilliseconds);
-                        };
-                        //System.Diagnostics.Trace.WriteLine($"after model.m_arrConnectionJoints[{i}].m_arrPlates[{j}].SetParams: " + (DateTime.Now - start).TotalMilliseconds);
-
-                        string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].Name;
-                        int iQuantity = 1;
-                        string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.Name;
-
-                        float fWidth_bx = model.m_arrConnectionJoints[i].m_arrPlates[j].Width_bx;
-                        float fHeight_hy = model.m_arrConnectionJoints[i].m_arrPlates[j].Height_hy;
-                        float Ft = model.m_arrConnectionJoints[i].m_arrPlates[j].Ft;
-                        float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].fArea;
-                        float fMassPerPiece = fArea * Ft * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
-                        float fTotalArea = iQuantity * fArea;
-                        float fTotalMass = iQuantity * fMassPerPiece;
-
-                        float fTotalPrice;
-                        if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
-                             fTotalPrice = fTotalMass * (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD;
-                        else
-                            fTotalPrice = fTotalMass * fCFS_PricePerKg_Plates_Total;
-
-                        bool bPlatewasAdded = false; // Plate was added to the group
-
-                        if (i > 0 || (i == 0 && j > 0)) // If it not first item
-                        {
-                            for (int k = 0; k < ListOfPlateGroups.Count; k++) // For each group of plates check if current plate has same prefix and same dimensions as some already created -  // Add plate to the group or create new one
-                            {
-                                if (ListOfPlateGroups[k].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].Name &&
-                                MathF.d_equal(ListOfPlateGroups[k].Width_bx, model.m_arrConnectionJoints[i].m_arrPlates[j].Width_bx) &&
-                                MathF.d_equal(ListOfPlateGroups[k].Height_hy, model.m_arrConnectionJoints[i].m_arrPlates[j].Height_hy) &&
-                                MathF.d_equal(ListOfPlateGroups[k].Ft, model.m_arrConnectionJoints[i].m_arrPlates[j].Ft) &&
-                                MathF.d_equal(ListOfPlateGroups[k].fArea, model.m_arrConnectionJoints[i].m_arrPlates[j].fArea))
-                                {
-                                    // Add plate to the one from already created groups
-
-                                    listPlateQuantity[k] += 1; // Add one plate (piece) to the quantity
-                                    listPlateTotalArea[k] = Math.Round(listPlateQuantity[k] * dlistPlateArea[k], iNumberOfDecimalPlacesArea);
-                                    listPlateTotalMass[k] = Math.Round(listPlateQuantity[k] * dlistPlateMassPerPiece[k], iNumberOfDecimalPlacesMass); // Recalculate total weight of all plates in the group
-
-                                    // Recalculate total price of all plates in the group
-
-                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
-                                        listPlateTotalPrice[k] = Math.Round(listPlateTotalMass[k] * (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD, iNumberOfDecimalPlacesPrice);
-                                    else
-                                        listPlateTotalPrice[k] = Math.Round(listPlateTotalMass[k] * fCFS_PricePerKg_Plates_Total, iNumberOfDecimalPlacesPrice);
-
-                                    bPlatewasAdded = true;
-                                }
-                                // TOO - po pridani plechu by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
-                            }
-                        }
-
-                        if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
-                        {
-                            listPlatePrefix.Add(sPrefix);
-                            listPlateQuantity.Add(iQuantity);
-                            listPlateMaterialName.Add(sMaterialName);
-                            dlistPlateWidth_bx.Add(Math.Round(fWidth_bx, iNumberOfDecimalPlacesPlateDim));
-                            dlistPlateHeight_hy.Add(Math.Round(fHeight_hy, iNumberOfDecimalPlacesPlateDim));
-                            dlistPlateThickness_tz.Add(Math.Round(Ft, iNumberOfDecimalPlacesPlateDim));
-                            dlistPlateArea.Add(Math.Round(fArea, iNumberOfDecimalPlacesArea));
-                            dlistPlateMassPerPiece.Add(Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
-                            listPlateTotalArea.Add(Math.Round(fTotalArea, iNumberOfDecimalPlacesArea));
-                            listPlateTotalMass.Add(Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
-                            listPlateTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
-
-                            // Add first plate in the group to the list of plate groups
-                            ListOfPlateGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j]);
-                        }
-                    }
-                }
-            }
-            //System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
-
-            // Check Data
-            double dTotalPlatesArea_Model = 0, dTotalPlatesArea_Table = 0;
-            double dTotalPlatesVolume_Model = 0, dTotalPlatesVolume_Table = 0;
-            double dTotalPlatesMass_Model = 0, dTotalPlatesMass_Table = 0;
-            double dTotalPlatesPrice_Model = 0, dTotalPlatesPrice_Table = 0;
-            int iTotalPlatesNumber_Model = 0, iTotalPlatesNumber_Table = 0;
-
-            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
-            {
-                if (joint.BIsSelectedForMaterialList)
-                {
-                    // Set plates and connectors data
-                    foreach (CPlate plate in joint.m_arrPlates)
-                    {
-                        dTotalPlatesArea_Model += plate.fArea;
-                        dTotalPlatesVolume_Model += plate.fArea * plate.Ft;
-                        dTotalPlatesMass_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho;
-
-                        if (plate.Price_PPKG_NZD > 0)
-                            dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * plate.Price_PPKG_NZD;
-                        else
-                            dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
-
-                        iTotalPlatesNumber_Model += 1;
-                    }
-                }
-            }
-
-            for (int i = 0; i < listPlatePrefix.Count; i++)
-            {
-                dTotalPlatesArea_Table += (dlistPlateArea[i] * listPlateQuantity[i]);
-                dTotalPlatesVolume_Table += (dlistPlateArea[i] * listPlateQuantity[i] * dlistPlateThickness_tz[i]);
-                dTotalPlatesMass_Table += listPlateTotalMass[i];
-                dTotalPlatesPrice_Table += listPlateTotalPrice[i];
-                iTotalPlatesNumber_Table += listPlateQuantity[i];
-            }
-
-            dTotalPlatesArea_Model = Math.Round(dTotalPlatesArea_Model, iNumberOfDecimalPlacesArea);
-            dTotalPlatesVolume_Model = Math.Round(dTotalPlatesVolume_Model, iNumberOfDecimalPlacesVolume);
-            dTotalPlatesMass_Model = Math.Round(dTotalPlatesMass_Model, iNumberOfDecimalPlacesMass);
-            dTotalPlatesPrice_Model = Math.Round(dTotalPlatesPrice_Model, iNumberOfDecimalPlacesPrice);
-
-            if (!MathF.d_equal(dTotalPlatesArea_Model, dTotalPlatesArea_Table) ||
-                !MathF.d_equal(dTotalPlatesVolume_Model, dTotalPlatesVolume_Table) ||
-                !MathF.d_equal(dTotalPlatesMass_Model, dTotalPlatesMass_Table) ||
-                (iTotalPlatesNumber_Model != iTotalPlatesNumber_Table)) // Error
-                MessageBox.Show(
-                "Total area of plates in model " + dTotalPlatesArea_Model + " m^2" + "\n" +
-                "Total area of plates in table " + dTotalPlatesArea_Table + " m^2" + "\n" +
-                "Total volume of plates in model " + dTotalPlatesVolume_Model + " m^3" + "\n" +
-                "Total volume of plates in table " + dTotalPlatesVolume_Table + " m^3" + "\n" +
-                "Total weight of plates in model " + dTotalPlatesMass_Model + " kg" + "\n" +
-                "Total weight of plates in table " + dTotalPlatesMass_Table + " kg" + "\n" +
-                "Total number of plates in model " + iTotalPlatesNumber_Model + "\n" +
-                "Total number of plates in table " + iTotalPlatesNumber_Table + "\n");
-
-            // Prepare output format (last row is empty)
-            for (int i = 0; i < listPlatePrefix.Count; i++)
-            {
-                // Change output data format
-                listPlateWidth_bx.Add(dlistPlateWidth_bx[i].ToString());
-                listPlateHeight_hy.Add(dlistPlateHeight_hy[i].ToString());
-                listPlateThickness_tz.Add(dlistPlateThickness_tz[i].ToString());
-                listPlateArea.Add(dlistPlateArea[i].ToString());
-                listPlateMassPerPiece.Add(dlistPlateMassPerPiece[i].ToString());
-            }
-
-            // Add Sum
-            listPlatePrefix.Add("Total:");
-            listPlateQuantity.Add(iTotalPlatesNumber_Table);
-            listPlateMaterialName.Add("");
-            listPlateWidth_bx.Add(""); // Empty cell
-            listPlateHeight_hy.Add(""); // Empty cell
-            listPlateThickness_tz.Add(""); // Empty cell
-            listPlateArea.Add(""); // Empty cell
-            listPlateMassPerPiece.Add(""); // Empty cell
-            listPlateTotalArea.Add(dTotalPlatesArea_Table);
-            listPlateTotalMass.Add(dTotalPlatesMass_Table);
-            listPlateTotalPrice.Add(dTotalPlatesPrice_Table);
-
-            // Create Table
-            DataTable table2 = new DataTable("Table2");
-            // Create Table Rows
-
-            table2.Columns.Add("Prefix", typeof(String));
-            table2.Columns.Add("Quantity", typeof(Int32));
-            table2.Columns.Add("Material", typeof(String));
-            table2.Columns.Add("Width", typeof(String));
-            table2.Columns.Add("Height", typeof(String));
-            table2.Columns.Add("Thickness", typeof(String));
-            table2.Columns.Add("Area", typeof(String));
-            table2.Columns.Add("Mass_per_Piece", typeof(String));
-            table2.Columns.Add("Total_Area", typeof(Decimal));
-            table2.Columns.Add("Total_Mass", typeof(Decimal));
-            table2.Columns.Add("Total_Price", typeof(Decimal));
-
-            // Set Column Caption
-            table2.Columns["Prefix"].Caption = "Prefix1";
-            table2.Columns["Quantity"].Caption = "Quantity";
-            table2.Columns["Material"].Caption = "Material";
-            table2.Columns["Width"].Caption = "Width";
-            table2.Columns["Height"].Caption = "Height";
-            table2.Columns["Thickness"].Caption = "Thickness";
-            table2.Columns["Area"].Caption = "Area";
-            table2.Columns["Mass_per_Piece"].Caption = "Mass_per_Piece";
-            table2.Columns["Total_Area"].Caption = "Total_Area";
-            table2.Columns["Total_Mass"].Caption = "Total_Mass";
-            table2.Columns["Total_Price"].Caption = "Total_Price";
-
-            // Create Datases
-            ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table2);
-
-            for (int i = 0; i < listPlatePrefix.Count; i++)
-            {
-                DataRow row = table2.NewRow();
-
-                try
-                {
-                    row["Prefix"] = listPlatePrefix[i];
-                    row["Quantity"] = listPlateQuantity[i];
-                    row["Material"] = listPlateMaterialName[i];
-                    row["Width"] = listPlateWidth_bx[i];
-                    row["Height"] = listPlateHeight_hy[i];
-                    row["Thickness"] = listPlateThickness_tz[i];
-                    row["Area"] = listPlateArea[i];
-                    row["Mass_per_Piece"] = listPlateMassPerPiece[i];
-                    row["Total_Area"] = listPlateTotalArea[i];
-                    row["Total_Mass"] = listPlateTotalMass[i];
-                    row["Total_Price"] = listPlateTotalPrice[i];
-                }
-                catch (ArgumentOutOfRangeException) { }
-                table2.Rows.Add(row);
-            }
-
-            //System.Diagnostics.Trace.WriteLine("before plates: " + (DateTime.Now - start).TotalMilliseconds);
-            Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
-            //System.Diagnostics.Trace.WriteLine("after plates: " + (DateTime.Now - start).TotalMilliseconds);
-
-
+            CreateTablePlates(model);
+            
             // Connectors
             // TASK 422
             // Neviem ci je to stastne ale chcel som usetrit datagridy a dat vsetky spojovacie prostriedky (rozne typy) do jednej tabulky
@@ -727,14 +414,14 @@ namespace PFD
         // Deleting lists for updating actual values
         private void DeleteLists()
         {
-            listPlatePrefix.Clear();
-            listPlateQuantity.Clear();
-            listPlateMaterialName.Clear();
-            dlistPlateWidth_bx.Clear();
-            dlistPlateHeight_hy.Clear();
-            dlistPlateArea.Clear();
-            dlistPlateMassPerPiece.Clear();
-            listPlateTotalMass.Clear();
+            //listPlatePrefix.Clear();
+            //listPlateQuantity.Clear();
+            //listPlateMaterialName.Clear();
+            //dlistPlateWidth_bx.Clear();
+            //dlistPlateHeight_hy.Clear();
+            //dlistPlateArea.Clear();
+            //dlistPlateMassPerPiece.Clear();
+            //listPlateTotalMass.Clear();
 
             listConnectorPrefix.Clear();
             listConnectorQuantity.Clear();
@@ -744,5 +431,238 @@ namespace PFD
             listConnectorTotalMass.Clear();
             listConnectorTotalPrice.Clear();
         }
+
+        private void CreateTablePlates(CModel model)
+        {
+            const float fCFS_PricePerKg_Plates_Material = 1.698f;    // NZD / kg
+            const float fCFS_PricePerKg_Plates_Manufacture = 0.0f;   // NZD / kg
+            float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
+
+            List<QuotationItem> quotation = new List<QuotationItem>();
+            // Plates
+            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
+            {
+                if (!joint.BIsSelectedForMaterialList) continue;
+
+                foreach (CPlate plate in joint.m_arrPlates) // For each plate
+                {
+                    // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
+                    // Nie vsetky plechy budu mat parametre definovane v databaze
+                    // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
+
+                    #region Base Plate
+                    // TO Ondrej Blok1 Plate START
+                    // ----------------------------------------------------------------------------------------------------------------------------------------
+                    try
+                    {
+                        plate.SetParams(plate.Name, plate.m_ePlateSerieType_FS);
+                    }
+                    catch { };
+
+                    QuotationHelper.AddPlateToQuotation(plate, quotation, 1, fCFS_PricePerKg_Plates_Total);
+
+
+                    // TO Ondrej Blok1 Plate END
+                    // ----------------------------------------------------------------------------------------------------------------------------------------
+                    #endregion
+
+                    //temp
+                    // Anchors - WASHERS
+                    // TO Mato - nieco som skusal... chcelo by to asi mat jeden objekt na tieto veci a nie zoznamy kade tade
+                    //rovnako je asi problem,ze to nijako negrupujem...ale tak potreboval by som vediet na zaklade coho sa to bude grupovat
+
+                    // To Ondrej - K prvej vete nemam vyhrady. Urob ako sa to ma.
+                    // Zgrupovat to treba podla prefixu, ale kedze to este nie je dotiahnute tak porovnavam aj rozmery a plochu uz pridanych plates alebo washers s aktualnym
+                    // Vyrobil som 3 bloky kodu, resp. regiony
+                    // Jeden pre base plate, jeden washer plate top a jeden pre washer bearing
+                    // Funguje to tak ze sa v bloku nastavia parametre aktualnej plate / washer (pocet, rozmery cena, celkove pocty a cena atd)
+                    // Potom sa prechadza cyklus cez vsetky uz vytvorene riadky, resp ListOfPlateGroups a porovnava sa ci je aktualny objekt rovnaky ako niektory uz pridany do skupiny
+                    // Porovnava sa prefix, rozmery a plocha (ak by sme boli dosledni tak pre plates by sa este malo porovnat screw arrangement, anchor arrangement)
+                    // Ak sa zisti ze rovnaky plate/ washer uz bol pridany tak sa aktualizuju celkove parametre, celkovy pocet, celkova plocha, celkova hmotnost
+                    // Ak sa zisti ze taky plech v skupine este nie je alebo je to uplne prvy plech v cykle tak sa vyrobi novy zaznam
+
+                    // Dalo by sa to napriklad refaktorovat a urobit z toho jedna funkcia
+                    // ListOfPlateGroups by som asi zrusil, lebo tam nemame moznost nastavit pocet plechov v ramci skupiny
+                    // Ak tomu rozumiem spravne chces na to pouzit List<PlateView> a odstranit jednotlive zoznamy podla stplcov
+                    // Kazdopadne zase sa dostavame k tomu, ze to mame vselijako, niekde samostatne zoznamy pre jednotlive stlpce, inde zoznam objektov s properties, ktore odpovedaju jednemu riadku.
+
+                    if (plate is CConCom_Plate_B_basic)
+                    {
+                        CConCom_Plate_B_basic plateB = (CConCom_Plate_B_basic)plate;
+
+                        if (plateB.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+                        {
+                            CAnchor anchor = plateB.AnchorArrangement.Anchors.FirstOrDefault();
+                            int anchorsNum = plateB.AnchorArrangement.Anchors.Length;
+
+                            #region Washer Plate Top
+                            // TO Ondrej Blok2 Washer Plate Top START
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            // Plate Top Washer
+                            try
+                            {
+                                anchor.WasherPlateTop.SetParams(anchor.WasherPlateTop.Name, anchor.WasherPlateTop.m_ePlateSerieType_FS);
+                            }
+                            catch { };
+
+                            QuotationHelper.AddPlateToQuotation(anchor.WasherPlateTop, quotation, anchorsNum, fCFS_PricePerKg_Plates_Total);
+
+
+                            // TO Ondrej Blok2 Washer Plate Top END
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            #endregion
+
+                            #region Washer Bearing 
+                            // TO Ondrej Blok3 Washer Bearing START
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            // Bearing Washer
+                            try
+                            {
+                                anchor.WasherBearing.SetParams(anchor.WasherBearing.Name, anchor.WasherBearing.m_ePlateSerieType_FS);
+                            }
+                            catch { };
+
+                            QuotationHelper.AddPlateToQuotation(anchor.WasherBearing, quotation, anchorsNum, fCFS_PricePerKg_Plates_Total);
+
+                            // TO Ondrej Blok3 Washer Bearing END
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            #endregion
+                        }
+                    }
+                    //end temp
+                }
+
+            }
+            //System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
+
+            // Check Data
+            double dTotalPlatesArea_Model = 0, dTotalPlatesArea_Table = 0;
+            double dTotalPlatesVolume_Model = 0, dTotalPlatesVolume_Table = 0;
+            double dTotalPlatesMass_Model = 0, dTotalPlatesMass_Table = 0;
+            double dTotalPlatesPrice_Model = 0, dTotalPlatesPrice_Table = 0;
+            int iTotalPlatesNumber_Model = 0, iTotalPlatesNumber_Table = 0;
+
+            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
+            {
+                if (joint.BIsSelectedForMaterialList)
+                {
+                    // Set plates and connectors data
+                    foreach (CPlate plate in joint.m_arrPlates)
+                    {
+                        dTotalPlatesArea_Model += plate.fArea;
+                        dTotalPlatesVolume_Model += plate.fArea * plate.Ft;
+                        dTotalPlatesMass_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho;
+
+                        if (plate.Price_PPKG_NZD > 0)
+                            dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * plate.Price_PPKG_NZD;
+                        else
+                        {
+                            dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
+
+                            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J || plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K) // Consider overal rectangular dimensions for knee and apex plates
+                            {
+                                dTotalPlatesPrice_Model += plate.Width_bx_Stretched * plate.Height_hy_Stretched * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
+                            }
+                        }
+
+                        iTotalPlatesNumber_Model += 1;
+                    }
+                }
+            }
+
+            foreach (QuotationItem item in quotation)
+            {
+                dTotalPlatesArea_Table += item.Area * item.Quantity;
+                dTotalPlatesVolume_Table += item.Area * item.Quantity * item.Ft;
+                dTotalPlatesMass_Table += item.TotalMass;
+                dTotalPlatesPrice_Table += item.TotalPrice;
+                iTotalPlatesNumber_Table += item.Quantity;
+            }
+            dBuildingMass += dTotalPlatesMass_Table;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalPlatesPrice_Table;
+
+            // Create Table
+            DataTable table = new DataTable("Plates");
+            // Create Table Rows
+            table.Columns.Add(QuotationHelper.colProp_Prefix.ColumnName, QuotationHelper.colProp_Prefix.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Material.ColumnName, QuotationHelper.colProp_Material.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Height_m.ColumnName, QuotationHelper.colProp_Height_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Thickness_m.ColumnName, QuotationHelper.colProp_Thickness_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Area_m2.ColumnName, QuotationHelper.colProp_Area_m2.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitMass_P.ColumnName, QuotationHelper.colProp_UnitMass_P.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_P_NZD.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
+
+            // Set Table Column Properties
+            QuotationHelper.SetDataTableColumnProperties(table);
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table);
+
+            DataRow row = null;
+            foreach (QuotationItem item in quotation)
+            {
+                row = table.NewRow();
+
+                try
+                {
+                    row[QuotationHelper.colProp_Prefix.ColumnName] = item.Prefix;
+                    row[QuotationHelper.colProp_Count.ColumnName] = item.Quantity;
+                    row[QuotationHelper.colProp_Material.ColumnName] = item.MaterialName;
+                    row[QuotationHelper.colProp_Width_m.ColumnName] = item.Width_bx.ToString("F2");
+                    row[QuotationHelper.colProp_Height_m.ColumnName] = item.Height_hy.ToString("F2");
+                    row[QuotationHelper.colProp_Thickness_m.ColumnName] = item.Ft.ToString("F3"); // meters
+                    row[QuotationHelper.colProp_Area_m2.ColumnName] = item.Area.ToString("F2");
+                    row[QuotationHelper.colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
+                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = item.TotalArea.ToString("F2");
+                    row[QuotationHelper.colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
+                    row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = item.PricePerPiece.ToString("F2");
+                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table.Rows.Add(row);
+            }
+            
+            // Last row
+            row = table.NewRow();
+            row[QuotationHelper.colProp_Prefix.ColumnName] = "Total:";
+            row[QuotationHelper.colProp_Count.ColumnName] = iTotalPlatesNumber_Table;
+            row[QuotationHelper.colProp_Material.ColumnName] = "";
+            row[QuotationHelper.colProp_Width_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Height_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Thickness_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Area_m2.ColumnName] = "";
+            row[QuotationHelper.colProp_UnitMass_P.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = dTotalPlatesArea_Table.ToString("F2");
+            row[QuotationHelper.colProp_TotalMass.ColumnName] = dTotalPlatesMass_Table.ToString("F2");
+            row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = dTotalPlatesPrice_Table.ToString("F2");
+            table.Rows.Add(row);
+
+            Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            Datagrid_Plates.Loaded += Datagrid_Plates_Loaded;
+        }
+
+        private void Datagrid_Plates_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_Plates);
+        }
+        private void SetLastRowBold(DataGrid datagrid)
+        {
+            DataGridRow dtrow = (DataGridRow)datagrid.ItemContainerGenerator.ContainerFromIndex(datagrid.Items.Count - 1);
+            if (dtrow == null) return;
+            Setter bold = new Setter(TextBlock.FontWeightProperty, FontWeights.Bold, null);
+            Style newStyle = new Style(dtrow.GetType());
+
+            newStyle.Setters.Add(bold);
+            dtrow.Style = newStyle;
+        }
+
     }
 }

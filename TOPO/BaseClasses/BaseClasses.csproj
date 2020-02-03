@@ -95,6 +95,9 @@
     <Compile Include="Calculations\CalculationSettingsFoundation.cs" />
     <Compile Include="CCNCPathFinder.cs" />
     <Compile Include="CConnectionJointTypes.cs" />
+    <Compile Include="ColumnProperties.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CLine2D.cs" />
     <Compile Include="CNote2D.cs" />
     <Compile Include="ComboItem.cs" />
