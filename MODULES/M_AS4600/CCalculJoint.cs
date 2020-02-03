@@ -501,7 +501,7 @@ namespace M_AS4600
                 designDetails.fe_Plate = fe_vertical; // Uvazujeme vertikalnu vzdialenost, dominantne zatazenie je v smere vertikalnej osi pruta
 
             }
-            else if(plate is CConCom_Plate_LL)
+            else if (plate is CConCom_Plate_LL)
             {
                 CConCom_Plate_LL plate_LL = (CConCom_Plate_LL)plate;
 
@@ -978,7 +978,7 @@ namespace M_AS4600
                     fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_5435_MainMember);
 
                     // 5.4.2.5 Connection shear as limited by end distance
-                    designDetails.fe_Plate =  0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+                    designDetails.fe_Plate = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
 
                     // Distance to an end of the connected part is parallel to the line of the applied force
                     designDetails.fV_asterix_fv_plate = fDIF_V_connection_one_side / (designDetails.iNumberOfScrewsInTension / 2);
@@ -1249,7 +1249,7 @@ namespace M_AS4600
 
             float fs2 = basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1[0]; // TODO - nacitavat nejako krajsie ak je kotiev v rade viac ako 2 a s roznymi vzdialenostami
 
-            if(fs2 == 0) // Ak je hodnota s2 = 0
+            if (fs2 == 0) // Ak je hodnota s2 = 0
                 designDetails.fa_force = (plate.Width_bx - basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx) / 2f;
             else
                 designDetails.fa_force = (plate.Width_bx - fs2 - 0.5f * basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx - 0.5f * basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx) / 2f;
@@ -1265,7 +1265,7 @@ namespace M_AS4600
             if (designDetails.fEta_N_t_5423_plate < 0 ||
                 designDetails.fEta_341a_plate < 0 ||
                 designDetails.fEta_V_yv_3341_plate < 0 ||
-                designDetails.fEta_V_yv_723_11_plate <0 ||
+                designDetails.fEta_V_yv_723_11_plate < 0 ||
                 designDetails.fEta_Mb_plate < 0 ||
                 designDetails.fEta_MainMember < 0 ||
                 designDetails.fEta_Mb_MainMember_oneside_plastic < 0 ||
@@ -1600,7 +1600,7 @@ namespace M_AS4600
             designDetails.fElasticityFactor_1764 = 1.0f;
 
             if (bIsEarthquakeCombination)
-              designDetails.fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
+                designDetails.fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
 
             // 17.5.6 Strength of cast -in anchors
 
@@ -1747,7 +1747,7 @@ namespace M_AS4600
             // Group of anchors
 
             // Rozlisovat typ kotvy - rovnica 17-14 alebo 17-15
-            if(designDetails.bIsCastInHeadedStud) // 17-14
+            if (designDetails.bIsCastInHeadedStud) // 17-14
                 designDetails.fV_s_17581_group = designDetails.fV_s_1714_group = eq_concrete.Eq_17_14___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
             else // 17-15
                 designDetails.fV_s_17581_group = designDetails.fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
@@ -1918,50 +1918,70 @@ namespace M_AS4600
             fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_footing_uplift);
 
             // Bearing
-            designDetails.fN_design_bearing_total = sDIF_temp.fN_c + designDetails.fG_design_bearing;
+            designDetails.fN_design_bearing_total = Math.Max(0, -sDIF_temp.fN + designDetails.fG_design_bearing); // Tahova sila v stlpe sa pre bearing uvazuje ako zaporna
 
-            // Resulting moment
-            // Znamienka !!!
-            float fM_tot = sDIF_temp.fN * footing.Eccentricity_y + sDIF_temp.fM_xu_xx + sDIF_temp.fV_yv_yy * designDetails.fFootingHeight;
-
-            // Eccentricity
-            float fe_t_y = Math.Abs(fM_tot) / designDetails.fN_design_bearing_total; // ???? Rozlisovat znamienko momentu a znamienko excentricity
-
-            // Eccentricity limit
-            float fe_limit_b6 = designDetails.fFootingDimension_y / 6f;
-
-            float fPressure_bearing_N_uniform = designDetails.fN_design_bearing_total / designDetails.fA_footing;
-            float fPressure_bearing_M = (6 * designDetails.fN_design_bearing_total * fe_t_y) / (MathF.Pow2(designDetails.fFootingDimension_y) * designDetails.fFootingDimension_x);
-
-            // Minimum bearing pressure
-            float fPressure_bearing_min = 0;
-
-            if (fe_t_y < fe_limit_b6)
-                fPressure_bearing_min = fPressure_bearing_N_uniform - fPressure_bearing_M;
-            else
-                fPressure_bearing_min = 0;
-
-            // Maximum bearing pressure
-            float fPressure_bearing_max;
-            if (fe_t_y < fe_limit_b6)
-                fPressure_bearing_max = fPressure_bearing_N_uniform + fPressure_bearing_M;
-            else
+            if (designDetails.fN_design_bearing_total > 0 || !MathF.d_equal(sDIF_temp.fM_xu_xx, 0))
             {
-                float fLength_bearing = 3 * (designDetails.fFootingDimension_y / 2 - fe_t_y);
-                fPressure_bearing_max = (2 * designDetails.fN_design_bearing_total) / (designDetails.fFootingDimension_x * fLength_bearing);
+                // Resulting moment
+                // Znamienka !!!
+
+                float fecc_y_pad = -footing.Eccentricity_y;
+                float fV_yv_yy_pad = -sDIF_temp.fV_yv_yy;
+                // Pre stlpy ramu na pravej strane treba hodnoty prehodit - nie som si uplne isty ci je znamienko hodnoty Vyv_yy spravne
+                if ((joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn || joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn)
+                    && joint.m_MainMember.NodeEnd.ID == joint.m_Node.ID) // TODO polohu stlpov by trebalo urcit nejako krajsie
+                {
+                    fecc_y_pad *= -1; // Prehodime znamienko
+                    //fV_yv_yy_pad *= -1;
+                }
+
+                // Kladny moment je clockwise (pravidlo lavej ruky)
+                float fM_tot = sDIF_temp.fN * fecc_y_pad + sDIF_temp.fM_xu_xx + fV_yv_yy_pad * designDetails.fFootingHeight;
+
+                // Eccentricity
+                float fe_t_y = Math.Abs(fM_tot) / designDetails.fN_design_bearing_total; // Hodnotu excentricity v dalsom vypocte uvazujeme v absolutnej hodnote
+
+                // Eccentricity limit
+                float fe_limit_b6 = designDetails.fFootingDimension_y / 6f;
+
+                float fPressure_bearing_N_uniform = designDetails.fN_design_bearing_total / designDetails.fA_footing;
+                float fPressure_bearing_M = (6 * designDetails.fN_design_bearing_total * fe_t_y) / (MathF.Pow2(designDetails.fFootingDimension_y) * designDetails.fFootingDimension_x);
+
+                // Pressure - positive, Tension (uplift) - negative value
+                // Kladny smer sily nadol
+                float fPressure_bearing_1 = fPressure_bearing_N_uniform - fPressure_bearing_M;
+                float fPressure_bearing_2 = fPressure_bearing_N_uniform + fPressure_bearing_M;
+
+                // Minimum bearing pressure
+                float fPressure_bearing_min = 0;
+
+                if (fe_t_y < fe_limit_b6)
+                    fPressure_bearing_min = Math.Min(fPressure_bearing_1, fPressure_bearing_2); // Pressure (+), tension (-)
+                else
+                    fPressure_bearing_min = 0;
+
+                // Maximum bearing pressure
+                float fPressure_bearing_max = 0;
+                if (fe_t_y < fe_limit_b6)
+                    fPressure_bearing_max = Math.Max(fPressure_bearing_1, fPressure_bearing_2); // Pressure (+), tension (-)
+                else
+                {
+                    float fLength_bearing = 3 * (designDetails.fFootingDimension_y / 2 - fe_t_y);
+                    fPressure_bearing_max = (2 * designDetails.fN_design_bearing_total) / (designDetails.fFootingDimension_x * fLength_bearing);
+                }
+
+                designDetails.fPressure_bearing = Math.Max(fPressure_bearing_min, fPressure_bearing_max);
+
+                // Urcit faktor podla typu kombinacie
+
+                //if() - TODO ONDREJ - tu potrebujem vediet typ kombinacie, aky pocitam, ak je to EQ, tak musim pouzit iny faktor pre kapacitu podlozia
+                designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactor_Phi; // TODO - zistit aky je faktor
+                                                                                              // else
+                                                                                              //designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactorEQ_Phi;
+
+                designDetails.fEta_footing_bearing = designDetails.fPressure_bearing / (designDetails.fSafetyFactor * designDetails.fc_nominal_soil_bearing_capacity);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_footing_bearing);
             }
-
-            designDetails.fPressure_bearing = Math.Max(fPressure_bearing_min, fPressure_bearing_max);
-
-            // Urcit faktor podla typu kombinacie
-
-            //if() - TODO ONDREJ - tu potrebujem vediet typ kombinacie, aky pocitam, ak je to EQ, tak musim pouzit iny faktor pre kapacitu podlozia
-            designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactor_Phi; // TODO - zistit aky je faktor
-            // else
-            //designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactorEQ_Phi;
-
-            designDetails.fEta_footing_bearing = designDetails.fPressure_bearing / (designDetails.fSafetyFactor * designDetails.fc_nominal_soil_bearing_capacity);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_footing_bearing);
 
             // Bending - design of reinforcement
             // Reinforcement bars in x direction (parallel to the wall)
@@ -2037,8 +2057,12 @@ namespace M_AS4600
             designDetails.fp_ratio_xDirection = (designDetails.fA_s_tot_Xdirection_bottom + designDetails.fA_s_tot_Xdirection_top) / (designDetails.fFootingDimension_y * designDetails.fFootingHeight); // Sum of the bottom and top surface
             designDetails.fp_ratio_limit_minimum_xDirection = eq_concrete.Eq_9_1_ratio(designDetails.ff_apostrophe_c, fReinforcementStrength_fy);
 
+            bool bConsiderMinRCRatioCheckInMaxDesignRatio = false;
+
             designDetails.fEta_MinimumReinforcement_xDirection = designDetails.fp_ratio_limit_minimum_xDirection / designDetails.fp_ratio_xDirection;
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_MinimumReinforcement_xDirection);
+
+            if (bConsiderMinRCRatioCheckInMaxDesignRatio)
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_MinimumReinforcement_xDirection);
 
             //  Shear
             designDetails.fV_asterix_footingdesign_shear = designDetails.fq_linear_xDirection * designDetails.fFootingDimension_x / 2f; // ??? jednoducho podpoprety nosnik ???
@@ -2239,7 +2263,7 @@ namespace M_AS4600
             float fLimitMin = 0.0001f; // 0.1 mm
             float fLimitMax = 10f; // 10 m
 
-            if(fDimValue < -fLimitMin || fDimValue > fLimitMax) // Negative distance or extremely large value in the joint or footing design
+            if (fDimValue < -fLimitMin || fDimValue > fLimitMax) // Negative distance or extremely large value in the joint or footing design
             {
                 throw new Exception("Invalid propery value " + fDimValue + "[m].");
             }
