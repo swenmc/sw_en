@@ -42,15 +42,6 @@ namespace PFD
             }
         }
 
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnLoad_Click(object sender, RoutedEventArgs e)
-        {
-            DesignOptionsChanged = true;
-        }
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {

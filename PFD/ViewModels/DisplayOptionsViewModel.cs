@@ -2669,5 +2669,142 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void SetViewModel(DisplayOptionsViewModel newVM)
+        {
+            IsSetFromCode = true;
+            LightDirectional = newVM.LightDirectional;
+            LightPoint = newVM.LightPoint;
+            LightSpot = newVM.LightSpot;
+            LightAmbient = newVM.LightAmbient;
+            MaterialDiffuse = newVM.MaterialDiffuse;
+            MaterialEmissive = newVM.MaterialEmissive;
+            DisplayMembers = newVM.DisplayMembers;
+            DisplayJoints = newVM.DisplayJoints;
+            DisplayPlates = newVM.DisplayPlates;
+            DisplayConnectors = newVM.DisplayConnectors;
+            DisplayNodes = newVM.DisplayNodes;
+            DisplayFoundations = newVM.DisplayFoundations;
+            DisplayReinforcementBars = newVM.DisplayReinforcementBars;
+            DisplayFloorSlab = newVM.DisplayFloorSlab;
+            DisplaySawCuts = newVM.DisplaySawCuts;
+            DisplayControlJoints = newVM.DisplayControlJoints;
+
+            DisplayMembersWireFrame = newVM.DisplayMembersWireFrame;
+            DisplayJointsWireFrame = newVM.DisplayJointsWireFrame;
+            DisplayPlatesWireFrame = newVM.DisplayPlatesWireFrame;
+            DisplayConnectorsWireFrame = newVM.DisplayConnectorsWireFrame;
+            DisplayNodesWireFrame = newVM.DisplayNodesWireFrame;
+            DisplayFoundationsWireFrame = newVM.DisplayFoundationsWireFrame;
+            DisplayReinforcementBarsWireFrame = newVM.DisplayReinforcementBarsWireFrame;
+            DisplayNodalSupports = newVM.DisplayNodalSupports;
+            DisplayMembersCenterLines = newVM.DisplayMembersCenterLines;
+            DisplaySolidModel = newVM.DisplaySolidModel;
+            DisplayWireFrameModel = newVM.DisplayWireFrameModel;
+            DisplayDistinguishedColorMember = newVM.DisplayDistinguishedColorMember;
+            DisplayTransparentModelMember = newVM.DisplayTransparentModelMember;
+            ColorsAccordingToMembers = newVM.ColorsAccordingToMembers;
+            ColorsAccordingToSections = newVM.ColorsAccordingToSections;
+
+            ShowNodesDescription = newVM.ShowNodesDescription;
+            ShowMemberDescription = newVM.ShowMemberDescription;
+            ShowMemberID = newVM.ShowMemberID;
+            ShowMemberPrefix = newVM.ShowMemberPrefix;
+            ShowMemberRealLength = newVM.ShowMemberRealLength;
+            ShowMemberRealLengthInMM = newVM.ShowMemberRealLengthInMM;
+            ShowMemberRealLengthUnit = newVM.ShowMemberRealLengthUnit;
+            ShowMemberCrossSectionStartName = newVM.ShowMemberCrossSectionStartName;
+            ShowFoundationsDescription = newVM.ShowFoundationsDescription;
+            ShowSawCutsDescription = newVM.ShowSawCutsDescription;
+            ShowControlJointsDescription = newVM.ShowControlJointsDescription;
+            ShowDimensions = newVM.ShowDimensions;
+            ShowGridLines = newVM.ShowGridLines;
+            ShowSectionSymbols = newVM.ShowSectionSymbols;
+            ShowDetailSymbols = newVM.ShowDetailSymbols;
+            ShowSlabRebates = newVM.ShowSlabRebates;
+
+            ShowLoads = newVM.ShowLoads;
+            ShowLoadsOnMembers = newVM.ShowLoadsOnMembers;
+            ShowLoadsOnGirts = newVM.ShowLoadsOnGirts;
+            ShowLoadsOnPurlins = newVM.ShowLoadsOnPurlins;
+            ShowLoadsOnEavePurlins = newVM.ShowLoadsOnEavePurlins;
+            ShowLoadsOnColumns = newVM.ShowLoadsOnColumns;
+            ShowLoadsOnFrameMembers = newVM.ShowLoadsOnFrameMembers;
+            ShowNodalLoads = newVM.ShowNodalLoads;
+            ShowSurfaceLoads = newVM.ShowSurfaceLoads;
+            ShowLoadsLabels = newVM.ShowLoadsLabels;
+            ShowLoadsLabelsUnits = newVM.ShowLoadsLabelsUnits;
+            ShowGlobalAxis = newVM.ShowGlobalAxis;
+            ShowLocalMembersAxis = newVM.ShowLocalMembersAxis;
+            ShowSurfaceLoadsAxis = newVM.ShowSurfaceLoadsAxis;
+
+            DisplayIn3DRatio = newVM.DisplayIn3DRatio;
+
+
+            WireframeColorIndex = newVM.WireframeColorIndex;
+            WireFrameLineThickness = newVM.WireFrameLineThickness;
+
+            MemberCenterlineColorIndex = newVM.MemberCenterlineColorIndex;
+            MemberCenterlineThickness = newVM.MemberCenterlineThickness;
+
+            NodeDescriptionTextFontSize = newVM.NodeDescriptionTextFontSize;
+            MemberDescriptionTextFontSize = newVM.MemberDescriptionTextFontSize;
+            DimensionTextFontSize = newVM.DimensionTextFontSize;
+            GridLineLabelTextFontSize = newVM.GridLineLabelTextFontSize;
+            SectionSymbolLabelTextFontSize = newVM.SectionSymbolLabelTextFontSize;
+            DetailSymbolLabelTextFontSize = newVM.DetailSymbolLabelTextFontSize;
+
+            SawCutTextFontSize = newVM.SawCutTextFontSize;
+            ControlJointTextFontSize = newVM.ControlJointTextFontSize;
+
+            FoundationTextFontSize = newVM.FoundationTextFontSize;
+            FloorSlabTextFontSize = newVM.FloorSlabTextFontSize;
+
+            NodeColorIndex = newVM.NodeColorIndex;
+            NodeDescriptionTextColorIndex = newVM.NodeDescriptionTextColorIndex;
+            MemberDescriptionTextColorIndex = newVM.MemberDescriptionTextColorIndex;
+            DimensionTextColorIndex = newVM.DimensionTextColorIndex;
+            DimensionLineColorIndex = newVM.DimensionLineColorIndex;
+            GridLineLabelTextColorIndex = newVM.GridLineLabelTextColorIndex;
+            GridLineColorIndex = newVM.GridLineColorIndex;
+            GridLinePatternType = newVM.GridLinePatternType;
+            SectionSymbolLabelTextColorIndex = newVM.SectionSymbolLabelTextColorIndex;
+            SectionSymbolColorIndex = newVM.SectionSymbolColorIndex;
+            DetailSymbolLabelTextColorIndex = newVM.DetailSymbolLabelTextColorIndex;
+            DetailSymbolLabelBackColorIndex = newVM.DetailSymbolLabelBackColorIndex;
+            DetailSymbolColorIndex = newVM.DetailSymbolColorIndex;
+            SawCutTextColorIndex = newVM.SawCutTextColorIndex;
+            SawCutLineColorIndex = newVM.SawCutLineColorIndex;
+            SawCutLinePatternType = newVM.SawCutLinePatternType;
+            ControlJointTextColorIndex = newVM.ControlJointTextColorIndex;
+            ControlJointLineColorIndex = newVM.ControlJointLineColorIndex;
+            ControlJointLinePatternType = newVM.ControlJointLinePatternType;
+
+            FoundationTextColorIndex = newVM.FoundationTextColorIndex;
+            FloorSlabTextColorIndex = newVM.FloorSlabTextColorIndex;
+
+            FoundationColorIndex = newVM.FoundationColorIndex;
+            FloorSlabColorIndex = newVM.FloorSlabColorIndex;
+            SlabRebateColorIndex = newVM.SlabRebateColorIndex;
+
+            PlateColorIndex = newVM.PlateColorIndex;
+            ScrewColorIndex = newVM.ScrewColorIndex;
+            AnchorColorIndex = newVM.AnchorColorIndex;
+            WasherColorIndex = newVM.WasherColorIndex;
+            NutColorIndex = newVM.NutColorIndex;
+
+            MemberSolidModelOpacity = newVM.MemberSolidModelOpacity;
+            PlateSolidModelOpacity = newVM.PlateSolidModelOpacity;
+            ScrewSolidModelOpacity = newVM.ScrewSolidModelOpacity;
+            AnchorSolidModelOpacity = newVM.AnchorSolidModelOpacity;
+            FoundationSolidModelOpacity = newVM.FoundationSolidModelOpacity;
+            ReinforcementBarSolidModelOpacity = newVM.ReinforcementBarSolidModelOpacity;
+            FloorSlabSolidModelOpacity = newVM.FloorSlabSolidModelOpacity;
+            SlabRebateSolidModelOpacity = newVM.SlabRebateSolidModelOpacity;
+
+            BackgroundColorIndex = newVM.BackgroundColorIndex;
+
+            IsSetFromCode = false;
+        }
     }
 }

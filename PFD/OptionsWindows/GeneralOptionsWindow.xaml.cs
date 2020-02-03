@@ -43,17 +43,7 @@ namespace PFD
                     GeneralOptionsChanged = true;
             }
         }
-                
-
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnLoad_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
+        
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {

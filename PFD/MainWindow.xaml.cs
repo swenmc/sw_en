@@ -241,6 +241,10 @@ namespace PFD
                     vm.RecreateJoints = true; //need to recreate joint when Section was changed
                     vm.RecreateModel = true;
                 }
+                if (e.PropertyName == "Color")
+                {
+                    vm.RecreateModel = true;
+                }
                 if (e.PropertyName == "Generate")
                 {
                     vm.RecreateFoundations = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruju Foundations
@@ -807,18 +811,10 @@ namespace PFD
 
                 UpdateUC_Joints();
                 UpdateUC_Footings();
-
-                //FlashingsViewModel flashigsVM = new FlashingsViewModel(vm.Model);
-                //vm.Flashings = flashigsVM.Flashings;
+                                
                 vm.Flashings = null;
                 vm.Gutters = null;
                 vm.Downpipes = null;
-
-                //temp nastavenie Recreate****
-                //je potrebne niekde nastavit vsetky recreate na false a zapnut ich iba ak sa zmenilo nieco co vyzaduje aby boli pregenerovane
-                vm.RecreateJoints = false;
-                vm.RecreateFoundations = false;
-                vm.RecreateFloorSlab = false;
             }
 
             bool generateSurfaceLoads = vm._displayOptionsVM.ShowSurfaceLoadsAxis ||
@@ -2188,8 +2184,7 @@ namespace PFD
         {
             if (newVM == null) return;
             vm.IsSetFromCode = true;
-            vm.ModelIndex = newVM.ModelIndex;
-            vm.IsSetFromCode = true;
+            vm.ModelIndex = newVM.ModelIndex;            
             vm.GableWidth = newVM.GableWidth;
             vm.Length = newVM.Length;
             vm.WallHeight = newVM.WallHeight;
@@ -2226,7 +2221,9 @@ namespace PFD
             vm.Gutters = newVM.Gutters;
             vm.Downpipes = newVM.Downpipes;
 
-            vm._displayOptionsVM = newVM._displayOptionsVM;
+            vm.ComponentList = newVM.ComponentList;
+
+            vm._displayOptionsVM.SetViewModel(newVM._displayOptionsVM);
             vm._generalOptionsVM = newVM._generalOptionsVM;
             vm._solverOptionsVM = newVM._solverOptionsVM;
             vm._designOptionsVM = newVM._designOptionsVM;

@@ -43,16 +43,6 @@ namespace PFD
             }
         }
 
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnLoad_Click(object sender, RoutedEventArgs e)
-        {
-            DisplayOptionsChanged = true;
-        }
-
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
             if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;

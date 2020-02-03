@@ -268,7 +268,10 @@ namespace PFD
 
                 //dolezite je volat private fields a nie Properties pokial nechceme aby sa volali setter metody
                 CDatabaseModels dmodel = new CDatabaseModels(MModelIndex);
-                IsSetFromCode = true;
+
+                bool isChangedFromCode = IsSetFromCode;
+
+                if(!isChangedFromCode) IsSetFromCode = true;
                 GableWidth = dmodel.fb;
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
@@ -313,7 +316,7 @@ namespace PFD
                 MRecreateRCMesh = true;
 
                 RecreateModel = true;
-                IsSetFromCode = false;
+                if (!isChangedFromCode) IsSetFromCode = false;
                 NotifyPropertyChanged("ModelIndex");
             }
         }

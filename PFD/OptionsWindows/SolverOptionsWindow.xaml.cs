@@ -40,16 +40,6 @@ namespace PFD
             }
         }
 
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnLoad_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
             if (SolverOptionsChanged) _pfdVM.SolverOptionsChanged = true;
