@@ -1189,13 +1189,12 @@ namespace PFD
             //}
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
+                RecreateModel = true;
                 RecreateJoints = true;
                 RecreateFloorSlab = true;
-                NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
-                RecreateJoints = false;
+                NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");                
                 SetResultsAreNotValid();
             }
-            RecreateFloorSlab = true;
             SetComponentListAccordingToDoors();
         }
 
@@ -1237,9 +1236,9 @@ namespace PFD
             //}
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
+                RecreateModel = true;
                 RecreateJoints = true;
-                NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
-                RecreateJoints = false;
+                NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");                
                 SetResultsAreNotValid();
             }
             SetComponentListAccordingToWindows();
