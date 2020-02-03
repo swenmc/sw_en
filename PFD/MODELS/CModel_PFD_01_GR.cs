@@ -1176,7 +1176,6 @@ namespace PFD
                              bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, vm._generalOptionsVM.WindPostUnderRafter);
             else
                 m_arrConnectionJoints = joints;
-
             #endregion
 
             CountPlates_ValidationPurpose(true);
