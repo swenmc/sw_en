@@ -244,9 +244,8 @@ namespace BaseClasses
         public float fEta_footing_bearing;
 
         // Bending - design of reinforcement
+        public float fReinforcementStrength_fy;
         // Reinforcement bars in x direction (parallel to the wall)
-        public float fq_linear_xDirection;
-        public float fM_asterix_footingdesign_xDirection;
 
         public float fd_reinforcement_xDirection_top;
         public float fA_s1_Xdirection_top;
@@ -274,30 +273,54 @@ namespace BaseClasses
 
         public float fAlpha_c;
         public float fPhi_b_foundations;
-        public float fConcreteCover_reinforcement_xDirection;
-        public float fd_effective_xDirection;
-        public float fx_u_xDirection;
-        public float fM_b_footing_xDirection;
-        public float fEta_bending_M_footing;
 
-        public float fd_effective_yDirection;
+        public float fq_linear_xDirection_top;
+        public float fM_asterix_footingdesign_xDirection_top;
+        public float fConcreteCover_reinforcement_xDirection_top;
+        public float fd_effective_xDirection_top;
+        public float fx_u_xDirection_top;
+        public float fM_b_footing_xDirection_top;
+        public float fEta_bending_M_footing_xDirection_top;
+
+        public float fConcreteCover_reinforcement_yDirection_top;
+        public float fd_effective_yDirection_top;
+
+        public float fq_linear_xDirection_bottom;
+        public float fM_asterix_footingdesign_xDirection_bottom;
+        public float fConcreteCover_reinforcement_xDirection_bottom;
+        public float fd_effective_xDirection_bottom;
+        public float fx_u_xDirection_bottom;
+        public float fM_b_footing_xDirection_bottom;
+        public float fEta_bending_M_footing_xDirection_bottom;
+
+        public float fConcreteCover_reinforcement_yDirection_bottom;
+        public float fd_effective_yDirection_bottom;
+
+        //  Shear
+        public float fPhi_v_foundations;
+        public float fk_a;
+        public float fk_d;
+
+        public float fV_asterix_footingdesign_shear_xDirection_top;
+        public float fA_cv_xDirection_top;
+        public float fp_w_xDirection_top;
+        public float fv_b_xDirection_top;
+        public float fv_c_xDirection_top;
+        public float fV_c_xDirection_top;
+        public float fEta_shear_V_footing_xDirection_top;
+
+        public float fV_asterix_footingdesign_shear_xDirection_bottom;
+        public float fA_cv_xDirection_bottom;
+        public float fp_w_xDirection_bottom;
+        public float fv_b_xDirection_bottom;
+        public float fv_c_xDirection_bottom;
+        public float fV_c_xDirection_bottom;
+        public float fEta_shear_V_footing_xDirection_bottom;
 
         // Minimum longitudinal reinforcement ratio
         public float fp_ratio_xDirection;
         public float fp_ratio_limit_minimum_xDirection;
         public float fEta_MinimumReinforcement_xDirection;
-
-        //  Shear
-        public float fV_asterix_footingdesign_shear;
-        public float fA_cv_xDirection;
-        public float fp_w_xDirection;
-        public float fk_a;
-        public float fk_d;
-        public float fv_b_xDirection;
-        public float fv_c_xDirection;
-        public float fV_c_xDirection;
-        public float fPhi_v_foundations;
-        public float fEta_shear_V_footing;
 
         // Punching shear
         public float fcriticalPerimeter_b0;
