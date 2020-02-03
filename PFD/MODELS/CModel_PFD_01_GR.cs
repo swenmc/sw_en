@@ -1178,7 +1178,7 @@ namespace PFD
                 m_arrConnectionJoints = joints;
             #endregion
 
-            CountPlates_ValidationPurpose(true);
+            CountPlates_ValidationPurpose(false);
 
             #region Blocks
 
@@ -1277,7 +1277,7 @@ namespace PFD
                 //}
             }
 
-            CountPlates_ValidationPurpose(true);
+            CountPlates_ValidationPurpose(false);
 
             // Validation - check that all created joints have assigned Main Member
             // Check all joints after definition of doors and windows members and joints
@@ -1341,7 +1341,7 @@ namespace PFD
             }
             //------------------------------------------------------------
 
-            CountPlates_ValidationPurpose(true);
+            CountPlates_ValidationPurpose(false);
 
             // End of blocks
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2384,43 +2384,48 @@ namespace PFD
             }
 
             // Add block member connections to the main model connections
-
-            // Validation
-            // Number of added joints
-            int iNumberOfAddedJoints = 0;
-            // Number of added plates
-            int iNumberOfAddedPlates = 0;
-
             if (addJoints)
             {
                 foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
-                {
                     m_arrConnectionJoints.Add(joint); // Add joint
-
-                    iNumberOfAddedJoints++;
-
-                    foreach (CPlate plate in joint.m_arrPlates)
-                    {
-                        iNumberOfAddedPlates++;
-
-                        if (plate is CConCom_Plate_B_basic)
-                        {
-                            CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
-
-                            foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
-                            {
-                                iNumberOfAddedPlates++; // anchor.WasherBearing
-                                iNumberOfAddedPlates++; // anchor.WasherPlateTop
-                            }
-                        }
-                    }
-                }
             }
-            
 
-            System.Diagnostics.Trace.WriteLine(
-                "Number of added joints: " + iNumberOfAddedJoints + "\n" +
-                "Number of added plates and washers: " + iNumberOfAddedPlates);
+            // Validation
+            
+            //// Number of added joints
+            //int iNumberOfAddedJoints = 0;
+            //// Number of added plates
+            //int iNumberOfAddedPlates = 0;
+            //
+            //if (addJoints)
+            //{
+            //    foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
+            //    {
+            //        m_arrConnectionJoints.Add(joint); // Add joint
+            //
+            //        iNumberOfAddedJoints++;
+            //
+            //        foreach (CPlate plate in joint.m_arrPlates)
+            //        {
+            //            iNumberOfAddedPlates++;
+            //
+            //            if (plate is CConCom_Plate_B_basic)
+            //            {
+            //                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+            //
+            //                foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+            //                {
+            //                    iNumberOfAddedPlates++; // anchor.WasherBearing
+            //                    iNumberOfAddedPlates++; // anchor.WasherPlateTop
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //
+            //System.Diagnostics.Trace.WriteLine(
+            //    "Number of added joints: " + iNumberOfAddedJoints + "\n" +
+            //    "Number of added plates and washers: " + iNumberOfAddedPlates);
         }
 
         private void DeactivateMemberBracingBlocks(CMember m, CBlock block, List<Point3D> openningPointsInGCS)
