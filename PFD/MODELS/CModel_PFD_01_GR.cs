@@ -1172,24 +1172,11 @@ namespace PFD
 
             #region Joints
             if (joints == null)
-            {
                 CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
                              bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, vm._generalOptionsVM.WindPostUnderRafter);
-            }
             else
-            {
-                // Bug 491 TO Ondrej
-                // Problem je ze ak uz boli vygenerovane spoje tak sem pride zoznam joints, ktory obsahuje uz vytvorene spoje a k tymto spojom sa na nasledujich riadkoch pridaju 
-                // spoje z blokov, kedze spoje dveri uz v zozname joints boli tak sa tu pridaju znova
-                // Nie som si uplne isty preco sem idu vsetky realne spoje, nemali by to byt len "referencne" typy,
-                // ktore su v comboboxe v Joint Type UC_Joints a tie by sa mali "nalepit" na uzly nodes v modeli, teda vygenerovat realne spoje
-                
-                if(true)
-                   m_arrConnectionJoints = joints; // Povodny kod
-                else // Docasne vygenerujem spoje nanovo
-                   CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
-                                bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, vm._generalOptionsVM.WindPostUnderRafter);
-            }
+                m_arrConnectionJoints = joints;
+
             #endregion
 
             CountPlates_ValidationPurpose(true);
