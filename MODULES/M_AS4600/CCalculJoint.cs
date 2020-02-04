@@ -1849,7 +1849,7 @@ namespace M_AS4600
             fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17566_group);
 
             // C17.5.6.6 (Figure C17.1)
-            bool bUseC17566Equation = true;
+            bool bUseC17566Equation = false; // TODO Option do GUI
             float fEta_C17566_group = 0;
 
             if (bUseC17566Equation)
