@@ -136,19 +136,21 @@ namespace PFD
             {
                 if (joint.m_MainMember == null)
                 {
-                    new ArgumentNullException("Undefined main member of joint ID:" + joint.ID);
+                    if(_pfdVM.debugging)
+                       new ArgumentNullException("Undefined main member of joint ID:" + joint.ID);
                 }
 
                 if (joint.m_MainMember.EMemberTypePosition <= 0)
                 {
-                    new ArgumentNullException("Undefined main member type of joint ID: " + joint.ID + ", member ID: " + joint.m_MainMember.ID);
+                    if (_pfdVM.debugging)
+                        new ArgumentNullException("Undefined main member type of joint ID: " + joint.ID + ", member ID: " + joint.m_MainMember.ID);
                 }
 
                 if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers.Length > 0)
                 {
                     for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
                     {
-                        if (joint.m_SecondaryMembers[i].EMemberTypePosition <= 0)
+                        if (joint.m_SecondaryMembers[i].EMemberTypePosition <= 0 && _pfdVM.debugging)
                             new ArgumentNullException("Undefined secondary member type of joint ID: " + joint.ID + ", member ID: " + joint.m_SecondaryMembers[i].ID);
                     }
                 }
@@ -166,7 +168,7 @@ namespace PFD
                 jointsIdentified += list_joints.Count;
             }
 
-            if (modelJointsCount != jointsIdentified)
+            if (modelJointsCount != jointsIdentified && _pfdVM.debugging)
             {
                 System.Diagnostics.Trace.WriteLine($"JOINTS VALIDATION ERROR: Not all joints were identified. Identified joints count: [{jointsIdentified}]. Model joints count: [{modelJointsCount}]");
 

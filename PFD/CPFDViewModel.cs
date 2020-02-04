@@ -29,7 +29,7 @@ namespace PFD
     [Serializable]
     public class CPFDViewModel : INotifyPropertyChanged
     {
-        private bool debugging = true;
+        public bool debugging = false;
 
         [NonSerialized]
         private readonly BackgroundWorker _worker = new BackgroundWorker();

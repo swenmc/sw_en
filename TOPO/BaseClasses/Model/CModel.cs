@@ -17,6 +17,8 @@ namespace BaseClasses
     [Serializable]
     public class CModel
     {
+        public bool debugging = false;
+
         public float fL_tot;
         public float fL1_frame;
         public float fW_frame;
@@ -200,7 +202,8 @@ namespace BaseClasses
             //value je List<Member> vypiseme pocet rovnakych prvkov Members
             foreach (KeyValuePair<Tuple<float, string, string>, List<CMember>> pair in GroupedMembers)
             {
-                System.Diagnostics.Trace.WriteLine(string.Format("{0}, {1}", string.Format("{0}_{1}_{2}", pair.Key.Item1, pair.Key.Item2, pair.Key.Item3), pair.Value.Count));
+                if(debugging)
+                   System.Diagnostics.Trace.WriteLine(string.Format("{0}, {1}", string.Format("{0}_{1}_{2}", pair.Key.Item1, pair.Key.Item2, pair.Key.Item3), pair.Value.Count));
             }
         }
 
