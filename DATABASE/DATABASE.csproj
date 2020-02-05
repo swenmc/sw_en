@@ -140,7 +140,7 @@
     <Compile Include="CDatabaseManager.cs" />
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="DTO\CComponentPrefixes.cs" />
-    <Compile Include="DTO\CKitsetGableRoofEnclosed.cs" />
+    <Compile Include="DTO\CKitsetMonoOrGableRoofEnclosed.cs" />
     <Compile Include="DTO\CSectionProperties.cs" />
     <Compile Include="DTO\CoatingColours.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -336,7 +336,7 @@ namespace PFD
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            CKitsetGableRoofEnclosed model = CModelsManager.LoadModelKitsetGableRoofEnclosed(iSelectedIndex + 1);
+            CKitsetMonoOrGableRoofEnclosed model = CModelsManager.LoadModelKitsetMonoOrGableRoofEnclosed(iSelectedIndex + 1, "KitsetGableRoofEnclosed");
             if (model == null) throw new Exception("Model is null");
 
             fb = float.Parse(model.Width, nfi);

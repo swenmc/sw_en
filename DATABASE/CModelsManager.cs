@@ -7,49 +7,49 @@ namespace DATABASE
 {
     public static class CModelsManager
     {
-        public static List<CKitsetGableRoofEnclosed> LoadModelKitsetGableRoofEnclosed()
+        public static List<CKitsetMonoOrGableRoofEnclosed> LoadModelKitsetMonoOrGableRoofEnclosed(string tableName)
         {
-            CKitsetGableRoofEnclosed model;
-            List<CKitsetGableRoofEnclosed> items = new List<CKitsetGableRoofEnclosed>();
+            CKitsetMonoOrGableRoofEnclosed model;
+            List<CKitsetMonoOrGableRoofEnclosed> items = new List<CKitsetMonoOrGableRoofEnclosed>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["ModelsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from KitsetGableRoofEnclosed", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from "+ tableName, conn);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        model = GetKitsetGableRoofEnclosedProperties(reader);
+                        model = GetKitsetMonoOrGableRoofEnclosedProperties(reader);
                         items.Add(model);
                     }
                 }
             }
             return items;
         }
-        public static CKitsetGableRoofEnclosed LoadModelKitsetGableRoofEnclosed(int ID)
+        public static CKitsetMonoOrGableRoofEnclosed LoadModelKitsetMonoOrGableRoofEnclosed(int ID, string tableName)
         {
-            CKitsetGableRoofEnclosed model = null;
+            CKitsetMonoOrGableRoofEnclosed model = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["ModelsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from KitsetGableRoofEnclosed WHERE ID = @id", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from "+ tableName + " WHERE ID = @id", conn);
                 command.Parameters.AddWithValue("@id", ID);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        model = GetKitsetGableRoofEnclosedProperties(reader);
+                        model = GetKitsetMonoOrGableRoofEnclosedProperties(reader);
                     }
                 }
             }
             return model;
         }
 
-        private static CKitsetGableRoofEnclosed GetKitsetGableRoofEnclosedProperties(SQLiteDataReader reader)
+        private static CKitsetMonoOrGableRoofEnclosed GetKitsetMonoOrGableRoofEnclosedProperties(SQLiteDataReader reader)
         {
-            CKitsetGableRoofEnclosed model = new CKitsetGableRoofEnclosed();
+            CKitsetMonoOrGableRoofEnclosed model = new CKitsetMonoOrGableRoofEnclosed();
             model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             model.ModelName = reader["modelName"].ToString();
             model.Width = reader["width"].ToString();

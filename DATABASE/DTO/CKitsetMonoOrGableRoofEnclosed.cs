@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DATABASE.DTO
 {
-    public class CKitsetGableRoofEnclosed
+    public class CKitsetMonoOrGableRoofEnclosed
     {
         int MID;
         string MModelName;
@@ -521,7 +521,7 @@ namespace DATABASE.DTO
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------
-        public CKitsetGableRoofEnclosed() { }
+        public CKitsetMonoOrGableRoofEnclosed() { }
 
     }
 }
