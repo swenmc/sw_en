@@ -45,6 +45,9 @@ namespace PFD
             if (vm != null && vm.IsSetFromCode) return;
             if (vm.ComponentTypeIndex == -1) return;
 
+            if (vm.ComponentList.Count == 0) { this.IsEnabled = false; return; }
+            else this.IsEnabled = true;
+
             CMemberGroup GroupOfMembersWithSelectedType = null;
 
             if (vm.ComponentList[vm.ComponentTypeIndex] == "All") //All
