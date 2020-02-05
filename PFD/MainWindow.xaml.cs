@@ -245,6 +245,10 @@ namespace PFD
                 {
                     vm.RecreateModel = true;
                 }
+                if (e.PropertyName == "Calculate")
+                {
+                    vm.ModelCalculatedResultsValid = false;
+                }
                 if (e.PropertyName == "Generate")
                 {
                     vm.RecreateFoundations = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruju Foundations
@@ -766,9 +770,12 @@ namespace PFD
 
         private void UpdateAll(bool programStart = false)
         {
+            DateTime start = DateTime.Now;
+            
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
 
             UpdateGeometryInputData();
+            System.Diagnostics.Trace.WriteLine("UpdateGeometryInputData: " + (DateTime.Now - start).TotalMilliseconds);
 
             List<CConnectionJointTypes> joints = null;
             if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
@@ -778,6 +785,7 @@ namespace PFD
                 MessageBox.Show("Joints will be recreated and changed to defaults.");
                 this.IsEnabled = true;
             }
+            System.Diagnostics.Trace.WriteLine("Joints: " + (DateTime.Now - start).TotalMilliseconds);
 
             List<CFoundation> foundations = null;
             if (!vm.RecreateFoundations) foundations = vm.Model.m_arrFoundations;
@@ -808,14 +816,18 @@ namespace PFD
                     foundations,
                     slabs,
                     vm);
+                System.Diagnostics.Trace.WriteLine("Model created: " + (DateTime.Now - start).TotalMilliseconds);
 
                 UpdateUC_Joints();
+                System.Diagnostics.Trace.WriteLine("UpdateUC_Joints: " + (DateTime.Now - start).TotalMilliseconds);
                 UpdateUC_Footings();
-                                
+                System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);
+
                 vm.Flashings = null;
                 vm.Gutters = null;
                 vm.Downpipes = null;
             }
+            
 
             bool generateSurfaceLoads = vm._displayOptionsVM.ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||
@@ -825,6 +837,7 @@ namespace PFD
 
             // Calculate load values
             CalculateLoadingValues((CModel_PFD_01_GR)vm.Model);
+            System.Diagnostics.Trace.WriteLine("CalculateLoadingValues: " + (DateTime.Now - start).TotalMilliseconds);
 
             vm.Model.CalculateLoadValuesAndGenerateLoads(vm.GeneralLoad,
                 vm.Wind,
@@ -837,17 +850,21 @@ namespace PFD
                 vm.GenerateLoadsOnFrameMembers,
                 generateSurfaceLoads);
 
+            System.Diagnostics.Trace.WriteLine("CalculateLoadValuesAndGenerateLoads: " + (DateTime.Now - start).TotalMilliseconds);
+
             if (vm.SynchronizeGUI || programStart)
             {
                 // Create 3D window
                 //UpdateDisplayOptions();
                 sDisplayOptions = vm.GetDisplayOptions();
+                System.Diagnostics.Trace.WriteLine("GetDisplayOptions: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex], vm.JointsVM.DictJoints);
-
+                System.Diagnostics.Trace.WriteLine("new Page3Dmodel: " + (DateTime.Now - start).TotalMilliseconds);
                 // Display model in 3D preview frame
                 Frame1.Content = page1;
                 Frame1.UpdateLayout();
+                System.Diagnostics.Trace.WriteLine("UpdateLayout: " + (DateTime.Now - start).TotalMilliseconds);
             }
         }
 
