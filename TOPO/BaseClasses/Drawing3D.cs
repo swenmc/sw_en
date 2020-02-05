@@ -116,19 +116,13 @@ namespace BaseClasses
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
                 DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
-
-                // Martin 31.10.2019 - toto som zakomentoval inak sa pri generovani modelu pre export do pdf prepisovali display options, takze sa vzdy zobrazovali horizontalne gridlines, aj ked sa jednalo o elevations (front, back, left, right)
-                /*
-                sDisplayOptions.bCreateHorizontalGridlines = true;
-                sDisplayOptions.bCreateVerticalGridlinesFront = false;
-                sDisplayOptions.bCreateVerticalGridlinesBack = false;
-                sDisplayOptions.bCreateVerticalGridlinesLeft = false;
-                sDisplayOptions.bCreateVerticalGridlinesRight = false;
-                */
+                //System.Diagnostics.Trace.WriteLine("After DrawDimensionsToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
                 DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr);
+                //System.Diagnostics.Trace.WriteLine("After DrawGridlinesToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
+                //System.Diagnostics.Trace.WriteLine("After DrawSectionSymbolsToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayDetailSymbols)
                 {
@@ -222,10 +216,6 @@ namespace BaseClasses
 
                 _trackport.Model = (Model3D)gr;
 
-                // Add centerline member model
-                //if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, sDisplayOptions, _trackport.ViewPort);
-                //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
-
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
                     Drawing3D.CreateMembersDescriptionModel3D_POKUS_MC(model, _trackport.ViewPort, sDisplayOptions); // To Ondrej POKUS 17.8.2019
@@ -258,19 +248,10 @@ namespace BaseClasses
                 {
                     Drawing3D.CreateFloorSlabsDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
-
-                //if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
-                //{
-                //    CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-                //    CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-
-                //    CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4,0.1, (model.fW_frame * 1000).ToString());
-
-                //    Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
-                //}
             }
-
+            //System.Diagnostics.Trace.WriteLine("Before SetupScene: " + (DateTime.Now - start).TotalMilliseconds);
             _trackport.SetupScene();
+            //System.Diagnostics.Trace.WriteLine("After SetupScene: " + (DateTime.Now - start).TotalMilliseconds);
             return model;
         }
 
@@ -644,12 +625,12 @@ namespace BaseClasses
             float fOffsetTop = maxModelLength * 0.05f + model.fH2_frame; // H2 (ridge height)
             float fOffsetBottom = maxModelLength * 0.03f;
             float fLineLength = fOffsetTop + fOffsetBottom;
-            
+
             //TO Mato - tento parameter sa asi nemusi scalovat podla velkosti modelu, ci? Aspon tak som to spravil.
             float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
 
             if (sDisplayOptions.bCreateVerticalGridlinesFront)
-            {                
+            {
                 List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
                 membersBaseNodes_FrontSide = GetMemberBaseNodesFrontSide(model);
 
@@ -853,7 +834,7 @@ namespace BaseClasses
             {
                 CSlab slab = model.m_arrSlabs.FirstOrDefault();
                 if (slab == null) return;
-                
+
                 // TODO - zapracovat update na akcie v UC_DoorAndWindows - ked pridam nove roller door, alebo zmenim typ door z personnel na roller door alebo presuniem roller door do inej bay
                 // TODO - zapracovat update ak sa zmenia rozmery budovy a podobne
                 List<CSlabPerimeter> diff_perimetersWithoutRebates = ModelHelper.GetDifferentPerimetersWithoutRebates(slab.PerimeterBeams);
@@ -863,7 +844,7 @@ namespace BaseClasses
                 Point3D pointRight;
                 CSectionSymbol secSymbolLeft = null;
                 CSectionSymbol secSymbolRight = null;
-                
+
                 float fRelativePositionPerimeterSymbol = 0.4f;
                 List<string> sectionDetailsLetters = new List<string>() { "A", "B", "C", "D", "E", "F" };
                 int sectionDetailsLetterIndex = 0;
@@ -955,7 +936,7 @@ namespace BaseClasses
                         }
                     }
                 }
-                
+
                 float fRelativePositionRebateSymbol = 0.4f; // Relativna pozicia v ramci rebate length
                 foreach (CSlabPerimeter diffPerimeter in diff_perimetersWithRebates)
                 {
@@ -973,7 +954,7 @@ namespace BaseClasses
                             {
                                 // rebate.RebatePosition - uvada poziciu zaciatku rebate v ramci perimeter 0 - dlzka strany budovy
                                 // urcit ako x dveri + pocet bays * sirka bays
-                                
+
                                 if (perimeter.BuildingSide == "Left")
                                 {
                                     pointLeft = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
@@ -1030,7 +1011,7 @@ namespace BaseClasses
             }
         }
 
-       
+
 
         private static void DrawDetailSymbolsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, List<CDetailSymbol> listOfDetailSymbols, Model3DGroup gr)
         {
@@ -1538,43 +1519,71 @@ namespace BaseClasses
                                         JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
                                     }
 
-                                    // Add plate anchors - only base plates
-                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] is CConCom_Plate_B_basic)
+                                    //temp refaktoring 5.2.2020 - bug 522
+                                    if (sDisplayOptions.bDisplayConnectors)
                                     {
-                                        CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)cmodel.m_arrConnectionJoints[i].m_arrPlates[l];
+                                        // Add plate anchors - only base plates
+                                        if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] is CConCom_Plate_B_basic)
+                                        {
+                                            CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)cmodel.m_arrConnectionJoints[i].m_arrPlates[l];
 
-                                        if (plate.AnchorArrangement != null &&
-                                            plate.AnchorArrangement.Anchors != null &&
-                                            plate.AnchorArrangement.Anchors.Length > 0)
+                                            if (plate.AnchorArrangement != null &&
+                                                plate.AnchorArrangement.Anchors != null &&
+                                                plate.AnchorArrangement.Anchors.Length > 0)
+                                            {
+                                                Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
+                                                for (int m = 0; m < plate.AnchorArrangement.Anchors.Length; m++)
+                                                {
+                                                    GeometryModel3D plateConnectorgeom = plate.AnchorArrangement.Anchors[m].CreateGeomModel3D(brushAnchors);
+                                                    plate.AnchorArrangement.Anchors[m].Visual_Connector = plateConnectorgeom;
+                                                    plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
+
+                                                    Model3DGroup anchorModelObjectsModelGroup = new Model3DGroup(); // Vsetky objekty, ktore su na viazane na danu anchor pridame do skupiny
+
+                                                    // Washers
+                                                    GeometryModel3D washerPlateTopGeom = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateGeomModel3D(brushWashers);
+                                                    plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate = washerPlateTopGeom;
+                                                    anchorModelObjectsModelGroup.Children.Add(washerPlateTopGeom);
+
+                                                    GeometryModel3D washerBearingGeom = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateGeomModel3D(brushWashers);
+                                                    plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate = washerBearingGeom;
+                                                    anchorModelObjectsModelGroup.Children.Add(washerBearingGeom);
+
+                                                    // Nuts
+                                                    for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
+                                                    {
+                                                        GeometryModel3D nutGeom = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateGeomModel3D(brushNuts);
+                                                        plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut = nutGeom;
+                                                        anchorModelObjectsModelGroup.Children.Add(nutGeom);
+                                                    }
+
+                                                    anchorModelObjectsModelGroup.Transform = plateConnectorgeom.Transform; // Skupine objektov na kotve priradime transformaciu kotvy
+                                                    plateConnectorsModelGroup.Children.Add(anchorModelObjectsModelGroup); // Skupinu objektov na anchor pridame do skupiny anchors (connectors)
+                                                }
+                                                plateConnectorsModelGroup.Transform = plateGeom.Transform;
+                                                if (sDisplayOptions.bDisplayConnectors)
+                                                {
+                                                    JointModelGroup.Children.Add(plateConnectorsModelGroup);
+                                                }
+                                            }
+                                        }
+
+                                    } //end display connectors
+
+                                    //temp refaktoring 5.2.2020 - bug 522
+                                    if (sDisplayOptions.bDisplayConnectors)
+                                    {
+                                        // Add plate screws
+                                        if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement != null &&
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws != null &&
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length > 0)
                                         {
                                             Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
-                                            for (int m = 0; m < plate.AnchorArrangement.Anchors.Length; m++)
+                                            for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length; m++)
                                             {
-                                                GeometryModel3D plateConnectorgeom = plate.AnchorArrangement.Anchors[m].CreateGeomModel3D(brushAnchors);
-                                                plate.AnchorArrangement.Anchors[m].Visual_Connector = plateConnectorgeom;
+                                                GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].CreateGeomModel3D(brushScrews);
+                                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].Visual_Connector = plateConnectorgeom;
                                                 plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
-
-                                                Model3DGroup anchorModelObjectsModelGroup = new Model3DGroup(); // Vsetky objekty, ktore su na viazane na danu anchor pridame do skupiny
-
-                                                // Washers
-                                                GeometryModel3D washerPlateTopGeom = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateGeomModel3D(brushWashers);
-                                                plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate = washerPlateTopGeom;
-                                                anchorModelObjectsModelGroup.Children.Add(washerPlateTopGeom);
-
-                                                GeometryModel3D washerBearingGeom = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateGeomModel3D(brushWashers);
-                                                plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate = washerBearingGeom;
-                                                anchorModelObjectsModelGroup.Children.Add(washerBearingGeom);
-
-                                                // Nuts
-                                                for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
-                                                {
-                                                    GeometryModel3D nutGeom = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateGeomModel3D(brushNuts);
-                                                    plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut = nutGeom;
-                                                    anchorModelObjectsModelGroup.Children.Add(nutGeom);
-                                                }
-
-                                                anchorModelObjectsModelGroup.Transform = plateConnectorgeom.Transform; // Skupine objektov na kotve priradime transformaciu kotvy
-                                                plateConnectorsModelGroup.Children.Add(anchorModelObjectsModelGroup); // Skupinu objektov na anchor pridame do skupiny anchors (connectors)
                                             }
                                             plateConnectorsModelGroup.Transform = plateGeom.Transform;
                                             if (sDisplayOptions.bDisplayConnectors)
@@ -1584,24 +1593,6 @@ namespace BaseClasses
                                         }
                                     }
 
-                                    // Add plate screws
-                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement != null &&
-                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws != null &&
-                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length > 0)
-                                    {
-                                        Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
-                                        for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length; m++)
-                                        {
-                                            GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].CreateGeomModel3D(brushScrews);
-                                            cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].Visual_Connector = plateConnectorgeom;
-                                            plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
-                                        }
-                                        plateConnectorsModelGroup.Transform = plateGeom.Transform;
-                                        if (sDisplayOptions.bDisplayConnectors)
-                                        {
-                                            JointModelGroup.Children.Add(plateConnectorsModelGroup);
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -1647,7 +1638,7 @@ namespace BaseClasses
                                 RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
                                 JointModelGroup.Transform = rotate;
                             }
-                            else if ((cmodel.m_arrConnectionJoints[i].m_SecondaryMembers == null || cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] == null) && 
+                            else if ((cmodel.m_arrConnectionJoints[i].m_SecondaryMembers == null || cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] == null) &&
                                      cmodel.m_arrConnectionJoints[i].m_MainMember != null && !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Secondary members (or first secondary member) are null and - joint is defined in LCS of main member and rotation degree is not zero
                             {
                                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
@@ -1783,7 +1774,7 @@ namespace BaseClasses
                                         cmodel.m_arrFoundations[i].Top_Bars_x[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Top_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
-                                        if(sDisplayOptions.bDisplayReinforcementBars) model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                        if (sDisplayOptions.bDisplayReinforcementBars) model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
                             }
@@ -2557,9 +2548,9 @@ namespace BaseClasses
                     if (sDisplayOptions.bDisplayReinforcementBarsWireFrame)
                     {
                         wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_x, model.m_arrFoundations[i].GetFoundationTransformGroup()));
-                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_y,model.m_arrFoundations[i].GetFoundationTransformGroup()));
-                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_x,model.m_arrFoundations[i].GetFoundationTransformGroup()));
-                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_y,model.m_arrFoundations[i].GetFoundationTransformGroup()));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_y, model.m_arrFoundations[i].GetFoundationTransformGroup()));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_x, model.m_arrFoundations[i].GetFoundationTransformGroup()));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_y, model.m_arrFoundations[i].GetFoundationTransformGroup()));
                     }
                 }
 
@@ -2721,7 +2712,7 @@ namespace BaseClasses
         {
             if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
             {
-                if(cylinders == null) cylinders = new Model3DGroup();
+                if (cylinders == null) cylinders = new Model3DGroup();
 
                 float modelMaxLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                 //float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
@@ -3263,7 +3254,7 @@ namespace BaseClasses
                         pTextPosition.Z = p.Z + fOffsetZ;
 
                         // Create text
-                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor),0.5);
+                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor), 0.5);
 
                         if (centerModel)
                         {
@@ -3720,11 +3711,11 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = slab.Text;
             tb.FontFamily = new FontFamily("Arial");
-            
+
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 20f;
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
-            
+
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
