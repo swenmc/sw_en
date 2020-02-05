@@ -245,6 +245,10 @@ namespace PFD
                 {
                     vm.RecreateModel = true;
                 }
+                if (e.PropertyName == "Display")
+                {
+                    vm.RecreateModel = true;
+                }
                 if (e.PropertyName == "Calculate")
                 {
                     vm.ModelCalculatedResultsValid = false;
