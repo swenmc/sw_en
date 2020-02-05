@@ -984,12 +984,15 @@ namespace EXPIMP
             else return (value * qlItem.ReportUnitFactor).ToString($"F{qlItem.ReportDecimalPlaces}", nfi);
         }
 
-
         private static CConnectionJointTypes GetFirstSameJointFromModel(CConnectionJointTypes joint, CModel model)
         {
             foreach (CConnectionJointTypes j in model.m_arrConnectionJoints)
             {
-                if (joint.JointType == j.JointType) return j;
+                // Bug 513 - Musime vyberat nielen prvy spoj, ale prvy spoj, ktory ma generovane vsetky pripojene pruty
+                if (j.m_MainMember.BIsGenerated == true && (j.m_SecondaryMembers == null || j.m_SecondaryMembers[0].BIsGenerated == true))
+                {
+                    if (joint.JointType == j.JointType) return j;
+                }
             }
             return joint;
         }
