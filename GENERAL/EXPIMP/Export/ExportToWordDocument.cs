@@ -676,8 +676,12 @@ namespace EXPIMP
             document.ReplaceText("[FaultDistanceDmax]", data.FaultDistanceDmax.ToString(sStringFormat_Distance, nfi));
             document.ReplaceText("[ZoneFactorZ]", data.ZoneFactorZ.ToString(sStringFormat_Factor, nfi));
 
-            document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(sStringFormat_Weight, nfi));
-            document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(sStringFormat_Weight, nfi));
+            //document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(sStringFormat_Weight, nfi));
+            //document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(sStringFormat_Weight, nfi));
+
+            document.ReplaceText("[CCalcul_1170_5.G_tot_x]", vdh.GetStringReport(data.Eq.fG_tot_x, "CCalcul_1170_5.G_tot_x"));
+            document.ReplaceText("[CCalcul_1170_5.G_tot_y]", vdh.GetStringReport(data.Eq.fG_tot_y, "CCalcul_1170_5.G_tot_y"));
+
             document.ReplaceText("[CCalcul_1170_5.PeriodAlongXDirectionTx]", data.Eq.fPeriodAlongXDirection_Tx.ToString(sStringFormat_Period, nfi));
             document.ReplaceText("[CCalcul_1170_5.PeriodAlongYDirectionTy]", data.Eq.fPeriodAlongYDirection_Ty.ToString(sStringFormat_Period, nfi));
             document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTx]", data.Eq.fSpectralShapeFactor_Ch_Tx.ToString(sStringFormat_Factor, nfi));
@@ -692,13 +696,15 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_5.C_Tx_ULS]", data.Eq.fC_Tx_ULS.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", data.Eq.fk_Nu_Tx_ULS_strength.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.C_d_T1x_ULS_strength]", data.Eq.fC_d_T1x_ULS_strength.ToString(sStringFormat_Factor, nfi));
-            document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", data.Eq.fV_x_ULS_strength.ToString(sStringFormat_Force, nfi));
+            //document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", data.Eq.fV_x_ULS_strength.ToString(sStringFormat_Force, nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", vdh.GetStringReport(data.Eq.fV_x_ULS_strength, "CCalcul_1170_5.V_x_ULS_strength"));
             // Y-direction
             document.ReplaceText("[CCalcul_1170_5.N_TyD_ULS]", data.Eq.fN_TyD_ULS.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.C_Ty_ULS]", data.Eq.fC_Ty_ULS.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", data.Eq.fk_Nu_Ty_ULS_strength.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.C_d_T1y_ULS_strength]", data.Eq.fC_d_T1y_ULS_strength.ToString(sStringFormat_Factor, nfi));
-            document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(sStringFormat_Force, nfi));
+            //document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(sStringFormat_Force, nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", vdh.GetStringReport(data.Eq.fV_y_ULS_strength, "CCalcul_1170_5.V_y_ULS_strength"));
 
             // SLS
             // TO Ondrej - tu by to chcelo do tabulky riadok s textom Serviceability Limit State
@@ -711,13 +717,15 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_5.C_Tx_SLS]", data.Eq.fC_Tx_SLS.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_SLS]", data.Eq.fk_Nu_Tx_SLS.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.C_d_T1x_SLS]", data.Eq.fC_d_T1x_SLS.ToString(sStringFormat_Factor, nfi));
-            document.ReplaceText("[CCalcul_1170_5.V_x_SLS]", data.Eq.fV_x_SLS.ToString(sStringFormat_Force, nfi));
+            //document.ReplaceText("[CCalcul_1170_5.V_x_SLS]", data.Eq.fV_x_SLS.ToString(sStringFormat_Force, nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_x_SLS]", vdh.GetStringReport(data.Eq.fV_x_SLS, "CCalcul_1170_5.V_x_SLS"));
             // Y-direction
             document.ReplaceText("[CCalcul_1170_5.N_TyD_SLS]", data.Eq.fN_TyD_SLS.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.C_Ty_SLS]", data.Eq.fC_Ty_SLS.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_SLS]", data.Eq.fk_Nu_Ty_SLS.ToString(sStringFormat_Factor, nfi));
             document.ReplaceText("[CCalcul_1170_5.C_d_T1y_SLS]", data.Eq.fC_d_T1y_SLS.ToString(sStringFormat_Factor, nfi));
-            document.ReplaceText("[CCalcul_1170_5.V_y_SLS]", data.Eq.fV_y_SLS.ToString(sStringFormat_Force, nfi));
+            //document.ReplaceText("[CCalcul_1170_5.V_y_SLS]", data.Eq.fV_y_SLS.ToString(sStringFormat_Force, nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_y_SLS]", vdh.GetStringReport(data.Eq.fV_y_SLS, "CCalcul_1170_5.V_y_SLS"));
         }
 
         private static void DrawBasicGeometryParameters(DocX document)

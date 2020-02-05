@@ -546,7 +546,7 @@ namespace PFD
             int iNumberOfMainRafters_x = 2; // TODO - napojit na model
 
             float fLoadingWidth_Frame_x = vm.fBayWidth; // Zatazovacia sirka ramu
-            float fRafterLength = vm.GableWidth / (float)Math.Cos(vm.fRoofPitch_radians);
+            float fRafterLength = (0.5f * vm.GableWidth) / (float)Math.Cos(vm.fRoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
 
             float fMass_Purlins_x = iNumberOfPurlins_x * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_EavePurlins_x = iNumberOfEavePurlins_x * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
