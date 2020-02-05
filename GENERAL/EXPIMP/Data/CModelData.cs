@@ -70,8 +70,8 @@ namespace EXPIMP
         private float m_AnnualProbabilityULS_EQ;
         private float m_AnnualProbabilitySLS;
         private float m_SiteElevation;
-        private float m_FaultDistanceDmin;
-        private float m_FaultDistanceDmax;
+        private float m_FaultDistanceDmin_km;
+        private float m_FaultDistanceDmax_km;
         private float m_ZoneFactorZ;
         //private float m_PeriodAlongXDirectionTx;
         //private float m_PeriodAlongYDirectionTy;
@@ -795,29 +795,29 @@ namespace EXPIMP
             }
         }
 
-        public float FaultDistanceDmin
+        public float FaultDistanceDmin_km
         {
             get
             {
-                return m_FaultDistanceDmin;
+                return m_FaultDistanceDmin_km;
             }
 
             set
             {
-                m_FaultDistanceDmin = value;
+                m_FaultDistanceDmin_km = value;
             }
         }
 
-        public float FaultDistanceDmax
+        public float FaultDistanceDmax_km
         {
             get
             {
-                return m_FaultDistanceDmax;
+                return m_FaultDistanceDmax_km;
             }
 
             set
             {
-                m_FaultDistanceDmax = value;
+                m_FaultDistanceDmax_km = value;
             }
         }
 

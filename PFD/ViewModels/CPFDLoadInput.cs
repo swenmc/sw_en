@@ -47,8 +47,8 @@ namespace PFD
         private float MLocalPressureFactorKl_EavePurlin_Roof;
 
         private int MSiteSubSoilClassIndex;
-        private float MFaultDistanceDmin;
-        private float MFaultDistanceDmax;
+        private float MFaultDistanceDmin_km;
+        private float MFaultDistanceDmax_km;
         private float MZoneFactorZ;
         //private float MPeriodAlongXDirectionTx;
         //private float MPeriodAlongYDirectionTy;
@@ -456,36 +456,36 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float FaultDistanceDmin
+        public float FaultDistanceDmin_km
         {
             get
             {
-                return MFaultDistanceDmin;
+                return MFaultDistanceDmin_km;
             }
 
             set
             {
-                MFaultDistanceDmin = value;
+                MFaultDistanceDmin_km = value;
 
                 SetResultsAreNotValid();
-                NotifyPropertyChanged("FaultDistanceDmin");
+                NotifyPropertyChanged("FaultDistanceDmin_km");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float FaultDistanceDmax
+        public float FaultDistanceDmax_km
         {
             get
             {
-                return MFaultDistanceDmax;
+                return MFaultDistanceDmax_km;
             }
 
             set
             {
-                MFaultDistanceDmax = value;
+                MFaultDistanceDmax_km = value;
 
                 SetResultsAreNotValid();
-                NotifyPropertyChanged("FaultDistanceDmax");
+                NotifyPropertyChanged("FaultDistanceDmax_km");
             }
         }
 
@@ -894,8 +894,8 @@ namespace PFD
             LocalPressureFactorKl_EavePurlin_Roof = sloadInputTextBoxes.LocalPressureFactorKl_EavePurlin_Roof;
 
             SiteElevation = sloadInputTextBoxes.SiteElevation;
-            FaultDistanceDmin = sloadInputTextBoxes.FaultDistanceDmin_km;
-            FaultDistanceDmax = sloadInputTextBoxes.FaultDistanceDmax_km;
+            FaultDistanceDmin_km = sloadInputTextBoxes.FaultDistanceDmin_km;
+            FaultDistanceDmax_km = sloadInputTextBoxes.FaultDistanceDmax_km;
             //PeriodAlongXDirectionTx = sloadInputTextBoxes.PeriodAlongXDirectionTx;
             //PeriodAlongYDirectionTy = sloadInputTextBoxes.PeriodAlongYDirectionTy;
             AdditionalDeadActionRoof = sloadInputTextBoxes.AdditionalDeadActionRoof;
@@ -1014,19 +1014,19 @@ namespace PFD
                         {
                             if (!reader.IsDBNull(reader.GetOrdinal("D_min_km")))
                             {
-                                FaultDistanceDmin = float.Parse(reader["D_min_km"].ToString());
+                                FaultDistanceDmin_km = float.Parse(reader["D_min_km"].ToString());
                             }
                         }
-                        catch (ArgumentNullException) { FaultDistanceDmin = 9999.00f; }
+                        catch (ArgumentNullException) { FaultDistanceDmin_km = 9999.00f; }
 
                         try
                         {
                             if (!reader.IsDBNull(reader.GetOrdinal("D_max_km")))
                             {
-                                FaultDistanceDmax = float.Parse(reader["D_max_km"].ToString());
+                                FaultDistanceDmax_km = float.Parse(reader["D_max_km"].ToString());
                             }
                         }
-                        catch (ArgumentNullException) { FaultDistanceDmax = 9999.00f; }
+                        catch (ArgumentNullException) { FaultDistanceDmax_km = 9999.00f; }
                     }
                 }
 

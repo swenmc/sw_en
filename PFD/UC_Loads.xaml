@@ -100,6 +100,7 @@
             <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_SiteElevation" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=SiteElevation, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="7" Grid.Column="2" Text="[m]" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
             <TextBlock Grid.Row="9" Grid.Column="0" Text="Snow Region:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -190,16 +191,18 @@
 
             <TextBlock Grid.Row="17" Grid.Column="0" Text="Fault Distance Dmin:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="17" Grid.Column="1" Name ="FaultDistanceDmin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="17" Grid.Column="1" Name ="FaultDistanceDmin_km" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=FaultDistanceDmin, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=FaultDistanceDmin_km, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="17" Grid.Column="2" Text="[km]" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
             <TextBlock Grid.Row="18" Grid.Column="0" Text="Fault Distance Dmax:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="18" Grid.Column="1" Name ="FaultDistanceDmax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="18" Grid.Column="1" Name ="FaultDistanceDmax_km" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=FaultDistanceDmax, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-
+                         Text="{Binding Path=FaultDistanceDmax_km, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="18" Grid.Column="2" Text="[km]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            
             <TextBlock Grid.Row="19" Grid.Column="0" Text="Zone Factor Z:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="19" Grid.Column="1" Name ="ZoneFactorZ" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -248,9 +251,6 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ImposedActionRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="22" Grid.Column="2" Text="[kN / m²]" HorizontalAlignment="Left" VerticalAlignment="Top" />
-
         </Grid>
     </ScrollViewer>
-
-
 </UserControl>

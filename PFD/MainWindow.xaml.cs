@@ -667,7 +667,7 @@ namespace PFD
         public void CalculateEQParameters(float fT_1x_param, float fT_1y_param, float fMass_Total_x_param, float fMass_Total_y_param)
         {
             sSeisInputData.eSiteSubsoilClass = loadInput.SiteSubSoilClass;
-            sSeisInputData.fProximityToFault_D_km = loadInput.FaultDistanceDmin; // km
+            sSeisInputData.fProximityToFault_D_km = loadInput.FaultDistanceDmin_km; // km
             sSeisInputData.fZoneFactor_Z = loadInput.ZoneFactorZ;
             //sSeisInputData.fPeriodAlongXDirection_Tx = loadInput.PeriodAlongXDirectionTx; //sec
             //sSeisInputData.fPeriodAlongYDirection_Ty = loadInput.PeriodAlongYDirectionTy; //sec

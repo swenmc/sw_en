@@ -2782,17 +2782,18 @@ namespace PFD
             data.InternalPressureCoefficientCpiMaximumPressure = _loadInput.InternalPressureCoefficientCpiMaximumPressure;
             data.InternalPressureCoefficientCpiMaximumSuction = _loadInput.InternalPressureCoefficientCpiMaximumSuction;
 
-            data.AdditionalDeadActionWall = _loadInput.AdditionalDeadActionWall;
-            data.AdditionalDeadActionRoof = _loadInput.AdditionalDeadActionRoof;
-            data.ImposedActionRoof = _loadInput.ImposedActionRoof;
+            // Konverzia na zakladne jednotky SI
+            data.AdditionalDeadActionWall = _loadInput.AdditionalDeadActionWall * 1000;
+            data.AdditionalDeadActionRoof = _loadInput.AdditionalDeadActionRoof * 1000;
+            data.ImposedActionRoof = _loadInput.ImposedActionRoof * 1000;
             data.AnnualProbabilityULS_Snow = _loadInput.AnnualProbabilityULS_Snow;
             data.R_ULS_Snow = _loadInput.R_ULS_Snow;
             data.AnnualProbabilityULS_Wind = _loadInput.AnnualProbabilityULS_Wind;
             data.R_ULS_Wind = _loadInput.R_ULS_Wind;
             data.AnnualProbabilityULS_EQ = _loadInput.AnnualProbabilityULS_EQ;
             data.R_ULS_EQ = _loadInput.R_ULS_EQ;
-            data.FaultDistanceDmin = _loadInput.FaultDistanceDmin;
-            data.FaultDistanceDmax = _loadInput.FaultDistanceDmax;
+            data.FaultDistanceDmin_km = _loadInput.FaultDistanceDmin_km;
+            data.FaultDistanceDmax_km = _loadInput.FaultDistanceDmax_km;
             data.ZoneFactorZ = _loadInput.ZoneFactorZ;
             //data.PeriodAlongXDirectionTx = _loadInput.PeriodAlongXDirectionTx;
             //data.PeriodAlongYDirectionTy = _loadInput.PeriodAlongYDirectionTy;
