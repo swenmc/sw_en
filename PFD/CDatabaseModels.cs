@@ -361,10 +361,42 @@ namespace PFD
             iFrNo = int.Parse(model.IFrames);
             fL1 = fL / (iFrNo - 1);
             fRoof_Pitch_deg = 5;
-            fdist_girt = 0.25f * fL1;
-            fdist_purlin = 0.25f * fL1;
-            fdist_frontcolumn = 0.5f * fL1;
             fdist_girt_bottom = 0.3f; // Distance from concrete foundation to the centerline
+
+            float fDefaultDistanceOfGirts = 1.0f; // 2 meters
+            float fDefaultDistanceOfPurlins = 1.0f; // 2 meters
+            float fRoofPitch_radians = fRoof_Pitch_deg * MATH.MathF.fPI / 180f;
+
+            float fRafterLength;
+            float fdist_purlin_end; // Pre Gable Roof 250 mm od apex, pre Monopitch roof = 0;
+
+            if (iSelectedKitsetTypeIndex == 0)
+            {
+                fRafterLength = fb / (float)Math.Cos(fRoofPitch_radians);
+                fdist_purlin_end = fDefaultDistanceOfPurlins; // Posledna vaznica od konca rafteru
+            }
+            else if (iSelectedKitsetTypeIndex == 1)
+            {
+                fRafterLength = (0.5f * fb) / (float)Math.Cos(fRoofPitch_radians);
+                fdist_purlin_end = 0.25f; // Posledna vaznica od konca rafteru
+            }
+            else
+            {
+                fRafterLength = 0; // Exception
+                fdist_purlin_end = 0;
+            }
+
+            int iDefaultNumberOfGirtsPerColumn = (int)((fh - fdist_girt_bottom) / fDefaultDistanceOfGirts);
+            fdist_girt = (fh - fdist_girt_bottom) / (iDefaultNumberOfGirtsPerColumn - 1);
+
+            int iDefaultNumberOfPurlinsPerRafter = (int)((fRafterLength - fdist_purlin_end) / fDefaultDistanceOfPurlins);
+            fdist_purlin = (fRafterLength - fdist_purlin_end) / (iDefaultNumberOfPurlinsPerRafter - 1);
+
+            //fdist_girt = 0.25f * fL1;
+            //fdist_purlin = 0.25f * fL1;
+
+            fdist_frontcolumn = 0.7f * fL1;
+
             fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
             fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
 

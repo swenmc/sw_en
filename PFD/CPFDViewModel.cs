@@ -472,8 +472,19 @@ namespace PFD
                 // ak sa prepocita z inych hodnot (napr. b), tak by sa mala zobrazit
                 // aj ked je nevalidna a malo by vypisat nizsie uvedene varovanie, model by sa nemal prekreslit kym nie su vsetky hodnoty validne
 
-                if (value < 3 || value > 20)
-                    throw new ArgumentException("Roof Pitch must be between 3 and 20 degrees");
+                if (MKitsetTypeIndex == 0) // Monopitch roof
+                {
+                    if (value < -20 || value > 20)
+                        throw new ArgumentException("Roof Pitch must be between -20 and 20 degrees");
+                }
+                else if (MKitsetTypeIndex == 1) // Gable roof
+                {
+                    if (value < 3 || value > 20)
+                        throw new ArgumentException("Roof Pitch must be between 3 and 20 degrees");
+                }
+                else
+                    throw new ArgumentException("Invalid input. Kitset model is not implemented");
+
                 MRoofPitch_deg = value;
 
                 if (MModelIndex != 0)

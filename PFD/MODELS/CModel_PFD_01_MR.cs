@@ -332,11 +332,11 @@ namespace PFD
             int iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
 
-            bool bGeneratePurlins = false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.ePurlin].Generate.Value;
+            bool bGeneratePurlins = componentList[(int)EMemberGroupNames.ePurlin].Generate.Value;
             if (bGeneratePurlins)
             {
                 iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
-                iPurlinNoInOneFrame = 2 * iOneRafterPurlinNo;
+                iPurlinNoInOneFrame = 1 * iOneRafterPurlinNo;
             }
             componentListVM.SetRafterFlyBracingPosition_Items(iOneRafterPurlinNo); //zakomentovane 20.12.2019 - nechapem naco to tu je
 
@@ -577,7 +577,7 @@ namespace PFD
             float fMainColumnStart = 0.0f; // Dlzka orezu pruta stlpa na zaciatku (pri base plate) (zaporna hodnota skracuje prut)
             float fMainColumnEnd = -fallignment_column - fCutOffOneSide; // Dlzka orezu pruta stlpa na konci (zaporna hodnota skracuje prut)
             float fRafterStart = fallignment_knee_rafter - fCutOffOneSide;
-            float fRafterEnd = -fallignment_apex_rafter - fCutOffOneSide;                                                // Calculate according to h of rafter and roof pitch
+            float fRafterEnd = fallignment_knee_rafter - fCutOffOneSide;                                                // Calculate according to h of rafter and roof pitch
             float fEavesPurlinStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_max - fCutOffOneSide;
             float fEavesPurlinEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_min - fCutOffOneSide;
             float fGirtStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].y_max - fCutOffOneSide;
@@ -628,14 +628,13 @@ namespace PFD
                 m_arrNodes[i * iFrameNodesNo + 1].Name = "Main Column Top Node - left";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 1]);
 
-                m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, fW_frame, i * fL1_frame, fH1_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, fW_frame, i * fL1_frame, fH2_frame, 0);
                 m_arrNodes[i * iFrameNodesNo + 2].Name = "Main Column Top Node - right";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 2]);
 
                 m_arrNodes[i * iFrameNodesNo + 3] = new CNode(i * iFrameNodesNo + 4, fW_frame, i * fL1_frame, 00000, 0);
                 m_arrNodes[i * iFrameNodesNo + 3].Name = "Main Column Base Node - right";
                 listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 3]);
-
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 3]);
             }
 
@@ -730,7 +729,71 @@ namespace PFD
                 }
             }
 
+            // Nodes - Purlins
+            i_temp_numberofNodes += bGenerateGirts ? (iGirtNoInOneFrame * iFrameNo) : 0;
+            float fIntermediateSupportSpacingPurlins = fL1_frame / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
 
+            if (bGeneratePurlins)
+            {
+                for (int i = 0; i < iFrameNo; i++)
+                {
+                    for (int j = 0; j < iOneRafterPurlinNo; j++)
+                    {
+                        float x_glob, z_glob;
+                        CalcPurlinNodeCoord(fFirstPurlinPosition + j * fDist_Purlin, out x_glob, out z_glob);
+
+                        m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j] = new CNode(i_temp_numberofNodes + i * iPurlinNoInOneFrame + j + 1, x_glob, i * fL1_frame, z_glob, 0);
+                        RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j]);
+                    }
+
+                    /*
+                    for (int j = 0; j < iOneRafterPurlinNo; j++)
+                    {
+                        float x_glob, z_glob;
+                        CalcPurlinNodeCoord(fFirstPurlinPosition + j * fDist_Purlin, out x_glob, out z_glob);
+
+                        m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CNode(i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, fW_frame - x_glob, i * fL1_frame, z_glob, 0);
+                        RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j]);
+                    }*/
+                }
+            }
+
+            // Members - Purlins
+            i_temp_numberofMembers += bGenerateGirts ? (iGirtNoInOneFrame * (iFrameNo - 1)) : 0;
+            if (bGeneratePurlins)
+            {
+                for (int i = 0; i < (iFrameNo - 1); i++)
+                {
+                    for (int j = 0; j < iOneRafterPurlinNo; j++)
+                    {
+                        CMemberEccentricity temp = new CMemberEccentricity();
+                        float fRotationAngle;
+
+                        bool bOrientationOfLocalZAxisIsUpward = true;
+
+                        if (bOrientationOfLocalZAxisIsUpward)
+                        {
+                            fRotationAngle = -fRoofPitch_rad;
+                            temp.MFz_local = eccentricityPurlin.MFz_local;
+                        }
+                        else
+                        {
+                            fRotationAngle = -(fRoofPitch_rad + (float)Math.PI);
+                            temp.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
+                        }
+
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle, 0);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j], iNumberOfTransverseSupports_Purlins);
+                    }
+
+                    /*
+                    for (int j = 0; j < iOneRafterPurlinNo; j++)
+                    {
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], iNumberOfTransverseSupports_Purlins);
+                    }*/
+                }
+            }
 
 
 
@@ -763,70 +826,6 @@ namespace PFD
 
             if (false) // Zakomentovane ine typy prutov
             {
-                // Nodes - Purlins
-                i_temp_numberofNodes += bGenerateGirts ? (iGirtNoInOneFrame * iFrameNo) : 0;
-                float fIntermediateSupportSpacingPurlins = fL1_frame / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
-
-                if (bGeneratePurlins)
-                {
-                    for (int i = 0; i < iFrameNo; i++)
-                    {
-                        for (int j = 0; j < iOneRafterPurlinNo; j++)
-                        {
-                            float x_glob, z_glob;
-                            CalcPurlinNodeCoord(fFirstPurlinPosition + j * fDist_Purlin, out x_glob, out z_glob);
-
-                            m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j] = new CNode(i_temp_numberofNodes + i * iPurlinNoInOneFrame + j + 1, x_glob, i * fL1_frame, z_glob, 0);
-                            RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j]);
-                        }
-
-                        for (int j = 0; j < iOneRafterPurlinNo; j++)
-                        {
-                            float x_glob, z_glob;
-                            CalcPurlinNodeCoord(fFirstPurlinPosition + j * fDist_Purlin, out x_glob, out z_glob);
-
-                            m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CNode(i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, fW_frame - x_glob, i * fL1_frame, z_glob, 0);
-                            RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j]);
-                        }
-                    }
-                }
-
-                // Members - Purlins
-                i_temp_numberofMembers += bGenerateGirts ? (iGirtNoInOneFrame * (iFrameNo - 1)) : 0;
-                if (bGeneratePurlins)
-                {
-                    for (int i = 0; i < (iFrameNo - 1); i++)
-                    {
-                        for (int j = 0; j < iOneRafterPurlinNo; j++)
-                        {
-                            CMemberEccentricity temp = new CMemberEccentricity();
-                            float fRotationAngle;
-
-                            bool bOrientationOfLocalZAxisIsUpward = true;
-
-                            if (bOrientationOfLocalZAxisIsUpward)
-                            {
-                                fRotationAngle = -fRoofPitch_rad;
-                                temp.MFz_local = eccentricityPurlin.MFz_local;
-                            }
-                            else
-                            {
-                                fRotationAngle = -(fRoofPitch_rad + (float)Math.PI);
-                                temp.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
-                            }
-
-                            m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle, 0);
-                            CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j], iNumberOfTransverseSupports_Purlins);
-                        }
-
-                        for (int j = 0; j < iOneRafterPurlinNo; j++)
-                        {
-                            m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
-                            CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], iNumberOfTransverseSupports_Purlins);
-                        }
-                    }
-                }
-
                 // Front Columns
                 // Nodes - Front Columns
                 i_temp_numberofNodes += bGeneratePurlins ? (iPurlinNoInOneFrame * iFrameNo) : 0;
