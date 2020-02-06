@@ -98,12 +98,8 @@ namespace PFD
                 if (vm == null) return;
 
                 foreach (CComponentInfo cInfo in vm.ComponentList)
-                {
-                    if (vm.ComponentList.IndexOf(cInfo) == vm.ComponentList.Count - 1)
-                    {
-                        cInfo.IsSetFromCode = false;
-                    }
-                    else cInfo.IsSetFromCode = true;
+                {                    
+                    cInfo.IsSetFromCode = true;
 
                     if (header == "Calculate" && cInfo.IsCalculateEnabled) cInfo.Calculate = !calc;
                     if (header == "Design" && cInfo.IsDesignEnabled) cInfo.Design = !design;
@@ -111,6 +107,16 @@ namespace PFD
                     if (header == "MaterialList") cInfo.MaterialList = !material;
 
                     cInfo.IsSetFromCode = false;
+                }
+                
+                //fire change event at the end
+                CComponentInfo ci = vm.ComponentList.FirstOrDefault();
+                if (ci != null)
+                {
+                    if (header == "Calculate") ci.Calculate = ci.Calculate;
+                    if (header == "Design") ci.Design = ci.Design;
+                    if (header == "Display") ci.Display = ci.Display;
+                    if (header == "MaterialList") ci.MaterialList = ci.MaterialList;
                 }
             }
         }

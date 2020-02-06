@@ -59,9 +59,10 @@ namespace PFD
             CMemberGroup GroupOfMembersWithSelectedType = null;
 
             if (vm.ComponentList[vm.ComponentTypeIndex] == "All") //All
-            {
+            {                
                 if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
                 {
+                    if (sDesignResults_ULS.MaximumDesignRatioWholeStructureMember == null) { MessageBox.Show("No governing member."); return; }
                     CMemberGroup gr = Model.listOfModelMemberGroups.FirstOrDefault(c => c.MemberType_FS_Position == sDesignResults_ULS.MaximumDesignRatioWholeStructureMember.EMemberTypePosition);
                     if (gr != null) gr = gr.Clone();
                     gr.ListOfMembers = new List<CMember> { sDesignResults_ULS.MaximumDesignRatioWholeStructureMember };
@@ -70,6 +71,7 @@ namespace PFD
                 }
                 else if(vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_SLS)
                 {
+                    if (sDesignResults_SLS.MaximumDesignRatioWholeStructureMember == null) { MessageBox.Show("No governing member."); return; }
                     CMemberGroup gr = Model.listOfModelMemberGroups.FirstOrDefault(c => c.MemberType_FS_Position == sDesignResults_SLS.MaximumDesignRatioWholeStructureMember.EMemberTypePosition);
                     if (gr != null) gr = gr.Clone();
                     gr.ListOfMembers = new List<CMember> { sDesignResults_SLS.MaximumDesignRatioWholeStructureMember };
@@ -78,6 +80,7 @@ namespace PFD
                 }
                 else if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ALL)
                 {
+                    if (sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember == null) { MessageBox.Show("No governing member."); return; }
                     CMemberGroup gr = Model.listOfModelMemberGroups.FirstOrDefault(c => c.MemberType_FS_Position == sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember.EMemberTypePosition);
                     if (gr != null) gr = gr.Clone();
                     gr.ListOfMembers = new List<CMember> { sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember };

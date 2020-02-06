@@ -45,7 +45,7 @@ namespace PFD
             if (vm != null && vm.IsSetFromCode) return;
             if (vm.ComponentTypeIndex == -1) return;
 
-            if (vm.ComponentList.Count == 0) { this.IsEnabled = false; return; }
+            if (vm.ComponentList.Count == 0) { Results_FootingPad_GridView.DataContext = null; this.IsEnabled = false; return; }
             else this.IsEnabled = true;
 
             CMemberGroup GroupOfMembersWithSelectedType = null;
