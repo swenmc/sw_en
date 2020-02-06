@@ -18,7 +18,7 @@ namespace PFD.Infrastructure
         float[] fx_positions;
         double step;
         private Solver SolverWindow;
-        private CModel_PFD_01_GR Model;
+        private CModel_PFD Model;
         private bool MUseCRSCGeometricalAxes;
         private bool MShearDesignAccording334;
         private bool MIgnoreWebStiffeners;
@@ -49,7 +49,7 @@ namespace PFD.Infrastructure
         public sDesignResults sDesignResults_SLS = new sDesignResults();
 
         public CMemberDesignCalculations(Solver solverWindow,
-            CModel_PFD_01_GR model,
+            CModel_PFD model,
             bool useCRSCGeometricalAxes,
             bool bshearDesignAccording334,
             bool bIgnoreWebStiffeners,

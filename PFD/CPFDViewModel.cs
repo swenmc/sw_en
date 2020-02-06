@@ -264,7 +264,7 @@ namespace PFD
 
                 // TODO - nastavit do comboboxu Model type prislusne modely pre dany typ kitsetu
 
-                MModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type
+                ModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type (menim property aby som vyvolal aj zmenu modelu)
 
                 NotifyPropertyChanged("KitsetTypeIndex");
             }
@@ -1868,7 +1868,18 @@ namespace PFD
 
         private void SetModelBays()
         {
-            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
+            CModel_PFD model;
+
+            if (this.Model is CModel_PFD_01_MR)
+                model = (CModel_PFD_01_MR)this.Model;
+            else if (this.Model is CModel_PFD_01_GR)
+                model = (CModel_PFD_01_GR)this.Model;
+            else
+            {
+                model = null;
+                throw new Exception("Kitset model is not implemented.");
+            }
+
             frontBays = new List<int>();
             backBays = new List<int>();
             leftRightBays = new List<int>();
@@ -2059,7 +2070,18 @@ namespace PFD
 
         private void SetDoorsValidationProperties()
         {
-            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
+            CModel_PFD model;
+
+            if (this.Model is CModel_PFD_01_MR)
+                model = (CModel_PFD_01_MR)this.Model;
+            else if (this.Model is CModel_PFD_01_GR)
+                model = (CModel_PFD_01_GR)this.Model;
+            else
+            {
+                model = null;
+                throw new Exception("Kitset model is not implemented.");
+            }
+
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
                 d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
@@ -2068,7 +2090,18 @@ namespace PFD
 
         private void SetWindowsValidationProperties()
         {
-            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
+            CModel_PFD model;
+
+            if (this.Model is CModel_PFD_01_MR)
+                model = (CModel_PFD_01_MR)this.Model;
+            else if (this.Model is CModel_PFD_01_GR)
+                model = (CModel_PFD_01_GR)this.Model;
+            else
+            {
+                model = null;
+                throw new Exception("Kitset model is not implemented.");
+            }
+
             foreach (WindowProperties w in MWindowBlocksProperties)
             {
                 w.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
@@ -2475,7 +2508,18 @@ namespace PFD
 
         public void GenerateMemberLoadsIfNotGenerated()
         {
-            CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
+            CModel_PFD model;
+
+            if (this.Model is CModel_PFD_01_MR)
+                model = (CModel_PFD_01_MR)this.Model;
+            else if (this.Model is CModel_PFD_01_GR)
+                model = (CModel_PFD_01_GR)this.Model;
+            else
+            {
+                model = null;
+                throw new Exception("Kitset model is not implemented.");
+            }
+
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Generate loads if they are not generated
             DateTime start = DateTime.Now;
@@ -2531,7 +2575,7 @@ namespace PFD
             DateTime start = DateTime.Now;
             if (debugging) System.Diagnostics.Trace.WriteLine("STARTING CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
 
-            CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
+            CModel_PFD model = (CModel_PFD_01_GR)Model;
 
             CModelHelper.SetMembersAccordingTo(model.m_arrMembers, ComponentList);
 

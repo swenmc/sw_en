@@ -13,7 +13,7 @@ namespace PFD
         const bool debugging = false;
         //Extension method
         //returns list of frames with members from Model
-        public static List<CFrame> GetFramesFromModel(this CModel_PFD_01_GR model)
+        public static List<CFrame> GetFramesFromModel(this CModel_PFD model)
         {
             double limit = 0.0000001;
             List<CFrame> frames = new List<CFrame>();
@@ -29,7 +29,10 @@ namespace PFD
                 frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 1]);
                 frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 2]);
                 frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 3]);
-                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
+
+                // Gable roof
+                if (model is CModel_PFD_01_GR)
+                    frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
 
                 // Add members to the frame
                 foreach (CMember m in model.m_arrMembers)
@@ -54,7 +57,7 @@ namespace PFD
             return frames;
         }
 
-        public static List<CBeam_Simple> GetMembersFromModel(this CModel_PFD_01_GR model)
+        public static List<CBeam_Simple> GetMembersFromModel(this CModel_PFD model)
         {
             List<CBeam_Simple> simpleBeams = new List<CBeam_Simple>();
 
@@ -97,7 +100,7 @@ namespace PFD
             return simpleBeams;
         }
 
-        public static List<CNSupport> GetFrameCNSupports(this CModel_PFD_01_GR model)
+        public static List<CNSupport> GetFrameCNSupports(this CModel_PFD model)
         {
             List<CNSupport> frameSupports = new List<CNSupport>();
             /*
@@ -152,14 +155,24 @@ namespace PFD
             CNSupport support = new CNSupport((int)ENDOF.e2DEnv, 1, null, bRestrain, 0);
             support.m_iNodeCollection = new int[2];
             support.m_iNodeCollection[0] = 1;
-            support.m_iNodeCollection[1] = 5;
+
+            // Gable roof
+            if (model is CModel_PFD_01_MR)
+                support.m_iNodeCollection[1] = 4;
+            else if (model is CModel_PFD_01_GR)
+                support.m_iNodeCollection[1] = 5;
+            else
+            {
+                support = null;
+                throw new Exception("Kitset model is not implemented.");
+            }
 
             frameSupports.Add(support);
 
             return frameSupports;
         }
 
-        public static List<CNSupport> GetSimpleBeamCNSupports(this CModel_PFD_01_GR model)
+        public static List<CNSupport> GetSimpleBeamCNSupports(this CModel_PFD model)
         {
             List<CNSupport> simpleBeamSupports = new List<CNSupport>();
 
@@ -377,7 +390,7 @@ namespace PFD
         /// Method for model validation. Tries to find IDs duplicates...
         /// </summary>
         /// <param name="model">Main model</param>
-        public static void ValidateModel(this CModel_PFD_01_GR model)
+        public static void ValidateModel(this CModel_PFD model)
         {
             //find duplicate Member IDs
             var duplicateMembers = model.m_arrMembers.GroupBy(m => m.ID).Select(g => new { Count = g.Count(), ID = g.Key }).Where(g => g.Count > 1);

@@ -11,6 +11,11 @@ namespace PFD
     [Serializable]
     public class CModel_PFD : CExample
     {
+        public float fRoofPitch_rad;
+        public float fSlopeFactor; // Snow load
+        public int iFrameNo;
+        public int iFrameNodesNo;
+
         public List<CEntity3D> componentList;
 
         public virtual void CalculateLoadValuesAndGenerateLoads(

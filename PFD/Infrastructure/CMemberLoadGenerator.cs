@@ -95,7 +95,7 @@ namespace PFD
             wind = calc_wind;
         }
 
-        public CMemberLoadGenerator(CModel_PFD_01_GR model, CCalcul_1170_1 generalLoad, CCalcul_1170_3 snow, CCalcul_1170_2 calc_wind)
+        public CMemberLoadGenerator(CModel_PFD model, CCalcul_1170_1 generalLoad, CCalcul_1170_3 snow, CCalcul_1170_2 calc_wind)
         {
             iFrameNo = model.iFrameNo;
             fL1_frame = model.fL1_frame;

@@ -17,9 +17,6 @@ namespace PFD
     [Serializable]
     public class CModel_PFD_01_GR : CModel_PFD
     {
-        public float fRoofPitch_rad;
-        public int iFrameNo;
-
         public float fUpperGirtLimit;
         public float fDist_FrontGirts;
         public float fDist_BackGirts;
@@ -27,9 +24,6 @@ namespace PFD
         public float fz_UpperLimitForBackGirts;
         public float fFrontFrameRakeAngle_temp_rad;
         public float fBackFrameRakeAngle_temp_rad;
-        public float fSlopeFactor;
-
-        public int iFrameNodesNo = 5;
 
         public int iMainColumnNo;
         public int iRafterNo;
@@ -99,6 +93,7 @@ namespace PFD
             fFrontFrameRakeAngle_deg = fFrontFrameRakeAngle_temp_deg;
             fBackFrameRakeAngle_deg = fBackFrameRakeAngle_temp_deg;
 
+            iFrameNodesNo = 5;
             iFrameNo = iFrameNo_temp;
             fL1_frame = fL_tot / (iFrameNo - 1);
 
