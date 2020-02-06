@@ -2575,7 +2575,7 @@ namespace PFD
             DateTime start = DateTime.Now;
             if (debugging) System.Diagnostics.Trace.WriteLine("STARTING CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
 
-            CModel_PFD model = (CModel_PFD_01_GR)Model;
+            CModel_PFD model = Model;
 
             CModelHelper.SetMembersAccordingTo(model.m_arrMembers, ComponentList);
 

@@ -16,7 +16,13 @@ namespace PFD
         public int iFrameNo;
         public int iFrameNodesNo;
 
+        public int iEavesPurlinNoInOneFrame;
+        public int iPurlinNoInOneFrame;
+        public int iGirtNoInOneFrame;
+
         public List<CEntity3D> componentList;
+        public List<CBlock_3D_001_DoorInBay> DoorsModels;
+        public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
         public virtual void CalculateLoadValuesAndGenerateLoads(
                 CCalcul_1170_1 generalLoad,

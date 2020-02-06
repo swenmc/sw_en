@@ -489,7 +489,7 @@ namespace PFD
             return loadInput;
         }
 
-        private void CalculateLoadingValues(CModel_PFD_01_GR model)
+        private void CalculateLoadingValues(CModel_PFD model)
         {
             // Basic data
             sBuildingInputData.location = (ELocation)loadInput.LocationIndex;                    // locations (cities) enum
@@ -551,10 +551,27 @@ namespace PFD
             int iNumberOfPurlins_x = model.iPurlinNoInOneFrame;
             int iNumberOfGirts_x = model.iGirtNoInOneFrame;
             int iNumberOfMainColumns_x = 2; // TODO - napojit na model
+
             int iNumberOfMainRafters_x = 2; // TODO - napojit na model
+            float fRafterLength = 0;
+
+            if (model is CModel_PFD_01_MR)
+            {
+                iNumberOfMainRafters_x = 1;
+                fRafterLength = vm.GableWidth / (float)Math.Cos(vm.fRoofPitch_radians); // Sirka budovy premietnuta do sklonu raftera
+            }
+            else if (model is CModel_PFD_01_GR)
+            {
+                iNumberOfMainRafters_x = 2;
+                fRafterLength = (0.5f * vm.GableWidth) / (float)Math.Cos(vm.fRoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
+            }
+            else
+            {
+                iNumberOfMainRafters_x = -1;
+                throw new Exception("Kitset model is not implemented.");
+            }
 
             float fLoadingWidth_Frame_x = vm.fBayWidth; // Zatazovacia sirka ramu
-            float fRafterLength = (0.5f * vm.GableWidth) / (float)Math.Cos(vm.fRoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
 
             float fMass_Purlins_x = iNumberOfPurlins_x * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_EavePurlins_x = iNumberOfEavePurlins_x * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
@@ -804,7 +821,9 @@ namespace PFD
                 // Create Model
                 // Kitset Steel Gable Enclosed Buildings
                 // TODO - nove parametre pre nastavenie hodnot zatazenia
-                vm.Model = new CModel_PFD_01_GR(
+
+                if(vm.KitsetTypeIndex == 0)
+                vm.Model = new CModel_PFD_01_MR(
                     sGeometryInputData,
                     vm.Frames,
                     vm.GirtDistance,
@@ -820,6 +839,29 @@ namespace PFD
                     foundations,
                     slabs,
                     vm);
+                else if(vm.KitsetTypeIndex == 1)
+                    vm.Model = new CModel_PFD_01_GR(
+                    sGeometryInputData,
+                    vm.Frames,
+                    vm.GirtDistance,
+                    vm.PurlinDistance,
+                    vm.ColumnDistance,
+                    vm.BottomGirtPosition,
+                    vm.FrontFrameRakeAngle,
+                    vm.BackFrameRakeAngle,
+                    vm.DoorBlocksProperties,
+                    vm.WindowBlocksProperties,
+                    compList,
+                    joints,
+                    foundations,
+                    slabs,
+                    vm);
+                else
+                {
+                    vm.Model = null;
+                    throw new Exception("Kitset model is not implemented.");
+                }
+
                 System.Diagnostics.Trace.WriteLine("Model created: " + (DateTime.Now - start).TotalMilliseconds);
 
                 UpdateUC_Joints();
@@ -840,7 +882,7 @@ namespace PFD
                                         vm.GenerateLoadsOnColumns;
 
             // Calculate load values
-            CalculateLoadingValues((CModel_PFD_01_GR)vm.Model);
+            CalculateLoadingValues(vm.Model);
             System.Diagnostics.Trace.WriteLine("CalculateLoadingValues: " + (DateTime.Now - start).TotalMilliseconds);
 
             vm.Model.CalculateLoadValuesAndGenerateLoads(vm.GeneralLoad,
@@ -1293,7 +1335,7 @@ namespace PFD
             // 1. nacitat objekt CModel_PFD_01_GR
 
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
-            CModel_PFD_01_GR model = vm.Model as CModel_PFD_01_GR;
+            CModel_PFD model = vm.Model as CModel_PFD;
             double limit = 0.0000001;
 
             // 2. Najst pruty ramu
@@ -1417,8 +1459,6 @@ namespace PFD
                                 //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
                             }
                             else throw new Exception("Load type not known.");
-
-
                         }
                     }
                 }
@@ -1675,7 +1715,7 @@ namespace PFD
         int actualPreview = 0;
         private void RedrawDoorOrWindowPreview()
         {
-            if (actualPreview == 2) RedrawWidowPreview();
+            if (actualPreview == 2) RedrawWindowPreview();
             else RedrawDoorPreview();
         }
 
@@ -1692,7 +1732,7 @@ namespace PFD
         }
         private void RedrawDoorPreview()
         {
-            CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
+            CModel_PFD modelPFD = vm.Model as CModel_PFD;
 
             if (modelPFD.DoorsModels == null) return;
             //if (modelPFD.DoorsModels.Count == 0) return;
@@ -1725,10 +1765,10 @@ namespace PFD
                 if (!dg.IsLoaded) return;
                 if (!dg.IsMouseOver) return;
             }
-            RedrawWidowPreview();
+            RedrawWindowPreview();
         }
 
-        private void RedrawWidowPreview()
+        private void RedrawWindowPreview()
         {
             ////Mato??? - tieto komenty dole su aktualne? Lebo task 266 je uzavrety.
             //// TO Ondrej - no mne sa zda ze preberame z bloku WindowProperties props
@@ -1771,8 +1811,7 @@ namespace PFD
             //if (props == null) model = new CModel();
             //else model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
 
-
-            CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
+            CModel_PFD modelPFD = vm.Model as CModel_PFD;
             if (modelPFD.WindowsModels == null) return;
 
             int index = Datagrid_Windows.SelectedIndex;

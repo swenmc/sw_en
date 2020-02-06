@@ -28,9 +28,6 @@ namespace PFD
         public int iMainColumnNo;
         public int iRafterNo;
         public int iEavesPurlinNo;
-        public int iGirtNoInOneFrame;
-        public int iEavesPurlinNoInOneFrame = 2;
-        public int iPurlinNoInOneFrame;
         public int iFrontColumnNoInOneFrame;
         public int iBackColumnNoInOneFrame;
         public int iFrontGirtsNoInOneFrame;
@@ -56,9 +53,6 @@ namespace PFD
 
         CMemberEccentricity eccentricityGirtFront_Y0;
         CMemberEccentricity eccentricityGirtBack_YL;
-
-        public List<CBlock_3D_001_DoorInBay> DoorsModels;
-        public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
         private ObservableCollection<DoorProperties> DoorBlocksProperties; // Pridane kvoli Rebates
 
@@ -94,6 +88,8 @@ namespace PFD
             fBackFrameRakeAngle_deg = fBackFrameRakeAngle_temp_deg;
 
             iFrameNodesNo = 5;
+            iEavesPurlinNoInOneFrame = 2;
+
             iFrameNo = iFrameNo_temp;
             fL1_frame = fL_tot / (iFrameNo - 1);
 

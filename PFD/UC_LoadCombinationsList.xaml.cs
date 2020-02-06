@@ -40,11 +40,19 @@ namespace PFD
             // Clear all lists
             DeleteAllLists();
 
-
-            if (model is CModel_PFD_01_GR) // !!! Docasna vynimka - neviem ci je nieco zle alebo to tu spadlo z dovodu inej chyby alebo vynimky
+            if (model is CModel_PFD_01_MR) // !!! Docasna vynimka - neviem ci je nieco zle alebo to tu spadlo z dovodu inej chyby alebo vynimky
+            {
+                CModel_PFD_01_MR m = (CModel_PFD_01_MR)model;
+                if (m.m_arrLoadCombs == null) return; // TO Ondrej - tu mi to spadlo s tym ze zoznam kombinacii je null
+            }
+            else if (model is CModel_PFD_01_GR) // !!! Docasna vynimka - neviem ci je nieco zle alebo to tu spadlo z dovodu inej chyby alebo vynimky
             {
                 CModel_PFD_01_GR m = (CModel_PFD_01_GR)model;
                 if(m.m_arrLoadCombs == null) return; // TO Ondrej - tu mi to spadlo s tym ze zoznam kombinacii je null
+            }
+            else
+            {
+                throw new Exception("Kitset model is not implemented.");
             }
 
             // For each load combination add one row
