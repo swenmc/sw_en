@@ -451,6 +451,191 @@ namespace PFD
             }
         }
 
+        public void AddColumnsNodes(int i_temp_numberofNodes, int i_temp_numberofMembers, int iOneRafterColumnNo, int iColumnNoInOneFrame, float fDist_Columns, float fy_Global_Coord)
+        {
+            float z_glob;
+
+            // Bottom nodes
+            for (int i = 0; i < iOneRafterColumnNo; i++)
+            {
+                CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+                m_arrNodes[i_temp_numberofNodes + i] = new CNode(i_temp_numberofNodes + i + 1, (i + 1) * fDist_Columns, fy_Global_Coord, 0, 0);
+                listOfSupportedNodes_S2.Add(m_arrNodes[i_temp_numberofNodes + i]);
+                RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i]);
+            }
+
+            bool bIsGableRoof = iFrameNodesNo == 5;
+
+            int iSideNo = bIsGableRoof ? 2 : 1;
+
+            if (bIsGableRoof)
+            {
+                // Bottom nodes
+                for (int i = 0; i < iOneRafterColumnNo; i++)
+                {
+                    CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+                    m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + iOneRafterColumnNo + i + 1, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, 0, 0);
+                    listOfSupportedNodes_S2.Add(m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i]);
+                    RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i]);
+                }
+            }
+
+            // Top nodes
+            for (int i = 0; i < iOneRafterColumnNo; i++)
+            {
+                CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+                m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i] = new CNode(i_temp_numberofNodes + iSideNo * iOneRafterColumnNo + i + 1, (i + 1) * fDist_Columns, fy_Global_Coord, z_glob, 0);
+                RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i]);
+            }
+
+            if (bIsGableRoof)
+            {
+                // Top nodes
+                for (int i = 0; i < iOneRafterColumnNo; i++)
+                {
+                    CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+                    m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + (iSideNo + 1) * iOneRafterColumnNo + i + 1, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, z_glob, 0);
+                    RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i]);
+                }
+            }
+        }
+
+        public void AddColumnsMembers(
+            int i_temp_numberofNodes,
+            int i_temp_numberofMembers,
+            int iOneRafterColumnNo,
+            int iColumnNoInOneFrame,
+            CMemberEccentricity eccentricityColumn,
+            float fColumnAlignmentStart,
+            float fColumnAlignmentEnd,
+            CCrSc section,
+            float fMemberRotation,
+            bool bUseFlyBracing,
+            int iFlyBracing_Every_XXSupportingMember,
+            float fFirstSupportingMemberPositionAbsolute,
+            float fSupportingMembersDistance)
+        {
+            // Members - Columns
+            for (int i = 0; i < iOneRafterColumnNo; i++)
+            {
+                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i], section, EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
+                CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + i]);
+            }
+
+            bool bIsGableRoof = iFrameNodesNo == 5;
+
+            if (bIsGableRoof)
+            {
+                for (int i = 0; i < iOneRafterColumnNo; i++)
+                {
+                    m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + i + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i], section, EMemberType_FS.eC, EMemberType_FS_Position.ColumnBackSide, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
+                    CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i]);
+                }
+            }
+        }
+
+        public int GetNumberofIntermediateNodesInOneColumnForGirts(float fBottomGirtPosition_temp, float fDistBetweenColumns, float fz_UpperLimitForGirts, int iColumnIndex)
+        {
+            float fz_gcs_column_temp;
+
+            CalcColumnNodeCoord_Z((iColumnIndex + 1) * fDistBetweenColumns, out fz_gcs_column_temp);
+            int iNumber_of_segments = (int)((fz_gcs_column_temp - fz_UpperLimitForGirts - fBottomGirtPosition_temp) / fDist_Girt);
+            return iNumber_of_segments + 1;
+        }
+
+        public int GetNumberofIntermediateNodesInColumnsForOneFrame(int iOneRafterColumnNo, float fBottomGirtPosition_temp, float fDistBetweenColumns, float fz_UpperLimitForGirts)
+        {
+            int iNo_temp = 0;
+            for (int i = 0; i < iOneRafterColumnNo; i++)
+            {
+                iNo_temp += GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition_temp, fDistBetweenColumns, fz_UpperLimitForGirts, i);
+            }
+
+            return iNo_temp;
+        }
+
+        protected void FillIntermediateNodesForMembers()
+        {
+            foreach (CMember m in this.m_arrMembers)
+            {
+                foreach (CNode n in this.m_arrNodes)
+                {
+                    if (m.IsIntermediateNode(n)) m.IntermediateNodes.Add(n);
+                }
+            }
+
+            bool debugging = false;
+            if (debugging)
+            {
+                foreach (CMember m in this.m_arrMembers)
+                {
+                    if (m.IntermediateNodes.Count > 0) System.Diagnostics.Trace.WriteLine($"ID:{m.ID} Name:{m.Name} IntNodesCount: {m.IntermediateNodes.Count}");
+                }
+            }
+        }
+
+        public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
+        {
+            x_global = (float)Math.Cos(fRoofPitch_rad) * x_rel;
+            z_global = fH1_frame + (float)Math.Sin(fRoofPitch_rad) * x_rel;
+        }
+
+        public void CalcColumnNodeCoord_Z(float x, out float z_global)
+        {
+            bool bIsGableRoof = iFrameNodesNo == 5;
+
+            if(x<= 0.5f * fW_frame || !bIsGableRoof)
+                z_global = fH1_frame + (float)Math.Tan(fRoofPitch_rad) * x;
+            else
+                z_global = fH1_frame + (float)Math.Tan(fRoofPitch_rad) * (fW_frame - x);
+        }
+
+        // Rotate Node in Front or Back Frame about Z (angle between X and Front or Back Frame
+        public void RotateFrontOrBackFrameNodeAboutZ(CNode node_temp)
+        {
+            // Rake Angles - Front and Back Frame
+            // Upravi suradnice Y vsetkych uzlov s Y = 0 a s Y = L
+            // Prepocita suradnicu podla hodnoty X a uhlu, ktory je nastaveny medzi globalnou osou X a prednym (prvym) alebo zadnym (poslednym) ramom
+            // Tato uprava umoznuje zosikmenie prveho / posledneho ramu voci mezilahlym
+
+            if (node_temp != null)
+            {
+                if (MathF.d_equal(node_temp.Y, 0) && !MathF.d_equal(fFrontFrameRakeAngle_temp_rad, 0)) // Front Frame
+                {
+                    node_temp.Y += node_temp.X * (float)Math.Tan(fFrontFrameRakeAngle_temp_rad);
+                }
+
+                if (MathF.d_equal(node_temp.Y, fL_tot) && !MathF.d_equal(fBackFrameRakeAngle_temp_rad, 0)) // Back Frame
+                {
+                    node_temp.Y += node_temp.X * (float)Math.Tan(fBackFrameRakeAngle_temp_rad);
+                }
+            }
+        }
+
+        public void RotateAndTranslateNodeAboutZ_CCW(Point3D pControlPoint, ref CNode node, float fAngle_rad)
+        {
+            Point3D p = node.GetPoint3D();
+            RotateAndTranslatePointAboutZ_CCW(pControlPoint, ref p, fAngle_rad);
+
+            node.X = (float)p.X;
+            node.Y = (float)p.Y;
+        }
+
+        public void RotateAndTranslatePointAboutZ_CCW(Point3D pControlPoint, ref Point3D point, float fAngle_rad)
+        {
+            // Rotate node
+            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(point.X, point.Y, fAngle_rad);
+            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(point.X, point.Y, fAngle_rad);
+
+            // Set rotated coordinates
+            point.X = fx;
+            point.Y = fy;
+
+            // Translate node
+            point.X += (float)pControlPoint.X;
+            point.Y += (float)pControlPoint.Y;
+        }
+
         protected void DeactivateMemberBracingBlocks(CMember m, CBlock block, List<Point3D> openningPointsInGCS)
         {
             float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
@@ -859,6 +1044,29 @@ namespace PFD
                 if (debugging) System.Diagnostics.Trace.WriteLine($"DeactivateMemberAndItsJoints: Error: [{ex.Message}] m.ID:{m.ID}  Prefix: {m.Prefix}");
 
             };
+        }
+
+        protected void ValidateIDs()
+        {
+            // Nodes and Members
+
+            // Validacia generovanych prutov a uzlov (overime ci vsetky generovane nodes a members maju ID o 1 vacsie ako je index v poli
+            bool bValidateIDs = false;
+
+            if (bValidateIDs)
+            {
+                for (int i = 0; i < m_arrNodes.Length; i++)
+                {
+                    if (m_arrNodes[i].ID != i + 1)
+                        throw new Exception("Invalid ID - Node Index:" + i.ToString() + " Node ID: " + m_arrNodes[i].ID);
+                }
+
+                for (int i = 0; i < m_arrMembers.Length; i++)
+                {
+                    if (m_arrMembers[i].ID != i + 1)
+                        throw new Exception("Invalid ID - Member Index:" + i.ToString() + " Member ID: " + m_arrMembers[i].ID);
+                }
+            }
         }
 
         public void DeactivateMemberAndItsJoints(CMember m)
