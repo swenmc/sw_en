@@ -25,7 +25,7 @@ using DATABASE;
 using System.Globalization;
 
 namespace PFD
-{   
+{
     [Serializable]
     public class CPFDViewModel : INotifyPropertyChanged
     {
@@ -46,6 +46,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         private bool MIsRelease;
+        private int MKitsetTypeIndex;
         private int MModelIndex;
         private float MGableWidth;
         private float MLength;
@@ -96,10 +97,9 @@ namespace PFD
         private List<string> m_RoofFibreglassThicknessTypes;
         private List<string> m_WallFibreglassThicknessTypes;
 
-
         //private int MWireframeColorIndex;
         //public Color WireframeColor;
-        
+
         private int MViewIndex;
         private int MViewModelMemberFilterIndex;
 
@@ -108,9 +108,8 @@ namespace PFD
         
         private int MLoadCaseIndex;
 
-        private int iFrontColumnNoInOneFrame;                
+        private int iFrontColumnNoInOneFrame;
         private bool m_TransformScreenLines3DToCylinders3D;
-                
 
         private bool m_GeneralOptionsChanged;
         private bool m_SolverOptionsChanged;
@@ -127,7 +126,6 @@ namespace PFD
         private bool MGenerateLoadsOnColumns;
         private bool MGenerateLoadsOnFrameMembers;
         private bool MGenerateSurfaceLoads;
-
 
         //// Displacement / Deflection Limits
         //private float MVerticalDisplacementLimitDenominator_Rafter_PL;
@@ -147,8 +145,6 @@ namespace PFD
         private bool MUseCRSCGeometricalAxes = true;
         //private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
 
-
-        
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;        
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
@@ -255,6 +251,26 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public int KitsetTypeIndex
+        {
+            get
+            {
+                return MKitsetTypeIndex;
+            }
+
+            set
+            {
+                MKitsetTypeIndex = value;
+
+                // TODO - nastavit do comboboxu Model type prislusne modely pre dany typ kitsetu
+
+                MModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type
+
+                NotifyPropertyChanged("KitsetTypeIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
             get
@@ -267,7 +283,7 @@ namespace PFD
                 MModelIndex = value;
 
                 //dolezite je volat private fields a nie Properties pokial nechceme aby sa volali setter metody
-                CDatabaseModels dmodel = new CDatabaseModels(MModelIndex);
+                CDatabaseModels dmodel = new CDatabaseModels(MKitsetTypeIndex, MModelIndex);
 
                 bool isChangedFromCode = IsSetFromCode;
 
@@ -660,7 +676,7 @@ namespace PFD
 
                 SetResultsAreNotValid();
                 if (!isChangedFromCode) IsSetFromCode = false;
-                                
+
                 RecreateModel = true;
                 NotifyPropertyChanged("RoofCladdingIndex");
             }
@@ -694,7 +710,7 @@ namespace PFD
 
                 RecreateQuotation = true;
                 if (!isChangedFromCode) IsSetFromCode = false;
-                                
+
                 NotifyPropertyChanged("RoofCladdingCoatingIndex");
             }
         }
@@ -883,7 +899,6 @@ namespace PFD
             }
         }
 
-
         //-------------------------------------------------------------------------------------------------------------
         public float FibreglassAreaRoof
         {
@@ -977,7 +992,7 @@ namespace PFD
 
             set
             {
-                MLoadCaseIndex = value;                
+                MLoadCaseIndex = value;
                 RecreateModel = true;
                 NotifyPropertyChanged("LoadCaseIndex");
             }
@@ -993,14 +1008,12 @@ namespace PFD
             set
             {
                 MModel = value;
-                bool isChangedFromCode = IsSetFromCode;                
+                bool isChangedFromCode = IsSetFromCode;
                 if(!isChangedFromCode) IsSetFromCode = true;
                 SetModelBays();
                 if (!isChangedFromCode) IsSetFromCode = false;
             }
         }
-
-        
 
         //public bool DeterminateCombinationResultsByFEMSolver
         //{
@@ -1064,9 +1077,6 @@ namespace PFD
                 NotifyPropertyChanged("UseCRSCGeometricalAxes");
             }
         }
-                
-
-        
 
         public bool GenerateNodalLoads
         {
@@ -1224,6 +1234,7 @@ namespace PFD
                 NotifyPropertyChanged("WindowBlocksProperties");
             }
         }
+
         private void WindowBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
@@ -1246,6 +1257,7 @@ namespace PFD
             }
             SetComponentListAccordingToWindows();
         }
+
         public List<string> BuildingSides
         {
             get
@@ -1324,8 +1336,6 @@ namespace PFD
                 NotifyPropertyChanged("ModelCalculatedResultsValid");
             }
         }
-
-       
 
         public CJointsVM JointsVM
         {
@@ -1452,8 +1462,6 @@ namespace PFD
             }
         }
 
-        
-
         public bool RecreateModel
         {
             get
@@ -1467,7 +1475,6 @@ namespace PFD
                 if (MRecreateModel == true) RecreateQuotation = true;
             }
         }
-
 
         public bool FootingChanged
         {
@@ -1511,8 +1518,6 @@ namespace PFD
             }
         }
 
-        
-
         public bool TransformScreenLines3DToCylinders3D
         {
             get
@@ -1525,9 +1530,6 @@ namespace PFD
                 m_TransformScreenLines3DToCylinders3D = value;
             }
         }
-
-        
-
 
         //public bool BracingEverySecondRowOfGirts
         //{
@@ -1631,6 +1633,7 @@ namespace PFD
                 MRoofCladdingID = value;
             }
         }
+
         public int RoofCladdingCoatingID
         {
             get
@@ -1656,6 +1659,7 @@ namespace PFD
                 MWallCladdingID = value;
             }
         }
+
         public int WallCladdingCoatingID
         {
             get
@@ -1682,6 +1686,7 @@ namespace PFD
                 m_Claddings = value;
             }
         }
+
         public List<string> Coatings
         {
             get
@@ -1747,8 +1752,6 @@ namespace PFD
                 m_WallCladdingCoating = value;
             }
         }
-
-
 
         public List<string> RoofCladdingsThicknessTypes
         {
@@ -1897,7 +1900,7 @@ namespace PFD
             frontBays = new List<int>();
             backBays = new List<int>();
             leftRightBays = new List<int>();
-                        
+
             int i = 0;
             while (i < iFrameNo - 1)
             {
@@ -1954,7 +1957,6 @@ namespace PFD
                 }
             }
         }
-        
 
         private void CheckDoorsBays(DoorProperties d)
         {
@@ -2144,9 +2146,9 @@ namespace PFD
                 }
             }
         }
-        
+
         private void Flashings_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {            
+        {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
                 RecreateQuotation = true;
@@ -2164,7 +2166,7 @@ namespace PFD
                     if(item != null) item.Name = item.NameOld;                    
                     PFDMainWindow.Datagrid_Flashings.ItemsSource = null;
                     PFDMainWindow.Datagrid_Flashings.ItemsSource = Flashings;
-                }                 
+                }
             }
             if (e.PropertyName == "Thickness") return;
             if (e.PropertyName == "Width_total") return;
@@ -2229,7 +2231,7 @@ namespace PFD
                 RecreateQuotation = true;
             }
         }
-                
+
         private ObservableCollection<CAccessories_DownpipeProperties> m_Downpipes;
         public ObservableCollection<CAccessories_DownpipeProperties> Downpipes
         {
@@ -2252,7 +2254,6 @@ namespace PFD
 
             set
             {
-                
                 if (value == null) return;
                 m_Downpipes = value;
                 m_Downpipes.CollectionChanged += Downpipes_CollectionChanged;
@@ -2297,7 +2298,7 @@ namespace PFD
                 m_GeneralOptionsChanged = value;
 
                 SetResultsAreNotValid();
-                RecreateModel = true;                
+                RecreateModel = true;
                 
                 if (MSynchronizeGUI) NotifyPropertyChanged("GeneralOptionsChanged");
             }
@@ -2358,7 +2359,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, bool bRelease, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties,
+        public CPFDViewModel(int kitsetTypeIndex, int modelIndex, bool bRelease, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties,
             CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
         {
             MIsRelease = bRelease;
@@ -2401,6 +2402,9 @@ namespace PFD
             //UseFEMSolverCalculationForSimpleBeam = false;
             //DeterminateMemberLocalDisplacementsForULS = false;
             //ShearDesignAccording334 = false;
+
+            // Set default kitset model type
+            KitsetTypeIndex = kitsetTypeIndex;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex

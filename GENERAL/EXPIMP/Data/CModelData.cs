@@ -14,9 +14,10 @@ namespace EXPIMP
     public class CModelData
     {
         private bool debugging = true;
-       
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        private int MKitsetTypeIndex;
         private int MModelIndex;
         private float MGableWidth;
         private float MLength;
@@ -130,6 +131,20 @@ namespace EXPIMP
         public Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> FootingsDict;
 
         private CModel MModel;
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int KitsetTypeIndex
+        {
+            get
+            {
+                return MKitsetTypeIndex;
+            }
+
+            set
+            {
+                MKitsetTypeIndex = value;
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex

@@ -119,7 +119,7 @@ namespace PFD
             projectInfoVM = new CProjectInfoVM();
 
             // Model Geometry
-            vm = new CPFDViewModel(1, bRelease, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
+            vm = new CPFDViewModel(1, 1, bRelease, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;
@@ -1570,8 +1570,12 @@ namespace PFD
 
         private void SetInitialItemsInComboboxes()
         {
+            // Fill kitset type combobox items
+            CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "ModelType", "modelTypeName", Combobox_KitsetType);
+
             // Fill model combobox items
             CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
+
             // Cladding (type and colors)
             //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
             //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_WallCladding);
@@ -1605,7 +1609,7 @@ namespace PFD
         }
         private void PDF_WaitWindow_ContentRendered(object sender, EventArgs e)
         {
-            //CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;            
+            //CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
             CModelData modelData = vm.GetModelData();
 
             try
@@ -2171,7 +2175,7 @@ namespace PFD
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
 
             string modelName = Combobox_Models.Items[vm.ModelIndex].ToString();  //vm.Model.m_sConstObjectName
-            
+
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Data Files (*.cnx)|*.cnx";
             sfd.DefaultExt = "cnx";
@@ -2198,14 +2202,15 @@ namespace PFD
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 deserializedPfdVM = (CPFDViewModel)binaryFormatter.Deserialize(stream);
             }
-            ChangeActualViewModelWithLoadedViewModel(deserializedPfdVM);            
+            ChangeActualViewModelWithLoadedViewModel(deserializedPfdVM);
         }
 
         private void ChangeActualViewModelWithLoadedViewModel(CPFDViewModel newVM)
         {
             if (newVM == null) return;
             vm.IsSetFromCode = true;
-            vm.ModelIndex = newVM.ModelIndex;            
+            vm.KitsetTypeIndex = newVM.KitsetTypeIndex;
+            vm.ModelIndex = newVM.ModelIndex;
             vm.GableWidth = newVM.GableWidth;
             vm.Length = newVM.Length;
             vm.WallHeight = newVM.WallHeight;
@@ -2260,6 +2265,5 @@ namespace PFD
             //just to fire some change
             vm.GableWidth = vm.GableWidth;
         }
-
     }
 }

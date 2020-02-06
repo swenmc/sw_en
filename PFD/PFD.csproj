@@ -142,6 +142,7 @@
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="Infrastructure\QuotationHelper.cs" />
     <Compile Include="Infrastructure\BaseHelper.cs" />
+    <Compile Include="MODELS\CModel_PFD_01_GR.cs" />
     <Compile Include="WindPressureCoefficients.xaml.cs">
       <DependentUpon>WindPressureCoefficients.xaml</DependentUpon>
     </Compile>
@@ -236,7 +237,7 @@
     <Compile Include="MemberDesignDetails.xaml.cs">
       <DependentUpon>MemberDesignDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MODELS\CModel_PFD_01_GR.cs" />
+    <Compile Include="MODELS\CModel_PFD_01_MR.cs" />
     <Compile Include="MODELS\CModel_PFD.cs" />
     <Compile Include="ProjectInfo.xaml.cs">
       <DependentUpon>ProjectInfo.xaml</DependentUpon>

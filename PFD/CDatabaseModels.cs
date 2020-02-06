@@ -331,13 +331,29 @@ namespace PFD
         public CDatabaseModels()
         { }
 
-        public CDatabaseModels(int iSelectedIndex)
+        public CDatabaseModels(int iSelectedKitsetTypeIndex, int iSelectedModelIndex)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            CKitsetMonoOrGableRoofEnclosed model = CModelsManager.LoadModelKitsetMonoOrGableRoofEnclosed(iSelectedIndex + 1, "KitsetGableRoofEnclosed");
-            if (model == null) throw new Exception("Model is null");
+            string sDatabaseTableName;
+
+            /*
+            1   KitsetMonoRoofEnclosed
+            2   KitsetGableRoofEnclosed
+            3   KitsetSheltersSingleSpan
+            4   KitsetSheltersDoubleSpan
+            */
+
+            if (iSelectedKitsetTypeIndex == 0)
+                sDatabaseTableName = "KitsetMonoRoofEnclosed";
+            else if (iSelectedKitsetTypeIndex == 1)
+                sDatabaseTableName = "KitsetGableRoofEnclosed";
+            else
+                throw new Exception("Selected kitset type is not implemented.");
+
+            CKitsetMonoOrGableRoofEnclosed model = CModelsManager.LoadModelKitsetMonoOrGableRoofEnclosed(iSelectedModelIndex + 1, sDatabaseTableName);
+            if (model == null) throw new Exception("Model is null.");
 
             fb = float.Parse(model.Width, nfi);
             fL = float.Parse(model.Length, nfi);

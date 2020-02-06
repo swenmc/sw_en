@@ -70,7 +70,7 @@ namespace PFD
             //To Mato - tu by mozno trebalo pridat premenne pri zmene ktorych je nutne prekreslit Joint preview
 
             if (e.PropertyName == "ModelIndex") return;
-                        
+
             CConnectionJointTypes joint = GetSelectedJoint();
             displayJoint(joint);
         }
@@ -86,7 +86,7 @@ namespace PFD
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
 
             if (e.PropertyName == "ChangedAnchorArrangementParameter" || e.PropertyName == "ChangedScrewArrangementParameter" || e.PropertyName == "ChangedGeometryParameter")
-            {   
+            {
                 CConnectionJointTypes joint = GetSelectedJoint();
                 displayJoint(joint);
             }
