@@ -345,35 +345,35 @@ namespace PFD
 
             iFrontColumnNoInOneFrame = 0;
 
-            bool bGenerateFrontColumns = false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.eFrontColumn].Generate.Value;
+            bool bGenerateFrontColumns = componentList[(int)EMemberGroupNames.eFrontColumn].Generate.Value;
             if (bGenerateFrontColumns)
             {
                 iOneRafterFrontColumnNo = (int)(fW_frame / fDist_FrontColumns);
-                iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                iFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
                 // Update value of distance between columns
                 fDist_FrontColumns = (fW_frame / (iFrontColumnNoInOneFrame + 1));
             }
 
             const int iFrontColumnNodesNo = 2; // Number of Nodes for Front Column
             int iFrontColumninOneRafterNodesNo = iFrontColumnNodesNo * iOneRafterFrontColumnNo; // Number of Nodes for Front Columns under one Rafter
-            int iFrontColumninOneFrameNodesNo = 2 * iFrontColumninOneRafterNodesNo; // Number of Nodes for Front Columns under one Frame
+            int iFrontColumninOneFrameNodesNo = 1 * iFrontColumninOneRafterNodesNo; // Number of Nodes for Front Columns under one Frame
 
             iBackColumnNoInOneFrame = 0;
 
             fDist_BackColumns = fDist_FrontColumns; // Todo Temporary - umoznit ine roztece medzi zadnymi a prednymi stlpmi
 
-            bool bGenerateBackColumns =  false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.eBackColumn].Generate.Value;
+            bool bGenerateBackColumns =  componentList[(int)EMemberGroupNames.eBackColumn].Generate.Value;
             if (bGenerateBackColumns)
             {
                 iOneRafterBackColumnNo = (int)(fW_frame / fDist_BackColumns);
-                iBackColumnNoInOneFrame = 2 * iOneRafterBackColumnNo;
+                iBackColumnNoInOneFrame = 1 * iOneRafterBackColumnNo;
                 // Update value of distance between columns
                 fDist_BackColumns = (fW_frame / (iBackColumnNoInOneFrame + 1));
             }
 
             const int iBackColumnNodesNo = 2; // Number of Nodes for Back Column
             int iBackColumninOneRafterNodesNo = iBackColumnNodesNo * iOneRafterBackColumnNo; // Number of Nodes for Back Columns under one Rafter
-            int iBackColumninOneFrameNodesNo = 2 * iBackColumninOneRafterNodesNo; // Number of Nodes for Back Columns under one Frame
+            int iBackColumninOneFrameNodesNo = 1 * iBackColumninOneRafterNodesNo; // Number of Nodes for Back Columns under one Frame
 
             // Number of Nodes - Front Girts
             int iFrontIntermediateColumnNodesForGirtsOneRafterNo = 0;
@@ -795,9 +795,36 @@ namespace PFD
                 }
             }
 
+            // Front Columns
+            // Nodes - Front Columns
+            i_temp_numberofNodes += bGeneratePurlins ? (iPurlinNoInOneFrame * iFrameNo) : 0;
+            if (bGenerateFrontColumns)
+            {
+                AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fDist_FrontColumns, 0);
+            }
 
+            // Members - Front Columns
+            i_temp_numberofMembers += bGeneratePurlins ? (iPurlinNoInOneFrame * (iFrameNo - 1)) : 0;
+            if (bGenerateFrontColumns)
+            {
+                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, eccentricityColumnFront_Z, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fColumnsRotation, bUseFrontColumnFlyBracingPlates, iFrontColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_FrontGirts);
+            }
 
+            // Back Columns
+            // Nodes - Back Columns
+            i_temp_numberofNodes += bGenerateFrontColumns ? iFrontColumninOneFrameNodesNo : 0;
 
+            if (bGenerateBackColumns)
+            {
+                AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fDist_BackColumns, fL_tot);
+            }
+
+            // Members - Back Columns
+            i_temp_numberofMembers += bGenerateFrontColumns ? iFrontColumnNoInOneFrame : 0;
+            if (bGenerateBackColumns)
+            {
+                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, eccentricityColumnBack_Z, fBackColumnStart, fBackColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fColumnsRotation, bUseBackColumnFlyBracingPlates, iBackColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_BackGirts);
+            }
 
 
 
@@ -826,37 +853,6 @@ namespace PFD
 
             if (false) // Zakomentovane ine typy prutov
             {
-                // Front Columns
-                // Nodes - Front Columns
-                i_temp_numberofNodes += bGeneratePurlins ? (iPurlinNoInOneFrame * iFrameNo) : 0;
-                if (bGenerateFrontColumns)
-                {
-                    AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fDist_FrontColumns, 0);
-                }
-
-                // Members - Front Columns
-                i_temp_numberofMembers += bGeneratePurlins ? (iPurlinNoInOneFrame * (iFrameNo - 1)) : 0;
-                if (bGenerateFrontColumns)
-                {
-                    AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, eccentricityColumnFront_Z, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fColumnsRotation, bUseFrontColumnFlyBracingPlates, iFrontColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_FrontGirts);
-                }
-
-                // Back Columns
-                // Nodes - Back Columns
-                i_temp_numberofNodes += bGenerateFrontColumns ? iFrontColumninOneFrameNodesNo : 0;
-
-                if (bGenerateBackColumns)
-                {
-                    AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fDist_BackColumns, fL_tot);
-                }
-
-                // Members - Back Columns
-                i_temp_numberofMembers += bGenerateFrontColumns ? iFrontColumnNoInOneFrame : 0;
-                if (bGenerateBackColumns)
-                {
-                    AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, eccentricityColumnBack_Z, fBackColumnStart, fBackColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fColumnsRotation, bUseBackColumnFlyBracingPlates, iBackColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_BackGirts);
-                }
-
                 // Front Girts
                 // Nodes - Front Girts
                 i_temp_numberofNodes += bGenerateBackColumns ? iBackColumninOneFrameNodesNo : 0;
@@ -1635,10 +1631,10 @@ namespace PFD
 
         public void CalcColumnNodeCoord_Z(float x, out float z_global)
         {
-            if(x<= 0.5f * fW_frame)
+            //if(x<= 0.5f * fW_frame)
                z_global = fH1_frame + (float)Math.Tan(fRoofPitch_rad) * x;
-            else
-               z_global = fH1_frame + (float)Math.Tan(fRoofPitch_rad) * (fW_frame - x);
+            //else
+            //   z_global = fH1_frame + (float)Math.Tan(fRoofPitch_rad) * (fW_frame - x);
         }
 
         // Rotate Node in Front or Back Frame about Z (angle between X and Front or Back Frame
@@ -1701,29 +1697,31 @@ namespace PFD
             }
 
             // Bottom nodes
+            /*
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
                 CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
                 m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + iOneRafterColumnNo + i + 1, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, 0, 0);
                 listOfSupportedNodes_S2.Add(m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i]);
-            }
+            }*/
 
             // Top nodes
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
                 CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
-                m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i] = new CNode(i_temp_numberofNodes + 2 * iOneRafterColumnNo + i + 1, (i + 1) * fDist_Columns, fy_Global_Coord, z_glob, 0);
+                m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i] = new CNode(i_temp_numberofNodes + 1 * iOneRafterColumnNo + i + 1, (i + 1) * fDist_Columns, fy_Global_Coord, z_glob, 0);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i]);
             }
 
             // Top nodes
+            /*
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
                 CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
                 m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + 3 * iOneRafterColumnNo + i + 1, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, z_glob, 0);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i]);
-            }
+            }*/
         }
 
         public void AddColumnsMembers(
@@ -1748,11 +1746,12 @@ namespace PFD
                 CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + i]);
             }
 
+            /*
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
                 m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + i + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i], section, EMemberType_FS.eC, EMemberType_FS_Position.ColumnBackSide, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
                 CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i]);
-            }
+            }*/
         }
 
         public int GetNumberofIntermediateNodesInOneColumnForGirts(float fBottomGirtPosition_temp, float fDistBetweenColumns, float fz_UpperLimitForGirts, int iColumnIndex)

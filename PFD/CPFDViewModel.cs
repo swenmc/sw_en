@@ -544,8 +544,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.5 || value > 0.8 * MWallHeight)
-                    throw new ArgumentException("Girt distance must be between 0.5 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
+                if (value < 0.5 || value > 4)
+                    throw new ArgumentException("Girt distance must be between 0.5 and 4.0 [m]");
 
                 MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
                 SetResultsAreNotValid();
@@ -567,8 +567,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.5 || value > 0.4 * MGableWidth)
-                    throw new ArgumentException("Purlin distance must be between 0.5 and " + Math.Round(0.4 * MGableWidth, 3) + " [m]");
+                if (value < 0.5 || value > 4)
+                    throw new ArgumentException("Purlin distance must be between 0.5 and 4.0 [m]");
 
                 MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
                 SetResultsAreNotValid();

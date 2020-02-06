@@ -245,7 +245,9 @@ namespace PFD
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + i];
                     m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member));
 
-                    if (i < (int)(iFrontColumnNoInOneFrame / 2))
+                    int iSides = bIsGableRoof ? 2 : 1;
+
+                    if (i < (int)(iFrontColumnNoInOneFrame / iSides))
                         m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[1], current_member, -fRoofPitch_rad, bWindPostUnderRafter, true)); // Front Left Main Rafter (0 to 0.5*W)
                     else
                         m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[2], current_member, fRoofPitch_rad, bWindPostUnderRafter, true)); // Front Right Main Rafter(0.5*W to W)
@@ -260,10 +262,12 @@ namespace PFD
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + i];
                     m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member));
 
-                    if (i < (int)(iBackColumnNoInOneFrame / 2))
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 1], current_member, fRoofPitch_rad, bWindPostUnderRafter, false)); // Back Left Main Rafter (0 to 0.5*W)
+                    int iSides = bIsGableRoof ? 2 : 1;
+
+                    if (i < (int)(iBackColumnNoInOneFrame / iSides))
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame) + 1], current_member, fRoofPitch_rad, bWindPostUnderRafter, false)); // Back Left Main Rafter (0 to 0.5*W)
                     else
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 2], current_member, -fRoofPitch_rad, bWindPostUnderRafter, false)); // Back Right Main Rafter(0.5*W to W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame) + 2], current_member, -fRoofPitch_rad, bWindPostUnderRafter, false)); // Back Right Main Rafter(0.5*W to W)
                 }
             }
 
