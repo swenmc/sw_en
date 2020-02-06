@@ -18,7 +18,9 @@ namespace PFD
 
     public class CMemberLoadGenerator
     {
-        private int iFrameNo;
+        private int iFrameNodesNo;
+        private int iEavesPurlinNoInOneFrame;
+        private int iFramesNo;
         private float fL1_frame;
         private float fL_tot;
         private CLoadCase[] m_arrLoadCases;
@@ -49,7 +51,9 @@ namespace PFD
 
         // Pouzije sa ak generujeme zatazenie na ramoch
         public CMemberLoadGenerator(
-            int frameNo,
+            int frameNodesNo,
+            int eavesPurlinNoInOneFrame,
+            int framesNo,
             float L1_frame,
             float L_tot,
             float fSlopeFactor,
@@ -67,7 +71,9 @@ namespace PFD
             CCalcul_1170_3 snow,
             CCalcul_1170_2 calc_wind)
         {
-            iFrameNo = frameNo;
+            iFrameNodesNo = frameNodesNo;
+            iEavesPurlinNoInOneFrame =eavesPurlinNoInOneFrame;
+            iFramesNo = framesNo;
             fL1_frame = L1_frame;
             fL_tot = L_tot;
             m_arrLoadCases = arrLoadCases;
@@ -97,7 +103,9 @@ namespace PFD
 
         public CMemberLoadGenerator(CModel_PFD model, CCalcul_1170_1 generalLoad, CCalcul_1170_3 snow, CCalcul_1170_2 calc_wind)
         {
-            iFrameNo = model.iFrameNo;
+            iFrameNodesNo = model.iFrameNodesNo;
+            iEavesPurlinNoInOneFrame = model.iEavesPurlinNoInOneFrame;
+            iFramesNo = model.iFrameNo;
             fL1_frame = model.fL1_frame;
             fL_tot = model.fL_tot;
             m_arrLoadCases = model.m_arrLoadCases;
@@ -194,10 +202,12 @@ namespace PFD
             List<CMLoad> memberLoad_SLS_EQ_X_Plus_Left = new List<CMLoad>(); // TODO - Empty
             List<CMLoad> memberLoad_SLS_EQ_Y_Plus_Front = new List<CMLoad>(); // TODO - Empty
 
-            for (int i = 0; i < iFrameNo; i++)
+            for (int i = 0; i < iFramesNo; i++)
             {
                 // Generate loads on member of particular frame
                 GenerateLoadsOnFrame(i,
+                iFrameNodesNo,
+                iEavesPurlinNoInOneFrame,
                 fValueLoadColumnDead,
                 fValueLoadRafterDead,
                 GirtCrSc,
@@ -323,6 +333,8 @@ namespace PFD
 
         public void GenerateLoadsOnFrame(
             int iFrameIndex,
+            int iFrameNodesNo,
+            int iEavesPurlinNoInOneFrame,
             float fValueLoadWallCladdingSelfWeight_SurfaceLoad,
             float fValueLoadRoofCladdingSelfWeight_SurfaceLoad,
             CCrSc GirtCrSc,
@@ -391,13 +403,12 @@ namespace PFD
             ref List<CMLoad> memberLoadExternalPressure_SLS_Cpemax_Rear
             )
         {
-            int iEavesPurlinNoInOneFrame = 2;
-            int iFrameNodesNo = 5;
+            int iFrameMembersNo = iFrameNodesNo - 1;
 
-            int indexColumn1Left = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 0;
-            int indexColumn2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 3;
-            int indexRafter1Left = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 1;
-            int indexRafter2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 2;
+            int indexColumn1Left = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * iFrameMembersNo + 0;
+            int indexColumn2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * iFrameMembersNo + (iFrameMembersNo - 1);
+            int indexRafter1Left = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * iFrameMembersNo + 1;
+            int indexRafter2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * iFrameMembersNo + (iFrameMembersNo - 1 - 1);
 
             float fFrameTributaryWidth = fL1_frame;
             float fFrameGCSCoordinate_Y = iFrameIndex * fL1_frame;
@@ -410,7 +421,7 @@ namespace PFD
             float fSelfWeightRafter = -(float)(RafterCrSc.A_g * RafterCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
 
             // Half tributary width - first and last frame
-            if (iFrameIndex == 0 || iFrameIndex == iFrameNo - 1)
+            if (iFrameIndex == 0 || iFrameIndex == iFramesNo - 1)
             {
                 fFrameTributaryWidth *= 0.5f;
                 fSelfWeightColumn = -(float)(ColumnCrSc_EF.A_g * ColumnCrSc_EF.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
@@ -1234,13 +1245,13 @@ namespace PFD
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY) // First frame
                     fTributaryWidth_Y_Coordinate_Min = 0;
                 else // Last frame
-                    fTributaryWidth_Y_Coordinate_Max = (iFrameNo - 1) * fL1_frame;
+                    fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
             }
 
-            if (iFrameIndex == iFrameNo - 1) // Last Frame
+            if (iFrameIndex == iFramesNo - 1) // Last Frame
             {
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY) // First frame
-                    fTributaryWidth_Y_Coordinate_Max = (iFrameNo - 1) * fL1_frame;
+                    fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
                 else // Last frame
                     fTributaryWidth_Y_Coordinate_Min = 0;
             }

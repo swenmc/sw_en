@@ -1,6 +1,6 @@
 ﻿using BaseClasses;
 using CRSC;
-using BaseClasses.GraphObj;
+using BaseClasses.Helpers;
 using M_EC1.AS_NZS;
 using MATERIAL;
 using MATH;
@@ -10,55 +10,12 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Linq;
 using System.Collections.ObjectModel;
-using BaseClasses.Helpers;
 
 namespace PFD
 {
     [Serializable]
     public class CModel_PFD_01_MR : CModel_PFD
     {
-        public float fUpperGirtLimit;
-        public float fDist_FrontGirts;
-        public float fDist_BackGirts;
-        public float fz_UpperLimitForFrontGirts;
-        public float fz_UpperLimitForBackGirts;
-        public float fFrontFrameRakeAngle_temp_rad;
-        public float fBackFrameRakeAngle_temp_rad;
-
-        public int iMainColumnNo;
-        public int iRafterNo;
-        public int iEavesPurlinNo;
-        public int iFrontColumnNoInOneFrame;
-        public int iBackColumnNoInOneFrame;
-        public int iFrontGirtsNoInOneFrame;
-        public int iBackGirtsNoInOneFrame;
-        public int iGBSideWallsMembersNo = 0;
-        public int iPBMembersNo = 0;
-        public int iNumberOfGB_FSMembersInOneFrame = 0;
-        public int iNumberOfGB_BSMembersInOneFrame = 0;
-
-        int[] iArrNumberOfNodesPerFrontColumn;
-        int[] iArrNumberOfNodesPerBackColumn;
-        int iOneColumnGirtNo;
-
-        private float fFrontFrameRakeAngle_deg;
-        private float fBackFrameRakeAngle_deg;
-        private int iMainColumnFlyBracing_EveryXXGirt;
-        private int iOneRafterBackColumnNo = 0;
-        private int iOneRafterFrontColumnNo = 0;
-        private int iRafterFlyBracing_EveryXXPurlin;
-
-        CMemberEccentricity eccentricityColumnFront_Z;
-        CMemberEccentricity eccentricityColumnBack_Z;
-
-        CMemberEccentricity eccentricityGirtFront_Y0;
-        CMemberEccentricity eccentricityGirtBack_YL;
-
-        private ObservableCollection<DoorProperties> DoorBlocksProperties; // Pridane kvoli Rebates
-
-        private List<CNode> listOfSupportedNodes_S1;
-        private List<CNode> listOfSupportedNodes_S2;
-
         public CModel_PFD_01_MR
         (
                 BuildingGeometryDataInput sGeometryInputData,
@@ -87,8 +44,10 @@ namespace PFD
             fFrontFrameRakeAngle_deg = fFrontFrameRakeAngle_temp_deg;
             fBackFrameRakeAngle_deg = fBackFrameRakeAngle_temp_deg;
 
-            iEavesPurlinNoInOneFrame = 2;
             iFrameNodesNo = 4;
+            iFrameMembersNo = iFrameNodesNo - 1;
+            iEavesPurlinNoInOneFrame = 2;
+
             iFrameNo = iFrameNo_temp;
             fL1_frame = fL_tot / (iFrameNo - 1);
 
@@ -303,7 +262,7 @@ namespace PFD
             // Poziciu fly bracing - kazdy xx girt nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
             bool bUseMainColumnFlyBracingPlates = true; // Use fly bracing plates in girt to column joint
-            
+
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iMainColumnFlyBracing_EveryXXGirt = sGeometryInputData.iMainColumnFlyBracingEveryXXGirt;
             else
@@ -349,13 +308,13 @@ namespace PFD
             fz_UpperLimitForBackGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eBackGirt].b);
 
             // Side wall - girts
-            bool bGenerateGirts = componentList[(int)EMemberGroupNames.eGirtWall].Generate.Value;
+            bool bGenerateGirts = false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.eGirtWall].Generate.Value;
             if (bGenerateGirts)
             {
                 iOneColumnGirtNo = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
                 iGirtNoInOneFrame = 2 * iOneColumnGirtNo;
             }
-            
+
             componentListVM.SetColumnFlyBracingPosition_Items(iOneColumnGirtNo);  //zakomentovane 20.12.2019 - nechapem naco to tu je
 
             if (!bGenerateGirts || iMainColumnFlyBracing_EveryXXGirt == 0 || iMainColumnFlyBracing_EveryXXGirt > iGirtNoInOneFrame) // Index 0 means do not use fly bracing, more than number of girts per main column means no fly bracing too
@@ -368,7 +327,7 @@ namespace PFD
             int iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
 
-            bool bGeneratePurlins = componentList[(int)EMemberGroupNames.ePurlin].Generate.Value;
+            bool bGeneratePurlins = false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.ePurlin].Generate.Value;
             if (bGeneratePurlins)
             {
                 iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
@@ -381,7 +340,7 @@ namespace PFD
 
             iFrontColumnNoInOneFrame = 0;
 
-            bool bGenerateFrontColumns = componentList[(int)EMemberGroupNames.eFrontColumn].Generate.Value;
+            bool bGenerateFrontColumns = false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.eFrontColumn].Generate.Value;
             if (bGenerateFrontColumns)
             {
                 iOneRafterFrontColumnNo = (int)(fW_frame / fDist_FrontColumns);
@@ -398,7 +357,7 @@ namespace PFD
 
             fDist_BackColumns = fDist_FrontColumns; // Todo Temporary - umoznit ine roztece medzi zadnymi a prednymi stlpmi
 
-            bool bGenerateBackColumns = componentList[(int)EMemberGroupNames.eBackColumn].Generate.Value;
+            bool bGenerateBackColumns =  false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.eBackColumn].Generate.Value;
             if (bGenerateBackColumns)
             {
                 iOneRafterBackColumnNo = (int)(fW_frame / fDist_BackColumns);
@@ -417,7 +376,7 @@ namespace PFD
             iFrontGirtsNoInOneFrame = 0;
             iArrNumberOfNodesPerFrontColumn = new int[iOneRafterFrontColumnNo];
 
-            bool bGenerateFrontGirts = componentList[(int)EMemberGroupNames.eFrontGirt].Generate.Value;
+            bool bGenerateFrontGirts = false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.eFrontGirt].Generate.Value;
 
             if (bGenerateFrontGirts)
             {
@@ -452,7 +411,7 @@ namespace PFD
             iBackGirtsNoInOneFrame = 0;
             iArrNumberOfNodesPerBackColumn = new int[iOneRafterBackColumnNo];
 
-            bool bGenerateBackGirts = componentList[(int)EMemberGroupNames.eBackGirt].Generate.Value;
+            bool bGenerateBackGirts = false; // Zakomentovane bloky // componentList[(int)EMemberGroupNames.eBackGirt].Generate.Value;
 
             if (bGenerateBackGirts)
             {
@@ -482,7 +441,7 @@ namespace PFD
                 bUseBackColumnFlyBracingPlates = false;
 
             // Sidewall girts bracing blocks
-            bool bGenerateGirtBracingSideWalls = true;
+            bool bGenerateGirtBracingSideWalls = false; // Zakomentovane bloky true;
 
             int iNumberOfGBSideWallsNodesInOneBayOneSide = 0;
             int iNumberOfGBSideWallsNodesInOneBay = 0;
@@ -490,11 +449,11 @@ namespace PFD
 
             int iNumberOfGBSideWallsMembersInOneBayOneSide = 0;
             int iNumberOfGBSideWallsMembersInOneBay = 0;
-            
+
             // TODO 408 - Zapracovat toto nastavenie do GUI - prebrat s Ondrejom a dopracovat funkcionalitu tak ze sa budu generovat len bracing blocks na stenach 
             // alebo pre purlins v kazdom druhom rade (medzera medzi girts alebo purlins)
 
-            bool bUseGBEverySecondGUI = vm._generalOptionsVM.BracingEverySecondRowOfGirts; 
+            bool bUseGBEverySecondGUI = vm._generalOptionsVM.BracingEverySecondRowOfGirts;
             bool bUseGBEverySecond = bUseGBEverySecondGUI && (iOneColumnGirtNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
 
             if (bGenerateGirtBracingSideWalls)
@@ -509,7 +468,7 @@ namespace PFD
             }
 
             // Purlin bracing blocks
-            bool bGeneratePurlinBracing = true;
+            bool bGeneratePurlinBracing = false; // Zakomentovane bloky true;
 
             int iNumberOfPBNodesInOneBayOneSide = 0;
             int iNumberOfPBNodesInOneBay = 0;
@@ -533,7 +492,7 @@ namespace PFD
             }
 
             // Front side girts bracing blocks
-            bool bGenerateGirtBracingFrontSide = true;
+            bool bGenerateGirtBracingFrontSide = false; // Zakomentovane bloky true;
 
             int[] iArrGB_FS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerFrontColumn.Length + 1];
             int[] iArrGB_FS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerFrontColumn.Length + 1];
@@ -552,9 +511,9 @@ namespace PFD
 
                 for (int i = 0; i < iArrNumberOfNodesPerFrontColumn.Length; i++)
                 {
-                    iArrGB_FS_NumberOfNodesPerBay[i+1] = (iArrNumberOfNodesPerFrontColumn[i] + 1) * iNumberOfTransverseSupports_FrontGirts;
+                    iArrGB_FS_NumberOfNodesPerBay[i + 1] = (iArrNumberOfNodesPerFrontColumn[i] + 1) * iNumberOfTransverseSupports_FrontGirts;
                     iArrGB_FS_NumberOfNodesPerBayFirstNode[i + 1] = iArrNumberOfNodesPerFrontColumn[i] + 1;
-                    iArrGB_FS_NumberOfMembersPerBay[i+1] = iArrNumberOfNodesPerFrontColumn[i] * iNumberOfTransverseSupports_FrontGirts;
+                    iArrGB_FS_NumberOfMembersPerBay[i + 1] = iArrNumberOfNodesPerFrontColumn[i] * iNumberOfTransverseSupports_FrontGirts;
 
                     iNumberOfGB_FSNodesInOneFrame += iArrGB_FS_NumberOfNodesPerBay[i + 1];
                     iNumberOfGB_FSMembersInOneFrame += iArrGB_FS_NumberOfMembersPerBay[i + 1];
@@ -569,7 +528,7 @@ namespace PFD
             }
 
             // Back side girts bracing blocks
-            bool bGenerateGirtBracingBackSide = true;
+            bool bGenerateGirtBracingBackSide = false; // Zakomentovane bloky true;
 
             int[] iArrGB_BS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerBackColumn.Length + 1];
             int[] iArrGB_BS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerBackColumn.Length + 1];
@@ -705,9 +664,8 @@ namespace PFD
 
                 // Main Column
                 m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[i * iFrameNodesNo + 3], m_arrCrSc[iCrscColumnIndex], eColumnType, eColumnType_Position, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
-
                 // Reversed sequence of ILS
-                CreateAndAssignReversedIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseMainColumnFlyBracingPlates, iMainColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_Girt, ref m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3]);
+                CreateAndAssignReversedIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseMainColumnFlyBracingPlates, iMainColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_Girt, ref m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2]);
 
                 // Eaves Purlins
                 if (i < (iFrameNo - 1))
@@ -767,370 +725,404 @@ namespace PFD
                 }
             }
 
-            // Nodes - Purlins
-            i_temp_numberofNodes += bGenerateGirts ? (iGirtNoInOneFrame * iFrameNo) : 0;
-            float fIntermediateSupportSpacingPurlins = fL1_frame / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
 
-            if (bGeneratePurlins)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            if (false) // Zakomentovane ine typy prutov
             {
-                for (int i = 0; i < iFrameNo; i++)
+                // Nodes - Purlins
+                i_temp_numberofNodes += bGenerateGirts ? (iGirtNoInOneFrame * iFrameNo) : 0;
+                float fIntermediateSupportSpacingPurlins = fL1_frame / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
+
+                if (bGeneratePurlins)
                 {
-                    for (int j = 0; j < iOneRafterPurlinNo; j++)
+                    for (int i = 0; i < iFrameNo; i++)
                     {
-                        float x_glob, z_glob;
-                        CalcPurlinNodeCoord(fFirstPurlinPosition + j * fDist_Purlin, out x_glob, out z_glob);
-
-                        m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j] = new CNode(i_temp_numberofNodes + i * iPurlinNoInOneFrame + j + 1, x_glob, i * fL1_frame, z_glob, 0);
-                        RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j]);
-                    }
-
-                    for (int j = 0; j < iOneRafterPurlinNo; j++)
-                    {
-                        float x_glob, z_glob;
-                        CalcPurlinNodeCoord(fFirstPurlinPosition + j * fDist_Purlin, out x_glob, out z_glob);
-
-                        m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CNode(i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, fW_frame - x_glob, i * fL1_frame, z_glob, 0);
-                        RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j]);
-                    }
-                }
-            }
-
-            // Members - Purlins
-            i_temp_numberofMembers += bGenerateGirts ? (iGirtNoInOneFrame * (iFrameNo - 1)) : 0;
-            if (bGeneratePurlins)
-            {
-                for (int i = 0; i < (iFrameNo - 1); i++)
-                {
-                    for (int j = 0; j < iOneRafterPurlinNo; j++)
-                    {
-                        CMemberEccentricity temp = new CMemberEccentricity();
-                        float fRotationAngle;
-
-                        bool bOrientationOfLocalZAxisIsUpward = true;
-
-                        if (bOrientationOfLocalZAxisIsUpward)
+                        for (int j = 0; j < iOneRafterPurlinNo; j++)
                         {
-                            fRotationAngle = -fRoofPitch_rad;
-                            temp.MFz_local = eccentricityPurlin.MFz_local;
-                        }
-                        else
-                        {
-                            fRotationAngle = -(fRoofPitch_rad + (float)Math.PI);
-                            temp.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
+                            float x_glob, z_glob;
+                            CalcPurlinNodeCoord(fFirstPurlinPosition + j * fDist_Purlin, out x_glob, out z_glob);
+
+                            m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j] = new CNode(i_temp_numberofNodes + i * iPurlinNoInOneFrame + j + 1, x_glob, i * fL1_frame, z_glob, 0);
+                            RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j]);
                         }
 
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle, 0);
-                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j], iNumberOfTransverseSupports_Purlins);
-                    }
-
-                    for (int j = 0; j < iOneRafterPurlinNo; j++)
-                    {
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
-                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], iNumberOfTransverseSupports_Purlins);
-                    }
-                }
-            }
-
-            // Front Columns
-            // Nodes - Front Columns
-            i_temp_numberofNodes += bGeneratePurlins ? (iPurlinNoInOneFrame * iFrameNo) : 0;
-            if (bGenerateFrontColumns)
-            {
-                AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fDist_FrontColumns, 0);
-            }
-
-            // Members - Front Columns
-            i_temp_numberofMembers += bGeneratePurlins ? (iPurlinNoInOneFrame * (iFrameNo - 1)) : 0;
-            if (bGenerateFrontColumns)
-            {
-                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, eccentricityColumnFront_Z, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fColumnsRotation, bUseFrontColumnFlyBracingPlates, iFrontColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_FrontGirts);
-            }
-
-            // Back Columns
-            // Nodes - Back Columns
-            i_temp_numberofNodes += bGenerateFrontColumns ? iFrontColumninOneFrameNodesNo : 0;
-
-            if (bGenerateBackColumns)
-            {
-                AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fDist_BackColumns, fL_tot);
-            }
-
-            // Members - Back Columns
-            i_temp_numberofMembers += bGenerateFrontColumns ? iFrontColumnNoInOneFrame : 0;
-            if (bGenerateBackColumns)
-            {
-                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, eccentricityColumnBack_Z, fBackColumnStart, fBackColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fColumnsRotation, bUseBackColumnFlyBracingPlates, iBackColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_BackGirts);
-            }
-
-            // Front Girts
-            // Nodes - Front Girts
-            i_temp_numberofNodes += bGenerateBackColumns ? iBackColumninOneFrameNodesNo : 0;
-            float fIntermediateSupportSpacingGirtsFrontSide = fDist_FrontColumns / (iNumberOfTransverseSupports_FrontGirts + 1); // number of LTB segments = number of support + 1
-
-            if (bGenerateFrontGirts)
-            {
-                AddFrontOrBackGirtsNodes(iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumn, i_temp_numberofNodes, iFrontIntermediateColumnNodesForGirtsOneRafterNo, fDist_FrontGirts, fDist_FrontColumns, 0);
-            }
-
-            // Front Girts
-            // Members - Front Girts
-            // TODO - doplnit riesenie pre maly rozpon ked neexistuju mezilahle stlpiky, prepojenie mezi hlavnymi stplmi ramu na celu sirku budovy
-            // TODO - toto riesenie plati len ak existuju girts v pozdlznom smere, ak budu deaktivovane a nevytvoria sa uzly na stlpoch tak sa musia pruty na celnych stenach generovat uplne inak, musia sa vygenerovat aj uzly na stlpoch ....
-            // TODO - pri vacsom sklone strechy (cca > 35 stupnov) by bolo dobre dogenerovat prvky ktore nie su na oboch stranach pripojene k stlpom ale su na jeden strane pripojene na stlp a na druhej strane na rafter, inak vznikaju prilis velke prazdne oblasti bez podpory (trojuhoniky) pod hlavnym ramom
-
-            i_temp_numberofMembers += bGenerateBackColumns ? iBackColumnNoInOneFrame : 0;
-            if (bGenerateFrontGirts)
-            {
-                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumn, i_temp_numberofNodes, i_temp_numberofMembers, iFrontIntermediateColumnNodesForGirtsOneRafterNo, iFrontIntermediateColumnNodesForGirtsOneFrameNo, 0, fDist_Girt, eccentricityGirtFront_Y0, fFrontGirtStart_MC, fFrontGirtStart, fFrontGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], EMemberType_FS_Position.GirtFrontSide, fColumnsRotation, iNumberOfTransverseSupports_FrontGirts);
-            }
-
-            // Back Girts
-            // Nodes - Back Girts
-
-            i_temp_numberofNodes += bGenerateFrontGirts ? iFrontIntermediateColumnNodesForGirtsOneFrameNo : 0;
-            float fIntermediateSupportSpacingGirtsBackSide = fDist_BackColumns / (iNumberOfTransverseSupports_BackGirts + 1); // number of LTB segments = number of support + 1
-
-            if (bGenerateBackGirts)
-            {
-                AddFrontOrBackGirtsNodes(iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, iBackIntermediateColumnNodesForGirtsOneRafterNo, fDist_BackGirts, fDist_BackColumns, fL_tot);
-            }
-
-            // Back Girts
-            // Members - Back Girts
-
-            i_temp_numberofMembers += bGenerateFrontGirts ? iFrontGirtsNoInOneFrame : 0;
-            if (bGenerateBackGirts)
-            {
-                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, eccentricityGirtBack_YL, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], EMemberType_FS_Position.GirtBackSide, fColumnsRotation, iNumberOfTransverseSupports_BackGirts);
-            }
-
-            // Girt Bracing - Side walls
-            // Nodes - Girt Bracing - Side walls
-
-            i_temp_numberofNodes += bGenerateBackGirts ? iBackIntermediateColumnNodesForGirtsOneFrameNo : 0;
-            if (bGenerateGirtBracingSideWalls)
-            {
-                for (int i = 0; i < (iFrameNo-1); i++)
-                {
-                    for (int j = 0; j < (iOneColumnGirtNo + 1); j++) // Left side
-                    {
-                        float zCoord = j < iOneColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
-
-                        for (int k = 0; k < iNumberOfTransverseSupports_Girts ; k++)
+                        for (int j = 0; j < iOneRafterPurlinNo; j++)
                         {
-                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
-                        }
-                    }
+                            float x_glob, z_glob;
+                            CalcPurlinNodeCoord(fFirstPurlinPosition + j * fDist_Purlin, out x_glob, out z_glob);
 
-                    for (int j = 0; j < (iOneColumnGirtNo + 1); j++) // Right side
-                    {
-                        float zCoord = j < iOneColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
-
-                        for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
-                        {
-                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k + 1, fW_frame, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
+                            m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CNode(i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, fW_frame - x_glob, i * fL1_frame, z_glob, 0);
+                            RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j]);
                         }
                     }
                 }
-            }
 
-            // Members - Girt Bracing - Side walls
-
-            i_temp_numberofMembers += bGenerateBackGirts ? iBackGirtsNoInOneFrame : 0;
-            if (bGenerateGirtBracingSideWalls)
-            {
-                for (int i = 0; i < (iFrameNo - 1); i++)
+                // Members - Purlins
+                i_temp_numberofMembers += bGenerateGirts ? (iGirtNoInOneFrame * (iFrameNo - 1)) : 0;
+                if (bGeneratePurlins)
                 {
-                    for (int j = 0; j < iOneColumnGirtNo; j++) // Left side
+                    for (int i = 0; i < (iFrameNo - 1); i++)
                     {
-                        bool bDeactivateMember = false;
-                        if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
-
-                        float fGBSideWallEnd_Current = fGBSideWallEnd;
-
-                        if (j == iOneColumnGirtNo - 1) // Last
-                            fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
-
-                        for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                        for (int j = 0; j < iOneRafterPurlinNo; j++)
                         {
-                            int memberIndex = i_temp_numberofMembers + i * iNumberOfGBSideWallsMembersInOneBay + j * iNumberOfTransverseSupports_Girts + k;
-                            int startNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k;
-                            int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Girts + k;
-                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
+                            CMemberEccentricity temp = new CMemberEccentricity();
+                            float fRotationAngle;
 
-                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            bool bOrientationOfLocalZAxisIsUpward = true;
+
+                            if (bOrientationOfLocalZAxisIsUpward)
+                            {
+                                fRotationAngle = -fRoofPitch_rad;
+                                temp.MFz_local = eccentricityPurlin.MFz_local;
+                            }
+                            else
+                            {
+                                fRotationAngle = -(fRoofPitch_rad + (float)Math.PI);
+                                temp.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
+                            }
+
+                            m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle, 0);
+                            CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j], iNumberOfTransverseSupports_Purlins);
                         }
-                    }
 
-                    for (int j = 0; j < iOneColumnGirtNo; j++) // Right side
-                    {
-                        bool bDeactivateMember = false;
-                        if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
-
-                        float fGBSideWallEnd_Current = fGBSideWallEnd;
-
-                        if (j == iOneColumnGirtNo - 1) // Last
-                            fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
-
-                        for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                        for (int j = 0; j < iOneRafterPurlinNo; j++)
                         {
-                            int memberIndex = i_temp_numberofMembers + i * iNumberOfGBSideWallsMembersInOneBay + iNumberOfGBSideWallsMembersInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k;
-                            int startNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k;
-                            int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + +iNumberOfGBSideWallsNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Girts + k;
-                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
-
-                            if(bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
+                            CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], iNumberOfTransverseSupports_Purlins);
                         }
                     }
                 }
-            }
 
-            // Purlin Bracing
-            // Nodes - Purlin Bracing
-
-            i_temp_numberofNodes += bGenerateGirtBracingSideWalls ? iGBSideWallsNodesNo : 0;
-            if (bGeneratePurlinBracing)
-            {
-                for (int i = 0; i < (iFrameNo - 1); i++)
+                // Front Columns
+                // Nodes - Front Columns
+                i_temp_numberofNodes += bGeneratePurlins ? (iPurlinNoInOneFrame * iFrameNo) : 0;
+                if (bGenerateFrontColumns)
                 {
-                    for (int j = 0; j < (iOneRafterPurlinNo + 1); j++) // Left side - eave purlin and purlins
+                    AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fDist_FrontColumns, 0);
+                }
+
+                // Members - Front Columns
+                i_temp_numberofMembers += bGeneratePurlins ? (iPurlinNoInOneFrame * (iFrameNo - 1)) : 0;
+                if (bGenerateFrontColumns)
+                {
+                    AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, eccentricityColumnFront_Z, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fColumnsRotation, bUseFrontColumnFlyBracingPlates, iFrontColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_FrontGirts);
+                }
+
+                // Back Columns
+                // Nodes - Back Columns
+                i_temp_numberofNodes += bGenerateFrontColumns ? iFrontColumninOneFrameNodesNo : 0;
+
+                if (bGenerateBackColumns)
+                {
+                    AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fDist_BackColumns, fL_tot);
+                }
+
+                // Members - Back Columns
+                i_temp_numberofMembers += bGenerateFrontColumns ? iFrontColumnNoInOneFrame : 0;
+                if (bGenerateBackColumns)
+                {
+                    AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, eccentricityColumnBack_Z, fBackColumnStart, fBackColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fColumnsRotation, bUseBackColumnFlyBracingPlates, iBackColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_BackGirts);
+                }
+
+                // Front Girts
+                // Nodes - Front Girts
+                i_temp_numberofNodes += bGenerateBackColumns ? iBackColumninOneFrameNodesNo : 0;
+                float fIntermediateSupportSpacingGirtsFrontSide = fDist_FrontColumns / (iNumberOfTransverseSupports_FrontGirts + 1); // number of LTB segments = number of support + 1
+
+                if (bGenerateFrontGirts)
+                {
+                    AddFrontOrBackGirtsNodes(iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumn, i_temp_numberofNodes, iFrontIntermediateColumnNodesForGirtsOneRafterNo, fDist_FrontGirts, fDist_FrontColumns, 0);
+                }
+
+                // Front Girts
+                // Members - Front Girts
+                // TODO - doplnit riesenie pre maly rozpon ked neexistuju mezilahle stlpiky, prepojenie mezi hlavnymi stplmi ramu na celu sirku budovy
+                // TODO - toto riesenie plati len ak existuju girts v pozdlznom smere, ak budu deaktivovane a nevytvoria sa uzly na stlpoch tak sa musia pruty na celnych stenach generovat uplne inak, musia sa vygenerovat aj uzly na stlpoch ....
+                // TODO - pri vacsom sklone strechy (cca > 35 stupnov) by bolo dobre dogenerovat prvky ktore nie su na oboch stranach pripojene k stlpom ale su na jeden strane pripojene na stlp a na druhej strane na rafter, inak vznikaju prilis velke prazdne oblasti bez podpory (trojuhoniky) pod hlavnym ramom
+
+                i_temp_numberofMembers += bGenerateBackColumns ? iBackColumnNoInOneFrame : 0;
+                if (bGenerateFrontGirts)
+                {
+                    AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumn, i_temp_numberofNodes, i_temp_numberofMembers, iFrontIntermediateColumnNodesForGirtsOneRafterNo, iFrontIntermediateColumnNodesForGirtsOneFrameNo, 0, fDist_Girt, eccentricityGirtFront_Y0, fFrontGirtStart_MC, fFrontGirtStart, fFrontGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], EMemberType_FS_Position.GirtFrontSide, fColumnsRotation, iNumberOfTransverseSupports_FrontGirts);
+                }
+
+                // Back Girts
+                // Nodes - Back Girts
+
+                i_temp_numberofNodes += bGenerateFrontGirts ? iFrontIntermediateColumnNodesForGirtsOneFrameNo : 0;
+                float fIntermediateSupportSpacingGirtsBackSide = fDist_BackColumns / (iNumberOfTransverseSupports_BackGirts + 1); // number of LTB segments = number of support + 1
+
+                if (bGenerateBackGirts)
+                {
+                    AddFrontOrBackGirtsNodes(iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, iBackIntermediateColumnNodesForGirtsOneRafterNo, fDist_BackGirts, fDist_BackColumns, fL_tot);
+                }
+
+                // Back Girts
+                // Members - Back Girts
+
+                i_temp_numberofMembers += bGenerateFrontGirts ? iFrontGirtsNoInOneFrame : 0;
+                if (bGenerateBackGirts)
+                {
+                    AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, eccentricityGirtBack_YL, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], EMemberType_FS_Position.GirtBackSide, fColumnsRotation, iNumberOfTransverseSupports_BackGirts);
+                }
+
+                // Girt Bracing - Side walls
+                // Nodes - Girt Bracing - Side walls
+
+                i_temp_numberofNodes += bGenerateBackGirts ? iBackIntermediateColumnNodesForGirtsOneFrameNo : 0;
+                if (bGenerateGirtBracingSideWalls)
+                {
+                    for (int i = 0; i < (iFrameNo - 1); i++)
                     {
-                        float x_glob, z_glob;
-
-                        if (j == 0) // First row of nodes
-                        { x_glob = 0; z_glob = fH1_frame; } // Left edge of roof
-                        else
-                            CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
-
-                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        for (int j = 0; j < (iOneColumnGirtNo + 1); j++) // Left side
                         {
-                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k + 1, x_glob, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingPurlins, z_glob, 0);
+                            float zCoord = j < iOneColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
+
+                            for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                            {
+                                m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
+                            }
                         }
-                    }
 
-                    for (int j = 0; j < (iOneRafterPurlinNo + 1); j++) // Right side - eave purlin and purlins
-                    {
-                        float x_glob, z_glob;
-
-                        if (j == 0) // First row nodes
-                        { x_glob = 0; z_glob = fH1_frame; } // Right edge of roof (x uvazujeme zprava)
-                        else
-                            CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
-
-                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        for (int j = 0; j < (iOneColumnGirtNo + 1); j++) // Right side
                         {
-                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k + 1, fW_frame - x_glob, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingPurlins, z_glob, 0);
+                            float zCoord = j < iOneColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
+
+                            for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                            {
+                                m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k + 1, fW_frame, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
+                            }
                         }
                     }
                 }
-            }
 
-            // Members - Purlin Bracing
+                // Members - Girt Bracing - Side walls
 
-            i_temp_numberofMembers += bGenerateGirtBracingSideWalls ? iGBSideWallsMembersNo : 0;
-
-            if (bGeneratePurlinBracing)
-            {
-                for (int i = 0; i < (iFrameNo - 1); i++)
+                i_temp_numberofMembers += bGenerateBackGirts ? iBackGirtsNoInOneFrame : 0;
+                if (bGenerateGirtBracingSideWalls)
                 {
-                    for (int j = 0; j < iOneRafterPurlinNo; j++) // Left side
+                    for (int i = 0; i < (iFrameNo - 1); i++)
                     {
-                        bool bDeactivateMember = false;
-                        if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
-
-                        float fPBStart = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
-                        float fPBEnd = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
-
-                        float fPBStart_Current = fPBStart;
-
-                        if (j == 0) // First
-                            fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
-
-                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        for (int j = 0; j < iOneColumnGirtNo; j++) // Left side
                         {
-                            int memberIndex = i_temp_numberofMembers + i * iNumberOfPBMembersInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
-                            int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
-                            int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
-                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, 0, 0);
+                            bool bDeactivateMember = false;
+                            if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
 
-                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            float fGBSideWallEnd_Current = fGBSideWallEnd;
+
+                            if (j == iOneColumnGirtNo - 1) // Last
+                                fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
+
+                            for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                            {
+                                int memberIndex = i_temp_numberofMembers + i * iNumberOfGBSideWallsMembersInOneBay + j * iNumberOfTransverseSupports_Girts + k;
+                                int startNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k;
+                                int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Girts + k;
+                                m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
+
+                                if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            }
                         }
-                    }
 
-                    for (int j = 0; j < iOneRafterPurlinNo; j++) // Right side
-                    {
-                        bool bDeactivateMember = false;
-                        if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
-
-                        // Opacna orientacia osi LCS y na pravej strane
-                        float fPBStart = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
-                        float fPBEnd = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
-
-                        float fPBStart_Current = fPBStart;
-
-                        if (j == 0) // First
-                            fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
-
-                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        for (int j = 0; j < iOneColumnGirtNo; j++) // Right side
                         {
-                            int memberIndex = i_temp_numberofMembers + i * iNumberOfPBMembersInOneBay + iNumberOfPBMembersInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
-                            int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
-                            int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + +iNumberOfPBNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
-                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, MathF.fPI, 0);
+                            bool bDeactivateMember = false;
+                            if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
 
-                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            float fGBSideWallEnd_Current = fGBSideWallEnd;
+
+                            if (j == iOneColumnGirtNo - 1) // Last
+                                fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
+
+                            for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                            {
+                                int memberIndex = i_temp_numberofMembers + i * iNumberOfGBSideWallsMembersInOneBay + iNumberOfGBSideWallsMembersInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k;
+                                int startNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k;
+                                int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + +iNumberOfGBSideWallsNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Girts + k;
+                                m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
+
+                                if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            }
                         }
                     }
                 }
-            }
 
-            // Girt Bracing - Front side
-            // Nodes - Girt Bracing - Front side
+                // Purlin Bracing
+                // Nodes - Purlin Bracing
 
-            //TO Mato - to co to tu je?  bGeneratePurlinBracing??? asi skor bGenerateGirtBracingFrontSide nie?
-            // To Ondrej - funguje to tak, ze sa tu nastavi aktualny pocet existujucich uzlov a to tak, ze sa pripocita pocet, ktory vznikol v predchadzajucom if
-            // Mas pravdu, ze by sa to asi malo pripocitat uz v tom predchadzajucom if a tu by potom netrebalo kontrolovat ci je true a ci sa ma nieco pripocitat alebo nic - 0
+                i_temp_numberofNodes += bGenerateGirtBracingSideWalls ? iGBSideWallsNodesNo : 0;
+                if (bGeneratePurlinBracing)
+                {
+                    for (int i = 0; i < (iFrameNo - 1); i++)
+                    {
+                        for (int j = 0; j < (iOneRafterPurlinNo + 1); j++) // Left side - eave purlin and purlins
+                        {
+                            float x_glob, z_glob;
 
-            i_temp_numberofNodes += bGeneratePurlinBracing ? iPBNodesNo : 0;
-            int iNumberOfGB_FSNodesInOneSideAndMiddleBay = 0;
+                            if (j == 0) // First row of nodes
+                            { x_glob = 0; z_glob = fH1_frame; } // Left edge of roof
+                            else
+                                CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
 
-            if (bGenerateGirtBracingFrontSide)
-            {
-                AddFrontOrBackGirtsBracingBlocksNodes(i_temp_numberofNodes, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode,
-                iNumberOfTransverseSupports_FrontGirts, fIntermediateSupportSpacingGirtsFrontSide, fDist_FrontGirts, fDist_FrontColumns, 0, out iNumberOfGB_FSNodesInOneSideAndMiddleBay);
-            }
+                            for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                            {
+                                m_arrNodes[i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k + 1, x_glob, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingPurlins, z_glob, 0);
+                            }
+                        }
 
-            // Members - Girt Bracing - Front side
-            i_temp_numberofMembers += bGeneratePurlinBracing ? iPBMembersNo : 0;
-            if (bGenerateGirtBracingFrontSide)
-            {
-               float fGBFrontSideEndToRafter = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing].y_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+                        for (int j = 0; j < (iOneRafterPurlinNo + 1); j++) // Right side - eave purlin and purlins
+                        {
+                            float x_glob, z_glob;
 
-               AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode, iArrGB_FS_NumberOfMembersPerBay,
-               iNumberOfGB_FSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_FrontGirts, eccentricityGirtFront_Y0, fGBFrontSideStart, fGBFrontSideEnd, fGBFrontSideEndToRafter, m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing],
-               EMemberType_FS_Position.BracingBlocksGirtsFrontSide, fColumnsRotation, bUseGBEverySecond);
-            }
+                            if (j == 0) // First row nodes
+                            { x_glob = 0; z_glob = fH1_frame; } // Right edge of roof (x uvazujeme zprava)
+                            else
+                                CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
 
-            // Girt Bracing - Back side
-            // Nodes - Girt Bracing - Back side
-            i_temp_numberofNodes += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSNodesInOneFrame : 0;
-            int iNumberOfGB_BSNodesInOneSideAndMiddleBay = 0;
+                            for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                            {
+                                m_arrNodes[i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k + 1, fW_frame - x_glob, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingPurlins, z_glob, 0);
+                            }
+                        }
+                    }
+                }
 
-            if (bGenerateGirtBracingBackSide)
-            {
-                AddFrontOrBackGirtsBracingBlocksNodes(i_temp_numberofNodes, iArrGB_BS_NumberOfNodesPerBay, iArrGB_BS_NumberOfNodesPerBayFirstNode,
-                iNumberOfTransverseSupports_BackGirts, fIntermediateSupportSpacingGirtsBackSide, fDist_BackGirts, fDist_BackColumns, fL_tot, out iNumberOfGB_BSNodesInOneSideAndMiddleBay);
-            }
+                // Members - Purlin Bracing
 
-            // Members - Girt Bracing - Back side
-            i_temp_numberofMembers += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSMembersInOneFrame : 0;
-            if (bGenerateGirtBracingBackSide)
-            {
-                float fGBBackSideEndToRafter = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing].y_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+                i_temp_numberofMembers += bGenerateGirtBracingSideWalls ? iGBSideWallsMembersNo : 0;
 
-                AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_BS_NumberOfNodesPerBay, iArrGB_BS_NumberOfNodesPerBayFirstNode, iArrGB_BS_NumberOfMembersPerBay,
-                iNumberOfGB_BSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_BackGirts, eccentricityGirtBack_YL, fGBBackSideStart, fGBBackSideEnd, fGBBackSideEndToRafter, m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing],
-                EMemberType_FS_Position.BracingBlocksGirtsBackSide, fColumnsRotation, bUseGBEverySecond);
+                if (bGeneratePurlinBracing)
+                {
+                    for (int i = 0; i < (iFrameNo - 1); i++)
+                    {
+                        for (int j = 0; j < iOneRafterPurlinNo; j++) // Left side
+                        {
+                            bool bDeactivateMember = false;
+                            if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
+
+                            float fPBStart = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
+                            float fPBEnd = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
+
+                            float fPBStart_Current = fPBStart;
+
+                            if (j == 0) // First
+                                fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+
+                            for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                            {
+                                int memberIndex = i_temp_numberofMembers + i * iNumberOfPBMembersInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
+                                int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
+                                int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
+                                m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, 0, 0);
+
+                                if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            }
+                        }
+
+                        for (int j = 0; j < iOneRafterPurlinNo; j++) // Right side
+                        {
+                            bool bDeactivateMember = false;
+                            if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
+
+                            // Opacna orientacia osi LCS y na pravej strane
+                            float fPBStart = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
+                            float fPBEnd = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
+
+                            float fPBStart_Current = fPBStart;
+
+                            if (j == 0) // First
+                                fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+
+                            for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                            {
+                                int memberIndex = i_temp_numberofMembers + i * iNumberOfPBMembersInOneBay + iNumberOfPBMembersInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
+                                int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
+                                int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + +iNumberOfPBNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
+                                m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, MathF.fPI, 0);
+
+                                if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            }
+                        }
+                    }
+                }
+
+                // Girt Bracing - Front side
+                // Nodes - Girt Bracing - Front side
+
+                //TO Mato - to co to tu je?  bGeneratePurlinBracing??? asi skor bGenerateGirtBracingFrontSide nie?
+                // To Ondrej - funguje to tak, ze sa tu nastavi aktualny pocet existujucich uzlov a to tak, ze sa pripocita pocet, ktory vznikol v predchadzajucom if
+                // Mas pravdu, ze by sa to asi malo pripocitat uz v tom predchadzajucom if a tu by potom netrebalo kontrolovat ci je true a ci sa ma nieco pripocitat alebo nic - 0
+
+                i_temp_numberofNodes += bGeneratePurlinBracing ? iPBNodesNo : 0;
+                int iNumberOfGB_FSNodesInOneSideAndMiddleBay = 0;
+
+                if (bGenerateGirtBracingFrontSide)
+                {
+                    AddFrontOrBackGirtsBracingBlocksNodes(i_temp_numberofNodes, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode,
+                    iNumberOfTransverseSupports_FrontGirts, fIntermediateSupportSpacingGirtsFrontSide, fDist_FrontGirts, fDist_FrontColumns, 0, out iNumberOfGB_FSNodesInOneSideAndMiddleBay);
+                }
+
+                // Members - Girt Bracing - Front side
+                i_temp_numberofMembers += bGeneratePurlinBracing ? iPBMembersNo : 0;
+                if (bGenerateGirtBracingFrontSide)
+                {
+                    float fGBFrontSideEndToRafter = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing].y_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+
+                    AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode, iArrGB_FS_NumberOfMembersPerBay,
+                    iNumberOfGB_FSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_FrontGirts, eccentricityGirtFront_Y0, fGBFrontSideStart, fGBFrontSideEnd, fGBFrontSideEndToRafter, m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing],
+                    EMemberType_FS_Position.BracingBlocksGirtsFrontSide, fColumnsRotation, bUseGBEverySecond);
+                }
+
+                // Girt Bracing - Back side
+                // Nodes - Girt Bracing - Back side
+                i_temp_numberofNodes += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSNodesInOneFrame : 0;
+                int iNumberOfGB_BSNodesInOneSideAndMiddleBay = 0;
+
+                if (bGenerateGirtBracingBackSide)
+                {
+                    AddFrontOrBackGirtsBracingBlocksNodes(i_temp_numberofNodes, iArrGB_BS_NumberOfNodesPerBay, iArrGB_BS_NumberOfNodesPerBayFirstNode,
+                    iNumberOfTransverseSupports_BackGirts, fIntermediateSupportSpacingGirtsBackSide, fDist_BackGirts, fDist_BackColumns, fL_tot, out iNumberOfGB_BSNodesInOneSideAndMiddleBay);
+                }
+
+                // Members - Girt Bracing - Back side
+                i_temp_numberofMembers += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSMembersInOneFrame : 0;
+                if (bGenerateGirtBracingBackSide)
+                {
+                    float fGBBackSideEndToRafter = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing].y_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+
+                    AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_BS_NumberOfNodesPerBay, iArrGB_BS_NumberOfNodesPerBayFirstNode, iArrGB_BS_NumberOfMembersPerBay,
+                    iNumberOfGB_BSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_BackGirts, eccentricityGirtBack_YL, fGBBackSideStart, fGBBackSideEnd, fGBBackSideEndToRafter, m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing],
+                    EMemberType_FS_Position.BracingBlocksGirtsBackSide, fColumnsRotation, bUseGBEverySecond);
+                }
             }
 
             // Validacia generovanych prutov a uzlov (overime ci vsetky generovane nodes a members maju ID o 1 vacsie ako je index v poli
@@ -1163,172 +1155,175 @@ namespace PFD
 
             CountPlates_ValidationPurpose(false);
 
-            #region Blocks
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Blocks
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            DoorsModels = new List<CBlock_3D_001_DoorInBay>();
-            WindowsModels = new List<CBlock_3D_002_WindowInBay>();
-            vm.SetModelBays(iFrameNo);
-            bool isChangedFromCode = vm.IsSetFromCode;
-
-            if (doorBlocksProperties != null)
+            if (false) // Zakomentovane bloky
             {
-                foreach (DoorProperties dp in doorBlocksProperties.ToList())
+                #region Blocks
+
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // Blocks
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                DoorsModels = new List<CBlock_3D_001_DoorInBay>();
+                WindowsModels = new List<CBlock_3D_002_WindowInBay>();
+                vm.SetModelBays(iFrameNo);
+                bool isChangedFromCode = vm.IsSetFromCode;
+
+                if (doorBlocksProperties != null)
                 {
-                    if (!bGenerateGirts && (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (!bGenerateFrontGirts && dp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (!bGenerateBackGirts && dp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-
-                    if (!dp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-
-                    if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (dp.Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
+                    foreach (DoorProperties dp in doorBlocksProperties.ToList())
                     {
-                        AddDoorBlock(dp, 0.5f, fH1_frame, vm.RecreateJoints);
+                        if (!bGenerateGirts && (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                        else if (!bGenerateFrontGirts && dp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                        else if (!bGenerateBackGirts && dp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
 
-                        // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
-                        // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
-                        // Prosim pomoz mi to nejako usporiadat :)
-                        // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by 
-                        //v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
-                        // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
+                        if (!dp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
 
-                        if (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")
-                            dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/,
-                             fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti rebate pre LR Side
-                        else
-                            dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
-                            fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
-                    }
-                }
-
-                //refaktoring 24.1.2020
-                //for (int i = 0; i < doorBlocksProperties.Count; i++)
-                //{
-                //    if (!bGenerateGirts && (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")) continue;
-                //    else if (!bGenerateFrontGirts && doorBlocksProperties[i].sBuildingSide == "Front") continue;
-                //    else if (!bGenerateBackGirts && doorBlocksProperties[i].sBuildingSide == "Back") continue;
-
-                //    if (!doorBlocksProperties[i].ValidateBays()) continue;
-
-                //    if (doorBlocksProperties[i].Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
-                //    {
-                //        AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
-
-                //        // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
-                //        // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
-                //        // Prosim pomoz mi to nejako usporiadat :)
-                //        // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by 
-                //        //v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
-                //        // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
-
-                //        if (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")
-                //            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/,
-                //             fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti rebate pre LR Side
-                //        else
-                //            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
-                //            fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
-                //    }
-                //}
-            }
-
-            if (windowBlocksProperties != null)
-            {
-                foreach (WindowProperties wp in windowBlocksProperties.ToList())
-                {
-                    if (!bGenerateGirts && (wp.sBuildingSide == "Right" || wp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (!bGenerateFrontGirts && wp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (!bGenerateBackGirts && wp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-
-                    if (!wp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-
-                    if(!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (wp.Validate()) AddWindowBlock(wp, 0.5f, vm.RecreateJoints);
-                }
-                //refaktoring 24.1.2020
-                //for (int i = 0; i < windowBlocksProperties.Count; i++)
-                //{
-                //    if (!bGenerateGirts && (windowBlocksProperties[i].sBuildingSide == "Right" || windowBlocksProperties[i].sBuildingSide == "Left")) continue;
-                //    else if (!bGenerateFrontGirts && windowBlocksProperties[i].sBuildingSide == "Front") continue;
-                //    else if (!bGenerateBackGirts && windowBlocksProperties[i].sBuildingSide == "Back") continue;
-
-                //    if (!windowBlocksProperties[i].ValidateBays()) continue;
-
-                //    if (windowBlocksProperties[i].Validate()) AddWindowBlock(windowBlocksProperties[i], 0.5f);
-                //}
-            }
-
-            CountPlates_ValidationPurpose(false);
-
-            // Validation - check that all created joints have assigned Main Member
-            // Check all joints after definition of doors and windows members and joints
-            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
-            {
-                if (m_arrConnectionJoints[i].m_MainMember == null)
-                {
-                    //throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
-
-                    // TODO BUG 46 - TO Ondrej // Odstranenie spojov ktore patria k deaktivovanym prutom (pruty boli deaktivovane, pretoze sa nachadazju na miest vlozeneho bloku)
-                    // Odstranenie by malo nastavat uz vo funckii ktora generuje bloky okien a dveri
-
-                    // Toto je docasne riesenie - vymazeme spoj zo zoznamu
-                    m_arrConnectionJoints.RemoveAt(i); // Remove joint from the list
-                }
-                //BUG 327
-                if (m_arrConnectionJoints[i].m_SecondaryMembers != null)
-                {
-                    foreach (CMember secMem in m_arrConnectionJoints[i].m_SecondaryMembers)
-                    {
-                        if (secMem.BIsGenerated == false)
+                        if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                        else if (dp.Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
                         {
-                            CConnectionJointTypes joint = m_arrConnectionJoints[i];
-                            DeactivateJoint(ref joint);
+                            AddDoorBlock(dp, 0.5f, fH1_frame, vm.RecreateJoints);
+
+                            // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
+                            // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
+                            // Prosim pomoz mi to nejako usporiadat :)
+                            // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by 
+                            //v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
+                            // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
+
+                            if (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")
+                                dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/,
+                                 fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti rebate pre LR Side
+                            else
+                                dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
+                                fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
+                        }
+                    }
+
+                    //refaktoring 24.1.2020
+                    //for (int i = 0; i < doorBlocksProperties.Count; i++)
+                    //{
+                    //    if (!bGenerateGirts && (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")) continue;
+                    //    else if (!bGenerateFrontGirts && doorBlocksProperties[i].sBuildingSide == "Front") continue;
+                    //    else if (!bGenerateBackGirts && doorBlocksProperties[i].sBuildingSide == "Back") continue;
+
+                    //    if (!doorBlocksProperties[i].ValidateBays()) continue;
+
+                    //    if (doorBlocksProperties[i].Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
+                    //    {
+                    //        AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
+
+                    //        // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
+                    //        // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
+                    //        // Prosim pomoz mi to nejako usporiadat :)
+                    //        // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by 
+                    //        //v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
+                    //        // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
+
+                    //        if (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")
+                    //            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/,
+                    //             fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti rebate pre LR Side
+                    //        else
+                    //            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
+                    //            fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
+                    //    }
+                    //}
+                }
+
+                if (windowBlocksProperties != null)
+                {
+                    foreach (WindowProperties wp in windowBlocksProperties.ToList())
+                    {
+                        if (!bGenerateGirts && (wp.sBuildingSide == "Right" || wp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                        else if (!bGenerateFrontGirts && wp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                        else if (!bGenerateBackGirts && wp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+
+                        if (!wp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+
+                        if (!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                        else if (wp.Validate()) AddWindowBlock(wp, 0.5f, vm.RecreateJoints);
+                    }
+                    //refaktoring 24.1.2020
+                    //for (int i = 0; i < windowBlocksProperties.Count; i++)
+                    //{
+                    //    if (!bGenerateGirts && (windowBlocksProperties[i].sBuildingSide == "Right" || windowBlocksProperties[i].sBuildingSide == "Left")) continue;
+                    //    else if (!bGenerateFrontGirts && windowBlocksProperties[i].sBuildingSide == "Front") continue;
+                    //    else if (!bGenerateBackGirts && windowBlocksProperties[i].sBuildingSide == "Back") continue;
+
+                    //    if (!windowBlocksProperties[i].ValidateBays()) continue;
+
+                    //    if (windowBlocksProperties[i].Validate()) AddWindowBlock(windowBlocksProperties[i], 0.5f);
+                    //}
+                }
+
+                CountPlates_ValidationPurpose(false);
+
+                // Validation - check that all created joints have assigned Main Member
+                // Check all joints after definition of doors and windows members and joints
+                for (int i = 0; i < m_arrConnectionJoints.Count; i++)
+                {
+                    if (m_arrConnectionJoints[i].m_MainMember == null)
+                    {
+                        //throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+
+                        // TODO BUG 46 - TO Ondrej // Odstranenie spojov ktore patria k deaktivovanym prutom (pruty boli deaktivovane, pretoze sa nachadazju na miest vlozeneho bloku)
+                        // Odstranenie by malo nastavat uz vo funckii ktora generuje bloky okien a dveri
+
+                        // Toto je docasne riesenie - vymazeme spoj zo zoznamu
+                        m_arrConnectionJoints.RemoveAt(i); // Remove joint from the list
+                    }
+                    //BUG 327
+                    if (m_arrConnectionJoints[i].m_SecondaryMembers != null)
+                    {
+                        foreach (CMember secMem in m_arrConnectionJoints[i].m_SecondaryMembers)
+                        {
+                            if (secMem.BIsGenerated == false)
+                            {
+                                CConnectionJointTypes joint = m_arrConnectionJoints[i];
+                                DeactivateJoint(ref joint);
+                            }
                         }
                     }
                 }
-            }
 
-            // Opakovana kontrola po odstraneni spojov s MainMember = null
-            int iCountOfJoints_NotGenerated = 0; // Number of joints on deactivated members (girts where dorr and window blocks are inserted) // Mozno sa to na nieco pouzije :)
-            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
-            {
-                if (m_arrConnectionJoints[i].m_MainMember == null)
-                    throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
-
-                if(m_arrConnectionJoints[i].BIsGenerated == false)
+                // Opakovana kontrola po odstraneni spojov s MainMember = null
+                int iCountOfJoints_NotGenerated = 0; // Number of joints on deactivated members (girts where dorr and window blocks are inserted) // Mozno sa to na nieco pouzije :)
+                for (int i = 0; i < m_arrConnectionJoints.Count; i++)
                 {
-                    iCountOfJoints_NotGenerated++;
-                }
-            }
+                    if (m_arrConnectionJoints[i].m_MainMember == null)
+                        throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
 
-            // Validation - duplicity of node ID
-            for (int i = 0; i < m_arrNodes.Length; i++)
-            {
-                for (int j = 0; j < m_arrNodes.Length; j++)
+                    if (m_arrConnectionJoints[i].BIsGenerated == false)
+                    {
+                        iCountOfJoints_NotGenerated++;
+                    }
+                }
+
+                // Validation - duplicity of node ID
+                for (int i = 0; i < m_arrNodes.Length; i++)
                 {
-                    if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
-                        throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
+                    for (int j = 0; j < m_arrNodes.Length; j++)
+                    {
+                        if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
+                            throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
+                    }
                 }
+
+                //------------------------------------------------------------
+                // Vid TODO 234 - docasne priradenie vlastnosti materialu
+                // Pre objekty dveri je potrebne pridat prierezy do Component List - Tab Members a nacitat ich parametre, potom sa moze nacitanie z databazy zmazat
+                // Po zapracovani TODO 234 mozno tento kod zmazat
+                foreach (CMember member in m_arrMembers)
+                {
+                    if (member.CrScStart.m_Mat is CMat_03_00)
+                        DATABASE.CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)member.CrScStart.m_Mat, member.CrScStart.m_Mat.Name);
+                }
+                //------------------------------------------------------------
+
+                CountPlates_ValidationPurpose(false);
+
+                // End of blocks
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                #endregion
             }
-
-            //------------------------------------------------------------
-            // Vid TODO 234 - docasne priradenie vlastnosti materialu
-            // Pre objekty dveri je potrebne pridat prierezy do Component List - Tab Members a nacitat ich parametre, potom sa moze nacitanie z databazy zmazat
-            // Po zapracovani TODO 234 mozno tento kod zmazat
-            foreach (CMember member in m_arrMembers)
-            {
-                if (member.CrScStart.m_Mat is CMat_03_00)
-                    DATABASE.CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)member.CrScStart.m_Mat, member.CrScStart.m_Mat.Name);
-            }
-            //------------------------------------------------------------
-
-            CountPlates_ValidationPurpose(false);
-
-            // End of blocks
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            #endregion
 
             AddMembersToMemberGroupsLists();
 
@@ -1352,7 +1347,7 @@ namespace PFD
 
             for (int i = 0; i < m_arrNSupports.Length; i++)
             {
-                if(i < listOfSupportedNodes_S1.Count)
+                if (i < listOfSupportedNodes_S1.Count)
                     m_arrNSupports[i] = new CNSupport(6, i + 1, listOfSupportedNodes_S1[i], bSupport1, 0);
                 else
                     m_arrNSupports[i] = new CNSupport(6, i + 1, listOfSupportedNodes_S2[i - listOfSupportedNodes_S1.Count], bSupport2, 0);
@@ -1392,7 +1387,7 @@ namespace PFD
                 m_arrSlabs = slabs;
             #endregion
         }
-        
+
         public override void CalculateLoadValuesAndGenerateLoads(
                 CCalcul_1170_1 generalLoad,
                 CCalcul_1170_2 wind,
@@ -1405,6 +1400,9 @@ namespace PFD
                 bool bGenerateLoadsOnFrameMembers,
                 bool bGenerateSurfaceLoads)
         {
+            return; // Zakomentovane bloky 
+
+
             // Loading
             #region Load Cases
             // Load Cases
@@ -1414,7 +1412,7 @@ namespace PFD
 
             // Snow load factor - projection on roof
             // Faktor ktory prepocita zatazenie z podorysneho rozmeru premietnute na stresnu rovinu
-            fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
+            fSlopeFactor = (fW_frame / (fW_frame / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
 
             #region Surface Loads
             // Surface Loads
@@ -1446,7 +1444,10 @@ namespace PFD
             if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns || bGenerateLoadsOnFrameMembers)
             {
                 CMemberLoadGenerator loadGenerator =
-                new CMemberLoadGenerator(iFrameNo,
+                new CMemberLoadGenerator(
+                iFrameNodesNo,
+                iEavesPurlinNoInOneFrame,
+                iFrameNo,
                 fL1_frame,
                 fL_tot,
                 fSlopeFactor,
@@ -2409,1433 +2410,6 @@ namespace PFD
             //System.Diagnostics.Trace.WriteLine(
             //    "Number of added joints: " + iNumberOfAddedJoints + "\n" +
             //    "Number of added plates and washers: " + iNumberOfAddedPlates);
-        }
-
-        private void DeactivateMemberBracingBlocks(CMember m, CBlock block, List<Point3D> openningPointsInGCS)
-        {
-            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
-            IEnumerable<CMember> bracingBlocks = m_arrMembers.Where(mGB => mGB.EMemberType == EMemberType_FS.eGB && (m.IntermediateNodes.Contains(mGB.NodeStart) || m.IntermediateNodes.Contains(mGB.NodeEnd)));
-            foreach (CMember mBB in bracingBlocks)
-            {
-                if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
-                {
-                    if (mBB.NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && mBB.NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
-                    {
-                        DeactivateMemberAndItsJoints(mBB);
-                    }
-                }
-                else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
-                {
-                    if (mBB.NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && mBB.NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
-                    {
-                        DeactivateMemberAndItsJoints(mBB);
-                    }
-                }
-            }
-        }
-
-        private void DeactivateBracingBlocksThroughtBlock(CBlock block, List<Point3D> openningPointsInGCS)
-        {
-            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
-            //vyberieme podla Z suradnice tie,ktore pretinaju okno
-            IEnumerable<CMember> bracingBlocks = m_arrMembers.Where(mGB => mGB.EMemberType == EMemberType_FS.eGB && 
-                ((mGB.NodeStart.Z <= openningPointsInGCS[0].Z && mGB.NodeEnd.Z >= openningPointsInGCS[3].Z)
-                || (mGB.NodeStart.Z >= openningPointsInGCS[0].Z && mGB.NodeEnd.Z <= openningPointsInGCS[3].Z)));
-            foreach (CMember mBB in bracingBlocks)
-            {
-                if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
-                {
-                    // Bug 411 - pridana prva podmienka - musime kontrolovat aj to na ktorej strane budovy sme
-                    if (MathF.d_equal(mBB.NodeStart.X, openningPointsInGCS[0].X) && (mBB.NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && mBB.NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset))
-                    {
-                        DeactivateMemberAndItsJoints(mBB);
-                    }
-                }
-                else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
-                {
-                    // Bug 411 - pridana prva podmienka - musime kontrolovat aj to na ktorej strane budovy sme
-                    if (MathF.d_equal(mBB.NodeStart.Y, openningPointsInGCS[0].Y) && (mBB.NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && mBB.NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset))
-                    {
-                        DeactivateMemberAndItsJoints(mBB);
-                    }
-                }
-            }
-        }
-
-        // Load model component cross-sections
-        public void SetCrossSectionsFromDatabase()
-        {
-            // Todo - Ondrej
-            // Chcel som napojit obsah m_arrCrSc podla 
-            // MDBModels tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
-            // Skusis mi aspon jeden prierez napojit prosim ?
-            // pole m_arrCrSc by sa malo naplnit prierezmi podla mena prierezu (270115, 27095, 63020, ...) v databaze pre jednotlive typy members (purlin, girt, main column, ...)
-            // kazdemu menu prierezu zodpoveda iny objekt z tried, ktore su v CRSC / CrSc_3 / FS
-        }
-
-        // Add members to the member group list
-        // Base on cross-section ID 
-        // TODO - spravnejsie by bolo pridavat member do zoznamu priamo pri vytvoreni
-        public void AddMembersToMemberGroupsLists()
-        {
-            int i = 0;
-
-            // Opravene ID prierezu sa bralo z poradia v databaze a prepisovalo ID prierezu z modelu
-            foreach (CMember member in m_arrMembers)
-            {
-                foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
-                {
-                    if (member.BIsGenerated && member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
-                    {
-                        member.EMemberTypePosition = group.MemberType_FS_Position; // TODO - docasne riesenie, nastavime prutu typ podla pozicie (referencny typ pruta nastaveny v skupine), spravne by sme ho mohli nastavit uz v konstruktore pruta pri jeho vytvoreni
-                        group.ListOfMembers.Add(member);
-                        //listOfModelMemberGroups[group.CrossSection.ICrSc_ID].ListOfMembers.Add(member);
-                        i++;
-                        break;
-                    }
-                }
-            }
-
-            // Check
-            // TODO - aktivovat po vyrieseni mazania nevygenerovanych prutov zo zoznamu a pridani prutov tvoriacich bloky (dvere, okna, ...)
-            /*
-            if (i != m_arrMembers.Length)
-                throw new Exception("Not all members were added.");
-            */
-        }
-
-        private List<CSegment_LTB> GenerateIntermediateLTBSegmentsOnMember(List<CIntermediateTransverseSupport> lTransverseSupportGroup, bool bIsRelativeCoordinate_x, float fMemberLength)
-        {
-            List<CSegment_LTB> LTB_segment_group = null; // TODO - rozhodnut co sa ma generovat ak na prute nie su medzilahle podpory, nic alebo vzdy jeden segment ???
-
-            if (lTransverseSupportGroup != null && lTransverseSupportGroup.Count > 0)
-            {
-                LTB_segment_group = new List<CSegment_LTB>();
-
-                // Create lateral-torsional buckling segments
-                for (int j = 0; j < lTransverseSupportGroup.Count + 1; j++)
-                {
-                    // Number of segments = number of intermediate supports + 1 - type BothFlanges
-                    // TODO - doriesit ako generovat segmenty ak nie su vsetky lateral supports typu BothFlanges
-                    // Najprv by sa mal najst pocet podpor s BothFlanges, z toho urcit pocet segmentov a zohladnovat len tie coordinates x,
-                    // ktore sa vztahuju na podpory s BothFlanges
-
-                    float fSegmentStart_abs = 0;
-                    float fSegmentEnd_abs = fMemberLength;
-
-                    if (j == 0) // First Segment
-                    {
-                        fSegmentStart_abs = 0f;
-                        fSegmentEnd_abs = lTransverseSupportGroup[j].Fx_position_abs;
-                    }
-                    else if (j < lTransverseSupportGroup.Count)
-                    {
-                        fSegmentStart_abs = lTransverseSupportGroup[j - 1].Fx_position_abs;
-                        fSegmentEnd_abs = lTransverseSupportGroup[j].Fx_position_abs;
-                    }
-                    else // Last
-                    {
-                        fSegmentStart_abs = lTransverseSupportGroup[j - 1].Fx_position_abs;
-                        fSegmentEnd_abs = fMemberLength;
-                    }
-
-                    CSegment_LTB segment = new CSegment_LTB(j + 1, bIsRelativeCoordinate_x, fSegmentStart_abs, fSegmentEnd_abs, fMemberLength);
-
-                    LTB_segment_group.Add(segment);
-                }
-            }
-
-            return LTB_segment_group;
-        }
-
-        private List<CIntermediateTransverseSupport> GenerateRegularIntermediateTransverseSupports(float fMemberLength, int iNumberOfTransverseSupports)
-        {
-            List<CIntermediateTransverseSupport> TransverseSupportGroup = null;
-
-            float fFirstSupportPosition = fMemberLength / (iNumberOfTransverseSupports + 1); // number of LTB segments = number of support + 1
-            float fDistOfSupports = fFirstSupportPosition;
-
-            if (iNumberOfTransverseSupports > 0)
-            {
-                TransverseSupportGroup = new List<CIntermediateTransverseSupport>();
-                for (int j = 0; j < iNumberOfTransverseSupports; j++) // Each suport
-                {
-                    float fxLocationOfSupport = Math.Min(fFirstSupportPosition + j * fDistOfSupports, fMemberLength);
-
-                    if (fxLocationOfSupport < fMemberLength)
-                        TransverseSupportGroup.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfSupport / fMemberLength, fxLocationOfSupport, 0));
-                    // TODO - To Ondrej, nie som si isty ci mam v kazdej podpore CIntermediateTransverseSupport ukladat jej poziciu (aktualny stav) alebo ma CMember nie list CIntermediateTransverseSupport ale list nejakych struktur (x, CIntermediateTransverseSupport), takze x miesta budu definovane v tejto strukture v objekte CMember a samotny objekt CIntermediateTransverseSupport nebude vediet kde je
-                }
-            }
-
-            return TransverseSupportGroup;
-        }
-
-        private void CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(CMember member, int iNumberOfTransverseSupports)
-        {
-            List<CIntermediateTransverseSupport> TransverseSupportGroup = GenerateRegularIntermediateTransverseSupports(member.FLength, iNumberOfTransverseSupports);
-            List<CSegment_LTB> LTB_segment_group = GenerateIntermediateLTBSegmentsOnMember(TransverseSupportGroup, false, member.FLength);
-
-            // Assign transverse support group and LTB segment group to the member
-            member.IntermediateTransverseSupportGroup = TransverseSupportGroup;
-            member.LTBSegmentGroup = LTB_segment_group;
-        }
-
-        private void CreateIrregularTransverseSupportGroupAndLTBsegmentGroup(
-        bool bUseFlyBracing,
-        int iFlyBracing_Every_XXSupportingMember,
-        float fFirstSupportingMemberPositionAbsolute,
-        float fSupportingMembersDistance,
-        ref CMember member,
-        out List<CIntermediateTransverseSupport> lTransverseSupportGroup_Member,
-        out List<CSegment_LTB> LTB_segment_group_Member)
-        {
-            lTransverseSupportGroup_Member = null;
-            LTB_segment_group_Member = null;
-
-            // Define fly bracing positions and LTB segments on member
-            float fMemberLength = member.FLength;
-
-            if (bUseFlyBracing && iFlyBracing_Every_XXSupportingMember > 0)
-            {
-                    lTransverseSupportGroup_Member = new List<CIntermediateTransverseSupport>();
-                    float fFirstFlyBracePosition = fFirstSupportingMemberPositionAbsolute + (iFlyBracing_Every_XXSupportingMember - 1) * fSupportingMembersDistance;
-                    int iNumberOfFlyBracesOnMember = fFirstFlyBracePosition < fMemberLength ? (int)((fMemberLength - fFirstFlyBracePosition) / (iFlyBracing_Every_XXSupportingMember * fSupportingMembersDistance)) + 1 : 0;
-
-                    for (int j = 0; j < iNumberOfFlyBracesOnMember; j++) // Each fly brace
-                    {
-                        float fxLocationOfFlyBrace = fFirstFlyBracePosition + (j * iFlyBracing_Every_XXSupportingMember) * fSupportingMembersDistance;
-
-                        if (fxLocationOfFlyBrace < fMemberLength)
-                            lTransverseSupportGroup_Member.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfFlyBrace / fMemberLength, fxLocationOfFlyBrace, 0));
-                        // TODO - To Ondrej, nie som si isty ci mam v kazdej podpore CIntermediateTransverseSupport ukladat jej poziciu (aktualny stav) alebo ma CMember nie list CIntermediateTransverseSupport ale list nejakych struktur (x, CIntermediateTransverseSupport), takze x miesta budu definovane v tejto strukture v objekte CMember a samotny objekt CIntermediateTransverseSupport nebude vediet kde je
-                    }
-
-                    if (lTransverseSupportGroup_Member.Count > 0)
-                    {
-                        LTB_segment_group_Member = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_Member, false, fMemberLength);
-                    }
-            }
-        }
-
-        private void CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(
-            bool bUseFlyBracing,
-            int iFlyBracing_Every_XXSupportingMember,
-            float fFirstSupportingMemberPositionAbsolute,
-            float fSupportingMembersDistance,
-            ref CMember member)
-        {
-            List<CIntermediateTransverseSupport> lTransverseSupportGroup_Member;
-            List<CSegment_LTB> LTB_segment_group_Member;
-
-            CreateIrregularTransverseSupportGroupAndLTBsegmentGroup(
-                bUseFlyBracing,
-                iFlyBracing_Every_XXSupportingMember,
-                fFirstSupportingMemberPositionAbsolute,
-                fSupportingMembersDistance,
-                ref member,
-                out lTransverseSupportGroup_Member,
-                out LTB_segment_group_Member);
-
-            if (lTransverseSupportGroup_Member != null && lTransverseSupportGroup_Member.Count > 0)
-            {
-                // Assign transverse support group to the member
-                member.IntermediateTransverseSupportGroup = lTransverseSupportGroup_Member;
-                member.LTBSegmentGroup = LTB_segment_group_Member;
-            }
-        }
-
-        private void CreateAndAssignReversedIrregularTransverseSupportGroupAndLTBsegmentGroup(
-            bool bUseFlyBracing,
-            int iFlyBracing_Every_XXSupportingMember,
-            float fFirstSupportingMemberPositionAbsolute,
-            float fSupportingMembersDistance,
-            ref CMember member)
-        {
-            // Suradnice pre member opacne orientovane, takze pouzit L - x
-            float fmemberLength = member.FLength;
-            List<CIntermediateTransverseSupport> lTransverseSupportGroup_Member = new List<CIntermediateTransverseSupport>();
-            List<CSegment_LTB> LTB_segment_group_Member = new List<CSegment_LTB>();
-            CreateIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fBottomGirtPosition, fDist_Girt, ref member, out lTransverseSupportGroup_Member, out LTB_segment_group_Member);
-
-            // Reverse ILS and LTB segments
-            List<CIntermediateTransverseSupport> lTransverseSupportGroup_Member_Reverse = new List<CIntermediateTransverseSupport>();
-            List<CSegment_LTB> LTB_segment_group_Member_Reverse = new List<CSegment_LTB>();
-
-            if (lTransverseSupportGroup_Member != null && lTransverseSupportGroup_Member.Count != 0) // List is initialized and some intermediate supports exists
-            {
-                for (int j = 0; j < lTransverseSupportGroup_Member.Count; j++)
-                {
-                    int iSupportIndex = lTransverseSupportGroup_Member.Count - j - 1;
-                    CIntermediateTransverseSupport lTransverseSupport = new CIntermediateTransverseSupport(j + 1, lTransverseSupportGroup_Member[iSupportIndex].Type, 1f - lTransverseSupportGroup_Member[iSupportIndex].Fx_position_rel, fmemberLength - lTransverseSupportGroup_Member[iSupportIndex].Fx_position_abs);
-                    lTransverseSupportGroup_Member_Reverse.Add(lTransverseSupport);
-                }
-
-                LTB_segment_group_Member_Reverse = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_Member_Reverse, false, fmemberLength);
-
-                member.IntermediateTransverseSupportGroup = lTransverseSupportGroup_Member_Reverse;
-                member.LTBSegmentGroup = LTB_segment_group_Member_Reverse;
-            }
-        }
-
-        private void CreateJoints(bool bGenerateGirts, bool bUseMainColumnFlyBracingPlates, bool bGeneratePurlins, bool bUseRafterFlyBracingPlates, 
-            bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts,
-            bool bGenerateGirtBracingSideWalls, bool bGeneratePurlinBracing, bool bGenerateGirtBracingFrontSide, bool bGenerateGirtBracingBackSide, bool bWindPostUnderRafter)
-        {
-            // Connection Joints
-            m_arrConnectionJoints = new List<CConnectionJointTypes>();
-
-            // Frame Main Column Joints to Foundation
-            for (int i = 0; i < iFrameNo; i++)
-            {
-                m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrNodes[i * iFrameNodesNo + 0], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0]));
-                m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrNodes[i * iFrameNodesNo + 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3]));
-            }
-
-            float ft_rafter_joint_plate = 0.003f; // m
-
-            // Frame Rafter Joints
-            for (int i = 0; i < iFrameNo; i++)
-            {
-                float fRafterDepth = (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h;
-                float fa = fRafterDepth * (float)Math.Tan(fRoofPitch_rad);
-                float fRafterPart = fRafterDepth + fa;
-                float fbPlateHalf = fRafterPart * (float)Math.Cos(fRoofPitch_rad);
-                float fPlateWidth = 2 * fbPlateHalf;
-
-                if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
-                    m_arrConnectionJoints.Add(new CConnectionJoint_A001(m_arrNodes[i * 5 + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, fPlateWidth, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
-                else //if(i< (iFrameNo - 1) // Intermediate frame
-
-                    m_arrConnectionJoints.Add(new CConnectionJoint_A001(m_arrNodes[i * 5 + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, fPlateWidth, ft_rafter_joint_plate, 0));
-            }
-
-            float ft_knee_joint_plate = 0.003f; // m
-
-            // Knee Joints 1
-            for (int i = 0; i < iFrameNo; i++)
-            {
-                if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
-                else //if(i< (iFrameNo - 1) // Intermediate frame
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
-            }
-
-            // Knee Joints 2
-            for (int i = 0; i < iFrameNo; i++)
-            {
-                if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
-                else //if(i< (iFrameNo - 1) // Intermediate frame
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
-            }
-
-            // Eaves Purlin Joints
-            if (iEavesPurlinNo > 0)
-            {
-                for (int i = 0; i < iEavesPurlinNo / iEavesPurlinNoInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4];
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_C001(current_member.NodeStart, m_arrMembers[0], current_member, true));
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_C001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
-
-                    // Eave purlin is connected to the rafter - index i+1 and i+2
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1], current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eOneRightPlate));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, m_arrMembers[((i+1) * iEavesPurlinNoInOneFrame) + (i + 1) * (iFrameNodesNo - 1) + 1], current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eOneRightPlate));
-
-                    current_member = m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5];
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2], current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eOneRightPlate));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, m_arrMembers[((i+1) * iEavesPurlinNoInOneFrame) + (i + 1) * (iFrameNodesNo - 1) + 2], current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eOneRightPlate));
-                }
-            }
-
-            // Girt Joints
-            if (bGenerateGirts)
-            {
-                for (int i = 0; i < (iFrameNo - 1) * iGirtNoInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + i];
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-
-                    int iCurrentFrameIndex = i / iGirtNoInOneFrame;
-                    int iFirstGirtInFrameLeftSide = iMainColumnNo + iRafterNo + iEavesPurlinNo + iCurrentFrameIndex * iGirtNoInOneFrame;
-                    int iFirstGirtInFrameRightSide = iFirstGirtInFrameLeftSide + iGirtNoInOneFrame / 2;
-                    int iCurrentMemberIndex = iMainColumnNo + iRafterNo + iEavesPurlinNo + i;
-
-                    int iFirstGirtOnCurrentSideIndex;
-                    if (iCurrentMemberIndex < iFirstGirtInFrameRightSide)
-                        iFirstGirtOnCurrentSideIndex = iFirstGirtInFrameLeftSide;
-                    else
-                        iFirstGirtOnCurrentSideIndex = iFirstGirtInFrameRightSide;
-
-                    if (bUseMainColumnFlyBracingPlates && iMainColumnFlyBracing_EveryXXGirt > 0 && (iCurrentMemberIndex - iFirstGirtOnCurrentSideIndex + 1) % iMainColumnFlyBracing_EveryXXGirt == 0)
-                    {
-                        bool bTopOfPlateInCrscVerticalAxisPlusDirection = false;
-
-                        if (iFirstGirtInFrameRightSide <= iCurrentMemberIndex && iCurrentMemberIndex < iFirstGirtOnCurrentSideIndex + iGirtNoInOneFrame / 2)
-                            bTopOfPlateInCrscVerticalAxisPlusDirection = true;
-
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bTopOfPlateInCrscVerticalAxisPlusDirection));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bTopOfPlateInCrscVerticalAxisPlusDirection));
-                    }
-                    else
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    }
-                }
-            }
-
-            // Purlin Joints
-            if (bGeneratePurlins)
-            {
-                for (int i = 0; i < (iFrameNo - 1) * iPurlinNoInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + i];
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-
-                    int iCurrentFrameIndex = i / iPurlinNoInOneFrame;
-                    int iFirstPurlinInFrameLeftSide = iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + iCurrentFrameIndex * iPurlinNoInOneFrame;
-                    int iFirstPurlinInFrameRightSide = iFirstPurlinInFrameLeftSide + iPurlinNoInOneFrame / 2;
-                    int iCurrentMemberIndex = iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + i;
-
-                    int iFirstPurlinOnCurrentSideIndex;
-                    if (iCurrentMemberIndex < iFirstPurlinInFrameRightSide)
-                        iFirstPurlinOnCurrentSideIndex = iFirstPurlinInFrameLeftSide;
-                    else
-                        iFirstPurlinOnCurrentSideIndex = iFirstPurlinInFrameRightSide;
-
-                    if (bUseRafterFlyBracingPlates && iRafterFlyBracing_EveryXXPurlin > 0 && (iCurrentMemberIndex - iFirstPurlinOnCurrentSideIndex + 1) % iRafterFlyBracing_EveryXXPurlin == 0)
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                    }
-                    else
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    }
-                }
-            }
-
-            // Front Columns Foundation Joints / Top Joint to the rafter
-            if (bGenerateFrontColumns)
-            {
-                for (int i = 0; i < iFrontColumnNoInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + i];
-                    m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member));
-
-                    if (i < (int)(iFrontColumnNoInOneFrame / 2))
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[1], current_member, -fRoofPitch_rad, bWindPostUnderRafter, true)); // Front Left Main Rafter (0 to 0.5*W)
-                    else
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[2], current_member, fRoofPitch_rad, bWindPostUnderRafter, true)); // Front Right Main Rafter(0.5*W to W)
-                }
-            }
-
-            // Back Columns Foundation Joints / Top Joint to the rafter
-            if (bGenerateBackColumns)
-            {
-                for (int i = 0; i < iBackColumnNoInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + i];
-                    m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member));
-
-                    if (i < (int)(iBackColumnNoInOneFrame / 2))
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 1], current_member, fRoofPitch_rad, bWindPostUnderRafter, false)); // Back Left Main Rafter (0 to 0.5*W)
-                    else
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 2], current_member, -fRoofPitch_rad, bWindPostUnderRafter, false)); // Back Right Main Rafter(0.5*W to W)
-                }
-            }
-
-            // Front Girt Joints
-            if (bGenerateFrontGirts)
-            {
-                for (int i = 0; i < iFrontGirtsNoInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + i];
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_J001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true));
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_J001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true));
-
-                    // Number of girts in the middle
-                    int iNumberOfGirtsInMiddle = iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1];
-                    // Number of girts without middle
-                    int iNumberOfSymmetricalGirts = iFrontGirtsNoInOneFrame - iNumberOfGirtsInMiddle;
-                    // Number of girts in the half of frame (without middle)
-                    int iNumberOfSymmetricalGirtsHalf = iNumberOfSymmetricalGirts / 2;
-
-                    // Joint at member start - connected to the first main column
-                    if (i < iGirtNoInOneFrame / 2) // First column of girts are connected to the first main column
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[0], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates)); // Use height (z dimension)
-                    }
-                    else if ((iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle - 1) < i && i < (iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle + iOneColumnGirtNo)) // Joint at member start - connected to the second main column
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[3], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates)); // Use height (z dimension)
-                    }
-                    else
-                    {
-                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    }
-
-                    // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                }
-            }
-
-            // Back Girt Joints
-            if (bGenerateBackGirts)
-            {
-                for (int i = 0; i < iBackGirtsNoInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + i];
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_L001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true));
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_L001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true));
-
-                    // Number of girts in the middle
-                    int iNumberOfGirtsInMiddle = iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
-                    // Number of girts without middle
-                    int iNumberOfSymmetricalGirts = iBackGirtsNoInOneFrame - iNumberOfGirtsInMiddle;
-                    // Number of girts in the half of frame (without middle)
-                    int iNumberOfSymmetricalGirtsHalf = iNumberOfSymmetricalGirts / 2;
-
-                    // Joint at member start - connected to the first main column
-                    if (i < iGirtNoInOneFrame / 2) // First column of girts are connected to the first main column
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[((iFrameNo - 1) * iEavesPurlinNoInOneFrame) + (iFrameNo - 1) * (iFrameNodesNo - 1)], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates)); // Use height (z dimension)
-                    }
-                    else if ((iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle - 1) < i && i < (iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle + iOneColumnGirtNo)) // Joint at member start - connected to the second main column
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[((iFrameNo - 1) * iEavesPurlinNoInOneFrame) + (iFrameNo - 1) * (iFrameNodesNo - 1) + 3], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates)); // Use height (z dimension)
-                    }
-                    else
-                    {
-                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    }
-
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                }
-            }
-
-            // Girt Bracing - Side walls - Joints
-            if (bGenerateGirtBracingSideWalls)
-            {
-                for (int i = 0; i < iGBSideWallsMembersNo; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + i];
-
-                    //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
-                    // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
-                    if (current_member.BIsGenerated)
-                    {
-                        // Joint at member start
-                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-
-                        // Joint at member end
-                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    }
-                }
-            }
-
-            // Purlin Bracing - Joints
-            if (bGeneratePurlinBracing)
-            {
-                for (int i = 0; i < iPBMembersNo; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + i];
-
-                    //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
-                    // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
-                    if (current_member.BIsGenerated)
-                    {
-                        // Joint at member start
-                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-
-                        // Joint at member end
-                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    }
-                }
-            }
-
-            // Girt Bracing - Front Side - Joints
-            if (bGenerateGirtBracingFrontSide)
-            {
-                for (int i = 0; i < iNumberOfGB_FSMembersInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + i];
-
-                    //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
-                    // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
-                    if (current_member.BIsGenerated)
-                    {
-                        // Joint at member start
-                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-
-                        // Joint at member end
-                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    }
-                }
-            }
-
-            // Girt Bracing - Back Side - Joints
-            if (bGenerateGirtBracingBackSide)
-            {
-                for (int i = 0; i < iNumberOfGB_BSMembersInOneFrame; i++)
-                {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + i];
-
-                    //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
-                    // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
-                    if (current_member.BIsGenerated)
-                    {
-                        // Joint at member start
-                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-
-                        // Joint at member end
-                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    }
-                }
-            }
-
-            // Validation - check that all created joints have assigned Main Member
-            // Check all joints before definition of doors and windows members and joints
-            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
-            {
-                if (m_arrConnectionJoints[i].m_MainMember == null)
-                    throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
-            }
-
-            // Validation - duplicity of node ID
-            for (int i = 0; i < m_arrNodes.Length; i++)
-            {
-                for (int j = 0; j < m_arrNodes.Length; j++)
-                {
-                    if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
-                        throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
-                }
-            }
-        }
-
-        public void DeactivateMember(ref CMember m)
-        {
-            if (m != null)
-            {
-                m.BIsGenerated = false;
-                m.BIsDisplayed = false;
-                m.BIsSelectedForIFCalculation = false;
-                m.BIsSelectedForDesign = false;
-                m.BIsSelectedForMaterialList = false;
-            }
-        }
-
-        public void DeactivateJoint(ref CConnectionJointTypes j)
-        {
-            // Deaktivujeme parametre spoje aj vsetkych jeho component
-            if (j != null)
-            {
-                j.BIsGenerated = false;
-                j.BIsDisplayed = false;
-                j.BIsSelectedForDesign = false;
-                j.BIsSelectedForMaterialList = false;
-
-                // Deactivate joint components
-
-                if(j.m_arrConnectors != null && j.m_arrConnectors.Length > 0)
-                {
-                    foreach (CConnector connector in j.m_arrConnectors)
-                    {
-                        connector.BIsGenerated = false;
-                        connector.BIsDisplayed = false;
-                        connector.BIsSelectedForDesign = false;
-                        connector.BIsSelectedForMaterialList = false;
-                    }
-                }
-
-                if (j.m_arrWelds != null && j.m_arrWelds.Length > 0)
-                {
-                    foreach (CWeld weld in j.m_arrWelds)
-                    {
-                        weld.BIsGenerated = false;
-                        weld.BIsDisplayed = false;
-                        weld.BIsSelectedForDesign = false;
-                        weld.BIsSelectedForMaterialList = false;
-                    }
-                }
-
-                if (j.m_arrPlates != null && j.m_arrPlates.Length > 0)
-                {
-                    foreach (CPlate plate in j.m_arrPlates)
-                    {
-                        plate.BIsGenerated = false;
-                        plate.BIsDisplayed = false;
-                        plate.BIsSelectedForDesign = false;
-                        plate.BIsSelectedForMaterialList = false;
-
-                        if (plate.ScrewArrangement != null)
-                        {
-                            plate.ScrewArrangement.referenceScrew.BIsGenerated = false;
-                            plate.ScrewArrangement.referenceScrew.BIsDisplayed = false;
-                            plate.ScrewArrangement.referenceScrew.BIsSelectedForDesign = false;
-                            plate.ScrewArrangement.referenceScrew.BIsSelectedForMaterialList = false;
-
-                            if (plate.ScrewArrangement.Screws != null && plate.ScrewArrangement.Screws.Length > 0)
-                            {
-                                foreach (CScrew screw in plate.ScrewArrangement.Screws)
-                                {
-                                    screw.BIsGenerated = false;
-                                    screw.BIsDisplayed = false;
-                                    screw.BIsSelectedForDesign = false;
-                                    screw.BIsSelectedForMaterialList = false;
-                                }
-                            }
-                        }
-
-                        // Base Joint
-                        if (j is CConnectionJoint_TA01 || j is CConnectionJoint_TB01 || j is CConnectionJoint_TC01 || j is CConnectionJoint_TD01) // Tato podmienka je zbytocna
-                        {
-                            if (plate is CConCom_Plate_B_basic) // Base plate
-                            {
-                                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
-
-                                basePlate.AnchorArrangement.referenceAnchor.BIsGenerated = false;
-                                basePlate.AnchorArrangement.referenceAnchor.BIsDisplayed = false;
-                                basePlate.AnchorArrangement.referenceAnchor.BIsSelectedForDesign = false;
-                                basePlate.AnchorArrangement.referenceAnchor.BIsSelectedForMaterialList = false;
-
-                                if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.Anchors.Length > 0)
-                                {
-                                    foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
-                                    {
-                                        anchor.BIsGenerated = false;
-                                        anchor.BIsDisplayed = false;
-                                        anchor.BIsSelectedForDesign = false;
-                                        anchor.BIsSelectedForMaterialList = false;
-
-                                        anchor.WasherBearing.BIsGenerated = false;
-                                        anchor.WasherBearing.BIsDisplayed = false;
-                                        anchor.WasherBearing.BIsSelectedForDesign = false;
-                                        anchor.WasherBearing.BIsSelectedForMaterialList = false;
-
-                                        anchor.WasherPlateTop.BIsGenerated = false;
-                                        anchor.WasherPlateTop.BIsDisplayed = false;
-                                        anchor.WasherPlateTop.BIsSelectedForDesign = false;
-                                        anchor.WasherPlateTop.BIsSelectedForMaterialList = false;
-
-                                        foreach (CNut nut in anchor.Nuts)
-                                        {
-                                            nut.BIsGenerated = false;
-                                            nut.BIsDisplayed = false;
-                                            nut.BIsSelectedForDesign = false;
-                                            nut.BIsSelectedForMaterialList = false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public void DeactivateMemberAndItsJoints(ref CMember m)
-        {
-            DeactivateMember(ref m);
-
-            try
-            {
-                CConnectionJointTypes jStart;
-                CConnectionJointTypes jEnd;
-                GetModelMemberStartEndConnectionJoints(m, out jStart, out jEnd);
-
-                // Tu stoji za zvazenie ci sa maju spoje deaktivovat alebo aj zmazat
-                DeactivateJoint(ref jStart);
-                DeactivateJoint(ref jEnd);
-            }
-            catch(Exception ex)
-            {
-                bool debugging = true;
-                if (debugging) System.Diagnostics.Trace.WriteLine($"DeactivateMemberAndItsJoints: Error: [{ex.Message}] m.ID:{m.ID}  Prefix: {m.Prefix}");
-
-            };
-        }
-        public void DeactivateMemberAndItsJoints(CMember m)
-        {
-            DeactivateMemberAndItsJoints(ref m);
-        }
-
-        private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bIsReinforcementBarStraight)
-        {
-            bool bGenerateFoundations = true;
-            //bool bIsReinforcementBarStraight = false; // Nastavime bool, aky typ vyztuze chceme vytvorit
-
-            if (bGenerateFoundations)
-            {
-                // Docasne
-                CMat_02_00 materialConcrete = new CMat_02_00();
-                materialConcrete.Name = "25";
-                materialConcrete.Fck = 25e+6f;
-                materialConcrete.m_fRho = 2300f;
-                materialConcrete.m_fE = 30e+9f;
-
-                DATABASE.DTO.CMatPropertiesRC concreteProperties = DATABASE.CMaterialManager.LoadMaterialPropertiesRC(materialConcrete.Name);
-                materialConcrete.Fck = concreteProperties.Fc;
-                materialConcrete.m_fRho = (float)concreteProperties.Rho;
-                materialConcrete.m_fE = (float)concreteProperties.E;
-
-                // Foundations
-                // Footings
-                m_arrFoundations = new List<CFoundation>(iMainColumnNo + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame);
-
-                // Main Column - Footings
-                // TODO - Predbezne doporucene hodnoty velkosti zakladov vypocitane z rozmerov budovy
-                // UC - Footings
-                float fMainColumnFooting_aX = (float)Math.Round(MathF.Max(0.6f, Math.Min(fW_frame * 0.07f, fL1_frame * 0.35f)), 1);
-                float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.7f, Math.Min(fW_frame * 0.08f, fL1_frame * 0.40f)), 1);
-                float fMainColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
-                float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
-
-                CReinforcementBar MainColumnFootingReference_Top_Bar_x;
-                CReinforcementBar MainColumnFootingReference_Top_Bar_y;
-                CReinforcementBar MainColumnFootingReference_Bottom_Bar_x;
-                CReinforcementBar MainColumnFootingReference_Bottom_Bar_y;
-
-                int iMainColumnFootingNumberOfBarsTop_x;
-                int iMainColumnFootingNumberOfBarsTop_y;
-                int iMainColumnFootingNumberOfBarsBottom_x;
-                int iMainColumnFootingNumberOfBarsBottom_y;
-
-                CreateReferenceReinforcementBars(
-                    bIsReinforcementBarStraight,
-                    fMainColumnFooting_aX,
-                    fMainColumnFooting_bY,
-                    fMainColumnFooting_h,
-                    out MainColumnFootingReference_Top_Bar_x,
-                    out MainColumnFootingReference_Top_Bar_y,
-                    out MainColumnFootingReference_Bottom_Bar_x,
-                    out MainColumnFootingReference_Bottom_Bar_y,
-                    out iMainColumnFootingNumberOfBarsTop_x,
-                    out iMainColumnFootingNumberOfBarsTop_y,
-                    out iMainColumnFootingNumberOfBarsBottom_x,
-                    out iMainColumnFootingNumberOfBarsBottom_y
-                    );
-
-                for (int i = 0; i < iFrameNo; i++)
-                {
-                    float fMainColumnFooting_Eccentricity_x = 0f;
-                    float fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h);
-
-                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.MainColumn;
-                    string sName = "A";
-                    string sDescriptionText = "PAD TYPE A [MC]";
-                    //Color color = Colors.LightSkyBlue;
-
-                    if (i == 0 || i == (iFrameNo - 1)) // First or last frame
-                    {
-                        columnTypePosition = EMemberType_FS_Position.EdgeColumn;
-                        sName = "B";
-                        sDescriptionText = "PAD TYPE B [EC]";
-                        fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h);
-
-                        // Zistenie hrubky base plate v spoji
-                        float fBasePlateThickness = 0.003f;
-                        if (m_arrConnectionJoints != null)
-                           fBasePlateThickness = (m_arrConnectionJoints.Find(x => x.m_MainMember.EMemberTypePosition == columnTypePosition)).m_arrPlates[0].Ft;
-
-                        // Kedze kotevny plech sa je pripojeny z vonkajsej strany stlpa je potrebne pocitat pri excentricite s tymto rozmerom a zmmensit ju
-
-                        // Front side edge frame columns
-                        fMainColumnFooting_Eccentricity_x = 0.5f * (fMainColumnFooting_aX - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b - 2 * fBasePlateThickness);
-
-                        // Back side edge frame columns
-                        if (i == (iFrameNo - 1)) 
-                            fMainColumnFooting_Eccentricity_x *= -1;
-
-                        //color = Colors.LightSteelBlue;
-                    }
-
-                    // Left
-                    CNode node_left = m_arrNodes[i * iFrameNodesNo + 0];
-                    //Point3D controlPoint_left = new Point3D(i * 2 + 1, node_left.X - 0.5f * fMainColumnFooting_aX, node_left.Y - 0.5f * fMainColumnFooting_bY, node_left.Z - fMainColumnFooting_h, 0);
-                    m_arrFoundations.Add(new CFoundation(i * 2 + 1,
-                        EFoundationType.ePad,
-                        node_left,
-                        materialConcrete,
-                        columnTypePosition,
-                        sName,
-                        sDescriptionText,
-                        //controlPoint_left,
-                        fMainColumnFooting_aX, 
-                        fMainColumnFooting_bY,
-                        fMainColumnFooting_h,
-                        0,
-                        0,
-                        fMainColumnFooting_Eccentricity_x,
-                        -fMainColumnFooting_Eccentricity_y,
-                        90,
-                        fConcreteCover,
-                        MainColumnFootingReference_Top_Bar_x,
-                        MainColumnFootingReference_Top_Bar_y,
-                        MainColumnFootingReference_Bottom_Bar_x,
-                        MainColumnFootingReference_Bottom_Bar_y,
-                        iMainColumnFootingNumberOfBarsTop_x,
-                        iMainColumnFootingNumberOfBarsTop_y,
-                        iMainColumnFootingNumberOfBarsBottom_x,
-                        iMainColumnFootingNumberOfBarsBottom_y,
-                        //color,
-                        0.5f,
-                        true,
-                        0));
-
-                    // Right
-                    CNode node_right = m_arrNodes[i * iFrameNodesNo + 4];
-                    //Point3D controlPoint_right = new Point3D(i * 2 + 2, node_right.X - 0.5f * fMainColumnFooting_aX, node_right.Y - 0.5f * fMainColumnFooting_bY, node_right.Z - fMainColumnFooting_h, 0);
-                    m_arrFoundations.Add(new CFoundation(i * 2 + 2,
-                        EFoundationType.ePad,
-                        node_right,
-                        materialConcrete,
-                        columnTypePosition,
-                        sName,
-                        sDescriptionText,
-                        //controlPoint_right,
-                        fMainColumnFooting_aX,
-                        fMainColumnFooting_bY,
-                        fMainColumnFooting_h,
-                        0,
-                        0,
-                        -fMainColumnFooting_Eccentricity_x,
-                        -fMainColumnFooting_Eccentricity_y,
-                        270,
-                        fConcreteCover,
-                        MainColumnFootingReference_Top_Bar_x,
-                        MainColumnFootingReference_Top_Bar_y,
-                        MainColumnFootingReference_Bottom_Bar_x,
-                        MainColumnFootingReference_Bottom_Bar_y,
-                        iMainColumnFootingNumberOfBarsTop_x,
-                        iMainColumnFootingNumberOfBarsTop_y,
-                        iMainColumnFootingNumberOfBarsBottom_x,
-                        iMainColumnFootingNumberOfBarsBottom_y,
-                        //color,
-                        0.5f,
-                        true,
-                        0));
-                }
-
-                int iLastFoundationIndex = iMainColumnNo;
-
-                // Front and Back Wall Columns - Footings
-                if (bGenerateFrontColumns)
-                {
-                    float fFrontColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
-                    float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
-                    float fFrontColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
-
-                    float fFrontColumnFooting_Eccentricity_y = 0.5f * (fFrontColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h);
-
-                    CReinforcementBar FrontColumnFootingReference_Top_Bar_x;
-                    CReinforcementBar FrontColumnFootingReference_Top_Bar_y;
-                    CReinforcementBar FrontColumnFootingReference_Bottom_Bar_x;
-                    CReinforcementBar FrontColumnFootingReference_Bottom_Bar_y;
-
-                    int iFrontColumnFootingNumberOfBarsTop_x;
-                    int iFrontColumnFootingNumberOfBarsTop_y;
-                    int iFrontColumnFootingNumberOfBarsBottom_x;
-                    int iFrontColumnFootingNumberOfBarsBottom_y;
-
-                    CreateReferenceReinforcementBars(
-                        bIsReinforcementBarStraight,
-                        fFrontColumnFooting_aX,
-                        fFrontColumnFooting_bY,
-                        fFrontColumnFooting_h,
-                        out FrontColumnFootingReference_Top_Bar_x,
-                        out FrontColumnFootingReference_Top_Bar_y,
-                        out FrontColumnFootingReference_Bottom_Bar_x,
-                        out FrontColumnFootingReference_Bottom_Bar_y,
-                        out iFrontColumnFootingNumberOfBarsTop_x,
-                        out iFrontColumnFootingNumberOfBarsTop_y,
-                        out iFrontColumnFootingNumberOfBarsBottom_x,
-                        out iFrontColumnFootingNumberOfBarsBottom_y
-                        );
-
-                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.ColumnFrontSide;
-                    string sName = "C-FRONT";
-                    string sDescriptionText = "PAD TYPE C [WP-FRONT]";
-
-                    // Search footings control points
-                    List<CNode> listOfControlPoints = new List<CNode>();
-                    for (int i = 0; i < m_arrMembers.Length; i++)
-                    {
-                        // Find foundation definition nodes
-                        if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eFrontColumn].CrossSection))
-                            listOfControlPoints.Add(m_arrMembers[i].NodeStart);
-                    }
-
-                    for (int i = 0; i < listOfControlPoints.Count; i++)
-                    {
-                        //Point3D controlPoint = new Point3D(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fFrontColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fFrontColumnFooting_bY, listOfControlPoints[i].Z - fFrontColumnFooting_h, 0);
-                        m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1,
-                            EFoundationType.ePad,
-                            listOfControlPoints[i],
-                            materialConcrete,
-                            columnTypePosition,
-                            sName,
-                            sDescriptionText,
-                            //controlPoint,
-                            fFrontColumnFooting_aX,
-                            fFrontColumnFooting_bY,
-                            fFrontColumnFooting_h,
-                            0,
-                            eccentricityColumnFront_Z.MFz_local,
-                            0,
-                            -fFrontColumnFooting_Eccentricity_y,
-                            180,
-                            fConcreteCover,
-                            FrontColumnFootingReference_Top_Bar_x,
-                            FrontColumnFootingReference_Top_Bar_y,
-                            FrontColumnFootingReference_Bottom_Bar_x,
-                            FrontColumnFootingReference_Bottom_Bar_y,
-                            iFrontColumnFootingNumberOfBarsTop_x,
-                            iFrontColumnFootingNumberOfBarsTop_y,
-                            iFrontColumnFootingNumberOfBarsBottom_x,
-                            iFrontColumnFootingNumberOfBarsBottom_y,
-                            //Colors.LightSeaGreen,
-                            0.5f,
-                            true,
-                            0));
-                    }
-
-                    iLastFoundationIndex += listOfControlPoints.Count;
-                }
-
-                if (bGenerateBackColumns)
-                {
-                    float fBackColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
-                    float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
-                    float fBackColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
-
-                    float fBackColumnFooting_Eccentricity_y = 0.5f * (fBackColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h);
-
-                    CReinforcementBar BackColumnFootingReference_Top_Bar_x;
-                    CReinforcementBar BackColumnFootingReference_Top_Bar_y;
-                    CReinforcementBar BackColumnFootingReference_Bottom_Bar_x;
-                    CReinforcementBar BackColumnFootingReference_Bottom_Bar_y;
-
-                    int iBackColumnFootingNumberOfBarsTop_x;
-                    int iBackColumnFootingNumberOfBarsTop_y;
-                    int iBackColumnFootingNumberOfBarsBottom_x;
-                    int iBackColumnFootingNumberOfBarsBottom_y;
-
-                    CreateReferenceReinforcementBars(
-                        bIsReinforcementBarStraight,
-                        fBackColumnFooting_aX,
-                        fBackColumnFooting_bY,
-                        fBackColumnFooting_h,
-                        out BackColumnFootingReference_Top_Bar_x,
-                        out BackColumnFootingReference_Top_Bar_y,
-                        out BackColumnFootingReference_Bottom_Bar_x,
-                        out BackColumnFootingReference_Bottom_Bar_y,
-                        out iBackColumnFootingNumberOfBarsTop_x,
-                        out iBackColumnFootingNumberOfBarsTop_y,
-                        out iBackColumnFootingNumberOfBarsBottom_x,
-                        out iBackColumnFootingNumberOfBarsBottom_y
-                        );
-
-                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.ColumnBackSide;
-                    string sName = "C-BACK";
-                    string sDescriptionText = "PAD TYPE C [WP-BACK]";
-
-                    // Search footings control points
-                    List<CNode> listOfControlPoints = new List<CNode>();
-                    for (int i = 0; i < m_arrMembers.Length; i++)
-                    {
-                        // Find foundation definition nodes
-                        if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackColumn].CrossSection))
-                            listOfControlPoints.Add(m_arrMembers[i].NodeStart);
-                    }
-
-                    for (int i = 0; i < listOfControlPoints.Count; i++)
-                    {
-                        //Point3D controlPoint = new Point3D(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fBackColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fBackColumnFooting_bY, listOfControlPoints[i].Z - fBackColumnFooting_h, 0);
-                        m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1,
-                            EFoundationType.ePad,
-                            listOfControlPoints[i],
-                            materialConcrete,
-                            columnTypePosition,
-                            sName,
-                            sDescriptionText,
-                            //controlPoint,
-                            fBackColumnFooting_aX,
-                            fBackColumnFooting_bY,
-                            fBackColumnFooting_h,
-                            0,
-                            eccentricityColumnBack_Z.MFz_local,
-                            0,
-                            fBackColumnFooting_Eccentricity_y,
-                            180,
-                            fConcreteCover,
-                            BackColumnFootingReference_Top_Bar_x,
-                            BackColumnFootingReference_Top_Bar_y,
-                            BackColumnFootingReference_Bottom_Bar_x,
-                            BackColumnFootingReference_Bottom_Bar_y,
-                            iBackColumnFootingNumberOfBarsTop_x,
-                            iBackColumnFootingNumberOfBarsTop_y,
-                            iBackColumnFootingNumberOfBarsBottom_x,
-                            iBackColumnFootingNumberOfBarsBottom_y,
-                            //Colors.Coral,
-                            0.5f,
-                            true,
-                            0));
-                    }
-
-                    iLastFoundationIndex += listOfControlPoints.Count;
-                }
-
-                // Validation - skontroluje ci je velkost pola zhodna s poctom vygenerovanych prvkov
-                if (m_arrFoundations.Count != iLastFoundationIndex)
-                    throw new Exception("Incorrect number of generated foundations");
-            }
-        }
-
-        private void CreateFloorSlab(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts, bool bWindPostUnderRafter)
-        {
-            bool bGenerateSlabs = true;
-
-            if (bGenerateSlabs)
-            {
-                // Docasne
-                CMat_02_00 materialConcrete = new CMat_02_00();
-                materialConcrete.Name = "25";
-                materialConcrete.Fck = 25e+6f;
-                materialConcrete.m_fRho = 2300f;
-                materialConcrete.m_fE = 30e+9f;
-
-                // Ground Floor Slab
-                float fFloorSlab_AdditionalOffset_X = 0.005f; // Rozmer o ktory doska presahuje od hrany stlpa
-                float fFloorSlab_AdditionalOffset_Y = 0.005f; // Rozmer o ktory doska presahuje od hrany stlpa
-
-                float fFloorSlabOffset_x = -(float)m_arrCrSc[0].z_max - fFloorSlab_AdditionalOffset_X;
-                float fFloorSlabOffset_y_Front = (float)m_arrCrSc[0].y_min - fFloorSlab_AdditionalOffset_Y;
-                float fFloorSlabOffset_y_Back = (float)m_arrCrSc[0].y_max + fFloorSlab_AdditionalOffset_Y;
-
-                float fFloorSlab_aX = fW_frame + 2 * (-fFloorSlabOffset_x);
-                float fFloorSlab_bY = fL_tot + (-fFloorSlabOffset_y_Front) + fFloorSlabOffset_y_Back;
-                float fFloorSlab_h = 0.125f;
-                float fFloorSlab_eX = fFloorSlabOffset_x;
-                float fFloorSlab_eY = fFloorSlabOffset_y_Front;
-
-                float fConcreteCoverTop = 0.05f; // 50 mm
-                string sMeshGradeName = "SE92DE";
-
-                CReinforcementMesh mesh = new CReinforcementMesh(sMeshGradeName);
-
-                // Saw Cuts
-                CSawCut refSawCut = new CSawCut(0, new Point3D(0, 0, 0), new Point3D(1, 0, 0), 0.01f, 0.03f, true, 0);
-
-                // Create raster of lines in XY-plane
-                float fFirstSawCutPositionInDirectionX = 0;
-                float fFirstSawCutPositionInDirectionY = 0;
-                int iNumberOfSawCutsInDirectionX = 0;
-                int iNumberOfSawCutsInDirectionY = 0;
-                float fSawCutsSpacingInDirectionX = 0;
-                float fSawCutsSpacingInDirectionY = 0;
-
-                float fSawCutMaximumDistanceY = Math.Min(6, fL1_frame); // 6 m // V kazdej bay alebo maximalne 6 metrov od seba
-                float fSawCutMaximumDistanceX = 0.5f * fSawCutMaximumDistanceY; // Pomer Y : X = 2:1
-
-                if (fSawCutMaximumDistanceY < fFloorSlab_bY)
-                {
-                    iNumberOfSawCutsInDirectionY = (int)(fFloorSlab_bY / fSawCutMaximumDistanceY);
-                    // Predpoklada sa, ze posledny saw cut je rovnako vzdialeny od konca ako prvy od zaciatku
-                    fSawCutsSpacingInDirectionY = fFloorSlab_bY / (iNumberOfSawCutsInDirectionY);
-                    fFirstSawCutPositionInDirectionY = fSawCutsSpacingInDirectionY / 2f;
-                }
-
-                if (fSawCutMaximumDistanceX < fFloorSlab_aX)
-                {
-                    iNumberOfSawCutsInDirectionX = (int)(fFloorSlab_aX / fSawCutMaximumDistanceX);
-                    // Predpoklada sa, ze posledny saw cut je rovnako vzdialeny od konca ako prvy od zaciatku
-                    fSawCutsSpacingInDirectionX = fFloorSlab_aX / (iNumberOfSawCutsInDirectionX);
-                    fFirstSawCutPositionInDirectionX = fSawCutsSpacingInDirectionX / 2f;
-                }
-
-                // ControlJoints
-                CDowel refDowel = new CDowel(new Point3D(0, 0, 0), 0.016f, 0.6f, 0.947f);
-                CControlJoint refControlJoint = new CControlJoint(0, new Point3D(0, 0, 0), new Point3D(1, 0, 0), refDowel,0.4f, true, 0);
-                // Create raster of lines in XY-plane
-                float fControlJointMaximumDistance = Math.Min(24, 0.5f * fFloorSlab_bY); // 24 m alebo polovica budovy (vzdy aspon jeden joint v strede)
-
-                float fFirstControlJointPositionInDirectionX = 0;
-                float fFirstControlJointPositionInDirectionY = 0;
-                int iNumberOfControlJointsInDirectionX = 0;
-                int iNumberOfControlJointsInDirectionY = 0;
-                float fControlJointsSpacingInDirectionX = 0;
-                float fControlJointsSpacingInDirectionY = 0;
-
-                if (fControlJointMaximumDistance < fFloorSlab_bY)
-                {
-                    iNumberOfControlJointsInDirectionY = (int)(fFloorSlab_bY / fControlJointMaximumDistance);
-                    // Predpoklada sa, ze posledny control joint je rovnako vzdialeny od konca ako prvy od zaciatku
-                    fControlJointsSpacingInDirectionY = fFloorSlab_bY / (iNumberOfControlJointsInDirectionY);
-                    fFirstControlJointPositionInDirectionY = fControlJointsSpacingInDirectionY / 2f;
-                }
-
-                if (fControlJointMaximumDistance < fFloorSlab_aX)
-                {
-                    iNumberOfControlJointsInDirectionX = (int)(fFloorSlab_aX / fControlJointMaximumDistance);
-                    // Predpoklada sa, ze posledny control joint je rovnako vzdialeny od konca ako prvy od zaciatku
-                    fControlJointsSpacingInDirectionX = fFloorSlab_aX / (iNumberOfControlJointsInDirectionX);
-                    fFirstControlJointPositionInDirectionX = fControlJointsSpacingInDirectionX / 2f;
-                }
-
-                float fPerimeterDepth_LRSide = 0.45f; // "AS 2870 - Size must be between 0.45 and 2 [m]"; // TODO napojit na tabulku normy
-                float fPerimeterWidth_LRSide = 0.25f;
-                float fStartersLapLength_LRSide = 0.6f;
-                float fStartersSpacing_LRSide = 0.6f;
-                float fStarters_Phi_LRSide = 0.012f;
-                float fLongitud_Reinf_TopAndBotom_Phi_LRSide = 0.016f;
-                float fLongitud_Reinf_Intermediate_Phi_LRSide = 0.012f;
-                int fLongitud_Reinf_Intermediate_Count_LRSide = 1;
-
-                float fRebateWidth_LRSide = 0.5f;
-
-                float fPerimeterDepth_FBSide = 0.45f; // "AS 2870 - Size must be between 0.45 and 2 [m]"; // TODO napojit na tabulku normy
-                float fPerimeterWidth_FBSide = 0.25f;
-                float fStartersLapLength_FBSide = 0.6f;
-                float fStartersSpacing_FBSide = 0.6f;
-                float fStarters_Phi_FBSide = 0.012f;
-                float fLongitud_Reinf_TopAndBotom_Phi_FBSide = 0.016f;
-                float fLongitud_Reinf_Intermediate_Phi_FBSide = 0.012f;
-                int fLongitud_Reinf_Intermediate_Count_FBSide = 1;
-
-                float fRebateWidth_FBSide = 0.5f;
-
-                m_arrSlabs = new List<CSlab>();
-                m_arrSlabs.Add(new CSlab(1,
-                            materialConcrete,
-                            fFloorSlab_aX,
-                            fFloorSlab_bY,
-                            fFloorSlab_h,
-                            fFloorSlab_eX,
-                            fFloorSlab_eY, 0,
-                            fConcreteCoverTop,
-                            sMeshGradeName,
-                            iNumberOfSawCutsInDirectionX,
-                            iNumberOfSawCutsInDirectionY,
-                            fFirstSawCutPositionInDirectionX,
-                            fFirstSawCutPositionInDirectionY,
-                            fSawCutsSpacingInDirectionX,
-                            fSawCutsSpacingInDirectionY,
-                            refSawCut,
-                            iNumberOfControlJointsInDirectionX,
-                            iNumberOfControlJointsInDirectionY,
-                            fFirstControlJointPositionInDirectionX,
-                            fFirstControlJointPositionInDirectionY,
-                            fControlJointsSpacingInDirectionX,
-                            fControlJointsSpacingInDirectionY,
-                            refControlJoint,
-                            fPerimeterDepth_LRSide,
-                            fPerimeterWidth_LRSide,
-                            fStartersLapLength_LRSide,
-                            fStartersSpacing_LRSide,
-                            fStarters_Phi_LRSide,
-                            fLongitud_Reinf_TopAndBotom_Phi_LRSide,
-                            fLongitud_Reinf_Intermediate_Phi_LRSide,
-                            fLongitud_Reinf_Intermediate_Count_LRSide,
-                            fRebateWidth_LRSide,
-                            fPerimeterDepth_FBSide,
-                            fPerimeterWidth_FBSide,
-                            fStartersLapLength_FBSide,
-                            fStartersSpacing_FBSide,
-                            fStarters_Phi_FBSide,
-                            fLongitud_Reinf_TopAndBotom_Phi_FBSide,
-                            fLongitud_Reinf_Intermediate_Phi_FBSide,
-                            fLongitud_Reinf_Intermediate_Count_FBSide,
-                            fRebateWidth_FBSide,
-                            DoorBlocksProperties,
-
-                            // Temp
-                            // TODO Ondrej - tieto parametre sa mi nepacia, sluzia na vypocet polohy zaciatku rebate a dlzky rebate, malo by to podla mna prist do CSlab uz nejako v ramci door properties
-                            //fL1_frame, // Vzdialenost ramov
-                            //fDist_FrontColumns, // Vzdialenost wind posts (stlpov v prednej stene)
-                            //fDist_BackColumns, // Vzdialenost wind posts (stlpov v zadnej stene)
-                            //0.14f, // Sirka cross-section typu roller door trimmer
-
-                            //BackColumnFootingReference_Top_Bar_x,
-                            //BackColumnFootingReference_Top_Bar_y,
-                            //BackColumnFootingReference_Bottom_Bar_x,
-                            //BackColumnFootingReference_Bottom_Bar_y,
-                            //iBackColumnFootingNumberOfBarsTop_x,
-                            //iBackColumnFootingNumberOfBarsTop_y,
-                            //iBackColumnFootingNumberOfBarsBottom_x,
-                            //iBackColumnFootingNumberOfBarsBottom_y,
-                            //Colors.LightGray,
-                            0.3f,
-                            true,
-                            0));
-            }
-        }
-
-        private int GetDefaultNumberOfReinforcingBars(float footingPadWidth, float fBarDiameter, float fConcreteCover)
-        {
-            float fDefaultDistanceBetweenReinforcementBars = 0.15f; // 150 mm
-
-            // Number of spacings + 1
-            return (int)((footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / fDefaultDistanceBetweenReinforcementBars) + 1;
-        }
-
-        private void CreateReferenceReinforcementBars(
-            bool bIsReinforcementBarStraight,
-            float faX,
-            float fbY,
-            float fhZ,
-            out CReinforcementBar reference_Top_Bar_x,
-            out CReinforcementBar reference_Top_Bar_y,
-            out CReinforcementBar reference_Bottom_Bar_x,
-            out CReinforcementBar reference_Bottom_Bar_y,
-            out int iNumberOfBarsTop_x,
-            out int iNumberOfBarsTop_y,
-            out int iNumberOfBarsBottom_x,
-            out int iNumberOfBarsBottom_y,
-            float fDiameterTop_Bar_x = 0.012f,
-            float fDiameterTop_Bar_y = 0.012f,
-            float fDiameterBottom_Bar_x = 0.012f,
-            float fDiameterBottom_Bar_y = 0.012f,
-            float fConcreteCover = 0.075f
-            )
-        {
-            // For each pad recalculate lengths of reference bars
-            float fLengthTop_Bar_x = bIsReinforcementBarStraight ? faX - 2 * fConcreteCover : faX - 2 * fConcreteCover - fDiameterTop_Bar_x;
-            float fLengthBottom_Bar_x = bIsReinforcementBarStraight ? faX - 2 * fConcreteCover : faX - 2 * fConcreteCover - fDiameterBottom_Bar_x;
-            float fLengthTop_Bar_y = bIsReinforcementBarStraight ? fbY - 2 * fConcreteCover : fbY - 2 * fConcreteCover - fDiameterTop_Bar_y;
-            float fLengthBottom_Bar_y = bIsReinforcementBarStraight ? fbY - 2 * fConcreteCover : fbY - 2 * fConcreteCover - fDiameterBottom_Bar_y;
-
-            iNumberOfBarsTop_x = GetDefaultNumberOfReinforcingBars(fbY, fDiameterTop_Bar_x, fConcreteCover);
-            iNumberOfBarsTop_y = GetDefaultNumberOfReinforcingBars(faX, fDiameterTop_Bar_y, fConcreteCover);
-            iNumberOfBarsBottom_x = GetDefaultNumberOfReinforcingBars(fbY, fDiameterBottom_Bar_x, fConcreteCover);
-            iNumberOfBarsBottom_y = GetDefaultNumberOfReinforcingBars(faX, fDiameterBottom_Bar_y, fConcreteCover);
-
-            // Reference / first bar coordinates
-            double cp_Top_x_coordX = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_x;
-            double cp_Top_x_coordY = bIsReinforcementBarStraight ? fConcreteCover + 0.5f * fDiameterTop_Bar_x : fConcreteCover + fDiameterTop_Bar_y + 0.5f * fDiameterTop_Bar_x;
-            double cp_Top_y_coordX = bIsReinforcementBarStraight ? fConcreteCover + 0.5f * fDiameterTop_Bar_y : fConcreteCover + fDiameterTop_Bar_x + 0.5f * fDiameterTop_Bar_y;
-            double cp_Top_y_coordY = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_y;
-            double cp_Bottom_x_coordX = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterBottom_Bar_x;
-            double cp_Bottom_x_coordY = bIsReinforcementBarStraight ? fConcreteCover + 0.5f * fDiameterBottom_Bar_x : fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x;
-            double cp_Bottom_y_coordX = bIsReinforcementBarStraight ? fConcreteCover + 0.5f * fDiameterBottom_Bar_y : fConcreteCover + fDiameterBottom_Bar_x + 0.5f * fDiameterBottom_Bar_y;
-            double cp_Bottom_y_coordY = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterBottom_Bar_y;
-
-            Point3D cp_Top_x = new Point3D(cp_Top_x_coordX, cp_Top_x_coordY, fhZ - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x);
-            Point3D cp_Top_y = new Point3D(cp_Top_y_coordX, cp_Top_y_coordY, fhZ - fConcreteCover - 0.5f * fDiameterTop_Bar_y);
-            Point3D cp_Bottom_x = new Point3D(cp_Bottom_x_coordX, cp_Bottom_x_coordY, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x);
-            Point3D cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, fConcreteCover + 0.5f * fDiameterBottom_Bar_y);
-
-            if(!bIsReinforcementBarStraight)
-            {
-                cp_Top_x = new Point3D(cp_Top_x_coordX, cp_Top_x_coordY, fConcreteCover + fDiameterTop_Bar_y);
-                cp_Top_y = new Point3D(cp_Top_y_coordX, cp_Top_y_coordY, fConcreteCover);
-
-                // Kedze sa vertikalne casti hornych a spodnych prutov prekryvaju posunieme horne pruty o sucet polovic priemeru
-                cp_Top_x.Y = cp_Top_x_coordY + 0.5 * fDiameterTop_Bar_x + 0.5 * fDiameterBottom_Bar_x;
-                cp_Top_y.X = cp_Top_y_coordX + 0.5 * fDiameterTop_Bar_y + 0.5 * fDiameterBottom_Bar_y;
-
-                cp_Bottom_x = new Point3D(cp_Bottom_x_coordX, cp_Bottom_x_coordY, fhZ - fConcreteCover - fDiameterBottom_Bar_y);
-                cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, fhZ - fConcreteCover);
-            }
-
-            if (bIsReinforcementBarStraight)
-            {
-                reference_Top_Bar_x = new CReinforcementBarStraight(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, /*Colors.CadetBlue,*/ 0.5f, true, 0);
-                reference_Top_Bar_y = new CReinforcementBarStraight(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, /*Colors.Coral,*/ 0.5f,  true, 0);
-                reference_Bottom_Bar_x = new CReinforcementBarStraight(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, /*Colors.YellowGreen,*/ 0.5f, true, 0);
-                reference_Bottom_Bar_y = new CReinforcementBarStraight(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, /*Colors.Purple,*/ 0.5f, true, 0);
-            }
-            else
-            {
-                float fArcRadiusNetTop_Bar_x = 3f * fDiameterTop_Bar_x;
-                float fArcRadiusNetTop_Bar_y = 3f * fDiameterTop_Bar_y;
-                float fArcRadiusNetBottom_Bar_x = 3f * fDiameterBottom_Bar_x;
-                float fArcRadiusNetBottom_Bar_y = 3f * fDiameterBottom_Bar_y;
-
-                reference_Top_Bar_x = new CReinforcementBar_U(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fArcRadiusNetTop_Bar_x, fDiameterTop_Bar_x, /*Colors.CadetBlue,*/ 0.5f, true, true, 0);
-                reference_Top_Bar_y = new CReinforcementBar_U(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fArcRadiusNetTop_Bar_y, fDiameterTop_Bar_y, /*Colors.Coral,*/ 0.5f, true, true, 0);
-                reference_Bottom_Bar_x = new CReinforcementBar_U(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fArcRadiusNetBottom_Bar_x, fDiameterBottom_Bar_x, /*Colors.YellowGreen,*/ 0.5f, false, true, 0);
-                reference_Bottom_Bar_y = new CReinforcementBar_U(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fArcRadiusNetBottom_Bar_y, fDiameterBottom_Bar_y, /*Colors.Purple,*/ 0.5f, false, true, 0);
-            }
-        }
-
-        private void CountPlates_ValidationPurpose(bool bIsDebbuging)
-        {
-            if (bIsDebbuging)
-            {
-                int iNumberOfJoints = 0;
-                int iNumberOfJointsGenerateTrue = 0;
-                int iNumberOfJointsGenerateFalse = 0;
-
-                int iNumberOfPlates = 0;
-                int iNumberOfPlateGenerateTrue = 0;
-                int iNumberOfPlateGenerateFalse = 0;
-                int iNumberOfPlateMatListTrue = 0;
-                int iNumberOfPlateMatlistFalse = 0;
-
-                foreach (CConnectionJointTypes joint in m_arrConnectionJoints)
-                {
-                    iNumberOfJoints++;
-                    if (joint.BIsGenerated) iNumberOfJointsGenerateTrue++; else iNumberOfJointsGenerateFalse++;
-
-                    foreach (CPlate plate in joint.m_arrPlates)
-                    {
-                        iNumberOfPlates++;
-
-                        if (plate.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
-                        if (plate.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
-
-                        if (plate is CConCom_Plate_B_basic)
-                        {
-                            CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
-
-                            foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
-                            {
-                                iNumberOfPlates++; // anchor.WasherBearing
-                                iNumberOfPlates++; // anchor.WasherPlateTop
-
-                                if (anchor.WasherBearing.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
-                                if (anchor.WasherBearing.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
-
-                                if (anchor.WasherPlateTop.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
-                                if (anchor.WasherPlateTop.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;
-                            }
-                        }
-                    }
-                }
-
-                System.Diagnostics.Trace.WriteLine(
-                    "Total number of joints: " + iNumberOfJoints.ToString() + "\n" +
-                    "Number of joints - Generate - True: " + iNumberOfJointsGenerateTrue.ToString() + "\n" +
-                    "Number of joints - Generate - False: " + iNumberOfJointsGenerateFalse.ToString() + "\n" +
-                    "\n" +
-                    "Total number of plates: " + iNumberOfPlates.ToString() + "\n" +
-                    "Number of plates - Generate - True: " + iNumberOfPlateGenerateTrue.ToString() + "\n" +
-                    "Number of plates - Generate - False: " + iNumberOfPlateGenerateFalse.ToString() + "\n" +
-                    "Number of plates - Material List - True: " + iNumberOfPlateMatListTrue.ToString() + "\n" +
-                    "Number of plates - Material List - False: " + iNumberOfPlateMatlistFalse.ToString() + "\n");
-            }
         }
     }
 }

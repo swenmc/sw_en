@@ -178,6 +178,8 @@ namespace PFD
 
         private List<CConnectionJointTypes> GetConnectionJointTypesFor(CConnectionDescription con)
         {
+            if (_pfdVM.Model.m_arrConnectionJoints == null) return null; // Ak neexistuju v modeli spoje vratime null
+
             List<CConnectionJointTypes> items = _pfdVM.Model.m_arrConnectionJoints.FindAll(c => c.GetType() == GetTypeFor(con.JoinType));
             List<CConnectionJointTypes> resItems = new List<CConnectionJointTypes>();
 

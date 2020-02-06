@@ -905,7 +905,13 @@ namespace PFD
                 sDisplayOptions = vm.GetDisplayOptions();
                 System.Diagnostics.Trace.WriteLine("GetDisplayOptions: " + (DateTime.Now - start).TotalMilliseconds);
 
-                Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex], vm.JointsVM.DictJoints);
+                Page3Dmodel page1;
+
+                if(vm.Model.m_arrLoadCases != null) // Ak existuju nejake load cases zobrazime vybrany
+                    page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex], vm.JointsVM.DictJoints);
+                else // Ak neexistuju load cases - docasne pre pripady IN WORK, kedy model nema este definovane ziadne load cases
+                    page1 = new Page3Dmodel(vm.Model, sDisplayOptions, null, vm.JointsVM.DictJoints);
+
                 System.Diagnostics.Trace.WriteLine("new Page3Dmodel: " + (DateTime.Now - start).TotalMilliseconds);
                 // Display model in 3D preview frame
                 Frame1.Content = page1;
@@ -913,7 +919,6 @@ namespace PFD
                 System.Diagnostics.Trace.WriteLine("UpdateLayout: " + (DateTime.Now - start).TotalMilliseconds);
             }
         }
-
 
         private void UpdateUC_Joints()
         {
