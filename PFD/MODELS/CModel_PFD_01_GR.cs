@@ -16,6 +16,8 @@ namespace PFD
     [Serializable]
     public class CModel_PFD_01_GR : CModel_PFD
     {
+        private int iOneColumnGirtNo;
+
         public CModel_PFD_01_GR
         (
                 BuildingGeometryDataInput sGeometryInputData,
@@ -1122,7 +1124,7 @@ namespace PFD
             #region Joints
             if (joints == null)
                 CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
-                             bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, vm._generalOptionsVM.WindPostUnderRafter);
+                             bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, vm._generalOptionsVM.WindPostUnderRafter, iOneColumnGirtNo);
             else
                 m_arrConnectionJoints = joints;
             #endregion

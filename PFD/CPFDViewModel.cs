@@ -195,7 +195,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
         public float fBayWidth;
-        public float fApexHeight_H2;
+        public float fHeight_H2; // Apex height for gable roof or right side wall heigth for monopitch roof
         public float fRoofPitch_radians;
         public float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov)
 
@@ -308,7 +308,13 @@ namespace PFD
                 //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
                 fBayWidth = MLength / (MFrames - 1);
                 fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
-                fApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+
+                if (MKitsetTypeIndex == 0)
+                    fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                else if (MKitsetTypeIndex == 1)
+                    fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                else
+                    fHeight_H2 = 0; // Exception
 
                 RoofCladdingIndex = 1;
                 RoofCladdingCoatingIndex = 1;
@@ -355,15 +361,32 @@ namespace PFD
                     // UHOL ZACHOVAME ROVNAKY - V OPACNOM PRIPADE SA NEUPDATOVALA SPRAVNE VYSKA h2
 
                     // Recalculate roof pitch
-                    //fRoofPitch_radians = (float)Math.Atan((fApexHeight_H2 - MWallHeight) / (0.5f * MGableWidth));
+                    //fRoofPitch_radians = (float)Math.Atan((fHeight_H2 - MWallHeight) / (0.5f * MGableWidth));
                     // Set new value in GUI
                     //MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
                     // Recalculate roof height
-                    fApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
-                    // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
-                    IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                    if (MKitsetTypeIndex == 0)
+                    {
+                        fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+
+                        // Re-calculate value of distance between columns (number of columns per frame is always even
+                        int iOneRafterFrontColumnNo = (int)(MGableWidth / MColumnDistance);
+                        IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
+                    }
+                    else if (MKitsetTypeIndex == 1)
+                    {
+                        fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+
+                        // Re-calculate value of distance between columns (number of columns per frame is always even
+                        int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
+                        IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                    }
+                    else
+                    {
+                        fHeight_H2 = 0; // Exception
+                        IFrontColumnNoInOneFrame = 0;
+                    }
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -419,7 +442,12 @@ namespace PFD
                 if (MModelIndex != 0)
                 {
                     // Recalculate roof heigth
-                    fApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    if (MKitsetTypeIndex == 0)
+                        fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    else if (MKitsetTypeIndex == 1)
+                        fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    else
+                        fHeight_H2 = 0; // Exception
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -451,8 +479,14 @@ namespace PFD
                 if (MModelIndex != 0)
                 {
                     fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
+
                     // Recalculate h2
-                    fApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    if (MKitsetTypeIndex == 0)
+                        fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    else if (MKitsetTypeIndex == 1)
+                        fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    else
+                        fHeight_H2 = 0; // Exception
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -2893,7 +2927,7 @@ namespace PFD
             data.BottomGirtPosition = MBottomGirtPosition;
 
             data.BayWidth = fBayWidth;
-            data.ApexHeight_H2 = fApexHeight_H2;
+            data.ApexHeight_H2 = fHeight_H2;
             
             data.RoofCladding = RoofCladding;
             data.WallCladding = WallCladding;

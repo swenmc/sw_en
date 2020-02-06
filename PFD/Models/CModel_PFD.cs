@@ -46,7 +46,6 @@ namespace PFD
 
         protected int[] iArrNumberOfNodesPerFrontColumn;
         protected int[] iArrNumberOfNodesPerBackColumn;
-        protected int iOneColumnGirtNo;
 
         protected float fFrontFrameRakeAngle_temp_rad;
         protected float fBackFrameRakeAngle_temp_rad;
@@ -94,7 +93,7 @@ namespace PFD
 
         protected void CreateJoints(bool bGenerateGirts, bool bUseMainColumnFlyBracingPlates, bool bGeneratePurlins, bool bUseRafterFlyBracingPlates,
         bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts,
-        bool bGenerateGirtBracingSideWalls, bool bGeneratePurlinBracing, bool bGenerateGirtBracingFrontSide, bool bGenerateGirtBracingBackSide, bool bWindPostUnderRafter)
+        bool bGenerateGirtBracingSideWalls, bool bGeneratePurlinBracing, bool bGenerateGirtBracingFrontSide, bool bGenerateGirtBracingBackSide, bool bWindPostUnderRafter, int iOneColumnGirtNo)
         {
             bool bIsGableRoof = iFrameNodesNo == 5;
 
@@ -143,9 +142,9 @@ namespace PFD
             for (int i = 0; i < iFrameNo; i++)
             {
                 if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
                 else //if(i< (iFrameNo - 1) // Intermediate frame
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
             }
 
             // Eaves Purlin Joints
