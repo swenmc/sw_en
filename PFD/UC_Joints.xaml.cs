@@ -665,6 +665,17 @@ namespace PFD
             sp.VerticalAlignment = VerticalAlignment.Top;
             sp.HorizontalAlignment = HorizontalAlignment.Left;
 
+            ComboBox selectPlateType = new ComboBox();
+            selectPlateType.HorizontalAlignment = HorizontalAlignment.Left;
+            selectPlateType.Width = 200;
+            selectPlateType.Height = 20;
+            List<string> series = CPlateHelper.GetPlateSeries(plate);
+            selectPlateType.ItemsSource = series;
+            selectPlateType.SelectedIndex = series.IndexOf(plate.Name);
+            selectPlateType.SelectionChanged += SelectPlateSerie_SelectionChanged;
+            sp.Children.Add(selectPlateType);
+            
+
             //Grid grid = new Grid();
             //RowDefinition row = new RowDefinition();
             //row.Height = new GridLength(40);
@@ -760,6 +771,26 @@ namespace PFD
             ti.IsEnabled = true;
         }
 
+        
+        private void SelectPlateSerie_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //todo
+            //CPlate plate = GetSelectedPlate();
+            //if (plate == null) return;
+            //CConnectionJointTypes joint = GetSelectedJoint();
+            //if (joint == null) return;
+
+            //ComboBox cbAA = sender as ComboBox;
+            //if (cbAA == null) return;
+            //ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
+            
+            //TabItem ti = vm.TabItems[vm.SelectedTabIndex];
+            //SetTabContent(ti, plate);
+
+            //displayJoint(joint);
+
+            //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+        }
         private void SelectAA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CPlate plate = GetSelectedPlate();

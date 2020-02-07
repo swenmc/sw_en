@@ -1585,5 +1585,88 @@ namespace PFD
 
             plate.UpdatePlateData(plate.ScrewArrangement);
         }
+
+
+        public static List<string> GetPlateSeries(CPlate plate)
+        {
+            CDatabaseComponents dc = new CDatabaseComponents();
+            switch (plate.m_ePlateSerieType_FS)
+            {
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        return dc.arr_Serie_B_Names;
+                    }
+                case ESerieTypePlate.eSerie_F:
+                    {
+                        return dc.arr_Serie_F_Names;
+                    }
+                case ESerieTypePlate.eSerie_G:
+                    {
+                        return dc.arr_Serie_G_Names;
+                    }
+                case ESerieTypePlate.eSerie_H:
+                    {
+                        return dc.arr_Serie_H_Names;
+                    }
+                case ESerieTypePlate.eSerie_J:
+                    {
+                        return dc.arr_Serie_J_Names;
+                    }
+                case ESerieTypePlate.eSerie_K:
+                    {
+                        return dc.arr_Serie_K_Names;
+                    }
+                case ESerieTypePlate.eSerie_L:
+                    {
+                        return dc.arr_Serie_L_Names;
+                    }
+                case ESerieTypePlate.eSerie_LL:
+                    {
+                        return dc.arr_Serie_LL_Names;
+                    }
+                case ESerieTypePlate.eSerie_M:
+                    {
+                        return dc.arr_Serie_M_Names;
+                    }
+                case ESerieTypePlate.eSerie_N:
+                    {
+                        return dc.arr_Serie_N_Names;
+                    }
+                case ESerieTypePlate.eSerie_O:
+                    {
+                        return dc.arr_Serie_O_Names;
+                    }
+                case ESerieTypePlate.eSerie_Q:
+                    {
+                        return dc.arr_Serie_Q_Names;
+                    }
+                case ESerieTypePlate.eSerie_S:
+                    {
+                        return dc.arr_Serie_S_Names;
+                    }
+                case ESerieTypePlate.eSerie_T:
+                    {
+                        return dc.arr_Serie_T_Names;
+                    }
+                //case ESerieTypePlate.eSerie_W:
+                //    {
+                //        return dc.arr_Serie_W_Names;
+                //    }
+                case ESerieTypePlate.eSerie_X:
+                    {
+                        return dc.arr_Serie_X_Names;
+                    }
+                case ESerieTypePlate.eSerie_Y:
+                    {
+                        return dc.arr_Serie_Y_Names;
+                    }
+                default:
+                    {
+                        // Not implemented
+                        return new List<string>(1) { " " };
+                    }
+            }
+
+        }
     }
 }
