@@ -433,24 +433,7 @@ namespace PFD
             {
                 foreach(CComponentInfo cInfo in componentList)
                 {
-                    //toto odstranime ked bude m.EMemberTypePosition stale dobre n astavene
-                    //if (m.EMemberType == EMemberType_FS.eDF && cInfo.MemberTypePosition == EMemberType_FS_Position.DoorFrame)
-                    //{
-                    //    m.CrScStart.ID = (int)cInfo.MemberTypePosition;
-                    //}
-                    //if (m.EMemberType == EMemberType_FS.eDT && cInfo.MemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
-                    //{
-                    //    m.CrScStart.ID = (int)cInfo.MemberTypePosition;
-                    //}
-                    //if (m.EMemberType == EMemberType_FS.eDL && cInfo.MemberTypePosition == EMemberType_FS_Position.DoorLintel)
-                    //{
-                    //    m.CrScStart.ID = (int)cInfo.MemberTypePosition;
-                    //}
-                    //if (m.EMemberType == EMemberType_FS.eWF && cInfo.MemberTypePosition == EMemberType_FS_Position.WindowFrame)
-                    //{
-                    //    m.CrScStart.ID = (int)cInfo.MemberTypePosition;
-                    //}
-
+                    
                     // Ak deaktivujeme prut kvoli tomu, ze bol na jeho miesto vlozeny blok, tak tu mu uz nesmieme nastavit ze je znova aktivny
                     // Myslel som ze taky prut bude mat nastavene BIsGenerated na false ale bude v m_arrMembers existovat, aby mi sedeli cisla pri generovani prutov blokov atd
                     //if (m.Prefix == cInfo.Prefix &&
@@ -529,6 +512,17 @@ namespace PFD
             foreach (CMember m in members)
             {
                 m.BIsSelectedForMaterialList = cInfo.MaterialList;
+            }
+        }
+        public static void ChangeMembersIsSelectedForMaterialList(CPFDViewModel vm)           
+        {
+            foreach (CComponentInfo cInfo in vm.ComponentList)
+            {                
+                foreach (CMember m in vm.Model.m_arrMembers)
+                {
+                    if(m.EMemberTypePosition == cInfo.MemberTypePosition)
+                        m.BIsSelectedForMaterialList = cInfo.MaterialList;
+                }
             }
         }
 

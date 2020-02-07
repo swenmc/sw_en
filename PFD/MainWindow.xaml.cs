@@ -175,6 +175,12 @@ namespace PFD
                 //if (e.PropertyName == "SelectedComponentIndex") return;  //osetrene uz v CPFDViewModel
                 if (e.PropertyName == "ColumnFlyBracingPosition_Items") return;
                 if (e.PropertyName == "RafterFlyBracingPosition_Items") return;
+
+                if (e.PropertyName == "AllMaterialListChanged")
+                {
+                    CModelHelper.ChangeMembersIsSelectedForMaterialList(vm);
+                    vm.RecreateQuotation = true;
+                }
             }
             else if (sender is CPFDLoadInput)
             {
@@ -299,6 +305,7 @@ namespace PFD
                     CModelHelper.ChangeMembersIsSelectedForMaterialList(cInfo, vm.Model);
                     vm.RecreateQuotation = true;
                 }
+                
             }
 
             SetUIElementsVisibility();

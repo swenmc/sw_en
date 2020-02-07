@@ -116,7 +116,7 @@ namespace PFD
                     if (header == "Calculate") ci.Calculate = ci.Calculate;
                     if (header == "Design") ci.Design = ci.Design;
                     if (header == "Display") ci.Display = ci.Display;
-                    if (header == "MaterialList") ci.MaterialList = ci.MaterialList;
+                    if (header == "MaterialList") vm.AllMaterialListChanged = true;
                 }
             }
         }

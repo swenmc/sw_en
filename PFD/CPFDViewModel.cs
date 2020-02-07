@@ -2538,7 +2538,11 @@ namespace PFD
                 return;
             }
 
-            //if (PropertyChanged != null) PropertyChanged(sender, e);
+            if (e.PropertyName == "AllMaterialListChanged")
+            {
+                if (PropertyChanged != null) PropertyChanged(sender, e);
+            }
+
         }
 
         public void Run()

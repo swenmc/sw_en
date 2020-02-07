@@ -397,11 +397,13 @@ namespace PFD
 
             DataRow row;
             foreach (CCrSc crsc in model.m_arrCrSc.GroupBy(m => m.Name_short).Select(g => g.First()))
-            {
-                row = dt.NewRow();
+            {   
                 List<CMember> membersList = model.GetListOfMembersWithCrscDatabaseID(crsc.DatabaseID);
-
                 int count = membersList.Where(m => m.BIsGenerated && m.BIsSelectedForMaterialList).Count();
+
+                if (count > 0) row = dt.NewRow();
+                else continue;
+
                 double totalLength = membersList.Where(m => m.BIsGenerated && m.BIsSelectedForMaterialList).Sum(m => m.FLength_real);
                 double totalMass = (crsc.A_g * GlobalConstants.MATERIAL_DENSITY_STEEL * totalLength);
                 double totalPrice = totalLength * crsc.price_PPLM_NZD;

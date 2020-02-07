@@ -43,6 +43,8 @@ namespace PFD
         private List<CSectionPropertiesText> m_ComponentDetailsList;
         private List<CMaterialPropertiesText> m_MaterialDetailsList;
 
+        private bool m_allMaterialListChanged;
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -474,7 +476,20 @@ namespace PFD
                 return MEmptyILS_Items;
             }
         }
-        
+
+        public bool AllMaterialListChanged
+        {
+            get
+            {
+                return m_allMaterialListChanged;
+            }
+
+            set
+            {
+                m_allMaterialListChanged = value;
+                NotifyPropertyChanged("AllMaterialListChanged");
+            }
+        }
 
         private List<CComponentPrefixes> list_CompPref;
         //-------------------------------------------------------------------------------------------------------------
