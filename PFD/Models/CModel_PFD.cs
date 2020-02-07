@@ -554,6 +554,131 @@ namespace PFD
             return iNo_temp;
         }
 
+        public void AddFrontOrBackGirtsNodes(int iOneRafterColumnNo, int[] iArrNumberOfNodesPerColumn, int i_temp_numberofNodes, int iIntermediateColumnNodesForGirtsOneRafterNo, float fDist_Girts, float fDist_Columns, float fy_Global_Coord)
+        {
+            int iTemp = 0;
+
+            for (int i = 0; i < iOneRafterColumnNo; i++)
+            {
+                float z_glob;
+                CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+
+                for (int j = 0; j < iArrNumberOfNodesPerColumn[i]; j++)
+                {
+                    m_arrNodes[i_temp_numberofNodes + iTemp + j] = new CNode(i_temp_numberofNodes + iTemp + j + 1, (i + 1) * fDist_Columns, fy_Global_Coord, fBottomGirtPosition + j * fDist_Girts, 0);
+                    RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iTemp + j]);
+                }
+
+                iTemp += iArrNumberOfNodesPerColumn[i];
+            }
+
+            bool bIsGableRoof = iFrameNodesNo == 5;
+
+            if (bIsGableRoof)
+            {
+                iTemp = 0;
+
+                for (int i = 0; i < iOneRafterColumnNo; i++)
+                {
+                    float z_glob;
+                    CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+
+                    for (int j = 0; j < iArrNumberOfNodesPerColumn[i]; j++)
+                    {
+                        m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j] = new CNode(i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j + 1, fW_frame - (i + 1) * fDist_Columns, fy_Global_Coord, fBottomGirtPosition + j * fDist_Girts, 0);
+                        RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j]);
+                    }
+
+                    iTemp += iArrNumberOfNodesPerColumn[i];
+                }
+            }
+        }
+
+        public void AddFrontOrBackGirtsMembers(int iFrameNodesNo, int iOneRafterColumnNo, int[] iArrNumberOfNodesPerColumn, int i_temp_numberofNodes, int i_temp_numberofMembers,
+            int iIntermediateColumnNodesForGirtsOneRafterNo, int iIntermediateColumnNodesForGirtsOneFrameNo, int iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection,
+            float fDist_Girts, CMemberEccentricity eGirtEccentricity, float fGirtStart_MC, float fGirtStart, float fGirtEnd, CCrSc section, EMemberType_FS_Position eMemberType_FS_Position, float fMemberRotation, int iNumberOfTransverseSupports)
+        {
+            int iTemp = 0;
+            int iTemp2 = 0;
+            int iOneColumnGirtNo_temp = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
+
+            bool bIsGableRoof = iFrameNodesNo == 5;
+
+            for (int i = 0; i < iOneRafterColumnNo + 1; i++)
+            {
+                if (i == 0) // First session depends on number of girts at main frame column
+                {
+                    for (int j = 0; j < iOneColumnGirtNo_temp; j++)
+                    {
+                        m_arrMembers[i_temp_numberofMembers + j] = new CMember(i_temp_numberofMembers + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + j], m_arrNodes[i_temp_numberofNodes + j], section, EMemberType_FS.eG, eMemberType_FS_Position, eGirtEccentricity, eGirtEccentricity, fGirtStart_MC, fGirtEnd, fMemberRotation, 0);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + j], iNumberOfTransverseSupports);
+                    }
+
+                    iTemp += iOneColumnGirtNo_temp;
+                }
+                else if (i < iOneRafterColumnNo) // Other sessions
+                {
+                    for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
+                    {
+                        m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iArrNumberOfNodesPerColumn[i - 1] + iTemp2 + j], section, EMemberType_FS.eG, eMemberType_FS_Position, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, fMemberRotation, 0);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iTemp + j], iNumberOfTransverseSupports);
+                    }
+
+                    iTemp2 += iArrNumberOfNodesPerColumn[i - 1];
+                    iTemp += iArrNumberOfNodesPerColumn[i - 1];
+                }
+                else // Last session - prechadza cez stred budovy
+                {
+                    for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
+                    {
+                        if (!bIsGableRoof)
+                            m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + iOneColumnGirtNo_temp + j], section, EMemberType_FS.eG, eMemberType_FS_Position, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtStart_MC, fMemberRotation, 0);
+                        else
+                            m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneFrameNo - iArrNumberOfNodesPerColumn[iOneRafterColumnNo - 1] + j], section, EMemberType_FS.eG, eMemberType_FS_Position, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, fMemberRotation, 0);
+
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iTemp + j], iNumberOfTransverseSupports);
+                    }
+
+                    iTemp += iArrNumberOfNodesPerColumn[i - 1];
+                }
+            }
+
+            if (bIsGableRoof)
+            {
+                iTemp = 0;
+                iTemp2 = 0;
+
+                for (int i = 0; i < iOneRafterColumnNo; i++)
+                {
+                    int iNumberOfMembers_temp = iOneColumnGirtNo_temp + iIntermediateColumnNodesForGirtsOneRafterNo;
+
+                    CMemberEccentricity eGirtEccentricity_temp = new CMemberEccentricity(eGirtEccentricity.MFy_local, -eGirtEccentricity.MFz_local);
+
+                    if (i == 0) // First session depends on number of girts at main frame column
+                    {
+                        for (int j = 0; j < iOneColumnGirtNo_temp; j++)
+                        {
+                            m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + iOneColumnGirtNo_temp + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + j], section, EMemberType_FS.eG, eMemberType_FS_Position, eGirtEccentricity_temp, eGirtEccentricity_temp, fGirtStart_MC, fGirtEnd, -fMemberRotation, 0);
+                            CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j], iNumberOfTransverseSupports);
+                        }
+
+                        iTemp += iOneColumnGirtNo_temp;
+                    }
+                    else // Other sessions (not in the middle)
+                    {
+                        for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
+                        {
+                            m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iArrNumberOfNodesPerColumn[i - 1] + iTemp2 + j], section, EMemberType_FS.eG, eMemberType_FS_Position, eGirtEccentricity_temp, eGirtEccentricity_temp, fGirtStart, fGirtEnd, -fMemberRotation, 0);
+                            CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j], iNumberOfTransverseSupports);
+                        }
+
+                        iTemp2 += iArrNumberOfNodesPerColumn[i - 1];
+                        iTemp += iArrNumberOfNodesPerColumn[i - 1];
+                    }
+                }
+            }
+        }
+
         protected void FillIntermediateNodesForMembers()
         {
             foreach (CMember m in this.m_arrMembers)
