@@ -129,7 +129,12 @@ namespace PFD
             UpdateAll(true);
 
             vm.Model.GroupModelMembers();
+
+            vm.RecreateModel = false;
             vm.RecreateJoints = false;
+            vm.RecreateFloorSlab = false;
+            vm.RecreateFoundations = false;
+            vm.RecreateQuotation = false;
         }
 
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli

@@ -488,6 +488,7 @@ namespace PFD
 
             for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
             {
+                model.m_arrConnectionJoints[i].SetJointIsSelectedForMaterialListAccordingToMember();
                 if (!model.m_arrConnectionJoints[i].BIsSelectedForMaterialList) continue;
 
                 for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate

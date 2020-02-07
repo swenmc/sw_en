@@ -246,6 +246,24 @@ namespace BaseClasses
             }
         }
 
+        //To Mato - prosim o review
+        public void SetJointIsSelectedForMaterialListAccordingToMember()
+        {
+            if (m_MainMember != null)
+            {
+                if (m_MainMember.BIsSelectedForMaterialList) { BIsSelectedForMaterialList = true; return; }
+            }
+            if (m_SecondaryMembers != null)
+            {
+                foreach (CMember m in m_SecondaryMembers)
+                {
+                    if (m.BIsSelectedForMaterialList) { BIsSelectedForMaterialList = true; return; }
+                }
+            }
+
+            BIsSelectedForMaterialList = false;
+        }
+
         public virtual CConnectionJointTypes RecreateJoint()
         {
             return null;

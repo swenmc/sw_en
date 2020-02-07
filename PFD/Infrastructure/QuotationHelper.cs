@@ -248,6 +248,9 @@ namespace PFD
             // Plates
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
             {
+                //to Mato - nasledujuci riadok ppotrebuje review
+                joint.SetJointIsSelectedForMaterialListAccordingToMember();
+                
                 if (!joint.BIsSelectedForMaterialList) continue;
 
                 foreach (CPlate plate in joint.m_arrPlates) // For each plate
@@ -466,6 +469,9 @@ namespace PFD
 
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
             {
+                //to Mato - nasledujuci riadok ppotrebuje review
+                joint.SetJointIsSelectedForMaterialListAccordingToMember();
+
                 if (!joint.BIsSelectedForMaterialList) continue;
 
                 foreach (CPlate plate in joint.m_arrPlates) // For each plate
