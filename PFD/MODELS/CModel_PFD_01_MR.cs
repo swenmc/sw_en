@@ -396,6 +396,22 @@ namespace PFD
                 // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                 for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                 {
+
+
+
+
+
+
+                    // TODO - IN WORK
+                    // TU potrebujem zapracovat znizujuci sa pocet girt nodes a girt pre zaporny sklon !!!
+
+
+
+
+
+
+
+
                     int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts, i);
                     iFrontGirtsNoInOneFrame += temp;
                     iArrNumberOfNodesPerFrontColumn[i] = temp;

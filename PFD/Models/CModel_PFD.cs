@@ -598,11 +598,18 @@ namespace PFD
             int iIntermediateColumnNodesForGirtsOneRafterNo, int iIntermediateColumnNodesForGirtsOneFrameNo, int iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection,
             float fDist_Girts, CMemberEccentricity eGirtEccentricity, float fGirtStart_MC, float fGirtStart, float fGirtEnd, CCrSc section, EMemberType_FS_Position eMemberType_FS_Position, float fMemberRotation, int iNumberOfTransverseSupports)
         {
+            bool bIsGableRoof = iFrameNodesNo == 5;
+
             int iTemp = 0;
             int iTemp2 = 0;
-            int iOneColumnGirtNo_temp = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
 
-            bool bIsGableRoof = iFrameNodesNo == 5;
+            int iLeftColumnGirtNo_temp = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
+            int iRightColumnGirtNo_temp = iLeftColumnGirtNo_temp;
+
+            if(!bIsGableRoof)
+                iRightColumnGirtNo_temp = (int)((fH2_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
+
+            int iOneColumnGirtNo_temp = iLeftColumnGirtNo_temp;
 
             for (int i = 0; i < iOneRafterColumnNo + 1; i++)
             {
@@ -629,7 +636,9 @@ namespace PFD
                 }
                 else // Last session - prechadza cez stred budovy
                 {
-                    for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
+                    int iNumberOfGirtsInLastSession = /* Math.Min(*/ iArrNumberOfNodesPerColumn[i - 1];/*, iRightColumnGirtNo_temp);*/
+
+                    for (int j = 0; j < iNumberOfGirtsInLastSession; j++) // Ak je uhol sklonu zaporny tak rozhoduje pocet uzlov na pravej strane, ktory moze byt mensi ako je na lavej
                     {
                         if (!bIsGableRoof)
                             m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + iOneColumnGirtNo_temp + j], section, EMemberType_FS.eG, eMemberType_FS_Position, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtStart_MC, fMemberRotation, 0);
@@ -639,7 +648,7 @@ namespace PFD
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iTemp + j], iNumberOfTransverseSupports);
                     }
 
-                    iTemp += iArrNumberOfNodesPerColumn[i - 1];
+                    iTemp += iNumberOfGirtsInLastSession;
                 }
             }
 
