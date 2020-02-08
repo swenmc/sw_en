@@ -1122,8 +1122,10 @@ namespace PFD
                     }
             } //end switch
 
+            joint.m_arrPlates[vm.SelectedTabIndex] = plate;
+
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
-            ti.Name = componentName;
+            ti.Header = componentName;
             SetTabContent(ti, plate);
 
             displayJoint(joint);
@@ -1289,7 +1291,7 @@ namespace PFD
                         //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
                         //StackPanel sp = sw.Content as StackPanel;
                         StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                        DataGrid dgAA = sp.Children[1] as DataGrid;
+                        DataGrid dgAA = sp.Children[2] as DataGrid;
                         dgAA.ItemsSource = anchorArrangementParams;
                         foreach (CComponentParamsView cpw in anchorArrangementParams)
                         {
@@ -1367,7 +1369,7 @@ namespace PFD
                     //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
                     //StackPanel sp = sw.Content as StackPanel;
                     StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                    DataGrid dgSA = sp.Children[1] as DataGrid;
+                    DataGrid dgSA = sp.Children[2] as DataGrid;
                     dgSA.ItemsSource = screwArrangementParams;
                     foreach (CComponentParamsView cpw in screwArrangementParams)
                     {
@@ -1446,8 +1448,8 @@ namespace PFD
                 //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
                 //StackPanel sp = sw.Content as StackPanel;
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                DataGrid dgGeometry = sp.Children[3] as DataGrid;
-                DataGrid dgDetails = sp.Children[5] as DataGrid;
+                DataGrid dgGeometry = sp.Children[4] as DataGrid;
+                DataGrid dgDetails = sp.Children[6] as DataGrid;
                 List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
                 foreach (CComponentParamsView cpw in geometryParams)
                 {
