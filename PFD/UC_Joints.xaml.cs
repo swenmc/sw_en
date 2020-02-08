@@ -31,6 +31,8 @@ namespace PFD
         Dictionary<int, List<CConnectionJointTypes>> jointsDict;
         List<CConnectionJointTypes> list_joints;
 
+        bool paramsChanged = false;
+
         public UC_Joints(CPFDViewModel pfdVM)
         {
             InitializeComponent();
@@ -786,7 +788,9 @@ namespace PFD
             int componentIndex = cb.SelectedIndex;
             string componentName = cb.SelectedValue.ToString();
 
-            
+            paramsChanged = true;
+
+
             float fb_R; // Rafter Width
             float fb_B; // Wind Post Width
             float fb; // in plane XY -X coord
@@ -1130,7 +1134,7 @@ namespace PFD
 
             displayJoint(joint);
 
-            if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+            //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
         }
 
 
@@ -1144,6 +1148,8 @@ namespace PFD
 
             ComboBox cbAA = sender as ComboBox;
             if (cbAA == null) return;
+
+            paramsChanged = true;
             ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
             //CPlateHelper.AnchorArrangementChanged(joint, plate, cbAA.SelectedIndex);
             //CPlateHelper.UpdatePlateAnchorArrangementData(plate);
@@ -1153,7 +1159,7 @@ namespace PFD
 
             displayJoint(joint);
 
-            if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+            //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
         }
 
         private void SelectSA_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1165,6 +1171,8 @@ namespace PFD
 
             ComboBox cbSA = sender as ComboBox;
             if (cbSA == null) return;
+
+            paramsChanged = true;
             ChangeAllSameJointsPlateScrewArrangement(cbSA.SelectedIndex);
             //CPlateHelper.ScrewArrangementChanged(joint, plate, cbSA.SelectedIndex);
             //CPlateHelper.UpdatePlateScrewArrangementData(plate);
@@ -1174,7 +1182,7 @@ namespace PFD
 
             displayJoint(joint);
 
-            if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+            //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
         }
 
         private void ChangeAllSameJointsPlateAnchorArrangement(int anchorArrangementIndex)
@@ -1645,6 +1653,30 @@ namespace PFD
         private void FrameJointPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (!paramsChanged) return;
+
+            MessageBox.Show("Changed joint params will be applied to the model.");
+
+            foreach (List<CConnectionJointTypes> sameJoints in jointsDict.Values)
+            {
+                CConnectionJointTypes refJoint = sameJoints.FirstOrDefault();
+                if (refJoint == null) continue;
+                foreach (CConnectionJointTypes joint in sameJoints)
+                {
+                    joint.m_arrPlates = refJoint.m_arrPlates;
+                }
+            }
+
+            if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            paramsChanged = false;
         }
     }
 }

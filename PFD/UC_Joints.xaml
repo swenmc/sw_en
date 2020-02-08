@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        d:DesignHeight="1200" d:DesignWidth="600">
+        d:DesignHeight="1200" d:DesignWidth="600" Unloaded="UserControl_Unloaded" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">250</System:Double>
