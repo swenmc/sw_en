@@ -14,6 +14,16 @@ namespace BaseClasses
     [Serializable]
     public class CScrewArrangementRectApexOrKnee : CScrewArrangement
     {
+        // TODO - Ondrej, TODO No. 105
+        // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
+        // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
+        // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
+
+        private int m_NumberOfGroups;  //default 2
+        private int m_NumberOfSequenceInGroup;
+        private List<CScrewRectSequence> m_RectSequences;
+
+
         private float m_fCrscRafterDepth;
 
         public float FCrscRafterDepth
@@ -56,6 +66,45 @@ namespace BaseClasses
             set
             {
                 m_fStiffenerSize = value;
+            }
+        }
+
+        public int NumberOfGroups
+        {
+            get
+            {
+                return m_NumberOfGroups;
+            }
+
+            set
+            {
+                m_NumberOfGroups = value;
+            }
+        }
+
+        public int NumberOfSequenceInGroup
+        {
+            get
+            {
+                return m_NumberOfSequenceInGroup;
+            }
+
+            set
+            {
+                m_NumberOfSequenceInGroup = value;
+            }
+        }
+
+        public List<CScrewRectSequence> RectSequences
+        {
+            get
+            {
+                return m_RectSequences;
+            }
+
+            set
+            {
+                m_RectSequences = value;
             }
         }
 
@@ -257,6 +306,62 @@ namespace BaseClasses
             ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
 
             UpdateArrangmentData();
+        }
+
+        //priprava pre task 515
+        public CScrewArrangementRectApexOrKnee(
+           CScrew referenceScrew_temp,
+           float fCrscRafterDepth_temp,
+           float fCrscWebStraightDepth_temp,
+           float fStiffenerSize_temp,
+           List<CScrewRectSequence> listRectSequences)             
+        {
+            referenceScrew = referenceScrew_temp;
+            FCrscRafterDepth = fCrscRafterDepth_temp;
+            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            FStiffenerSize = fStiffenerSize_temp;
+
+            IHolesNumber = 0;
+            foreach (CScrewRectSequence rectS in listRectSequences)
+            {
+                IHolesNumber += rectS.INumberOfConnectors;
+            }
+            
+
+            UpdateArrangmentDataNew();
+        }
+
+        //priprava pre task 515
+        //tato metoda by mala nahradit UpdateArrangmentData
+        public void UpdateArrangmentDataNew()
+        {
+            // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            // Update reference screw properties
+            DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
+            referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
+                        
+            ListOfSequenceGroups = new List<CScrewSequenceGroup>(NumberOfGroups);
+            int index = 0;
+            for (int i = 0; i < NumberOfGroups; i++)
+            {
+                CScrewSequenceGroup gr = new CScrewSequenceGroup();
+                gr.NumberOfHalfCircleSequences = 0;
+                gr.NumberOfRectangularSequences = NumberOfSequenceInGroup;
+                for (int j = 0; j < NumberOfSequenceInGroup; j++)
+                {
+                    gr.ListSequence.Add(RectSequences[index]);
+                    index++;
+                }
+                ListOfSequenceGroups.Add(gr);
+            }
+            // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
+            RecalculateTotalNumberOfScrews();
+
+            HolesCentersPoints2D = new Point[IHolesNumber];
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
 
         public override void UpdateArrangmentData()

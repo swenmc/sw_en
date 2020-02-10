@@ -614,6 +614,27 @@ namespace PFD
             else return false;
         }
 
+
+        //pokusy
+        public static void UpdateRectangularSequencesNumberOfScrews(int iSeqNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementRectApexOrKnee arrangementTemp)
+        {
+            //int numberOfScrews = int.Parse(itemNewValueString.Value);
+            //if (numberOfScrews < 2) return; // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
+
+            //// Change each group
+            //foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+            //{
+            //    IEnumerable<CConnectorSequence> halfCircleSequences = (IEnumerable<CConnectorSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence);
+            //    CConnectorSequence seq = null;
+            //    seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
+            //    if (seq != null) seq.INumberOfConnectors = numberOfScrews;
+            //    seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
+            //    if (seq != null) seq.INumberOfConnectors = numberOfScrews;
+            //}
+            //// Recalculate total number of screws in the arrangement
+            //arrangementTemp.RecalculateTotalNumberOfScrews();
+        }
+
         // Geometry
 
         public static void DataGridGeometryParams_ValueChanged(CComponentParamsView item, CPlate plate)
