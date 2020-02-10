@@ -2511,6 +2511,10 @@ namespace PFD
             if (e.PropertyName == "JointTypes") return;
             if (e.PropertyName == "SelectedTabIndex") return;
 
+            if (e.PropertyName == "ChangedScrewArrangementParameter") return;
+            if (e.PropertyName == "ChangedAnchorArrangementParameter") return;
+            if (e.PropertyName == "ChangedGeometryParameter") return;
+
             if (PropertyChanged != null) PropertyChanged(sender, e);
         }
 

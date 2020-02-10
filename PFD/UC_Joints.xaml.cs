@@ -140,8 +140,8 @@ namespace PFD
             {
                 if (joint.m_MainMember == null)
                 {
-                    if(_pfdVM.debugging)
-                       new ArgumentNullException("Undefined main member of joint ID:" + joint.ID);
+                    if (_pfdVM.debugging)
+                        new ArgumentNullException("Undefined main member of joint ID:" + joint.ID);
                 }
 
                 if (joint.m_MainMember.EMemberTypePosition <= 0)
@@ -678,7 +678,7 @@ namespace PFD
             selectPlateType.SelectedIndex = series.IndexOf(plate.Name);
             selectPlateType.SelectionChanged += SelectPlateSerie_SelectionChanged;
             sp.Children.Add(selectPlateType);
-            
+
 
             //Grid grid = new Grid();
             //RowDefinition row = new RowDefinition();
@@ -775,7 +775,7 @@ namespace PFD
             ti.IsEnabled = true;
         }
 
-        
+
         private void SelectPlateSerie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CPlate plate = GetSelectedPlate();
@@ -984,17 +984,17 @@ namespace PFD
                         if (componentIndex == 0) // JA
                         {
                             //to Mato - moze zdedit ScrewArangement z povodnej plate???
-                            plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true, plate.ScrewArrangement);                            
+                            plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true, plate.ScrewArrangement);
                         }
                         else if (componentIndex == 1) // JB
                         {
                             if (bUseSimpleShapeOfPlates)
                             {
-                                plate = new CConCom_Plate_JBS(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, true, plate.ScrewArrangement);                                
+                                plate = new CConCom_Plate_JBS(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, true, plate.ScrewArrangement);
                             }
                             else
                             {
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, true, plate.ScrewArrangement);                                
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, true, plate.ScrewArrangement);
                             }
                         }
                         else //(componentIndex == 2) // JC
@@ -1026,11 +1026,11 @@ namespace PFD
                         {
                             if (bUseSimpleShapeOfPlates)
                             {
-                                plate = new CConCom_Plate_KBS(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);                                
+                                plate = new CConCom_Plate_KBS(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);
                             }
                             else
                             {
-                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);                                
+                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);
                             }
                         }
                         else if (componentIndex == 2) // KC
@@ -1042,7 +1042,7 @@ namespace PFD
                             else
                             {
                                 plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);
-                                
+
                             }
                         }
                         else if (componentIndex == 3) // KD
@@ -1050,26 +1050,26 @@ namespace PFD
                             if (bUseSimpleShapeOfPlates)
                             {
                                 plate = new CConCom_Plate_KDS(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);
-                                
+
                             }
                             else
                             {
                                 plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);
-                                
+
                             }
                         }
                         else if (componentIndex == 4) // KES
                         {
                             plate = new CConCom_Plate_KES(dcomponents.arr_Serie_K_Names[4], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);
-                            
+
                         }
                         else if (componentIndex == 5) // KFS
                         {
-                            plate = new CConCom_Plate_KFS(dcomponents.arr_Serie_K_Names[5], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);                            
+                            plate = new CConCom_Plate_KFS(dcomponents.arr_Serie_K_Names[5], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, plate.ScrewArrangement);
                         }
                         else // KK - TODO - screws are not implemented !!!
                         {
-                            plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[6], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, plate.ScrewArrangement);                            
+                            plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[6], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, plate.ScrewArrangement);
                         }
                         break;
                     }
@@ -1282,35 +1282,62 @@ namespace PFD
         {
             if (!(sender is CComponentParamsView)) return;
             CComponentParamsView item = sender as CComponentParamsView;
-            foreach (CConnectionJointTypes joint in list_joints)
+
+            CConnectionJointTypes joint = GetSelectedJoint();
+
+            CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+
+            if (plate is CConCom_Plate_B_basic)
             {
-                CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
 
-                if (plate is CConCom_Plate_B_basic)
+                CPlateHelper.UpdatePlateScrewArrangementData(plate);
+
+                if (anchorArrangementParams != null)
                 {
-                    CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
-                    CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
-                    List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
-
-                    CPlateHelper.UpdatePlateScrewArrangementData(plate);
-
-                    if (anchorArrangementParams != null)
+                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+                    DataGrid dgAA = sp.Children[2] as DataGrid;
+                    dgAA.ItemsSource = anchorArrangementParams;
+                    foreach (CComponentParamsView cpw in anchorArrangementParams)
                     {
-                        //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
-                        //StackPanel sp = sw.Content as StackPanel;
-                        StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                        DataGrid dgAA = sp.Children[2] as DataGrid;
-                        dgAA.ItemsSource = anchorArrangementParams;
-                        foreach (CComponentParamsView cpw in anchorArrangementParams)
-                        {
-                            cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
-                        }
+                        cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
                     }
                 }
             }
-
             vm.ChangedAnchorArrangementParameter = item;
-            //HandleJointsPropertyChangedEvent(sender, e);            
+
+
+            //foreach (CConnectionJointTypes joint in list_joints)
+            //{
+            //    CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+
+            //    if (plate is CConCom_Plate_B_basic)
+            //    {
+            //        CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+            //        CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
+            //        List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+
+            //        CPlateHelper.UpdatePlateScrewArrangementData(plate);
+
+            //        if (anchorArrangementParams != null)
+            //        {
+            //            //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
+            //            //StackPanel sp = sw.Content as StackPanel;
+            //            StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+            //            DataGrid dgAA = sp.Children[2] as DataGrid;
+            //            dgAA.ItemsSource = anchorArrangementParams;
+            //            foreach (CComponentParamsView cpw in anchorArrangementParams)
+            //            {
+            //                cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //vm.ChangedAnchorArrangementParameter = item;
+            ////HandleJointsPropertyChangedEvent(sender, e);            
         }
 
         private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
@@ -1357,37 +1384,56 @@ namespace PFD
             {
                 cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
             }
-            
+
             return dgSA;
         }
         private void HandleScrewArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (!(sender is CComponentParamsView)) return;
             CComponentParamsView item = sender as CComponentParamsView;
-            foreach (CConnectionJointTypes joint in list_joints)
+
+            CConnectionJointTypes joint = GetSelectedJoint();
+            CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+            CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
+            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+
+            CPlateHelper.UpdatePlateScrewArrangementData(plate);
+
+            if (screwArrangementParams != null)
             {
-                CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
-                CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
-                List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-
-                CPlateHelper.UpdatePlateScrewArrangementData(plate);                
-
-                if (screwArrangementParams != null)
+                StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+                DataGrid dgSA = sp.Children[2] as DataGrid;
+                dgSA.ItemsSource = screwArrangementParams;
+                foreach (CComponentParamsView cpw in screwArrangementParams)
                 {
-                    //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
-                    //StackPanel sp = sw.Content as StackPanel;
-                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                    DataGrid dgSA = sp.Children[2] as DataGrid;
-                    dgSA.ItemsSource = screwArrangementParams;
-                    foreach (CComponentParamsView cpw in screwArrangementParams)
-                    {
-                        cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
-                    }
+                    cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
                 }
             }
-
             vm.ChangedScrewArrangementParameter = item;
-            //HandleJointsPropertyChangedEvent(sender, e);
+            
+
+            //foreach (CConnectionJointTypes joint in list_joints)
+            //{
+            //    CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+            //    CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
+            //    List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+
+            //    CPlateHelper.UpdatePlateScrewArrangementData(plate);                
+
+            //    if (screwArrangementParams != null)
+            //    {                    
+            //        StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+            //        DataGrid dgSA = sp.Children[2] as DataGrid;
+            //        dgSA.ItemsSource = screwArrangementParams;
+            //        foreach (CComponentParamsView cpw in screwArrangementParams)
+            //        {
+            //            cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
+            //        }
+            //    }
+            //}
+
+            //vm.ChangedScrewArrangementParameter = item;
+            ////HandleJointsPropertyChangedEvent(sender, e);
         }
         private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
         {
@@ -1421,7 +1467,7 @@ namespace PFD
             tc3.CellTemplate = GetDataTemplate();
             tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
             dg.Columns.Add(tc3);
-                        
+
             //DataGridTextColumn tc3 = new DataGridTextColumn();
             //tc3.Binding = new Binding("Value");            
             //Style style = new Style(typeof(TextBlock));
@@ -1456,8 +1502,8 @@ namespace PFD
                 //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
                 //StackPanel sp = sw.Content as StackPanel;
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                DataGrid dgGeometry = sp.Children[4] as DataGrid;
-                DataGrid dgDetails = sp.Children[6] as DataGrid;
+                DataGrid dgGeometry = sp.Children[3] as DataGrid;
+                DataGrid dgDetails = sp.Children[5] as DataGrid;
                 List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
                 foreach (CComponentParamsView cpw in geometryParams)
                 {

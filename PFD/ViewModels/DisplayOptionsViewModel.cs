@@ -2519,7 +2519,7 @@ namespace PFD
             DisplayMembers = true;
             DisplayJoints = true;
             DisplayPlates = true;
-            DisplayConnectors = false;
+            DisplayConnectors = true;
             DisplayNodes = false;
             DisplayFoundations = true;
             DisplayReinforcementBars = false;

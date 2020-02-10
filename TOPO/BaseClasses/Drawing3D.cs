@@ -4899,8 +4899,9 @@ namespace BaseClasses
 
                 // Pregenerujeme naklonovany joint, aby sme aktualizovali suradnice control points, pozicie plechov na skratenych prutoch a podobne
                 CConnectionJointTypes jointCloneRecreated = jointClone.RecreateJoint();
-                jointClone.m_arrPlates = jointCloneRecreated.m_arrPlates;
-                jointClone.m_pControlPoint = jointCloneRecreated.m_pControlPoint;
+                //tento riadok pri prekresleni sposobobal reset m_arrPlates - cize ZLE
+                //jointClone.m_arrPlates = jointCloneRecreated.m_arrPlates;
+                //jointClone.m_pControlPoint = jointCloneRecreated.m_pControlPoint;
 
                 // Pridame upraveny naklonovany spoj do modelu
                 jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
