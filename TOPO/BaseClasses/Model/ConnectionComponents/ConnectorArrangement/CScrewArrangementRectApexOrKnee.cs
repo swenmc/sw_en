@@ -327,7 +327,6 @@ namespace BaseClasses
                 IHolesNumber += rectS.INumberOfConnectors;
             }
             
-
             UpdateArrangmentDataNew();
         }
 
