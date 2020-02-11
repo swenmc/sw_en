@@ -549,7 +549,7 @@ namespace PFD
             }
 
             // Purlin bracing blocks
-            bool bGeneratePurlinBracing = false; // Zakomentovane bloky true;
+            bool bGeneratePurlinBracing = true;
 
             int iNumberOfPBNodesInOneBayOneSide = 0;
             int iNumberOfPBNodesInOneBay = 0;
@@ -561,14 +561,15 @@ namespace PFD
             bool bUsePBEverySecondGUI = vm._generalOptionsVM.BracingEverySecondRowOfPurlins;
             bool bUsePBEverySecond = bUsePBEverySecondGUI && (iOneRafterPurlinNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na stranu strechy je neparny
 
+            int iLastPurlin = 1; // Monopitch roof - poslendna vaznica a eave purlin 
             if (bGeneratePurlinBracing)
             {
-                iNumberOfPBNodesInOneBayOneSide = iNumberOfTransverseSupports_Purlins * (iOneRafterPurlinNo + 1);
-                iNumberOfPBNodesInOneBay = 2 * iNumberOfPBNodesInOneBayOneSide;
+                iNumberOfPBNodesInOneBayOneSide = iNumberOfTransverseSupports_Purlins * (iOneRafterPurlinNo + 1 + iLastPurlin);
+                iNumberOfPBNodesInOneBay = 1 * iNumberOfPBNodesInOneBayOneSide;
                 iPBNodesNo = iNumberOfPBNodesInOneBay * (iFrameNo - 1);
 
-                iNumberOfPBMembersInOneBayOneSide = iNumberOfTransverseSupports_Purlins * iOneRafterPurlinNo;
-                iNumberOfPBMembersInOneBay = 2 * iNumberOfPBMembersInOneBayOneSide;
+                iNumberOfPBMembersInOneBayOneSide = iNumberOfTransverseSupports_Purlins * (iOneRafterPurlinNo + iLastPurlin);
+                iNumberOfPBMembersInOneBay = 1 * iNumberOfPBMembersInOneBayOneSide;
                 iPBMembersNo = iNumberOfPBMembersInOneBay * (iFrameNo - 1);
             }
 
@@ -1025,7 +1026,114 @@ namespace PFD
                 }
             }
 
+            // Purlin Bracing
+            // Nodes - Purlin Bracing
 
+            i_temp_numberofNodes += bGenerateGirtBracingSideWalls ? iGBSideWallsNodesNo : 0;
+            if (bGeneratePurlinBracing)
+            {
+                for (int i = 0; i < (iFrameNo - 1); i++)
+                {
+                    for (int j = 0; j < (iOneRafterPurlinNo + 1 + iLastPurlin); j++) // Left side - eave purlin and purlins
+                    {
+                        float x_glob, z_glob;
+
+                        if (j == 0) // First row of nodes
+                        { x_glob = 0; z_glob = fH1_frame; } // Left edge of roof
+                        else
+                        {
+                            if(iLastPurlin == 0 || j < (iOneRafterPurlinNo + iLastPurlin)) // Gable roof or intermediate points of monopitch
+                               CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
+                            else
+                            { x_glob = fW_frame; z_glob = fH2_frame; } // Right edge of roof - monopitch
+                        }
+
+                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        {
+                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k + 1, x_glob, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingPurlins, z_glob, 0);
+                        }
+                    }
+
+                    //for (int j = 0; j < (iOneRafterPurlinNo + 1); j++) // Right side - eave purlin and purlins
+                    //{
+                    //    float x_glob, z_glob;
+                    //
+                    //    if (j == 0) // First row nodes
+                    //    { x_glob = 0; z_glob = fH1_frame; } // Right edge of roof (x uvazujeme zprava)
+                    //    else
+                    //        CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
+                    //
+                    //    for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                    //    {
+                    //        m_arrNodes[i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k + 1, fW_frame - x_glob, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingPurlins, z_glob, 0);
+                    //    }
+                    //}
+                }
+            }
+
+            // Members - Purlin Bracing
+
+            i_temp_numberofMembers += bGenerateGirtBracingSideWalls ? iGBSideWallsMembersNo : 0;
+
+            if (bGeneratePurlinBracing)
+            {
+                for (int i = 0; i < (iFrameNo - 1); i++)
+                {
+                    for (int j = 0; j < iOneRafterPurlinNo + iLastPurlin; j++) // Left side
+                    {
+                        bool bDeactivateMember = false;
+                        if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
+
+                        float fPBStart = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
+                        float fPBEnd = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
+
+                        float fPBStart_Current = fPBStart;
+                        float fPBEnd_Current = fPBEnd;
+
+                        if (j == 0) // First
+                            fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+
+                        if(iLastPurlin == 1 && j == (iOneRafterPurlinNo + iLastPurlin -1)) // Last monopitch
+                            fPBEnd_Current = (+(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+
+                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        {
+                            int memberIndex = i_temp_numberofMembers + i * iNumberOfPBMembersInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
+                            int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
+                            int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
+                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd_Current, 0, 0);
+
+                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                        }
+                    }
+
+                    // Prava strana gable roof
+                    //for (int j = 0; j < iOneRafterPurlinNo; j++) // Right side
+                    //{
+                    //    bool bDeactivateMember = false;
+                    //    if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
+                    //
+                    //    // Opacna orientacia osi LCS y na pravej strane
+                    //    float fPBStart = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
+                    //    float fPBEnd = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
+                    //
+                    //    float fPBStart_Current = fPBStart;
+                    //
+                    //    if (j == 0) // First
+                    //        fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+                    //
+                    //    for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                    //    {
+                    //        int memberIndex = i_temp_numberofMembers + i * iNumberOfPBMembersInOneBay + iNumberOfPBMembersInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
+                    //        int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
+                    //        int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + +iNumberOfPBNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
+                    //        m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, MathF.fPI, 0);
+                    //
+                    //        if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                    //    }
+                    //}
+                }
+            }
 
 
 
@@ -1046,104 +1154,7 @@ namespace PFD
 
             if (false) // Zakomentovane ine typy prutov
             {
-                // Purlin Bracing
-                // Nodes - Purlin Bracing
 
-                i_temp_numberofNodes += bGenerateGirtBracingSideWalls ? iGBSideWallsNodesNo : 0;
-                if (bGeneratePurlinBracing)
-                {
-                    for (int i = 0; i < (iFrameNo - 1); i++)
-                    {
-                        for (int j = 0; j < (iOneRafterPurlinNo + 1); j++) // Left side - eave purlin and purlins
-                        {
-                            float x_glob, z_glob;
-
-                            if (j == 0) // First row of nodes
-                            { x_glob = 0; z_glob = fH1_frame; } // Left edge of roof
-                            else
-                                CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
-
-                            for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
-                            {
-                                m_arrNodes[i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k + 1, x_glob, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingPurlins, z_glob, 0);
-                            }
-                        }
-
-                        for (int j = 0; j < (iOneRafterPurlinNo + 1); j++) // Right side - eave purlin and purlins
-                        {
-                            float x_glob, z_glob;
-
-                            if (j == 0) // First row nodes
-                            { x_glob = 0; z_glob = fH1_frame; } // Right edge of roof (x uvazujeme zprava)
-                            else
-                                CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
-
-                            for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
-                            {
-                                m_arrNodes[i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k + 1, fW_frame - x_glob, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingPurlins, z_glob, 0);
-                            }
-                        }
-                    }
-                }
-
-                // Members - Purlin Bracing
-
-                i_temp_numberofMembers += bGenerateGirtBracingSideWalls ? iGBSideWallsMembersNo : 0;
-
-                if (bGeneratePurlinBracing)
-                {
-                    for (int i = 0; i < (iFrameNo - 1); i++)
-                    {
-                        for (int j = 0; j < iOneRafterPurlinNo; j++) // Left side
-                        {
-                            bool bDeactivateMember = false;
-                            if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
-
-                            float fPBStart = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
-                            float fPBEnd = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
-
-                            float fPBStart_Current = fPBStart;
-
-                            if (j == 0) // First
-                                fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
-
-                            for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
-                            {
-                                int memberIndex = i_temp_numberofMembers + i * iNumberOfPBMembersInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
-                                int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
-                                int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
-                                m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, 0, 0);
-
-                                if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
-                            }
-                        }
-
-                        for (int j = 0; j < iOneRafterPurlinNo; j++) // Right side
-                        {
-                            bool bDeactivateMember = false;
-                            if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
-
-                            // Opacna orientacia osi LCS y na pravej strane
-                            float fPBStart = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
-                            float fPBEnd = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
-
-                            float fPBStart_Current = fPBStart;
-
-                            if (j == 0) // First
-                                fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
-
-                            for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
-                            {
-                                int memberIndex = i_temp_numberofMembers + i * iNumberOfPBMembersInOneBay + iNumberOfPBMembersInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
-                                int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
-                                int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + +iNumberOfPBNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
-                                m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, MathF.fPI, 0);
-
-                                if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
-                            }
-                        }
-                    }
-                }
 
                 // Girt Bracing - Front side
                 // Nodes - Girt Bracing - Front side
