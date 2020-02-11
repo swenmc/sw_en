@@ -394,6 +394,14 @@ namespace BaseClasses
         eScrew = 2
     }
 
+    public enum EModelType_FS
+    {
+        eKitsetMonoRoofEnclosed = 0,
+        eKitsetGableRoofEnclosed = 1,
+        eKitsetSheltersSingleSpan = 2,
+        eKitsetSheltersDoubleSpan = 3
+    }
+
     public enum ESerieTypePlate
     {
         eSerie_B,

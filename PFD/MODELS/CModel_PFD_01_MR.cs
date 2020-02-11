@@ -38,6 +38,8 @@ namespace PFD
                 CPFDViewModel vm
             )
         {
+            eKitset = EModelType_FS.eKitsetMonoRoofEnclosed;
+
             ObservableCollection<CComponentInfo> componentList = componentListVM?.ComponentList;
             fH1_frame = sGeometryInputData.fH_1;
             fW_frame = sGeometryInputData.fW;

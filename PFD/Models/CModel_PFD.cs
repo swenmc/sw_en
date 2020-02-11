@@ -98,7 +98,7 @@ namespace PFD
         bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts,
         bool bGenerateGirtBracingSideWalls, bool bGeneratePurlinBracing, bool bGenerateGirtBracingFrontSide, bool bGenerateGirtBracingBackSide, bool bWindPostUnderRafter, int iOneColumnGirtNo)
         {
-            bool bIsGableRoof = iFrameNodesNo == 5;
+            bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
 
             // Connection Joints
             m_arrConnectionJoints = new List<CConnectionJointTypes>();
@@ -467,7 +467,7 @@ namespace PFD
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i]);
             }
 
-            bool bIsGableRoof = iFrameNodesNo == 5;
+            bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
 
             int iSideNo = bIsGableRoof ? 2 : 1;
 
@@ -525,7 +525,7 @@ namespace PFD
                 CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + i]);
             }
 
-            bool bIsGableRoof = iFrameNodesNo == 5;
+            bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
 
             if (bIsGableRoof)
             {
@@ -575,7 +575,7 @@ namespace PFD
                 iTemp += iArrNumberOfNodesPerColumn[i];
             }
 
-            bool bIsGableRoof = iFrameNodesNo == 5;
+            bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
 
             if (bIsGableRoof)
             {
@@ -601,7 +601,7 @@ namespace PFD
             int iIntermediateColumnNodesForGirtsOneRafterNo, int iIntermediateColumnNodesForGirtsOneFrameNo, int iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection,
             float fDist_Girts, CMemberEccentricity eGirtEccentricity, float fGirtStart_MC, float fGirtStart, float fGirtEnd, CCrSc section, EMemberType_FS_Position eMemberType_FS_Position, float fMemberRotation, int iNumberOfTransverseSupports)
         {
-            bool bIsGableRoof = iFrameNodesNo == 5;
+            bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
 
             int iTemp = 0; // Docasny pocet prutov
             int iTemp2 = 0; // Docasny pocet uzlov
@@ -711,7 +711,7 @@ namespace PFD
 
         public void CalcColumnNodeCoord_Z(bool bConsiderAbsoluteValueOfRoofPitch, float fHeight, float x, out float z_global)
         {
-            bool bIsGableRoof = iFrameNodesNo == 5;
+            bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
 
             float fRoofPitch_temp = fRoofPitch_rad;
 

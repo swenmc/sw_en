@@ -94,10 +94,24 @@ namespace BaseClasses.Helpers
                 List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D>();
 
                 CMember m1 = model.m_arrMembers[0]; // Lavy stlp vpredu
-                CMember m2 = model.m_arrMembers[3]; // Pravy stlp vpredu
+                CMember m2;
+
+                if (model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                    m2 = model.m_arrMembers[2]; // Pravy stlp vpredu
+                else if (model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
+                    m2 = model.m_arrMembers[3]; // Pravy stlp vpredu
+                else
+                    m2 = null; // Exception
 
                 CMember m3 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn); // Pravy stlp vzadu
-                CMember m4 = model.m_arrMembers[9]; // Pravy stlp v 2 rame
+                CMember m4;
+
+                if (model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                    m4 = model.m_arrMembers[7]; // Pravy stlp v 2 rame
+                else if (model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
+                    m4 = model.m_arrMembers[9]; // Pravy stlp v 2 rame
+                else
+                    m4 = null; // Exception
 
                 if (m1 != null && m2 != null && m3 != null && m4 != null)
                 {
@@ -119,10 +133,8 @@ namespace BaseClasses.Helpers
                     listOfDimensions.Add(dimPOKUSNA3);
                     listOfDimensions.Add(dimPOKUSNA4);
                 }
-                
 
-                
-                // Girts                
+                // Girts
                 CMember m6 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.Girt); // Prvy girt vlavo
                 if (m6 != null)
                 {

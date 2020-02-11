@@ -19,6 +19,10 @@ namespace BaseClasses
     {
         public bool debugging = false;
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // TO Ondrej: Docasne su tieto parametre tu, ale nemali byt v CModel ale niekde v potomkoch, napriklad CModel_PFD
+        public EModelType_FS eKitset;
+
         public float fL_tot;
         public float fL1_frame;
         public float fW_frame;
@@ -32,6 +36,12 @@ namespace BaseClasses
 
         public float fDist_FrontColumns;
         public float fDist_BackColumns;
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
         // General project data
 
