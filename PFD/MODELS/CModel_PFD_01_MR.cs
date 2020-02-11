@@ -516,13 +516,16 @@ namespace PFD
                 bUseBackColumnFlyBracingPlates = false;
 
             // Sidewall girts bracing blocks
-            bool bGenerateGirtBracingSideWalls = false; // Zakomentovane bloky true;
+            bool bGenerateGirtBracingSideWalls = true;
 
-            int iNumberOfGBSideWallsNodesInOneBayOneSide = 0;
+            int iNumberOfGBSideWallsNodesInOneBayOneSideLeft = 0;
+            int iNumberOfGBSideWallsNodesInOneBayOneSideRight = 0;
+
             int iNumberOfGBSideWallsNodesInOneBay = 0;
             int iGBSideWallsNodesNo = 0;
 
-            int iNumberOfGBSideWallsMembersInOneBayOneSide = 0;
+            int iNumberOfGBSideWallsMembersInOneBayOneSideLeft = 0;
+            int iNumberOfGBSideWallsMembersInOneBayOneSideRight = 0;
             int iNumberOfGBSideWallsMembersInOneBay = 0;
 
             // TODO 408 - Zapracovat toto nastavenie do GUI - prebrat s Ondrejom a dopracovat funkcionalitu tak ze sa budu generovat len bracing blocks na stenach 
@@ -533,12 +536,15 @@ namespace PFD
 
             if (bGenerateGirtBracingSideWalls)
             {
-                iNumberOfGBSideWallsNodesInOneBayOneSide = iNumberOfTransverseSupports_Girts * (Math.Min(iLeftColumnGirtNo, iRightColumnGirtNo) + 1);
-                iNumberOfGBSideWallsNodesInOneBay = 2 * iNumberOfGBSideWallsNodesInOneBayOneSide;
+                iNumberOfGBSideWallsNodesInOneBayOneSideLeft = iNumberOfTransverseSupports_Girts * (iLeftColumnGirtNo + 1);
+                iNumberOfGBSideWallsNodesInOneBayOneSideRight = iNumberOfTransverseSupports_Girts * (iRightColumnGirtNo + 1);
+
+                iNumberOfGBSideWallsNodesInOneBay = iNumberOfGBSideWallsNodesInOneBayOneSideLeft + iNumberOfGBSideWallsNodesInOneBayOneSideRight;
                 iGBSideWallsNodesNo = iNumberOfGBSideWallsNodesInOneBay * (iFrameNo - 1);
 
-                iNumberOfGBSideWallsMembersInOneBayOneSide = iNumberOfTransverseSupports_Girts * Math.Min(iLeftColumnGirtNo, iRightColumnGirtNo);
-                iNumberOfGBSideWallsMembersInOneBay = 2 * iNumberOfGBSideWallsMembersInOneBayOneSide;
+                iNumberOfGBSideWallsMembersInOneBayOneSideLeft = iNumberOfTransverseSupports_Girts * iLeftColumnGirtNo;
+                iNumberOfGBSideWallsMembersInOneBayOneSideRight = iNumberOfTransverseSupports_Girts * iRightColumnGirtNo;
+                iNumberOfGBSideWallsMembersInOneBay = iNumberOfGBSideWallsMembersInOneBayOneSideLeft + iNumberOfGBSideWallsMembersInOneBayOneSideRight;
                 iGBSideWallsMembersNo = iNumberOfGBSideWallsMembersInOneBay * (iFrameNo - 1);
             }
 
@@ -938,7 +944,86 @@ namespace PFD
                 AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumnFromLeft, iArrNumberOfGirtsPerBackColumnFromLeft, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, eccentricityGirtBack_YL, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], EMemberType_FS_Position.GirtBackSide, fColumnsRotation, iNumberOfTransverseSupports_BackGirts);
             }
 
+            // Girt Bracing - Side walls
+            // Nodes - Girt Bracing - Side walls
 
+            i_temp_numberofNodes += bGenerateBackGirts ? iBackIntermediateColumnNodesForGirtsOneFrameNo : 0;
+            if (bGenerateGirtBracingSideWalls)
+            {
+                for (int i = 0; i < (iFrameNo - 1); i++)
+                {
+                    for (int j = 0; j < (iLeftColumnGirtNo + 1); j++) // Left side
+                    {
+                        float zCoord = j < iLeftColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
+
+                        for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                        {
+                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
+                        }
+                    }
+
+                    for (int j = 0; j < (iRightColumnGirtNo + 1); j++) // Right side
+                    {
+                        float zCoord = j < iRightColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH2_frame;
+
+                        for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                        {
+                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k + 1, fW_frame, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
+                        }
+                    }
+                }
+            }
+
+            // Members - Girt Bracing - Side walls
+
+            i_temp_numberofMembers += bGenerateBackGirts ? iBackGirtsNoInOneFrame : 0;
+            if (bGenerateGirtBracingSideWalls)
+            {
+                for (int i = 0; i < (iFrameNo - 1); i++)
+                {
+                    for (int j = 0; j < iLeftColumnGirtNo; j++) // Left side
+                    {
+                        bool bDeactivateMember = false;
+                        if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
+
+                        float fGBSideWallEnd_Current = fGBSideWallEnd;
+
+                        if (j == iLeftColumnGirtNo - 1) // Last
+                            fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
+
+                        for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                        {
+                            int memberIndex = i_temp_numberofMembers + i * iNumberOfGBSideWallsMembersInOneBay + j * iNumberOfTransverseSupports_Girts + k;
+                            int startNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k;
+                            int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Girts + k;
+                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
+
+                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                        }
+                    }
+
+                    for (int j = 0; j < iRightColumnGirtNo; j++) // Right side
+                    {
+                        bool bDeactivateMember = false;
+                        if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
+
+                        float fGBSideWallEnd_Current = fGBSideWallEnd;
+
+                        if (j == iRightColumnGirtNo - 1) // Last
+                            fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
+
+                        for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
+                        {
+                            int memberIndex = i_temp_numberofMembers + i * iNumberOfGBSideWallsMembersInOneBay + iNumberOfGBSideWallsMembersInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k;
+                            int startNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k;
+                            int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + +iNumberOfGBSideWallsNodesInOneBayOneSideLeft + (j + 1) * iNumberOfTransverseSupports_Girts + k;
+                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
+
+                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                        }
+                    }
+                }
+            }
 
 
 
@@ -961,87 +1046,6 @@ namespace PFD
 
             if (false) // Zakomentovane ine typy prutov
             {
-                // Girt Bracing - Side walls
-                // Nodes - Girt Bracing - Side walls
-
-                i_temp_numberofNodes += bGenerateBackGirts ? iBackIntermediateColumnNodesForGirtsOneFrameNo : 0;
-                if (bGenerateGirtBracingSideWalls)
-                {
-                    for (int i = 0; i < (iFrameNo - 1); i++)
-                    {
-                        for (int j = 0; j < (iLeftColumnGirtNo + 1); j++) // Left side
-                        {
-                            float zCoord = j < iLeftColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
-
-                            for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
-                            {
-                                m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
-                            }
-                        }
-
-                        for (int j = 0; j < (iRightColumnGirtNo + 1); j++) // Right side
-                        {
-                            float zCoord = j < iRightColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
-
-                            for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
-                            {
-                                m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k + 1, fW_frame, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
-                            }
-                        }
-                    }
-                }
-
-                // Members - Girt Bracing - Side walls
-
-                i_temp_numberofMembers += bGenerateBackGirts ? iBackGirtsNoInOneFrame : 0;
-                if (bGenerateGirtBracingSideWalls)
-                {
-                    for (int i = 0; i < (iFrameNo - 1); i++)
-                    {
-                        for (int j = 0; j < iLeftColumnGirtNo; j++) // Left side
-                        {
-                            bool bDeactivateMember = false;
-                            if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
-
-                            float fGBSideWallEnd_Current = fGBSideWallEnd;
-
-                            if (j == iLeftColumnGirtNo - 1) // Last
-                                fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
-
-                            for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
-                            {
-                                int memberIndex = i_temp_numberofMembers + i * iNumberOfGBSideWallsMembersInOneBay + j * iNumberOfTransverseSupports_Girts + k;
-                                int startNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k;
-                                int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Girts + k;
-                                m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
-
-                                if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
-                            }
-                        }
-
-                        for (int j = 0; j < iRightColumnGirtNo; j++) // Right side
-                        {
-                            bool bDeactivateMember = false;
-                            if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
-
-                            float fGBSideWallEnd_Current = fGBSideWallEnd;
-
-                            if (j == iRightColumnGirtNo - 1) // Last
-                                fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
-
-                            for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
-                            {
-                                int memberIndex = i_temp_numberofMembers + i * iNumberOfGBSideWallsMembersInOneBay + iNumberOfGBSideWallsMembersInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k;
-                                int startNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Girts + k;
-                                int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + +iNumberOfGBSideWallsNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Girts + k;
-                                m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
-
-                                if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
-                            }
-                        }
-                    }
-                }
-
                 // Purlin Bracing
                 // Nodes - Purlin Bracing
 
