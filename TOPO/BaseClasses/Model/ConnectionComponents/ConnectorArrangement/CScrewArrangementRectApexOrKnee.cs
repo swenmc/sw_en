@@ -613,36 +613,53 @@ namespace BaseClasses
             float fx_cUG = flZ + FCrscRafterDepth * (float)Math.Sin(fSlope_rad);
             float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
 
-            // Bottom group - column
-            ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-            ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
-            // Set radii of connectors / screws in the group
-            ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
+            //TODO Mato - ak mame dynamicke sekvencie tak na pevne indexy mozme zabudnut, ziadne taketo somarinky tu byt nemozu
 
-            // Rotate screws by colum slope (bottom group only)
-            // Rotate about [0,0] 90 deg
-            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+            if (ListOfSequenceGroups.Count > 0)
+            {
+                //temp na surovo prec ak je menej ako 2 lebo sa to samozrejme zrube
+                if (ListOfSequenceGroups[0].ListSequence.Count < 2) return;
 
-            // Upper group - rafter
-            ListOfSequenceGroups[1].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
-            ListOfSequenceGroups[1].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
-            // Set radii of connectors / screws in the group
-            ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
+                // Bottom group - column
+                ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+                ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+                // Set radii of connectors / screws in the group
+                ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
 
-            // Rotate screws by roof slope (upper group only)
-            // Rotate about [0,0]
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+                // Rotate screws by colum slope (bottom group only)
+                // Rotate about [0,0] 90 deg
+                RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+                RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
 
-            // Translate from [0,0] on plate to the final position
-            // Bottom Group
-            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+                if (ListOfSequenceGroups.Count > 1)
+                {
+                    // Upper group - rafter
+                    ListOfSequenceGroups[1].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+                    ListOfSequenceGroups[1].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+                    // Set radii of connectors / screws in the group
+                    ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
 
-            // Upper Group
-            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
-            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+                    // Rotate screws by roof slope (upper group only)
+                    // Rotate about [0,0]
+                    RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+                    RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+                }
+                
+
+                // Translate from [0,0] on plate to the final position
+                // Bottom Group
+                TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+                TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+
+                if (ListOfSequenceGroups.Count > 1)
+                {
+                    // Upper Group
+                    TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+                    TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+                }
+            }
+
+            
 
             FillArrayOfHolesCentersInWholeArrangement();
         }
@@ -699,6 +716,93 @@ namespace BaseClasses
             Point[] seqPoints = sequence.HolesCentersPoints;
             Geom2D.TransformPositions_CCW_rad(fPoint_x, fPoint_y, 0, ref seqPoints);
             sequence.HolesCentersPoints = seqPoints; // je to potrebne takto nastavovat lebo nie je mozne volat [ref sequence.HolesCentersPoints]
+        }
+
+
+        public void NumberOfGroups_Updated(int newNumberOfGroups)
+        {
+            if (newNumberOfGroups < 0) return;
+            if (newNumberOfGroups > 5) return;
+
+            if (newNumberOfGroups < NumberOfGroups)
+            {
+                while (newNumberOfGroups < NumberOfGroups)
+                {
+                    RemoveSequenceGroup();
+                    NumberOfGroups--;
+                }                
+            }
+            else if (newNumberOfGroups > NumberOfGroups)
+            {
+                while (newNumberOfGroups > NumberOfGroups)
+                {
+                    AddSequenceGroup();
+                    NumberOfGroups++;
+                }
+            }
+        }
+        public void NumberOfSequenceInGroup_Updated(int newNumberOfSequenceInGroup)
+        {
+            if (newNumberOfSequenceInGroup < 0) return;
+            if (newNumberOfSequenceInGroup > 10) return;
+
+            if (newNumberOfSequenceInGroup < NumberOfSequenceInGroup)
+            {
+                while (newNumberOfSequenceInGroup < NumberOfSequenceInGroup)
+                {
+                    RemoveSequenceFromEachGroup();
+                    NumberOfSequenceInGroup--;
+                }
+            }
+            else if (newNumberOfSequenceInGroup > NumberOfSequenceInGroup)
+            {
+                while (newNumberOfSequenceInGroup > NumberOfSequenceInGroup)
+                {
+                    AddSequenceToEachGroup();
+                    NumberOfSequenceInGroup++;
+                }
+            }
+        }
+
+        private void AddSequenceGroup()
+        {
+            CScrewSequenceGroup gr = new CScrewSequenceGroup();
+            for (int i = 0; i < NumberOfSequenceInGroup; i++)
+            {
+                CScrewRectSequence rS = new CScrewRectSequence();
+                RectSequences.Add(rS);
+                gr.ListSequence.Add(rS);
+            }
+            ListOfSequenceGroups.Add(gr);
+        }
+        private void RemoveSequenceGroup()
+        {
+            ListOfSequenceGroups.RemoveAt(ListOfSequenceGroups.Count - 1);
+            for (int i = 0; i < NumberOfSequenceInGroup; i++)
+            {                
+                RectSequences.RemoveAt(RectSequences.Count - 1);                
+            }
+        }
+
+        private void AddSequenceToEachGroup()
+        {
+            int grIndex = 0;
+            foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
+            {
+                CScrewRectSequence rS = new CScrewRectSequence();
+                gr.ListSequence.Add(rS);
+                RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup,rS);
+                grIndex++;
+            }
+            
+        }
+        private void RemoveSequenceFromEachGroup()
+        {
+            for (int i = ListOfSequenceGroups.Count - 1; i >= 0; i--)
+            {
+                ListOfSequenceGroups[i].ListSequence.RemoveAt(ListOfSequenceGroups[i].ListSequence.Count - 1);
+                RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
+            }
         }
     }
 }

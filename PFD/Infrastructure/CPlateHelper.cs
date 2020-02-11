@@ -488,6 +488,20 @@ namespace PFD
                     // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                     // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
 
+                    if (item.Name.Equals("Number of groups"))
+                    {
+                        int numberOfGroups = int.Parse(itemStr.Value);
+                        arrangementTemp.NumberOfGroups_Updated(numberOfGroups);
+
+                    }
+                    if (item.Name.Equals("Number of sequence in group"))
+                    {
+                        int numberOfSequenceInGroup = int.Parse(itemStr.Value);
+                        arrangementTemp.NumberOfSequenceInGroup_Updated(numberOfSequenceInGroup);
+
+                    } 
+
+
                     if (item.Name.Contains(" SQ"))
                     {
                         int seqIndex = GetSequenceNumFromName(item.Name) - 1;
