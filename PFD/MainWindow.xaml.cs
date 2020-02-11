@@ -1628,7 +1628,7 @@ namespace PFD
         private void SetInitialItemsInComboboxes()
         {
             // Fill kitset type combobox items
-            CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "ModelType", "modelTypeName", Combobox_KitsetType);
+            CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "ModelType", "modelTypeName_short", Combobox_KitsetType);
 
             // Fill model combobox items
             CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);

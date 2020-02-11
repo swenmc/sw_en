@@ -91,114 +91,114 @@
                         <!-- TODO To Ondrej: Navrhujem prepracovat vsetko na DataGridView, bude to jednoduchsie lebo budeme mat len jeden typ objektu pre vstupy a vystupy a budeme tie tabulky vkladat do protokolu, napr. export do Wordu-->
                         <!-- Nemyslim si,ze to nejako extra pomoze. Export je vacsinou specificky a chces ho aj nejako stylovat, nie len nasmarat tabulky a koniec. -->
 
-                        <TextBlock Grid.Row="5" Grid.Column="3" Text="Kitset Type:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                        <ComboBox Grid.Row="5" Grid.Column="4" Name ="Combobox_KitsetType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Kitset Type:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_KitsetType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=KitsetTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                         
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                        <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                        <!--<ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
                           VerticalAlignment="Center" SelectionChanged="ComboBox_Models_SelectionChanged" SelectedIndex="1"/>-->
-                        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0,0,0" 
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0,0,0" 
                          VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GableWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"  
-                         Text="{Binding Path=Length, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         VerticalAlignment="Top"  />
+                        <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
-                         Text="{Binding Path=WallHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=Length, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=RoofPitch_deg, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  
+                         Text="{Binding Path=WallHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Frames:" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Frames_No" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=Frames, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Girt Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_Girt_Distance" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GirtDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=PurlinDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=RoofPitch_deg, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Frames:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_Frames_No" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=Frames, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Girt Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
+                        <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_Girt_Distance" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GirtDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Column Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=ColumnDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=PurlinDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Bottom Girt Position:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Column Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_BottomGirt_Position" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=BottomGirtPosition, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=ColumnDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="10" Grid.Column="0" Text="Front Frame Angle:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                        <TextBlock Grid.Row="10" Grid.Column="0" Text="Bottom Girt Position:" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_FrontFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_BottomGirt_Position" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=BottomGirtPosition, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="11" Grid.Column="0" Text="Front Frame Angle:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
+                        <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_FrontFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FrontFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="11" Grid.Column="0" Text="Back Frame Angle:" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_BackFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=BackFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="12" Grid.Column="0" Text="Roof Cladding:" HorizontalAlignment="Left" Margin="5,0,0,0" />
-                        <ComboBox Grid.Row="12" Grid.Column="1" Name ="Combobox_RoofCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="12" Grid.Column="0" Text="Back Frame Angle:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
+                        <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_BackFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=BackFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="12" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof Cladding:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_RoofCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Claddings}" SelectedIndex="{Binding Path=RoofCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof Cladding Coating:" HorizontalAlignment="Left" Margin="5,0,0,0" />
-                        <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_RoofCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Coating:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_RoofCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=RoofCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
-                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=RoofCladdingColors}" SelectedIndex="{Binding Path=RoofCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -210,20 +210,20 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Roof Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
-                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_RoofCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Roof Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
+                        <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_RoofCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding RoofCladdingsThicknessTypes}" SelectedIndex="{Binding Path=RoofCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0,0,0" />
-                        <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Claddings}" SelectedIndex="{Binding Path=WallCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wall Cladding Coating:" HorizontalAlignment="Left" Margin="5,0,0,0" />
-                        <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Wall Cladding Coating:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="18" Grid.Column="1" Name ="Combobox_WallCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=WallCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
-                        <ComboBox Grid.Row="18" Grid.Column="1" ItemsSource="{Binding Path=WallCladdingColors}" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="19" Grid.Column="1" ItemsSource="{Binding Path=WallCladdingColors}" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -235,39 +235,40 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Wall Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
-                        <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Wall Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
+                        <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding WallCladdingsThicknessTypes}" SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Suport Type:" HorizontalAlignment="Left" Margin="5,0,0,0" />
-                        <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_SupportType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Suport Type:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_SupportType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SupportTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Roof Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
-                        <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_RoofFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Roof Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
+                        <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_RoofFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding RoofFibreglassThicknessTypes}" SelectedIndex="{Binding Path=RoofFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Wall Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
-                        <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_WallFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="23" Grid.Column="0" Text="Wall Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
+                        <ComboBox Grid.Row="23" Grid.Column="1" Name ="Combobox_WallFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding WallFibreglassThicknessTypes}" SelectedIndex="{Binding Path=WallFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="23" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                        <TextBlock Grid.Row="24" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="23" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="24" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FibreglassAreaRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="23" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="24" Grid.Column="0" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" Margin="5,0,0,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="24" Grid.Column="1" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=FibreglassAreaWall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="24" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-                        
+                        <TextBlock Grid.Row="25" Grid.Column="0" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
+                        <TextBox Grid.Row="25" Grid.Column="1" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=FibreglassAreaWall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="25" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
+
+                        <!-- Second column of widgets-->
+
                         <TextBlock Grid.Row="1" Grid.Column="3" Text="View:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                         <ComboBox Grid.Row="1" Grid.Column="4" Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ModelViews}}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>

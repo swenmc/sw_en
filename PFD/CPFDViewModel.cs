@@ -262,6 +262,9 @@ namespace PFD
             {
                 MKitsetTypeIndex = value;
 
+                if (MKitsetTypeIndex > 1)
+                    throw new ArgumentException("Selected kitset type is not implemented.");
+
                 // TODO - nastavit do comboboxu Model type prislusne modely pre dany typ kitsetu
 
                 ModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type (menim property aby som vyvolal aj zmenu modelu)
