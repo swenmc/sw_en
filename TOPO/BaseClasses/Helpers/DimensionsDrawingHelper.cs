@@ -115,43 +115,60 @@ namespace BaseClasses.Helpers
 
                 if (m1 != null && m2 != null && m3 != null && m4 != null)
                 {
-                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
+                    CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
                     0.6, 0.6, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
 
                     // stlp vpravo - vyskova kota
-                    CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m2.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, 1,
-                        0.6, 0.6, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), true);
+                    float fh = model.fH1_frame;
 
-                    CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                    if (model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed) // Pre monopitch kotujeme pravu vysku steny
+                        fh = model.fH2_frame;
+
+                    CDimensionLinear3D dim2 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m2.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, 1,
+                        0.6, 0.6, 0.05, 0.15, (fh * 1000).ToString("F0"), true);
+
+                    CDimensionLinear3D dim3 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
                         0.6, 0.6, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
-                    
-                    CDimensionLinear3D dimPOKUSNA4 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+
+                    CDimensionLinear3D dim4 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
                         0.5, 0.5, 0.05, 0.15, (model.fL1_frame * 1000).ToString("F0"), true);
 
-                    listOfDimensions.Add(dimPOKUSNA1);
-                    listOfDimensions.Add(dimPOKUSNA2);
-                    listOfDimensions.Add(dimPOKUSNA3);
-                    listOfDimensions.Add(dimPOKUSNA4);
+                    listOfDimensions.Add(dim1);
+                    listOfDimensions.Add(dim2);
+                    listOfDimensions.Add(dim3);
+                    listOfDimensions.Add(dim4);
+
+                    if (model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed) // Pre monopitch kotujeme lavu aj pravu vysku steny
+                    {
+                        // stlp vlavo - vyskova kota
+                        CDimensionLinear3D dim41 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                            0.8, 0.8, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+
+                        listOfDimensions.Add(dim41);
+                    }
                 }
 
                 // Girts
                 CMember m6 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.Girt); // Prvy girt vlavo
-                if (m6 != null)
+                if (m6 != null) // Girt nie je null
                 {
                     int index = Array.IndexOf(model.m_arrMembers, m6);
                     CMember m7 = model.m_arrMembers[index + 1]; // Nasledujuci girt vlavo
 
-                    CDimensionLinear3D dimPOKUSNA5 = new CDimensionLinear3D(m6.NodeStart.GetPoint3D(), m7.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
-                       0.6, 0.6, 0.05, 0.15, (model.fDist_Girt * 1000).ToString("F0"), false);
-                    listOfDimensions.Add(dimPOKUSNA5);
+                    if (MathF.d_equal(m7.NodeStart.X, 0)) // Girt je na lavej strane
+                    {
+                        CDimensionLinear3D dim5 = new CDimensionLinear3D(m6.NodeStart.GetPoint3D(), m7.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                           0.6, 0.6, 0.05, 0.15, (model.fDist_Girt * 1000).ToString("F0"), false);
+                        listOfDimensions.Add(dim5);
+                    }
 
                     // Bottom Girt
-                    CDimensionLinear3D dimPOKUSNA7 = new CDimensionLinear3D(new Point3D(0, 0, 0), m6.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                    CDimensionLinear3D dim7 = new CDimensionLinear3D(new Point3D(0, 0, 0), m6.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
                        0.6, 0.6, 0.05, 0.15, (model.fBottomGirtPosition * 1000).ToString("F0"), false);
 
-                    listOfDimensions.Add(dimPOKUSNA7);
+                    listOfDimensions.Add(dim7);
                 }
-                
+
                 // Purlins
                 CMember m8 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.Purlin); // Prva purlin vlavo
                 if (m8 != null)
@@ -159,9 +176,9 @@ namespace BaseClasses.Helpers
                     int index = Array.IndexOf(model.m_arrMembers, m8);
                     CMember m9 = model.m_arrMembers[index + 1]; // Nasledujuca purlin vlavo
 
-                    CDimensionLinear3D dimPOKUSNA6 = new CDimensionLinear3D(m8.NodeStart.GetPoint3D(), m9.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+                    CDimensionLinear3D dim6 = new CDimensionLinear3D(m8.NodeStart.GetPoint3D(), m9.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
                        0.6, 0.6, 0.05, 0.15, (model.fDist_Purlin * 1000).ToString("F0"), false);
-                    listOfDimensions.Add(dimPOKUSNA6);
+                    listOfDimensions.Add(dim6);
                 }
 
                 DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
@@ -179,14 +196,14 @@ namespace BaseClasses.Helpers
                 CMember m2 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
                 // stlpy na lavej strane maju PointStart v Z = 0
-                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m2.NodeStart.GetPoint3D(), m1.NodeStart.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                CDimensionLinear3D dim1 = new CDimensionLinear3D(m2.NodeStart.GetPoint3D(), m1.NodeStart.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
                     0.4, 0.4, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
 
                 // stlp vlavo - vyskova kota
-                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
+                CDimensionLinear3D dim2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
                     0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
 
-                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dim1, dim2 };
 
                 DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
             }
@@ -283,14 +300,14 @@ namespace BaseClasses.Helpers
                 CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
                 // stlpy na pravej strane maju PointEnd v Z = 0
-                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
                     0.4, 0.4, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
 
                 // stlp vlavo - vyskova kota
-                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
+                CDimensionLinear3D dim2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
                     0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
 
-                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dim1, dim2 };
 
                 DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
             }
@@ -302,14 +319,14 @@ namespace BaseClasses.Helpers
             CMember m3 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter);
             //CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
-            CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
+            CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
                  0.4, 0.4, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
-            CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+            CDimensionLinear3D dim2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
                  0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
-            CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m3.NodeStart.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+            CDimensionLinear3D dim3 = new CDimensionLinear3D(m3.NodeStart.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
                  0.4, 0.4, 0.05, 0.15, (m3.FLength * 1000).ToString("F0"), false);
 
-            List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA3 };
+            List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dim1, dim2, dim3 };
 
             DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
         }
@@ -319,14 +336,14 @@ namespace BaseClasses.Helpers
             CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
             CMember m3 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter);
 
-            CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
+            CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
                  0.4, 0.4, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
-            CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m2.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+            CDimensionLinear3D dim2 = new CDimensionLinear3D(m2.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
                  0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
-            CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m3.NodeStart.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+            CDimensionLinear3D dim3 = new CDimensionLinear3D(m3.NodeStart.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
                  0.4, 0.4, 0.05, 0.15, (m3.FLength * 1000).ToString("F0"), false);
 
-            List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA3 };
+            List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dim1, dim2, dim3 };
 
             DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
         }
