@@ -11,6 +11,18 @@ namespace BaseClasses
     public class CScrewRectSequence : CScrewSequence
     {
         private int m_iNumberOfScrewsInRow_xDirection;
+        private int m_iNumberOfScrewsInColumn_yDirection;
+        
+        private double m_RefPointX;
+        private double m_RefPointY;        
+        private float m_fDistanceOfPointsX;
+        private float m_fDistanceOfPointsY;
+
+        private bool m_SameDistancesX;
+        private bool m_SameDistancesY;
+        private List<float> m_DistancesOfPointsX;
+        private List<float> m_DistancesOfPointsY;
+        
 
         public int NumberOfScrewsInRow_xDirection
         {
@@ -24,9 +36,6 @@ namespace BaseClasses
                 m_iNumberOfScrewsInRow_xDirection = value;
             }
         }
-
-        private int m_iNumberOfScrewsInColumn_yDirection;
-
         public int NumberOfScrewsInColumn_yDirection
         {
             get
@@ -39,9 +48,6 @@ namespace BaseClasses
                 m_iNumberOfScrewsInColumn_yDirection = value;
             }
         }
-
-        private float m_fDistanceOfPointsX;
-
         public float DistanceOfPointsX
         {
             get
@@ -54,9 +60,6 @@ namespace BaseClasses
                 m_fDistanceOfPointsX = value;
             }
         }
-
-        private float m_fDistanceOfPointsY;
-
         public float DistanceOfPointsY
         {
             get
@@ -69,10 +72,6 @@ namespace BaseClasses
                 m_fDistanceOfPointsY = value;
             }
         }
-
-        private double m_RefPointX;
-        private double m_RefPointY;
-
         public double RefPointX
         {
             get
@@ -86,7 +85,6 @@ namespace BaseClasses
                 ReferencePoint = new Point(RefPointX, RefPointY);
             }
         }
-
         public double RefPointY
         {
             get
@@ -101,7 +99,59 @@ namespace BaseClasses
             }
         }
 
-        
+        public bool SameDistancesX
+        {
+            get
+            {
+                return m_SameDistancesX;
+            }
+
+            set
+            {
+                m_SameDistancesX = value;
+            }
+        }
+
+        public bool SameDistancesY
+        {
+            get
+            {
+                return m_SameDistancesY;
+            }
+
+            set
+            {
+                m_SameDistancesY = value;
+            }
+        }
+
+        public List<float> DistancesOfPointsX
+        {
+            get
+            {
+                if (m_DistancesOfPointsX == null) SetDistancesX();
+                return m_DistancesOfPointsX;
+            }
+
+            set
+            {
+                m_DistancesOfPointsX = value;
+            }
+        }
+
+        public List<float> DistancesOfPointsY
+        {
+            get
+            {
+                if (m_DistancesOfPointsY == null) SetDistancesY();
+                return m_DistancesOfPointsY;
+            }
+
+            set
+            {
+                m_DistancesOfPointsY = value;
+            }
+        }
 
         public CScrewRectSequence()
         { }
@@ -127,6 +177,23 @@ namespace BaseClasses
             INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
             HolesCentersPoints = new Point[INumberOfConnectors];
         }
-        
+
+        private void SetDistancesX()
+        {
+            m_DistancesOfPointsX = new List<float>();
+            for (int i = 0; i < m_iNumberOfScrewsInRow_xDirection - 1; i++)
+            {
+                m_DistancesOfPointsX.Add(m_fDistanceOfPointsX);
+            }
+        }
+        private void SetDistancesY()
+        {
+            m_DistancesOfPointsY = new List<float>();
+            for (int i = 0; i < m_iNumberOfScrewsInColumn_yDirection - 1; i++)
+            {
+                m_DistancesOfPointsY.Add(m_fDistanceOfPointsY);
+            }
+        }
+
     }
 }
