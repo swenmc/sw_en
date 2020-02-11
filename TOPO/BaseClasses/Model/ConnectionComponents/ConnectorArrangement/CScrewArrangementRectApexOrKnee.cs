@@ -110,36 +110,203 @@ namespace BaseClasses
 
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
 
-        // Bottom (knee plate) or left (apex plate) group
-        public int iNumberOfScrewsInRow_xDirection_SQ1;
-        public int iNumberOfScrewsInColumn_yDirection_SQ1;
-        public float fx_c_SQ1;
-        public float fy_c_SQ1;
-        public float fDistanceOfPointsX_SQ1;
-        public float fDistanceOfPointsY_SQ1;
-        public int iNumberOfScrewsInRow_xDirection_SQ2;
-        public int iNumberOfScrewsInColumn_yDirection_SQ2;
-        public float fx_c_SQ2;
-        public float fy_c_SQ2;
-        public float fDistanceOfPointsX_SQ2;
-        public float fDistanceOfPointsY_SQ2;
+        //// Bottom (knee plate) or left (apex plate) group
+        //public int iNumberOfScrewsInRow_xDirection_SQ1;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ1;
+        //public float fx_c_SQ1;
+        //public float fy_c_SQ1;
+        //public float fDistanceOfPointsX_SQ1;
+        //public float fDistanceOfPointsY_SQ1;
+        //public int iNumberOfScrewsInRow_xDirection_SQ2;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ2;
+        //public float fx_c_SQ2;
+        //public float fy_c_SQ2;
+        //public float fDistanceOfPointsX_SQ2;
+        //public float fDistanceOfPointsY_SQ2;
 
-        // Top (knee plate) or right (apex plate) group
-        public int iNumberOfScrewsInRow_xDirection_SQ3;
-        public int iNumberOfScrewsInColumn_yDirection_SQ3;
-        public float fx_c_SQ3;
-        public float fy_c_SQ3;
-        public float fDistanceOfPointsX_SQ3;
-        public float fDistanceOfPointsY_SQ3;
-        public int iNumberOfScrewsInRow_xDirection_SQ4;
-        public int iNumberOfScrewsInColumn_yDirection_SQ4;
-        public float fx_c_SQ4;
-        public float fy_c_SQ4;
-        public float fDistanceOfPointsX_SQ4;
-        public float fDistanceOfPointsY_SQ4;
+        //// Top (knee plate) or right (apex plate) group
+        //public int iNumberOfScrewsInRow_xDirection_SQ3;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ3;
+        //public float fx_c_SQ3;
+        //public float fy_c_SQ3;
+        //public float fDistanceOfPointsX_SQ3;
+        //public float fDistanceOfPointsY_SQ3;
+        //public int iNumberOfScrewsInRow_xDirection_SQ4;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ4;
+        //public float fx_c_SQ4;
+        //public float fy_c_SQ4;
+        //public float fDistanceOfPointsX_SQ4;
+        //public float fDistanceOfPointsY_SQ4;
 
         public CScrewArrangementRectApexOrKnee()
         { }
+
+        //public CScrewArrangementRectApexOrKnee(
+        //    CScrew referenceScrew_temp,
+        //    float fCrscRafterDepth_temp,
+        //    float fCrscWebStraightDepth_temp,
+        //    float fStiffenerSize_temp,
+        //    int iNumberOfScrewsInRow_xDirection_SQ1_temp,
+        //    int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
+        //    float fx_c_SQ1_temp,
+        //    float fy_c_SQ1_temp,
+        //    float fDistanceOfPointsX_SQ1_temp,
+        //    float fDistanceOfPointsY_SQ1_temp,
+        //    int iNumberOfScrewsInRow_xDirection_SQ2_temp,
+        //    int iNumberOfScrewsInColumn_yDirection_SQ2_temp,
+        //    float fx_c_SQ2_temp,
+        //    float fy_c_SQ2_temp,
+        //    float fDistanceOfPointsX_SQ2_temp,
+        //    float fDistanceOfPointsY_SQ2_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp + iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp, referenceScrew_temp)
+        //{
+        //    referenceScrew = referenceScrew_temp;
+        //    FCrscRafterDepth = fCrscRafterDepth_temp;
+        //    FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+        //    FStiffenerSize = fStiffenerSize_temp;
+
+        //    // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
+        //    iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_SQ1_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_SQ1_temp;
+        //    fx_c_SQ1 = fx_c_SQ1_temp;
+        //    fy_c_SQ1 = fy_c_SQ1_temp;
+        //    fDistanceOfPointsX_SQ1 = fDistanceOfPointsX_SQ1_temp;
+        //    fDistanceOfPointsY_SQ1 = fDistanceOfPointsY_SQ1_temp;
+
+        //    iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_SQ2_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_SQ2_temp;
+        //    fx_c_SQ2 = fx_c_SQ2_temp;
+        //    fy_c_SQ2 = fy_c_SQ2_temp;
+        //    fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
+        //    fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
+
+        //    ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two groups, each for the connection of one member in joint
+
+        //    UpdateArrangmentData();
+        //}
+
+        //public CScrewArrangementRectApexOrKnee(
+        //    CScrew referenceScrew_temp,
+        //    float fCrscRafterDepth_temp,
+        //    float fCrscWebStraightDepth_temp,
+        //    float fStiffenerSize_temp,
+        //    int iNumberOfScrewsInRow_xDirection_G1_SQ_temp,  // Bottom group of knee plate
+        //    int iNumberOfScrewsInColumn_yDirection_G1_SQ_temp,
+        //    int iNumberOfScrewsInRow_xDirection_G2_SQ_temp,  // Upper group of knee plate
+        //    int iNumberOfScrewsInColumn_yDirection_G2_SQ_temp) : base(iNumberOfScrewsInRow_xDirection_G1_SQ_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ_temp + iNumberOfScrewsInRow_xDirection_G2_SQ_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ_temp, referenceScrew_temp)
+        //{
+        //    referenceScrew = referenceScrew_temp;
+        //    FCrscRafterDepth = fCrscRafterDepth_temp;
+        //    FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+        //    FStiffenerSize = fStiffenerSize_temp;
+
+        //    float fFreeEdgeDistance = 0.05f;
+        //    float fDistanceinX = 0.05f;
+        //    float fDistanceFromEdgeLine = 0.02f;
+        //    float fDepthOfOneStraightPartOfWeb = 0.5f * (fCrscWebStraightDepth_temp - fStiffenerSize_temp);
+
+        //    // Bottom group
+        //    iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
+        //    fx_c_SQ1 = fFreeEdgeDistance;
+        //    fy_c_SQ1 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
+        //    fDistanceOfPointsX_SQ1 = fDistanceinX;
+        //    fDistanceOfPointsY_SQ1 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+
+        //    iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
+        //    fx_c_SQ2 = fFreeEdgeDistance;
+        //    fy_c_SQ2 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDepthOfOneStraightPartOfWeb + fStiffenerSize_temp + fDistanceFromEdgeLine;
+        //    fDistanceOfPointsX_SQ2 = fDistanceinX;
+        //    fDistanceOfPointsY_SQ2 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+
+        //    // Upper group
+        //    iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
+        //    fx_c_SQ3 = fFreeEdgeDistance;
+        //    fy_c_SQ3 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
+        //    fDistanceOfPointsX_SQ3 = fDistanceinX;
+        //    fDistanceOfPointsY_SQ3 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+
+        //    iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
+        //    fx_c_SQ4 = fFreeEdgeDistance;
+        //    fy_c_SQ4 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDepthOfOneStraightPartOfWeb + fStiffenerSize_temp + fDistanceFromEdgeLine;
+        //    fDistanceOfPointsX_SQ4 = fDistanceinX;
+        //    fDistanceOfPointsY_SQ4 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+
+        //    ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
+
+        //    UpdateArrangmentData();
+        //}
+
+        //public CScrewArrangementRectApexOrKnee(
+        //    CScrew referenceScrew_temp,
+        //    float fCrscRafterDepth_temp,
+        //    float fCrscWebStraightDepth_temp,
+        //    float fStiffenerSize_temp,
+        //    int iNumberOfScrewsInRow_xDirection_G1_SQ1_temp,  // Bottom group of knee plate - G1 - SQ1
+        //    int iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp,
+        //    float fx_c_SQ1_temp,
+        //    float fy_c_SQ1_temp,
+        //    float fDistanceOfPointsX_SQ1_temp,
+        //    float fDistanceOfPointsY_SQ1_temp,
+        //    int iNumberOfScrewsInRow_xDirection_G1_SQ2_temp,  // Bottom group of knee plate - G1 - SQ2
+        //    int iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp,
+        //    float fx_c_SQ2_temp,
+        //    float fy_c_SQ2_temp,
+        //    float fDistanceOfPointsX_SQ2_temp,
+        //    float fDistanceOfPointsY_SQ2_temp,
+        //    int iNumberOfScrewsInRow_xDirection_G2_SQ3_temp,  // Upper group of knee plate - G2 - SQ3
+        //    int iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp,
+        //    float fx_c_SQ3_temp,
+        //    float fy_c_SQ3_temp,
+        //    float fDistanceOfPointsX_SQ3_temp,
+        //    float fDistanceOfPointsY_SQ3_temp,
+        //    int iNumberOfScrewsInRow_xDirection_G2_SQ4_temp,  // Upper group of knee plate - G2 - SQ4
+        //    int iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp,
+        //    float fx_c_SQ4_temp,
+        //    float fy_c_SQ4_temp,
+        //    float fDistanceOfPointsX_SQ4_temp,
+        //    float fDistanceOfPointsY_SQ4_temp) : base(iNumberOfScrewsInRow_xDirection_G1_SQ1_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp + iNumberOfScrewsInRow_xDirection_G1_SQ2_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp + iNumberOfScrewsInRow_xDirection_G2_SQ3_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp + iNumberOfScrewsInRow_xDirection_G2_SQ4_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp, referenceScrew_temp)
+        //{
+        //    referenceScrew = referenceScrew_temp;
+        //    FCrscRafterDepth = fCrscRafterDepth_temp;
+        //    FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+        //    FStiffenerSize = fStiffenerSize_temp;
+
+        //    // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
+        //    iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_G1_SQ1_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp;
+        //    fx_c_SQ1 = fx_c_SQ1_temp;
+        //    fy_c_SQ1 = fy_c_SQ1_temp;
+        //    fDistanceOfPointsX_SQ1 = fDistanceOfPointsX_SQ1_temp;
+        //    fDistanceOfPointsY_SQ1 = fDistanceOfPointsY_SQ1_temp;
+
+        //    iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ2_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp;
+        //    fx_c_SQ2 = fx_c_SQ2_temp;
+        //    fy_c_SQ2 = fy_c_SQ2_temp;
+        //    fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
+        //    fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
+
+        //    iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_G2_SQ3_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp;
+        //    fx_c_SQ3 = fx_c_SQ3_temp;
+        //    fy_c_SQ3 = fy_c_SQ3_temp;
+        //    fDistanceOfPointsX_SQ3 = fDistanceOfPointsX_SQ3_temp;
+        //    fDistanceOfPointsY_SQ3 = fDistanceOfPointsY_SQ3_temp;
+
+        //    iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ4_temp;
+        //    iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp;
+        //    fx_c_SQ4 = fx_c_SQ4_temp;
+        //    fy_c_SQ4 = fy_c_SQ4_temp;
+        //    fDistanceOfPointsX_SQ4 = fDistanceOfPointsX_SQ4_temp;
+        //    fDistanceOfPointsY_SQ4 = fDistanceOfPointsY_SQ4_temp;
+
+        //    ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
+
+        //    UpdateArrangmentData();
+        //}
 
         public CScrewArrangementRectApexOrKnee(
             CScrew referenceScrew_temp,
@@ -157,84 +324,27 @@ namespace BaseClasses
             float fx_c_SQ2_temp,
             float fy_c_SQ2_temp,
             float fDistanceOfPointsX_SQ2_temp,
-            float fDistanceOfPointsY_SQ2_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp + iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp, referenceScrew_temp)
+            float fDistanceOfPointsY_SQ2_temp)
         {
             referenceScrew = referenceScrew_temp;
             FCrscRafterDepth = fCrscRafterDepth_temp;
             FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             FStiffenerSize = fStiffenerSize_temp;
 
-            // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-            iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_SQ1_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_SQ1_temp;
-            fx_c_SQ1 = fx_c_SQ1_temp;
-            fy_c_SQ1 = fy_c_SQ1_temp;
-            fDistanceOfPointsX_SQ1 = fDistanceOfPointsX_SQ1_temp;
-            fDistanceOfPointsY_SQ1 = fDistanceOfPointsY_SQ1_temp;
+            RectSequences = new List<CScrewRectSequence>();
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
 
-            iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_SQ2_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_SQ2_temp;
-            fx_c_SQ2 = fx_c_SQ2_temp;
-            fy_c_SQ2 = fy_c_SQ2_temp;
-            fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
-            fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
+            NumberOfGroups = 2;
+            NumberOfSequenceInGroup = 2;
 
-            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two groups, each for the connection of one member in joint
-
-            UpdateArrangmentData();
-        }
-
-        public CScrewArrangementRectApexOrKnee(
-            CScrew referenceScrew_temp,
-            float fCrscRafterDepth_temp,
-            float fCrscWebStraightDepth_temp,
-            float fStiffenerSize_temp,
-            int iNumberOfScrewsInRow_xDirection_G1_SQ_temp,  // Bottom group of knee plate
-            int iNumberOfScrewsInColumn_yDirection_G1_SQ_temp,
-            int iNumberOfScrewsInRow_xDirection_G2_SQ_temp,  // Upper group of knee plate
-            int iNumberOfScrewsInColumn_yDirection_G2_SQ_temp) : base(iNumberOfScrewsInRow_xDirection_G1_SQ_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ_temp + iNumberOfScrewsInRow_xDirection_G2_SQ_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ_temp, referenceScrew_temp)
-        {
-            referenceScrew = referenceScrew_temp;
-            FCrscRafterDepth = fCrscRafterDepth_temp;
-            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            FStiffenerSize = fStiffenerSize_temp;
-
-            float fFreeEdgeDistance = 0.05f;
-            float fDistanceinX = 0.05f;
-            float fDistanceFromEdgeLine = 0.02f;
-            float fDepthOfOneStraightPartOfWeb = 0.5f * (fCrscWebStraightDepth_temp - fStiffenerSize_temp);
-
-            // Bottom group
-            iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
-            fx_c_SQ1 = fFreeEdgeDistance;
-            fy_c_SQ1 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
-            fDistanceOfPointsX_SQ1 = fDistanceinX;
-            fDistanceOfPointsY_SQ1 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
-
-            iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
-            fx_c_SQ2 = fFreeEdgeDistance;
-            fy_c_SQ2 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDepthOfOneStraightPartOfWeb + fStiffenerSize_temp + fDistanceFromEdgeLine;
-            fDistanceOfPointsX_SQ2 = fDistanceinX;
-            fDistanceOfPointsY_SQ2 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
-
-            // Upper group
-            iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
-            fx_c_SQ3 = fFreeEdgeDistance;
-            fy_c_SQ3 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
-            fDistanceOfPointsX_SQ3 = fDistanceinX;
-            fDistanceOfPointsY_SQ3 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
-
-            iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
-            fx_c_SQ4 = fFreeEdgeDistance;
-            fy_c_SQ4 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDepthOfOneStraightPartOfWeb + fStiffenerSize_temp + fDistanceFromEdgeLine;
-            fDistanceOfPointsX_SQ4 = fDistanceinX;
-            fDistanceOfPointsY_SQ4 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
-
-            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
+            IHolesNumber = 0;
+            foreach (CScrewRectSequence rectS in RectSequences)
+            {
+                IHolesNumber += rectS.INumberOfConnectors;
+            }
 
             UpdateArrangmentData();
         }
@@ -267,43 +377,27 @@ namespace BaseClasses
             float fx_c_SQ4_temp,
             float fy_c_SQ4_temp,
             float fDistanceOfPointsX_SQ4_temp,
-            float fDistanceOfPointsY_SQ4_temp) : base(iNumberOfScrewsInRow_xDirection_G1_SQ1_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp + iNumberOfScrewsInRow_xDirection_G1_SQ2_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp + iNumberOfScrewsInRow_xDirection_G2_SQ3_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp + iNumberOfScrewsInRow_xDirection_G2_SQ4_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp, referenceScrew_temp)
+            float fDistanceOfPointsY_SQ4_temp)
         {
             referenceScrew = referenceScrew_temp;
             FCrscRafterDepth = fCrscRafterDepth_temp;
             FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             FStiffenerSize = fStiffenerSize_temp;
 
-            // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-            iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_G1_SQ1_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp;
-            fx_c_SQ1 = fx_c_SQ1_temp;
-            fy_c_SQ1 = fy_c_SQ1_temp;
-            fDistanceOfPointsX_SQ1 = fDistanceOfPointsX_SQ1_temp;
-            fDistanceOfPointsY_SQ1 = fDistanceOfPointsY_SQ1_temp;
+            RectSequences = new List<CScrewRectSequence>();
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_G1_SQ1_temp, iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_G1_SQ2_temp, iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_G2_SQ3_temp, iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_G2_SQ4_temp, iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
 
-            iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ2_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp;
-            fx_c_SQ2 = fx_c_SQ2_temp;
-            fy_c_SQ2 = fy_c_SQ2_temp;
-            fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
-            fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
+            NumberOfGroups = 2;
+            NumberOfSequenceInGroup = 2;
 
-            iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_G2_SQ3_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp;
-            fx_c_SQ3 = fx_c_SQ3_temp;
-            fy_c_SQ3 = fy_c_SQ3_temp;
-            fDistanceOfPointsX_SQ3 = fDistanceOfPointsX_SQ3_temp;
-            fDistanceOfPointsY_SQ3 = fDistanceOfPointsY_SQ3_temp;
-
-            iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ4_temp;
-            iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp;
-            fx_c_SQ4 = fx_c_SQ4_temp;
-            fy_c_SQ4 = fy_c_SQ4_temp;
-            fDistanceOfPointsX_SQ4 = fDistanceOfPointsX_SQ4_temp;
-            fDistanceOfPointsY_SQ4 = fDistanceOfPointsY_SQ4_temp;
-
-            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
+            IHolesNumber = 0;
+            foreach (CScrewRectSequence rectS in RectSequences)
+            {
+                IHolesNumber += rectS.INumberOfConnectors;
+            }
 
             UpdateArrangmentData();
         }
@@ -327,12 +421,12 @@ namespace BaseClasses
                 IHolesNumber += rectS.INumberOfConnectors;
             }
             
-            UpdateArrangmentDataNew();
+            UpdateArrangmentData();
         }
 
         //priprava pre task 515
         //tato metoda by mala nahradit UpdateArrangmentData
-        public void UpdateArrangmentDataNew()
+        public override void UpdateArrangmentData()
         {
             // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -363,86 +457,86 @@ namespace BaseClasses
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
 
-        public override void UpdateArrangmentData()
-        {
-            // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
+        //public override void UpdateArrangmentData()
+        //{
+        //    // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
+        //    NumberFormatInfo nfi = new NumberFormatInfo();
+        //    nfi.NumberDecimalSeparator = ".";
 
-            // Update reference screw properties
-            DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
-            referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
+        //    // Update reference screw properties
+        //    DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
+        //    referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
 
-            ListOfSequenceGroups.Clear(); // Delete previous data otherwise are added more and more new screws to the list
-            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2);
-            ListOfSequenceGroups.Add(new CScrewSequenceGroup());
+        //    ListOfSequenceGroups.Clear(); // Delete previous data otherwise are added more and more new screws to the list
+        //    ListOfSequenceGroups = new List<CScrewSequenceGroup>(2);
+        //    ListOfSequenceGroups.Add(new CScrewSequenceGroup());
 
-            CScrewRectSequence seq1 = new CScrewRectSequence();
-            seq1.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ1;
-            seq1.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ1;
-            seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
-            seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1;
-            seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1;
-            seq1.INumberOfConnectors = seq1.NumberOfScrewsInRow_xDirection * seq1.NumberOfScrewsInColumn_yDirection;
-            seq1.HolesCentersPoints = new Point[seq1.INumberOfConnectors];
-            ListOfSequenceGroups[0].ListSequence.Add(seq1);
+        //    CScrewRectSequence seq1 = new CScrewRectSequence();
+        //    seq1.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ1;
+        //    seq1.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ1;
+        //    seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
+        //    seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1;
+        //    seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1;
+        //    seq1.INumberOfConnectors = seq1.NumberOfScrewsInRow_xDirection * seq1.NumberOfScrewsInColumn_yDirection;
+        //    seq1.HolesCentersPoints = new Point[seq1.INumberOfConnectors];
+        //    ListOfSequenceGroups[0].ListSequence.Add(seq1);
 
-            CScrewRectSequence seq2 = new CScrewRectSequence();
-            seq2.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ2;
-            seq2.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ2;
-            seq2.ReferencePoint = new Point(fx_c_SQ2, fy_c_SQ2);
-            seq2.DistanceOfPointsX = fDistanceOfPointsX_SQ2;
-            seq2.DistanceOfPointsY = fDistanceOfPointsY_SQ2;
-            seq2.INumberOfConnectors = seq2.NumberOfScrewsInRow_xDirection * seq2.NumberOfScrewsInColumn_yDirection;
-            seq2.HolesCentersPoints = new Point[seq2.INumberOfConnectors];
-            ListOfSequenceGroups[0].ListSequence.Add(seq2);
+        //    CScrewRectSequence seq2 = new CScrewRectSequence();
+        //    seq2.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ2;
+        //    seq2.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ2;
+        //    seq2.ReferencePoint = new Point(fx_c_SQ2, fy_c_SQ2);
+        //    seq2.DistanceOfPointsX = fDistanceOfPointsX_SQ2;
+        //    seq2.DistanceOfPointsY = fDistanceOfPointsY_SQ2;
+        //    seq2.INumberOfConnectors = seq2.NumberOfScrewsInRow_xDirection * seq2.NumberOfScrewsInColumn_yDirection;
+        //    seq2.HolesCentersPoints = new Point[seq2.INumberOfConnectors];
+        //    ListOfSequenceGroups[0].ListSequence.Add(seq2);
 
-            ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 0;
-            ListOfSequenceGroups[0].NumberOfRectangularSequences = 2;
+        //    ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 0;
+        //    ListOfSequenceGroups[0].NumberOfRectangularSequences = 2;
             
-            if (iNumberOfScrewsInRow_xDirection_SQ3 != 0 && iNumberOfScrewsInColumn_yDirection_SQ3 != 0 &&
-                iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0)
-            {
-                ListOfSequenceGroups.Add(new CScrewSequenceGroup());
+        //    if (iNumberOfScrewsInRow_xDirection_SQ3 != 0 && iNumberOfScrewsInColumn_yDirection_SQ3 != 0 &&
+        //        iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0)
+        //    {
+        //        ListOfSequenceGroups.Add(new CScrewSequenceGroup());
 
-                CScrewRectSequence seq3 = new CScrewRectSequence();
-                seq3.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ3;
-                seq3.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ3;
-                seq3.ReferencePoint = new Point(fx_c_SQ3, fy_c_SQ3);
-                seq3.DistanceOfPointsX = fDistanceOfPointsX_SQ3;
-                seq3.DistanceOfPointsY = fDistanceOfPointsY_SQ3;
-                seq3.INumberOfConnectors = seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection;
-                seq3.HolesCentersPoints = new Point[seq3.INumberOfConnectors];
-                ListOfSequenceGroups[1].ListSequence.Add(seq3);
+        //        CScrewRectSequence seq3 = new CScrewRectSequence();
+        //        seq3.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ3;
+        //        seq3.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ3;
+        //        seq3.ReferencePoint = new Point(fx_c_SQ3, fy_c_SQ3);
+        //        seq3.DistanceOfPointsX = fDistanceOfPointsX_SQ3;
+        //        seq3.DistanceOfPointsY = fDistanceOfPointsY_SQ3;
+        //        seq3.INumberOfConnectors = seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection;
+        //        seq3.HolesCentersPoints = new Point[seq3.INumberOfConnectors];
+        //        ListOfSequenceGroups[1].ListSequence.Add(seq3);
 
-                CScrewRectSequence seq4 = new CScrewRectSequence();
-                seq4.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ4;
-                seq4.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ4;
-                seq4.ReferencePoint = new Point(fx_c_SQ4, fy_c_SQ4);
-                seq4.DistanceOfPointsX = fDistanceOfPointsX_SQ4;
-                seq4.DistanceOfPointsY = fDistanceOfPointsY_SQ4;
-                seq4.INumberOfConnectors = seq4.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection;
-                seq4.HolesCentersPoints = new Point[seq4.INumberOfConnectors];
-                ListOfSequenceGroups[1].ListSequence.Add(seq4);
+        //        CScrewRectSequence seq4 = new CScrewRectSequence();
+        //        seq4.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ4;
+        //        seq4.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ4;
+        //        seq4.ReferencePoint = new Point(fx_c_SQ4, fy_c_SQ4);
+        //        seq4.DistanceOfPointsX = fDistanceOfPointsX_SQ4;
+        //        seq4.DistanceOfPointsY = fDistanceOfPointsY_SQ4;
+        //        seq4.INumberOfConnectors = seq4.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection;
+        //        seq4.HolesCentersPoints = new Point[seq4.INumberOfConnectors];
+        //        ListOfSequenceGroups[1].ListSequence.Add(seq4);
 
-                ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 0;
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+        //        ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 0;
+        //        ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
 
-                // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
-                RecalculateTotalNumberOfScrews();
-            }
-            else
-            {
-                // Celkovy pocet skrutiek
-                // Definovane su len sekvencie v jednej group, ocakava sa ze pocet v groups je rovnaky a hodnoty sa skopiruju (napr. pre apex plate)
-                RecalculateTotalNumberOfScrews();
-                int iNumberOfGroupsInPlate = 2;
-                IHolesNumber *= iNumberOfGroupsInPlate;
-            }
+        //        // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
+        //        RecalculateTotalNumberOfScrews();
+        //    }
+        //    else
+        //    {
+        //        // Celkovy pocet skrutiek
+        //        // Definovane su len sekvencie v jednej group, ocakava sa ze pocet v groups je rovnaky a hodnoty sa skopiruju (napr. pre apex plate)
+        //        RecalculateTotalNumberOfScrews();
+        //        int iNumberOfGroupsInPlate = 2;
+        //        IHolesNumber *= iNumberOfGroupsInPlate;
+        //    }
 
-            HolesCentersPoints2D = new Point[IHolesNumber];
-            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
-        }
+        //    HolesCentersPoints2D = new Point[IHolesNumber];
+        //    arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+        //}
 
         public Point[] Get_ScrewSequencePointCoordinates(CScrewRectSequence srectSeq)
         {

@@ -1804,36 +1804,44 @@ namespace PFD
                         // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                         // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
 
+                        if (item.Name.Contains(" SQ"))
+                        {
+                            int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                            if (item.Name.Contains("Number of screws in row SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
+                            if (item.Name.Contains("Number of screws in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
+                            if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        }
+                        
+                        //if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
+                        //if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
+                        //if (item.Name == "Number of screws in row SQ3") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3.ToString(); }
+                        //if (item.Name == "Number of screws in column SQ3") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3.ToString(); }
+                        //if (item.Name == "Inserting point coordinate x SQ3") arrangementTemp.fx_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ3") arrangementTemp.fy_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ3") arrangementTemp.fDistanceOfPointsX_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ3") arrangementTemp.fDistanceOfPointsY_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
-                        if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
-                        if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
-                        if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-
-                        if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
-                        if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
-                        if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-
-                        if (item.Name == "Number of screws in row SQ3") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3.ToString(); }
-                        if (item.Name == "Number of screws in column SQ3") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3.ToString(); }
-                        if (item.Name == "Inserting point coordinate x SQ3") arrangementTemp.fx_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ3") arrangementTemp.fy_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ3") arrangementTemp.fDistanceOfPointsX_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ3") arrangementTemp.fDistanceOfPointsY_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-
-                        if (item.Name == "Number of screws in row SQ4") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4.ToString(); }
-                        if (item.Name == "Number of screws in column SQ4") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4.ToString(); }
-                        if (item.Name == "Inserting point coordinate x SQ4") arrangementTemp.fx_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Number of screws in row SQ4") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4.ToString(); }
+                        //if (item.Name == "Number of screws in column SQ4") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4.ToString(); }
+                        //if (item.Name == "Inserting point coordinate x SQ4") arrangementTemp.fx_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                     }
                     else if (item is CComponentParamsViewList)
                     {
@@ -1861,34 +1869,44 @@ namespace PFD
                         // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
                         // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                         // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
+                        if (item.Name.Contains(" SQ"))
+                        {
+                            int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                            if (item.Name.Contains("Number of screws in row SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
+                            if (item.Name.Contains("Number of screws in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
+                            if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        }
 
-                        if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
-                        if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
-                        if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
-                        if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
-                        if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
-                        if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
-                        if (item.Name == "Number of screws in row SQ3") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3 = int.Parse(itemStr.Value);
-                        if (item.Name == "Number of screws in column SQ3") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3 = int.Parse(itemStr.Value);
-                        if (item.Name == "Inserting point coordinate x SQ3") arrangementTemp.fx_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ3") arrangementTemp.fy_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ3") arrangementTemp.fDistanceOfPointsX_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ3") arrangementTemp.fDistanceOfPointsY_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Number of screws in row SQ3") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Number of screws in column SQ3") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Inserting point coordinate x SQ3") arrangementTemp.fx_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ3") arrangementTemp.fy_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ3") arrangementTemp.fDistanceOfPointsX_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ3") arrangementTemp.fDistanceOfPointsY_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
-                        if (item.Name == "Number of screws in row SQ4") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4 = int.Parse(itemStr.Value);
-                        if (item.Name == "Number of screws in column SQ4") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4 = int.Parse(itemStr.Value);
-                        if (item.Name == "Inserting point coordinate x SQ4") arrangementTemp.fx_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Number of screws in row SQ4") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Number of screws in column SQ4") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Inserting point coordinate x SQ4") arrangementTemp.fx_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                     }
                     else if (item is CComponentParamsViewList)
                     {
@@ -1908,19 +1926,30 @@ namespace PFD
                         CComponentParamsViewString itemStr = item as CComponentParamsViewString;
                         if (string.IsNullOrEmpty(itemStr.Value)) return;
 
-                        if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
-                        if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
-                        if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name.Contains(" SQ"))
+                        {
+                            int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                            if (item.Name.Contains("Number of screws in row SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
+                            if (item.Name.Contains("Number of screws in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
+                            if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        }
 
-                        if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
-                        if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
-                        if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+
+                        //if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
+                        //if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                     }
                     else if (item is CComponentParamsViewList)
                     {
@@ -1941,6 +1970,14 @@ namespace PFD
                 // Redraw plate in 2D and 3D
                 UpdateAndDisplayPlate();
             }
+        }
+
+        private int GetSequenceNumFromName(string name)
+        {
+            int seqNum = 0;
+            int.TryParse(name.Substring(name.IndexOf(" SQ")), out seqNum);
+
+            return seqNum;
         }
 
         //private void UpdateCircleSequencesNumberOfScrews(int iCircleNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
