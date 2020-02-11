@@ -357,8 +357,6 @@ namespace PFD
 
             iBackColumnNoInOneFrame = 0;
 
-            fDist_BackColumns = fDist_FrontColumns; // Todo Temporary - umoznit ine roztece medzi zadnymi a prednymi stlpmi
-
             bool bGenerateBackColumns = componentList[(int)EMemberGroupNames.eBackColumn].Generate.Value;
             if (bGenerateBackColumns)
             {
@@ -376,31 +374,35 @@ namespace PFD
             int iFrontIntermediateColumnNodesForGirtsOneRafterNo = 0;
             int iFrontIntermediateColumnNodesForGirtsOneFrameNo = 0;
             iFrontGirtsNoInOneFrame = 0;
-            iArrNumberOfNodesPerFrontColumn = new int[iOneRafterFrontColumnNo];
+            iArrNumberOfNodesPerFrontColumnFromLeft = new int[iOneRafterFrontColumnNo];
 
             bool bGenerateFrontGirts = componentList[(int)EMemberGroupNames.eFrontGirt].Generate.Value;
 
             if (bGenerateFrontGirts)
             {
-                iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterFrontColumnNo, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts);
+                iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(true, iOneRafterFrontColumnNo, fH1_frame, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts);
                 iFrontIntermediateColumnNodesForGirtsOneFrameNo = 2 * iFrontIntermediateColumnNodesForGirtsOneRafterNo;
 
                 // Number of Girts - Main Frame Column
                 //iOneColumnGirtNo = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
 
-                iFrontGirtsNoInOneFrame = iOneColumnGirtNo;
+                //iFrontGirtsNoInOneFrame = iOneColumnGirtNo;
+                iArrNumberOfGirtsPerFrontColumnFromLeft = new int[iFrontColumnNoInOneFrame + 1];
+                iArrNumberOfGirtsPerFrontColumnFromLeft[0] = iOneColumnGirtNo;
 
                 // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                 for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                 {
-                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts, i);
-                    iFrontGirtsNoInOneFrame += temp;
-                    iArrNumberOfNodesPerFrontColumn[i] = temp;
+                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(true, fH1_frame, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts, i);
+                    //iFrontGirtsNoInOneFrame += temp;
+                    iArrNumberOfGirtsPerFrontColumnFromLeft[i + 1] = temp;
+                    iArrNumberOfNodesPerFrontColumnFromLeft[i] = temp;
                 }
 
+                iFrontGirtsNoInOneFrame = iArrNumberOfGirtsPerFrontColumnFromLeft.Sum();
                 iFrontGirtsNoInOneFrame *= 2;
                 // Girts in the middle are considered twice - remove one set
-                iFrontGirtsNoInOneFrame -= iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1];
+                iFrontGirtsNoInOneFrame -= iArrNumberOfNodesPerFrontColumnFromLeft[iOneRafterFrontColumnNo - 1];
             }
             componentListVM.SetFrontColumnFlyBracingPosition_Items(iOneColumnGirtNo); //zakomentovane 20.12.2019 - nechapem naco to tu je
 
@@ -411,31 +413,36 @@ namespace PFD
             int iBackIntermediateColumnNodesForGirtsOneRafterNo = 0;
             int iBackIntermediateColumnNodesForGirtsOneFrameNo = 0;
             iBackGirtsNoInOneFrame = 0;
-            iArrNumberOfNodesPerBackColumn = new int[iOneRafterBackColumnNo];
+            iArrNumberOfNodesPerBackColumnFromLeft = new int[iOneRafterBackColumnNo];
 
             bool bGenerateBackGirts = componentList[(int)EMemberGroupNames.eBackGirt].Generate.Value;
 
             if (bGenerateBackGirts)
             {
-                iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterBackColumnNo, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts);
+                iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(true, iOneRafterBackColumnNo, fH1_frame, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts);
                 iBackIntermediateColumnNodesForGirtsOneFrameNo = 2 * iBackIntermediateColumnNodesForGirtsOneRafterNo;
 
                 // Number of Girts - Main Frame Column
                 //iOneColumnGirtNo = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
 
-                iBackGirtsNoInOneFrame = iOneColumnGirtNo;
+                //iBackGirtsNoInOneFrame = iOneColumnGirtNo;
+
+                iArrNumberOfGirtsPerBackColumnFromLeft = new int[iBackColumnNoInOneFrame + 1];
+                iArrNumberOfGirtsPerBackColumnFromLeft[0] = iOneColumnGirtNo;
 
                 // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                 for (int i = 0; i < iOneRafterBackColumnNo; i++)
                 {
-                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts, i);
-                    iBackGirtsNoInOneFrame += temp;
-                    iArrNumberOfNodesPerBackColumn[i] = temp;
+                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(true, fH1_frame, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts, i);
+                    //iBackGirtsNoInOneFrame += temp;
+                    iArrNumberOfGirtsPerBackColumnFromLeft[i + 1] = temp;
+                    iArrNumberOfNodesPerBackColumnFromLeft[i] = temp;
                 }
 
+                iBackGirtsNoInOneFrame = iArrNumberOfGirtsPerBackColumnFromLeft.Sum();
                 iBackGirtsNoInOneFrame *= 2;
                 // Girts in the middle are considered twice - remove one set
-                iBackGirtsNoInOneFrame -= iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
+                iBackGirtsNoInOneFrame -= iArrNumberOfNodesPerBackColumnFromLeft[iOneRafterBackColumnNo - 1];
             }
             componentListVM.SetBackColumnFlyBracingPosition_Items(iOneColumnGirtNo); //zakomentovane 20.12.2019 - nechapem naco to tu je
 
@@ -496,9 +503,9 @@ namespace PFD
             // Front side girts bracing blocks
             bool bGenerateGirtBracingFrontSide = true;
 
-            int[] iArrGB_FS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerFrontColumn.Length + 1];
-            int[] iArrGB_FS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerFrontColumn.Length + 1];
-            int[] iArrGB_FS_NumberOfMembersPerBay = new int[iArrNumberOfNodesPerFrontColumn.Length + 1];
+            int[] iArrGB_FS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerFrontColumnFromLeft.Length + 1];
+            int[] iArrGB_FS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerFrontColumnFromLeft.Length + 1];
+            int[] iArrGB_FS_NumberOfMembersPerBay = new int[iArrNumberOfNodesPerFrontColumnFromLeft.Length + 1];
             int iNumberOfGB_FSNodesInOneFrame = 0;
 
             if (bGenerateGirtBracingFrontSide)
@@ -511,11 +518,11 @@ namespace PFD
                 iNumberOfGB_FSNodesInOneFrame = iArrGB_FS_NumberOfNodesPerBay[0];
                 iNumberOfGB_FSMembersInOneFrame = iArrGB_FS_NumberOfMembersPerBay[0];
 
-                for (int i = 0; i < iArrNumberOfNodesPerFrontColumn.Length; i++)
+                for (int i = 0; i < iArrNumberOfNodesPerFrontColumnFromLeft.Length; i++)
                 {
-                    iArrGB_FS_NumberOfNodesPerBay[i+1] = (iArrNumberOfNodesPerFrontColumn[i] + 1) * iNumberOfTransverseSupports_FrontGirts;
-                    iArrGB_FS_NumberOfNodesPerBayFirstNode[i + 1] = iArrNumberOfNodesPerFrontColumn[i] + 1;
-                    iArrGB_FS_NumberOfMembersPerBay[i+1] = iArrNumberOfNodesPerFrontColumn[i] * iNumberOfTransverseSupports_FrontGirts;
+                    iArrGB_FS_NumberOfNodesPerBay[i+1] = (iArrNumberOfNodesPerFrontColumnFromLeft[i] + 1) * iNumberOfTransverseSupports_FrontGirts;
+                    iArrGB_FS_NumberOfNodesPerBayFirstNode[i + 1] = iArrNumberOfNodesPerFrontColumnFromLeft[i] + 1;
+                    iArrGB_FS_NumberOfMembersPerBay[i+1] = iArrNumberOfNodesPerFrontColumnFromLeft[i] * iNumberOfTransverseSupports_FrontGirts;
 
                     iNumberOfGB_FSNodesInOneFrame += iArrGB_FS_NumberOfNodesPerBay[i + 1];
                     iNumberOfGB_FSMembersInOneFrame += iArrGB_FS_NumberOfMembersPerBay[i + 1];
@@ -532,9 +539,9 @@ namespace PFD
             // Back side girts bracing blocks
             bool bGenerateGirtBracingBackSide = true;
 
-            int[] iArrGB_BS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerBackColumn.Length + 1];
-            int[] iArrGB_BS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerBackColumn.Length + 1];
-            int[] iArrGB_BS_NumberOfMembersPerBay = new int[iArrNumberOfNodesPerBackColumn.Length + 1];
+            int[] iArrGB_BS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerBackColumnFromLeft.Length + 1];
+            int[] iArrGB_BS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerBackColumnFromLeft.Length + 1];
+            int[] iArrGB_BS_NumberOfMembersPerBay = new int[iArrNumberOfNodesPerBackColumnFromLeft.Length + 1];
             int iNumberOfGB_BSNodesInOneFrame = 0;
 
             if (bGenerateGirtBracingBackSide)
@@ -547,11 +554,11 @@ namespace PFD
                 iNumberOfGB_BSNodesInOneFrame = iArrGB_BS_NumberOfNodesPerBay[0];
                 iNumberOfGB_BSMembersInOneFrame = iArrGB_BS_NumberOfMembersPerBay[0];
 
-                for (int i = 0; i < iArrNumberOfNodesPerBackColumn.Length; i++)
+                for (int i = 0; i < iArrNumberOfNodesPerBackColumnFromLeft.Length; i++)
                 {
-                    iArrGB_BS_NumberOfNodesPerBay[i + 1] = (iArrNumberOfNodesPerBackColumn[i] + 1) * iNumberOfTransverseSupports_BackGirts;
-                    iArrGB_BS_NumberOfNodesPerBayFirstNode[i + 1] = iArrNumberOfNodesPerBackColumn[i] + 1;
-                    iArrGB_BS_NumberOfMembersPerBay[i + 1] = iArrNumberOfNodesPerBackColumn[i] * iNumberOfTransverseSupports_BackGirts;
+                    iArrGB_BS_NumberOfNodesPerBay[i + 1] = (iArrNumberOfNodesPerBackColumnFromLeft[i] + 1) * iNumberOfTransverseSupports_BackGirts;
+                    iArrGB_BS_NumberOfNodesPerBayFirstNode[i + 1] = iArrNumberOfNodesPerBackColumnFromLeft[i] + 1;
+                    iArrGB_BS_NumberOfMembersPerBay[i + 1] = iArrNumberOfNodesPerBackColumnFromLeft[i] * iNumberOfTransverseSupports_BackGirts;
 
                     iNumberOfGB_BSNodesInOneFrame += iArrGB_BS_NumberOfNodesPerBay[i + 1];
                     iNumberOfGB_BSMembersInOneFrame += iArrGB_BS_NumberOfMembersPerBay[i + 1];
@@ -804,7 +811,7 @@ namespace PFD
             i_temp_numberofNodes += bGeneratePurlins ? (iPurlinNoInOneFrame * iFrameNo) : 0;
             if (bGenerateFrontColumns)
             {
-                AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fDist_FrontColumns, 0);
+                AddColumnsNodes(false, i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fH1_frame, fDist_FrontColumns, 0);
             }
 
             // Members - Front Columns
@@ -820,7 +827,7 @@ namespace PFD
 
             if (bGenerateBackColumns)
             {
-                AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fDist_BackColumns, fL_tot);
+                AddColumnsNodes(false, i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fH1_frame, fDist_BackColumns, fL_tot);
             }
 
             // Members - Back Columns
@@ -837,7 +844,7 @@ namespace PFD
 
             if (bGenerateFrontGirts)
             {
-                AddFrontOrBackGirtsNodes(iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumn, i_temp_numberofNodes, iFrontIntermediateColumnNodesForGirtsOneRafterNo, fDist_FrontGirts, fDist_FrontColumns, 0);
+                AddFrontOrBackGirtsNodes(false, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumnFromLeft, i_temp_numberofNodes, iFrontIntermediateColumnNodesForGirtsOneRafterNo, fH1_frame, fDist_FrontGirts, fDist_FrontColumns, 0);
             }
 
             // Front Girts
@@ -849,7 +856,7 @@ namespace PFD
             i_temp_numberofMembers += bGenerateBackColumns ? iBackColumnNoInOneFrame : 0;
             if (bGenerateFrontGirts)
             {
-                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumn, i_temp_numberofNodes, i_temp_numberofMembers, iFrontIntermediateColumnNodesForGirtsOneRafterNo, iFrontIntermediateColumnNodesForGirtsOneFrameNo, 0, fDist_Girt, eccentricityGirtFront_Y0, fFrontGirtStart_MC, fFrontGirtStart, fFrontGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], EMemberType_FS_Position.GirtFrontSide, fColumnsRotation, iNumberOfTransverseSupports_FrontGirts);
+                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumnFromLeft, iArrNumberOfGirtsPerFrontColumnFromLeft, i_temp_numberofNodes, i_temp_numberofMembers, iFrontIntermediateColumnNodesForGirtsOneRafterNo, iFrontIntermediateColumnNodesForGirtsOneFrameNo, 0, fDist_Girt, eccentricityGirtFront_Y0, fFrontGirtStart_MC, fFrontGirtStart, fFrontGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], EMemberType_FS_Position.GirtFrontSide, fColumnsRotation, iNumberOfTransverseSupports_FrontGirts);
             }
 
             // Back Girts
@@ -860,7 +867,7 @@ namespace PFD
 
             if (bGenerateBackGirts)
             {
-                AddFrontOrBackGirtsNodes(iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, iBackIntermediateColumnNodesForGirtsOneRafterNo, fDist_BackGirts, fDist_BackColumns, fL_tot);
+                AddFrontOrBackGirtsNodes(false, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumnFromLeft, i_temp_numberofNodes, iBackIntermediateColumnNodesForGirtsOneRafterNo, fH1_frame, fDist_BackGirts, fDist_BackColumns, fL_tot);
             }
 
             // Back Girts
@@ -869,7 +876,7 @@ namespace PFD
             i_temp_numberofMembers += bGenerateFrontGirts ? iFrontGirtsNoInOneFrame : 0;
             if (bGenerateBackGirts)
             {
-                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, eccentricityGirtBack_YL, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], EMemberType_FS_Position.GirtBackSide, fColumnsRotation, iNumberOfTransverseSupports_BackGirts);
+                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumnFromLeft, iArrNumberOfGirtsPerBackColumnFromLeft, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, eccentricityGirtBack_YL, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], EMemberType_FS_Position.GirtBackSide, fColumnsRotation, iNumberOfTransverseSupports_BackGirts);
             }
 
             // Girt Bracing - Side walls
@@ -1065,7 +1072,7 @@ namespace PFD
             if (bGenerateGirtBracingFrontSide)
             {
                 AddFrontOrBackGirtsBracingBlocksNodes(i_temp_numberofNodes, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode,
-                iNumberOfTransverseSupports_FrontGirts, fIntermediateSupportSpacingGirtsFrontSide, fDist_FrontGirts, fDist_FrontColumns, 0, out iNumberOfGB_FSNodesInOneSideAndMiddleBay);
+                iNumberOfTransverseSupports_FrontGirts, fH1_frame, fIntermediateSupportSpacingGirtsFrontSide, fDist_FrontGirts, fDist_FrontColumns, 0, out iNumberOfGB_FSNodesInOneSideAndMiddleBay);
             }
 
             // Members - Girt Bracing - Front side
@@ -1087,7 +1094,7 @@ namespace PFD
             if (bGenerateGirtBracingBackSide)
             {
                 AddFrontOrBackGirtsBracingBlocksNodes(i_temp_numberofNodes, iArrGB_BS_NumberOfNodesPerBay, iArrGB_BS_NumberOfNodesPerBayFirstNode,
-                iNumberOfTransverseSupports_BackGirts, fIntermediateSupportSpacingGirtsBackSide, fDist_BackGirts, fDist_BackColumns, fL_tot, out iNumberOfGB_BSNodesInOneSideAndMiddleBay);
+                iNumberOfTransverseSupports_BackGirts, fH1_frame, fIntermediateSupportSpacingGirtsBackSide, fDist_BackGirts, fDist_BackColumns, fL_tot, out iNumberOfGB_BSNodesInOneSideAndMiddleBay);
             }
 
             // Members - Girt Bracing - Back side
@@ -1558,7 +1565,7 @@ namespace PFD
         }
 
         public void AddFrontOrBackGirtsBracingBlocksNodes(int i_temp_numberofNodes, int [] iArrGB_NumberOfNodesPerBay, int [] iArrGB_NumberOfNodesPerBayFirstNode,
-            int iNumberOfTransverseSupports, float fIntermediateSupportSpacing,  float fDist_Girts, float fDist_Columns, float fy_Global_Coord, out int iNumberOfGB_NodesInOneSideAndMiddleBay)
+            int iNumberOfTransverseSupports, float fHeight, float fIntermediateSupportSpacing,  float fDist_Girts, float fDist_Columns, float fy_Global_Coord, out int iNumberOfGB_NodesInOneSideAndMiddleBay)
         {
             int iTemp = 0;
 
@@ -1574,7 +1581,7 @@ namespace PFD
                         if (j < iArrGB_NumberOfNodesPerBayFirstNode[i] - 1)
                             z_glob = (fBottomGirtPosition + j * fDist_Girts);
                         else
-                            CalcColumnNodeCoord_Z(x_glob, out z_glob); // Top bracing blocks under the edge rafter
+                            CalcColumnNodeCoord_Z(false, fH1_frame, x_glob, out z_glob); // Top bracing blocks under the edge rafter
 
                         m_arrNodes[i_temp_numberofNodes + iTemp + j * iNumberOfTransverseSupports + k] = new CNode(i_temp_numberofNodes + iTemp + j * iNumberOfTransverseSupports + k + 1, x_glob, fy_Global_Coord, z_glob, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iTemp + j * iNumberOfTransverseSupports + k]);
@@ -1598,7 +1605,7 @@ namespace PFD
                         if (j < iArrGB_NumberOfNodesPerBayFirstNode[i] - 1)
                             z_glob = (fBottomGirtPosition + j * fDist_Girts);
                         else
-                            CalcColumnNodeCoord_Z(x_glob, out z_glob); // Top bracing blocks under the edge rafter
+                            CalcColumnNodeCoord_Z(false, fH1_frame, x_glob, out z_glob); // Top bracing blocks under the edge rafter
 
                         m_arrNodes[i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports + k] = new CNode(i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports + k + 1, fW_frame - x_glob, fy_Global_Coord, z_glob, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports + k]);
@@ -1863,14 +1870,14 @@ namespace PFD
                 if (sBuildingSide == "Front")  // Front side properties
                 {
                     iNumberOfIntermediateColumns = iFrontColumnNoInOneFrame;
-                    iArrayOfGirtsPerColumnCount = iArrNumberOfNodesPerFrontColumn;
+                    iArrayOfGirtsPerColumnCount = iArrNumberOfNodesPerFrontColumnFromLeft;
                     //iNumberOfGirtsInWall = iFrontGirtsNoInOneFrame;
                     fBayWidth = fDist_FrontColumns;
                 }
                 else // Back side properties
                 {
                     iNumberOfIntermediateColumns = iBackColumnNoInOneFrame;
-                    iArrayOfGirtsPerColumnCount = iArrNumberOfNodesPerBackColumn;
+                    iArrayOfGirtsPerColumnCount = iArrNumberOfNodesPerBackColumnFromLeft;
                     //iNumberOfGirtsInWall = iBackGirtsNoInOneFrame;
                     fBayWidth = fDist_BackColumns;
                 }
