@@ -603,8 +603,8 @@ namespace PFD
 
             set
             {
-                if (value < 1 || value > 0.6 * MGableWidth)
-                    throw new ArgumentException("Column distance must be between 1 and " + Math.Round(0.5 * MGableWidth, 3) + " [m]");
+                if (value < 1 || value > 0.65 * MGableWidth)
+                    throw new ArgumentException("Column distance must be between 1 and " + Math.Round(0.65 * MGableWidth, 3) + " [m]");
                 MColumnDistance = value;
 
                 if (MModelIndex != 0)

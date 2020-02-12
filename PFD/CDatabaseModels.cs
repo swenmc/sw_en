@@ -395,7 +395,7 @@ namespace PFD
             //fdist_girt = 0.25f * fL1;
             //fdist_purlin = 0.25f * fL1;
 
-            fdist_frontcolumn = 0.7f * fL1;
+            fdist_frontcolumn = 0.6f * fL1;
 
             fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
             fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
