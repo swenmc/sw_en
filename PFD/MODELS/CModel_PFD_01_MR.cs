@@ -362,7 +362,7 @@ namespace PFD
 
             iBackColumnNoInOneFrame = 0;
 
-            bool bGenerateBackColumns =  componentList[(int)EMemberGroupNames.eBackColumn].Generate.Value;
+            bool bGenerateBackColumns = componentList[(int)EMemberGroupNames.eBackColumn].Generate.Value;
             if (bGenerateBackColumns)
             {
                 iOneRafterBackColumnNo = (int)(fW_frame / fDist_BackColumns);
@@ -1064,8 +1064,8 @@ namespace PFD
                         { x_glob = 0; z_glob = fH1_frame; } // Left edge of roof
                         else
                         {
-                            if(iLastPurlin == 0 || j < (iOneRafterPurlinNo + iLastPurlin)) // Gable roof or intermediate points of monopitch
-                               CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
+                            if (iLastPurlin == 0 || j < (iOneRafterPurlinNo + iLastPurlin)) // Gable roof or intermediate points of monopitch
+                                CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
                             else
                             { x_glob = fW_frame; z_glob = fH2_frame; } // Right edge of roof - monopitch
                         }
@@ -1115,7 +1115,7 @@ namespace PFD
                         if (j == 0) // First
                             fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
 
-                        if(iLastPurlin == 1 && j == (iOneRafterPurlinNo + iLastPurlin -1)) // Last monopitch
+                        if (iLastPurlin == 1 && j == (iOneRafterPurlinNo + iLastPurlin - 1)) // Last monopitch
                             fPBEnd_Current = (+(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
@@ -1220,175 +1220,185 @@ namespace PFD
 
             CountPlates_ValidationPurpose(false);
 
-            if (false) // Zakomentovane bloky
+            #region Blocks
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Blocks
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            DoorsModels = new List<CBlock_3D_001_DoorInBay>();
+            WindowsModels = new List<CBlock_3D_002_WindowInBay>();
+            vm.SetModelBays(iFrameNo);
+            bool isChangedFromCode = vm.IsSetFromCode;
+
+            if (doorBlocksProperties != null)
             {
-                #region Blocks
-
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                // Blocks
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                DoorsModels = new List<CBlock_3D_001_DoorInBay>();
-                WindowsModels = new List<CBlock_3D_002_WindowInBay>();
-                vm.SetModelBays(iFrameNo);
-                bool isChangedFromCode = vm.IsSetFromCode;
-
-                if (doorBlocksProperties != null)
+                foreach (DoorProperties dp in doorBlocksProperties.ToList())
                 {
-                    foreach (DoorProperties dp in doorBlocksProperties.ToList())
+                    if (!bGenerateGirts && (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (!bGenerateFrontGirts && dp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (!bGenerateBackGirts && dp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+
+                    if (!dp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+
+                    if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (dp.Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
                     {
-                        if (!bGenerateGirts && (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                        else if (!bGenerateFrontGirts && dp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                        else if (!bGenerateBackGirts && dp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-
-                        if (!dp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-
-                        if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                        else if (dp.Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
+                        float fSideWallHeight = fH1_frame;
+                        if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
                         {
-                            AddDoorBlock(dp, 0.5f, fH1_frame, vm.RecreateJoints);
-
-                            // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
-                            // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
-                            // Prosim pomoz mi to nejako usporiadat :)
-                            // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by 
-                            //v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
-                            // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
-
-                            if (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")
-                                dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/,
-                                 fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti rebate pre LR Side
-                            else
-                                dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
-                                fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
+                            fSideWallHeight = dp.sBuildingSide == "Left" ? fH1_frame : fH2_frame;
                         }
-                    }
+                        AddDoorBlock(dp, 0.5f, fSideWallHeight, vm.RecreateJoints);
 
-                    //refaktoring 24.1.2020
-                    //for (int i = 0; i < doorBlocksProperties.Count; i++)
-                    //{
-                    //    if (!bGenerateGirts && (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")) continue;
-                    //    else if (!bGenerateFrontGirts && doorBlocksProperties[i].sBuildingSide == "Front") continue;
-                    //    else if (!bGenerateBackGirts && doorBlocksProperties[i].sBuildingSide == "Back") continue;
+                        // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
+                        // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
+                        // Prosim pomoz mi to nejako usporiadat :)
+                        // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by 
+                        //v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
+                        // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
 
-                    //    if (!doorBlocksProperties[i].ValidateBays()) continue;
-
-                    //    if (doorBlocksProperties[i].Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
-                    //    {
-                    //        AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
-
-                    //        // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
-                    //        // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
-                    //        // Prosim pomoz mi to nejako usporiadat :)
-                    //        // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by 
-                    //        //v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
-                    //        // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
-
-                    //        if (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")
-                    //            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/,
-                    //             fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti rebate pre LR Side
-                    //        else
-                    //            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
-                    //            fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
-                    //    }
-                    //}
-                }
-
-                if (windowBlocksProperties != null)
-                {
-                    foreach (WindowProperties wp in windowBlocksProperties.ToList())
-                    {
-                        if (!bGenerateGirts && (wp.sBuildingSide == "Right" || wp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                        else if (!bGenerateFrontGirts && wp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                        else if (!bGenerateBackGirts && wp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-
-                        if (!wp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-
-                        if (!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                        else if (wp.Validate()) AddWindowBlock(wp, 0.5f, vm.RecreateJoints);
-                    }
-                    //refaktoring 24.1.2020
-                    //for (int i = 0; i < windowBlocksProperties.Count; i++)
-                    //{
-                    //    if (!bGenerateGirts && (windowBlocksProperties[i].sBuildingSide == "Right" || windowBlocksProperties[i].sBuildingSide == "Left")) continue;
-                    //    else if (!bGenerateFrontGirts && windowBlocksProperties[i].sBuildingSide == "Front") continue;
-                    //    else if (!bGenerateBackGirts && windowBlocksProperties[i].sBuildingSide == "Back") continue;
-
-                    //    if (!windowBlocksProperties[i].ValidateBays()) continue;
-
-                    //    if (windowBlocksProperties[i].Validate()) AddWindowBlock(windowBlocksProperties[i], 0.5f);
-                    //}
-                }
-
-                CountPlates_ValidationPurpose(false);
-
-                // Validation - check that all created joints have assigned Main Member
-                // Check all joints after definition of doors and windows members and joints
-                for (int i = 0; i < m_arrConnectionJoints.Count; i++)
-                {
-                    if (m_arrConnectionJoints[i].m_MainMember == null)
-                    {
-                        //throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
-
-                        // TODO BUG 46 - TO Ondrej // Odstranenie spojov ktore patria k deaktivovanym prutom (pruty boli deaktivovane, pretoze sa nachadazju na miest vlozeneho bloku)
-                        // Odstranenie by malo nastavat uz vo funckii ktora generuje bloky okien a dveri
-
-                        // Toto je docasne riesenie - vymazeme spoj zo zoznamu
-                        m_arrConnectionJoints.RemoveAt(i); // Remove joint from the list
-                    }
-                    //BUG 327
-                    if (m_arrConnectionJoints[i].m_SecondaryMembers != null)
-                    {
-                        foreach (CMember secMem in m_arrConnectionJoints[i].m_SecondaryMembers)
-                        {
-                            if (secMem.BIsGenerated == false)
-                            {
-                                CConnectionJointTypes joint = m_arrConnectionJoints[i];
-                                DeactivateJoint(ref joint);
-                            }
-                        }
+                        if (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")
+                            dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/,
+                             fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti rebate pre LR Side
+                        else
+                            dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
+                            fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
                     }
                 }
 
-                // Opakovana kontrola po odstraneni spojov s MainMember = null
-                int iCountOfJoints_NotGenerated = 0; // Number of joints on deactivated members (girts where dorr and window blocks are inserted) // Mozno sa to na nieco pouzije :)
-                for (int i = 0; i < m_arrConnectionJoints.Count; i++)
-                {
-                    if (m_arrConnectionJoints[i].m_MainMember == null)
-                        throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+                //refaktoring 24.1.2020
+                //for (int i = 0; i < doorBlocksProperties.Count; i++)
+                //{
+                //    if (!bGenerateGirts && (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")) continue;
+                //    else if (!bGenerateFrontGirts && doorBlocksProperties[i].sBuildingSide == "Front") continue;
+                //    else if (!bGenerateBackGirts && doorBlocksProperties[i].sBuildingSide == "Back") continue;
 
-                    if (m_arrConnectionJoints[i].BIsGenerated == false)
-                    {
-                        iCountOfJoints_NotGenerated++;
-                    }
-                }
+                //    if (!doorBlocksProperties[i].ValidateBays()) continue;
 
-                // Validation - duplicity of node ID
-                for (int i = 0; i < m_arrNodes.Length; i++)
-                {
-                    for (int j = 0; j < m_arrNodes.Length; j++)
-                    {
-                        if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
-                            throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
-                    }
-                }
+                //    if (doorBlocksProperties[i].Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
+                //    {
+                //        AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
 
-                //------------------------------------------------------------
-                // Vid TODO 234 - docasne priradenie vlastnosti materialu
-                // Pre objekty dveri je potrebne pridat prierezy do Component List - Tab Members a nacitat ich parametre, potom sa moze nacitanie z databazy zmazat
-                // Po zapracovani TODO 234 mozno tento kod zmazat
-                foreach (CMember member in m_arrMembers)
-                {
-                    if (member.CrScStart.m_Mat is CMat_03_00)
-                        DATABASE.CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)member.CrScStart.m_Mat, member.CrScStart.m_Mat.Name);
-                }
-                //------------------------------------------------------------
+                //        // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
+                //        // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
+                //        // Prosim pomoz mi to nejako usporiadat :)
+                //        // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by 
+                //        //v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
+                //        // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
 
-                CountPlates_ValidationPurpose(false);
-
-                // End of blocks
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                #endregion
+                //        if (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")
+                //            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/,
+                //             fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti rebate pre LR Side
+                //        else
+                //            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
+                //            fL1_frame, fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
+                //    }
+                //}
             }
+
+            if (windowBlocksProperties != null)
+            {
+                foreach (WindowProperties wp in windowBlocksProperties.ToList())
+                {
+                    if (!bGenerateGirts && (wp.sBuildingSide == "Right" || wp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (!bGenerateFrontGirts && wp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (!bGenerateBackGirts && wp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+
+                    if (!wp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+
+                    if (!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (wp.Validate())
+                    {
+                        float fSideWallHeight = fH1_frame;
+                        if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                        {
+                            fSideWallHeight = wp.sBuildingSide == "Left" ? fH1_frame : fH2_frame;
+                        }
+                        AddWindowBlock(wp, 0.5f, fSideWallHeight, vm.RecreateJoints);
+                    }
+                }
+                //refaktoring 24.1.2020
+                //for (int i = 0; i < windowBlocksProperties.Count; i++)
+                //{
+                //    if (!bGenerateGirts && (windowBlocksProperties[i].sBuildingSide == "Right" || windowBlocksProperties[i].sBuildingSide == "Left")) continue;
+                //    else if (!bGenerateFrontGirts && windowBlocksProperties[i].sBuildingSide == "Front") continue;
+                //    else if (!bGenerateBackGirts && windowBlocksProperties[i].sBuildingSide == "Back") continue;
+
+                //    if (!windowBlocksProperties[i].ValidateBays()) continue;
+
+                //    if (windowBlocksProperties[i].Validate()) AddWindowBlock(windowBlocksProperties[i], 0.5f);
+                //}
+            }
+
+            CountPlates_ValidationPurpose(false);
+
+            // Validation - check that all created joints have assigned Main Member
+            // Check all joints after definition of doors and windows members and joints
+            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
+            {
+                if (m_arrConnectionJoints[i].m_MainMember == null)
+                {
+                    //throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+
+                    // TODO BUG 46 - TO Ondrej // Odstranenie spojov ktore patria k deaktivovanym prutom (pruty boli deaktivovane, pretoze sa nachadazju na miest vlozeneho bloku)
+                    // Odstranenie by malo nastavat uz vo funckii ktora generuje bloky okien a dveri
+
+                    // Toto je docasne riesenie - vymazeme spoj zo zoznamu
+                    m_arrConnectionJoints.RemoveAt(i); // Remove joint from the list
+                }
+                //BUG 327
+                if (m_arrConnectionJoints[i].m_SecondaryMembers != null)
+                {
+                    foreach (CMember secMem in m_arrConnectionJoints[i].m_SecondaryMembers)
+                    {
+                        if (secMem.BIsGenerated == false)
+                        {
+                            CConnectionJointTypes joint = m_arrConnectionJoints[i];
+                            DeactivateJoint(ref joint);
+                        }
+                    }
+                }
+            }
+
+            // Opakovana kontrola po odstraneni spojov s MainMember = null
+            int iCountOfJoints_NotGenerated = 0; // Number of joints on deactivated members (girts where dorr and window blocks are inserted) // Mozno sa to na nieco pouzije :)
+            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
+            {
+                if (m_arrConnectionJoints[i].m_MainMember == null)
+                    throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+
+                if (m_arrConnectionJoints[i].BIsGenerated == false)
+                {
+                    iCountOfJoints_NotGenerated++;
+                }
+            }
+
+            // Validation - duplicity of node ID
+            for (int i = 0; i < m_arrNodes.Length; i++)
+            {
+                for (int j = 0; j < m_arrNodes.Length; j++)
+                {
+                    if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
+                        throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
+                }
+            }
+
+            //------------------------------------------------------------
+            // Vid TODO 234 - docasne priradenie vlastnosti materialu
+            // Pre objekty dveri je potrebne pridat prierezy do Component List - Tab Members a nacitat ich parametre, potom sa moze nacitanie z databazy zmazat
+            // Po zapracovani TODO 234 mozno tento kod zmazat
+            foreach (CMember member in m_arrMembers)
+            {
+                if (member.CrScStart.m_Mat is CMat_03_00)
+                    DATABASE.CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)member.CrScStart.m_Mat, member.CrScStart.m_Mat.Name);
+            }
+            //------------------------------------------------------------
+
+            CountPlates_ValidationPurpose(false);
+
+            // End of blocks
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            #endregion
 
             AddMembersToMemberGroupsLists();
 
@@ -1655,7 +1665,7 @@ namespace PFD
             #region Load Combinations
             // Load Combinations
             CLoadCombinationsGenerator generator = new CLoadCombinationsGenerator(m_arrLoadCaseGroups);
-            generator.GenerateAll();            
+            generator.GenerateAll();
             m_arrLoadCombs = generator.Combinations.ToArray();
             #endregion
 
@@ -1668,8 +1678,8 @@ namespace PFD
             #endregion
         }
 
-        public void AddFrontOrBackGirtsBracingBlocksNodes(bool bConsiderAbsoluteValueOfRoofPitch, int i_temp_numberofNodes, int [] iArrGB_NumberOfNodesPerBay, int [] iArrGB_NumberOfNodesPerBayFirstNode,
-            int iNumberOfTransverseSupports, float fHeight, float fIntermediateSupportSpacing,  float fDist_Girts, float fDist_Columns, float fy_Global_Coord, out int iNumberOfGB_NodesInOneSideAndMiddleBay)
+        public void AddFrontOrBackGirtsBracingBlocksNodes(bool bConsiderAbsoluteValueOfRoofPitch, int i_temp_numberofNodes, int[] iArrGB_NumberOfNodesPerBay, int[] iArrGB_NumberOfNodesPerBayFirstNode,
+            int iNumberOfTransverseSupports, float fHeight, float fIntermediateSupportSpacing, float fDist_Girts, float fDist_Columns, float fy_Global_Coord, out int iNumberOfGB_NodesInOneSideAndMiddleBay)
         {
             int iTemp = 0;
 
@@ -1750,7 +1760,7 @@ namespace PFD
                         if (m_arrMembers[memberIndex].FLength_real < fRealLengthLimit)
                             DeactivateMember(ref m_arrMembers[memberIndex]);
 
-                        if(bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                        if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                     }
                 }
                 iTemp += iArrGB_NumberOfNodesPerBay[i];
@@ -1828,7 +1838,7 @@ namespace PFD
             CBlock_3D_001_DoorInBay door;
             Point3D pControlPointBlock;
             float fBayWidth;
-            float fBayHeight = fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
+            float fBayHeight = fSideWallHeight; //fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
             int iFirstMemberToDeactivate;
             bool bIsReverseSession;
             bool bIsFirstBayInFrontorBackSide;
@@ -1862,7 +1872,7 @@ namespace PFD
             DoorsModels.Add(door);
         }
 
-        public void AddWindowBlock(WindowProperties prop, float fLimitDistanceFromColumn, bool addJoints)
+        public void AddWindowBlock(WindowProperties prop, float fLimitDistanceFromColumn, float fSideWallHeight, bool addJoints)
         {
             CMember mReferenceGirt;
             CMember mColumnLeft;
@@ -1871,7 +1881,7 @@ namespace PFD
             CBlock_3D_002_WindowInBay window;
             Point3D pControlPointBlock;
             float fBayWidth;
-            float fBayHeight = fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
+            float fBayHeight = fSideWallHeight; //fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
             int iFirstGirtInBay;
             int iFirstMemberToDeactivate;
             bool bIsReverseSession;
@@ -1894,8 +1904,8 @@ namespace PFD
 
             CMember mGirtToConnectWindowColumns_Bottom = null;
 
-            if(iNumberOfGirtsUnderWindow > 0)
-               mGirtToConnectWindowColumns_Bottom = m_arrMembers[(mReferenceGirt.ID - 1) + (iNumberOfGirtsUnderWindow - 1)]; // Toto je girt, ku ktoremu sa pripoja stlpiky okna v dolnej casti
+            if (iNumberOfGirtsUnderWindow > 0)
+                mGirtToConnectWindowColumns_Bottom = m_arrMembers[(mReferenceGirt.ID - 1) + (iNumberOfGirtsUnderWindow - 1)]; // Toto je girt, ku ktoremu sa pripoja stlpiky okna v dolnej casti
 
             CMember mGirtToConnectWindowColumns_Top = m_arrMembers[(mReferenceGirt.ID - 1) + (iNumberOfGirtsUnderWindow - 1) + iNumberOfGirtsToDeactivate + 1]; // Toto je girt, ku ktoremu sa pripoja stlpiky okna v hornej casti (len v pripade ze sa nepripoja k eave purlin alebo edge rafter)
 
@@ -1950,19 +1960,25 @@ namespace PFD
                 int iSideMultiplier = sBuildingSide == "Left" ? 0 : 1; // 0 left side X = 0, 1 - right side X = Gable Width
                 int iBlockFrame = iBayNumber - 1; // ID of frame in the bay, starts with zero
 
-                int iBayColumnLeft = (iBlockFrame * 6) + (iSideMultiplier == 0 ? 0 : (4 - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
-                int iBayColumnRight = ((iBlockFrame + 1) * 6) + (iSideMultiplier == 0 ? 0 : (4 - 1));
+                int iNumberOfMembersInOneFrame = eKitset == EModelType_FS.eKitsetMonoRoofEnclosed ? 3 : 4;
+
+                int iBayColumnLeft = (iBlockFrame * (iNumberOfMembersInOneFrame + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iNumberOfMembersInOneFrame - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
+                int iBayColumnRight = ((iBlockFrame + 1) * (iNumberOfMembersInOneFrame + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iNumberOfMembersInOneFrame - 1));
                 fBayWidth = fL1_frame;
-                iFirstMemberToDeactivate = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iSideMultiplier * (iGirtNoInOneFrame / 2);
+
+                int iLeftGirtNo = 0;
+                if (sBuildingSide == "Right") iLeftGirtNo = iLeftColumnGirtNo;
+
+                iFirstMemberToDeactivate = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iLeftGirtNo /*iSideMultiplier * (iGirtNoInOneFrame / 2)*/;
 
                 mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
                 mColumnLeft = m_arrMembers[iBayColumnLeft];
                 mColumnRight = m_arrMembers[iBayColumnRight];
 
                 if (sBuildingSide == "Left")
-                mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + 4];
+                    mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + iNumberOfMembersInOneFrame];
                 else
-                mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + 5];
+                    mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + (iNumberOfMembersInOneFrame + 1)];
             }
             else // Front or Back Side
             {
@@ -1974,14 +1990,14 @@ namespace PFD
                 if (sBuildingSide == "Front")  // Front side properties
                 {
                     iNumberOfIntermediateColumns = iFrontColumnNoInOneFrame;
-                    iArrayOfGirtsPerColumnCount = iArrNumberOfNodesPerFrontColumnFromLeft;
+                    iArrayOfGirtsPerColumnCount = iArrNumberOfGirtsPerFrontColumnFromLeft; //iArrNumberOfNodesPerFrontColumnFromLeft;
                     //iNumberOfGirtsInWall = iFrontGirtsNoInOneFrame;
                     fBayWidth = fDist_FrontColumns;
                 }
                 else // Back side properties
                 {
                     iNumberOfIntermediateColumns = iBackColumnNoInOneFrame;
-                    iArrayOfGirtsPerColumnCount = iArrNumberOfNodesPerBackColumnFromLeft;
+                    iArrayOfGirtsPerColumnCount = iArrNumberOfGirtsPerBackColumnFromLeft; //iArrNumberOfNodesPerBackColumnFromLeft;
                     //iNumberOfGirtsInWall = iBackGirtsNoInOneFrame;
                     fBayWidth = fDist_BackColumns;
                 }
@@ -2003,7 +2019,9 @@ namespace PFD
                     }
                     else
                     {
-                        iColumnNumberLeft = (iFrameNo - 1) * 6;
+                        int iNumberOfMembersInOneFrame = eKitset == EModelType_FS.eKitsetMonoRoofEnclosed ? 3 : 4;
+
+                        iColumnNumberLeft = (iFrameNo - 1) * (iNumberOfMembersInOneFrame + iEavesPurlinNoInOneFrame);
                         iColumnNumberRight = iNumberOfMembers_tempForColumns + iBlockSequence;
                     }
 
@@ -2013,15 +2031,17 @@ namespace PFD
                 }
                 else
                 {
-                    if (iBlockSequence < (int)(iNumberOfIntermediateColumns / 2) + 1) // Left session
+                    bool bIsGable = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
+
+                    if (iBlockSequence < (int)(iNumberOfIntermediateColumns / 2) + 1 || !bIsGable) // Left session
                     {
                         iColumnNumberLeft = iNumberOfMembers_tempForColumns + iBlockSequence - 1;
                         iColumnNumberRight = iNumberOfMembers_tempForColumns + iBlockSequence;
 
-                        iNumberOfFirstGirtInWallToDeactivate += iLeftColumnGirtNo;
+                        iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[0]; // iLeftColumnGirtNo;
 
                         for (int i = 0; i < iBlockSequence - 1; i++)
-                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i];
+                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i+1];
                     }
                     else // Right session
                     {
@@ -2161,7 +2181,7 @@ namespace PFD
             }
 
             // Validation
-            
+
             //// Number of added joints
             //int iNumberOfAddedJoints = 0;
             //// Number of added plates

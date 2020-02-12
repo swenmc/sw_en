@@ -20,7 +20,7 @@ namespace PFD.Infrastructure
 
                 doorProps = new DoorProperties();
                 doorProps.sBuildingSide = "Front";
-                doorProps.iBayNumber = 2;
+                doorProps.iBayNumber = 3;
                 doorProps.sDoorType = "Roller Door";
                 doorProps.fDoorsHeight = 2.1f;
                 doorProps.fDoorsWidth = 1.2f;
@@ -28,45 +28,55 @@ namespace PFD.Infrastructure
                 doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
                 DoorBlocks.Add(doorProps);
 
-                doorProps = new DoorProperties();
-                doorProps.sBuildingSide = "Left";
-                doorProps.iBayNumber = 1;
-                doorProps.sDoorType = "Roller Door";
-                doorProps.fDoorsHeight = 2.1f;
-                doorProps.fDoorsWidth = 2.2f;
-                doorProps.fDoorCoordinateXinBlock = 0.5f;
-                doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
-                DoorBlocks.Add(doorProps);
-                
-                doorProps = new DoorProperties();
-                doorProps.sBuildingSide = "Right";
-                doorProps.iBayNumber = 3;
-                doorProps.sDoorType = "Roller Door";
-                doorProps.fDoorsHeight = 1.1f;
-                doorProps.fDoorsWidth = 1.8f;
-                doorProps.fDoorCoordinateXinBlock = 0.6f;
-                doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
-                DoorBlocks.Add(doorProps);
-                
-                doorProps = new DoorProperties();
-                doorProps.sBuildingSide = "Back";
-                doorProps.iBayNumber = 2;
-                doorProps.sDoorType = "Roller Door";
-                doorProps.fDoorsHeight = 1.1f;
-                doorProps.fDoorsWidth = 0.9f;
-                doorProps.fDoorCoordinateXinBlock = 0.4f;
-                doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
-                DoorBlocks.Add(doorProps);
-                
-                doorProps = new DoorProperties();
-                doorProps.sBuildingSide = "Back";
-                doorProps.iBayNumber = 3;
-                doorProps.sDoorType = "Roller Door";
-                doorProps.fDoorsHeight = 2.1f;
-                doorProps.fDoorsWidth = 0.8f;
-                doorProps.fDoorCoordinateXinBlock = 0.5f;
-                doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
-                DoorBlocks.Add(doorProps);
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Front";
+                //doorProps.iBayNumber = 2;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 2.1f;
+                //doorProps.fDoorsWidth = 1.2f;
+                //doorProps.fDoorCoordinateXinBlock = 0.3f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
+                //
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Left";
+                //doorProps.iBayNumber = 1;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 2.1f;
+                //doorProps.fDoorsWidth = 2.2f;
+                //doorProps.fDoorCoordinateXinBlock = 0.5f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
+                //
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Right";
+                //doorProps.iBayNumber = 3;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 1.1f;
+                //doorProps.fDoorsWidth = 1.8f;
+                //doorProps.fDoorCoordinateXinBlock = 0.6f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
+                //
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Back";
+                //doorProps.iBayNumber = 2;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 1.1f;
+                //doorProps.fDoorsWidth = 0.9f;
+                //doorProps.fDoorCoordinateXinBlock = 0.4f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
+                //
+                //doorProps = new DoorProperties();
+                //doorProps.sBuildingSide = "Back";
+                //doorProps.iBayNumber = 3;
+                //doorProps.sDoorType = "Roller Door";
+                //doorProps.fDoorsHeight = 2.1f;
+                //doorProps.fDoorsWidth = 0.8f;
+                //doorProps.fDoorCoordinateXinBlock = 0.5f;
+                //doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+                //DoorBlocks.Add(doorProps);
             }
 
             return DoorBlocks;
