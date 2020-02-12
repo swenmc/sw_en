@@ -363,8 +363,8 @@ namespace PFD
             fRoof_Pitch_deg = 5;
             fdist_girt_bottom = 0.3f; // Distance from concrete foundation to the centerline
 
-            float fDefaultDistanceOfGirts = 1.0f; // 2 meters
-            float fDefaultDistanceOfPurlins = 1.0f; // 2 meters
+            float fDefaultDistanceOfGirts = 1.2f; // 2 meters
+            float fDefaultDistanceOfPurlins = 1.2f; // 2 meters
             float fRoofPitch_radians = fRoof_Pitch_deg * MATH.MathF.fPI / 180f;
 
             float fRafterLength;
@@ -387,10 +387,10 @@ namespace PFD
             }
 
             int iDefaultNumberOfGirtsPerColumn = (int)((fh - fdist_girt_bottom) / fDefaultDistanceOfGirts);
-            fdist_girt = (fh - fdist_girt_bottom) / Math.Max(iDefaultNumberOfGirtsPerColumn - 1, 1); // Minimalne 1 girt - bottom
+            fdist_girt = (fh - fdist_girt_bottom) / Math.Max(iDefaultNumberOfGirtsPerColumn, 1); // Minimalne 1 girt - bottom
 
             int iDefaultNumberOfPurlinsPerRafter = (int)((fRafterLength - fdist_purlin_end) / fDefaultDistanceOfPurlins);
-            fdist_purlin = (fRafterLength - fdist_purlin_end) / Math.Max(iDefaultNumberOfPurlinsPerRafter - 1, 1); // Minimalne 1 purlin
+            fdist_purlin = (fRafterLength - fdist_purlin_end) / Math.Max(iDefaultNumberOfPurlinsPerRafter, 1); // Minimalne 1 purlin
 
             //fdist_girt = 0.25f * fL1;
             //fdist_purlin = 0.25f * fL1;
