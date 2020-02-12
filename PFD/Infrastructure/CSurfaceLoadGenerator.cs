@@ -106,6 +106,12 @@ namespace PFD
             generalLoad = calc_generalLoad;
         }
 
+        public void GenerateSurfaceLoads_M()
+        {
+
+
+        }
+
         public void GenerateSurfaceLoads()
         {
             // Surface Free Loads
@@ -371,7 +377,7 @@ namespace PFD
                 out surfaceWindLoad_SLS_PlusY_Cpemax,
                 out surfaceWindLoad_SLS_MinusY_Cpemax
             );
-            
+
             // Assign generated member loads to the load cases
             // Universal
             m_arrLoadCases[(int)ELCName.eDL_G].SurfaceLoadsList = surfaceDeadLoad;

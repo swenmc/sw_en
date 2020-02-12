@@ -152,6 +152,8 @@ namespace PFD
                 if (e.PropertyName == "IsEnabledLocalMembersAxis") return;
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
+                if (e.PropertyName == "ModelTypes") return;
+                if (e.PropertyName == "KitsetTypeIndex") return;
 
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility(); } return; }
 
@@ -1628,10 +1630,10 @@ namespace PFD
         private void SetInitialItemsInComboboxes()
         {
             // Fill kitset type combobox items
-            CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "ModelType", "modelTypeName_short", Combobox_KitsetType);
+            //CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "ModelType", "modelTypeName_short", Combobox_KitsetType);
 
             // Fill model combobox items
-            CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
+            //CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
 
             // Cladding (type and colors)
             //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
@@ -1647,9 +1649,9 @@ namespace PFD
             //Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             //Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 
-            Combobox_SupportType.Items.Add("Fixed");
-            Combobox_SupportType.Items.Add("Pinned");
-            Combobox_SupportType.SelectedIndex = 1;
+            //Combobox_SupportType.Items.Add("Fixed");
+            //Combobox_SupportType.Items.Add("Pinned");
+            //Combobox_SupportType.SelectedIndex = 1;
 
             //CComboBoxHelper.FillComboboxWithColors_All(Combobox_WireframeColor);
             //Combobox_WireframeColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);

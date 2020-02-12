@@ -1481,8 +1481,6 @@ namespace PFD
                 bool bGenerateLoadsOnFrameMembers,
                 bool bGenerateSurfaceLoads)
         {
-            return;
-
             // Loading
             #region Load Cases
             // Load Cases
@@ -1493,6 +1491,8 @@ namespace PFD
             // Snow load factor - projection on roof
             // Faktor ktory prepocita zatazenie z podorysneho rozmeru premietnute na stresnu rovinu
             fSlopeFactor = (fW_frame / (fW_frame / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
+
+            return;
 
             #region Surface Loads
             // Surface Loads

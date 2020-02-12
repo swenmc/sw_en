@@ -97,6 +97,11 @@ namespace PFD
         private List<string> m_RoofFibreglassThicknessTypes;
         private List<string> m_WallFibreglassThicknessTypes;
 
+        private List<string> m_SupportTypes;
+        private List<string> m_ModelTypes;
+        private List<string> m_KitsetTypes;
+
+
         //private int MWireframeColorIndex;
         //public Color WireframeColor;
 
@@ -266,6 +271,10 @@ namespace PFD
                     throw new ArgumentException("Selected kitset type is not implemented.");
 
                 // TODO - nastavit do comboboxu Model type prislusne modely pre dany typ kitsetu
+                if(MKitsetTypeIndex == 0) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetMonoRoofEnclosed", "modelName");
+                else if(MKitsetTypeIndex == 1) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName");
+                else if (MKitsetTypeIndex == 2) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetShelterSingleSpan", "modelName");
+                else if (MKitsetTypeIndex == 3) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetShelterDoubleSpan", "modelName");
 
                 ModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type (menim property aby som vyvolal aj zmenu modelu)
 
@@ -284,6 +293,7 @@ namespace PFD
             set
             {
                 MModelIndex = value;
+                if (MModelIndex == -1) return;
 
                 //dolezite je volat private fields a nie Properties pokial nechceme aby sa volali setter metody
                 CDatabaseModels dmodel = new CDatabaseModels(MKitsetTypeIndex, MModelIndex);
@@ -2453,6 +2463,49 @@ namespace PFD
             }
         }
 
+        public List<string> SupportTypes
+        {
+            get
+            {
+                if (m_SupportTypes == null) m_SupportTypes = new List<string>() { "Fixed", "Pinned" };
+                return m_SupportTypes;
+            }
+
+            set
+            {
+                m_SupportTypes = value;
+            }
+        }
+
+        public List<string> ModelTypes
+        {
+            get
+            {
+                if(m_ModelTypes == null) m_ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName");
+                return m_ModelTypes;
+            }
+
+            set
+            {
+                m_ModelTypes = value;
+                NotifyPropertyChanged("ModelTypes");
+            }
+        }
+
+        public List<string> KitsetTypes
+        {
+            get
+            {
+                if(m_KitsetTypes == null) m_KitsetTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "ModelType", "modelTypeName_short");
+                return m_KitsetTypes;
+            }
+
+            set
+            {
+                m_KitsetTypes = value;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -2505,7 +2558,7 @@ namespace PFD
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
-            ModelIndex = modelIndex;
+            //ModelIndex = modelIndex;
 
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;

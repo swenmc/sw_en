@@ -93,13 +93,13 @@
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Kitset Type:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_KitsetType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=KitsetTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding KitsetTypes}" SelectedIndex="{Binding Path=KitsetTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                         
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                         <!--<ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
                           VerticalAlignment="Center" SelectionChanged="ComboBox_Models_SelectionChanged" SelectedIndex="1"/>-->
                         <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding ModelTypes}" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0,0,0" 
                          VerticalAlignment="Top"  />
@@ -241,7 +241,7 @@
 
                         <TextBlock Grid.Row="21" Grid.Column="0" Text="Suport Type:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_SupportType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=SupportTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding SupportTypes}" SelectedIndex="{Binding Path=SupportTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="22" Grid.Column="0" Text="Roof Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
                         <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_RoofFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
