@@ -1246,7 +1246,10 @@ namespace PFD
                         float fSideWallHeight = fH1_frame;
                         if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
                         {
-                            fSideWallHeight = dp.sBuildingSide == "Left" ? fH1_frame : fH2_frame;
+                            if(dp.sBuildingSide == "Right")
+                                fSideWallHeight = fH2_frame;
+                            else if(dp.sBuildingSide == "Front" || dp.sBuildingSide == "Back")
+                                fSideWallHeight = Math.Max(fH1_frame, fH2_frame);
                         }
                         AddDoorBlock(dp, iLeftColumnGirtNo, iRightColumnGirtNo, 0.5f, fSideWallHeight, vm.RecreateJoints);
 
@@ -1312,7 +1315,10 @@ namespace PFD
                         float fSideWallHeight = fH1_frame;
                         if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
                         {
-                            fSideWallHeight = wp.sBuildingSide == "Left" ? fH1_frame : fH2_frame;
+                            if (wp.sBuildingSide == "Right")
+                                fSideWallHeight = fH2_frame;
+                            else if (wp.sBuildingSide == "Front" || wp.sBuildingSide == "Back")
+                                fSideWallHeight = Math.Max(fH1_frame, fH2_frame);
                         }
                         AddWindowBlock(wp, iLeftColumnGirtNo, iRightColumnGirtNo, 0.5f, fSideWallHeight, vm.RecreateJoints);
                     }

@@ -600,8 +600,24 @@ namespace PFD
                 if (MModelIndex != 0)
                 {
                     // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
-                    IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                    int iOneRafterFrontColumnNo;
+
+                    if (MKitsetTypeIndex == 0)
+                    {
+                        iOneRafterFrontColumnNo = (int)(MGableWidth / MColumnDistance);
+                        IFrontColumnNoInOneFrame = iOneRafterFrontColumnNo;
+                    }
+                    else if (MKitsetTypeIndex == 1)
+                    {
+                        iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
+                        IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                    }
+                    else
+                    {
+                        iOneRafterFrontColumnNo = 0; // Exception
+                        IFrontColumnNoInOneFrame = 0;
+                    }
+
                     // Update value of distance between columns
 
                     // Todo
