@@ -221,9 +221,9 @@ namespace PFD
             else
                 throw new Exception("Cross-section material is not defined.");
 
-            // Allignments
-            float fallignment_column, fallignment_knee_rafter, fallignment_apex_rafter;
-            GetJointAllignments((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h, out fallignment_column, out fallignment_knee_rafter, out fallignment_apex_rafter);
+            // alignments
+            float falignment_column, falignment_knee_rafter, falignment_apex_rafter;
+            GetJointalignments((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h, out falignment_column, out falignment_knee_rafter, out falignment_apex_rafter);
 
             // Member Eccentricities
             // Zadane hodnoty predpokladaju ze prierez je symetricky, je potrebne zobecnit
@@ -231,7 +231,7 @@ namespace PFD
             CMemberEccentricity eccentricityGirtLeft_X0 = new CMemberEccentricity(0, (float)(-(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - 0.5 * m_arrCrSc[(int)EMemberGroupNames.eGirtWall].h)));
             CMemberEccentricity eccentricityGirtRight_XB = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - 0.5 * m_arrCrSc[(int)EMemberGroupNames.eGirtWall].h));
 
-            float feccentricityEavePurlin_z = -fallignment_column + (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_max;
+            float feccentricityEavePurlin_z = -falignment_column + (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_max;
             CMemberEccentricity eccentricityEavePurlin = new CMemberEccentricity(-(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h + m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min), feccentricityEavePurlin_z);
 
             // Moze byt automaticke alebo uzivatelsky nastavitelne
@@ -579,11 +579,11 @@ namespace PFD
 
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
 
-            // Allignments (zaporna hodnota skracuje prut)
+            // alignments (zaporna hodnota skracuje prut)
             float fMainColumnStart = 0.0f; // Dlzka orezu pruta stlpa na zaciatku (pri base plate) (zaporna hodnota skracuje prut)
-            float fMainColumnEnd = -fallignment_column - fCutOffOneSide; // Dlzka orezu pruta stlpa na konci (zaporna hodnota skracuje prut)
-            float fRafterStart = fallignment_knee_rafter - fCutOffOneSide;
-            float fRafterEnd = -fallignment_apex_rafter - fCutOffOneSide;                                                // Calculate according to h of rafter and roof pitch
+            float fMainColumnEnd = -falignment_column - fCutOffOneSide; // Dlzka orezu pruta stlpa na konci (zaporna hodnota skracuje prut)
+            float fRafterStart = falignment_knee_rafter - fCutOffOneSide;
+            float fRafterEnd = -falignment_apex_rafter - fCutOffOneSide;                                                // Calculate according to h of rafter and roof pitch
             float fEavesPurlinStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_max - fCutOffOneSide;
             float fEavesPurlinEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_min - fCutOffOneSide;
             float fGirtStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].y_max - fCutOffOneSide;
@@ -1147,7 +1147,7 @@ namespace PFD
                     if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
                     else if (dp.Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
                     {
-                        AddDoorBlock(dp, 0.5f, fH1_frame, vm.RecreateJoints);
+                        AddDoorBlock(dp, iOneColumnGirtNo, iOneColumnGirtNo, 0.5f, fH1_frame, vm.RecreateJoints);
 
                         // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
                         // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
@@ -1205,8 +1205,11 @@ namespace PFD
 
                     if (!wp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
 
-                    if(!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (wp.Validate()) AddWindowBlock(wp, 0.5f, vm.RecreateJoints);
+                    if (!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (wp.Validate())
+                    {
+                        AddWindowBlock(wp, iOneColumnGirtNo, iOneColumnGirtNo, 0.5f, fH1_frame, vm.RecreateJoints);
+                    }
                 }
                 //refaktoring 24.1.2020
                 //for (int i = 0; i < windowBlocksProperties.Count; i++)
@@ -1689,7 +1692,7 @@ namespace PFD
             }
         }
 
-        public void GetJointAllignments(float fh_column, float fh_rafter, out float allignment_column, out float allignment_knee_rafter, out float allignment_apex_rafter)
+        public void GetJointalignments(float fh_column, float fh_rafter, out float alignment_column, out float alignment_knee_rafter, out float alignment_apex_rafter)
         {
             float cosAlpha = (float)Math.Cos(fRoofPitch_rad);
             float sinAlpha = (float)Math.Sin(fRoofPitch_rad);
@@ -1701,22 +1704,23 @@ namespace PFD
             float x = cosAlpha * 2f * a;
             float x2 = 0.5f * fh_column - x;
             float y2 = tanAlpha * x2;
-            allignment_column = 0.5f * y + y2;
+            alignment_column = 0.5f * y + y2;
 
             float x3 = 0.5f * x;
             float x4 = 0.5f * fh_column - x3;
-            allignment_knee_rafter = x4 / cosAlpha;
+            alignment_knee_rafter = x4 / cosAlpha;
 
-            allignment_apex_rafter = a;
+            alignment_apex_rafter = a;
             */
 
             float y = fh_rafter / cosAlpha;
-            allignment_apex_rafter = sinAlpha * 0.5f * y;
-            float x = cosAlpha * 2f * allignment_apex_rafter;
-            allignment_column = 0.5f * y + (tanAlpha * (0.5f * fh_column - x));
-            allignment_knee_rafter = (0.5f * fh_column - (0.5f * x)) / cosAlpha;
+            alignment_apex_rafter = sinAlpha * 0.5f * y;
+            float x = cosAlpha * 2f * alignment_apex_rafter;
+            alignment_column = 0.5f * y + (tanAlpha * (0.5f * fh_column - x));
+            alignment_knee_rafter = (0.5f * fh_column - (0.5f * x)) / cosAlpha;
         }
 
+        /*
         public void AddDoorBlock(DoorProperties prop, float fLimitDistanceFromColumn, float fSideWallHeight, bool addJoints)
         {
             CMember mReferenceGirt;
@@ -1821,10 +1825,11 @@ namespace PFD
 
             WindowsModels.Add(window);
         }
-
-        public void DeterminateBasicPropertiesToInsertBlock(
+        public override void DeterminateBasicPropertiesToInsertBlock(
             string sBuildingSide,                     // Identification of building side (left, right, front, back)
             int iBayNumber,                           // Bay number (1-n) in positive X or Y direction
+            int iSideWallLeftColumnGirtNoInOneFrame,  // Number of girts in the left side wall per one column (one frame)
+            int iSideWallRightColumnGirtNoInOneFrame, // Number of girts in the right side wall per one column (one frame)
             out CMember mReferenceGirt,               // Reference girt - first girts that needs to be deactivated and replaced by new member (some parameters are same for deactivated and new member)
             out CMember mColumnLeft,                  // Left column of bay
             out CMember mColumnRight,                 // Right column of bay
@@ -2002,7 +2007,7 @@ namespace PFD
                 Array.Resize(ref m_arrCrSc, arraysizeoriginal + 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
                 // Preskocit prvy prvok v poli block crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
                 m_arrCrSc[arraysizeoriginal] = block.m_arrCrSc[i];
-                //m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
+                //m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i; // -1 + 1; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
             }
 
             //task 405 - je to hotove, ale chcelo by to mozno aj zistit ako je to narocne na pamat, lebo su tam vyhladavacky
@@ -2095,5 +2100,7 @@ namespace PFD
             //    "Number of added joints: " + iNumberOfAddedJoints + "\n" +
             //    "Number of added plates and washers: " + iNumberOfAddedPlates);
         }
+
+        */
     }
 }

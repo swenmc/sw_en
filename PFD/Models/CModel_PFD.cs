@@ -1869,5 +1869,392 @@ namespace PFD
                     "Number of plates - Material List - False: " + iNumberOfPlateMatlistFalse.ToString() + "\n");
             }
         }
+
+        public void AddDoorBlock(DoorProperties prop, int iSideWallLeftColumnGirtNoInOneFrame, int iSideWallRightColumnGirtNoInOneFrame, float fLimitDistanceFromColumn, float fSideWallHeight, bool addJoints)
+        {
+            CMember mReferenceGirt;
+            CMember mColumnLeft;
+            CMember mColumnRight;
+            CMember mEavesPurlin;
+            CBlock_3D_001_DoorInBay door;
+            Point3D pControlPointBlock;
+            float fBayWidth;
+            float fBayHeight = fSideWallHeight; //fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
+            int iFirstMemberToDeactivate;
+            bool bIsReverseSession;
+            bool bIsFirstBayInFrontorBackSide;
+            bool bIsLastBayInFrontorBackSide;
+
+            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, iSideWallLeftColumnGirtNoInOneFrame, iSideWallRightColumnGirtNoInOneFrame, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out pControlPointBlock, out fBayWidth, out iFirstMemberToDeactivate, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
+
+            // Set girt to connect columns / trimmers
+            int iNumberOfGirtsToDeactivate = (int)((prop.fDoorsHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt (prevzate z CBlock_3D_001_DoorInBay)
+            CMember mGirtToConnectDoorTrimmers = m_arrMembers[(mReferenceGirt.ID - 1) + iNumberOfGirtsToDeactivate]; // Toto je girt, ku ktoremu sa pripoja stlpy dveri (len v pripade ze sa nepripoja k eave purlin alebo edge rafter) - 1 -index reference girt
+
+            door = new CBlock_3D_001_DoorInBay(
+                prop,
+                fLimitDistanceFromColumn,
+                fBottomGirtPosition,
+                fDist_Girt,
+                mReferenceGirt,
+                mGirtToConnectDoorTrimmers,
+                mColumnLeft,
+                mColumnRight,
+                mEavesPurlin,
+                fBayWidth,
+                fBayHeight,
+                fUpperGirtLimit,
+                bIsReverseSession,
+                bIsFirstBayInFrontorBackSide,
+                bIsLastBayInFrontorBackSide);
+
+            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, door, addJoints);
+
+            DoorsModels.Add(door);
+        }
+
+        public void AddWindowBlock(WindowProperties prop, int iSideWallLeftColumnGirtNoInOneFrame, int iSideWallRightColumnGirtNoInOneFrame, float fLimitDistanceFromColumn, float fSideWallHeight, bool addJoints)
+        {
+            CMember mReferenceGirt;
+            CMember mColumnLeft;
+            CMember mColumnRight;
+            CMember mEavesPurlin;
+            CBlock_3D_002_WindowInBay window;
+            Point3D pControlPointBlock;
+            float fBayWidth;
+            float fBayHeight = fSideWallHeight; //fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
+            int iFirstGirtInBay;
+            int iFirstMemberToDeactivate;
+            bool bIsReverseSession;
+            bool bIsFirstBayInFrontorBackSide;
+            bool bIsLastBayInFrontorBackSide;
+
+            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, iSideWallLeftColumnGirtNoInOneFrame, iSideWallRightColumnGirtNoInOneFrame, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out pControlPointBlock, out fBayWidth, out iFirstGirtInBay, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
+
+            // Prevzate z CBlock_3D_002_WindowInBay
+            int iNumberOfGirtsUnderWindow = (int)((prop.fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
+            float fCoordinateZOfGirtUnderWindow = (iNumberOfGirtsUnderWindow - 1) * fDist_Girt + fBottomGirtPosition;
+
+            if (prop.fWindowCoordinateZinBay <= fBottomGirtPosition)
+            {
+                iNumberOfGirtsUnderWindow = 0;
+                fCoordinateZOfGirtUnderWindow = 0f;
+            }
+
+            int iNumberOfGirtsToDeactivate = (int)((prop.fWindowsHeight + prop.fWindowCoordinateZinBay - fCoordinateZOfGirtUnderWindow) / fDist_Girt); // Number of intermediate girts to deactivate
+
+            CMember mGirtToConnectWindowColumns_Bottom = null;
+
+            if (iNumberOfGirtsUnderWindow > 0)
+                mGirtToConnectWindowColumns_Bottom = m_arrMembers[(mReferenceGirt.ID - 1) + (iNumberOfGirtsUnderWindow - 1)]; // Toto je girt, ku ktoremu sa pripoja stlpiky okna v dolnej casti
+
+            CMember mGirtToConnectWindowColumns_Top = m_arrMembers[(mReferenceGirt.ID - 1) + (iNumberOfGirtsUnderWindow - 1) + iNumberOfGirtsToDeactivate + 1]; // Toto je girt, ku ktoremu sa pripoja stlpiky okna v hornej casti (len v pripade ze sa nepripoja k eave purlin alebo edge rafter)
+
+            window = new CBlock_3D_002_WindowInBay(
+                prop,
+                fLimitDistanceFromColumn,
+                fBottomGirtPosition,
+                fDist_Girt,
+                mReferenceGirt,
+                mGirtToConnectWindowColumns_Bottom,
+                mGirtToConnectWindowColumns_Top,
+                mColumnLeft,
+                mColumnRight,
+                mEavesPurlin,
+                fBayWidth,
+                fBayHeight,
+                fUpperGirtLimit,
+                bIsReverseSession,
+                bIsFirstBayInFrontorBackSide,
+                bIsLastBayInFrontorBackSide);
+
+            iFirstMemberToDeactivate = iFirstGirtInBay + window.iNumberOfGirtsUnderWindow;
+
+            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, window, addJoints);
+
+            WindowsModels.Add(window);
+        }
+
+        public virtual void DeterminateBasicPropertiesToInsertBlock(
+            string sBuildingSide,                     // Identification of building side (left, right, front, back)
+            int iBayNumber,                           // Bay number (1-n) in positive X or Y direction
+            int iSideWallLeftColumnGirtNoInOneFrame,  // Number of girts in the left side wall per one column (one frame)
+            int iSideWallRightColumnGirtNoInOneFrame, // Number of girts in the right side wall per one column (one frame)
+            out CMember mReferenceGirt,               // Reference girt - first girts that needs to be deactivated and replaced by new member (some parameters are same for deactivated and new member)
+            out CMember mColumnLeft,                  // Left column of bay
+            out CMember mColumnRight,                 // Right column of bay
+            out CMember mEavesPurlin,                 // Eave purlin for left and right side
+            out Point3D pControlPointBlock,           // Conctrol point to insert block - defined as left column base point
+            out float fBayWidth,                      // Width of bay (distance between bay columns)
+            out int iFirstMemberToDeactivate,         // Index of first girt in the bay which is in collision with the block and must be deactivated
+            out bool bIsReverseSession,               // Front or back wall bay can have reverse direction of girts in X
+            out bool bIsFirstBayInFrontorBackSide,
+            out bool bIsLastBayInFrontorBackSide
+            )
+        {
+            bIsReverseSession = false;            // Set to true value just for front or back wall (right part of wall)
+            bIsFirstBayInFrontorBackSide = false; // Set to true value just for front or back wall (first bay)
+            bIsLastBayInFrontorBackSide = false;  // Set to true value just for front or back wall (last bay)
+
+            if (sBuildingSide == "Left" || sBuildingSide == "Right")
+            {
+                // Left side X = 0, Right Side X = GableWidth
+                // Insert after frame ID
+                int iSideMultiplier = sBuildingSide == "Left" ? 0 : 1; // 0 left side X = 0, 1 - right side X = Gable Width
+                int iBlockFrame = iBayNumber - 1; // ID of frame in the bay, starts with zero
+
+                int iBayColumnLeft = (iBlockFrame * (iFrameMembersNo + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iFrameMembersNo - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
+                int iBayColumnRight = ((iBlockFrame + 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iFrameMembersNo - 1));
+                fBayWidth = fL1_frame;
+
+                int iLeftGirtNoInOneFrame = 0;
+                if (sBuildingSide == "Right") iLeftGirtNoInOneFrame = iSideWallLeftColumnGirtNoInOneFrame;
+
+                iFirstMemberToDeactivate = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iLeftGirtNoInOneFrame /*iSideMultiplier * (iGirtNoInOneFrame / 2)*/;
+
+                mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
+                mColumnLeft = m_arrMembers[iBayColumnLeft];
+                mColumnRight = m_arrMembers[iBayColumnRight];
+
+                if (sBuildingSide == "Left")
+                    mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + iFrameMembersNo];
+                else
+                    mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + (iFrameMembersNo + 1)];
+            }
+            else // Front or Back Side
+            {
+                // Insert after sequence ID
+                int iNumberOfIntermediateColumns;
+                int[] iArrayOfGirtsPerColumnCount;
+                //int iNumberOfGirtsInWall;
+
+                if (sBuildingSide == "Front")  // Front side properties
+                {
+                    iNumberOfIntermediateColumns = iFrontColumnNoInOneFrame;
+                    iArrayOfGirtsPerColumnCount = iArrNumberOfGirtsPerFrontColumnFromLeft; //iArrNumberOfNodesPerFrontColumnFromLeft;
+                    //iNumberOfGirtsInWall = iFrontGirtsNoInOneFrame;
+                    fBayWidth = fDist_FrontColumns;
+                }
+                else // Back side properties
+                {
+                    iNumberOfIntermediateColumns = iBackColumnNoInOneFrame;
+                    iArrayOfGirtsPerColumnCount = iArrNumberOfGirtsPerBackColumnFromLeft; //iArrNumberOfNodesPerBackColumnFromLeft;
+                    //iNumberOfGirtsInWall = iBackGirtsNoInOneFrame;
+                    fBayWidth = fDist_BackColumns;
+                }
+
+                int iSideMultiplier = sBuildingSide == "Front" ? 0 : 1; // 0 front side Y = 0, 1 - back side Y = Length
+                int iBlockSequence = iBayNumber - 1; // ID of sequence, starts with zero
+                int iColumnNumberLeft;
+                int iColumnNumberRight;
+                int iNumberOfFirstGirtInWallToDeactivate = 0;
+                int iNumberOfMembers_tempForGirts = iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iSideMultiplier * iFrontGirtsNoInOneFrame;
+                int iNumberOfMembers_tempForColumns = iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iSideMultiplier * iFrontColumnNoInOneFrame;
+
+                if (iBlockSequence == 0) // Main Column - first bay
+                {
+                    if (sBuildingSide == "Front")
+                    {
+                        iColumnNumberLeft = 0;
+                        iColumnNumberRight = iNumberOfMembers_tempForColumns + iBlockSequence;
+                    }
+                    else
+                    {
+                        iColumnNumberLeft = (iFrameNo - 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame);
+                        iColumnNumberRight = iNumberOfMembers_tempForColumns + iBlockSequence;
+                    }
+
+                    iFirstMemberToDeactivate = iNumberOfMembers_tempForGirts + iNumberOfFirstGirtInWallToDeactivate;
+
+                    bIsFirstBayInFrontorBackSide = true; // First bay
+                }
+                else
+                {
+                    bool bIsGable = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
+
+                    if (iBlockSequence < (int)(iNumberOfIntermediateColumns / 2) + 1 || !bIsGable) // Left session
+                    {
+                        iColumnNumberLeft = iNumberOfMembers_tempForColumns + iBlockSequence - 1;
+                        iColumnNumberRight = iNumberOfMembers_tempForColumns + iBlockSequence;
+
+                        iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[0]; // iLeftColumnGirtNo;
+
+                        for (int i = 0; i < iBlockSequence - 1; i++)
+                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i + 1];
+                    }
+                    else // Right session
+                    {
+                        bIsReverseSession = true; // Nodes and members are numbered from right to the left
+
+                        iColumnNumberLeft = iNumberOfMembers_tempForColumns + (int)(iNumberOfIntermediateColumns / 2) + iNumberOfIntermediateColumns - iBlockSequence;
+                        iColumnNumberRight = iNumberOfMembers_tempForColumns + (int)(iNumberOfIntermediateColumns / 2) + iNumberOfIntermediateColumns - iBlockSequence - 1;
+
+                        // Number of girts in left session
+                        iNumberOfFirstGirtInWallToDeactivate += iSideWallRightColumnGirtNoInOneFrame;
+
+                        for (int i = 0; i < (int)(iNumberOfIntermediateColumns / 2); i++)
+                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i+1];
+
+                        if (iBlockSequence < iNumberOfIntermediateColumns)
+                            iNumberOfFirstGirtInWallToDeactivate += iSideWallRightColumnGirtNoInOneFrame;
+
+                        for (int i = 0; i < iNumberOfIntermediateColumns - iBlockSequence - 1; i++)
+                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i+1];
+
+                        if (iBlockSequence == iNumberOfIntermediateColumns) // Last bay
+                        {
+                            bIsLastBayInFrontorBackSide = true;
+                            iColumnNumberRight = iSideMultiplier == 0 ? (iFrameMembersNo - 1) : (iFrameNo - 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame) + (iFrameMembersNo - 1);
+                        }
+                    }
+
+                    iFirstMemberToDeactivate = iNumberOfMembers_tempForGirts + iNumberOfFirstGirtInWallToDeactivate;
+                }
+
+                mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
+                mColumnLeft = m_arrMembers[iColumnNumberLeft];
+                mColumnRight = m_arrMembers[iColumnNumberRight];
+                mEavesPurlin = null; // Not defined for the front and back side
+            }
+
+            pControlPointBlock = new Point3D(mColumnLeft.NodeStart.X, mColumnLeft.NodeStart.Y, mColumnLeft.NodeStart.Z);
+        }
+
+        //Tuto funkciu mam pozriet - Mato chce:
+        //rozsirujem tam velkosti poli a take veci CModel_PFD_01_GR - riadok 1751
+        //vlastne tie objekty z objektu CBlock pridavam do celkoveho zoznamu, ale napriklad prerez pre girts som ignoroval aby tam nebol 2x
+        //Chce to vymysliet nejaky koncept ako to ma fungovat a chce to programatorsku hlavu 🙂
+        //tie moje "patlacky" ako sa to tam dolepuje do poli atd by som nebral velmi vazne
+        //Malo by ty to fungovat tak, ze ked pridam prve dvere tak sa tie prierezy pridaju a ked pridavam dalsie, tak uz sa pridavaju len uzly a pruty a prierez sa len nastavi
+        //uz by sa nemal vytvarat novy
+        public void AddDoorOrWindowBlockProperties(Point3D pControlPointBlock, int iFirstMemberToDeactivate, CBlock block, bool addJoints = true)
+        {
+            float fBlockRotationAboutZaxis_rad = 0;
+
+            if (block.BuildingSide == "Left" || block.BuildingSide == "Right")
+                fBlockRotationAboutZaxis_rad = MathF.fPI / 2.0f; // Parameter of block - depending on side of building (front, back (0 deg), left, right (90 deg))
+
+            //----------------------------------------------------------------------------------------------------------------------------------------------------
+            // TODO 405 - TO Ondrej - tu sa znazim pripravit obrysove body otvoru v 3D - GCS
+            // Opening definition points
+            // Transformation from LCS of block to GCS // Create definition points in 3D
+
+            List<Point3D> openningPointsInGCS = new List<Point3D>();
+
+            foreach (System.Windows.Point p2D in block.openningPoints)
+            {
+                Point3D p3D = new Point3D(p2D.X, 0, p2D.Y);
+                RotateAndTranslatePointAboutZ_CCW(pControlPointBlock, ref p3D, fBlockRotationAboutZaxis_rad);
+                openningPointsInGCS.Add(p3D); // Output - s tymito suradnicami by sa mala porovnavat pozicia girt bracing na jednotlivych stranach budovy
+            }
+            //----------------------------------------------------------------------------------------------------------------------------------------------------
+
+            int arraysizeoriginal;
+
+            // Cross-sections
+
+            // Copy block cross-sections into the model
+            for (int i = 1; i < block.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+            {
+                CCrSc foundCrsc = m_arrCrSc.FirstOrDefault(c => c.ID == block.m_arrCrSc[i].ID);
+                if (foundCrsc != null) continue;
+
+                arraysizeoriginal = m_arrCrSc.Length;
+                Array.Resize(ref m_arrCrSc, arraysizeoriginal + 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
+                // Preskocit prvy prvok v poli block crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+                m_arrCrSc[arraysizeoriginal] = block.m_arrCrSc[i];
+                //m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
+            }
+
+            //task 405 - je to hotove, ale chcelo by to mozno aj zistit ako je to narocne na pamat, lebo su tam vyhladavacky
+            DeactivateBracingBlocksThroughtBlock(block, openningPointsInGCS);
+
+            // Nodes
+            arraysizeoriginal = m_arrNodes.Length;
+            Array.Resize(ref m_arrNodes, m_arrNodes.Length + block.m_arrNodes.Length);
+
+            int iNumberofMembersToDeactivate = block.INumberOfGirtsToDeactivate;
+
+            // Deactivate already generated members in the bay (space between frames) where is the block inserted
+            for (int i = 0; i < iNumberofMembersToDeactivate; i++)
+            {
+                // Deactivate Members
+                // Deactivate Member Joints
+                CMember m = m_arrMembers[iFirstMemberToDeactivate + i];
+                DeactivateMemberAndItsJoints(ref m);
+
+                // -------------------------------------------------------------------------------------------------
+                // Deactivate bracing blocks and joints
+                // Find bracing blocks for deactivated girt
+                DeactivateMemberBracingBlocks(m, block, openningPointsInGCS);
+            }
+
+            // Copy block nodes into the model
+            for (int i = 0; i < block.m_arrNodes.Length; i++)
+            {
+                RotateAndTranslateNodeAboutZ_CCW(pControlPointBlock, ref block.m_arrNodes[i], fBlockRotationAboutZaxis_rad);
+                m_arrNodes[arraysizeoriginal + i] = block.m_arrNodes[i];
+                m_arrNodes[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
+            }
+
+            // Members
+            arraysizeoriginal = m_arrMembers.Length;
+            Array.Resize(ref m_arrMembers, m_arrMembers.Length + block.m_arrMembers.Length);
+
+            // Copy block members into the model
+            for (int i = 0; i < block.m_arrMembers.Length; i++)
+            {
+                // Position of definition nodes was already changed, we dont need to rotate member definition nodes NodeStart and NodeEnd
+                // Recalculate basic member data (PointA, PointB, delta projection length)
+                block.m_arrMembers[i].Fill_Basic();
+
+                m_arrMembers[arraysizeoriginal + i] = block.m_arrMembers[i];
+                m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
+            }
+
+            // Add block member connections to the main model connections
+            if (addJoints)
+            {
+                foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
+                    m_arrConnectionJoints.Add(joint); // Add joint
+            }
+
+            // Validation
+
+            //// Number of added joints
+            //int iNumberOfAddedJoints = 0;
+            //// Number of added plates
+            //int iNumberOfAddedPlates = 0;
+            //
+            //if (addJoints)
+            //{
+            //    foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
+            //    {
+            //        m_arrConnectionJoints.Add(joint); // Add joint
+            //
+            //        iNumberOfAddedJoints++;
+            //
+            //        foreach (CPlate plate in joint.m_arrPlates)
+            //        {
+            //            iNumberOfAddedPlates++;
+            //
+            //            if (plate is CConCom_Plate_B_basic)
+            //            {
+            //                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+            //
+            //                foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+            //                {
+            //                    iNumberOfAddedPlates++; // anchor.WasherBearing
+            //                    iNumberOfAddedPlates++; // anchor.WasherPlateTop
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //
+            //System.Diagnostics.Trace.WriteLine(
+            //    "Number of added joints: " + iNumberOfAddedJoints + "\n" +
+            //    "Number of added plates and washers: " + iNumberOfAddedPlates);
+        }
     }
 }

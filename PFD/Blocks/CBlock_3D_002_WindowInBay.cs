@@ -182,8 +182,8 @@ namespace PFD
             // Block Members
             // TODO - add to block parameters
 
-            float fGirtAllignmentStart = bIsReverseGirtSession ? ReferenceGirt.FAlignment_End : ReferenceGirt.FAlignment_Start; // Main column of a frame
-            float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Window column
+            float fGirtAlignmentStart = bIsReverseGirtSession ? ReferenceGirt.FAlignment_End : ReferenceGirt.FAlignment_Start; // Main column of a frame
+            float fGirtAlignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Window column
             CMemberEccentricity eccentricityGirtStart = bIsReverseGirtSession ? ReferenceGirt.EccentricityEnd : ReferenceGirt.EccentricityStart;
             CMemberEccentricity eccentricityGirtEnd = bIsReverseGirtSession ? ReferenceGirt.EccentricityStart : ReferenceGirt.EccentricityEnd;
             CMemberEccentricity eccentricityGirtStart_temp;
@@ -200,9 +200,9 @@ namespace PFD
 
                 for (int j = 0; j < INumberOfGirtsToDeactivate; j++)
                 {
-                    // Alignment - switch start and end allignment for girts on the left side of window and the right side of window
-                    float fGirtStartTemp = fGirtAllignmentStart;
-                    float fGirtEndTemp = fGirtAllignmentEnd;
+                    // Alignment - switch start and end alignment for girts on the left side of window and the right side of window
+                    float fGirtStartTemp = fGirtAlignmentStart;
+                    float fGirtEndTemp = fGirtAlignmentEnd;
 
                     eccentricityGirtStart_temp = new CMemberEccentricity(eccentricityGirtStart.MFy_local, eccentricityGirtStart.MFz_local);
                     eccentricityGirtEnd_temp = new CMemberEccentricity(eccentricityGirtEnd.MFy_local, eccentricityGirtEnd.MFz_local);
@@ -213,19 +213,23 @@ namespace PFD
                         eccentricityGirtEnd_temp = new CMemberEccentricity(-eccentricityGirtEnd.MFy_local, -eccentricityGirtEnd.MFz_local);
                     }
 
-                    if (i == 1 || bWindowToCloseToLeftColumn) // If just right sequence of girts is generated switch allignment and eccentricity (???) need testing;
+                    if (i == 1 || bWindowToCloseToLeftColumn) // If just right sequence of girts is generated switch alignment and eccentricity (???) need testing;
                     {
-                        if (!bIsLastBayInFrontorBackSide) // Change allignment (different columns on bay sides)
+                        if (!bIsLastBayInFrontorBackSide) // Change alignment (different columns on bay sides)
                         {
-                            fGirtStartTemp = fGirtAllignmentEnd;
-                            fGirtEndTemp = fGirtAllignmentStart;
+                            fGirtStartTemp = fGirtAlignmentEnd;
+                            fGirtEndTemp = fGirtAlignmentStart;
 
                             if (bIsFirstBayInFrontorBackSide) // First bay, right side, end connection to the intermediate column
                                 fGirtEndTemp = ReferenceGirt.FAlignment_End;
                         }
-                        else // Last bay - right side - end allignment to the main column
+                        else // Last bay - right side - end alignment to the main column
                         {
                             fGirtEndTemp = ReferenceGirt.FAlignment_Start;
+
+                            // Ak je girt v obratenom poradi a len na pravej strane v ramci bay, tak zaciatocne alignment ma byt nastavene podla edge column a koncove podla window column
+                            if (bIsReverseGirtSession) // Obratene poradie girts (Gable roof predna a zadna strana napravo)
+                                fGirtStartTemp = fGirtAlignmentEnd;
                         }
 
                         eccentricityGirtStart_temp = new CMemberEccentricity(eccentricityGirtEnd.MFy_local, eccentricityGirtEnd.MFz_local); // TODO - we need probably to change signs of values
