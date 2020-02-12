@@ -1481,8 +1481,7 @@ namespace PFD
                 bool bGenerateLoadsOnFrameMembers,
                 bool bGenerateSurfaceLoads)
         {
-            return; // Zakomentovane bloky 
-
+            return;
 
             // Loading
             #region Load Cases
@@ -1805,34 +1804,6 @@ namespace PFD
             //    iTemp += iArrGB_NumberOfNodesPerBay[i];
             //    iTemp2 += iArrGB_NumberOfMembersPerBay[i];
             //}
-        }
-
-        public void GetJointalignments(float fh_column, float fh_rafter, out float alignment_column, out float alignment_knee_rafter, out float alignment_apex_rafter)
-        {
-            float cosAlpha = (float)Math.Cos(fRoofPitch_rad);
-            float sinAlpha = (float)Math.Sin(fRoofPitch_rad);
-            float tanAlpha = (float)Math.Tan(fRoofPitch_rad);
-
-            /*
-            float y = fh_rafter / cosAlpha;
-            float a = sinAlpha * 0.5f * y;
-            float x = cosAlpha * 2f * a;
-            float x2 = 0.5f * fh_column - x;
-            float y2 = tanAlpha * x2;
-            alignment_column = 0.5f * y + y2;
-
-            float x3 = 0.5f * x;
-            float x4 = 0.5f * fh_column - x3;
-            alignment_knee_rafter = x4 / cosAlpha;
-
-            alignment_apex_rafter = a;
-            */
-
-            float y = fh_rafter / cosAlpha;
-            alignment_apex_rafter = sinAlpha * 0.5f * y;
-            float x = cosAlpha * 2f * alignment_apex_rafter;
-            alignment_column = 0.5f * y + (tanAlpha * (0.5f * fh_column - x));
-            alignment_knee_rafter = (0.5f * fh_column - (0.5f * x)) / cosAlpha;
         }
     }
 }
