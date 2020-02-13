@@ -270,7 +270,7 @@ namespace PFD
                 if (MKitsetTypeIndex > 1)
                     throw new ArgumentException("Selected kitset type is not implemented.");
 
-                // TODO - nastavit do comboboxu Model type prislusne modely pre dany typ kitsetu
+                // Nastavit do comboboxu Model type prislusne modely pre dany typ kitsetu
                 if(MKitsetTypeIndex == 0) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetMonoRoofEnclosed", "modelName");
                 else if(MKitsetTypeIndex == 1) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName");
                 else if (MKitsetTypeIndex == 2) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetShelterSingleSpan", "modelName");
@@ -323,11 +323,28 @@ namespace PFD
                 fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
 
                 if (MKitsetTypeIndex == 0)
+                {
                     fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+
+                    // Re-calculate value of distance between columns (number of columns per frame is always even
+                    int iOneRafterFrontColumnNo = (int)((MGableWidth - 0.95 * MColumnDistance) / MColumnDistance);
+                    IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
+                }
                 else if (MKitsetTypeIndex == 1)
+                {
                     fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+
+                    // Re-calculate value of distance between columns (number of columns per frame is always even
+                    int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth - 0.45f * MColumnDistance) / MColumnDistance);
+                    IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                }
                 else
+                {
                     fHeight_H2 = 0; // Exception
+                    IFrontColumnNoInOneFrame = 0;
+                }
+
+                MColumnDistance = MGableWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
 
                 RoofCladdingIndex = 1;
                 RoofCladdingCoatingIndex = 1;
@@ -384,7 +401,7 @@ namespace PFD
                         fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
-                        int iOneRafterFrontColumnNo = (int)(MGableWidth / MColumnDistance);
+                        int iOneRafterFrontColumnNo = (int)((MGableWidth - 0.95 * MColumnDistance) / MColumnDistance);
                         IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
                     }
                     else if (MKitsetTypeIndex == 1)
@@ -392,7 +409,7 @@ namespace PFD
                         fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
-                        int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
+                        int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth - 0.45f * MColumnDistance) / MColumnDistance);
                         IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     }
                     else
@@ -400,6 +417,8 @@ namespace PFD
                         fHeight_H2 = 0; // Exception
                         IFrontColumnNoInOneFrame = 0;
                     }
+
+                    MColumnDistance = MGableWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -614,12 +633,12 @@ namespace PFD
 
                     if (MKitsetTypeIndex == 0)
                     {
-                        iOneRafterFrontColumnNo = (int)(MGableWidth / MColumnDistance);
+                        iOneRafterFrontColumnNo = (int)((MGableWidth - 0.95 * MColumnDistance) / MColumnDistance);
                         IFrontColumnNoInOneFrame = iOneRafterFrontColumnNo;
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
-                        iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
+                        iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth - 0.45f * MColumnDistance) / MColumnDistance);
                         IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     }
                     else
@@ -638,7 +657,7 @@ namespace PFD
                     // chcel som tam mat toho co najmenej a len najnutnejsie hodnoty
                     // Mozes to tak upravit ak je to logickejsie a spravnejsie
 
-                    MColumnDistance = (MGableWidth / (IFrontColumnNoInOneFrame + 1));
+                    MColumnDistance = MGableWidth / (IFrontColumnNoInOneFrame + 1);
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
