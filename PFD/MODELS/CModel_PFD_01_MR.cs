@@ -1518,8 +1518,6 @@ namespace PFD
             }
             #endregion
 
-            return;
-
             #region Member Loads
             if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns || bGenerateLoadsOnFrameMembers)
             {
