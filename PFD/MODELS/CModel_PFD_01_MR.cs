@@ -1492,8 +1492,6 @@ namespace PFD
             // Faktor ktory prepocita zatazenie z podorysneho rozmeru premietnute na stresnu rovinu
             fSlopeFactor = (fW_frame / (fW_frame / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
 
-            return;
-
             #region Surface Loads
             // Surface Loads
 
@@ -1502,10 +1500,11 @@ namespace PFD
                 CSurfaceLoadGenerator surfaceLoadGenerator = new CSurfaceLoadGenerator(fH1_frame, fH2_frame, fW_frame, fL_tot, fRoofPitch_rad,
                     fDist_Purlin, fDist_Girt, fDist_FrontGirts, fDist_BackGirts, fDist_FrontColumns, fDist_BackColumns,
                     fSlopeFactor, m_arrLoadCases, generalLoad, wind, snow);
-                surfaceLoadGenerator.GenerateSurfaceLoads();
+                surfaceLoadGenerator.GenerateSurfaceLoads_M();
             }
 
             #endregion
+            return;
 
             #region Earthquake - nodal loads
             // Earthquake
