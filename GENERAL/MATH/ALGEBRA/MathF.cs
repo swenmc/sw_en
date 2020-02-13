@@ -363,7 +363,25 @@ public double RombergIntegration(Function y, double a, double b, int n)
 
 */
 
+        //----------------------------------------------------------------------------------------------------------------------------
+        // Sum and Average
+        //----------------------------------------------------------------------------------------------------------------------------
+        public static float Sum(params float[] data)
+        {
+            float result = 0;
 
+            for (int i = 0; i < data.Length; i++)
+            {
+                result += data[i];
+            }
+
+            return result;
+        }
+
+        public static float Average(params float[] data)
+        {
+            return Sum(data) / data.Length;
+        }
     }
 }
 

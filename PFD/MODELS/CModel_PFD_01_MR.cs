@@ -16,8 +16,8 @@ namespace PFD
     [Serializable]
     public class CModel_PFD_01_MR : CModel_PFD
     {
-        private int iLeftColumnGirtNo;
-        private int iRightColumnGirtNo;
+        public int iLeftColumnGirtNo;
+        public int iRightColumnGirtNo;
 
         public CModel_PFD_01_MR
         (
@@ -1504,7 +1504,6 @@ namespace PFD
             }
 
             #endregion
-            return;
 
             #region Earthquake - nodal loads
             // Earthquake
@@ -1514,10 +1513,12 @@ namespace PFD
                 int iNumberOfLoadsInXDirection = iFrameNo;
                 int iNumberOfLoadsInYDirection = 2;
 
-                CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, m_arrLoadCases, m_arrNodes,/* fL1_frame,*/ eq);
+                CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, iFrameNodesNo, m_arrLoadCases, m_arrNodes,/* fL1_frame,*/ eq);
                 nodalLoadGenerator.GenerateNodalLoads();
             }
             #endregion
+
+            return;
 
             #region Member Loads
             if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns || bGenerateLoadsOnFrameMembers)

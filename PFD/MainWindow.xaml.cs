@@ -565,19 +565,40 @@ namespace PFD
             int iNumberOfPurlins_x = model.iPurlinNoInOneFrame;
             int iNumberOfGirts_x = model.iGirtNoInOneFrame;
             int iNumberOfMainColumns_x = 2; // TODO - napojit na model
+            int iNumberOfMainRafters_x; // TODO - napojit na model
 
-            int iNumberOfMainRafters_x = 2; // TODO - napojit na model
             float fRafterLength = 0;
+            float fWallHeight_Left = 0;
+            float fWallHeight_Right = 0;
+            float fk_ex;
+            double fDelta_x;
 
             if (model is CModel_PFD_01_MR)
             {
                 iNumberOfMainRafters_x = 1;
                 fRafterLength = vm.GableWidth / (float)Math.Cos(vm.fRoofPitch_radians); // Sirka budovy premietnuta do sklonu raftera
+                fWallHeight_Left = vm.Model.fH1_frame;
+                fWallHeight_Right = vm.Model.fH2_frame;
+                float fk_ex_LeftColumn = GetEquivalentStiffness(fWallHeight_Left, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E); // Tuhost laveho stlpa
+                float fk_ex_RightColumn = GetEquivalentStiffness(fWallHeight_Right, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E); // Tuhost praveho stlpa
+                fk_ex = fk_ex_LeftColumn + fk_ex_RightColumn; // Celkova tuhost stlpov ramu
+
+                // Sila na stlp vypocitana podla jeho tuhosti
+                double fP_Left = 1f * fk_ex_LeftColumn / fk_ex;
+                double fP_Right = 1f * fk_ex_RightColumn / fk_ex;
+
+                float fDelta_x_LeftColumn = (float)GetCantileverDeflection(fP_Left, fWallHeight_Left, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E);
+                float fDelta_x_RightColumn = (float)GetCantileverDeflection(fP_Right, fWallHeight_Right, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E);
+                fDelta_x = MathF.Average(fDelta_x_LeftColumn, fDelta_x_RightColumn); // (Priemerna) deformacia ramu ako celku od jednotkovej sily
             }
             else if (model is CModel_PFD_01_GR)
             {
                 iNumberOfMainRafters_x = 2;
                 fRafterLength = (0.5f * vm.GableWidth) / (float)Math.Cos(vm.fRoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
+                fWallHeight_Left = vm.Model.fH1_frame;
+                fWallHeight_Right = vm.Model.fH1_frame;
+                fk_ex = GetEquivalentStiffness(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E);
+                fDelta_x = GetCantileverDeflection(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E);
             }
             else
             {
@@ -585,46 +606,73 @@ namespace PFD
                 throw new Exception("Kitset model is not implemented.");
             }
 
+            // X - direction
             float fLoadingWidth_Frame_x = vm.fBayWidth; // Zatazovacia sirka ramu
 
             float fMass_Purlins_x = iNumberOfPurlins_x * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_EavePurlins_x = iNumberOfEavePurlins_x * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_Girts_x = iNumberOfGirts_x * fGirtMassPerMeter * fLoadingWidth_Frame_x;
-            float fMass_Frame_x = iNumberOfMainColumns_x * fMainColumnMassPerMeter * vm.WallHeight + iNumberOfMainRafters_x * fMainRafterMassPerMeter * fRafterLength;
+            float fMass_Frame_x = (fMainColumnMassPerMeter * fWallHeight_Left + fMainColumnMassPerMeter * fWallHeight_Right) + iNumberOfMainRafters_x * fMainRafterMassPerMeter * fRafterLength;
 
             // Pre stlpy uvazujeme polovicu vysky
-            float fMass_Wall_x_kg = 0.5f * iNumberOfMainColumns_x * vm.WallHeight * fLoadingWidth_Frame_x * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Wall_x_kg = (0.5f * fWallHeight_Left + 0.5f * fWallHeight_Right) * fLoadingWidth_Frame_x * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
             float fMass_Roof_x_kg = iNumberOfMainRafters_x * fRafterLength * fLoadingWidth_Frame_x * (fRoofCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
             float fMass_Total_x = fMass_Frame_x + fMass_Girts_x + fMass_Wall_x_kg + fMass_EavePurlins_x + fMass_Purlins_x + fMass_Roof_x_kg;
 
-            float fT_1x = GetPeriod(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E, fMass_Total_x);  // TODO  napojit Column Iy (AS 4600 - Ix)
+            float fT_1x = GetPeriod(fk_ex, fMass_Total_x);  // TODO  napojit Column Iy (AS 4600 - Ix)
 
+            // Y - direction
             int iNumberOfMainColumns_y = model.iFrameNo;
-            int iNumberOfMainRafters_y = iNumberOfMainColumns_y; // Pocet rafters je rovnaky ako pocet stlpov
+            int iNumberOfMainRafters_y = iNumberOfMainRafters_x * model.iFrameNo; // Pocet rafters
             int iNumberOfPurlins_y = (iNumberOfMainColumns_y - 1) * (iNumberOfPurlins_x / 2); // Number of bays (number of frames - 1) * Number of purlins per half of building width
             int iNumberOfEavePurlins_y = (iNumberOfMainColumns_y - 1);
-            int iNumberOfGirtsInWallPerMainColumn = model.iGirtNoInOneFrame / iNumberOfMainColumns_x; // Pocet girts na vysku stlpa
-            int iNumberOfGirts_y = (iNumberOfMainColumns_x - 1) * iNumberOfGirtsInWallPerMainColumn;
+
+            int iNumberOfGirtsInLeftWallPerMainColumn = model.iGirtNoInOneFrame / iNumberOfMainColumns_x; // Pocet girts na vysku stlpa
+            int iNumberOfGirtsInRightWallPerMainColumn = model.iGirtNoInOneFrame / iNumberOfMainColumns_x; // Pocet girts na vysku stlpa
+
+            if (model is CModel_PFD_01_MR) // Rozdielny pocet girts na lavej a pravej strane budovy
+            {
+                CModel_PFD_01_MR modelMonoPitch = (CModel_PFD_01_MR)model;
+                iNumberOfGirtsInLeftWallPerMainColumn = modelMonoPitch.iLeftColumnGirtNo;
+                iNumberOfGirtsInRightWallPerMainColumn = modelMonoPitch.iRightColumnGirtNo;
+            }
+
+            int iNumberOfGirts_y_Left = (iNumberOfMainColumns_y - 1) * iNumberOfGirtsInLeftWallPerMainColumn;
+            int iNumberOfGirts_y_Right = (iNumberOfMainColumns_y - 1) * iNumberOfGirtsInRightWallPerMainColumn;
 
             float fMass_Purlins_y = iNumberOfPurlins_y * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_EavePurlins_y = iNumberOfEavePurlins_y * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
-            float fMass_Girts_y = iNumberOfGirts_y * fGirtMassPerMeter * fLoadingWidth_Frame_x;
-            float fMass_Frame_y = iNumberOfMainColumns_y * fMainColumnMassPerMeter * 0.5f * vm.WallHeight + iNumberOfMainRafters_y * fMainRafterMassPerMeter * fRafterLength;
+            float fMass_Girts_y_Left = iNumberOfGirts_y_Left * fGirtMassPerMeter * fLoadingWidth_Frame_x;
+            float fMass_Girts_y_Right = iNumberOfGirts_y_Right * fGirtMassPerMeter * fLoadingWidth_Frame_x;
+
+            float fMass_Frame_y_Left = iNumberOfMainColumns_y * fMainColumnMassPerMeter * 0.5f * fWallHeight_Left + iNumberOfMainRafters_y * fMainRafterMassPerMeter * fRafterLength;
+            float fMass_Frame_y_Right = iNumberOfMainColumns_y * fMainColumnMassPerMeter * 0.5f * fWallHeight_Right + iNumberOfMainRafters_y * fMainRafterMassPerMeter * fRafterLength;
+
             // TODO - pre smer Y pripocitat vahu polovice sirky * polovice vysky prednej a zadnej steny
 
             float fLoadingWidth_Frame_y = 0.5f * vm.GableWidth; // Zatazovacia sirka ramu v smere Y - polovica budovy
 
-            float fMass_Wall_y_kg = vm.Length * 0.5f * vm.WallHeight * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Wall_y_Left_kg = vm.Length * 0.5f * fWallHeight_Left * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Wall_y_Right_kg = vm.Length * 0.5f * fWallHeight_Right * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+
             float fMass_Roof_y_kg = vm.Length * fRafterLength * (fRoofCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
-            float fMass_Total_y = fMass_Frame_y + fMass_Girts_y + fMass_Wall_y_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
+            float fMass_Total_y_Left = fMass_Frame_y_Left + fMass_Girts_y_Left + fMass_Wall_y_Left_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
+            float fMass_Total_y_Right = fMass_Frame_y_Right + fMass_Girts_y_Right + fMass_Wall_y_Right_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
 
-            float fT_1y = GetPeriod(iNumberOfMainColumns_y, vm.WallHeight, fMainColumnMomentOfInteria_zv, fMainColumnMaterial_E, fMass_Total_y);  //  TODO  napojit Column Iz (AS 4600 - Iy)
+            float fk_ey = GetEquivalentStiffness(iNumberOfMainColumns_y, vm.WallHeight, fMainColumnMomentOfInteria_zv, fMainColumnMaterial_E);
+            float fMass_Total_y = MathF.Average(fMass_Total_y_Left, fMass_Total_y_Right); // Priemerna hmotnost - pre monopitch roof by mala byt hodnota ina pre lavu a pravu stranu
+            // TODO - Implementovat vypocet inej frekvencie fT_1y pre lavu a pravu stranu ???
+            // Pripadne vypocit len jednu frekvenciu a jeden faktor ale pouzit inu hodnotu mass_total pre vypocet sily na lavej a pravej strane
+            // Potom by sme mali dostat inu hodnotu zatazenia na lavej a pravej strane budovy
+            // Zatial je to zjednodusene, vypocitame rozne hmotnosti pre lavu a pravu stranu ale v dalsom vypocte pouzivame priemernu hodnotu a zatazenie uvazujeme rovnake na oboch stranach
+            float fT_1y = GetPeriod(fk_ey, fMass_Total_y);  //  TODO  napojit Main a Edge Column Iz (AS 4600 - Iy)
 
             // NZS 1170.5, cl. 4.1.2.1 Rayleigh method, eq. 4.1(1)
-            float fT_1x_RM_411 = GetPeriod_RM_NZS1107_5_Eq411(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E, fMass_Total_x);
-            float fT_1y_RM_411 = GetPeriod_RM_NZS1107_5_Eq411(iNumberOfMainColumns_y, vm.WallHeight, fMainColumnMomentOfInteria_zv, fMainColumnMaterial_E, fMass_Total_y);
+            double fDelta_y = GetCantileverDeflection(iNumberOfMainColumns_y, vm.WallHeight, fMainColumnMomentOfInteria_zv, fMainColumnMaterial_E);
+            float fT_1x_RM_411 = GetPeriod_RM_NZS1107_5_Eq411(fDelta_x, fMass_Total_x);
+            float fT_1y_RM_411 = GetPeriod_RM_NZS1107_5_Eq411(fDelta_y, fMass_Total_y);
 
             // Validation - compare calculated periods
             // Kontrola vypoctu frekvencii, assert v pripade ze rozdiel je viac nez 20% mensej z hodnot (TODO - idealne je spocitat z globalneho modelu alebo aspon 2D modelu ramu so zohladnenim poddajnosti prievlaku (rafter) pre smer x / krajnej vaznice (edge purlin) pre smer y)
@@ -712,12 +760,21 @@ namespace PFD
             vm.Eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, sSeisInputData);
         }
 
-        // Priblizne riesenie (tuhy prievlak)
-        public float GetPeriod(int iNumberOfColumns, float fL, float fI_column, float fE, float fMass_Total)
+        public float GetEquivalentStiffness(float fL, float fI_column, float fE)
         {
             // Equivalent Stiffness
-            float fk_e = iNumberOfColumns * (3 * fE * fI_column / MathF.Pow3(fL));
+            return 3 * fE * fI_column / MathF.Pow3(fL);
+        }
 
+        public float GetEquivalentStiffness(int iNumberOfColumns, float fL, float fI_column, float fE)
+        {
+            // Equivalent Stiffness
+            return iNumberOfColumns * GetEquivalentStiffness(fL, fI_column, fE);
+        }
+
+        // Priblizne riesenie (tuhy prievlak)
+        public float GetPeriod(float fk_e, float fMass_Total)
+        {
             // Natural circular frequency
             float fOmega = MathF.Sqrt(fk_e / fMass_Total);
 
@@ -730,10 +787,21 @@ namespace PFD
             return fPeriod_T;
         }
 
-        public float GetPeriod_RM_NZS1107_5_Eq411(int iNumberOfColumns, float fL, float fI_column, float fE, float fMass_Total)
+        public double GetCantileverDeflection(double fP, float fL, float fI_column, float fE)
+        {
+            //double fP = 1; // Unit Force
+            return fP * MathF.Pow3(fL) / (3 * fI_column * fE); // Cantilever deflection (rafter is considered as rigid member)
+        }
+
+        public double GetCantileverDeflection(/*double fP,*/ int iNumberOfColumns, float fL, float fI_column, float fE)
         {
             double fP = 1; // Unit Force
-            double fDelta_x = fP * MathF.Pow3(vm.WallHeight) / (iNumberOfColumns * 3 * fI_column * fE); // Cantilever deflection (rafter is considered as rigid member)
+            return GetCantileverDeflection(fP / iNumberOfColumns, fL, fI_column, fE); // Cantilever deflection (rafter is considered as rigid member)
+        }
+
+        public float GetPeriod_RM_NZS1107_5_Eq411(double fDelta_x, float fMass_Total)
+        {
+            double fP = 1; // Unit Force
             return (float)(2 * MathF.fPI * Math.Sqrt((fMass_Total * GlobalConstants.G_ACCELERATION * MathF.Pow2(fDelta_x)) / (GlobalConstants.G_ACCELERATION * fP * fDelta_x))); // Eq. 4.1(1)
         }
 
