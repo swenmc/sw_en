@@ -176,7 +176,7 @@ namespace BaseClasses
                     // Trapezoidal shape
                     if (!MathF.d_equal(fY2_dimension, 0.0f))
                     {
-                        CalculateYCoordinatesOfSegment(segmentStart_x_coordinate, segment_x_dimension, out fY_dimension_temp1, out fY_dimension_temp2);
+                        CalculateYCoordinatesOfSegment(bIsGableRoof, segmentStart_x_coordinate, segment_x_dimension, out fY_dimension_temp1, out fY_dimension_temp2);
                     }
 
                     if (bIsGableRoof && !MathF.d_equal(fY2_dimension,0) && fX_coordinates[i] < 0.5f * fX_dimension_max && fX_coordinates[i + 1] > 0.5f * fX_dimension_max) // Trapezoidal segment with 5 points in the middle of wall under gable roof apex
@@ -185,7 +185,7 @@ namespace BaseClasses
                         // 5 points
                         float fY_dimension_temp1_unused;
                         float fY3_dimension_temp; // Bod na pravej strane
-                        CalculateYCoordinatesOfSegment(0.5f * fX_dimension_max, segmentStart_x_coordinate + segment_x_dimension - 0.5f * fX_dimension_max, out fY_dimension_temp1_unused, out fY3_dimension_temp);
+                        CalculateYCoordinatesOfSegment(bIsGableRoof, 0.5f * fX_dimension_max, segmentStart_x_coordinate + segment_x_dimension - 0.5f * fX_dimension_max, out fY_dimension_temp1_unused, out fY3_dimension_temp);
                         LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, ELoadCS, ELoadDir, pControlPoint_segment, segment_x_dimension, fY3_dimension_temp, 0.5f * fX_dimension_max - segmentStart_x_coordinate, fY2_dimension, fY_dimension_temp1, fValues[(int)eMainLoadDirection, i] * fLoadDirectionValueFactor, 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, false, BIsDisplayed, FTime));
                     }
                     else
@@ -211,7 +211,7 @@ namespace BaseClasses
                     // Trapezoidal shape
                     if (!MathF.d_equal(fY2_dimension, 0.0f))
                     {
-                        CalculateYCoordinatesOfSegment(segmentStart_x_coordinate, segment_x_dimension, out fY_dimension_temp1, out fY_dimension_temp2);
+                        CalculateYCoordinatesOfSegment(bIsGableRoof, segmentStart_x_coordinate, segment_x_dimension, out fY_dimension_temp1, out fY_dimension_temp2);
                     }
 
                     if (bIsGableRoof && !MathF.d_equal(fY2_dimension, 0) && fX_coordinates[i] < 0.5f * fX_dimension_max  && fX_coordinates[i + 1] > fX_dimension_max) // Last Segment - one segment per whole right side of gable roof building, segment start is on the left side
@@ -232,19 +232,25 @@ namespace BaseClasses
             }
         }
 
-        private void CalculateYCoordinatesOfSegment(float fSegmentStart_x_coordinate, float fSegmentStart_x_dimension, out float fY_dimension_temp1, out float fY_dimension_temp2)
+        private void CalculateYCoordinatesOfSegment(bool bIsGableRoof, float fSegmentStart_x_coordinate, float fSegmentStart_x_dimension, out float fY_dimension_temp1, out float fY_dimension_temp2)
         {
-            if (fSegmentStart_x_coordinate < 0.5f * fX_dimension_max)  // Half of symmetric gable roof
+            // Dlzka priemetu raftera do horizontalnej osi x
+            float fRafterProjectionLength_X = 0.5f * fX_dimension_max; // Half of symmetric gable roof
+
+            if (!bIsGableRoof)
+                fRafterProjectionLength_X = fX_dimension_max;
+
+            if (fSegmentStart_x_coordinate < fRafterProjectionLength_X) // Half of symmetric gable roof
             {
                 // Left side of building
-                fY_dimension_temp1 = fY_dimension + (fSegmentStart_x_coordinate * ((fY2_dimension - fY_dimension) / (0.5f * fX_dimension_max)));
-                fY_dimension_temp2 = fY_dimension + ((fSegmentStart_x_coordinate + fSegmentStart_x_dimension) * ((fY2_dimension - fY_dimension) / (0.5f * fX_dimension_max)));
+                fY_dimension_temp1 = fY_dimension + (fSegmentStart_x_coordinate * ((fY2_dimension - fY_dimension) / fRafterProjectionLength_X));
+                fY_dimension_temp2 = fY_dimension + ((fSegmentStart_x_coordinate + fSegmentStart_x_dimension) * ((fY2_dimension - fY_dimension) / fRafterProjectionLength_X));
             }
             else
             {
                 // Right side of building
-                fY_dimension_temp1 = fY2_dimension - ((fSegmentStart_x_coordinate - (0.5f * fX_dimension_max)) * ((fY2_dimension - fY_dimension) / (0.5f * fX_dimension_max)));
-                fY_dimension_temp2 = fY2_dimension - (((fSegmentStart_x_coordinate + fSegmentStart_x_dimension) - (0.5f * fX_dimension_max)) * ((fY2_dimension - fY_dimension) / (0.5f * fX_dimension_max)));
+                fY_dimension_temp1 = fY2_dimension - ((fSegmentStart_x_coordinate - fRafterProjectionLength_X) * ((fY2_dimension - fY_dimension) / fRafterProjectionLength_X));
+                fY_dimension_temp2 = fY2_dimension - (((fSegmentStart_x_coordinate + fSegmentStart_x_dimension) - fRafterProjectionLength_X) * ((fY2_dimension - fY_dimension) / fRafterProjectionLength_X));
             }
         }
 
