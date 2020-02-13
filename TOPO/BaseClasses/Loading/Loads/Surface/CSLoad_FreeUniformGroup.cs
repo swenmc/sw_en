@@ -18,6 +18,14 @@ namespace BaseClasses
             set { m_loadList = value; }
         }
 
+        private bool m_bIsGableRoof;
+
+        public bool IsGableRoof
+        {
+            get { return m_bIsGableRoof; }
+            set { m_bIsGableRoof = value; }
+        }
+
         private bool m_bUseColorScaleRedAndBlue;
 
         public bool UseColorScaleRedAndBlue
@@ -52,6 +60,7 @@ namespace BaseClasses
                float m_fRotationX_deg_temp,
                float m_fRotationY_deg_temp,
                float m_fRotationZ_deg_temp,
+               bool bIsGableRoof_temp,
                bool bDrawPositiveValueOnPlusLocalZSide_temp,
                bool bChangePositionForNegativeValue_temp,
                bool bIsDisplayed,
@@ -73,13 +82,14 @@ namespace BaseClasses
             RotationY_deg = m_fRotationY_deg_temp;
             RotationZ_deg = m_fRotationZ_deg_temp;
 
+            m_bIsGableRoof = bIsGableRoof_temp;
             bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
             bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
             iFirstSegmentColorID = iFirstSegmentColorID_temp;
 
-            CreateParticularLoads();
+            CreateParticularLoads(m_bIsGableRoof);
         }
 
         public CSLoad_FreeUniformGroup(
@@ -97,6 +107,7 @@ namespace BaseClasses
                float m_fRotationX_deg_temp,
                float m_fRotationY_deg_temp,
                float m_fRotationZ_deg_temp,
+               bool bIsGableRoof_temp,
                bool bDrawPositiveValueOnPlusLocalZSide_temp,
                bool bChangePositionForNegativeValue_temp,
                bool bIsDisplayed,
@@ -118,16 +129,17 @@ namespace BaseClasses
             RotationY_deg = m_fRotationY_deg_temp;
             RotationZ_deg = m_fRotationZ_deg_temp;
 
+            m_bIsGableRoof = bIsGableRoof_temp;
             bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
             bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
             iFirstSegmentColorID = iFirstSegmentColorID_temp;
 
-            CreateParticularLoads();
+            CreateParticularLoads(m_bIsGableRoof);
         }
 
-        public void CreateParticularLoads()
+        public void CreateParticularLoads(bool bIsGableRoof)
         {
             // Basic validation
             if (fX_coordinates == null || fX_coordinates.Length < 2 || fValues == null || fValues.Length < 2) // Validation - load position and value should be calculated
@@ -167,7 +179,7 @@ namespace BaseClasses
                         CalculateYCoordinatesOfSegment(segmentStart_x_coordinate, segment_x_dimension, out fY_dimension_temp1, out fY_dimension_temp2);
                     }
 
-                    if (!MathF.d_equal(fY2_dimension,0) && fX_coordinates[i] < 0.5f * fX_dimension_max && fX_coordinates[i + 1] > 0.5f * fX_dimension_max) // Trapezoidal segment with 5 points in the middle of wall under gable roof apex
+                    if (bIsGableRoof && !MathF.d_equal(fY2_dimension,0) && fX_coordinates[i] < 0.5f * fX_dimension_max && fX_coordinates[i + 1] > 0.5f * fX_dimension_max) // Trapezoidal segment with 5 points in the middle of wall under gable roof apex
                     {
                         // Create object in LCS (x - direction with changing values of load)
                         // 5 points
@@ -202,7 +214,7 @@ namespace BaseClasses
                         CalculateYCoordinatesOfSegment(segmentStart_x_coordinate, segment_x_dimension, out fY_dimension_temp1, out fY_dimension_temp2);
                     }
 
-                    if (!MathF.d_equal(fY2_dimension, 0) && fX_coordinates[i] < 0.5f * fX_dimension_max  && fX_coordinates[i + 1] > fX_dimension_max) // Last Segment - one segment per whole right side of gable roof building, segment start is on the left side
+                    if (bIsGableRoof && !MathF.d_equal(fY2_dimension, 0) && fX_coordinates[i] < 0.5f * fX_dimension_max  && fX_coordinates[i + 1] > fX_dimension_max) // Last Segment - one segment per whole right side of gable roof building, segment start is on the left side
                     {
                         // Create object in LCS (x - direction with changing values of load)
                         // 5 points
