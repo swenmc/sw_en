@@ -75,7 +75,7 @@ namespace PFD
         #endregion
 
         public CSurfaceLoadGenerator(float H1_frame, float H2_frame,
-            float W_frame, float L_tot, float RoofPitch_rad, 
+            float W_frame, float L_tot, float RoofPitch_rad,
             float Dist_Purlin,
             float Dist_Girt,
             float Dist_FrontGirts,
@@ -389,11 +389,11 @@ namespace PFD
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_max_Right_X_Minus].SurfaceLoadsList = surfaceWindLoad_ULS_MinusX_Cpimax;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_max_Front_Y_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusY_Cpimax;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_max_Rear_Y_Minus].SurfaceLoadsList = surfaceWindLoad_ULS_MinusY_Cpimax;
-            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpemin; 
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpemin;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Right_X_Minus].SurfaceLoadsList = surfaceWindLoad_ULS_MinusX_Cpemin;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Front_Y_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusY_Cpemin;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Rear_Y_Minus].SurfaceLoadsList = surfaceWindLoad_ULS_MinusY_Cpemin;
-            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpemax; 
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpemax;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Right_X_Minus].SurfaceLoadsList = surfaceWindLoad_ULS_MinusX_Cpemax;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Front_Y_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusY_Cpemax;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Rear_Y_Minus].SurfaceLoadsList = surfaceWindLoad_ULS_MinusY_Cpemax;
@@ -409,11 +409,11 @@ namespace PFD
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_max_Right_X_Minus].SurfaceLoadsList = surfaceWindLoad_SLS_MinusX_Cpimax;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_max_Front_Y_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpimax;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_max_Rear_Y_Minus].SurfaceLoadsList = surfaceWindLoad_SLS_MinusY_Cpimax;
-            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpemin; 
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpemin;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Right_X_Minus].SurfaceLoadsList = surfaceWindLoad_SLS_MinusX_Cpemin;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Front_Y_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpemin;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Rear_Y_Minus].SurfaceLoadsList = surfaceWindLoad_SLS_MinusY_Cpemin;
-            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpemax; 
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpemax;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Right_X_Minus].SurfaceLoadsList = surfaceWindLoad_SLS_MinusX_Cpemax;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Front_Y_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpemax;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Rear_Y_Minus].SurfaceLoadsList = surfaceWindLoad_SLS_MinusY_Cpemax;
@@ -661,6 +661,7 @@ namespace PFD
             out List<CSLoad_Free> surfaceWindLoadMinusY_Cpemax)
         {
             // Wind Load
+            /*
             Color cColorWindPressure = Colors.DeepPink;
             Color cColorWindSagging = Colors.DarkCyan;
 
@@ -674,6 +675,7 @@ namespace PFD
             float[] fp_e_W_wall_Theta_4;
             float[] fp_e_L_wall_Theta_4;
             float[,] fp_e_S_wall_Theta_4;
+
 
             if (eLSType == ELSType.eLS_ULS)
             {
@@ -705,6 +707,35 @@ namespace PFD
                 fp_e_L_wall_Theta_4 = wind.fp_e_L_wall_SLS_Theta_4;
                 fp_e_S_wall_Theta_4 = wind.fp_e_S_wall_SLS_Theta_4;
             }
+            */
+
+            Color cColorWindPressure;
+            Color cColorWindSagging;
+
+            float[,] fp_e_min_U_roof_Theta_4;
+            float[,] fp_e_min_D_roof_Theta_4;
+            float[,] fp_e_min_R_roof_Theta_4;
+            float[,] fp_e_max_U_roof_Theta_4;
+            float[,] fp_e_max_D_roof_Theta_4;
+            float[,] fp_e_max_R_roof_Theta_4;
+
+            float[] fp_e_W_wall_Theta_4;
+            float[] fp_e_L_wall_Theta_4;
+            float[,] fp_e_S_wall_Theta_4;
+
+            SetExternalPressureParameters(
+                eLSType,
+                out cColorWindPressure,
+                out cColorWindSagging,
+                out fp_e_min_U_roof_Theta_4,
+                out fp_e_min_D_roof_Theta_4,
+                out fp_e_min_R_roof_Theta_4,
+                out fp_e_max_U_roof_Theta_4,
+                out fp_e_max_D_roof_Theta_4,
+                out fp_e_max_R_roof_Theta_4,
+                out fp_e_W_wall_Theta_4,
+                out fp_e_L_wall_Theta_4,
+                out fp_e_S_wall_Theta_4);
 
             // Cpe, min
             SetSurfaceWindLoads_Cpe(
@@ -803,7 +834,7 @@ namespace PFD
         )
         {
             bool bIsGableRoof = true;
-
+            /*
             // Wind Load
             Color cColorWindPressure = Colors.DeepPink;
             Color cColorWindSagging = Colors.DarkCyan;
@@ -858,6 +889,30 @@ namespace PFD
                 fp_e_L_wall_Theta_4 = wind.fp_e_L_wall_SLS_Theta_4;
                 fp_e_S_wall_Theta_4 = wind.fp_e_S_wall_SLS_Theta_4;
             }
+            */
+
+            Color cColorWindPressure = Colors.DeepPink;
+            Color cColorWindSagging = Colors.DarkCyan;
+
+            float[,] fp_e_U_roof_Theta_4;
+            float[,] fp_e_D_roof_Theta_4;
+            float[,] fp_e_R_roof_Theta_4;
+
+            float[] fp_e_W_wall_Theta_4;
+            float[] fp_e_L_wall_Theta_4;
+            float[,] fp_e_S_wall_Theta_4;
+
+            SetExternalPressureParameters(
+                eLSType,
+                iCodeForCpeMinMaxValue,
+                out cColorWindPressure,
+                out cColorWindSagging,
+                out fp_e_U_roof_Theta_4,
+                out fp_e_D_roof_Theta_4,
+                out fp_e_R_roof_Theta_4,
+                out fp_e_W_wall_Theta_4,
+                out fp_e_L_wall_Theta_4,
+                out fp_e_S_wall_Theta_4);
 
             float fLoadDirectionValueFactor_Roof = -1f;
             float fLoadDirectionValueFactor_Wall = 1f;
@@ -1418,7 +1473,7 @@ namespace PFD
             surfaceWindLoadPlusY_Cpi.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fp_i_roof_Theta_4[(int)ELCMainDirection.ePlusY], -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, false, false, true, 0));
             surfaceWindLoadPlusY_Cpi.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataWallLeftRight, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, pWallFrontLeft, fWallLeftOrRight_X, fWallLeft_Y, -fp_i_wall_Theta_4[(int)ELCMainDirection.ePlusY], 90, 0, 90, cColorWindWalls, false, true, true, 0));
             surfaceWindLoadPlusY_Cpi.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataWallLeftRight, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, pWallBackRight, fWallLeftOrRight_X, fWallRight_Y, -fp_i_wall_Theta_4[(int)ELCMainDirection.ePlusY], 90, 0, 180 + 90, cColorWindWalls, false, true, true, 0));
-            surfaceWindLoadPlusY_Cpi.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataWallFront, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, pWallFrontLeft, fWallFrontOrBack_X, fWallFrontOrBack_Y1, fWallFrontOrBack_Y2,  fp_i_W_wall_Theta_4[(int)ELCMainDirection.ePlusY], 90, 0, 0, cColorWindWalls, false, false, true, true, 0));
+            surfaceWindLoadPlusY_Cpi.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataWallFront, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, pWallFrontLeft, fWallFrontOrBack_X, fWallFrontOrBack_Y1, fWallFrontOrBack_Y2, fp_i_W_wall_Theta_4[(int)ELCMainDirection.ePlusY], 90, 0, 0, cColorWindWalls, false, false, true, true, 0));
             surfaceWindLoadPlusY_Cpi.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataWallBack, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, pWallBackRight, fWallFrontOrBack_X, fWallFrontOrBack_Y2, fWallFrontOrBack_Y1, fp_i_wall_Theta_4[(int)ELCMainDirection.ePlusY], 90, 0, 180, cColorWindWalls, true, false, true, true, 0));
 
             surfaceWindLoadMinusY_Cpi = new List<CSLoad_Free>(5);
@@ -1465,6 +1520,7 @@ namespace PFD
             out List<CSLoad_Free> surfaceWindLoadMinusY_Cpemax)
         {
             // Wind Load
+            /*
             Color cColorWindPressure = Colors.DeepPink;
             Color cColorWindSagging = Colors.DarkCyan;
 
@@ -1509,6 +1565,35 @@ namespace PFD
                 fp_e_L_wall_Theta_4 = wind.fp_e_L_wall_SLS_Theta_4;
                 fp_e_S_wall_Theta_4 = wind.fp_e_S_wall_SLS_Theta_4;
             }
+            */
+
+            Color cColorWindPressure;
+            Color cColorWindSagging;
+
+            float[,] fp_e_min_U_roof_Theta_4;
+            float[,] fp_e_min_D_roof_Theta_4;
+            float[,] fp_e_min_R_roof_Theta_4;
+            float[,] fp_e_max_U_roof_Theta_4;
+            float[,] fp_e_max_D_roof_Theta_4;
+            float[,] fp_e_max_R_roof_Theta_4;
+
+            float[] fp_e_W_wall_Theta_4;
+            float[] fp_e_L_wall_Theta_4;
+            float[,] fp_e_S_wall_Theta_4;
+
+            SetExternalPressureParameters(
+                eLSType,
+                out cColorWindPressure,
+                out cColorWindSagging,
+                out fp_e_min_U_roof_Theta_4,
+                out fp_e_min_D_roof_Theta_4,
+                out fp_e_min_R_roof_Theta_4,
+                out fp_e_max_U_roof_Theta_4,
+                out fp_e_max_D_roof_Theta_4,
+                out fp_e_max_R_roof_Theta_4,
+                out fp_e_W_wall_Theta_4,
+                out fp_e_L_wall_Theta_4,
+                out fp_e_S_wall_Theta_4);
 
             // Cpe, min
             SetSurfaceWindLoads_Cpe_M(
@@ -1610,7 +1695,7 @@ namespace PFD
         )
         {
             bool bIsGableRoof = false;
-
+            /*
             // Wind Load
             Color cColorWindPressure = Colors.DeepPink;
             Color cColorWindSagging = Colors.DarkCyan;
@@ -1665,6 +1750,37 @@ namespace PFD
                 fp_e_L_wall_Theta_4 = wind.fp_e_L_wall_SLS_Theta_4;
                 fp_e_S_wall_Theta_4 = wind.fp_e_S_wall_SLS_Theta_4;
             }
+
+            float fLoadDirectionValueFactor_Roof = -1f;
+            float fLoadDirectionValueFactor_Wall = 1f;
+            float fLoadDirectionValueFactor_FrontWall = -1f;
+            float fLoadDirectionValueFactor_BackWall = -1f;
+            float fLoadDirectionValueFactor_LeftWall = -1f;
+            float fLoadDirectionValueFactor_RightWall = -1f;
+            */
+
+            Color cColorWindPressure = Colors.DeepPink;
+            Color cColorWindSagging = Colors.DarkCyan;
+
+            float[,] fp_e_U_roof_Theta_4;
+            float[,] fp_e_D_roof_Theta_4;
+            float[,] fp_e_R_roof_Theta_4;
+
+            float[] fp_e_W_wall_Theta_4;
+            float[] fp_e_L_wall_Theta_4;
+            float[,] fp_e_S_wall_Theta_4;
+
+            SetExternalPressureParameters(
+                eLSType,
+                iCodeForCpeMinMaxValue,
+                out cColorWindPressure,
+                out cColorWindSagging,
+                out fp_e_U_roof_Theta_4,
+                out fp_e_D_roof_Theta_4,
+                out fp_e_R_roof_Theta_4,
+                out fp_e_W_wall_Theta_4,
+                out fp_e_L_wall_Theta_4,
+                out fp_e_S_wall_Theta_4);
 
             float fLoadDirectionValueFactor_Roof = -1f;
             float fLoadDirectionValueFactor_Wall = 1f;
@@ -1766,6 +1882,116 @@ namespace PFD
                     fp_i_W_wall_Theta_4 = wind.fp_i_max_SLS_Theta_4;
                     fp_i_wall_Theta_4 = wind.fp_i_max_SLS_Theta_4;
                 }
+            }
+        }
+
+        private void SetExternalPressureParameters(
+            ELSType eLSType,
+            int iCodeForCpeMinMaxValue,
+            out Color cColorWindPressure,
+            out Color cColorWindSagging,
+            out float[,] fp_e_U_roof_Theta_4,
+            out float[,] fp_e_D_roof_Theta_4,
+            out float[,] fp_e_R_roof_Theta_4,
+            out float[] fp_e_W_wall_Theta_4,
+            out float[] fp_e_L_wall_Theta_4,
+            out float[,] fp_e_S_wall_Theta_4)
+        {
+            // Wind Load
+            cColorWindPressure = Colors.DeepPink;
+            cColorWindSagging = Colors.DarkCyan;
+
+            if (eLSType == ELSType.eLS_ULS)
+            {
+                // Roof
+                if (iCodeForCpeMinMaxValue == 0)
+                {
+                    fp_e_U_roof_Theta_4 = wind.fp_e_min_U_roof_ULS_Theta_4;
+                    fp_e_D_roof_Theta_4 = wind.fp_e_min_D_roof_ULS_Theta_4;
+                    fp_e_R_roof_Theta_4 = wind.fp_e_min_R_roof_ULS_Theta_4;
+                }
+                else
+                {
+                    fp_e_U_roof_Theta_4 = wind.fp_e_max_U_roof_ULS_Theta_4;
+                    fp_e_D_roof_Theta_4 = wind.fp_e_max_D_roof_ULS_Theta_4;
+                    fp_e_R_roof_Theta_4 = wind.fp_e_max_R_roof_ULS_Theta_4;
+                }
+
+                // Walls
+                fp_e_W_wall_Theta_4 = wind.fp_e_W_wall_ULS_Theta_4;
+                fp_e_L_wall_Theta_4 = wind.fp_e_L_wall_ULS_Theta_4;
+                fp_e_S_wall_Theta_4 = wind.fp_e_S_wall_ULS_Theta_4;
+            }
+            else
+            {
+                // Roof
+                if (iCodeForCpeMinMaxValue == 0)
+                {
+                    fp_e_U_roof_Theta_4 = wind.fp_e_min_U_roof_SLS_Theta_4;
+                    fp_e_D_roof_Theta_4 = wind.fp_e_min_D_roof_SLS_Theta_4;
+                    fp_e_R_roof_Theta_4 = wind.fp_e_min_R_roof_SLS_Theta_4;
+                }
+                else
+                {
+                    fp_e_U_roof_Theta_4 = wind.fp_e_max_U_roof_SLS_Theta_4;
+                    fp_e_D_roof_Theta_4 = wind.fp_e_max_D_roof_SLS_Theta_4;
+                    fp_e_R_roof_Theta_4 = wind.fp_e_max_R_roof_SLS_Theta_4;
+                }
+
+                // Walls
+                fp_e_W_wall_Theta_4 = wind.fp_e_W_wall_SLS_Theta_4;
+                fp_e_L_wall_Theta_4 = wind.fp_e_L_wall_SLS_Theta_4;
+                fp_e_S_wall_Theta_4 = wind.fp_e_S_wall_SLS_Theta_4;
+            }
+        }
+
+        private void SetExternalPressureParameters(
+            ELSType eLSType,
+            out Color cColorWindPressure,
+            out Color cColorWindSagging,
+            out float[,] fp_e_min_U_roof_Theta_4,
+            out float[,] fp_e_min_D_roof_Theta_4,
+            out float[,] fp_e_min_R_roof_Theta_4,
+            out float[,] fp_e_max_U_roof_Theta_4,
+            out float[,] fp_e_max_D_roof_Theta_4,
+            out float[,] fp_e_max_R_roof_Theta_4,
+            out float[] fp_e_W_wall_Theta_4,
+            out float[] fp_e_L_wall_Theta_4,
+            out float[,] fp_e_S_wall_Theta_4)
+        {
+            // Wind Load
+            cColorWindPressure = Colors.DeepPink;
+            cColorWindSagging = Colors.DarkCyan;
+
+            if (eLSType == ELSType.eLS_ULS)
+            {
+                // Roof
+                fp_e_min_U_roof_Theta_4 = wind.fp_e_min_U_roof_ULS_Theta_4;
+                fp_e_min_D_roof_Theta_4 = wind.fp_e_min_D_roof_ULS_Theta_4;
+                fp_e_min_R_roof_Theta_4 = wind.fp_e_min_R_roof_ULS_Theta_4;
+                fp_e_max_U_roof_Theta_4 = wind.fp_e_max_U_roof_ULS_Theta_4;
+                fp_e_max_D_roof_Theta_4 = wind.fp_e_max_D_roof_ULS_Theta_4;
+                fp_e_max_R_roof_Theta_4 = wind.fp_e_max_R_roof_ULS_Theta_4;
+
+                // Walls
+                fp_e_W_wall_Theta_4 = wind.fp_e_W_wall_ULS_Theta_4;
+                fp_e_L_wall_Theta_4 = wind.fp_e_L_wall_ULS_Theta_4;
+                fp_e_S_wall_Theta_4 = wind.fp_e_S_wall_ULS_Theta_4;
+            }
+            else
+            {
+                // Roof
+                fp_e_min_U_roof_Theta_4 = wind.fp_e_min_U_roof_SLS_Theta_4;
+                fp_e_min_D_roof_Theta_4 = wind.fp_e_min_D_roof_SLS_Theta_4;
+                fp_e_min_R_roof_Theta_4 = wind.fp_e_min_R_roof_SLS_Theta_4;
+                fp_e_max_U_roof_Theta_4 = wind.fp_e_max_U_roof_SLS_Theta_4;
+                fp_e_max_D_roof_Theta_4 = wind.fp_e_max_D_roof_SLS_Theta_4;
+                fp_e_max_R_roof_Theta_4 = wind.fp_e_max_R_roof_SLS_Theta_4;
+
+                // Walls
+                fp_e_W_wall_Theta_4 = wind.fp_e_W_wall_SLS_Theta_4;
+                fp_e_L_wall_Theta_4 = wind.fp_e_L_wall_SLS_Theta_4;
+                fp_e_S_wall_Theta_4 = wind.fp_e_S_wall_SLS_Theta_4;
             }
         }
     }
