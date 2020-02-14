@@ -19,10 +19,41 @@ namespace BaseClasses
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
         public int iNumberOfAnchorsInRow_xDirection_SQ1;
         public int iNumberOfAnchorsInColumn_yDirection_SQ1;
-        public float fx_c_SQ1;
-        public float fy_c_SQ1;
+        //public float fx_c_SQ1;
+        //public float fy_c_SQ1;
         public float[] fDistanceOfPointsX_SQ1;
         public float[] fDistanceOfPointsY_SQ1;
+
+        double m_RefPointX;
+        public double RefPointX
+        {
+            get
+            {
+                return m_RefPointX;
+            }
+
+            set
+            {
+                m_RefPointX = value;
+                //ReferencePoint = new Point(RefPointX, RefPointY);
+            }
+        }
+
+        double m_RefPointY;
+
+        public double RefPointY
+        {
+            get
+            {
+                return m_RefPointY;
+            }
+
+            set
+            {
+                m_RefPointY = value;
+                //ReferencePoint = new Point(RefPointX, RefPointY);
+            }
+        }
 
         public CAnchorArrangement_BB_BG() { }
 
@@ -40,8 +71,11 @@ namespace BaseClasses
             // Parametre sekvencie
             iNumberOfAnchorsInRow_xDirection_SQ1 = NumberOfAnchorsInYDirection;
             iNumberOfAnchorsInColumn_yDirection_SQ1 = NumberOfAnchorsInZDirection;
-            fx_c_SQ1 = (float)prop.a1_pos_cp_x;
-            fy_c_SQ1 = (float)prop.a1_pos_cp_y;
+            //fx_c_SQ1 = (float)prop.a1_pos_cp_x;
+            //fy_c_SQ1 = (float)prop.a1_pos_cp_y;
+            m_RefPointX = prop.a1_pos_cp_x;
+            m_RefPointY = prop.a1_pos_cp_y;
+
             float dist_x1 = (float)prop.dist_x1;
             float dist_y1 = (float)prop.dist_y1;
             float dist_x2 = (float)prop.dist_x2;
@@ -84,7 +118,7 @@ namespace BaseClasses
             CAnchorRectSequence seq1 = new CAnchorRectSequence();
             seq1.NumberOfAnchorsInRow_xDirection = iNumberOfAnchorsInRow_xDirection_SQ1;
             seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfAnchorsInColumn_yDirection_SQ1;
-            seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
+            //seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
             seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1;
             seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1;
             seq1.INumberOfConnectors = seq1.NumberOfAnchorsInRow_xDirection * seq1.NumberOfAnchorsInColumn_yDirection;
@@ -106,7 +140,7 @@ namespace BaseClasses
         public Point[] Get_AnchorSequencePointCoordinates(CAnchorRectSequence srectSeq)
         {
             // Connectors in Sequence
-            return GetRegularArrayOfPointsInCartesianCoordinates(srectSeq.ReferencePoint, srectSeq.NumberOfAnchorsInRow_xDirection, srectSeq.NumberOfAnchorsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            return GetRegularArrayOfPointsInCartesianCoordinates(new Point(m_RefPointX, m_RefPointY) /*srectSeq.ReferencePoint*/, srectSeq.NumberOfAnchorsInRow_xDirection, srectSeq.NumberOfAnchorsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
         }
 
         public override void Calc_HolesCentersCoord2D(float fbX, float fhY, float flZ)

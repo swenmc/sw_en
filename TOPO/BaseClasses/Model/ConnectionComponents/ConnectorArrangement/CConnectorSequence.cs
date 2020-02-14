@@ -25,6 +25,7 @@ namespace BaseClasses
             }
         }
 
+        /*
         private Point m_RefPoint;
 
         public Point ReferencePoint
@@ -38,7 +39,7 @@ namespace BaseClasses
             {
                 m_RefPoint = value;
             }
-        }
+        }*/
 
         private Point[] m_holesCentersPoints;
 

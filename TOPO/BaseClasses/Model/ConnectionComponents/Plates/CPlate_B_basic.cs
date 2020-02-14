@@ -295,7 +295,7 @@ namespace BaseClasses
                 iNumberOfScrewsInSection = ((CScrewArrangement_BX_1)screwArrangement).RectSequences[0].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_1)screwArrangement).RectSequences[1].NumberOfScrewsInColumn_yDirection;
 
             if (screwArrangement is CScrewArrangement_BX_2)
-                iNumberOfScrewsInSection = ((CScrewArrangement_BX_2)screwArrangement).RectSequences[0].NumberOfScrewsInColumn_yDirection+ ((CScrewArrangement_BX_2)screwArrangement).RectSequences[1].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_2)screwArrangement).RectSequences[2].NumberOfScrewsInColumn_yDirection;
+                iNumberOfScrewsInSection = ((CScrewArrangement_BX_2)screwArrangement).RectSequences[0].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_2)screwArrangement).RectSequences[1].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_2)screwArrangement).RectSequences[2].NumberOfScrewsInColumn_yDirection;
 
             fA_n = fA_g;
 

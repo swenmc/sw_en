@@ -12,9 +12,9 @@ namespace BaseClasses
     {
         private int m_iNumberOfScrewsInRow_xDirection;
         private int m_iNumberOfScrewsInColumn_yDirection;
-        
+
         private double m_RefPointX;
-        private double m_RefPointY;        
+        private double m_RefPointY;
         private float m_fDistanceOfPointsX;
         private float m_fDistanceOfPointsY;
 
@@ -82,7 +82,7 @@ namespace BaseClasses
             set
             {
                 m_RefPointX = value;
-                ReferencePoint = new Point(RefPointX, RefPointY);
+                //ReferencePoint = new Point(RefPointX, RefPointY);
             }
         }
         public double RefPointY
@@ -95,7 +95,7 @@ namespace BaseClasses
             set
             {
                 m_RefPointY = value;
-                ReferencePoint = new Point(RefPointX, RefPointY);
+                //ReferencePoint = new Point(RefPointX, RefPointY);
             }
         }
 
