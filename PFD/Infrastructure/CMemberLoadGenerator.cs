@@ -403,6 +403,15 @@ namespace PFD
             ref List<CMLoad> memberLoadExternalPressure_SLS_Cpemax_Rear
             )
         {
+            bool bIsGableRoof = iFrameNodesNo == 5;
+
+            int iNumberOfColumnsInFrame = 2;
+            int iNumberOfEavePurlinsInFrame = 2;
+            int iNumberOfRaftersInFrame = 2;
+
+            if (!bIsGableRoof)
+                iNumberOfRaftersInFrame = 1;
+
             int iFrameMembersNo = iFrameNodesNo - 1;
 
             int indexColumn1Left = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * iFrameMembersNo + 0;
@@ -438,43 +447,59 @@ namespace PFD
 
             // Dead Loads
             // Columns
-            CMLoad loadColumnLeft_DL = new CMLoad_21(iFrameIndex * 4 + 1, fValueLoadColumnDead, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_X, true, 0);
+            CMLoad loadColumnLeft_DL = new CMLoad_21(iFrameIndex * iFrameMembersNo + 1, fValueLoadColumnDead, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_X, true, 0);
             // Osovy system praveho stlpa smeruje zhora nadol, takze hodnota zatazenia v LCS je s opacnym znamienkom (* -1)
-            CMLoad loadColumnRight_DL = new CMLoad_21(iFrameIndex * 4 + 2, -fValueLoadColumnDead, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_X, true, 0);
+            CMLoad loadColumnRight_DL = new CMLoad_21(iFrameIndex * iFrameMembersNo + 2, -fValueLoadColumnDead, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_X, true, 0);
             memberLoadDead.Add(loadColumnLeft_DL);
             memberLoadDead.Add(loadColumnRight_DL);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_DL = new CMLoad_21(iFrameIndex * 4 + 3, fValueLoadRafterDead, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
-            CMLoad loadRafterRight_DL = new CMLoad_21(iFrameIndex * 4 + 4, fValueLoadRafterDead, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterLeft_DL = new CMLoad_21(iFrameIndex * iFrameMembersNo + 3, fValueLoadRafterDead, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberLoadDead.Add(loadRafterLeft_DL);
-            memberLoadDead.Add(loadRafterRight_DL);
+
+            if (bIsGableRoof)
+            {
+                CMLoad loadRafterRight_DL = new CMLoad_21(iFrameIndex * iFrameMembersNo + 4, fValueLoadRafterDead, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+                memberLoadDead.Add(loadRafterRight_DL);
+            }
 
             // Imposed Loads - roof
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_IL = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
-            CMLoad loadRafterRight_IL = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterLeft_IL = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (iNumberOfColumnsInFrame + iNumberOfRaftersInFrame + iNumberOfEavePurlinsInFrame)], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberLoadImposed.Add(loadRafterLeft_IL);
-            memberLoadImposed.Add(loadRafterRight_IL);
+
+            if (bIsGableRoof)
+            {
+                CMLoad loadRafterRight_IL = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (iNumberOfColumnsInFrame + iNumberOfRaftersInFrame + iNumberOfEavePurlinsInFrame) + 1], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+                memberLoadImposed.Add(loadRafterRight_IL);
+            }
 
             // Snow Loads - roof
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
             CMLoad loadRafterLeft_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
-            CMLoad loadRafterRight_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowAll_ULS.Add(loadRafterLeft_SL1_All_ULS);
-            memberMaxLoadSnowAll_ULS.Add(loadRafterRight_SL1_All_ULS);
+
+            if (bIsGableRoof)
+            {
+                CMLoad loadRafterRight_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+                memberMaxLoadSnowAll_ULS.Add(loadRafterRight_SL1_All_ULS);
+            }
 
             // Rafters
+            float fSnowLoadOnRafterLengthMultiplier = 1;
+            if (!bIsGableRoof)
+                fSnowLoadOnRafterLengthMultiplier = 0.5f;
+
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_SL2_Left_ULS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterLeft_SL2_Left_ULS = new CMLoad_22(iFrameIndex + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, fSnowLoadOnRafterLengthMultiplier * m_arrMembers[indexRafter1Left].FLength, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_PA_22, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowLeft_ULS.Add(loadRafterLeft_SL2_Left_ULS);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterRight_SL3_Right_ULS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterRight_SL3_Right_ULS = new CMLoad_23(iFrameIndex + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, fSnowLoadOnRafterLengthMultiplier * m_arrMembers[indexRafter2Right].FLength, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_PB_23, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowRight_ULS.Add(loadRafterRight_SL3_Right_ULS);
 
             // Wind Loads
@@ -691,18 +716,22 @@ namespace PFD
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
             CMLoad loadRafterLeft_SL1_All_SLS = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
-            CMLoad loadRafterRight_SL1_All_SLS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowSLS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowAll_SLS.Add(loadRafterLeft_SL1_All_SLS);
-            memberMaxLoadSnowAll_SLS.Add(loadRafterRight_SL1_All_SLS);
+
+            if (bIsGableRoof)
+            {
+                CMLoad loadRafterRight_SL1_All_SLS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowSLS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+                memberMaxLoadSnowAll_SLS.Add(loadRafterRight_SL1_All_SLS);
+            }
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_SL2_Left_SLS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowSLS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterLeft_SL2_Left_SLS = new CMLoad_22(iFrameIndex + 1, fValueLoadRafterSnowSLS_Nu_2 * fFrameTributaryWidth, fSnowLoadOnRafterLengthMultiplier * m_arrMembers[indexRafter1Left].FLength, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_PA_22, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowLeft_SLS.Add(loadRafterLeft_SL2_Left_SLS);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterRight_SL3_Right_SLS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowSLS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterRight_SL3_Right_SLS = new CMLoad_23(iFrameIndex + 1, fValueLoadRafterSnowSLS_Nu_2 * fFrameTributaryWidth, fSnowLoadOnRafterLengthMultiplier * m_arrMembers[indexRafter2Right].FLength, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_PB_23, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowRight_SLS.Add(loadRafterRight_SL3_Right_SLS);
 
             // Wind Loads
