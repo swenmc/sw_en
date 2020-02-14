@@ -2109,6 +2109,9 @@ namespace PFD
 
                         for (int i = 0; i < iBlockSequence - 1; i++)
                             iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i + 1];
+
+                        if(!bIsGable && iBlockSequence == iNumberOfIntermediateColumns) // Monopitch - posledna bay
+                            bIsLastBayInFrontorBackSide = true;
                     }
                     else // Right session
                     {

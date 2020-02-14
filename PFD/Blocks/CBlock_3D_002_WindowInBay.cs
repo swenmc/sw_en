@@ -227,6 +227,12 @@ namespace PFD
                         {
                             fGirtEndTemp = ReferenceGirt.FAlignment_Start;
 
+                            if (!bIsReverseGirtSession && bIsLastBayInFrontorBackSide) // Posledna bay, ale nie reverse session, girt ma odsadenie podla frame edge column
+                            {
+                                fGirtStartTemp = fGirtAlignmentEnd;
+                                fGirtEndTemp = ReferenceGirt.FAlignment_End;
+                            }
+
                             // Ak je girt v obratenom poradi a len na pravej strane v ramci bay, tak zaciatocne alignment ma byt nastavene podla edge column a koncove podla window column
                             if (bIsReverseGirtSession) // Obratene poradie girts (Gable roof predna a zadna strana napravo)
                                 fGirtStartTemp = fGirtAlignmentEnd;

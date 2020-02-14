@@ -203,6 +203,7 @@ namespace PFD
 
             float fGirtAlignmentStart = bIsReverseGirtSession ? ReferenceGirt.FAlignment_End : ReferenceGirt.FAlignment_Start; // Main column of a frame
             float fGirtAlignmentEnd = -0.5f * (float)crscColumn.b - fCutOffOneSide; // Door column
+
             CMemberEccentricity eccentricityGirtStart = bIsReverseGirtSession ? ReferenceGirt.EccentricityEnd : ReferenceGirt.EccentricityStart;
             CMemberEccentricity eccentricityGirtEnd = bIsReverseGirtSession ? ReferenceGirt.EccentricityStart : ReferenceGirt.EccentricityEnd;
             CMemberEccentricity eccentricityGirtStart_temp;
@@ -245,6 +246,12 @@ namespace PFD
                         else // Last bay - right side - end alignment to the main column
                         {
                             fGirtEndTemp = ReferenceGirt.FAlignment_Start;
+
+                            if (!bIsReverseGirtSession && bIsLastBayInFrontorBackSide) // Posledna bay, ale nie reverse session, girt ma odsadenie podla frame edge column
+                            {
+                                fGirtStartTemp = fGirtAlignmentEnd;
+                                fGirtEndTemp = ReferenceGirt.FAlignment_End;
+                            }
 
                             // Ak je girt v obratenom poradi a len na pravej strane v ramci bay, tak zaciatocne alignment ma byt nastavene podla edge column a koncove podla door trimmer
                             if (bIsReverseGirtSession) // Obratene poradie girts (Gable roof predna a zadna strana napravo)
