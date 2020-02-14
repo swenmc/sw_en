@@ -971,8 +971,10 @@ namespace PFD
             // Roof Surface Geometry
             // Control Points
             Point3D pRoofFrontLeft = new Point3D(0, 0, fH1_frame);
+            Point3D pRoofFrontMiddle = new Point3D(0.5f * fW_frame, 0, 0.5f * (fH1_frame + fH2_frame));
             Point3D pRoofFrontRight = new Point3D(fW_frame, 0, fH2_frame);
             Point3D pRoofBackLeft = new Point3D(0, fL_tot, fH1_frame);
+            Point3D pRoofBackMiddle = new Point3D(0.5f * fW_frame, fL_tot, 0.5f * (fH1_frame + fH2_frame));
             Point3D pRoofBackRight = new Point3D(fW_frame, fL_tot, fH2_frame);
 
             // Dimensions
@@ -1038,10 +1040,18 @@ namespace PFD
             surfaceRoofSnowLoad_ULS_Nu_1 = new List<CSLoad_Free>(1);
             //surfaceRoofSnowLoad_ULS_Nu_1.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDirection.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
             surfaceRoofSnowLoad_ULS_Nu_1.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDirection.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
+            surfaceRoofSnowLoad_ULS_Nu_2_Left = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_ULS_Nu_2_Left.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDirection.eLD_Z, pRoofFrontMiddle, fRoof_X, 0.5f * fRoof_Y, fsnowULS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
+            surfaceRoofSnowLoad_ULS_Nu_2_Right = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_ULS_Nu_2_Right.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDirection.eLD_Z, pRoofFrontRight, fRoof_X, 0.5f * fRoof_Y, fsnowULS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
 
             surfaceRoofSnowLoad_SLS_Nu_1 = new List<CSLoad_Free>(1);
             //surfaceRoofSnowLoad_SLS_Nu_1.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDirection.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowSLS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
             surfaceRoofSnowLoad_SLS_Nu_1.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDirection.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowSLS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
+            surfaceRoofSnowLoad_SLS_Nu_2_Left = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_SLS_Nu_2_Left.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDirection.eLD_Z, pRoofFrontMiddle, fRoof_X, 0.5f * fRoof_Y, fsnowSLS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
+            surfaceRoofSnowLoad_SLS_Nu_2_Right = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_SLS_Nu_2_Right.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDirection.eLD_Z, pRoofFrontRight, fRoof_X, 0.5f * fRoof_Y, fsnowSLS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
 
             // Wind Load
             // Internal pressure
@@ -1232,10 +1242,9 @@ namespace PFD
             m_arrLoadCases[(int)ELCName.eIL_Q].SurfaceLoadsList = surfaceRoofImposedLoad;
 
             // ULS
-            // ULS
             m_arrLoadCases[(int)ELCName.eSL_Su_Full].SurfaceLoadsList = surfaceRoofSnowLoad_ULS_Nu_1;
-            //m_arrLoadCases[(int)ELCName.eSL_Su_Left].SurfaceLoadsList = surfaceRoofSnowLoad_ULS_Nu_2_Left;
-            //m_arrLoadCases[(int)ELCName.eSL_Su_Right].SurfaceLoadsList = surfaceRoofSnowLoad_ULS_Nu_2_Right;
+            m_arrLoadCases[(int)ELCName.eSL_Su_Left].SurfaceLoadsList = surfaceRoofSnowLoad_ULS_Nu_2_Left;
+            m_arrLoadCases[(int)ELCName.eSL_Su_Right].SurfaceLoadsList = surfaceRoofSnowLoad_ULS_Nu_2_Right;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_min_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpimin;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_min_Right_X_Minus].SurfaceLoadsList = surfaceWindLoad_ULS_MinusX_Cpimin;
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_min_Front_Y_Plus].SurfaceLoadsList = surfaceWindLoad_ULS_PlusY_Cpimin;
@@ -1254,8 +1263,8 @@ namespace PFD
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Rear_Y_Minus].SurfaceLoadsList = surfaceWindLoad_ULS_MinusY_Cpemax;
             // SLS
             m_arrLoadCases[(int)ELCName.eSL_Ss_Full].SurfaceLoadsList = surfaceRoofSnowLoad_SLS_Nu_1;
-            //m_arrLoadCases[(int)ELCName.eSL_Ss_Left].SurfaceLoadsList = surfaceRoofSnowLoad_SLS_Nu_2_Left;
-            //m_arrLoadCases[(int)ELCName.eSL_Ss_Right].SurfaceLoadsList = surfaceRoofSnowLoad_SLS_Nu_2_Right;
+            m_arrLoadCases[(int)ELCName.eSL_Ss_Left].SurfaceLoadsList = surfaceRoofSnowLoad_SLS_Nu_2_Left;
+            m_arrLoadCases[(int)ELCName.eSL_Ss_Right].SurfaceLoadsList = surfaceRoofSnowLoad_SLS_Nu_2_Right;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_min_Left_X_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpimin;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_min_Right_X_Minus].SurfaceLoadsList = surfaceWindLoad_SLS_MinusX_Cpimin;
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_min_Front_Y_Plus].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpimin;
