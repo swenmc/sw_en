@@ -173,6 +173,8 @@ namespace BaseClasses
             m_RefPointY = refPointY;
             m_fDistanceOfPointsX = distanceOfPointsX;
             m_fDistanceOfPointsY = distanceOfPointsY;
+            m_SameDistancesX = true;
+            m_SameDistancesY = true;
 
             INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
             HolesCentersPoints = new Point[INumberOfConnectors];

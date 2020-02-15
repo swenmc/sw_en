@@ -105,47 +105,47 @@ namespace BaseClasses
             }
         }
 
-        // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
+        //// TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
 
-        // Left group
-        public int iNumberOfScrewsInRow_xDirection_SQ1;
-        public int iNumberOfScrewsInColumn_yDirection_SQ1;
-        public float fx_c_SQ1;
-        public float fy_c_SQ1;
-        public float fDistanceOfPointsX_SQ1;
-        public float fDistanceOfPointsY_SQ1;
-        public int iNumberOfScrewsInRow_xDirection_SQ2;
-        public int iNumberOfScrewsInColumn_yDirection_SQ2;
-        public float fx_c_SQ2;
-        public float fy_c_SQ2;
-        public float fDistanceOfPointsX_SQ2;
-        public float fDistanceOfPointsY_SQ2;
-        public int iNumberOfScrewsInRow_xDirection_SQ3;
-        public int iNumberOfScrewsInColumn_yDirection_SQ3;
-        public float fx_c_SQ3;
-        public float fy_c_SQ3;
-        public float fDistanceOfPointsX_SQ3;
-        public float fDistanceOfPointsY_SQ3;
+        //// Left group
+        //public int iNumberOfScrewsInRow_xDirection_SQ1;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ1;
+        //public float fx_c_SQ1;
+        //public float fy_c_SQ1;
+        //public float fDistanceOfPointsX_SQ1;
+        //public float fDistanceOfPointsY_SQ1;
+        //public int iNumberOfScrewsInRow_xDirection_SQ2;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ2;
+        //public float fx_c_SQ2;
+        //public float fy_c_SQ2;
+        //public float fDistanceOfPointsX_SQ2;
+        //public float fDistanceOfPointsY_SQ2;
+        //public int iNumberOfScrewsInRow_xDirection_SQ3;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ3;
+        //public float fx_c_SQ3;
+        //public float fy_c_SQ3;
+        //public float fDistanceOfPointsX_SQ3;
+        //public float fDistanceOfPointsY_SQ3;
 
-        // Right group
-        public int iNumberOfScrewsInRow_xDirection_SQ4;
-        public int iNumberOfScrewsInColumn_yDirection_SQ4;
-        public float fx_c_SQ4;
-        public float fy_c_SQ4;
-        public float fDistanceOfPointsX_SQ4;
-        public float fDistanceOfPointsY_SQ4;
-        public int iNumberOfScrewsInRow_xDirection_SQ5;
-        public int iNumberOfScrewsInColumn_yDirection_SQ5;
-        public float fx_c_SQ5;
-        public float fy_c_SQ5;
-        public float fDistanceOfPointsX_SQ5;
-        public float fDistanceOfPointsY_SQ5;
-        public int iNumberOfScrewsInRow_xDirection_SQ6;
-        public int iNumberOfScrewsInColumn_yDirection_SQ6;
-        public float fx_c_SQ6;
-        public float fy_c_SQ6;
-        public float fDistanceOfPointsX_SQ6;
-        public float fDistanceOfPointsY_SQ6;
+        //// Right group
+        //public int iNumberOfScrewsInRow_xDirection_SQ4;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ4;
+        //public float fx_c_SQ4;
+        //public float fy_c_SQ4;
+        //public float fDistanceOfPointsX_SQ4;
+        //public float fDistanceOfPointsY_SQ4;
+        //public int iNumberOfScrewsInRow_xDirection_SQ5;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ5;
+        //public float fx_c_SQ5;
+        //public float fy_c_SQ5;
+        //public float fDistanceOfPointsX_SQ5;
+        //public float fDistanceOfPointsY_SQ5;
+        //public int iNumberOfScrewsInRow_xDirection_SQ6;
+        //public int iNumberOfScrewsInColumn_yDirection_SQ6;
+        //public float fx_c_SQ6;
+        //public float fy_c_SQ6;
+        //public float fDistanceOfPointsX_SQ6;
+        //public float fDistanceOfPointsY_SQ6;
 
         public CScrewArrangement_BX_2() { }
 
