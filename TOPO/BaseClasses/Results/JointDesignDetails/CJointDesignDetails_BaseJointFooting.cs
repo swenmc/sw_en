@@ -35,7 +35,8 @@ namespace BaseClasses
         public float fe_y_BasePlateToFootingEdge;
 
         public float fe_x_AnchorToFootingEdge;
-        public float fe_y_AnchorToFootingEdge;
+        public float fe_y_AnchorToFootingEdge_Tension;
+        public float fe_y_AnchorToFootingEdge_Shear;
 
         public float fu_x_Washer;
         public float fu_y_Washer;
@@ -106,8 +107,8 @@ namespace BaseClasses
         public float fs_1_y;
         public float fs_min;
         public float fc_2_x;
-        public float fc_1_y;
-        public float fc_min;
+        public float fc_1_y_Tension;  // TODO Vypis
+        public float fc_min_Tension;  // TODO Vypis
         public float fk;
         public float fLambda_53;
         public float fPsi_1_group;
@@ -167,6 +168,7 @@ namespace BaseClasses
         public float fPsi_5_group;
         public float fPsi_6;
         public float fPsi_7;
+        public float fc_1_y_Shear; // TODO Vypis
         public float fA_vo;
         public float fA_v_group;
         public float fd_o;

@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using BaseClasses;
 using MATH;
 using MATERIAL;
@@ -1319,10 +1321,12 @@ namespace M_AS4600
             if (!MathF.d_equal(designDetails.fV_asterix_x_joint, 0) || !MathF.d_equal(designDetails.fV_asterix_y_joint, 0))
                 designDetails.fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(designDetails.fV_asterix_x_joint) + MathF.Pow2(designDetails.fV_asterix_y_joint));
 
+            List<CAnchor> anchors = basePlate.AnchorArrangement.Anchors.OfType<CAnchor>().ToList(); // TODO - preklapam pole kotiev na list - chcel o by to zefektivnit a pracovat s zmenit v arrangement pole na list
+
             int iNumberAnchors = basePlate.AnchorArrangement.Anchors.Length;
             designDetails.iNumberAnchors = basePlate.AnchorArrangement.IHolesNumber;
-            designDetails.iNumberAnchors_t = designDetails.iNumberAnchors; // Total number of anchors active in tension - all anchors active as default
-            designDetails.iNumberAnchors_v = designDetails.iNumberAnchors; // Total number of anchors active in shear - all anchors active as default
+            designDetails.iNumberAnchors_t = anchors.Count(p => p.IsActiveInTension); // Total number of anchors active in tension - all anchors active as default
+            designDetails.iNumberAnchors_v = anchors.Count(p=> p.IsActiveInShear); // Pocet kotiev ktore maju nastaveny
 
             CAnchorArrangement_BB_BG anchorArrangement;
 
@@ -1334,7 +1338,7 @@ namespace M_AS4600
             }
 
             int iNumberAnchors_x = anchorArrangement.NumberOfAnchorsInYDirection;
-            int iNumberAnchors_y = anchorArrangement.NumberOfAnchorsInZDirection;
+            int iNumberAnchors_y_Tension = anchorArrangement.NumberOfAnchorsInZDirection;
 
             designDetails.fN_asterix_anchor_uplif = sDIF_temp.fN_t / designDetails.iNumberAnchors_t; // Design axial force per anchor
             designDetails.fV_asterix_anchor = designDetails.fV_asterix_res_joint / designDetails.iNumberAnchors_v; // Design shear force per anchor
@@ -1355,13 +1359,21 @@ namespace M_AS4600
             float pe_y_plus_min_AnchorToPlateEdge = float.MaxValue;
             float fe_x_minus_min_AnchorToFootingEdge = float.MaxValue;
             float fe_x_plus_min_AnchorToFootingEdge = float.MaxValue;
-            float fe_y_minus_min_AnchorToFootingEdge = float.MaxValue;
-            float fe_y_plus_min_AnchorToFootingEdge = float.MaxValue;
+            float fe_y_minus_min_AnchorToFootingEdge_Tension = float.MaxValue;
+            float fe_y_plus_min_AnchorToFootingEdge_Tension = float.MaxValue;
+
+            float fe_y_minus_min_AnchorToFootingEdge_Shear = float.MaxValue;
+            float fe_y_plus_min_AnchorToFootingEdge_Shear = float.MaxValue;
 
             designDetails.bIsCastInHeadedStud = false; // TODO - rozlisovat typ kotvy
 
             //(a) For cast-in headed stud anchors // Eq. 17-14
             //(b) For cast-in headed bolts and hooked bolt anchors // Eq. 17-15
+
+            // TODO bool IsActiveInShear by som nastavoval pre kotvy na okraji az niekde tu a nie v konstruktoroch pri vzniku anchor, lebo 
+            // sa to tyka len vypoctu a ak sa to nastavuje priamo v konstruktore anchor tak sa meni cely objekt kotvy, hoci v reale je stale rovnaky, len ho uvazujeme vo vypocte inak
+
+            // Az tu by sme mali zistit ake je maximalne y pre kotvy a vsetkym kotvam s touto suradnicou nastavovat tento bool na false ak je v GUI Design Options nastaveny nerovnomerny rozhos smyku
 
             foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
             {
@@ -1383,18 +1395,26 @@ namespace M_AS4600
                 if (anchor.x_fe_plus < fe_x_plus_min_AnchorToFootingEdge)
                     fe_x_plus_min_AnchorToFootingEdge = anchor.x_fe_plus;
 
-                if (anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge)
-                    fe_y_minus_min_AnchorToFootingEdge = anchor.y_fe_minus;
+                if (anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge_Tension)
+                    fe_y_minus_min_AnchorToFootingEdge_Tension = anchor.y_fe_minus;
 
-                if (anchor.y_fe_plus < fe_y_plus_min_AnchorToFootingEdge)
-                    fe_y_plus_min_AnchorToFootingEdge = anchor.y_fe_plus;
+                if (anchor.y_fe_plus < fe_y_plus_min_AnchorToFootingEdge_Tension)
+                    fe_y_plus_min_AnchorToFootingEdge_Tension = anchor.y_fe_plus;
+
+                if (anchor.IsActiveInShear && anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge_Shear)
+                    fe_y_minus_min_AnchorToFootingEdge_Shear = anchor.y_fe_minus;
+
+                if (anchor.IsActiveInShear && anchor.y_fe_plus < fe_y_plus_min_AnchorToFootingEdge_Shear)
+                    fe_y_plus_min_AnchorToFootingEdge_Shear = anchor.y_fe_plus;
             }
 
             // Nastavenie minimalnych okrajovych vzdialenosti podla smeru sily
             float pe_x_min_AnchorToPlateEdge = 0;
             float pe_y_min_AnchorToPlateEdge = 0;
             float fe_x_min_AnchorToFootingEdge = 0;
-            float fe_y_min_AnchorToFootingEdge = 0;
+            float fe_y_min_AnchorToFootingEdge_Tension = 0;
+
+            float fe_y_min_AnchorToFootingEdge_Shear = 0;
 
             // Znamienka su opacne ako som zvyknuty :-/
             /*
@@ -1425,12 +1445,14 @@ namespace M_AS4600
             if (sDIF_temp.fV_yv_yy > 0)
             {
                 pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
-                fe_y_min_AnchorToFootingEdge = fe_y_plus_min_AnchorToFootingEdge;
+                fe_y_min_AnchorToFootingEdge_Tension = fe_y_plus_min_AnchorToFootingEdge_Tension;
+                fe_y_min_AnchorToFootingEdge_Shear = fe_y_plus_min_AnchorToFootingEdge_Shear;
             }
             else
             {
                 pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
-                fe_y_min_AnchorToFootingEdge = fe_y_minus_min_AnchorToFootingEdge;
+                fe_y_min_AnchorToFootingEdge_Tension = fe_y_minus_min_AnchorToFootingEdge_Tension;
+                fe_y_min_AnchorToFootingEdge_Shear = fe_y_minus_min_AnchorToFootingEdge_Shear;
             }
 
             // Pre stlpy ramu na pravej strane treba hodnoty prehodit - nie som si uplne isty ci je znamienko hodnoty Vyv_yy spravne
@@ -1452,12 +1474,14 @@ namespace M_AS4600
                 if (sDIF_temp.fV_yv_yy > 0)
                 {
                     pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
-                    fe_y_min_AnchorToFootingEdge = fe_y_minus_min_AnchorToFootingEdge;
+                    fe_y_min_AnchorToFootingEdge_Tension = fe_y_minus_min_AnchorToFootingEdge_Tension;
+                    fe_y_min_AnchorToFootingEdge_Shear = fe_y_minus_min_AnchorToFootingEdge_Shear;
                 }
                 else
                 {
                     pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
-                    fe_y_min_AnchorToFootingEdge = fe_y_plus_min_AnchorToFootingEdge;
+                    fe_y_min_AnchorToFootingEdge_Tension = fe_y_plus_min_AnchorToFootingEdge_Tension;
+                    fe_y_min_AnchorToFootingEdge_Shear = fe_y_plus_min_AnchorToFootingEdge_Shear;
                 }
             }
 
@@ -1468,7 +1492,8 @@ namespace M_AS4600
             designDetails.fe_y_BasePlateToFootingEdge = Math.Min(basePlate.y_minus_plateEdge_to_pad, basePlate.y_plus_plateEdge_to_pad); // Minimum distance between plate edge and footing edge
 
             designDetails.fe_x_AnchorToFootingEdge = fe_x_min_AnchorToFootingEdge;
-            designDetails.fe_y_AnchorToFootingEdge = fe_y_min_AnchorToFootingEdge;
+            designDetails.fe_y_AnchorToFootingEdge_Tension = fe_y_min_AnchorToFootingEdge_Tension;
+            designDetails.fe_y_AnchorToFootingEdge_Shear = fe_y_min_AnchorToFootingEdge_Shear;
 
             designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx;  // Input
             designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input
@@ -1477,7 +1502,8 @@ namespace M_AS4600
             designDetails.fs_1_y = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsY_SQ1); // centre-to-centre spacing of the anchors
 
             designDetails.fc_2_x = designDetails.fe_x_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
-            designDetails.fc_1_y = designDetails.fe_y_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
+            designDetails.fc_1_y_Tension = designDetails.fe_y_AnchorToFootingEdge_Tension; // Vzdialenost kotvy od okraja betonoveho zakladu
+            designDetails.fc_1_y_Shear = designDetails.fe_y_AnchorToFootingEdge_Shear; // Vzdialenost kotvy od okraja betonoveho zakladu
 
             // Validation of distances
 
@@ -1488,7 +1514,8 @@ namespace M_AS4600
             ValidateDimensionValue(designDetails.fe_y_BasePlateToFootingEdge);
 
             ValidateDimensionValue(designDetails.fe_x_AnchorToFootingEdge);
-            ValidateDimensionValue(designDetails.fe_y_AnchorToFootingEdge);
+            ValidateDimensionValue(designDetails.fe_y_AnchorToFootingEdge_Tension);
+            ValidateDimensionValue(designDetails.fe_y_AnchorToFootingEdge_Shear);
 
             ValidateDimensionValue(designDetails.fu_x_Washer);
             ValidateDimensionValue(designDetails.fu_y_Washer);
@@ -1497,7 +1524,8 @@ namespace M_AS4600
             ValidateDimensionValue(designDetails.fs_1_y);
 
             ValidateDimensionValue(designDetails.fc_2_x);
-            ValidateDimensionValue(designDetails.fc_1_y);
+            ValidateDimensionValue(designDetails.fc_1_y_Tension);
+            ValidateDimensionValue(designDetails.fc_1_y_Shear);
 
             // Material properties
             CMat_02_00 materialConcrete = new CMat_02_00();
@@ -1622,16 +1650,16 @@ namespace M_AS4600
             // Group of anchors
 
             // Figure C17.4 – Definition of dimension e´n for group anchors
-            designDetails.fe_apostrophe_n = 0f;       // TODO dopracovat                    // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
-            designDetails.fConcreteCover = footing.ConcreteCover; // Input
+            designDetails.fe_apostrophe_n = 0f;                                                   // TODO dopracovat                    // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
+            designDetails.fConcreteCover = footing.ConcreteCover;                                 // Input
             designDetails.fh_ef = basePlate.AnchorArrangement.referenceAnchor.h_effective;        // effective anchor embedment depth
             designDetails.fs_min = Math.Min(designDetails.fs_2_x, designDetails.fs_1_y);
-            designDetails.fc_min = Math.Min(designDetails.fc_2_x, designDetails.fc_1_y);
+            designDetails.fc_min_Tension = Math.Min(designDetails.fc_2_x, designDetails.fc_1_y_Tension);
             designDetails.fk = 10f; // for cast-in anchors
             designDetails.fLambda_53 = eq_concrete.Eq_5_3_____(designDetails.fRho_c);
 
             designDetails.fPsi_1_group = eq_concrete.Eq_17_8____(designDetails.fe_apostrophe_n, designDetails.fh_ef);
-            designDetails.fPsi_2 = eq_concrete.Get_Psi_2__(designDetails.fc_min, designDetails.fh_ef);
+            designDetails.fPsi_2 = eq_concrete.Get_Psi_2__(designDetails.fc_min_Tension, designDetails.fh_ef);
 
             // Ψ3 = 1.25 for cast -in anchors in uncracked concrete
             // Ψ3 = 1.0 for concrete which is cracked at service load levels.
@@ -1639,10 +1667,10 @@ namespace M_AS4600
             designDetails.fA_no_group = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
 
             float fDistanceOfAnchorFromEdge_OtherSide_x = designDetails.fFootingDimension_x - designDetails.fc_2_x - (iNumberAnchors_x - 1) * designDetails.fs_2_x;
-            float fDistanceOfAnchorFromEdge_OtherSide_y = designDetails.fFootingDimension_y - designDetails.fc_1_y - (iNumberAnchors_y - 1) * designDetails.fs_1_y;
+            float fDistanceOfAnchorFromEdge_OtherSide_y = designDetails.fFootingDimension_y - designDetails.fc_1_y_Tension - (iNumberAnchors_y_Tension - 1) * designDetails.fs_1_y;
 
             float fAn_Length_x_group = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_x) + ((iNumberAnchors_x - 1) * designDetails.fs_2_x);
-            float fAn_Length_y_group = Math.Min(designDetails.fc_1_y, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_y) + ((iNumberAnchors_y - 1) * designDetails.fs_1_y);
+            float fAn_Length_y_group = Math.Min(designDetails.fc_1_y_Tension, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_y) + ((iNumberAnchors_y_Tension - 1) * designDetails.fs_1_y);
             designDetails.fA_n_group = Math.Min(fAn_Length_x_group * fAn_Length_y_group, designDetails.iNumberAnchors_t * designDetails.fA_no_group);
 
             designDetails.fN_b_179_group = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
@@ -1662,7 +1690,7 @@ namespace M_AS4600
             designDetails.fPsi_1_single = 1.0f;
             designDetails.fA_no_single = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
             float fAn_Length_x_single = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
-            float fAn_Length_y_single = Math.Min(designDetails.fc_1_y, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
+            float fAn_Length_y_single = Math.Min(designDetails.fc_1_y_Tension, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
             designDetails.fA_n_single = Math.Min(fAn_Length_x_single * fAn_Length_y_single, designDetails.fA_no_single);
 
             designDetails.fN_b_179_single = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
@@ -1699,17 +1727,17 @@ namespace M_AS4600
             designDetails.fN_sb_1713_single = float.PositiveInfinity;
             designDetails.fEta_17574_single = 0;
 
-            if (designDetails.fc_min < 0.4f * designDetails.fh_ef)
+            if (designDetails.fc_min_Tension < 0.4f * designDetails.fh_ef)
             {
                 // 17.5.7.4 Lower characteristic concrete side face blowout strength
                 // Single anchor - edge
                 // c1 = distance from the centre of an anchor shaft to the edge of the concrete in the direction in which
                 // the load is applied, mm. If tension is applied to the anchor then c1 = cmin. Where anchors subject
                 // to shear are located in narrow sections of limited thickness, c1 shall not exceed the largest of c2 / 1.5, h / 1.5, or s/ 3
-                designDetails.fc_1_17574 = designDetails.fc_1_y;
+                designDetails.fc_1_17574 = designDetails.fc_1_y_Tension;
 
                 if (designDetails.fN_asterix_anchor_uplif > 0) // Tension in anchor
-                    designDetails.fc_1_17574 = designDetails.fc_min;
+                    designDetails.fc_1_17574 = designDetails.fc_min_Tension;
 
                 // Anchors subject to shear are located in narrow sections of limited thickness
                 float fc_1_limit = MathF.Max(designDetails.fc_2_x / 1.5f, designDetails.fh_ef / 1.5f, designDetails.fs_min / 3f);
@@ -1759,8 +1787,8 @@ namespace M_AS4600
             // Group of anchors
 
             designDetails.fe_apostrophe_v = 0; // TODO dopracovat
-            designDetails.fPsi_5_group = eq_concrete.Eq_17_18___(designDetails.fc_1_y, designDetails.fe_apostrophe_v, designDetails.fs_2_x); // s - perpendicular to shear force - Figure C17.7 – Definition of dimensions e´
-            designDetails.fPsi_6 = eq_concrete.Get_Psi_6__(designDetails.fc_1_y, designDetails.fc_2_x);
+            designDetails.fPsi_5_group = eq_concrete.Eq_17_18___(designDetails.fc_1_y_Shear, designDetails.fe_apostrophe_v, designDetails.fs_2_x); // s - perpendicular to shear force - Figure C17.7 – Definition of dimensions e´
+            designDetails.fPsi_6 = eq_concrete.Get_Psi_6__(designDetails.fc_1_y_Shear, designDetails.fc_2_x);
 
             // Ψ7 = modification factor for cracked concrete, given by:
             // Ψ7 = 1.0 for anchors in cracked concrete with no supplementary reinforcement or with smaller than 12 mm diameter reinforcing bar as supplementary reinforcement
@@ -1768,9 +1796,9 @@ namespace M_AS4600
             // Ψ7 = 1.4 for concrete that is not cracked at service load levels.
             designDetails.fPsi_7 = 1.0f;
 
-            designDetails.fA_vo = 2 * (1.5f * designDetails.fc_1_y) * (1.5f * designDetails.fc_1_y); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
-            float fAv_Length_x_group = Math.Min(1.5f * designDetails.fc_1_y, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y, designDetails.fc_2_x) + (iNumberAnchors_x - 1) * designDetails.fs_2_x;
-            float fAv_Depth_h = Math.Min(1.5f * designDetails.fc_1_y, designDetails.fFootingHeight);
+            designDetails.fA_vo = 2 * (1.5f * designDetails.fc_1_y_Shear) * (1.5f * designDetails.fc_1_y_Shear); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
+            float fAv_Length_x_group = Math.Min(1.5f * designDetails.fc_1_y_Shear, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fc_2_x) + (iNumberAnchors_x - 1) * designDetails.fs_2_x;
+            float fAv_Depth_h = Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fFootingHeight);
             designDetails.fA_v_group = fAv_Length_x_group * fAv_Depth_h; // projected concrete failure area of an anchor or group of anchors in shear
             designDetails.fd_o = designDetails.fd_f;
 
@@ -1780,8 +1808,8 @@ namespace M_AS4600
             if (designDetails.iNumberAnchors != 1 && designDetails.fs_min != 0 && designDetails.fs_min < 0.065f)
                 throw new Exception("Distance between anchors s is smaller than 65 mm.");
 
-            designDetails.fV_b_1717a = eq_concrete.Eq_17_17a__(designDetails.fk_2, designDetails.fl, designDetails.fd_o, designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y);
-            designDetails.fV_b_1717b = eq_concrete.Eq_17_17b__(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y);
+            designDetails.fV_b_1717a = eq_concrete.Eq_17_17a__(designDetails.fk_2, designDetails.fl, designDetails.fd_o, designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y_Shear);
+            designDetails.fV_b_1717b = eq_concrete.Eq_17_17b__(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y_Shear);
             designDetails.fV_b_1717 = Math.Min(designDetails.fV_b_1717a, designDetails.fV_b_1717b);
             designDetails.fV_cb_1716_group = eq_concrete.Eq_17_16___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 
@@ -1791,7 +1819,7 @@ namespace M_AS4600
             // Single of anchor - edge
 
             designDetails.fPsi_5_single = 1.0f;
-            float fAv_Length_x_single = Math.Min(1.5f * designDetails.fc_1_y, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y, designDetails.fc_2_x);
+            float fAv_Length_x_single = Math.Min(1.5f * designDetails.fc_1_y_Shear, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fc_2_x);
             designDetails.fA_v_single = fAv_Length_x_single * fAv_Depth_h;
             designDetails.fV_cb_1716_single = eq_concrete.Eq_17_16___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 

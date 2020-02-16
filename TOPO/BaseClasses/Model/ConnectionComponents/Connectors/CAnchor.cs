@@ -38,6 +38,9 @@ namespace BaseClasses
 
         private float m_fh_effective; // Effective Depth
 
+        private bool m_bIsActiveInTension; // TODO - toto by mohla byt univerzalna vlastnost pre predka CConnector
+        private bool m_bIsActiveInShear; // TODO - toto by mohla byt univerzalna vlastnost pre predka CConnector
+
         private List<CNut> m_Nuts;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -279,6 +282,34 @@ namespace BaseClasses
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public bool IsActiveInTension
+        {
+            get
+            {
+                return m_bIsActiveInTension;
+            }
+
+            set
+            {
+                m_bIsActiveInTension = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsActiveInShear
+        {
+            get
+            {
+                return m_bIsActiveInShear;
+            }
+
+            set
+            {
+                m_bIsActiveInShear = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public List<CNut> Nuts
         {
             get
@@ -477,7 +508,7 @@ namespace BaseClasses
             //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
-        public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, CWasher_W washerPlateTop, CWasher_W washerBearing, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, CWasher_W washerPlateTop, CWasher_W washerBearing, bool bIsActiveInTension, bool bIsActiveInShear, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Prefix = "Anchor";
             Name = name_temp;
@@ -547,6 +578,9 @@ namespace BaseClasses
             }
 
             h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
+
+            m_bIsActiveInTension = bIsActiveInTension;
+            m_bIsActiveInShear = bIsActiveInShear;
 
             m_Mat.Name = nameMaterial_temp;
             ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };

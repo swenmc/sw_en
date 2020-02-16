@@ -105,7 +105,9 @@ namespace BaseClasses
 
             ITotNoPointsin2D = 8;
 
-            AnchorArrangement = new CAnchorArrangement_BB_BG(Name, referenceAnchor_temp);
+            bool uniformDistributionOfShear = false; // Todo by malo prist z nastaveni Design Options
+
+            AnchorArrangement = new CAnchorArrangement_BB_BG(Name, referenceAnchor_temp, uniformDistributionOfShear);
 
             iNoPoints2Dfor3D = ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + AnchorArrangement.IHolesNumber * INumberOfPointsOfHole;
             ITotNoPointsin3D = 2 * iNoPoints2Dfor3D;

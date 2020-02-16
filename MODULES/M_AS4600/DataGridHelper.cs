@@ -2274,8 +2274,12 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_AnchorToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
-                listPhysicalQuantity_Symbols.Add("ey.a.footing");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Symbols.Add("ey.a.footing.T");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToFootingEdge_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("ey.a.footing.S");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToFootingEdge_Shear * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
                 listPhysicalQuantity_Symbols.Add("bx.washer");
@@ -2480,12 +2484,12 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fc_2_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
-                listPhysicalQuantity_Symbols.Add("c1");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_y * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Symbols.Add("c1.T");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_y_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
-                listPhysicalQuantity_Symbols.Add("cmin");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fc_min * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Symbols.Add("cmin.T");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fc_min_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
                 listPhysicalQuantity_Symbols.Add("k");
@@ -2596,7 +2600,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17573_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
-                if (det.fc_min < 0.4f * det.fh_ef)
+                if (det.fc_min_Tension < 0.4f * det.fh_ef)
                 {
                     // 17.5.7.4 Lower characteristic concrete side face blowout strength
                     // Single anchor - edge
@@ -2668,6 +2672,10 @@ namespace M_AS4600
                 listPhysicalQuantity_Symbols.Add("ψ7");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_7, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("c1.S");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_y_Shear * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
                 listPhysicalQuantity_Symbols.Add("Avo");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fA_vo * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));

@@ -188,7 +188,8 @@ namespace BaseClasses
             ITotNoPointsin2D = 8;
             ITotNoPointsin3D = 16;
 
-            AnchorArrangement = new CAnchorArrangement_BB_BG(Name, referenceAnchor_temp);
+            bool uniformDistributionOfShear = false; // TODO - Todo by malo prist z nastavenia design options
+            AnchorArrangement = new CAnchorArrangement_BB_BG(Name, referenceAnchor_temp, uniformDistributionOfShear);
 
             m_pControlPoint = controlpoint;
             Fb_X = fbX_temp;
