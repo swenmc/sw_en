@@ -3138,7 +3138,7 @@ namespace PFD
                 fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad;
             }
 
-            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, fDelfectionLimitFraction_Denominator, fDeflectionLimit);
+            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, MKitsetTypeIndex == 1, res.DesignDeflections, m, fDelfectionLimitFraction_Denominator, fDeflectionLimit);
         }
 
         public void GetGoverningMemberJointsDesignDetails(out Dictionary<EMemberType_FS_Position, CCalculJoint> dictStartJointResults, out Dictionary<EMemberType_FS_Position, CCalculJoint> dictEndJointResults)

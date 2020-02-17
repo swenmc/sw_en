@@ -290,7 +290,7 @@ namespace M_AS4600
             }
         }
 
-        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, CMember member, float fLimitDeflectionFraction_Denominator_temp, float fLimitFraction)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bIsGableRoof, designDeflections sDDeflections_x_temp, CMember member, float fLimitDeflectionFraction_Denominator_temp, float fLimitFraction)
         {
             sDDeflections = sDDeflections_x_temp;
             fLength_deflections = member.FLength;
@@ -298,7 +298,14 @@ namespace M_AS4600
             fLimitDeflectionFraction = fLimitFraction; // 1/300 - Kvoli zobrazeniu v detailoch - nepouzivam
 
             if (member.EMemberType == EMemberType_FS.eMR || member.EMemberType == EMemberType_FS.eER)
-                fLength_deflections = 2 * Math.Abs(member.NodeEnd.X - member.NodeStart.X); // Total width of gable roof building - vertical deflection of apex deflection
+            {
+                int iLimitSpanFactor = 1; // Faktor pre horizontalny rozpon 1 - monopitch (1 rafter) 2 - Gable Roof (2 rafters)
+
+                if (bIsGableRoof)
+                    iLimitSpanFactor = 2;
+
+                fLength_deflections = iLimitSpanFactor * Math.Abs(member.NodeEnd.X - member.NodeStart.X); // Total width of gable roof / monopitch building - vertical deflection of apex / middle deflection
+            }
 
             CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDDeflections, fLength_deflections, fLimitFraction);
 

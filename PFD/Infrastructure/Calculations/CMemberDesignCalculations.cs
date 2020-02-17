@@ -28,6 +28,8 @@ namespace PFD.Infrastructure
         private bool DeterminateMemberLocalDisplacementsForULS;
         CalculationSettingsFoundation FootingCalcSettings;
 
+        private bool MIsGableRoofModel;
+
         private int membersIFCalcCount;
         private int membersDesignCalcCount;
 
@@ -84,6 +86,9 @@ namespace PFD.Infrastructure
             //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
             //FootingCalcSettings.FloorSlabThickness = 0.125f;
             ////-------------------------------------------------------------------------------------------------------------
+
+            if (model is CModel_PFD_01_GR)
+                MIsGableRoofModel = true;
 
             FootingCalcSettings = footingCalcSettings;
             beamSimpleModels = BeamSimpleModels;
@@ -531,6 +536,7 @@ namespace PFD.Infrastructure
 
                         // Design check procedure
                         memberDesignModel.SetDesignDeflections_PFD(MUseCRSCGeometricalAxes,
+                            MIsGableRoofModel,
                             iNumberOfDesignSections,
                             m,
                             fDeflectionLimitDenominator_Fraction,

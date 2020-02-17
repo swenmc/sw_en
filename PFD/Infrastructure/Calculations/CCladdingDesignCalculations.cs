@@ -292,6 +292,7 @@ namespace PFD.Infrastructure
 
                         // Design check procedure
                         memberDesignModel.SetDesignDeflections_PFD(MUseCRSCGeometricalAxes,
+                            false,
                             iNumberOfDesignSections,
                             m,
                             fDeflectionLimitDenominator_Fraction,

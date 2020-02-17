@@ -17,6 +17,9 @@ namespace PFD
         public bool UseCRSCGeometricalAxes;
         //public bool ShearDesignAccording334;
         //public bool IgnoreWebStiffeners;
+
+        private bool MIsGableRoofModel;
+
         CModel_PFD Model;
         public List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
@@ -34,13 +37,16 @@ namespace PFD
             designOptionsVM = doVM;
 
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
-            
+
             Model = model;
             DesignResults_ULS = listDesignResults_ULS;
             DesignResults_SLS = listDesignResults_SLS;
             sDesignResults_ULSandSLS = designResults_ULS_SLS;
             sDesignResults_ULS = designResults_ULS;
             sDesignResults_SLS = designResults_SLS;
+
+            if (model is CModel_PFD_01_GR)
+                MIsGableRoofModel = true;
 
             // Member Design
             CPFDMemberDesign vm = new CPFDMemberDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
@@ -175,7 +181,7 @@ namespace PFD
                 }
                 else { textGoverningLoadComb.Text = ""; }
 
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, MIsGableRoofModel, DesignResults_SLS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             }
             else if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ALL)
             {
@@ -229,7 +235,7 @@ namespace PFD
             }
         }
 
-        public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_SLS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
+        public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, bool bIsGableRoof, List<CMemberLoadCombinationRatio_SLS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
         {
             cGoverningMemberResults = null;
 
@@ -255,7 +261,7 @@ namespace PFD
                         fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad;
                     }
 
-                    CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, fDeflectionLimitFraction_Denominator, fDeflectionLimit);
+                    CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, bIsGableRoof, res.DesignDeflections, m, fDeflectionLimitFraction_Denominator, fDeflectionLimit);
 
                     if (calcul.fEta_max > fMaximumDesignRatio)
                     {
@@ -300,7 +306,7 @@ namespace PFD
                             isULS = true;
                         }
                     }
-                                        
+
                     //SLS
                     CMemberLoadCombinationRatio_SLS res_SLS = DesignResults_SLS.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
                     if (res_SLS != null)
@@ -318,7 +324,7 @@ namespace PFD
                             fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad;
                         }
 
-                        CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, res_SLS.DesignDeflections, m, fDeflectionLimitFraction_Denominator, fDeflectionLimit);
+                        CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, MIsGableRoofModel, res_SLS.DesignDeflections, m, fDeflectionLimitFraction_Denominator, fDeflectionLimit);
 
                         if (calcul.fEta_max > fMaximumDesignRatio)
                         {
