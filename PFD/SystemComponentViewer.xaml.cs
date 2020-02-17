@@ -1852,9 +1852,10 @@ namespace PFD
                     arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
                     plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
                 }
-                else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_BX_1)
+                else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_BX)
                 {
-                    CScrewArrangement_BX_1 arrangementTemp = (CScrewArrangement_BX_1)plate.ScrewArrangement;
+                    CScrewArrangement_BX arrangementTemp = (CScrewArrangement_BX)plate.ScrewArrangement;
+                    //CScrewArrangement_BX_1 arrangementTemp = (CScrewArrangement_BX_1)plate.ScrewArrangement;
 
                     if (item is CComponentParamsViewString)
                     {

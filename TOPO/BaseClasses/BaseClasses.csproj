@@ -121,6 +121,7 @@
     <Compile Include="ModelViews\PlateView.cs" />
     <Compile Include="Model\CAccessories_DownpipeProperties.cs" />
     <Compile Include="Model\CAccessories_LengthItemProperties.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BX.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_H.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_G.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_M.cs" />

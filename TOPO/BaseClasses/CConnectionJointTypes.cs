@@ -173,32 +173,40 @@ namespace BaseClasses
             // BX1 - 2 rectangular sequencies
             // BX2 - 3 rectangular sequencies
 
-            CScrewArrangement_BX_2 screwArrangement2_10075_92 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,
+            //CScrewArrangement_BX_2
+            CScrewArrangement_BX screwArrangement2_10075_92 = new CScrewArrangement_BX(referenceScrew, fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,
                     2, 1, 0.020f, 0.015f, 0.030f, 0.03f,
                     2, 1, 0.020f, 0.050f, 0.030f, 0.03f,
                     2, 1, 0.020f, 0.085f, 0.030f, 0.03f);
-            CScrewArrangement_BX_2 screwArrangement2_270XXX_180 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+            //CScrewArrangement_BX_2
+            CScrewArrangement_BX screwArrangement2_270XXX_180 = new CScrewArrangement_BX(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
                     3, 1, 0.030f, 0.030f, 0.060f, 0.050f,
                     3, 1, 0.030f, 0.135f, 0.060f, 0.050f,
                     3, 1, 0.030f, 0.240f, 0.060f, 0.050f);
-            CScrewArrangement_BX_2 screwArrangement2_270XXX_100 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+            //CScrewArrangement_BX_2
+            CScrewArrangement_BX screwArrangement2_270XXX_100 = new CScrewArrangement_BX(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
                     2, 1, 0.025f, 0.030f, 0.050f, 0.050f,
                     2, 1, 0.025f, 0.135f, 0.050f, 0.050f,
                     2, 1, 0.025f, 0.240f, 0.050f, 0.050f);
-            CScrewArrangement_BX_2 screwArrangement2_270XXXn_180 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+            //CScrewArrangement_BX_2
+            CScrewArrangement_BX screwArrangement2_270XXXn_180 = new CScrewArrangement_BX(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
                     3, 1, 0.030f, 0.030f, 0.060f, 0.050f,
                     3, 1, 0.030f, 0.135f, 0.060f, 0.050f,
                     3, 1, 0.030f, 0.260f, 0.060f, 0.050f);
-            CScrewArrangement_BX_1 screwArrangement1_50020_154 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.132f,
+            //CScrewArrangement_BX_1
+            CScrewArrangement_BX screwArrangement1_50020_154 = new CScrewArrangement_BX(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.132f,
                     3, 3, 0.027f, 0.030f, 0.050f, 0.060f,
                     3, 3, 0.027f, 0.345f, 0.050f, 0.060f);
-            CScrewArrangement_BX_1 screwArrangement1_50020n_154 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.182f,
+            //CScrewArrangement_BX_1
+            CScrewArrangement_BX screwArrangement1_50020n_154 = new CScrewArrangement_BX(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.182f,
                     3, 3, 0.027f, 0.030f, 0.050f, 0.060f,
                     3, 3, 0.027f, 0.395f, 0.050f, 0.060f);
-            CScrewArrangement_BX_1 screwArrangement1_63020_180 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
+            //CScrewArrangement_BX_1
+            CScrewArrangement_BX screwArrangement1_63020_180 = new CScrewArrangement_BX(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
                     3, 5, 0.030f, 0.029f, 0.060f, 0.035f,
                     3, 5, 0.030f, 0.404f, 0.060f, 0.035f);
-            CScrewArrangement_BX_1 screwArrangement1_63020_400 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
+            //CScrewArrangement_BX_1
+            CScrewArrangement_BX screwArrangement1_63020_400 = new CScrewArrangement_BX(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
                     7, 5, 0.050f, 0.029f, 0.050f, 0.035f,
                     7, 5, 0.050f, 0.401f, 0.050f, 0.035f);
 

@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -292,11 +293,23 @@ namespace BaseClasses
             fA_g = Get_A_rect(2 * Ft, Fh_Y);
             int iNumberOfScrewsInSection = 6; // Jedna strana plechu TODO, temporary - zavisi na rozmiestneni skrutiek
 
-            if (screwArrangement is CScrewArrangement_BX_1)
-                iNumberOfScrewsInSection = ((CScrewArrangement_BX_1)screwArrangement).RectSequences[0].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_1)screwArrangement).RectSequences[1].NumberOfScrewsInColumn_yDirection;
+            if (screwArrangement is CScrewArrangement_BX)
+            {
+                CScrewSequenceGroup gr = screwArrangement.ListOfSequenceGroups.FirstOrDefault();
+                if (gr != null)
+                {
+                    iNumberOfScrewsInSection = 0;
+                    foreach (CConnectorSequence sc in gr.ListSequence)
+                    {
+                        iNumberOfScrewsInSection += ((CScrewRectSequence)sc).NumberOfScrewsInColumn_yDirection;
+                    }
+                }
+            }
+            //if (screwArrangement is CScrewArrangement_BX_1)
+            //    iNumberOfScrewsInSection = ((CScrewArrangement_BX_1)screwArrangement).RectSequences[0].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_1)screwArrangement).RectSequences[1].NumberOfScrewsInColumn_yDirection;
 
-            if (screwArrangement is CScrewArrangement_BX_2)
-                iNumberOfScrewsInSection = ((CScrewArrangement_BX_2)screwArrangement).RectSequences[0].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_2)screwArrangement).RectSequences[1].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_2)screwArrangement).RectSequences[2].NumberOfScrewsInColumn_yDirection;
+            //if (screwArrangement is CScrewArrangement_BX_2)
+            //    iNumberOfScrewsInSection = ((CScrewArrangement_BX_2)screwArrangement).RectSequences[0].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_2)screwArrangement).RectSequences[1].NumberOfScrewsInColumn_yDirection + ((CScrewArrangement_BX_2)screwArrangement).RectSequences[2].NumberOfScrewsInColumn_yDirection;
 
             fA_n = fA_g;
 

@@ -909,9 +909,10 @@ namespace PFD
                 //    screwArrangmenetProperties.Add(new CComponentParamsViewString("Distance between screws y SQ4", "y4", (Math.Round(rectArrangement.fDistanceOfPointsY_SQ4 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 //}
             }
-            else if (screwArrangement != null && screwArrangement is CScrewArrangement_BX_1)
+            else if (screwArrangement != null && screwArrangement is CScrewArrangement_BX)
             {
-                CScrewArrangement_BX_1 rectArrangement = (CScrewArrangement_BX_1)screwArrangement;
+                CScrewArrangement_BX rectArrangement = (CScrewArrangement_BX)screwArrangement;
+                //CScrewArrangement_BX_1 rectArrangement = (CScrewArrangement_BX_1)screwArrangement;
 
                 List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
 
