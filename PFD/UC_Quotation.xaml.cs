@@ -40,9 +40,6 @@ namespace PFD
         // 2 mm - 27.0 NZD / m^2
         // 1 mm - 14.0 NZD / m^2
 
-        
-        
-
         float fTotalAreaOfOpennings = 0;
 
         float fRollerDoorTrimmerFlashing_TotalLength = 0;
@@ -59,12 +56,17 @@ namespace PFD
             InitializeComponent();
             _pfdVM = vm;
 
-            
-
             CModel model = vm.Model;
 
             List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
-            List<Point> fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
+            List<Point> fWallDefinitionPoints_Front;
+
+            if (_pfdVM.Model is CModel_PFD_01_MR)
+                fWallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
+            else if (_pfdVM.Model is CModel_PFD_01_GR)
+                fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
+            else
+                fWallDefinitionPoints_Front = null; // Exception - not implemented
 
             float fWallArea_Left = 0; float fWallArea_Right = 0;
             if (vm.ComponentList[(int)EMemberType_FS_Position.Girt].Generate == true)
@@ -137,11 +139,30 @@ namespace PFD
             // DG 6
             // Cladding
             float fWallArea_Total = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
-            float fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame)); // Dlzka hrany strechy
+            float fRoofSideLength = 0;
 
             float fRoofArea = 0;
+            int iNumberOfRoofSides = 0; // Number of roof planes (2 - gable, 1 - monopitch)
+
+            if (_pfdVM.Model is CModel_PFD_01_MR)
+            {
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(model.fW_frame)); // Dlzka hrany strechy
+                iNumberOfRoofSides = 1;
+            }
+            else if(_pfdVM.Model is CModel_PFD_01_GR)
+            {
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame)); // Dlzka hrany strechy
+                iNumberOfRoofSides = 2;
+            }
+            else
+            {
+                // Exception - not implemented
+                fRoofSideLength = 0;
+                iNumberOfRoofSides = 0;
+            }
+
             if (vm.ComponentList[(int)EMemberType_FS_Position.Purlin].Generate == true)
-                fRoofArea = 2 * fRoofSideLength * model.fL_tot;
+                fRoofArea = iNumberOfRoofSides * fRoofSideLength * model.fL_tot;
 
             float fFibreGlassArea_Roof = vm.FibreglassAreaRoof / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = vm.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
@@ -1202,9 +1223,29 @@ namespace PFD
         float fPADoorLintelFlashing_TotalLength,
         float fWindowFlashing_TotalLength)
         {
-            float fRoofRidgeFlashing_TotalLength = model.fL_tot;
-            float fWallCornerFlashing_TotalLength = 4 * model.fH1_frame;
-            float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+            float fRoofRidgeFlashing_TotalLength = 0;
+            float fWallCornerFlashing_TotalLength = 0;
+            float fBargeFlashing_TotalLength = 0;
+
+            if (model is CModel_PFD_01_MR)
+            {
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 2 * model.fH1_frame + 2 * model.fH2_frame;
+                fBargeFlashing_TotalLength = 2 * fRoofSideLength;
+            }
+            else if(model is CModel_PFD_01_GR)
+            {
+                fRoofRidgeFlashing_TotalLength = model.fL_tot;
+                fWallCornerFlashing_TotalLength = 4 * model.fH1_frame;
+                fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+            }
+            else
+            {
+                // Exception - not implemented
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 0;
+                fBargeFlashing_TotalLength = 0;
+            }
 
             //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
             CAccessories_LengthItemProperties flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[0]);
@@ -1310,10 +1351,24 @@ namespace PFD
 
         private void CreateTableGutters(CModel model)
         {
-            float fGuttersTotalLength = 2 * model.fL_tot; // na dvoch okrajoch strechy
-            
+            float fGuttersTotalLength = 0;
+
+            if (model is CModel_PFD_01_MR)
+            {
+                fGuttersTotalLength = 1 * model.fL_tot; // na jednej hrane strechy (podla toho ci je mensia H1 alebo H2), ale pre dlzku gutter to nehra rolu
+            }
+            else if (model is CModel_PFD_01_GR)
+            {
+                fGuttersTotalLength = 2 * model.fL_tot; // na dvoch okrajoch strechy
+            }
+            else
+            {
+                // Exception - not implemented
+                fGuttersTotalLength = 0;
+            }
+
             //toto tu je len preto ak by sa nahodou neupdatoval gutters total length pri zmene modelu (mozno je aj lepsie to mat az tu)
-            //_pfdVM.Gutters[0].Length_total = fGuttersTotalLength;            
+            //_pfdVM.Gutters[0].Length_total = fGuttersTotalLength;
 
             // Create Table
             DataTable dt = new DataTable("Gutters");
@@ -1398,7 +1453,22 @@ namespace PFD
         {
             // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
             CAccessories_DownpipeProperties downpipe = _pfdVM.Downpipes[0];
-            float fDownpipesTotalLength = downpipe.CountOfDownpipePoints * model.fH1_frame; // Pocet zvodov krat vyska steny
+            float fDownpipesTotalLength = 0;
+
+            if (model is CModel_PFD_01_MR)
+            {
+                fDownpipesTotalLength = downpipe.CountOfDownpipePoints * Math.Min(model.fH1_frame, model.fH2_frame); // Pocet zvodov krat mensia z vysok stien vlavo a vpravo (H1 alebo H2)
+            }
+            else if (model is CModel_PFD_01_GR)
+            {
+                fDownpipesTotalLength = downpipe.CountOfDownpipePoints * model.fH1_frame; // Pocet zvodov krat vyska steny
+            }
+            else
+            {
+                // Exception - not implemented
+                fDownpipesTotalLength = 0;
+            }
+
             downpipe.Length_total = fDownpipesTotalLength;
             
             double fDownpipesTotalMass = fDownpipesTotalLength * downpipe.Mass_kg_lm;

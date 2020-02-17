@@ -19,9 +19,6 @@ namespace PFD
 
         private List<CAccessories_LengthItemProperties> m_Flashings;
 
-
-
-
         public bool IsSetFromCode = false;
 
         public List<CAccessories_LengthItemProperties> Flashings
@@ -37,21 +34,52 @@ namespace PFD
             }
         }
 
-
-        
-
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public FlashingsViewModel(CModel model)
-        {            
+        {
             IsSetFromCode = false;
 
-            float fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame)); // Dlzka hrany strechy
+            float fRoofSideLength = 0;
+ 
+            if (model is CModel_PFD_01_MR)
+            {
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(model.fW_frame)); // Dlzka hrany strechy
+            }
+            else if (model is CModel_PFD_01_GR)
+            {
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame)); // Dlzka hrany strechy
+            }
+            else
+            {
+                // Exception - not implemented
+                fRoofSideLength = 0;
+            }
 
-            float fRoofRidgeFlashing_TotalLength = model.fL_tot;
-            float fWallCornerFlashing_TotalLength = 4 * model.fH1_frame;
-            float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+            float fRoofRidgeFlashing_TotalLength = 0;
+            float fWallCornerFlashing_TotalLength = 0;
+            float fBargeFlashing_TotalLength = 0;
+
+            if (model is CModel_PFD_01_MR)
+            {
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 2 * model.fH1_frame + 2 * model.fH2_frame;
+                fBargeFlashing_TotalLength = 2 * fRoofSideLength;
+            }
+            else if (model is CModel_PFD_01_GR)
+            {
+                fRoofRidgeFlashing_TotalLength = model.fL_tot;
+                fWallCornerFlashing_TotalLength = 4 * model.fH1_frame;
+                fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+            }
+            else
+            {
+                // Exception - not implemented
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 0;
+                fBargeFlashing_TotalLength = 0;
+            }
 
             float fRollerDoorTrimmerFlashing_TotalLength = 0;
             float fRollerDoorLintelFlashing_TotalLength = 0;
@@ -72,10 +100,7 @@ namespace PFD
             Flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
             Flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
             Flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
-
         }
-
-        
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)

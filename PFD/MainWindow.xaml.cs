@@ -1,48 +1,48 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Runtime.Serialization.Formatters.Binary;
+//using System.Threading;
+//using System.Data.SQLite;
+//using System.Configuration;
+//using System.Text;
+//using System.Threading.Tasks;
+//using System.Globalization;
+//using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data.SqlClient;
-using System.Data;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.ComponentModel;
 using System.Windows.Media.Media3D;
-using System.Threading;
-using System.Data.SQLite;
-using System.Configuration;
+//using System.Windows.Data;
+//using System.Windows.Documents;
+//using System.Windows.Media;
+//using System.Windows.Media.Imaging;
+//using System.Windows.Navigation;
+//using System.Windows.Shapes;
+//using System.Data.SqlClient;
 using BaseClasses;
 using BaseClasses.Helpers;
-using BaseClasses.GraphObj;
+//using BaseClasses.GraphObj;
 using DATABASE;
 using MATH;
 using MATERIAL;
 using M_EC1.AS_NZS;
-using _3DTools;
-using FEM_CALC_BASE;
-using M_BASE;
 using CRSC;
 using EXPIMP;
 using Examples;
 using DATABASE.DTO;
-using BriefFiniteElementNet;
-using BriefFiniteElementNet.Controls;
 using PFD.Infrastructure;
-using System.Collections.ObjectModel;
-using System.IO;
-using HelixToolkit.Wpf;
+//using HelixToolkit.Wpf;
+//using _3DTools;
+//using FEM_CALC_BASE;
+//using M_BASE;
 using Microsoft.Win32;
-using System.Runtime.Serialization.Formatters.Binary;
+using BriefFiniteElementNet;
+//using BriefFiniteElementNet.Controls;
 
 namespace PFD
 {
@@ -312,7 +312,7 @@ namespace PFD
                     CModelHelper.ChangeMembersIsSelectedForMaterialList(cInfo, vm.Model);
                     vm.RecreateQuotation = true;
                 }
-                
+
             }
 
             SetUIElementsVisibility();
@@ -874,7 +874,7 @@ namespace PFD
         private void UpdateAll(bool programStart = false)
         {
             DateTime start = DateTime.Now;
-            
+
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
 
             UpdateGeometryInputData();
@@ -904,24 +904,24 @@ namespace PFD
                 // Kitset Steel Gable Enclosed Buildings
                 // TODO - nove parametre pre nastavenie hodnot zatazenia
 
-                if(vm.KitsetTypeIndex == 0)
-                vm.Model = new CModel_PFD_01_MR(
-                    sGeometryInputData,
-                    vm.Frames,
-                    vm.GirtDistance,
-                    vm.PurlinDistance,
-                    vm.ColumnDistance,
-                    vm.BottomGirtPosition,
-                    vm.FrontFrameRakeAngle,
-                    vm.BackFrameRakeAngle,
-                    vm.DoorBlocksProperties,
-                    vm.WindowBlocksProperties,
-                    compList,
-                    joints,
-                    foundations,
-                    slabs,
-                    vm);
-                else if(vm.KitsetTypeIndex == 1)
+                if (vm.KitsetTypeIndex == 0)
+                    vm.Model = new CModel_PFD_01_MR(
+                        sGeometryInputData,
+                        vm.Frames,
+                        vm.GirtDistance,
+                        vm.PurlinDistance,
+                        vm.ColumnDistance,
+                        vm.BottomGirtPosition,
+                        vm.FrontFrameRakeAngle,
+                        vm.BackFrameRakeAngle,
+                        vm.DoorBlocksProperties,
+                        vm.WindowBlocksProperties,
+                        compList,
+                        joints,
+                        foundations,
+                        slabs,
+                        vm);
+                else if (vm.KitsetTypeIndex == 1)
                     vm.Model = new CModel_PFD_01_GR(
                     sGeometryInputData,
                     vm.Frames,
@@ -955,7 +955,7 @@ namespace PFD
                 vm.Gutters = null;
                 vm.Downpipes = null;
             }
-            
+
 
             bool generateSurfaceLoads = vm._displayOptionsVM.ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||
@@ -989,7 +989,7 @@ namespace PFD
 
                 Page3Dmodel page1;
 
-                if(vm.Model.m_arrLoadCases != null) // Ak existuju nejake load cases zobrazime vybrany
+                if (vm.Model.m_arrLoadCases != null) // Ak existuju nejake load cases zobrazime vybrany
                     page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex], vm.JointsVM.DictJoints);
                 else // Ak neexistuju load cases - docasne pre pripady IN WORK, kedy model nema este definovane ziadne load cases
                     page1 = new Page3Dmodel(vm.Model, sDisplayOptions, null, vm.JointsVM.DictJoints);
@@ -2074,13 +2074,7 @@ namespace PFD
                     if (!isTheItemToDelete) windowProperties.Add(wp);
                 }
                 vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
-
-
-
             }
-
-
-
         }
 
         private void ExportQuotation_Click(object sender, RoutedEventArgs e)

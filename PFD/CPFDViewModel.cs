@@ -2226,18 +2226,52 @@ namespace PFD
         public CPFDLoadInput _loadInput;
                 
         private ObservableCollection<CAccessories_LengthItemProperties> m_Flashings;
-        private List<string> m_FlashingsNames;        
+        private List<string> m_FlashingsNames;
         public ObservableCollection<CAccessories_LengthItemProperties> Flashings
         {
             get
             {
                 if (m_Flashings == null)
                 {
-                    float fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(0.5f * Model.fW_frame)); // Dlzka hrany strechy
+                    float fRoofSideLength = 0;
 
-                    float fRoofRidgeFlashing_TotalLength = Model.fL_tot;
-                    float fWallCornerFlashing_TotalLength = 4 * Model.fH1_frame;
-                    float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+                    if (Model is CModel_PFD_01_MR)
+                    {
+                        fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(Model.fW_frame)); // Dlzka hrany strechy
+                    }
+                    else if (Model is CModel_PFD_01_GR)
+                    {
+                        fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(0.5f * Model.fW_frame)); // Dlzka hrany strechy
+                    }
+                    else
+                    {
+                        // Exception - not implemented
+                        fRoofSideLength = 0;
+                    }
+
+                    float fRoofRidgeFlashing_TotalLength = 0;
+                    float fWallCornerFlashing_TotalLength = 0;
+                    float fBargeFlashing_TotalLength = 0;
+
+                    if (Model is CModel_PFD_01_MR)
+                    {
+                        fRoofRidgeFlashing_TotalLength = 0;
+                        fWallCornerFlashing_TotalLength = 2 * Model.fH1_frame + 2 * Model.fH2_frame;
+                        fBargeFlashing_TotalLength = 2 * fRoofSideLength;
+                    }
+                    else if (Model is CModel_PFD_01_GR)
+                    {
+                        fRoofRidgeFlashing_TotalLength = Model.fL_tot;
+                        fWallCornerFlashing_TotalLength = 4 * Model.fH1_frame;
+                        fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+                    }
+                    else
+                    {
+                        // Exception - not implemented
+                        fRoofRidgeFlashing_TotalLength = 0;
+                        fWallCornerFlashing_TotalLength = 0;
+                        fBargeFlashing_TotalLength = 0;
+                    }
 
                     float fRollerDoorTrimmerFlashing_TotalLength = 0;
                     float fRollerDoorLintelFlashing_TotalLength = 0;
@@ -2289,7 +2323,7 @@ namespace PFD
                 {
                     PFDMainWindow.ShowMessageBoxInPFDWindow("ERROR.\nDuplicated definition of flashing type.\nChoose a unique type, please.");
                     CAccessories_LengthItemProperties item = sender as CAccessories_LengthItemProperties;
-                    if(item != null) item.Name = item.NameOld;                    
+                    if(item != null) item.Name = item.NameOld;
                     PFDMainWindow.Datagrid_Flashings.ItemsSource = null;
                     PFDMainWindow.Datagrid_Flashings.ItemsSource = Flashings;
                 }
@@ -2326,7 +2360,7 @@ namespace PFD
         }
 
         
-        private ObservableCollection<CAccessories_LengthItemProperties> m_Gutters;        
+        private ObservableCollection<CAccessories_LengthItemProperties> m_Gutters;
         private List<string> m_GuttersNames;
         public ObservableCollection<CAccessories_LengthItemProperties> Gutters
         {
@@ -2334,7 +2368,22 @@ namespace PFD
             {
                 if (m_Gutters == null)
                 {
-                    float fGuttersTotalLength = 2 * Model.fL_tot; // na dvoch okrajoch strechy
+                    float fGuttersTotalLength = 0; // na dvoch okrajoch strechy
+
+                    if (MModel is CModel_PFD_01_MR)
+                    {
+                        fGuttersTotalLength = Model.fL_tot; // na jednom okraji strechy
+                    }
+                    else if (MModel is CModel_PFD_01_GR)
+                    {
+                        fGuttersTotalLength = 2 * Model.fL_tot; // na dvoch okrajoch strechy
+                    }
+                    else
+                    {
+                        // Exception - not implemented
+                        fGuttersTotalLength = 0;
+                    }
+
                     CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
                     gutter.PropertyChanged += AccessoriesItem_PropertyChanged;
                     Gutters = new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
@@ -2366,8 +2415,25 @@ namespace PFD
                 if (m_Downpipes == null)
                 {
                     // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-                    int iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-                    float fDownpipesTotalLength = iCountOfDownpipePoints * Model.fH1_frame; // Pocet zvodov krat vyska steny
+                    int iCountOfDownpipePoints = 0;
+                    float fDownpipesTotalLength = 0;
+
+                    if(MModel is CModel_PFD_01_MR)
+                    {
+                        iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
+                        fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(MModel.fH1_frame, MModel.fH2_frame); // Pocet zvodov krat vyska steny
+                    }
+                    else if(MModel is CModel_PFD_01_GR)
+                    {
+                        iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
+                        fDownpipesTotalLength = iCountOfDownpipePoints * MModel.fH1_frame; // Pocet zvodov krat vyska steny
+                    }
+                    else
+                    {
+                        // Exception - not implemented
+                        iCountOfDownpipePoints = 0;
+                        fDownpipesTotalLength = 0;
+                    }
 
                     CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2);
 
