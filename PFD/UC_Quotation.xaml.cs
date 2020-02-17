@@ -58,33 +58,50 @@ namespace PFD
 
             CModel model = vm.Model;
 
-            List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
-            List<Point> fWallDefinitionPoints_Front;
+            List<Point> WallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
+
+            List<Point> WallDefinitionPoints_Right;
+            List<Point> WallDefinitionPoints_Front;
 
             if (_pfdVM.Model is CModel_PFD_01_MR)
-                fWallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
+            {
+                WallDefinitionPoints_Right = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH2_frame), new Point(0, model.fH2_frame) };
+                WallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
+            }
             else if (_pfdVM.Model is CModel_PFD_01_GR)
-                fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
+            {
+                WallDefinitionPoints_Right = WallDefinitionPoints_Left;
+                WallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
+            }
             else
-                fWallDefinitionPoints_Front = null; // Exception - not implemented
+            {
+                WallDefinitionPoints_Right = null; // Exception - not implemented
+                WallDefinitionPoints_Front = null; // Exception - not implemented
+            }
 
             float fWallArea_Left = 0; float fWallArea_Right = 0;
             if (vm.ComponentList[(int)EMemberType_FS_Position.Girt].Generate == true)
             {
-                fWallArea_Left = Geom2D.PolygonArea(fWallDefinitionPoints_Left.ToArray());
-                fWallArea_Right = fWallArea_Left;
-            }
+                fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left.ToArray());
 
+                if (_pfdVM.Model is CModel_PFD_01_MR)
+                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
+                else if (_pfdVM.Model is CModel_PFD_01_GR)
+                    fWallArea_Right = fWallArea_Left;
+                else
+                    fWallArea_Right = float.MinValue; //  Excepion - not implemented
+
+            }
             float fWallArea_Front = 0;
             if (vm.ComponentList[(int)EMemberType_FS_Position.GirtFrontSide].Generate == true)
-                fWallArea_Front = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
+                fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
 
             float fWallArea_Back = 0;
             if (vm.ComponentList[(int)EMemberType_FS_Position.GirtBackSide].Generate == true)
-                fWallArea_Back = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
+                fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
 
             float fBuildingArea_Gross = model.fW_frame * model.fL_tot;
-            float fBuildingVolume_Gross = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray()) * model.fL_tot;
+            float fBuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray()) * model.fL_tot;
 
             // DG 1
             // Members
