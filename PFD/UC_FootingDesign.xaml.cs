@@ -103,14 +103,14 @@ namespace PFD
                     CJointLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == joint.m_Node.ID);
                     if (res == null) continue;
 
-                    CCalculJoint cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces);
+                    CCalculJoint cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, _pfdVM._designOptionsVM.UniformShearDistributionInAnchors, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces);
 
                     // Find member in the group of members with maximum joint design ratio
                     if (cJoint.fEta_max_footing > fMaximumDesignRatio)
                     {
                         fMaximumDesignRatio = cJoint.fEta_max_footing;
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces, true);
+                        cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, _pfdVM._designOptionsVM.UniformShearDistributionInAnchors, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces, true);
                         cGoverningMemberFootingResults = cJoint;
                     }
                 }

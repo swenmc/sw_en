@@ -15,17 +15,20 @@ namespace PFD
     {
         bool UseCRSCGeometricalAxes;
         bool ShearDesignAccording334;
+        bool UniformShearDistributionInAnchors;
 
         CPFDViewModel _pfdVM;
         CalculationSettingsFoundation FootingCalcSettings;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
-        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, bool bShearDesignAccording334_temp, CPFDViewModel pfdVM, CComponentListVM compList)
+        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, bool bShearDesignAccording334_temp, bool bUniformShearDistributionInAnchors, CPFDViewModel pfdVM, CComponentListVM compList)
         {
             InitializeComponent();
 
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
             ShearDesignAccording334 = bShearDesignAccording334_temp;
+            UniformShearDistributionInAnchors = bUniformShearDistributionInAnchors;
+
             _pfdVM = pfdVM;
             DesignResults_ULS = _pfdVM.JointDesignResults_ULS;
 
@@ -119,7 +122,7 @@ namespace PFD
                     CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
                     CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
                     if (resStart == null) continue;
-                    if (resEnd == null) continue;                    
+                    if (resEnd == null) continue;
                     ////-------------------------------------------------------------------------------------------------------------
                     //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
                     //CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
@@ -133,8 +136,8 @@ namespace PFD
                     //FootingCalcSettings.FloorSlabThickness = 0.125f;
                     ////-------------------------------------------------------------------------------------------------------------
 
-                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces);
-                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces);
+                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, UniformShearDistributionInAnchors, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces);
+                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, UniformShearDistributionInAnchors, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces);
 
                     // Find member in the group of members with maximum start or end joint design ratio
                     if (cJointStart.fEta_max_joint > fMaximumDesignRatio || cJointEnd.fEta_max_joint > fMaximumDesignRatio)
@@ -150,11 +153,11 @@ namespace PFD
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
                         //To Mato - toto mi musis vsvetlit preco sa to tu prepocitava znovu akurat jeden bool na konci je zmeneny
-                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces, true);
+                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, UniformShearDistributionInAnchors, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
+                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, UniformShearDistributionInAnchors, cjEnd, _pfdVM.Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
                         cGoverningMemberEndJointResults = cJointEnd;
                     }
                 }

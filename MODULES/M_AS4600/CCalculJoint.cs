@@ -25,6 +25,7 @@ namespace M_AS4600
 
         public CalculationSettingsFoundation foundationCalcSettings;
         public bool ShearDesignAccording334; // TODO - priviest sem celu sadu nastaveni vypoctu
+        public bool UniformShearDistributionInAnchors;
         CScrew screw;
         CPlate plate;
         CCrSc_TW crsc_mainMember;
@@ -46,7 +47,7 @@ namespace M_AS4600
         public float fEta_max_joint = 0;
         public float fEta_max_footing = 0;
 
-        public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, CConnectionJointTypes joint_temp, CModel model, CalculationSettingsFoundation calcSettingsFoundation, designInternalForces sDIF_temp, bool bSaveDetails = false)
+        public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bUniformShearDistributionInAnchors, CConnectionJointTypes joint_temp, CModel model, CalculationSettingsFoundation calcSettingsFoundation, designInternalForces sDIF_temp, bool bSaveDetails = false)
         {
             if (joint_temp == null)
             {
@@ -80,6 +81,7 @@ namespace M_AS4600
             }
 
             ShearDesignAccording334 = bShearDesignAccording334;
+            UniformShearDistributionInAnchors = bUniformShearDistributionInAnchors;
 
             footing = model.GetFoundationForJointFromModel(joint);
             CalculateDesignRatio(bIsDebugging, joint, footing, sDIF_AS4600, bSaveDetails);
@@ -1323,10 +1325,28 @@ namespace M_AS4600
 
             List<CAnchor> anchors = basePlate.AnchorArrangement.Anchors.OfType<CAnchor>().ToList(); // TODO - preklapam pole kotiev na list - chcel o by to zefektivnit a pracovat s zmenit v arrangement pole na list
 
+            double maxCoordinateY = 0; // Maximum value of Y coordinate
+
+            if (!UniformShearDistributionInAnchors) // Ak nie je rovnomerne rozdeleny smyk, musime najst kotvy na okraji (maximalne Y) a nastavit im ze maju byt v smyku neaktivne
+            {
+                // Find maximum value of Y coordinate, close to the edge (+Y direction)
+                for (int i = 0; i < anchors.Count; i++)
+                {
+                    if (anchors[i].m_pControlPoint.Y > maxCoordinateY)
+                        maxCoordinateY = anchors[i].m_pControlPoint.Y;
+                }
+            }
+
+            for (int i = 0; i < anchors.Count; i++)
+            {
+                if (!UniformShearDistributionInAnchors && MathF.d_equal(anchors[i].m_pControlPoint.Y, maxCoordinateY)) // Nerovnomerne rozdeleny smyk a kota sa nachadaza na okraji s (+Y) - ignorujeme ju vo smyku
+                    anchors[i].IsActiveInShear = basePlate.AnchorArrangement.Anchors[i].IsActiveInShear = false;
+            }
+
             int iNumberAnchors = basePlate.AnchorArrangement.Anchors.Length;
             designDetails.iNumberAnchors = basePlate.AnchorArrangement.IHolesNumber;
             designDetails.iNumberAnchors_t = anchors.Count(p => p.IsActiveInTension); // Total number of anchors active in tension - all anchors active as default
-            designDetails.iNumberAnchors_v = anchors.Count(p=> p.IsActiveInShear); // Pocet kotiev ktore maju nastaveny
+            designDetails.iNumberAnchors_v = anchors.Count(p => p.IsActiveInShear); // Pocet kotiev ktore maju nastaveny
 
             CAnchorArrangement_BB_BG anchorArrangement;
 

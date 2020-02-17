@@ -22,6 +22,7 @@ namespace PFD.Infrastructure
         private bool MUseCRSCGeometricalAxes;
         private bool MShearDesignAccording334;
         private bool MIgnoreWebStiffeners;
+        private bool MUniformShearDistributionInAnchors;
         private bool DeterminateCombinationResultsByFEMSolver;
         private bool UseFEMSolverCalculationForSimpleBeam;
         private bool DeterminateMemberLocalDisplacementsForULS;
@@ -53,6 +54,7 @@ namespace PFD.Infrastructure
             bool useCRSCGeometricalAxes,
             bool bshearDesignAccording334,
             bool bIgnoreWebStiffeners,
+            bool bUniformShearDistributionInAnchors,
             bool determinateCombinationResultsByFEMSolver,
             bool bUseFEMSolverCalculationForSimpleBeam,
             bool determinateMemberLocalDisplacementsForULS,
@@ -65,6 +67,7 @@ namespace PFD.Infrastructure
             MUseCRSCGeometricalAxes = useCRSCGeometricalAxes;
             MShearDesignAccording334 = bshearDesignAccording334;
             MIgnoreWebStiffeners = bIgnoreWebStiffeners;
+            MUniformShearDistributionInAnchors = bUniformShearDistributionInAnchors;
             DeterminateCombinationResultsByFEMSolver = determinateCombinationResultsByFEMSolver;
             UseFEMSolverCalculationForSimpleBeam = bUseFEMSolverCalculationForSimpleBeam;
             DeterminateMemberLocalDisplacementsForULS = determinateMemberLocalDisplacementsForULS;
@@ -454,7 +457,7 @@ namespace PFD.Infrastructure
                         CConnectionJointTypes jointStart;
                         CConnectionJointTypes jointEnd;
 
-                        jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, MShearDesignAccording334, Model, m, FootingCalcSettings, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
+                        jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, MShearDesignAccording334, MUniformShearDistributionInAnchors, Model, m, FootingCalcSettings, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
 
                         // Validation - Main member of joint must be defined
                         if (jointStart.m_MainMember == null)

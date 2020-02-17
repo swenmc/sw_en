@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Design Options" Height="380" Width="400">
+        Title="Design Options" Height="410" Width="400">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -30,7 +30,8 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                
+                <RowDefinition Height="30"/>
+
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
@@ -80,9 +81,10 @@
 
             <CheckBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Name="chbShearDesignAccording334" Margin="5,0" IsChecked="{Binding Path=ShearDesignAccording334}">Use shear design according to 3.3.4</CheckBox>
             <CheckBox Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Name="chbIgnoreWebStiffeners" Margin="5,0" IsChecked="{Binding Path=IgnoreWebStiffeners}">Ignore web stiffeners (conservative shear design)</CheckBox>
+            <CheckBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Name="chbUniformShearDistributionInAnchors" Margin="5,0" IsChecked="{Binding Path=UniformShearDistributionInAnchors}">Uniform shear distribution in anchors</CheckBox>
 
-            <StackPanel Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
-                
+            <StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
             </StackPanel>
         </Grid>

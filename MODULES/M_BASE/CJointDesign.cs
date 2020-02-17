@@ -24,7 +24,7 @@ namespace M_BASE
         }
 
         // PFD
-        public void SetDesignForcesAndJointDesign_PFD(int iNumberOfDesignSections, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, CModel model, CMember member, CalculationSettingsFoundation footingCalcSettings, basicInternalForces[] sBIF_x, out CConnectionJointTypes jointStart, out CConnectionJointTypes jointEnd, out designInternalForces sjointStartDIF_x, out designInternalForces sjointEndDIF_x)
+        public void SetDesignForcesAndJointDesign_PFD(int iNumberOfDesignSections, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bUniformShearDistributionInAnchors, CModel model, CMember member, CalculationSettingsFoundation footingCalcSettings, basicInternalForces[] sBIF_x, out CConnectionJointTypes jointStart, out CConnectionJointTypes jointEnd, out designInternalForces sjointStartDIF_x, out designInternalForces sjointEndDIF_x)
         {
             BUseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
             model.GetModelMemberStartEndConnectionJoints(member, out jointStart, out jointEnd);
@@ -60,7 +60,7 @@ namespace M_BASE
                         SetDesignInternalForces(bUseCRSCGeometricalAxes, sBIF_x[j], ref sjointStartDIF_x);
 
                         // Design joint
-                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, jointStart, model, FootingCalcSettings, sjointStartDIF_x);
+                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, bUniformShearDistributionInAnchors, jointStart, model, FootingCalcSettings, sjointStartDIF_x);
                         fDesignRatio_Start = obj_CalcDesign.fEta_max_joint;
                     }
                     else // End Joint Design
@@ -69,7 +69,7 @@ namespace M_BASE
                         SetDesignInternalForces(bUseCRSCGeometricalAxes, sBIF_x[j], ref sjointEndDIF_x);
 
                         // Design joint
-                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, jointEnd, model, FootingCalcSettings, sjointEndDIF_x);
+                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, bUniformShearDistributionInAnchors, jointEnd, model, FootingCalcSettings, sjointEndDIF_x);
                         fDesignRatio_End = obj_CalcDesign.fEta_max_joint;
                     }
                 }

@@ -219,29 +219,11 @@ namespace BaseClasses
         {
             Anchors = new CAnchor[IHolesNumber];
 
-            double maxCoordinateY = 0; // Maximum value of Y coordinate
-
-            if (!m_UniformDistributionOfShear) // Ak nie je rovnomerne rozdeleny smyk, musime najst kotvy na okraji (maximalne Y) a nastavit im ze maju byt v smyku neaktivne
-            {
-                // Find maximum value of Y coordinate, close to the edge (+Y direction)
-                for (int i = 0; i < IHolesNumber; i++)
-                {
-                    if (holesCentersPointsfor3D[i].Y > maxCoordinateY)
-                        maxCoordinateY = holesCentersPointsfor3D[i].Y;
-                }
-            }
-
             for (int i = 0; i < IHolesNumber; i++)
             {
-                bool bIsActiveInTension = true;
-                bool bIsActiveInShear = true;
-
-                if (!m_UniformDistributionOfShear && MathF.d_equal(arrConnectorControlPoints3D[i].Y, maxCoordinateY)) // Nerovnomerne rozdeleny smyk a kota sa nachadaza na okraji s (+Y) - ignorujeme ju vo smyku
-                    bIsActiveInShear = false;
-
                 Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
 
-                Anchors[i] = new CAnchor(referenceAnchor.Name, referenceAnchor.m_Mat.Name, controlpoint, referenceAnchor.Length, referenceAnchor.h_effective, referenceAnchor.WasherPlateTop, referenceAnchor.WasherBearing, bIsActiveInTension, bIsActiveInShear, 0, 90 , 0, true);
+                Anchors[i] = new CAnchor(referenceAnchor.Name, referenceAnchor.m_Mat.Name, controlpoint, referenceAnchor.Length, referenceAnchor.h_effective, referenceAnchor.WasherPlateTop, referenceAnchor.WasherBearing, 0, 90 , 0, true);
             }
         }
     }

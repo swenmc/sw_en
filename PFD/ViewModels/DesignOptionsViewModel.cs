@@ -32,6 +32,7 @@ namespace PFD
 
         private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
         private bool MIgnoreWebStiffeners; // Ignoruju sa vyztuhy / rebra na stene a pocita sa s celou stenou akokeby bola priama
+        private bool MUniformShearDistributionInAnchors; // true - smyk rozdeleny rovnomerne na vsetky kotvy (mala vzdialenost c1.y), false - smyk v krajnych kotvach na strane +Y zakladu je ignorovany (vacsia vzdialenost c1.y)
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
 
@@ -171,6 +172,21 @@ namespace PFD
             }
         }
 
+        public bool UniformShearDistributionInAnchors
+        {
+            get
+            {
+                return MUniformShearDistributionInAnchors;
+            }
+
+            set
+            {
+                MUniformShearDistributionInAnchors = value;
+
+                NotifyPropertyChanged("UniformShearDistributionInAnchors");
+            }
+        }
+
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -190,6 +206,7 @@ namespace PFD
 
             MShearDesignAccording334 = false;
             MIgnoreWebStiffeners = false;
+            MUniformShearDistributionInAnchors = true;
 
             IsSetFromCode = false;
         }

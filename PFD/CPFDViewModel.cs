@@ -2762,7 +2762,7 @@ namespace PFD
             }
 
             CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
-            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners,
+            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners, _designOptionsVM.UniformShearDistributionInAnchors,
                 _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS, 
                 footingSettings, frameModels, beamSimpleModels);
             memberDesignCalculations.CalculateAll();
@@ -3169,8 +3169,8 @@ namespace PFD
 
                 CalculationSettingsFoundation FootingCalcSettings = FootingVM.GetCalcSettings();
 
-                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces, true);
-                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.UniformShearDistributionInAnchors, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.UniformShearDistributionInAnchors, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
 
                 dictStartJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberStartJointResults);
                 dictEndJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberEndJointResults);
