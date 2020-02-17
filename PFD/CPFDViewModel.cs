@@ -278,6 +278,9 @@ namespace PFD
 
                 ModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type (menim property aby som vyvolal aj zmenu modelu)
 
+                SetDefaultFlashings();
+                SetDefaultDownpipes();
+
                 NotifyPropertyChanged("KitsetTypeIndex");
             }
         }
@@ -2233,64 +2236,7 @@ namespace PFD
             {
                 if (m_Flashings == null)
                 {
-                    float fRoofSideLength = 0;
-
-                    if (Model is CModel_PFD_01_MR)
-                    {
-                        fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(Model.fW_frame)); // Dlzka hrany strechy
-                    }
-                    else if (Model is CModel_PFD_01_GR)
-                    {
-                        fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(0.5f * Model.fW_frame)); // Dlzka hrany strechy
-                    }
-                    else
-                    {
-                        // Exception - not implemented
-                        fRoofSideLength = 0;
-                    }
-
-                    float fRoofRidgeFlashing_TotalLength = 0;
-                    float fWallCornerFlashing_TotalLength = 0;
-                    float fBargeFlashing_TotalLength = 0;
-
-                    if (Model is CModel_PFD_01_MR)
-                    {
-                        fRoofRidgeFlashing_TotalLength = 0;
-                        fWallCornerFlashing_TotalLength = 2 * Model.fH1_frame + 2 * Model.fH2_frame;
-                        fBargeFlashing_TotalLength = 2 * fRoofSideLength;
-                    }
-                    else if (Model is CModel_PFD_01_GR)
-                    {
-                        fRoofRidgeFlashing_TotalLength = Model.fL_tot;
-                        fWallCornerFlashing_TotalLength = 4 * Model.fH1_frame;
-                        fBargeFlashing_TotalLength = 4 * fRoofSideLength;
-                    }
-                    else
-                    {
-                        // Exception - not implemented
-                        fRoofRidgeFlashing_TotalLength = 0;
-                        fWallCornerFlashing_TotalLength = 0;
-                        fBargeFlashing_TotalLength = 0;
-                    }
-
-                    float fRollerDoorTrimmerFlashing_TotalLength = 0;
-                    float fRollerDoorLintelFlashing_TotalLength = 0;
-                    float fRollerDoorLintelCapFlashing_TotalLength = 0;
-                    float fPADoorTrimmerFlashing_TotalLength = 0;
-                    float fPADoorLintelFlashing_TotalLength = 0;
-                    float fWindowFlashing_TotalLength = 0;
-
-                    ObservableCollection<CAccessories_LengthItemProperties> flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
-                    flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
-                    flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
-                    flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
-                    flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
-                    flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
-                    flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
-                    flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
-                    flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
-                    flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
-                    Flashings = flashings;
+                    SetDefaultFlashings();
                 }
                 return m_Flashings;
             }
@@ -2304,6 +2250,8 @@ namespace PFD
                 {
                     item.PropertyChanged += FlashingsItem_PropertyChanged;
                 }
+
+                NotifyPropertyChanged("Flashings");
             }
         }
 
@@ -2332,6 +2280,76 @@ namespace PFD
             if (e.PropertyName == "Width_total") return;
             PropertyChanged(sender, e);
         }
+
+        public void SetDefaultFlashings()
+        {
+            float fRoofSideLength = 0;
+
+            if (Model is CModel_PFD_01_MR)
+            {
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(Model.fW_frame)); // Dlzka hrany strechy
+            }
+            else if (Model is CModel_PFD_01_GR)
+            {
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(0.5f * Model.fW_frame)); // Dlzka hrany strechy
+            }
+            else
+            {
+                // Exception - not implemented
+                fRoofSideLength = 0;
+            }
+
+            float fRoofRidgeFlashing_TotalLength = 0;
+            float fWallCornerFlashing_TotalLength = 0;
+            float fBargeFlashing_TotalLength = 0;
+
+            if (Model is CModel_PFD_01_MR)
+            {
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 2 * Model.fH1_frame + 2 * Model.fH2_frame;
+                fBargeFlashing_TotalLength = 2 * fRoofSideLength;
+            }
+            else if (Model is CModel_PFD_01_GR)
+            {
+                fRoofRidgeFlashing_TotalLength = Model.fL_tot;
+                fWallCornerFlashing_TotalLength = 4 * Model.fH1_frame;
+                fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+            }
+            else
+            {
+                // Exception - not implemented
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 0;
+                fBargeFlashing_TotalLength = 0;
+            }
+
+            float fRollerDoorTrimmerFlashing_TotalLength = 0;
+            float fRollerDoorLintelFlashing_TotalLength = 0;
+            float fRollerDoorLintelCapFlashing_TotalLength = 0;
+            float fPADoorTrimmerFlashing_TotalLength = 0;
+            float fPADoorLintelFlashing_TotalLength = 0;
+            float fWindowFlashing_TotalLength = 0;
+
+            ObservableCollection<CAccessories_LengthItemProperties> flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
+
+            if (KitsetTypeIndex != 0)
+            {
+                flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
+            }
+                        
+            flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
+            flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
+            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
+            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
+            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
+            flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
+            flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
+            flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
+            Flashings = flashings;
+
+            SetFlashingsNames();
+        }
+
         public bool ValidateFlashings()
         {
             foreach (CAccessories_LengthItemProperties item in Flashings)
@@ -2387,6 +2405,8 @@ namespace PFD
                     CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
                     gutter.PropertyChanged += AccessoriesItem_PropertyChanged;
                     Gutters = new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
+
+                    NotifyPropertyChanged("Gutters");
                 }
                 return m_Gutters;
             }
@@ -2414,32 +2434,7 @@ namespace PFD
             {
                 if (m_Downpipes == null)
                 {
-                    // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-                    int iCountOfDownpipePoints = 0;
-                    float fDownpipesTotalLength = 0;
-
-                    if(MModel is CModel_PFD_01_MR)
-                    {
-                        iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
-                        fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(MModel.fH1_frame, MModel.fH2_frame); // Pocet zvodov krat vyska steny
-                    }
-                    else if(MModel is CModel_PFD_01_GR)
-                    {
-                        iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-                        fDownpipesTotalLength = iCountOfDownpipePoints * MModel.fH1_frame; // Pocet zvodov krat vyska steny
-                    }
-                    else
-                    {
-                        // Exception - not implemented
-                        iCountOfDownpipePoints = 0;
-                        fDownpipesTotalLength = 0;
-                    }
-
-                    CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2);
-
-                    downpipe.PropertyChanged += AccessoriesItem_PropertyChanged;
-                    Downpipes = new ObservableCollection<CAccessories_DownpipeProperties>() { downpipe };
-
+                    SetDefaultDownpipes();
                 }
                 return m_Downpipes;
             }
@@ -2449,7 +2444,38 @@ namespace PFD
                 if (value == null) return;
                 m_Downpipes = value;
                 m_Downpipes.CollectionChanged += Downpipes_CollectionChanged;
+
+                NotifyPropertyChanged("Downpipes");
             }
+        }
+
+        private void SetDefaultDownpipes()
+        {
+            // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
+            int iCountOfDownpipePoints = 0;
+            float fDownpipesTotalLength = 0;
+
+            if (MModel is CModel_PFD_01_MR)
+            {
+                iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
+                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(MModel.fH1_frame, MModel.fH2_frame); // Pocet zvodov krat vyska steny
+            }
+            else if (MModel is CModel_PFD_01_GR)
+            {
+                iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
+                fDownpipesTotalLength = iCountOfDownpipePoints * MModel.fH1_frame; // Pocet zvodov krat vyska steny
+            }
+            else
+            {
+                // Exception - not implemented
+                iCountOfDownpipePoints = 0;
+                fDownpipesTotalLength = 0;
+            }
+
+            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);
+
+            downpipe.PropertyChanged += AccessoriesItem_PropertyChanged;
+            Downpipes = new ObservableCollection<CAccessories_DownpipeProperties>() { downpipe };
         }
 
         private void Downpipes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -2464,11 +2490,30 @@ namespace PFD
         {
             get
             {
-                if(m_FlashingsNames == null) m_FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
+                if (m_FlashingsNames == null) SetFlashingsNames();
                 return m_FlashingsNames;
             }
+            set
+            {
+                m_FlashingsNames = value;
+                NotifyPropertyChanged("FlashingsNames");
+            }
         }
+
+        private void SetFlashingsNames()
+        {
+            if (KitsetTypeIndex == 0)
+            {
+                FlashingsNames = new List<string>() { "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+                        "PA Door Trimmer",  "PA Door Header", "Window"};
+            }
+            else
+            {
+                FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+                        "PA Door Trimmer",  "PA Door Header", "Window"};
+            }
+        }
+
         public List<string> GuttersNames
         {
             get

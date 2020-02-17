@@ -243,9 +243,9 @@ namespace BaseClasses
             m_CountOfDownpipePoints = 4; //default
         }
 
-        public CAccessories_DownpipeProperties(string name, double totalLength, int colorIndex)
+        public CAccessories_DownpipeProperties(string name, int countDownPipePoints, double totalLength, int colorIndex)
         {
-            m_CountOfDownpipePoints = 4; //default
+            m_CountOfDownpipePoints = countDownPipePoints; //default
             m_Name = name;
             m_length_total = totalLength;
             //m_color = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties(colorIndex).CodeHEX);

@@ -154,6 +154,10 @@ namespace PFD
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
                 if (e.PropertyName == "ModelTypes") return;
                 if (e.PropertyName == "KitsetTypeIndex") return;
+                if (e.PropertyName == "Flashings") return;
+                if (e.PropertyName == "FlashingsNames") return;                
+                if (e.PropertyName == "Gutters") return;
+                if (e.PropertyName == "Downpipes") return;                
 
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility(); } return; }
 
@@ -2242,11 +2246,27 @@ namespace PFD
 
         private void BtnAddDownpipe_Click(object sender, RoutedEventArgs e)
         {
-            // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-            int iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-            float fDownpipesTotalLength = iCountOfDownpipePoints * vm.Model.fH1_frame; // Pocet zvodov krat vyska steny
+            int iCountOfDownpipePoints = 0;
+            float fDownpipesTotalLength = 0;
 
-            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2);
+            if (vm.Model is CModel_PFD_01_MR)
+            {
+                iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
+                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(vm.Model.fH1_frame, vm.Model.fH2_frame); // Pocet zvodov krat vyska steny
+            }
+            else if (vm.Model is CModel_PFD_01_GR)
+            {
+                iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
+                fDownpipesTotalLength = iCountOfDownpipePoints * vm.Model.fH1_frame; // Pocet zvodov krat vyska steny
+            }
+            else
+            {
+                // Exception - not implemented
+                iCountOfDownpipePoints = 0;
+                fDownpipesTotalLength = 0;
+            }
+
+            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);            
             downpipe.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
 
             vm.Downpipes.Add(downpipe);
