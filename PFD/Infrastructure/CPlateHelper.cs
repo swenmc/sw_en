@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using BaseClasses.Helpers;
 using DATABASE;
 using MATH;
 using System;
@@ -1457,10 +1458,7 @@ namespace PFD
                                 plate.ScrewArrangement = null;
                             else
                             {
-                                // TO Ondrej - chcelo by to nejako usporiadat funkcie aby som tento fiktivny spoj nemusel vyrabat
-                                // Fiktivny spoj
-                                CConnectionJointTypes tempJoint = new CConnectionJointTypes();
-                                plate.ScrewArrangement = tempJoint.GetBasePlateArrangement(plate.Name, referenceScrew/*, plate.Height_hy*/); // Funckia nastavi plechu arrangement podla jeho nazvu
+                                plate.ScrewArrangement = CJointHelper.GetBasePlateArrangement(plate.Name, referenceScrew/*, plate.Height_hy*/); // Funckia nastavi plechu arrangement podla jeho nazvu
                             }
                         }
                         break;

@@ -867,8 +867,6 @@ namespace PFD
                 case ESerieTypePlate.eSerie_B:
                     {
                         CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(componentIndex + 1);
-                        CConnectionJointTypes tempJoint = new CConnectionJointTypes(); // TODO Ondrej - to by trebalo refaktorovat a odstranit vytvaranie tempJoint, potrebujeme zavolat GetBasePlateArrangement aby sa podla prefixu plate nastavilo defaultne usporiadanie screwarrangement ale ziaden joint neexistuje
-                        // GetBasePlateArrangement by asi nemalo byt v CConnectionJointTypes ale priamo v CPlate_B_basic
                         fb = (float)prop.dim1;
                         fb2 = fb;
                         fh = (float)prop.dim2y;
@@ -876,7 +874,7 @@ namespace PFD
                         ft = (float)prop.t;
                         iNumberofHoles = prop.iNumberHolesAnchors; // !!!! - rozlisovat medzi otvormi pre skrutky a pre anchors
 
-                        plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, tempJoint.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
+                        plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, CJointHelper.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
                         break;
                     }
                 case ESerieTypePlate.eSerie_L:

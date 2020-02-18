@@ -24,6 +24,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Threading;
 using System.Configuration;
+using BaseClasses.Helpers;
 
 namespace PFD
 {
@@ -295,9 +296,7 @@ namespace PFD
                                         plate.ScrewArrangement = null;
                                     else
                                     {
-                                        CConnectionJointTypes tempJoint = new CConnectionJointTypes(); // TODO Ondrej - to by trebalo refaktorovat a odstranit vytvaranie tempJoint, potrebujeme zavolat GetBasePlateArrangement aby sa podla prefixu plate nastavilo defaultne usporiadanie screwarrangement ale ziaden joint neexistuje
-                                        // GetBasePlateArrangement by asi nemalo byt v CConnectionJointTypes ale priamo v CPlate_B_basic
-                                        plate.ScrewArrangement = tempJoint.GetBasePlateArrangement(plate.Prefix, referenceScrew/*, plate.Height_hy*/);
+                                        plate.ScrewArrangement = CJointHelper.GetBasePlateArrangement(plate.Prefix, referenceScrew/*, plate.Height_hy*/);
                                     }
 
                                     break;
@@ -1295,10 +1294,8 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(vm.ComponentIndex + 1);
-                            CConnectionJointTypes tempJoint = new CConnectionJointTypes(); // TODO Ondrej - to by trebalo refaktorovat a odstranit vytvaranie tempJoint, potrebujeme zavolat GetBasePlateArrangement aby sa podla prefixu plate nastavilo defaultne usporiadanie screwarrangement ale ziaden joint neexistuje
-                                                                                           // GetBasePlateArrangement by asi nemalo byt v CConnectionJointTypes ale priamo v CPlate_B_basic
-                            plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, tempJoint.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
+                            CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(vm.ComponentIndex + 1);                            
+                            plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, CJointHelper.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
