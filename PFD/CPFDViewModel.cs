@@ -278,8 +278,8 @@ namespace PFD
 
                 ModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type (menim property aby som vyvolal aj zmenu modelu)
 
-                SetDefaultFlashings();
-                SetDefaultDownpipes();
+                //SetDefaultFlashings();
+                //SetDefaultDownpipes();
 
                 NotifyPropertyChanged("KitsetTypeIndex");
             }
@@ -2449,7 +2449,7 @@ namespace PFD
             }
         }
 
-        private void SetDefaultDownpipes()
+        public void SetDefaultDownpipes()
         {
             // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
             int iCountOfDownpipePoints = 0;
@@ -2498,6 +2498,14 @@ namespace PFD
                 m_FlashingsNames = value;
                 NotifyPropertyChanged("FlashingsNames");
             }
+        }
+        public List<string> AllFlashingsNames
+        {
+            get
+            {                
+                return new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+                        "PA Door Trimmer",  "PA Door Header", "Window"};
+            }            
         }
 
         private void SetFlashingsNames()
