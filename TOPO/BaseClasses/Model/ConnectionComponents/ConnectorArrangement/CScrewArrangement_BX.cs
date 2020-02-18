@@ -15,6 +15,10 @@ namespace BaseClasses
     // One middle web stiffener, 4 segments
     // 50020 (single and nested) and 63020
 
+    // BA, BB, BC, BG
+    // Two web stiffeners, 6 segments
+    // 270 single and nested
+
     [Serializable]
     public class CScrewArrangement_BX : CScrewArrangement
     {
@@ -22,6 +26,7 @@ namespace BaseClasses
         private int m_NumberOfSequenceInGroup;
         private List<CScrewRectSequence> m_RectSequences;
 
+        /*
         private float m_fCrscColumnDepth;
 
         public float FCrscColumnDepth
@@ -65,7 +70,7 @@ namespace BaseClasses
             {
                 m_fStiffenerSize = value;
             }
-        }
+        }*/
 
         public int NumberOfGroups
         {
@@ -106,15 +111,13 @@ namespace BaseClasses
             }
         }
 
-        
-
         public CScrewArrangement_BX() { }
 
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
-            float fCrscColumnDepth_temp,
-            float fCrscWebStraightDepth_temp,
-            float fStiffenerSize_temp,
+            //float fCrscColumnDepth_temp,
+            //float fCrscWebStraightDepth_temp,
+            //float fStiffenerSize_temp,
             int iNumberOfScrewsInRow_xDirection_SQ1_temp,
             int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
             float fx_c_SQ1_temp,
@@ -129,9 +132,9 @@ namespace BaseClasses
             float fDistanceOfPointsY_SQ2_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp + iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp, referenceScrew_temp)
         {
             referenceScrew = referenceScrew_temp;
-            FCrscColumnDepth = fCrscColumnDepth_temp;
-            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            FStiffenerSize = fStiffenerSize_temp;
+            //FCrscColumnDepth = fCrscColumnDepth_temp;
+            //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            //FStiffenerSize = fStiffenerSize_temp;
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
@@ -151,11 +154,13 @@ namespace BaseClasses
             UpdateArrangmentData();
         }
 
+        // Tento konstruktor by sa nemal pre databazove plates typu B pouzit
+
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
-            float fCrscColumnDepth_temp,
-            float fCrscWebStraightDepth_temp,
-            float fStiffenerSize_temp,
+            //float fCrscColumnDepth_temp,
+            //float fCrscWebStraightDepth_temp,
+            //float fStiffenerSize_temp,
             int iNumberOfScrewsInRow_xDirection_SQ1_temp,
             int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
             float fx_c_SQ1_temp,
@@ -176,9 +181,9 @@ namespace BaseClasses
             float fDistanceOfPointsY_SQ3_temp)
         {
             referenceScrew = referenceScrew_temp;
-            FCrscColumnDepth = fCrscColumnDepth_temp;
-            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            FStiffenerSize = fStiffenerSize_temp;
+            //FCrscColumnDepth = fCrscColumnDepth_temp;
+            //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            //FStiffenerSize = fStiffenerSize_temp;
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
@@ -200,7 +205,52 @@ namespace BaseClasses
             UpdateArrangmentData();
         }
 
+        public CScrewArrangement_BX(
+            CScrew referenceScrew_temp,
+            //float fCrscColumnDepth_temp,
+            //float fCrscWebStraightDepth_temp,
+            //float fStiffenerSize_temp,
+            int iNumberOfScrewsInRow_xDirection_SQ1_temp,
+            int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
+            float fx_c_SQ1_temp,
+            float fy_c_SQ1_temp,
+            List<float> distancesOfPointsX_SQ1_temp,
+            List<float> distancesOfPointsY_SQ1_temp)
+        {
+            // TO Ondrej - tento konstruktor by sa dal pozjednodusovat,
+            // mohli by sme don poslat len List distancesOfPointsX a distancesOfPointsY
+            // Podla poctu prvkov v tomto zozname + 1 by sa urcili NumberOfScrewsInRow_xDirection a NumberOfScrewsInColumn_yDirection
+            // Ak by bol pocet prvkov v zozname 1, tak by sa m_SameDistances nastavilo na true, ak by to bolo viac nez jedna, tak na false
 
+            referenceScrew = referenceScrew_temp;
+            //FCrscColumnDepth = fCrscColumnDepth_temp;
+            //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            //FStiffenerSize = fStiffenerSize_temp;
+
+            bool sameDistancesX = true;
+            bool sameDistancesY = true;
+
+            if (distancesOfPointsX_SQ1_temp.Count > 1)
+                 sameDistancesX = false;
+
+            if (distancesOfPointsY_SQ1_temp.Count > 1)
+                sameDistancesY = false;
+
+            RectSequences = new List<CScrewRectSequence>();
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, sameDistancesX, sameDistancesY, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, sameDistancesX, sameDistancesY, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
+
+            NumberOfGroups = 2;
+            NumberOfSequenceInGroup = 1;
+
+            IHolesNumber = 0;
+            foreach (CScrewRectSequence rectS in RectSequences)
+            {
+                IHolesNumber += rectS.INumberOfConnectors;
+            }
+
+            UpdateArrangmentData();
+        }
 
         public override void UpdateArrangmentData()
         {
@@ -233,11 +283,13 @@ namespace BaseClasses
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
 
-
         public Point[] Get_ScrewSequencePointCoordinates(CScrewRectSequence srectSeq)
         {
             // Connectors in Sequence
-            return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            if(srectSeq.SameDistancesX && srectSeq.SameDistancesY) // Ak su pre oba smery vzdialenosti skrutiek rovnake, posielame do konstruktora len jedno cislo pre rozostup (vzdialenost) skrutiek
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            else // Ak su aspon pre jeden smer vzdialenosti skrutiek rozdielne, posielame do konstruktora zoznam rozostupov (rozne vzdialenosti) skrutiek
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistancesOfPointsX.ToArray(), srectSeq.DistancesOfPointsY.ToArray());
         }
 
         public override void Calc_HolesCentersCoord2DBasePlate(
@@ -258,7 +310,7 @@ namespace BaseClasses
                     sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);
 
                     if (grCount == 2) //second group is mirrored
-                    {                                                
+                    {
                         sc.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * (2 * flZ + fbX), sc);
                     }
                 }

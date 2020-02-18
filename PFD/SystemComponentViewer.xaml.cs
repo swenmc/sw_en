@@ -297,7 +297,7 @@ namespace PFD
                                     {
                                         CConnectionJointTypes tempJoint = new CConnectionJointTypes(); // TODO Ondrej - to by trebalo refaktorovat a odstranit vytvaranie tempJoint, potrebujeme zavolat GetBasePlateArrangement aby sa podla prefixu plate nastavilo defaultne usporiadanie screwarrangement ale ziaden joint neexistuje
                                         // GetBasePlateArrangement by asi nemalo byt v CConnectionJointTypes ale priamo v CPlate_B_basic
-                                        plate.ScrewArrangement = tempJoint.GetBasePlateArrangement(plate.Prefix, referenceScrew, plate.Height_hy);
+                                        plate.ScrewArrangement = tempJoint.GetBasePlateArrangement(plate.Prefix, referenceScrew/*, plate.Height_hy*/);
                                     }
 
                                     break;
@@ -1298,7 +1298,7 @@ namespace PFD
                             CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(vm.ComponentIndex + 1);
                             CConnectionJointTypes tempJoint = new CConnectionJointTypes(); // TODO Ondrej - to by trebalo refaktorovat a odstranit vytvaranie tempJoint, potrebujeme zavolat GetBasePlateArrangement aby sa podla prefixu plate nastavilo defaultne usporiadanie screwarrangement ale ziaden joint neexistuje
                                                                                            // GetBasePlateArrangement by asi nemalo byt v CConnectionJointTypes ale priamo v CPlate_B_basic
-                            plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, tempJoint.GetBasePlateArrangement(prop.Name, referenceScrew, fh)); // B
+                            plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, tempJoint.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
@@ -1862,9 +1862,9 @@ namespace PFD
                         CComponentParamsViewString itemStr = item as CComponentParamsViewString;
                         if (string.IsNullOrEmpty(itemStr.Value)) return;
 
-                        if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscColumnDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                        if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscColumnDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
                         // TODO - Ondrej, TODO No. 105
                         // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)

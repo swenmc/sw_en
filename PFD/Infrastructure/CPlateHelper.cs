@@ -258,9 +258,9 @@ namespace PFD
                 List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
 
                 screwArrangmenetProperties.Add(new CComponentParamsViewList(CParamsResources.ScrewGaugeS.Name, CParamsResources.ScrewGaugeS.Symbol, rectArrangement.referenceScrew.Gauge.ToString(), listScrewGauges, CParamsResources.ScrewGaugeS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
-                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(rectArrangement.FCrscColumnDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit, false));
+                //screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(rectArrangement.FCrscColumnDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit, false));
                 //screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(rectArrangement.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
-                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(rectArrangement.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit, false));
+                //screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(rectArrangement.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit, false));
 
                 int num = 0;
                 foreach (CScrewRectSequence src in rectArrangement.RectSequences)
@@ -647,9 +647,9 @@ namespace PFD
                     float item_val = 0;
                     if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscColumnDepth = item_val / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = item_val / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = item_val / fLengthUnitFactor;
+                    //if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscColumnDepth = item_val / fLengthUnitFactor;
+                    //if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = item_val / fLengthUnitFactor;
+                    //if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = item_val / fLengthUnitFactor;
 
                     // TODO - Ondrej, TODO No. 105
                     // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
@@ -1415,14 +1415,14 @@ namespace PFD
             }
 
             //CScrewArrangement_BX_1
-            CScrewArrangement_BX screwArrangement_BX_01 = new CScrewArrangement_BX(referenceScrew, fColumnDepth, fColumnDepth - 2 * 0.025f - 2 * 0.002f, 0.18f,
-                3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
-                3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
-            //CScrewArrangement_BX_2
-            CScrewArrangement_BX screwArrangement_BX_02 = new CScrewArrangement_BX(referenceScrew, fColumnDepth, fColumnDepth - 2 * 0.008f - 2 * 0.002f, 0.058f,
-                3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
-                3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
-                3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
+            //CScrewArrangement_BX screwArrangement_BX_01 = new CScrewArrangement_BX(referenceScrew, /*fColumnDepth, fColumnDepth - 2 * 0.025f - 2 * 0.002f, 0.18f,*/
+            //    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
+            //    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            ////CScrewArrangement_BX_2
+            //CScrewArrangement_BX screwArrangement_BX_02 = new CScrewArrangement_BX(referenceScrew, /*fColumnDepth, fColumnDepth - 2 * 0.008f - 2 * 0.002f, 0.058f,*/
+            //    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
+            //    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
+            //    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
             CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
             CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
@@ -1456,7 +1456,12 @@ namespace PFD
                             if (screwArrangementIndex == 0) // Undefined
                                 plate.ScrewArrangement = null;
                             else
-                                plate.ScrewArrangement = screwArrangement_BX_02;
+                            {
+                                // TO Ondrej - chcelo by to nejako usporiadat funkcie aby som tento fiktivny spoj nemusel vyrabat
+                                // Fiktivny spoj
+                                CConnectionJointTypes tempJoint = new CConnectionJointTypes();
+                                plate.ScrewArrangement = tempJoint.GetBasePlateArrangement(plate.Name, referenceScrew/*, plate.Height_hy*/); // Funckia nastavi plechu arrangement podla jeho nazvu
+                            }
                         }
                         break;
                     }

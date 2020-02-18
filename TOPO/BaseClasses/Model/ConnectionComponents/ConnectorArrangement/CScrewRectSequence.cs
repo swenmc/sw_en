@@ -161,7 +161,7 @@ namespace BaseClasses
             NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_temp;
             NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_temp;
             INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
-            HolesCentersPoints = new Point[INumberOfConnectors];            
+            HolesCentersPoints = new Point[INumberOfConnectors];
         }
 
         public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection, int iNumberOfScrewsInColumn_yDirection, float refPointX, float refPointY, float distanceOfPointsX, float distanceOfPointsY)
@@ -175,6 +175,35 @@ namespace BaseClasses
             m_fDistanceOfPointsY = distanceOfPointsY;
             m_SameDistancesX = true;
             m_SameDistancesY = true;
+
+            INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+            HolesCentersPoints = new Point[INumberOfConnectors];
+        }
+
+        public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection, int iNumberOfScrewsInColumn_yDirection, float refPointX, float refPointY, bool bSameDistancesX, bool bSameDistancesY, List<float> distancesOfPointsX, List<float> distancesOfPointsY)
+        {
+            // TO Ondrej - tento konstruktor by sa dal pozjednodusovat,
+            // mohli by sme don poslat len List distancesOfPointsX a distancesOfPointsY
+            // Podla poctu prvkov v tomto zozname + 1 by sa urcili NumberOfScrewsInRow_xDirection a NumberOfScrewsInColumn_yDirection
+            // Ak by bol pocet prvkov v zozname 1, tak by sa m_SameDistances nastavilo na true, ak by to bolo viac nez jedna, tak na false
+
+            NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection;
+            NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection;
+
+            m_RefPointX = refPointX;
+            m_RefPointY = refPointY;
+            m_SameDistancesX = bSameDistancesX;
+            m_SameDistancesY = bSameDistancesY;
+
+            if (bSameDistancesX)
+                m_fDistanceOfPointsX = distancesOfPointsX[0];
+            else
+                m_DistancesOfPointsX = distancesOfPointsX;
+
+            if (bSameDistancesY)
+                m_fDistanceOfPointsY = distancesOfPointsY[0];
+            else
+                m_DistancesOfPointsY = distancesOfPointsY;
 
             INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
             HolesCentersPoints = new Point[INumberOfConnectors];
@@ -196,6 +225,5 @@ namespace BaseClasses
                 m_DistancesOfPointsY.Add(m_fDistanceOfPointsY);
             }
         }
-
     }
 }
