@@ -172,6 +172,11 @@ namespace PFD
             // Girt Joints
             if (bGenerateGirts)
             {
+                int iNumberOfGirtsPerLeftColumnInOneFrame = iGirtNoInOneFrame / 2;
+
+                if (!bIsGableRoof)
+                    iNumberOfGirtsPerLeftColumnInOneFrame = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
+
                 for (int i = 0; i < (iFrameNo - 1) * iGirtNoInOneFrame; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + i];
@@ -180,7 +185,7 @@ namespace PFD
 
                     int iCurrentFrameIndex = i / iGirtNoInOneFrame;
                     int iFirstGirtInFrameLeftSide = iMainColumnNo + iRafterNo + iEavesPurlinNo + iCurrentFrameIndex * iGirtNoInOneFrame;
-                    int iFirstGirtInFrameRightSide = iFirstGirtInFrameLeftSide + iGirtNoInOneFrame / 2;
+                    int iFirstGirtInFrameRightSide = iFirstGirtInFrameLeftSide + iNumberOfGirtsPerLeftColumnInOneFrame;
                     int iCurrentMemberIndex = iMainColumnNo + iRafterNo + iEavesPurlinNo + i;
 
                     int iFirstGirtOnCurrentSideIndex;
@@ -193,7 +198,7 @@ namespace PFD
                     {
                         bool bTopOfPlateInCrscVerticalAxisPlusDirection = false;
 
-                        if (iFirstGirtInFrameRightSide <= iCurrentMemberIndex && iCurrentMemberIndex < iFirstGirtOnCurrentSideIndex + iGirtNoInOneFrame / 2)
+                        if (iFirstGirtInFrameRightSide <= iCurrentMemberIndex && iCurrentMemberIndex < iFirstGirtOnCurrentSideIndex + iNumberOfGirtsPerLeftColumnInOneFrame)
                             bTopOfPlateInCrscVerticalAxisPlusDirection = true;
 
                         m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bTopOfPlateInCrscVerticalAxisPlusDirection));
