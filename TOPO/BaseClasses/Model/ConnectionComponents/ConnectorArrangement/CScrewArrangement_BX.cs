@@ -113,6 +113,41 @@ namespace BaseClasses
 
         public CScrewArrangement_BX() { }
 
+        // Jedna sekvencia s rovnakymi vzdialenostami na jednej strane plate
+        public CScrewArrangement_BX(
+            CScrew referenceScrew_temp,
+            //float fCrscColumnDepth_temp,
+            //float fCrscWebStraightDepth_temp,
+            //float fStiffenerSize_temp,
+            int iNumberOfScrewsInRow_xDirection_SQ1_temp,
+            int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
+            float fx_c_SQ1_temp,
+            float fy_c_SQ1_temp,
+            float fDistanceOfPointsX_SQ1_temp,
+            float fDistanceOfPointsY_SQ1_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp, referenceScrew_temp)
+        {
+            referenceScrew = referenceScrew_temp;
+            //FCrscColumnDepth = fCrscColumnDepth_temp;
+            //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            //FStiffenerSize = fStiffenerSize_temp;
+
+            RectSequences = new List<CScrewRectSequence>();
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+
+            NumberOfGroups = 2;
+            NumberOfSequenceInGroup = 1;
+
+            IHolesNumber = 0;
+            foreach (CScrewRectSequence rectS in RectSequences)
+            {
+                IHolesNumber += rectS.INumberOfConnectors;
+            }
+
+            UpdateArrangmentData();
+        }
+
+        // Dve sekvencie s rovnakymi vzdialenostami na jednej strane plate
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
             //float fCrscColumnDepth_temp,
@@ -155,7 +190,7 @@ namespace BaseClasses
         }
 
         // Tento konstruktor by sa nemal pre databazove plates typu B pouzit
-
+        // Tri sekvencie s rovnakymi vzdialenostami na jednej strane plate
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
             //float fCrscColumnDepth_temp,
@@ -205,6 +240,7 @@ namespace BaseClasses
             UpdateArrangmentData();
         }
 
+        // Jedna sekvencia s roznymi vzdialenostami na jednej strane plate
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
             //float fCrscColumnDepth_temp,

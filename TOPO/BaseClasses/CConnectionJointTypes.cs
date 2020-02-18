@@ -178,7 +178,7 @@ namespace BaseClasses
 
             //CScrewArrangement_BX_2
             //CScrewArrangement_BX screwArrangement2_10075_92 = new CScrewArrangement_BX(referenceScrew, /*fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,*/
-            //        2, 1, 0.020f, 0.015f, 0.030f, 0.03f,
+            //        2, 1, 0.020f, 0.012f, 0.030f, 0.03f,
             //        2, 1, 0.020f, 0.050f, 0.030f, 0.03f,
             //        2, 1, 0.020f, 0.085f, 0.030f, 0.03f);
             //CScrewArrangement_BX_2
@@ -198,16 +198,16 @@ namespace BaseClasses
             //        3, 1, 0.030f, 0.260f, 0.060f, 0.050f);
 
             CScrewArrangement_BX screwArrangement2_10075_92 = new CScrewArrangement_BX(referenceScrew,
-                    2, 3, 0.030f, 0.030f, new List<float>(1) { 0.020f }, new List<float>(3) { 0.015f, 0.050f, 0.085f });
+                    2, 3, 0.020f, 0.012f, 0.030f, 0.035f);
 
             CScrewArrangement_BX screwArrangement2_270XXX_180 = new CScrewArrangement_BX(referenceScrew,
-                    3, 3, 0.030f, 0.030f, new List<float>(1) { 0.060f }, new List<float>(3) { 0.030f, 0.135f, 0.240f });
+                    3, 3, 0.030f, 0.030f, 0.060f , 0.105f);
 
             CScrewArrangement_BX screwArrangement2_270XXX_100 = new CScrewArrangement_BX(referenceScrew,
-                    2, 3, 0.025f, 0.030f, new List<float>(1) { 0.050f }, new List<float>(3) { 0.025f, 0.135f, 0.240f });
+                    2, 3, 0.025f, 0.030f,  0.050f , 0.105f);
 
             CScrewArrangement_BX screwArrangement2_270XXXn_180 = new CScrewArrangement_BX(referenceScrew,
-                    3, 3, 0.030f, 0.030f, new List<float>(1) { 0.060f }, new List<float>(3) { 0.030f, 0.135f, 0.260f });
+                    3, 3, 0.030f, 0.030f, new List<float>(1) { 0.060f }, new List<float>(2) { 0.105f, 0.135f });
 
             //CScrewArrangement_BX_1
             CScrewArrangement_BX screwArrangement1_50020_154 = new CScrewArrangement_BX(referenceScrew, /*fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.132f,*/
