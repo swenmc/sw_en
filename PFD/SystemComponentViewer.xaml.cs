@@ -1801,6 +1801,17 @@ namespace PFD
                         // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                         // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
 
+                        if (item.Name.Equals("Number of groups"))
+                        {
+                            int numberOfGroups = int.Parse(itemStr.Value);
+                            arrangementTemp.NumberOfGroups_Updated(numberOfGroups);
+                        }
+                        if (item.Name.Equals("Number of sequence in group"))
+                        {
+                            int numberOfSequenceInGroup = int.Parse(itemStr.Value);
+                            arrangementTemp.NumberOfSequenceInGroup_Updated(numberOfSequenceInGroup);
+                        }
+
                         if (item.Name.Contains(" SQ"))
                         {
                             int seqIndex = GetSequenceNumFromName(item.Name) - 1;
@@ -1808,10 +1819,43 @@ namespace PFD
                             if (item.Name.Contains("Number of screws in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
                             if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
                             if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                            if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                            if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+
+                            if (arrangementTemp.RectSequences[seqIndex].SameDistancesX)
+                            {
+                                if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            }
+                            else
+                            {
+                                for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX.Count; i++)
+                                {
+                                    if (item.Name.Contains($"Distance between screws x{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                }
+                            }
+                            if (arrangementTemp.RectSequences[seqIndex].SameDistancesY)
+                            {
+                                if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            }
+                            else
+                            {
+                                for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY.Count; i++)
+                                {
+                                    if (item.Name.Contains($"Distance between screws y{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                }
+                            }
+
                         }
-                        
+
+                        //if (item.Name.Contains(" SQ"))
+                        //{
+                        //    int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                        //    if (item.Name.Contains("Number of screws in row SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
+                        //    if (item.Name.Contains("Number of screws in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
+                        //    if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //    if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //    if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //    if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //}
+
                         //if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
                         //if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
                         //if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
@@ -1840,6 +1884,20 @@ namespace PFD
                         //if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         //if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                     }
+                    else if (item is CComponentParamsViewBool)
+                    {
+                        CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
+                        if (item.Name.Contains("Same distance between screws x SQ"))
+                        {
+                            int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                            arrangementTemp.RectSequences[seqIndex].SameDistancesX = itemBool.Value;
+                        }
+                        if (item.Name.Contains("Same distance between screws y SQ"))
+                        {
+                            int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                            arrangementTemp.RectSequences[seqIndex].SameDistancesY = itemBool.Value;
+                        }
+                    }
                     else if (item is CComponentParamsViewList)
                     {
                         CComponentParamsViewList itemList = item as CComponentParamsViewList;
@@ -1867,6 +1925,13 @@ namespace PFD
                         // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
                         // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                         // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
+                                                
+                        if (item.Name.Equals("Number of sequence in group"))
+                        {
+                            int numberOfSequenceInGroup = int.Parse(itemStr.Value);
+                            arrangementTemp.NumberOfSequenceInGroup_Updated(numberOfSequenceInGroup);
+                        }
+
                         if (item.Name.Contains(" SQ"))
                         {
                             int seqIndex = GetSequenceNumFromName(item.Name) - 1;
@@ -1874,9 +1939,42 @@ namespace PFD
                             if (item.Name.Contains("Number of screws in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
                             if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
                             if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                            if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                            if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+
+                            if (arrangementTemp.RectSequences[seqIndex].SameDistancesX)
+                            {
+                                if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            }
+                            else
+                            {
+                                for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX.Count; i++)
+                                {
+                                    if (item.Name.Contains($"Distance between screws x{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                }
+                            }
+                            if (arrangementTemp.RectSequences[seqIndex].SameDistancesY)
+                            {
+                                if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            }
+                            else
+                            {
+                                for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY.Count; i++)
+                                {
+                                    if (item.Name.Contains($"Distance between screws y{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                }
+                            }
+
                         }
+
+                        //if (item.Name.Contains(" SQ"))
+                        //{
+                        //    int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                        //    if (item.Name.Contains("Number of screws in row SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
+                        //    if (item.Name.Contains("Number of screws in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
+                        //    if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //    if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //    if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //    if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        //}
 
                         //if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
                         //if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
@@ -1905,6 +2003,20 @@ namespace PFD
                         //if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         //if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         //if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    }
+                    else if (item is CComponentParamsViewBool)
+                    {
+                        CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
+                        if (item.Name.Contains("Same distance between screws x SQ"))
+                        {
+                            int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                            arrangementTemp.RectSequences[seqIndex].SameDistancesX = itemBool.Value;
+                        }
+                        if (item.Name.Contains("Same distance between screws y SQ"))
+                        {
+                            int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                            arrangementTemp.RectSequences[seqIndex].SameDistancesY = itemBool.Value;
+                        }
                     }
                     else if (item is CComponentParamsViewList)
                     {
@@ -1972,8 +2084,8 @@ namespace PFD
 
         private int GetSequenceNumFromName(string name)
         {
-            int seqNum = 0;
-            int.TryParse(name.Substring(name.IndexOf(" SQ")), out seqNum);
+            int seqNum = 0;            
+            int.TryParse(name.Substring(name.IndexOf("SQ") + 2), out seqNum);
 
             return seqNum;
         }

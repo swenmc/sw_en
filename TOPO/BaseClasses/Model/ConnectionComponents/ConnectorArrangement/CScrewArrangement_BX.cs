@@ -475,5 +475,49 @@ namespace BaseClasses
 
             return OutputSequence;
         }
+
+        public void NumberOfSequenceInGroup_Updated(int newNumberOfSequenceInGroup)
+        {
+            if (newNumberOfSequenceInGroup < 0) return;
+            if (newNumberOfSequenceInGroup > 10) return;
+
+            if (newNumberOfSequenceInGroup < NumberOfSequenceInGroup)
+            {
+                while (newNumberOfSequenceInGroup < NumberOfSequenceInGroup)
+                {
+                    RemoveSequenceFromEachGroup();
+                    NumberOfSequenceInGroup--;
+                }
+            }
+            else if (newNumberOfSequenceInGroup > NumberOfSequenceInGroup)
+            {
+                while (newNumberOfSequenceInGroup > NumberOfSequenceInGroup)
+                {
+                    AddSequenceToEachGroup();
+                    NumberOfSequenceInGroup++;
+                }
+            }
+        }
+        private void AddSequenceToEachGroup()
+        {
+            int grIndex = 0;
+            foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
+            {
+                CScrewRectSequence rS = new CScrewRectSequence();
+                gr.ListSequence.Add(rS);
+                RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup, rS);
+                grIndex++;
+            }
+
+        }
+        private void RemoveSequenceFromEachGroup()
+        {
+            for (int i = ListOfSequenceGroups.Count - 1; i >= 0; i--)
+            {
+                ListOfSequenceGroups[i].ListSequence.RemoveAt(ListOfSequenceGroups[i].ListSequence.Count - 1);
+                RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
+            }
+        }
+
     }
 }
