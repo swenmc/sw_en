@@ -34,6 +34,7 @@ namespace BaseClasses
             set
             {
                 m_iNumberOfScrewsInRow_xDirection = value;
+                SetDistancesX();
             }
         }
         public int NumberOfScrewsInColumn_yDirection
@@ -46,6 +47,7 @@ namespace BaseClasses
             set
             {
                 m_iNumberOfScrewsInColumn_yDirection = value;
+                SetDistancesY();
             }
         }
         public float DistanceOfPointsX

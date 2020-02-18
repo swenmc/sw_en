@@ -201,6 +201,11 @@ namespace BaseClasses
 
         public override void FillArrayOfHolesCentersInWholeArrangement()
         {
+            //TODO - tu bude potrebne doplnit nejaku kontrolu, a rozsirenie pola HolesCentersPoints2D, lebo sa to tu nejako zrubava
+            //resp. nejako reagovat na zmenu poctu skrutiek a nasledna inicializacia tohto pola
+            //ja vlastne ani neviem naco to tu toto vlastne je, sa mi nezda,zeby to nieco robilo
+
+
             // Fill array of holes centers - whole arrangement
             int iPointIndex = 0;
             for (int i = 0; i < ListOfSequenceGroups.Count; i++) // Add each group
