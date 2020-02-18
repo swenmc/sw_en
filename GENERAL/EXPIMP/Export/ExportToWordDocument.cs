@@ -96,9 +96,16 @@ namespace EXPIMP
 
                 // Replace parameter identificators by values in .doc
                 //-----------------------------------------------------------------------------------------------------------
+                document.ReplaceText("[RoofShape]", data.RoofShape); // Tvar budovy
+
                 document.ReplaceText("[Length]", data.Length.ToString(sStringFormat_Length));
-                document.ReplaceText("[GableWidth]", data.GableWidth.ToString(sStringFormat_Length));
+                document.ReplaceText("[Width]", data.Width.ToString(sStringFormat_Length));
                 document.ReplaceText("[WallHeight]", data.WallHeight.ToString(sStringFormat_Length));
+
+                // Todo
+                // - pre gable roof CModel_PFD_01_GR potrebujeme zobrazit wall height a apex height
+                // - pre monopitch roof CModel_PFD_01_MR potrebujeme zobrazit wall height 1 a wall height 2
+
                 document.ReplaceText("[ApexHeight_H2]",data.ApexHeight_H2.ToString(sStringFormat_Length));
                 document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString("F0"));
                 document.ReplaceText("[BayWidth]", data.BayWidth.ToString(sStringFormat_Length));
@@ -305,7 +312,7 @@ namespace EXPIMP
 
             DrawBasicGeometryParameters(document);
 
-            document.ReplaceText("[GableWidth]", data.GableWidth.ToString(nfi));
+            document.ReplaceText("[Width]", data.Width.ToString(nfi));
             document.ReplaceText("[Length]", data.Length.ToString(nfi));
             document.ReplaceText("[WallHeight]", data.WallHeight.ToString(nfi));
             document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString(nfi));

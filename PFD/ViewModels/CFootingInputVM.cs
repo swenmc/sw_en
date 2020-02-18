@@ -2515,7 +2515,7 @@ namespace PFD
 
             //Floor slab by som riesil v inej metode
             // Floor Slab
-            float fFloorSlab_aX = _pfdVM.Model.m_arrSlabs.First().m_fDim1; // _pfdVM.GableWidth; // Tu by sme potrebovali dostat rozmery floor slab
+            float fFloorSlab_aX = _pfdVM.Model.m_arrSlabs.First().m_fDim1; // _pfdvm.Width; // Tu by sme potrebovali dostat rozmery floor slab
             float fFloorSlab_bY = _pfdVM.Model.m_arrSlabs.First().m_fDim2; // _pfdVM.Length;
 
             // Predpoklada sa, ze posledny saw cut je rovnako vzdialeny od konca ako prvy od zaciatku

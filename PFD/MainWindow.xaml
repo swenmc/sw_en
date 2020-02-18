@@ -101,11 +101,11 @@
                         <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding ModelTypes}" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0,0,0" 
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Width:" HorizontalAlignment="Left" Margin="5,0,0,0" 
                          VerticalAlignment="Top"  />
-                        <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GableWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 

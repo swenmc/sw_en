@@ -48,7 +48,7 @@ namespace PFD
         private bool MIsRelease;
         private int MKitsetTypeIndex;
         private int MModelIndex;
-        private float MGableWidth;
+        private float MWidth;
         private float MLength;
         private float MWallHeight;
         private float MRoofPitch_deg;
@@ -304,7 +304,7 @@ namespace PFD
                 bool isChangedFromCode = IsSetFromCode;
 
                 if(!isChangedFromCode) IsSetFromCode = true;
-                GableWidth = dmodel.fb;
+                Width = dmodel.fb;
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
                 Frames = dmodel.iFrNo;
@@ -327,18 +327,18 @@ namespace PFD
 
                 if (MKitsetTypeIndex == 0)
                 {
-                    fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = (int)((MGableWidth - 0.95 * MColumnDistance) / MColumnDistance);
+                    int iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
                     IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
                 }
                 else if (MKitsetTypeIndex == 1)
                 {
-                    fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth - 0.45f * MColumnDistance) / MColumnDistance);
+                    int iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
                     IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                 }
                 else
@@ -347,7 +347,7 @@ namespace PFD
                     IFrontColumnNoInOneFrame = 0;
                 }
 
-                MColumnDistance = MGableWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
+                MColumnDistance = MWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
 
                 RoofCladdingIndex = 1;
                 RoofCladdingCoatingIndex = 1;
@@ -377,42 +377,42 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float GableWidth
+        public float Width
         {
             get
             {
-                return MGableWidth;
+                return MWidth;
             }
             set
             {
                 if (value < 3 || value > 100)
-                    throw new ArgumentException("Gable Width must be between 3 and 100 [m]");
-                MGableWidth = value;
+                    throw new ArgumentException("Width must be between 3 and 100 [m]");
+                MWidth = value;
 
                 if (MModelIndex != 0)
                 {
                     // UHOL ZACHOVAME ROVNAKY - V OPACNOM PRIPADE SA NEUPDATOVALA SPRAVNE VYSKA h2
 
                     // Recalculate roof pitch
-                    //fRoofPitch_radians = (float)Math.Atan((fHeight_H2 - MWallHeight) / (0.5f * MGableWidth));
+                    //fRoofPitch_radians = (float)Math.Atan((fHeight_H2 - MWallHeight) / (0.5f * MWidth));
                     // Set new value in GUI
                     //MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
                     // Recalculate roof height
 
                     if (MKitsetTypeIndex == 0)
                     {
-                        fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
-                        int iOneRafterFrontColumnNo = (int)((MGableWidth - 0.95 * MColumnDistance) / MColumnDistance);
+                        int iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
                         IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
-                        fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
-                        int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth - 0.45f * MColumnDistance) / MColumnDistance);
+                        int iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
                         IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     }
                     else
@@ -421,14 +421,14 @@ namespace PFD
                         IFrontColumnNoInOneFrame = 0;
                     }
 
-                    MColumnDistance = MGableWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
+                    MColumnDistance = MWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
-                NotifyPropertyChanged("GableWidth");
+                NotifyPropertyChanged("Width");
             }
         }
 
@@ -478,9 +478,9 @@ namespace PFD
                 {
                     // Recalculate roof heigth
                     if (MKitsetTypeIndex == 0)
-                        fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
                     else if (MKitsetTypeIndex == 1)
-                        fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
                     else
                         fHeight_H2 = 0; // Exception
                 }
@@ -528,9 +528,9 @@ namespace PFD
 
                     // Recalculate h2
                     if (MKitsetTypeIndex == 0)
-                        fHeight_H2 = MWallHeight + MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
                     else if (MKitsetTypeIndex == 1)
-                        fHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
                     else
                         fHeight_H2 = 0; // Exception
                 }
@@ -625,8 +625,8 @@ namespace PFD
 
             set
             {
-                if (value < 1 || value > 0.65 * MGableWidth)
-                    throw new ArgumentException("Column distance must be between 1 and " + Math.Round(0.65 * MGableWidth, 3) + " [m]");
+                if (value < 1 || value > 0.65 * MWidth)
+                    throw new ArgumentException("Column distance must be between 1 and " + Math.Round(0.65 * MWidth, 3) + " [m]");
                 MColumnDistance = value;
 
                 if (MModelIndex != 0)
@@ -636,12 +636,12 @@ namespace PFD
 
                     if (MKitsetTypeIndex == 0)
                     {
-                        iOneRafterFrontColumnNo = (int)((MGableWidth - 0.95 * MColumnDistance) / MColumnDistance);
+                        iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
                         IFrontColumnNoInOneFrame = iOneRafterFrontColumnNo;
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
-                        iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth - 0.45f * MColumnDistance) / MColumnDistance);
+                        iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
                         IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     }
                     else
@@ -660,7 +660,7 @@ namespace PFD
                     // chcel som tam mat toho co najmenej a len najnutnejsie hodnoty
                     // Mozes to tak upravit ak je to logickejsie a spravnejsie
 
-                    MColumnDistance = MGableWidth / (IFrontColumnNoInOneFrame + 1);
+                    MColumnDistance = MWidth / (IFrontColumnNoInOneFrame + 1);
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -701,7 +701,7 @@ namespace PFD
 
             set
             {
-                float frontFrameRakeAngle_limit_rad = (float)(Math.Atan(fBayWidth / MGableWidth) - (Math.PI / 180)); // minus 1 radian
+                float frontFrameRakeAngle_limit_rad = (float)(Math.Atan(fBayWidth / MWidth) - (Math.PI / 180)); // minus 1 radian
                 float frontFrameRakeAngle_limit_deg = frontFrameRakeAngle_limit_rad * 180f / MathF.fPI;
 
                 if (value < -frontFrameRakeAngle_limit_deg || value > frontFrameRakeAngle_limit_deg)
@@ -727,7 +727,7 @@ namespace PFD
 
             set
             {
-                float backFrameRakeAngle_limit_rad = (float)(Math.Atan(fBayWidth / MGableWidth) - (Math.PI / 180)); // minus 1 radian
+                float backFrameRakeAngle_limit_rad = (float)(Math.Atan(fBayWidth / MWidth) - (Math.PI / 180)); // minus 1 radian
                 float backFrameRakeAngle_limit_deg = backFrameRakeAngle_limit_rad * 180f / MathF.fPI;
 
                 if (value < -backFrameRakeAngle_limit_deg || value > backFrameRakeAngle_limit_deg)
@@ -3028,7 +3028,7 @@ namespace PFD
         {
             CModelData data = new CModelData();
             data.ModelIndex = ModelIndex;
-            data.GableWidth = MGableWidth;
+            data.Width = MWidth;
             data.Length = MLength;
             data.WallHeight = MWallHeight;
             data.RoofPitch_deg = MRoofPitch_deg;
@@ -3137,7 +3137,18 @@ namespace PFD
         public QuotationData GetQuotationData()
         {
             QuotationData data = new QuotationData();
-            data.GableWidth = MGableWidth;
+
+            if (KitsetTypeIndex == 0)
+                data.RoofShape = "Monopitch";
+            else if (KitsetTypeIndex == 1)
+                data.RoofShape = "Gable";
+            else
+            {
+                data.RoofShape = ""; // Not implemented
+                throw new Exception("Model shape is not implemented.");
+            }
+
+            data.Width = MWidth;
             data.Length = MLength;
             data.WallHeight = MWallHeight;
             data.RoofPitch_deg = MRoofPitch_deg;

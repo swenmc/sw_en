@@ -19,7 +19,7 @@ namespace EXPIMP
         //-------------------------------------------------------------------------------------------------------------
         private int MKitsetTypeIndex;
         private int MModelIndex;
-        private float MGableWidth;
+        private float MWidth;
         private float MLength;
         private float MWallHeight;
         private float MRoofPitch_deg;
@@ -161,15 +161,15 @@ namespace EXPIMP
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float GableWidth
+        public float Width
         {
             get
             {
-                return MGableWidth;
+                return MWidth;
             }
             set
-            {                
-                MGableWidth = value;
+            {
+                MWidth = value;
             }
         }
 

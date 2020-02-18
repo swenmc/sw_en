@@ -15,7 +15,9 @@ namespace EXPIMP
     {
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        private float MGableWidth;
+        private string MRoofShape;
+
+        private float MWidth;
         private float MLength;
         private float MWallHeight;
         private float MApexHeight_H2;
@@ -63,15 +65,27 @@ namespace EXPIMP
         double m_BuildingPrice_PPKG;
 
         //-------------------------------------------------------------------------------------------------------------
-        public float GableWidth
+        public string RoofShape
         {
             get
             {
-                return MGableWidth;
+                return MRoofShape;
             }
             set
             {
-                MGableWidth = value;
+                MRoofShape = value;
+            }
+        }
+
+        public float Width
+        {
+            get
+            {
+                return MWidth;
+            }
+            set
+            {
+                MWidth = value;
             }
         }
 

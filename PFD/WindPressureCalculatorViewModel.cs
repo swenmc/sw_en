@@ -67,7 +67,7 @@ namespace PFD
         private float MAerodynamicShapeFactor_Cfigemin;
         private float MAerodynamicShapeFactor_Cfigemax;
 
-        private float MGableWidth;
+        private float MWidth;
         private float MLength;
         private float MWallHeight;
         private float MRoofPitch_deg;
@@ -645,14 +645,14 @@ namespace PFD
         {
             get
             {
-                return MGableWidth;
+                return MWidth;
             }
 
             set
             {
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Gable Width must be between 3 and 100 [m]");
-                MGableWidth = value;
+                MWidth = value;
 
                 NotifyPropertyChanged("GableWidth");
             }

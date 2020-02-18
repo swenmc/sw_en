@@ -436,7 +436,7 @@ namespace PFD
             // Treba sa na to pozriet podrobnejsie
             // Navrhujem napojit nejaky externy solver
 
-            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fHeight_H2, 1000, 0, 1000, 1000, 1000);
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.Width, vm.WallHeight, vm.fHeight_H2, 1000, 0, 1000, 1000, 1000);
             FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
 
             // Auxialiary string - result data
@@ -580,7 +580,7 @@ namespace PFD
             if (model is CModel_PFD_01_MR)
             {
                 iNumberOfMainRafters_x = 1;
-                fRafterLength = vm.GableWidth / (float)Math.Cos(vm.fRoofPitch_radians); // Sirka budovy premietnuta do sklonu raftera
+                fRafterLength = vm.Width / (float)Math.Cos(vm.fRoofPitch_radians); // Sirka budovy premietnuta do sklonu raftera
                 fWallHeight_Left = vm.Model.fH1_frame;
                 fWallHeight_Right = vm.Model.fH2_frame;
                 float fk_ex_LeftColumn = GetEquivalentStiffness(fWallHeight_Left, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E); // Tuhost laveho stlpa
@@ -598,7 +598,7 @@ namespace PFD
             else if (model is CModel_PFD_01_GR)
             {
                 iNumberOfMainRafters_x = 2;
-                fRafterLength = (0.5f * vm.GableWidth) / (float)Math.Cos(vm.fRoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
+                fRafterLength = (0.5f * vm.Width) / (float)Math.Cos(vm.fRoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
                 fWallHeight_Left = vm.Model.fH1_frame;
                 fWallHeight_Right = vm.Model.fH1_frame;
                 fk_ex = GetEquivalentStiffness(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E);
@@ -655,7 +655,7 @@ namespace PFD
 
             // TODO - pre smer Y pripocitat vahu polovice sirky * polovice vysky prednej a zadnej steny
 
-            float fLoadingWidth_Frame_y = 0.5f * vm.GableWidth; // Zatazovacia sirka ramu v smere Y - polovica budovy
+            float fLoadingWidth_Frame_y = 0.5f * vm.Width; // Zatazovacia sirka ramu v smere Y - polovica budovy
 
             float fMass_Wall_y_Left_kg = vm.Length * 0.5f * fWallHeight_Left * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
             float fMass_Wall_y_Right_kg = vm.Length * 0.5f * fWallHeight_Right * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
@@ -1049,7 +1049,7 @@ namespace PFD
             // Set current geometry data to calculate loads
             sGeometryInputData.fH_2 = vm.fHeight_H2;
             sGeometryInputData.fH_1 = vm.WallHeight;
-            sGeometryInputData.fW = vm.GableWidth;
+            sGeometryInputData.fW = vm.Width;
             sGeometryInputData.fL = vm.Length;
             sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
 
@@ -2351,7 +2351,7 @@ namespace PFD
             vm.IsSetFromCode = true;
             vm.KitsetTypeIndex = newVM.KitsetTypeIndex;
             vm.ModelIndex = newVM.ModelIndex;
-            vm.GableWidth = newVM.GableWidth;
+            vm.Width = newVM.Width;
             vm.Length = newVM.Length;
             vm.WallHeight = newVM.WallHeight;
             vm.RoofPitch_deg = newVM.RoofPitch_deg;
@@ -2403,7 +2403,7 @@ namespace PFD
             vm.RecreateQuotation = true;
 
             //just to fire some change
-            vm.GableWidth = vm.GableWidth;
+            vm.Width = vm.Width;
         }
     }
 }

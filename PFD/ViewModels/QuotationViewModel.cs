@@ -34,10 +34,7 @@ namespace PFD
         double m_BuildingPrice_PCM;
         double m_BuildingPrice_PPKG;
 
-        
-        
         public bool IsSetFromCode = false;
-
 
         //-------------------------------------------------------------------------------------------------------------
         public double BuildingNetPrice_WithoutMargin_WithoutGST
@@ -225,10 +222,6 @@ namespace PFD
                 NotifyPropertyChanged("Margin_Percentage");
             }
         }
-
-        
-
-
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------

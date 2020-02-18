@@ -1712,7 +1712,7 @@ namespace EXPIMP
 
             gfx.DrawString("Width", font, XBrushes.Black, offsetX1, 60);
             gfx.DrawString("B = ", font, XBrushes.Black, offsetX2, 60);
-            gfx.DrawString(data.GableWidth.ToString(), font, XBrushes.Black, offsetX3, 60);
+            gfx.DrawString(data.Width.ToString(), font, XBrushes.Black, offsetX3, 60);
             gfx.DrawString("m", font, XBrushes.Black, offsetX4, 60);
 
             gfx.DrawString("Length", font, XBrushes.Black, offsetX1, 80);
@@ -1753,7 +1753,7 @@ namespace EXPIMP
             //para.Format.SpaceAfter = "3cm";
             FormattedText t = para.AddFormattedText("B =", TextFormat.Bold);
             t.AddTab();
-            para.AddFormattedText(data.GableWidth.ToString());
+            para.AddFormattedText(data.Width.ToString());
             para.AddText("m");
             t = para.AddFormattedText("2");
             t.Superscript = true;
