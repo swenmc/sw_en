@@ -1338,8 +1338,8 @@ namespace EXPIMP
             opts.fWireFrameLineThickness = 2f;
 
             opts.bDisplayMembers = true;
-            opts.bDisplayJoints = true;
-            opts.bDisplayPlates = true;
+            opts.bDisplayJoints = false;
+            opts.bDisplayPlates = false;
 
             opts.bDisplayNodes = false;
             opts.bDisplayNodesDescription = false;
