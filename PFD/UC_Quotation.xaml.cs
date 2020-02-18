@@ -1265,34 +1265,34 @@ namespace PFD
             }
 
             //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
-            CAccessories_LengthItemProperties flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[0]);
+            CAccessories_LengthItemProperties flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[0]);
             if(flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[1]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[1]);
             if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[2]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[2]);
             if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[3]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[3]);
             if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[4]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[4]);
             if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[5]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[5]);
             if (flashing != null) flashing.Length_total = fRollerDoorLintelFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[6]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[6]);
             if (flashing != null) flashing.Length_total = fRollerDoorLintelCapFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[7]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[7]);
             if (flashing != null) flashing.Length_total = fPADoorTrimmerFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[8]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[8]);
             if (flashing != null) flashing.Length_total = fPADoorLintelFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[9]);
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[9]);
             if (flashing != null) flashing.Length_total = fWindowFlashing_TotalLength;
             
             // Create Table

@@ -955,9 +955,11 @@ namespace PFD
                 UpdateUC_Footings();
                 System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);
 
-                vm.Flashings = null;
-                vm.Gutters = null;
-                vm.Downpipes = null;
+                //vm.Flashings = null;
+                //vm.Gutters = null;
+                //vm.Downpipes = null;
+                vm.SetDefaultFlashings();
+                vm.SetDefaultDownpipes();
             }
 
 
