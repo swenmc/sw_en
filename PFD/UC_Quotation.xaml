@@ -384,38 +384,46 @@
             <TextBlock Grid.Row="2" Text="{Binding BuildingArea_Gross, StringFormat={}{0:0.00}}" Name="BuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
-            <TextBlock Grid.Row="3" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Margin (" VerticalAlignment="Top" Width="60" Margin="10,2,0,0" FontSize="16"/>
-            <TextBox   Grid.Row="3" Text="{Binding Margin_Percentage, StringFormat={}{0:0}}" Name="Margin_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="25" Margin="70,2,0,0" FontSize="16" BorderThickness="0" BorderBrush="White" MaxLength="2"/>
-            <TextBlock Grid.Row="3" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="%):" VerticalAlignment="Top" Width="30" Margin="95,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="3" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Margin  (" VerticalAlignment="Top" Width="65" Margin="10,2,0,0" FontSize="16"/>
+            <TextBox   Grid.Row="3" Text="{Binding Margin_Percentage, StringFormat={}{0:0}}" Name="Margin_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Margin="75,2,0,0" FontSize="16" BorderThickness="0" BorderBrush="White" TextAlignment="Right" MaxLength="2"/>
+            <TextBlock Grid.Row="3" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="%):" VerticalAlignment="Top" Width="30" Margin="105,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="3" Text="{Binding Margin_Absolute, StringFormat={}{0:0.00}}" Name="Margin_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="3" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="3" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Volume:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="3" Text="{Binding BuildingVolume_Gross, StringFormat={}{0:0.00}}" Name="BuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="3" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
-            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Subtotal Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="4" Text="{Binding BuildingPrice_WithMargin_WithoutGST, StringFormat={}{0:0.00}}" Name="SubTotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Markup (" VerticalAlignment="Top" Width="65" Margin="10,2,0,0" FontSize="16"/>
+            <TextBox   Grid.Row="4" Text="{Binding Markup_Percentage, StringFormat={}{0:0}}" Name="Markup_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Margin="75,2,0,0" FontSize="16" BorderThickness="0" BorderBrush="White" MaxLength="3" TextAlignment="Right" IsReadOnly="True"/>
+            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="%):" VerticalAlignment="Top" Width="30" Margin="105,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="4" Text="{Binding Markup_Absolute, StringFormat={}{0:0.00}}" Name="Markup_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Mass:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="4" Text="{Binding BuildingMass, StringFormat={}{0:0.00}}" Name="BuildingMass" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="kg" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
-            <TextBlock Grid.Row="5" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="GST      ( " VerticalAlignment="Top" Width="60" Margin="10,2,0,0" FontSize="16"/>
-            <TextBox   Grid.Row="5" Text="{Binding GST_Percentage, StringFormat={}{0:0}}" Name="GST_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="25" Margin="70,2,0,0" FontSize="16" BorderThickness="0" BorderBrush="White" MaxLength="2"/>
-            <TextBlock Grid.Row="5" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="%):" VerticalAlignment="Top" Width="30" Margin="95,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="5" Text="{Binding GST_Absolute, StringFormat={}{0:0.00}}" Name="GST_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="5" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Subtotal Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="5" Text="{Binding BuildingPrice_WithMargin_WithoutGST, StringFormat={}{0:0.00}}" Name="SubTotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="5" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
+            
             <TextBlock Grid.Row="5" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="5" Text="{Binding BuildingPrice_PSM, StringFormat={}{0:0.00}}" Name="UnitPricePerBuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="5" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
-            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Total Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
-            <TextBlock Grid.Row="6" Text="{Binding TotalBuildingPrice_IncludingGST, StringFormat={}{0:0.00}}" Name="TotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
-            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="GST       ( " VerticalAlignment="Top" Width="65" Margin="10,2,0,0" FontSize="16"/>
+            <TextBox   Grid.Row="6" Text="{Binding GST_Percentage, StringFormat={}{0:0}}" Name="GST_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Margin="75,2,0,0" FontSize="16" BorderThickness="0" BorderBrush="White" TextAlignment="Right" MaxLength="2"/>
+            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="%):" VerticalAlignment="Top" Width="30" Margin="105,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="6" Text="{Binding GST_Absolute, StringFormat={}{0:0.00}}" Name="GST_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
+            
             <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="6" Text="{Binding BuildingPrice_PCM, StringFormat={}{0:0.00}}" Name="UnitPricePerBuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
+            <TextBlock Grid.Row="7" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Total Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="7" Text="{Binding TotalBuildingPrice_IncludingGST, StringFormat={}{0:0.00}}" Name="TotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="7" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            
             <TextBlock Grid.Row="7" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="7" Text="{Binding BuildingPrice_PPKG, StringFormat={}{0:0.00}}" Name="UnitPricePerBuildingMass" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="7" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / kg" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>

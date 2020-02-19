@@ -3197,6 +3197,8 @@ namespace PFD
             data.GST_Percentage = _quotationViewModel.GST_Percentage;
             data.Margin_Absolute = _quotationViewModel.Margin_Absolute;
             data.Margin_Percentage = _quotationViewModel.Margin_Percentage;
+            data.Markup_Absolute = _quotationViewModel.Markup_Absolute;
+            data.Markup_Percentage = _quotationViewModel.Markup_Percentage;
             data.TotalBuildingPrice_IncludingGST = _quotationViewModel.TotalBuildingPrice_IncludingGST;
 
             return data;

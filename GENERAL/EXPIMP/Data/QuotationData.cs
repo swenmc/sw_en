@@ -51,6 +51,8 @@ namespace EXPIMP
 
         double m_Margin_Absolute;
         double m_Margin_Percentage;
+        double m_Markup_Absolute;
+        double m_Markup_Percentage;
         double m_BuildingPrice_WithMargin_WithoutGST;
         double m_GST_Absolute;
         double m_GST_Percentage;
@@ -424,6 +426,32 @@ namespace EXPIMP
             set
             {
                 m_Margin_Percentage = value;
+            }
+        }
+
+        public double Markup_Absolute
+        {
+            get
+            {
+                return m_Markup_Absolute;
+            }
+
+            set
+            {
+                m_Markup_Absolute = value;
+            }
+        }
+
+        public double Markup_Percentage
+        {
+            get
+            {
+                return m_Markup_Percentage;
+            }
+
+            set
+            {
+                m_Markup_Percentage = value;
             }
         }
 

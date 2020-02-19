@@ -21,6 +21,9 @@ namespace PFD
 
         double m_Margin_Absolute;
         double m_Margin_Percentage;
+        double m_Markup_Absolute;
+        double m_Markup_Percentage;
+
         double m_BuildingPrice_WithMargin_WithoutGST;
         double m_GST_Absolute;
         double m_GST_Percentage;
@@ -62,6 +65,20 @@ namespace PFD
             {
                 m_Margin_Absolute = value;
                 NotifyPropertyChanged("Margin_Absolute");
+            }
+        }
+
+        public double Markup_Absolute
+        {
+            get
+            {
+                return m_Markup_Absolute;
+            }
+
+            set
+            {
+                m_Markup_Absolute = value;
+                NotifyPropertyChanged("Markup_Absolute");
             }
         }
 
@@ -216,10 +233,24 @@ namespace PFD
 
             set
             {
-                if (value < 0.0 || value > 60)
-                    throw new ArgumentException("Margin must be between 0.0 and 60 [%]");
+                if (value < 0.0 || value > 80)
+                    throw new ArgumentException("Margin must be between 0.0 and 80 [%]");
                 m_Margin_Percentage = value;
                 NotifyPropertyChanged("Margin_Percentage");
+            }
+        }
+
+        public double Markup_Percentage
+        {
+            get
+            {
+                return m_Markup_Percentage;
+            }
+
+            set
+            {
+                m_Markup_Percentage = value;
+                NotifyPropertyChanged("Markup_Percentage");
             }
         }
 

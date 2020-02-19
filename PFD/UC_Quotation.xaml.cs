@@ -262,6 +262,8 @@ namespace PFD
             double dGST_Percentage = 15;   // Default
 
             double dMarginAbsolute,
+                   dMarkupAbsolute,
+                   dMarkupPercentage,
                    buildingPrice_WithMargin_WithoutGST,
                    buildingPrice_PSM,
                    buildingPrice_PCM,
@@ -277,6 +279,8 @@ namespace PFD
                    dMarginPercentage,
                    dGST_Percentage,
                    out dMarginAbsolute,
+                   out dMarkupAbsolute,
+                   out dMarkupPercentage,
                    out buildingPrice_WithMargin_WithoutGST,
                    out buildingPrice_PSM,
                    out buildingPrice_PCM,
@@ -291,6 +295,8 @@ namespace PFD
                 BuildingNetPrice_WithoutMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST,
                 Margin_Percentage = dMarginPercentage,
                 Margin_Absolute = dMarginAbsolute,
+                Markup_Percentage = dMarkupPercentage,
+                Markup_Absolute = dMarkupAbsolute,
                 BuildingPrice_WithMargin_WithoutGST = buildingPrice_WithMargin_WithoutGST,
                 GST_Percentage = dGST_Percentage,
                 GST_Absolute = dGST_Absolute,
@@ -345,6 +351,8 @@ namespace PFD
                 QuotationViewModel vm = sender as QuotationViewModel;
 
                 double dMarginAbsolute,
+                       dMarkupAbsolute,
+                       dMarkupPercentage,
                        buildingPrice_WithMargin_WithoutGST,
                        buildingPrice_PSM,
                        buildingPrice_PCM,
@@ -360,6 +368,8 @@ namespace PFD
                        vm.Margin_Percentage,
                        vm.GST_Percentage,
                        out dMarginAbsolute,
+                       out dMarkupAbsolute,
+                       out dMarkupPercentage,
                        out buildingPrice_WithMargin_WithoutGST,
                        out buildingPrice_PSM,
                        out buildingPrice_PCM,
@@ -370,6 +380,8 @@ namespace PFD
 
                 // Set view model output values
                 vm.Margin_Absolute = dMarginAbsolute;
+                vm.Markup_Absolute = dMarkupAbsolute;
+                vm.Markup_Percentage = dMarkupPercentage;
                 vm.BuildingPrice_WithMargin_WithoutGST = buildingPrice_WithMargin_WithoutGST;
                 vm.GST_Absolute = dGST_Absolute;
                 vm.TotalBuildingPrice_IncludingGST = dTotalBuildingPrice_IncludingGST;
@@ -386,6 +398,8 @@ namespace PFD
             double dMarginPercentage,
             double dGST_Percentage,
             out double dMarginAbsolute,
+            out double dMarkupAbsolute,
+            out double dMarkupPercentage,
             out double buildingPrice_WithMargin_WithoutGST,
             out double buildingPrice_PSM,
             out double buildingPrice_PCM,
@@ -395,8 +409,18 @@ namespace PFD
             )
         {
             // Margin
-            dMarginAbsolute = dBuildingNetPrice_WithoutMargin_WithoutGST * dMarginPercentage / 100f;
-            buildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + dMarginAbsolute;
+            // Marža = (predajná cena – nákupná cena) / predajná cena * 100(vyjadrené v %)
+            buildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST / ((100f - dMarginPercentage) / 100f);
+            dMarginAbsolute = buildingPrice_WithMargin_WithoutGST - dBuildingNetPrice_WithoutMargin_WithoutGST; // Podiel z koncovej (predajnej) ceny - marza
+
+            // Markup
+            // Prirážka = (predajná cena – nákupná cena) / nákupná cena * 100 (vyjadrené v %)
+            dMarkupAbsolute = buildingPrice_WithMargin_WithoutGST - dBuildingNetPrice_WithoutMargin_WithoutGST;
+            dMarkupPercentage = dMarkupAbsolute / dBuildingNetPrice_WithoutMargin_WithoutGST * 100f; // Podiel voci zakladnej (nakupnej) cene - prirazka
+            double dMarkupPercentage_check = (dMarginPercentage / (100f - dMarginPercentage)) * 100f;
+
+            if (!MathF.d_equal(dMarkupPercentage, dMarkupPercentage_check))
+                throw new Exception("Error in the markup calculation.");
 
             // Building Unit Price
             buildingPrice_PSM = fBuildingArea_Gross > 0 ? buildingPrice_WithMargin_WithoutGST / fBuildingArea_Gross : 0;
