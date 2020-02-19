@@ -197,13 +197,19 @@ namespace BaseClasses
             m_SameDistancesX = bSameDistancesX;
             m_SameDistancesY = bSameDistancesY;
 
-            if (bSameDistancesX)
+            if (bSameDistancesX) // Ak je vzdialenost rovnaka nastavime tuto vzdialenost ako prvu polozku pola
+            {
                 m_fDistanceOfPointsX = distancesOfPointsX[0];
+                SetDistancesX(); // Nastavime vsetky medzery rovnake podla poctu skrutiek
+            }
             else
                 m_DistancesOfPointsX = distancesOfPointsX;
 
-            if (bSameDistancesY)
+            if (bSameDistancesY) // Ak je vzdialenost rovnaka nastavime tuto vzdialenost ako prvu polozku pola
+            {
                 m_fDistanceOfPointsY = distancesOfPointsY[0];
+                SetDistancesY(); // Nastavime vsetky medzery rovnake podla poctu skrutiek
+            }
             else
                 m_DistancesOfPointsY = distancesOfPointsY;
 
