@@ -509,8 +509,12 @@ namespace PFD
 
                 if (MKitsetTypeIndex == 0) // Monopitch roof
                 {
-                    if (value < -20 || value > 20)
-                        throw new ArgumentException("Roof Pitch must be between -20 and 20 degrees");
+                    float fMinimumRoofPitchLimit_radians = (float)Math.Atan((MWallHeight - MBottomGirtPosition) / MWidth);
+                    float fMinimumRoofPitchLimit_deg = fMinimumRoofPitchLimit_radians / (MathF.fPI / 180f);
+                    fMinimumRoofPitchLimit_deg--; // Od kladneho sklonu opocitame jeden stupen
+
+                    if (value < -fMinimumRoofPitchLimit_deg || value > 20)
+                        throw new ArgumentException("Roof Pitch must be between "+ Math.Round(-fMinimumRoofPitchLimit_deg, 0) + " and 20 degrees");
                 }
                 else if (MKitsetTypeIndex == 1) // Gable roof
                 {
