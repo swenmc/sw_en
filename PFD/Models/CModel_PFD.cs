@@ -125,7 +125,6 @@ namespace PFD
                     if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
                         m_arrConnectionJoints.Add(new CConnectionJoint_A001(m_arrNodes[i * iFrameNodesNo + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 2], fRoofPitch_rad, fPlateWidth, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
                     else //if(i< (iFrameNo - 1) // Intermediate frame
-
                         m_arrConnectionJoints.Add(new CConnectionJoint_A001(m_arrNodes[i * iFrameNodesNo + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 2], fRoofPitch_rad, fPlateWidth, ft_rafter_joint_plate, 0));
                 }
             }
@@ -173,9 +172,17 @@ namespace PFD
             if (bGenerateGirts)
             {
                 int iNumberOfGirtsPerLeftColumnInOneFrame = iGirtNoInOneFrame / 2;
+                int iNumberOfGirtsPerRightColumnInOneFrame = iNumberOfGirtsPerLeftColumnInOneFrame;
 
                 if (!bIsGableRoof)
-                    iNumberOfGirtsPerLeftColumnInOneFrame = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
+                {
+                    // Cesty a necesty ako pekne previest float na int :)
+                    //iNumberOfGirtsPerLeftColumnInOneFrame = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt);
+                    //iNumberOfGirtsPerLeftColumnInOneFrame = (int)Math.Ceiling((fH1_frame - fBottomGirtPosition) / fDist_Girt);
+                    //iNumberOfGirtsPerLeftColumnInOneFrame = (int)Math.Floor((fH1_frame - fBottomGirtPosition) / fDist_Girt);
+                    iNumberOfGirtsPerLeftColumnInOneFrame = (int)Math.Round((fH1_frame - fBottomGirtPosition) / fDist_Girt);
+                    iNumberOfGirtsPerRightColumnInOneFrame = iGirtNoInOneFrame - iNumberOfGirtsPerLeftColumnInOneFrame;
+                }
 
                 for (int i = 0; i < (iFrameNo - 1) * iGirtNoInOneFrame; i++)
                 {
@@ -198,7 +205,7 @@ namespace PFD
                     {
                         bool bTopOfPlateInCrscVerticalAxisPlusDirection = false;
 
-                        if (iFirstGirtInFrameRightSide <= iCurrentMemberIndex && iCurrentMemberIndex < iFirstGirtOnCurrentSideIndex + iNumberOfGirtsPerLeftColumnInOneFrame)
+                        if (iFirstGirtInFrameRightSide <= iCurrentMemberIndex && iCurrentMemberIndex < iFirstGirtOnCurrentSideIndex + iNumberOfGirtsPerRightColumnInOneFrame)
                             bTopOfPlateInCrscVerticalAxisPlusDirection = true;
 
                         m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bTopOfPlateInCrscVerticalAxisPlusDirection));
