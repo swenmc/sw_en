@@ -1231,6 +1231,7 @@ namespace PFD
         private DataGrid GetDatagridForAnchorArrangement(List<CComponentParamsView> anchorArrangementParams)
         {
             DataGrid dgAA = new DataGrid();
+            dgAA.Name = "DatagridForAnchorArrangement";
             //dgAA.SetValue(Grid.RowProperty, 1);
             dgAA.ItemsSource = anchorArrangementParams;
             dgAA.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -1340,6 +1341,7 @@ namespace PFD
         private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
         {
             DataGrid dgSA = new DataGrid();
+            dgSA.Name = "DatagridForScrewArrangement";
             //dgSA.SetValue(Grid.RowProperty, 1);
             dgSA.ItemsSource = screwArrangementParams;
             dgSA.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -1399,7 +1401,11 @@ namespace PFD
             if (screwArrangementParams != null)
             {
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                DataGrid dgSA = sp.Children[2] as DataGrid;
+
+                int screwArrangementGridIndex = 2;
+                if (plate is CConCom_Plate_B_basic) { screwArrangementGridIndex = 4; }
+
+                DataGrid dgSA = sp.Children[screwArrangementGridIndex] as DataGrid;
                 dgSA.ItemsSource = screwArrangementParams;
                 foreach (CComponentParamsView cpw in screwArrangementParams)
                 {
