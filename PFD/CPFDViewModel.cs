@@ -509,9 +509,10 @@ namespace PFD
 
                 if (MKitsetTypeIndex == 0) // Monopitch roof
                 {
-                    float fMinimumRoofPitchLimit_radians = (float)Math.Atan((MWallHeight - MBottomGirtPosition) / MWidth);
-                    float fMinimumRoofPitchLimit_deg = fMinimumRoofPitchLimit_radians / (MathF.fPI / 180f);
+                    float fMinimumRoofPitchLimit_radians = (float)Math.Atan((MWallHeight - MBottomGirtPosition) / MWidth); // Kladny sklon v radianoch
+                    float fMinimumRoofPitchLimit_deg = fMinimumRoofPitchLimit_radians / (MathF.fPI / 180f); // Kladny sklon v stupnoch
                     fMinimumRoofPitchLimit_deg--; // Od kladneho sklonu opocitame jeden stupen
+                    fMinimumRoofPitchLimit_deg = Math.Min(fMinimumRoofPitchLimit_deg, 20); // Mensia z vypocitanej hodnoty a hodnoty 20 stupnov
 
                     if (value < -fMinimumRoofPitchLimit_deg || value > 20)
                         throw new ArgumentException("Roof Pitch must be between "+ Math.Round(-fMinimumRoofPitchLimit_deg, 0) + " and 20 degrees");

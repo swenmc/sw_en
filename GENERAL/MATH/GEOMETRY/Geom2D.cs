@@ -1533,7 +1533,19 @@ namespace MATH
             }
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Get right triangle altitude
 
+        public static float GetRightTriangleAltitude(float fhypotenuse_c, float fAngle_Alpha_rad) // Zakladna a uhol
+        {
+            double opposite_a = fhypotenuse_c * Math.Sin(Math.Abs(fAngle_Alpha_rad)); // Protilahla odvesna
+            double adjacent_b = fhypotenuse_c * Math.Cos(Math.Abs(fAngle_Alpha_rad)); // Prilahla odvesna
+
+            double hypotenusePortion_c_a = MathF.Pow2(opposite_a) / fhypotenuse_c;
+            double hypotenusePortion_c_b = MathF.Pow2(adjacent_b) / fhypotenuse_c;
+
+            return (float)Math.Sqrt(hypotenusePortion_c_a * hypotenusePortion_c_b); // altitude_vc
+        }
 
         /// <summary>
         /// Converts an angle in decimal degress to radians.

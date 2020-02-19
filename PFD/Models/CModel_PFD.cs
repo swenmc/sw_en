@@ -1884,9 +1884,9 @@ namespace PFD
 
         public void GetJointalignments(float fh_column, float fh_rafter, out float alignment_column, out float alignment_knee_rafter, out float alignment_apex_rafter)
         {
-            float cosAlpha = (float)Math.Cos(fRoofPitch_rad);
-            float sinAlpha = (float)Math.Sin(fRoofPitch_rad);
-            float tanAlpha = (float)Math.Tan(fRoofPitch_rad);
+            float cosAlpha = (float)Math.Cos(Math.Abs(fRoofPitch_rad));
+            float sinAlpha = (float)Math.Sin(Math.Abs(fRoofPitch_rad));
+            float tanAlpha = (float)Math.Tan(Math.Abs(fRoofPitch_rad));
 
             /*
             float y = fh_rafter / cosAlpha;

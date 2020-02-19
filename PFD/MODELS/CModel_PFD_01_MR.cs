@@ -227,6 +227,10 @@ namespace PFD
             float falignment_column, falignment_knee_rafter, falignment_apex_rafter;
             GetJointalignments((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h, out falignment_column, out falignment_knee_rafter, out falignment_apex_rafter);
 
+            // Monopitch !!!
+            //float fNegativeSlopeDifference_Column = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h * (float)Math.Tan(fRoofPitch_rad);
+            //float fNegativeSlopeDifference_Rafter = Geom2D.GetRightTriangleAltitude((float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h, fRoofPitch_rad); // Vyska v pravouhlom trojuholniku
+
             // Member Eccentricities
             // Zadane hodnoty predpokladaju ze prierez je symetricky, je potrebne zobecnit
             CMemberEccentricity eccentricityPurlin = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h - 0.5 * m_arrCrSc[(int)EMemberGroupNames.ePurlin].h));
