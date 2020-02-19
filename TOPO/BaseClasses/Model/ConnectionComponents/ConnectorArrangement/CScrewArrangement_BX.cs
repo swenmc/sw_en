@@ -213,7 +213,7 @@ namespace BaseClasses
             float fx_c_SQ3_temp,
             float fy_c_SQ3_temp,
             float fDistanceOfPointsX_SQ3_temp,
-            float fDistanceOfPointsY_SQ3_temp)
+            float fDistanceOfPointsY_SQ3_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp + iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp + iNumberOfScrewsInRow_xDirection_SQ3_temp * iNumberOfScrewsInColumn_yDirection_SQ3_temp, referenceScrew_temp)
         {
             referenceScrew = referenceScrew_temp;
             //FCrscColumnDepth = fCrscColumnDepth_temp;
@@ -251,7 +251,7 @@ namespace BaseClasses
             float fx_c_SQ1_temp,
             float fy_c_SQ1_temp,
             List<float> distancesOfPointsX_SQ1_temp,
-            List<float> distancesOfPointsY_SQ1_temp)
+            List<float> distancesOfPointsY_SQ1_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp, referenceScrew_temp)
         {
             // TO Ondrej - tento konstruktor by sa dal pozjednodusovat,
             // mohli by sme don poslat len List distancesOfPointsX a distancesOfPointsY
@@ -353,6 +353,7 @@ namespace BaseClasses
 
                 gr.HolesRadii = gr.Get_RadiiOfConnectorsInGroup();
             }
+
             FillArrayOfHolesCentersInWholeArrangement();
 
 

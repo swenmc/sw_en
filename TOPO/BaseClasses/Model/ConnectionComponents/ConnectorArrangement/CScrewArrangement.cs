@@ -205,6 +205,10 @@ namespace BaseClasses
             //resp. nejako reagovat na zmenu poctu skrutiek a nasledna inicializacia tohto pola
             //ja vlastne ani neviem naco to tu toto vlastne je, sa mi nezda,zeby to nieco robilo
 
+            // TO Ondrej
+            // Pred tym nez sa zavola tato funckia sa musi spravne alokovat velkost pola, to znamena ze musi byt prepocitane IHolesNumber
+            // vid metoda RecalculateTotalNumberOfScrews To by sa malo zmenit uz pred tym nez sa zmenene screw arrangement nastavuje plechu
+            // Akurat si nie som isty ako to bude s tymi mirrorovanymi groups
 
             // Fill array of holes centers - whole arrangement
             int iPointIndex = 0;
