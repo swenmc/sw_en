@@ -133,7 +133,7 @@ namespace BaseClasses
                 arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X - fx; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (knee plate alebo apex JC)
                 arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - fy; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (apex plate)
 
-                if(bScrewInPlusZDirection)
+                if (bScrewInPlusZDirection)
                     arrConnectorControlPoints3D[i].Z = -referenceScrew.T_ht_headTotalThickness;
                 else
                     arrConnectorControlPoints3D[i].Z = ft + referenceScrew.T_ht_headTotalThickness;
@@ -199,16 +199,53 @@ namespace BaseClasses
                 IHolesNumber = 0;
         }
 
+        public void RecalculateTotalNumberOfScrews_2()
+        {
+            // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
+            IHolesNumber = 0;
+
+            for (int i = 0; i < ListOfSequenceGroups.Count; i++) // Add each group
+            {
+                for (int j = 0; j < ListOfSequenceGroups[i].ListSequence.Count; j++) // Add each sequence in group
+                {
+                    if (ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints == null) continue;
+
+                    IHolesNumber += ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length;
+                }
+            }
+
+            // Validation
+            if (IHolesNumber < 0)
+                IHolesNumber = 0;
+        }
+
         public override void FillArrayOfHolesCentersInWholeArrangement()
         {
+            //-------------------------------------------------------------------------------------------------------------------------------------------------
+            // Po vyrieseni zmazat celu tuto cast
+
             //TODO - tu bude potrebne doplnit nejaku kontrolu, a rozsirenie pola HolesCentersPoints2D, lebo sa to tu nejako zrubava
             //resp. nejako reagovat na zmenu poctu skrutiek a nasledna inicializacia tohto pola
             //ja vlastne ani neviem naco to tu toto vlastne je, sa mi nezda,zeby to nieco robilo
 
             // TO Ondrej
+            // Tato funkcia nerobi nic ine len pozbera suradnice z jednotlivych groups a ich sekvencii a vsetky body nakopiruje do jedneho velkeho pola HolesCentersPoints2D.
+            // To pole sa potom pouziva pre vykreslovanie skrutiek na 2D plechu a neviem kde vsade este.
+
             // Pred tym nez sa zavola tato funckia sa musi spravne alokovat velkost pola, to znamena ze musi byt prepocitane IHolesNumber
             // vid metoda RecalculateTotalNumberOfScrews To by sa malo zmenit uz pred tym nez sa zmenene screw arrangement nastavuje plechu
-            // Akurat si nie som isty ako to bude s tymi mirrorovanymi groups
+            // Akurat si nie som isty ako to bude s tymi mirrorovanymi groups. Tie by uz mali byt vytvorene a updatovane ked sa zavola tato funckia.
+            // Vsetky parametre sekvencii a groups musia byt pred volanim tejto funkcie aktualizovane.
+
+            // Problem je ze sice sa zmeni v sekvencii velkost pola HolesCentersPoints ale dalsie parametre ako INumberOfConnectors zostane povodne cislo
+            // Vyrobil som druhu metodu RecalculateTotalNumberOfScrews_2, ktora prepocita pocet skrutiek podla velkosti pola HolesCentersPoints
+            // Spravne by sa vsak mal nastavit pri zmene arrangement a sekvencii pocet jej prvkov seq.INumberOfConnectors
+
+            RecalculateTotalNumberOfScrews_2(); // Docasne to prepocitavam a menim tu ale urcite by sme to mali urobit niekde skor
+            HolesCentersPoints2D = new Point[IHolesNumber]; // Docasne
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------------
 
             // Fill array of holes centers - whole arrangement
             int iPointIndex = 0;
