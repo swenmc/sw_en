@@ -116,7 +116,7 @@ namespace BaseClasses.Helpers
                 if (m1 != null && m2 != null && m3 != null && m4 != null)
                 {
                     CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
-                    0.6, 0.6, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
+                    0.7, 0.7, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
 
                     // stlp vpravo - vyskova kota
                     float fh = model.fH1_frame;
@@ -128,7 +128,7 @@ namespace BaseClasses.Helpers
                         0.6, 0.6, 0.05, 0.15, (fh * 1000).ToString("F0"), true);
 
                     CDimensionLinear3D dim3 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
-                        0.6, 0.6, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
+                        0.7, 0.7, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
 
                     CDimensionLinear3D dim4 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
                         0.5, 0.5, 0.05, 0.15, (model.fL1_frame * 1000).ToString("F0"), true);
