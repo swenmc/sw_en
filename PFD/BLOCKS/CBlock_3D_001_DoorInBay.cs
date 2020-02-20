@@ -283,7 +283,12 @@ namespace PFD
 
             if (bDoorColumnIsConnectedtoEavePurlin)
             {
-                fDoorColumnEnd = (float)referenceEavePurlin.CrScStart.z_min - fCutOffOneSide;
+                float referenceEavePurlinEcc_Local_z = -referenceEavePurlin.EccentricityStart.MFz_local; // Left side (+z downward)
+
+                if(BuildingSide == "Right")
+                    referenceEavePurlinEcc_Local_z = referenceEavePurlin.EccentricityStart.MFz_local; // Right side (+z upward)
+
+                fDoorColumnEnd = referenceEavePurlinEcc_Local_z + (float)referenceEavePurlin.CrScStart.z_min - fCutOffOneSide;
             }
 
             float fOffsetBetweenGirtAndColumn_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)crscColumn.z_max;
