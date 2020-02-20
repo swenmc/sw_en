@@ -44,7 +44,7 @@ namespace PFD
                 throw new Exception("Window is defined out of frame bay."); // Window is defined out of frame bay
 
             if ((prop.fWindowsHeight + prop.fWindowCoordinateZinBay) > fBayHeight)
-                throw new Exception("Window is defined out of frame height"); // Window is defined out of frame height
+                throw new Exception("Window is defined out of frame height."); // Window is defined out of frame height
 
             float fDistanceBetweenWindowColumns = prop.fWindowsWidth / (prop.iNumberOfWindowColumns - 1);
 
