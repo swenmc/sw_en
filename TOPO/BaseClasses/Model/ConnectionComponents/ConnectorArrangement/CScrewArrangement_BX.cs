@@ -523,6 +523,5 @@ namespace BaseClasses
                 RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
             }
         }
-
     }
 }

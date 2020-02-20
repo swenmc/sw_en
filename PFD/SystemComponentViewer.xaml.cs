@@ -1925,7 +1925,7 @@ namespace PFD
                         // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
                         // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                         // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
-                                                
+
                         if (item.Name.Equals("Number of sequence in group"))
                         {
                             int numberOfSequenceInGroup = int.Parse(itemStr.Value);
@@ -1962,7 +1962,6 @@ namespace PFD
                                     if (item.Name.Contains($"Distance between screws y{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
                                 }
                             }
-
                         }
 
                         //if (item.Name.Contains(" SQ"))
@@ -2022,6 +2021,17 @@ namespace PFD
                     {
                         CComponentParamsViewList itemList = item as CComponentParamsViewList;
                         if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    }
+
+                    // Bug 531
+                    // TO Ondrej - zmenili sme v nejakej sekvencii parametre, ale kedze su sekvencie zrkadlene tak to treba zmenit aj pre jej zrkadlenu dvojicku
+                    // Mozeme to urobit priamo tu, alebo v UpdateArrangmentData
+                    // Mozes to urobit aj tak ze zrkadlene sekvencie uplne zahodis a az pri mirror group sa vytvoria s rovnakymi parametrami ako maju tie v prvej skupine
+
+                    for (int i = 0; i < arrangementTemp.NumberOfSequenceInGroup; i++)
+                    {
+                        // Naklonujeme sekvencie z jednej skupiny (vlavo) do mirrorovanych sekvencii (ktore su v druhej skupine - vpravo)
+                        arrangementTemp.RectSequences[arrangementTemp.NumberOfSequenceInGroup + i] = ExtensionMethods.Clone(arrangementTemp.RectSequences[i]);
                     }
 
                     arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
