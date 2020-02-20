@@ -307,6 +307,10 @@ namespace BaseClasses
                 gr.NumberOfRectangularSequences = NumberOfSequenceInGroup;
                 for (int j = 0; j < NumberOfSequenceInGroup; j++)
                 {
+                    // TO Ondrej - Pridal som tento riadok - Updatujeme celkovy pocet prvkov v sekvencii - asi by sa to mohlo uskutocnit uz skor pred tym ako sem RectSequences dorazia
+                    RectSequences[index].INumberOfConnectors = RectSequences[index].NumberOfScrewsInRow_xDirection * RectSequences[index].NumberOfScrewsInColumn_yDirection;
+
+                    // Pridame sekvenciu do skupiny
                     gr.ListSequence.Add(RectSequences[index]);
                     index++;
                 }
