@@ -199,6 +199,7 @@ namespace BaseClasses
                 IHolesNumber = 0;
         }
 
+        /*
         public void RecalculateTotalNumberOfScrews_2()
         {
             // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
@@ -217,7 +218,7 @@ namespace BaseClasses
             // Validation
             if (IHolesNumber < 0)
                 IHolesNumber = 0;
-        }
+        }*/
 
         public override void FillArrayOfHolesCentersInWholeArrangement()
         {
@@ -241,9 +242,9 @@ namespace BaseClasses
             // Vyrobil som druhu metodu RecalculateTotalNumberOfScrews_2, ktora prepocita pocet skrutiek podla velkosti pola HolesCentersPoints
             // Spravne by sa vsak mal nastavit pri zmene arrangement a sekvencii pocet jej prvkov seq.INumberOfConnectors
 
-            RecalculateTotalNumberOfScrews_2(); // Docasne to prepocitavam a menim tu ale urcite by sme to mali urobit niekde skor
-            HolesCentersPoints2D = new Point[IHolesNumber]; // Docasne
-            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+            //RecalculateTotalNumberOfScrews_2(); // Docasne to prepocitavam a menim tu ale urcite by sme to mali urobit niekde skor
+            //HolesCentersPoints2D = new Point[IHolesNumber]; // Docasne
+            //arrConnectorControlPoints3D = new Point3D[IHolesNumber];
 
             //-------------------------------------------------------------------------------------------------------------------------------------------------
 
