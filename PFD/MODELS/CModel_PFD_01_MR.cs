@@ -237,8 +237,26 @@ namespace PFD
             CMemberEccentricity eccentricityGirtLeft_X0 = new CMemberEccentricity(0, (float)(-(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - 0.5 * m_arrCrSc[(int)EMemberGroupNames.eGirtWall].h)));
             CMemberEccentricity eccentricityGirtRight_XB = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - 0.5 * m_arrCrSc[(int)EMemberGroupNames.eGirtWall].h));
 
-            float feccentricityEavePurlin_z = -falignment_column + (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_max;
-            CMemberEccentricity eccentricityEavePurlin = new CMemberEccentricity(-(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h + m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min), feccentricityEavePurlin_z);
+            float falignment_column_Right = -(float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_min / (float)Math.Cos(fRoofPitch_rad) + (-(float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_min) * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+            float feccentricityEavePurlin_y = (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h + m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min);
+            float feccentricityEavePurlinLeft_z = -falignment_column + (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h * (float)Math.Cos(Math.Abs(fRoofPitch_rad)) - (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_max;
+            float feccentricityEavePurlinRight_z = -falignment_column_Right + (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h * (float)Math.Tan(Math.Abs(fRoofPitch_rad)) + (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h / (float)Math.Cos(Math.Abs(fRoofPitch_rad)) - (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].b * (float)Math.Tan(Math.Abs(fRoofPitch_rad)) - (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_max;
+
+            if (fRoofPitch_rad < 0) // zaporny sklon
+            {
+                // Prehodime alignment pre stlpy vlavo a vpravo
+                float t = falignment_column;
+                falignment_column = falignment_column_Right;
+                falignment_column_Right = t;
+
+                // Prehodime vypocitane excentricity vlavo a vpravo
+                // TO Ondrej - asi existuje nejaky sposob ako prehodit hodnoty v premennych bez pouzitia tretej docasnej
+                t = feccentricityEavePurlinLeft_z;
+                feccentricityEavePurlinLeft_z = feccentricityEavePurlinRight_z;
+                feccentricityEavePurlinRight_z = t;
+            }
+
+            CMemberEccentricity eccentricityEavePurlin = new CMemberEccentricity(-feccentricityEavePurlin_y, feccentricityEavePurlinLeft_z);
 
             // Moze byt automaticke alebo uzivatelsky nastavitelne
             //bWindPostEndUnderRafter = m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].h > 0.49f ? true : false; // TODO - nastavovat podla velkosti edge frame rafter // true - stlp konci na spodnej hrane rafter, false - stlp konci na hornej hrane rafter
@@ -782,7 +800,8 @@ namespace PFD
                     m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, eccEavePurlinLeft, eccEavePurlinLeft, fEavesPurlinStart, fEavesPurlinEnd, (float)Math.PI, 0);
 
                     // Right - osa z prierezu smeruje hore
-                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1 + 1, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[(i + 1) * iFrameNodesNo + 2], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
+                    CMemberEccentricity eccEavePurlinRight = new CMemberEccentricity(eccentricityEavePurlin.MFy_local, feccentricityEavePurlinRight_z);
+                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1 + 1, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[(i + 1) * iFrameNodesNo + 2], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, eccEavePurlinRight, eccEavePurlinRight, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
                     CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo], iNumberOfTransverseSupports_EdgePurlins);
                     CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1], iNumberOfTransverseSupports_EdgePurlins);
                 }
@@ -1016,7 +1035,7 @@ namespace PFD
                         float fGBSideWallEnd_Current = fGBSideWallEnd;
 
                         if (j == iLeftColumnGirtNo - 1) // Last
-                            fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
+                            fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlinLeft_z - fCutOffOneSide;
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
                         {
@@ -1037,7 +1056,7 @@ namespace PFD
                         float fGBSideWallEnd_Current = fGBSideWallEnd;
 
                         if (j == iRightColumnGirtNo - 1) // Last
-                            fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlin_z - fCutOffOneSide;
+                            fGBSideWallEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_min + feccentricityEavePurlinRight_z - fCutOffOneSide;
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
                         {
