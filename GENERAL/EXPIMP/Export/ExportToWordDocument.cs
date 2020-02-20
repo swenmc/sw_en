@@ -101,12 +101,19 @@ namespace EXPIMP
                 document.ReplaceText("[Length]", data.Length.ToString(sStringFormat_Length));
                 document.ReplaceText("[Width]", data.Width.ToString(sStringFormat_Length));
                 document.ReplaceText("[WallHeight]", data.WallHeight.ToString(sStringFormat_Length));
+                document.ReplaceText("[ApexHeight_H2]", data.ApexHeight_H2.ToString(sStringFormat_Length));
+                                
+                if (data.KitSetTypeIndex == 0) //Monopitch
+                {
+                    document.ReplaceText("[lblWallH1]", "Wall Height 1");
+                    document.ReplaceText("[lblWallH2]", "Wall Height 2");                    
+                }
+                else if (data.KitSetTypeIndex == 1) //Gable
+                {
+                    document.ReplaceText("[lblWallH1]", "Wall Height");
+                    document.ReplaceText("[lblWallH2]", "Apex Height");
+                }
 
-                // Todo
-                // - pre gable roof CModel_PFD_01_GR potrebujeme zobrazit wall height a apex height
-                // - pre monopitch roof CModel_PFD_01_MR potrebujeme zobrazit wall height 1 a wall height 2
-
-                document.ReplaceText("[ApexHeight_H2]",data.ApexHeight_H2.ToString(sStringFormat_Length));
                 document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString("F0"));
                 document.ReplaceText("[BayWidth]", data.BayWidth.ToString(sStringFormat_Length));
 

@@ -3160,7 +3160,7 @@ namespace PFD
                 data.RoofShape = ""; // Not implemented
                 throw new Exception("Model shape is not implemented.");
             }
-
+            data.KitSetTypeIndex = MKitsetTypeIndex;
             data.Width = MWidth;
             data.Length = MLength;
             data.WallHeight = MWallHeight;

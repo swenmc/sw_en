@@ -15,6 +15,7 @@ namespace EXPIMP
     {
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        private int MKitSetTypeIndex;
         private string MRoofShape;
 
         private float MWidth;
@@ -67,6 +68,18 @@ namespace EXPIMP
         double m_BuildingPrice_PPKG;
 
         //-------------------------------------------------------------------------------------------------------------
+        public int KitSetTypeIndex
+        {
+            get
+            {
+                return MKitSetTypeIndex;
+            }
+
+            set
+            {
+                MKitSetTypeIndex = value;
+            }
+        }
         public string RoofShape
         {
             get
@@ -584,6 +597,8 @@ namespace EXPIMP
                 m_BuildingPrice_PPKG = value;
             }
         }
+
+        
 
 
 
