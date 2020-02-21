@@ -14,7 +14,7 @@
         <System:Double x:Key="theColumnWidthValue">100</System:Double>
         <System:Double x:Key="theColumnWidthUnit">70</System:Double>
         <Style x:Key="RightAligned" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
         <Style x:Key="LeftAligned" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -48,13 +48,13 @@
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="Component Name" Width="120"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Com. Color" ToolTipService.ToolTip="Select component color" Width="70" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">                    
+                <DataGridComboBoxColumn Header="Com. Color" ToolTipService.ToolTip="Select component color" Width="70" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding Colors}"/>

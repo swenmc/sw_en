@@ -16,6 +16,9 @@
         <Style x:Key="CenterAligned" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
+        <Style x:Key="LeftHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
         <Style x:Key="MainColumn" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -41,9 +44,9 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding LoadCaseID}" Header="ID" Width="50" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding LoadCaseName}" Header="Load Case Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding LoadCaseType}" Header="Load Case Type" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LoadCaseID}" Header="ID" Width="50" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LoadCaseName}" Header="Load Case Name" Width="Auto" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LoadCaseType}" Header="Load Case Type" Width="Auto" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
                 
             </DataGrid.Columns>
         </DataGrid>
