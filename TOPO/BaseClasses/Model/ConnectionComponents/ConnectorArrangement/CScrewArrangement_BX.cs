@@ -253,11 +253,26 @@ namespace BaseClasses
             List<float> distancesOfPointsX_SQ1_temp,
             List<float> distancesOfPointsY_SQ1_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp, referenceScrew_temp)
         {
+            //----------------------------------------------------------------------------------------------------------------------------------------------------------------
             // TO Ondrej - tento konstruktor by sa dal pozjednodusovat,
             // mohli by sme don poslat len List distancesOfPointsX a distancesOfPointsY
             // Podla poctu prvkov v tomto zozname + 1 by sa urcili NumberOfScrewsInRow_xDirection a NumberOfScrewsInColumn_yDirection
             // Ak by bol pocet prvkov v zozname 1, tak by sa m_SameDistances nastavilo na true, ak by to bolo viac nez jedna, tak na false
             //To Mato - toto si Mato prekombinoval, to sa neda, aby z toho pola bol aj pocet screws a zaroven aby podla poctu to rozhodlo ze je sameDistance :-D co ak budem chciet pocet 4 a same distance :-D
+
+            // To Ondrej - nie je mi uplne jasne preco sa to neda
+
+            // Pride mi pole s jednym prvkom.
+            // nastavim ze pocet skrutiek je 2
+            // nastavim bSameDistance = true
+            // pri generovani rastra potom budem brat vzdy distance ako tento jediny prvok pola
+
+            // Pride mi pole s viac nez jednym prvkom.
+            // Nastavim pocet skrutiek na velkost pola + 1
+            // Zistim ci su vsetky vzdialenosti v poli rovnake (napriklad tymto MathF.d_equal(... , ...)
+            // Ak su rovnake, nastavim bSameDistance = true,
+            // Ak nie su rovnake, nastavim bSameDistance = false;
+            //----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
             referenceScrew = referenceScrew_temp;
             //FCrscColumnDepth = fCrscColumnDepth_temp;
