@@ -117,8 +117,8 @@ namespace PFD.Infrastructure
             //Calculate_InternalForces_LoadCombinations();
             //Calculate_Deflections_LoadCombinations();
 
-            //To Mato - zamyslam sa preco pocitame aj IF a Deflections for LoadCases aj pre LoadCombinations
-            //problem bol v tom,ze pocitali sa IF aj pre load case aj pre load combination, pricom pre load case bezal progress ale pre loadCombination uz nie, ani pre deflections
+            // To Mato - zamyslam sa preco pocitame aj IF a Deflections for LoadCases aj pre LoadCombinations
+            // Problem bol v tom,ze pocitali sa IF aj pre load case aj pre load combination, pricom pre load case bezal progress ale pre loadCombination uz nie, ani pre deflections
             Calculate_InternalForces();
             Calculate_MemberDesign_LoadCombinations();
 
@@ -649,6 +649,7 @@ namespace PFD.Infrastructure
             if (iSimpleBeamIndex < 0)
             {
                 //To Mato - V Load Cases som zaskrtol druhe option a tu sa mi dostalo iSimpleBeamIndex = -1;
+                // To Ondrej - Vyskusal som to a prebehlo to bez problemov
                 return;
             }
             // Create load combination (FEM solver object)

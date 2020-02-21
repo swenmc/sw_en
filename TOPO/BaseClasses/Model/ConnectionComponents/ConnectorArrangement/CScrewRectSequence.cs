@@ -202,18 +202,13 @@ namespace BaseClasses
 
             m_RefPointX = refPointX;
             m_RefPointY = refPointY;
-                      
+
             m_SameDistancesX = distancesOfPointsX.Count == 1;
-            m_SameDistancesY = distancesOfPointsY.Count == 1;            
+            m_SameDistancesY = distancesOfPointsY.Count == 1;
 
             DistancesOfPointsX = distancesOfPointsX;
             DistancesOfPointsY = distancesOfPointsY;
 
-            //To Mato - tento riadok tu nechcem mat, ale ked ho nemam, tak sa to zrube a neviem prist nato preco sa to zrubava, skus prosim pozriet
-            NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection;
-            
-
-            
             HolesCentersPoints = new Point[INumberOfConnectors];
         }
 

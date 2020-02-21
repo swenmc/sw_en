@@ -16,6 +16,9 @@
         <Style x:Key="CenterAligned" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
+        <Style x:Key="LeftHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
         <Style x:Key="MainColumn" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -39,12 +42,12 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding ID}" Header="ID" Width="50" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding LimitState}" Header="Limit State" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding LoadCases}" Header="Load Cases" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding CombinationKey}" Header="Combination Key" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Formula}" Header="Formula" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding ID}" Header="ID" Width="50" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="Auto" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LimitState}" Header="Limit State" Width="Auto" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LoadCases}" Header="Load Cases" Width="Auto" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding CombinationKey}" Header="Combination Key" Width="Auto" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Formula}" Header="Formula" Width="Auto" HeaderStyle="{StaticResource LeftHeaderStyle}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

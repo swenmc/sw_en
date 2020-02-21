@@ -1255,7 +1255,7 @@ namespace PFD
         private DataGrid GetDatagridForAnchorArrangement(List<CComponentParamsView> anchorArrangementParams)
         {
             DataGrid dgAA = new DataGrid();
-            dgAA.Name = "DatagridForAnchorArrangement";            
+            dgAA.Name = "DatagridForAnchorArrangement";
             //dgAA.SetValue(Grid.RowProperty, 1);
             dgAA.ItemsSource = anchorArrangementParams;
             dgAA.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -1483,6 +1483,7 @@ namespace PFD
             dg.AutoGenerateColumns = false;
             dg.IsEnabled = true;
             dg.IsReadOnly = false;
+            dg.CanUserSortColumns = false;
             dg.HeadersVisibility = DataGridHeadersVisibility.Column;
             dg.SelectionMode = DataGridSelectionMode.Single;
             dg.SelectionUnit = DataGridSelectionUnit.Cell;
@@ -1567,6 +1568,7 @@ namespace PFD
             dg.AutoGenerateColumns = false;
             dg.IsEnabled = true;
             dg.IsReadOnly = true;
+            dg.CanUserSortColumns = false;
             dg.HeadersVisibility = DataGridHeadersVisibility.Column;
             dg.SelectionMode = DataGridSelectionMode.Single;
             dg.SelectionUnit = DataGridSelectionUnit.Cell;

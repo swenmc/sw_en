@@ -1767,9 +1767,6 @@ namespace PFD
                     {
                         if (plate.ScrewArrangement == null) return 0;
                         else if (plate.ScrewArrangement is CScrewArrangement_BX) return 1;
-                        //TO Mato - s tymto co? index 2 to nevrati nikdy ???
-                        //else if (plate.ScrewArrangement is CScrewArrangement_BX_1) return 1;
-                        //else if (plate.ScrewArrangement is CScrewArrangement_BX_2) return 2;
                         else return 0;
                     }
                 case ESerieTypePlate.eSerie_L:
