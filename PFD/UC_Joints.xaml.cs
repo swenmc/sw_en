@@ -715,11 +715,12 @@ namespace PFD
                 sp.Width = 550;
                 spAA.Orientation = Orientation.Horizontal;
                 Label lAA = new Label() { Content = "Anchor Arrangement: " };
-                ComboBox selectAA = new ComboBox();
+                ComboBox selectAA = new ComboBox();   
+                
                 selectAA.Width = 200;
                 selectAA.Height = 20;
                 selectAA.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
-                selectAA.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
+                selectAA.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);               
                 selectAA.SelectionChanged += SelectAA_SelectionChanged;
                 spAA.Children.Add(lAA);
                 spAA.Children.Add(selectAA);
@@ -1144,7 +1145,7 @@ namespace PFD
             if (joint == null) return;
 
             ComboBox cbAA = sender as ComboBox;
-            if (cbAA == null) return;
+            if (cbAA == null) return;            
 
             paramsChanged = true;
             ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);

@@ -6,12 +6,46 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         d:DesignHeight="1070" d:DesignWidth="600">
+    <UserControl.Resources>
+        <Style x:Key="RightAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="LeftAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="CenterAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="MainColumn" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </UserControl.Resources>
     <Grid Margin="5,10,5,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_LoadCases" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0"
                   IsReadOnly="true" SelectedCellsChanged="Datagrid_LoadCases_SelectedCellsChanged"
-                  SelectionMode="Single" />
+                  SelectionMode="Single" AutoGenerateColumns="False">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding LoadCaseID}" Header="ID" Width="50" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LoadCaseName}" Header="Load Case Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LoadCaseType}" Header="Load Case Type" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

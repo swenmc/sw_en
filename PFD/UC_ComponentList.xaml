@@ -13,6 +13,19 @@
         <System:Double x:Key="theColumnWidthSymbol">100</System:Double>
         <System:Double x:Key="theColumnWidthValue">100</System:Double>
         <System:Double x:Key="theColumnWidthUnit">70</System:Double>
+        <Style x:Key="RightAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="LeftAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="CenterAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="MainColumn" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -24,17 +37,24 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}" MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown">
+                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}" 
+                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="120"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Com. Color" ToolTipService.ToolTip="Select component color" Width="70" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
-                    <!--<DataGridComboBoxColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Color}"/>
-                            <Setter Property="Foreground" Value="{Binding Color}"/>
-                        </Style>
-                    </DataGridComboBoxColumn.CellStyle>-->
+                <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="Component Name" Width="120"></DataGridTextColumn>
+                <DataGridComboBoxColumn Header="Com. Color" ToolTipService.ToolTip="Select component color" Width="70" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">                    
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding Colors}"/>
@@ -65,47 +85,8 @@
                             </Setter>
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
-                </DataGridComboBoxColumn>
+                </DataGridComboBoxColumn>                
                 
-                <!--<DataGridTemplateColumn Header="Color" ToolTipService.ToolTip="Select color" Width="Auto">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Color}"/>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox x:Name="ComboBoxColumn" ItemsSource="{Binding Source={StaticResource Colors}}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Rectangle Fill="{Binding Path=Color}" Width="92" Height="12" Margin="0,1,5,1" />
-                                            <TextBlock Text="{Binding Color}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox x:Name="ComboBoxColumn" ItemsSource="{Binding Source={StaticResource Colors}}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Rectangle Fill="{Binding Path=Color}" Width="92" Height="12" Margin="0,1,5,1" />
-                                            <TextBlock Text="{Binding Color}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>-->
-                <!--<DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="Auto" 
-                    SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}" 
-                    ItemsSource ="{Binding Source={StaticResource Colors}}">
-                </DataGridComboBoxColumn>-->
                 <DataGridComboBoxColumn Header="Section" ToolTipService.ToolTip="Select section" Width="70" SelectedValueBinding="{Binding Section, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">

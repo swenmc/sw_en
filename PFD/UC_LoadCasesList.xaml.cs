@@ -38,13 +38,13 @@ namespace PFD
             
             Datagrid_LoadCases.ItemsSource = loadCases;
 
-            // Set Column Header
-            // TODO Ondrej - chcelo by to nastavit Column Name na ID namiesto loadCaseID, teraz to berie asi z nazvu property vo view model CLoadCaseView
+            //// Set Column Header
+            //// TODO Ondrej - chcelo by to nastavit Column Name na ID namiesto loadCaseID, teraz to berie asi z nazvu property vo view model CLoadCaseView
             //Datagrid_LoadCases.Columns[0].Header = "ID";
             //Datagrid_LoadCases.Columns[1].Header = "Name";
             //Datagrid_LoadCases.Columns[2].Header = "Type";
 
-            // Set Column Width
+            //// Set Column Width
             //Datagrid_LoadCases.Columns[0].Width = 100;
             //Datagrid_LoadCases.Columns[1].Width = 100;
             //Datagrid_LoadCases.Columns[2].Width = 100;

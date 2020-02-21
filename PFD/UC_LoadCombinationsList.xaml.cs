@@ -89,9 +89,9 @@ namespace PFD
             // Set Column Caption
             table.Columns["ID"].Caption = "ID";
             table.Columns["Name"].Caption = "Name";
-            table.Columns["LimitState"].Caption = "LimitState";
-            table.Columns["LoadCases"].Caption = "LoadCases";
-            table.Columns["CombinationKey"].Caption = "CombinationKey";
+            table.Columns["LimitState"].Caption = "Limit State";
+            table.Columns["LoadCases"].Caption = "Load Cases";
+            table.Columns["CombinationKey"].Caption = "Combination Key";
             table.Columns["Formula"].Caption = "Formula";
 
             // Create Datases
@@ -118,20 +118,6 @@ namespace PFD
 
             Datagrid_LoadCombinations.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
 
-            // Set Column Header
-            /*
-            Datagrid_Members.Columns[0].Header = "ID";
-            Datagrid_Members.Columns[1].Header = "Name";
-            Datagrid_Members.Columns[2].Header = "LimitState";
-            Datagrid_Members.Columns[3].Header = "LoadCases";
-            */
-
-            // Set Column Width
-            /*
-            Datagrid_Members.Columns[0].Width = 100;
-            Datagrid_Members.Columns[1].Width = 100;
-            Datagrid_Members.Columns[2].Width = 100;
-            */
         }
 
         private void DeleteAllLists()
