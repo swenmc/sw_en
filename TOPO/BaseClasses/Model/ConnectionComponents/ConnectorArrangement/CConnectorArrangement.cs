@@ -57,7 +57,7 @@ namespace BaseClasses
             return GetRegularArrayOfPointsInCartesianCoordinates(refPoint, iNumberOfPointsInXDirection, iNumberOfPointsInYDirection, farr_DistancesOfPointsX, farr_DistancesOfPointsY);
         }
 
-        public Point[] GetRegularArrayOfPointsInCartesianCoordinates(Point refPoint, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float [] farr_DistancesOfPointsX, float [] farr_DistancesOfPointsY)
+        public Point[] GetRegularArrayOfPointsInCartesianCoordinates(Point refPoint, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float[] farr_DistancesOfPointsX, float[] farr_DistancesOfPointsY)
         {
             Point[] array = new Point[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection];
 
@@ -75,18 +75,32 @@ namespace BaseClasses
                         array[i * iNumberOfPointsInXDirection + j].X = refPoint.X + j * farr_DistancesOfPointsX[0]; // Fill items in row [i], column [j]
                         array[i * iNumberOfPointsInXDirection + j].Y = refPoint.Y + i * farr_DistancesOfPointsY[0]; // Fill items in row [i], column [j]
                     }
+                    else if (farr_DistancesOfPointsX.Length == 1 && farr_DistancesOfPointsY.Length != 1)
+                    {
+                        array[i * iNumberOfPointsInXDirection + j].X = refPoint.X + j * farr_DistancesOfPointsX[0]; // Fill items in row [i], column [j]
+                        array[i * iNumberOfPointsInXDirection + j].Y = lastY + (i > 0 ? farr_DistancesOfPointsY[i - 1] : 0); // Fill items in row [i], column [j]
+
+                        lastX += 0; // Ak je v poli pre vzdialenosti x len jedna hodnota index nenavysujeme
+                    }
+                    else if (farr_DistancesOfPointsX.Length != 1 && farr_DistancesOfPointsY.Length == 1)
+                    {
+                        array[i * iNumberOfPointsInXDirection + j].X = lastX + (j > 0 ? farr_DistancesOfPointsX[j - 1] : 0); // Fill items in row [i], column [j]
+                        array[i * iNumberOfPointsInXDirection + j].Y = refPoint.Y + i * farr_DistancesOfPointsY[0]; // Fill items in row [i], column [j]
+
+                        lastX += j > 0 ? farr_DistancesOfPointsX[j - 1] : 0;
+                    }
                     else
                     {
                         // Pre prvy index v rade alebo stplci pripocitavame nulu pretoze uvazujeme priamo hodnoty refPoint.X a refPoint.Y
-                        array[i * iNumberOfPointsInXDirection + j].X = lastX + (j > 0 ? farr_DistancesOfPointsX[j-1] : 0); // Fill items in row [i], column [j]
-                        array[i * iNumberOfPointsInXDirection + j].Y = lastY + (i > 0 ? farr_DistancesOfPointsY[i-1] : 0); // Fill items in row [i], column [j]
+                        array[i * iNumberOfPointsInXDirection + j].X = lastX + (j > 0 ? farr_DistancesOfPointsX[j - 1] : 0); // Fill items in row [i], column [j]
+                        array[i * iNumberOfPointsInXDirection + j].Y = lastY + (i > 0 ? farr_DistancesOfPointsY[i - 1] : 0); // Fill items in row [i], column [j]
 
-                        lastX += j > 0 ? farr_DistancesOfPointsX[j-1] : 0;
+                        lastX += j > 0 ? farr_DistancesOfPointsX[j - 1] : 0;
                     }
                 }
 
-                if(i < farr_DistancesOfPointsY.Length)
-                  lastY += i > 0 ? farr_DistancesOfPointsY[i-1] : 0; // Pripocitat len ak je index v poli validny, pre rovnake vzdialenosti medzi bodmi by to nefungovalo
+                if (i < farr_DistancesOfPointsY.Length)
+                    lastY += i > 0 ? farr_DistancesOfPointsY[i - 1] : 0; // Pripocitat len ak je index v poli validny, pre rovnake vzdialenosti medzi bodmi by to nefungovalo
             }
 
             return array;

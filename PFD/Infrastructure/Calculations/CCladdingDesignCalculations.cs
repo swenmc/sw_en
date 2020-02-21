@@ -273,7 +273,7 @@ namespace PFD.Infrastructure
                         CMemberGroup currentMemberTypeGroupOfMembers = Model.listOfModelMemberGroups.FirstOrDefault(gr => gr.MemberType_FS == m.EMemberType);
 
                         // To Mato - pozor ak su to dvere, okno, tak currentMemberTypeGroupOfMembers je null
-                        // Ak je to aktualne, tak musime teda este doplnit funkcionalitu tak, aby sa pre pruty blokov tiez vytvorili skupiny
+                        // To Ondrej - Ak je to aktualne, tak musime teda este doplnit funkcionalitu tak, aby sa pre pruty blokov tiez vytvorili skupiny
 
                         if (currentMemberTypeGroupOfMembers != null)
                         {
