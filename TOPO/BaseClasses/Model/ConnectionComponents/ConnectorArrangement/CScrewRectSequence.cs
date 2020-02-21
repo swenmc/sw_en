@@ -113,6 +113,7 @@ namespace BaseClasses
             set
             {
                 m_SameDistancesX = value;
+                if (m_SameDistancesX == false) SetDistancesX();
             }
         }
 
@@ -126,6 +127,7 @@ namespace BaseClasses
             set
             {
                 m_SameDistancesY = value;
+                if (m_SameDistancesY == false) SetDistancesY();
             }
         }
 
@@ -140,6 +142,10 @@ namespace BaseClasses
             set
             {
                 m_DistancesOfPointsX = value;
+                if (m_DistancesOfPointsX != null)
+                {
+                    if (m_DistancesOfPointsX.Count > 0) m_fDistanceOfPointsX = m_DistancesOfPointsX.First();
+                }
             }
         }
 
@@ -154,6 +160,10 @@ namespace BaseClasses
             set
             {
                 m_DistancesOfPointsY = value;
+                if (m_DistancesOfPointsY != null)
+                {
+                    if (m_DistancesOfPointsY.Count > 0) m_fDistanceOfPointsY = m_DistancesOfPointsY.First();
+                }
             }
         }
 
@@ -170,8 +180,8 @@ namespace BaseClasses
 
         public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection, int iNumberOfScrewsInColumn_yDirection, float refPointX, float refPointY, float distanceOfPointsX, float distanceOfPointsY)
         {
-            NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection;
-            NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection;
+            m_iNumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection;
+            m_iNumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection;
 
             m_RefPointX = refPointX;
             m_RefPointY = refPointY;
@@ -180,44 +190,71 @@ namespace BaseClasses
             m_SameDistancesX = true;
             m_SameDistancesY = true;
 
-            //INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+            INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
             HolesCentersPoints = new Point[INumberOfConnectors];
         }
 
-        public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection, int iNumberOfScrewsInColumn_yDirection, float refPointX, float refPointY, bool bSameDistancesX, bool bSameDistancesY, List<float> distancesOfPointsX, List<float> distancesOfPointsY)
+        public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection, int iNumberOfScrewsInColumn_yDirection, float refPointX, float refPointY, List<float> distancesOfPointsX, List<float> distancesOfPointsY)
         {
-            // TO Ondrej - tento konstruktor by sa dal pozjednodusovat,
-            // mohli by sme don poslat len List distancesOfPointsX a distancesOfPointsY
-            // Podla poctu prvkov v tomto zozname + 1 by sa urcili NumberOfScrewsInRow_xDirection a NumberOfScrewsInColumn_yDirection
-            // Ak by bol pocet prvkov v zozname 1, tak by sa m_SameDistances nastavilo na true, ak by to bolo viac nez jedna, tak na false
-
-            NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection;
-            NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection;
+            m_iNumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection;
+            m_iNumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection;
+            INumberOfConnectors = m_iNumberOfScrewsInRow_xDirection * m_iNumberOfScrewsInColumn_yDirection;
 
             m_RefPointX = refPointX;
             m_RefPointY = refPointY;
-            m_SameDistancesX = bSameDistancesX;
-            m_SameDistancesY = bSameDistancesY;
+                      
+            m_SameDistancesX = distancesOfPointsX.Count == 1;
+            m_SameDistancesY = distancesOfPointsY.Count == 1;            
 
-            if (bSameDistancesX) // Ak je vzdialenost rovnaka nastavime tuto vzdialenost ako prvu polozku pola
-            {
-                m_fDistanceOfPointsX = distancesOfPointsX[0];
-                SetDistancesX(); // Nastavime vsetky medzery rovnake podla poctu skrutiek
-            }
-            else
-                m_DistancesOfPointsX = distancesOfPointsX;
+            DistancesOfPointsX = distancesOfPointsX;
+            DistancesOfPointsY = distancesOfPointsY;
 
-            if (bSameDistancesY) // Ak je vzdialenost rovnaka nastavime tuto vzdialenost ako prvu polozku pola
-            {
-                m_fDistanceOfPointsY = distancesOfPointsY[0];
-                SetDistancesY(); // Nastavime vsetky medzery rovnake podla poctu skrutiek
-            }
-            else
-                m_DistancesOfPointsY = distancesOfPointsY;
+            //To Mato - tento riadok tu nechcem mat, ale ked ho nemam, tak sa to zrube a neviem prist nato preco sa to zrubava, skus prosim pozriet
+            NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection;
+            
 
-            //INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+            
             HolesCentersPoints = new Point[INumberOfConnectors];
         }
+
+        //public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection, int iNumberOfScrewsInColumn_yDirection, float refPointX, float refPointY, List<float> distancesOfPointsX, List<float> distancesOfPointsY)
+        //{
+        //    // TO Ondrej - tento konstruktor by sa dal pozjednodusovat,
+        //    // mohli by sme don poslat len List distancesOfPointsX a distancesOfPointsY
+        //    // Podla poctu prvkov v tomto zozname + 1 by sa urcili NumberOfScrewsInRow_xDirection a NumberOfScrewsInColumn_yDirection
+        //    // Ak by bol pocet prvkov v zozname 1, tak by sa m_SameDistances nastavilo na true, ak by to bolo viac nez jedna, tak na false
+        //    //toto si Mato prekombinoval, to sa neda, aby z toho pola bol aj pocet screws a zaroven aby podla poctu to rozhodlo ze je sameDistance :-D co ak budem chciet pocet 4 a same distance :-D
+
+        //    NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection;
+        //    NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection;
+
+        //    m_RefPointX = refPointX;
+        //    m_RefPointY = refPointY;
+        //    SameDistancesX = distancesOfPointsX.Count == 1;
+        //    SameDistancesY = distancesOfPointsY.Count == 1;
+
+        //    DistancesOfPointsX = distancesOfPointsX;
+        //    DistancesOfPointsY = distancesOfPointsY;
+
+        //    if (bSameDistancesX) // Ak je vzdialenost rovnaka nastavime tuto vzdialenost ako prvu polozku pola
+        //    {
+        //        m_fDistanceOfPointsX = distancesOfPointsX[0];
+        //        SetDistancesX(); // Nastavime vsetky medzery rovnake podla poctu skrutiek
+        //    }
+        //    else
+        //        m_DistancesOfPointsX = distancesOfPointsX;
+
+        //    if (bSameDistancesY) // Ak je vzdialenost rovnaka nastavime tuto vzdialenost ako prvu polozku pola
+        //    {
+        //        m_fDistanceOfPointsY = distancesOfPointsY[0];
+        //        SetDistancesY(); // Nastavime vsetky medzery rovnake podla poctu skrutiek
+        //    }
+        //    else
+        //        m_DistancesOfPointsY = distancesOfPointsY;
+
+        //    //INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+        //    HolesCentersPoints = new Point[INumberOfConnectors];
+        //}
 
         private void SetDistancesX()
         {

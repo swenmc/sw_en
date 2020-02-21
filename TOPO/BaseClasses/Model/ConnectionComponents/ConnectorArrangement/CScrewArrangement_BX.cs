@@ -257,24 +257,25 @@ namespace BaseClasses
             // mohli by sme don poslat len List distancesOfPointsX a distancesOfPointsY
             // Podla poctu prvkov v tomto zozname + 1 by sa urcili NumberOfScrewsInRow_xDirection a NumberOfScrewsInColumn_yDirection
             // Ak by bol pocet prvkov v zozname 1, tak by sa m_SameDistances nastavilo na true, ak by to bolo viac nez jedna, tak na false
+            //To Mato - toto si Mato prekombinoval, to sa neda, aby z toho pola bol aj pocet screws a zaroven aby podla poctu to rozhodlo ze je sameDistance :-D co ak budem chciet pocet 4 a same distance :-D
 
             referenceScrew = referenceScrew_temp;
             //FCrscColumnDepth = fCrscColumnDepth_temp;
             //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             //FStiffenerSize = fStiffenerSize_temp;
 
-            bool sameDistancesX = true;
-            bool sameDistancesY = true;
+            //bool sameDistancesX = true;
+            //bool sameDistancesY = true;
 
-            if (distancesOfPointsX_SQ1_temp.Count > 1)
-                 sameDistancesX = false;
+            //if (distancesOfPointsX_SQ1_temp.Count > 1)
+            //     sameDistancesX = false;
 
-            if (distancesOfPointsY_SQ1_temp.Count > 1)
-                sameDistancesY = false;
+            //if (distancesOfPointsY_SQ1_temp.Count > 1)
+            //    sameDistancesY = false;
 
             RectSequences = new List<CScrewRectSequence>();
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, sameDistancesX, sameDistancesY, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, sameDistancesX, sameDistancesY, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
 
             NumberOfGroups = 2;
             NumberOfSequenceInGroup = 1;
