@@ -267,12 +267,9 @@ namespace PFD
             {
                 MKitsetTypeIndex = value;
 
-                if (MKitsetTypeIndex > 1)
+                if (MKitsetTypeIndex > 1) // Temporary
                 {
                   System.Windows.MessageBox.Show("Selected kitset type is not implemented.");
-                  // TODO Ondrej - potrebujeme odtialto vyskocit a vratit do comboboxu povodnu polozku
-                  // Mozno bude lepsie tie polozky co maju index 2 a 3 z toho comba hned po naplneni z databazy zmazat a hotovo
-                  //KitsetTypeIndex = 0;
                   return;
                   //  throw new ArgumentException("Selected kitset type is not implemented.");
                 }
@@ -284,9 +281,6 @@ namespace PFD
                 else if (MKitsetTypeIndex == 3) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetShelterDoubleSpan", "modelName");
 
                 ModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type (menim property aby som vyvolal aj zmenu modelu)
-
-                //SetDefaultFlashings();
-                //SetDefaultDownpipes();
 
                 NotifyPropertyChanged("KitsetTypeIndex");
             }
@@ -329,6 +323,11 @@ namespace PFD
                 SetResultsAreNotValid();
 
                 //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
+
+                // TO Ondrej - prerob to ako treba
+                // Povodne to bolo tak ze properties boli len parametre ktore boli zadavane v GUI
+                // Ak je programatorsky spravnejsie, ze ma byt vsetko co sa tu pouziva property, tak nemam namietky
+
                 fBayWidth = MLength / (MFrames - 1);
                 fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
 
@@ -2647,6 +2646,9 @@ namespace PFD
             get
             {
                 if(m_KitsetTypes == null) m_KitsetTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "ModelType", "modelTypeName_short");
+
+                // V databaze su sice 4 typy ale 3 a 4 este nie su implementovane, tak ich zatial zmazeme.
+                m_KitsetTypes.RemoveRange(2, 2); // Zmazat polozky s indexom 2 a 3
                 return m_KitsetTypes;
             }
 
