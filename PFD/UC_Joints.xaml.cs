@@ -669,15 +669,28 @@ namespace PFD
             sp.VerticalAlignment = VerticalAlignment.Top;
             sp.HorizontalAlignment = HorizontalAlignment.Left;
 
+            StackPanel spPT = new StackPanel();
+            spPT.Width = 550;
+            spPT.Orientation = Orientation.Horizontal;
+            Label lPT = new Label() { Content = "Plate Prefix: " };
+            lPT.Width = 150;
+
             ComboBox selectPlateType = new ComboBox();
             selectPlateType.HorizontalAlignment = HorizontalAlignment.Left;
-            selectPlateType.Width = 200;
+            selectPlateType.Width = 120;
             selectPlateType.Height = 20;
+            var margin = selectPlateType.Margin;
+            margin.Top = 2;
+            //margin.Bottom = 5;
+            selectPlateType.Margin = margin;
             List<string> series = CPlateHelper.GetPlateSeries(plate);
             selectPlateType.ItemsSource = series;
             selectPlateType.SelectedIndex = series.IndexOf(plate.Name);
             selectPlateType.SelectionChanged += SelectPlateSerie_SelectionChanged;
-            sp.Children.Add(selectPlateType);
+
+            spPT.Children.Add(lPT);
+            spPT.Children.Add(selectPlateType);
+            sp.Children.Add(spPT);
 
 
             //Grid grid = new Grid();
@@ -715,10 +728,15 @@ namespace PFD
                 sp.Width = 550;
                 spAA.Orientation = Orientation.Horizontal;
                 Label lAA = new Label() { Content = "Anchor Arrangement: " };
+                lAA.Width = 150;
                 ComboBox selectAA = new ComboBox();   
                 
-                selectAA.Width = 200;
+                selectAA.Width = 120;
                 selectAA.Height = 20;
+                var marginAA = selectAA.Margin;
+                marginAA.Top = 5;
+                marginAA.Bottom = 5;
+                selectAA.Margin = marginAA;
                 selectAA.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
                 selectAA.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);               
                 selectAA.SelectionChanged += SelectAA_SelectionChanged;
@@ -740,9 +758,14 @@ namespace PFD
             sp.Width = 550;
             spSA.Orientation = Orientation.Horizontal;
             Label lSA = new Label() { Content = "Screw Arrangement: " };
+            lSA.Width = 150;
             ComboBox selectSA = new ComboBox();
-            selectSA.Width = 200;
+            selectSA.Width = 120;
             selectSA.Height = 20;
+            var marginSA = selectSA.Margin;
+            marginSA.Top = 5;
+            marginSA.Bottom = 5;
+            selectSA.Margin = marginSA;
             selectSA.ItemsSource = CPlateHelper.GetPlateScrewArangementTypes(plate);
             selectSA.SelectedIndex = CPlateHelper.GetPlateScrewArangementIndex(plate);
             selectSA.SelectionChanged += SelectSA_SelectionChanged;
@@ -1232,18 +1255,20 @@ namespace PFD
         private DataGrid GetDatagridForAnchorArrangement(List<CComponentParamsView> anchorArrangementParams)
         {
             DataGrid dgAA = new DataGrid();
-            dgAA.Name = "DatagridForAnchorArrangement";
+            dgAA.Name = "DatagridForAnchorArrangement";            
             //dgAA.SetValue(Grid.RowProperty, 1);
             dgAA.ItemsSource = anchorArrangementParams;
             dgAA.HorizontalAlignment = HorizontalAlignment.Stretch;
             dgAA.AutoGenerateColumns = false;
             dgAA.IsEnabled = true;
             dgAA.IsReadOnly = false;
-            dgAA.HeadersVisibility = DataGridHeadersVisibility.None;
+            dgAA.CanUserSortColumns = false;
+            dgAA.HeadersVisibility = DataGridHeadersVisibility.Column;
             dgAA.SelectionMode = DataGridSelectionMode.Single;
             dgAA.SelectionUnit = DataGridSelectionUnit.Cell;
-
+            
             DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
             tc1.Binding = new Binding("Name");
             tc1.CellStyle = GetReadonlyCellStyle();
             tc1.IsReadOnly = true;
@@ -1251,6 +1276,7 @@ namespace PFD
             dgAA.Columns.Add(tc1);
 
             DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
             tc2.Binding = new Binding("ShortCut");
             tc2.CellStyle = GetReadonlyCellStyle();
             tc2.IsReadOnly = true;
@@ -1258,12 +1284,14 @@ namespace PFD
             dgAA.Columns.Add(tc2);
 
             DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.Header = "Value";
             tc3.IsReadOnly = false;
             tc3.CellTemplate = GetDataTemplate();
             tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
             dgAA.Columns.Add(tc3);
 
             DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
             tc4.Binding = new Binding("Unit");
             tc4.CellStyle = GetReadonlyCellStyle();
             tc4.IsReadOnly = true;
@@ -1349,11 +1377,13 @@ namespace PFD
             dgSA.AutoGenerateColumns = false;
             dgSA.IsEnabled = true;
             dgSA.IsReadOnly = false;
-            dgSA.HeadersVisibility = DataGridHeadersVisibility.None;
+            dgSA.CanUserSortColumns = false;
+            dgSA.HeadersVisibility = DataGridHeadersVisibility.Column;
             dgSA.SelectionMode = DataGridSelectionMode.Single;
             dgSA.SelectionUnit = DataGridSelectionUnit.Cell;
 
             DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
             tc1.Binding = new Binding("Name");
             tc1.CellStyle = GetReadonlyCellStyle();
             tc1.IsReadOnly = true;
@@ -1361,6 +1391,7 @@ namespace PFD
             dgSA.Columns.Add(tc1);
 
             DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
             tc2.Binding = new Binding("ShortCut");
             tc2.CellStyle = GetReadonlyCellStyle();
             tc2.IsReadOnly = true;
@@ -1368,12 +1399,14 @@ namespace PFD
             dgSA.Columns.Add(tc2);
 
             DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.Header = "Value";
             tc3.IsReadOnly = false;
             tc3.CellTemplate = GetDataTemplate();
             tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
             dgSA.Columns.Add(tc3);
 
             DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
             tc4.Binding = new Binding("Unit");
             tc4.CellStyle = GetReadonlyCellStyle();
             tc4.IsReadOnly = true;
@@ -1448,11 +1481,12 @@ namespace PFD
             dg.AutoGenerateColumns = false;
             dg.IsEnabled = true;
             dg.IsReadOnly = false;
-            dg.HeadersVisibility = DataGridHeadersVisibility.None;
+            dg.HeadersVisibility = DataGridHeadersVisibility.Column;
             dg.SelectionMode = DataGridSelectionMode.Single;
             dg.SelectionUnit = DataGridSelectionUnit.Cell;
 
             DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
             tc1.Binding = new Binding("Name");
             tc1.CellStyle = GetReadonlyCellStyle();
             tc1.IsReadOnly = true;
@@ -1460,6 +1494,7 @@ namespace PFD
             dg.Columns.Add(tc1);
 
             DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
             tc2.Binding = new Binding("ShortCut");
             tc2.CellStyle = GetReadonlyCellStyle();
             tc2.IsReadOnly = true;
@@ -1467,6 +1502,7 @@ namespace PFD
             dg.Columns.Add(tc2);
 
             DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.Header = "Value";
             tc3.IsReadOnly = false;
             tc3.CellTemplate = GetDataTemplate();
             tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
@@ -1481,6 +1517,7 @@ namespace PFD
             //dg.Columns.Add(tc3);
 
             DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
             tc4.Binding = new Binding("Unit");
             tc4.CellStyle = GetReadonlyCellStyle();
             tc4.IsReadOnly = true;
@@ -1528,11 +1565,12 @@ namespace PFD
             dg.AutoGenerateColumns = false;
             dg.IsEnabled = true;
             dg.IsReadOnly = true;
-            dg.HeadersVisibility = DataGridHeadersVisibility.None;
+            dg.HeadersVisibility = DataGridHeadersVisibility.Column;
             dg.SelectionMode = DataGridSelectionMode.Single;
             dg.SelectionUnit = DataGridSelectionUnit.Cell;
 
             DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
             tc1.Binding = new Binding("Name");
             tc1.CellStyle = GetReadonlyCellStyle();
             tc1.IsReadOnly = true;
@@ -1540,6 +1578,7 @@ namespace PFD
             dg.Columns.Add(tc1);
 
             DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
             tc2.Binding = new Binding("ShortCut");
             tc2.CellStyle = GetReadonlyCellStyle();
             tc2.IsReadOnly = true;
@@ -1547,6 +1586,7 @@ namespace PFD
             dg.Columns.Add(tc2);
 
             DataGridTextColumn tc3 = new DataGridTextColumn();
+            tc3.Header = "Value";
             tc3.Binding = new Binding("Value");
             Style style = new Style(typeof(TextBlock));
             style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
@@ -1557,6 +1597,7 @@ namespace PFD
             dg.Columns.Add(tc3);
 
             DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
             tc4.Binding = new Binding("Unit");
             tc4.CellStyle = GetReadonlyCellStyle();
             tc4.IsReadOnly = true;

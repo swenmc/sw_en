@@ -137,10 +137,10 @@
             <TextBlock Grid.Row="4" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ScrewArrangementParameters}"
-                      HeadersVisibility="None" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
-                      SelectionMode="Single" SelectionUnit="Cell" >
+                      HeadersVisibility="Column" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
+                      SelectionMode="Single" SelectionUnit="Cell" CanUserSortColumns="False" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="It1" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
+                    <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
@@ -148,7 +148,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="It2" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}">
+                    <DataGridTextColumn Header="Symbol" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}">
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
@@ -156,7 +156,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Header="It3" Width="60" IsReadOnly="False" >
+                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -200,7 +200,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="It4" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
+                    <DataGridTextColumn Header="Unit" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
@@ -214,10 +214,10 @@
             <TextBlock Grid.Row="6" Grid.Column="0" Name="TxtGeometry" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ComponentGeometry}" 
-                      HeadersVisibility="None" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
-                      SelectionMode="Single" SelectionUnit="Cell" CellEditEnding="DataGridGeometry_CellEditEnding" >
+                      HeadersVisibility="Column" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
+                      SelectionMode="Single" SelectionUnit="Cell" CellEditEnding="DataGridGeometry_CellEditEnding" CanUserSortColumns="False" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="It1" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
+                    <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
@@ -225,7 +225,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="It2" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}" >
+                    <DataGridTextColumn Header="Symbol" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
@@ -233,14 +233,14 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="It3" Width="60" IsReadOnly="{Binding IsReadOnly}" Binding="{Binding Value, Mode=TwoWay}" >
+                    <DataGridTextColumn Header="Value" Width="60" IsReadOnly="{Binding IsReadOnly}" Binding="{Binding Value, Mode=TwoWay}" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right" />                                
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="It4" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
+                    <DataGridTextColumn Header="Unit" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
@@ -253,9 +253,10 @@
 
             <TextBlock Grid.Row="8" Grid.Column="0" Text="Parameters" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails" Margin="10 0 0 0" 
-                      ItemsSource="{Binding Path=ComponentDetails}" HeadersVisibility="None" AutoGenerateColumns="False" IsReadOnly="True">
+                      ItemsSource="{Binding Path=ComponentDetails}" HeadersVisibility="Column" 
+                      AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="It1" Width="*" Binding="{Binding Name}" >
+                    <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
@@ -263,7 +264,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="It2" Width="40" Binding="{Binding ShortCut}" >
+                    <DataGridTextColumn Header="Symbol" Width="40" Binding="{Binding ShortCut}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
@@ -271,7 +272,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="It3" Width="60" Binding="{Binding Value}" >
+                    <DataGridTextColumn Header="Value" Width="60" Binding="{Binding Value}" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right" />
@@ -284,7 +285,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="It4" Width="50" Binding="{Binding Unit}" >
+                    <DataGridTextColumn Header="Unit" Width="50" Binding="{Binding Unit}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
