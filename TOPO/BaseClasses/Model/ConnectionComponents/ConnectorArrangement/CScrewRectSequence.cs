@@ -34,6 +34,7 @@ namespace BaseClasses
             set
             {
                 m_iNumberOfScrewsInRow_xDirection = value;
+                INumberOfConnectors = m_iNumberOfScrewsInRow_xDirection * m_iNumberOfScrewsInColumn_yDirection;
                 SetDistancesX();
             }
         }
@@ -47,6 +48,7 @@ namespace BaseClasses
             set
             {
                 m_iNumberOfScrewsInColumn_yDirection = value;
+                INumberOfConnectors = m_iNumberOfScrewsInRow_xDirection * m_iNumberOfScrewsInColumn_yDirection;
                 SetDistancesY();
             }
         }
@@ -162,7 +164,7 @@ namespace BaseClasses
         {
             NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_temp;
             NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_temp;
-            INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+            //INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
             HolesCentersPoints = new Point[INumberOfConnectors];
         }
 
@@ -178,7 +180,7 @@ namespace BaseClasses
             m_SameDistancesX = true;
             m_SameDistancesY = true;
 
-            INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+            //INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
             HolesCentersPoints = new Point[INumberOfConnectors];
         }
 
@@ -213,7 +215,7 @@ namespace BaseClasses
             else
                 m_DistancesOfPointsY = distancesOfPointsY;
 
-            INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+            //INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
             HolesCentersPoints = new Point[INumberOfConnectors];
         }
 
