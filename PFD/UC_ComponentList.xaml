@@ -35,7 +35,7 @@
             <RowDefinition Height="3*"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        </Grid.RowDefinitions>        
         <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}" 
                   MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False">

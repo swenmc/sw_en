@@ -1264,9 +1264,10 @@ namespace PFD
             dgAA.IsReadOnly = false;
             dgAA.CanUserSortColumns = false;
             dgAA.HeadersVisibility = DataGridHeadersVisibility.Column;
-            dgAA.SelectionMode = DataGridSelectionMode.Single;
+            dgAA.SelectionMode = DataGridSelectionMode.Extended;
             dgAA.SelectionUnit = DataGridSelectionUnit.Cell;
-            
+            dgAA.SelectedItems.Clear();
+
             DataGridTextColumn tc1 = new DataGridTextColumn();
             tc1.Header = "Name";
             tc1.Binding = new Binding("Name");
@@ -1379,8 +1380,9 @@ namespace PFD
             dgSA.IsReadOnly = false;
             dgSA.CanUserSortColumns = false;
             dgSA.HeadersVisibility = DataGridHeadersVisibility.Column;
-            dgSA.SelectionMode = DataGridSelectionMode.Single;
+            dgSA.SelectionMode = DataGridSelectionMode.Extended;
             dgSA.SelectionUnit = DataGridSelectionUnit.Cell;
+            dgSA.SelectedItems.Clear();
 
             DataGridTextColumn tc1 = new DataGridTextColumn();
             tc1.Header = "Name";
