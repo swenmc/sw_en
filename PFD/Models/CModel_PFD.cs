@@ -1922,6 +1922,7 @@ namespace PFD
             CMember mColumnLeft;
             CMember mColumnRight;
             CMember mEavesPurlin;
+            CMember mEdgeRafter;
             CBlock_3D_001_DoorInBay door;
             Point3D pControlPointBlock;
             float fBayWidth;
@@ -1931,7 +1932,7 @@ namespace PFD
             bool bIsFirstBayInFrontorBackSide;
             bool bIsLastBayInFrontorBackSide;
 
-            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, iSideWallLeftColumnGirtNoInOneFrame, iSideWallRightColumnGirtNoInOneFrame, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out pControlPointBlock, out fBayWidth, out iFirstMemberToDeactivate, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
+            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, iSideWallLeftColumnGirtNoInOneFrame, iSideWallRightColumnGirtNoInOneFrame, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out mEdgeRafter, out pControlPointBlock, out fBayWidth, out iFirstMemberToDeactivate, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
 
             // Set girt to connect columns / trimmers
             int iNumberOfGirtsToDeactivate = (int)((prop.fDoorsHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt (prevzate z CBlock_3D_001_DoorInBay)
@@ -1942,11 +1943,18 @@ namespace PFD
                 fLimitDistanceFromColumn,
                 fBottomGirtPosition,
                 fDist_Girt,
+                fDist_FrontColumns,
+                fDist_BackColumns,
+                fH1_frame,
+                fW_frame,
+                fRoofPitch_rad,
+                eKitset,
                 mReferenceGirt,
                 mGirtToConnectDoorTrimmers,
                 mColumnLeft,
                 mColumnRight,
                 mEavesPurlin,
+                mEdgeRafter,
                 fBayWidth,
                 fBayHeight,
                 fUpperGirtLimit,
@@ -1965,6 +1973,7 @@ namespace PFD
             CMember mColumnLeft;
             CMember mColumnRight;
             CMember mEavesPurlin;
+            CMember mEdgeRafter;
             CBlock_3D_002_WindowInBay window;
             Point3D pControlPointBlock;
             float fBayWidth;
@@ -1975,7 +1984,7 @@ namespace PFD
             bool bIsFirstBayInFrontorBackSide;
             bool bIsLastBayInFrontorBackSide;
 
-            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, iSideWallLeftColumnGirtNoInOneFrame, iSideWallRightColumnGirtNoInOneFrame, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out pControlPointBlock, out fBayWidth, out iFirstGirtInBay, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
+            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, iSideWallLeftColumnGirtNoInOneFrame, iSideWallRightColumnGirtNoInOneFrame, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out mEdgeRafter, out pControlPointBlock, out fBayWidth, out iFirstGirtInBay, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
 
             // Prevzate z CBlock_3D_002_WindowInBay
             int iNumberOfGirtsUnderWindow = (int)((prop.fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
@@ -2001,12 +2010,19 @@ namespace PFD
                 fLimitDistanceFromColumn,
                 fBottomGirtPosition,
                 fDist_Girt,
+                fDist_FrontColumns,
+                fDist_BackColumns,
+                fH1_frame,
+                fW_frame,
+                fRoofPitch_rad,
+                eKitset,
                 mReferenceGirt,
                 mGirtToConnectWindowColumns_Bottom,
                 mGirtToConnectWindowColumns_Top,
                 mColumnLeft,
                 mColumnRight,
                 mEavesPurlin,
+                mEdgeRafter,
                 fBayWidth,
                 fBayHeight,
                 fUpperGirtLimit,
@@ -2030,6 +2046,7 @@ namespace PFD
             out CMember mColumnLeft,                  // Left column of bay
             out CMember mColumnRight,                 // Right column of bay
             out CMember mEavesPurlin,                 // Eave purlin for left and right side
+            out CMember mEdgeRafter,                  // Edge rafter - reference for front and back side (trimmer to rafter connection)
             out Point3D pControlPointBlock,           // Conctrol point to insert block - defined as left column base point
             out float fBayWidth,                      // Width of bay (distance between bay columns)
             out int iFirstMemberToDeactivate,         // Index of first girt in the bay which is in collision with the block and must be deactivated
@@ -2066,6 +2083,8 @@ namespace PFD
                     mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + iFrameMembersNo];
                 else
                     mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + (iFrameMembersNo + 1)];
+
+                mEdgeRafter = null; // Not defined for the left and right side
             }
             else // Front or Back Side
             {
@@ -2093,6 +2112,7 @@ namespace PFD
                 int iBlockSequence = iBayNumber - 1; // ID of sequence, starts with zero
                 int iColumnNumberLeft;
                 int iColumnNumberRight;
+                int iRafterNumber;
                 int iNumberOfFirstGirtInWallToDeactivate = 0;
                 int iNumberOfMembers_tempForGirts = iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iSideMultiplier * iFrontGirtsNoInOneFrame;
                 int iNumberOfMembers_tempForColumns = iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iSideMultiplier * iFrontColumnNoInOneFrame;
@@ -2103,11 +2123,13 @@ namespace PFD
                     {
                         iColumnNumberLeft = 0;
                         iColumnNumberRight = iNumberOfMembers_tempForColumns + iBlockSequence;
+                        iRafterNumber = iColumnNumberLeft + 1;
                     }
                     else
                     {
                         iColumnNumberLeft = (iFrameNo - 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame);
                         iColumnNumberRight = iNumberOfMembers_tempForColumns + iBlockSequence;
+                        iRafterNumber = iColumnNumberLeft + 1;
                     }
 
                     iFirstMemberToDeactivate = iNumberOfMembers_tempForGirts + iNumberOfFirstGirtInWallToDeactivate;
@@ -2130,6 +2152,11 @@ namespace PFD
 
                         if(!bIsGable && iBlockSequence == iNumberOfIntermediateColumns) // Monopitch - posledna bay
                             bIsLastBayInFrontorBackSide = true;
+
+                        if (sBuildingSide == "Front")
+                            iRafterNumber = 1;
+                        else
+                            iRafterNumber = (iFrameNo - 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame) + 1;
                     }
                     else // Right session
                     {
@@ -2155,6 +2182,11 @@ namespace PFD
                             bIsLastBayInFrontorBackSide = true;
                             iColumnNumberRight = iSideMultiplier == 0 ? (iFrameMembersNo - 1) : (iFrameNo - 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame) + (iFrameMembersNo - 1);
                         }
+
+                        if (sBuildingSide == "Front")
+                            iRafterNumber = iFrameMembersNo - 1 - 1; // Minus right column, minus index 1
+                        else
+                            iRafterNumber = (iFrameNo - 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame) + (iFrameMembersNo - 1 - 1);
                     }
 
                     iFirstMemberToDeactivate = iNumberOfMembers_tempForGirts + iNumberOfFirstGirtInWallToDeactivate;
@@ -2163,6 +2195,7 @@ namespace PFD
                 mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
                 mColumnLeft = m_arrMembers[iColumnNumberLeft];
                 mColumnRight = m_arrMembers[iColumnNumberRight];
+                mEdgeRafter = m_arrMembers[iRafterNumber];
                 mEavesPurlin = null; // Not defined for the front and back side
             }
 

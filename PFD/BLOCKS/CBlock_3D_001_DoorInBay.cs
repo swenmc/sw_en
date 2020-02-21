@@ -14,11 +14,18 @@ namespace PFD
             float fLimitDistanceFromColumn,       // Limit value to generate girts on the left or right side of opening
             float fBottomGirtPosition,            // Vertical position of first girt
             float fDist_Girt,                     // Vertical regular distance between girts
+            float fDist_FrontColumns_temp,        // Pridane kvoli pripoju trimmer to rafter - Horizontal regular distance between columns in the front wall / side
+            float fDist_BackColumns_temp,         // Pridane kvoli pripoju trimmer to rafter - Horizontal regular distance between columns in the front wall / side
+            float fH1_frame_Left,                 // Pridane kvoli pripoju trimmer to rafter - Height of frame column on the left side
+            float fW_rame_temp,                   // Pridane kvoli pripoju trimmer to rafter - Frame Width
+            float fRoofPitch_rad_temp,            // Pridane kvoli pripoju trimmer to rafter - Roof Pitch
+            EModelType_FS eKitset_temp,           // Pridane kvoli pripoju trimmer to rafter - Building shape 0 - monopitch roof, 1 - gable roof
             CMember referenceGirt_temp,           // Reference girt object in bay
             CMember GirtToConnectDoorTrimmers,    // Girt to connect door trimmers on the top (not used in case that door trimmers are connected to the eave purlin or edge rafter)
             CMember ColumnLeft,                   // Left column of bay
             CMember ColumnRight,                  // Right column of bay
             CMember referenceEavePurlin,          // Reference Eave Purlin
+            CMember referenceRafter,              // Pridane kvoli pripoju trimmer to rafter - Reference Edge Rafter
             float fBayWidth,
             float fBayHeight,
             float fUpperGirtLimit,                // Vertical limit to generate last girt (cant' be too close or in colision with eave purlin or rafter)
@@ -111,6 +118,7 @@ namespace PFD
             INumberOfGirtsToDeactivate = (int)((prop.fDoorsHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt
 
             bool bDoorColumnIsConnectedtoEavePurlin = false;
+            bool bDoorColumnIsConnectedtoRafter = false;
             bool bDoorToCloseToLeftColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
             bool bDoorToCloseToRightColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
 
@@ -175,20 +183,77 @@ namespace PFD
 
                 // TODO - Refaktorovat validaciu hornej suradnice stlpa s window
                 // Vertical coordinate
-                float fz = fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt;
-                fz = Math.Min(fz, fBayHeight); // Top node z-coordinate must be less or equal to the bay height
+                float fz_0 = fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt;
+                float fz_1 = fz_0;
 
                 // Ak nie je vygenerovany girt pretoze je velmi blizko eave purlin (left, right) alebo rafter (front, back)
                 // napajame stlpiky priamo na eave purlin alebo rafter, tj. suradcnica horneho bodu stlpika je rovna fBayHeight
                 // TODO - zatial to plati len pre lavu a pravu stranu, pretoze nemam spocitanu maximalnu volnu vysku pre jednotlive bays na prednej a zadnej strane
                 // Ak bude spravne urcena fBayHeight, tak (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right") zmazat
-                if ((fBayHeight - fz < fUpperGirtLimit) && (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right"))
+                if ((fBayHeight - fz_0 < fUpperGirtLimit) && (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right"))
                 {
-                    fz = fBayHeight;
+                    fz_0 = fz_1 = fBayHeight;
                     bDoorColumnIsConnectedtoEavePurlin = true;
                 }
 
-                m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, prop.fDoorCoordinateXinBlock + i * prop.fDoorsWidth, 0, fz, 0);
+                if(prop.sBuildingSide == "Front" || prop.sBuildingSide == "Back")
+                {
+                    // TODO - cely blok refaktorovat s Window
+
+                    float fDist_Columns;
+
+                    if (prop.sBuildingSide == "Front")
+                        fDist_Columns = fDist_FrontColumns_temp;
+                    else
+                        fDist_Columns = fDist_BackColumns_temp;
+
+                    bool bConsiderAbsoluteValueOfRoofPitch = true;
+
+                    if(eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                        bConsiderAbsoluteValueOfRoofPitch = false;
+
+                    // Urcime absolutne suradnice x pre laveho a praveho okraja bay
+                    float fx_abs_Bay_Left = (prop.iBayNumber - 1) * fDist_Columns;
+                    float fx_abs_Bay_Right = (prop.iBayNumber) * fDist_Columns;
+
+                    // Urcime suradnice teoretickeho priesecnika medzi rafter a lavym, resp. pravym okrajom bay v ramci celej steny
+                    float fz_abs_LeftBay = 0;
+                    float fz_abs_RightBay = 0;
+
+                    fW_frame = fW_rame_temp;
+                    fRoofPitch_rad = fRoofPitch_rad_temp;
+                    eKitset = eKitset_temp; // Nastavime tvar budovy do modelu bloku
+                    CalcColumnNodeCoord_Z(bConsiderAbsoluteValueOfRoofPitch, fH1_frame_Left, fx_abs_Bay_Left, out fz_abs_LeftBay);
+                    CalcColumnNodeCoord_Z(bConsiderAbsoluteValueOfRoofPitch, fH1_frame_Left, fx_abs_Bay_Right, out fz_abs_RightBay);
+                    float fz_abs_Bay_Min = Math.Min(fz_abs_LeftBay, fz_abs_RightBay);
+                    fBayHeight = fz_abs_Bay_Min; // Nastavime bay heigth na minimum (TODO - dalo by sa s tym hrat lebo teoreticky mozu dvere do bay vojst aj ked su mensie ako minimalna vyska v bay, zavisi to od pozicie dveri v ramci bay a od uhla sklonu)
+
+                    if (prop.fDoorsHeight > fBayHeight)
+                        throw new Exception("Door is defined out of bay height."); // Door is defined out of bay height
+
+                    // Urcime absolutne suradnice x pre poziciu laveho a praveho stlpika dveri v ramci celej steny
+                    float fx_abs_LeftColumn = (prop.iBayNumber - 1) * fDist_Columns + prop.fDoorCoordinateXinBlock;
+                    float fx_abs_RightColumn = fx_abs_LeftColumn + prop.fDoorsWidth;
+
+                    // Urcime suradnice teoretickeho priesecnika medzi rafter a column pre pozicie x laveho a praveho stlpika dveri v ramci celej steny
+                    float fz_abs_LeftColumn = 0;
+                    float fz_abs_RightColumn = 0;
+
+                    CalcColumnNodeCoord_Z(bConsiderAbsoluteValueOfRoofPitch, fH1_frame_Left, fx_abs_LeftColumn, out fz_abs_LeftColumn);
+                    CalcColumnNodeCoord_Z(bConsiderAbsoluteValueOfRoofPitch, fH1_frame_Left, fx_abs_RightColumn, out fz_abs_RightColumn);
+
+                    // TODO - tento limit by chcelo este nejako poladit, resp presne spocitat ale to sa musim poriadne zamysliet :)
+                    float fUpperGirtLimit_temp = 0.5f * fUpperGirtLimit;  // Pre edge rafter nemozeme pouzit limit stanoveny pre eave purlin
+
+                    if (fBayHeight - fz_0 < fUpperGirtLimit_temp)
+                    {
+                        bDoorColumnIsConnectedtoRafter = true;
+                        fz_0 = fz_abs_LeftColumn;
+                        fz_1 = fz_abs_RightColumn;
+                    }
+                }
+
+                m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, prop.fDoorCoordinateXinBlock + i * prop.fDoorsWidth, 0, i == 0 ? fz_0 : fz_1, 0);
             }
 
             // Coordinates of door lintel nodes
@@ -289,6 +354,12 @@ namespace PFD
                     referenceEavePurlinEcc_Local_z = referenceEavePurlin.EccentricityStart.MFz_local; // Right side (+z upward)
 
                 fDoorColumnEnd = referenceEavePurlinEcc_Local_z + (float)referenceEavePurlin.CrScStart.z_min - fCutOffOneSide;
+            }
+
+            if(bDoorColumnIsConnectedtoRafter)
+            {
+                float referenceEdgeRafter_alignment_temp = (float)referenceRafter.CrScStart.z_min / (float)Math.Cos(Math.Abs(fRoofPitch_rad)) + (float)crscColumn.y_min * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                fDoorColumnEnd = referenceEdgeRafter_alignment_temp - fCutOffOneSide;
             }
 
             float fOffsetBetweenGirtAndColumn_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)crscColumn.z_max;
@@ -407,6 +478,11 @@ namespace PFD
                 if (bDoorColumnIsConnectedtoEavePurlin && (BuildingSide == "Left" || BuildingSide == "Right")) // Connection to the eave purlin Only Left and Right Side
                 {
                     mainMemberForColumnJoint = referenceEavePurlin;
+                }
+
+                if (bDoorColumnIsConnectedtoRafter && (BuildingSide == "Front" || BuildingSide == "Back")) // Connection to the edge rafter Only Front and Back Side
+                {
+                    mainMemberForColumnJoint = referenceRafter;
                 }
 
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
