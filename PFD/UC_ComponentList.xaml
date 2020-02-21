@@ -38,7 +38,7 @@
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}" 
-                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown">
+                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="ContentTemplate">
@@ -177,7 +177,7 @@
 
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Cross-Section Properties" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_ComponentDetails" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding ComponentDetailsList, Mode=OneWay}">
+                  IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding ComponentDetailsList, Mode=OneWay}" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding Source={StaticResource theColumnWidthText}}"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding Source={StaticResource  theColumnWidthSymbol}}"></DataGridTextColumn>
@@ -188,7 +188,7 @@
 
         <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Material Properties" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_Materials" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding MaterialDetailsList, Mode=OneWay}">
+                  IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding MaterialDetailsList, Mode=OneWay}" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding Source={StaticResource  theColumnWidthText}}"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding Source={StaticResource  theColumnWidthSymbol}}"></DataGridTextColumn>

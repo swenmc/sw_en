@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_LoadCases" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0"
                   IsReadOnly="true" SelectedCellsChanged="Datagrid_LoadCases_SelectedCellsChanged"
-                  SelectionMode="Single" AutoGenerateColumns="False">
+                  SelectionMode="Single" AutoGenerateColumns="False" CanUserSortColumns="False">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="ContentTemplate">

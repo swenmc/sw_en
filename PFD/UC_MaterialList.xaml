@@ -34,7 +34,7 @@
             <TextBlock Grid.Row="0" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <DataGrid Name ="Datagrid_Members" ItemsSource="{Binding MembersMaterialList}" Grid.Row="1"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
-            IsReadOnly="True">
+            IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="ContentTemplate">

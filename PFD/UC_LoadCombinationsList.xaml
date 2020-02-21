@@ -25,7 +25,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DataGrid Name ="Datagrid_LoadCombinations" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="true" Margin="5,0" AutoGenerateColumns="False">
+        <DataGrid Name ="Datagrid_LoadCombinations" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="true" Margin="5,0" AutoGenerateColumns="False" CanUserSortColumns="False">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="ContentTemplate">
