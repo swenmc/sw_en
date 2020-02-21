@@ -1022,7 +1022,15 @@ namespace PFD
                         float fPBStart_Current = fPBStart;
 
                         if (j == 0) // First
-                            fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+                        {
+                            // TODO - refaktorovat s monopitch
+                            float b = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                            float c = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_max / (float)Math.Cos(Math.Abs(fRoofPitch_rad));
+                            float d = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].b * (float)Math.Cos(Math.Abs(fRoofPitch_rad));
+                            float e = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max;
+                            float f = e * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                            fPBStart_Current = c - b - d - f - fCutOffOneSide;
+                        }
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
                         {
@@ -1047,7 +1055,15 @@ namespace PFD
                         float fPBStart_Current = fPBStart;
 
                         if (j == 0) // First
-                            fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+                        {
+                            // TODO - refaktorovat s monopitch
+                            float b = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                            float c = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_max / (float)Math.Cos(Math.Abs(fRoofPitch_rad));
+                            float d = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].b * (float)Math.Cos(Math.Abs(fRoofPitch_rad));
+                            float e = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max;
+                            float f = e * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                            fPBStart_Current = c - b - d - f - fCutOffOneSide;
+                        }
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
                         {

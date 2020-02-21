@@ -1136,11 +1136,41 @@ namespace PFD
                         float fPBStart_Current = fPBStart;
                         float fPBEnd_Current = fPBEnd;
 
-                        if (j == 0) // First
-                            fPBStart_Current = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+                        // Prvy alebo posledny bracing block - pripojeny na zaciatku alebo na konci k eave purlin
+                        if (j == 0 || (iLastPurlin == 1 && j == (iOneRafterPurlinNo + iLastPurlin - 1)))
+                        {
+                            //float a = (-(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_max - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(Math.Abs(fRoofPitch_rad));
 
-                        if (iLastPurlin == 1 && j == (iOneRafterPurlinNo + iLastPurlin - 1)) // Last monopitch
-                            fPBEnd_Current = (+(float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min - eccentricityEavePurlin.MFy_local) / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+                            // Poznamka: Uvazuje sa absolutna hodnota uhla a ak je uhol zaporny, tak sa na hodnoty prehodia
+                            float fFirstStart;
+                            float fLastEnd;
+
+                            float b = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                            float c = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_max / (float)Math.Cos(Math.Abs(fRoofPitch_rad));
+                            float d = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].b * (float)Math.Cos(Math.Abs(fRoofPitch_rad));
+                            float e = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max - (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].z_max;
+                            float f = e * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                            fFirstStart = c - b - d - f - fCutOffOneSide;
+
+                            float g = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].h * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                            float h = (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].b / (float)Math.Cos(Math.Abs(fRoofPitch_rad));
+                            fLastEnd = c - g - h + b + f - fCutOffOneSide;
+
+                            if (fRoofPitch_rad < 0) // Prehodime hodnoty
+                            {
+                                // Poznamka: Uvazuje sa absolutna hodnota uhla a ak je uhol zaporny, tak sa na hodnoty prehodia
+                                float temp = fFirstStart;
+                                fFirstStart = fLastEnd;
+                                fLastEnd = temp;
+                            }
+
+                            if (j == 0) // Pre prvy member nastavime start
+                                fPBStart_Current = fFirstStart;
+
+                            // Pre posledny member nastavime end
+                            if (iLastPurlin == 1 && j == (iOneRafterPurlinNo + iLastPurlin - 1)) // Last monopitch
+                                fPBEnd_Current = fLastEnd;
+                        }
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
                         {

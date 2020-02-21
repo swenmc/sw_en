@@ -268,7 +268,14 @@ namespace PFD
                 MKitsetTypeIndex = value;
 
                 if (MKitsetTypeIndex > 1)
-                    throw new ArgumentException("Selected kitset type is not implemented.");
+                {
+                  System.Windows.MessageBox.Show("Selected kitset type is not implemented.");
+                  // TODO Ondrej - potrebujeme odtialto vyskocit a vratit do comboboxu povodnu polozku
+                  // Mozno bude lepsie tie polozky co maju index 2 a 3 z toho comba hned po naplneni z databazy zmazat a hotovo
+                  //KitsetTypeIndex = 0;
+                  return;
+                  //  throw new ArgumentException("Selected kitset type is not implemented.");
+                }
 
                 // Nastavit do comboboxu Model type prislusne modely pre dany typ kitsetu
                 if(MKitsetTypeIndex == 0) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetMonoRoofEnclosed", "modelName");
