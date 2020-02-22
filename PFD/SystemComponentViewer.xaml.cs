@@ -208,6 +208,10 @@ namespace PFD
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             CPlateHelper.DataGridScrewArrangement_ValueChanged(cpw, plate);
+
+            vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+            CPlateHelper.UpdatePlateScrewArrangementData(plate);
+            
             // Delete drilling route
             vm.DrillingRoutePoints = null;
             // Redraw plate in 2D and 3D
