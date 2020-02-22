@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace PFD
     {
         //-------------------------------------------------------------------------------------------------------------
         private string MValue;
-        private List<string> MValues;
+        private ObservableCollection<string> MValues;
 
         public string Value
         {
@@ -28,11 +29,11 @@ namespace PFD
             }
         }
 
-        public List<string> Values
+        public ObservableCollection<string> Values
         {
             get
             {
-                if (MValues == null) MValues = new List<string>();
+                if (MValues == null) MValues = new ObservableCollection<string>();
                 return MValues;
             }
 
@@ -47,7 +48,7 @@ namespace PFD
         public CComponentParamsViewList(string name, string shortcut, string value, List<string> values, string unit) : base(name, shortcut, unit, "ComboBox")
         {   
             MValue = value;
-            MValues = values;
+            MValues = new ObservableCollection<string>(values);
         }
     }
 }

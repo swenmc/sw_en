@@ -1638,7 +1638,7 @@ namespace PFD
             <Setter Property='ContentTemplate'>
             <Setter.Value>
             <DataTemplate>
-            <ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            <ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
             </DataTemplate>
             </Setter.Value>
             </Setter>
