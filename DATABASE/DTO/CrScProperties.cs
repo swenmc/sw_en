@@ -48,6 +48,7 @@ namespace DATABASE.DTO
         public double A_vy;
         public double fvy_red_factor;
         public double d_1_flat_portion;
+        public double d_mu; // Middle unstraight part
         public double d_tot;
         public double d_tot_length;
         public double A_w1;

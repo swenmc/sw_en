@@ -106,6 +106,7 @@ namespace CRSC
         private double _fvy_red_factor;
 
         private double _d_1_flat_portion;
+        private double _d_mu;
         private double _d_tot;
         private double _d_tot_length;
         private double _A_w1;
@@ -387,6 +388,12 @@ namespace CRSC
             set { _d_1_flat_portion = value; }
         }
 
+        public double d_mu
+        {
+            get { return _d_mu; }
+            set { _d_mu = value; }
+        }
+
         public double d_tot
         {
             get { return _d_tot; }
@@ -506,6 +513,7 @@ namespace CRSC
             this.A_vy = dto.A_vy;
             this.fvy_red_factor = dto.fvy_red_factor;
             this.d_1_flat_portion = dto.d_1_flat_portion;
+            this.d_mu = dto.d_mu;
             this.d_tot = dto.d_tot;
             this.d_tot_length = dto.d_tot_length;
             this.A_w1 = dto.A_w1;
