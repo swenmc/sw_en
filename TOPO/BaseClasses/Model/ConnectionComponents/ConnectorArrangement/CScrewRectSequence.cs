@@ -212,6 +212,27 @@ namespace BaseClasses
             HolesCentersPoints = new Point[INumberOfConnectors];
         }
 
+        public CScrewRectSequence Copy()
+        {
+            CScrewRectSequence crs = new CScrewRectSequence()
+            {
+                m_iNumberOfScrewsInRow_xDirection = this.m_iNumberOfScrewsInRow_xDirection,
+                m_iNumberOfScrewsInColumn_yDirection = this.m_iNumberOfScrewsInColumn_yDirection,
+                m_RefPointX = this.m_RefPointX,
+                m_RefPointY = this.m_RefPointY,
+                m_fDistanceOfPointsX = this.m_fDistanceOfPointsX,
+                m_fDistanceOfPointsY = this.m_fDistanceOfPointsY,
+                m_DistancesOfPointsX = this.m_DistancesOfPointsX,
+                m_DistancesOfPointsY = this.m_DistancesOfPointsY,
+                m_SameDistancesX = this.m_SameDistancesX,
+                m_SameDistancesY = this.m_SameDistancesY
+            };
+            crs.INumberOfConnectors = m_iNumberOfScrewsInRow_xDirection * m_iNumberOfScrewsInColumn_yDirection;
+            crs.HolesCentersPoints = new Point[INumberOfConnectors];
+
+            return crs;
+        }
+
         //public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection, int iNumberOfScrewsInColumn_yDirection, float refPointX, float refPointY, List<float> distancesOfPointsX, List<float> distancesOfPointsY)
         //{
         //    // TO Ondrej - tento konstruktor by sa dal pozjednodusovat,

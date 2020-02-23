@@ -269,8 +269,7 @@ namespace PFD
                 foreach (CScrewRectSequence src in rectArrangement.RectSequences)
                 {
                     num++;
-                    if (num * 2 > rectArrangement.RectSequences.Count) break;
-
+                    
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in row SQ{num}", "No", src.NumberOfScrewsInRow_xDirection.ToString(), "[-]"));
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in column SQ{num}", "No", src.NumberOfScrewsInColumn_yDirection.ToString(), "[-]"));
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));

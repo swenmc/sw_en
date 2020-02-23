@@ -25,52 +25,7 @@ namespace BaseClasses
         private int m_NumberOfGroups;
         private int m_NumberOfSequenceInGroup;
         private List<CScrewRectSequence> m_RectSequences;
-
-        /*
-        private float m_fCrscColumnDepth;
-
-        public float FCrscColumnDepth
-        {
-            get
-            {
-                return m_fCrscColumnDepth;
-            }
-
-            set
-            {
-                m_fCrscColumnDepth = value;
-            }
-        }
-
-        private float m_fCrscWebStraightDepth;
-
-        public float FCrscWebStraightDepth
-        {
-            get
-            {
-                return m_fCrscWebStraightDepth;
-            }
-
-            set
-            {
-                m_fCrscWebStraightDepth = value;
-            }
-        }
-
-        float m_fStiffenerSize; // Middle cross-section stiffener dimension (without screws)
-
-        public float FStiffenerSize
-        {
-            get
-            {
-                return m_fStiffenerSize;
-            }
-
-            set
-            {
-                m_fStiffenerSize = value;
-            }
-        }*/
+        private bool m_MirroredGroups;
 
         public int NumberOfGroups
         {
@@ -111,14 +66,24 @@ namespace BaseClasses
             }
         }
 
+        public bool MirroredGroups
+        {
+            get
+            {
+                return m_MirroredGroups;
+            }
+
+            set
+            {
+                m_MirroredGroups = value;
+            }
+        }
+
         public CScrewArrangement_BX() { }
 
         // Jedna sekvencia s rovnakymi vzdialenostami na jednej strane plate
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
-            //float fCrscColumnDepth_temp,
-            //float fCrscWebStraightDepth_temp,
-            //float fStiffenerSize_temp,
             int iNumberOfScrewsInRow_xDirection_SQ1_temp,
             int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
             float fx_c_SQ1_temp,
@@ -127,14 +92,12 @@ namespace BaseClasses
             float fDistanceOfPointsY_SQ1_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp, referenceScrew_temp)
         {
             referenceScrew = referenceScrew_temp;
-            //FCrscColumnDepth = fCrscColumnDepth_temp;
-            //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            //FStiffenerSize = fStiffenerSize_temp;
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
 
+            MirroredGroups = true;
             NumberOfGroups = 2;
             NumberOfSequenceInGroup = 1;
 
@@ -143,16 +106,13 @@ namespace BaseClasses
             {
                 IHolesNumber += rectS.INumberOfConnectors;
             }
-
+            if (MirroredGroups) IHolesNumber = IHolesNumber * 2;
             UpdateArrangmentData();
         }
 
         // Dve sekvencie s rovnakymi vzdialenostami na jednej strane plate
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
-            //float fCrscColumnDepth_temp,
-            //float fCrscWebStraightDepth_temp,
-            //float fStiffenerSize_temp,
             int iNumberOfScrewsInRow_xDirection_SQ1_temp,
             int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
             float fx_c_SQ1_temp,
@@ -167,15 +127,13 @@ namespace BaseClasses
             float fDistanceOfPointsY_SQ2_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp + iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp, referenceScrew_temp)
         {
             referenceScrew = referenceScrew_temp;
-            //FCrscColumnDepth = fCrscColumnDepth_temp;
-            //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            //FStiffenerSize = fStiffenerSize_temp;
+            MirroredGroups = true;
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
+            //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
 
             NumberOfGroups = 2;
             NumberOfSequenceInGroup = 2;
@@ -185,7 +143,7 @@ namespace BaseClasses
             {
                 IHolesNumber += rectS.INumberOfConnectors;
             }
-
+            if (MirroredGroups) IHolesNumber = IHolesNumber * 2;
             UpdateArrangmentData();
         }
 
@@ -193,9 +151,6 @@ namespace BaseClasses
         // Tri sekvencie s rovnakymi vzdialenostami na jednej strane plate
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
-            //float fCrscColumnDepth_temp,
-            //float fCrscWebStraightDepth_temp,
-            //float fStiffenerSize_temp,
             int iNumberOfScrewsInRow_xDirection_SQ1_temp,
             int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
             float fx_c_SQ1_temp,
@@ -216,17 +171,15 @@ namespace BaseClasses
             float fDistanceOfPointsY_SQ3_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp + iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp + iNumberOfScrewsInRow_xDirection_SQ3_temp * iNumberOfScrewsInColumn_yDirection_SQ3_temp, referenceScrew_temp)
         {
             referenceScrew = referenceScrew_temp;
-            //FCrscColumnDepth = fCrscColumnDepth_temp;
-            //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            //FStiffenerSize = fStiffenerSize_temp;
+            MirroredGroups = true;
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ3_temp, iNumberOfScrewsInColumn_yDirection_SQ3_temp, fx_c_SQ3_temp, fy_c_SQ3_temp, fDistanceOfPointsX_SQ3_temp, fDistanceOfPointsY_SQ3_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ3_temp, iNumberOfScrewsInColumn_yDirection_SQ3_temp, fx_c_SQ3_temp, fy_c_SQ3_temp, fDistanceOfPointsX_SQ3_temp, fDistanceOfPointsY_SQ3_temp));
+            //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
+            //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ3_temp, iNumberOfScrewsInColumn_yDirection_SQ3_temp, fx_c_SQ3_temp, fy_c_SQ3_temp, fDistanceOfPointsX_SQ3_temp, fDistanceOfPointsY_SQ3_temp));
 
             NumberOfGroups = 2;
             NumberOfSequenceInGroup = 3;
@@ -236,16 +189,13 @@ namespace BaseClasses
             {
                 IHolesNumber += rectS.INumberOfConnectors;
             }
-
+            if (MirroredGroups) IHolesNumber = IHolesNumber * 2;
             UpdateArrangmentData();
         }
 
         // Jedna sekvencia s roznymi vzdialenostami na jednej strane plate
         public CScrewArrangement_BX(
             CScrew referenceScrew_temp,
-            //float fCrscColumnDepth_temp,
-            //float fCrscWebStraightDepth_temp,
-            //float fStiffenerSize_temp,
             int iNumberOfScrewsInRow_xDirection_SQ1_temp,
             int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
             float fx_c_SQ1_temp,
@@ -275,6 +225,7 @@ namespace BaseClasses
             //----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
             referenceScrew = referenceScrew_temp;
+            MirroredGroups = true;
             //FCrscColumnDepth = fCrscColumnDepth_temp;
             //FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             //FStiffenerSize = fStiffenerSize_temp;
@@ -290,7 +241,7 @@ namespace BaseClasses
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
+            //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, distancesOfPointsX_SQ1_temp, distancesOfPointsY_SQ1_temp));
 
             NumberOfGroups = 2;
             NumberOfSequenceInGroup = 1;
@@ -300,7 +251,7 @@ namespace BaseClasses
             {
                 IHolesNumber += rectS.INumberOfConnectors;
             }
-
+            if (MirroredGroups) IHolesNumber = IHolesNumber * 2;
             UpdateArrangmentData();
         }
 
@@ -315,20 +266,21 @@ namespace BaseClasses
             referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
 
             ListOfSequenceGroups = new List<CScrewSequenceGroup>(NumberOfGroups);
-            int index = 0;
+            
             for (int i = 0; i < NumberOfGroups; i++)
             {
                 CScrewSequenceGroup gr = new CScrewSequenceGroup();
                 gr.NumberOfHalfCircleSequences = 0;
                 gr.NumberOfRectangularSequences = NumberOfSequenceInGroup;
+                
                 for (int j = 0; j < NumberOfSequenceInGroup; j++)
                 {
                     // TO Ondrej - Pridal som tento riadok - Updatujeme celkovy pocet prvkov v sekvencii - asi by sa to mohlo uskutocnit uz skor pred tym ako sem RectSequences dorazia
-                    RectSequences[index].INumberOfConnectors = RectSequences[index].NumberOfScrewsInRow_xDirection * RectSequences[index].NumberOfScrewsInColumn_yDirection;
+                    //RectSequences[index].INumberOfConnectors = RectSequences[index].NumberOfScrewsInRow_xDirection * RectSequences[index].NumberOfScrewsInColumn_yDirection;
 
                     // Pridame sekvenciu do skupiny
-                    gr.ListSequence.Add(RectSequences[index]);
-                    index++;
+                    if(i == 0) gr.ListSequence.Add(RectSequences[j]);
+                    else gr.ListSequence.Add(RectSequences[j].Copy());
                 }
                 ListOfSequenceGroups.Add(gr);
             }
@@ -364,7 +316,7 @@ namespace BaseClasses
                 foreach (CScrewRectSequence sc in gr.ListSequence)
                 {
                     sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);
-
+                    
                     if (grCount == 2) //second group is mirrored
                     {
                         sc.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * (2 * flZ + fbX), sc);
