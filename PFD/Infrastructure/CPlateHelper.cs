@@ -1448,8 +1448,11 @@ namespace PFD
         {
             int iNumberofHoles = 0;
 
-            CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
+            //CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
+
+            if (plate.ScrewArrangement != null)
+                referenceScrew = plate.ScrewArrangement.referenceScrew;
 
             // Default values
             // Member cross-section parameters
@@ -1463,6 +1466,21 @@ namespace PFD
             float fRafterWebStraightDepth = fColumnDepth - 2 * 0.025f - 2 * 0.002f;
             float fRafterWebSiffenerSize_1 = 0.18f;
 
+            float fWebEndArcInternalRadius = 0.025f;
+
+            int iNumberOfScrewsInRow_xDirection_SQ1 = 0;
+            int iNumberOfScrewsInColumn_yDirection_SQ1 = 0;
+            float fx_c_SQ1 = 0f;
+            float fy_c_SQ1 = 0f;
+            float fDistanceOfPointsX_SQ1 = 0f;
+            float fDistanceOfPointsY_SQ1 = 0f;
+            int iNumberOfScrewsInRow_xDirection_SQ2 = 0;
+            int iNumberOfScrewsInColumn_yDirection_SQ2 = 0;
+            float fx_c_SQ2 = 0f;
+            float fy_c_SQ2 = 0f;
+            float fDistanceOfPointsX_SQ2 = 0f;
+            float fDistanceOfPointsY_SQ2 = 0f;
+
             // Circle arrangement
             bool bUseAdditionalConnectors = true;
             int iNumberOfAdditionalConnectorsInCorner = 4;
@@ -1475,21 +1493,58 @@ namespace PFD
             {
                 // Base plate, knee joint - column is main member
                 fColumnDepth = (float)joint.m_MainMember.CrScStart.h;
-                fColumnWebStraightDepth = fColumnDepth - 2 * 0.025f - 2 * (float)joint.m_MainMember.CrScStart.t_min; // TODO - nacitat z databazy
+                fColumnWebStraightDepth = fColumnDepth - 2 * fWebEndArcInternalRadius - 2 * (float)joint.m_MainMember.CrScStart.t_min; // TODO - nacitat z databazy
                 fColumnWebSiffenerSize_1 = 0.18f; // TODO dopracovat do databazy, zohladnit pocet vyztuh, asymetricka poloha
 
                 if (joint.m_SecondaryMembers != null) // Apex, knee, ... for knee joint - column is main member and rafter is secondary member
                 {
                     fRafterDepth = (float)joint.m_SecondaryMembers[0].CrScStart.h;
-                    fRafterWebStraightDepth = fColumnDepth - 2 * 0.025f - 2 * (float)joint.m_SecondaryMembers[0].CrScStart.t_min; // TODO - nacitat z databazy
+                    fRafterWebStraightDepth = fColumnDepth - 2 * fWebEndArcInternalRadius - 2 * (float)joint.m_SecondaryMembers[0].CrScStart.t_min; // TODO - nacitat z databazy
                     fRafterWebSiffenerSize_1 = 0.2857142f * (float)joint.m_SecondaryMembers[0].CrScStart.h; // TODO dopracovat do databazy, zohladnit pocet vyztuh, asymetricka poloha
 
                     // Recalculate default radius and number of screws depending on cross-section depth
                     float fMinimumDistanceBetweenScrews = 0.02f;
+
+                    // Circle arrangement - parameters
                     fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fRafterWebStraightDepth);
                     fConnectorRadiusInCircleSequence = 0.45f * fRafterWebStraightDepth; // TODO - dynamicky podla velkosti prierezu
                     float fDistanceBetweenScrewsInCircle = 0.05f;
                     iConnectorNumberInCircleSequence = (int)((2f * MathF.fPI * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle); // 20; // TODO - dynamicky podla velkosti prierezu
+
+                    // Rectangular arrangement - parameters
+                    // Apex Joint
+
+                    float fEdgeDistance = 0.05f;
+
+                    float fDistanceOfPointsX_default = 0.07f;
+                    float fDistanceOfPointsY_default = 0.05f;
+
+                    float fb_plate = plate.Width_bx;
+
+                    // Spodna sekvencia
+                    iNumberOfScrewsInRow_xDirection_SQ1 = (int)((0.5f * fb_plate - 2 * fEdgeDistance) / fDistanceOfPointsX_default) + 1;
+                    iNumberOfScrewsInColumn_yDirection_SQ1 = 2;
+
+                    fDistanceOfPointsX_SQ1 = (0.5f * fb_plate - 2 * fEdgeDistance) / (iNumberOfScrewsInRow_xDirection_SQ1 - 1);
+                    fDistanceOfPointsY_SQ1 = 0.05f;
+
+                    fx_c_SQ1 = fEdgeDistance;
+                    fy_c_SQ1 = fEdgeDistance;
+
+                    // Horna sekvencia
+                    // TODO zapracovat uhol sklonu a urcit vzdialenost kam mozno pripojit plech v hornej casti
+                    iNumberOfScrewsInRow_xDirection_SQ2 = (int)((0.5f * fb_plate - 2 * fEdgeDistance) / fDistanceOfPointsY_default) + 1;
+                    iNumberOfScrewsInColumn_yDirection_SQ2 = 2;
+
+                    fDistanceOfPointsX_SQ2 = (0.5f * fb_plate - 2 * fEdgeDistance) / (iNumberOfScrewsInRow_xDirection_SQ2 - 1);
+                    fDistanceOfPointsY_SQ2 = 0.05f;
+
+                    fx_c_SQ2 = 3 * fEdgeDistance; // ??? TODO - urcit podla sklonu
+                    fy_c_SQ2 = fRafterDepth - fWebEndArcInternalRadius - (float)joint.m_SecondaryMembers[0].CrScStart.t_min - (iNumberOfScrewsInColumn_yDirection_SQ2 - 1) * fDistanceOfPointsY_SQ2;
+
+                    // Knee Joint
+
+
                 }
             }
 
@@ -1522,7 +1577,8 @@ namespace PFD
             screwSeqGroups.Add(gr2);
 
             CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebSiffenerSize_1, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebSiffenerSize_1, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
+            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebSiffenerSize_1, iNumberOfScrewsInRow_xDirection_SQ1, iNumberOfScrewsInColumn_yDirection_SQ1, fx_c_SQ1, fy_c_SQ1, fDistanceOfPointsX_SQ1, fDistanceOfPointsY_SQ1, iNumberOfScrewsInRow_xDirection_SQ2, iNumberOfScrewsInColumn_yDirection_SQ2, fx_c_SQ2, fy_c_SQ2, fDistanceOfPointsX_SQ2, fDistanceOfPointsY_SQ2);
+            //CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebSiffenerSize_1, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
             //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
             CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebSiffenerSize_1, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
 

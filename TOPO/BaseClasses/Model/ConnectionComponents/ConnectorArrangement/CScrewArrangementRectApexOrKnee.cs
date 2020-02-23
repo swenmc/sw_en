@@ -408,7 +408,7 @@ namespace BaseClasses
            float fCrscRafterDepth_temp,
            float fCrscWebStraightDepth_temp,
            float fStiffenerSize_temp,
-           List<CScrewRectSequence> listRectSequences)             
+           List<CScrewRectSequence> listRectSequences)
         {
             referenceScrew = referenceScrew_temp;
             FCrscRafterDepth = fCrscRafterDepth_temp;
@@ -435,7 +435,7 @@ namespace BaseClasses
             // Update reference screw properties
             DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
             referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
-                        
+
             ListOfSequenceGroups = new List<CScrewSequenceGroup>(NumberOfGroups);
             int index = 0;
             for (int i = 0; i < NumberOfGroups; i++)
