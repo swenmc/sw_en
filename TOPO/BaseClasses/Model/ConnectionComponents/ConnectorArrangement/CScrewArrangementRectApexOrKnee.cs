@@ -308,6 +308,40 @@ namespace BaseClasses
         //    UpdateArrangmentData();
         //}
 
+        // Jedna sekvencia s rovnakymi vzdialenostami na jednej strane plate
+        public CScrewArrangementRectApexOrKnee(
+            CScrew referenceScrew_temp,
+            float fCrscRafterDepth_temp,
+            float fCrscWebStraightDepth_temp,
+            float fStiffenerSize_temp,
+            int iNumberOfScrewsInRow_xDirection_SQ1_temp,
+            int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
+            float fx_c_SQ1_temp,
+            float fy_c_SQ1_temp,
+            float fDistanceOfPointsX_SQ1_temp,
+            float fDistanceOfPointsY_SQ1_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp, referenceScrew_temp)
+        {
+            referenceScrew = referenceScrew_temp;
+            FCrscRafterDepth = fCrscRafterDepth_temp;
+            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            FStiffenerSize = fStiffenerSize_temp;
+
+            RectSequences = new List<CScrewRectSequence>();
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+
+            NumberOfGroups = 2;
+            NumberOfSequenceInGroup = 1;
+
+            IHolesNumber = 0;
+            foreach (CScrewRectSequence rectS in RectSequences)
+            {
+                IHolesNumber += rectS.INumberOfConnectors;
+            }
+
+            UpdateArrangmentData();
+        }
+
         public CScrewArrangementRectApexOrKnee(
             CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
@@ -420,7 +454,7 @@ namespace BaseClasses
             {
                 IHolesNumber += rectS.INumberOfConnectors;
             }
-            
+
             UpdateArrangmentData();
         }
 
