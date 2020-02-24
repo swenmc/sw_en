@@ -248,7 +248,6 @@ namespace PFD
             // Plates
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
             {
-                //to Mato - nasledujuci riadok ppotrebuje review
                 joint.SetJointIsSelectedForMaterialListAccordingToMember();
                 
                 if (!joint.BIsSelectedForMaterialList) continue;
@@ -469,7 +468,6 @@ namespace PFD
 
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
             {
-                //to Mato - nasledujuci riadok ppotrebuje review
                 joint.SetJointIsSelectedForMaterialListAccordingToMember();
 
                 if (!joint.BIsSelectedForMaterialList) continue;
@@ -477,7 +475,7 @@ namespace PFD
                 foreach (CPlate plate in joint.m_arrPlates) // For each plate
                 {
                     // Screws
-                    if (plate.ScrewArrangement.Screws != null)
+                    if (plate.ScrewArrangement != null && plate.ScrewArrangement.Screws != null)
                     {
                         QuotationHelper.AddConnector(plate.ScrewArrangement.Screws.FirstOrDefault(), quotation, plate.ScrewArrangement.Screws.Length);
                     }

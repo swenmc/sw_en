@@ -542,7 +542,7 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_Connectors);
         }
-        
+
         private void CreateTableBoltNuts(CModel model)
         {
             // Bolt nuts
@@ -565,7 +565,7 @@ namespace PFD
                             CAnchor anchor = plate.AnchorArrangement.Anchors.FirstOrDefault();
                             int anchorsNum = plate.AnchorArrangement.Anchors.Length;
                             //v pripade ak su anchor.Nuts stale rovnake tak netreba foreach ale len quantity = anchorsNum * anchor.Nuts.Count
-                            // TO Ondrej  - na 90 % su rovnake, teoereticky by mohol niekto mat hornu maticu nejaku specialnu inu ako spodne zabetonovane v betone, priemer musi byt rovnaky
+                            // TO Ondrej  - na 90 % su rovnake, teoreticky by mohol niekto mat hornu maticu nejaku specialnu inu ako spodne zabetonovane v betone, priemer musi byt rovnaky
                             foreach (CNut nut in anchor.Nuts)
                             {
                                 AddBoltNutToQuotation(nut, quotation, anchorsNum);

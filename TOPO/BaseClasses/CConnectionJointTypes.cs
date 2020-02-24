@@ -194,22 +194,27 @@ namespace BaseClasses
             }
         }
 
-        //To Mato - prosim o review
         public void SetJointIsSelectedForMaterialListAccordingToMember()
         {
-            if (m_MainMember != null)
+            // Vsetky pruty v spoji musia mat BIsSelectedForMaterialList = true, potom ma aj samotny spoj
+
+            if (m_MainMember != null && (m_SecondaryMembers == null || m_SecondaryMembers.Length == 0)) // V spoji je len main member a nie je null ak ma main member BIsSelectedForMaterialList = true, tak to plati aj pre joint
             {
                 if (m_MainMember.BIsSelectedForMaterialList) { BIsSelectedForMaterialList = true; return; }
             }
-            if (m_SecondaryMembers != null)
+
+            if (m_MainMember != null && m_SecondaryMembers != null && m_SecondaryMembers.Length > 0) // V spoji su aj main aj secondary members a nie su null - vsetky pruty spoja musia mat BIsSelectedForMaterialList = true
             {
+                if (m_MainMember.BIsSelectedForMaterialList)
+                { BIsSelectedForMaterialList = true; }
+                else
+                { BIsSelectedForMaterialList = false; return; } // Main member ma nastavene false - mozeme vratit vysledok aj bez kontroly secondary members
+
                 foreach (CMember m in m_SecondaryMembers)
                 {
-                    if (m.BIsSelectedForMaterialList) { BIsSelectedForMaterialList = true; return; }
+                    if (!m.BIsSelectedForMaterialList) { BIsSelectedForMaterialList = false; return; } // Niektory zo secondary members nema BIsSelectedForMaterialList = true
                 }
             }
-
-            BIsSelectedForMaterialList = false;
         }
 
         public virtual CConnectionJointTypes RecreateJoint()
