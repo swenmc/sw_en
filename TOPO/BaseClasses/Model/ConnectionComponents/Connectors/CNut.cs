@@ -238,7 +238,8 @@ namespace BaseClasses
             // Outline Points
             // Outline Edges
             float fRadiusOut = 0.5f * m_fSizeAcrossCorners;  // Toto ta ma nastavit ako polovica dlzky uhlopriecky maximalneho rozmeru nut
-            float fRadiusIn = 0.008f; // TODO - toto ta ma nastavit podla priemeru anchor
+            float fDiameterInternal = float.Parse((m_Name.Substring(1))) / 1000f; // Vynechame v stringu prvy znak - charakter "M" - index 0, zaciname od indexu 1
+            float fRadiusIn = fDiameterInternal / 2f; // 0.008f;
 
             int iEdgeOut = iEdgesOutBasic * iNumberOfSegmentsPerSideOut;
             int iEdgesInBasic = iEdgeOut;
