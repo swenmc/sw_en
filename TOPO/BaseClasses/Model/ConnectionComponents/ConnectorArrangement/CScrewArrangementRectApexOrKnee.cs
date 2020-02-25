@@ -589,20 +589,28 @@ namespace BaseClasses
             float fx_c = fOffset_x + 0.00f;
             float fy_c = flZ + 0.00f;
 
+            // Zaviest mat moznost mat dynamicky pocet sekvencii
+
             // Left side
             ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-            ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+
+            if(ListOfSequenceGroups[0].ListSequence.Count == 2) // TODO Ondrej - zaviest mat moznost mat dynamicky pocet sekvencii
+               ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
             // Set radii of connectors / screws in the group
             ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
 
             // Rotate screws by roof slope
             // Rotate about [0,0]
             RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+
+            if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+                RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
 
             // Translate from [0,0] on plate to the final position
             TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-            TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+
+            if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+                TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
 
             // Right side
             CScrewRectSequence seq3 = new CScrewRectSequence();
@@ -610,8 +618,11 @@ namespace BaseClasses
             seq3.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq3);
 
             CScrewRectSequence seq4 = new CScrewRectSequence();
-            seq4.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints;
-            seq4.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq4);
+            if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+            {
+                seq4.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints;
+                seq4.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq4);
+            }
 
             // Add mirrored sequences into the list
             if (ListOfSequenceGroups.Count == 1) // Just in case that mirrored (right side) group doesn't exists
@@ -619,14 +630,24 @@ namespace BaseClasses
                 ListOfSequenceGroups.Add(new CScrewSequenceGroup()); // Right Side Group
 
                 ListOfSequenceGroups[1].ListSequence.Add(seq3);
-                ListOfSequenceGroups[1].ListSequence.Add(seq4);
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 1;
+
+                if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+                {
+                    ListOfSequenceGroups[1].ListSequence.Add(seq4);
+                    ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+                }
             }
             else // In case that group already exists set current sequences
             {
                 ListOfSequenceGroups[1].ListSequence[0] = seq3;
-                ListOfSequenceGroups[1].ListSequence[1] = seq4;
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 1;
+
+                if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+                {
+                    ListOfSequenceGroups[1].ListSequence[1] = seq4;
+                    ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+                }
             }
             ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
 

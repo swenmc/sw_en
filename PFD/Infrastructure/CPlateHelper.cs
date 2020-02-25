@@ -1647,10 +1647,8 @@ namespace PFD
                     bool bIsOneSequence = false;
 
                     // TODO - IN WORK - implementovat dynamicky pocet sekvencii
-                    /*
                     if (fRafterDepth < 0.400f) // TODO pre 270xx a 270xx nested
                         bIsOneSequence = true;
-                    */
 
                     if (bIsOneSequence)
                     {
