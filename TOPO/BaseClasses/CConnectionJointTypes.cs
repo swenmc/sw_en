@@ -200,7 +200,8 @@ namespace BaseClasses
 
             if (m_MainMember != null && (m_SecondaryMembers == null || m_SecondaryMembers.Length == 0)) // V spoji je len main member a nie je null ak ma main member BIsSelectedForMaterialList = true, tak to plati aj pre joint
             {
-                if (m_MainMember.BIsSelectedForMaterialList) { BIsSelectedForMaterialList = true; return; }
+                BIsSelectedForMaterialList = m_MainMember.BIsSelectedForMaterialList;
+                return;
             }
 
             if (m_MainMember != null && m_SecondaryMembers != null && m_SecondaryMembers.Length > 0) // V spoji su aj main aj secondary members a nie su null - vsetky pruty spoja musia mat BIsSelectedForMaterialList = true
