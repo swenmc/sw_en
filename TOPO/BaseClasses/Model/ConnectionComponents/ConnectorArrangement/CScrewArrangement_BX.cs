@@ -478,7 +478,16 @@ namespace BaseClasses
             {
                 CScrewRectSequence rS = new CScrewRectSequence();
                 gr.ListSequence.Add(rS);
-                RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup, rS);
+
+                if (MirroredGroups)
+                {
+                    if(grIndex ==0 ) RectSequences.Insert(NumberOfSequenceInGroup, rS);
+                }
+                else
+                {
+                    RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup, rS);
+                }
+                
                 grIndex++;
             }
 
@@ -488,7 +497,14 @@ namespace BaseClasses
             for (int i = ListOfSequenceGroups.Count - 1; i >= 0; i--)
             {
                 ListOfSequenceGroups[i].ListSequence.RemoveAt(ListOfSequenceGroups[i].ListSequence.Count - 1);
-                RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
+                if (MirroredGroups)
+                {
+                    if(i == 0) RectSequences.RemoveAt(NumberOfSequenceInGroup - 1);
+                }
+                else
+                {
+                    RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
+                }                
             }
         }
     }
