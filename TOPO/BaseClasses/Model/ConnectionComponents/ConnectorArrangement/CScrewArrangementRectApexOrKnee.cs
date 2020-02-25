@@ -479,6 +479,9 @@ namespace BaseClasses
                 gr.NumberOfRectangularSequences = NumberOfSequenceInGroup;
                 for (int j = 0; j < NumberOfSequenceInGroup; j++)
                 {
+                    // TODO Ondrej - toto prosim urobit analogicky podla base plate arrangement BX
+                    RectSequences[index].INumberOfConnectors = RectSequences[index].NumberOfScrewsInRow_xDirection * RectSequences[index].NumberOfScrewsInColumn_yDirection;
+
                     gr.ListSequence.Add(RectSequences[index]);
                     index++;
                 }
