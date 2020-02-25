@@ -386,6 +386,7 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         private CWasher_W m_WasherPlateTop;
+                
         public CWasher_W WasherPlateTop
         {
             get
