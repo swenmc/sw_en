@@ -22,7 +22,7 @@ namespace BaseClasses
         private int m_NumberOfGroups;  //default 2
         private int m_NumberOfSequenceInGroup;
         private List<CScrewRectSequence> m_RectSequences;
-
+        private bool m_MirroredGroups;
 
         private float m_fCrscRafterDepth;
 
@@ -105,6 +105,19 @@ namespace BaseClasses
             set
             {
                 m_RectSequences = value;
+            }
+        }
+
+        public bool MirroredGroups
+        {
+            get
+            {
+                return m_MirroredGroups;
+            }
+
+            set
+            {
+                m_MirroredGroups = value;
             }
         }
 
@@ -309,6 +322,7 @@ namespace BaseClasses
         //}
 
         // Jedna sekvencia s rovnakymi vzdialenostami na jednej strane plate
+        // Apex
         public CScrewArrangementRectApexOrKnee(
             CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
@@ -342,6 +356,9 @@ namespace BaseClasses
             UpdateArrangmentData();
         }
 
+        // Apex - 2 groups a v kazdej 2 nezavisle sekvencie (vyuzijeme mirror)
+        // Knee - 2 groups a kazdej 1 sekvencia
+
         public CScrewArrangementRectApexOrKnee(
             CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
@@ -358,13 +375,17 @@ namespace BaseClasses
             float fx_c_SQ2_temp,
             float fy_c_SQ2_temp,
             float fDistanceOfPointsX_SQ2_temp,
-            float fDistanceOfPointsY_SQ2_temp)
+            float fDistanceOfPointsY_SQ2_temp,
+            bool bIsApex/* = true*/)
         {
             referenceScrew = referenceScrew_temp;
             FCrscRafterDepth = fCrscRafterDepth_temp;
             FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             FStiffenerSize = fStiffenerSize_temp;
 
+            // TODO - povodne sa tento konstruktor pouzival len pre apex takze 1 a 3 a 2 a 4 sekvencia boli rovnake
+            // Chcem ho vsak pouzivat aj pre knee plates pre pripad ze jedna group obsahuje len jednu sekvenciu, takze budu 2 skupiny a v kazdej jedna sekvencia
+            //-------------------------------------------------------------------------------------------------------------------------------------------------------------
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
@@ -372,17 +393,43 @@ namespace BaseClasses
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
 
             NumberOfGroups = 2;
-            NumberOfSequenceInGroup = 2;
+            NumberOfSequenceInGroup = 2; // Pre Apex 2 sekvencie v jednej group
+            //-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+            // TO Ondrej - zaviest funkcionalitu podla _BX arrangement pre MirroredGroups a potom tuto cast odkomentovat a nahradit nou riadky, ktore su vyssie
+
+            /*
+            RectSequences = new List<CScrewRectSequence>();
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
+            MirroredGroups = true;
+
+            if (!bIsApex)
+            {
+                RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+                RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
+                MirroredGroups = false;
+            }
+
+            NumberOfGroups = 2;
+            NumberOfSequenceInGroup = 2; // Pre Apex 2 sekvencie v jednej group
+
+            if (!bIsApex)
+            {
+                NumberOfSequenceInGroup = 1; // Pre Knee jedna sekvencia v jednej group
+            }
+            */
 
             IHolesNumber = 0;
             foreach (CScrewRectSequence rectS in RectSequences)
             {
                 IHolesNumber += rectS.INumberOfConnectors;
             }
-
+            if (MirroredGroups) IHolesNumber = IHolesNumber * 2;
             UpdateArrangmentData();
         }
 
+        // Knee
         public CScrewArrangementRectApexOrKnee(
             CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
@@ -480,7 +527,7 @@ namespace BaseClasses
                 for (int j = 0; j < NumberOfSequenceInGroup; j++)
                 {
                     // TODO Ondrej - toto prosim urobit analogicky podla base plate arrangement BX
-                    RectSequences[index].INumberOfConnectors = RectSequences[index].NumberOfScrewsInRow_xDirection * RectSequences[index].NumberOfScrewsInColumn_yDirection;
+                    //RectSequences[index].INumberOfConnectors = RectSequences[index].NumberOfScrewsInRow_xDirection * RectSequences[index].NumberOfScrewsInColumn_yDirection;
 
                     gr.ListSequence.Add(RectSequences[index]);
                     index++;

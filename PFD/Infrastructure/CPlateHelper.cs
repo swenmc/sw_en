@@ -1601,6 +1601,7 @@ namespace PFD
 
                     // Rectangular arrangement - parameters
                     // Apex Joint
+                    // Vyvorime dve groups a v nich po dvoch sekvenciach - spolu 4 sekvencie (vyuzijeme zrkadlenie)
 
                     float fEdgeDistance = 0.05f;
 
@@ -1643,14 +1644,15 @@ namespace PFD
                     fy_c_SQ2_apex = fRafterDepth - fWebEndArcExternalRadius_Rafter - fMinimumStraightEdgeDistance - (iNumberOfScrewsInColumn_yDirection_SQ2_apex - 1) * fDistanceOfPointsY_SQ2_apex;
 
                     screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_SQ1_apex, iNumberOfScrewsInColumn_yDirection_SQ1_apex, fx_c_SQ1_apex, fy_c_SQ1_apex, fDistanceOfPointsX_SQ1_apex, fDistanceOfPointsY_SQ1_apex,
-                                                                                                                                                                     iNumberOfScrewsInRow_xDirection_SQ2_apex, iNumberOfScrewsInColumn_yDirection_SQ2_apex, fx_c_SQ2_apex, fy_c_SQ2_apex, fDistanceOfPointsX_SQ2_apex, fDistanceOfPointsY_SQ2_apex);
-                    bool bIsOneSequence = false;
+                                                                                                                                                                     iNumberOfScrewsInRow_xDirection_SQ2_apex, iNumberOfScrewsInColumn_yDirection_SQ2_apex, fx_c_SQ2_apex, fy_c_SQ2_apex, fDistanceOfPointsX_SQ2_apex, fDistanceOfPointsY_SQ2_apex, true);
+                    bool bIsOneSequenceApex = false;
 
                     // TODO - IN WORK - implementovat dynamicky pocet sekvencii
                     if (fRafterDepth < 0.400f) // TODO pre 270xx a 270xx nested
-                        bIsOneSequence = true;
+                        bIsOneSequenceApex = true;
 
-                    if (bIsOneSequence)
+                    // Vyvorime len dve groups a v nich po jednej sekvencii - spolu dve sekvencie (vyuzijeme zrkadlenie)
+                    if (bIsOneSequenceApex)
                     {
                         fDistanceOfPointsY_default = 0.107f;
 
@@ -1674,6 +1676,7 @@ namespace PFD
                     // 14, 2, 0.050f, 0.425f, 0.050f, 0.158f
 
                     // Knee
+                    // Vyvorime dve groups a v nich po dvoch sekvenciach - spolu 4 sekvencie
                     float fOverlappingDistanceColumn = fColumnDepth; // Stvorec s rozmermi prierezu
                     float fOverlappingDistanceRafter = fRafterDepth; // Stvorec s rozmermi prierezu
 
@@ -1715,14 +1718,46 @@ namespace PFD
                     fy_c_SQ4_knee = fRafterDepth - fWebEndArcExternalRadius_Rafter - fMinimumStraightEdgeDistance - (iNumberOfScrewsInColumn_yDirection_G2_SQ4_knee - 1) * fDistanceOfPointsY_SQ4_knee;
 
                     screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_G1_SQ1_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee, fx_c_SQ1_knee, fy_c_SQ1_knee, fDistanceOfPointsX_SQ1_knee, fDistanceOfPointsY_SQ1_knee,
-                                                                                                                                                                                                     iNumberOfScrewsInRow_xDirection_G1_SQ2_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ2_knee, fx_c_SQ2_knee, fy_c_SQ2_knee, fDistanceOfPointsX_SQ2_knee, fDistanceOfPointsY_SQ2_knee,
-                                                                                                                                                                                                     iNumberOfScrewsInRow_xDirection_G2_SQ3_knee, iNumberOfScrewsInColumn_yDirection_G2_SQ3_knee, fx_c_SQ3_knee, fy_c_SQ3_knee, fDistanceOfPointsX_SQ3_knee, fDistanceOfPointsY_SQ3_knee,
-                                                                                                                                                                                                     iNumberOfScrewsInRow_xDirection_G2_SQ4_knee, iNumberOfScrewsInColumn_yDirection_G2_SQ4_knee, fx_c_SQ4_knee, fy_c_SQ4_knee, fDistanceOfPointsX_SQ4_knee, fDistanceOfPointsY_SQ4_knee);
+                                                                                                                                                                     iNumberOfScrewsInRow_xDirection_G1_SQ2_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ2_knee, fx_c_SQ2_knee, fy_c_SQ2_knee, fDistanceOfPointsX_SQ2_knee, fDistanceOfPointsY_SQ2_knee,
+                                                                                                                                                                     iNumberOfScrewsInRow_xDirection_G2_SQ3_knee, iNumberOfScrewsInColumn_yDirection_G2_SQ3_knee, fx_c_SQ3_knee, fy_c_SQ3_knee, fDistanceOfPointsX_SQ3_knee, fDistanceOfPointsY_SQ3_knee,
+                                                                                                                                                                     iNumberOfScrewsInRow_xDirection_G2_SQ4_knee, iNumberOfScrewsInColumn_yDirection_G2_SQ4_knee, fx_c_SQ4_knee, fy_c_SQ4_knee, fDistanceOfPointsX_SQ4_knee, fDistanceOfPointsY_SQ4_knee);
+
+                    bool bIsTwoSequencesKnee = false;
+
+                    // TODO - IN WORK - implementovat dynamicky pocet sekvencii
+                    if (fRafterDepth < 0.400f) // TODO pre 270xx a 270xx nested
+                        bIsTwoSequencesKnee = true;
+
+                    // Vyvorime len dve groups a v nich po jednej sekvencii - spolu dve sekvencie
+                    if (bIsTwoSequencesKnee)
+                    {
+                        fDistanceOfPointsY_default = 0.107f;
+
+                        iNumberOfScrewsInRow_xDirection_G1_SQ1_knee = (int)((fOverlappingDistanceColumn - 2 * fEdgeDistance) / fDistanceOfPointsX_default) + 1;  // Bottom group of knee plate - G1 - SQ1
+                        iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee = (int)((fColumnWebStraightDepth - 2 * fMinimumStraightEdgeDistance) / fDistanceOfPointsY_default) + 1;
+                        if (iNumberOfScrewsInRow_xDirection_G1_SQ1_knee > 1)
+                            fDistanceOfPointsX_SQ1_knee = (fOverlappingDistanceColumn - 2 * fEdgeDistance) / (iNumberOfScrewsInRow_xDirection_G1_SQ1_knee - 1);
+                        if (iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee > 1)
+                            fDistanceOfPointsY_SQ1_knee = (fColumnWebStraightDepth - 2 * fMinimumStraightEdgeDistance) / (iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee - 1);
+                        fx_c_SQ1_knee = fEdgeDistance;
+                        fy_c_SQ1_knee = fWebEndArcExternalRadius_Column + fMinimumStraightEdgeDistance;
+
+                        iNumberOfScrewsInRow_xDirection_G2_SQ3_knee = (int)((fOverlappingDistanceRafter - 2 * fEdgeDistance) / fDistanceOfPointsX_default) + 1;  // Upper group of knee plate - G2 - SQ3
+                        iNumberOfScrewsInColumn_yDirection_G2_SQ3_knee = (int)((fRafterWebStraightDepth - 2 * fMinimumStraightEdgeDistance) / fDistanceOfPointsY_default) + 1;
+                        if (iNumberOfScrewsInRow_xDirection_G2_SQ3_knee > 1)
+                            fDistanceOfPointsX_SQ3_knee = (fOverlappingDistanceRafter - 2 * fEdgeDistance) / (iNumberOfScrewsInRow_xDirection_G2_SQ3_knee - 1);
+                        if (iNumberOfScrewsInColumn_yDirection_G2_SQ3_knee > 1)
+                            fDistanceOfPointsY_SQ3_knee = (fRafterWebStraightDepth - 2 * fMinimumStraightEdgeDistance) / (iNumberOfScrewsInColumn_yDirection_G2_SQ3_knee - 1);
+                        fx_c_SQ3_knee = fEdgeDistance;
+                        fy_c_SQ3_knee = fWebEndArcExternalRadius_Rafter + fMinimumStraightEdgeDistance;
+
+                        screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_G1_SQ1_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee, fx_c_SQ1_knee, fy_c_SQ1_knee, fDistanceOfPointsX_SQ1_knee, fDistanceOfPointsY_SQ1_knee,
+                                                                                                                                                                         iNumberOfScrewsInRow_xDirection_G2_SQ3_knee, iNumberOfScrewsInColumn_yDirection_G2_SQ3_knee, fx_c_SQ3_knee, fy_c_SQ3_knee, fDistanceOfPointsX_SQ3_knee, fDistanceOfPointsY_SQ3_knee, false);
+                    }
 
                     //CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
                     //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
                     //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
-
                 }
             }
 
