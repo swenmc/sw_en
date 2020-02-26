@@ -1649,8 +1649,8 @@ namespace EXPIMP
             {
                 if(cInfo.MemberTypePosition != EMemberType_FS_Position.MainColumn &&
                     cInfo.MemberTypePosition != EMemberType_FS_Position.EdgeColumn &&
-                    cInfo.MemberTypePosition != EMemberType_FS_Position.ColumnFrontSide &&
-                    cInfo.MemberTypePosition != EMemberType_FS_Position.ColumnBackSide) continue;
+                    cInfo.MemberTypePosition != EMemberType_FS_Position.WindPostFrontSide &&
+                    cInfo.MemberTypePosition != EMemberType_FS_Position.WindPostBackSide) continue;
                 if (!cInfo.Design) continue;
                 
                 // Start Joint

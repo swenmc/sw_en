@@ -35,8 +35,8 @@ namespace BaseClasses
             m_DesignResults.Add(EMemberType_FS_Position.EdgePurlin, new DesignResultItem());
             m_DesignResults.Add(EMemberType_FS_Position.Girt, new DesignResultItem());
             m_DesignResults.Add(EMemberType_FS_Position.Purlin, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_FS_Position.ColumnFrontSide, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_FS_Position.ColumnBackSide, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.WindPostFrontSide, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.WindPostBackSide, new DesignResultItem());
             m_DesignResults.Add(EMemberType_FS_Position.GirtFrontSide, new DesignResultItem());
             m_DesignResults.Add(EMemberType_FS_Position.GirtBackSide, new DesignResultItem());
 

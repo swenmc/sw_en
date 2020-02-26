@@ -930,10 +930,10 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                item = s.DesignResults[EMemberType_FS_Position.ColumnFrontSide];
+                item = s.DesignResults[EMemberType_FS_Position.WindPostFrontSide];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
-                    sb.Append("Maximum design ratio - front columns\n");
+                    sb.Append("Maximum design ratio - front wind posts\n");
                     sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
                     if (item.GoverningLoadCombination != null)
                     {
@@ -942,10 +942,10 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                item = s.DesignResults[EMemberType_FS_Position.ColumnBackSide];
+                item = s.DesignResults[EMemberType_FS_Position.WindPostBackSide];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
-                    sb.Append("Maximum design ratio - back columns\n");
+                    sb.Append("Maximum design ratio - back wind posts\n");
                     sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
                     if (item.GoverningLoadCombination != null)
                     {

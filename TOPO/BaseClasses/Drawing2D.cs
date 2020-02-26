@@ -488,7 +488,7 @@ namespace BaseClasses
 
                     if (joint.m_MainMember.EccentricityStart != null)
                     {
-                        if (pad.m_ColumnMemberTypePosition != EMemberType_FS_Position.ColumnBackSide)
+                        if (pad.m_ColumnMemberTypePosition != EMemberType_FS_Position.WindPostBackSide)
                             horizontalOffsetColumn -= joint.m_MainMember.EccentricityStart.MFz_local; // Odpocitavame, pretoze lokalny smer z pruta smeruje v opacnom smere ako x osa v canvas
                         else // Pre wind post na zadnej strane je excentricita definovana zaporna v GCS, preto ju musime otocit
                             horizontalOffsetColumn += joint.m_MainMember.EccentricityStart.MFz_local;
@@ -522,7 +522,7 @@ namespace BaseClasses
             double horizontalOffset = -0.5 * fPadWidth_y - pad.Eccentricity_y; // Opacne znamienko pre excentricity lebo LCS y v 3D smeruje tam, kam x v 2D
 
             // Pre wind post na zadnej strane je excentricita definovana zaporna v GCS, preto ju musime otocit
-            if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+            if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
                 horizontalOffset = -0.5 * fPadWidth_y + pad.Eccentricity_y;
 
             List<Point> PointsFootingPad_real = new List<Point>
@@ -688,7 +688,7 @@ namespace BaseClasses
                     float fPerimeterDepth = floorSlab.PerimeterDepth_LRSide; // TODO - napojit
 
                     // Front or back side
-                    if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                    if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
                     {
                         fPerimeterWidth = floorSlab.PerimeterWidth_FBSide;
                         fPerimeterDepth = floorSlab.PerimeterDepth_FBSide;
@@ -1052,7 +1052,7 @@ namespace BaseClasses
 
                 if (joint.m_MainMember.EccentricityStart != null) // Napojenie na excentricity - ak je prutu nastavena excentricita, nastavime rovnaky posun stredu plate
                 {
-                    if (pad.m_ColumnMemberTypePosition != EMemberType_FS_Position.ColumnBackSide)
+                    if (pad.m_ColumnMemberTypePosition != EMemberType_FS_Position.WindPostBackSide)
                         insertingPoint_Plate.X = -joint.m_MainMember.EccentricityStart.MFz_local; // Odpocitavame, pretoze lokalny smer z pruta smeruje v opacnom smere ako x osa v canvas
                     else
                         insertingPoint_Plate.X = +joint.m_MainMember.EccentricityStart.MFz_local;
@@ -2556,7 +2556,7 @@ namespace BaseClasses
             startersSpacing = slab.StartersSpacing_LRSide;
 
             // Front or back side
-            if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+            if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
             {
                 fBarDiameter = slab.Starters_Phi_FBSide;
                 fTopPartProjectionLength = slab.StartersLapLength_FBSide;

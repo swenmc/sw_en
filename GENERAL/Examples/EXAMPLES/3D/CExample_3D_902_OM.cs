@@ -73,7 +73,7 @@ namespace Examples
 
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(1);
-            //listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 200, 200, 200, 0));
+            //listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eWP, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 200, 200, 200, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(1, "Girt", EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[0], 200, 200, 200, 0));
 
             // Members
@@ -81,9 +81,9 @@ namespace Examples
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
 
-            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, -0.2f, -0.3f, 0.0f, 0);
+            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eWP, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, -0.2f, -0.3f, 0.0f, 0);
             m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eG, EMemberType_FS_Position.Girt, eccmember, eccmember, -0.2f, -0.3f, 0.0f, 0);
-            //m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[1], EMemberType_FS.eC, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
+            //m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[1], EMemberType_FS.eWP, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());

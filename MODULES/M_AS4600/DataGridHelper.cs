@@ -1073,7 +1073,7 @@ namespace M_AS4600
                     listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                     listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
                 }
-                else if (calc.joint is CConnectionJoint_S001) // Front / back column connection to the main rafter
+                else if (calc.joint is CConnectionJoint_S001) // Front / back wind post connection to the main rafter
                 {
                     listPhysicalQuantity_Symbols.Add("Connection to the rafter");
                     listPhysicalQuantity_Values.Add("");

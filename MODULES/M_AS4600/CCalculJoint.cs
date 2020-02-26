@@ -185,7 +185,7 @@ namespace M_AS4600
                 {
                     CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_AS4600, bSaveDetails); // purlin, girt or eave purlin
                 }
-                else if (joint_temp is CConnectionJoint_S001) // Front / back column connection to the main rafter
+                else if (joint_temp is CConnectionJoint_S001) // Front / back wind post connection to the main rafter
                 {
                     CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(joint_temp, sDIF_AS4600, bSaveDetails);
                 }
@@ -197,8 +197,8 @@ namespace M_AS4600
             }
             else if (joint_temp is CConnectionJoint_TA01 || joint_temp is CConnectionJoint_TB01 || joint_temp is CConnectionJoint_TC01 || joint_temp is CConnectionJoint_TD01)
             {
-                CalculateDesignRatioBaseJoint(joint_temp, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back column connection to the foundation)
-                CalculateDesignRatioBaseJointFooting(foundation, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back column connection to the foundation)
+                CalculateDesignRatioBaseJoint(joint_temp, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back wind post connection to the foundation)
+                CalculateDesignRatioBaseJointFooting(foundation, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back wind post connection to the foundation)
             }
             else
             {

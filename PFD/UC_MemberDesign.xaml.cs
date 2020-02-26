@@ -116,7 +116,7 @@ namespace PFD
                 GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_PermanentLoad = designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_PL;
                 GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total = designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_TL;
             }
-            else if(GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eC) // Wind post - TODO bude potrebne prerobit enum eC vsade na eWP
+            else if(GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eWP) // Wind post - TODO bude potrebne prerobit enum eC vsade na eWP
             {
                 GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total = designOptionsVM.HorizontalDisplacementLimitDenominator_Windpost_TL;
             }

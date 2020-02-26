@@ -318,8 +318,8 @@ namespace PFD
                 if (m_FootingPadMemberTypes == null) m_FootingPadMemberTypes = new List<ComboItem> {
                     new ComboItem((int)EMemberType_FS_Position.MainColumn, EMemberType_FS_Position.MainColumn.GetFriendlyName()),
                     new ComboItem((int)EMemberType_FS_Position.EdgeColumn, EMemberType_FS_Position.EdgeColumn.GetFriendlyName()),
-                    new ComboItem((int)EMemberType_FS_Position.ColumnFrontSide, EMemberType_FS_Position.ColumnFrontSide.GetFriendlyName()),
-                    new ComboItem((int)EMemberType_FS_Position.ColumnBackSide, EMemberType_FS_Position.ColumnBackSide.GetFriendlyName()) };
+                    new ComboItem((int)EMemberType_FS_Position.WindPostFrontSide, EMemberType_FS_Position.WindPostFrontSide.GetFriendlyName()),
+                    new ComboItem((int)EMemberType_FS_Position.WindPostBackSide, EMemberType_FS_Position.WindPostBackSide.GetFriendlyName()) };
                 return m_FootingPadMemberTypes;
             }
 
@@ -1852,11 +1852,11 @@ namespace PFD
                 joint = GetBaseJointForSelectedNode(pad.m_Node);
                 m_DictFootings.Add("Edge Column", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
 
-                pad = GetFootingPad(EMemberType_FS_Position.ColumnFrontSide);
+                pad = GetFootingPad(EMemberType_FS_Position.WindPostFrontSide);
                 joint = GetBaseJointForSelectedNode(pad.m_Node);
                 m_DictFootings.Add("Wind Post - Front", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
 
-                pad = GetFootingPad(EMemberType_FS_Position.ColumnBackSide);
+                pad = GetFootingPad(EMemberType_FS_Position.WindPostBackSide);
                 joint = GetBaseJointForSelectedNode(pad.m_Node);
                 m_DictFootings.Add("Wind Post - Back", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
 
@@ -1930,11 +1930,11 @@ namespace PFD
                     new ComboItem((int)EMemberType_FS_Position.MainColumn, EMemberType_FS_Position.MainColumn.GetFriendlyName()),
                     new ComboItem((int)EMemberType_FS_Position.EdgeColumn, EMemberType_FS_Position.EdgeColumn.GetFriendlyName())};
             
-            CComponentInfo ciFC = _pfdVM.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide && c.Generate == true);
-            if (ciFC != null) footingPadMemberTypes.Add(new ComboItem((int)EMemberType_FS_Position.ColumnFrontSide, EMemberType_FS_Position.ColumnFrontSide.GetFriendlyName()));
+            CComponentInfo ciFC = _pfdVM.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide && c.Generate == true);
+            if (ciFC != null) footingPadMemberTypes.Add(new ComboItem((int)EMemberType_FS_Position.WindPostFrontSide, EMemberType_FS_Position.WindPostFrontSide.GetFriendlyName()));
 
-            CComponentInfo ciBC = _pfdVM.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide && c.Generate == true);
-            if (ciBC != null) footingPadMemberTypes.Add(new ComboItem((int)EMemberType_FS_Position.ColumnBackSide, EMemberType_FS_Position.ColumnBackSide.GetFriendlyName()));
+            CComponentInfo ciBC = _pfdVM.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide && c.Generate == true);
+            if (ciBC != null) footingPadMemberTypes.Add(new ComboItem((int)EMemberType_FS_Position.WindPostBackSide, EMemberType_FS_Position.WindPostBackSide.GetFriendlyName()));
 
             FootingPadMemberTypes = footingPadMemberTypes;
             FootingPadMemberTypeIndex = 0;
@@ -2123,12 +2123,12 @@ namespace PFD
 
                 fe_y = -fe_y_abs;
             }
-            else if (columnTypePosition == EMemberType_FS_Position.ColumnFrontSide)
+            else if (columnTypePosition == EMemberType_FS_Position.WindPostFrontSide)
             {
                 fe_x = fe_x_abs;
                 fe_y = -fe_y_abs; // + eccentricityColumnFront_Z.MFz_local // Ak chceme urcit celkovu excentricitu od uzla
             }
-            else if (columnTypePosition == EMemberType_FS_Position.ColumnBackSide)
+            else if (columnTypePosition == EMemberType_FS_Position.WindPostBackSide)
             {
                 fe_x = fe_x_abs;
                 fe_y = fe_y_abs; // + eccentricityColumnBack_Z.MFz_local // Ak chceme urcit celkovu excentricitu od uzla
@@ -2471,9 +2471,9 @@ namespace PFD
                 // Tu potrebujem zistit na ktorej strane budovy su jednotlive patky - ta "Right" side by sa mohla urcovat asi aj nejako krajsie
                 // Podobne bool pre posledny ram
 
-                if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide)
+                if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide)
                     sBuildingSide = "Front";
-                else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
                     sBuildingSide = "Back";
                 else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.EdgeColumn || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.MainColumn)
                 {

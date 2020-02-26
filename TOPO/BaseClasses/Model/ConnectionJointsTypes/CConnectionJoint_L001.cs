@@ -6,7 +6,7 @@ namespace BaseClasses
 {
     public class CConnectionJoint_L001 : CConnectionJointTypes
     {
-        // Back Girts to Back Column Joint
+        // Back Girts to Back Wind Post Joint
         public float m_ft;
 
         public CConnectionJoint_L001() { }

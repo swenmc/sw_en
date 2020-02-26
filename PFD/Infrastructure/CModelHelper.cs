@@ -79,7 +79,7 @@ namespace PFD
                     (model.m_arrMembers[i].EMemberType == EMemberType_FS.eP ||
                     model.m_arrMembers[i].EMemberType == EMemberType_FS.eEP ||
                     model.m_arrMembers[i].EMemberType == EMemberType_FS.eG ||
-                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eC))
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eWP))
                 {
                     simpleBeamMember = model.m_arrMembers[i];
                     simpleBeamMember.NodeStart = simpleBeamNodes[0];

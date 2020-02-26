@@ -12,7 +12,7 @@ namespace BaseClasses
 {
     public class CConnectionJoint_T001 : CConnectionJointTypes
     {
-        // Beam to Main Rafter / Main Column / Front Column / Back Column Joint
+        // Beam to Main Rafter / Main Column / Front Wind Post / Back Wind Post Joint
         public float m_ft;
         public float m_ft_main_plate;
         public float m_fPlate_Angle_Leg;

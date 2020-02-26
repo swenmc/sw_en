@@ -252,7 +252,7 @@ namespace PFD
                 }
             }
 
-            // Front Columns Foundation Joints / Top Joint to the rafter
+            // Front Wind Posts Foundation Joints / Top Joint to the rafter
             if (bGenerateFrontColumns)
             {
                 for (int i = 0; i < iFrontColumnNoInOneFrame; i++)
@@ -269,7 +269,7 @@ namespace PFD
                 }
             }
 
-            // Back Columns Foundation Joints / Top Joint to the rafter
+            // Back Wind Posts Foundation Joints / Top Joint to the rafter
             if (bGenerateBackColumns)
             {
                 for (int i = 0; i < iBackColumnNoInOneFrame; i++)
@@ -533,7 +533,7 @@ namespace PFD
             // Members - Columns
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i], section, EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
+                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i], section, EMemberType_FS.eWP, EMemberType_FS_Position.WindPostFrontSide, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
                 CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + i]);
             }
 
@@ -543,7 +543,7 @@ namespace PFD
             {
                 for (int i = 0; i < iOneRafterColumnNo; i++)
                 {
-                    m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + i + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i], section, EMemberType_FS.eC, EMemberType_FS_Position.ColumnBackSide, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
+                    m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + i + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i], section, EMemberType_FS.eWP, EMemberType_FS_Position.WindPostBackSide, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
                     CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i]);
                 }
             }
@@ -1391,7 +1391,7 @@ namespace PFD
                     float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.7f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), 1);
                     float fFrontColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
-                    float fFrontColumnFooting_Eccentricity_y = 0.5f * (fFrontColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h);
+                    float fFrontColumnFooting_Eccentricity_y = 0.5f * (fFrontColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].h);
 
                     CReinforcementBar FrontColumnFootingReference_Top_Bar_x;
                     CReinforcementBar FrontColumnFootingReference_Top_Bar_y;
@@ -1418,7 +1418,7 @@ namespace PFD
                         out iFrontColumnFootingNumberOfBarsBottom_y
                         );
 
-                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.ColumnFrontSide;
+                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.WindPostFrontSide;
                     string sName = "C-FRONT";
                     string sDescriptionText = "PAD TYPE C [WP-FRONT]";
 
@@ -1428,8 +1428,8 @@ namespace PFD
                     {
                         // Find foundation definition nodes
                         if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eFrontColumn].CrossSection))
+                            m_arrMembers[i].EMemberType == EMemberType_FS.eWP &&
+                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eFrontWindPost].CrossSection))
                             listOfControlPoints.Add(m_arrMembers[i].NodeStart);
                     }
 
@@ -1478,7 +1478,7 @@ namespace PFD
                     float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.7f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), 1);
                     float fBackColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
-                    float fBackColumnFooting_Eccentricity_y = 0.5f * (fBackColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h);
+                    float fBackColumnFooting_Eccentricity_y = 0.5f * (fBackColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].h);
 
                     CReinforcementBar BackColumnFootingReference_Top_Bar_x;
                     CReinforcementBar BackColumnFootingReference_Top_Bar_y;
@@ -1505,7 +1505,7 @@ namespace PFD
                         out iBackColumnFootingNumberOfBarsBottom_y
                         );
 
-                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.ColumnBackSide;
+                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.WindPostBackSide;
                     string sName = "C-BACK";
                     string sDescriptionText = "PAD TYPE C [WP-BACK]";
 
@@ -1515,8 +1515,8 @@ namespace PFD
                     {
                         // Find foundation definition nodes
                         if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackColumn].CrossSection))
+                            m_arrMembers[i].EMemberType == EMemberType_FS.eWP &&
+                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackWindPost].CrossSection))
                             listOfControlPoints.Add(m_arrMembers[i].NodeStart);
                     }
 

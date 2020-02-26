@@ -21,7 +21,7 @@ namespace PFD
         private float m_fRoof_Pitch_deg; // Building roof pitch
         private float m_fdist_girt; // Distance between girts (Z-axis)
         private float m_fdist_purlin; // Distance between purlins (X-axis in roof pitch slope)
-        private float m_fdist_frontcolumn; // Distance between front columns (X-axis)
+        private float m_fdist_frontcolumn; // Distance between Front Wind Posts (X-axis)
         private float m_fdist_girt_bottom; // Distance between bottom girt and column slab (Z-axis)
         private float m_fRakeAngleFrontFrame_deg; // Angle between X-axis and first frame
         private float m_fRakeAngleBackFrame_deg; // Angle between X-axis and last frame
@@ -418,8 +418,8 @@ namespace PFD
             MembersSectionsDict.Add(EMemberType_FS_Position.EdgePurlin, model.EdgePurlin);
             MembersSectionsDict.Add(EMemberType_FS_Position.Girt, model.Girt);
             MembersSectionsDict.Add(EMemberType_FS_Position.Purlin, model.Purlin);
-            MembersSectionsDict.Add(EMemberType_FS_Position.ColumnFrontSide, model.ColumnFrontSide);
-            MembersSectionsDict.Add(EMemberType_FS_Position.ColumnBackSide, model.ColumnBackSide);
+            MembersSectionsDict.Add(EMemberType_FS_Position.WindPostFrontSide, model.ColumnFrontSide);
+            MembersSectionsDict.Add(EMemberType_FS_Position.WindPostBackSide, model.ColumnBackSide);
             MembersSectionsDict.Add(EMemberType_FS_Position.GirtFrontSide, model.GirtFrontSide);
             MembersSectionsDict.Add(EMemberType_FS_Position.GirtBackSide, model.GirtBackSide);
             MembersSectionsDict.Add(EMemberType_FS_Position.DoorFrame, model.DoorFrame);

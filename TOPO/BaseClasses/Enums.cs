@@ -453,7 +453,7 @@ namespace BaseClasses
         eWF, // Window Frame
         eBG, // Base Girt
         eMR, // Main Rafter
-        eMC // Main Column
+        eMC  // Main Column
     }
 
     public enum EMemberType_FS_Position
@@ -465,8 +465,8 @@ namespace BaseClasses
         EdgePurlin = 5,
         Girt = 6,
         Purlin = 7,
-        ColumnFrontSide = 8,
-        ColumnBackSide = 9,
+        WindPostFrontSide = 8,
+        WindPostBackSide = 9,
         GirtFrontSide = 10,
         GirtBackSide = 11,
         BracingBlockGirts = 12,
@@ -491,8 +491,8 @@ namespace BaseClasses
         eEavesPurlin = 4,
         eGirtWall = 5,
         ePurlin = 6,
-        eFrontColumn = 7,
-        eBackColumn = 8,
+        eFrontWindPost = 7,
+        eBackWindPost = 8,
         eFrontGirt = 9,
         eBackGirt = 10,
         eGirtBracing = 11,
@@ -815,7 +815,7 @@ namespace BaseClasses
         public bool bDisplayMemberLoads_Girts;
         public bool bDisplayMemberLoads_Purlins;
         public bool bDisplayMemberLoads_EavePurlins;
-        public bool bDisplayMemberLoads_Columns;
+        public bool bDisplayMemberLoads_WindPosts;
         public bool bDisplayMemberLoads_Frames;
         public bool bDisplaySurfaceLoads;
 
@@ -1032,8 +1032,8 @@ namespace BaseClasses
         public int iEdgePurlin_ILS_Number;
         public int iGirt_ILS_Number;
         public int iPurlin_ILS_Number;
-        public int iFrontColumnFlyBracingEveryXXGirt;
-        public int iBackColumnFlyBracingEveryXXGirt;
+        public int iFrontWindPostFlyBracingEveryXXGirt;
+        public int iBackWindPostFlyBracingEveryXXGirt;
         public int iGirtFrontSide_ILS_Number;
         public int iGirtBackSide_ILS_Number;
     }

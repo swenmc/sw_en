@@ -1705,7 +1705,7 @@ namespace BaseClasses
                             if ((sDisplayOptions.bDisplayMemberLoads_Girts && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eG) ||
                                (sDisplayOptions.bDisplayMemberLoads_Purlins && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eP) ||
                                (sDisplayOptions.bDisplayMemberLoads_EavePurlins && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eEP) ||
-                               (sDisplayOptions.bDisplayMemberLoads_Columns && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eC) ||
+                               (sDisplayOptions.bDisplayMemberLoads_WindPosts && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eWP) ||
                                (sDisplayOptions.bDisplayMemberLoads_Frames &&
                                (selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMC ||
                                selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMR ||
@@ -4112,7 +4112,7 @@ namespace BaseClasses
                             if ((sDisplayOptions.bDisplayMemberLoads_Girts && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eG) ||
                                (sDisplayOptions.bDisplayMemberLoads_Purlins && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eP) ||
                                (sDisplayOptions.bDisplayMemberLoads_EavePurlins && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eEP) ||
-                               (sDisplayOptions.bDisplayMemberLoads_Columns && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eC) ||
+                               (sDisplayOptions.bDisplayMemberLoads_WindPosts && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eWP) ||
                                (sDisplayOptions.bDisplayMemberLoads_Frames &&
                                (loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMC ||
                                loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMR ||

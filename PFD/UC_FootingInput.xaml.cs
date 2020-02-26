@@ -50,7 +50,7 @@ namespace PFD
                 if (e.PropertyName == "Generate")
                 {
                     CComponentInfo ci = sender as CComponentInfo;
-                    if (ci.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || ci.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                    if (ci.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || ci.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
                     {
                         vm.SetFootingPadMemberTypes();                        
                     }

@@ -243,7 +243,7 @@ namespace PFD
                     //Pri zmene poctu ILS pre purlin alebo girt je potrebne pregenerovat model (pruty aj spoje) a pripadne vygenerovat pruty bracing blocks nanovo ak sa zmenil ich pocet. 
                     if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin || cInfo.MemberTypePosition == EMemberType_FS_Position.Girt ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide ||
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
@@ -1070,10 +1070,10 @@ namespace PFD
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
             if (ci != null) sGeometryInputData.iPurlin_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
 
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide);
-            if (ci != null) sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide);
-            if (ci != null) sGeometryInputData.iBackColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
+            if (ci != null) sGeometryInputData.iFrontWindPostFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
+            if (ci != null) sGeometryInputData.iBackWindPostFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
 
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
             if (ci != null) sGeometryInputData.iGirtFrontSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);

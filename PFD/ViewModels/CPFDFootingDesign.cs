@@ -140,7 +140,7 @@ namespace PFD
         {
             //Task 335: Pre Component Type staci Main Column, Edge Column, Wind Post (alebo Column) -front side, Wind Post (alebo Column) -back side.
             ComponentList = componentList.Where(s => (s.MemberTypePosition == EMemberType_FS_Position.MainColumn || s.MemberTypePosition == EMemberType_FS_Position.EdgeColumn 
-                        || s.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || s.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide) 
+                        || s.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || s.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide) 
                         && s.Generate == true && s.Calculate == true && s.Design == true).Select(s => s.ComponentName).ToList();
 
             if(ComponentList.Count > 0) ComponentList.Add("All");

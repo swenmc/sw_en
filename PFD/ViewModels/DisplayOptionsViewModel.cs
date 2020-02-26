@@ -243,7 +243,7 @@ namespace PFD
         private bool MShowLoadsOnGirts;
         private bool MShowLoadsOnPurlins;
         private bool MShowLoadsOnEavePurlins;
-        private bool MShowLoadsOnColumns;
+        private bool MShowLoadsOnWindPosts;
         private bool MShowLoadsOnFrameMembers;
         private bool MShowSurfaceLoads;
 
@@ -2178,19 +2178,19 @@ namespace PFD
             }
         }
 
-        public bool ShowLoadsOnColumns
+        public bool ShowLoadsOnWindPosts
         {
             get
             {
-                return MShowLoadsOnColumns;
+                return MShowLoadsOnWindPosts;
             }
 
             set
             {
-                MShowLoadsOnColumns = value;
+                MShowLoadsOnWindPosts = value;
 
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
-                NotifyPropertyChanged("ShowLoadsOnColumns");
+                NotifyPropertyChanged("ShowLoadsOnWindPosts");
             }
         }
 
@@ -2579,7 +2579,7 @@ namespace PFD
             ShowLoadsOnGirts = true;
             ShowLoadsOnPurlins = true;
             ShowLoadsOnEavePurlins = true;
-            ShowLoadsOnColumns = true;
+            ShowLoadsOnWindPosts = true;
             ShowLoadsOnFrameMembers = true;
             ShowNodalLoads = false;
             ShowSurfaceLoads = false;
@@ -2728,7 +2728,7 @@ namespace PFD
             ShowLoadsOnGirts = newVM.ShowLoadsOnGirts;
             ShowLoadsOnPurlins = newVM.ShowLoadsOnPurlins;
             ShowLoadsOnEavePurlins = newVM.ShowLoadsOnEavePurlins;
-            ShowLoadsOnColumns = newVM.ShowLoadsOnColumns;
+            ShowLoadsOnWindPosts = newVM.ShowLoadsOnWindPosts;
             ShowLoadsOnFrameMembers = newVM.ShowLoadsOnFrameMembers;
             ShowNodalLoads = newVM.ShowNodalLoads;
             ShowSurfaceLoads = newVM.ShowSurfaceLoads;

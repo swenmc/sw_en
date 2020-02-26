@@ -372,8 +372,8 @@ namespace BaseClasses
                 case EMemberType_FS_Position.Girt: return "Girt";
                 case EMemberType_FS_Position.GirtFrontSide: return "Girt Front Side";
                 case EMemberType_FS_Position.GirtBackSide: return "Girt Back Side";
-                case EMemberType_FS_Position.ColumnFrontSide: return "Column Front Side";
-                case EMemberType_FS_Position.ColumnBackSide: return "Column Back Side";
+                case EMemberType_FS_Position.WindPostFrontSide: return "Wind Post Front Side";
+                case EMemberType_FS_Position.WindPostBackSide: return "Wind Post Back Side";
                 case EMemberType_FS_Position.DoorFrame: return "Door Frame";
                 case EMemberType_FS_Position.DoorLintel: return "Door Lintel";
                 case EMemberType_FS_Position.DoorTrimmer: return "Door Trimmer";

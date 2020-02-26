@@ -316,19 +316,19 @@ namespace PFD
                         break;
                     //15  Base - wind post - front
                     case 15:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide && joint.m_SecondaryMembers == null)
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide && joint.m_SecondaryMembers == null)
                             resItems.Add(joint);
                         break;
                     //16  Base - wind post - back
                     case 16:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.ColumnBackSide && joint.m_SecondaryMembers == null)
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide && joint.m_SecondaryMembers == null)
                             resItems.Add(joint);
                         break;
                     //17  Wind post to edge rafter - front
                     case 17:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide)
                             )
                             resItems.Add(joint);
                         break;
@@ -336,7 +336,7 @@ namespace PFD
                     case 18:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
                             )
                             resItems.Add(joint);
                         break;
@@ -358,7 +358,7 @@ namespace PFD
                         break;
                     //21  Girt to wind post - front
                     case 21:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide &&
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
                             )
@@ -366,7 +366,7 @@ namespace PFD
                         break;
                     //22  Girt to wind post - back
                     case 22:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.ColumnBackSide &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide &&
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtBackSide)
                             )
