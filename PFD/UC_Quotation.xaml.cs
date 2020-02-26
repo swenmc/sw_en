@@ -529,7 +529,7 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_Plates);
         }
-        
+
         private void CreateTableConnectors(CModel model)
         {
             DataSet ds = QuotationHelper.GetTableConnectors(model, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
@@ -848,8 +848,6 @@ namespace PFD
                 Datagrid_Cladding.Loaded += Datagrid_Cladding_Loaded;
             }
         }
-
-        
 
         private void Datagrid_Cladding_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1459,7 +1457,6 @@ namespace PFD
 
             }
 
-
             dBuildingMass += SumTotalMass;
             dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
 
@@ -1737,17 +1734,10 @@ namespace PFD
             }
         }
 
-        
-
-        
-
         private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
         {
             QuotationDisplayOptionsWindow window = new QuotationDisplayOptionsWindow(_pfdVM);
             window.ShowDialog();
-
-            
-
         }
 
         private void ChangeGUIAccordingToDisplayOptions()
