@@ -32,6 +32,14 @@ namespace DATABASE
                         item.ID = reader.GetInt32(reader.GetOrdinal("ID"));
                         item.Name = reader["name"].ToString();
                         item.JoinType = reader["jointType"].ToString();
+                        item.MainMemberPrefix_FS = reader["mainMemberPrefix_FS"].ToString();
+                        item.SecondaryMemberPrefix_FS = reader["secondaryMemberPrefix_FS"].ToString();
+                        item.MainMemberPrefix_FS_position = reader["mainMemberPrefix_FS_position"].ToString();
+                        item.SecondaryMemberPrefix_FS_position = reader["secondaryMemberPrefix_FS_position"].ToString();
+                        item.MainMemberPrefix_FS_ID = Int32.Parse(reader["mainMemberPrefix_FS_ID"].ToString());
+                        item.SecondaryMemberPrefix_FS_ID = item.SecondaryMemberPrefix_FS =="" ? -1 : Int32.Parse(reader["secondaryMemberPrefix_FS_ID"].ToString());
+                        item.MainMemberPrefix_FS_position_ID = Int32.Parse(reader["mainMemberPrefix_FS_position_ID"].ToString());
+                        item.SecondaryMemberPrefix_FS_position_ID = item.SecondaryMemberPrefix_FS_position == "" ? -1 : Int32.Parse(reader["secondaryMemberPrefix_FS_position_ID"].ToString());
                         item.Note = reader["note"].ToString();
                         items.Add(item);
                     }
