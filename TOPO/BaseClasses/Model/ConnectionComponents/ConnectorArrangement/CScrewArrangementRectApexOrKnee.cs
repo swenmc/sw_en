@@ -435,17 +435,20 @@ namespace BaseClasses
             // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
             float fx_c = fOffset_x + 0.00f;
             float fy_c = flZ + 0.00f;
-                        
+
             int grCount = 0;
             foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
             {
                 grCount++;
                 foreach (CScrewRectSequence sc in gr.ListSequence)
                 {
-                    sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);                    
+                    sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);
                     // Rotate screws by roof slope
                     // Rotate about [0,0]
                     RotateSequence_CCW_rad(0, 0, fSlope_rad, sc);
+
+                    // Translate from [0,0] on plate to the final position
+                    TranslateSequence(fx_c, fy_c, sc);
 
                     if (grCount == 2) //second group is mirrored
                     {
@@ -530,12 +533,14 @@ namespace BaseClasses
             float fSlope_rad)
         {
             //To Mato - toto tu na nieco potrebujeme?
-            //// Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
-            //float fx_cBG = flZ + FCrscRafterDepth;
-            //float fy_cBG = 0;
+            //To Ondrej: TY BETAR TY MI TU NEKOMENTUJ TOTO :))))
 
-            //float fx_cUG = flZ + FCrscRafterDepth * (float)Math.Sin(fSlope_rad);
-            //float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
+            // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
+            float fx_cBG = flZ + FCrscRafterDepth;
+            float fy_cBG = 0;
+
+            float fx_cUG = flZ + FCrscRafterDepth * (float)Math.Sin(fSlope_rad);
+            float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
 
             int grCount = 0;
             foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
@@ -544,17 +549,27 @@ namespace BaseClasses
                 foreach (CScrewRectSequence sc in gr.ListSequence)
                 {
                     sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);
-                    
-                    // Rotate about [0,0]
+
                     if (grCount % 2 == 1)
                     {
+                        // Bottom Group
+
                         // Rotate about [0,0] 90 deg
                         RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, sc);
+
+                        // Translate from [0,0] on plate to the final position
+                        TranslateSequence(fx_cBG, fy_cBG, sc);
                     }
                     else
                     {
+                        // Upper Group
+
                         // Rotate screws by roof slope
+                        // Rotate about [0,0]
                         RotateSequence_CCW_rad(0, 0, fSlope_rad, sc);
+
+                        // Translate from [0,0] on plate to the final position
+                        TranslateSequence(fx_cUG, fy_cUG, sc);
                     }
                 }
 
