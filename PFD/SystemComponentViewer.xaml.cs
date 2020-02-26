@@ -310,7 +310,8 @@ namespace PFD
                                         plate.ScrewArrangement = null;
                                     else
                                     {
-                                        plate.ScrewArrangement = CJointHelper.GetBasePlateArrangement(plate.Prefix, referenceScrew/*, plate.Height_hy*/);
+                                        string platePrefix = vm.Components.ElementAtOrDefault(vm.ComponentIndex);
+                                        plate.ScrewArrangement = CJointHelper.GetBasePlateArrangement(platePrefix, referenceScrew/*, plate.Height_hy*/);
                                     }
 
                                     break;
