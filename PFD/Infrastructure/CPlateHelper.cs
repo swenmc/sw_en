@@ -880,7 +880,7 @@ namespace PFD
 
         private static bool IsValidCircleRadius(float radius, CScrewArrangementCircleApexOrKnee arrangementTemp)
         {
-            float fAdditionalMargin = 0.02f; // TODO - napojit na GUI, napojit na generovanie screw arrangement - vid Circle Arrangement Get_ScrewGroup_IncludingAdditionalScrews
+            float fAdditionalMargin = 0.01f; // TODO - napojit na GUI, napojit na generovanie screw arrangement - vid Circle Arrangement Get_ScrewGroup_IncludingAdditionalScrews
             if (radius > 0.5 * arrangementTemp.FStiffenerSize + fAdditionalMargin) return true;
             else return false;
         }
@@ -1553,7 +1553,7 @@ namespace PFD
                 else
                     throw new ArgumentNullException("Invalid cross-section type.");
 
-                float fMinimumStraightEdgeDistance = 0.02f;
+                float fMinimumStraightEdgeDistance = 0.01f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
 
                 // Base plate, knee joint - column is main member
                 fColumnDepth = (float)joint.m_MainMember.CrScStart.h;
