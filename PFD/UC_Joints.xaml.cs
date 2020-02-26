@@ -813,8 +813,7 @@ namespace PFD
             string componentName = cb.SelectedValue.ToString();
 
             paramsChanged = true;
-
-
+            
             float fb_R; // Rafter Width
             float fb_B; // Wind Post Width
             float fb; // in plane XY -X coord
@@ -838,52 +837,7 @@ namespace PFD
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             float fCrsc_h = 0.27f; // Default depth of connected member cross-section
-
-            bool bUseAdditionalConnectors = true;
-            int iNumberOfAdditionalConnectorsInCorner = 4;
-            int iConnectorNumberInCircleSequence = 20;
-            float fConnectorRadiusInCircleSequence = 0.25f;
-
-            List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
-            CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
-            gr1.NumberOfHalfCircleSequences = 2;
-            gr1.NumberOfRectangularSequences = 4;
-            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-            screwSeqGroups.Add(gr1);
-            CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
-            gr2.NumberOfHalfCircleSequences = 2;
-            gr2.NumberOfRectangularSequences = 4;
-            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-            screwSeqGroups.Add(gr2);
-
-            // 63020 default
-            CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f, true);
-            //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
-
-            // 270xx default
-            bool bUseAdditionalConnectors_270xx = false;
-            int iNumberOfAdditionalConnectorsInCorner_270xx = 4;
-            int iConnectorNumberInCircleSequence_270xx = 8;
-            float fConnectorRadiusInCircleSequence_270xx = 0.12f;
-
-            List<CScrewSequenceGroup> screwSeqGroups_270xx = new List<CScrewSequenceGroup>();
-            CScrewSequenceGroup gr1_270xx = new CScrewSequenceGroup();
-            gr1_270xx.NumberOfHalfCircleSequences = 2;
-            gr1_270xx.NumberOfRectangularSequences = 4;
-            gr1_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
-            gr1_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
-            screwSeqGroups_270xx.Add(gr1_270xx);
-            CScrewSequenceGroup gr2_270xx = new CScrewSequenceGroup();
-            gr2_270xx.NumberOfHalfCircleSequences = 2;
-            gr2_270xx.NumberOfRectangularSequences = 4;
-            gr2_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
-            gr2_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
-            screwSeqGroups_270xx.Add(gr2_270xx);
-
+            
             CDatabaseComponents dcomponents = new CDatabaseComponents();
 
             switch (plate.m_ePlateSerieType_FS)

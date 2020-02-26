@@ -23,6 +23,7 @@ namespace BaseClasses
         private int m_NumberOfSequenceInGroup;
         private List<CScrewRectSequence> m_RectSequences;
         private bool m_MirroredGroups;
+        private bool m_IsApex;
 
         private float m_fCrscRafterDepth;
 
@@ -121,205 +122,21 @@ namespace BaseClasses
             }
         }
 
-        // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
+        public bool IsApex
+        {
+            get
+            {
+                return m_IsApex;
+            }
 
-        //// Bottom (knee plate) or left (apex plate) group
-        //public int iNumberOfScrewsInRow_xDirection_SQ1;
-        //public int iNumberOfScrewsInColumn_yDirection_SQ1;
-        //public float fx_c_SQ1;
-        //public float fy_c_SQ1;
-        //public float fDistanceOfPointsX_SQ1;
-        //public float fDistanceOfPointsY_SQ1;
-        //public int iNumberOfScrewsInRow_xDirection_SQ2;
-        //public int iNumberOfScrewsInColumn_yDirection_SQ2;
-        //public float fx_c_SQ2;
-        //public float fy_c_SQ2;
-        //public float fDistanceOfPointsX_SQ2;
-        //public float fDistanceOfPointsY_SQ2;
-
-        //// Top (knee plate) or right (apex plate) group
-        //public int iNumberOfScrewsInRow_xDirection_SQ3;
-        //public int iNumberOfScrewsInColumn_yDirection_SQ3;
-        //public float fx_c_SQ3;
-        //public float fy_c_SQ3;
-        //public float fDistanceOfPointsX_SQ3;
-        //public float fDistanceOfPointsY_SQ3;
-        //public int iNumberOfScrewsInRow_xDirection_SQ4;
-        //public int iNumberOfScrewsInColumn_yDirection_SQ4;
-        //public float fx_c_SQ4;
-        //public float fy_c_SQ4;
-        //public float fDistanceOfPointsX_SQ4;
-        //public float fDistanceOfPointsY_SQ4;
+            set
+            {
+                m_IsApex = value;
+            }
+        }
 
         public CScrewArrangementRectApexOrKnee()
         { }
-
-        //public CScrewArrangementRectApexOrKnee(
-        //    CScrew referenceScrew_temp,
-        //    float fCrscRafterDepth_temp,
-        //    float fCrscWebStraightDepth_temp,
-        //    float fStiffenerSize_temp,
-        //    int iNumberOfScrewsInRow_xDirection_SQ1_temp,
-        //    int iNumberOfScrewsInColumn_yDirection_SQ1_temp,
-        //    float fx_c_SQ1_temp,
-        //    float fy_c_SQ1_temp,
-        //    float fDistanceOfPointsX_SQ1_temp,
-        //    float fDistanceOfPointsY_SQ1_temp,
-        //    int iNumberOfScrewsInRow_xDirection_SQ2_temp,
-        //    int iNumberOfScrewsInColumn_yDirection_SQ2_temp,
-        //    float fx_c_SQ2_temp,
-        //    float fy_c_SQ2_temp,
-        //    float fDistanceOfPointsX_SQ2_temp,
-        //    float fDistanceOfPointsY_SQ2_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp + iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp, referenceScrew_temp)
-        //{
-        //    referenceScrew = referenceScrew_temp;
-        //    FCrscRafterDepth = fCrscRafterDepth_temp;
-        //    FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-        //    FStiffenerSize = fStiffenerSize_temp;
-
-        //    // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-        //    iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_SQ1_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_SQ1_temp;
-        //    fx_c_SQ1 = fx_c_SQ1_temp;
-        //    fy_c_SQ1 = fy_c_SQ1_temp;
-        //    fDistanceOfPointsX_SQ1 = fDistanceOfPointsX_SQ1_temp;
-        //    fDistanceOfPointsY_SQ1 = fDistanceOfPointsY_SQ1_temp;
-
-        //    iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_SQ2_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_SQ2_temp;
-        //    fx_c_SQ2 = fx_c_SQ2_temp;
-        //    fy_c_SQ2 = fy_c_SQ2_temp;
-        //    fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
-        //    fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
-
-        //    ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two groups, each for the connection of one member in joint
-
-        //    UpdateArrangmentData();
-        //}
-
-        //public CScrewArrangementRectApexOrKnee(
-        //    CScrew referenceScrew_temp,
-        //    float fCrscRafterDepth_temp,
-        //    float fCrscWebStraightDepth_temp,
-        //    float fStiffenerSize_temp,
-        //    int iNumberOfScrewsInRow_xDirection_G1_SQ_temp,  // Bottom group of knee plate
-        //    int iNumberOfScrewsInColumn_yDirection_G1_SQ_temp,
-        //    int iNumberOfScrewsInRow_xDirection_G2_SQ_temp,  // Upper group of knee plate
-        //    int iNumberOfScrewsInColumn_yDirection_G2_SQ_temp) : base(iNumberOfScrewsInRow_xDirection_G1_SQ_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ_temp + iNumberOfScrewsInRow_xDirection_G2_SQ_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ_temp, referenceScrew_temp)
-        //{
-        //    referenceScrew = referenceScrew_temp;
-        //    FCrscRafterDepth = fCrscRafterDepth_temp;
-        //    FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-        //    FStiffenerSize = fStiffenerSize_temp;
-
-        //    float fFreeEdgeDistance = 0.05f;
-        //    float fDistanceinX = 0.05f;
-        //    float fDistanceFromEdgeLine = 0.02f;
-        //    float fDepthOfOneStraightPartOfWeb = 0.5f * (fCrscWebStraightDepth_temp - fStiffenerSize_temp);
-
-        //    // Bottom group
-        //    iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
-        //    fx_c_SQ1 = fFreeEdgeDistance;
-        //    fy_c_SQ1 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
-        //    fDistanceOfPointsX_SQ1 = fDistanceinX;
-        //    fDistanceOfPointsY_SQ1 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
-
-        //    iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
-        //    fx_c_SQ2 = fFreeEdgeDistance;
-        //    fy_c_SQ2 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDepthOfOneStraightPartOfWeb + fStiffenerSize_temp + fDistanceFromEdgeLine;
-        //    fDistanceOfPointsX_SQ2 = fDistanceinX;
-        //    fDistanceOfPointsY_SQ2 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
-
-        //    // Upper group
-        //    iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
-        //    fx_c_SQ3 = fFreeEdgeDistance;
-        //    fy_c_SQ3 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
-        //    fDistanceOfPointsX_SQ3 = fDistanceinX;
-        //    fDistanceOfPointsY_SQ3 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
-
-        //    iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
-        //    fx_c_SQ4 = fFreeEdgeDistance;
-        //    fy_c_SQ4 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDepthOfOneStraightPartOfWeb + fStiffenerSize_temp + fDistanceFromEdgeLine;
-        //    fDistanceOfPointsX_SQ4 = fDistanceinX;
-        //    fDistanceOfPointsY_SQ4 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
-
-        //    ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
-
-        //    UpdateArrangmentData();
-        //}
-
-        //public CScrewArrangementRectApexOrKnee(
-        //    CScrew referenceScrew_temp,
-        //    float fCrscRafterDepth_temp,
-        //    float fCrscWebStraightDepth_temp,
-        //    float fStiffenerSize_temp,
-        //    int iNumberOfScrewsInRow_xDirection_G1_SQ1_temp,  // Bottom group of knee plate - G1 - SQ1
-        //    int iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp,
-        //    float fx_c_SQ1_temp,
-        //    float fy_c_SQ1_temp,
-        //    float fDistanceOfPointsX_SQ1_temp,
-        //    float fDistanceOfPointsY_SQ1_temp,
-        //    int iNumberOfScrewsInRow_xDirection_G1_SQ2_temp,  // Bottom group of knee plate - G1 - SQ2
-        //    int iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp,
-        //    float fx_c_SQ2_temp,
-        //    float fy_c_SQ2_temp,
-        //    float fDistanceOfPointsX_SQ2_temp,
-        //    float fDistanceOfPointsY_SQ2_temp,
-        //    int iNumberOfScrewsInRow_xDirection_G2_SQ3_temp,  // Upper group of knee plate - G2 - SQ3
-        //    int iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp,
-        //    float fx_c_SQ3_temp,
-        //    float fy_c_SQ3_temp,
-        //    float fDistanceOfPointsX_SQ3_temp,
-        //    float fDistanceOfPointsY_SQ3_temp,
-        //    int iNumberOfScrewsInRow_xDirection_G2_SQ4_temp,  // Upper group of knee plate - G2 - SQ4
-        //    int iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp,
-        //    float fx_c_SQ4_temp,
-        //    float fy_c_SQ4_temp,
-        //    float fDistanceOfPointsX_SQ4_temp,
-        //    float fDistanceOfPointsY_SQ4_temp) : base(iNumberOfScrewsInRow_xDirection_G1_SQ1_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp + iNumberOfScrewsInRow_xDirection_G1_SQ2_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp + iNumberOfScrewsInRow_xDirection_G2_SQ3_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp + iNumberOfScrewsInRow_xDirection_G2_SQ4_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp, referenceScrew_temp)
-        //{
-        //    referenceScrew = referenceScrew_temp;
-        //    FCrscRafterDepth = fCrscRafterDepth_temp;
-        //    FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-        //    FStiffenerSize = fStiffenerSize_temp;
-
-        //    // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-        //    iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_G1_SQ1_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp;
-        //    fx_c_SQ1 = fx_c_SQ1_temp;
-        //    fy_c_SQ1 = fy_c_SQ1_temp;
-        //    fDistanceOfPointsX_SQ1 = fDistanceOfPointsX_SQ1_temp;
-        //    fDistanceOfPointsY_SQ1 = fDistanceOfPointsY_SQ1_temp;
-
-        //    iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ2_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp;
-        //    fx_c_SQ2 = fx_c_SQ2_temp;
-        //    fy_c_SQ2 = fy_c_SQ2_temp;
-        //    fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
-        //    fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
-
-        //    iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_G2_SQ3_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp;
-        //    fx_c_SQ3 = fx_c_SQ3_temp;
-        //    fy_c_SQ3 = fy_c_SQ3_temp;
-        //    fDistanceOfPointsX_SQ3 = fDistanceOfPointsX_SQ3_temp;
-        //    fDistanceOfPointsY_SQ3 = fDistanceOfPointsY_SQ3_temp;
-
-        //    iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ4_temp;
-        //    iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp;
-        //    fx_c_SQ4 = fx_c_SQ4_temp;
-        //    fy_c_SQ4 = fy_c_SQ4_temp;
-        //    fDistanceOfPointsX_SQ4 = fDistanceOfPointsX_SQ4_temp;
-        //    fDistanceOfPointsY_SQ4 = fDistanceOfPointsY_SQ4_temp;
-
-        //    ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
-
-        //    UpdateArrangmentData();
-        //}
 
         // Jedna sekvencia s rovnakymi vzdialenostami na jednej strane plate
         // Apex
@@ -339,10 +156,12 @@ namespace BaseClasses
             FCrscRafterDepth = fCrscRafterDepth_temp;
             FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             FStiffenerSize = fStiffenerSize_temp;
+            m_IsApex = true;
+            m_MirroredGroups = true;
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
+            //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
 
             NumberOfGroups = 2;
             NumberOfSequenceInGroup = 1;
@@ -352,6 +171,7 @@ namespace BaseClasses
             {
                 IHolesNumber += rectS.INumberOfConnectors;
             }
+            if (MirroredGroups) IHolesNumber = IHolesNumber * 2;
 
             UpdateArrangmentData();
         }
@@ -382,44 +202,29 @@ namespace BaseClasses
             FCrscRafterDepth = fCrscRafterDepth_temp;
             FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             FStiffenerSize = fStiffenerSize_temp;
+            m_IsApex = bIsApex;
+            m_MirroredGroups = m_IsApex;
 
             // TODO - povodne sa tento konstruktor pouzival len pre apex takze 1 a 3 a 2 a 4 sekvencia boli rovnake
             // Chcem ho vsak pouzivat aj pre knee plates pre pripad ze jedna group obsahuje len jednu sekvenciu, takze budu 2 skupiny a v kazdej jedna sekvencia
             //-------------------------------------------------------------------------------------------------------------------------------------------------------------
-            RectSequences = new List<CScrewRectSequence>();
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
-            RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
-
-            NumberOfGroups = 2;
-            NumberOfSequenceInGroup = 2; // Pre Apex 2 sekvencie v jednej group
-            //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
             // TO Ondrej - zaviest funkcionalitu podla _BX arrangement pre MirroredGroups a potom tuto cast odkomentovat a nahradit nou riadky, ktore su vyssie
-
-            /*
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
-            MirroredGroups = true;
+            
+            NumberOfGroups = 2;            
 
-            if (!bIsApex)
+            if (m_IsApex)
             {
-                RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
-                RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ2_temp, iNumberOfScrewsInColumn_yDirection_SQ2_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
-                MirroredGroups = false;
+                NumberOfSequenceInGroup = 2; // Pre Apex 2 sekvencie v jednej group
             }
-
-            NumberOfGroups = 2;
-            NumberOfSequenceInGroup = 2; // Pre Apex 2 sekvencie v jednej group
-
-            if (!bIsApex)
+            else
             {
                 NumberOfSequenceInGroup = 1; // Pre Knee jedna sekvencia v jednej group
             }
-            */
-
+            
             IHolesNumber = 0;
             foreach (CScrewRectSequence rectS in RectSequences)
             {
@@ -464,6 +269,8 @@ namespace BaseClasses
             FCrscRafterDepth = fCrscRafterDepth_temp;
             FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             FStiffenerSize = fStiffenerSize_temp;
+            m_IsApex = false;
+            m_MirroredGroups = false;
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_G1_SQ1_temp, iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
@@ -483,30 +290,6 @@ namespace BaseClasses
             UpdateArrangmentData();
         }
 
-        //priprava pre task 515
-        public CScrewArrangementRectApexOrKnee(
-           CScrew referenceScrew_temp,
-           float fCrscRafterDepth_temp,
-           float fCrscWebStraightDepth_temp,
-           float fStiffenerSize_temp,
-           List<CScrewRectSequence> listRectSequences)
-        {
-            referenceScrew = referenceScrew_temp;
-            FCrscRafterDepth = fCrscRafterDepth_temp;
-            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            FStiffenerSize = fStiffenerSize_temp;
-
-            IHolesNumber = 0;
-            foreach (CScrewRectSequence rectS in listRectSequences)
-            {
-                IHolesNumber += rectS.INumberOfConnectors;
-            }
-
-            UpdateArrangmentData();
-        }
-
-        //priprava pre task 515
-        //tato metoda by mala nahradit UpdateArrangmentData
         public override void UpdateArrangmentData()
         {
             // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
@@ -524,13 +307,20 @@ namespace BaseClasses
                 CScrewSequenceGroup gr = new CScrewSequenceGroup();
                 gr.NumberOfHalfCircleSequences = 0;
                 gr.NumberOfRectangularSequences = NumberOfSequenceInGroup;
+
                 for (int j = 0; j < NumberOfSequenceInGroup; j++)
                 {
-                    // TODO Ondrej - toto prosim urobit analogicky podla base plate arrangement BX
-                    //RectSequences[index].INumberOfConnectors = RectSequences[index].NumberOfScrewsInRow_xDirection * RectSequences[index].NumberOfScrewsInColumn_yDirection;
-
-                    gr.ListSequence.Add(RectSequences[index]);
-                    index++;
+                    // Pridame sekvenciu do skupiny
+                    if (MirroredGroups)
+                    {
+                        if (i == 0) gr.ListSequence.Add(RectSequences[j]);
+                        else gr.ListSequence.Add(RectSequences[j].Copy());
+                    }
+                    else
+                    {
+                        gr.ListSequence.Add(RectSequences[index]);
+                        index++;
+                    }
                 }
                 ListOfSequenceGroups.Add(gr);
             }
@@ -541,6 +331,8 @@ namespace BaseClasses
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
 
+
+        //uchovane povodne neskor treba zmazat
         //public override void UpdateArrangmentData()
         //{
         //    // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
@@ -577,7 +369,7 @@ namespace BaseClasses
 
         //    ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 0;
         //    ListOfSequenceGroups[0].NumberOfRectangularSequences = 2;
-            
+
         //    if (iNumberOfScrewsInRow_xDirection_SQ3 != 0 && iNumberOfScrewsInColumn_yDirection_SQ3 != 0 &&
         //        iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0)
         //    {
@@ -625,7 +417,13 @@ namespace BaseClasses
         public Point[] Get_ScrewSequencePointCoordinates(CScrewRectSequence srectSeq)
         {
             // Connectors in Sequence
-            return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            if (srectSeq.SameDistancesX && srectSeq.SameDistancesY) // Ak su pre oba smery vzdialenosti skrutiek rovnake, posielame do konstruktora len jedno cislo pre rozostup (vzdialenost) skrutiek
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            else // Ak su aspon pre jeden smer vzdialenosti skrutiek rozdielne, posielame do konstruktora zoznam rozostupov (rozne vzdialenosti) skrutiek
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistancesOfPointsX.ToArray(), srectSeq.DistancesOfPointsY.ToArray());
+
+            //// Connectors in Sequence
+            //return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
         }
 
         public override void Calc_HolesCentersCoord2DApexPlate(
@@ -638,70 +436,91 @@ namespace BaseClasses
             // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
             float fx_c = fOffset_x + 0.00f;
             float fy_c = flZ + 0.00f;
-
-            // Zaviest mat moznost mat dynamicky pocet sekvencii
-
-            // Left side
-            ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-
-            if(ListOfSequenceGroups[0].ListSequence.Count == 2) // TODO Ondrej - zaviest mat moznost mat dynamicky pocet sekvencii
-               ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
-            // Set radii of connectors / screws in the group
-            ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
-
-            // Rotate screws by roof slope
-            // Rotate about [0,0]
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-
-            if (ListOfSequenceGroups[0].ListSequence.Count == 2)
-                RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
-
-            // Translate from [0,0] on plate to the final position
-            TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-
-            if (ListOfSequenceGroups[0].ListSequence.Count == 2)
-                TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
-
-            // Right side
-            CScrewRectSequence seq3 = new CScrewRectSequence();
-            seq3.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints;
-            seq3.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq3);
-
-            CScrewRectSequence seq4 = new CScrewRectSequence();
-            if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+                        
+            int grCount = 0;
+            foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
             {
-                seq4.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints;
-                seq4.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq4);
-            }
-
-            // Add mirrored sequences into the list
-            if (ListOfSequenceGroups.Count == 1) // Just in case that mirrored (right side) group doesn't exists
-            {
-                ListOfSequenceGroups.Add(new CScrewSequenceGroup()); // Right Side Group
-
-                ListOfSequenceGroups[1].ListSequence.Add(seq3);
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 1;
-
-                if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+                grCount++;
+                foreach (CScrewRectSequence sc in gr.ListSequence)
                 {
-                    ListOfSequenceGroups[1].ListSequence.Add(seq4);
-                    ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
-                }
-            }
-            else // In case that group already exists set current sequences
-            {
-                ListOfSequenceGroups[1].ListSequence[0] = seq3;
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 1;
+                    sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);                    
+                    // Rotate screws by roof slope
+                    // Rotate about [0,0]
+                    RotateSequence_CCW_rad(0, 0, fSlope_rad, sc);
 
-                if (ListOfSequenceGroups[0].ListSequence.Count == 2)
-                {
-                    ListOfSequenceGroups[1].ListSequence[1] = seq4;
-                    ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+                    if (grCount == 2) //second group is mirrored
+                    {
+                        sc.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, sc);
+                    }
                 }
+
+                gr.HolesRadii = gr.Get_RadiiOfConnectorsInGroup();
             }
-            ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
 
             FillArrayOfHolesCentersInWholeArrangement();
+                       
+
+            //// Left side
+            //ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+
+            //if(ListOfSequenceGroups[0].ListSequence.Count == 2) // TODO Ondrej - zaviest mat moznost mat dynamicky pocet sekvencii
+            //   ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+            //// Set radii of connectors / screws in the group
+            //ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
+
+            //// Rotate screws by roof slope
+            //// Rotate about [0,0]
+            //RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+
+            //if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+            //    RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+
+            //// Translate from [0,0] on plate to the final position
+            //TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+
+            //if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+            //    TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+
+            //// Right side
+            //CScrewRectSequence seq3 = new CScrewRectSequence();
+            //seq3.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints;
+            //seq3.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq3);
+
+            //CScrewRectSequence seq4 = new CScrewRectSequence();
+            //if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+            //{
+            //    seq4.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints;
+            //    seq4.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq4);
+            //}
+
+            //// Add mirrored sequences into the list
+            //if (ListOfSequenceGroups.Count == 1) // Just in case that mirrored (right side) group doesn't exists
+            //{
+            //    ListOfSequenceGroups.Add(new CScrewSequenceGroup()); // Right Side Group
+
+            //    ListOfSequenceGroups[1].ListSequence.Add(seq3);
+            //    ListOfSequenceGroups[1].NumberOfRectangularSequences = 1;
+
+            //    if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+            //    {
+            //        ListOfSequenceGroups[1].ListSequence.Add(seq4);
+            //        ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+            //    }
+            //}
+            //else // In case that group already exists set current sequences
+            //{
+            //    ListOfSequenceGroups[1].ListSequence[0] = seq3;
+            //    ListOfSequenceGroups[1].NumberOfRectangularSequences = 1;
+
+            //    if (ListOfSequenceGroups[0].ListSequence.Count == 2)
+            //    {
+            //        ListOfSequenceGroups[1].ListSequence[1] = seq4;
+            //        ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+            //    }
+            //}
+            //ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
+
+            //FillArrayOfHolesCentersInWholeArrangement();
         }
 
         public override void Calc_HolesCentersCoord2DKneePlate(
@@ -711,62 +530,90 @@ namespace BaseClasses
             float fhY_1,
             float fSlope_rad)
         {
-            // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
-            float fx_cBG = flZ + FCrscRafterDepth;
-            float fy_cBG = 0;
+            //To Mato - toto tu na nieco potrebujeme?
+            //// Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
+            //float fx_cBG = flZ + FCrscRafterDepth;
+            //float fy_cBG = 0;
 
-            float fx_cUG = flZ + FCrscRafterDepth * (float)Math.Sin(fSlope_rad);
-            float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
+            //float fx_cUG = flZ + FCrscRafterDepth * (float)Math.Sin(fSlope_rad);
+            //float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
 
-            //TODO Mato - ak mame dynamicke sekvencie tak na pevne indexy mozme zabudnut, ziadne taketo somarinky tu byt nemozu
-
-            if (ListOfSequenceGroups.Count > 0)
+            int grCount = 0;
+            foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
             {
-                //temp na surovo prec ak je menej ako 2 lebo sa to samozrejme zrube
-                if (ListOfSequenceGroups[0].ListSequence.Count < 2) return;
-
-                // Bottom group - column
-                ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-                ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
-                // Set radii of connectors / screws in the group
-                ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
-
-                // Rotate screws by colum slope (bottom group only)
-                // Rotate about [0,0] 90 deg
-                RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-                RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
-
-                if (ListOfSequenceGroups.Count > 1)
+                grCount++;
+                foreach (CScrewRectSequence sc in gr.ListSequence)
                 {
-                    // Upper group - rafter
-                    ListOfSequenceGroups[1].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
-                    ListOfSequenceGroups[1].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
-                    // Set radii of connectors / screws in the group
-                    ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
-
-                    // Rotate screws by roof slope (upper group only)
+                    sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);
+                    
                     // Rotate about [0,0]
-                    RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
-                    RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+                    if (grCount % 2 == 1)
+                    {
+                        // Rotate about [0,0] 90 deg
+                        RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, sc);
+                    }
+                    else
+                    {
+                        // Rotate screws by roof slope
+                        RotateSequence_CCW_rad(0, 0, fSlope_rad, sc);
+                    }
                 }
+
+                gr.HolesRadii = gr.Get_RadiiOfConnectorsInGroup();
+            }
+
+            FillArrayOfHolesCentersInWholeArrangement();
+
+
+
+            ////TODO Mato - ak mame dynamicke sekvencie tak na pevne indexy mozme zabudnut, ziadne taketo somarinky tu byt nemozu
+            //if (ListOfSequenceGroups.Count > 0)
+            //{
+            //    //temp na surovo prec ak je menej ako 2 lebo sa to samozrejme zrube
+            //    if (ListOfSequenceGroups[0].ListSequence.Count < 2) return;
+
+            //    // Bottom group - column
+            //    ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            //    ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+            //    // Set radii of connectors / screws in the group
+            //    ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
+
+            //    // Rotate screws by colum slope (bottom group only)
+            //    // Rotate about [0,0] 90 deg
+            //    RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            //    RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+
+            //    if (ListOfSequenceGroups.Count > 1)
+            //    {
+            //        // Upper group - rafter
+            //        ListOfSequenceGroups[1].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+            //        ListOfSequenceGroups[1].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+            //        // Set radii of connectors / screws in the group
+            //        ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
+
+            //        // Rotate screws by roof slope (upper group only)
+            //        // Rotate about [0,0]
+            //        RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+            //        RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+            //    }
                 
 
-                // Translate from [0,0] on plate to the final position
-                // Bottom Group
-                TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
-                TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+            //    // Translate from [0,0] on plate to the final position
+            //    // Bottom Group
+            //    TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            //    TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
 
-                if (ListOfSequenceGroups.Count > 1)
-                {
-                    // Upper Group
-                    TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
-                    TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
-                }
-            }
+            //    if (ListOfSequenceGroups.Count > 1)
+            //    {
+            //        // Upper Group
+            //        TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+            //        TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
+            //    }
+            //}
 
             
 
-            FillArrayOfHolesCentersInWholeArrangement();
+            //FillArrayOfHolesCentersInWholeArrangement();
         }
 
         public override void Calc_ApexPlateData(
@@ -896,17 +743,32 @@ namespace BaseClasses
             {
                 CScrewRectSequence rS = new CScrewRectSequence();
                 gr.ListSequence.Add(rS);
-                RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup,rS);
+
+                if (MirroredGroups)
+                {
+                    if (grIndex == 0) RectSequences.Insert(NumberOfSequenceInGroup, rS);
+                }
+                else
+                {
+                    RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup, rS);
+                }
+
                 grIndex++;
             }
-            
         }
         private void RemoveSequenceFromEachGroup()
         {
             for (int i = ListOfSequenceGroups.Count - 1; i >= 0; i--)
             {
                 ListOfSequenceGroups[i].ListSequence.RemoveAt(ListOfSequenceGroups[i].ListSequence.Count - 1);
-                RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
+                if (MirroredGroups)
+                {
+                    if (i == 0) RectSequences.RemoveAt(NumberOfSequenceInGroup - 1);
+                }
+                else
+                {
+                    RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
+                }
             }
         }
     }
