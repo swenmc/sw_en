@@ -439,21 +439,21 @@ namespace BaseClasses
     {
         //eInvalid = -1,
         eG = 0,  // Girt
-        eC,  // Column
-        eER, // End Rafter
-        eWP, // Wind Post
-        eEC, // End Column
-        eEP, // Edge Purlin
-        eP,  // Purlin
-        eDT, // Door Trimmer (roller door)
-        eDL, // Door Lintel (roller door)
-        ePB, // Purlin Block
-        eGB, // Girt Block
-        eDF, // Door Frame (personnel door)
-        eWF, // Window Frame
-        eBG, // Base Girt
-        eMR, // Main Rafter
-        eMC  // Main Column
+        eC = 1,  // Column
+        eER = 2, // End Rafter
+        eWP = 3, // Wind Post
+        eEC = 4, // End Column
+        eEP = 5, // Edge Purlin
+        eP = 6,  // Purlin
+        eDT = 7, // Door Trimmer (roller door)
+        eDL = 8, // Door Lintel (roller door)
+        ePB = 9, // Purlin Block
+        eGB = 10, // Girt Block
+        eDF = 11, // Door Frame (personnel door)
+        eWF = 12, // Window Frame
+        eBG = 13, // Base Girt
+        eMR = 14, // Main Rafter
+        eMC = 15  // Main Column
     }
 
     public enum EMemberType_FS_Position
@@ -471,8 +471,8 @@ namespace BaseClasses
         GirtBackSide = 11,
         BracingBlockGirts = 12,
         BracingBlockPurlins = 13,
-        BracingBlocksGirtsFrontSide = 14,
-        BracingBlocksGirtsBackSide = 15,
+        BracingBlockGirtsFrontSide = 14,
+        BracingBlockGirtsBackSide = 15,
         DoorFrame = 16,
         WindowFrame = 17,
         DoorTrimmer = 18,
