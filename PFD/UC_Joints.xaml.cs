@@ -1508,12 +1508,15 @@ namespace PFD
             {
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
                 CPlateHelper.DataGridGeometryParams_ValueChanged(item, plate);
-
-                //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
-                //StackPanel sp = sw.Content as StackPanel;
+                                
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                DataGrid dgGeometry = sp.Children[3] as DataGrid;
-                DataGrid dgDetails = sp.Children[5] as DataGrid;
+
+                int geometryGridIndex = 4;
+                if (plate is CConCom_Plate_B_basic) { geometryGridIndex = 6; }
+
+                DataGrid dgGeometry = sp.Children[geometryGridIndex] as DataGrid;
+                DataGrid dgDetails = sp.Children[geometryGridIndex + 2] as DataGrid;
+
                 List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
                 foreach (CComponentParamsView cpw in geometryParams)
                 {
