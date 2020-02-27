@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 namespace BaseClasses.Helpers
@@ -212,6 +213,51 @@ namespace BaseClasses.Helpers
             else
                 return null; // Exception - not defined plate prefix
         }
+        
+        public static CScrewArrangementCircleApexOrKnee GetDefaultCircleScrewArrangement(
+            float fCrscDepth,
+            float fCrscWebEndArcExternalRadius,
+            float fCrscWebStraightDepth,
+            float fCrscWebMiddlePart,
+            CScrew referenceScrew)
+        {
+            // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
+            float fMinimumStraightEdgeDistance = 0.010f;
 
+            // Recalculate default radius and number of screws depending on cross-section depth
+            float fMinimumDistanceBetweenScrews = 0.02f;
+
+            // Circle arrangement - parameters
+            bool bUseAdditionalCornerScrews = true;
+            int iAdditionalConnectorInCornerNumber = 4; // 4 screws in each corner
+            float fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fCrscWebStraightDepth);
+            float fConnectorRadiusInCircleSequence = 0.5f * (fCrscWebStraightDepth - 2 * fMinimumStraightEdgeDistance);
+            float fDistanceBetweenScrewsInCircle = 0.05f;
+
+            if (fCrscDepth < 0.5f) // Zmenseny default - TODO mohol by byt urceny podla tvaru prierezu
+            {
+                fDistanceBetweenScrewsInCircle = 0.030f;
+            }
+
+            // http://www.ambrsoft.com/TrigoCalc/Sphere/Arc_.htm
+            float fAngle = 2f * (float)Math.Acos((0.5f * (fCrscWebMiddlePart + 2f * fMinimumDistanceBetweenScrews)) / fConnectorRadiusInCircleSequence);
+            int iConnectorNumberInCircleSequence = (int)((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle) + 1; // Pocet medzier + 1
+
+            List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
+            CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
+            gr1.NumberOfHalfCircleSequences = 2;
+            gr1.NumberOfRectangularSequences = 4;
+            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr1);
+            CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
+            gr2.NumberOfHalfCircleSequences = 2;
+            gr2.NumberOfRectangularSequences = 4;
+            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr2);
+
+            return new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fCrscWebMiddlePart, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+        }
     }
 }
