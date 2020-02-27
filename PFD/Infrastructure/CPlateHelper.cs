@@ -47,7 +47,7 @@ namespace PFD
                     anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.1", "y1", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
                 // Pole pozicii obsahuje rozne pocty (1 alebo 2 medzery medzi kotvami v jednom rade, pocet kotiev je 1 - 3 v rade
-                if(baseArrangement.fDistanceOfPointsX_SQ1.Length > 1 && baseArrangement.fDistanceOfPointsX_SQ1[1] > 0)
+                if (baseArrangement.fDistanceOfPointsX_SQ1.Length > 1 && baseArrangement.fDistanceOfPointsX_SQ1[1] > 0)
                     anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.2", "x2", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 if (baseArrangement.fDistanceOfPointsY_SQ1.Length > 1 && baseArrangement.fDistanceOfPointsY_SQ1[1] > 0)
                     anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.2", "y2", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
@@ -193,7 +193,7 @@ namespace PFD
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y SQ{num}", $"yc{num}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-                    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws x SQ{num}", $"bx{num}", src.SameDistancesX,""));
+                    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
                     screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws y SQ{num}", $"by{num}", src.SameDistancesY, ""));
                     if (src.SameDistancesX)
                     {
@@ -203,7 +203,7 @@ namespace PFD
                     {
                         for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
                         {
-                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x{i+1} SQ{num}", $"x{i+1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                         }
                     }
                     if (src.SameDistancesY)
@@ -217,7 +217,7 @@ namespace PFD
                             screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                         }
                     }
-                    
+
                 }
 
                 //screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of screws in row SQ1", "No", rectArrangement.iNumberOfScrewsInRow_xDirection_SQ1.ToString(), "[-]"));
@@ -271,7 +271,7 @@ namespace PFD
                 foreach (CScrewRectSequence src in rectArrangement.RectSequences)
                 {
                     num++;
-                    
+
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in row SQ{num}", "No", src.NumberOfScrewsInRow_xDirection.ToString(), "[-]"));
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in column SQ{num}", "No", src.NumberOfScrewsInColumn_yDirection.ToString(), "[-]"));
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
@@ -576,8 +576,8 @@ namespace PFD
                     {
                         int numberOfSequenceInGroup = int.Parse(itemStr.Value);
                         arrangementTemp.NumberOfSequenceInGroup_Updated(numberOfSequenceInGroup);
-                    } 
-                    
+                    }
+
                     if (item.Name.Contains(" SQ"))
                     {
                         int seqIndex = GetSequenceNumFromName(item.Name) - 1;
@@ -645,7 +645,7 @@ namespace PFD
                     if (item.Name.Contains("Same distance between screws x SQ"))
                     {
                         int seqIndex = GetSequenceNumFromName(item.Name) - 1;
-                        arrangementTemp.RectSequences[seqIndex].SameDistancesX = itemBool.Value;                        
+                        arrangementTemp.RectSequences[seqIndex].SameDistancesX = itemBool.Value;
                     }
                     if (item.Name.Contains("Same distance between screws y SQ"))
                     {
@@ -682,7 +682,7 @@ namespace PFD
                     // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
                     // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                     // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
-                                        
+
                     if (item.Name.Equals("Number of sequence in group"))
                     {
                         int numberOfSequenceInGroup = int.Parse(itemStr.Value);
@@ -1448,8 +1448,6 @@ namespace PFD
 
         public static void ScrewArrangementChanged(CConnectionJointTypes joint, CPlate plate, int screwArrangementIndex)
         {
-            int iNumberofHoles = 0;
-
             //CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
@@ -1487,14 +1485,6 @@ namespace PFD
             // 50020 - 131
             // 63020 - 185
             //fColumnWebSiffenerSize
-
-
-            // Circle arrangement
-            bool bUseAdditionalConnectors = true;
-            int iNumberOfAdditionalConnectorsInCorner = 4;
-            int iConnectorNumberInCircleSequence = 20;
-            float fConnectorRadiusInCircleSequence = 0.25f;
-            float fAdditionalConnectorDistance = 0.03f;
 
             // Rectangular arrangement
             // Apex
@@ -1553,55 +1543,31 @@ namespace PFD
                 else
                     throw new ArgumentNullException("Invalid cross-section type.");
 
-                float fMinimumStraightEdgeDistance = 0.005f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
+                float fMinimumStraightEdgeDistance = 0.010f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
 
                 // Base plate, knee joint - column is main member
                 fColumnDepth = (float)joint.m_MainMember.CrScStart.h;
-                fColumnWebStraightDepth = (float)columnCrsc.d_tot;
+                fWebEndArcExternalRadius_Column = (float)columnCrsc.r_ee; // External edge radius
+                fColumnWebStraightDepth = fColumnDepth - 2 * fWebEndArcExternalRadius_Column;
                 fColumnWebMiddlePart = (float)columnCrsc.d_mu; // Nerovna cast v strede steny (zjednodusenia - pre nested  crsc sa uvazuje symetria, pre 270 sa do tohto uvazuje aj stredna rovna cast, hoci v nej mozu byt skrutky)
-                fWebEndArcExternalRadius_Column = 0.5f * (fColumnDepth - fColumnWebStraightDepth);
 
-                if (joint.m_SecondaryMembers != null) // Apex, knee, ... for knee joint - column is main member and rafter is secondary member
+                if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers.Length > 0) // Apex, knee, ... for knee joint - column is main member and rafter is secondary member
                 {
                     CRSC.CCrSc_TW rafterCrsc = null;
 
-                    if (joint.m_SecondaryMembers[0].CrScStart is CRSC.CCrSc_TW)
+                    if (joint.m_SecondaryMembers[0].CrScStart != null && joint.m_SecondaryMembers[0].CrScStart is CRSC.CCrSc_TW)
                     {
                         rafterCrsc = (CRSC.CCrSc_TW)joint.m_SecondaryMembers[0].CrScStart;
                     }
                     else
                         throw new ArgumentNullException("Invalid cross-section type.");
 
-                    fRafterDepth = (float)joint.m_SecondaryMembers[0].CrScStart.h;
-                    fRafterWebStraightDepth = (float)rafterCrsc.d_tot;
+                    fRafterDepth = (float)rafterCrsc.h;
+                    fWebEndArcExternalRadius_Rafter = (float)rafterCrsc.r_ee; // External edge radius
+                    fRafterWebStraightDepth = fRafterDepth - 2 * fWebEndArcExternalRadius_Rafter;
                     fRafterWebMiddlePart = (float)rafterCrsc.d_mu; // Nerovna cast v strede steny (zjednodusenia - pre nested  crsc sa uvazuje symetria, pre 270 sa do tohto uvazuje aj stredna rovna cast, hoci v nej mozu byt skrutky)
-                    fWebEndArcExternalRadius_Rafter = 0.5f * (fRafterDepth - fRafterWebStraightDepth);
 
-                    // Recalculate default radius and number of screws depending on cross-section depth
-                    float fMinimumDistanceBetweenScrews = 0.02f;
-
-                    // Circle arrangement - parameters
-                    fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fRafterWebStraightDepth);
-                    fConnectorRadiusInCircleSequence = 0.5f * (fRafterWebStraightDepth - 2 * fMinimumStraightEdgeDistance);
-                    float fDistanceBetweenScrewsInCircle = 0.04f;
-                    float fAngle = 2f * (float)Math.Acos((0.5f * (fRafterWebMiddlePart + 2f * fMinimumDistanceBetweenScrews)) / fConnectorRadiusInCircleSequence);
-                    iConnectorNumberInCircleSequence = (int)((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle); // 20; // TODO - dynamicky podla velkosti prierezu
-
-                    List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
-                    CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
-                    gr1.NumberOfHalfCircleSequences = 2;
-                    gr1.NumberOfRectangularSequences = 4;
-                    gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-                    gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-                    screwSeqGroups.Add(gr1);
-                    CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
-                    gr2.NumberOfHalfCircleSequences = 2;
-                    gr2.NumberOfRectangularSequences = 4;
-                    gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-                    gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-                    screwSeqGroups.Add(gr2);
-
-                    screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+                    screwArrangementCircle = GetDefaultCircleScrewArrangement(fRafterDepth, fWebEndArcExternalRadius_Rafter, fRafterWebStraightDepth, fRafterWebMiddlePart, referenceScrew);
 
                     // Rectangular arrangement - parameters
                     // Apex Joint
@@ -1612,7 +1578,7 @@ namespace PFD
                     float fDistanceOfPointsX_default = 0.07f;
                     float fDistanceOfPointsY_default = 0.05f;
 
-                    if(fRafterDepth < 0.5f) // Zmenseny default - TODO mohol by byt urceny podla tvaru prierezu
+                    if (fRafterDepth < 0.5f) // Zmenseny default - TODO mohol by byt urceny podla tvaru prierezu
                     {
                         fEdgeDistance = 0.03f;
 
@@ -1786,7 +1752,7 @@ namespace PFD
             //    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
             //    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
             //    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
-            
+
             //To Mato - naco sa tu vkuse vyrabali tieto objekty to fakt nechapem
             //CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
             //CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
@@ -1898,7 +1864,7 @@ namespace PFD
                         {
                             CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
                             plate.ScrewArrangement = screwArrangement_O;
-                        }   
+                        }
 
                         break;
                     }
@@ -2061,7 +2027,8 @@ namespace PFD
                         //TODO
                         /*if (plate.ScrewArrangement == null) return 0;
                         else if (plate.ScrewArrangement is CScrewArrangement_G) return 1;
-                        else*/ return 0;
+                        else*/
+                        return 0;
                     }
                 case ESerieTypePlate.eSerie_H:
                     {
@@ -2149,7 +2116,6 @@ namespace PFD
             plate.UpdatePlateData(plate.ScrewArrangement);
         }
 
-
         public static List<string> GetPlateSeries(CPlate plate)
         {
             CDatabaseComponents dc = new CDatabaseComponents();
@@ -2229,7 +2195,52 @@ namespace PFD
                         return new List<string>(1) { " " };
                     }
             }
+        }
 
+        public static CScrewArrangementCircleApexOrKnee GetDefaultCircleScrewArrangement(
+            float fCrscDepth,
+            float fCrscWebEndArcExternalRadius,
+            float fCrscWebStraightDepth,
+            float fCrscWebMiddlePart,
+            CScrew referenceScrew)
+        {
+            // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
+            float fMinimumStraightEdgeDistance = 0.010f;
+
+            // Recalculate default radius and number of screws depending on cross-section depth
+            float fMinimumDistanceBetweenScrews = 0.02f;
+
+            // Circle arrangement - parameters
+            bool bUseAdditionalCornerScrews = true;
+            int iAdditionalConnectorInCornerNumber = 4; // 4 screws in each corner
+            float fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fCrscWebStraightDepth);
+            float fConnectorRadiusInCircleSequence = 0.5f * (fCrscWebStraightDepth - 2 * fMinimumStraightEdgeDistance);
+            float fDistanceBetweenScrewsInCircle = 0.05f;
+
+            if (fCrscDepth < 0.5f) // Zmenseny default - TODO mohol by byt urceny podla tvaru prierezu
+            {
+                fDistanceBetweenScrewsInCircle = 0.030f;
+            }
+
+            // http://www.ambrsoft.com/TrigoCalc/Sphere/Arc_.htm
+            float fAngle = 2f * (float)Math.Acos((0.5f * (fCrscWebMiddlePart + 2f * fMinimumDistanceBetweenScrews)) / fConnectorRadiusInCircleSequence);
+            int iConnectorNumberInCircleSequence = (int)((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle) + 1; // Pocet medzier + 1
+
+            List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
+            CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
+            gr1.NumberOfHalfCircleSequences = 2;
+            gr1.NumberOfRectangularSequences = 4;
+            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr1);
+            CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
+            gr2.NumberOfHalfCircleSequences = 2;
+            gr2.NumberOfRectangularSequences = 4;
+            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr2);
+
+            return new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fCrscWebMiddlePart, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
         }
     }
 }

@@ -54,18 +54,30 @@ namespace BaseClasses
             else
                 throw new ArgumentNullException("Invalid cross-section type.");
 
-            float fMinimumStraightEdgeDistance = 0.005f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
+            //-----------------------------------------------------------------------------------------------
+            // TODO Ondrej - refaktorovat s CPlateHelper.GetDefaultCircleScrewArrangement
+            float fMinimumStraightEdgeDistance = 0.010f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
 
-            float fCrscWebStraightDepth = (float)rafterCrsc.d_tot; // BOX 63020 web straight depth
+            float fCrscDepth = (float)rafterCrsc.h;
+            float fWebEndArcExternalRadius = (float)rafterCrsc.r_ee; // External edge radius
+            float fCrscWebStraightDepth = fCrscDepth - 2 * fWebEndArcExternalRadius;
             float fStiffenerSize = (float)rafterCrsc.d_mu; // Nerovna cast v strede steny (zjednodusenia - pre nested  crsc sa uvazuje symetria, pre 270 sa do tohto uvazuje aj stredna rovna cast, hoci v nej mozu byt skrutky)
+
             bool bUseAdditionalCornerScrews = true;
             int iAdditionalConnectorInCornerNumber = 4; // 4 screws in each corner
             float fMinimumDistanceBetweenScrews = 0.02f;
             float fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fCrscWebStraightDepth);
             float fConnectorRadiusInCircleSequence = 0.5f * (fCrscWebStraightDepth - 2 * fMinimumStraightEdgeDistance);
-            float fDistanceBetweenScrewsInCircle = 0.04f;
+            float fDistanceBetweenScrewsInCircle = 0.05f;
+
+            if (fCrscDepth < 0.5f) // Zmenseny default - TODO mohol by byt urceny podla tvaru prierezu
+            {
+                fDistanceBetweenScrewsInCircle = 0.030f;
+            }
+
+            // http://www.ambrsoft.com/TrigoCalc/Sphere/Arc_.htm
             float fAngle = 2f * (float)Math.Acos((0.5f * (fStiffenerSize + 2f * fMinimumDistanceBetweenScrews)) / fConnectorRadiusInCircleSequence);
-            int iConnectorNumberInCircleSequence = (int) ((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle); // 20; // TODO - dynamicky podla velkosti plate
+            int iConnectorNumberInCircleSequence = (int) ((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle) + 1; // Pocet medzier + 1
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
@@ -81,8 +93,9 @@ namespace BaseClasses
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr2);
+            //-----------------------------------------------------------------------------------------------
 
-            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, true, screwArrangement); // Rotation angle in degrees

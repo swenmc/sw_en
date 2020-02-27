@@ -97,14 +97,39 @@ namespace BaseClasses
             Point3D ControlPoint_P2 = new Point3D(fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1);
 
             // Screw arrangement parameters
-            // TODO nacitavat parametre z prierezu
-            float fCrscWebStraightDepth = (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.025f - 2 * (float)m_SecondaryMembers[0].CrScStart.t_min; // BOX 63020 web straight depth
-            float fStiffenerSize = 0.2857142f * (float)m_SecondaryMembers[0].CrScStart.h; // TODO - - dynamicky podla typu a velkosti prierezu -  0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
+            CRSC.CCrSc_TW rafterCrsc = null;
+
+            if (m_SecondaryMembers[0].CrScStart is CRSC.CCrSc_TW)
+            {
+                rafterCrsc = (CRSC.CCrSc_TW)m_SecondaryMembers[0].CrScStart;
+            }
+            else
+                throw new ArgumentNullException("Invalid cross-section type.");
+
+            //-----------------------------------------------------------------------------------------------
+            // TODO Ondrej - refaktorovat s CPlateHelper.GetDefaultCircleScrewArrangement
+            float fMinimumStraightEdgeDistance = 0.010f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
+
+            float fCrscDepth = (float)rafterCrsc.h;
+            float fWebEndArcExternalRadius = (float)rafterCrsc.r_ee; // External edge radius
+            float fCrscWebStraightDepth = fCrscDepth - 2 * fWebEndArcExternalRadius;
+            float fStiffenerSize = (float)rafterCrsc.d_mu; // Nerovna cast v strede steny (zjednodusenia - pre nested  crsc sa uvazuje symetria, pre 270 sa do tohto uvazuje aj stredna rovna cast, hoci v nej mozu byt skrutky)
+
             bool bUseAdditionalCornerScrews = true;
             int iAdditionalConnectorInCornerNumber = 4; // 4 screws in each corner
-            float fAdditionalConnectorDistance = Math.Max(0.02f, 0.05f * fCrscWebStraightDepth);
-            float fConnectorRadiusInCircleSequence = 0.45f * fCrscWebStraightDepth; // TODO - dynamicky podla velkosti prierezu
-            int iConnectorNumberInCircleSequence = (int)((2f * MATH.MathF.fPI * fConnectorRadiusInCircleSequence) / 0.05f); // 20; // TODO - dynamicky podla velkosti plate
+            float fMinimumDistanceBetweenScrews = 0.02f;
+            float fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fCrscWebStraightDepth);
+            float fConnectorRadiusInCircleSequence = 0.5f * (fCrscWebStraightDepth - 2 * fMinimumStraightEdgeDistance);
+            float fDistanceBetweenScrewsInCircle = 0.050f;
+
+            if (fCrscDepth < 0.5f) // Zmenseny default - TODO mohol by byt urceny podla tvaru prierezu
+            {
+                fDistanceBetweenScrewsInCircle = 0.030f;
+            }
+
+            // http://www.ambrsoft.com/TrigoCalc/Sphere/Arc_.htm
+            float fAngle = 2f * (float)Math.Acos((0.5f * (fStiffenerSize + 2f * fMinimumDistanceBetweenScrews)) / fConnectorRadiusInCircleSequence);
+            int iConnectorNumberInCircleSequence = (int)((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle) + 1; // Pocet medzier + 1
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
@@ -120,9 +145,10 @@ namespace BaseClasses
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr2);
+            //-----------------------------------------------------------------------------------------------
 
-            CScrewArrangementCircleApexOrKnee screwArrangement1 = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
-            CScrewArrangementCircleApexOrKnee screwArrangement2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            CScrewArrangementCircleApexOrKnee screwArrangement1 = new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            CScrewArrangementCircleApexOrKnee screwArrangement2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
             bool bScrewInPlusZDirection1 = m_Node == m_MainMember.NodeStart ? true : false;
             bool bScrewInPlusZDirection2 = m_Node == m_MainMember.NodeStart ? false : true;

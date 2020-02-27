@@ -309,6 +309,7 @@ namespace DATABASE
             properties.A_vy = reader["A_vy"].ToString();
             properties.fvy_red_factor = reader["fvy_red_factor"].ToString();
             properties.d_1_flat_portion = reader["d_1_flat_portion"].ToString();
+            properties.r_ee = reader["r_ee"].ToString();
             properties.d_mu = reader["d_mu"].ToString();
             properties.d_tot = reader["d_tot"].ToString();
             properties.d_tot_length = reader["d_tot_length"].ToString();
@@ -377,6 +378,7 @@ namespace DATABASE
             crsc.A_vy = double.Parse(reader["A_vy"].ToString(), nfi);
             crsc.fvy_red_factor = double.Parse(reader["fvy_red_factor"].ToString(), nfi);
             crsc.d_1_flat_portion = double.Parse(reader["d_1_flat_portion"].ToString(), nfi);
+            crsc.r_ee = double.Parse(reader["r_ee"].ToString(), nfi);
             crsc.d_mu = double.Parse(reader["d_mu"].ToString(), nfi);
             crsc.d_tot = double.Parse(reader["d_tot"].ToString(), nfi);
             crsc.d_tot_length = double.Parse(reader["d_tot_length"].ToString(), nfi);
@@ -453,6 +455,7 @@ namespace DATABASE
             list.Add(properties.A_vy);
             list.Add(properties.fvy_red_factor);
             list.Add(properties.d_1_flat_portion);
+            list.Add(properties.r_ee);
             list.Add(properties.d_mu);
             list.Add(properties.d_tot);
             list.Add(properties.d_tot_length);

@@ -56,6 +56,7 @@ namespace DATABASE.DTO
         public string A_vy;
         public string fvy_red_factor;
         public string d_1_flat_portion;
+        public string r_ee;
         public string d_mu;
         public string d_tot;
         public string d_tot_length;
