@@ -1541,20 +1541,29 @@ namespace BaseClasses
                                                     Model3DGroup anchorModelObjectsModelGroup = new Model3DGroup(); // Vsetky objekty, ktore su na viazane na danu anchor pridame do skupiny
 
                                                     // Washers
-                                                    GeometryModel3D washerPlateTopGeom = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateGeomModel3D(brushWashers);
-                                                    plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate = washerPlateTopGeom;
-                                                    anchorModelObjectsModelGroup.Children.Add(washerPlateTopGeom);
+                                                    if (plate.AnchorArrangement.Anchors[m].WasherPlateTop != null)
+                                                    {
+                                                        GeometryModel3D washerPlateTopGeom = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateGeomModel3D(brushWashers);
+                                                        plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate = washerPlateTopGeom;
+                                                        anchorModelObjectsModelGroup.Children.Add(washerPlateTopGeom);
+                                                    }
 
-                                                    GeometryModel3D washerBearingGeom = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateGeomModel3D(brushWashers);
-                                                    plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate = washerBearingGeom;
-                                                    anchorModelObjectsModelGroup.Children.Add(washerBearingGeom);
+                                                    if (plate.AnchorArrangement.Anchors[m].WasherBearing != null)
+                                                    {
+                                                        GeometryModel3D washerBearingGeom = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateGeomModel3D(brushWashers);
+                                                        plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate = washerBearingGeom;
+                                                        anchorModelObjectsModelGroup.Children.Add(washerBearingGeom);
+                                                    }
 
                                                     // Nuts
-                                                    for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
+                                                    if (plate.AnchorArrangement.Anchors[m].Nuts != null)
                                                     {
-                                                        GeometryModel3D nutGeom = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateGeomModel3D(brushNuts);
-                                                        plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut = nutGeom;
-                                                        anchorModelObjectsModelGroup.Children.Add(nutGeom);
+                                                        for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
+                                                        {
+                                                            GeometryModel3D nutGeom = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateGeomModel3D(brushNuts);
+                                                            plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut = nutGeom;
+                                                            anchorModelObjectsModelGroup.Children.Add(nutGeom);
+                                                        }
                                                     }
 
                                                     anchorModelObjectsModelGroup.Transform = plateConnectorgeom.Transform; // Skupine objektov na kotve priradime transformaciu kotvy
@@ -2415,24 +2424,33 @@ namespace BaseClasses
                                                 List<Point3D> anchorObjectsPoints = new List<Point3D>();
 
                                                 // Washer - plate top
-                                                GeometryModel3D geomWasherPlateTop = plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate;
-                                                List<Point3D> pointsWasherPlateTop = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateWireFrameModel().Points.ToList();
-                                                var transPoints_WasherPlateTop = pointsWasherPlateTop.Select(p => geomWasherPlateTop.Transform.Transform(p));
-                                                anchorObjectsPoints.AddRange(transPoints_WasherPlateTop);
+                                                if (plate.AnchorArrangement.Anchors[m].WasherPlateTop != null)
+                                                {
+                                                    GeometryModel3D geomWasherPlateTop = plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate;
+                                                    List<Point3D> pointsWasherPlateTop = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateWireFrameModel().Points.ToList();
+                                                    var transPoints_WasherPlateTop = pointsWasherPlateTop.Select(p => geomWasherPlateTop.Transform.Transform(p));
+                                                    anchorObjectsPoints.AddRange(transPoints_WasherPlateTop);
+                                                }
 
                                                 // Washer - bearing
-                                                GeometryModel3D geomWasherBearing = plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate;
-                                                List<Point3D> pointsWasherBearing = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateWireFrameModel().Points.ToList();
-                                                var transPoints_WasherBearing = pointsWasherBearing.Select(p => geomWasherBearing.Transform.Transform(p));
-                                                anchorObjectsPoints.AddRange(transPoints_WasherBearing);
+                                                if (plate.AnchorArrangement.Anchors[m].WasherBearing != null)
+                                                {
+                                                    GeometryModel3D geomWasherBearing = plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate;
+                                                    List<Point3D> pointsWasherBearing = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateWireFrameModel().Points.ToList();
+                                                    var transPoints_WasherBearing = pointsWasherBearing.Select(p => geomWasherBearing.Transform.Transform(p));
+                                                    anchorObjectsPoints.AddRange(transPoints_WasherBearing);
+                                                }
 
                                                 // Nuts
-                                                for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
+                                                if (plate.AnchorArrangement.Anchors[m].Nuts != null)
                                                 {
-                                                    GeometryModel3D geomNut = plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut;
-                                                    List<Point3D> pointsNut = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateWireFrameModel().Points.ToList();
-                                                    var transPoints_Nut = pointsNut.Select(p => geomNut.Transform.Transform(p));
-                                                    anchorObjectsPoints.AddRange(transPoints_Nut);
+                                                    for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
+                                                    {
+                                                        GeometryModel3D geomNut = plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut;
+                                                        List<Point3D> pointsNut = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateWireFrameModel().Points.ToList();
+                                                        var transPoints_Nut = pointsNut.Select(p => geomNut.Transform.Transform(p));
+                                                        anchorObjectsPoints.AddRange(transPoints_Nut);
+                                                    }
                                                 }
 
                                                 // Transformujeme body objektov priradenych ku anchor

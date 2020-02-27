@@ -165,10 +165,14 @@ namespace BaseClasses
                 plateProp = DATABASE.CJointsManager.GetPlate_B_Properties(platePrefix);
                 screwArrangement = CJointHelper.GetBasePlateArrangement(platePrefix, referenceScrew/*, (float)plateProp.dim2y*/); // Set base plate screw arrangement
                 washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, -90, 0); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
+
+                if (sSectionNameDatabase == "10075") // Pre stlpiky dveri neuvazovat pravouhle washers
+                {
+                    washerBearing = null;
+                    washerPlateTop = null;
+                }
             }
         }
-
-        
 
         public void SetBaseJointEdgeDistances(CFoundation pad)
         {

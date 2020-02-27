@@ -1163,7 +1163,7 @@ namespace BaseClasses
                             float fNutHeight = nut.Thickness_max;
 
                             // Washer - Plate
-                            if (opts.bDrawWashers)
+                            if (opts.bDrawWashers && anchor.WasherPlateTop != null)
                             {
                                 fPlateWasherWidth_x = anchor.WasherPlateTop.Width_bx; // Kolmo na rovinu
                                 fPlateWasherWidth_y = anchor.WasherPlateTop.Height_hy;
@@ -1199,24 +1199,24 @@ namespace BaseClasses
                             }
 
                             // Washer - Bearing
-                            if (opts.bDrawWashers)
+                            if (opts.bDrawWashers && anchor.WasherBearing != null)
                             {
-                                fBearingWasherWidth_x = anchor.WasherBearing.Width_bx; // Kolmo na rovinu
-                                fBearingWasherWidth_y = anchor.WasherBearing.Height_hy;
-                                fBearingWasherThickness = anchor.WasherBearing.Ft;
+                                    fBearingWasherWidth_x = anchor.WasherBearing.Width_bx; // Kolmo na rovinu
+                                    fBearingWasherWidth_y = anchor.WasherBearing.Height_hy;
+                                    fBearingWasherThickness = anchor.WasherBearing.Ft;
 
-                                float fBearingWasherOffsetFromTop = fAnchorLength - 0.03f; // TO napojit na GUI ??? // Vzdialenost od hornej hrany kotvy po hornu hranu bearing washer
+                                    float fBearingWasherOffsetFromTop = fAnchorLength - 0.03f; // TO napojit na GUI ??? // Vzdialenost od hornej hrany kotvy po hornu hranu bearing washer
 
-                                Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
-                                Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop - fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                                    Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
+                                    Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop - fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
-                                Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_BearingWasher);
-                                Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_BearingWasher);
+                                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_BearingWasher);
+                                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_BearingWasher);
 
-                                bearingWasherNotePoint = new Point(br_BearingWasher.X, lt_BearingWasher.Y);
+                                    bearingWasherNotePoint = new Point(br_BearingWasher.X, lt_BearingWasher.Y);
 
-                                List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                                DrawRectangle(opts.WasherStrokeColor, null, opts.WasherLineThickness, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
+                                    List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                                    DrawRectangle(opts.WasherStrokeColor, null, opts.WasherLineThickness, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
 
                                 // Nuts - Bearing
                                 if (opts.bDrawNuts)

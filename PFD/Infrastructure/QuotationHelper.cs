@@ -104,6 +104,8 @@ namespace PFD
 
         public static void AddPlateToQuotation(CPlate plate, List<QuotationItem> quotation, int iQuantity, float fCFS_PricePerKg_Plates_Total)
         {
+            if (plate == null) return;
+
             float fMassPerPiece = plate.fArea * plate.Ft * plate.m_Mat.m_fRho;
             float fPricePerPiece = plate.Price_PPKG_NZD > 0 ? (float)plate.Price_PPKG_NZD * fMassPerPiece : fCFS_PricePerKg_Plates_Total * fMassPerPiece;
 
@@ -309,7 +311,8 @@ namespace PFD
                             // Plate Top Washer
                             try
                             {
-                                anchor.WasherPlateTop.SetParams(anchor.WasherPlateTop.Name, anchor.WasherPlateTop.m_ePlateSerieType_FS);
+                                if (anchor.WasherPlateTop != null)
+                                    anchor.WasherPlateTop.SetParams(anchor.WasherPlateTop.Name, anchor.WasherPlateTop.m_ePlateSerieType_FS);
                             }
                             catch { };
 
@@ -326,7 +329,8 @@ namespace PFD
                             // Bearing Washer
                             try
                             {
-                                anchor.WasherBearing.SetParams(anchor.WasherBearing.Name, anchor.WasherBearing.m_ePlateSerieType_FS);
+                                if(anchor.WasherBearing != null)
+                                    anchor.WasherBearing.SetParams(anchor.WasherBearing.Name, anchor.WasherBearing.m_ePlateSerieType_FS);
                             }
                             catch { };
 

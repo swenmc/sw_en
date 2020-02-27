@@ -1145,22 +1145,31 @@ namespace PFD
                                         anchor.BIsSelectedForDesign = false;
                                         anchor.BIsSelectedForMaterialList = false;
 
-                                        anchor.WasherBearing.BIsGenerated = false;
-                                        anchor.WasherBearing.BIsDisplayed = false;
-                                        anchor.WasherBearing.BIsSelectedForDesign = false;
-                                        anchor.WasherBearing.BIsSelectedForMaterialList = false;
-
-                                        anchor.WasherPlateTop.BIsGenerated = false;
-                                        anchor.WasherPlateTop.BIsDisplayed = false;
-                                        anchor.WasherPlateTop.BIsSelectedForDesign = false;
-                                        anchor.WasherPlateTop.BIsSelectedForMaterialList = false;
-
-                                        foreach (CNut nut in anchor.Nuts)
+                                        if (anchor.WasherBearing != null)
                                         {
-                                            nut.BIsGenerated = false;
-                                            nut.BIsDisplayed = false;
-                                            nut.BIsSelectedForDesign = false;
-                                            nut.BIsSelectedForMaterialList = false;
+                                            anchor.WasherBearing.BIsGenerated = false;
+                                            anchor.WasherBearing.BIsDisplayed = false;
+                                            anchor.WasherBearing.BIsSelectedForDesign = false;
+                                            anchor.WasherBearing.BIsSelectedForMaterialList = false;
+                                        }
+
+                                        if (anchor.WasherPlateTop != null)
+                                        {
+                                            anchor.WasherPlateTop.BIsGenerated = false;
+                                            anchor.WasherPlateTop.BIsDisplayed = false;
+                                            anchor.WasherPlateTop.BIsSelectedForDesign = false;
+                                            anchor.WasherPlateTop.BIsSelectedForMaterialList = false;
+                                        }
+
+                                        if (anchor.Nuts != null)
+                                        {
+                                            foreach (CNut nut in anchor.Nuts)
+                                            {
+                                                nut.BIsGenerated = false;
+                                                nut.BIsDisplayed = false;
+                                                nut.BIsSelectedForDesign = false;
+                                                nut.BIsSelectedForMaterialList = false;
+                                            }
                                         }
                                     }
                                 }
@@ -1862,8 +1871,10 @@ namespace PFD
 
                             foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
                             {
-                                iNumberOfPlates++; // anchor.WasherBearing
-                                iNumberOfPlates++; // anchor.WasherPlateTop
+                                if(anchor.WasherBearing != null)
+                                   iNumberOfPlates++; // anchor.WasherBearing
+                                if (anchor.WasherPlateTop != null)
+                                    iNumberOfPlates++; // anchor.WasherPlateTop
 
                                 if (anchor.WasherBearing.BIsGenerated) iNumberOfPlateGenerateTrue++; else iNumberOfPlateGenerateFalse++;
                                 if (anchor.WasherBearing.BIsSelectedForMaterialList) iNumberOfPlateMatListTrue++; else iNumberOfPlateMatlistFalse++;

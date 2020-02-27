@@ -1253,10 +1253,17 @@ namespace M_AS4600
 
             float fs2 = basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1[0]; // TODO - nacitavat nejako krajsie ak je kotiev v rade viac ako 2 a s roznymi vzdialenostami
 
+            float fWasherPlateTopWidth_bx;
+
+            if (basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop != null)
+                fWasherPlateTopWidth_bx = basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx;
+            else // Chemicka vlepena alebo mechanicka kotva - horna washer je dodavana spolu s kotvou , docasne nastavujem maly rozmer 20 mm
+                fWasherPlateTopWidth_bx = 0.02f;
+
             if (fs2 == 0) // Ak je hodnota s2 = 0
-                designDetails.fa_force = (plate.Width_bx - basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx) / 2f;
+                designDetails.fa_force = (plate.Width_bx - fWasherPlateTopWidth_bx) / 2f;
             else
-                designDetails.fa_force = (plate.Width_bx - fs2 - 0.5f * basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx - 0.5f * basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx) / 2f;
+                designDetails.fa_force = (plate.Width_bx - fs2 - 0.5f * fWasherPlateTopWidth_bx - 0.5f * fWasherPlateTopWidth_bx) / 2f;
 
             designDetails.fM_y_asterix_plate = fN_oneside * designDetails.fa_force;
             // TODO - plasticky alebo elasticky prierezovy modul ???
@@ -1515,8 +1522,16 @@ namespace M_AS4600
             designDetails.fe_y_AnchorToFootingEdge_Tension = fe_y_min_AnchorToFootingEdge_Tension;
             designDetails.fe_y_AnchorToFootingEdge_Shear = fe_y_min_AnchorToFootingEdge_Shear;
 
-            designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx;  // Input
-            designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input
+            if (basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop != null)
+            {
+                designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx;  // Input
+                designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input
+            }
+            else // Chemicka vlepena alebo mechanicka kotva - horna washer je dodavana spolu s kotvou , docasne nastavujem maly rozmer 20 mm
+            {
+                designDetails.fu_x_Washer = 0.02f;
+                designDetails.fu_y_Washer = 0.02f;
+            }
 
             designDetails.fs_2_x = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1); // centre-to-centre spacing of the anchors
             designDetails.fs_1_y = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsY_SQ1); // centre-to-centre spacing of the anchors
@@ -1728,8 +1743,20 @@ namespace M_AS4600
 
             // 17.5.7.3  Lower characteristic tension pullout strength of anchor
             // Group of anchors
-            designDetails.fm_x = anchorArrangement.referenceAnchor.WasherBearing.Width_bx; // Input
-            designDetails.fm_y = anchorArrangement.referenceAnchor.WasherBearing.Height_hy; // Input
+            if (anchorArrangement.referenceAnchor.WasherBearing != null)
+            {
+                designDetails.fm_x = anchorArrangement.referenceAnchor.WasherBearing.Width_bx; // Input
+                designDetails.fm_y = anchorArrangement.referenceAnchor.WasherBearing.Height_hy; // Input
+            }
+            else
+            {
+                // TODO - dopracovat navrh kotiev, ktore su chemicke alebo mechanicke a nemaju washer
+                // Mal by to byt samostatny vypoctovy blok aby sa to nepomiesalo so zabetonovanymi
+
+                // Docasne nastavim male rozmery (20x20 mm) aj ked wahserBearing neexistuje
+                designDetails.fm_x = 0.02f; // Input
+                designDetails.fm_y = 0.02f; // Input
+            }
             designDetails.fA_brg = designDetails.fm_x * designDetails.fm_y; // bearing area of the head of stud or anchor
             designDetails.fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, designDetails.fA_brg);
 

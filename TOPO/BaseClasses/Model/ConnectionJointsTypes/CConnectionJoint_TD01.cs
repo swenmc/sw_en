@@ -34,7 +34,7 @@ namespace BaseClasses
             float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
 
-            CAnchor referenceAnchor = new CAnchor("M16", "8.8", fAnchorLength, 0.8f * fAnchorLength, true);
+            CAnchor referenceAnchor = new CAnchor("M10", "8.8", fAnchorLength, 0.8f * fAnchorLength, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CScrewArrangement screwArrangement;

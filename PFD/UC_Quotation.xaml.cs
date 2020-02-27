@@ -566,9 +566,12 @@ namespace PFD
                             int anchorsNum = plate.AnchorArrangement.Anchors.Length;
                             //v pripade ak su anchor.Nuts stale rovnake tak netreba foreach ale len quantity = anchorsNum * anchor.Nuts.Count
                             // TO Ondrej  - na 90 % su rovnake, teoreticky by mohol niekto mat hornu maticu nejaku specialnu inu ako spodne zabetonovane v betone, priemer musi byt rovnaky
-                            foreach (CNut nut in anchor.Nuts)
+                            if (anchor.Nuts != null)
                             {
-                                AddBoltNutToQuotation(nut, quotation, anchorsNum);
+                                foreach (CNut nut in anchor.Nuts)
+                                {
+                                    AddBoltNutToQuotation(nut, quotation, anchorsNum);
+                                }
                             }
                         }
                     }
