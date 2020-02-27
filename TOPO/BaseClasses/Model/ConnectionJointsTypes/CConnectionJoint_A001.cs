@@ -44,14 +44,28 @@ namespace BaseClasses
             Point3D ControlPoint_P2 = new Point3D(m_Node.X - 0.5 * m_fb, m_Node.Y + m_MainMember.CrScStart.y_max /*+ 0.5f * m_MainMember.CrScStart.b*/ + /*1.5f **/ m_ft, m_Node.Z - (m_fh_2 - 0.5 * m_fh_1));
 
             // Screw arrangement parameters
-            // TODO nacitavat parametre z prierezu
-            float fCrscWebStraightDepth = (float)MainRafter_temp.CrScStart.h - 2 * 0.025f - 2 * (float)MainRafter_temp.CrScStart.t_min; // BOX 63020 web straight depth
-            float fStiffenerSize = 0.2857142f * (float)MainRafter_temp.CrScStart.h; // TODO - - dynamicky podla typu a velkosti prierezu -  0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
+
+            CRSC.CCrSc_TW rafterCrsc = null;
+
+            if (m_SecondaryMembers[0].CrScStart is CRSC.CCrSc_TW)
+            {
+                rafterCrsc = (CRSC.CCrSc_TW)m_SecondaryMembers[0].CrScStart;
+            }
+            else
+                throw new ArgumentNullException("Invalid cross-section type.");
+
+            float fMinimumStraightEdgeDistance = 0.005f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
+
+            float fCrscWebStraightDepth = (float)rafterCrsc.d_tot; // BOX 63020 web straight depth
+            float fStiffenerSize = (float)rafterCrsc.d_mu; // Nerovna cast v strede steny (zjednodusenia - pre nested  crsc sa uvazuje symetria, pre 270 sa do tohto uvazuje aj stredna rovna cast, hoci v nej mozu byt skrutky)
             bool bUseAdditionalCornerScrews = true;
             int iAdditionalConnectorInCornerNumber = 4; // 4 screws in each corner
-            float fAdditionalConnectorDistance = Math.Max(0.02f, 0.05f * fCrscWebStraightDepth);
-            float fConnectorRadiusInCircleSequence = 0.45f * fCrscWebStraightDepth; // TODO - dynamicky podla velkosti prierezu
-            int iConnectorNumberInCircleSequence = (int) ((2f * MATH.MathF.fPI * fConnectorRadiusInCircleSequence) / 0.05f); // 20; // TODO - dynamicky podla velkosti plate
+            float fMinimumDistanceBetweenScrews = 0.02f;
+            float fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fCrscWebStraightDepth);
+            float fConnectorRadiusInCircleSequence = 0.5f * (fCrscWebStraightDepth - 2 * fMinimumStraightEdgeDistance);
+            float fDistanceBetweenScrewsInCircle = 0.04f;
+            float fAngle = 2f * (float)Math.Acos((0.5f * (fStiffenerSize + 2f * fMinimumDistanceBetweenScrews)) / fConnectorRadiusInCircleSequence);
+            int iConnectorNumberInCircleSequence = (int) ((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle); // 20; // TODO - dynamicky podla velkosti plate
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();

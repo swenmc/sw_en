@@ -1553,7 +1553,7 @@ namespace PFD
                 else
                     throw new ArgumentNullException("Invalid cross-section type.");
 
-                float fMinimumStraightEdgeDistance = 0.01f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
+                float fMinimumStraightEdgeDistance = 0.005f; // Minimalna vzdialenost skrutky od hrany ohybu pozdlzneho rebra / vyztuhy na priereze (hrana zakrivenej casti)
 
                 // Base plate, knee joint - column is main member
                 fColumnDepth = (float)joint.m_MainMember.CrScStart.h;
@@ -1582,9 +1582,10 @@ namespace PFD
 
                     // Circle arrangement - parameters
                     fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fRafterWebStraightDepth);
-                    fConnectorRadiusInCircleSequence = 0.45f * fRafterWebStraightDepth; // TODO - dynamicky podla velkosti prierezu
-                    float fDistanceBetweenScrewsInCircle = 0.05f;
-                    iConnectorNumberInCircleSequence = (int)((2f * MathF.fPI * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle); // 20; // TODO - dynamicky podla velkosti prierezu
+                    fConnectorRadiusInCircleSequence = 0.5f * (fRafterWebStraightDepth - 2 * fMinimumStraightEdgeDistance);
+                    float fDistanceBetweenScrewsInCircle = 0.04f;
+                    float fAngle = 2f * (float)Math.Acos((0.5f * (fRafterWebMiddlePart + 2f * fMinimumDistanceBetweenScrews)) / fConnectorRadiusInCircleSequence);
+                    iConnectorNumberInCircleSequence = (int)((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle); // 20; // TODO - dynamicky podla velkosti prierezu
 
                     List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
                     CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
@@ -1600,7 +1601,7 @@ namespace PFD
                     gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
                     screwSeqGroups.Add(gr2);
 
-                    screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                    screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
                     // Rectangular arrangement - parameters
                     // Apex Joint
