@@ -114,6 +114,7 @@ namespace BaseClasses
             {
                 m_SameDistancesX = value;
                 if (m_SameDistancesX == false) SetDistancesX();
+                else SetDistanceX();
             }
         }
 
@@ -128,6 +129,7 @@ namespace BaseClasses
             {
                 m_SameDistancesY = value;
                 if (m_SameDistancesY == false) SetDistancesY();
+                else SetDistanceY();
             }
         }
 
@@ -287,6 +289,14 @@ namespace BaseClasses
             {
                 m_DistancesOfPointsY.Add(m_fDistanceOfPointsY);
             }
+        }
+        private void SetDistanceX()
+        {
+            if (m_DistancesOfPointsX != null && m_DistancesOfPointsX.Count > 0) DistanceOfPointsX = m_DistancesOfPointsX.First();
+        }
+        private void SetDistanceY()
+        {
+            if (m_DistancesOfPointsY != null && m_DistancesOfPointsY.Count > 0) DistanceOfPointsY = m_DistancesOfPointsY.First();
         }
     }
 }
