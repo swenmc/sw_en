@@ -76,6 +76,9 @@ namespace CRSC
             b_in = b - 2 * fz_stif1_out - 2 * m_ft_w;
             h_in = h - 2 * fz_stif1_out - 2 * m_ft_f;
 
+            // Load Cross-section Database Values - based on cross-section Name_short
+            FillCrScPropertiesByTableData();
+
             // Create Array - allocate memory
             CrScPointsOut = new List<Point>(INoPointsOut);
             CrScPointsIn = new List<Point>(INoPointsIn);
@@ -83,7 +86,6 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
-            FillCrScPropertiesByTableData();
             ChangeCoordToCentroid(); // Temp - TODO doriesit zadavanie bodov (CW, CCW), osove systemy, orientaciu os a zjednotit zadanie pre vsetky prierezy
 
             // SOLID MODEL

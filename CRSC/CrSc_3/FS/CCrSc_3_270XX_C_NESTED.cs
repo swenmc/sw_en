@@ -87,6 +87,9 @@ namespace CRSC
             b_in = b - 2 * fy_1stif1 - 2 * m_ft_w;
             h_in = h - 2 * fz_2stif1 - 2 * m_ft_f; // Temp - urcit podla rozmerov
 
+            // Load Cross-section Database Values - based on cross-section Name_short
+            FillCrScPropertiesByTableData();
+
             // Create Array - allocate memory
             CrScPointsOut = new List<Point>(INoPointsOut);
             CrScPointsIn = new List<Point>(INoPointsIn);
@@ -94,7 +97,6 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
-            FillCrScPropertiesByTableData();
             ChangeCoordToCentroid();
 
             // SOLID MODEL

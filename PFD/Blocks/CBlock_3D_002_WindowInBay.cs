@@ -285,6 +285,9 @@ namespace PFD
                             fGirtStartTemp = fGirtAlignmentEnd;
                             fGirtEndTemp = fGirtAlignmentStart;
 
+                            if (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right")
+                                fGirtEndTemp = ReferenceGirt.FAlignment_End; // Ak su girt len na pravej strane od okna, nastavime koncove odsadenie podla povodneho koncoveho odsadenia referencneho girt
+
                             if (bIsFirstBayInFrontorBackSide) // First bay, right side, end connection to the intermediate column
                                 fGirtEndTemp = ReferenceGirt.FAlignment_End;
                         }

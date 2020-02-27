@@ -33,13 +33,15 @@ namespace CRSC
             CSColor = color_temp;
             Fd = (float)h - 2 * ft;
 
+            // Load Cross-section Database Values - based on cross-section Name_short
+            FillCrScPropertiesByTableData();
+
             // Create Array - allocate memory
             CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
             CalcCrSc_Coord();
 
-            FillCrScPropertiesByTableData();
             ChangeCoordToCentroid();
 
             // SOLID MODEL

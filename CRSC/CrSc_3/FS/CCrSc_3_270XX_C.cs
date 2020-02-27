@@ -90,13 +90,14 @@ namespace CRSC
             fz_2stif1 = 0.018f;
             fz_2stif2 = 0.020f;
 
+            // Load Cross-section Database Values - based on cross-section Name_short
+            FillCrScPropertiesByTableData();
+
             // Create Array - allocate memory
             CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
             CalcCrSc_Coord();
-
-            FillCrScPropertiesByTableData();
 
             ChangeCoordToCentroid(); // Temp - TODO doriesit zadavanie bodov (CW, CCW), osove systemy, orientaciu os a zjednotit zadanie pre vsetky prierezy
 
