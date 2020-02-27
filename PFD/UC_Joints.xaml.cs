@@ -240,6 +240,7 @@ namespace PFD
                     // aby sme si boli isti ze sme spoj priradili spravne
 
                     // Nechcem ho mazat, lebo nas stal vela usilia
+                    // Ked to mame cez DB, tak by som to odlozil do zabudnutia
 
                     switch (con.ID)
                     {
