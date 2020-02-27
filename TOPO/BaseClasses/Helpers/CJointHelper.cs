@@ -105,6 +105,22 @@ namespace BaseClasses.Helpers
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.eWindowFrame_Header_Sill_WindowFrameColumn:
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eGirtbracing_Girt:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eGirtBracing_EdgePurlin:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eGirtBracing_Girt_Front:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eGirtBracing_EdgeRafter_Front:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eGirtBracing_Girt_Back:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eGirtBracing_EdgeRafter_Back:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlinBracing_Purlin:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlinBracing_EdgePurlin:
+                    opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
             }
         }
 

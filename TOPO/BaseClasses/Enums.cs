@@ -675,7 +675,15 @@ namespace BaseClasses
         eWindowFrame_Girt_Back = 45,
         eWindowFrame_EdgePulin = 46,
         eWindowFrame_EdgeRafter = 47,
-        eWindowFrame_Header_Sill_WindowFrameColumn = 48
+        eWindowFrame_Header_Sill_WindowFrameColumn = 48,
+        eGirtbracing_Girt = 49,
+        eGirtBracing_EdgePurlin = 50,
+        eGirtBracing_Girt_Front = 51,
+        eGirtBracing_EdgeRafter_Front = 52,
+        eGirtBracing_Girt_Back = 53,
+        eGirtBracing_EdgeRafter_Back = 54,
+        ePurlinBracing_Purlin = 55,
+        ePurlinBracing_EdgePurlin = 56
     }
 
     public enum EModelViews
