@@ -1110,7 +1110,7 @@ namespace BaseClasses
                 }
 
                 // Draw Anchors
-                if (basePlate.AnchorArrangement.Anchors != null && basePlate.AnchorArrangement.Anchors.Length > 0)
+                if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.Anchors != null && basePlate.AnchorArrangement.Anchors.Length > 0)
                 {
                     // Filter anchors in one row // Nechceme zobrazovat kotvy ktore su za sebou a prekryvaju sa
 
@@ -1402,7 +1402,7 @@ namespace BaseClasses
 
                 // Anchors Description
                 bool bDrawAnchorDescription = true;
-                if (opts.bDrawAnchors && bDrawAnchorDescription)
+                if (opts.bDrawAnchors && bDrawAnchorDescription && basePlate.AnchorArrangement != null)
                 {
                     dVerticalProjectionOfArrow = 0.52; // m // TODO Ondrej - S tymto sa treba pohrat
 

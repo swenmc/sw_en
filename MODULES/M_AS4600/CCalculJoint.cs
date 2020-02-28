@@ -1251,7 +1251,9 @@ namespace M_AS4600
 
             designDetails.fa_force = 0.0f; // Moment arm of force
 
-            float fs2 = basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1[0]; // TODO - nacitavat nejako krajsie ak je kotiev v rade viac ako 2 a s roznymi vzdialenostami
+            float fs2 = 0f;
+            if (basePlate.AnchorArrangement != null)
+                fs2 = basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1[0]; // TODO - nacitavat nejako krajsie ak je kotiev v rade viac ako 2 a s roznymi vzdialenostami
 
             float fWasherPlateTopWidth_bx;
 
