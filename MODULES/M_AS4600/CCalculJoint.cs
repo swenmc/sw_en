@@ -111,16 +111,24 @@ namespace M_AS4600
             if (joint_temp.m_MainMember == null)
                 throw new ArgumentNullException("Error " + "Joint No: " + joint_temp.ID + " Main member is not defined.");
 
-            // Check that some screws exist in the connection
-            if (joint_temp.m_arrPlates[0].ScrewArrangement == null || joint_temp.m_arrPlates[0].ScrewArrangement.Screws == null)
-                return; // Invalid data, joint without connectors
+            // Check that some connector or plates and connectors are defined
+            if (joint_temp.m_arrConnectors == null && (joint_temp.m_arrPlates == null || joint_temp.m_arrPlates.Length == 0))
+                throw new ArgumentNullException("Error " + "Joint No: " + joint_temp.ID + " The connectors or plates and connectors are not defined.");
+
+            // Check that all plates are connected - some screw arrangement is defined for each plate
+            for (int i = 0; i < joint_temp.m_arrPlates.Length; i++)
+            {
+                // Check that some screws exist in the connection
+                if (joint_temp.m_arrPlates[i].ScrewArrangement == null || joint_temp.m_arrPlates[i].ScrewArrangement.Screws == null)
+                    return; // Invalid data, joint / plate without connectors
+            }
 
             //df = nominal screw diameter
-            screw = joint_temp.m_arrPlates[0].ScrewArrangement.referenceScrew; // Parametre prvej skrutky prveho plechu
+            screw = joint_temp.m_arrPlates[0].ScrewArrangement.referenceScrew; // Parametre prvej skrutky prveho plechu // TODO - upravit tak aby bolo rozne podla toho ktory plech sa pocita
             plate = joint_temp.m_arrPlates[0];
             crsc_mainMember = (CCrSc_TW)joint_temp.m_MainMember.CrScStart;
 
-            ft_1_plate = (float)plate.Ft;
+            ft_1_plate = (float)plate.Ft; // TODO - upravit tak aby bolo rozne podla toho ktory plech sa pocita
             ft_2_crscmainMember = (float)crsc_mainMember.t_min;
 
             // Validate thickness of elements

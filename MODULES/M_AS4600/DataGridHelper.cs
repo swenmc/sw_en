@@ -693,6 +693,9 @@ namespace M_AS4600
             {
                 CJointDesignDetails_ApexOrKnee det = (CJointDesignDetails_ApexOrKnee)calc.joint.DesignDetails;
 
+                if (det == null) // No calculation details
+                    return;
+
                 if (calc.joint is CConnectionJoint_A001)
                     listPhysicalQuantity_Symbols.Add("Apex connection");
                 else
@@ -903,6 +906,9 @@ namespace M_AS4600
 
                     CJointDesignDetails_GirtOrPurlin det = (CJointDesignDetails_GirtOrPurlin)calc.joint.DesignDetails;
 
+                    if (det == null) // No calculation details
+                        return;
+
                     // 5.4.3 Screwed connections in tension
                     // 5.4.3.2 Pull-out and pull-over (pull-through)
 
@@ -1090,6 +1096,9 @@ namespace M_AS4600
                     DisplayBasicValues_IF(calc);
 
                     CJointDesignDetails_FrontOrBackColumnToMainRafterJoint det = (CJointDesignDetails_FrontOrBackColumnToMainRafterJoint)calc.joint.DesignDetails;
+
+                    if (det == null) // No calculation details
+                        return;
 
                     CConnectionJoint_S001 joint_S001 = (CConnectionJoint_S001)calc.joint;
 
@@ -1910,6 +1919,9 @@ namespace M_AS4600
             {
                 CJointDesignDetails_BaseJoint det = (CJointDesignDetails_BaseJoint)calc.joint.DesignDetails;
 
+                if (det == null) // No calculation details
+                    return;
+
                 listPhysicalQuantity_Symbols.Add("Footing Base");
                 listPhysicalQuantity_Values.Add("");
                 listPhysicalQuantity_Units.Add("");
@@ -2190,6 +2202,9 @@ namespace M_AS4600
             if (calc.joint is CConnectionJoint_TA01 || calc.joint is CConnectionJoint_TB01 || calc.joint is CConnectionJoint_TC01 || calc.joint is CConnectionJoint_TD01)
             {
                 CJointDesignDetails_BaseJointFooting det = (CJointDesignDetails_BaseJointFooting)calc.footing.DesignDetails;
+
+                if (det == null) // No calculation details
+                    return;
 
                 DisplayBasicValues_IF(calc);
 
