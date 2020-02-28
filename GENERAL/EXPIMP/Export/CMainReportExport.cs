@@ -2290,65 +2290,76 @@ namespace EXPIMP
             //    tableParams.Add(new string[2] { "Plates count", joint.m_arrPlates.Length.ToString() });
             if (joint.m_arrPlates != null && joint.m_arrPlates.Length > 0)
             {
-                //tableParams.Add(new string[2] { "Plate name", joint.m_arrPlates.FirstOrDefault().Name.ToString() });
-                //tableParams.Add(new string[2] { "Plate thickness", (joint.m_arrPlates.FirstOrDefault().Ft * 1000).ToString() + " [mm]" });
-                tableParams.Add(new string[2] { "Plates ", joint.m_arrPlates.Length.ToString() + " x " + joint.m_arrPlates.FirstOrDefault().Name.ToString() + " - " + "thickness " + (joint.m_arrPlates.FirstOrDefault().Ft * 1000).ToString() + " [mm]" });
-                //tableParams.Add(new string[2] { "Screws count in plate", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() });
-                //tableParams.Add(new string[2] { "Screw", "TEK " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge +"g").ToString() });
-                tableParams.Add(new string[2] { "Screws", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " +
-                    "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() + " each plate" });
-
-                if (joint.m_arrPlates.FirstOrDefault().ScrewArrangement is CScrewArrangementCircleApexOrKnee) // Knee or apex with circle screw arrangement
+                CPlate plate = joint.m_arrPlates.FirstOrDefault();
+                if (plate != null)
                 {
-                    CScrewArrangementCircleApexOrKnee circleArrangement = (CScrewArrangementCircleApexOrKnee)joint.m_arrPlates.FirstOrDefault().ScrewArrangement;
+                    //tableParams.Add(new string[2] { "Plate name", plate.Name.ToString() });
+                    //tableParams.Add(new string[2] { "Plate thickness", (plate.Ft * 1000).ToString() + " [mm]" });
+                    tableParams.Add(new string[2] { "Plates ", joint.m_arrPlates.Length.ToString() + " x " + plate.Name.ToString() + " - " + "thickness " + (plate.Ft * 1000).ToString() + " [mm]" });
+                    //tableParams.Add(new string[2] { "Screws count in plate", plate.ScrewArrangement.IHolesNumber.ToString() });
+                    //tableParams.Add(new string[2] { "Screw", "TEK " + (plate.ScrewArrangement.referenceScrew.Gauge +"g").ToString() });
 
-                    //tableParams.Add(new string[2] { "Number of circles", circleArrangement.INumberOfCirclesInGroup.ToString() });
-
-                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    // TODO 370
-                    // TODO - Ondrej toto by chcelo nejako zautomatizovat a zjednotit s tym ako vypisujeme v System Component Viewer parametre pre plate a pre screw arrangement
-                    // Chcel by som to urobit co najhutnejsie aby sme mali co najmenej riadkov v tabulke
-                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                    // Screws in circles
-                    // First circle
-                    if (circleArrangement.ListOfSequenceGroups[0].ListSequence[0] is CScrewHalfCircleSequence) // Radius parameters
+                    CScrewArrangement screwArrangement = plate.ScrewArrangement;
+                    if (screwArrangement != null)
                     {
-                        CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[0];
-                        tableParams.Add(new string[2] { "Circle screws", "4 x " + seq.INumberOfConnectors + " " +
-                            "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() +
+                        tableParams.Add(new string[2] { "Screws", screwArrangement.IHolesNumber.ToString() + " x " +
+                    "TEKs " + (screwArrangement.referenceScrew.Gauge + "g").ToString() + " each plate" });
+
+                        if (screwArrangement is CScrewArrangementCircleApexOrKnee) // Knee or apex with circle screw arrangement
+                        {
+                            CScrewArrangementCircleApexOrKnee circleArrangement = (CScrewArrangementCircleApexOrKnee)screwArrangement;
+
+                            //tableParams.Add(new string[2] { "Number of circles", circleArrangement.INumberOfCirclesInGroup.ToString() });
+
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            // TODO 370
+                            // TODO - Ondrej toto by chcelo nejako zautomatizovat a zjednotit s tym ako vypisujeme v System Component Viewer parametre pre plate a pre screw arrangement
+                            // Chcel by som to urobit co najhutnejsie aby sme mali co najmenej riadkov v tabulke
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            // Screws in circles
+                            // First circle
+                            if (circleArrangement.ListOfSequenceGroups[0].ListSequence[0] is CScrewHalfCircleSequence) // Radius parameters
+                            {
+                                CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[0];
+                                tableParams.Add(new string[2] { "Circle screws", "4 x " + seq.INumberOfConnectors + " " +
+                            "TEKs " + (plate.ScrewArrangement.referenceScrew.Gauge + "g").ToString() +
                             "\nradius: " + (seq.Radius * 1000).ToString("F0") + " [mm]" });
-                    }
+                            }
 
-                    // Second circle
-                    if (circleArrangement.ListOfSequenceGroups[0].ListSequence[2] != null && circleArrangement.ListOfSequenceGroups[0].ListSequence[2] is CScrewHalfCircleSequence) // Radius parameters
-                    {
-                        CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[2];
-                        tableParams.Add(new string[2] { "Circle screws", "4 x " + seq.INumberOfConnectors + " " +
-                            "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() +
+                            // Second circle
+                            if (circleArrangement.ListOfSequenceGroups[0].ListSequence[2] != null && circleArrangement.ListOfSequenceGroups[0].ListSequence[2] is CScrewHalfCircleSequence) // Radius parameters
+                            {
+                                CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[2];
+                                tableParams.Add(new string[2] { "Circle screws", "4 x " + seq.INumberOfConnectors + " " +
+                            "TEKs " + (screwArrangement.referenceScrew.Gauge + "g").ToString() +
                             "\nradius: " + (seq.Radius * 1000).ToString("F0") + " [mm]" });
-                    }
+                            }
 
-                    // Screws in corners
-                    if (circleArrangement.BUseAdditionalCornerScrews)
-                    {
-                        tableParams.Add(new string[2] { "Corner screws", "2 x 4 x " + circleArrangement.IAdditionalConnectorInCornerNumber + " " +
-                            "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() +
+                            // Screws in corners
+                            if (circleArrangement.BUseAdditionalCornerScrews)
+                            {
+                                tableParams.Add(new string[2] { "Corner screws", "2 x 4 x " + circleArrangement.IAdditionalConnectorInCornerNumber + " " +
+                            "TEKs " + (screwArrangement.referenceScrew.Gauge + "g").ToString() +
                             "\nspacing: "+
                               (circleArrangement.FAdditionalScrewsDistance_x * 1000).ToString("F0") + " x "
                             + (circleArrangement.FAdditionalScrewsDistance_y * 1000).ToString("F0") + " [mm]" });
+                            }
+                        }
                     }
-                }
+                    if (plate is CConCom_Plate_B_basic) // Base plate
+                    {
+                        CConCom_Plate_B_basic plate_B = (CConCom_Plate_B_basic)plate;
+                        CAnchorArrangement anchorArrangement = plate_B.AnchorArrangement;
+                        if (anchorArrangement != null)
+                        {
+                            //tableParams.Add(new string[2] { "Number of anchors", anchorArrangement.IHolesNumber.ToString() });
+                            //tableParams.Add(new string[2] { "Anchor", "M"+(anchorArrangement.referenceAnchor.Diameter_shank*1000).ToString() + " HD bolts - " + (anchorArrangement.referenceAnchor.Length * 1000).ToString() + " [mm]" });
+                            tableParams.Add(new string[2] { "Anchors", anchorArrangement.IHolesNumber.ToString() + " x " + "M" + (anchorArrangement.referenceAnchor.Diameter_shank * 1000).ToString() + " HD bolts - " + (anchorArrangement.referenceAnchor.Length * 1000).ToString() + " [mm]" });
+                            tableParams.Add(new string[2] { "Note", "Drypack between plate and floor to suit" });
+                        }
+                    }
 
-                if (joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic) // Base plate
-                {
-                    CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)joint.m_arrPlates.FirstOrDefault();
-                    CAnchorArrangement anchorArrangement = plate.AnchorArrangement;
-
-                    //tableParams.Add(new string[2] { "Number of anchors", anchorArrangement.IHolesNumber.ToString() });
-                    //tableParams.Add(new string[2] { "Anchor", "M"+(anchorArrangement.referenceAnchor.Diameter_shank*1000).ToString() + " HD bolts - " + (anchorArrangement.referenceAnchor.Length * 1000).ToString() + " [mm]" });
-                    tableParams.Add(new string[2] { "Anchors", anchorArrangement.IHolesNumber.ToString() + " x " + "M" + (anchorArrangement.referenceAnchor.Diameter_shank * 1000).ToString() + " HD bolts - " + (anchorArrangement.referenceAnchor.Length * 1000).ToString() + " [mm]" });
-                    tableParams.Add(new string[2] { "Note", "Drypack between plate and floor to suit" });
                 }
             }
 

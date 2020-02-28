@@ -2392,7 +2392,8 @@ namespace BaseClasses
                                 if (sDisplayOptions.bDisplayConnectorsWireFrame)
                                 {
                                     // Add plate connectors
-                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws != null &&
+                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement != null &&
+                                        model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws != null &&
                                         model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.Length > 0)
                                     {
                                         for (int m = 0; m < model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.Length; m++)
