@@ -2214,26 +2214,6 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_res_joint * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
-                listPhysicalQuantity_Symbols.Add("n anchors");
-                listPhysicalQuantity_Values.Add(det.iNumberAnchors.ToString());
-                listPhysicalQuantity_Units.Add("");
-
-                listPhysicalQuantity_Symbols.Add("n anchors.T");
-                listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
-                listPhysicalQuantity_Units.Add("");
-
-                listPhysicalQuantity_Symbols.Add("n anchors.V");
-                listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
-                listPhysicalQuantity_Units.Add("");
-
-                listPhysicalQuantity_Symbols.Add("N*anchor.up");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_asterix_anchor_uplif * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("V*anchor");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_anchor * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
                 listPhysicalQuantity_Symbols.Add("wx.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fplateWidth_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
@@ -2254,42 +2234,6 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fFootingHeight * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
-                listPhysicalQuantity_Symbols.Add("ex.a.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_AnchorToPlateEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("ey.a.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToPlateEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("ex.p.footing");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_BasePlateToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("ey.p.footing");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_BasePlateToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("ex.a.footing");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_AnchorToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("ey.a.footing.T");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToFootingEdge_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("ey.a.footing.S");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToFootingEdge_Shear * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("bx.washer");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fu_x_Washer * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("by.washer");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fu_y_Washer * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
                 listPhysicalQuantity_Symbols.Add("f'c");
                 listPhysicalQuantity_Values.Add(Math.Round(det.ff_apostrophe_c * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Stress);
@@ -2298,497 +2242,556 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fRho_c * fUnitFactor_Density, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                 listPhysicalQuantity_Units.Add(sUnit_Density);
 
-                listPhysicalQuantity_Symbols.Add("ds"); // thread
-                listPhysicalQuantity_Values.Add(Math.Round(det.fd_s * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("df"); // shank
-                listPhysicalQuantity_Values.Add(Math.Round(det.fd_f * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("Ac");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_c * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
-
-                listPhysicalQuantity_Symbols.Add("Ao");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_o * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
-
-                listPhysicalQuantity_Symbols.Add("fy.b");
-                listPhysicalQuantity_Values.Add(Math.Round(det.ff_y_anchor * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Stress);
-
-                listPhysicalQuantity_Symbols.Add("fu.b");
-                listPhysicalQuantity_Values.Add(Math.Round(det.ff_u_anchor * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Stress);
-
-                // AS / NZS 4600:2018 - 5.3 Bolted connections
-                listPhysicalQuantity_Symbols.Add("Φv");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_v_532, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Vf");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_f_532 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vf");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_532_1, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("Φv");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_v_534, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("α");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fAlpha_5342, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("C");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fC_5342, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Vb");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_5342 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vb");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5342, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("Vb");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_5343 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vb");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5343, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("Φ");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_535, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Vfv");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_5351_2_anchor * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vfv");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5351_2, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("Nft");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_ft_5352_1 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Nft");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5352_1, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("η");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5353, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // Plate bearing - local compression in concrete
-
-                listPhysicalQuantity_Symbols.Add("Alc");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_contact * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
-
-                listPhysicalQuantity_Symbols.Add("Zx.lc");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fZ_y_contact * fUnitFactor_ComponentSectionModulus, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentSectionModulus);
-
-                listPhysicalQuantity_Symbols.Add("plc.N");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_N * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Stress);
-
-                listPhysicalQuantity_Symbols.Add("plc.Mx");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_My * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Stress);
-
-                listPhysicalQuantity_Symbols.Add("plc.NMx");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_N_My * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Stress);
-
-                listPhysicalQuantity_Symbols.Add("Φc");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_c_ConcreteLocalPressure, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("η pN.Mx");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_p_N_My, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // NZS 3101.1 - 2006
-
-                listPhysicalQuantity_Symbols.Add("Φelasticity");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fElasticityFactor_1764, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Φt.a");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_anchor_tension_173, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Φv.a");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_anchor_shear_174, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Φt.c");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_concrete_tension_174a, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Φv.c");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_concrete_shear_174b, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                // 17.5.7.1  Steel strength of anchor in tension
-                // Group of anchors
-                listPhysicalQuantity_Symbols.Add("Ase");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_se * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
-
-                listPhysicalQuantity_Symbols.Add("Ns.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_s_176_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Ns.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17571_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // 17.5.7.2  Strength of concrete breakout of anchor
-                // Group of anchors
-
-                listPhysicalQuantity_Symbols.Add("e'n");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_apostrophe_n * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("c");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fConcreteCover * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("hef");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fh_ef * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("s2");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fs_2_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("s1");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fs_1_y * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("smin");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fs_min * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("c2");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fc_2_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("c1.T");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_y_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("cmin.T");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fc_min_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("k");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fk, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("λ");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fLambda_53, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("ψ1.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_1_group, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("ψ2");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_2, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("ψ3");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_3, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Ano.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_no_group * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_BasicArea);
-
-                listPhysicalQuantity_Symbols.Add("An.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_group * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_BasicArea);
-
-                listPhysicalQuantity_Symbols.Add("Nb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Nb.g(a)");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179a_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Ncb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_cb_177_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Ncb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17572_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // Single anchor - edge
-                listPhysicalQuantity_Symbols.Add("ψ1.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_1_single, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Ano.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_no_single * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_BasicArea);
-
-                listPhysicalQuantity_Symbols.Add("An.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_single * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_BasicArea);
-
-                listPhysicalQuantity_Symbols.Add("Nb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Nb.s(a)");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179a_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Ncb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_cb_177_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Ncb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17572_single, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // 17.5.7.3  Lower characteristic tension pullout strength of anchor
-                // Group of anchors
-
-                listPhysicalQuantity_Symbols.Add("mx");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fm_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("my");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fm_y * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("Abrg");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_brg * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
-
-                listPhysicalQuantity_Symbols.Add("Np.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_p_1711_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("ψ4");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_4, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Npn.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_pn_1710_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Npn.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_pn_1710_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Npn.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17573_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                if (det.fc_min_Tension < 0.4f * det.fh_ef)
+                if (det.iNumberAnchors > 0)
                 {
-                    // 17.5.7.4 Lower characteristic concrete side face blowout strength
-                    // Single anchor - edge
+                    listPhysicalQuantity_Symbols.Add("n anchors");
+                    listPhysicalQuantity_Values.Add(det.iNumberAnchors.ToString());
+                    listPhysicalQuantity_Units.Add("");
 
-                    listPhysicalQuantity_Symbols.Add("c1");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_17574 * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Symbols.Add("n anchors.T");
+                    listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
+                    listPhysicalQuantity_Units.Add("");
+
+                    listPhysicalQuantity_Symbols.Add("n anchors.V");
+                    listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
+                    listPhysicalQuantity_Units.Add("");
+
+                    listPhysicalQuantity_Symbols.Add("N*anchor.up");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_asterix_anchor_uplif * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("V*anchor");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_anchor * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("ex.a.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_AnchorToPlateEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                     listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
-                    listPhysicalQuantity_Symbols.Add("k1");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fk_1, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Symbols.Add("ey.a.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToPlateEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("ex.p.footing");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_BasePlateToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("ey.p.footing");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_BasePlateToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("ex.a.footing");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_AnchorToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("ey.a.footing.T");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToFootingEdge_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("ey.a.footing.S");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToFootingEdge_Shear * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("bx.washer");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fu_x_Washer * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("by.washer");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fu_y_Washer * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("ds"); // thread
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fd_s * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("df"); // shank
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fd_f * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("Ac");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_c * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                    listPhysicalQuantity_Symbols.Add("Ao");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_o * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                    listPhysicalQuantity_Symbols.Add("fy.b");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.ff_y_anchor * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                    listPhysicalQuantity_Symbols.Add("fu.b");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.ff_u_anchor * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                    // AS / NZS 4600:2018 - 5.3 Bolted connections
+                    listPhysicalQuantity_Symbols.Add("Φv");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_v_532, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
                     listPhysicalQuantity_Units.Add(sUnit_Factor);
 
-                    listPhysicalQuantity_Symbols.Add("Nsb.s");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_sb_1713_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Symbols.Add("Vf");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_f_532 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
                     listPhysicalQuantity_Units.Add(sUnit_Force);
 
-                    listPhysicalQuantity_Symbols.Add("η Nsb.s");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17574_single, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Symbols.Add("η Vf");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_532_1, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("Φv");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_v_534, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("α");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fAlpha_5342, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("C");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fC_5342, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Vb");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_5342 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vb");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5342, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("Vb");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_5343 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vb");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5343, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("Φ");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_535, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Vfv");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_5351_2_anchor * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vfv");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5351_2, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("Nft");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_ft_5352_1 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Nft");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5352_1, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("η");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5353, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // Plate bearing - local compression in concrete
+
+                    listPhysicalQuantity_Symbols.Add("Alc");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_contact * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                    listPhysicalQuantity_Symbols.Add("Zx.lc");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fZ_y_contact * fUnitFactor_ComponentSectionModulus, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentSectionModulus);
+
+                    listPhysicalQuantity_Symbols.Add("plc.N");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_N * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                    listPhysicalQuantity_Symbols.Add("plc.Mx");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_My * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                    listPhysicalQuantity_Symbols.Add("plc.NMx");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fLocalCompressionStress_p_N_My * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                    listPhysicalQuantity_Symbols.Add("Φc");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_c_ConcreteLocalPressure, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("η pN.Mx");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_p_N_My, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // NZS 3101.1 - 2006
+
+                    listPhysicalQuantity_Symbols.Add("Φelasticity");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fElasticityFactor_1764, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Φt.a");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_anchor_tension_173, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Φv.a");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_anchor_shear_174, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Φt.c");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_concrete_tension_174a, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Φv.c");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_concrete_shear_174b, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    // 17.5.7.1  Steel strength of anchor in tension
+                    // Group of anchors
+                    listPhysicalQuantity_Symbols.Add("Ase");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_se * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                    listPhysicalQuantity_Symbols.Add("Ns.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_s_176_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Ns.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17571_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 17.5.7.2  Strength of concrete breakout of anchor
+                    // Group of anchors
+
+                    listPhysicalQuantity_Symbols.Add("e'n");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_apostrophe_n * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("c");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fConcreteCover * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("hef");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fh_ef * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("s2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fs_2_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("s1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fs_1_y * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("smin");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fs_min * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("c2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fc_2_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("c1.T");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_y_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("cmin.T");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fc_min_Tension * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("k");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fk, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("λ");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fLambda_53, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("ψ1.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_1_group, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("ψ2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_2, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("ψ3");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_3, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Ano.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_no_group * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_BasicArea);
+
+                    listPhysicalQuantity_Symbols.Add("An.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_group * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_BasicArea);
+
+                    listPhysicalQuantity_Symbols.Add("Nb.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Nb.g(a)");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179a_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Ncb.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_cb_177_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Ncb.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17572_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // Single anchor - edge
+                    listPhysicalQuantity_Symbols.Add("ψ1.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_1_single, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Ano.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_no_single * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_BasicArea);
+
+                    listPhysicalQuantity_Symbols.Add("An.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_single * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_BasicArea);
+
+                    listPhysicalQuantity_Symbols.Add("Nb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Nb.s(a)");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179a_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Ncb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_cb_177_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Ncb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17572_single, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 17.5.7.3  Lower characteristic tension pullout strength of anchor
+                    // Group of anchors
+
+                    listPhysicalQuantity_Symbols.Add("mx");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fm_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("my");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fm_y * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("Abrg");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_brg * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                    listPhysicalQuantity_Symbols.Add("Np.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_p_1711_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("ψ4");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_4, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Npn.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_pn_1710_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Npn.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_pn_1710_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Npn.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17573_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    if (det.fc_min_Tension < 0.4f * det.fh_ef)
+                    {
+                        // 17.5.7.4 Lower characteristic concrete side face blowout strength
+                        // Single anchor - edge
+
+                        listPhysicalQuantity_Symbols.Add("c1");
+                        listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_17574 * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                        listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                        listPhysicalQuantity_Symbols.Add("k1");
+                        listPhysicalQuantity_Values.Add(Math.Round(det.fk_1, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                        listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                        listPhysicalQuantity_Symbols.Add("Nsb.s");
+                        listPhysicalQuantity_Values.Add(Math.Round(det.fN_sb_1713_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                        listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                        listPhysicalQuantity_Symbols.Add("η Nsb.s");
+                        listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17574_single, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                        listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+                    }
+
+                    // Lower characteristic strength in tension
+                    listPhysicalQuantity_Symbols.Add("Nn.g.min");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_n_nominal_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    // Lower design strength in tension
+                    listPhysicalQuantity_Symbols.Add("Φ·Nn.g.min");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_d_design_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    // 17.5.8 Lower characteristic strength of anchor in shear
+
+                    // 17.5.8.1 Lower characteristic shear strength of steel of anchor
+                    // Group of anchors
+                    if (det.bIsCastInHeadedStud)
+                    {
+                        listPhysicalQuantity_Symbols.Add("Vs.g1714");
+                        listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1714_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                        listPhysicalQuantity_Units.Add(sUnit_Force);
+                    }
+                    else
+                    {
+                        listPhysicalQuantity_Symbols.Add("Vs.g1715");
+                        listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1715_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                        listPhysicalQuantity_Units.Add(sUnit_Force);
+                    }
+
+                    listPhysicalQuantity_Symbols.Add("Vs.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_17581_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vs.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17581_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("e'v");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_apostrophe_v * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("ψ5.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_5_group, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("ψ6");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_6, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("ψ7");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_7, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("c1.S");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_y_Shear * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("Avo");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_vo * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_BasicArea);
+
+                    listPhysicalQuantity_Symbols.Add("Av");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_v_group * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_BasicArea);
+
+                    listPhysicalQuantity_Symbols.Add("do");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fd_o * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("k2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fk_2, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("l");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fl * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("Vb.1717a");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717a * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Vb.1717b");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717b * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Vb.1717");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Vcb.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1716_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vcb.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17582_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // Single of anchor - edge
+                    listPhysicalQuantity_Symbols.Add("ψ5.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_5_single, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Av.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_v_single * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_BasicArea);
+
+                    listPhysicalQuantity_Symbols.Add("Vcb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1716_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vcb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17582_single, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
+
+                    // Group of anchors
+                    listPhysicalQuantity_Symbols.Add("Vcb.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1721_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vcb.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17583_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // Single anchor - edge
+                    listPhysicalQuantity_Symbols.Add("Vcb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1721_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vcb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17583_single, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
+                    // Group of anchors
+                    listPhysicalQuantity_Symbols.Add("Ncb.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_cb_17584_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("kcp");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fk_cp_17584, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Vcp.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_cp_1722_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vcp.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17584_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // Lower characteristic strength in shear
+                    listPhysicalQuantity_Symbols.Add("Vn.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_n_nominal_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    // Lower design strength in shear
+                    listPhysicalQuantity_Symbols.Add("Φ·Vn.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_d_design_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    // 17.5.6.6 Interaction of tension and shear – simplified procedures
+                    // Group of anchors
+
+                    // 17.5.6.6(Eq. 17–5)
+                    listPhysicalQuantity_Symbols.Add("η 17566.g");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17566_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                     listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
                 }
-
-                // Lower characteristic strength in tension
-                listPhysicalQuantity_Symbols.Add("Nn.g.min");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_n_nominal_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                // Lower design strength in tension
-                listPhysicalQuantity_Symbols.Add("Φ·Nn.g.min");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_d_design_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                // 17.5.8 Lower characteristic strength of anchor in shear
-
-                // 17.5.8.1 Lower characteristic shear strength of steel of anchor
-                // Group of anchors
-                if (det.bIsCastInHeadedStud)
-                {
-                    listPhysicalQuantity_Symbols.Add("Vs.g1714");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1714_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-                }
-                else
-                {
-                    listPhysicalQuantity_Symbols.Add("Vs.g1715");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1715_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-                }
-
-                listPhysicalQuantity_Symbols.Add("Vs.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_17581_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vs.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17581_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("e'v");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fe_apostrophe_v * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("ψ5.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_5_group, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("ψ6");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_6, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("ψ7");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_7, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("c1.S");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_y_Shear * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("Avo");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_vo * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_BasicArea);
-
-                listPhysicalQuantity_Symbols.Add("Av");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_v_group * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_BasicArea);
-
-                listPhysicalQuantity_Symbols.Add("do");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fd_o * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("k2");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fk_2, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("l");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fl * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                listPhysicalQuantity_Symbols.Add("Vb.1717a");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717a * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Vb.1717b");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717b * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Vb.1717");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Vcb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1716_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vcb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17582_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // Single of anchor - edge
-                listPhysicalQuantity_Symbols.Add("ψ5.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_5_single, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Av.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_v_single * fUnitFactor_BasicArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_BasicArea);
-
-                listPhysicalQuantity_Symbols.Add("Vcb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1716_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vcb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17582_single, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
-
-                // Group of anchors
-                listPhysicalQuantity_Symbols.Add("Vcb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1721_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vcb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17583_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // Single anchor - edge
-                listPhysicalQuantity_Symbols.Add("Vcb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1721_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vcb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17583_single, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
-                // Group of anchors
-                listPhysicalQuantity_Symbols.Add("Ncb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fN_cb_17584_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("kcp");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fk_cp_17584, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Vcp.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cp_1722_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vcp.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17584_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // Lower characteristic strength in shear
-                listPhysicalQuantity_Symbols.Add("Vn.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_n_nominal_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                // Lower design strength in shear
-                listPhysicalQuantity_Symbols.Add("Φ·Vn.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_d_design_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                // 17.5.6.6 Interaction of tension and shear – simplified procedures
-                // Group of anchors
-
-                // 17.5.6.6(Eq. 17–5)
-                listPhysicalQuantity_Symbols.Add("η 17566.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17566_group, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Footings
                 listPhysicalQuantity_Symbols.Add("γF.u");

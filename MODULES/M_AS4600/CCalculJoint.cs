@@ -1257,7 +1257,7 @@ namespace M_AS4600
 
             float fWasherPlateTopWidth_bx;
 
-            if (basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop != null)
+            if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop != null)
                 fWasherPlateTopWidth_bx = basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop.Width_bx;
             else // Chemicka vlepena alebo mechanicka kotva - horna washer je dodavana spolu s kotvou , docasne nastavujem maly rozmer 20 mm
                 fWasherPlateTopWidth_bx = 0.02f;
@@ -1332,45 +1332,11 @@ namespace M_AS4600
             if (!MathF.d_equal(designDetails.fV_asterix_x_joint, 0) || !MathF.d_equal(designDetails.fV_asterix_y_joint, 0))
                 designDetails.fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(designDetails.fV_asterix_x_joint) + MathF.Pow2(designDetails.fV_asterix_y_joint));
 
-            List<CAnchor> anchors = basePlate.AnchorArrangement.Anchors.OfType<CAnchor>().ToList(); // TODO - preklapam pole kotiev na list - chcel o by to zefektivnit a pracovat s zmenit v arrangement pole na list
-
-            double maxCoordinateY = 0; // Maximum value of Y coordinate
-
-            if (!UniformShearDistributionInAnchors) // Ak nie je rovnomerne rozdeleny smyk, musime najst kotvy na okraji (maximalne Y) a nastavit im ze maju byt v smyku neaktivne
-            {
-                // Find maximum value of Y coordinate, close to the edge (+Y direction)
-                for (int i = 0; i < anchors.Count; i++)
-                {
-                    if (anchors[i].m_pControlPoint.Y > maxCoordinateY)
-                        maxCoordinateY = anchors[i].m_pControlPoint.Y;
-                }
-            }
-
-            for (int i = 0; i < anchors.Count; i++)
-            {
-                if (!UniformShearDistributionInAnchors && MathF.d_equal(anchors[i].m_pControlPoint.Y, maxCoordinateY)) // Nerovnomerne rozdeleny smyk a kota sa nachadaza na okraji s (+Y) - ignorujeme ju vo smyku
-                    anchors[i].IsActiveInShear = basePlate.AnchorArrangement.Anchors[i].IsActiveInShear = false;
-            }
-
-            int iNumberAnchors = basePlate.AnchorArrangement.Anchors.Length;
-            designDetails.iNumberAnchors = basePlate.AnchorArrangement.IHolesNumber;
-            designDetails.iNumberAnchors_t = anchors.Count(p => p.IsActiveInTension); // Total number of anchors active in tension - all anchors active as default
-            designDetails.iNumberAnchors_v = anchors.Count(p => p.IsActiveInShear); // Pocet kotiev ktore maju nastaveny
-
-            CAnchorArrangement_BB_BG anchorArrangement;
-
-            if (basePlate.AnchorArrangement is CAnchorArrangement_BB_BG)
-                anchorArrangement = (CAnchorArrangement_BB_BG)basePlate.AnchorArrangement;
-            else
-            {
-                throw new Exception("Not implemented arrangmement of anchors.");
-            }
-
-            int iNumberAnchors_x = anchorArrangement.NumberOfAnchorsInYDirection;
-            int iNumberAnchors_y_Tension = anchorArrangement.NumberOfAnchorsInZDirection;
-
-            designDetails.fN_asterix_anchor_uplif = sDIF_temp.fN_t / designDetails.iNumberAnchors_t; // Design axial force per anchor
-            designDetails.fV_asterix_anchor = designDetails.fV_asterix_res_joint / designDetails.iNumberAnchors_v; // Design shear force per anchor
+            // Material properties
+            CMat_02_00 materialConcrete = new CMat_02_00();
+            materialConcrete = (CMat_02_00)foundation.m_Mat;
+            designDetails.ff_apostrophe_c = (float)materialConcrete.Fck; // Characteristic compressive (cylinder) concrete strength
+            designDetails.fRho_c = materialConcrete.m_fRho; // Density of concrete
 
             designDetails.fplateWidth_x = basePlate.Width_bx;
             designDetails.fplateWidth_y = basePlate.Height_hy;
@@ -1379,560 +1345,596 @@ namespace M_AS4600
             designDetails.fFootingDimension_y = foundation.m_fDim2; // Input
             designDetails.fFootingHeight = foundation.m_fDim3; // Input
 
-            joint.SetBaseJointEdgeDistances(foundation); // Vypocitame vzdialenosti
-
-            // Vsetky hodnoty by mali byt kladne, plus a minus znamenaju len to v smere ktorej osi (na ktoru stranu -x vlavo, +x vpravo, -y dole, +y hore) je vzdialenost medzi okrajmi merana
-            float pe_x_minus_min_AnchorToPlateEdge = float.MaxValue;
-            float pe_x_plus_min_AnchorToPlateEdge = float.MaxValue;
-            float pe_y_minus_min_AnchorToPlateEdge = float.MaxValue;
-            float pe_y_plus_min_AnchorToPlateEdge = float.MaxValue;
-            float fe_x_minus_min_AnchorToFootingEdge = float.MaxValue;
-            float fe_x_plus_min_AnchorToFootingEdge = float.MaxValue;
-            float fe_y_minus_min_AnchorToFootingEdge_Tension = float.MaxValue;
-            float fe_y_plus_min_AnchorToFootingEdge_Tension = float.MaxValue;
-
-            float fe_y_minus_min_AnchorToFootingEdge_Shear = float.MaxValue;
-            float fe_y_plus_min_AnchorToFootingEdge_Shear = float.MaxValue;
-
-            designDetails.bIsCastInHeadedStud = false; // TODO - rozlisovat typ kotvy
-
-            //(a) For cast-in headed stud anchors // Eq. 17-14
-            //(b) For cast-in headed bolts and hooked bolt anchors // Eq. 17-15
-
-            // TODO bool IsActiveInShear by som nastavoval pre kotvy na okraji az niekde tu a nie v konstruktoroch pri vzniku anchor, lebo 
-            // sa to tyka len vypoctu a ak sa to nastavuje priamo v konstruktore anchor tak sa meni cely objekt kotvy, hoci v reale je stale rovnaky, len ho uvazujeme vo vypocte inak
-
-            // Az tu by sme mali zistit ake je maximalne y pre kotvy a vsetkym kotvam s touto suradnicou nastavovat tento bool na false ak je v GUI Design Options nastaveny nerovnomerny rozhos smyku
-
-            foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+            if (basePlate.AnchorArrangement != null)
             {
-                if (anchor.x_pe_minus < pe_x_minus_min_AnchorToPlateEdge)
-                    pe_x_minus_min_AnchorToPlateEdge = anchor.x_pe_minus;
+                List<CAnchor> anchors = basePlate.AnchorArrangement.Anchors.OfType<CAnchor>().ToList(); // TODO - preklapam pole kotiev na list - chcel o by to zefektivnit a pracovat s zmenit v arrangement pole na list
 
-                if (anchor.x_pe_plus < pe_x_plus_min_AnchorToPlateEdge)
-                    pe_x_plus_min_AnchorToPlateEdge = anchor.x_pe_plus;
+                double maxCoordinateY = 0; // Maximum value of Y coordinate
 
-                if (anchor.y_pe_minus < pe_y_minus_min_AnchorToPlateEdge)
-                    pe_y_minus_min_AnchorToPlateEdge = anchor.y_pe_minus;
-
-                if (anchor.y_pe_plus < pe_y_plus_min_AnchorToPlateEdge)
-                    pe_y_plus_min_AnchorToPlateEdge = anchor.y_pe_plus;
-
-                if (anchor.x_fe_minus < fe_x_minus_min_AnchorToFootingEdge)
-                    fe_x_minus_min_AnchorToFootingEdge = anchor.x_fe_minus;
-
-                if (anchor.x_fe_plus < fe_x_plus_min_AnchorToFootingEdge)
-                    fe_x_plus_min_AnchorToFootingEdge = anchor.x_fe_plus;
-
-                if (anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge_Tension)
-                    fe_y_minus_min_AnchorToFootingEdge_Tension = anchor.y_fe_minus;
-
-                if (anchor.y_fe_plus < fe_y_plus_min_AnchorToFootingEdge_Tension)
-                    fe_y_plus_min_AnchorToFootingEdge_Tension = anchor.y_fe_plus;
-
-                if (anchor.IsActiveInShear && anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge_Shear)
-                    fe_y_minus_min_AnchorToFootingEdge_Shear = anchor.y_fe_minus;
-
-                if (anchor.IsActiveInShear && anchor.y_fe_plus < fe_y_plus_min_AnchorToFootingEdge_Shear)
-                    fe_y_plus_min_AnchorToFootingEdge_Shear = anchor.y_fe_plus;
-            }
-
-            // Nastavenie minimalnych okrajovych vzdialenosti podla smeru sily
-            float pe_x_min_AnchorToPlateEdge = 0;
-            float pe_y_min_AnchorToPlateEdge = 0;
-            float fe_x_min_AnchorToFootingEdge = 0;
-            float fe_y_min_AnchorToFootingEdge_Tension = 0;
-
-            float fe_y_min_AnchorToFootingEdge_Shear = 0;
-
-            // Znamienka su opacne ako som zvyknuty :-/
-            /*
-            -> |\
-            -> | \
-            -> |  \
-            -> |   \
-            -> |____\  Hodnota V je zaporna
-
-               ^
-               | LCS
-            <--
-            */
-
-            // Zaporna sila - zaporna suradnica
-            // Stlpy na zadnej strane maju rovnaky sme LCS ako stlpy na prednej strane, ale opacnu orientaciu patky
-            if (sDIF_temp.fV_xu_xx > 0)
-            {
-                pe_x_min_AnchorToPlateEdge = pe_x_plus_min_AnchorToPlateEdge;
-                fe_x_min_AnchorToFootingEdge = fe_x_plus_min_AnchorToFootingEdge;
-            }
-            else
-            {
-                pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
-                fe_x_min_AnchorToFootingEdge = fe_x_minus_min_AnchorToFootingEdge;
-            }
-
-            if (sDIF_temp.fV_yv_yy > 0)
-            {
-                pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
-                fe_y_min_AnchorToFootingEdge_Tension = fe_y_plus_min_AnchorToFootingEdge_Tension;
-                fe_y_min_AnchorToFootingEdge_Shear = fe_y_plus_min_AnchorToFootingEdge_Shear;
-            }
-            else
-            {
-                pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
-                fe_y_min_AnchorToFootingEdge_Tension = fe_y_minus_min_AnchorToFootingEdge_Tension;
-                fe_y_min_AnchorToFootingEdge_Shear = fe_y_minus_min_AnchorToFootingEdge_Shear;
-            }
-
-            // Pre stlpy ramu na pravej strane treba hodnoty prehodit - nie som si uplne isty ci je znamienko hodnoty Vyv_yy spravne
-            if ((joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn || joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn)
-                && joint.m_MainMember.NodeEnd.ID == joint.m_Node.ID) // TODO polohu stlpov by trebalo urcit nejako krajsie
-            {
-                // Stlpy hlavneho ramu vlavo maju os x smerujucu nahor, stply na pravej strane maju os x smerujucu nadol
-                if (sDIF_temp.fV_xu_xx > 0)
+                if (!UniformShearDistributionInAnchors) // Ak nie je rovnomerne rozdeleny smyk, musime najst kotvy na okraji (maximalne Y) a nastavit im ze maju byt v smyku neaktivne
                 {
-                    pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
-                    fe_x_min_AnchorToFootingEdge = fe_x_minus_min_AnchorToFootingEdge;
+                    // Find maximum value of Y coordinate, close to the edge (+Y direction)
+                    for (int i = 0; i < anchors.Count; i++)
+                    {
+                        if (anchors[i].m_pControlPoint.Y > maxCoordinateY)
+                            maxCoordinateY = anchors[i].m_pControlPoint.Y;
+                    }
                 }
+
+                for (int i = 0; i < anchors.Count; i++)
+                {
+                    if (!UniformShearDistributionInAnchors && MathF.d_equal(anchors[i].m_pControlPoint.Y, maxCoordinateY)) // Nerovnomerne rozdeleny smyk a kota sa nachadaza na okraji s (+Y) - ignorujeme ju vo smyku
+                        anchors[i].IsActiveInShear = basePlate.AnchorArrangement.Anchors[i].IsActiveInShear = false;
+                }
+
+                int iNumberAnchors = basePlate.AnchorArrangement.Anchors.Length;
+                designDetails.iNumberAnchors = basePlate.AnchorArrangement.IHolesNumber;
+                designDetails.iNumberAnchors_t = anchors.Count(p => p.IsActiveInTension); // Total number of anchors active in tension - all anchors active as default
+                designDetails.iNumberAnchors_v = anchors.Count(p => p.IsActiveInShear); // Pocet kotiev ktore maju nastaveny
+
+                CAnchorArrangement_BB_BG anchorArrangement;
+
+                if (basePlate.AnchorArrangement is CAnchorArrangement_BB_BG)
+                    anchorArrangement = (CAnchorArrangement_BB_BG)basePlate.AnchorArrangement;
                 else
+                {
+                    throw new Exception("Not implemented arrangmement of anchors.");
+                }
+
+                int iNumberAnchors_x = anchorArrangement.NumberOfAnchorsInYDirection;
+                int iNumberAnchors_y_Tension = anchorArrangement.NumberOfAnchorsInZDirection;
+
+                designDetails.fN_asterix_anchor_uplif = sDIF_temp.fN_t / designDetails.iNumberAnchors_t; // Design axial force per anchor
+                designDetails.fV_asterix_anchor = designDetails.fV_asterix_res_joint / designDetails.iNumberAnchors_v; // Design shear force per anchor
+
+                joint.SetBaseJointEdgeDistances(foundation); // Vypocitame vzdialenosti
+
+                // Vsetky hodnoty by mali byt kladne, plus a minus znamenaju len to v smere ktorej osi (na ktoru stranu -x vlavo, +x vpravo, -y dole, +y hore) je vzdialenost medzi okrajmi merana
+                float pe_x_minus_min_AnchorToPlateEdge = float.MaxValue;
+                float pe_x_plus_min_AnchorToPlateEdge = float.MaxValue;
+                float pe_y_minus_min_AnchorToPlateEdge = float.MaxValue;
+                float pe_y_plus_min_AnchorToPlateEdge = float.MaxValue;
+                float fe_x_minus_min_AnchorToFootingEdge = float.MaxValue;
+                float fe_x_plus_min_AnchorToFootingEdge = float.MaxValue;
+                float fe_y_minus_min_AnchorToFootingEdge_Tension = float.MaxValue;
+                float fe_y_plus_min_AnchorToFootingEdge_Tension = float.MaxValue;
+
+                float fe_y_minus_min_AnchorToFootingEdge_Shear = float.MaxValue;
+                float fe_y_plus_min_AnchorToFootingEdge_Shear = float.MaxValue;
+
+                designDetails.bIsCastInHeadedStud = false; // TODO - rozlisovat typ kotvy
+
+                //(a) For cast-in headed stud anchors // Eq. 17-14
+                //(b) For cast-in headed bolts and hooked bolt anchors // Eq. 17-15
+
+                // TODO bool IsActiveInShear by som nastavoval pre kotvy na okraji az niekde tu a nie v konstruktoroch pri vzniku anchor, lebo 
+                // sa to tyka len vypoctu a ak sa to nastavuje priamo v konstruktore anchor tak sa meni cely objekt kotvy, hoci v reale je stale rovnaky, len ho uvazujeme vo vypocte inak
+
+                // Az tu by sme mali zistit ake je maximalne y pre kotvy a vsetkym kotvam s touto suradnicou nastavovat tento bool na false ak je v GUI Design Options nastaveny nerovnomerny rozhos smyku
+
+                foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+                {
+                    if (anchor.x_pe_minus < pe_x_minus_min_AnchorToPlateEdge)
+                        pe_x_minus_min_AnchorToPlateEdge = anchor.x_pe_minus;
+
+                    if (anchor.x_pe_plus < pe_x_plus_min_AnchorToPlateEdge)
+                        pe_x_plus_min_AnchorToPlateEdge = anchor.x_pe_plus;
+
+                    if (anchor.y_pe_minus < pe_y_minus_min_AnchorToPlateEdge)
+                        pe_y_minus_min_AnchorToPlateEdge = anchor.y_pe_minus;
+
+                    if (anchor.y_pe_plus < pe_y_plus_min_AnchorToPlateEdge)
+                        pe_y_plus_min_AnchorToPlateEdge = anchor.y_pe_plus;
+
+                    if (anchor.x_fe_minus < fe_x_minus_min_AnchorToFootingEdge)
+                        fe_x_minus_min_AnchorToFootingEdge = anchor.x_fe_minus;
+
+                    if (anchor.x_fe_plus < fe_x_plus_min_AnchorToFootingEdge)
+                        fe_x_plus_min_AnchorToFootingEdge = anchor.x_fe_plus;
+
+                    if (anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge_Tension)
+                        fe_y_minus_min_AnchorToFootingEdge_Tension = anchor.y_fe_minus;
+
+                    if (anchor.y_fe_plus < fe_y_plus_min_AnchorToFootingEdge_Tension)
+                        fe_y_plus_min_AnchorToFootingEdge_Tension = anchor.y_fe_plus;
+
+                    if (anchor.IsActiveInShear && anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge_Shear)
+                        fe_y_minus_min_AnchorToFootingEdge_Shear = anchor.y_fe_minus;
+
+                    if (anchor.IsActiveInShear && anchor.y_fe_plus < fe_y_plus_min_AnchorToFootingEdge_Shear)
+                        fe_y_plus_min_AnchorToFootingEdge_Shear = anchor.y_fe_plus;
+                }
+
+                // Nastavenie minimalnych okrajovych vzdialenosti podla smeru sily
+                float pe_x_min_AnchorToPlateEdge = 0;
+                float pe_y_min_AnchorToPlateEdge = 0;
+                float fe_x_min_AnchorToFootingEdge = 0;
+                float fe_y_min_AnchorToFootingEdge_Tension = 0;
+
+                float fe_y_min_AnchorToFootingEdge_Shear = 0;
+
+                // Znamienka su opacne ako som zvyknuty :-/
+                /*
+                -> |\
+                -> | \
+                -> |  \
+                -> |   \
+                -> |____\  Hodnota V je zaporna
+
+                   ^
+                   | LCS
+                <--
+                */
+
+                // Zaporna sila - zaporna suradnica
+                // Stlpy na zadnej strane maju rovnaky sme LCS ako stlpy na prednej strane, ale opacnu orientaciu patky
+                if (sDIF_temp.fV_xu_xx > 0)
                 {
                     pe_x_min_AnchorToPlateEdge = pe_x_plus_min_AnchorToPlateEdge;
                     fe_x_min_AnchorToFootingEdge = fe_x_plus_min_AnchorToFootingEdge;
                 }
+                else
+                {
+                    pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
+                    fe_x_min_AnchorToFootingEdge = fe_x_minus_min_AnchorToFootingEdge;
+                }
 
                 if (sDIF_temp.fV_yv_yy > 0)
-                {
-                    pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
-                    fe_y_min_AnchorToFootingEdge_Tension = fe_y_minus_min_AnchorToFootingEdge_Tension;
-                    fe_y_min_AnchorToFootingEdge_Shear = fe_y_minus_min_AnchorToFootingEdge_Shear;
-                }
-                else
                 {
                     pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
                     fe_y_min_AnchorToFootingEdge_Tension = fe_y_plus_min_AnchorToFootingEdge_Tension;
                     fe_y_min_AnchorToFootingEdge_Shear = fe_y_plus_min_AnchorToFootingEdge_Shear;
                 }
-            }
+                else
+                {
+                    pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
+                    fe_y_min_AnchorToFootingEdge_Tension = fe_y_minus_min_AnchorToFootingEdge_Tension;
+                    fe_y_min_AnchorToFootingEdge_Shear = fe_y_minus_min_AnchorToFootingEdge_Shear;
+                }
 
-            designDetails.fe_x_AnchorToPlateEdge = pe_x_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
-            designDetails.fe_y_AnchorToPlateEdge = pe_y_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
+                // Pre stlpy ramu na pravej strane treba hodnoty prehodit - nie som si uplne isty ci je znamienko hodnoty Vyv_yy spravne
+                if ((joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn || joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn)
+                    && joint.m_MainMember.NodeEnd.ID == joint.m_Node.ID) // TODO polohu stlpov by trebalo urcit nejako krajsie
+                {
+                    // Stlpy hlavneho ramu vlavo maju os x smerujucu nahor, stply na pravej strane maju os x smerujucu nadol
+                    if (sDIF_temp.fV_xu_xx > 0)
+                    {
+                        pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
+                        fe_x_min_AnchorToFootingEdge = fe_x_minus_min_AnchorToFootingEdge;
+                    }
+                    else
+                    {
+                        pe_x_min_AnchorToPlateEdge = pe_x_plus_min_AnchorToPlateEdge;
+                        fe_x_min_AnchorToFootingEdge = fe_x_plus_min_AnchorToFootingEdge;
+                    }
 
-            designDetails.fe_x_BasePlateToFootingEdge = Math.Min(basePlate.x_minus_plateEdge_to_pad, basePlate.x_plus_plateEdge_to_pad); // Minimum distance between plate edge and footing edge
-            designDetails.fe_y_BasePlateToFootingEdge = Math.Min(basePlate.y_minus_plateEdge_to_pad, basePlate.y_plus_plateEdge_to_pad); // Minimum distance between plate edge and footing edge
+                    if (sDIF_temp.fV_yv_yy > 0)
+                    {
+                        pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
+                        fe_y_min_AnchorToFootingEdge_Tension = fe_y_minus_min_AnchorToFootingEdge_Tension;
+                        fe_y_min_AnchorToFootingEdge_Shear = fe_y_minus_min_AnchorToFootingEdge_Shear;
+                    }
+                    else
+                    {
+                        pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
+                        fe_y_min_AnchorToFootingEdge_Tension = fe_y_plus_min_AnchorToFootingEdge_Tension;
+                        fe_y_min_AnchorToFootingEdge_Shear = fe_y_plus_min_AnchorToFootingEdge_Shear;
+                    }
+                }
 
-            designDetails.fe_x_AnchorToFootingEdge = fe_x_min_AnchorToFootingEdge;
-            designDetails.fe_y_AnchorToFootingEdge_Tension = fe_y_min_AnchorToFootingEdge_Tension;
-            designDetails.fe_y_AnchorToFootingEdge_Shear = fe_y_min_AnchorToFootingEdge_Shear;
+                designDetails.fe_x_AnchorToPlateEdge = pe_x_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
+                designDetails.fe_y_AnchorToPlateEdge = pe_y_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
 
-            if (basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop != null)
-            {
-                designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx;  // Input
-                designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input
-            }
-            else // Chemicka vlepena alebo mechanicka kotva - horna washer je dodavana spolu s kotvou , docasne nastavujem maly rozmer 20 mm
-            {
-                designDetails.fu_x_Washer = 0.02f;
-                designDetails.fu_y_Washer = 0.02f;
-            }
+                designDetails.fe_x_BasePlateToFootingEdge = Math.Min(basePlate.x_minus_plateEdge_to_pad, basePlate.x_plus_plateEdge_to_pad); // Minimum distance between plate edge and footing edge
+                designDetails.fe_y_BasePlateToFootingEdge = Math.Min(basePlate.y_minus_plateEdge_to_pad, basePlate.y_plus_plateEdge_to_pad); // Minimum distance between plate edge and footing edge
 
-            designDetails.fs_2_x = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1); // centre-to-centre spacing of the anchors
-            designDetails.fs_1_y = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsY_SQ1); // centre-to-centre spacing of the anchors
+                designDetails.fe_x_AnchorToFootingEdge = fe_x_min_AnchorToFootingEdge;
+                designDetails.fe_y_AnchorToFootingEdge_Tension = fe_y_min_AnchorToFootingEdge_Tension;
+                designDetails.fe_y_AnchorToFootingEdge_Shear = fe_y_min_AnchorToFootingEdge_Shear;
 
-            designDetails.fc_2_x = designDetails.fe_x_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
-            designDetails.fc_1_y_Tension = designDetails.fe_y_AnchorToFootingEdge_Tension; // Vzdialenost kotvy od okraja betonoveho zakladu
-            designDetails.fc_1_y_Shear = designDetails.fe_y_AnchorToFootingEdge_Shear; // Vzdialenost kotvy od okraja betonoveho zakladu
+                if (basePlate.AnchorArrangement.referenceAnchor.WasherPlateTop != null)
+                {
+                    designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx;  // Input
+                    designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input
+                }
+                else // Chemicka vlepena alebo mechanicka kotva - horna washer je dodavana spolu s kotvou , docasne nastavujem maly rozmer 20 mm
+                {
+                    designDetails.fu_x_Washer = 0.02f;
+                    designDetails.fu_y_Washer = 0.02f;
+                }
 
-            // Validation of distances
+                designDetails.fs_2_x = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1); // centre-to-centre spacing of the anchors
+                designDetails.fs_1_y = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsY_SQ1); // centre-to-centre spacing of the anchors
 
-            ValidateDimensionValue(designDetails.fe_x_AnchorToPlateEdge);
-            ValidateDimensionValue(designDetails.fe_y_AnchorToPlateEdge);
+                designDetails.fc_2_x = designDetails.fe_x_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
+                designDetails.fc_1_y_Tension = designDetails.fe_y_AnchorToFootingEdge_Tension; // Vzdialenost kotvy od okraja betonoveho zakladu
+                designDetails.fc_1_y_Shear = designDetails.fe_y_AnchorToFootingEdge_Shear; // Vzdialenost kotvy od okraja betonoveho zakladu
 
-            ValidateDimensionValue(designDetails.fe_x_BasePlateToFootingEdge);
-            ValidateDimensionValue(designDetails.fe_y_BasePlateToFootingEdge);
+                // Validation of distances
 
-            ValidateDimensionValue(designDetails.fe_x_AnchorToFootingEdge);
-            ValidateDimensionValue(designDetails.fe_y_AnchorToFootingEdge_Tension);
-            ValidateDimensionValue(designDetails.fe_y_AnchorToFootingEdge_Shear);
+                ValidateDimensionValue(designDetails.fe_x_AnchorToPlateEdge);
+                ValidateDimensionValue(designDetails.fe_y_AnchorToPlateEdge);
 
-            ValidateDimensionValue(designDetails.fu_x_Washer);
-            ValidateDimensionValue(designDetails.fu_y_Washer);
+                ValidateDimensionValue(designDetails.fe_x_BasePlateToFootingEdge);
+                ValidateDimensionValue(designDetails.fe_y_BasePlateToFootingEdge);
 
-            ValidateDimensionValue(designDetails.fs_2_x);
-            ValidateDimensionValue(designDetails.fs_1_y);
+                ValidateDimensionValue(designDetails.fe_x_AnchorToFootingEdge);
+                ValidateDimensionValue(designDetails.fe_y_AnchorToFootingEdge_Tension);
+                ValidateDimensionValue(designDetails.fe_y_AnchorToFootingEdge_Shear);
 
-            ValidateDimensionValue(designDetails.fc_2_x);
-            ValidateDimensionValue(designDetails.fc_1_y_Tension);
-            ValidateDimensionValue(designDetails.fc_1_y_Shear);
+                ValidateDimensionValue(designDetails.fu_x_Washer);
+                ValidateDimensionValue(designDetails.fu_y_Washer);
 
-            // Material properties
-            CMat_02_00 materialConcrete = new CMat_02_00();
-            materialConcrete = (CMat_02_00)foundation.m_Mat;
+                ValidateDimensionValue(designDetails.fs_2_x);
+                ValidateDimensionValue(designDetails.fs_1_y);
 
-            designDetails.ff_apostrophe_c = (float)materialConcrete.Fck; // Characteristic compressive (cylinder) concrete strength
-            designDetails.fRho_c = materialConcrete.m_fRho; // Density of concrete
+                ValidateDimensionValue(designDetails.fc_2_x);
+                ValidateDimensionValue(designDetails.fc_1_y_Tension);
+                ValidateDimensionValue(designDetails.fc_1_y_Shear);
 
-            // Anchors (bolts)
-            designDetails.fd_s = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
-            designDetails.fd_f = basePlate.AnchorArrangement.referenceAnchor.Diameter_shank;
+                // Anchors (bolts)
+                designDetails.fd_s = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
+                designDetails.fd_f = basePlate.AnchorArrangement.referenceAnchor.Diameter_shank;
 
-            designDetails.fA_c = basePlate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
-            designDetails.fA_o = basePlate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
+                designDetails.fA_c = basePlate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
+                designDetails.fA_o = basePlate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
 
-            designDetails.ff_y_anchor = ((CMat_03_00)basePlate.AnchorArrangement.referenceAnchor.m_Mat).m_ff_yk[0];
-            designDetails.ff_u_anchor = ((CMat_03_00)basePlate.AnchorArrangement.referenceAnchor.m_Mat).m_ff_u[0];
+                designDetails.ff_y_anchor = ((CMat_03_00)basePlate.AnchorArrangement.referenceAnchor.m_Mat).m_ff_yk[0];
+                designDetails.ff_u_anchor = ((CMat_03_00)basePlate.AnchorArrangement.referenceAnchor.m_Mat).m_ff_u[0];
 
-            // AS / NZS 4600:2018 - 5.3 Bolted connections
-            // Base plate design
-            // 5.3.2 Tearout
-            designDetails.fPhi_v_532 = 0.7f;
-            designDetails.fV_f_532 = eq.Eq_532_2___(ft_1_plate, Math.Min(designDetails.fe_x_AnchorToPlateEdge, designDetails.fe_y_AnchorToPlateEdge), ff_uk_1_plate); // Todo - minimum alebo smer y
-            designDetails.fEta_532_1 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_v_532, designDetails.fV_f_532);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_532_1);
+                // AS / NZS 4600:2018 - 5.3 Bolted connections
+                // Base plate design
+                // 5.3.2 Tearout
+                designDetails.fPhi_v_532 = 0.7f;
+                designDetails.fV_f_532 = eq.Eq_532_2___(ft_1_plate, Math.Min(designDetails.fe_x_AnchorToPlateEdge, designDetails.fe_y_AnchorToPlateEdge), ff_uk_1_plate); // Todo - minimum alebo smer y
+                designDetails.fEta_532_1 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_v_532, designDetails.fV_f_532);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_532_1);
 
-            // 5.3.4.2 Bearing capacity without considering bolt hole deformation
-            designDetails.fPhi_v_534 = 0.6f;
-            designDetails.fAlpha_5342 = eq.Get_Alpha_Table_5342_A(ETypesOfBearingConnection.eType3);
-            designDetails.fC_5342 = eq.Get_Factor_C_Table_5342_B(designDetails.fd_f, ft_1_plate);
-            designDetails.fV_b_5342 = eq.Eq_5342____(designDetails.fAlpha_5342, designDetails.fC_5342, designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
-            designDetails.fEta_5342 = Math.Abs(designDetails.fV_asterix_anchor) / (designDetails.fPhi_v_534 * designDetails.fV_b_5342);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5342);
+                // 5.3.4.2 Bearing capacity without considering bolt hole deformation
+                designDetails.fPhi_v_534 = 0.6f;
+                designDetails.fAlpha_5342 = eq.Get_Alpha_Table_5342_A(ETypesOfBearingConnection.eType3);
+                designDetails.fC_5342 = eq.Get_Factor_C_Table_5342_B(designDetails.fd_f, ft_1_plate);
+                designDetails.fV_b_5342 = eq.Eq_5342____(designDetails.fAlpha_5342, designDetails.fC_5342, designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
+                designDetails.fEta_5342 = Math.Abs(designDetails.fV_asterix_anchor) / (designDetails.fPhi_v_534 * designDetails.fV_b_5342);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5342);
 
-            // 5.3.4.3 Bearing capacity at a bolt hole deformation of 6 mm
-            designDetails.fV_b_5343 = eq.Eq_5343____(designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
-            designDetails.fEta_5343 = Math.Abs(designDetails.fV_asterix_anchor) / (designDetails.fPhi_v_534 * designDetails.fV_b_5343);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5343);
+                // 5.3.4.3 Bearing capacity at a bolt hole deformation of 6 mm
+                designDetails.fV_b_5343 = eq.Eq_5343____(designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
+                designDetails.fEta_5343 = Math.Abs(designDetails.fV_asterix_anchor) / (designDetails.fPhi_v_534 * designDetails.fV_b_5343);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5343);
 
-            // Bolt design / Anchor design
-            // 5.3.5.1 Bolt in shear
-            designDetails.fPhi_535 = 0.8f;
-            int iNumberOfShearPlanesOfBolt_core = 1; // Jednostrizny spoj - strih jardom skrutky
-            designDetails.fV_fv_5351_2_anchor = eq.Eq_5351_2__(designDetails.ff_u_anchor, iNumberOfShearPlanesOfBolt_core, designDetails.fA_c, 0, designDetails.fA_o); // Uvazovane konzervativne jedna smykova plocha a zavit je aj v smykovej ploche
-            designDetails.fEta_5351_2 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5351_2);
+                // Bolt design / Anchor design
+                // 5.3.5.1 Bolt in shear
+                designDetails.fPhi_535 = 0.8f;
+                int iNumberOfShearPlanesOfBolt_core = 1; // Jednostrizny spoj - strih jardom skrutky
+                designDetails.fV_fv_5351_2_anchor = eq.Eq_5351_2__(designDetails.ff_u_anchor, iNumberOfShearPlanesOfBolt_core, designDetails.fA_c, 0, designDetails.fA_o); // Uvazovane konzervativne jedna smykova plocha a zavit je aj v smykovej ploche
+                designDetails.fEta_5351_2 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5351_2);
 
-            // 5.3.5.2 Bolt in tension
-            designDetails.fN_ft_5352_1 = eq.Eq_5352_2__(designDetails.fA_c, designDetails.ff_u_anchor);
-            designDetails.fEta_5352_1 = eq.Eq_5352_1__(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_535, designDetails.fN_ft_5352_1);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5352_1);
+                // 5.3.5.2 Bolt in tension
+                designDetails.fN_ft_5352_1 = eq.Eq_5352_2__(designDetails.fA_c, designDetails.ff_u_anchor);
+                designDetails.fEta_5352_1 = eq.Eq_5352_1__(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_535, designDetails.fN_ft_5352_1);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5352_1);
 
-            // 5.3.5.3 Bolt subject to combined shear and tension
-            float fPortion_V_5353;
-            float fPortion_N_5353;
-            designDetails.fEta_5353 = eq.Eq_5353____(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor, designDetails.fN_asterix_anchor_uplif, 0.8f, designDetails.fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5353);
+                // 5.3.5.3 Bolt subject to combined shear and tension
+                float fPortion_V_5353;
+                float fPortion_N_5353;
+                designDetails.fEta_5353 = eq.Eq_5353____(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor, designDetails.fN_asterix_anchor_uplif, 0.8f, designDetails.fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_5353);
 
-            // Plate bearing - local compression in concrete
-            // Todo sa ani nema aplikovat ak je stlp na doraz tak sa prenasa o obvode prierezu, mal by to byt obvod prierezu * (hrubka prierezu + 2 * hrubka base plate) - roznos 45 stupnov
+                // Plate bearing - local compression in concrete
+                // Todo sa ani nema aplikovat ak je stlp na doraz tak sa prenasa o obvode prierezu, mal by to byt obvod prierezu * (hrubka prierezu + 2 * hrubka base plate) - roznos 45 stupnov
 
-            bool bColumnInConctactWithPlate = true; // Ak je true uvazuje sa ako kontakt obrys stlpa, ak je false tak sa uvazuje len kontaktny obrys plate
+                bool bColumnInConctactWithPlate = true; // Ak je true uvazuje sa ako kontakt obrys stlpa, ak je false tak sa uvazuje len kontaktny obrys plate
 
-            float fA_MainMemberContact = (float)(crsc_mainMember.A_g * ((ft_1_plate * 2 + crsc_mainMember.t_min) / crsc_mainMember.t_min));
-            float fA_PlateContact = plate.fA_g * (ft_1_plate * 2 / ft_1_plate);
+                float fA_MainMemberContact = (float)(crsc_mainMember.A_g * ((ft_1_plate * 2 + crsc_mainMember.t_min) / crsc_mainMember.t_min));
+                float fA_PlateContact = plate.fA_g * (ft_1_plate * 2 / ft_1_plate);
 
-            float fZ_y_MainMemberContact = (float)((crsc_mainMember.I_y * ((ft_1_plate * 2 + crsc_mainMember.t_min) / crsc_mainMember.t_min)) / crsc_mainMember.z_max);
-            float fZ_y_PlateContact = plate.fW_el_yu * (ft_1_plate * 2 / ft_1_plate);
+                float fZ_y_MainMemberContact = (float)((crsc_mainMember.I_y * ((ft_1_plate * 2 + crsc_mainMember.t_min) / crsc_mainMember.t_min)) / crsc_mainMember.z_max);
+                float fZ_y_PlateContact = plate.fW_el_yu * (ft_1_plate * 2 / ft_1_plate);
 
-            if (bColumnInConctactWithPlate)
-            {
-                designDetails.fA_contact = fA_MainMemberContact;
-                designDetails.fZ_y_contact = fZ_y_MainMemberContact;
-            }
-            else
-            {
-                designDetails.fA_contact = fA_PlateContact;
-                designDetails.fZ_y_contact = fZ_y_PlateContact;
-            }
+                if (bColumnInConctactWithPlate)
+                {
+                    designDetails.fA_contact = fA_MainMemberContact;
+                    designDetails.fZ_y_contact = fZ_y_MainMemberContact;
+                }
+                else
+                {
+                    designDetails.fA_contact = fA_PlateContact;
+                    designDetails.fZ_y_contact = fZ_y_PlateContact;
+                }
 
-            designDetails.fLocalCompressionStress_p_N = -sDIF_temp.fN / designDetails.fA_contact; // - tension , + compression
-            designDetails.fLocalCompressionStress_p_My = Math.Abs(sDIF_temp.fM_xu_xx) / designDetails.fZ_y_contact;
+                designDetails.fLocalCompressionStress_p_N = -sDIF_temp.fN / designDetails.fA_contact; // - tension , + compression
+                designDetails.fLocalCompressionStress_p_My = Math.Abs(sDIF_temp.fM_xu_xx) / designDetails.fZ_y_contact;
 
-            designDetails.fLocalCompressionStress_p_N_My = designDetails.fLocalCompressionStress_p_N + designDetails.fLocalCompressionStress_p_My;
+                designDetails.fLocalCompressionStress_p_N_My = designDetails.fLocalCompressionStress_p_N + designDetails.fLocalCompressionStress_p_My;
 
-            if (designDetails.fLocalCompressionStress_p_N_My < 0) // Only uplift tension force in the base plate connection
-            {
-                designDetails.fLocalCompressionStress_p_N = 0;
-                designDetails.fLocalCompressionStress_p_N_My = 0;
-            }
+                if (designDetails.fLocalCompressionStress_p_N_My < 0) // Only uplift tension force in the base plate connection
+                {
+                    designDetails.fLocalCompressionStress_p_N = 0;
+                    designDetails.fLocalCompressionStress_p_N_My = 0;
+                }
 
-            designDetails.fPhi_c_ConcreteLocalPressure = 0.65f; // ???
+                designDetails.fPhi_c_ConcreteLocalPressure = 0.65f; // ???
 
-            designDetails.fEta_p_N_My = designDetails.fLocalCompressionStress_p_N_My / (designDetails.fPhi_c_ConcreteLocalPressure * designDetails.ff_apostrophe_c);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_p_N_My);
+                designDetails.fEta_p_N_My = designDetails.fLocalCompressionStress_p_N_My / (designDetails.fPhi_c_ConcreteLocalPressure * designDetails.ff_apostrophe_c);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_p_N_My);
 
-            // NZS 3101.1 - 2006
-            bool bIsEarthquakeCombination = true; // TODO - napojit typ kombinacie alebo vstup z GUI
+                // NZS 3101.1 - 2006
+                bool bIsEarthquakeCombination = true; // TODO - napojit typ kombinacie alebo vstup z GUI
 
-            designDetails.fElasticityFactor_1764 = 1.0f;
+                designDetails.fElasticityFactor_1764 = 1.0f;
 
-            if (bIsEarthquakeCombination)
-                designDetails.fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
+                if (bIsEarthquakeCombination)
+                    designDetails.fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
 
-            // 17.5.6 Strength of cast -in anchors
+                // 17.5.6 Strength of cast -in anchors
 
-            // 17.5.6.4 Strength reduction factors
-            designDetails.fPhi_anchor_tension_173 = 0.75f;
-            designDetails.fPhi_anchor_shear_174 = 0.65f;
+                // 17.5.6.4 Strength reduction factors
+                designDetails.fPhi_anchor_tension_173 = 0.75f;
+                designDetails.fPhi_anchor_shear_174 = 0.65f;
 
-            designDetails.fPhi_concrete_tension_174a = 0.65f;
-            designDetails.fPhi_concrete_shear_174b = 0.65f;
+                designDetails.fPhi_concrete_tension_174a = 0.65f;
+                designDetails.fPhi_concrete_shear_174b = 0.65f;
 
-            // 17.5.7.1  Steel strength of anchor in tension
-            // Group of anchors
-            designDetails.fA_se = designDetails.fA_c; // Effective cross-sectional area of an anchor
-            designDetails.fN_s_176_group = eq_concrete.Eq_17_6____(designDetails.iNumberAnchors_t, designDetails.fA_se, designDetails.ff_u_anchor);
-            designDetails.fEta_17571_group = eq_concrete.Eq_17_1____(sDIF_temp.fN_t, designDetails.fPhi_anchor_tension_173, designDetails.fN_s_176_group);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17571_group);
+                // 17.5.7.1  Steel strength of anchor in tension
+                // Group of anchors
+                designDetails.fA_se = designDetails.fA_c; // Effective cross-sectional area of an anchor
+                designDetails.fN_s_176_group = eq_concrete.Eq_17_6____(designDetails.iNumberAnchors_t, designDetails.fA_se, designDetails.ff_u_anchor);
+                designDetails.fEta_17571_group = eq_concrete.Eq_17_1____(sDIF_temp.fN_t, designDetails.fPhi_anchor_tension_173, designDetails.fN_s_176_group);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17571_group);
 
-            // 17.5.7.2  Strength of concrete breakout of anchor
-            // Group of anchors
+                // 17.5.7.2  Strength of concrete breakout of anchor
+                // Group of anchors
 
-            // Figure C17.4 – Definition of dimension e´n for group anchors
-            designDetails.fe_apostrophe_n = 0f;                                                   // TODO dopracovat                    // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
-            designDetails.fConcreteCover = footing.ConcreteCover;                                 // Input
-            designDetails.fh_ef = basePlate.AnchorArrangement.referenceAnchor.h_effective;        // effective anchor embedment depth
-            designDetails.fs_min = Math.Min(designDetails.fs_2_x, designDetails.fs_1_y);
-            designDetails.fc_min_Tension = Math.Min(designDetails.fc_2_x, designDetails.fc_1_y_Tension);
-            designDetails.fk = 10f; // for cast-in anchors
-            designDetails.fLambda_53 = eq_concrete.Eq_5_3_____(designDetails.fRho_c);
+                // Figure C17.4 – Definition of dimension e´n for group anchors
+                designDetails.fe_apostrophe_n = 0f;                                                   // TODO dopracovat                    // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
+                designDetails.fConcreteCover = footing.ConcreteCover;                                 // Input
+                designDetails.fh_ef = basePlate.AnchorArrangement.referenceAnchor.h_effective;        // effective anchor embedment depth
+                designDetails.fs_min = Math.Min(designDetails.fs_2_x, designDetails.fs_1_y);
+                designDetails.fc_min_Tension = Math.Min(designDetails.fc_2_x, designDetails.fc_1_y_Tension);
+                designDetails.fk = 10f; // for cast-in anchors
+                designDetails.fLambda_53 = eq_concrete.Eq_5_3_____(designDetails.fRho_c);
 
-            designDetails.fPsi_1_group = eq_concrete.Eq_17_8____(designDetails.fe_apostrophe_n, designDetails.fh_ef);
-            designDetails.fPsi_2 = eq_concrete.Get_Psi_2__(designDetails.fc_min_Tension, designDetails.fh_ef);
+                designDetails.fPsi_1_group = eq_concrete.Eq_17_8____(designDetails.fe_apostrophe_n, designDetails.fh_ef);
+                designDetails.fPsi_2 = eq_concrete.Get_Psi_2__(designDetails.fc_min_Tension, designDetails.fh_ef);
 
-            // Ψ3 = 1.25 for cast -in anchors in uncracked concrete
-            // Ψ3 = 1.0 for concrete which is cracked at service load levels.
-            designDetails.fPsi_3 = 1.25f; // modification factor or cracking of concrete
-            designDetails.fA_no_group = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
+                // Ψ3 = 1.25 for cast -in anchors in uncracked concrete
+                // Ψ3 = 1.0 for concrete which is cracked at service load levels.
+                designDetails.fPsi_3 = 1.25f; // modification factor or cracking of concrete
+                designDetails.fA_no_group = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
 
-            float fDistanceOfAnchorFromEdge_OtherSide_x = designDetails.fFootingDimension_x - designDetails.fc_2_x - (iNumberAnchors_x - 1) * designDetails.fs_2_x;
-            float fDistanceOfAnchorFromEdge_OtherSide_y = designDetails.fFootingDimension_y - designDetails.fc_1_y_Tension - (iNumberAnchors_y_Tension - 1) * designDetails.fs_1_y;
+                float fDistanceOfAnchorFromEdge_OtherSide_x = designDetails.fFootingDimension_x - designDetails.fc_2_x - (iNumberAnchors_x - 1) * designDetails.fs_2_x;
+                float fDistanceOfAnchorFromEdge_OtherSide_y = designDetails.fFootingDimension_y - designDetails.fc_1_y_Tension - (iNumberAnchors_y_Tension - 1) * designDetails.fs_1_y;
 
-            float fAn_Length_x_group = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_x) + ((iNumberAnchors_x - 1) * designDetails.fs_2_x);
-            float fAn_Length_y_group = Math.Min(designDetails.fc_1_y_Tension, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_y) + ((iNumberAnchors_y_Tension - 1) * designDetails.fs_1_y);
-            designDetails.fA_n_group = Math.Min(fAn_Length_x_group * fAn_Length_y_group, designDetails.iNumberAnchors_t * designDetails.fA_no_group);
+                float fAn_Length_x_group = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_x) + ((iNumberAnchors_x - 1) * designDetails.fs_2_x);
+                float fAn_Length_y_group = Math.Min(designDetails.fc_1_y_Tension, 1.5f * designDetails.fh_ef) + Math.Min(1.5f * designDetails.fh_ef, fDistanceOfAnchorFromEdge_OtherSide_y) + ((iNumberAnchors_y_Tension - 1) * designDetails.fs_1_y);
+                designDetails.fA_n_group = Math.Min(fAn_Length_x_group * fAn_Length_y_group, designDetails.iNumberAnchors_t * designDetails.fA_no_group);
 
-            designDetails.fN_b_179_group = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
-            designDetails.fN_b_179a_group = eq_concrete.Eq_17_9a___(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fh_ef);
+                designDetails.fN_b_179_group = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
+                designDetails.fN_b_179a_group = eq_concrete.Eq_17_9a___(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fh_ef);
 
-            if (0.280f <= designDetails.fh_ef && designDetails.fh_ef <= 0.635f && designDetails.fN_b_179_group > designDetails.fN_b_179a_group)
-            {
-                designDetails.fN_b_179_group = designDetails.fN_b_179a_group;
-            }
+                if (0.280f <= designDetails.fh_ef && designDetails.fh_ef <= 0.635f && designDetails.fN_b_179_group > designDetails.fN_b_179a_group)
+                {
+                    designDetails.fN_b_179_group = designDetails.fN_b_179a_group;
+                }
 
-            designDetails.fN_cb_177_group = eq_concrete.Eq_17_7____(designDetails.fPsi_1_group, designDetails.fPsi_2, designDetails.fPsi_3, designDetails.fA_n_group, designDetails.fA_no_group, designDetails.fN_b_179_group);
+                designDetails.fN_cb_177_group = eq_concrete.Eq_17_7____(designDetails.fPsi_1_group, designDetails.fPsi_2, designDetails.fPsi_3, designDetails.fA_n_group, designDetails.fA_no_group, designDetails.fN_b_179_group);
 
-            designDetails.fEta_17572_group = eq_concrete.Eq_17_1____(sDIF_temp.fN_t, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_group);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17572_group);
+                designDetails.fEta_17572_group = eq_concrete.Eq_17_1____(sDIF_temp.fN_t, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_group);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17572_group);
 
-            // Single anchor - edge
-            designDetails.fPsi_1_single = 1.0f;
-            designDetails.fA_no_single = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
-            float fAn_Length_x_single = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
-            float fAn_Length_y_single = Math.Min(designDetails.fc_1_y_Tension, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
-            designDetails.fA_n_single = Math.Min(fAn_Length_x_single * fAn_Length_y_single, designDetails.fA_no_single);
-
-            designDetails.fN_b_179_single = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
-            designDetails.fN_b_179a_single = eq_concrete.Eq_17_9a___(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fh_ef);
-
-            if (0.280f <= designDetails.fh_ef && designDetails.fh_ef <= 0.635f && designDetails.fN_b_179_single > designDetails.fN_b_179a_single)
-            {
-                designDetails.fN_b_179_single = designDetails.fN_b_179a_single;
-            }
-
-            designDetails.fN_cb_177_single = eq_concrete.Eq_17_7____(designDetails.fPsi_1_single, designDetails.fPsi_2, designDetails.fPsi_3, designDetails.fA_n_single, designDetails.fA_no_single, designDetails.fN_b_179_single);
-
-            designDetails.fEta_17572_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_single);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17572_single);
-
-            // 17.5.7.3  Lower characteristic tension pullout strength of anchor
-            // Group of anchors
-            if (anchorArrangement.referenceAnchor.WasherBearing != null)
-            {
-                designDetails.fm_x = anchorArrangement.referenceAnchor.WasherBearing.Width_bx; // Input
-                designDetails.fm_y = anchorArrangement.referenceAnchor.WasherBearing.Height_hy; // Input
-            }
-            else
-            {
-                // TODO - dopracovat navrh kotiev, ktore su chemicke alebo mechanicke a nemaju washer
-                // Mal by to byt samostatny vypoctovy blok aby sa to nepomiesalo so zabetonovanymi
-
-                // Docasne nastavim male rozmery (20x20 mm) aj ked wahserBearing neexistuje
-                designDetails.fm_x = 0.02f; // Input
-                designDetails.fm_y = 0.02f; // Input
-            }
-            designDetails.fA_brg = designDetails.fm_x * designDetails.fm_y; // bearing area of the head of stud or anchor
-            designDetails.fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, designDetails.fA_brg);
-
-            // Modification factor for pullout strength
-            // Ψ4 = 1.0 for concrete cracked at service load levels but with the extent of cracking controlled by reinforcement distributed in accordance with 2.4.4.4 and 2.4.4.5
-            // Ψ4 = 1.4 for concrete with no cracking at service load levels
-            designDetails.fPsi_4 = 1.0f;
-            designDetails.fN_pn_1710_single = eq_concrete.Eq_17_10___(designDetails.fPsi_4, designDetails.fN_p_1711_single);
-            designDetails.fN_pn_1710_group = designDetails.iNumberAnchors_t * designDetails.fN_pn_1710_single;
-
-            designDetails.fEta_17573_group = eq_concrete.Eq_17_1____(sDIF_temp.fN_t, designDetails.fPhi_anchor_tension_173, designDetails.fN_pn_1710_group);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17573_group);
-
-            // The side face blowout strength of a headed anchor with deep embedment close to an edge
-            designDetails.fN_sb_1713_single = float.PositiveInfinity;
-            designDetails.fEta_17574_single = 0;
-
-            if (designDetails.fc_min_Tension < 0.4f * designDetails.fh_ef)
-            {
-                // 17.5.7.4 Lower characteristic concrete side face blowout strength
                 // Single anchor - edge
-                // c1 = distance from the centre of an anchor shaft to the edge of the concrete in the direction in which
-                // the load is applied, mm. If tension is applied to the anchor then c1 = cmin. Where anchors subject
-                // to shear are located in narrow sections of limited thickness, c1 shall not exceed the largest of c2 / 1.5, h / 1.5, or s/ 3
-                designDetails.fc_1_17574 = designDetails.fc_1_y_Tension;
+                designDetails.fPsi_1_single = 1.0f;
+                designDetails.fA_no_single = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
+                float fAn_Length_x_single = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
+                float fAn_Length_y_single = Math.Min(designDetails.fc_1_y_Tension, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
+                designDetails.fA_n_single = Math.Min(fAn_Length_x_single * fAn_Length_y_single, designDetails.fA_no_single);
 
-                if (designDetails.fN_asterix_anchor_uplif > 0) // Tension in anchor
-                    designDetails.fc_1_17574 = designDetails.fc_min_Tension;
+                designDetails.fN_b_179_single = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
+                designDetails.fN_b_179a_single = eq_concrete.Eq_17_9a___(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fh_ef);
 
-                // Anchors subject to shear are located in narrow sections of limited thickness
-                float fc_1_limit = MathF.Max(designDetails.fc_2_x / 1.5f, designDetails.fh_ef / 1.5f, designDetails.fs_min / 3f);
+                if (0.280f <= designDetails.fh_ef && designDetails.fh_ef <= 0.635f && designDetails.fN_b_179_single > designDetails.fN_b_179a_single)
+                {
+                    designDetails.fN_b_179_single = designDetails.fN_b_179a_single;
+                }
 
-                if (designDetails.fc_1_17574 > fc_1_limit)
-                    designDetails.fc_1_17574 = fc_1_limit;
+                designDetails.fN_cb_177_single = eq_concrete.Eq_17_7____(designDetails.fPsi_1_single, designDetails.fPsi_2, designDetails.fPsi_3, designDetails.fA_n_single, designDetails.fA_no_single, designDetails.fN_b_179_single);
 
-                designDetails.fk_1 = eq_concrete.Get_k_1____(designDetails.fc_1_17574, designDetails.fc_2_x);
+                designDetails.fEta_17572_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_single);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17572_single);
 
-                designDetails.fN_sb_1713_single = eq_concrete.Eq_17_13___(designDetails.fk_1, designDetails.fc_1_17574, designDetails.fLambda_53, designDetails.fA_brg, designDetails.ff_apostrophe_c);
+                // 17.5.7.3  Lower characteristic tension pullout strength of anchor
+                // Group of anchors
+                if (anchorArrangement.referenceAnchor.WasherBearing != null)
+                {
+                    designDetails.fm_x = anchorArrangement.referenceAnchor.WasherBearing.Width_bx; // Input
+                    designDetails.fm_y = anchorArrangement.referenceAnchor.WasherBearing.Height_hy; // Input
+                }
+                else
+                {
+                    // TODO - dopracovat navrh kotiev, ktore su chemicke alebo mechanicke a nemaju washer
+                    // Mal by to byt samostatny vypoctovy blok aby sa to nepomiesalo so zabetonovanymi
 
-                designDetails.fEta_17574_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_sb_1713_single);
-                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17574_single);
-            }
+                    // Docasne nastavim male rozmery (20x20 mm) aj ked wahserBearing neexistuje
+                    designDetails.fm_x = 0.02f; // Input
+                    designDetails.fm_y = 0.02f; // Input
+                }
+                designDetails.fA_brg = designDetails.fm_x * designDetails.fm_y; // bearing area of the head of stud or anchor
+                designDetails.fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, designDetails.fA_brg);
 
-            // Lower characteristic strength in tension
-            designDetails.fN_n_nominal_min = MathF.Min(
-                designDetails.fN_s_176_group,                                       // 17.5.7.1
-                designDetails.fN_cb_177_group,                                      // 17.5.7.2
-                designDetails.iNumberAnchors_t * designDetails.fN_cb_177_single,    // 17.5.7.2
-                designDetails.fN_pn_1710_group,                                     // 17.5.7.3
-                designDetails.iNumberAnchors_t * designDetails.fN_sb_1713_single);  // 17.5.7.4
+                // Modification factor for pullout strength
+                // Ψ4 = 1.0 for concrete cracked at service load levels but with the extent of cracking controlled by reinforcement distributed in accordance with 2.4.4.4 and 2.4.4.5
+                // Ψ4 = 1.4 for concrete with no cracking at service load levels
+                designDetails.fPsi_4 = 1.0f;
+                designDetails.fN_pn_1710_single = eq_concrete.Eq_17_10___(designDetails.fPsi_4, designDetails.fN_p_1711_single);
+                designDetails.fN_pn_1710_group = designDetails.iNumberAnchors_t * designDetails.fN_pn_1710_single;
 
-            // Lower design strength in tension
-            designDetails.fN_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
-                designDetails.fPhi_anchor_tension_173 * designDetails.fN_s_176_group,                                         // 17.5.7.1
-                designDetails.fPhi_concrete_tension_174a * designDetails.fN_cb_177_group,                                     // 17.5.7.2
-                designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * designDetails.fN_cb_177_single,   // 17.5.7.2
-                designDetails.fPhi_anchor_tension_173 * designDetails.fN_pn_1710_group,                                       // 17.5.7.3
-                designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * designDetails.fN_sb_1713_single); // 17.5.7.4
+                designDetails.fEta_17573_group = eq_concrete.Eq_17_1____(sDIF_temp.fN_t, designDetails.fPhi_anchor_tension_173, designDetails.fN_pn_1710_group);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17573_group);
 
-            // 17.5.8 Lower characteristic strength of anchor in shear
+                // The side face blowout strength of a headed anchor with deep embedment close to an edge
+                designDetails.fN_sb_1713_single = float.PositiveInfinity;
+                designDetails.fEta_17574_single = 0;
 
-            // 17.5.8.1 Lower characteristic shear strength of steel of anchor
-            // Group of anchors
+                if (designDetails.fc_min_Tension < 0.4f * designDetails.fh_ef)
+                {
+                    // 17.5.7.4 Lower characteristic concrete side face blowout strength
+                    // Single anchor - edge
+                    // c1 = distance from the centre of an anchor shaft to the edge of the concrete in the direction in which
+                    // the load is applied, mm. If tension is applied to the anchor then c1 = cmin. Where anchors subject
+                    // to shear are located in narrow sections of limited thickness, c1 shall not exceed the largest of c2 / 1.5, h / 1.5, or s/ 3
+                    designDetails.fc_1_17574 = designDetails.fc_1_y_Tension;
 
-            // Rozlisovat typ kotvy - rovnica 17-14 alebo 17-15
-            if (designDetails.bIsCastInHeadedStud) // 17-14
-                designDetails.fV_s_17581_group = designDetails.fV_s_1714_group = eq_concrete.Eq_17_14___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
-            else // 17-15
-                designDetails.fV_s_17581_group = designDetails.fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
+                    if (designDetails.fN_asterix_anchor_uplif > 0) // Tension in anchor
+                        designDetails.fc_1_17574 = designDetails.fc_min_Tension;
 
-            designDetails.fEta_17581_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_anchor_shear_174, designDetails.fV_s_17581_group);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17573_group);
+                    // Anchors subject to shear are located in narrow sections of limited thickness
+                    float fc_1_limit = MathF.Max(designDetails.fc_2_x / 1.5f, designDetails.fh_ef / 1.5f, designDetails.fs_min / 3f);
 
-            // 17.5.8.2 Lower characteristic concrete breakout strength of the anchor in shear perpendicular to edge
-            // Group of anchors
+                    if (designDetails.fc_1_17574 > fc_1_limit)
+                        designDetails.fc_1_17574 = fc_1_limit;
 
-            designDetails.fe_apostrophe_v = 0; // TODO dopracovat
-            designDetails.fPsi_5_group = eq_concrete.Eq_17_18___(designDetails.fc_1_y_Shear, designDetails.fe_apostrophe_v, designDetails.fs_2_x); // s - perpendicular to shear force - Figure C17.7 – Definition of dimensions e´
-            designDetails.fPsi_6 = eq_concrete.Get_Psi_6__(designDetails.fc_1_y_Shear, designDetails.fc_2_x);
+                    designDetails.fk_1 = eq_concrete.Get_k_1____(designDetails.fc_1_17574, designDetails.fc_2_x);
 
-            // Ψ7 = modification factor for cracked concrete, given by:
-            // Ψ7 = 1.0 for anchors in cracked concrete with no supplementary reinforcement or with smaller than 12 mm diameter reinforcing bar as supplementary reinforcement
-            // Ψ7 = 1.2 for anchors in cracked concrete with a 12 mm diameter reinforcing bar or greater as supplementary reinforcement
-            // Ψ7 = 1.4 for concrete that is not cracked at service load levels.
-            designDetails.fPsi_7 = 1.0f;
+                    designDetails.fN_sb_1713_single = eq_concrete.Eq_17_13___(designDetails.fk_1, designDetails.fc_1_17574, designDetails.fLambda_53, designDetails.fA_brg, designDetails.ff_apostrophe_c);
 
-            designDetails.fA_vo = 2 * (1.5f * designDetails.fc_1_y_Shear) * (1.5f * designDetails.fc_1_y_Shear); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
-            float fAv_Length_x_group = Math.Min(1.5f * designDetails.fc_1_y_Shear, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fc_2_x) + (iNumberAnchors_x - 1) * designDetails.fs_2_x;
-            float fAv_Depth_h = Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fFootingHeight);
-            designDetails.fA_v_group = fAv_Length_x_group * fAv_Depth_h; // projected concrete failure area of an anchor or group of anchors in shear
-            designDetails.fd_o = designDetails.fd_f;
+                    designDetails.fEta_17574_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_sb_1713_single);
+                    fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17574_single);
+                }
 
-            designDetails.fk_2 = 0.6f;
-            designDetails.fl = Math.Min(designDetails.fh_ef, 8f * designDetails.fd_o); // load-bearing length of anchors for shear, equal to hef for anchors with constant stiffness over the full length of the embedded section but less than 8do.Shall be taken as 0.8 times the effective embedment depth for hooked metal plates.
+                // Lower characteristic strength in tension
+                designDetails.fN_n_nominal_min = MathF.Min(
+                    designDetails.fN_s_176_group,                                       // 17.5.7.1
+                    designDetails.fN_cb_177_group,                                      // 17.5.7.2
+                    designDetails.iNumberAnchors_t * designDetails.fN_cb_177_single,    // 17.5.7.2
+                    designDetails.fN_pn_1710_group,                                     // 17.5.7.3
+                    designDetails.iNumberAnchors_t * designDetails.fN_sb_1713_single);  // 17.5.7.4
 
-            if (designDetails.iNumberAnchors != 1 && designDetails.fs_min != 0 && designDetails.fs_min < 0.065f)
-                throw new Exception("Distance between anchors s is smaller than 65 mm.");
+                // Lower design strength in tension
+                designDetails.fN_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
+                    designDetails.fPhi_anchor_tension_173 * designDetails.fN_s_176_group,                                         // 17.5.7.1
+                    designDetails.fPhi_concrete_tension_174a * designDetails.fN_cb_177_group,                                     // 17.5.7.2
+                    designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * designDetails.fN_cb_177_single,   // 17.5.7.2
+                    designDetails.fPhi_anchor_tension_173 * designDetails.fN_pn_1710_group,                                       // 17.5.7.3
+                    designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * designDetails.fN_sb_1713_single); // 17.5.7.4
 
-            designDetails.fV_b_1717a = eq_concrete.Eq_17_17a__(designDetails.fk_2, designDetails.fl, designDetails.fd_o, designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y_Shear);
-            designDetails.fV_b_1717b = eq_concrete.Eq_17_17b__(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y_Shear);
-            designDetails.fV_b_1717 = Math.Min(designDetails.fV_b_1717a, designDetails.fV_b_1717b);
-            designDetails.fV_cb_1716_group = eq_concrete.Eq_17_16___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
+                // 17.5.8 Lower characteristic strength of anchor in shear
 
-            designDetails.fEta_17582_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_group);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17582_group);
+                // 17.5.8.1 Lower characteristic shear strength of steel of anchor
+                // Group of anchors
 
-            // Single of anchor - edge
+                // Rozlisovat typ kotvy - rovnica 17-14 alebo 17-15
+                if (designDetails.bIsCastInHeadedStud) // 17-14
+                    designDetails.fV_s_17581_group = designDetails.fV_s_1714_group = eq_concrete.Eq_17_14___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
+                else // 17-15
+                    designDetails.fV_s_17581_group = designDetails.fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
 
-            designDetails.fPsi_5_single = 1.0f;
-            float fAv_Length_x_single = Math.Min(1.5f * designDetails.fc_1_y_Shear, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fc_2_x);
-            designDetails.fA_v_single = fAv_Length_x_single * fAv_Depth_h;
-            designDetails.fV_cb_1716_single = eq_concrete.Eq_17_16___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
+                designDetails.fEta_17581_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_anchor_shear_174, designDetails.fV_s_17581_group);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17573_group);
 
-            designDetails.fEta_17582_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_single);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17582_single);
+                // 17.5.8.2 Lower characteristic concrete breakout strength of the anchor in shear perpendicular to edge
+                // Group of anchors
 
-            // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
-            // Group of anchors
-            // TODO - zohladnit len paralelnu smykovu silu Vx ???
+                designDetails.fe_apostrophe_v = 0; // TODO dopracovat
+                designDetails.fPsi_5_group = eq_concrete.Eq_17_18___(designDetails.fc_1_y_Shear, designDetails.fe_apostrophe_v, designDetails.fs_2_x); // s - perpendicular to shear force - Figure C17.7 – Definition of dimensions e´
+                designDetails.fPsi_6 = eq_concrete.Get_Psi_6__(designDetails.fc_1_y_Shear, designDetails.fc_2_x);
 
-            designDetails.fV_cb_1721_group = eq_concrete.Eq_17_21___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_7, designDetails.fV_b_1717);
+                // Ψ7 = modification factor for cracked concrete, given by:
+                // Ψ7 = 1.0 for anchors in cracked concrete with no supplementary reinforcement or with smaller than 12 mm diameter reinforcing bar as supplementary reinforcement
+                // Ψ7 = 1.2 for anchors in cracked concrete with a 12 mm diameter reinforcing bar or greater as supplementary reinforcement
+                // Ψ7 = 1.4 for concrete that is not cracked at service load levels.
+                designDetails.fPsi_7 = 1.0f;
 
-            designDetails.fEta_17583_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_group);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17583_group);
+                designDetails.fA_vo = 2 * (1.5f * designDetails.fc_1_y_Shear) * (1.5f * designDetails.fc_1_y_Shear); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
+                float fAv_Length_x_group = Math.Min(1.5f * designDetails.fc_1_y_Shear, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fc_2_x) + (iNumberAnchors_x - 1) * designDetails.fs_2_x;
+                float fAv_Depth_h = Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fFootingHeight);
+                designDetails.fA_v_group = fAv_Length_x_group * fAv_Depth_h; // projected concrete failure area of an anchor or group of anchors in shear
+                designDetails.fd_o = designDetails.fd_f;
 
-            // Single anchor - edge
-            designDetails.fV_cb_1721_single = eq_concrete.Eq_17_21___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_7, designDetails.fV_b_1717);
+                designDetails.fk_2 = 0.6f;
+                designDetails.fl = Math.Min(designDetails.fh_ef, 8f * designDetails.fd_o); // load-bearing length of anchors for shear, equal to hef for anchors with constant stiffness over the full length of the embedded section but less than 8do.Shall be taken as 0.8 times the effective embedment depth for hooked metal plates.
 
-            designDetails.fEta_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_single);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17583_single);
+                if (designDetails.iNumberAnchors != 1 && designDetails.fs_min != 0 && designDetails.fs_min < 0.065f)
+                    throw new Exception("Distance between anchors s is smaller than 65 mm.");
 
-            // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
-            // Group of anchors
+                designDetails.fV_b_1717a = eq_concrete.Eq_17_17a__(designDetails.fk_2, designDetails.fl, designDetails.fd_o, designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y_Shear);
+                designDetails.fV_b_1717b = eq_concrete.Eq_17_17b__(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y_Shear);
+                designDetails.fV_b_1717 = Math.Min(designDetails.fV_b_1717a, designDetails.fV_b_1717b);
+                designDetails.fV_cb_1716_group = eq_concrete.Eq_17_16___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            designDetails.fN_cb_17584_group = Math.Min(designDetails.fN_pn_1710_group, designDetails.fN_cb_177_group); // ??? Zohladnit aj N_pn ???
-            designDetails.fk_cp_17584 = eq_concrete.Get_k_cp___(designDetails.fh_ef);
-            designDetails.fV_cp_1722_group = eq_concrete.Eq_17_22___(designDetails.fk_cp_17584, designDetails.fN_cb_17584_group);
+                designDetails.fEta_17582_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_group);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17582_group);
 
-            designDetails.fEta_17584_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cp_1722_group);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17584_group);
+                // Single of anchor - edge
 
-            // Lower characteristic strength in shear
-            designDetails.fV_n_nominal_min = MathF.Min(
-                designDetails.fV_s_17581_group,                                     // 17.5.8.1
-                designDetails.fV_cb_1716_group,                                     // 17.5.8.2
-                designDetails.iNumberAnchors_v * designDetails.fV_cb_1716_single,   // 17.5.8.2
-                designDetails.fV_cb_1721_group,                                     // 17.5.8.3
-                designDetails.iNumberAnchors_v * designDetails.fV_cb_1721_single,   // 17.5.8.3
-                designDetails.fV_cp_1722_group);                                    // 17.5.8.4
+                designDetails.fPsi_5_single = 1.0f;
+                float fAv_Length_x_single = Math.Min(1.5f * designDetails.fc_1_y_Shear, fDistanceOfAnchorFromEdge_OtherSide_x) + Math.Min(1.5f * designDetails.fc_1_y_Shear, designDetails.fc_2_x);
+                designDetails.fA_v_single = fAv_Length_x_single * fAv_Depth_h;
+                designDetails.fV_cb_1716_single = eq_concrete.Eq_17_16___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            // Lower design strength in shear
-            designDetails.fV_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
-                designDetails.fPhi_anchor_shear_174 * designDetails.fV_s_17581_group,                                          // 17.5.8.1
-                designDetails.fPhi_concrete_shear_174b * designDetails.fV_cb_1716_group,                                       // 17.5.8.2
-                designDetails.fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * designDetails.fV_cb_1716_single,     // 17.5.8.2
-                designDetails.fPhi_concrete_shear_174b * designDetails.fV_cb_1721_group,                                       // 17.5.8.3
-                designDetails.fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * designDetails.fV_cb_1721_single,     // 17.5.8.3
-                designDetails.fPhi_concrete_shear_174b * designDetails.fV_cp_1722_group);                                      // 17.5.8.4
+                designDetails.fEta_17582_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_single);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17582_single);
 
-            // 17.5.6.6 Interaction of tension and shear – simplified procedures
-            // Group of anchors
+                // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
+                // Group of anchors
+                // TODO - zohladnit len paralelnu smykovu silu Vx ???
 
-            // 17.5.6.6(Eq. 17–5)
-            designDetails.fEta_17566_group = eq_concrete.Eq_17566___(sDIF_temp.fN_t, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
-            fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17566_group);
+                designDetails.fV_cb_1721_group = eq_concrete.Eq_17_21___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            // C17.5.6.6 (Figure C17.1)
-            bool bUseC17566Equation = false; // TODO Option do GUI
-            float fEta_C17566_group = 0;
+                designDetails.fEta_17583_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_group);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17583_group);
 
-            if (bUseC17566Equation)
-            {
-                fEta_C17566_group = eq_concrete.Eq_C17566__(sDIF_temp.fN_t, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
-                fEta_max_footing = MathF.Max(fEta_max_footing, fEta_C17566_group);
+                // Single anchor - edge
+                designDetails.fV_cb_1721_single = eq_concrete.Eq_17_21___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_7, designDetails.fV_b_1717);
+
+                designDetails.fEta_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_single);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17583_single);
+
+                // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
+                // Group of anchors
+
+                designDetails.fN_cb_17584_group = Math.Min(designDetails.fN_pn_1710_group, designDetails.fN_cb_177_group); // ??? Zohladnit aj N_pn ???
+                designDetails.fk_cp_17584 = eq_concrete.Get_k_cp___(designDetails.fh_ef);
+                designDetails.fV_cp_1722_group = eq_concrete.Eq_17_22___(designDetails.fk_cp_17584, designDetails.fN_cb_17584_group);
+
+                designDetails.fEta_17584_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cp_1722_group);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17584_group);
+
+                // Lower characteristic strength in shear
+                designDetails.fV_n_nominal_min = MathF.Min(
+                    designDetails.fV_s_17581_group,                                     // 17.5.8.1
+                    designDetails.fV_cb_1716_group,                                     // 17.5.8.2
+                    designDetails.iNumberAnchors_v * designDetails.fV_cb_1716_single,   // 17.5.8.2
+                    designDetails.fV_cb_1721_group,                                     // 17.5.8.3
+                    designDetails.iNumberAnchors_v * designDetails.fV_cb_1721_single,   // 17.5.8.3
+                    designDetails.fV_cp_1722_group);                                    // 17.5.8.4
+
+                // Lower design strength in shear
+                designDetails.fV_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
+                    designDetails.fPhi_anchor_shear_174 * designDetails.fV_s_17581_group,                                          // 17.5.8.1
+                    designDetails.fPhi_concrete_shear_174b * designDetails.fV_cb_1716_group,                                       // 17.5.8.2
+                    designDetails.fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * designDetails.fV_cb_1716_single,     // 17.5.8.2
+                    designDetails.fPhi_concrete_shear_174b * designDetails.fV_cb_1721_group,                                       // 17.5.8.3
+                    designDetails.fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * designDetails.fV_cb_1721_single,     // 17.5.8.3
+                    designDetails.fPhi_concrete_shear_174b * designDetails.fV_cp_1722_group);                                      // 17.5.8.4
+
+                // 17.5.6.6 Interaction of tension and shear – simplified procedures
+                // Group of anchors
+
+                // 17.5.6.6(Eq. 17–5)
+                designDetails.fEta_17566_group = eq_concrete.Eq_17566___(sDIF_temp.fN_t, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
+                fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_17566_group);
+
+                // C17.5.6.6 (Figure C17.1)
+                bool bUseC17566Equation = false; // TODO Option do GUI
+                float fEta_C17566_group = 0;
+
+                if (bUseC17566Equation)
+                {
+                    fEta_C17566_group = eq_concrete.Eq_C17566__(sDIF_temp.fN_t, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
+                    fEta_max_footing = MathF.Max(fEta_max_footing, fEta_C17566_group);
+                }
             }
 
             // Footings
@@ -2053,8 +2055,8 @@ namespace M_AS4600
 
                 //if() - TODO ONDREJ - tu potrebujem vediet typ kombinacie, aky pocitam, ak je to EQ, tak musim pouzit iny faktor pre kapacitu podlozia
                 designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactor_Phi; // TODO - zistit aky je faktor
-                                                                                              // else
-                                                                                              //designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactorEQ_Phi;
+                // else
+                //designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactorEQ_Phi;
 
                 designDetails.fEta_footing_bearing = designDetails.fPressure_bearing / (designDetails.fSafetyFactor * designDetails.fc_nominal_soil_bearing_capacity);
                 fEta_max_footing = MathF.Max(fEta_max_footing, designDetails.fEta_footing_bearing);
@@ -2246,7 +2248,7 @@ namespace M_AS4600
                 designDetails.fEta_17583_single < 0 ||
                 designDetails.fEta_17584_group < 0 ||
                 designDetails.fEta_17566_group < 0 ||
-                fEta_C17566_group < 0 ||
+                //fEta_C17566_group < 0 ||
                 designDetails.fEta_footing_uplift < 0 ||
                 designDetails.fEta_footing_bearing < 0 ||
                 designDetails.fEta_bending_M_footing_xDirection_top < 0 ||

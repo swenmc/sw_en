@@ -194,7 +194,8 @@ namespace BaseClasses
                 basePlate.x_plus_plateEdge_to_pad = x_plateEdge_to_pad_basic + feccentricity_x;
                 basePlate.y_plus_plateEdge_to_pad = y_plateEdge_to_pad_basic + feccentricity_y;
 
-                basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad);
+                if(basePlate.AnchorArrangement != null)
+                   basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad);
             }
         }
 
