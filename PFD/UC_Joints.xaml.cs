@@ -1614,6 +1614,10 @@ namespace PFD
             {
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
                 CPlateHelper.DataGridGeometryParams_ValueChanged(item, plate);
+
+                //To Mato - Task 553
+                plate.UpdateControlPoint();
+                joint.UpdateMainMemberAlignment();
                                 
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
 

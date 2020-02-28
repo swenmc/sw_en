@@ -827,5 +827,14 @@ namespace BaseClasses
                     }
             }
         }
+
+        //To Mato - Task 553
+        public void UpdateControlPoint()
+        {
+            m_pControlPoint.X += 10;
+            m_pControlPoint.Y += 10;
+            m_pControlPoint.Z += 10;
+
+        }
     }
 }

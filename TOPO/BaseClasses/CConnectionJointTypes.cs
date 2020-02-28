@@ -227,5 +227,15 @@ namespace BaseClasses
         {
             return null;
         }
+
+        public void UpdateMainMemberAlignment()
+        {
+            //To Mato - Task 553
+            if (m_MainMember != null)
+            {
+                m_MainMember.FAlignment_Start += 10;
+                m_MainMember.FAlignment_End += 10;
+            }
+        }
     }
 }
