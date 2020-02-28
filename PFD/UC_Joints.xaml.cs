@@ -845,12 +845,10 @@ namespace PFD
                 spAA.Children.Add(selectAA);
                 sp.Children.Add(spAA);
 
-                if (basePlate.AnchorArrangement != null)
-                {
-                    List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
-                    //lAA.SetValue(Grid.RowProperty, 0);
-                    sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));
-                }
+                
+                //ak by bol AnchorArrangement null - tak sa aj tak zobrazi prazdny grid - kvoli zachovaniu indexov
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);                    
+                sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));                
             }
 
             // Screw Arrangement

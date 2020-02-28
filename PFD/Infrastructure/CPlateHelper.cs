@@ -1444,6 +1444,16 @@ namespace PFD
         public static void AnchorArrangementChanged(CConnectionJointTypes joint, CPlate plate, int anchorArrangementIndex)
         {
             // TODO Toto potrebujem nejako dorobit alebo zlucit s ScrewArrangementChanged
+
+            if (plate is CConCom_Plate_B_basic)
+            {
+                CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
+                bool uniformDistributionOfShear = false; // TODO - Todo by malo prist z nastavenia design options
+
+                CConCom_Plate_B_basic plate_B_Basic = (CConCom_Plate_B_basic)plate;
+                if (anchorArrangementIndex == 0) plate_B_Basic.AnchorArrangement = null;
+                else plate_B_Basic.AnchorArrangement = new CAnchorArrangement_BB_BG(plate.Name, referenceAnchor, uniformDistributionOfShear);
+            }
         }
 
         public static void ScrewArrangementChanged(CConnectionJointTypes joint, CPlate plate, int screwArrangementIndex)
