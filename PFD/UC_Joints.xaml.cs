@@ -1371,7 +1371,7 @@ namespace PFD
             }
 
             if (anchorArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
-                dgAA.Visibility = Visibility.Hidden;
+                dgAA.Visibility = Visibility.Collapsed;
 
             return dgAA;
         }
