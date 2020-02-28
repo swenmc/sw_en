@@ -839,16 +839,17 @@ namespace PFD
                 marginAA.Bottom = 5;
                 selectAA.Margin = marginAA;
                 selectAA.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
-                selectAA.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);               
+                selectAA.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
                 selectAA.SelectionChanged += SelectAA_SelectionChanged;
                 spAA.Children.Add(lAA);
                 spAA.Children.Add(selectAA);
                 sp.Children.Add(spAA);
 
-                
                 //ak by bol AnchorArrangement null - tak sa aj tak zobrazi prazdny grid - kvoli zachovaniu indexov
-                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);                    
-                sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));                
+                // TO Ondrej - to sa mi nepaci. Da sa riadok s hlavickami stlpcov akokeby zobrazit ale pritom bude neviditelny?
+                // Pridal som tam podmienku ze aj je pocet parametrov 0 tak sa nastavi pre datagrid visibility.Hidden, ale datagrid ako objekt sa medzi children prida
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+                sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));
             }
 
             // Screw Arrangement
@@ -1369,6 +1370,9 @@ namespace PFD
                 cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
             }
 
+            if (anchorArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
+                dgAA.Visibility = Visibility.Hidden;
+
             return dgAA;
         }
         private void HandleAnchorArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -1484,6 +1488,9 @@ namespace PFD
             {
                 cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
             }
+
+            if (screwArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
+                dgSA.Visibility = Visibility.Hidden;
 
             return dgSA;
         }
