@@ -847,7 +847,7 @@ namespace PFD
 
                 //ak by bol AnchorArrangement null - tak sa aj tak zobrazi prazdny grid - kvoli zachovaniu indexov
                 // TO Ondrej - to sa mi nepaci. Da sa riadok s hlavickami stlpcov akokeby zobrazit ale pritom bude neviditelny?
-                // Pridal som tam podmienku ze aj je pocet parametrov 0 tak sa nastavi pre datagrid visibility.Hidden, ale datagrid ako objekt sa medzi children prida
+                // Pridal som tam podmienku ze ak je pocet parametrov 0 tak sa nastavi pre datagrid Visibility.Hidden, ale datagrid ako objekt sa medzi children prida
                 List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
                 sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));
             }
