@@ -61,6 +61,9 @@ namespace CRSC
             CSColor = color_temp;
             m_fd = fh - 2 * ft;
 
+            // Load Cross-section Database Values - based on cross-section Name_short
+            //FillCrScPropertiesByTableData();
+
             // Create Array - allocate memory
             CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data

@@ -77,6 +77,9 @@ namespace CRSC
             fz_stif = 0.13f;
             fy_stif = 0.04f;
 
+            // Load Cross-section Database Values - based on cross-section Name_short
+            FillCrScPropertiesByTableData();
+
             // Create Array - allocate memory
             //CrScPointsOut = new float[ITotNoPoints, 2];
             CrScPointsOut = new List<Point>(ITotNoPoints);
@@ -86,8 +89,8 @@ namespace CRSC
 
             ChangeCoordToCentroid(); // Temp - TODO doriesit zadavanie bodov (CW, CCW), osove systemy, orientaciu os a zjednotit zadanie pre vsetky prierezy
 
+            // SOLID MODEL
             // Fill list of indices for drawing of surface - triangles edges
-
             // Particular indices - distinguished colors of member surfaces
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
@@ -96,10 +99,9 @@ namespace CRSC
             // Complex indices - one color or member
             loadCrScIndices();
 
-            // Wireframe Indices
+            // WIREFRAME MODEL
+            // Complex indices
             loadCrScWireFrameIndices();
-
-            FillCrScPropertiesByTableData();
         }
 
         public void CalcCrSc_Coord()

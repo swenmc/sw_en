@@ -45,6 +45,10 @@ namespace CRSC
             Name_long = "I " + (fh * 1000).ToString() + (ft * 1000).ToString();
             Name_short = (fh * 1000).ToString() + (ft * 1000).ToString();
 
+            // Temporary
+            Name_long = "C " + "270" + (ft * 1000 * 100).ToString() + " back to back";
+            Name_short = "270" + (ft * 1000 * 100).ToString() + "btb";
+
             CSColor = color_temp;  // Set cross-section color
 
             IsShapeSolid = true;
@@ -58,6 +62,9 @@ namespace CRSC
 
             CSColor = color_temp;
             m_fd = fh - 2 * ft;
+
+            // Load Cross-section Database Values - based on cross-section Name_short
+            FillCrScPropertiesByTableData();
 
             // Create Array - allocate memory
             CrScPointsOut = new List<Point>(ITotNoPoints);
