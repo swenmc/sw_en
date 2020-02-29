@@ -830,8 +830,8 @@ namespace PFD
                 spAA.Orientation = Orientation.Horizontal;
                 Label lAA = new Label() { Content = "Anchor Arrangement: " };
                 lAA.Width = 150;
-                ComboBox selectAA = new ComboBox();   
-                
+                ComboBox selectAA = new ComboBox();
+
                 selectAA.Width = 120;
                 selectAA.Height = 20;
                 var marginAA = selectAA.Margin;
@@ -913,7 +913,7 @@ namespace PFD
             string componentName = cb.SelectedValue.ToString();
 
             paramsChanged = true;
-            
+
             float fb_R; // Rafter Width
             float fb_B; // Wind Post Width
             float fb; // in plane XY -X coord
@@ -937,7 +937,7 @@ namespace PFD
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             float fCrsc_h = 0.27f; // Default depth of connected member cross-section
-            
+
             CDatabaseComponents dcomponents = new CDatabaseComponents();
 
             switch (plate.m_ePlateSerieType_FS)
@@ -1234,7 +1234,7 @@ namespace PFD
             if (joint == null) return;
 
             ComboBox cbAA = sender as ComboBox;
-            if (cbAA == null) return;            
+            if (cbAA == null) return;
 
             paramsChanged = true;
             ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
@@ -1521,7 +1521,7 @@ namespace PFD
                 }
             }
             vm.ChangedScrewArrangementParameter = item;
-            
+
 
             //foreach (CConnectionJointTypes joint in list_joints)
             //{
@@ -1618,7 +1618,7 @@ namespace PFD
                 //To Mato - Task 553
                 plate.UpdateControlPoint();
                 joint.UpdateMainMemberAlignment();
-                                
+
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
 
                 int geometryGridIndex = 4;
@@ -1842,6 +1842,11 @@ namespace PFD
                 foreach (CConnectionJointTypes joint in sameJoints)
                 {
                     joint.m_arrPlates = refJoint.m_arrPlates;
+                    //To Mato - skusal som odpamatavat control points, skusal som vola hocijake metody vid nizsie ale nic nepomaha
+                    //foreach (CPlate plate in joint.m_arrPlates)
+                    //{
+                    //    plate.UpdatePlateData(plate.ScrewArrangement);
+                    //}
                 }
             }
 
