@@ -2084,23 +2084,38 @@ namespace PFD
         private void CheckDoorsBays(DoorProperties d)
         {
             if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
+
             if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
             {
-                //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri
-                int bayNum = GetFreeBayFor(d);
-                if (bayNum == -1)
-                {
-                    throw new Exception($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
-                    //PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
-                }
-                else
-                {
-                    d.IsSetFromCode = true;
-                    d.iBayNumber = bayNum;
-                    d.IsSetFromCode = false;
-                }
+                throw new Exception($"This bay is already occupied with a door.");
+            }
+
+            if (MWindowBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() == 1)
+            {
+                throw new Exception($"This bay is already occupied with a window.");
             }
         }
+
+        //private void CheckDoorsBays(DoorProperties d)
+        //{
+        //    if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
+        //    if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
+        //    {
+        //        //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri
+        //        int bayNum = GetFreeBayFor(d);
+        //        if (bayNum == -1)
+        //        {
+        //            throw new Exception($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
+        //            //PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
+        //        }
+        //        else
+        //        {
+        //            d.IsSetFromCode = true;
+        //            d.iBayNumber = bayNum;
+        //            d.IsSetFromCode = false;
+        //        }
+        //    }
+        //}
 
         private void SetWindowsBays(bool check = true)
         {
@@ -2149,12 +2164,25 @@ namespace PFD
             if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
             if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
             {
-                //w.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie okna
-                int bayNum = GetFreeBayFor(w);
-                if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{w.sBuildingSide}]");
-                else w.iBayNumber = bayNum;
+                throw new Exception("The position is already occupied with a window.");
+            }
+            if (MDoorBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() == 1)
+            {
+                throw new Exception("The position is already occupied with a door.");                
             }
         }
+
+        //private void CheckWindowsBays(WindowProperties w)
+        //{
+        //    if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
+        //    if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
+        //    {
+        //        //w.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie okna
+        //        int bayNum = GetFreeBayFor(w);
+        //        if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{w.sBuildingSide}]");
+        //        else w.iBayNumber = bayNum;
+        //    }
+        //}
 
         private int GetFreeBayFor(WindowProperties win)
         {
@@ -3027,6 +3055,8 @@ namespace PFD
             }
             catch (Exception ex)
             {
+                //task 551
+                //toto este prerobit tak,ze zdetekuje koliziu dveri a okna
                 PFDMainWindow.ShowMessageBoxInPFDWindow(ex.Message);
                 //bug 436
                 //tu by som chcel reagovat na to,ze neexistuje volna bay, zistit koliziu = ze su rovnake objekty a jeden surovo zmazat
@@ -3042,8 +3072,43 @@ namespace PFD
 
         private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
-            SetResultsAreNotValid();
-            this.PropertyChanged(sender, e);
+            try
+            {
+                if (e.PropertyName == "sBuildingSide")
+                {
+                    SetResultsAreNotValid();
+                    if (sender is DoorProperties) SetDoorsBays(sender as DoorProperties);
+                    if (sender is WindowProperties) SetWindowsBays(sender as WindowProperties);
+                }
+                else if (e.PropertyName == "iBayNumber")
+                {
+                    SetResultsAreNotValid();
+                    if (sender is DoorProperties) CheckDoorsBays(sender as DoorProperties);
+                    if (sender is WindowProperties) CheckWindowsBays(sender as WindowProperties);
+                }
+                else if (e.PropertyName == "fWindowsHeight" || e.PropertyName == "fWindowsWidth" || e.PropertyName == "fWindowCoordinateXinBay" || e.PropertyName == "fWindowCoordinateZinBay")
+                {
+                    SetResultsAreNotValid();
+                }                
+                this.PropertyChanged(sender, e);
+            }
+            catch (Exception ex)
+            {
+                //task 551
+                //toto este prerobit tak,ze zdetekuje koliziu dveri a okna
+                PFDMainWindow.ShowMessageBoxInPFDWindow(ex.Message);
+                //bug 436
+                //tu by som chcel reagovat na to,ze neexistuje volna bay, zistit koliziu = ze su rovnake objekty a jeden surovo zmazat
+                var duplicates = WindowBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() > 1).Select(g => g.FirstOrDefault());
+                if (duplicates.Count() > 0)
+                {
+                    var windowsProps = WindowBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() == 1).Select(g => g.FirstOrDefault()).ToList();
+                    windowsProps.AddRange(duplicates);
+                    WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowsProps);
+                }
+            }
+
+            
         }
 
         private void HandleComponentInfoPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
