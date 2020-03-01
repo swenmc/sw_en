@@ -2063,7 +2063,12 @@ namespace PFD
             else if (d.sBuildingSide == "Left" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
             else if (d.sBuildingSide == "Right" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
 
-            CheckDoorsBays(d);
+            if (!CheckDoorsBays(d))
+            {
+                this.IsSetFromCode = true;
+                d.sBuildingSide = d.sBuildingSide_old;
+                this.IsSetFromCode = false;
+            }
         }
 
         private void CheckDoorsBays()
@@ -2081,19 +2086,24 @@ namespace PFD
             }
         }
 
-        private void CheckDoorsBays(DoorProperties d)
+        private bool CheckDoorsBays(DoorProperties d)
         {
+            bool isValid = true;
             if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
 
             if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
             {
-                throw new Exception($"This bay is already occupied with a door.");
+                PFDMainWindow.ShowMessageBoxInPFDWindow("This bay is already occupied with a door.");
+                isValid = false;
+                //throw new Exception($"This bay is already occupied with a door.");
             }
-
             if (MWindowBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() == 1)
             {
-                throw new Exception($"This bay is already occupied with a window.");
+                PFDMainWindow.ShowMessageBoxInPFDWindow("This bay is already occupied with a window.");
+                isValid = false;
+                //throw new Exception($"This bay is already occupied with a window.");
             }
+            return isValid;
         }
 
         //private void CheckDoorsBays(DoorProperties d)
@@ -2126,7 +2136,10 @@ namespace PFD
                 else if (w.sBuildingSide == "Left" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
                 else if (w.sBuildingSide == "Right" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
             }
-            if(check) CheckWindowsBays();
+            if (check)
+            {
+                CheckWindowsBays();
+            }            
         }
 
         private void SetWindowsBays(WindowProperties w)
@@ -2136,7 +2149,10 @@ namespace PFD
             else if (w.sBuildingSide == "Left" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
             else if (w.sBuildingSide == "Right" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
 
-            CheckWindowsBays(w);
+            if (!CheckWindowsBays(w))
+            {
+                w.sBuildingSide = w.sBuildingSide_old;
+            }
         }
 
         private void CheckWindowsBays()
@@ -2159,17 +2175,21 @@ namespace PFD
             }
         }
 
-        private void CheckWindowsBays(WindowProperties w)
+        private bool CheckWindowsBays(WindowProperties w)
         {
+            bool isValid = true;
             if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
             if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
             {
-                throw new Exception("The position is already occupied with a window.");
+                PFDMainWindow.ShowMessageBoxInPFDWindow("The position is already occupied with a window.");                
+                isValid = false;
             }
             if (MDoorBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() == 1)
             {
-                throw new Exception("The position is already occupied with a door.");                
+                PFDMainWindow.ShowMessageBoxInPFDWindow("The position is already occupied with a door.");                
+                isValid = false;
             }
+            return isValid;
         }
 
         //private void CheckWindowsBays(WindowProperties w)
@@ -3023,6 +3043,8 @@ namespace PFD
         {
             try
             {
+                if (IsSetFromCode) return;
+
                 if (e.PropertyName == "sBuildingSide")
                 {
                     SetResultsAreNotValid();
@@ -3032,8 +3054,16 @@ namespace PFD
                 else if (e.PropertyName == "iBayNumber")
                 {
                     SetResultsAreNotValid();
-                    if (sender is DoorProperties) CheckDoorsBays(sender as DoorProperties);
-                    if (sender is WindowProperties) CheckWindowsBays(sender as WindowProperties);
+                    if (sender is DoorProperties)
+                    {
+                        DoorProperties d = sender as DoorProperties;
+                        if (!CheckDoorsBays(d)) { IsSetFromCode = true; d.iBayNumber = d.iBayNumber_old; IsSetFromCode = false; }
+                    }
+                    if (sender is WindowProperties)
+                    {
+                        WindowProperties w = sender as WindowProperties;
+                        if (!CheckWindowsBays(w)) { IsSetFromCode = true; w.iBayNumber = w.iBayNumber_old; IsSetFromCode = false; }
+                    }
                 }
                 else if (e.PropertyName == "sDoorType")
                 {
@@ -3074,6 +3104,8 @@ namespace PFD
         {
             try
             {
+                if (IsSetFromCode) return;
+
                 if (e.PropertyName == "sBuildingSide")
                 {
                     SetResultsAreNotValid();
@@ -3083,8 +3115,16 @@ namespace PFD
                 else if (e.PropertyName == "iBayNumber")
                 {
                     SetResultsAreNotValid();
-                    if (sender is DoorProperties) CheckDoorsBays(sender as DoorProperties);
-                    if (sender is WindowProperties) CheckWindowsBays(sender as WindowProperties);
+                    if (sender is DoorProperties)
+                    {
+                        DoorProperties d = sender as DoorProperties;
+                        if (!CheckDoorsBays(d)) { IsSetFromCode = true; d.iBayNumber = d.iBayNumber_old; IsSetFromCode = false; }
+                    }
+                    if (sender is WindowProperties)
+                    {
+                        WindowProperties w = sender as WindowProperties;
+                        if (!CheckWindowsBays(w)) { IsSetFromCode = true; w.iBayNumber = w.iBayNumber_old; IsSetFromCode = false; }
+                    }
                 }
                 else if (e.PropertyName == "fWindowsHeight" || e.PropertyName == "fWindowsWidth" || e.PropertyName == "fWindowCoordinateXinBay" || e.PropertyName == "fWindowCoordinateZinBay")
                 {

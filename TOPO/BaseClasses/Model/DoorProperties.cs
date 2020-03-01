@@ -18,6 +18,9 @@ namespace BaseClasses
 
         private string m_sBuildingSide;
         private int m_iBayNumber;
+        private string m_sBuildingSide_old;
+        private int m_iBayNumber_old;
+
         private List<int> m_Bays;
         private string m_sDoorType;
         private float m_fDoorsHeight;
@@ -51,12 +54,12 @@ namespace BaseClasses
 
             set
             {
-                string temp = m_sBuildingSide;
+                m_sBuildingSide_old = m_sBuildingSide;
                 m_sBuildingSide = value;
                 
                 if (!ValidateDoorInsideBay())
                 {
-                    m_sBuildingSide = temp;
+                    m_sBuildingSide = m_sBuildingSide_old;
                     MessageBox.Show("Doors outside of bay width.");
                 }
                 else NotifyPropertyChanged("sBuildingSide");
@@ -72,6 +75,7 @@ namespace BaseClasses
 
             set
             {
+                m_iBayNumber_old = m_iBayNumber;
                 m_iBayNumber = value;
                 NotifyPropertyChanged("iBayNumber");
             }
@@ -267,6 +271,32 @@ namespace BaseClasses
             {
                 m_SerieEnabled = value;
                 NotifyPropertyChanged("SerieEnabled");
+            }
+        }
+
+        public string sBuildingSide_old
+        {
+            get
+            {
+                return m_sBuildingSide_old;
+            }
+
+            set
+            {
+                m_sBuildingSide_old = value;
+            }
+        }
+
+        public int iBayNumber_old
+        {
+            get
+            {
+                return m_iBayNumber_old;
+            }
+
+            set
+            {
+                m_iBayNumber_old = value;
             }
         }
 
