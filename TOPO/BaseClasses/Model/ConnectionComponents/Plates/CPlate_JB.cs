@@ -282,7 +282,7 @@ namespace BaseClasses
             arrPoints3D[2].Z = 0;
 
             arrPoints3D[3].X = arrPoints3D[2].X;
-            arrPoints3D[3].Y = m_fhY1 + fy_temp2;
+            arrPoints3D[3].Y = m_fhY1 + Ft + fy_temp2;
             arrPoints3D[3].Z = arrPoints3D[2].Z;
 
             arrPoints3D[4].X = arrPoints3D[1].X;
@@ -290,7 +290,7 @@ namespace BaseClasses
             arrPoints3D[4].Z = arrPoints3D[1].Z;
 
             arrPoints3D[5].X = 0.5f * m_fbX + 2 * fx_temp2;
-            arrPoints3D[5].Y = m_fhY2 + fy_temp2;
+            arrPoints3D[5].Y = m_fhY2 + Ft + fy_temp2;
             arrPoints3D[5].Z = arrPoints3D[0].Z;
 
             arrPoints3D[6].X = arrPoints3D[5].X;
@@ -298,7 +298,7 @@ namespace BaseClasses
             arrPoints3D[6].Z = 0;
 
             arrPoints3D[7].X = 0.5f * m_fbX + fx_temp2;
-            arrPoints3D[7].Y = m_fhY2;
+            arrPoints3D[7].Y = m_fhY2 + 2 * Ft;
             arrPoints3D[7].Z = arrPoints3D[2].Z;
 
             arrPoints3D[8].X = 0.5f * m_fbX - fx_temp2;
@@ -341,7 +341,7 @@ namespace BaseClasses
             arrPoints3D[i_temp + 2].Z = Ft;
 
             arrPoints3D[i_temp + 3].X = arrPoints3D[2].X;
-            arrPoints3D[i_temp + 3].Y = m_fhY1;
+            arrPoints3D[i_temp + 3].Y = m_fhY1 + Ft;
             arrPoints3D[i_temp + 3].Z = Ft;
 
             arrPoints3D[i_temp + 4].X = arrPoints3D[1].X;
@@ -349,7 +349,7 @@ namespace BaseClasses
             arrPoints3D[i_temp + 4].Z = arrPoints3D[1].Z;
 
             arrPoints3D[i_temp + 5].X = 0.5f * m_fbX + fx_temp2;
-            arrPoints3D[i_temp + 5].Y = m_fhY2;
+            arrPoints3D[i_temp + 5].Y = m_fhY2 + Ft;
             arrPoints3D[i_temp + 5].Z = arrPoints3D[0].Z;
 
             arrPoints3D[i_temp + 6].X = arrPoints3D[19].X;
@@ -357,7 +357,7 @@ namespace BaseClasses
             arrPoints3D[i_temp + 6].Z = Ft;
 
             arrPoints3D[i_temp + 7].X = 0.5f * m_fbX - fx_temp2;
-            arrPoints3D[i_temp + 7].Y = m_fhY2;
+            arrPoints3D[i_temp + 7].Y = m_fhY2 + Ft;
             arrPoints3D[i_temp + 7].Z = arrPoints3D[20].Z;
 
             arrPoints3D[i_temp + 8].X = arrPoints3D[21].X;

@@ -24,8 +24,6 @@ namespace BaseClasses
 
             Name = "Main Column Base Joint";
 
-            float fAlignment_x = 0; // Odsadenie plechu od definicneho uzla pruta
-
             float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
 
@@ -57,7 +55,7 @@ namespace BaseClasses
             // Recalculate member parameters
             m_MainMember.Fill_Basic();
 
-            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft, -0.5f * fh_plate + flocaleccentricity_z);
+            Point3D ControlPoint_P1 = new Point3D(0, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft, -0.5f * fh_plate + flocaleccentricity_z);
 
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, referenceAnchor, screwArrangement); // Rotation angle in degrees
@@ -65,7 +63,7 @@ namespace BaseClasses
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new Point3D(m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft, -0.5f * fh_plate + flocaleccentricity_z);
+                ControlPoint_P1 = new Point3D(m_MainMember.FLength, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft, -0.5f * fh_plate + flocaleccentricity_z);
                 m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, referenceAnchor, screwArrangement); // Rotation angle in degrees
             }
         }
@@ -74,5 +72,42 @@ namespace BaseClasses
         {
             return new CConnectionJoint_TA01(m_Node, m_MainMember);
         }
+
+        public override void UpdateJoint()
+        {
+            // Update Plate Control Point
+            float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
+            float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
+
+            m_arrPlates[0].m_pControlPoint = new Point3D(0, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
+
+            if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
+            {
+                // Rotate and move joint defined in the start point [0,0,0] to the end point
+                m_arrPlates[0].m_pControlPoint = new Point3D(m_MainMember.FLength, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
+            }
+
+            // Update Member Alignment
+            m_MainMember.FAlignment_Start = -m_arrPlates[0].Ft;
+
+            if (m_Node.ID != m_MainMember.NodeStart.ID)
+                m_MainMember.FAlignment_End = -m_arrPlates[0].Ft;
+
+            // Update plate and its screw and anchor arrangement - positions of screws and anchors in plate
+            CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)m_arrPlates[0];
+            plate.AnchorArrangement.Calc_HolesCentersCoord3D(plate.Width_bx, plate.Height_hy, plate.Fl_Z);
+            plate.AnchorArrangement.GenerateAnchors_BasePlate();
+            plate.UpdatePlateData(plate.AnchorArrangement);
+            m_arrPlates[0] = plate;
+        }
+
+        /*
+        public override void UpdateMainMemberAlignment()
+        {
+            m_MainMember.FAlignment_Start = -m_ft;
+
+            if (m_Node.ID != m_MainMember.NodeStart.ID)
+                m_MainMember.FAlignment_End = -m_ft;
+        }*/
     }
 }

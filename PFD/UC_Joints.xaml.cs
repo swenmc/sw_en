@@ -1616,8 +1616,9 @@ namespace PFD
                 CPlateHelper.DataGridGeometryParams_ValueChanged(item, plate);
 
                 //To Mato - Task 553
-                plate.UpdateControlPoint();
-                joint.UpdateMainMemberAlignment();
+                //plate.UpdateControlPoint();
+                //joint.UpdateMainMemberAlignment();
+                joint.UpdateJoint();
 
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
 

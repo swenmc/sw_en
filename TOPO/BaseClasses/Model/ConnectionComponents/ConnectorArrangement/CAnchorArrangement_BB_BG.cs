@@ -215,7 +215,7 @@ namespace BaseClasses
             }
         }
 
-        void GenerateAnchors_BasePlate()
+        public void GenerateAnchors_BasePlate()
         {
             Anchors = new CAnchor[IHolesNumber];
 

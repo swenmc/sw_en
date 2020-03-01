@@ -114,7 +114,7 @@ namespace BaseClasses
             arrPoints3D[2].Z = 0;
 
             arrPoints3D[3].X = arrPoints3D[2].X;
-            arrPoints3D[3].Y = Fh_Y1 + fy_temp2;
+            arrPoints3D[3].Y = Fh_Y1 + Ft + fy_temp2;
             arrPoints3D[3].Z = arrPoints3D[2].Z;
 
             arrPoints3D[4].X = arrPoints3D[1].X;
@@ -126,7 +126,7 @@ namespace BaseClasses
             arrPoints3D[5].Z = arrPoints3D[1].Z;
 
             arrPoints3D[6].X = 0.5f * Fb_X + fx_temp2;
-            arrPoints3D[6].Y = Fh_Y2 + fy_temp2;
+            arrPoints3D[6].Y = Fh_Y2 + Ft + fy_temp2;
             arrPoints3D[6].Z = arrPoints3D[0].Z;
 
             arrPoints3D[7].X = arrPoints3D[6].X;
@@ -134,7 +134,7 @@ namespace BaseClasses
             arrPoints3D[7].Z = 0;
 
             arrPoints3D[8].X = 0.5f * Fb_X;
-            arrPoints3D[8].Y = Fh_Y2;
+            arrPoints3D[8].Y = Fh_Y2 + Ft;
             arrPoints3D[8].Z = arrPoints3D[2].Z;
 
             arrPoints3D[9].X = arrPoints3D[8].X - fx_temp2;
@@ -177,7 +177,7 @@ namespace BaseClasses
             arrPoints3D[i_temp + 2].Z = Ft;
 
             arrPoints3D[i_temp + 3].X = arrPoints3D[2].X;
-            arrPoints3D[i_temp + 3].Y = Fh_Y1;
+            arrPoints3D[i_temp + 3].Y = Fh_Y1 + Ft;
             arrPoints3D[i_temp + 3].Z = Ft;
 
             arrPoints3D[i_temp + 4].X = arrPoints3D[5].X;
@@ -185,7 +185,7 @@ namespace BaseClasses
             arrPoints3D[i_temp + 4].Z = arrPoints3D[1].Z;
 
             arrPoints3D[i_temp + 5].X = 0.5f * Fb_X;
-            arrPoints3D[i_temp + 5].Y = Fh_Y2;
+            arrPoints3D[i_temp + 5].Y = Fh_Y2 + Ft;
             arrPoints3D[i_temp + 5].Z = arrPoints3D[0].Z;
 
             arrPoints3D[i_temp + 6].X = arrPoints3D[20].X;

@@ -228,14 +228,19 @@ namespace BaseClasses
             return null;
         }
 
-        public void UpdateMainMemberAlignment()
+        /*
+        public virtual void UpdateMainMemberAlignment()
         {
             //To Mato - Task 553
             if (m_MainMember != null)
             {
-                m_MainMember.FAlignment_Start += 10;
-                m_MainMember.FAlignment_End += 10;
+                m_MainMember.FAlignment_Start += 0.01f;
+                m_MainMember.FAlignment_End += 0.01f;
             }
+        }*/
+
+        public virtual void UpdateJoint()
+        {
         }
     }
 }

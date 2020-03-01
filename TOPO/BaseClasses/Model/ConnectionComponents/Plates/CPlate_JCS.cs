@@ -137,7 +137,7 @@ namespace BaseClasses
 
         private float m_fhY1;
 
-        /*
+        
         public float Fh_Y1
         {
             get
@@ -149,7 +149,7 @@ namespace BaseClasses
             {
                 m_fhY1 = value;
             }
-        }*/
+        }
 
         private float m_fbX2;
 
@@ -169,7 +169,6 @@ namespace BaseClasses
 
         private float m_fhY2;
 
-        /*
         public float Fh_Y2
         {
             get
@@ -181,7 +180,7 @@ namespace BaseClasses
             {
                 m_fhY2 = value;
             }
-        }*/
+        }
 
         private float m_fLipBase_dim_x;
 

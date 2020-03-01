@@ -395,7 +395,7 @@ namespace BaseClasses
             {
                 for (int j = 0; j < ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints.Length; j++)
                 {
-                    arrConnectorControlPoints3D[iLastItemIndex + j].X = - ft; // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[iLastItemIndex + j].X = -referenceScrew.T_ht_headTotalThickness;
                     arrConnectorControlPoints3D[iLastItemIndex + j].Y = ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].Y;
                     arrConnectorControlPoints3D[iLastItemIndex + j].Z =  flZ - ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].X;
                 }
@@ -410,7 +410,7 @@ namespace BaseClasses
             {
                 for (int j = 0; j < ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints.Length; j++)
                 {
-                    arrConnectorControlPoints3D[IHolesNumber / 2 + iLastItemIndex + j].X = fbX + 2 * ft + ft; // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[IHolesNumber / 2 + iLastItemIndex + j].X = fbX + 2 * ft + referenceScrew.T_ht_headTotalThickness;
                     arrConnectorControlPoints3D[IHolesNumber / 2 + iLastItemIndex + j].Y = ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].Y;
                     arrConnectorControlPoints3D[IHolesNumber / 2 + iLastItemIndex + j].Z = ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].X - flZ - fbX;
                 }
