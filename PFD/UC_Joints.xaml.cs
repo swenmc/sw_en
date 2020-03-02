@@ -1617,6 +1617,7 @@ namespace PFD
 
                 // Task 553 - To Ondrej - tu som vyrobil funkciu ktora by mala updatovat joint, mozes na to mrknut
                 joint.UpdateJoint();
+                UpdateConnectedMembers(joint);
 
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
 
@@ -1637,6 +1638,29 @@ namespace PFD
             vm.ChangedGeometryParameter = item;
             //HandleJointsPropertyChangedEvent(sender, e);
         }
+
+        private void UpdateConnectedMembers(CConnectionJointTypes joint)
+        {
+            //task 555
+            //takto nejako Mato? ze ked sa zmeni konkretny spoj, tak sa bude nieco vyhladavat v modeli a menit
+
+            //asi bude potrebne nejako adresnejsie vyhladat,co sa ma zmenit
+            if (joint is CConnectionJoint_B001)
+            {
+                float ft = joint.m_arrPlates[0].Ft;
+
+                foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
+                {
+                    if (jt is CConnectionJoint_T001)
+                    {
+                        CConnectionJoint_T001 t1 = jt as CConnectionJoint_T001;
+                        t1.m_ft_main_plate = ft;
+                        t1.UpdateJoint();
+                    }
+                }
+            }
+        }
+
         private DataGrid GetDatagridForDetails(List<CComponentParamsView> detailsParams)
         {
             DataGrid dg = new DataGrid();

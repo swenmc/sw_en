@@ -134,7 +134,9 @@ namespace BaseClasses
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
             m_arrPlates[0].m_pControlPoint = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
-            m_arrPlates[1].m_pControlPoint = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
+
+            if (m_arrPlates.Length == 2)
+                m_arrPlates[1].m_pControlPoint = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
 
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
@@ -143,7 +145,9 @@ namespace BaseClasses
 
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 m_arrPlates[0].m_pControlPoint = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
-                m_arrPlates[1].m_pControlPoint = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
+
+                if (m_arrPlates.Length == 2)
+                    m_arrPlates[1].m_pControlPoint = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
             }
         }
     }
