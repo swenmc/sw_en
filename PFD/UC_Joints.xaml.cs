@@ -1384,6 +1384,8 @@ namespace PFD
 
             CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
 
+            paramsChanged = true;
+
             if (plate is CConCom_Plate_B_basic)
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
@@ -1502,6 +1504,7 @@ namespace PFD
             CConnectionJointTypes joint = GetSelectedJoint();
             CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
             CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
+            paramsChanged = true;
             List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
 
             CPlateHelper.UpdatePlateScrewArrangementData(plate);
@@ -1610,6 +1613,7 @@ namespace PFD
         {
             if (!(sender is CComponentParamsView)) return;
             CComponentParamsView item = sender as CComponentParamsView;
+            paramsChanged = true;
             foreach (CConnectionJointTypes joint in list_joints)
             {
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
@@ -1656,6 +1660,11 @@ namespace PFD
                         CConnectionJoint_T001 t1 = jt as CConnectionJoint_T001;
                         t1.m_ft_main_plate = ft;
                         t1.UpdateJoint();
+
+                        //To Mato - ja neviem ako mam skratit Member
+                        //t1.m_MainMember.FLength = t1.m_MainMember.FLength - ft;
+                        t1.m_SecondaryMembers[0].FLength = t1.m_SecondaryMembers[0].FLength - ft;
+
                     }
                 }
             }
