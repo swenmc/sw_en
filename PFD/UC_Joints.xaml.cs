@@ -1615,9 +1615,7 @@ namespace PFD
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
                 CPlateHelper.DataGridGeometryParams_ValueChanged(item, plate);
 
-                //To Mato - Task 553
-                //plate.UpdateControlPoint();
-                //joint.UpdateMainMemberAlignment();
+                // Task 553 - To Ondrej - tu som vyrobil funkciu ktora by mala updatovat joint, mozes na to mrknut
                 joint.UpdateJoint();
 
                 StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;

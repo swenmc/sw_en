@@ -94,20 +94,13 @@ namespace BaseClasses
                 m_MainMember.FAlignment_End = -m_arrPlates[0].Ft;
 
             // Update plate and its screw and anchor arrangement - positions of screws and anchors in plate
+
+            // To Ondrej - toto by sa dalo asi nejako zjednodusit a upravit
             CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)m_arrPlates[0];
             plate.AnchorArrangement.Calc_HolesCentersCoord3D(plate.Width_bx, plate.Height_hy, plate.Fl_Z);
             plate.AnchorArrangement.GenerateAnchors_BasePlate();
             plate.UpdatePlateData(plate.AnchorArrangement);
             m_arrPlates[0] = plate;
         }
-
-        /*
-        public override void UpdateMainMemberAlignment()
-        {
-            m_MainMember.FAlignment_Start = -m_ft;
-
-            if (m_Node.ID != m_MainMember.NodeStart.ID)
-                m_MainMember.FAlignment_End = -m_ft;
-        }*/
     }
 }

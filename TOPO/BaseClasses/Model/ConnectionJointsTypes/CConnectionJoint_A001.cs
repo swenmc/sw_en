@@ -86,7 +86,7 @@ namespace BaseClasses
 
         private void GetApexPlateGeneralParameters(CPlate plate, out float fh_Y1, out float fh_Y2)
         {
-            // Todo - dalo by sa pridat aj spolocne parametre plates J, napriklad sirka b a dalsie
+            // Todo - dalo by sa pridat aj dalsie spolocne parametre plates J, napriklad sirka b a dalsie
             if (plate is CConCom_Plate_JA)
             {
                 CConCom_Plate_JA plate_JA = (CConCom_Plate_JA)plate;

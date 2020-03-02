@@ -23,6 +23,9 @@ namespace BaseClasses
         public float m_ft_rafter;
         public float m_fJointAngleAboutZ_deg;
 
+        public float m_fRafterVectorDirection;
+        Point m_pUpperLeftPointOfPlate;
+
         public CConnectionJoint_B001() { }
 
         public CConnectionJoint_B001(CNode Node_temp, CMember MainFrameColumn_temp, CMember MainFrameRafter_temp, float fSLope_rad_temp, float fb_2_temp, float fh_1_temp, float ft, float ft_rafter, float fJointAngleAboutZ_deg)
@@ -59,9 +62,9 @@ namespace BaseClasses
             Point Line2_Start = new Point();
             Point Line2_End = new Point();
 
-            float fRafterVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg
-            float fRotatePlatesInJointAngle = fRafterVectorDirection > 0 ? (0  + fJointAngleAboutZ_deg): (180 + fJointAngleAboutZ_deg);
-            float fDistanceX = fRafterVectorDirection > 0 ? -0.5f * (float)m_MainMember.CrScStart.h : 0.5f * (float)m_MainMember.CrScStart.h;
+            m_fRafterVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg
+            float fRotatePlatesInJointAngle = m_fRafterVectorDirection > 0 ? (0  + fJointAngleAboutZ_deg): (180 + fJointAngleAboutZ_deg);
+            float fDistanceX = m_fRafterVectorDirection > 0 ? -0.5f * (float)m_MainMember.CrScStart.h : 0.5f * (float)m_MainMember.CrScStart.h;
 
             Line1_Start.X = m_MainMember.NodeStart.X + fDistanceX; // Column
             Line1_Start.Y = m_MainMember.NodeStart.Z;
@@ -73,28 +76,28 @@ namespace BaseClasses
             Line2_End.X = m_SecondaryMembers[0].NodeEnd.X;
             Line2_End.Y = m_SecondaryMembers[0].NodeEnd.Z + (0.5f * m_SecondaryMembers[0].CrScStart.h) / Math.Cos(fSLope_rad_temp);
 
-            Point pUpperLeftPointOfPlate = new Point();
-            pUpperLeftPointOfPlate = (Point)Intersection(Line1_Start, Line1_End, Line2_Start, Line2_End);
+            m_pUpperLeftPointOfPlate = (Point)Intersection(Line1_Start, Line1_End, Line2_Start, Line2_End);
 
             float fControlPointXCoord;
             float fControlPointYCoord1;
             float fControlPointYCoord2;
 
-            if (fRafterVectorDirection > 0)
+            float fGap = 0.002f; // 2 mm
+            if (m_fRafterVectorDirection > 0)
             {
-                fControlPointXCoord = m_Node.X - 0.5f * m_fb_1;
-                fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/- 0.5f * m_ft);
-                fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /* + 0.5f * m_MainMember.CrScStart.b*/ + 1.5f * m_ft);
+                fControlPointXCoord = m_Node.X - (float)m_MainMember.CrScStart.z_max;
+                fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/- fGap);
+                fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /* + 0.5f * m_MainMember.CrScStart.b*/ + m_ft + fGap);
             }
             else
             {
-                fControlPointXCoord = m_Node.X + 0.5f * m_fb_1;
-                fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - 0.5f * m_ft - m_ft);
-                fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /*0.5f * m_MainMember.CrScStart.b*/ + 1.5f * m_ft - m_ft);
+                fControlPointXCoord = m_Node.X + (float)m_MainMember.CrScStart.z_max;
+                fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - fGap - m_ft);
+                fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /*0.5f * m_MainMember.CrScStart.b*/ + fGap + m_ft - m_ft);
             }
 
-            Point3D ControlPoint_P1 = new Point3D(fControlPointXCoord, fControlPointYCoord1, pUpperLeftPointOfPlate.Y - m_fh_1);
-            Point3D ControlPoint_P2 = new Point3D(fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1);
+            Point3D ControlPoint_P1 = new Point3D(fControlPointXCoord, fControlPointYCoord1, m_pUpperLeftPointOfPlate.Y - m_fh_1);
+            Point3D ControlPoint_P2 = new Point3D(fControlPointXCoord, fControlPointYCoord2, m_pUpperLeftPointOfPlate.Y - m_fh_1);
 
             // Screw arrangement parameters
             CRSC.CCrSc_TW rafterCrsc = null;
@@ -149,10 +152,115 @@ namespace BaseClasses
             return new CConnectionJoint_B001(m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb_2, m_fh_1, m_ft, m_ft_rafter, m_fJointAngleAboutZ_deg);
         }
 
+        public override void UpdateJoint()
+        {
+            float fPlate1_b_X1 = 0;
+            float fPlate1_h_Y1 = 0;
+            float fPlate1_h_Y2 = 0;
 
+            float fPlate2_b_X1 = 0;
+            float fPlate2_h_Y1 = 0;
+            float fPlate2_h_Y2 = 0;
 
+            GetKneePlateGeneralParameters(m_arrPlates[0], out fPlate1_b_X1, out fPlate1_h_Y1, out fPlate1_h_Y2);
+            GetKneePlateGeneralParameters(m_arrPlates[1], out fPlate2_b_X1, out fPlate2_h_Y1, out fPlate2_h_Y2);
 
+            float fControlPointXCoord1;
+            float fControlPointXCoord2;
+            float fControlPointYCoord1;
+            float fControlPointYCoord2;
 
+            float fGap = 0.002f; // 2 mm
+            if (m_fRafterVectorDirection > 0)
+            {
+                fControlPointXCoord1 = m_Node.X - (float)m_MainMember.CrScStart.z_max;
+                fControlPointXCoord2 = m_Node.X - (float)m_MainMember.CrScStart.z_max;
+                fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/- fGap);
+                fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /* + 0.5f * m_MainMember.CrScStart.b*/ + m_arrPlates[1].Ft + fGap);
+            }
+            else
+            {
+                fControlPointXCoord1 = m_Node.X + (float)m_MainMember.CrScStart.z_max;
+                fControlPointXCoord2 = m_Node.X + (float)m_MainMember.CrScStart.z_max;
+                fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - fGap - m_arrPlates[0].Ft);
+                fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /*0.5f * m_MainMember.CrScStart.b*/ + fGap + m_arrPlates[1].Ft - m_arrPlates[1].Ft);
+            }
+
+            m_arrPlates[0].m_pControlPoint = new Point3D(fControlPointXCoord1, fControlPointYCoord1, m_pUpperLeftPointOfPlate.Y - fPlate1_h_Y1);
+            m_arrPlates[1].m_pControlPoint = new Point3D(fControlPointXCoord2, fControlPointYCoord2, m_pUpperLeftPointOfPlate.Y - fPlate2_h_Y1);
+        }
+
+        private void GetKneePlateGeneralParameters(CPlate plate, out float fb_X1, out float fh_Y1, out float fh_Y2)
+        {
+            // Todo - dalo by sa pridat aj dalsie spolocne parametre plates K
+            if (plate is CConCom_Plate_KA)
+            {
+                CConCom_Plate_KA plate_KA = (CConCom_Plate_KA)plate;
+                fb_X1 = plate_KA.Fb_X1;
+                fh_Y1 = plate_KA.Fh_Y1;
+                fh_Y2 = plate_KA.Fh_Y2;
+            }
+            else if (plate is CConCom_Plate_KB)
+            {
+                CConCom_Plate_KB plate_KB = (CConCom_Plate_KB)plate;
+                fb_X1 = plate_KB.Fb_X1;
+                fh_Y1 = plate_KB.Fh_Y1;
+                fh_Y2 = plate_KB.Fh_Y2;
+            }
+            else if (plate is CConCom_Plate_KBS)
+            {
+                CConCom_Plate_KBS plate_KBS = (CConCom_Plate_KBS)plate;
+                fb_X1 = plate_KBS.Fb_X1;
+                fh_Y1 = plate_KBS.Fh_Y1;
+                fh_Y2 = plate_KBS.Fh_Y2;
+            }
+            else if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC plate_KC = (CConCom_Plate_KC)plate;
+                fb_X1 = plate_KC.Fb_X1;
+                fh_Y1 = plate_KC.Fh_Y1;
+                fh_Y2 = plate_KC.Fh_Y2;
+            }
+            else if (plate is CConCom_Plate_KCS)
+            {
+                CConCom_Plate_KCS plate_KCS = (CConCom_Plate_KCS)plate;
+                fb_X1 = plate_KCS.Fb_X1;
+                fh_Y1 = plate_KCS.Fh_Y1;
+                fh_Y2 = plate_KCS.Fh_Y2;
+            }
+            else if (plate is CConCom_Plate_KD)
+            {
+                CConCom_Plate_KD plate_KD = (CConCom_Plate_KD)plate;
+                fb_X1 = plate_KD.Fb_X1;
+                fh_Y1 = plate_KD.Fh_Y1;
+                fh_Y2 = plate_KD.Fh_Y2;
+            }
+            else if (plate is CConCom_Plate_KDS)
+            {
+                CConCom_Plate_KDS plate_KDS = (CConCom_Plate_KDS)plate;
+                fb_X1 = plate_KDS.Fb_X1;
+                fh_Y1 = plate_KDS.Fh_Y1;
+                fh_Y2 = plate_KDS.Fh_Y2;
+            }
+            else if (plate is CConCom_Plate_KES)
+            {
+                CConCom_Plate_KES plate_KES = (CConCom_Plate_KES)plate;
+                fb_X1 = plate_KES.Fb_X1;
+                fh_Y1 = plate_KES.Fh_Y1;
+                fh_Y2 = plate_KES.Fh_Y2;
+            }
+            else if (plate is CConCom_Plate_KFS)
+            {
+                CConCom_Plate_KFS plate_KFS = (CConCom_Plate_KFS)plate;
+                fb_X1 = plate_KFS.Fb_X1;
+                fh_Y1 = plate_KFS.Fh_Y1;
+                fh_Y2 = plate_KFS.Fh_Y2;
+            }
+            else
+            {
+                throw new Exception("Invalid type of apex plate");
+            }
+        }
 
 
 
@@ -200,9 +308,5 @@ namespace BaseClasses
 
         //CScrewArrangementCircleApexOrKnee screwArrangement1 = new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
         //CScrewArrangementCircleApexOrKnee screwArrangement2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
-
-
-
-
     }
 }
