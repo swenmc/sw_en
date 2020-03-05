@@ -1797,20 +1797,61 @@ namespace PFD
             //asi bude potrebne nejako adresnejsie vyhladat,co sa ma zmenit
             if (joint is CConnectionJoint_B001)
             {
-                float ft = joint.m_arrPlates[0].Ft;
+                float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
+                float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
 
                 foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
                 {
-                    if (jt is CConnectionJoint_T001)
+                    // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
+                    // ale len nejaku podskupinu z ENUM - EJointType
+                    if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_MainRafter)
                     {
-                        CConnectionJoint_T001 t1 = jt as CConnectionJoint_T001;
-                        t1.m_ft_main_plate = ft;
-                        t1.UpdateJoint();
+                        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
+                        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
+                        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
 
-                        //To Mato - ja neviem ako mam skratit Member
-                        //t1.m_MainMember.FLength = t1.m_MainMember.FLength - ft;
-                        t1.m_SecondaryMembers[0].FLength = t1.m_SecondaryMembers[0].FLength - ft;
+                        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
+                        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
 
+                        if (jt.m_Node.ID == joint.m_SecondaryMembers[0].NodeStart.ID)
+                        {
+                            joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
+                        }
+
+                        if (jt.m_Node.ID == joint.m_SecondaryMembers[0].NodeEnd.ID)
+                        {
+                            joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
+                        }
+
+                        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
+                        joint_t1.UpdateJoint();
+                    }
+
+                    if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_EdgeRafter)
+                    {
+                        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
+                        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
+                        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
+
+                        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
+                        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
+
+                        if (jt.m_Node.ID == joint.m_SecondaryMembers[0].NodeStart.ID)
+                        {
+                            joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
+                        }
+
+                        if (jt.m_Node.ID == joint.m_SecondaryMembers[0].NodeEnd.ID)
+                        {
+                            joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
+                        }
+
+                        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
+                        joint_t1.UpdateJoint();
                     }
                 }
             }
