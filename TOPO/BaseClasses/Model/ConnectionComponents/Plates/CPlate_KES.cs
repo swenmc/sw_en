@@ -102,7 +102,7 @@ namespace BaseClasses
 
         bool m_bScrewInPlusZDirection;
 
-        public bool bScrewInPlusZDirection
+        public bool ScrewInPlusZDirection
         {
             get
             {
@@ -183,7 +183,7 @@ namespace BaseClasses
             if (screwArrangement != null)
             {
                 // Parameter flZ - // Distance from the left edge is used for KC and KD plates)
-                screwArrangement.Calc_KneePlateData(Fb_X1, Fb_X2, Fl_Z, Fh_Y1, Ft, FSlope_rad, bScrewInPlusZDirection);
+                screwArrangement.Calc_KneePlateData(Fb_X1, Fb_X2, Fl_Z, Fh_Y1, Ft, FSlope_rad, ScrewInPlusZDirection);
             }
 
             // Fill list of indices for drawing of surface

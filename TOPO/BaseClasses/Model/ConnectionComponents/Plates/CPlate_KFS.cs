@@ -102,7 +102,7 @@ namespace BaseClasses
 
         bool m_bScrewInPlusZDirection;
 
-        public bool bScrewInPlusZDirection
+        public bool ScrewInPlusZDirection
         {
             get
             {
