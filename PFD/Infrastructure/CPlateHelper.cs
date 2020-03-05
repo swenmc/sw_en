@@ -38,18 +38,18 @@ namespace PFD
 
                 if (baseArrangement.referenceAnchor.WasherPlateTop != null)
                 {
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("WasherPlateTop Name", CParamsResources.AnchorNameS.Symbol, baseArrangement.referenceAnchor.WasherPlateTop.Name.ToString(), CParamsResources.AnchorNameS.Unit, false));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("WasherPlateTop Width", "?", (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("WasherPlateTop Height", "?", (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Height_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("WasherPlateTop Thickness", "?", (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherNameS.Name, CParamsResources.PlateWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherPlateTop.Name.ToString(), CParamsResources.PlateWasherNameS.Unit, false));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherWidthxS.Name, CParamsResources.PlateWasherWidthxS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherWidthxS.Unit, true));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherWidthyS.Name, CParamsResources.PlateWasherWidthyS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Height_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherWidthyS.Unit, true));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherThicknessS.Name, CParamsResources.PlateWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherThicknessS.Unit, true));
                 }
 
                 if (baseArrangement.referenceAnchor.WasherBearing != null)
                 {
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("WasherBearing Name", CParamsResources.AnchorNameS.Symbol, baseArrangement.referenceAnchor.WasherBearing.Name.ToString(), CParamsResources.AnchorNameS.Unit, false));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("WasherBearing Width", "?", (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("WasherBearing Height", "?", (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Height_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("WasherBearing Thickness", "?", (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherNameS.Name, CParamsResources.BearingWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherBearing.Name.ToString(), CParamsResources.BearingWasherNameS.Unit, false));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherWidthxS.Name, CParamsResources.BearingWasherWidthxS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherWidthxS.Unit, true));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherWidthyS.Name, CParamsResources.BearingWasherWidthyS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Height_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherWidthyS.Unit, true));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherThicknessS.Name, CParamsResources.BearingWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherThicknessS.Unit, true));
                 }                    
                 
                 anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in row SQ1", "No", baseArrangement.iNumberOfAnchorsInRow_xDirection_SQ1.ToString(), "[-]"));
@@ -99,16 +99,18 @@ namespace PFD
                     
                     if (arrangementTemp.referenceAnchor.WasherPlateTop != null)
                     {
-                        if (item.Name.Equals("WasherPlateTop Width")) arrangementTemp.referenceAnchor.WasherPlateTop.Width_bx = item_val / fLengthUnitFactor;
-                        if (item.Name.Equals("WasherPlateTop Height")) arrangementTemp.referenceAnchor.WasherPlateTop.Height_hy = item_val / fLengthUnitFactor;
-                        if (item.Name.Equals("WasherPlateTop Thickness")) arrangementTemp.referenceAnchor.WasherPlateTop.Ft = item_val / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.PlateWasherNameS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Name = itemStr.ToString();
+                        if (item.Name.Equals(CParamsResources.PlateWasherWidthxS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Width_bx = item_val / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.PlateWasherWidthyS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Height_hy = item_val / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.PlateWasherThicknessS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Ft = item_val / fLengthUnitFactor;
                     }
 
                     if (arrangementTemp.referenceAnchor.WasherBearing != null)
                     {
-                        if (item.Name.Equals("WasherBearing Width")) arrangementTemp.referenceAnchor.WasherBearing.Width_bx = item_val / fLengthUnitFactor;
-                        if (item.Name.Equals("WasherBearing Height")) arrangementTemp.referenceAnchor.WasherBearing.Height_hy = item_val / fLengthUnitFactor;
-                        if (item.Name.Equals("WasherBearing Thickness")) arrangementTemp.referenceAnchor.WasherBearing.Ft = item_val / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.BearingWasherNameS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Name = itemStr.ToString();
+                        if (item.Name.Equals(CParamsResources.BearingWasherWidthxS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Width_bx = item_val / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.BearingWasherWidthyS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Height_hy = item_val / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.BearingWasherThicknessS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Ft = item_val / fLengthUnitFactor;
                     }
 
                     if (item.Name == "Number of anchors in row SQ1") arrangementTemp.iNumberOfAnchorsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);

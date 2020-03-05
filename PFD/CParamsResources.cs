@@ -159,6 +159,104 @@ namespace PFD
             public const string Symbol = "Ldr";
         }
 
+        // WASHER
+
+        public struct WasherNameS
+        {
+            public const string Name = "Name";
+            public const string DBName = sDBName_None;
+            public const string Unit = sUnit_None;
+            public const string Symbol = sSymbol_None;
+        }
+
+        public struct WasherThicknessS
+        {
+            public const string Name = "Thickness";
+            public const string DBName = "WasherThick";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "t";
+        }
+
+        public struct WasherWidthxS
+        {
+            public const string Name = "Width x";
+            public const string DBName = "WasherWidthx";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "bx";
+        }
+
+        public struct WasherWidthyS
+        {
+            public const string Name = "Width y";
+            public const string DBName = "WasherWidthy";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "by";
+        }
+
+        public struct PlateWasherNameS
+        {
+            public const string Name = "Plate Washer Name";
+            public const string DBName = sDBName_None;
+            public const string Unit = sUnit_None;
+            public const string Symbol = sSymbol_None;
+        }
+
+        public struct PlateWasherThicknessS
+        {
+            public const string Name = "Plate Washer Thickness";
+            public const string DBName = "PlateWasherThick";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "t";
+        }
+
+        public struct PlateWasherWidthxS
+        {
+            public const string Name = "Plate Washer Width x";
+            public const string DBName = "PlateWasherWidthx";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "bx";
+        }
+
+        public struct PlateWasherWidthyS
+        {
+            public const string Name = "Plate Washer Width y";
+            public const string DBName = "PlateWasherWidthy";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "by";
+        }
+
+        public struct BearingWasherNameS
+        {
+            public const string Name = "Bearing Washer Name";
+            public const string DBName = sDBName_None;
+            public const string Unit = sUnit_None;
+            public const string Symbol = sSymbol_None;
+        }
+
+        public struct BearingWasherThicknessS
+        {
+            public const string Name = "Bearing Washer Thickness";
+            public const string DBName = "BearingWasherThick";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "t";
+        }
+
+        public struct BearingWasherWidthxS
+        {
+            public const string Name = "Bearing Washer Width x";
+            public const string DBName = "BearingWasherWidthx";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "bx";
+        }
+
+        public struct BearingWasherWidthyS
+        {
+            public const string Name = "Bearing Washer Width y";
+            public const string DBName = "BearingWasherWidthy";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "by";
+        }
+
         // MEMBER / CROSS-SECTION PROPERTIES
 
         public struct RafterWidthS
