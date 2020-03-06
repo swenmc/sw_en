@@ -2091,6 +2091,14 @@ namespace PFD
                         plate.Ft = refJoint.m_arrPlates[i].Ft;
                         plate.Height_hy = refJoint.m_arrPlates[i].Height_hy;
                         plate.Width_bx = refJoint.m_arrPlates[i].Width_bx;
+                        //plate.bScrewInPlusZD
+
+                        plate.ScrewArrangement = refJoint.m_arrPlates[i].ScrewArrangement;
+                        if (plate is CConCom_Plate_B_basic)
+                        {
+                            ((CConCom_Plate_B_basic)plate).AnchorArrangement = ((CConCom_Plate_B_basic)refJoint.m_arrPlates[i]).AnchorArrangement;
+                        }
+                        
                         i++;
                     }
 
