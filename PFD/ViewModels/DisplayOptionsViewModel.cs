@@ -2519,7 +2519,7 @@ namespace PFD
             DisplayMembers = true;
             DisplayJoints = true; // Vypnute v defaulte
             DisplayPlates = true; // Vypnute v defaulte
-            DisplayConnectors = true; // Vypnute v defaulte
+            DisplayConnectors = false; // Vypnute v defaulte
             DisplayNodes = false;
             DisplayFoundations = true;
             DisplayReinforcementBars = false;
