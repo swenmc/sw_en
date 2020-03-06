@@ -558,7 +558,22 @@ namespace BaseClasses
 
             //doplnit parametre specificke pre danu triedu
 
-            
+            if (plate is CConCom_Plate_H)
+            {
+                CConCom_Plate_H refPlate = (CConCom_Plate_H)plate;
+                this.m_fbX = refPlate.m_fbX;
+                this.m_fhY1 = refPlate.m_fhY1;
+                this.m_fhY2 = refPlate.m_fhY2;
+                this.m_fMainMemberWidth = refPlate.m_fMainMemberWidth;
+                this.m_fSlope_rad = refPlate.m_fSlope_rad;
+                this.m_alpha1_rad = refPlate.m_alpha1_rad;
+                this.m_iHolesNumber = refPlate.m_iHolesNumber;
+                this.iLeftRightIndex = refPlate.iLeftRightIndex;
+                this.m_e_min_x_BottomLeg = refPlate.m_e_min_x_BottomLeg;
+                this.m_e_min_y_BottomLeg = refPlate.m_e_min_y_BottomLeg;
+                this.m_e_min_x_TopLeg = refPlate.m_e_min_x_TopLeg;
+                this.m_e_min_y_TopLeg = refPlate.m_e_min_y_TopLeg;
+            }
         }
     }
 }

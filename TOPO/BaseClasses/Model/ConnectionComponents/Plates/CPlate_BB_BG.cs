@@ -700,10 +700,10 @@ namespace BaseClasses
 
             //doplnit parametre specificke pre danu triedu
 
-            if (plate is CConCom_Plate_BB_BG)
-            {
-                this.AnchorArrangement = ((CConCom_Plate_BB_BG)plate).AnchorArrangement;
-            }
+            //if (plate is CConCom_Plate_BB_BG)
+            //{
+            //    this.AnchorArrangement = ((CConCom_Plate_BB_BG)plate).AnchorArrangement;
+            //}
         }
     }
 }

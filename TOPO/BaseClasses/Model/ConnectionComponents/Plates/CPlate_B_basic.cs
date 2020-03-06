@@ -356,7 +356,15 @@ namespace BaseClasses
 
             if (plate is CConCom_Plate_B_basic)
             {
-                this.AnchorArrangement = ((CConCom_Plate_B_basic)plate).AnchorArrangement;
+                CConCom_Plate_B_basic refPlate = (CConCom_Plate_B_basic)plate;
+                this.m_flZ = refPlate.m_flZ;
+                this.AnchorArrangement = refPlate.AnchorArrangement;
+                this.m_fx_minus_plateEdge_to_pad = refPlate.m_fx_minus_plateEdge_to_pad;
+                this.m_fy_minus_plateEdge_to_pad = refPlate.m_fy_minus_plateEdge_to_pad;
+                this.m_fx_plus_plateEdge_to_pad = refPlate.m_fx_plus_plateEdge_to_pad;
+                this.m_fy_plus_plateEdge_to_pad = refPlate.m_fy_plus_plateEdge_to_pad;
+                this.m_fe_min_y = refPlate.m_fe_min_y;
+                this.m_fe_min_z = refPlate.m_fe_min_z;
             }
         }
     }

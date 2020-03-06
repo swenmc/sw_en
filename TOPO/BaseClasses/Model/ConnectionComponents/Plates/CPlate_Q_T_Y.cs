@@ -357,7 +357,11 @@ namespace BaseClasses
             if (plate is CConCom_Plate_Q_T_Y)
             {
                 CConCom_Plate_Q_T_Y refPlate = (CConCom_Plate_Q_T_Y)plate;
-                //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
+                this.m_fbX = refPlate.m_fbX;
+                this.m_fhY = refPlate.m_fhY;
+                this.m_flZ1 = refPlate.m_flZ1;
+                this.m_flZ2 = refPlate.m_flZ2;
+                this.m_iHolesNumber = refPlate.m_iHolesNumber;
             }
         }
     }

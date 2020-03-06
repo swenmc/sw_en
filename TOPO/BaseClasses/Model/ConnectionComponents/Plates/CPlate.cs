@@ -831,10 +831,37 @@ namespace BaseClasses
 
         public virtual void CopyParams(CPlate plate)
         {
-            this.Ft = plate.Ft;
-            this.Height_hy = plate.Height_hy;
+            // TO Ondrej - tu som nakopiroval vsetko co som nasiel, mozno su niektore z tych parametrov zbytocne tak to potom este zakomentujeme
             this.Width_bx = plate.Width_bx;
-
+            this.Height_hy = plate.Height_hy;
+            this.fWidth_bx_Stretched = plate.fWidth_bx_Stretched;
+            this.Height_hy_Stretched = plate.Height_hy_Stretched;
+            this.Ft = plate.Ft;
+            this.fArea = plate.fArea;
+            this.fA_g = plate.fA_g;
+            this.fA_n = plate.fA_n;
+            this.fA_v_zv = plate.fA_v_zv;
+            this.fA_vn_zv = plate.fA_vn_zv;
+            this.fI_yu = plate.fI_yu;
+            this.fW_el_yu = plate.fW_el_yu;
+            this.fCuttingRouteDistance = plate.fCuttingRouteDistance;
+            this.fSurface = plate.fSurface;
+            this.fVolume = plate.fVolume;
+            this.fMass = plate.fMass;
+            this.m_fRotationX_deg = plate.m_fRotationX_deg;
+            this.m_fRotationY_deg = plate.m_fRotationY_deg;
+            this.m_fRotationZ_deg = plate.m_fRotationZ_deg;
+            this.ITotNoPointsin3D = plate.ITotNoPointsin3D;
+            this.ITotNoPointsin2D = plate.ITotNoPointsin2D;
+            this.m_drillingRoutePoints = plate.m_drillingRoutePoints;
+            this.m_dimensions = plate.m_dimensions;
+            this.m_MemberOutlines = plate.m_MemberOutlines;
+            this.m_BendLines = plate.m_BendLines;
+            this.arrConnectorControlPoints3D = plate.arrConnectorControlPoints3D;
+            this.INoPoints2Dfor3D = plate.INoPoints2Dfor3D;
+            this.m_fs_f_min = plate.m_fs_f_min;
+            this.m_fs_f_max = plate.m_fs_f_max;
+            this.m_iNumberOfConnectorsInSection = plate.m_iNumberOfConnectorsInSection;
             this.ScrewArrangement = plate.ScrewArrangement;
         }
     }

@@ -68,7 +68,13 @@ namespace BaseClasses
 
             //doplnit parametre specificke pre danu triedu
 
-            
-        }
+            if (plate is CPlate_Frame)
+            {
+                CPlate_Frame refPlate = (CPlate_Frame)plate;
+
+                this.m_fe_min_x = refPlate.m_fe_min_x;
+                this.m_fe_min_y = refPlate.m_fe_min_y;
+            }
+       }
     }
 }

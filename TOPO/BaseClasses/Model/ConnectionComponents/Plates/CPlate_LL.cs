@@ -817,7 +817,14 @@ namespace BaseClasses
             if (plate is CConCom_Plate_LL)
             {
                 CConCom_Plate_LL refPlate = (CConCom_Plate_LL)plate;
-                //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
+                this.m_fbX1 = refPlate.m_fbX1;
+                this.m_fbX2 = refPlate.m_fbX2;
+                this.m_fhY = refPlate.m_fhY;
+                this.m_flZ = refPlate.m_flZ;
+                this.m_e_min_x_LeftLeg = refPlate.m_e_min_x_LeftLeg;
+                this.m_e_min_y_LeftLeg = refPlate.m_e_min_y_LeftLeg;
+                this.m_e_min_z_RightLeg = refPlate.m_e_min_z_RightLeg;
+                this.m_e_min_y_RightLeg = refPlate.m_e_min_y_RightLeg;
             }
         }
     }

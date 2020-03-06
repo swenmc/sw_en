@@ -177,7 +177,10 @@ namespace BaseClasses
             if (plate is CWasher_W)
             {
                 CWasher_W refPlate = (CWasher_W)plate;
-                //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
+                this.pointsIn_2D = refPlate.pointsIn_2D;
+                this.pointsOut_2D = refPlate.pointsOut_2D;
+                this.iEdgesOutBasic = refPlate.iEdgesOutBasic;
+                this.iNumberOfSegmentsPerSideOut = refPlate.iNumberOfSegmentsPerSideOut;
             }
         }
     }

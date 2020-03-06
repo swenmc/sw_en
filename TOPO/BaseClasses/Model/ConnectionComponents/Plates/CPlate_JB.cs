@@ -576,6 +576,11 @@ namespace BaseClasses
             {
                 //ak by bolo viac parametrov tak takto
                 CConCom_Plate_JB refPlate = (CConCom_Plate_JB)plate;
+                this.m_fbX = refPlate.m_fbX;
+                this.m_fhY1 = refPlate.m_fhY1;
+                this.m_fhY2 = refPlate.m_fhY2;
+                this.m_flZ = refPlate.m_flZ;
+                this.m_fSlope_rad = refPlate.m_fSlope_rad;
                 this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
             }
         }

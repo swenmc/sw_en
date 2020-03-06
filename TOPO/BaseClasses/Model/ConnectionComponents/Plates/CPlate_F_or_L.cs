@@ -744,7 +744,20 @@ namespace BaseClasses
 
             //doplnit parametre specificke pre danu triedu
 
-            
+            if (plate is CConCom_Plate_F_or_L)
+            {
+                CConCom_Plate_F_or_L refPlate = (CConCom_Plate_F_or_L)plate;
+                this.m_fbX1 = refPlate.m_fbX1;
+                this.m_fbX2 = refPlate.m_fbX2;
+                this.m_fhY = refPlate.m_fhY;
+                this.m_flZ = refPlate.m_flZ;
+                this.iLeftRightIndex = refPlate.iLeftRightIndex;
+                this.m_e_min_x_LeftLeg = refPlate.m_e_min_x_LeftLeg;
+                this.m_e_min_y_LeftLeg = refPlate.m_e_min_y_LeftLeg;
+                this.m_e_min_z_RightLeg = refPlate.m_e_min_z_RightLeg;
+                this.m_e_min_y_RightLeg = refPlate.m_e_min_y_RightLeg;
+                this.m_fConnectedSectionDepth = refPlate.m_fConnectedSectionDepth;
+            }
         }
     }
 }
