@@ -50,6 +50,24 @@ namespace BaseClasses
             if (MainMember_temp != null && MainMember_temp.CrScStart != null)
                 m_fPlate_Angle_Height = (float)MainMember_temp.CrScStart.h;
 
+            //--------------------------------------------------------------------------------------------------
+            // Prepisem default hodnotami z databazy
+            string sPlatePrefix;
+            CPlate_F_Properties plateProp;
+            SetPlate_F_Type(m_MainMember.CrScStart.Name_short, out sPlatePrefix, out plateProp);
+
+            if (plateProp != null)
+            {
+                sPlateType_F_left = sPlatePrefix + " - LH";
+                sPlateType_F_right = sPlatePrefix + " - RH";
+                m_ft = (float)plateProp.thickness;
+                m_fPlate_Angle_LeftLeg = (float)plateProp.dim3;
+                m_fPlate_Angle_RightLeg_BX1 = (float)plateProp.dim11;
+                m_fPlate_Angle_RightLeg_BX2 = (float)plateProp.dim12;
+                m_fPlate_Angle_Height = (float)plateProp.dim2y;
+            }
+            //--------------------------------------------------------------------------------------------------
+
             float fCutOffOneSide = 0.005f;
             float fAlignment_x = 0.0f;
 

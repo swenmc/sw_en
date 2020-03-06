@@ -174,6 +174,211 @@ namespace BaseClasses
             }
         }
 
+        protected void SetPlate_L_Type(string sSectionNameDatabase,
+            out string platePrefix, out DATABASE.DTO.CPlate_L_Properties plateProp)
+        {
+            // Prierez, ktory sa pripaja
+
+            plateProp = null;
+
+            if (sSectionNameDatabase == "10075")
+            {
+                platePrefix = "LJ";
+            }
+            else if (sSectionNameDatabase == "27055")
+            {
+                platePrefix = "LH";
+            }
+            else if (sSectionNameDatabase == "27095")
+            {
+                platePrefix = "LH";
+            }
+            else if (sSectionNameDatabase == "27095n")
+            {
+                platePrefix = "LK";
+            }
+            else if (sSectionNameDatabase == "270115")
+            {
+                platePrefix = "LH";
+            }
+            else if (sSectionNameDatabase == "270115btb")
+            {
+                platePrefix = "LH";
+            }
+            else if (sSectionNameDatabase == "270115n")
+            {
+                platePrefix = "LK";
+            }
+            else if (sSectionNameDatabase == "50020")
+            {
+                platePrefix = "LE";
+            }
+            else if (sSectionNameDatabase == "50020n")
+            {
+                platePrefix = "LF";
+            }
+            else if (sSectionNameDatabase == "63020")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "63020s1")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "63020s2")
+            {
+                platePrefix = "";
+            }
+            else
+            {
+                platePrefix = "";
+                // Docasne zakomentovane - nezobrazovat vynimku, pouziju sa defaultne hodnoty
+                /*throw new NotImplementedException("Invalid cross-section name: " + sSectionNameDatabase + ". \n" +
+                                                  "Plate of cross-section with this name is not implemented");*/
+            }
+
+            if (platePrefix != "")
+            {
+                plateProp = DATABASE.CJointsManager.GetPlate_L_Properties(platePrefix);
+            }
+        }
+
+        protected void SetPlate_F_Type(string sSectionNameDatabase,
+          out string platePrefix, out DATABASE.DTO.CPlate_F_Properties plateProp)
+        {
+            // Prierez, ku ktoremu sa pripajame !!!!
+            plateProp = null;
+
+            if (sSectionNameDatabase == "10075")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "27055")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "27095")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "27095n")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "270115")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "270115btb")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "270115n")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "50020")
+            {
+                platePrefix = "FC";
+            }
+            else if (sSectionNameDatabase == "50020n")
+            {
+                platePrefix = "FB";
+            }
+            else if (sSectionNameDatabase == "63020")
+            {
+                platePrefix = "FA";
+            }
+            else if (sSectionNameDatabase == "63020s1")
+            {
+                platePrefix = "FA";
+            }
+            else if (sSectionNameDatabase == "63020s2")
+            {
+                platePrefix = "FA";
+            }
+            else
+            {
+                platePrefix = "";
+                // Docasne zakomentovane - nezobrazovat vynimku, pouziju sa defaultne hodnoty
+                /*throw new NotImplementedException("Invalid cross-section name: " + sSectionNameDatabase + ". \n" +
+                                                  "Plate of cross-section with this name is not implemented");*/
+            }
+
+            if (platePrefix != "")
+            {
+                plateProp = DATABASE.CJointsManager.GetPlate_F_Properties(platePrefix + " - LH"); // V databaze su len hodnoty pre nazvy s LH a RH
+            }
+        }
+
+        protected void SetPlate_LL_Type(string sSectionNameDatabase,
+          out string platePrefix, out DATABASE.DTO.CPlate_LL_Properties plateProp)
+        {
+            // Prierez, ktory sa pripaja
+
+            plateProp = null;
+
+            if (sSectionNameDatabase == "10075")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "27055")
+            {
+                platePrefix = "LLH";
+            }
+            else if (sSectionNameDatabase == "27095")
+            {
+                platePrefix = "LLH";
+            }
+            else if (sSectionNameDatabase == "27095n")
+            {
+                platePrefix = "LLK";
+            }
+            else if (sSectionNameDatabase == "270115")
+            {
+                platePrefix = "LLH";
+            }
+            else if (sSectionNameDatabase == "270115btb")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "270115n")
+            {
+                platePrefix = "LLK";
+            }
+            else if (sSectionNameDatabase == "50020")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "50020n")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "63020")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "63020s1")
+            {
+                platePrefix = "";
+            }
+            else if (sSectionNameDatabase == "63020s2")
+            {
+                platePrefix = "";
+            }
+            else
+            {
+                platePrefix = "";
+                throw new NotImplementedException("Invalid cross-section name: " + sSectionNameDatabase + ". \n" +
+                                                  "Plate of cross-section with this name is not implemented");
+            }
+
+            if (platePrefix != "")
+            {
+                plateProp = DATABASE.CJointsManager.GetPlate_LL_Properties(platePrefix);
+            }
+        }
+
         public void SetBaseJointEdgeDistances(CFoundation pad)
         {
             // Joint with base plate and anchors
