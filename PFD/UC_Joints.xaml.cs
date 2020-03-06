@@ -1800,6 +1800,8 @@ namespace PFD
                 float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
                 float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
 
+
+                //toto refaktorovat tak,ze z Dictionary vybrat Joints daneho typu a metodu vyuzit aj dole, lebo kod je rovnaky
                 foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
                 {
                     // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
