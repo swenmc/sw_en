@@ -551,5 +551,14 @@ namespace BaseClasses
 
             return arrayControlPoints3D;
         }
+
+        public override void CopyParams(CPlate plate)
+        {
+            base.CopyParams(plate);
+
+            //doplnit parametre specificke pre danu triedu
+
+            
+        }
     }
 }

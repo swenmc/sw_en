@@ -805,5 +805,20 @@ namespace BaseClasses
             wireFrameIndices.Add(9);
             wireFrameIndices.Add(17);
         }*/
+
+
+
+        public override void CopyParams(CPlate plate)
+        {
+            base.CopyParams(plate);
+
+            //doplnit parametre specificke pre danu triedu
+
+            if (plate is CConCom_Plate_LL)
+            {
+                CConCom_Plate_LL refPlate = (CConCom_Plate_LL)plate;
+                //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
+            }
+        }
     }
 }

@@ -827,5 +827,15 @@ namespace BaseClasses
                     }
             }
         }
+
+
+        public virtual void CopyParams(CPlate plate)
+        {
+            this.Ft = plate.Ft;
+            this.Height_hy = plate.Height_hy;
+            this.Width_bx = plate.Width_bx;
+
+            this.ScrewArrangement = plate.ScrewArrangement;
+        }
     }
 }

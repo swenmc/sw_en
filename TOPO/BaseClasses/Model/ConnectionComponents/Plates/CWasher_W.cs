@@ -165,5 +165,20 @@ namespace BaseClasses
         }
 
         //public override void loadWireFrameIndices() { }
+
+
+        //Ak by nahodou trebalo aj pre washer
+        public override void CopyParams(CPlate plate)
+        {
+            base.CopyParams(plate);
+
+            //doplnit parametre specificke pre danu triedu
+
+            if (plate is CWasher_W)
+            {
+                CWasher_W refPlate = (CWasher_W)plate;
+                //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
+            }
+        }
     }
 }

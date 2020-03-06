@@ -62,5 +62,13 @@ namespace BaseClasses
         {
             SetMinimumScrewToEdgeDistances_Basic(screwArrangement);
         }
+        public override void CopyParams(CPlate plate)
+        {
+            base.CopyParams(plate);
+
+            //doplnit parametre specificke pre danu triedu
+
+            
+        }
     }
 }

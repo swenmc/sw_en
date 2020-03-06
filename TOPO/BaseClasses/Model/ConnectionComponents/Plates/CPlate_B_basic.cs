@@ -347,5 +347,17 @@ namespace BaseClasses
                 e_min_z = (float)screwArrangement.HolesCentersPoints2D[0].X;
             }
         }
+
+        public override void CopyParams(CPlate plate)
+        {
+            base.CopyParams(plate);
+
+            //doplnit parametre specificke pre danu triedu
+
+            if (plate is CConCom_Plate_B_basic)
+            {
+                this.AnchorArrangement = ((CConCom_Plate_B_basic)plate).AnchorArrangement;
+            }
+        }
     }
 }

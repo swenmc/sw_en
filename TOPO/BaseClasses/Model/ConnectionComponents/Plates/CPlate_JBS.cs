@@ -416,5 +416,18 @@ namespace BaseClasses
 
             return wireFrame;
         }
+
+        public override void CopyParams(CPlate plate)
+        {
+            base.CopyParams(plate);
+
+            //doplnit parametre specificke pre danu triedu
+
+            if (plate is CConCom_Plate_JBS)
+            {
+                CConCom_Plate_JBS refPlate = (CConCom_Plate_JBS)plate;
+                //this.m = refPlate.m_bScrewInPlusZDirection;
+            }
+        }
     }
 }

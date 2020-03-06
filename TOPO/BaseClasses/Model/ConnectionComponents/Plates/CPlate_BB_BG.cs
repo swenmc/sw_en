@@ -692,5 +692,18 @@ namespace BaseClasses
 
             return wireFrame;
         }
+
+
+        public override void CopyParams(CPlate plate)
+        {
+            base.CopyParams(plate);
+
+            //doplnit parametre specificke pre danu triedu
+
+            if (plate is CConCom_Plate_BB_BG)
+            {
+                this.AnchorArrangement = ((CConCom_Plate_BB_BG)plate).AnchorArrangement;
+            }
+        }
     }
 }

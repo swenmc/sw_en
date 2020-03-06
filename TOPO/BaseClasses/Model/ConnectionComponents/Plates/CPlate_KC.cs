@@ -648,5 +648,18 @@ namespace BaseClasses
 
             base.RotatePlateAboutZ_CW(fTheta_deg);
         }
+
+        public override void CopyParams(CPlate plate)
+        {
+            base.CopyParams(plate);
+
+            //doplnit parametre specificke pre danu triedu
+
+            if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC refPlate = (CConCom_Plate_KC)plate;
+                this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
+            }
+        }
     }
 }
