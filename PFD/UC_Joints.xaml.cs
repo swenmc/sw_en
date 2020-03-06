@@ -785,7 +785,7 @@ namespace PFD
             //margin.Bottom = 5;
             selectPlateType.Margin = margin;
             List<string> series = CPlateHelper.GetPlateSeries(plate);
-            if(series != null) series.Remove("KK"); //task 556 natvrdo vyhodit KK
+            if (series != null) series.Remove("KK"); //task 556 natvrdo vyhodit KK
             selectPlateType.ItemsSource = series;
             selectPlateType.SelectedIndex = series.IndexOf(plate.Name);
             selectPlateType.SelectionChanged += SelectPlateSerie_SelectionChanged;
@@ -913,10 +913,10 @@ namespace PFD
             int componentIndex = cb.SelectedIndex;
             string componentName = cb.SelectedValue.ToString();
 
-            paramsChanged = true;            
+            paramsChanged = true;
 
             bool bUseSimpleShapeOfPlates = true; // Zjednoduseny alebo presny tvar plechu
-            
+
             CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
             float fCrsc_h = 0.27f; // Default depth of connected member cross-section
@@ -926,10 +926,10 @@ namespace PFD
             switch (plate.m_ePlateSerieType_FS)
             {
                 case ESerieTypePlate.eSerie_B:
-                    {                        
+                    {
                         CConCom_Plate_B_basic pB = plate as CConCom_Plate_B_basic;
                         CAnchorArrangement_BB_BG anchorArrangement = pB.AnchorArrangement;
-                                                
+
                         plate = new CConCom_Plate_B_basic(componentName, pB.m_pControlPoint, pB.Fb_X, pB.Fh_Y, pB.Fl_Z, pB.Ft, pB.m_fRotationX_deg, pB.m_fRotationY_deg, pB.m_fRotationZ_deg, referenceAnchor, pB.ScrewArrangement);
 
                         ((CConCom_Plate_B_basic)plate).AnchorArrangement = anchorArrangement; //pokus zachovat povodny Anchor Arrangement
@@ -940,11 +940,11 @@ namespace PFD
                     {
                         CScrewArrangement_L sa = plate.ScrewArrangement as CScrewArrangement_L;
                         CConCom_Plate_F_or_L pL = plate as CConCom_Plate_F_or_L;
-                        plate = new CConCom_Plate_F_or_L(componentName,  pL.m_pControlPoint, pL.Fb_X1, pL.Fh_Y, pL.Fl_Z, pL.Ft, fCrsc_h, 0, 0, 0, sa); // L
+                        plate = new CConCom_Plate_F_or_L(componentName, pL.m_pControlPoint, pL.Fb_X1, pL.Fh_Y, pL.Fl_Z, pL.Ft, fCrsc_h, 0, 0, 0, sa); // L
                         break;
                     }
                 case ESerieTypePlate.eSerie_LL:
-                    {                        
+                    {
                         CScrewArrangement_LL sa = plate.ScrewArrangement as CScrewArrangement_LL;
                         CConCom_Plate_LL pLL = plate as CConCom_Plate_LL;
                         plate = new CConCom_Plate_LL(componentName, pLL.m_pControlPoint, pLL.Fb_X1, pLL.Fh_Y, pLL.Fl_Z, pLL.Ft, fCrsc_h, 0, 0, 0, sa); // LL
@@ -953,18 +953,18 @@ namespace PFD
                 case ESerieTypePlate.eSerie_F:
                     {
                         CScrewArrangement_F sa = plate.ScrewArrangement as CScrewArrangement_F;
-                        
+
                         CConCom_Plate_F_or_L pF = plate as CConCom_Plate_F_or_L;
                         plate = new CConCom_Plate_F_or_L(componentName, pF.m_pControlPoint, pF.Fb_X1, pF.Fb_X2, pF.Fh_Y, pF.Fl_Z, pF.Ft, fCrsc_h, 0, 0, 0, sa); // F
                         break;
                     }
                 case ESerieTypePlate.eSerie_G:
-                    {                        
+                    {
                         CScrewArrangement_G sa = plate.ScrewArrangement as CScrewArrangement_G;
 
                         CConCom_Plate_G pG = plate as CConCom_Plate_G;
                         plate = new CConCom_Plate_G(componentName, pG.m_pControlPoint, pG.Fb_X1, pG.Fb_X2, pG.Fh_Y1, pG.Fh_Y2, pG.Fl_Z, fCrsc_h, pG.Ft, 0, 0, 0, sa); // G
-                        
+
                         break;
                     }
                 case ESerieTypePlate.eSerie_H:
@@ -979,7 +979,7 @@ namespace PFD
                     {
                         CConCom_Plate_Q_T_Y pQ = plate as CConCom_Plate_Q_T_Y;
                         plate = new CConCom_Plate_Q_T_Y(componentName, pQ.m_pControlPoint, pQ.Fb_X, pQ.Fh_Y, pQ.Fl_Z1, pQ.Fl_Z2, pQ.Ft, pQ.m_iHolesNumber); // Q
-                        
+
                         break;
                     }
                 case ESerieTypePlate.eSerie_T:
@@ -992,7 +992,7 @@ namespace PFD
                     {
                         CConCom_Plate_Q_T_Y pY = plate as CConCom_Plate_Q_T_Y;
                         plate = new CConCom_Plate_Q_T_Y(componentName, pY.m_pControlPoint, pY.Fb_X, pY.Fh_Y, pY.Fl_Z1, pY.Fl_Z2, pY.Ft, pY.m_iHolesNumber); // Y
-                        
+
                         break;
                     }
                 case ESerieTypePlate.eSerie_J:
@@ -1002,7 +1002,7 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_K:
                     {
-                        CPlateHelper.SetPlate_K_WithSameDimensions(ref plate, componentIndex, componentName, bUseSimpleShapeOfPlates);                        
+                        CPlateHelper.SetPlate_K_WithSameDimensions(ref plate, componentIndex, componentName, bUseSimpleShapeOfPlates);
                         break;
                     }
                 case ESerieTypePlate.eSerie_M:
@@ -1014,14 +1014,14 @@ namespace PFD
                         break;
                     }
                 case ESerieTypePlate.eSerie_N:
-                    {                        
+                    {
                         CConCom_Plate_N pN = plate as CConCom_Plate_N;
                         CScrewArrangement_N sa = plate.ScrewArrangement as CScrewArrangement_N;
                         plate = new CConCom_Plate_N(componentName, pN.m_pControlPoint, pN.Fb_X1, pN.Fb_X3, pN.Fh_Y, pN.FZ, pN.Ft, pN.m_fRotationX_deg, pN.m_fRotationY_deg, pN.m_fRotationZ_deg, sa);
                         break;
                     }
                 case ESerieTypePlate.eSerie_O:
-                    {                        
+                    {
                         CConCom_Plate_O pO = plate as CConCom_Plate_O;
                         CScrewArrangement_O sa = plate.ScrewArrangement as CScrewArrangement_O;
                         plate = new CConCom_Plate_O(componentName, pO.m_pControlPoint, pO.Fb_X1, pO.Fb_X2, pO.Fh_Y1, pO.Fh_Y2, pO.Ft, pO.FSlope_rad, pO.m_fRotationX_deg, pO.m_fRotationY_deg, pO.m_fRotationZ_deg, sa);
@@ -1793,85 +1793,147 @@ namespace PFD
         private void UpdateConnectedMembers(CConnectionJointTypes joint)
         {
             //task 555
-            //takto nejako Mato? ze ked sa zmeni konkretny spoj, tak sa bude nieco vyhladavat v modeli a menit
 
             //asi bude potrebne nejako adresnejsie vyhladat,co sa ma zmenit
             if (joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_MainRafter_Column)
             {
-                float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
-                float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
+                UpdatePurlinRafterJoints(joint as CConnectionJoint_B001, EJointType.eEdgePurlin_MainRafter);
+
+                //float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
+                //float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
 
 
-                //toto refaktorovat tak,ze z Dictionary vybrat Joints daneho typu a metodu vyuzit aj dole, lebo kod je rovnaky
-                foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
-                {
-                    // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
-                    // ale len nejaku podskupinu z ENUM - EJointType
-                    if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_MainRafter)
-                    {
-                        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
-                        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
-                        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
+                ////toto refaktorovat tak,ze z Dictionary vybrat Joints daneho typu a metodu vyuzit aj dole, lebo kod je rovnaky
+                //foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
+                //{
+                //    // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
+                //    // ale len nejaku podskupinu z ENUM - EJointType
+                //    if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_MainRafter)
+                //    {
+                //        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
+                //        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
+                //        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
 
-                        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
-                        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
+                //        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
+                //        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
 
-                        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
-                        {
-                            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
-                        }
+                //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
+                //        {
+                //            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                //            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
+                //        }
 
-                        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
-                        {
-                            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
-                        }
+                //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
+                //        {
+                //            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                //            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
+                //        }
 
-                        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
-                        joint_t1.UpdateJoint();
-                    }
-                }
+                //        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
+                //        joint_t1.UpdateJoint();
+                //    }
+                //}
             }
-            else if(joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_EgdeRafter_Column)
+            else if (joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_EgdeRafter_Column)
             {
-                float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
-                float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
+                UpdatePurlinRafterJoints(joint as CConnectionJoint_B001, EJointType.eEdgePurlin_EdgeRafter);
 
-                foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
-                {
-                    // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
-                    // ale len nejaku podskupinu z ENUM - EJointType
-                    if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_EdgeRafter)
-                    {
-                        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
-                        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
-                        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
+                //float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
+                //float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
 
-                        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
-                        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
+                //foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
+                //{
+                //    // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
+                //    // ale len nejaku podskupinu z ENUM - EJointType
+                //    if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_EdgeRafter)
+                //    {
+                //        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
+                //        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
+                //        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
 
-                        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
-                        {
-                            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
-                        }
+                //        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
+                //        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
 
-                        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
-                        {
-                            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
-                        }
+                //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
+                //        {
+                //            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                //            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
+                //        }
 
-                        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
-                        joint_t1.UpdateJoint();
-                    }
-                }
+                //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
+                //        {
+                //            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                //            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
+                //        }
+
+                //        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
+                //        joint_t1.UpdateJoint();
+                //    }
+                //}
             }
             else
             {
 
             }
+        }
+
+        private void UpdatePurlinRafterJoints(CConnectionJoint_B001 joint, EJointType jointType)
+        {
+            float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
+            float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
+
+            foreach (CConnectionJointTypes jt in jointsDict[(int)jointType])
+            {
+                float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
+                float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
+                float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
+
+                CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
+
+                if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
+                {
+                    joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                    joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
+                }
+
+                if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
+                {
+                    joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                    joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
+                }
+
+                joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
+                joint_t1.UpdateJoint();
+            }
+
+            //foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
+            //{
+            //    if (jt is CConnectionJoint_T001 && jt.JointType == jointType)
+            //    {
+            //        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
+            //        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
+            //        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
+
+            //        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
+            //        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
+
+            //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
+            //        {
+            //            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+            //            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
+            //        }
+
+            //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
+            //        {
+            //            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+            //            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
+            //        }
+
+            //        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
+            //        joint_t1.UpdateJoint();
+            //    }
+            //}
+
         }
 
         private DataGrid GetDatagridForDetails(List<CComponentParamsView> detailsParams)
