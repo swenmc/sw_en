@@ -615,6 +615,33 @@ namespace BaseClasses
             m_fPortionOtAnchorAbovePlate_abs = MathF.Max(fPortionOtAnchorAbovePlate_rel * Length, 1.8f * Diameter_shank, 0.02f); // [m]
         }
 
+        public void UpdateControlPoint()
+        {
+            //Mato TODO
+            //1.Update Anchor control point
+
+            //tu ked menim akokolvek tak zmenu v modeli nevidim!!!
+            this.m_pControlPoint.Z += 10000;
+            this.m_pControlPoint.Y += 10000;
+            this.m_pControlPoint.X += 10000;
+
+            //2.Update Washers control points
+            if (WasherBearing != null)
+            {
+                WasherBearing.m_pControlPoint.X += 0.1;
+                WasherBearing.m_pControlPoint.Y += 0.1;
+                WasherBearing.m_pControlPoint.Z += 0.1;
+            }
+
+            if (WasherPlateTop != null)
+            {
+                WasherPlateTop.m_pControlPoint.X += 0.1;
+                WasherPlateTop.m_pControlPoint.Y += 0.1;
+                WasherPlateTop.m_pControlPoint.Z += 0.1;
+            }
+
+        }
+
         /*
         protected override void loadIndices()
         {

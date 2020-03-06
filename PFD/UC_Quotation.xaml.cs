@@ -1748,6 +1748,11 @@ namespace PFD
 
         }
 
+        private void btnRefreshQuotation_Click(object sender, RoutedEventArgs e)
+        {
+            _pfdVM.RecreateQuotation = true;
+        }
+
         //ODKALDAM SI PLATES METODU AK BY SOM V REFAKTORINGU NIECO DOBABRAL TAK odtialto sa vezme
         //private void CreateTablePlates(CModel model)
         //{

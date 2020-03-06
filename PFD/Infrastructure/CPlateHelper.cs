@@ -1,6 +1,7 @@
 ﻿using BaseClasses;
 using BaseClasses.Helpers;
 using DATABASE;
+using DATABASE.DTO;
 using MATH;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,10 @@ namespace PFD
             {
                 CAnchorArrangement_BB_BG baseArrangement = (CAnchorArrangement_BB_BG)anchorArrangement;
 
-                List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
+                //List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
 
                 List<string> listAnchorDiameters = CBoltsManager.LoadBoltsProperties("ThreadedBars").Select(i => i.Name).ToList();
+                List<string> listWashersNames = CWashersManager.LoadPlate_W_Descriptions().Select(i => i.Name).ToList();
 
                 anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.AnchorNameS.Name, CParamsResources.AnchorNameS.Symbol, baseArrangement.referenceAnchor.Name.ToString(), listAnchorDiameters, CParamsResources.AnchorNameS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
                 anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorDiameterS.Name, CParamsResources.AnchorDiameterS.Symbol, (Math.Round(baseArrangement.referenceAnchor.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorDiameterS.Unit, false));
@@ -38,7 +40,8 @@ namespace PFD
 
                 if (baseArrangement.referenceAnchor.WasherPlateTop != null)
                 {
-                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherNameS.Name, CParamsResources.PlateWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherPlateTop.Name.ToString(), CParamsResources.PlateWasherNameS.Unit, false));
+                    anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.PlateWasherNameS.Name, CParamsResources.PlateWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherPlateTop.Name.ToString(), listWashersNames, CParamsResources.PlateWasherNameS.Unit));
+                    //anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherNameS.Name, CParamsResources.PlateWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherPlateTop.Name.ToString(), CParamsResources.PlateWasherNameS.Unit, false));
                     anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherWidthxS.Name, CParamsResources.PlateWasherWidthxS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherWidthxS.Unit, true));
                     anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherWidthyS.Name, CParamsResources.PlateWasherWidthyS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Height_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherWidthyS.Unit, true));
                     anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherThicknessS.Name, CParamsResources.PlateWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherThicknessS.Unit, true));
@@ -46,7 +49,8 @@ namespace PFD
 
                 if (baseArrangement.referenceAnchor.WasherBearing != null)
                 {
-                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherNameS.Name, CParamsResources.BearingWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherBearing.Name.ToString(), CParamsResources.BearingWasherNameS.Unit, false));
+                    anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.BearingWasherNameS.Name, CParamsResources.BearingWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherBearing.Name.ToString(), listWashersNames, CParamsResources.BearingWasherNameS.Unit));
+                    //anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherNameS.Name, CParamsResources.BearingWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherBearing.Name.ToString(), CParamsResources.BearingWasherNameS.Unit, false));
                     anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherWidthxS.Name, CParamsResources.BearingWasherWidthxS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherWidthxS.Unit, true));
                     anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherWidthyS.Name, CParamsResources.BearingWasherWidthyS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Height_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherWidthyS.Unit, true));
                     anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherThicknessS.Name, CParamsResources.BearingWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherThicknessS.Unit, true));
@@ -95,22 +99,41 @@ namespace PFD
                     if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
                     if (item.Name.Equals(CParamsResources.AnchorDiameterS.Name)) arrangementTemp.referenceAnchor.Diameter_shank = item_val / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.AnchorLengthS.Name)) arrangementTemp.referenceAnchor.Length = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.AnchorLengthS.Name))
+                    {
+                        arrangementTemp.referenceAnchor.Length = item_val / fLengthUnitFactor;
+                        arrangementTemp.referenceAnchor.UpdateControlPoint();
+                    }
                     
                     if (arrangementTemp.referenceAnchor.WasherPlateTop != null)
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateWasherNameS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Name = itemStr.ToString();
+                    {                        
                         if (item.Name.Equals(CParamsResources.PlateWasherWidthxS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Width_bx = item_val / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.PlateWasherWidthyS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Height_hy = item_val / fLengthUnitFactor;
-                        if (item.Name.Equals(CParamsResources.PlateWasherThicknessS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Ft = item_val / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.PlateWasherThicknessS.Name))
+                        {
+                            arrangementTemp.referenceAnchor.WasherPlateTop.Ft = item_val / fLengthUnitFactor;
+                            //to Mato - neviem kde presne ale asi sa niekde musi volat nejaky update. Musi sa asi volat Calc_Coord3D();
+                            // Update plate data
+                            arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData(null);    
+                            //nepomohlo neviem zmenit Washer thickness aby sa zmenilo aj v 3D
+                                                    
+                        }
                     }
 
                     if (arrangementTemp.referenceAnchor.WasherBearing != null)
                     {
-                        if (item.Name.Equals(CParamsResources.BearingWasherNameS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Name = itemStr.ToString();
                         if (item.Name.Equals(CParamsResources.BearingWasherWidthxS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Width_bx = item_val / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.BearingWasherWidthyS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Height_hy = item_val / fLengthUnitFactor;
-                        if (item.Name.Equals(CParamsResources.BearingWasherThicknessS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Ft = item_val / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.BearingWasherThicknessS.Name))
+                        {
+                            arrangementTemp.referenceAnchor.WasherBearing.Ft = item_val / fLengthUnitFactor;
+                            //to Mato - neviem kde presne ale asi sa niekde musi volat nejaky update. Musi sa asi volat Calc_Coord3D();
+                            // Update plate data
+                            arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData(null);
+                            //nepomohlo neviem zmenit Washer thickness aby sa zmenilo aj v 3D
+                        }
+
+
                     }
 
                     if (item.Name == "Number of anchors in row SQ1") arrangementTemp.iNumberOfAnchorsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
@@ -134,7 +157,23 @@ namespace PFD
                 else if (item is CComponentParamsViewList)
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
-                    if (item.Name.Equals(CParamsResources.AnchorNameS.Name)) arrangementTemp.referenceAnchor.Name = itemList.Value;
+                    if (item.Name.Equals(CParamsResources.AnchorNameS.Name))
+                    {
+                        arrangementTemp.referenceAnchor.Name = itemList.Value;
+                        CBoltProperties props = CBoltsManager.GetBoltProperties(arrangementTemp.referenceAnchor.Name, "ThreadedBars");
+                        arrangementTemp.referenceAnchor.Diameter_shank = (float)props.ShankDiameter;
+                    }
+
+                    if (item.Name.Equals(CParamsResources.PlateWasherNameS.Name))
+                    {
+                        arrangementTemp.referenceAnchor.WasherPlateTop.Name = itemList.Value;
+                        UpdateWasherParamsFromDB(arrangementTemp.referenceAnchor.WasherPlateTop);
+                    }
+                    if (item.Name.Equals(CParamsResources.BearingWasherNameS.Name))
+                    {
+                        arrangementTemp.referenceAnchor.WasherBearing.Name = itemList.Value;
+                        UpdateWasherParamsFromDB(arrangementTemp.referenceAnchor.WasherBearing);
+                    } 
                 }
 
                 arrangementTemp.UpdateArrangmentData();         // Update data of screw arrangement
@@ -144,6 +183,14 @@ namespace PFD
             {
                 // Anchor arrangement is not implemented
             }
+        }
+
+        public static void UpdateWasherParamsFromDB(CWasher_W washer)
+        {
+            CRectWasher_W_Properties props = CWashersManager.GetPlate_W_Properties(washer.Name);
+            washer.Ft = (float)props.thickness;
+            washer.Width_bx = (float)props.dim1x;
+            washer.Height_hy = (float)props.dim2y;
         }
 
         // Screws

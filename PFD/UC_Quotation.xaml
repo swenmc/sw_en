@@ -36,6 +36,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <Button Grid.Row="0" Grid.Column="0" Name="btnRefreshQuotation" Content="Refresh" Height="20" Width="70" Margin="320 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnRefreshQuotation_Click"></Button>
             <Button Grid.Row="0" Grid.Column="3" Name="btnDisplayOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Quotation Options" Margin="400 0 0 0" Width="20" Height="20" Click="BtnDisplayOptions_Click">
                 <Image Source="Resources/options_quotation.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
             </Button>
