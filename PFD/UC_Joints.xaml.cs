@@ -785,6 +785,7 @@ namespace PFD
             //margin.Bottom = 5;
             selectPlateType.Margin = margin;
             List<string> series = CPlateHelper.GetPlateSeries(plate);
+            if(series != null) series.Remove("KK"); //task 556 natvrdo vyhodit KK
             selectPlateType.ItemsSource = series;
             selectPlateType.SelectedIndex = series.IndexOf(plate.Name);
             selectPlateType.SelectionChanged += SelectPlateSerie_SelectionChanged;
