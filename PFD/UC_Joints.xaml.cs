@@ -1813,15 +1813,15 @@ namespace PFD
                         // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
                         CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
 
-                        if (jt.m_Node.ID == joint.m_SecondaryMembers[0].NodeStart.ID)
+                        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
                         {
-                            joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
                             joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
                         }
 
-                        if (jt.m_Node.ID == joint.m_SecondaryMembers[0].NodeEnd.ID)
+                        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
                         {
-                            joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
                             joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
                         }
 
@@ -1848,15 +1848,15 @@ namespace PFD
                         // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
                         CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
 
-                        if (jt.m_Node.ID == joint.m_SecondaryMembers[0].NodeStart.ID)
+                        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
                         {
-                            joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
                             joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
                         }
 
-                        if (jt.m_Node.ID == joint.m_SecondaryMembers[0].NodeEnd.ID)
+                        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
                         {
-                            joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
                             joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
                         }
 
