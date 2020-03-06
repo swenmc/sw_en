@@ -2076,12 +2076,26 @@ namespace PFD
                 if (refJoint == null) continue;
                 foreach (CConnectionJointTypes joint in sameJoints)
                 {
-                    joint.m_arrPlates = refJoint.m_arrPlates;
+                    //m_arrPlates[0].m_pControlPoint = new Point3D(0, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
+
+                    //joint.m_arrPlates = refJoint.m_arrPlates;
                     //To Mato - skusal som odpamatavat control points, skusal som vola hocijake metody vid nizsie ale nic nepomaha
                     //foreach (CPlate plate in joint.m_arrPlates)
                     //{
                     //    plate.UpdatePlateData(plate.ScrewArrangement);
                     //}
+                    int i = 0;
+                    foreach (CPlate plate in joint.m_arrPlates)
+                    {
+                        //plate.CopyParams(refJoint.Plates[i]);
+                        plate.Ft = refJoint.m_arrPlates[i].Ft;
+                        plate.Height_hy = refJoint.m_arrPlates[i].Height_hy;
+                        plate.Width_bx = refJoint.m_arrPlates[i].Width_bx;
+                        i++;
+                    }
+
+
+                    joint.UpdateJoint();
                 }
             }
 
