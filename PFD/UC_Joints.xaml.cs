@@ -1795,7 +1795,7 @@ namespace PFD
             //takto nejako Mato? ze ked sa zmeni konkretny spoj, tak sa bude nieco vyhladavat v modeli a menit
 
             //asi bude potrebne nejako adresnejsie vyhladat,co sa ma zmenit
-            if (joint is CConnectionJoint_B001)
+            if (joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_MainRafter_Column)
             {
                 float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
                 float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
@@ -1828,7 +1828,17 @@ namespace PFD
                         joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
                         joint_t1.UpdateJoint();
                     }
+                }
+            }
+            else if(joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_EgdeRafter_Column)
+            {
+                float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
+                float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
 
+                foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
+                {
+                    // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
+                    // ale len nejaku podskupinu z ENUM - EJointType
                     if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_EdgeRafter)
                     {
                         float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
@@ -1854,6 +1864,10 @@ namespace PFD
                         joint_t1.UpdateJoint();
                     }
                 }
+            }
+            else
+            {
+
             }
         }
 
