@@ -55,7 +55,6 @@ namespace BaseClasses
             }
             //--------------------------------------------------------------------------------------------------
 
-
             float fCutOffOneSide = 0.005f;
             float fAlignment_x = 0;
 
