@@ -1551,8 +1551,8 @@ namespace M_AS4600
                     designDetails.fu_y_Washer = 0.02f;
                 }
 
-                designDetails.fs_2_x = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1); // centre-to-centre spacing of the anchors
-                designDetails.fs_1_y = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsY_SQ1); // centre-to-centre spacing of the anchors
+                designDetails.fs_2_x = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1.ToArray()); // centre-to-centre spacing of the anchors
+                designDetails.fs_1_y = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsY_SQ1.ToArray()); // centre-to-centre spacing of the anchors
 
                 designDetails.fc_2_x = designDetails.fe_x_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
                 designDetails.fc_1_y_Tension = designDetails.fe_y_AnchorToFootingEdge_Tension; // Vzdialenost kotvy od okraja betonoveho zakladu

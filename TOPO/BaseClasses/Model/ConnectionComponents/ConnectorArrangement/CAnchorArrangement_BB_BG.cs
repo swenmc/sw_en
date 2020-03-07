@@ -21,8 +21,10 @@ namespace BaseClasses
         public int iNumberOfAnchorsInColumn_yDirection_SQ1;
         //public float fx_c_SQ1;
         //public float fy_c_SQ1;
-        public float[] fDistanceOfPointsX_SQ1;
-        public float[] fDistanceOfPointsY_SQ1;
+        public List<float> fDistanceOfPointsX_SQ1;
+        public List<float> fDistanceOfPointsY_SQ1;
+
+        private List<CAnchorRectSequence> m_RectSequences;
 
         double m_RefPointX;
         public double RefPointX
@@ -70,6 +72,19 @@ namespace BaseClasses
             }
         }
 
+        public List<CAnchorRectSequence> RectSequences
+        {
+            get
+            {
+                return m_RectSequences;
+            }
+
+            set
+            {
+                m_RectSequences = value;
+            }
+        }
+
         public CAnchorArrangement_BB_BG() { }
 
         public CAnchorArrangement_BB_BG(string plateName_temp, CAnchor referenceAnchor_temp, bool uniformDistributionOfShear)
@@ -100,20 +115,48 @@ namespace BaseClasses
 
             if (float.IsNaN(dist_x2) || float.IsNaN(dist_y2))
             {
-                fDistanceOfPointsX_SQ1 = new float[1] { dist_x1 };
-                fDistanceOfPointsY_SQ1 = new float[1] { dist_y1 };
+                fDistanceOfPointsX_SQ1 = new List<float> { dist_x1 };
+                fDistanceOfPointsY_SQ1 = new List<float> { dist_y1 };
             }
             else
             {
-                fDistanceOfPointsX_SQ1 = new float[2] { dist_x1, dist_x2 };
-                fDistanceOfPointsY_SQ1 = new float[2] { dist_y1, dist_y2 };
+                fDistanceOfPointsX_SQ1 = new List<float> { dist_x1, dist_x2 };
+                fDistanceOfPointsY_SQ1 = new List<float> { dist_y1, dist_y2 };
             }
 
             referenceAnchor = referenceAnchor_temp;
             HoleRadius = 0.5f * referenceAnchor.Diameter_thread; // Anchor diameter
             RadiusAngle = 360; // Circle total angle to generate holes
 
-            ListOfSequenceGroups = new List<CAnchorSequenceGroup>(1); // One group
+            CAnchorRectSequence seq1 = new CAnchorRectSequence();
+            seq1.NumberOfAnchorsInRow_xDirection = iNumberOfAnchorsInRow_xDirection_SQ1;
+            seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfAnchorsInColumn_yDirection_SQ1;
+            //seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
+            if (fDistanceOfPointsX_SQ1.Count > 1)
+            {
+                seq1.SameDistancesX = false;
+                seq1.DistancesOfPointsX = fDistanceOfPointsX_SQ1;
+            }
+            else
+            {
+                seq1.SameDistancesX = true;
+                seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1.First();
+            }
+
+            if (fDistanceOfPointsY_SQ1.Count > 1)
+            {
+                seq1.SameDistancesY = false;
+                seq1.DistancesOfPointsY = fDistanceOfPointsY_SQ1;
+            }
+            else
+            {
+                seq1.SameDistancesY = true;
+                seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1.First();
+            }
+
+            seq1.INumberOfConnectors = seq1.NumberOfAnchorsInRow_xDirection * seq1.NumberOfAnchorsInColumn_yDirection;
+            seq1.HolesCentersPoints = new Point[seq1.INumberOfConnectors];
+            RectSequences = new List<CAnchorRectSequence>() { seq1 };
 
             UpdateArrangmentData();
         }
@@ -127,20 +170,42 @@ namespace BaseClasses
             // Update reference anchor properties
             //DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
             //referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
-
-            ListOfSequenceGroups.Clear(); // Delete previous data otherwise are added more and more new screws to the list
+            
             ListOfSequenceGroups = new List<CAnchorSequenceGroup>(1);
             ListOfSequenceGroups.Add(new CAnchorSequenceGroup());
+                        
+            //CAnchorRectSequence seq1 = new CAnchorRectSequence();
+            //seq1.NumberOfAnchorsInRow_xDirection = iNumberOfAnchorsInRow_xDirection_SQ1;
+            //seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfAnchorsInColumn_yDirection_SQ1;
+            ////seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
+            //if (fDistanceOfPointsX_SQ1.Count > 1)
+            //{
+            //    seq1.SameDistancesX = false;
+            //    seq1.DistancesOfPointsX = fDistanceOfPointsX_SQ1;
+            //}
+            //else
+            //{
+            //    seq1.SameDistancesX = true;
+            //    seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1.First();
+            //}
 
-            CAnchorRectSequence seq1 = new CAnchorRectSequence();
-            seq1.NumberOfAnchorsInRow_xDirection = iNumberOfAnchorsInRow_xDirection_SQ1;
-            seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfAnchorsInColumn_yDirection_SQ1;
-            //seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
-            seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1;
-            seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1;
-            seq1.INumberOfConnectors = seq1.NumberOfAnchorsInRow_xDirection * seq1.NumberOfAnchorsInColumn_yDirection;
-            seq1.HolesCentersPoints = new Point[seq1.INumberOfConnectors];
-            ListOfSequenceGroups[0].ListSequence.Add(seq1);
+            //if (fDistanceOfPointsY_SQ1.Count > 1)
+            //{
+            //    seq1.SameDistancesY = false;
+            //    seq1.DistancesOfPointsY = fDistanceOfPointsY_SQ1;
+            //}
+            //else
+            //{
+            //    seq1.SameDistancesY = true;
+            //    seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1.First();
+            //}
+            
+            //seq1.INumberOfConnectors = seq1.NumberOfAnchorsInRow_xDirection * seq1.NumberOfAnchorsInColumn_yDirection;
+            //seq1.HolesCentersPoints = new Point[seq1.INumberOfConnectors];
+
+            
+
+            ListOfSequenceGroups[0].ListSequence.Add(RectSequences.First());
 
             ListOfSequenceGroups[0].NumberOfRectangularSequences = 1;
 
