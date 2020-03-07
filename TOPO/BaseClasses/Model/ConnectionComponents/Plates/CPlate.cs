@@ -848,9 +848,9 @@ namespace BaseClasses
             this.fSurface = plate.fSurface;
             this.fVolume = plate.fVolume;
             this.fMass = plate.fMass;
-            this.m_fRotationX_deg = plate.m_fRotationX_deg;
-            this.m_fRotationY_deg = plate.m_fRotationY_deg;
-            this.m_fRotationZ_deg = plate.m_fRotationZ_deg;
+            //this.m_fRotationX_deg = plate.m_fRotationX_deg; // Neviem ci toto treba kopirovat
+            //this.m_fRotationY_deg = plate.m_fRotationY_deg;
+            //this.m_fRotationZ_deg = plate.m_fRotationZ_deg;
             this.ITotNoPointsin3D = plate.ITotNoPointsin3D;
             this.ITotNoPointsin2D = plate.ITotNoPointsin2D;
             this.m_drillingRoutePoints = plate.m_drillingRoutePoints;

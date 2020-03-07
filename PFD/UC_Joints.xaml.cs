@@ -1892,13 +1892,13 @@ namespace PFD
 
                 if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
                 {
-                    joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                    //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
                     joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
                 }
 
                 if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
                 {
-                    joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                    //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
                     joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
                 }
 
