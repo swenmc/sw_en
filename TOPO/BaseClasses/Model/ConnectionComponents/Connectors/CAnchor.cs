@@ -37,6 +37,7 @@ namespace BaseClasses
         private float m_fy_fe_max;
 
         private float m_fh_effective; // Effective Depth
+        private float m_fWasherBearing_OffsetFromBottom; // Vzdialenost od spodnej hrany kotvy po spodnu hranu washer
 
         private bool m_bIsActiveInTension; // TODO - toto by mohla byt univerzalna vlastnost pre predka CConnector
         private bool m_bIsActiveInShear; // TODO - toto by mohla byt univerzalna vlastnost pre predka CConnector
@@ -278,6 +279,20 @@ namespace BaseClasses
             set
             {
                 m_fh_effective = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WasherBearing_OffsetFromBottom
+        {
+            get
+            {
+                return m_fWasherBearing_OffsetFromBottom;
+            }
+
+            set
+            {
+                m_fWasherBearing_OffsetFromBottom = value;
             }
         }
 
@@ -533,6 +548,7 @@ namespace BaseClasses
 
             SetPortionOtAnchorAbovePlate();
 
+            m_fWasherBearing_OffsetFromBottom = 0f;
             float fOffsetFor3D = 0.0001f; // Offset medzi washer a nut pre krajsiu 3D grafiku
 
             // Washer size
@@ -559,16 +575,16 @@ namespace BaseClasses
             {
                 m_WasherBearing = washerBearing;
 
-                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
-                float fWasherBearing_OffsetFromBottom = 0.03f; // 30 mm
-
-                m_WasherBearing.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - fWasherBearing_OffsetFromBottom);
-
                 if (m_Nuts == null)
                     m_Nuts = new List<CNut>();
 
                 CNut nutTop = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0);
                 CNut nutBottom = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0);
+
+                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
+                m_fWasherBearing_OffsetFromBottom = nutBottom.Thickness_max + 0.02f; // vyska matice + 20 mm
+                m_WasherBearing.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
+
                 float fWasherBearingTopNutPosition = (float)m_WasherBearing.m_pControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
                 float fWasherBearingBottomNutPosition = (float)m_WasherBearing.m_pControlPoint.X + nutBottom.Thickness_max + fOffsetFor3D;
                 nutTop.m_pControlPoint.X = fWasherBearingTopNutPosition;
@@ -617,29 +633,35 @@ namespace BaseClasses
 
         public void UpdateControlPoint()
         {
+            float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit
+            m_fPortionOtAnchorAbovePlate_abs = Length - m_fh_effective - (m_WasherBearing != null ? m_WasherBearing.Ft : 0) - m_fWasherBearing_OffsetFromBottom;
+
+            // TO ONDREJ - DACO TU ROBIM ALE NEVIEM VELMI ZE CO :)
+            // POTREBUJEM TO S TEBOU NEJAKO POSKLADAT, CO MA BYT NEJAKY DEFAULT A CO MA BYT INDE
+
             //Mato TODO
             //1.Update Anchor control point
 
             //tu ked menim akokolvek tak zmenu v modeli nevidim!!!
-            this.m_pControlPoint.Z += 10000;
-            this.m_pControlPoint.Y += 10000;
-            this.m_pControlPoint.X += 10000;
+
+            //this.m_pControlPoint.X += 0.1f; //m_fPortionOtAnchorAbovePlate_abs;
+            //this.m_pControlPoint.Y += 0.1;
+            this.m_pControlPoint.Z = m_fPortionOtAnchorAbovePlate_abs; // Globalny system ???
 
             //2.Update Washers control points
-            if (WasherBearing != null)
-            {
-                WasherBearing.m_pControlPoint.X += 0.1;
-                WasherBearing.m_pControlPoint.Y += 0.1;
-                WasherBearing.m_pControlPoint.Z += 0.1;
-            }
-
             if (WasherPlateTop != null)
             {
-                WasherPlateTop.m_pControlPoint.X += 0.1;
-                WasherPlateTop.m_pControlPoint.Y += 0.1;
-                WasherPlateTop.m_pControlPoint.Z += 0.1;
+                WasherPlateTop.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
+                //WasherPlateTop.m_pControlPoint.Y += 0.1;
+                //WasherPlateTop.m_pControlPoint.Z += 0.1;
             }
 
+            if (WasherBearing != null)
+            {
+                WasherBearing.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
+                //WasherBearing.m_pControlPoint.Y += 0.1;
+                //WasherBearing.m_pControlPoint.Z += 0.1;
+            }
         }
 
         /*
