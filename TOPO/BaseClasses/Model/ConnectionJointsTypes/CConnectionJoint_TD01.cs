@@ -43,7 +43,7 @@ namespace BaseClasses
             CWasher_W washerBearing;
 
             DATABASE.DTO.CPlate_B_Properties plateProp;
-            SetBasePlateTypeAndScrewArrangement(m_MainMember.CrScStart.Name_short, referenceScrew, out sPlatePrefix, out plateProp, out screwArrangement, out washerPlateTop, out washerBearing);
+            SetBasePlateTypeAndScrewArrangement(m_MainMember.CrScStart.Name_short, referenceScrew, referenceAnchor, out sPlatePrefix, out plateProp, out screwArrangement, out washerPlateTop, out washerBearing);
 
             float fb_plate = (float)plateProp.dim1;
             float fh_plate = (float)plateProp.dim2y;

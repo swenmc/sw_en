@@ -81,15 +81,22 @@ namespace BaseClasses
         }
 
         // Pomocna funkcia pre base plates - nastavenie typu plechu podla prierezu a nastavenie screwArrangement
-        protected void SetBasePlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew,
+        protected void SetBasePlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew, CAnchor referenceAnchor,
             out string platePrefix, out DATABASE.DTO.CPlate_B_Properties plateProp, out CScrewArrangement screwArrangement, out CWasher_W washerPlateTop, out CWasher_W washerBearing)
         {
             screwArrangement = null;
             washerPlateTop = null;
             plateProp = null;
 
+            float fWasherHoleDiameter = referenceAnchor.Diameter_shank; // Priemer otvoru vo washer - priemer kotvy pre < 20 mm je to 16 mm + 2 mm = 18 mm, pre >= 20 mm je to napr. 20 + 3 mm = 23 mm
+
+            if (fWasherHoleDiameter < 0.020f)
+                fWasherHoleDiameter += 0.002f; // Add 2 mm
+            else
+                fWasherHoleDiameter += 0.003f; // Add 3 mm
+
             string washerPlateTopName;
-            washerBearing = new CWasher_W("WA", new Point3D(0,0,0), 0, -90, 0); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
+            washerBearing = new CWasher_W("WA", new Point3D(0,0,0), fWasherHoleDiameter, 0, -90, 0); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
 
             if (sSectionNameDatabase == "10075")
             {
@@ -164,7 +171,7 @@ namespace BaseClasses
             {
                 plateProp = DATABASE.CJointsManager.GetPlate_B_Properties(platePrefix);
                 screwArrangement = CJointHelper.GetBasePlateArrangement(platePrefix, referenceScrew/*, (float)plateProp.dim2y*/); // Set base plate screw arrangement
-                washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, -90, 0); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
+                washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), fWasherHoleDiameter, 0, -90, 0); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
 
                 if (sSectionNameDatabase == "10075") // Pre stlpiky dveri neuvazovat pravouhle washers
                 {
