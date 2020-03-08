@@ -426,5 +426,13 @@ namespace PFD
             public const string Unit = sUnit_ConnectorLength;
             public const string Symbol = "l";
         }
+
+        public struct AnchorEffectiveDepthS
+        {
+            public const string Name = "Anchor effective depth";
+            public const string DBName = "AnchorEffectiveDepth";
+            public const string Unit = sUnit_ConnectorLength;
+            public const string Symbol = "h eff";
+        }
     }
 }
