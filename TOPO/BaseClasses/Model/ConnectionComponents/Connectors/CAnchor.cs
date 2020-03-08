@@ -44,6 +44,8 @@ namespace BaseClasses
 
         private List<CNut> m_Nuts;
 
+        private float fOffsetFor3D = 0.0001f; // Offset medzi washer a nut pre krajsiu 3D grafiku
+
         //-------------------------------------------------------------------------------------------------------------
         public float x_pe_minus
         {
@@ -456,9 +458,10 @@ namespace BaseClasses
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
-            SetPortionOtAnchorAbovePlate();
-
             h_effective = 0.90909f * fLength_temp; // 300 mm (efektivna dlzka tyce zabetonovana v zaklade)
+
+            m_bIsActiveInTension = true; // Default
+            m_bIsActiveInShear = true; // Default
 
             ((CMat_03_00)m_Mat).Name = "8.8";
             ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
@@ -476,6 +479,8 @@ namespace BaseClasses
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
             //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
+
+            SetPortionOtAnchorAbovePlateDefault();
         }
 
         public CAnchor(string name_temp, string nameMaterial_temp, float fLength_temp, float fh_eff_temp, /*CWasher_W washerPlateTop, CWasher_W washerBearing,*/ bool bIsDisplayed)
@@ -500,9 +505,10 @@ namespace BaseClasses
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
-            SetPortionOtAnchorAbovePlate();
-
             h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
+
+            m_bIsActiveInTension = true; // Default
+            m_bIsActiveInShear = true; // Default
 
             m_Mat.Name = nameMaterial_temp;
             ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
@@ -522,6 +528,8 @@ namespace BaseClasses
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
             //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
+
+            SetPortionOtAnchorAbovePlateDefault();
         }
 
         public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, CWasher_W washerPlateTop, CWasher_W washerBearing, /*bool bIsActiveInTension, bool bIsActiveInShear, */float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
@@ -546,10 +554,40 @@ namespace BaseClasses
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
-            SetPortionOtAnchorAbovePlate();
+            h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
 
-            m_fWasherBearing_OffsetFromBottom = 0f;
-            float fOffsetFor3D = 0.0001f; // Offset medzi washer a nut pre krajsiu 3D grafiku
+            m_bIsActiveInTension = true; // Default
+            m_bIsActiveInShear = true; // Default
+
+            m_Mat.Name = nameMaterial_temp;
+            ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
+
+            CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
+
+            ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
+            ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
+
+            Mass = GetMass();
+
+            BIsDisplayed = bIsDisplayed;
+
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
+
+            m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
+            //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
+
+            // Bug 526
+            // Upravil som funkciu UpdateControlPoint
+            // TODO ONDREJ - Tu je problem ze toto SetPortionOtAnchorAbovePlateDefault() sa zavola pri vytvarani novej kotvy
+            // Funkcia vracia m_fPortionOtAnchorAbovePlate_abs, nastavuje tuho hodnotu na default
+            // Zmen v spoji Main Column Base dlzku kotvy l na 1000 mm
+            // Ak mam nejaku referencnu kotvu, zmenim jej v GUI dlzku a zavolam UpdateControlPoint tak sa spocita spravne m_fPortionOtAnchorAbovePlate_abs (cca 700 mm nad plate)
+            // Ale potom ked sa generuju skutocne kotvy v spoji ktore zobrazujeme, tak sa zavola tento konstruktor tak sa m_fPortionOtAnchorAbovePlate_abs prepise na default
+            // a potom su top plate washers nie tesne nad plechom (700 mm pod control point) ale daleko nad nim, teda len par desiatok milimetrov pod control point.
+
+            SetPortionOtAnchorAbovePlateDefault();
 
             // Washer size
             // Plate washer
@@ -593,30 +631,6 @@ namespace BaseClasses
                 m_Nuts.Add(nutTop);
                 m_Nuts.Add(nutBottom);
             }
-
-            h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
-
-            m_bIsActiveInTension = true; // Default
-            m_bIsActiveInShear = true; // Default
-
-            m_Mat.Name = nameMaterial_temp;
-            ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
-
-            CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
-
-            ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
-            ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
-
-            Mass = GetMass();
-
-            BIsDisplayed = bIsDisplayed;
-
-            m_fRotationX_deg = fRotation_x_deg;
-            m_fRotationY_deg = fRotation_y_deg;
-            m_fRotationZ_deg = fRotation_z_deg;
-
-            m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
         public float GetMass()
@@ -624,7 +638,7 @@ namespace BaseClasses
             return Area_p_pitch * Length * m_Mat.m_fRho;
         }
 
-        private void SetPortionOtAnchorAbovePlate()
+        private void SetPortionOtAnchorAbovePlateDefault()
         {
             // TODO - Tuto vzdialenost mozeme urcovat rozne, ako parameter kolko ma byt kotva nad plechom / betonom alebo ako parameter dlzka kotvy - kolko ma byt kotevna dlzka (dlzka zabetonovanej casti kotvy)
             float fPortionOtAnchorAbovePlate_rel = 0.09f; // [-] // Suradnica konca kotvy nad plechom (maximum z 9% dlzky kotvy, 1.8x priemer kotvy alebo 20 mm)
@@ -633,34 +647,50 @@ namespace BaseClasses
 
         public void UpdateControlPoint()
         {
-            float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit
             m_fPortionOtAnchorAbovePlate_abs = Length - m_fh_effective - (m_WasherBearing != null ? m_WasherBearing.Ft : 0) - m_fWasherBearing_OffsetFromBottom;
 
-            // TO ONDREJ - DACO TU ROBIM ALE NEVIEM VELMI ZE CO :)
-            // POTREBUJEM TO S TEBOU NEJAKO POSKLADAT, CO MA BYT NEJAKY DEFAULT A CO MA BYT INDE
+            this.m_pControlPoint.Z = m_fPortionOtAnchorAbovePlate_abs; // Globalny system
 
-            //Mato TODO
-            //1.Update Anchor control point
-
-            //tu ked menim akokolvek tak zmenu v modeli nevidim!!!
-
-            //this.m_pControlPoint.X += 0.1f; //m_fPortionOtAnchorAbovePlate_abs;
-            //this.m_pControlPoint.Y += 0.1;
-            this.m_pControlPoint.Z = m_fPortionOtAnchorAbovePlate_abs; // Globalny system ???
-
-            //2.Update Washers control points
             if (WasherPlateTop != null)
             {
-                WasherPlateTop.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
-                //WasherPlateTop.m_pControlPoint.Y += 0.1;
-                //WasherPlateTop.m_pControlPoint.Z += 0.1;
+                // TODO Ondrej // Refaktorovat s konstruktorom
+                // m_Nuts sa pregeneruje uplne, ak chces mozes sa s tym vyhrat, aby sa len updatovali pozicie control point CNut
+
+                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
+                float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit
+                m_WasherPlateTop.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
+
+                m_Nuts = new List<CNut>();
+
+                CNut nut = new CNut(Name, m_Mat.Name, new Point3D(0, 0, 0), 0, -90, 0);
+                float fWasherTopPlateNutPosition = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness - m_WasherPlateTop.Ft - fOffsetFor3D;
+                nut.m_pControlPoint.X = fWasherTopPlateNutPosition;
+
+                m_Nuts.Add(nut);
             }
 
             if (WasherBearing != null)
             {
-                WasherBearing.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
-                //WasherBearing.m_pControlPoint.Y += 0.1;
-                //WasherBearing.m_pControlPoint.Z += 0.1;
+                // TODO Ondrej // Refaktorovat s konstruktorom
+                // m_Nuts sa pregeneruje uplne, ak chces mozes sa s tym vyhrat, aby sa len updatovali pozicie control point CNut
+
+                if (m_Nuts == null)
+                    m_Nuts = new List<CNut>();
+
+                CNut nutTop = new CNut(Name, m_Mat.Name, new Point3D(0, 0, 0), 0, -90, 0);
+                CNut nutBottom = new CNut(Name, m_Mat.Name, new Point3D(0, 0, 0), 0, -90, 0);
+
+                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
+                m_fWasherBearing_OffsetFromBottom = nutBottom.Thickness_max + 0.02f; // vyska matice + 20 mm
+                m_WasherBearing.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
+
+                float fWasherBearingTopNutPosition = (float)m_WasherBearing.m_pControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
+                float fWasherBearingBottomNutPosition = (float)m_WasherBearing.m_pControlPoint.X + nutBottom.Thickness_max + fOffsetFor3D;
+                nutTop.m_pControlPoint.X = fWasherBearingTopNutPosition;
+                nutBottom.m_pControlPoint.X = fWasherBearingBottomNutPosition;
+
+                m_Nuts.Add(nutTop);
+                m_Nuts.Add(nutBottom);
             }
         }
 
