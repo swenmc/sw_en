@@ -56,60 +56,60 @@ namespace PFD
                     anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherThicknessS.Name, CParamsResources.BearingWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherThicknessS.Unit, true));
                 }                    
                 
-                anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in row SQ1", "No", baseArrangement.iNumberOfAnchorsInRow_xDirection_SQ1.ToString(), "[-]"));
-                anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in column SQ1", "No", baseArrangement.iNumberOfAnchorsInColumn_yDirection_SQ1.ToString(), "[-]"));
-                anchorArrangementProperties.Add(new CComponentParamsViewString("Inserting point coordinate x SQ1", "xc1", (Math.Round(baseArrangement.RefPointX /*baseArrangement.fx_c_SQ1*/ * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                anchorArrangementProperties.Add(new CComponentParamsViewString("Inserting point coordinate y SQ1", "yc1", (Math.Round(baseArrangement.RefPointY /*baseArrangement.fy_c_SQ1*/ * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in row SQ1", "No", baseArrangement.iNumberOfAnchorsInRow_xDirection_SQ1.ToString(), "[-]"));
+                //anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in column SQ1", "No", baseArrangement.iNumberOfAnchorsInColumn_yDirection_SQ1.ToString(), "[-]"));
+                //anchorArrangementProperties.Add(new CComponentParamsViewString("Inserting point coordinate x SQ1", "xc1", (Math.Round(baseArrangement.RefPointX /*baseArrangement.fx_c_SQ1*/ * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //anchorArrangementProperties.Add(new CComponentParamsViewString("Inserting point coordinate y SQ1", "yc1", (Math.Round(baseArrangement.RefPointY /*baseArrangement.fy_c_SQ1*/ * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-                if (baseArrangement.fDistanceOfPointsX_SQ1.Count > 0 && baseArrangement.fDistanceOfPointsX_SQ1[0] > 0)
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.1", "x1", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                if (baseArrangement.fDistanceOfPointsY_SQ1.Count > 0 && baseArrangement.fDistanceOfPointsY_SQ1[0] > 0)
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.1", "y1", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //if (baseArrangement.fDistanceOfPointsX_SQ1.Count > 0 && baseArrangement.fDistanceOfPointsX_SQ1[0] > 0)
+                //    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.1", "x1", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //if (baseArrangement.fDistanceOfPointsY_SQ1.Count > 0 && baseArrangement.fDistanceOfPointsY_SQ1[0] > 0)
+                //    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.1", "y1", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-                // Pole pozicii obsahuje rozne pocty (1 alebo 2 medzery medzi kotvami v jednom rade, pocet kotiev je 1 - 3 v rade
-                if (baseArrangement.fDistanceOfPointsX_SQ1.Count > 1 && baseArrangement.fDistanceOfPointsX_SQ1[1] > 0)
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.2", "x2", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                if (baseArrangement.fDistanceOfPointsY_SQ1.Count > 1 && baseArrangement.fDistanceOfPointsY_SQ1[1] > 0)
-                    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.2", "y2", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //// Pole pozicii obsahuje rozne pocty (1 alebo 2 medzery medzi kotvami v jednom rade, pocet kotiev je 1 - 3 v rade
+                //if (baseArrangement.fDistanceOfPointsX_SQ1.Count > 1 && baseArrangement.fDistanceOfPointsX_SQ1[1] > 0)
+                //    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.2", "x2", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //if (baseArrangement.fDistanceOfPointsY_SQ1.Count > 1 && baseArrangement.fDistanceOfPointsY_SQ1[1] > 0)
+                //    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.2", "y2", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
 
 
                 //TODO 527
-                //int num = 0;
-                //foreach (CAnchorRectSequence src in baseArrangement.RectSequences)
-                //{
-                //    num++;
+                int num = 0;
+                foreach (CAnchorRectSequence src in baseArrangement.RectSequences)
+                {
+                    num++;
 
-                //    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in row SQ{num}", "No", src.NumberOfScrewsInRow_xDirection.ToString(), "[-]"));
-                //    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in column SQ{num}", "No", src.NumberOfScrewsInColumn_yDirection.ToString(), "[-]"));
-                //    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                //    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y SQ{num}", $"yc{num}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString($"Number of anchors in row SQ{num}", "No", src.NumberOfAnchorsInRow_xDirection.ToString(), "[-]"));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString($"Number of anchors in column SQ{num}", "No", src.NumberOfAnchorsInColumn_yDirection.ToString(), "[-]"));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y SQ{num}", $"yc{num}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-                //    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
-                //    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws y SQ{num}", $"by{num}", src.SameDistancesY, ""));
-                //    if (src.SameDistancesX)
-                //    {
-                //        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x SQ{num}", $"x{num}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                //    }
-                //    else
-                //    {
-                //        for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
-                //        {
-                //            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                //        }
-                //    }
-                //    if (src.SameDistancesY)
-                //    {
-                //        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y SQ{num}", $"y{num}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                //    }
-                //    else
-                //    {
-                //        for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
-                //        {
-                //            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                //        }
-                //    }
-                //}
+                    anchorArrangementProperties.Add(new CComponentParamsViewBool($"Same distance between anchors x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
+                    anchorArrangementProperties.Add(new CComponentParamsViewBool($"Same distance between anchors y SQ{num}", $"by{num}", src.SameDistancesY, ""));
+                    if (src.SameDistancesX)
+                    {
+                        anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors x SQ{num}", $"x{num}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                    }
+                    else
+                    {
+                        for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
+                        {
+                            anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        }
+                    }
+                    if (src.SameDistancesY)
+                    {
+                        anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors y SQ{num}", $"y{num}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                    }
+                    else
+                    {
+                        for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
+                        {
+                            anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        }
+                    }
+                }
 
 
             }
@@ -187,65 +187,71 @@ namespace PFD
                         arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData();
                     }
 
-                    if (item.Name == "Number of anchors in row SQ1") arrangementTemp.iNumberOfAnchorsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
-                    if (item.Name == "Number of anchors in column SQ1") arrangementTemp.iNumberOfAnchorsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
-                    //if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = item_val / fLengthUnitFactor;
-                    //if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = item_val / fLengthUnitFactor;
+                    //if (item.Name == "Number of anchors in row SQ1") arrangementTemp.iNumberOfAnchorsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
+                    //if (item.Name == "Number of anchors in column SQ1") arrangementTemp.iNumberOfAnchorsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
+                    ////if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = item_val / fLengthUnitFactor;
+                    ////if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = item_val / fLengthUnitFactor;
 
-                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.RefPointX = item_val / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.RefPointY = item_val / fLengthUnitFactor;
+                    //if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.RefPointX = item_val / fLengthUnitFactor;
+                    //if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.RefPointY = item_val / fLengthUnitFactor;
 
-                    if (arrangementTemp.fDistanceOfPointsX_SQ1.Count > 0 && arrangementTemp.fDistanceOfPointsX_SQ1[0] > 0)
-                        if (item.Name == "Distance between anchors x SQ1.1") arrangementTemp.fDistanceOfPointsX_SQ1[0] = item_val / fLengthUnitFactor;
-                    if (arrangementTemp.fDistanceOfPointsY_SQ1.Count > 0 && arrangementTemp.fDistanceOfPointsY_SQ1[0] > 0)
-                        if (item.Name == "Distance between anchors y SQ1.1") arrangementTemp.fDistanceOfPointsY_SQ1[0] = item_val / fLengthUnitFactor;
+                    //if (arrangementTemp.fDistanceOfPointsX_SQ1.Count > 0 && arrangementTemp.fDistanceOfPointsX_SQ1[0] > 0)
+                    //    if (item.Name == "Distance between anchors x SQ1.1") arrangementTemp.fDistanceOfPointsX_SQ1[0] = item_val / fLengthUnitFactor;
+                    //if (arrangementTemp.fDistanceOfPointsY_SQ1.Count > 0 && arrangementTemp.fDistanceOfPointsY_SQ1[0] > 0)
+                    //    if (item.Name == "Distance between anchors y SQ1.1") arrangementTemp.fDistanceOfPointsY_SQ1[0] = item_val / fLengthUnitFactor;
 
-                    if (arrangementTemp.fDistanceOfPointsX_SQ1.Count > 1 && arrangementTemp.fDistanceOfPointsX_SQ1[1] > 0)
-                        if (item.Name == "Distance between anchors x SQ1.2") arrangementTemp.fDistanceOfPointsX_SQ1[1] = item_val / fLengthUnitFactor;
-                    if (arrangementTemp.fDistanceOfPointsY_SQ1.Count > 1 && arrangementTemp.fDistanceOfPointsY_SQ1[1] > 0)
-                        if (item.Name == "Distance between anchors y SQ1.2") arrangementTemp.fDistanceOfPointsY_SQ1[1] = item_val / fLengthUnitFactor;
-
-
+                    //if (arrangementTemp.fDistanceOfPointsX_SQ1.Count > 1 && arrangementTemp.fDistanceOfPointsX_SQ1[1] > 0)
+                    //    if (item.Name == "Distance between anchors x SQ1.2") arrangementTemp.fDistanceOfPointsX_SQ1[1] = item_val / fLengthUnitFactor;
+                    //if (arrangementTemp.fDistanceOfPointsY_SQ1.Count > 1 && arrangementTemp.fDistanceOfPointsY_SQ1[1] > 0)
+                    //    if (item.Name == "Distance between anchors y SQ1.2") arrangementTemp.fDistanceOfPointsY_SQ1[1] = item_val / fLengthUnitFactor;
 
 
+                    //527
+                    if (item.Name.Contains(" SQ"))
+                    {
+                        int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                        if (item.Name.Contains("Number of anchors in row  SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfAnchorsInRow_xDirection = int.Parse(itemStr.Value);
+                        if (item.Name.Contains("Number of anchors in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfAnchorsInColumn_yDirection = int.Parse(itemStr.Value);
+                        if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
-                    //TODO 527
-                    //if (item.Name.Contains(" SQ"))
-                    //{
-                    //    int seqIndex = GetSequenceNumFromName(item.Name) - 1;
-                    //    if (item.Name.Contains("Number of screws in row SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
-                    //    if (item.Name.Contains("Number of screws in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
-                    //    if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    //    if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
-
-                    //    if (arrangementTemp.RectSequences[seqIndex].SameDistancesX)
-                    //    {
-                    //        if (item.Name.Contains("Distance between screws x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    //    }
-                    //    else
-                    //    {
-                    //        for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX.Count; i++)
-                    //        {
-                    //            if (item.Name.Contains($"Distance between screws x{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    //        }
-                    //    }
-                    //    if (arrangementTemp.RectSequences[seqIndex].SameDistancesY)
-                    //    {
-                    //        if (item.Name.Contains("Distance between screws y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    //    }
-                    //    else
-                    //    {
-                    //        for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY.Count; i++)
-                    //        {
-                    //            if (item.Name.Contains($"Distance between screws y{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    //        }
-                    //    }
-
-                    //}
-
-
-
-
+                        if (arrangementTemp.RectSequences[seqIndex].SameDistancesX)
+                        {
+                            if (item.Name.Contains("Distance between anchors x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX.Count; i++)
+                            {
+                                if (item.Name.Contains($"Distance between anchors x{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            }
+                        }
+                        if (arrangementTemp.RectSequences[seqIndex].SameDistancesY)
+                        {
+                            if (item.Name.Contains("Distance between anchors y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY.Count; i++)
+                            {
+                                if (item.Name.Contains($"Distance between anchors y{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            }
+                        }
+                    }
+                }
+                else if (item is CComponentParamsViewBool)
+                {
+                    CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
+                    if (item.Name.Contains("Same distance between anchors x SQ"))
+                    {
+                        int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                        arrangementTemp.RectSequences[seqIndex].SameDistancesX = itemBool.Value;
+                    }
+                    if (item.Name.Contains("Same distance between anchors y SQ"))
+                    {
+                        int seqIndex = GetSequenceNumFromName(item.Name) - 1;
+                        arrangementTemp.RectSequences[seqIndex].SameDistancesY = itemBool.Value;
+                    }
                 }
                 else if (item is CComponentParamsViewList)
                 {

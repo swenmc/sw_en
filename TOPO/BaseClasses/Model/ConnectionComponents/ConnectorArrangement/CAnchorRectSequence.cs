@@ -14,7 +14,12 @@ namespace BaseClasses
         private int m_iNumberOfAnchorsInColumn_yDirection;
         private float m_fDistanceOfPointsX;
         private float m_fDistanceOfPointsY;
+
+        double m_RefPointX;
+        double m_RefPointY;
+
         
+
         private bool m_SameDistancesX;
         private bool m_SameDistancesY;
         private List<float> m_DistancesOfPointsX;
@@ -77,6 +82,33 @@ namespace BaseClasses
             set
             {
                 m_fDistanceOfPointsY = value;
+            }
+        }
+
+        public double RefPointX
+        {
+            get
+            {
+                return m_RefPointX;
+            }
+
+            set
+            {
+                m_RefPointX = value;
+                //ReferencePoint = new Point(RefPointX, RefPointY);
+            }
+        }
+        public double RefPointY
+        {
+            get
+            {
+                return m_RefPointY;
+            }
+
+            set
+            {
+                m_RefPointY = value;
+                //ReferencePoint = new Point(RefPointX, RefPointY);
             }
         }
 

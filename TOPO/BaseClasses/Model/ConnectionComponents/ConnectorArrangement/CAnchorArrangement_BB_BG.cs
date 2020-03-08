@@ -26,36 +26,7 @@ namespace BaseClasses
 
         private List<CAnchorRectSequence> m_RectSequences;
 
-        double m_RefPointX;
-        public double RefPointX
-        {
-            get
-            {
-                return m_RefPointX;
-            }
-
-            set
-            {
-                m_RefPointX = value;
-                //ReferencePoint = new Point(RefPointX, RefPointY);
-            }
-        }
-
-        double m_RefPointY;
-
-        public double RefPointY
-        {
-            get
-            {
-                return m_RefPointY;
-            }
-
-            set
-            {
-                m_RefPointY = value;
-                //ReferencePoint = new Point(RefPointX, RefPointY);
-            }
-        }
+        
 
         private bool m_UniformDistributionOfShear;
 
@@ -105,8 +76,8 @@ namespace BaseClasses
             iNumberOfAnchorsInColumn_yDirection_SQ1 = NumberOfAnchorsInZDirection;
             //fx_c_SQ1 = (float)prop.a1_pos_cp_x;
             //fy_c_SQ1 = (float)prop.a1_pos_cp_y;
-            m_RefPointX = prop.a1_pos_cp_x;
-            m_RefPointY = prop.a1_pos_cp_y;
+            //m_RefPointX = prop.a1_pos_cp_x;
+            //m_RefPointY = prop.a1_pos_cp_y;
 
             float dist_x1 = (float)prop.dist_x1;
             float dist_y1 = (float)prop.dist_y1;
@@ -129,6 +100,8 @@ namespace BaseClasses
             RadiusAngle = 360; // Circle total angle to generate holes
 
             CAnchorRectSequence seq1 = new CAnchorRectSequence();
+            seq1.RefPointX = prop.a1_pos_cp_x;
+            seq1.RefPointY = prop.a1_pos_cp_y;
             seq1.NumberOfAnchorsInRow_xDirection = iNumberOfAnchorsInRow_xDirection_SQ1;
             seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfAnchorsInColumn_yDirection_SQ1;
             //seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
@@ -222,7 +195,7 @@ namespace BaseClasses
         public Point[] Get_AnchorSequencePointCoordinates(CAnchorRectSequence srectSeq)
         {
             // Connectors in Sequence
-            return GetRegularArrayOfPointsInCartesianCoordinates(new Point(m_RefPointX, m_RefPointY) /*srectSeq.ReferencePoint*/, srectSeq.NumberOfAnchorsInRow_xDirection, srectSeq.NumberOfAnchorsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY) /*srectSeq.ReferencePoint*/, srectSeq.NumberOfAnchorsInRow_xDirection, srectSeq.NumberOfAnchorsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
         }
 
         public override void Calc_HolesCentersCoord2D(float fbX, float fhY, float flZ)
