@@ -147,35 +147,26 @@ namespace PFD
                     }
                     
                     if (arrangementTemp.referenceAnchor.WasherPlateTop != null)
-                    {                        
+                    {
+                        //if (item.Name.Equals(CParamsResources.PlateNameS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Name = itemStr.ToString();
                         if (item.Name.Equals(CParamsResources.PlateWasherWidthxS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Width_bx = item_val / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.PlateWasherWidthyS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Height_hy = item_val / fLengthUnitFactor;
-                        if (item.Name.Equals(CParamsResources.PlateWasherThicknessS.Name))
-                        {
-                            arrangementTemp.referenceAnchor.WasherPlateTop.Ft = item_val / fLengthUnitFactor;
-                            //to Mato - neviem kde presne ale asi sa niekde musi volat nejaky update. Musi sa asi volat Calc_Coord3D();
-                            // Update plate data
-                            arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData(null);    
-                            //nepomohlo neviem zmenit Washer thickness aby sa zmenilo aj v 3D
-                                                    
-                        }
+                        if (item.Name.Equals(CParamsResources.PlateWasherThicknessS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Ft = item_val / fLengthUnitFactor;
+
+                        // Update washer / plate data
+                        arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData(null);
                     }
 
                     if (arrangementTemp.referenceAnchor.WasherBearing != null)
                     {
+                        //if (item.Name.Equals(CParamsResources.BearingWasherNameS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Name = itemStr.ToString();
                         if (item.Name.Equals(CParamsResources.BearingWasherWidthxS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Width_bx = item_val / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.BearingWasherWidthyS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Height_hy = item_val / fLengthUnitFactor;
-                        if (item.Name.Equals(CParamsResources.BearingWasherThicknessS.Name))
-                        {
-                            arrangementTemp.referenceAnchor.WasherBearing.Ft = item_val / fLengthUnitFactor;
-                            //to Mato - neviem kde presne ale asi sa niekde musi volat nejaky update. Musi sa asi volat Calc_Coord3D();
-                            // Update plate data
-                            arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData(null);
-                            //nepomohlo neviem zmenit Washer thickness aby sa zmenilo aj v 3D
-                        }
+                        if (item.Name.Equals(CParamsResources.BearingWasherThicknessS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Ft = item_val / fLengthUnitFactor;
+
+                        // Update washer / plate data
+                        arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData(null);
                     }
-
-
 
                     if (item.Name == "Number of anchors in row SQ1") arrangementTemp.iNumberOfAnchorsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of anchors in column SQ1") arrangementTemp.iNumberOfAnchorsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
@@ -251,12 +242,18 @@ namespace PFD
                     {
                         arrangementTemp.referenceAnchor.WasherPlateTop.Name = itemList.Value;
                         UpdateWasherParamsFromDB(arrangementTemp.referenceAnchor.WasherPlateTop);
+
+                        // Update washer / plate data
+                        arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData(null);
                     }
                     if (item.Name.Equals(CParamsResources.BearingWasherNameS.Name))
                     {
                         arrangementTemp.referenceAnchor.WasherBearing.Name = itemList.Value;
                         UpdateWasherParamsFromDB(arrangementTemp.referenceAnchor.WasherBearing);
-                    } 
+
+                        // Update washer / plate data
+                        arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData(null);
+                    }
                 }
 
                 arrangementTemp.UpdateArrangmentData();         // Update data of screw arrangement
