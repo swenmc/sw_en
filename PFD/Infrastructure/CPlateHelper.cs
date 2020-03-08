@@ -37,6 +37,7 @@ namespace PFD
                 anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.AnchorNameS.Name, CParamsResources.AnchorNameS.Symbol, baseArrangement.referenceAnchor.Name.ToString(), listAnchorDiameters, CParamsResources.AnchorNameS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
                 anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorDiameterS.Name, CParamsResources.AnchorDiameterS.Symbol, (Math.Round(baseArrangement.referenceAnchor.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorDiameterS.Unit, false));
                 anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorLengthS.Name, CParamsResources.AnchorLengthS.Symbol, (Math.Round(baseArrangement.referenceAnchor.Length * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
+                anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorEffectiveDepthS.Name, CParamsResources.AnchorEffectiveDepthS.Symbol, (Math.Round(baseArrangement.referenceAnchor.h_effective * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorEffectiveDepthS.Unit, true));
 
                 if (baseArrangement.referenceAnchor.WasherPlateTop != null)
                 {
@@ -162,6 +163,11 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.AnchorLengthS.Name))
                     {
                         arrangementTemp.referenceAnchor.Length = item_val / fLengthUnitFactor;
+                        arrangementTemp.referenceAnchor.UpdateControlPoint();
+                    }
+                    if (item.Name.Equals(CParamsResources.AnchorEffectiveDepthS.Name))
+                    {
+                        arrangementTemp.referenceAnchor.h_effective = item_val / fLengthUnitFactor;
                         arrangementTemp.referenceAnchor.UpdateControlPoint();
                     }
 
