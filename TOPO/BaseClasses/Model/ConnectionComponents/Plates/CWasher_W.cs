@@ -17,6 +17,21 @@ namespace BaseClasses
         List<Point> pointsIn_2D;
         List<Point> pointsOut_2D;
 
+        private float m_fHoleDiameter; // Priemer otvoru vo washer - priemer kotvy pre < 20 mm je to 16 mm + 2 mm = 18 mm, pre >= 20 mm je to napr. 20 + 3 mm = 23 mm
+
+        public float HoleDiameter
+        {
+            get
+            {
+                return m_fHoleDiameter;
+            }
+
+            set
+            {
+                m_fHoleDiameter = value;
+            }
+        }
+
         short iEdgesOutBasic = 4;
         short iNumberOfSegmentsPerSideOut = 4;
 
@@ -31,6 +46,7 @@ namespace BaseClasses
         //float fbx_1_temp,
         //float fhy_1_temp,
         //float ft_platethickness,
+        float fHoleDiameter,
         float fRotation_x_deg,
         float fRotation_y_deg,
         float fRotation_z_deg)
@@ -47,6 +63,7 @@ namespace BaseClasses
             //m_fbX1 = fbx_1_temp;
             //m_fhY1 = fhy_1_temp;
             //Ft = ft_platethickness;
+            m_fHoleDiameter = fHoleDiameter;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
@@ -70,10 +87,10 @@ namespace BaseClasses
                 //Price_PPP_NZD = prop.Price_PPP_NZD;
             }
 
-            UpdatePlateData(null);
+            UpdatePlateData();
         }
 
-        public override void UpdatePlateData(CScrewArrangement screwArrangement)
+        public void UpdatePlateData()
         {
             m_Mat.Name = "Q235"; // ???? TODO zapracovat do databazy ??? // AS/NZS1111
 
@@ -113,14 +130,13 @@ namespace BaseClasses
             // Minimum edge distances - zadane v suradnicovom smere plechu
             //SetMinimumScrewToEdgeDistances(screwArrangement);
 
-            float fHoleDiameter = 0.018f; // Priemer otvoru vo washer - priemer kotvy pre < 20 mm je to 16 mm + 2 mm = 18 mm, pre >= 20 mm je to napr. 20 + 3 mm = 23 mm
             fA_g = Get_A_rect(Ft, Height_hy);
             int iNumberOfSHolesInSection = 1; // TODO, temporary - zavisi na rozmiestneni skrutiek
 
             fA_n = fA_g;
             if (iNumberOfSHolesInSection > 0)
             {
-                fA_n -= iNumberOfSHolesInSection * fHoleDiameter * Ft;
+                fA_n -= iNumberOfSHolesInSection * m_fHoleDiameter * Ft;
             }
 
             fA_v_zv = Get_A_rect(Ft, Height_hy);
@@ -128,7 +144,7 @@ namespace BaseClasses
             fA_vn_zv = fA_v_zv;
             if (iNumberOfSHolesInSection > 0)
             {
-                fA_vn_zv -= iNumberOfSHolesInSection * fHoleDiameter * Ft;
+                fA_vn_zv -= iNumberOfSHolesInSection * m_fHoleDiameter * Ft;
             }
 
             fI_yu = Get_I_yu_rect(Ft, Height_hy);  // Moment of inertia of plate
@@ -148,7 +164,7 @@ namespace BaseClasses
             // Outline Points
             // Outline Edges
             float fRadiusOut = Width_bx * (float)MathF.dSqrt2 / 2;  // Ma sa nastavit ako polovica dlzky uhlopriecky // Plati len pre stvorcove podlozky, je potrebne doimplementovat obdlznikove
-            float fRadiusIn = 0.008f; // TODO - toto ta ma nastavit podla priemeru anchor
+            float fRadiusIn = 0.5f * m_fHoleDiameter;
 
             int iEdgeOut = iEdgesOutBasic * iNumberOfSegmentsPerSideOut;
             int iEdgesInBasic = iEdgeOut;
@@ -239,6 +255,7 @@ namespace BaseClasses
                 this.pointsOut_2D = refPlate.pointsOut_2D;
                 this.iEdgesOutBasic = refPlate.iEdgesOutBasic;
                 this.iNumberOfSegmentsPerSideOut = refPlate.iNumberOfSegmentsPerSideOut;
+                this.m_fHoleDiameter = refPlate.m_fHoleDiameter;
             }
         }
     }

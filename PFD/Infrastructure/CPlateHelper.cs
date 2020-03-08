@@ -139,13 +139,32 @@ namespace PFD
                     float item_val = 0;
                     if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
-                    if (item.Name.Equals(CParamsResources.AnchorDiameterS.Name)) arrangementTemp.referenceAnchor.Diameter_shank = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.AnchorDiameterS.Name))
+                    {
+                        arrangementTemp.referenceAnchor.Diameter_shank = item_val / fLengthUnitFactor;
+
+                        // Ak zmenime priemer kotvy zmenia sa velkosti otvorov vo washers
+
+                        if (arrangementTemp.referenceAnchor.WasherPlateTop != null)
+                        {
+                            // Update washer / plate data
+                            arrangementTemp.referenceAnchor.WasherPlateTop.HoleDiameter = arrangementTemp.referenceAnchor.Diameter_shank + (arrangementTemp.referenceAnchor.Diameter_shank < 0.02f ? 0.002f : 0.003f); // K priemeru kotvy pridame 2 alebo 3 mm podla hodnoty priemeru
+                            arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData();
+                        }
+
+                        if (arrangementTemp.referenceAnchor.WasherBearing != null)
+                        {
+                            // Update washer / plate data
+                            arrangementTemp.referenceAnchor.WasherBearing.HoleDiameter = arrangementTemp.referenceAnchor.Diameter_shank + (arrangementTemp.referenceAnchor.Diameter_shank < 0.02f ? 0.002f : 0.003f); // K priemeru kotvy pridame 2 alebo 3 mm podla hodnoty priemeru
+                            arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData();
+                        }
+                    }
                     if (item.Name.Equals(CParamsResources.AnchorLengthS.Name))
                     {
                         arrangementTemp.referenceAnchor.Length = item_val / fLengthUnitFactor;
                         arrangementTemp.referenceAnchor.UpdateControlPoint();
                     }
-                    
+
                     if (arrangementTemp.referenceAnchor.WasherPlateTop != null)
                     {
                         //if (item.Name.Equals(CParamsResources.PlateNameS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Name = itemStr.ToString();
@@ -154,7 +173,7 @@ namespace PFD
                         if (item.Name.Equals(CParamsResources.PlateWasherThicknessS.Name)) arrangementTemp.referenceAnchor.WasherPlateTop.Ft = item_val / fLengthUnitFactor;
 
                         // Update washer / plate data
-                        arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData(null);
+                        arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData();
                     }
 
                     if (arrangementTemp.referenceAnchor.WasherBearing != null)
@@ -165,7 +184,7 @@ namespace PFD
                         if (item.Name.Equals(CParamsResources.BearingWasherThicknessS.Name)) arrangementTemp.referenceAnchor.WasherBearing.Ft = item_val / fLengthUnitFactor;
 
                         // Update washer / plate data
-                        arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData(null);
+                        arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData();
                     }
 
                     if (item.Name == "Number of anchors in row SQ1") arrangementTemp.iNumberOfAnchorsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
@@ -236,6 +255,22 @@ namespace PFD
                         arrangementTemp.referenceAnchor.Name = itemList.Value;
                         CBoltProperties props = CBoltsManager.GetBoltProperties(arrangementTemp.referenceAnchor.Name, "ThreadedBars");
                         arrangementTemp.referenceAnchor.Diameter_shank = (float)props.ShankDiameter;
+
+                        // Ak zmenime priemer kotvy zmenia sa velkosti otvorov vo washers
+
+                        if (arrangementTemp.referenceAnchor.WasherPlateTop != null)
+                        {
+                            // Update washer / plate data
+                            arrangementTemp.referenceAnchor.WasherPlateTop.HoleDiameter = arrangementTemp.referenceAnchor.Diameter_shank + (arrangementTemp.referenceAnchor.Diameter_shank < 0.02f ? 0.002f : 0.003f); // K priemeru kotvy pridame 2 alebo 3 mm podla hodnoty priemeru
+                            arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData();
+                        }
+
+                        if (arrangementTemp.referenceAnchor.WasherBearing != null)
+                        {
+                            // Update washer / plate data
+                            arrangementTemp.referenceAnchor.WasherBearing.HoleDiameter = arrangementTemp.referenceAnchor.Diameter_shank + (arrangementTemp.referenceAnchor.Diameter_shank < 0.02f ? 0.002f : 0.003f); // K priemeru kotvy pridame 2 alebo 3 mm podla hodnoty priemeru
+                            arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData();
+                        }
                     }
 
                     if (item.Name.Equals(CParamsResources.PlateWasherNameS.Name))
@@ -244,7 +279,7 @@ namespace PFD
                         UpdateWasherParamsFromDB(arrangementTemp.referenceAnchor.WasherPlateTop);
 
                         // Update washer / plate data
-                        arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData(null);
+                        arrangementTemp.referenceAnchor.WasherPlateTop.UpdatePlateData();
                     }
                     if (item.Name.Equals(CParamsResources.BearingWasherNameS.Name))
                     {
@@ -252,7 +287,7 @@ namespace PFD
                         UpdateWasherParamsFromDB(arrangementTemp.referenceAnchor.WasherBearing);
 
                         // Update washer / plate data
-                        arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData(null);
+                        arrangementTemp.referenceAnchor.WasherBearing.UpdatePlateData();
                     }
                 }
 
