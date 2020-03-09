@@ -923,39 +923,97 @@ namespace PFD
 
             CDatabaseComponents dcomponents = new CDatabaseComponents();
 
+            Point3D controlpoint = new Point3D(0, 0, 0);
+            float fb_R; // Rafter Width
+            float fb_B; // Wind Post Width
+            float fb; // in plane XY -X coord
+            float fb2; // in plane XY - X coord
+            float fh; // in plane XY - Y coord
+            float fh2; // in plane XY - Y coord
+            float fl; // out of plane - Z coord
+            float fl2; // out of plane - Z coord
+            float ft;
+            int iNumberOfStiffeners = 0;
+            float fb_fl; // Flange - Z-section
+            float fc_lip1; // LIP - Z-section
+            float fRoofPitch_rad;
+            float fGamma_rad; // Plate M alebo N uhol medzi hranou prierezu a vonkajsou hranou plechu
+            int iNumberofHoles = 0;
+
             switch (plate.m_ePlateSerieType_FS)
             {
                 case ESerieTypePlate.eSerie_B:
                     {
-                        CConCom_Plate_B_basic pB = plate as CConCom_Plate_B_basic;
-                        CAnchorArrangement_BB_BG anchorArrangement = pB.AnchorArrangement;
+                        CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(componentIndex + 1);
+                        fb = (float)prop.dim1;
+                        fb2 = fb;
+                        fh = (float)prop.dim2y;
+                        fl = (float)prop.dim3;
+                        ft = (float)prop.t;
+                        iNumberofHoles = prop.iNumberHolesAnchors; // !!!! - rozlisovat medzi otvormi pre skrutky a pre anchors
 
-                        plate = new CConCom_Plate_B_basic(componentName, pB.m_pControlPoint, pB.Fb_X, pB.Fh_Y, pB.Fl_Z, pB.Ft, pB.m_fRotationX_deg, pB.m_fRotationY_deg, pB.m_fRotationZ_deg, referenceAnchor, pB.ScrewArrangement);
+                        CAnchorArrangement_BB_BG anchorArrangement = ((CConCom_Plate_B_basic)plate).AnchorArrangement;
+                        plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, CJointHelper.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
+                        
 
-                        ((CConCom_Plate_B_basic)plate).AnchorArrangement = anchorArrangement; //pokus zachovat povodny Anchor Arrangement
+                        //CConCom_Plate_B_basic pB = plate as CConCom_Plate_B_basic;
+                        //CAnchorArrangement_BB_BG anchorArrangement = pB.AnchorArrangement;
+                        //plate = new CConCom_Plate_B_basic(componentName, pB.m_pControlPoint, pB.Fb_X, pB.Fh_Y, pB.Fl_Z, pB.Ft, pB.m_fRotationX_deg, pB.m_fRotationY_deg, pB.m_fRotationZ_deg, referenceAnchor, pB.ScrewArrangement);
+                        //((CConCom_Plate_B_basic)plate).AnchorArrangement = anchorArrangement; //pokus zachovat povodny Anchor Arrangement
 
                         break;
                     }
                 case ESerieTypePlate.eSerie_L:
                     {
-                        CScrewArrangement_L sa = plate.ScrewArrangement as CScrewArrangement_L;
-                        CConCom_Plate_F_or_L pL = plate as CConCom_Plate_F_or_L;
-                        plate = new CConCom_Plate_F_or_L(componentName, pL.m_pControlPoint, pL.Fb_X1, pL.Fh_Y, pL.Fl_Z, pL.Ft, fCrsc_h, 0, 0, 0, sa); // L
+                        CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(componentIndex + 1);
+                        CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew);                        
+                        fb = (float)prop.dim1;
+                        fb2 = fb;
+                        fh = (float)prop.dim2y;
+                        fl = (float)prop.dim3;
+                        ft = (float)prop.thickness;
+                        iNumberofHoles = prop.NumberOfHolesScrews;
+                        plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, fCrsc_h, 0, 0, 0, screwArrangement_L); // L
+
+                        //CScrewArrangement_L sa = plate.ScrewArrangement as CScrewArrangement_L;
+                        //CConCom_Plate_F_or_L pL = plate as CConCom_Plate_F_or_L;
+                        //plate = new CConCom_Plate_F_or_L(componentName, pL.m_pControlPoint, pL.Fb_X1, pL.Fh_Y, pL.Fl_Z, pL.Ft, fCrsc_h, 0, 0, 0, sa); // L
                         break;
                     }
                 case ESerieTypePlate.eSerie_LL:
                     {
-                        CScrewArrangement_LL sa = plate.ScrewArrangement as CScrewArrangement_LL;
-                        CConCom_Plate_LL pLL = plate as CConCom_Plate_LL;
-                        plate = new CConCom_Plate_LL(componentName, pLL.m_pControlPoint, pLL.Fb_X1, pLL.Fh_Y, pLL.Fl_Z, pLL.Ft, fCrsc_h, 0, 0, 0, sa); // LL
+                        CPlate_LL_Properties prop = CJointsManager.GetPlate_LL_Properties(componentIndex + 1);
+                        CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(prop.NumberOfHolesScrews, referenceScrew);                        
+                        fb = (float)prop.dim11;
+                        fb2 = (float)prop.dim12;
+                        fh = (float)prop.dim2y;
+                        fl = (float)prop.dim3;
+                        ft = (float)prop.thickness;
+                        iNumberofHoles = prop.NumberOfHolesScrews;
+                        plate = new CConCom_Plate_LL(prop.Name, controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL); // LL
+
+
+                        //CScrewArrangement_LL sa = plate.ScrewArrangement as CScrewArrangement_LL;
+                        //CConCom_Plate_LL pLL = plate as CConCom_Plate_LL;
+                        //plate = new CConCom_Plate_LL(componentName, pLL.m_pControlPoint, pLL.Fb_X1, pLL.Fh_Y, pLL.Fl_Z, pLL.Ft, fCrsc_h, 0, 0, 0, sa); // LL
                         break;
                     }
                 case ESerieTypePlate.eSerie_F:
                     {
-                        CScrewArrangement_F sa = plate.ScrewArrangement as CScrewArrangement_F;
+                        CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(componentIndex + 1);
+                        CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(prop.NumberOfHolesScrews, referenceScrew);
+                        
+                        fb = (float)prop.dim11;
+                        fb2 = (float)prop.dim12;
+                        fh = (float)prop.dim2y;
+                        fl = (float)prop.dim3;
+                        ft = (float)prop.thickness;
+                        iNumberofHoles = prop.NumberOfHolesScrews;
+                        plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, fCrsc_h, 0f, 0f, 0f, screwArrangement_F); // F
 
-                        CConCom_Plate_F_or_L pF = plate as CConCom_Plate_F_or_L;
-                        plate = new CConCom_Plate_F_or_L(componentName, pF.m_pControlPoint, pF.Fb_X1, pF.Fb_X2, pF.Fh_Y, pF.Fl_Z, pF.Ft, fCrsc_h, 0, 0, 0, sa); // F
+                        //CScrewArrangement_F sa = plate.ScrewArrangement as CScrewArrangement_F;
+                        //CConCom_Plate_F_or_L pF = plate as CConCom_Plate_F_or_L;
+                        //plate = new CConCom_Plate_F_or_L(componentName, pF.m_pControlPoint, pF.Fb_X1, pF.Fb_X2, pF.Fh_Y, pF.Fl_Z, pF.Ft, fCrsc_h, 0, 0, 0, sa); // F
                         break;
                     }
                 case ESerieTypePlate.eSerie_G:
@@ -977,21 +1035,43 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_Q:
                     {
-                        CConCom_Plate_Q_T_Y pQ = plate as CConCom_Plate_Q_T_Y;
-                        plate = new CConCom_Plate_Q_T_Y(componentName, pQ.m_pControlPoint, pQ.Fb_X, pQ.Fh_Y, pQ.Fl_Z1, pQ.Ft, pQ.m_iHolesNumber); // Q
+                        fb = dcomponents.arr_Serie_Q_Dimension[componentIndex, 0] / 1000f;
+                        fh = dcomponents.arr_Serie_Q_Dimension[componentIndex, 1] / 1000f;
+                        fl = dcomponents.arr_Serie_Q_Dimension[componentIndex, 2] / 1000f;
+                        ft = dcomponents.arr_Serie_Q_Dimension[componentIndex, 3] / 1000f;
+                        iNumberofHoles = (int)dcomponents.arr_Serie_Q_Dimension[componentIndex, 4];
+                        plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles); // Q
+
+                        //CConCom_Plate_Q_T_Y pQ = plate as CConCom_Plate_Q_T_Y;
+                        //plate = new CConCom_Plate_Q_T_Y(componentName, pQ.m_pControlPoint, pQ.Fb_X, pQ.Fh_Y, pQ.Fl_Z1, pQ.Ft, pQ.m_iHolesNumber); // Q
 
                         break;
                     }
                 case ESerieTypePlate.eSerie_T:
                     {
-                        CConCom_Plate_Q_T_Y pT = plate as CConCom_Plate_Q_T_Y;
-                        plate = new CConCom_Plate_Q_T_Y(componentName, pT.m_pControlPoint, pT.Fb_X, pT.Fh_Y, pT.Fl_Z1, pT.Ft, pT.m_iHolesNumber); // T
+                        fb = dcomponents.arr_Serie_T_Dimension[componentIndex, 0] / 1000f;
+                        fh = dcomponents.arr_Serie_T_Dimension[componentIndex, 1] / 1000f;
+                        fl = dcomponents.arr_Serie_T_Dimension[componentIndex, 2] / 1000f;
+                        ft = dcomponents.arr_Serie_T_Dimension[componentIndex, 3] / 1000f;
+                        iNumberofHoles = (int)dcomponents.arr_Serie_T_Dimension[componentIndex, 4];
+                        plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles); // T
+
+                        //CConCom_Plate_Q_T_Y pT = plate as CConCom_Plate_Q_T_Y;
+                        //plate = new CConCom_Plate_Q_T_Y(componentName, pT.m_pControlPoint, pT.Fb_X, pT.Fh_Y, pT.Fl_Z1, pT.Ft, pT.m_iHolesNumber); // T
                         break;
                     }
                 case ESerieTypePlate.eSerie_Y:
                     {
-                        CConCom_Plate_Q_T_Y pY = plate as CConCom_Plate_Q_T_Y;
-                        plate = new CConCom_Plate_Q_T_Y(componentName, pY.m_pControlPoint, pY.Fb_X, pY.Fh_Y, pY.Fl_Z1, pY.Fl_Z2, pY.Ft, pY.m_iHolesNumber); // Y
+                        fb = dcomponents.arr_Serie_Y_Dimension[componentIndex, 0] / 1000f;
+                        fh = dcomponents.arr_Serie_Y_Dimension[componentIndex, 1] / 1000f;
+                        fl = dcomponents.arr_Serie_Y_Dimension[componentIndex, 2] / 1000f;
+                        fl2 = dcomponents.arr_Serie_Y_Dimension[componentIndex, 3] / 1000f;
+                        ft = dcomponents.arr_Serie_Y_Dimension[componentIndex, 4] / 1000f;
+                        iNumberofHoles = (int)dcomponents.arr_Serie_Y_Dimension[componentIndex, 5];
+                        plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles); // Y
+
+                        //CConCom_Plate_Q_T_Y pY = plate as CConCom_Plate_Q_T_Y;
+                        //plate = new CConCom_Plate_Q_T_Y(componentName, pY.m_pControlPoint, pY.Fb_X, pY.Fh_Y, pY.Fl_Z1, pY.Fl_Z2, pY.Ft, pY.m_iHolesNumber); // Y
 
                         break;
                     }
