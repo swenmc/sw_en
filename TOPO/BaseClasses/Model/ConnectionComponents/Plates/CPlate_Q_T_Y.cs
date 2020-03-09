@@ -80,7 +80,7 @@ namespace BaseClasses
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
-            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_Q;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_Y;
 
             ITotNoPointsin2D = 8;
             ITotNoPointsin3D = 16;
@@ -120,6 +120,8 @@ namespace BaseClasses
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
+            //m_ePlateSerieType_FS = ESerieTypePlate.eSerie_Q;
+            //m_ePlateSerieType_FS = ESerieTypePlate.eSerie_T;
 
             ITotNoPointsin2D = 8;
             ITotNoPointsin3D = 16;

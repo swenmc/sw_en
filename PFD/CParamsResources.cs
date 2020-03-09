@@ -79,6 +79,14 @@ namespace PFD
             public const string Symbol = "b2";
         }
 
+        public struct PlateWidth3S
+        {
+            public const string Name = "Width 3";
+            public const string DBName = "PlateWidth3";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "b3";
+        }
+
         public struct PlateHeightS
         {
             public const string Name = "Height";
@@ -106,9 +114,33 @@ namespace PFD
         public struct PlateLipS
         {
             public const string Name = "Lip";
-            public const string DBName = "PlateHLip";
+            public const string DBName = "PlateLip";
             public const string Unit = sUnit_PlateLength;
             public const string Symbol = "c lip";
+        }
+
+        public struct PlateLip1S
+        {
+            public const string Name = "Lip 1";
+            public const string DBName = "PlateLip1";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "c lip.1";
+        }
+
+        public struct PlateLip2S
+        {
+            public const string Name = "Lip 2";
+            public const string DBName = "PlateLip2";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "c lip.2";
+        }
+
+        public struct PlateAngleS
+        {
+            public const string Name = "Angle";
+            public const string DBName = "PlateAngle";
+            public const string Unit = sUnit_Rotation;
+            public const string Symbol = "α.1";
         }
 
         public struct PlatePerimeterS
