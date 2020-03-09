@@ -69,6 +69,7 @@ namespace BaseClasses
             set
             {
                 m_fDistanceOfPointsX = value;
+                SetDistancesX();
             }
         }
        
@@ -82,6 +83,7 @@ namespace BaseClasses
             set
             {
                 m_fDistanceOfPointsY = value;
+                SetDistancesY();
             }
         }
 
