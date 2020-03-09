@@ -491,30 +491,39 @@ namespace PFD
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y SQ{num}", $"yc{num}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-                    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
-                    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws y SQ{num}", $"by{num}", src.SameDistancesY, ""));
-                    if (src.SameDistancesX)
+                    if (src.NumberOfScrewsInRow_xDirection > 1) screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
+                    if (src.NumberOfScrewsInColumn_yDirection > 1) screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws y SQ{num}", $"by{num}", src.SameDistancesY, ""));
+
+                    if (src.NumberOfScrewsInRow_xDirection > 1)
                     {
-                        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x SQ{num}", $"x{num}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    }
-                    else
-                    {
-                        for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
+                        if (src.SameDistancesX)
                         {
-                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x SQ{num}", $"x{num}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        }
+                        else
+                        {
+                            for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
+                            {
+                                screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            }
                         }
                     }
-                    if (src.SameDistancesY)
+
+                    if (src.NumberOfScrewsInColumn_yDirection > 1)
                     {
-                        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y SQ{num}", $"y{num}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    }
-                    else
-                    {
-                        for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
+                        if (src.SameDistancesY)
                         {
-                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y SQ{num}", $"y{num}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        }
+                        else
+                        {
+                            for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
+                            {
+                                screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            }
                         }
                     }
+
                 }
             }
             //else if (screwArrangement != null && screwArrangement is CScrewArrangement_BX_1)

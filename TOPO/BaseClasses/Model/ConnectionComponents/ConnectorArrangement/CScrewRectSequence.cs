@@ -62,6 +62,7 @@ namespace BaseClasses
             set
             {
                 m_fDistanceOfPointsX = value;
+                SetDistancesX();
             }
         }
         public float DistanceOfPointsY
@@ -74,6 +75,7 @@ namespace BaseClasses
             set
             {
                 m_fDistanceOfPointsY = value;
+                SetDistancesY();
             }
         }
         public double RefPointX
