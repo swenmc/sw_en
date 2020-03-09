@@ -216,7 +216,7 @@ namespace PFD
                     if (item.Name.Contains(" SQ"))
                     {
                         int seqIndex = GetSequenceNumFromName(item.Name) - 1;
-                        if (item.Name.Contains("Number of anchors in row  SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfAnchorsInRow_xDirection = int.Parse(itemStr.Value);
+                        if (item.Name.Contains("Number of anchors in row SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfAnchorsInRow_xDirection = int.Parse(itemStr.Value);
                         if (item.Name.Contains("Number of anchors in column SQ")) arrangementTemp.RectSequences[seqIndex].NumberOfAnchorsInColumn_yDirection = int.Parse(itemStr.Value);
                         if (item.Name.Contains("Inserting point coordinate x SQ")) arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Contains("Inserting point coordinate y SQ")) arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
