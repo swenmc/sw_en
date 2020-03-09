@@ -86,6 +86,9 @@ namespace BaseClasses
 
             if (float.IsNaN(dist_x2) || float.IsNaN(dist_y2))
             {
+                if (MathF.d_equal(dist_x1, 0f)) dist_x1 = 0.08f;
+                if (MathF.d_equal(dist_y1, 0f)) dist_y1 = 0.08f;
+
                 fDistanceOfPointsX_SQ1 = new List<float> { dist_x1 };
                 fDistanceOfPointsY_SQ1 = new List<float> { dist_y1 };
             }
