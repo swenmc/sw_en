@@ -86,33 +86,39 @@ namespace PFD
                     anchorArrangementProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                     anchorArrangementProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y SQ{num}", $"yc{num}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-                    anchorArrangementProperties.Add(new CComponentParamsViewBool($"Same distance between anchors x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
-                    anchorArrangementProperties.Add(new CComponentParamsViewBool($"Same distance between anchors y SQ{num}", $"by{num}", src.SameDistancesY, ""));
-                    if (src.SameDistancesX)
+                    if (src.NumberOfAnchorsInRow_xDirection > 1) anchorArrangementProperties.Add(new CComponentParamsViewBool($"Same distance between anchors x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
+                    if (src.NumberOfAnchorsInColumn_yDirection > 1) anchorArrangementProperties.Add(new CComponentParamsViewBool($"Same distance between anchors y SQ{num}", $"by{num}", src.SameDistancesY, ""));
+
+                    if (src.NumberOfAnchorsInRow_xDirection > 1)
                     {
-                        anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors x SQ{num}", $"x{num}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    }
-                    else
-                    {
-                        for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
+                        if (src.SameDistancesX)
                         {
-                            anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors x SQ{num}", $"x{num}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        }
+                        else
+                        {
+                            for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
+                            {
+                                anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            }
                         }
                     }
-                    if (src.SameDistancesY)
+
+                    if (src.NumberOfAnchorsInColumn_yDirection > 1)
                     {
-                        anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors y SQ{num}", $"y{num}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    }
-                    else
-                    {
-                        for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
+                        if (src.SameDistancesY)
                         {
-                            anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors y SQ{num}", $"y{num}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        }
+                        else
+                        {
+                            for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
+                            {
+                                anchorArrangementProperties.Add(new CComponentParamsViewString($"Distance between anchors y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            }
                         }
                     }
                 }
-
-
             }
             else
             {
@@ -1438,7 +1444,7 @@ namespace PFD
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidthS.Name, CParamsResources.PlateWidthS.Symbol, (Math.Round(plateTemp.Fb_X * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidthS.Unit));
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit));
             }
-            else if(plate is CConCom_Plate_F_or_L)
+            else if (plate is CConCom_Plate_F_or_L)
             {
                 CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
 
@@ -1987,21 +1993,21 @@ namespace PFD
 
             //CScrewArrangement_BX_1
             //CScrewArrangement_BX screwArrangement_BX_01 = new CScrewArrangement_BX(referenceScrew, /*fColumnDepth, fColumnDepth - 2 * 0.025f - 2 * 0.002f, 0.18f,*/
-                //    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
-                //    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
-                ////CScrewArrangement_BX_2
-                //CScrewArrangement_BX screwArrangement_BX_02 = new CScrewArrangement_BX(referenceScrew, /*fColumnDepth, fColumnDepth - 2 * 0.008f - 2 * 0.002f, 0.058f,*/
-                //    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
-                //    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
-                //    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
+            //    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
+            //    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            ////CScrewArrangement_BX_2
+            //CScrewArrangement_BX screwArrangement_BX_02 = new CScrewArrangement_BX(referenceScrew, /*fColumnDepth, fColumnDepth - 2 * 0.008f - 2 * 0.002f, 0.058f,*/
+            //    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
+            //    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
+            //    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
 
-                //To Mato - naco sa tu vkuse vyrabali tieto objekty to fakt nechapem
-                //CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
-                //CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
-                //CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
-                //CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
+            //To Mato - naco sa tu vkuse vyrabali tieto objekty to fakt nechapem
+            //CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
+            //CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
+            //CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+            //CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
 
-                switch (plate.m_ePlateSerieType_FS)
+            switch (plate.m_ePlateSerieType_FS)
             {
                 case ESerieTypePlate.eSerie_B:
                     {
@@ -2456,7 +2462,7 @@ namespace PFD
                 if (plate is CConCom_Plate_JBS)
                 {
                     CConCom_Plate_JBS p = plate as CConCom_Plate_JBS;
-                    plate = new CConCom_Plate_JA(componentName, p.m_pControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); 
+                    plate = new CConCom_Plate_JA(componentName, p.m_pControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_JB)
                 {
