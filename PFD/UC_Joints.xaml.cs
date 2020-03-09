@@ -978,14 +978,14 @@ namespace PFD
                 case ESerieTypePlate.eSerie_Q:
                     {
                         CConCom_Plate_Q_T_Y pQ = plate as CConCom_Plate_Q_T_Y;
-                        plate = new CConCom_Plate_Q_T_Y(componentName, pQ.m_pControlPoint, pQ.Fb_X, pQ.Fh_Y, pQ.Fl_Z1, pQ.Fl_Z2, pQ.Ft, pQ.m_iHolesNumber); // Q
+                        plate = new CConCom_Plate_Q_T_Y(componentName, pQ.m_pControlPoint, pQ.Fb_X, pQ.Fh_Y, pQ.Fl_Z1, pQ.Ft, pQ.m_iHolesNumber); // Q
 
                         break;
                     }
                 case ESerieTypePlate.eSerie_T:
                     {
                         CConCom_Plate_Q_T_Y pT = plate as CConCom_Plate_Q_T_Y;
-                        plate = new CConCom_Plate_Q_T_Y(componentName, pT.m_pControlPoint, pT.Fb_X, pT.Fh_Y, pT.Fl_Z1, pT.Fl_Z2, pT.Ft, pT.m_iHolesNumber); // T
+                        plate = new CConCom_Plate_Q_T_Y(componentName, pT.m_pControlPoint, pT.Fb_X, pT.Fh_Y, pT.Fl_Z1, pT.Ft, pT.m_iHolesNumber); // T
                         break;
                     }
                 case ESerieTypePlate.eSerie_Y:
