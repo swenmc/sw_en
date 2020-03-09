@@ -1143,6 +1143,20 @@ namespace PFD
                 plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                 plate = plateTemp;
             }
+            else if (plate is CConCom_Plate_F_or_L)
+            {
+                CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = item_val / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
             else if (plate is CConCom_Plate_JA)
             {
                 CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
@@ -1423,6 +1437,16 @@ namespace PFD
 
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidthS.Name, CParamsResources.PlateWidthS.Symbol, (Math.Round(plateTemp.Fb_X * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidthS.Unit));
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit));
+            }
+            else if(plate is CConCom_Plate_F_or_L)
+            {
+                CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
+
+                // Zatial len read-only
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateLipS.Name, CParamsResources.PlateLipS.Symbol, (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateLipS.Unit, false));
             }
             else if (plate is CConCom_Plate_JA)
             {
@@ -1963,21 +1987,21 @@ namespace PFD
 
             //CScrewArrangement_BX_1
             //CScrewArrangement_BX screwArrangement_BX_01 = new CScrewArrangement_BX(referenceScrew, /*fColumnDepth, fColumnDepth - 2 * 0.025f - 2 * 0.002f, 0.18f,*/
-            //    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
-            //    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
-            ////CScrewArrangement_BX_2
-            //CScrewArrangement_BX screwArrangement_BX_02 = new CScrewArrangement_BX(referenceScrew, /*fColumnDepth, fColumnDepth - 2 * 0.008f - 2 * 0.002f, 0.058f,*/
-            //    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
-            //    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
-            //    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
+                //    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
+                //    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+                ////CScrewArrangement_BX_2
+                //CScrewArrangement_BX screwArrangement_BX_02 = new CScrewArrangement_BX(referenceScrew, /*fColumnDepth, fColumnDepth - 2 * 0.008f - 2 * 0.002f, 0.058f,*/
+                //    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
+                //    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
+                //    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
 
-            //To Mato - naco sa tu vkuse vyrabali tieto objekty to fakt nechapem
-            //CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
-            //CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
-            //CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
-            //CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
+                //To Mato - naco sa tu vkuse vyrabali tieto objekty to fakt nechapem
+                //CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
+                //CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
+                //CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+                //CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
 
-            switch (plate.m_ePlateSerieType_FS)
+                switch (plate.m_ePlateSerieType_FS)
             {
                 case ESerieTypePlate.eSerie_B:
                     {

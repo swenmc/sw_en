@@ -1310,7 +1310,7 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(vm.ComponentIndex + 1);                            
+                            CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(vm.ComponentIndex + 1);
                             plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, CJointHelper.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
                             break;
                         }
@@ -1757,6 +1757,20 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_F_or_L)
+                {
+                    CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
+
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
