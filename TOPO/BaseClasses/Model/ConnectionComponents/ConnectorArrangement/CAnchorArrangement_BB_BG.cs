@@ -195,11 +195,20 @@ namespace BaseClasses
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
 
+        //public Point[] Get_AnchorSequencePointCoordinates(CAnchorRectSequence srectSeq)
+        //{
+        //    // Connectors in Sequence
+        //    return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY) /*srectSeq.ReferencePoint*/, srectSeq.NumberOfAnchorsInRow_xDirection, srectSeq.NumberOfAnchorsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+        //}
         public Point[] Get_AnchorSequencePointCoordinates(CAnchorRectSequence srectSeq)
         {
             // Connectors in Sequence
-            return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY) /*srectSeq.ReferencePoint*/, srectSeq.NumberOfAnchorsInRow_xDirection, srectSeq.NumberOfAnchorsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            if (srectSeq.SameDistancesX && srectSeq.SameDistancesY) // Ak su pre oba smery vzdialenosti skrutiek rovnake, posielame do konstruktora len jedno cislo pre rozostup (vzdialenost) skrutiek
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfAnchorsInRow_xDirection, srectSeq.NumberOfAnchorsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            else // Ak su aspon pre jeden smer vzdialenosti skrutiek rozdielne, posielame do konstruktora zoznam rozostupov (rozne vzdialenosti) skrutiek
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfAnchorsInRow_xDirection, srectSeq.NumberOfAnchorsInColumn_yDirection, srectSeq.DistancesOfPointsX.ToArray(), srectSeq.DistancesOfPointsY.ToArray());
         }
+
 
         public override void Calc_HolesCentersCoord2D(float fbX, float fhY, float flZ)
         {
