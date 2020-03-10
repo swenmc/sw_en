@@ -76,7 +76,8 @@ namespace BaseClasses
             Line2_End.X = m_SecondaryMembers[0].NodeEnd.X;
             Line2_End.Y = m_SecondaryMembers[0].NodeEnd.Z + (0.5f * m_SecondaryMembers[0].CrScStart.h) / Math.Cos(fSLope_rad_temp);
 
-            m_pUpperLeftPointOfPlate = (Point)Intersection(Line1_Start, Line1_End, Line2_Start, Line2_End);
+            Point? p = Intersection(Line1_Start, Line1_End, Line2_Start, Line2_End);
+            if (p != null) m_pUpperLeftPointOfPlate = p.Value;
 
             float fControlPointXCoord;
             float fControlPointYCoord1;
@@ -187,7 +188,8 @@ namespace BaseClasses
             Line2_End.X = m_SecondaryMembers[0].NodeEnd.X;
             Line2_End.Y = m_SecondaryMembers[0].NodeEnd.Z + (0.5f * m_SecondaryMembers[0].CrScStart.h) / Math.Cos(m_fSlope_rad);
 
-            m_pUpperLeftPointOfPlate = (Point)Intersection(Line1_Start, Line1_End, Line2_Start, Line2_End);
+            Point? p = Intersection(Line1_Start, Line1_End, Line2_Start, Line2_End);
+            if(p != null) m_pUpperLeftPointOfPlate = p.Value;
 
             float fControlPointXCoord1;
             float fControlPointXCoord2;
