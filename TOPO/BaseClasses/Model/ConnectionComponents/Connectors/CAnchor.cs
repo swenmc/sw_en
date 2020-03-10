@@ -642,7 +642,8 @@ namespace BaseClasses
         {
             // TODO - Tuto vzdialenost mozeme urcovat rozne, ako parameter kolko ma byt kotva nad plechom / betonom alebo ako parameter dlzka kotvy - kolko ma byt kotevna dlzka (dlzka zabetonovanej casti kotvy)
             float fPortionOtAnchorAbovePlate_rel = 0.09f; // [-] // Suradnica konca kotvy nad plechom (maximum z 9% dlzky kotvy, 1.8x priemer kotvy alebo 20 mm)
-            m_fPortionOtAnchorAbovePlate_abs = MathF.Max(fPortionOtAnchorAbovePlate_rel * Length, 1.8f * Diameter_shank, 0.02f); // [m]
+            //m_fPortionOtAnchorAbovePlate_abs = MathF.Max(fPortionOtAnchorAbovePlate_rel * Length, 1.8f * Diameter_shank, 0.02f); // [m]
+            m_fPortionOtAnchorAbovePlate_abs = Length - m_fh_effective - (m_WasherBearing != null ? m_WasherBearing.Ft : 0) - m_fWasherBearing_OffsetFromBottom;
         }
 
         public void UpdateControlPoint()
