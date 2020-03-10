@@ -532,7 +532,11 @@ namespace BaseClasses
             SetPortionOtAnchorAbovePlateDefault();
         }
 
-        public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, CWasher_W washerPlateTop, CWasher_W washerBearing, /*bool bIsActiveInTension, bool bIsActiveInShear, */float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        // Tento konstruktor sa pouziva pre vytvorenie realnych kotiev - vstupne parametre su parametre referencnej kotvy
+        // TODO Ondrej - mozno by sme mali mat konstruktor kde do CAnchor vstupuje iny objekt CAnchor (referencna kotva) a potom sa v konsruktore len vybrane parametre
+        // (okrem control point a natocenia) skopiruju zo vstupneho objektu do properties vytvaraneho objektu
+        //
+        public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, float fPortionOtAnchorAbovePlate_abs_temp, CWasher_W washerPlateTop, CWasher_W washerBearing, /*bool bIsActiveInTension, bool bIsActiveInShear, */float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Prefix = "Anchor";
             Name = name_temp;
@@ -554,7 +558,8 @@ namespace BaseClasses
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
-            h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
+            m_fh_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
+            m_fPortionOtAnchorAbovePlate_abs = fPortionOtAnchorAbovePlate_abs_temp;
 
             m_bIsActiveInTension = true; // Default
             m_bIsActiveInShear = true; // Default
@@ -578,16 +583,10 @@ namespace BaseClasses
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
             //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
 
-            // Bug 526
-            // Upravil som funkciu UpdateControlPoint
-            // TODO ONDREJ - Tu je problem ze toto SetPortionOtAnchorAbovePlateDefault() sa zavola pri vytvarani novej kotvy
-            // Funkcia vracia m_fPortionOtAnchorAbovePlate_abs, nastavuje tuho hodnotu na default
-            // Zmen v spoji Main Column Base dlzku kotvy l na 1000 mm
-            // Ak mam nejaku referencnu kotvu, zmenim jej v GUI dlzku a zavolam UpdateControlPoint tak sa spocita spravne m_fPortionOtAnchorAbovePlate_abs (cca 700 mm nad plate)
-            // Ale potom ked sa generuju skutocne kotvy v spoji ktore zobrazujeme, tak sa zavola tento konstruktor tak sa m_fPortionOtAnchorAbovePlate_abs prepise na default
-            // a potom su top plate washers nie tesne nad plechom (700 mm pod control point) ale daleko nad nim, teda len par desiatok milimetrov pod control point.
-
-            SetPortionOtAnchorAbovePlateDefault();
+            // Tato funkcia sa nevola, kedze fPortionOtAnchorAbovePlate je vstupny parameter
+            // Mozeme ju vsak pre istotu zavolat ak je vstup nevalidny - horny okraj kotvy by bol pod urovnou betonu
+            if(fPortionOtAnchorAbovePlate_abs_temp <= 0)
+                SetPortionOtAnchorAbovePlateDefault();
 
             // Washer size
             // Plate washer
@@ -642,8 +641,7 @@ namespace BaseClasses
         {
             // TODO - Tuto vzdialenost mozeme urcovat rozne, ako parameter kolko ma byt kotva nad plechom / betonom alebo ako parameter dlzka kotvy - kolko ma byt kotevna dlzka (dlzka zabetonovanej casti kotvy)
             float fPortionOtAnchorAbovePlate_rel = 0.09f; // [-] // Suradnica konca kotvy nad plechom (maximum z 9% dlzky kotvy, 1.8x priemer kotvy alebo 20 mm)
-            //m_fPortionOtAnchorAbovePlate_abs = MathF.Max(fPortionOtAnchorAbovePlate_rel * Length, 1.8f * Diameter_shank, 0.02f); // [m]
-            m_fPortionOtAnchorAbovePlate_abs = Length - m_fh_effective - (m_WasherBearing != null ? m_WasherBearing.Ft : 0) - m_fWasherBearing_OffsetFromBottom;
+            m_fPortionOtAnchorAbovePlate_abs = MathF.Max(fPortionOtAnchorAbovePlate_rel * Length, 1.8f * Diameter_shank, 0.02f); // [m]
         }
 
         public void UpdateControlPoint()
