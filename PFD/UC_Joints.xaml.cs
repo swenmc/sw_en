@@ -46,23 +46,7 @@ namespace PFD
 
             ArrangeConnectionJoints();
             //DebugJoints();
-            vm.JointTypeIndex = 1;
-
-
-            //vsetok kod dole su len pokusy nastavit hned po loade aplikace v tabe Joints prvy tab na aktivny, lebo sa mi zda ako disablovany...nic s tym neviem spravit
-            //JointsTabControl.SelectedIndex = 0;
-            //JointsTabControl.SelectedItem = vm.TabItems[vm.SelectedTabIndex];
-            //vm.TabItems[vm.SelectedTabIndex].Focus();
-            //UpdateLayout();
-
-            //this.Dispatcher.Invoke(DispatcherPriority.Normal, (Action)(() =>
-            //{
-            //    JointsTabControl.SelectedIndex = 0;
-            //    //JointsTabControl.SelectedItem = JointsTabControl.Items[0];
-            //    JointsTabControl.Focus();
-            //    // Do something to update my gui
-            //}));
-
+            vm.JointTypeIndex = 1;            
         }
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -793,33 +777,7 @@ namespace PFD
             spPT.Children.Add(lPT);
             spPT.Children.Add(selectPlateType);
             sp.Children.Add(spPT);
-
-
-            //Grid grid = new Grid();
-            //RowDefinition row = new RowDefinition();
-            //row.Height = new GridLength(40);
-            //grid.RowDefinitions.Add(row);
-
-            //row = new RowDefinition();
-            //row.Height = new GridLength(1.0, GridUnitType.Star);
-            //grid.RowDefinitions.Add(row);
-
-            //row = new RowDefinition();
-            //row.Height = new GridLength(40);
-            //grid.RowDefinitions.Add(row);
-
-            //row = new RowDefinition();
-            //row.Height = new GridLength(1.0, GridUnitType.Star);
-            //grid.RowDefinitions.Add(row);
-
-            //row = new RowDefinition();
-            //row.Height = new GridLength(40);
-            //grid.RowDefinitions.Add(row);
-
-            //row = new RowDefinition();
-            //row.Height = new GridLength(1.0, GridUnitType.Star);
-            //grid.RowDefinitions.Add(row);
-
+            
             // Base Plate - Anchor Arrangement
             if (plate is CConCom_Plate_B_basic)
             {
@@ -845,10 +803,7 @@ namespace PFD
                 spAA.Children.Add(lAA);
                 spAA.Children.Add(selectAA);
                 sp.Children.Add(spAA);
-
-                //ak by bol AnchorArrangement null - tak sa aj tak zobrazi prazdny grid - kvoli zachovaniu indexov
-                // TO Ondrej - to sa mi nepaci. Da sa riadok s hlavickami stlpcov akokeby zobrazit ale pritom bude neviditelny?
-                // Pridal som tam podmienku ze ak je pocet parametrov 0 tak sa nastavi pre datagrid Visibility.Hidden, ale datagrid ako objekt sa medzi children prida
+                
                 List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
                 sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));
             }
@@ -953,7 +908,7 @@ namespace PFD
                         iNumberofHoles = prop.iNumberHolesAnchors; // !!!! - rozlisovat medzi otvormi pre skrutky a pre anchors
 
                         CAnchorArrangement_BB_BG anchorArrangement = ((CConCom_Plate_B_basic)plate).AnchorArrangement;
-                        // Bug 553 - TO Ondrej - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
+                        // Bug 553 - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
                         plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, plate.m_fRotationX_deg, plate.m_fRotationY_deg, plate.m_fRotationZ_deg, referenceAnchor, CJointHelper.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
 
                         //CConCom_Plate_B_basic pB = plate as CConCom_Plate_B_basic;
@@ -973,7 +928,7 @@ namespace PFD
                         fl = (float)prop.dim3;
                         ft = (float)prop.thickness;
                         iNumberofHoles = prop.NumberOfHolesScrews;
-                        // Bug 553 - TO Ondrej - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
+                        // Bug 553 - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
                         plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, fCrsc_h, plate.m_fRotationX_deg, plate.m_fRotationY_deg, plate.m_fRotationZ_deg, screwArrangement_L); // L
 
                         //CScrewArrangement_L sa = plate.ScrewArrangement as CScrewArrangement_L;
@@ -991,7 +946,7 @@ namespace PFD
                         fl = (float)prop.dim3;
                         ft = (float)prop.thickness;
                         iNumberofHoles = prop.NumberOfHolesScrews;
-                        // Bug 553 - TO Ondrej - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
+                        // Bug 553 - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
                         plate = new CConCom_Plate_LL(prop.Name, controlpoint, fb, fb2, fh, fl, ft, plate.m_fRotationX_deg, plate.m_fRotationY_deg, plate.m_fRotationZ_deg, screwArrangement_LL); // LL
 
                         //CScrewArrangement_LL sa = plate.ScrewArrangement as CScrewArrangement_LL;
@@ -1010,7 +965,7 @@ namespace PFD
                         fl = (float)prop.dim3;
                         ft = (float)prop.thickness;
                         iNumberofHoles = prop.NumberOfHolesScrews;
-                        // Bug 553 - TO Ondrej - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
+                        // Bug 553 - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
                         plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, fCrsc_h, plate.m_fRotationX_deg, plate.m_fRotationY_deg, plate.m_fRotationZ_deg, screwArrangement_F); // F
 
                         //CScrewArrangement_F sa = plate.ScrewArrangement as CScrewArrangement_F;
@@ -1118,7 +1073,7 @@ namespace PFD
             } //end switch
 
             joint.m_arrPlates[vm.SelectedTabIndex] = plate;
-            joint.UpdateJoint(); // Bug 553 - TO Ondrej - Update Control points ???
+            joint.UpdateJoint(); // Bug 553
 
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             ti.Header = componentName;
@@ -1128,6 +1083,701 @@ namespace PFD
 
             //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
         }
+
+        
+
+
+
+        private void SelectAA_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CPlate plate = GetSelectedPlate();
+            if (plate == null) return;
+            CConnectionJointTypes joint = GetSelectedJoint();
+            if (joint == null) return;
+
+            ComboBox cbAA = sender as ComboBox;
+            if (cbAA == null) return;
+
+            paramsChanged = true;
+            ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);            
+
+            TabItem ti = vm.TabItems[vm.SelectedTabIndex];
+            SetTabContent(ti, plate);
+
+            displayJoint(joint);
+
+            //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+        }
+
+        private void SelectSA_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CPlate plate = GetSelectedPlate();
+            if (plate == null) return;
+            CConnectionJointTypes joint = GetSelectedJoint();
+            if (joint == null) return;
+
+            ComboBox cbSA = sender as ComboBox;
+            if (cbSA == null) return;
+
+            paramsChanged = true;
+            ChangeAllSameJointsPlateScrewArrangement(cbSA.SelectedIndex);            
+
+            TabItem ti = vm.TabItems[vm.SelectedTabIndex];
+            SetTabContent(ti, plate);
+
+            displayJoint(joint);
+
+            //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+        }
+
+        private void ChangeAllSameJointsPlateAnchorArrangement(int anchorArrangementIndex)
+        {
+            List<CConnectionJointTypes> joints = GetSelectedJoints();
+            foreach (CConnectionJointTypes joint in joints)
+            {
+                CPlateHelper.AnchorArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], anchorArrangementIndex);
+                CPlateHelper.UpdatePlateAnchorArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
+            }
+        }
+
+        private void ChangeAllSameJointsPlateScrewArrangement(int screwArrangementIndex)
+        {
+            List<CConnectionJointTypes> joints = GetSelectedJoints();
+            foreach (CConnectionJointTypes joint in joints)
+            {
+                CPlateHelper.ScrewArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], screwArrangementIndex);
+                CPlateHelper.UpdatePlateScrewArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
+            }
+        }
+
+        private CPlate GetSelectedPlate()
+        {
+            CConnectionJointTypes joint = GetSelectedJoint();
+            if (joint == null) return null;
+            if (joint.m_arrPlates == null) return null;
+
+            return joint.m_arrPlates[vm.SelectedTabIndex];
+        }
+
+        private CConnectionJointTypes GetSelectedJoint()
+        {
+            if (vm.JointTypeIndex == -1) return null;
+            CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
+            list_joints = jointsDict[con.ID];
+            //all joints in list should be the same!
+            CConnectionJointTypes joint = list_joints.FirstOrDefault();
+            //CConnectionJointTypes joint = list_joints.LastOrDefault();
+            //joint.JointType = (EJointType)(con.ID);
+            return joint;
+        }
+        private List<CConnectionJointTypes> GetSelectedJoints()
+        {
+            CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
+            return jointsDict[con.ID];
+        }
+
+        private DataGrid GetDatagridForAnchorArrangement(List<CComponentParamsView> anchorArrangementParams)
+        {
+            DataGrid dgAA = new DataGrid();
+            dgAA.Name = "DatagridForAnchorArrangement";
+            //dgAA.SetValue(Grid.RowProperty, 1);
+            dgAA.ItemsSource = anchorArrangementParams;
+            dgAA.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dgAA.AutoGenerateColumns = false;
+            dgAA.IsEnabled = true;
+            dgAA.IsReadOnly = false;
+            dgAA.CanUserSortColumns = false;
+            dgAA.HeadersVisibility = DataGridHeadersVisibility.Column;
+            dgAA.SelectionMode = DataGridSelectionMode.Extended;
+            dgAA.SelectionUnit = DataGridSelectionUnit.Cell;
+            dgAA.SelectedItems.Clear();
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc2);
+
+            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.Header = "Value";
+            tc3.IsReadOnly = false;
+            tc3.CellTemplate = GetDataTemplate();
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc4);
+
+            foreach (CComponentParamsView cpw in anchorArrangementParams)
+            {
+                cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
+            }
+
+            if (anchorArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
+                dgAA.Visibility = Visibility.Collapsed;
+
+            return dgAA;
+        }
+        private void HandleAnchorArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (!(sender is CComponentParamsView)) return;
+            CComponentParamsView item = sender as CComponentParamsView;
+
+            CConnectionJointTypes joint = GetSelectedJoint();
+
+            CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+
+            paramsChanged = true;
+
+            if (plate is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+
+                CPlateHelper.UpdatePlateScrewArrangementData(plate);
+
+                if (anchorArrangementParams != null)
+                {
+                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+                    DataGrid dgAA = sp.Children[2] as DataGrid;
+                    dgAA.ItemsSource = anchorArrangementParams;
+                    foreach (CComponentParamsView cpw in anchorArrangementParams)
+                    {
+                        cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
+                    }
+                }
+            }
+            vm.ChangedAnchorArrangementParameter = item;            
+        }
+
+        private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
+        {
+            DataGrid dgSA = new DataGrid();
+            dgSA.Name = "DatagridForScrewArrangement";
+            //dgSA.SetValue(Grid.RowProperty, 1);
+            dgSA.ItemsSource = screwArrangementParams;
+            dgSA.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dgSA.AutoGenerateColumns = false;
+            dgSA.IsEnabled = true;
+            dgSA.IsReadOnly = false;
+            dgSA.CanUserSortColumns = false;
+            dgSA.HeadersVisibility = DataGridHeadersVisibility.Column;
+            dgSA.SelectionMode = DataGridSelectionMode.Extended;
+            dgSA.SelectionUnit = DataGridSelectionUnit.Cell;
+            dgSA.SelectedItems.Clear();
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dgSA.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgSA.Columns.Add(tc2);
+
+            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.Header = "Value";
+            tc3.IsReadOnly = false;
+            tc3.CellTemplate = GetDataTemplate();
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgSA.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgSA.Columns.Add(tc4);
+
+            foreach (CComponentParamsView cpw in screwArrangementParams)
+            {
+                cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
+            }
+
+            if (screwArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
+                dgSA.Visibility = Visibility.Hidden;
+
+            return dgSA;
+        }
+        private void HandleScrewArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (!(sender is CComponentParamsView)) return;
+            CComponentParamsView item = sender as CComponentParamsView;
+
+            CConnectionJointTypes joint = GetSelectedJoint();
+            CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+            CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
+            paramsChanged = true;
+            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+
+            CPlateHelper.UpdatePlateScrewArrangementData(plate);
+
+            if (screwArrangementParams != null)
+            {
+                StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+
+                int screwArrangementGridIndex = 2;
+                if (plate is CConCom_Plate_B_basic) { screwArrangementGridIndex = 4; }
+
+                DataGrid dgSA = sp.Children[screwArrangementGridIndex] as DataGrid;
+                dgSA.ItemsSource = screwArrangementParams;
+                foreach (CComponentParamsView cpw in screwArrangementParams)
+                {
+                    cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
+                }
+            }
+            vm.ChangedScrewArrangementParameter = item;
+        }
+        private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
+        {
+            DataGrid dg = new DataGrid();
+            //dg.SetValue(Grid.RowProperty, 3);
+            dg.ItemsSource = geometryParams;
+            dg.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dg.AutoGenerateColumns = false;
+            dg.IsEnabled = true;
+            dg.IsReadOnly = false;
+            dg.CanUserSortColumns = false;
+            dg.HeadersVisibility = DataGridHeadersVisibility.Column;
+            dg.SelectionMode = DataGridSelectionMode.Single;
+            dg.SelectionUnit = DataGridSelectionUnit.Cell;
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc2);
+
+            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.Header = "Value";
+            tc3.IsReadOnly = false;
+            tc3.CellTemplate = GetDataTemplate();
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc3);
+
+            //DataGridTextColumn tc3 = new DataGridTextColumn();
+            //tc3.Binding = new Binding("Value");            
+            //Style style = new Style(typeof(TextBlock));
+            //style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
+            //tc3.ElementStyle = style;
+            //tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            //dg.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc4);
+
+            foreach (CComponentParamsView cpw in geometryParams)
+            {
+                cpw.PropertyChanged += HandleGeometryComponentParamsViewPropertyChangedEvent;
+            }
+
+            return dg;
+        }
+        private void HandleGeometryComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (!(sender is CComponentParamsView)) return;
+            CComponentParamsView item = sender as CComponentParamsView;
+            paramsChanged = true;
+            foreach (CConnectionJointTypes joint in list_joints)
+            {
+                CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+                CPlateHelper.DataGridGeometryParams_ValueChanged(item, plate);
+
+                // Task 553
+                joint.UpdateJoint();
+                UpdateConnectedMembers(joint);
+
+                StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+
+                int geometryGridIndex = 4;
+                if (plate is CConCom_Plate_B_basic) { geometryGridIndex = 6; }
+
+                DataGrid dgGeometry = sp.Children[geometryGridIndex] as DataGrid;
+                DataGrid dgDetails = sp.Children[geometryGridIndex + 2] as DataGrid;
+
+                List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
+                foreach (CComponentParamsView cpw in geometryParams)
+                {
+                    cpw.PropertyChanged += HandleGeometryComponentParamsViewPropertyChangedEvent;
+                }
+                dgGeometry.ItemsSource = geometryParams;
+                dgDetails.ItemsSource = CPlateHelper.GetComponentDetails(plate);
+            }
+            vm.ChangedGeometryParameter = item;
+            //HandleJointsPropertyChangedEvent(sender, e);
+        }
+
+        private void UpdateConnectedMembers(CConnectionJointTypes joint)
+        {
+            //task 555                        
+            if (joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_MainRafter_Column)
+            {
+                UpdatePurlinRafterJoints(joint as CConnectionJoint_B001, EJointType.eEdgePurlin_MainRafter);
+            }
+            else if (joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_EgdeRafter_Column)
+            {
+                UpdatePurlinRafterJoints(joint as CConnectionJoint_B001, EJointType.eEdgePurlin_EdgeRafter);
+            }
+            else
+            {
+
+            }
+        }
+
+        private void UpdatePurlinRafterJoints(CConnectionJoint_B001 joint, EJointType jointType)
+        {
+            float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
+            float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
+
+            foreach (CConnectionJointTypes jt in jointsDict[(int)jointType])
+            {
+                float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
+                float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
+                float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
+
+                CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
+
+                if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
+                {
+                    //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                    joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
+                }
+
+                if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
+                {
+                    //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+                    joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
+                }
+
+                joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
+                joint_t1.UpdateJoint();
+            }
+
+            //foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
+            //{
+            //    if (jt is CConnectionJoint_T001 && jt.JointType == jointType)
+            //    {
+            //        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
+            //        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
+            //        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
+
+            //        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
+            //        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
+
+            //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
+            //        {
+            //            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+            //            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
+            //        }
+
+            //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
+            //        {
+            //            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
+            //            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
+            //        }
+
+            //        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
+            //        joint_t1.UpdateJoint();
+            //    }
+            //}
+
+        }
+
+        private DataGrid GetDatagridForDetails(List<CComponentParamsView> detailsParams)
+        {
+            DataGrid dg = new DataGrid();
+            //dg.SetValue(Grid.RowProperty, 5);
+            dg.ItemsSource = detailsParams;
+            dg.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dg.AutoGenerateColumns = false;
+            dg.IsEnabled = true;
+            dg.IsReadOnly = true;
+            dg.CanUserSortColumns = false;
+            dg.HeadersVisibility = DataGridHeadersVisibility.Column;
+            dg.SelectionMode = DataGridSelectionMode.Single;
+            dg.SelectionUnit = DataGridSelectionUnit.Cell;
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc2);
+
+            DataGridTextColumn tc3 = new DataGridTextColumn();
+            tc3.Header = "Value";
+            tc3.Binding = new Binding("Value");
+            Style style = new Style(typeof(TextBlock));
+            style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
+            tc3.ElementStyle = style;
+            tc3.CellStyle = GetReadonlyCellStyle();
+            tc3.IsReadOnly = true;
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc4);
+            return dg;
+        }
+        private Style GetReadonlyCellStyle()
+        {
+            Style style = new Style(typeof(DataGridCell));
+            style.Setters.Add(new Setter(BackgroundProperty, new SolidColorBrush(Colors.WhiteSmoke)));
+            style.Setters.Add(new Setter(ForegroundProperty, new SolidColorBrush(Colors.Black)));
+            return style;
+        }
+        private DataTemplate GetDataTemplate()
+        {
+            DataTemplate retVal = null;
+
+            var context = new ParserContext();
+            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+
+            string s = @"<DataTemplate><ContentControl Content='{Binding}'><ContentControl.Style><Style TargetType='ContentControl'><Style.Triggers>            
+            <DataTrigger Binding='{Binding CheckType}' Value='CheckBox'>
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <CheckBox HorizontalAlignment='Center' IsChecked='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            <DataTrigger Binding='{Binding CheckType}' Value='ComboBox' >
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            <DataTrigger Binding='{Binding CheckType}' Value='TextBox'>
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' IsEnabled='{Binding IsEnabled}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            </Style.Triggers>
+            </Style>
+            </ContentControl.Style>
+            </ContentControl>
+            </DataTemplate>";
+
+            retVal = XamlReader.Parse(s, context) as DataTemplate;
+            return retVal;
+        }
+
+        private DataGridTextColumn GetDataGridTextColumn()
+        {
+            DataGridTextColumn retVal = null;
+
+            var context = new ParserContext();
+            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+
+            string s = @"<DataGridTextColumn Header='It3' Width='60' IsReadOnly='{Binding IsReadOnly}' Binding='{Binding Value, Mode=TwoWay}'>
+            <DataGridTextColumn.ElementStyle><Style TargetType='{x:Type TextBlock}' ><Setter Property='HorizontalAlignment' Value='Right' /></Style>
+            </DataGridTextColumn.ElementStyle></DataGridTextColumn>";
+
+            retVal = XamlReader.Parse(s, context) as DataGridTextColumn;
+            return retVal;
+        }
+        private void showAllJointsCount_Checked(object sender, RoutedEventArgs e)
+        {
+            CreateGridAndShowResultsCount();
+        }
+        private void CreateGridAndShowResultsCount()
+        {
+            List<TabItem> tabItems = new List<TabItem>();
+
+            TabItem tab = new TabItem();
+            tab.Header = "Joint types count";
+            if (tab == null) return;
+            ScrollViewer sw = new ScrollViewer();
+            sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            StackPanel sp = new StackPanel();
+            DataGrid dg = new DataGrid();
+            dg.HeadersVisibility = DataGridHeadersVisibility.None;
+            dg.MinWidth = 500;
+            List<Tuple<int, string, string, int>> results = new List<Tuple<int, string, string, int>>();
+            foreach (CConnectionDescription cd in vm.AllJointTypes)
+            {
+                Tuple<int, string, string, int> t = Tuple.Create(cd.ID, cd.Name, cd.JoinType, jointsDict[cd.ID].Count);
+                results.Add(t);
+            }
+
+            dg.ItemsSource = results;
+            sp.Children.Add(dg);
+            sw.Content = sp;
+            tab.Content = sw;
+
+            tabItems.Add(tab);
+
+            vm.TabItems = tabItems;
+            vm.SelectedTabIndex = 0;
+        }
+        private void showAllJointsCount_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SetDynamicTabs(vm);
+        }
+        private void displayJoint(CConnectionJointTypes joint)
+        {
+            if (joint == null) return; // Error - nothing to display
+
+            sDisplayOptions = _pfdVM.GetDisplayOptions();
+            //Here is the place to overwrite displayOptions from Main Model
+            // TODO - refaktorovat s nastavenim zobrazenia footing pad preview
+            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bDisplayMemberDescription = false;
+            sDisplayOptions.bDisplayNodes = false;
+            sDisplayOptions.bDisplayNodesDescription = false;
+            sDisplayOptions.bDisplayMembersCenterLines = false;
+
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
+
+            CModel jointModel = Drawing3D.GetJointPreviewModel(joint, null, ref sDisplayOptions);
+
+            CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
+            Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, EModelType.eJoint);
+
+            // Display model in 3D preview frame
+            FrameJointPreview3D.Content = page1;
+            FrameJointPreview3D.UpdateLayout();
+        }
+
+        private void FrameJointPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (!paramsChanged) return;
+
+            MessageBox.Show("Changed joint params will be applied to the model.");
+
+            foreach (List<CConnectionJointTypes> sameJoints in jointsDict.Values)
+            {
+                CConnectionJointTypes refJoint = sameJoints.FirstOrDefault();
+                if (refJoint == null) continue;
+                foreach (CConnectionJointTypes joint in sameJoints)
+                {
+                    int i = 0;
+                    foreach (CPlate plate in joint.m_arrPlates)
+                    {
+                        plate.CopyParams(refJoint.m_arrPlates[i]);
+                        i++;
+                    }
+
+                    joint.UpdateJoint();
+                }
+            }
+
+            if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            paramsChanged = false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #region commmented code
 
         //odkladam do zalohy lebo menim kvoli tasku 529
         //private void SelectPlateSerie_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1453,792 +2103,10 @@ namespace PFD
 
         //    //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
         //}
+        #endregion
 
 
 
-        private void SelectAA_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            CPlate plate = GetSelectedPlate();
-            if (plate == null) return;
-            CConnectionJointTypes joint = GetSelectedJoint();
-            if (joint == null) return;
-
-            ComboBox cbAA = sender as ComboBox;
-            if (cbAA == null) return;
-
-            paramsChanged = true;
-            ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
-            //CPlateHelper.AnchorArrangementChanged(joint, plate, cbAA.SelectedIndex);
-            //CPlateHelper.UpdatePlateAnchorArrangementData(plate);
-
-            TabItem ti = vm.TabItems[vm.SelectedTabIndex];
-            SetTabContent(ti, plate);
-
-            displayJoint(joint);
-
-            //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
-        }
-
-        private void SelectSA_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            CPlate plate = GetSelectedPlate();
-            if (plate == null) return;
-            CConnectionJointTypes joint = GetSelectedJoint();
-            if (joint == null) return;
-
-            ComboBox cbSA = sender as ComboBox;
-            if (cbSA == null) return;
-
-            paramsChanged = true;
-            ChangeAllSameJointsPlateScrewArrangement(cbSA.SelectedIndex);
-            //CPlateHelper.ScrewArrangementChanged(joint, plate, cbSA.SelectedIndex);
-            //CPlateHelper.UpdatePlateScrewArrangementData(plate);
-
-            TabItem ti = vm.TabItems[vm.SelectedTabIndex];
-            SetTabContent(ti, plate);
-
-            displayJoint(joint);
-
-            //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
-        }
-
-        private void ChangeAllSameJointsPlateAnchorArrangement(int anchorArrangementIndex)
-        {
-            List<CConnectionJointTypes> joints = GetSelectedJoints();
-            foreach (CConnectionJointTypes joint in joints)
-            {
-                CPlateHelper.AnchorArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], anchorArrangementIndex);
-                CPlateHelper.UpdatePlateAnchorArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
-            }
-        }
-
-        private void ChangeAllSameJointsPlateScrewArrangement(int screwArrangementIndex)
-        {
-            List<CConnectionJointTypes> joints = GetSelectedJoints();
-            foreach (CConnectionJointTypes joint in joints)
-            {
-                CPlateHelper.ScrewArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], screwArrangementIndex);
-                CPlateHelper.UpdatePlateScrewArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
-            }
-        }
-
-        private CPlate GetSelectedPlate()
-        {
-            CConnectionJointTypes joint = GetSelectedJoint();
-            if (joint == null) return null;
-            if (joint.m_arrPlates == null) return null;
-
-            return joint.m_arrPlates[vm.SelectedTabIndex];
-        }
-
-        private CConnectionJointTypes GetSelectedJoint()
-        {
-            if (vm.JointTypeIndex == -1) return null;
-            CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
-            list_joints = jointsDict[con.ID];
-            //all joints in list should be the same!
-            CConnectionJointTypes joint = list_joints.FirstOrDefault();
-            //CConnectionJointTypes joint = list_joints.LastOrDefault();
-            //joint.JointType = (EJointType)(con.ID);
-            return joint;
-        }
-        private List<CConnectionJointTypes> GetSelectedJoints()
-        {
-            CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
-            return jointsDict[con.ID];
-        }
-
-        private DataGrid GetDatagridForAnchorArrangement(List<CComponentParamsView> anchorArrangementParams)
-        {
-            DataGrid dgAA = new DataGrid();
-            dgAA.Name = "DatagridForAnchorArrangement";
-            //dgAA.SetValue(Grid.RowProperty, 1);
-            dgAA.ItemsSource = anchorArrangementParams;
-            dgAA.HorizontalAlignment = HorizontalAlignment.Stretch;
-            dgAA.AutoGenerateColumns = false;
-            dgAA.IsEnabled = true;
-            dgAA.IsReadOnly = false;
-            dgAA.CanUserSortColumns = false;
-            dgAA.HeadersVisibility = DataGridHeadersVisibility.Column;
-            dgAA.SelectionMode = DataGridSelectionMode.Extended;
-            dgAA.SelectionUnit = DataGridSelectionUnit.Cell;
-            dgAA.SelectedItems.Clear();
-
-            DataGridTextColumn tc1 = new DataGridTextColumn();
-            tc1.Header = "Name";
-            tc1.Binding = new Binding("Name");
-            tc1.CellStyle = GetReadonlyCellStyle();
-            tc1.IsReadOnly = true;
-            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
-            dgAA.Columns.Add(tc1);
-
-            DataGridTextColumn tc2 = new DataGridTextColumn();
-            tc2.Header = "Symbol";
-            tc2.Binding = new Binding("ShortCut");
-            tc2.CellStyle = GetReadonlyCellStyle();
-            tc2.IsReadOnly = true;
-            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dgAA.Columns.Add(tc2);
-
-            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
-            tc3.Header = "Value";
-            tc3.IsReadOnly = false;
-            tc3.CellTemplate = GetDataTemplate();
-            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dgAA.Columns.Add(tc3);
-
-            DataGridTextColumn tc4 = new DataGridTextColumn();
-            tc4.Header = "Unit";
-            tc4.Binding = new Binding("Unit");
-            tc4.CellStyle = GetReadonlyCellStyle();
-            tc4.IsReadOnly = true;
-            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dgAA.Columns.Add(tc4);
-
-            foreach (CComponentParamsView cpw in anchorArrangementParams)
-            {
-                cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
-            }
-
-            if (anchorArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
-                dgAA.Visibility = Visibility.Collapsed;
-
-            return dgAA;
-        }
-        private void HandleAnchorArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
-        {
-            if (!(sender is CComponentParamsView)) return;
-            CComponentParamsView item = sender as CComponentParamsView;
-
-            CConnectionJointTypes joint = GetSelectedJoint();
-
-            CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
-
-            paramsChanged = true;
-
-            if (plate is CConCom_Plate_B_basic)
-            {
-                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
-                CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
-                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
-
-                CPlateHelper.UpdatePlateScrewArrangementData(plate);
-
-                if (anchorArrangementParams != null)
-                {
-                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-                    DataGrid dgAA = sp.Children[2] as DataGrid;
-                    dgAA.ItemsSource = anchorArrangementParams;
-                    foreach (CComponentParamsView cpw in anchorArrangementParams)
-                    {
-                        cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
-                    }
-                }
-            }
-            vm.ChangedAnchorArrangementParameter = item;
-
-
-            //foreach (CConnectionJointTypes joint in list_joints)
-            //{
-            //    CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
-
-            //    if (plate is CConCom_Plate_B_basic)
-            //    {
-            //        CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
-            //        CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
-            //        List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
-
-            //        CPlateHelper.UpdatePlateScrewArrangementData(plate);
-
-            //        if (anchorArrangementParams != null)
-            //        {
-            //            //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
-            //            //StackPanel sp = sw.Content as StackPanel;
-            //            StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-            //            DataGrid dgAA = sp.Children[2] as DataGrid;
-            //            dgAA.ItemsSource = anchorArrangementParams;
-            //            foreach (CComponentParamsView cpw in anchorArrangementParams)
-            //            {
-            //                cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //vm.ChangedAnchorArrangementParameter = item;
-            ////HandleJointsPropertyChangedEvent(sender, e);            
-        }
-
-        private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
-        {
-            DataGrid dgSA = new DataGrid();
-            dgSA.Name = "DatagridForScrewArrangement";
-            //dgSA.SetValue(Grid.RowProperty, 1);
-            dgSA.ItemsSource = screwArrangementParams;
-            dgSA.HorizontalAlignment = HorizontalAlignment.Stretch;
-            dgSA.AutoGenerateColumns = false;
-            dgSA.IsEnabled = true;
-            dgSA.IsReadOnly = false;
-            dgSA.CanUserSortColumns = false;
-            dgSA.HeadersVisibility = DataGridHeadersVisibility.Column;
-            dgSA.SelectionMode = DataGridSelectionMode.Extended;
-            dgSA.SelectionUnit = DataGridSelectionUnit.Cell;
-            dgSA.SelectedItems.Clear();
-
-            DataGridTextColumn tc1 = new DataGridTextColumn();
-            tc1.Header = "Name";
-            tc1.Binding = new Binding("Name");
-            tc1.CellStyle = GetReadonlyCellStyle();
-            tc1.IsReadOnly = true;
-            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
-            dgSA.Columns.Add(tc1);
-
-            DataGridTextColumn tc2 = new DataGridTextColumn();
-            tc2.Header = "Symbol";
-            tc2.Binding = new Binding("ShortCut");
-            tc2.CellStyle = GetReadonlyCellStyle();
-            tc2.IsReadOnly = true;
-            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dgSA.Columns.Add(tc2);
-
-            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
-            tc3.Header = "Value";
-            tc3.IsReadOnly = false;
-            tc3.CellTemplate = GetDataTemplate();
-            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dgSA.Columns.Add(tc3);
-
-            DataGridTextColumn tc4 = new DataGridTextColumn();
-            tc4.Header = "Unit";
-            tc4.Binding = new Binding("Unit");
-            tc4.CellStyle = GetReadonlyCellStyle();
-            tc4.IsReadOnly = true;
-            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dgSA.Columns.Add(tc4);
-
-            foreach (CComponentParamsView cpw in screwArrangementParams)
-            {
-                cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
-            }
-
-            if (screwArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
-                dgSA.Visibility = Visibility.Hidden;
-
-            return dgSA;
-        }
-        private void HandleScrewArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
-        {
-            if (!(sender is CComponentParamsView)) return;
-            CComponentParamsView item = sender as CComponentParamsView;
-
-            CConnectionJointTypes joint = GetSelectedJoint();
-            CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
-            CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
-            paramsChanged = true;
-            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-
-            CPlateHelper.UpdatePlateScrewArrangementData(plate);
-
-            if (screwArrangementParams != null)
-            {
-                StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-
-                int screwArrangementGridIndex = 2;
-                if (plate is CConCom_Plate_B_basic) { screwArrangementGridIndex = 4; }
-
-                DataGrid dgSA = sp.Children[screwArrangementGridIndex] as DataGrid;
-                dgSA.ItemsSource = screwArrangementParams;
-                foreach (CComponentParamsView cpw in screwArrangementParams)
-                {
-                    cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
-                }
-            }
-            vm.ChangedScrewArrangementParameter = item;
-
-
-            //foreach (CConnectionJointTypes joint in list_joints)
-            //{
-            //    CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
-            //    CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
-            //    List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-
-            //    CPlateHelper.UpdatePlateScrewArrangementData(plate);                
-
-            //    if (screwArrangementParams != null)
-            //    {                    
-            //        StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-            //        DataGrid dgSA = sp.Children[2] as DataGrid;
-            //        dgSA.ItemsSource = screwArrangementParams;
-            //        foreach (CComponentParamsView cpw in screwArrangementParams)
-            //        {
-            //            cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
-            //        }
-            //    }
-            //}
-
-            //vm.ChangedScrewArrangementParameter = item;
-            ////HandleJointsPropertyChangedEvent(sender, e);
-        }
-        private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
-        {
-            DataGrid dg = new DataGrid();
-            //dg.SetValue(Grid.RowProperty, 3);
-            dg.ItemsSource = geometryParams;
-            dg.HorizontalAlignment = HorizontalAlignment.Stretch;
-            dg.AutoGenerateColumns = false;
-            dg.IsEnabled = true;
-            dg.IsReadOnly = false;
-            dg.CanUserSortColumns = false;
-            dg.HeadersVisibility = DataGridHeadersVisibility.Column;
-            dg.SelectionMode = DataGridSelectionMode.Single;
-            dg.SelectionUnit = DataGridSelectionUnit.Cell;
-
-            DataGridTextColumn tc1 = new DataGridTextColumn();
-            tc1.Header = "Name";
-            tc1.Binding = new Binding("Name");
-            tc1.CellStyle = GetReadonlyCellStyle();
-            tc1.IsReadOnly = true;
-            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
-            dg.Columns.Add(tc1);
-
-            DataGridTextColumn tc2 = new DataGridTextColumn();
-            tc2.Header = "Symbol";
-            tc2.Binding = new Binding("ShortCut");
-            tc2.CellStyle = GetReadonlyCellStyle();
-            tc2.IsReadOnly = true;
-            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dg.Columns.Add(tc2);
-
-            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
-            tc3.Header = "Value";
-            tc3.IsReadOnly = false;
-            tc3.CellTemplate = GetDataTemplate();
-            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dg.Columns.Add(tc3);
-
-            //DataGridTextColumn tc3 = new DataGridTextColumn();
-            //tc3.Binding = new Binding("Value");            
-            //Style style = new Style(typeof(TextBlock));
-            //style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
-            //tc3.ElementStyle = style;
-            //tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            //dg.Columns.Add(tc3);
-
-            DataGridTextColumn tc4 = new DataGridTextColumn();
-            tc4.Header = "Unit";
-            tc4.Binding = new Binding("Unit");
-            tc4.CellStyle = GetReadonlyCellStyle();
-            tc4.IsReadOnly = true;
-            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dg.Columns.Add(tc4);
-
-            foreach (CComponentParamsView cpw in geometryParams)
-            {
-                cpw.PropertyChanged += HandleGeometryComponentParamsViewPropertyChangedEvent;
-            }
-
-            return dg;
-        }
-        private void HandleGeometryComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
-        {
-            if (!(sender is CComponentParamsView)) return;
-            CComponentParamsView item = sender as CComponentParamsView;
-            paramsChanged = true;
-            foreach (CConnectionJointTypes joint in list_joints)
-            {
-                CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
-                CPlateHelper.DataGridGeometryParams_ValueChanged(item, plate);
-
-                // Task 553 - To Ondrej - tu som vyrobil funkciu ktora by mala updatovat joint, mozes na to mrknut
-                joint.UpdateJoint();
-                UpdateConnectedMembers(joint);
-
-                StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-
-                int geometryGridIndex = 4;
-                if (plate is CConCom_Plate_B_basic) { geometryGridIndex = 6; }
-
-                DataGrid dgGeometry = sp.Children[geometryGridIndex] as DataGrid;
-                DataGrid dgDetails = sp.Children[geometryGridIndex + 2] as DataGrid;
-
-                List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
-                foreach (CComponentParamsView cpw in geometryParams)
-                {
-                    cpw.PropertyChanged += HandleGeometryComponentParamsViewPropertyChangedEvent;
-                }
-                dgGeometry.ItemsSource = geometryParams;
-                dgDetails.ItemsSource = CPlateHelper.GetComponentDetails(plate);
-            }
-            vm.ChangedGeometryParameter = item;
-            //HandleJointsPropertyChangedEvent(sender, e);
-        }
-
-        private void UpdateConnectedMembers(CConnectionJointTypes joint)
-        {
-            //task 555
-
-            //asi bude potrebne nejako adresnejsie vyhladat,co sa ma zmenit
-            if (joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_MainRafter_Column)
-            {
-                UpdatePurlinRafterJoints(joint as CConnectionJoint_B001, EJointType.eEdgePurlin_MainRafter);
-
-                //float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
-                //float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
-
-
-                ////toto refaktorovat tak,ze z Dictionary vybrat Joints daneho typu a metodu vyuzit aj dole, lebo kod je rovnaky
-                //foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
-                //{
-                //    // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
-                //    // ale len nejaku podskupinu z ENUM - EJointType
-                //    if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_MainRafter)
-                //    {
-                //        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
-                //        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
-                //        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
-
-                //        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
-                //        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
-
-                //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
-                //        {
-                //            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                //            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
-                //        }
-
-                //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
-                //        {
-                //            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                //            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
-                //        }
-
-                //        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
-                //        joint_t1.UpdateJoint();
-                //    }
-                //}
-            }
-            else if (joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_EgdeRafter_Column)
-            {
-                UpdatePurlinRafterJoints(joint as CConnectionJoint_B001, EJointType.eEdgePurlin_EdgeRafter);
-
-                //float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
-                //float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
-
-                //foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
-                //{
-                //    // To Ondrej - tu nemozeme menit vsetky spoje daneho typu
-                //    // ale len nejaku podskupinu z ENUM - EJointType
-                //    if (jt is CConnectionJoint_T001 && jt.JointType == EJointType.eEdgePurlin_EdgeRafter)
-                //    {
-                //        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
-                //        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
-                //        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
-
-                //        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
-                //        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
-
-                //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
-                //        {
-                //            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                //            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
-                //        }
-
-                //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
-                //        {
-                //            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                //            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
-                //        }
-
-                //        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
-                //        joint_t1.UpdateJoint();
-                //    }
-                //}
-            }
-            else
-            {
-
-            }
-        }
-
-        private void UpdatePurlinRafterJoints(CConnectionJoint_B001 joint, EJointType jointType)
-        {
-            float ft_left = joint.m_arrPlates[1].Ft; // Lava plate v smere raftera
-            float ft_right = joint.m_arrPlates[0].Ft; // Prava plate v smere raftera
-
-            foreach (CConnectionJointTypes jt in jointsDict[(int)jointType])
-            {
-                float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
-                float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
-                float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
-
-                CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
-
-                if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
-                {
-                    //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                    joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
-                }
-
-                if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
-                {
-                    //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-                    joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
-                }
-
-                joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
-                joint_t1.UpdateJoint();
-            }
-
-            //foreach (CConnectionJointTypes jt in _pfdVM.Model.m_arrConnectionJoints)
-            //{
-            //    if (jt is CConnectionJoint_T001 && jt.JointType == jointType)
-            //    {
-            //        float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
-            //        float fEavesPurlinStart = -(float)joint.m_SecondaryMembers[0].CrScStart.y_max - fCutOffOneSide;
-            //        float fEavesPurlinEnd = (float)joint.m_SecondaryMembers[0].CrScStart.y_min - fCutOffOneSide;
-
-            //        // TODO - pohrat sa s tym co je na lavej a pravej strane spoja a co je na zaciatku a na konci eave purlin
-            //        CConnectionJoint_T001 joint_t1 = jt as CConnectionJoint_T001;
-
-            //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeStart.ID)
-            //        {
-            //            //joint_t1.m_ft_main_plate = ft_left; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-            //            joint_t1.m_SecondaryMembers[0].FAlignment_Start = fEavesPurlinStart - ft_left;
-            //        }
-
-            //        if (jt.m_Node.ID == joint_t1.m_SecondaryMembers[0].NodeEnd.ID)
-            //        {
-            //            //joint_t1.m_ft_main_plate = ft_right; // Tu treba nastavit do spoja CConnectionJoint_T001 hrubku main plate podla toho na ktorej strane sa nachadzame
-            //            joint_t1.m_SecondaryMembers[0].FAlignment_End = fEavesPurlinEnd - ft_right;
-            //        }
-
-            //        joint_t1.m_SecondaryMembers[0].Fill_Basic(); // Prepocitame parametre pruta
-            //        joint_t1.UpdateJoint();
-            //    }
-            //}
-
-        }
-
-        private DataGrid GetDatagridForDetails(List<CComponentParamsView> detailsParams)
-        {
-            DataGrid dg = new DataGrid();
-            //dg.SetValue(Grid.RowProperty, 5);
-            dg.ItemsSource = detailsParams;
-            dg.HorizontalAlignment = HorizontalAlignment.Stretch;
-            dg.AutoGenerateColumns = false;
-            dg.IsEnabled = true;
-            dg.IsReadOnly = true;
-            dg.CanUserSortColumns = false;
-            dg.HeadersVisibility = DataGridHeadersVisibility.Column;
-            dg.SelectionMode = DataGridSelectionMode.Single;
-            dg.SelectionUnit = DataGridSelectionUnit.Cell;
-
-            DataGridTextColumn tc1 = new DataGridTextColumn();
-            tc1.Header = "Name";
-            tc1.Binding = new Binding("Name");
-            tc1.CellStyle = GetReadonlyCellStyle();
-            tc1.IsReadOnly = true;
-            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
-            dg.Columns.Add(tc1);
-
-            DataGridTextColumn tc2 = new DataGridTextColumn();
-            tc2.Header = "Symbol";
-            tc2.Binding = new Binding("ShortCut");
-            tc2.CellStyle = GetReadonlyCellStyle();
-            tc2.IsReadOnly = true;
-            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dg.Columns.Add(tc2);
-
-            DataGridTextColumn tc3 = new DataGridTextColumn();
-            tc3.Header = "Value";
-            tc3.Binding = new Binding("Value");
-            Style style = new Style(typeof(TextBlock));
-            style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
-            tc3.ElementStyle = style;
-            tc3.CellStyle = GetReadonlyCellStyle();
-            tc3.IsReadOnly = true;
-            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dg.Columns.Add(tc3);
-
-            DataGridTextColumn tc4 = new DataGridTextColumn();
-            tc4.Header = "Unit";
-            tc4.Binding = new Binding("Unit");
-            tc4.CellStyle = GetReadonlyCellStyle();
-            tc4.IsReadOnly = true;
-            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
-            dg.Columns.Add(tc4);
-            return dg;
-        }
-        private Style GetReadonlyCellStyle()
-        {
-            Style style = new Style(typeof(DataGridCell));
-            style.Setters.Add(new Setter(BackgroundProperty, new SolidColorBrush(Colors.WhiteSmoke)));
-            style.Setters.Add(new Setter(ForegroundProperty, new SolidColorBrush(Colors.Black)));
-            return style;
-        }
-        private DataTemplate GetDataTemplate()
-        {
-            DataTemplate retVal = null;
-
-            var context = new ParserContext();
-            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
-
-            string s = @"<DataTemplate><ContentControl Content='{Binding}'><ContentControl.Style><Style TargetType='ContentControl'><Style.Triggers>            
-            <DataTrigger Binding='{Binding CheckType}' Value='CheckBox'>
-            <Setter Property='ContentTemplate'>
-            <Setter.Value>
-            <DataTemplate>
-            <CheckBox HorizontalAlignment='Center' IsChecked='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
-            </DataTemplate>
-            </Setter.Value>
-            </Setter>
-            </DataTrigger>
-            <DataTrigger Binding='{Binding CheckType}' Value='ComboBox' >
-            <Setter Property='ContentTemplate'>
-            <Setter.Value>
-            <DataTemplate>
-            <ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
-            </DataTemplate>
-            </Setter.Value>
-            </Setter>
-            </DataTrigger>
-            <DataTrigger Binding='{Binding CheckType}' Value='TextBox'>
-            <Setter Property='ContentTemplate'>
-            <Setter.Value>
-            <DataTemplate>
-            <TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' IsEnabled='{Binding IsEnabled}' />
-            </DataTemplate>
-            </Setter.Value>
-            </Setter>
-            </DataTrigger>
-            </Style.Triggers>
-            </Style>
-            </ContentControl.Style>
-            </ContentControl>
-            </DataTemplate>";
-
-            retVal = XamlReader.Parse(s, context) as DataTemplate;
-            return retVal;
-        }
-
-        private DataGridTextColumn GetDataGridTextColumn()
-        {
-            DataGridTextColumn retVal = null;
-
-            var context = new ParserContext();
-            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
-
-            string s = @"<DataGridTextColumn Header='It3' Width='60' IsReadOnly='{Binding IsReadOnly}' Binding='{Binding Value, Mode=TwoWay}'>
-            <DataGridTextColumn.ElementStyle><Style TargetType='{x:Type TextBlock}' ><Setter Property='HorizontalAlignment' Value='Right' /></Style>
-            </DataGridTextColumn.ElementStyle></DataGridTextColumn>";
-
-            retVal = XamlReader.Parse(s, context) as DataGridTextColumn;
-            return retVal;
-        }
-        private void showAllJointsCount_Checked(object sender, RoutedEventArgs e)
-        {
-            CreateGridAndShowResultsCount();
-        }
-        private void CreateGridAndShowResultsCount()
-        {
-            List<TabItem> tabItems = new List<TabItem>();
-
-            TabItem tab = new TabItem();
-            tab.Header = "Joint types count";
-            if (tab == null) return;
-            ScrollViewer sw = new ScrollViewer();
-            sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-            sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            StackPanel sp = new StackPanel();
-            DataGrid dg = new DataGrid();
-            dg.HeadersVisibility = DataGridHeadersVisibility.None;
-            dg.MinWidth = 500;
-            List<Tuple<int, string, string, int>> results = new List<Tuple<int, string, string, int>>();
-            foreach (CConnectionDescription cd in vm.AllJointTypes)
-            {
-                Tuple<int, string, string, int> t = Tuple.Create(cd.ID, cd.Name, cd.JoinType, jointsDict[cd.ID].Count);
-                results.Add(t);
-            }
-
-            dg.ItemsSource = results;
-            sp.Children.Add(dg);
-            sw.Content = sp;
-            tab.Content = sw;
-
-            tabItems.Add(tab);
-
-            vm.TabItems = tabItems;
-            vm.SelectedTabIndex = 0;
-        }
-        private void showAllJointsCount_Unchecked(object sender, RoutedEventArgs e)
-        {
-            SetDynamicTabs(vm);
-        }
-        private void displayJoint(CConnectionJointTypes joint)
-        {
-            if (joint == null) return; // Error - nothing to display
-
-            sDisplayOptions = _pfdVM.GetDisplayOptions();
-            //Here is the place to overwrite displayOptions from Main Model
-            // TODO - refaktorovat s nastavenim zobrazenia footing pad preview
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.bDisplayMemberDescription = false;
-            sDisplayOptions.bDisplayNodes = false;
-            sDisplayOptions.bDisplayNodesDescription = false;
-            sDisplayOptions.bDisplayMembersCenterLines = false;
-
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.bDisplayPlates = true;
-            sDisplayOptions.bDisplayConnectors = true;
-
-            CModel jointModel = Drawing3D.GetJointPreviewModel(joint, null, ref sDisplayOptions);
-
-            CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
-            Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, EModelType.eJoint);
-
-            // Display model in 3D preview frame
-            FrameJointPreview3D.Content = page1;
-            FrameJointPreview3D.UpdateLayout();
-        }
-
-        private void FrameJointPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (!paramsChanged) return;
-
-            MessageBox.Show("Changed joint params will be applied to the model.");
-
-            foreach (List<CConnectionJointTypes> sameJoints in jointsDict.Values)
-            {
-                CConnectionJointTypes refJoint = sameJoints.FirstOrDefault();
-                if (refJoint == null) continue;
-                foreach (CConnectionJointTypes joint in sameJoints)
-                {
-                    int i = 0;
-                    foreach (CPlate plate in joint.m_arrPlates)
-                    {
-                        plate.CopyParams(refJoint.m_arrPlates[i]);
-                        i++;
-                    }
-
-                    joint.UpdateJoint();
-                }
-            }
-
-            if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            paramsChanged = false;
-        }
+        
     }
 }
