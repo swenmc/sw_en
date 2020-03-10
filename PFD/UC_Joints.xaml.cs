@@ -1746,6 +1746,20 @@ namespace PFD
                 foreach (CConnectionJointTypes joint in sameJoints)
                 {
                     int i = 0;
+
+                    //pokusy 557
+                    if (joint is CConnectionJoint_B001)
+                    {
+                        if (jointsCount == 1 || jointsCount == 3)
+                        {
+                            joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
+                            joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
+                            joint.UpdateJoint();
+                            jointsCount++;
+                            continue;
+                        }
+                    }
+
                     foreach (CPlate plate in joint.m_arrPlates)
                     {
                         plate.CopyParams(refJoint.m_arrPlates[i]);
