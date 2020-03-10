@@ -1742,6 +1742,7 @@ namespace PFD
             {
                 CConnectionJointTypes refJoint = sameJoints.FirstOrDefault();
                 if (refJoint == null) continue;
+                int jointsCount = 0;
                 foreach (CConnectionJointTypes joint in sameJoints)
                 {
                     int i = 0;
@@ -1750,9 +1751,14 @@ namespace PFD
                         plate.CopyParams(refJoint.m_arrPlates[i]);
                         i++;
                     }
-
+                    if (joint is CConnectionJoint_B001)
+                    {
+                        CConnectionJoint_B001 jb = joint as CConnectionJoint_B001;
+                        jb.IsFront = (jointsCount <= 1);
+                    }
                     joint.UpdateJoint();
                     //UpdateConnectedMembers(joint);
+                    jointsCount++;
                 }
             }
 

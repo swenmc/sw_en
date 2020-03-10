@@ -24,6 +24,7 @@ namespace BaseClasses
         public float m_fJointAngleAboutZ_deg;
 
         public float m_fRafterVectorDirection;
+        public bool IsFront = true;
         Point m_pUpperLeftPointOfPlate;
 
         public CConnectionJoint_B001() { }
@@ -210,6 +211,11 @@ namespace BaseClasses
                 fControlPointXCoord2 = m_Node.X + (float)m_MainMember.CrScStart.z_max;
                 fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - fGap - m_arrPlates[0].Ft);
                 fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /*0.5f * m_MainMember.CrScStart.b*/ + fGap + m_arrPlates[1].Ft - m_arrPlates[1].Ft);
+            }
+
+            if (!IsFront)
+            {
+
             }
 
             m_arrPlates[0].m_pControlPoint = new Point3D(fControlPointXCoord1, fControlPointYCoord1, m_pUpperLeftPointOfPlate.Y - fPlate1_h_Y1);
