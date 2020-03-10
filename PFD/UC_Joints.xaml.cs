@@ -953,8 +953,8 @@ namespace PFD
                         iNumberofHoles = prop.iNumberHolesAnchors; // !!!! - rozlisovat medzi otvormi pre skrutky a pre anchors
 
                         CAnchorArrangement_BB_BG anchorArrangement = ((CConCom_Plate_B_basic)plate).AnchorArrangement;
-                        plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, CJointHelper.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
-                        
+                        // Bug 553 - TO Ondrej - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
+                        plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, plate.m_fRotationX_deg, plate.m_fRotationY_deg, plate.m_fRotationZ_deg, referenceAnchor, CJointHelper.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
 
                         //CConCom_Plate_B_basic pB = plate as CConCom_Plate_B_basic;
                         //CAnchorArrangement_BB_BG anchorArrangement = pB.AnchorArrangement;
@@ -966,14 +966,15 @@ namespace PFD
                 case ESerieTypePlate.eSerie_L:
                     {
                         CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(componentIndex + 1);
-                        CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew);                        
+                        CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew);
                         fb = (float)prop.dim1;
                         fb2 = fb;
                         fh = (float)prop.dim2y;
                         fl = (float)prop.dim3;
                         ft = (float)prop.thickness;
                         iNumberofHoles = prop.NumberOfHolesScrews;
-                        plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, fCrsc_h, 0, 0, 0, screwArrangement_L); // L
+                        // Bug 553 - TO Ondrej - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
+                        plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, fCrsc_h, plate.m_fRotationX_deg, plate.m_fRotationY_deg, plate.m_fRotationZ_deg, screwArrangement_L); // L
 
                         //CScrewArrangement_L sa = plate.ScrewArrangement as CScrewArrangement_L;
                         //CConCom_Plate_F_or_L pL = plate as CConCom_Plate_F_or_L;
@@ -983,15 +984,15 @@ namespace PFD
                 case ESerieTypePlate.eSerie_LL:
                     {
                         CPlate_LL_Properties prop = CJointsManager.GetPlate_LL_Properties(componentIndex + 1);
-                        CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(prop.NumberOfHolesScrews, referenceScrew);                        
+                        CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(prop.NumberOfHolesScrews, referenceScrew);
                         fb = (float)prop.dim11;
                         fb2 = (float)prop.dim12;
                         fh = (float)prop.dim2y;
                         fl = (float)prop.dim3;
                         ft = (float)prop.thickness;
                         iNumberofHoles = prop.NumberOfHolesScrews;
-                        plate = new CConCom_Plate_LL(prop.Name, controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL); // LL
-
+                        // Bug 553 - TO Ondrej - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
+                        plate = new CConCom_Plate_LL(prop.Name, controlpoint, fb, fb2, fh, fl, ft, plate.m_fRotationX_deg, plate.m_fRotationY_deg, plate.m_fRotationZ_deg, screwArrangement_LL); // LL
 
                         //CScrewArrangement_LL sa = plate.ScrewArrangement as CScrewArrangement_LL;
                         //CConCom_Plate_LL pLL = plate as CConCom_Plate_LL;
@@ -1002,14 +1003,15 @@ namespace PFD
                     {
                         CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(componentIndex + 1);
                         CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(prop.NumberOfHolesScrews, referenceScrew);
-                        
+
                         fb = (float)prop.dim11;
                         fb2 = (float)prop.dim12;
                         fh = (float)prop.dim2y;
                         fl = (float)prop.dim3;
                         ft = (float)prop.thickness;
                         iNumberofHoles = prop.NumberOfHolesScrews;
-                        plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, fCrsc_h, 0f, 0f, 0f, screwArrangement_F); // F
+                        // Bug 553 - TO Ondrej - vyrobime uplne novy plech, ale nastavime mu rotacie podla povodneho plechu, asi by sme mali potom este updatovat control point (spustime UpdateJoint na konci switchu)
+                        plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, fCrsc_h, plate.m_fRotationX_deg, plate.m_fRotationY_deg, plate.m_fRotationZ_deg, screwArrangement_F); // F
 
                         //CScrewArrangement_F sa = plate.ScrewArrangement as CScrewArrangement_F;
                         //CConCom_Plate_F_or_L pF = plate as CConCom_Plate_F_or_L;
@@ -1021,7 +1023,7 @@ namespace PFD
                         CScrewArrangement_G sa = plate.ScrewArrangement as CScrewArrangement_G;
 
                         CConCom_Plate_G pG = plate as CConCom_Plate_G;
-                        plate = new CConCom_Plate_G(componentName, pG.m_pControlPoint, pG.Fb_X1, pG.Fb_X2, pG.Fh_Y1, pG.Fh_Y2, pG.Fl_Z, fCrsc_h, pG.Ft, 0, 0, 0, sa); // G
+                        plate = new CConCom_Plate_G(componentName, pG.m_pControlPoint, pG.Fb_X1, pG.Fb_X2, pG.Fh_Y1, pG.Fh_Y2, pG.Fl_Z, fCrsc_h, pG.Ft, pG.m_fRotationX_deg, pG.m_fRotationY_deg, pG.m_fRotationZ_deg, sa); // G
 
                         break;
                     }
@@ -1030,7 +1032,7 @@ namespace PFD
                         CScrewArrangement_H sa = plate.ScrewArrangement as CScrewArrangement_H;
 
                         CConCom_Plate_H pH = plate as CConCom_Plate_H;
-                        plate = new CConCom_Plate_H(componentName, pH.m_pControlPoint, pH.Fb_X, pH.Fh_Y1, pH.Fh_Y2, fCrsc_h, pH.Ft, pH.FSlope_rad, 0, 0, 0, sa); // H
+                        plate = new CConCom_Plate_H(componentName, pH.m_pControlPoint, pH.Fb_X, pH.Fh_Y1, pH.Fh_Y2, fCrsc_h, pH.Ft, pH.FSlope_rad, pH.m_fRotationX_deg, pH.m_fRotationY_deg, pH.m_fRotationZ_deg, sa); // H
                         break;
                     }
                 case ESerieTypePlate.eSerie_Q:
@@ -1116,6 +1118,7 @@ namespace PFD
             } //end switch
 
             joint.m_arrPlates[vm.SelectedTabIndex] = plate;
+            joint.UpdateJoint(); // Bug 553 - TO Ondrej - Update Control points ???
 
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             ti.Header = componentName;
