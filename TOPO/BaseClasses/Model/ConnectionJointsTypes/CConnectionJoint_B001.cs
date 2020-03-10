@@ -165,6 +165,30 @@ namespace BaseClasses
             GetKneePlateGeneralParameters(m_arrPlates[0], out fPlate1_b_X1, out fPlate1_h_Y1, out fPlate1_h_Y2);
             GetKneePlateGeneralParameters(m_arrPlates[1], out fPlate2_b_X1, out fPlate2_h_Y1, out fPlate2_h_Y2);
 
+            // Find left top edge intersection between column and rafter
+            // Todo prepracovat a pokial mozno zjednodusit, potrebujeme len ziskat polohu plechu v globalnom smere Z
+
+            Point Line1_Start = new Point();
+            Point Line1_End = new Point();
+            Point Line2_Start = new Point();
+            Point Line2_End = new Point();
+
+            m_fRafterVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg
+            float fRotatePlatesInJointAngle = m_fRafterVectorDirection > 0 ? (0 + m_fJointAngleAboutZ_deg) : (180 + m_fJointAngleAboutZ_deg);
+            float fDistanceX = m_fRafterVectorDirection > 0 ? -0.5f * (float)m_MainMember.CrScStart.h : 0.5f * (float)m_MainMember.CrScStart.h;
+
+            Line1_Start.X = m_MainMember.NodeStart.X + fDistanceX; // Column
+            Line1_Start.Y = m_MainMember.NodeStart.Z;
+            Line1_End.X = m_MainMember.NodeEnd.X + fDistanceX;
+            Line1_End.Y = m_MainMember.NodeEnd.Z;
+
+            Line2_Start.X = m_SecondaryMembers[0].NodeStart.X; // Rafter
+            Line2_Start.Y = m_SecondaryMembers[0].NodeStart.Z + (0.5f * m_SecondaryMembers[0].CrScStart.h) / Math.Cos(m_fSlope_rad);
+            Line2_End.X = m_SecondaryMembers[0].NodeEnd.X;
+            Line2_End.Y = m_SecondaryMembers[0].NodeEnd.Z + (0.5f * m_SecondaryMembers[0].CrScStart.h) / Math.Cos(m_fSlope_rad);
+
+            m_pUpperLeftPointOfPlate = (Point)Intersection(Line1_Start, Line1_End, Line2_Start, Line2_End);
+
             float fControlPointXCoord1;
             float fControlPointXCoord2;
             float fControlPointYCoord1;
