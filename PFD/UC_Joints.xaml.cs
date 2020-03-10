@@ -1099,6 +1099,7 @@ namespace PFD
             if (cbAA == null) return;
 
             paramsChanged = true;
+            //To Mato - Tu by sme sa mali zamysliet, ci je nutne menit vsetky spoje rovnakeho typu, alebo staci zmenit referencny spoj
             ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);            
 
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
@@ -1120,6 +1121,7 @@ namespace PFD
             if (cbSA == null) return;
 
             paramsChanged = true;
+            //To Mato - Tu by sme sa mali zamysliet, ci je nutne menit vsetky spoje rovnakeho typu, alebo staci zmenit referencny spoj
             ChangeAllSameJointsPlateScrewArrangement(cbSA.SelectedIndex);            
 
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
@@ -1132,22 +1134,34 @@ namespace PFD
 
         private void ChangeAllSameJointsPlateAnchorArrangement(int anchorArrangementIndex)
         {
+            //To Mato - Tu by sme sa mali zamysliet, ci je nutne menit vsetky spoje rovnakeho typu, alebo staci zmenit referencny spoj
             List<CConnectionJointTypes> joints = GetSelectedJoints();
             foreach (CConnectionJointTypes joint in joints)
             {
                 CPlateHelper.AnchorArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], anchorArrangementIndex);
                 CPlateHelper.UpdatePlateAnchorArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
             }
+
+            //ci by nestacilo len 
+            //CConnectionJointTypes joint = GetSelectedJoint();
+            //CPlateHelper.AnchorArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], anchorArrangementIndex);
+            //CPlateHelper.UpdatePlateAnchorArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
         }
 
         private void ChangeAllSameJointsPlateScrewArrangement(int screwArrangementIndex)
         {
+            //To Mato - Tu by sme sa mali zamysliet, ci je nutne menit vsetky spoje rovnakeho typu, alebo staci zmenit referencny spoj
             List<CConnectionJointTypes> joints = GetSelectedJoints();
             foreach (CConnectionJointTypes joint in joints)
             {
                 CPlateHelper.ScrewArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], screwArrangementIndex);
                 CPlateHelper.UpdatePlateScrewArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
             }
+
+            //ci by nestacilo len
+            //CConnectionJointTypes joint = GetSelectedJoint();
+            //CPlateHelper.ScrewArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], screwArrangementIndex);
+            //CPlateHelper.UpdatePlateScrewArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
         }
 
         private CPlate GetSelectedPlate()
