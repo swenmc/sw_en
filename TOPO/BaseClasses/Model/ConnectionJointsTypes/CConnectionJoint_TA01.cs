@@ -88,9 +88,10 @@ namespace BaseClasses
             }
 
             // Update Member Alignment
-            m_MainMember.FAlignment_Start = -m_arrPlates[0].Ft;
+            if (m_Node.ID == m_MainMember.NodeStart.ID)
+                m_MainMember.FAlignment_Start = -m_arrPlates[0].Ft;
 
-            if (m_Node.ID != m_MainMember.NodeStart.ID)
+            if (m_Node.ID == m_MainMember.NodeEnd.ID)
                 m_MainMember.FAlignment_End = -m_arrPlates[0].Ft;
 
             // Update plate and its screw and anchor arrangement - positions of screws and anchors in plate
