@@ -97,8 +97,11 @@ namespace BaseClasses
 
             // To Ondrej - toto by sa dalo asi nejako zjednodusit a upravit
             CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)m_arrPlates[0];
-            plate.AnchorArrangement.Calc_HolesCentersCoord3D(plate.Width_bx, plate.Height_hy, plate.Fl_Z);
-            plate.AnchorArrangement.GenerateAnchors_BasePlate();
+            if (plate.AnchorArrangement != null)
+            {
+                plate.AnchorArrangement.Calc_HolesCentersCoord3D(plate.Width_bx, plate.Height_hy, plate.Fl_Z);
+                plate.AnchorArrangement.GenerateAnchors_BasePlate();
+            }            
             plate.UpdatePlateData(plate.AnchorArrangement);
             m_arrPlates[0] = plate;
         }

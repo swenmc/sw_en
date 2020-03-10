@@ -829,12 +829,9 @@ namespace PFD
             spSA.Children.Add(selectSA);
             sp.Children.Add(spSA);
 
-            if (plate.ScrewArrangement != null)
-            {
-                List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-                //lSA.SetValue(Grid.RowProperty, 0);
-                sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
-            }
+            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+            //lSA.SetValue(Grid.RowProperty, 0);
+            sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
 
             Label l = new Label() { Content = "Geometry: ", Margin = new Thickness(0, 15, 0, 0) };
             //l.SetValue(Grid.RowProperty, 2);
@@ -1333,7 +1330,7 @@ namespace PFD
             }
 
             if (screwArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
-                dgSA.Visibility = Visibility.Hidden;
+                dgSA.Visibility = Visibility.Collapsed;
 
             return dgSA;
         }

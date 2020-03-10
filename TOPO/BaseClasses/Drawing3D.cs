@@ -4917,8 +4917,9 @@ namespace BaseClasses
                 }
 
                 // Pregenerujeme naklonovany joint, aby sme aktualizovali suradnice control points, pozicie plechov na skratenych prutoch a podobne
-                CConnectionJointTypes jointCloneRecreated = jointClone.RecreateJoint();
-                
+                //CConnectionJointTypes jointCloneRecreated = jointClone.RecreateJoint();
+                jointClone.UpdateJoint();
+
                 //15.2.2020 - To Mato - ja toto neviem vyriesit. Nedari sa mi to. Nesmieme spravit recreareJoint,lebo sa dostane do defaultu ak aj zmenime screw arrangement tak sa zmeni nazad.
 
                 //TODO - s tymto musime nieco robit,lebo pri prekresleni sa to resetuje, ale ked zakomentujem,tak zase sa zle vykresluju plechy
