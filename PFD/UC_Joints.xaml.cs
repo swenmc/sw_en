@@ -46,7 +46,7 @@ namespace PFD
 
             ArrangeConnectionJoints();
             //DebugJoints();
-            vm.JointTypeIndex = 1;            
+            vm.JointTypeIndex = 1;
         }
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -777,7 +777,7 @@ namespace PFD
             spPT.Children.Add(lPT);
             spPT.Children.Add(selectPlateType);
             sp.Children.Add(spPT);
-            
+
             // Base Plate - Anchor Arrangement
             if (plate is CConCom_Plate_B_basic)
             {
@@ -803,7 +803,7 @@ namespace PFD
                 spAA.Children.Add(lAA);
                 spAA.Children.Add(selectAA);
                 sp.Children.Add(spAA);
-                
+
                 List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
                 sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));
             }
@@ -1084,7 +1084,7 @@ namespace PFD
             //if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
         }
 
-        
+
 
 
 
@@ -1100,7 +1100,7 @@ namespace PFD
 
             paramsChanged = true;
             //To Mato - Tu by sme sa mali zamysliet, ci je nutne menit vsetky spoje rovnakeho typu, alebo staci zmenit referencny spoj
-            ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);            
+            ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
 
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             SetTabContent(ti, plate);
@@ -1122,7 +1122,7 @@ namespace PFD
 
             paramsChanged = true;
             //To Mato - Tu by sme sa mali zamysliet, ci je nutne menit vsetky spoje rovnakeho typu, alebo staci zmenit referencny spoj
-            ChangeAllSameJointsPlateScrewArrangement(cbSA.SelectedIndex);            
+            ChangeAllSameJointsPlateScrewArrangement(cbSA.SelectedIndex);
 
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             SetTabContent(ti, plate);
@@ -1277,7 +1277,7 @@ namespace PFD
                     }
                 }
             }
-            vm.ChangedAnchorArrangementParameter = item;            
+            vm.ChangedAnchorArrangementParameter = item;
         }
 
         private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
@@ -1431,6 +1431,10 @@ namespace PFD
             if (!(sender is CComponentParamsView)) return;
             CComponentParamsView item = sender as CComponentParamsView;
             paramsChanged = true;
+
+            //toto by malo fungovat len takto, ale nefunguje
+            //CConnectionJointTypes joint = GetSelectedJoint();
+            int count = 0;
             foreach (CConnectionJointTypes joint in list_joints)
             {
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
@@ -1440,21 +1444,25 @@ namespace PFD
                 joint.UpdateJoint();
                 UpdateConnectedMembers(joint);
 
-                StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
-
-                int geometryGridIndex = 4;
-                if (plate is CConCom_Plate_B_basic) { geometryGridIndex = 6; }
-
-                DataGrid dgGeometry = sp.Children[geometryGridIndex] as DataGrid;
-                DataGrid dgDetails = sp.Children[geometryGridIndex + 2] as DataGrid;
-
-                List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
-                foreach (CComponentParamsView cpw in geometryParams)
+                count++;
+                if (count == 1)
                 {
-                    cpw.PropertyChanged += HandleGeometryComponentParamsViewPropertyChangedEvent;
+                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+
+                    int geometryGridIndex = 4;
+                    if (plate is CConCom_Plate_B_basic) { geometryGridIndex = 6; }
+
+                    DataGrid dgGeometry = sp.Children[geometryGridIndex] as DataGrid;
+                    DataGrid dgDetails = sp.Children[geometryGridIndex + 2] as DataGrid;
+
+                    List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
+                    foreach (CComponentParamsView cpw in geometryParams)
+                    {
+                        cpw.PropertyChanged += HandleGeometryComponentParamsViewPropertyChangedEvent;
+                    }
+                    dgGeometry.ItemsSource = geometryParams;
+                    dgDetails.ItemsSource = CPlateHelper.GetComponentDetails(plate);
                 }
-                dgGeometry.ItemsSource = geometryParams;
-                dgDetails.ItemsSource = CPlateHelper.GetComponentDetails(plate);
             }
             vm.ChangedGeometryParameter = item;
             //HandleJointsPropertyChangedEvent(sender, e);
@@ -1747,6 +1755,7 @@ namespace PFD
                     }
 
                     joint.UpdateJoint();
+                    //UpdateConnectedMembers(joint);
                 }
             }
 
@@ -2121,6 +2130,6 @@ namespace PFD
 
 
 
-        
+
     }
 }

@@ -266,6 +266,37 @@ namespace BaseClasses
         }
 
         //----------------------------------------------------------------------------
+        public override void UpdatePlateData(CScrewArrangement screwArrangement)
+        {
+            //TO Mato - skontrolovat a updatovat vo vsetkych triedach CPlate_*
+            // Create Array - allocate memory
+            PointsOut2D = new Point[ITotNoPointsin2D];
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
+
+            if (screwArrangement != null)
+            {
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            }
+
+            // Fill Array Data
+            Calc_Coord2D();
+            Calc_Coord3D();
+
+            if (screwArrangement != null)
+            {
+                //screwArrangement.Calc_ApexPlateData(0, m_fbX1, 0, m_fhY, Ft, m_fSlope_rad, ScrewInPlusZDirection);
+            }
+
+            // Fill list of indices for drawing of surface
+            loadIndices();
+
+            //UpdatePlateData_Basic(screwArrangement);
+
+            Set_DimensionPoints2D();
+
+            Set_MemberOutlinePoints2D();
+        }
+        //----------------------------------------------------------------------------
         public override void Calc_Coord2D()
         {
             PointsOut2D[0].X = 0;
