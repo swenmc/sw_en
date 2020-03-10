@@ -102,7 +102,7 @@ namespace BaseClasses
             {
                 plate.AnchorArrangement.Calc_HolesCentersCoord3D(plate.Width_bx, plate.Height_hy, plate.Fl_Z);
                 plate.AnchorArrangement.GenerateAnchors_BasePlate();
-            }            
+            }
             plate.UpdatePlateData(plate.AnchorArrangement);
             m_arrPlates[0] = plate;
         }
