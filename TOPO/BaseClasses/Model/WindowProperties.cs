@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace BaseClasses
         private int m_iBayNumber;
         private string m_sBuildingSide_old;
         private int m_iBayNumber_old;
-        private List<int> m_Bays;
+        private ObservableCollection<int> m_Bays;
         private float m_fWindowsHeight;
         private float m_fWindowsWidth;
         private float m_fWindowCoordinateXinBay;
@@ -183,11 +184,11 @@ namespace BaseClasses
             }
         }
 
-        public List<int> Bays
+        public ObservableCollection<int> Bays
         {
             get
             {
-                if (m_Bays == null) m_Bays = new List<int>();
+                if (m_Bays == null) m_Bays = new ObservableCollection<int>();
                 return m_Bays;
             }
 

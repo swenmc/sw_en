@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace BaseClasses
         private string m_sBuildingSide_old;
         private int m_iBayNumber_old;
 
-        private List<int> m_Bays;
+        private ObservableCollection<int> m_Bays;
         private string m_sDoorType;
         private float m_fDoorsHeight;
         private float m_fDoorsWidth;
@@ -200,11 +201,11 @@ namespace BaseClasses
             }
         }
 
-        public List<int> Bays
+        public ObservableCollection<int> Bays
         {
             get
             {
-                if (m_Bays == null) m_Bays = new List<int>();
+                if (m_Bays == null) m_Bays = new ObservableCollection<int>();
                 return m_Bays;
             }
 
