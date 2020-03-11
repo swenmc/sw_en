@@ -192,7 +192,6 @@ namespace BaseClasses
             Fl_Z = fl_Z_temp;
             Ft = ft_platethickness;
             m_fConnectedSectionDepth = fConnectedSectionDepth; // Vyska pripojeneho prierezu (zvycajne je to secondary member)
-
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
