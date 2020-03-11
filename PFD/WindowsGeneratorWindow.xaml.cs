@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,8 +19,8 @@ namespace PFD
 {
     public partial class WindowsGeneratorWindow : Window
     {
-        List<int> lefRightBays;
-        List<int> frontBackBays;
+        ObservableCollection<int> lefRightBays;
+        ObservableCollection<int> frontBackBays;
         WindowGeneratorViewModel vm;
 
         float fWallHeight;
@@ -34,8 +35,8 @@ namespace PFD
             fL1 = L1;
             fColumnsDistance = columnsDistance;
 
-            lefRightBays = new List<int>();
-            frontBackBays = new List<int>();
+            lefRightBays = new ObservableCollection<int>();
+            frontBackBays = new ObservableCollection<int>();
 
             for (int i = 1; i <= lrBaysNum; i++)
             {

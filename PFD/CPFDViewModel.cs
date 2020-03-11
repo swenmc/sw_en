@@ -1974,9 +1974,9 @@ namespace PFD
             }
         }
 
-        private List<int> frontBays;
-        private List<int> backBays;
-        private List<int> leftRightBays;
+        private ObservableCollection<int> frontBays;
+        private ObservableCollection<int> backBays;
+        private ObservableCollection<int> leftRightBays;
 
         private void SetModelBays()
         {
@@ -1992,9 +1992,9 @@ namespace PFD
                 throw new Exception("Kitset model is not implemented.");
             }
 
-            frontBays = new List<int>();
-            backBays = new List<int>();
-            leftRightBays = new List<int>();
+            frontBays = new ObservableCollection<int>();
+            backBays = new ObservableCollection<int>();
+            leftRightBays = new ObservableCollection<int>();
 
             int iFrameNo = model != null ? model.iFrameNo : 4;
             int i = 0;
@@ -2020,9 +2020,9 @@ namespace PFD
 
         public void SetModelBays(int iFrameNo)
         {
-            frontBays = new List<int>();
-            backBays = new List<int>();
-            leftRightBays = new List<int>();
+            frontBays = new ObservableCollection<int>();
+            backBays = new ObservableCollection<int>();
+            leftRightBays = new ObservableCollection<int>();
 
             int i = 0;
             while (i < iFrameNo - 1)
@@ -3057,12 +3057,12 @@ namespace PFD
                     if (sender is DoorProperties)
                     {
                         DoorProperties d = sender as DoorProperties;
-                        if (!CheckDoorsBays(d)) { IsSetFromCode = true; d.iBayNumber = d.iBayNumber_old; IsSetFromCode = false; }
+                        if (!CheckDoorsBays(d)) { IsSetFromCode = true; d.iBayNumber = d.iBayNumber_old; IsSetFromCode = false; return; }
                     }
                     if (sender is WindowProperties)
                     {
                         WindowProperties w = sender as WindowProperties;
-                        if (!CheckWindowsBays(w)) { IsSetFromCode = true; w.iBayNumber = w.iBayNumber_old; IsSetFromCode = false; }
+                        if (!CheckWindowsBays(w)) { IsSetFromCode = true; w.iBayNumber = w.iBayNumber_old; IsSetFromCode = false; return; }
                     }
                 }
                 else if (e.PropertyName == "sDoorType")
