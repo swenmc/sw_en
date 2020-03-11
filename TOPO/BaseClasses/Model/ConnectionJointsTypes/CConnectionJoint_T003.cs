@@ -174,11 +174,15 @@ namespace BaseClasses
 
             Point3D ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
             Point3D ControlPoint_P2 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
+            Vector3D RotationVector_P1 = new Vector3D(90, 0, 0);
+            Vector3D RotationVector_P2 = new Vector3D(90, 0, 180);
 
             if (!m_bTopOfPlateInCrscVerticalAxisPlusDirection)
             {
                 ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z);
                 ControlPoint_P2 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z);
+                RotationVector_P1 = new Vector3D(180 + 90, 0, 0);
+                RotationVector_P2 = new Vector3D(180 + 90, 0, 180);
             }
 
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -189,11 +193,15 @@ namespace BaseClasses
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
                 ControlPoint_P2 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
+                RotationVector_P1 = new Vector3D(90, 0, 180 + 0);
+                RotationVector_P2 = new Vector3D(90, 0, 180 + 180);
 
                 if (!m_bTopOfPlateInCrscVerticalAxisPlusDirection)
                 {
                     ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z);
                     ControlPoint_P2 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z);
+                    RotationVector_P1 = new Vector3D(180 + 90, 0, 180 + 0);
+                    RotationVector_P2 = new Vector3D(180 + 90, 0, 180 + 180);
                 }
             }
 
@@ -201,6 +209,9 @@ namespace BaseClasses
             {
                 m_arrPlates[0].m_pControlPoint = ControlPoint_P1;
                 m_arrPlates[1].m_pControlPoint = ControlPoint_P2;
+
+                m_arrPlates[0].SetPlateRotation(RotationVector_P1);
+                m_arrPlates[1].SetPlateRotation(RotationVector_P2);
             }
             else
             {
@@ -209,16 +220,24 @@ namespace BaseClasses
                 if (m_ePlateNumberAndPosition == EPlateNumberAndPositionInJoint.eOneLeftPlate)
                 {
                     m_arrPlates[0].m_pControlPoint = ControlPoint_P1;
+                    m_arrPlates[0].SetPlateRotation(RotationVector_P1);
 
                     if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID)
+                    {
                         m_arrPlates[0].m_pControlPoint = ControlPoint_P2;
+                        m_arrPlates[0].SetPlateRotation(RotationVector_P2);
+                    }
                 }
                 else
                 {
                     m_arrPlates[0].m_pControlPoint = ControlPoint_P2;
+                    m_arrPlates[0].SetPlateRotation(RotationVector_P2);
 
                     if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID)
+                    {
                         m_arrPlates[0].m_pControlPoint = ControlPoint_P1;
+                        m_arrPlates[0].SetPlateRotation(RotationVector_P1);
+                    }
                 }
             }
         }

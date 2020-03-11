@@ -828,6 +828,13 @@ namespace BaseClasses
             }
         }
 
+        // Set plate 3D object rotations in degrees 
+        public void SetPlateRotation(Vector3D rotations_XYZ)
+        {
+            m_fRotationX_deg = (float)rotations_XYZ.X;
+            m_fRotationY_deg = (float)rotations_XYZ.Y;
+            m_fRotationZ_deg = (float)rotations_XYZ.Z;
+        }
 
         public virtual void CopyParams(CPlate plate)
         {
