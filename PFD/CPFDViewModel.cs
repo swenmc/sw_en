@@ -2056,7 +2056,7 @@ namespace PFD
             if(check) CheckDoorsBays();
         }
 
-        private void SetDoorsBays(DoorProperties d)
+        private bool SetDoorsBays(DoorProperties d)
         {
             if (d.sBuildingSide == "Front" && !d.Bays.SequenceEqual(frontBays)) d.Bays = frontBays;
             else if (d.sBuildingSide == "Back" && !d.Bays.SequenceEqual(backBays)) d.Bays = backBays;
@@ -2068,7 +2068,9 @@ namespace PFD
                 this.IsSetFromCode = true;
                 d.sBuildingSide = d.sBuildingSide_old;
                 this.IsSetFromCode = false;
+                return false;
             }
+            return true;
         }
 
         private void CheckDoorsBays()
@@ -2142,7 +2144,7 @@ namespace PFD
             }            
         }
 
-        private void SetWindowsBays(WindowProperties w)
+        private bool SetWindowsBays(WindowProperties w)
         {
             if (w.sBuildingSide == "Front" && !w.Bays.SequenceEqual(frontBays)) w.Bays = frontBays;
             else if (w.sBuildingSide == "Back" && !w.Bays.SequenceEqual(backBays)) w.Bays = backBays;
@@ -2151,8 +2153,12 @@ namespace PFD
 
             if (!CheckWindowsBays(w))
             {
+                this.IsSetFromCode = true;
                 w.sBuildingSide = w.sBuildingSide_old;
+                this.IsSetFromCode = false;
+                return false;
             }
+            return true;
         }
 
         private void CheckWindowsBays()
@@ -3048,8 +3054,8 @@ namespace PFD
                 if (e.PropertyName == "sBuildingSide")
                 {
                     SetResultsAreNotValid();
-                    if (sender is DoorProperties) SetDoorsBays(sender as DoorProperties);
-                    if (sender is WindowProperties) SetWindowsBays(sender as WindowProperties);
+                    if (sender is DoorProperties) { if (!SetDoorsBays(sender as DoorProperties)) return; }
+                    if (sender is WindowProperties) { if (!SetWindowsBays(sender as WindowProperties)) return; }
                 }
                 else if (e.PropertyName == "iBayNumber")
                 {
@@ -3109,8 +3115,8 @@ namespace PFD
                 if (e.PropertyName == "sBuildingSide")
                 {
                     SetResultsAreNotValid();
-                    if (sender is DoorProperties) SetDoorsBays(sender as DoorProperties);
-                    if (sender is WindowProperties) SetWindowsBays(sender as WindowProperties);
+                    if (sender is DoorProperties) { if(!SetDoorsBays(sender as DoorProperties)) return; }
+                    if (sender is WindowProperties) { if(!SetWindowsBays(sender as WindowProperties)) return; }
                 }
                 else if (e.PropertyName == "iBayNumber")
                 {
@@ -3118,12 +3124,12 @@ namespace PFD
                     if (sender is DoorProperties)
                     {
                         DoorProperties d = sender as DoorProperties;
-                        if (!CheckDoorsBays(d)) { IsSetFromCode = true; d.iBayNumber = d.iBayNumber_old; IsSetFromCode = false; }
+                        if (!CheckDoorsBays(d)) { IsSetFromCode = true; d.iBayNumber = d.iBayNumber_old; IsSetFromCode = false; return; }
                     }
                     if (sender is WindowProperties)
                     {
                         WindowProperties w = sender as WindowProperties;
-                        if (!CheckWindowsBays(w)) { IsSetFromCode = true; w.iBayNumber = w.iBayNumber_old; IsSetFromCode = false; }
+                        if (!CheckWindowsBays(w)) { IsSetFromCode = true; w.iBayNumber = w.iBayNumber_old; IsSetFromCode = false; return; }
                     }
                 }
                 else if (e.PropertyName == "fWindowsHeight" || e.PropertyName == "fWindowsWidth" || e.PropertyName == "fWindowCoordinateXinBay" || e.PropertyName == "fWindowCoordinateZinBay")
