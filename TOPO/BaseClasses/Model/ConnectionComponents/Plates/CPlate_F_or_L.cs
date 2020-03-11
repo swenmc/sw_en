@@ -798,7 +798,7 @@ namespace BaseClasses
                 this.m_fbX2 = refPlate.m_fbX2;
                 this.m_fhY = refPlate.m_fhY;
                 this.m_flZ = refPlate.m_flZ;
-                //this.iLeftRightIndex = refPlate.iLeftRightIndex;
+                this.iLeftRightIndex = refPlate.iLeftRightIndex;
                 this.m_e_min_x_LeftLeg = refPlate.m_e_min_x_LeftLeg;
                 this.m_e_min_y_LeftLeg = refPlate.m_e_min_y_LeftLeg;
                 this.m_e_min_z_RightLeg = refPlate.m_e_min_z_RightLeg;
