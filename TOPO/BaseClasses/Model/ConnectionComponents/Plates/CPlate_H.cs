@@ -101,7 +101,20 @@ namespace BaseClasses
 
         public int m_iHolesNumber = 0;
 
-        private int iLeftRightIndex; // plate 0 - left, 1 - right
+        private int m_iLeftRightIndex; // plate 0 - left, 1 - right
+
+        public int LeftRightIndex
+        {
+            get
+            {
+                return m_iLeftRightIndex;
+            }
+
+            set
+            {
+                m_iLeftRightIndex = value;
+            }
+        }
 
         private float m_e_min_x_BottomLeg;
 
@@ -190,7 +203,7 @@ namespace BaseClasses
             ITotNoPointsin3D = 12;
 
             m_pControlPoint = controlpoint;
-            iLeftRightIndex = sName_temp.Substring(4, 2) == "LH" ? 0 : 1; // Side index - 0 - left (original), 1 - right
+            m_iLeftRightIndex = sName_temp.Substring(4, 2) == "LH" ? 0 : 1; // Side index - 0 - left (original), 1 - right
             m_fbX = fbX_temp;
             m_fhY1 = fhY1_temp;
             m_fhY2 = fhY2_temp;
@@ -217,7 +230,7 @@ namespace BaseClasses
 
             bool bChangeRotationAngle_MirroredPlate = false;
 
-            if (iLeftRightIndex % 2 != 0) // Change x-coordinates for odd index (RH)
+            if (m_iLeftRightIndex % 2 != 0) // Change x-coordinates for odd index (RH)
             {
                 bChangeRotationAngle_MirroredPlate = true; // Change rotation angle (about vertical axis Y) of screws in the left leg
 
@@ -444,7 +457,7 @@ namespace BaseClasses
         {
             TriangleIndices = new Int32Collection();
 
-            if (iLeftRightIndex == 0) // Left
+            if (m_iLeftRightIndex == 0) // Left
             {
                 // Front Side / Forehead
                 AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 8, 11);
@@ -462,7 +475,7 @@ namespace BaseClasses
                 AddRectangleIndices_CCW_1234(TriangleIndices, 0, 6, 11, 5);
                 AddRectangleIndices_CCW_1234(TriangleIndices, 4, 5, 11, 10);
             }
-            else if (iLeftRightIndex == 1) // Right
+            else if (m_iLeftRightIndex == 1) // Right
             {
                 // Front Side / Forehead
                 AddRectangleIndices_CW_1234(TriangleIndices, 6, 7, 8, 11);
@@ -599,7 +612,7 @@ namespace BaseClasses
                 this.m_fSlope_rad = refPlate.m_fSlope_rad;
                 this.m_alpha1_rad = refPlate.m_alpha1_rad;
                 this.m_iHolesNumber = refPlate.m_iHolesNumber;
-                this.iLeftRightIndex = refPlate.iLeftRightIndex;
+                this.m_iLeftRightIndex = refPlate.m_iLeftRightIndex;
                 this.m_e_min_x_BottomLeg = refPlate.m_e_min_x_BottomLeg;
                 this.m_e_min_y_BottomLeg = refPlate.m_e_min_y_BottomLeg;
                 this.m_e_min_x_TopLeg = refPlate.m_e_min_x_TopLeg;
