@@ -113,8 +113,8 @@ namespace PFD
                 if (MComponentSerieIndex != -1)
                 {
                     NotifyPropertyChanged("ComponentSerieIndex");
-                    ComponentSeriesChanged();
-                    ComponentIndex = 0;
+                    
+                    ComponentSeriesChanged();                    
                 }
             }
         }
@@ -634,7 +634,7 @@ namespace PFD
                 {
                     case ESerieTypeCrSc_FS.eSerie_Box_10075:
                         {
-                            Components = databaseComponents.arr_Serie_Box_FS_Names;
+                            Components = databaseComponents.arr_Serie_Box_FS_Names;                            
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_Z:
@@ -676,6 +676,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             Components = databaseComponents.arr_Serie_B_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_B_ScrewArrangement_Names;
                             ScrewArrangementIndex = 1;
                             break;
@@ -683,6 +684,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_L:
                         {
                             Components = databaseComponents.arr_Serie_L_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_L_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
@@ -690,6 +692,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_LL:
                         {
                             Components = databaseComponents.arr_Serie_LL_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_LL_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
@@ -697,6 +700,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_F:
                         {
                             Components = databaseComponents.arr_Serie_F_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_F_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
@@ -704,6 +708,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_G:
                         {
                             Components = databaseComponents.arr_Serie_G_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_G_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
@@ -711,6 +716,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_H:
                         {
                             Components = databaseComponents.arr_Serie_H_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_H_ScrewArrangement_Names;
                     ScrewArrangementIndex = 0;
                             break;
@@ -718,6 +724,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_Q:
                         {
                             Components = databaseComponents.arr_Serie_Q_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -725,6 +732,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_S:
                         {
                             Components = databaseComponents.arr_Serie_S_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -732,6 +740,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_T:
                         {
                             Components = databaseComponents.arr_Serie_T_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -739,6 +748,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_X:
                         {
                             Components = databaseComponents.arr_Serie_X_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -746,6 +756,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_Y:
                         {
                             Components = databaseComponents.arr_Serie_Y_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -753,6 +764,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             Components = databaseComponents.arr_Serie_J_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_J_ScrewArrangement_Names;
                             ScrewArrangementIndex = 2;
                             break;
@@ -760,6 +772,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_K:
                         {
                             Components = databaseComponents.arr_Serie_K_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_K_ScrewArrangement_Names;
                             ScrewArrangementIndex = 2;
                             break;
@@ -767,6 +780,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_M:
                         {
                             Components = databaseComponents.arr_Serie_M_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -774,6 +788,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_N:
                         {
                             Components = databaseComponents.arr_Serie_N_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -781,12 +796,14 @@ namespace PFD
                     case ESerieTypePlate.eSerie_O:
                         {
                             Components = databaseComponents.arr_Serie_O_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_O_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     default:
                         {
+                            ComponentIndex = 0;
                             ScrewArrangementIndex = 0;
                             // Not implemented
                             break;
