@@ -192,7 +192,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement_G screwArrangement_temp)
+            CScrewArrangement_G screwArrangement)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -214,6 +214,12 @@ namespace BaseClasses
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
+            UpdatePlateData(screwArrangement);
+        }
+
+        //----------------------------------------------------------------------------
+        public override void UpdatePlateData(CScrewArrangement screwArrangement)
+        {
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
@@ -221,9 +227,13 @@ namespace BaseClasses
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y1, Fh_Y2, Fl_Z, MainMemberDepth);
-            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
-            Calc_HolesControlPointsCoord3D(screwArrangement_temp);
+
+            if (screwArrangement != null)
+            {
+                ((CScrewArrangement_G)screwArrangement).Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y1, Fh_Y2, Fl_Z, MainMemberDepth);
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+                Calc_HolesControlPointsCoord3D((CScrewArrangement_G)screwArrangement);
+            }
 
             // Fill list of indices for drawing of surface
             loadIndices();
@@ -239,11 +249,11 @@ namespace BaseClasses
                     PointsOut2D[i].X *= -1;
                 }
 
-                if (screwArrangement_temp != null)
+                if (screwArrangement != null)
                 {
-                    for (int i = 0; i < screwArrangement_temp.IHolesNumber; i++)
+                    for (int i = 0; i < screwArrangement.IHolesNumber; i++)
                     {
-                        screwArrangement_temp.HolesCentersPoints2D[i].X *= -1;
+                        screwArrangement.HolesCentersPoints2D[i].X *= -1;
                         arrConnectorControlPoints3D[i].X *= -1;
                     }
                 }
@@ -254,8 +264,14 @@ namespace BaseClasses
                 }
             }
 
-            GenerateConnectors(screwArrangement_temp, bChangeRotationAngle_MirroredPlate);
+            if (screwArrangement != null)
+            {
+                GenerateConnectors((CScrewArrangement_G)screwArrangement, bChangeRotationAngle_MirroredPlate);
+            }
+        }
 
+        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        {
             Width_bx = m_fbX2;
             Height_hy = m_fhY2;
             //SetFlatedPlateDimensions();
@@ -269,47 +285,29 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(Ft, m_fhY2);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
+
+            fA_n = fA_g;
+            if (screwArrangement != null)
+            {
+                fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fA_v_zv = Get_A_rect(Ft, m_fhY2);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
+
+            fA_vn_zv = fA_v_zv;
+            if (screwArrangement != null)
+            {
+                fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fI_yu = Get_I_yu_rect(Ft, m_fhY2);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY2); // Elastic section modulus
 
-            ScrewArrangement = screwArrangement_temp;
+            ScrewArrangement = screwArrangement;
+
+            DrillingRoutePoints = null;
         }
 
-        //----------------------------------------------------------------------------
-        //----------------------------------------------------------------------------
-        public override void UpdatePlateData(CScrewArrangement screwArrangement)
-        {
-            //TO Mato - skontrolovat a updatovat vo vsetkych triedach CPlate_*
-            // Create Array - allocate memory
-            PointsOut2D = new Point[ITotNoPointsin2D];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-
-            if (screwArrangement != null)
-            {
-                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
-            }
-
-            // Fill Array Data
-            Calc_Coord2D();
-            Calc_Coord3D();
-
-            if (screwArrangement != null)
-            {
-                //screwArrangement.Calc_ApexPlateData(0, m_fbX1, 0, m_fhY, Ft, m_fSlope_rad, ScrewInPlusZDirection);
-            }
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            //UpdatePlateData_Basic(screwArrangement);
-
-            Set_DimensionPoints2D();
-
-            Set_MemberOutlinePoints2D();
-        }
         public override void Calc_Coord2D()
         {
             PointsOut2D[0].X = 0;
