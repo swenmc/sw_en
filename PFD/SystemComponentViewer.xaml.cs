@@ -710,8 +710,8 @@ namespace PFD
         {
             if (vm.ScrewArrangementIndex == 0)
             {
-                TxtScrewArrangment.Visibility = Visibility.Hidden;
-                DataGridScrewArrangement.Visibility = Visibility.Hidden;
+                //TxtScrewArrangment.Visibility = Visibility.Hidden;
+                //DataGridScrewArrangement.Visibility = Visibility.Hidden;
                 chbDrawHoles2D.IsEnabled = false;
                 chbDrawHoleCentreSymbol2D.IsEnabled = false;
                 chbDrawDrillingRoute2D.IsEnabled = false;
@@ -720,8 +720,8 @@ namespace PFD
             }
             else
             {
-                TxtScrewArrangment.Visibility = Visibility.Visible;
-                DataGridScrewArrangement.Visibility = Visibility.Visible;
+                //TxtScrewArrangment.Visibility = Visibility.Visible;
+                //DataGridScrewArrangement.Visibility = Visibility.Visible;
                 chbDrawHoles2D.IsEnabled = true;
                 chbDrawHoleCentreSymbol2D.IsEnabled = true;
                 chbDrawDrillingRoute2D.IsEnabled = true;
