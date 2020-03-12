@@ -1278,7 +1278,8 @@ namespace PFD
                 if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
                 if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
                 if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = item_val / fLengthUnitFactor;
-                if (item.Name.Equals(CParamsResources.PlateWidth3S.Name)) plateTemp.Fb_X3 = item_val / fLengthUnitFactor;
+                //if (item.Name.Equals(CParamsResources.PlateWidth3S.Name)) plateTemp.Fb_X3 = item_val / fLengthUnitFactor;
+                plateTemp.Fb_X3 = plateTemp.Fb_X1; // Symmetry
                 if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = item_val / fLengthUnitFactor;
                 if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.RoofPitch_rad = item_val / fDegToRadianFactor;
                 if (item.Name.Equals(CParamsResources.PlateAngleS.Name)) plateTemp.Gamma1_rad = item_val / fDegToRadianFactor;
@@ -1680,13 +1681,12 @@ namespace PFD
             {
                 CConCom_Plate_M plateTemp = (CConCom_Plate_M)plate;
 
-                // Zatial len read-only
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth3S.Name, CParamsResources.PlateWidth3S.Symbol, (Math.Round(plateTemp.Fb_X3 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth3S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.RoofPitch_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateAngleS.Name, CParamsResources.PlateAngleS.Symbol, (Math.Round(plateTemp.Gamma1_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.PlateAngleS.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit)); // Musi byt mozne menit lebo ak zmenim uhol potrebujem inu dlzku, este by sa mohlo prepocitat automaticky pri zmene uhlu Gamma1
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit, false)); // Read-only
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth3S.Name, CParamsResources.PlateWidth3S.Symbol, (Math.Round(plateTemp.Fb_X3 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth3S.Unit, false)); // Read-only
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.RoofPitch_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit, false)); // Read-only
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateAngleS.Name, CParamsResources.PlateAngleS.Symbol, (Math.Round(plateTemp.Gamma1_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.PlateAngleS.Unit));
             }
             else if (plate is CConCom_Plate_N)
             {

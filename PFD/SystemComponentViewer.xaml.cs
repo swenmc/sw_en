@@ -2012,6 +2012,23 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
+                else if (plate is CConCom_Plate_M)
+                {
+                    CConCom_Plate_M plateTemp = (CConCom_Plate_M)plate;
+
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth3S.Name)) plateTemp.Fb_X3 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.RoofPitch_rad = float.Parse(changedText) / fDegToRadianFactor;
+                    if (item.Name.Equals(CParamsResources.PlateAngleS.Name)) plateTemp.Gamma1_rad = float.Parse(changedText) / fDegToRadianFactor;
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
                 else if (plate is CConCom_Plate_O)
                 {
                     CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
