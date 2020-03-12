@@ -84,21 +84,6 @@ namespace BaseClasses
             }
         }
 
-        float m_alpha1_rad;
-
-        public float Alpha1_rad
-        {
-            get
-            {
-                return m_alpha1_rad;
-            }
-
-            set
-            {
-                m_alpha1_rad = value;
-            }
-        }
-
         public int m_iHolesNumber = 0;
 
         private int m_iLeftRightIndex; // plate 0 - left, 1 - right
@@ -616,7 +601,6 @@ namespace BaseClasses
                 this.m_fhY2 = refPlate.m_fhY2;
                 this.m_fMainMemberWidth = refPlate.m_fMainMemberWidth;
                 this.m_fSlope_rad = refPlate.m_fSlope_rad;
-                this.m_alpha1_rad = refPlate.m_alpha1_rad;
                 this.m_iHolesNumber = refPlate.m_iHolesNumber;
                 this.m_iLeftRightIndex = refPlate.m_iLeftRightIndex;
                 this.m_e_min_x_BottomLeg = refPlate.m_e_min_x_BottomLeg;
