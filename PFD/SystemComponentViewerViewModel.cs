@@ -113,8 +113,8 @@ namespace PFD
                 if (MComponentSerieIndex != -1)
                 {
                     NotifyPropertyChanged("ComponentSerieIndex");
-                    ComponentSeriesChanged();
-                    ComponentIndex = 0;
+                    
+                    ComponentSeriesChanged();                    
                 }
             }
         }
@@ -634,7 +634,7 @@ namespace PFD
                 {
                     case ESerieTypeCrSc_FS.eSerie_Box_10075:
                         {
-                            Components = databaseComponents.arr_Serie_Box_FS_Names;
+                            Components = databaseComponents.arr_Serie_Box_FS_Names;                            
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_Z:
@@ -676,6 +676,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             Components = databaseComponents.arr_Serie_B_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_B_ScrewArrangement_Names;
                             ScrewArrangementIndex = 1;
                             break;
@@ -683,6 +684,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_L:
                         {
                             Components = databaseComponents.arr_Serie_L_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_L_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
@@ -690,6 +692,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_LL:
                         {
                             Components = databaseComponents.arr_Serie_LL_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_LL_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
@@ -697,6 +700,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_F:
                         {
                             Components = databaseComponents.arr_Serie_F_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_F_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
@@ -704,20 +708,23 @@ namespace PFD
                     case ESerieTypePlate.eSerie_G:
                         {
                             Components = databaseComponents.arr_Serie_G_Names;
-                            ScrewArrangements = new List<string>(1) { "Undefined" };
+                            ComponentIndex = 0;
+                            ScrewArrangements = databaseComponents.arr_Serie_G_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_H:
                         {
                             Components = databaseComponents.arr_Serie_H_Names;
-                            ScrewArrangements = new List<string>(1) { "Undefined" };
-                            ScrewArrangementIndex = 0;
+                            ComponentIndex = 0;
+                            ScrewArrangements = databaseComponents.arr_Serie_H_ScrewArrangement_Names;
+                    ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
                         {
                             Components = databaseComponents.arr_Serie_Q_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -725,6 +732,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_S:
                         {
                             Components = databaseComponents.arr_Serie_S_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -732,6 +740,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_T:
                         {
                             Components = databaseComponents.arr_Serie_T_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -739,6 +748,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_X:
                         {
                             Components = databaseComponents.arr_Serie_X_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -746,6 +756,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_Y:
                         {
                             Components = databaseComponents.arr_Serie_Y_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -753,6 +764,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             Components = databaseComponents.arr_Serie_J_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_J_ScrewArrangement_Names;
                             ScrewArrangementIndex = 2;
                             break;
@@ -760,6 +772,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_K:
                         {
                             Components = databaseComponents.arr_Serie_K_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_K_ScrewArrangement_Names;
                             ScrewArrangementIndex = 2;
                             break;
@@ -767,6 +780,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_M:
                         {
                             Components = databaseComponents.arr_Serie_M_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -774,6 +788,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_N:
                         {
                             Components = databaseComponents.arr_Serie_N_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
@@ -781,12 +796,14 @@ namespace PFD
                     case ESerieTypePlate.eSerie_O:
                         {
                             Components = databaseComponents.arr_Serie_O_Names;
+                            ComponentIndex = 0;
                             ScrewArrangements = databaseComponents.arr_Serie_O_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     default:
                         {
+                            ComponentIndex = 0;
                             ScrewArrangementIndex = 0;
                             // Not implemented
                             break;
@@ -856,23 +873,20 @@ namespace PFD
             {
                 CConCom_Plate_G plateTemp = (CConCom_Plate_G)plate;
 
-                // Zatial len read-only
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight1S.Name, CParamsResources.PlateHeight1S.Symbol, (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight1S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateLipS.Name, CParamsResources.PlateLipS.Symbol, (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateLipS.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight1S.Name, CParamsResources.PlateHeight1S.Symbol, (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight1S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateLipS.Name, CParamsResources.PlateLipS.Symbol, (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateLipS.Unit));
             }
             else if (plate is CConCom_Plate_H)
             {
                 CConCom_Plate_H plateTemp = (CConCom_Plate_H)plate;
 
-                // Zatial len read-only
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidthS.Name, CParamsResources.PlateWidthS.Symbol, (Math.Round(plateTemp.Fb_X * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidthS.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight1S.Name, CParamsResources.PlateHeight1S.Symbol, (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight1S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.FSlope_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateAngleS.Name, CParamsResources.PlateAngleS.Symbol, (Math.Round(plateTemp.Alpha1_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.PlateAngleS.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidthS.Name, CParamsResources.PlateWidthS.Symbol, (Math.Round(plateTemp.Fb_X * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidthS.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight1S.Name, CParamsResources.PlateHeight1S.Symbol, (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight1S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.FSlope_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit));
             }
             else if (plate is CConCom_Plate_Q_T_Y && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_Q)
             {
@@ -906,13 +920,12 @@ namespace PFD
             {
                 CConCom_Plate_M plateTemp = (CConCom_Plate_M)plate;
 
-                // Zatial len read-only
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth3S.Name, CParamsResources.PlateWidth3S.Symbol, (Math.Round(plateTemp.Fb_X3 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth3S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.RoofPitch_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateAngleS.Name, CParamsResources.PlateAngleS.Symbol, (Math.Round(plateTemp.Gamma1_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.PlateAngleS.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth3S.Name, CParamsResources.PlateWidth3S.Symbol, (Math.Round(plateTemp.Fb_X3 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth3S.Unit, false)); // Read-only
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.RoofPitch_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateAngleS.Name, CParamsResources.PlateAngleS.Symbol, (Math.Round(plateTemp.Gamma1_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.PlateAngleS.Unit));
             }
             else if (plate is CConCom_Plate_N)
             {
@@ -930,12 +943,11 @@ namespace PFD
             {
                 CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
 
-                // Zatial len read-only
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight1S.Name, CParamsResources.PlateHeight1S.Symbol, (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight1S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.FSlope_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight1S.Name, CParamsResources.PlateHeight1S.Symbol, (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight1S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.FSlope_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit));
             }
             else if (plate is CConCom_Plate_JA)
             {

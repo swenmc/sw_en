@@ -84,24 +84,22 @@ namespace BaseClasses
             }
         }
 
-        float m_alpha1_rad;
+        public int m_iHolesNumber = 0;
 
-        public float Alpha1_rad
+        private int m_iLeftRightIndex; // plate 0 - left, 1 - right
+
+        public int LeftRightIndex
         {
             get
             {
-                return m_alpha1_rad;
+                return m_iLeftRightIndex;
             }
 
             set
             {
-                m_alpha1_rad = value;
+                m_iLeftRightIndex = value;
             }
         }
-
-        public int m_iHolesNumber = 0;
-
-        private int iLeftRightIndex; // plate 0 - left, 1 - right
 
         private float m_e_min_x_BottomLeg;
 
@@ -180,7 +178,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement_H screwArrangement_temp)
+            CScrewArrangement_H screwArrangement)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -190,7 +188,7 @@ namespace BaseClasses
             ITotNoPointsin3D = 12;
 
             m_pControlPoint = controlpoint;
-            iLeftRightIndex = sName_temp.Substring(4, 2) == "LH" ? 0 : 1; // Side index - 0 - left (original), 1 - right
+            m_iLeftRightIndex = sName_temp.Substring(4, 2) == "LH" ? 0 : 1; // Side index - 0 - left (original), 1 - right
             m_fbX = fbX_temp;
             m_fhY1 = fhY1_temp;
             m_fhY2 = fhY2_temp;
@@ -201,6 +199,12 @@ namespace BaseClasses
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
+            UpdatePlateData(screwArrangement);
+        }
+
+        //----------------------------------------------------------------------------
+        public override void UpdatePlateData(CScrewArrangement screwArrangement)
+        {
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
@@ -208,16 +212,26 @@ namespace BaseClasses
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement_temp.Calc_HolesCentersCoord2D(m_fbX, m_fhY1, m_fhY2, m_fMainMemberWidth);
-            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
-            Calc_HolesControlPointsCoord3D(screwArrangement_temp);
+
+            if (screwArrangement != null)
+            {
+                ((CScrewArrangement_H)screwArrangement).Calc_HolesCentersCoord2D(m_fbX, m_fhY1, m_fhY2, m_fMainMemberWidth);
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+                Calc_HolesControlPointsCoord3D((CScrewArrangement_H)screwArrangement);
+            }
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
+            UpdatePlateData_Basic(screwArrangement);
+
+            Set_DimensionPoints2D();
+
+            Set_MemberOutlinePoints2D();
+
             bool bChangeRotationAngle_MirroredPlate = false;
 
-            if (iLeftRightIndex % 2 != 0) // Change x-coordinates for odd index (RH)
+            if (m_iLeftRightIndex % 2 != 0) // Change x-coordinates for odd index (RH)
             {
                 bChangeRotationAngle_MirroredPlate = true; // Change rotation angle (about vertical axis Y) of screws in the left leg
 
@@ -226,11 +240,11 @@ namespace BaseClasses
                     PointsOut2D[i].X *= -1;
                 }
 
-                if (screwArrangement_temp != null)
+                if (screwArrangement != null)
                 {
-                    for (int i = 0; i < screwArrangement_temp.IHolesNumber; i++)
+                    for (int i = 0; i < screwArrangement.IHolesNumber; i++)
                     {
-                        screwArrangement_temp.HolesCentersPoints2D[i].X *= -1;
+                        screwArrangement.HolesCentersPoints2D[i].X *= -1;
                         arrConnectorControlPoints3D[i].X *= -1;
                     }
                 }
@@ -241,8 +255,14 @@ namespace BaseClasses
                 }
             }
 
-            GenerateConnectors(screwArrangement_temp, bChangeRotationAngle_MirroredPlate);
+            if (screwArrangement != null)
+            {
+                GenerateConnectors((CScrewArrangement_H)screwArrangement, bChangeRotationAngle_MirroredPlate);
+            }
+        }
 
+        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        {
             Width_bx = m_fbX;
             Height_hy = m_fhY1;
             //SetFlatedPlateDimensions();
@@ -256,46 +276,30 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(Ft, m_fhY2);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
+
+            fA_n = fA_g;
+            if (screwArrangement != null)
+            {
+                fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fA_v_zv = Get_A_rect(Ft, m_fhY2);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
+
+
+            fA_vn_zv = fA_v_zv;
+            if (screwArrangement != null)
+            {
+                fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fI_yu = Get_I_yu_rect(Ft, m_fhY1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY2); // Elastic section modulus
 
-            ScrewArrangement = screwArrangement_temp;
+            ScrewArrangement = screwArrangement;
+
+            DrillingRoutePoints = null;
         }
 
-        //----------------------------------------------------------------------------
-        public override void UpdatePlateData(CScrewArrangement screwArrangement)
-        {
-            //TO Mato - skontrolovat a updatovat vo vsetkych triedach CPlate_*
-            // Create Array - allocate memory
-            PointsOut2D = new Point[ITotNoPointsin2D];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-
-            if (screwArrangement != null)
-            {
-                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
-            }
-
-            // Fill Array Data
-            Calc_Coord2D();
-            Calc_Coord3D();
-
-            if (screwArrangement != null)
-            {
-                //screwArrangement.Calc_ApexPlateData(0, m_fbX1, 0, m_fhY, Ft, m_fSlope_rad, ScrewInPlusZDirection);
-            }
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            //UpdatePlateData_Basic(screwArrangement);
-
-            Set_DimensionPoints2D();
-
-            Set_MemberOutlinePoints2D();
-        }
         //----------------------------------------------------------------------------
         public override void Calc_Coord2D()
         {
@@ -444,7 +448,7 @@ namespace BaseClasses
         {
             TriangleIndices = new Int32Collection();
 
-            if (iLeftRightIndex == 0) // Left
+            if (m_iLeftRightIndex == 0) // Left
             {
                 // Front Side / Forehead
                 AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 8, 11);
@@ -462,7 +466,7 @@ namespace BaseClasses
                 AddRectangleIndices_CCW_1234(TriangleIndices, 0, 6, 11, 5);
                 AddRectangleIndices_CCW_1234(TriangleIndices, 4, 5, 11, 10);
             }
-            else if (iLeftRightIndex == 1) // Right
+            else if (m_iLeftRightIndex == 1) // Right
             {
                 // Front Side / Forehead
                 AddRectangleIndices_CW_1234(TriangleIndices, 6, 7, 8, 11);
@@ -597,9 +601,8 @@ namespace BaseClasses
                 this.m_fhY2 = refPlate.m_fhY2;
                 this.m_fMainMemberWidth = refPlate.m_fMainMemberWidth;
                 this.m_fSlope_rad = refPlate.m_fSlope_rad;
-                this.m_alpha1_rad = refPlate.m_alpha1_rad;
                 this.m_iHolesNumber = refPlate.m_iHolesNumber;
-                this.iLeftRightIndex = refPlate.iLeftRightIndex;
+                this.m_iLeftRightIndex = refPlate.m_iLeftRightIndex;
                 this.m_e_min_x_BottomLeg = refPlate.m_e_min_x_BottomLeg;
                 this.m_e_min_y_BottomLeg = refPlate.m_e_min_y_BottomLeg;
                 this.m_e_min_x_TopLeg = refPlate.m_e_min_x_TopLeg;
