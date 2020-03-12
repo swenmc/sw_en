@@ -704,15 +704,15 @@ namespace PFD
                     case ESerieTypePlate.eSerie_G:
                         {
                             Components = databaseComponents.arr_Serie_G_Names;
-                            ScrewArrangements = new List<string>(1) { "Undefined" };
+                            ScrewArrangements = databaseComponents.arr_Serie_G_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_H:
                         {
                             Components = databaseComponents.arr_Serie_H_Names;
-                            ScrewArrangements = new List<string>(1) { "Undefined" };
-                            ScrewArrangementIndex = 0;
+                            ScrewArrangements = databaseComponents.arr_Serie_H_ScrewArrangement_Names;
+                    ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

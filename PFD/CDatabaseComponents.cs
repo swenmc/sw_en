@@ -40,9 +40,17 @@ namespace PFD
             {"G - LH",
              "G - RH"};
 
-    public List<string> arr_Serie_H_Names = new List<string>(2)
+        public List<string> arr_Serie_G_ScrewArrangement_Names = new List<string>(2)
+            {"Undefined",
+             "Arrangement G"};
+
+        public List<string> arr_Serie_H_Names = new List<string>(2)
             {"H - LH",
              "H - RH"};
+
+        public List<string> arr_Serie_H_ScrewArrangement_Names = new List<string>(2)
+            {"Undefined",
+             "Arrangement H"};
 
         public List<string> arr_Serie_Q_Names = new List<string>(1)
             {"Q"};
