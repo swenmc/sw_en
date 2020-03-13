@@ -1418,7 +1418,7 @@ namespace PFD
                 int iNumberOfLoadsInXDirection = iFrameNo;
                 int iNumberOfLoadsInYDirection = 2;
 
-                CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, iFrameNo, m_arrLoadCases, m_arrNodes,/* fL1_frame,*/ eq);
+                CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, iFrameNodesNo, m_arrLoadCases, m_arrNodes,/* fL1_frame,*/ eq);
                 nodalLoadGenerator.GenerateNodalLoads();
             }
             #endregion
