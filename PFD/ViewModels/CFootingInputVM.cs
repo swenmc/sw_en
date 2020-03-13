@@ -827,8 +827,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.4f || value > 10f)
-                    throw new ArgumentException("Footing pad size must be between 0.4 and 10 [m]");
+                if (value < 0.4f || value > 30f)
+                    throw new ArgumentException("Footing pad size must be between 0.4 and 30 [m]");
 
                 m_FootingPadSize_x_Or_a = value;
 
@@ -855,8 +855,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.4f || value > 10f)
-                    throw new ArgumentException("Footing pad size must be between 0.4 and 10 [m]");
+                if (value < 0.4f || value > 30f)
+                    throw new ArgumentException("Footing pad size must be between 0.4 and 30 [m]");
 
                 m_FootingPadSize_y_Or_b = value;
                 // Komentovane 23.1.2020
@@ -1072,8 +1072,8 @@ namespace PFD
 
             set
             {
-                if (value < 0f || value > 50)
-                    throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
+                if (value < 0f || value > 500)
+                    throw new ArgumentException("Number of saw cuts must be between 0 and 500 [-]");
 
                 m_NumberOfSawCutsInDirectionX = value;
 
