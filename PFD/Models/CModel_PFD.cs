@@ -1257,10 +1257,12 @@ namespace PFD
                 // Main Column - Footings
                 // TODO - Predbezne doporucene hodnoty velkosti zakladov vypocitane z rozmerov budovy
                 // UC - Footings
+                float fMainColumnFooting_aX_MaxByCrscWidth = 20 * MathF.Max((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b, (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].b);
+                float fMainColumnFooting_bY_MaxByCrscDepth = 5 * MathF.Max((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h);
                 float fTributaryArea_Wall = MathF.Average(fH1_frame, fH2_frame) * fL1_frame;
                 float fTributaryArea_Roof = 0.5f * fW_frame * fL1_frame;
-                float fMainColumnFooting_aX = (float)Math.Round(MathF.Max(0.7f, 0.014f * (fTributaryArea_Wall + fTributaryArea_Roof)), 1);
-                float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.8f, 0.015f * (fTributaryArea_Wall + fTributaryArea_Roof)), 1);
+                float fMainColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.7f, 0.014f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_aX_MaxByCrscWidth), 1);
+                float fMainColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.8f, 0.015f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_bY_MaxByCrscDepth), 1);
                 float fMainColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
                 float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
 
@@ -1395,10 +1397,12 @@ namespace PFD
                 // Front and Back Wall Columns - Footings
                 if (bGenerateFrontColumns)
                 {
+                    float fFrontColumnFooting_aX_MaxByCrscWidth = 20 * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].b;
+                    float fFrontColumnFooting_bY_MaxByCrscDepth = 5 * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].h;
                     float fFrontColumnFootingTributaryArea = MathF.Average(fH1_frame, fH2_frame) * fDist_FrontColumns;
                     float fFrontColumnFootingSizeFactor = 0.045f;
-                    float fFrontColumnFooting_aX = (float)Math.Round(MathF.Max(0.6f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), 1);
-                    float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.7f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), 1);
+                    float fFrontColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.6f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), fFrontColumnFooting_aX_MaxByCrscWidth), 1);
+                    float fFrontColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.7f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), fFrontColumnFooting_bY_MaxByCrscDepth), 1);
                     float fFrontColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
                     float fFrontColumnFooting_Eccentricity_y = 0.5f * (fFrontColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].h);
@@ -1482,10 +1486,12 @@ namespace PFD
 
                 if (bGenerateBackColumns)
                 {
+                    float fBackColumnFooting_aX_MaxByCrscWidth = 20 * (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].b;
+                    float fBackColumnFooting_bY_MaxByCrscDepth = 5 * (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].h;
                     float fBackColumnFootingTributaryArea = MathF.Average(fH1_frame, fH2_frame) * fDist_BackColumns;
                     float fBackColumnFootingSizeFactor = 0.045f;
-                    float fBackColumnFooting_aX = (float)Math.Round(MathF.Max(0.6f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), 1);
-                    float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.7f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), 1);
+                    float fBackColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.6f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), fBackColumnFooting_aX_MaxByCrscWidth), 1);
+                    float fBackColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.7f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), fBackColumnFooting_bY_MaxByCrscDepth), 1);
                     float fBackColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
                     float fBackColumnFooting_Eccentricity_y = 0.5f * (fBackColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].h);
