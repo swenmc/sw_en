@@ -1,0 +1,65 @@
+﻿<Window x:Class="LicenseGenerator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:LicenseGenerator"
+        mc:Ignorable="d"
+        Title="License Generator" Height="400" Width="600">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">120</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>        
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" >Customer:</Label>
+        <Label Grid.Column="0" Grid.Row="1" >User Role:</Label>
+        <Label Grid.Column="0" Grid.Row="2" >Valid until:</Label>
+        <Label Grid.Column="0" Grid.Row="3" Margin="20 0 0 0">Year:</Label>
+        <Label Grid.Column="0" Grid.Row="4" Margin="20 0 0 0">Month:</Label>
+        <Label Grid.Column="0" Grid.Row="5" Margin="20 0 0 0">Day:</Label>
+        <Label Grid.Column="0" Grid.Row="6" FontWeight="Bold">License Key:</Label>
+
+        <TextBox Grid.Column="1" Grid.Row="0" Name="txtCustomer" Height="20" HorizontalAlignment="Left"
+                 Text="{Binding Path=CustomerName, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"
+                 Width="{StaticResource theTextBoxWidth}"></TextBox>
+        <!--<TextBox Grid.Column="1" Grid.Row="1" Name="txtRole" Height="20" Width="{StaticResource theTextBoxWidth}"></TextBox>-->
+        <ComboBox Grid.Column="1" Grid.Row="1" Name ="Combobox_Role" HorizontalAlignment="Left" 
+                  Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Center" 
+                  ItemsSource="{Binding Path=Roles}" SelectedValue="{Binding Path=Role, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Name="txtYear" Width="{StaticResource theTextBoxWidth}" Height="20" HorizontalAlignment="Left"
+                 Text="{Binding Path=Year, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"></TextBox>
+        <TextBox Grid.Column="1" Grid.Row="4" Name="txtMonth" Width="{StaticResource theTextBoxWidth}" Height="20" HorizontalAlignment="Left"
+                 Text="{Binding Path=Month, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"></TextBox>
+        <TextBox Grid.Column="1" Grid.Row="5" Name="txtDay" Width="{StaticResource theTextBoxWidth}" Height="20" HorizontalAlignment="Left"
+                 Text="{Binding Path=Day, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"></TextBox>
+        <TextBox Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" Height="20" Foreground="red" Name="txtKey" IsReadOnly="True"
+                 Text="{Binding Path=Key, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"></TextBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button  Height="30" Width="100" Name="ButtonCopy" Margin="10" Click="Button">Copy</Button>
+            <Button  Height="30" Width="100" Name="ButtonGenerate" Margin="10" Click="ButtonGenerate_Click">Generate</Button>
+            
+        </StackPanel>
+        
+
+
+
+    </Grid>
+</Window>
