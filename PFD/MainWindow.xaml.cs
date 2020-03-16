@@ -42,6 +42,7 @@ using PFD.Infrastructure;
 //using M_BASE;
 using Microsoft.Win32;
 using BriefFiniteElementNet;
+using System.Configuration;
 //using BriefFiniteElementNet.Controls;
 
 namespace PFD
@@ -98,6 +99,8 @@ namespace PFD
 
         public MainWindow()
         {
+            if (!CheckLicenseKey()) { MessageBox.Show("Not valid license key!"); this.Close(); return; }
+
             // Initial Screen
             SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
             splashScreen.Show(false);
@@ -137,6 +140,27 @@ namespace PFD
             vm.RecreateQuotation = false;
         }
 
+        private bool CheckLicenseKey()
+        {            
+            string customerName = ConfigurationManager.AppSettings["CustomerName"];
+            string key = ConfigurationManager.AppSettings["LicenseKey"];
+            string passPhrase = $"opmc_{customerName}";
+            string decryptedstring = StringCipher.Decrypt(key, passPhrase);
+            if (decryptedstring.StartsWith("opmc_"))
+            {
+                string[] parts = decryptedstring.Split(new string[] { "_" }, StringSplitOptions.RemoveEmptyEntries);
+                int y = int.Parse(parts[1]);
+                int m = int.Parse(parts[2]);
+                int d = int.Parse(parts[3]);
+                string role = parts[4];
+                CPermissions.InitPermissions(role);
+                DateTime licenseDate = new DateTime(y, m, d);
+                if (DateTime.Now > licenseDate) return false;
+                else return true;
+            } 
+            else return false;
+        }
+
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
@@ -155,9 +179,9 @@ namespace PFD
                 if (e.PropertyName == "ModelTypes") return;
                 if (e.PropertyName == "KitsetTypeIndex") return;
                 if (e.PropertyName == "Flashings") return;
-                if (e.PropertyName == "FlashingsNames") return;                
+                if (e.PropertyName == "FlashingsNames") return;
                 if (e.PropertyName == "Gutters") return;
-                if (e.PropertyName == "Downpipes") return;                
+                if (e.PropertyName == "Downpipes") return;
 
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility(); } return; }
 
@@ -2268,7 +2292,7 @@ namespace PFD
                 fDownpipesTotalLength = 0;
             }
 
-            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);            
+            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);
             downpipe.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
 
             vm.Downpipes.Add(downpipe);

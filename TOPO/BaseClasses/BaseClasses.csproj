@@ -116,6 +116,7 @@
     <Compile Include="Helpers\PropertyChangedExtendedEventArgs.cs" />
     <Compile Include="Helpers\QuotationExportOptions.cs" />
     <Compile Include="Helpers\QuotationDisplayOptions.cs" />
+    <Compile Include="Helpers\StringCipher.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="ModelViews\QuotationItem.cs" />
     <Compile Include="ModelViews\PlateView.cs" />

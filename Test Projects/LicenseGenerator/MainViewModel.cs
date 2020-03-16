@@ -135,17 +135,17 @@ namespace LicenseGenerator
             Month = trial.Month;
             Day = trial.Day;
 
+            Role = Roles.First();
+
             IsSetFromCode = false;
         }
 
         public string GetLicenseKey()
         {
-            string text = $"{Year}_{Month}_{Day}_{Role}";
-            string passPhrase = $"ompc_{CustomerName}";
+            string text = $"opmc_{Year}_{Month}_{Day}_{Role}";
+            string passPhrase = $"opmc_{CustomerName}";
             string encryptedstring = StringCipher.Encrypt(text, passPhrase);
-
-            string decryptedstring = StringCipher.Decrypt(encryptedstring, passPhrase);
-
+            //string decryptedstring = StringCipher.Decrypt(encryptedstring, passPhrase);
             return encryptedstring;
         }
 
