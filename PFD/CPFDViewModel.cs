@@ -448,8 +448,8 @@ namespace PFD
 
             set
             {
-                if (value < 3 || value > 150)
-                    throw new ArgumentException("Length must be between 3 and 150 [m]");
+                if (value < 3 || value > 300)
+                    throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLength = value;
 
                 if (MModelIndex != 0)
@@ -562,8 +562,8 @@ namespace PFD
 
             set
             {
-                if (value < 3 || value > 50) // TODO - Je potrebne zapracovat len 2 koncove ramy
-                    throw new ArgumentException("Number of frames must be between 3 and 50");
+                if (value < 3 || value > 75) // TODO - Je potrebne zapracovat len 2 koncove ramy
+                    throw new ArgumentException("Number of frames must be between 3 and 75");
                 MFrames = value;
 
                 if (MModelIndex != 0)

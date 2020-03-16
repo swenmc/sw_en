@@ -578,13 +578,7 @@ namespace BaseClasses
             List<CGridLine> listOfGridlines = new List<CGridLine>();
 
             // Labels - Y-direction (edge and main frames)
-            List<char> labelsY = new List<char>();
-            for (char letter = 'A'; letter <= 'Z'; letter++)
-            {
-                labelsY.Add(letter);
-
-                // TODO Ondrej - zapracovat dalsie symboly pre osi (AA, AB, AC, AD ....... ZA, ZB, ZC) , ak je budova obrovska a ma viac osi tak sa dostaneme mimo zoznamu
-            }
+            List<string> labelsY = null;            
 
             if (sDisplayOptions.bCreateHorizontalGridlines)
             {
@@ -596,9 +590,11 @@ namespace BaseClasses
                 // Left side
                 CMember[] membersLeftSide = null;
                 membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
-
+                
                 List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
                 membersBaseNodes_LeftSide = GetMemberBaseNodesLeftSide(model);
+
+                labelsY = GetLabelsForGridLines(membersBaseNodes_LeftSide.Count);
 
                 // Front side
                 CMember[] membersFrontSide = null;
@@ -660,6 +656,8 @@ namespace BaseClasses
                 List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
                 membersBaseNodes_LeftSide = GetMemberBaseNodesLeftSide(model);
 
+                labelsY = GetLabelsForGridLines(membersBaseNodes_LeftSide.Count);
+
                 for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
                 {
                     Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X - fOffsetInViewDirection, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
@@ -672,6 +670,8 @@ namespace BaseClasses
             {
                 List<CNode> membersBaseNodes_RightSide = null; // Main columns and edge columns
                 membersBaseNodes_RightSide = GetMemberBaseNodesRightSide(model);
+
+                labelsY = GetLabelsForGridLines(membersBaseNodes_RightSide.Count);
 
                 for (int i = 0; i < membersBaseNodes_RightSide.Count; i++)
                 {
@@ -693,6 +693,33 @@ namespace BaseClasses
                     DrawGridLineLabelText3D(gridLine, _trackport.ViewPort, sDisplayOptions);
                 }
             }
+        }
+
+        private static List<string> GetLabelsForGridLines(int num)
+        {
+            // Labels - Y-direction (edge and main frames)
+            List<string> labelsY = new List<string>();
+            int count = 0;
+            int countFirstPart = 0;
+            string firstPart = "";
+            int range = (int)'Z' - (int)'A';
+            char a = 'A';
+            for (int i = 0; i < num; i++)
+            {
+                if (count < range)
+                {
+                    labelsY.Add($"{firstPart}{(char)('A' + count)}");
+                }
+                else
+                {
+                    labelsY.Add($"{firstPart}{(char)('A' + count)}");
+                    count = 0;
+                    firstPart = ((char)((int)'A' + countFirstPart)).ToString();
+                    countFirstPart++;
+                }
+                count++;
+            }
+            return labelsY;
         }
 
         private static List<CNode> GetMemberBaseNodesFrontSide(CModel model)
