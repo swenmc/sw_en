@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        Title="MainWindow" Height="1000" Width="2500">
+        Icon="Resources/FSlogoNew_PFD.png"
+        Title="FS - Engenius" Height="1000" Width="2500">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">120</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>
