@@ -30,6 +30,7 @@ namespace PFD
         private bool m_WindPostUnderRafter; // Poloha wind post pod rafterom alebo za nim, moze byt nastavitelne, mohlo by byt aj automaticke podla velkosti prierezu
 
         private bool m_UseStraightReinforcementBars;
+        private bool m_UpdateAutomatically;
 
         public bool BracingEverySecondRowOfGirts
         {
@@ -92,6 +93,20 @@ namespace PFD
             }
         }
 
+        public bool UpdateAutomatically
+        {
+            get
+            {
+                return m_UpdateAutomatically;
+            }
+
+            set
+            {
+                m_UpdateAutomatically = value;
+                NotifyPropertyChanged("UpdateAutomatically");
+            }
+        }
+
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -106,6 +121,8 @@ namespace PFD
             m_WindPostUnderRafter = false;
 
             m_UseStraightReinforcementBars = false;
+
+            m_UpdateAutomatically = false;
 
             IsSetFromCode = false;
         }

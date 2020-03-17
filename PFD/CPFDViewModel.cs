@@ -46,6 +46,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         private bool MIsRelease;
+
         private int MKitsetTypeIndex;
         private int MModelIndex;
         private float MWidth;
@@ -110,7 +111,7 @@ namespace PFD
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
-        
+
         private int MLoadCaseIndex;
 
         private int iFrontColumnNoInOneFrame;
@@ -150,13 +151,13 @@ namespace PFD
         private bool MUseCRSCGeometricalAxes = true;
         //private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
 
-        private ObservableCollection<DoorProperties> MDoorBlocksProperties;        
+        private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
         private List<string> MModelViews;
         private List<string> MViewModelMemberFilters;
-                
+
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
         private bool MRecreateJoints;
@@ -269,14 +270,14 @@ namespace PFD
 
                 if (MKitsetTypeIndex > 1) // Temporary
                 {
-                  System.Windows.MessageBox.Show("Selected kitset type is not implemented.");
-                  return;
-                  //  throw new ArgumentException("Selected kitset type is not implemented.");
+                    System.Windows.MessageBox.Show("Selected kitset type is not implemented.");
+                    return;
+                    //  throw new ArgumentException("Selected kitset type is not implemented.");
                 }
 
                 // Nastavit do comboboxu Model type prislusne modely pre dany typ kitsetu
-                if(MKitsetTypeIndex == 0) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetMonoRoofEnclosed", "modelName");
-                else if(MKitsetTypeIndex == 1) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName");
+                if (MKitsetTypeIndex == 0) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetMonoRoofEnclosed", "modelName");
+                else if (MKitsetTypeIndex == 1) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName");
                 else if (MKitsetTypeIndex == 2) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetShelterSingleSpan", "modelName");
                 else if (MKitsetTypeIndex == 3) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetShelterDoubleSpan", "modelName");
 
@@ -304,7 +305,7 @@ namespace PFD
 
                 bool isChangedFromCode = IsSetFromCode;
 
-                if(!isChangedFromCode) IsSetFromCode = true;
+                if (!isChangedFromCode) IsSetFromCode = true;
                 Width = dmodel.fb;
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
@@ -521,7 +522,7 @@ namespace PFD
                     fMinimumRoofPitchLimit_deg = Math.Min(fMinimumRoofPitchLimit_deg, 20); // Mensia z vypocitanej hodnoty a hodnoty 20 stupnov
 
                     if (value < -fMinimumRoofPitchLimit_deg || value > 20)
-                        throw new ArgumentException("Roof Pitch must be between "+ Math.Round(-fMinimumRoofPitchLimit_deg, 0) + " and 20 degrees");
+                        throw new ArgumentException("Roof Pitch must be between " + Math.Round(-fMinimumRoofPitchLimit_deg, 0) + " and 20 degrees");
                 }
                 else if (MKitsetTypeIndex == 1) // Gable roof
                 {
@@ -771,7 +772,7 @@ namespace PFD
 
                 bool isChangedFromCode = IsSetFromCode;
 
-                if(!isChangedFromCode) IsSetFromCode = true;
+                if (!isChangedFromCode) IsSetFromCode = true;
                 MRoofCladdingID = MRoofCladdingIndex;
                 RoofCladding = Claddings.ElementAtOrDefault(MRoofCladdingIndex);
                 RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
@@ -815,7 +816,7 @@ namespace PFD
                 RoofCladdingColorIndex = 0;
                 RoofCladdingThicknessIndex = 0;
                 RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
-                                
+
                 if (!isChangedFromCode) IsSetFromCode = false;
                 RecreateQuotation = false;//musi byt zmena nasilu
                 RecreateQuotation = true;
@@ -884,7 +885,7 @@ namespace PFD
 
                 WallFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", WallCladding, "name");
                 WallFibreglassThicknessIndex = 0;
-                                
+
                 if (!isChangedFromCode) IsSetFromCode = false;
                 RecreateQuotation = false;//musi byt zmena nasilu
                 RecreateQuotation = true;
@@ -916,7 +917,7 @@ namespace PFD
                 WallCladdingThicknessIndex = 0;
                 WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
                 WallCladdingColorIndex = 0;
-                                
+
                 if (!isChangedFromCode) IsSetFromCode = false;
                 RecreateQuotation = false;//musi byt zmena nasilu
                 RecreateQuotation = true;
@@ -1121,7 +1122,7 @@ namespace PFD
             {
                 MModel = value;
                 bool isChangedFromCode = IsSetFromCode;
-                if(!isChangedFromCode) IsSetFromCode = true;
+                if (!isChangedFromCode) IsSetFromCode = true;
                 SetModelBays();
                 if (!isChangedFromCode) IsSetFromCode = false;
             }
@@ -1364,7 +1365,7 @@ namespace PFD
             {
                 RecreateModel = true;
                 RecreateJoints = true;
-                NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");                
+                NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
                 SetResultsAreNotValid();
             }
             SetComponentListAccordingToWindows();
@@ -1444,7 +1445,7 @@ namespace PFD
 
             set
             {
-                MModelCalculatedResultsValid = value;                
+                MModelCalculatedResultsValid = value;
                 NotifyPropertyChanged("ModelCalculatedResultsValid");
             }
         }
@@ -1685,7 +1686,7 @@ namespace PFD
                 bool changed = false;
                 if (value == true && m_RecreateQuotation == false) changed = true;
                 m_RecreateQuotation = value;
-                if(changed) NotifyPropertyChanged("RecreateQuotation");
+                if (changed) NotifyPropertyChanged("RecreateQuotation");
             }
         }
 
@@ -2053,7 +2054,7 @@ namespace PFD
                 else if (d.sBuildingSide == "Left" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
                 else if (d.sBuildingSide == "Right" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
             }
-            if(check) CheckDoorsBays();
+            if (check) CheckDoorsBays();
         }
 
         private bool SetDoorsBays(DoorProperties d)
@@ -2141,7 +2142,7 @@ namespace PFD
             if (check)
             {
                 CheckWindowsBays();
-            }            
+            }
         }
 
         private bool SetWindowsBays(WindowProperties w)
@@ -2187,12 +2188,12 @@ namespace PFD
             if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
             if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
             {
-                PFDMainWindow.ShowMessageBoxInPFDWindow("The position is already occupied with a window.");                
+                PFDMainWindow.ShowMessageBoxInPFDWindow("The position is already occupied with a window.");
                 isValid = false;
             }
             if (MDoorBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() == 1)
             {
-                PFDMainWindow.ShowMessageBoxInPFDWindow("The position is already occupied with a door.");                
+                PFDMainWindow.ShowMessageBoxInPFDWindow("The position is already occupied with a door.");
                 isValid = false;
             }
             return isValid;
@@ -2297,7 +2298,7 @@ namespace PFD
 
         [NonSerialized]
         public CPFDLoadInput _loadInput;
-                
+
         private ObservableCollection<CAccessories_LengthItemProperties> m_Flashings;
         private List<string> m_FlashingsNames;
         public ObservableCollection<CAccessories_LengthItemProperties> Flashings
@@ -2341,7 +2342,7 @@ namespace PFD
                 {
                     PFDMainWindow.ShowMessageBoxInPFDWindow("ERROR.\nDuplicated definition of flashing type.\nChoose a unique type, please.");
                     CAccessories_LengthItemProperties item = sender as CAccessories_LengthItemProperties;
-                    if(item != null) item.Name = item.NameOld;
+                    if (item != null) item.Name = item.NameOld;
                     PFDMainWindow.Datagrid_Flashings.ItemsSource = null;
                     PFDMainWindow.Datagrid_Flashings.ItemsSource = Flashings;
                 }
@@ -2406,7 +2407,7 @@ namespace PFD
             {
                 flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
             }
-                        
+
             flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
             flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
             flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
@@ -2447,7 +2448,7 @@ namespace PFD
             PropertyChanged(sender, e);
         }
 
-        
+
         private ObservableCollection<CAccessories_LengthItemProperties> m_Gutters;
         private List<string> m_GuttersNames;
         public ObservableCollection<CAccessories_LengthItemProperties> Gutters
@@ -2572,10 +2573,10 @@ namespace PFD
         public List<string> AllFlashingsNames
         {
             get
-            {                
+            {
                 return new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
                         "PA Door Trimmer",  "PA Door Header", "Window"};
-            }            
+            }
         }
 
         private void SetFlashingsNames()
@@ -2614,8 +2615,9 @@ namespace PFD
 
                 SetResultsAreNotValid();
                 RecreateModel = true;
-                
+
                 if (MSynchronizeGUI) NotifyPropertyChanged("GeneralOptionsChanged");
+
             }
         }
 
@@ -2689,7 +2691,7 @@ namespace PFD
         {
             get
             {
-                if(m_ModelTypes == null) m_ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName");
+                if (m_ModelTypes == null) m_ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName");
                 return m_ModelTypes;
             }
 
@@ -2704,7 +2706,7 @@ namespace PFD
         {
             get
             {
-                if(m_KitsetTypes == null) m_KitsetTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "ModelType", "modelTypeName_short");
+                if (m_KitsetTypes == null) m_KitsetTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "ModelType", "modelTypeName_short");
 
                 // V databaze su sice 4 typy ale 3 a 4 este nie su implementovane, tak ich zatial zmazeme.
                 m_KitsetTypes.RemoveRange(2, 2); // Zmazat polozky s indexom 2 a 3
@@ -2717,13 +2719,15 @@ namespace PFD
             }
         }
 
+
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CPFDViewModel(int kitsetTypeIndex, int modelIndex, bool bRelease, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties,
             CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
         {
-            MIsRelease = bRelease;
+            MIsRelease = bRelease;            
 
             IsSetFromCode = true;
             DoorBlocksProperties = doorBlocksProperties;
@@ -2778,7 +2782,7 @@ namespace PFD
             QuotationDisplayOptions _quotationDisplayOptions = new QuotationDisplayOptions();
             //_quotationExportOptions = new QuotationExportOptions(_quotationDisplayOptions);
             _quotationDisplayOptionsVM = new QuotationDisplayOptionsViewModel(_quotationDisplayOptions);
-            
+
             IsSetFromCode = false;
 
             _worker.DoWork += CalculateInternalForces;
@@ -2955,7 +2959,7 @@ namespace PFD
 
             CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
             CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners, _designOptionsVM.UniformShearDistributionInAnchors,
-                _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS, 
+                _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS,
                 footingSettings, frameModels, beamSimpleModels);
             memberDesignCalculations.CalculateAll();
             SetDesignMembersLists(memberDesignCalculations);
@@ -3031,7 +3035,7 @@ namespace PFD
             return WindowBlocksProperties.Count > 0;
         }
 
-        
+
 
         private void SetResultsAreNotValid()
         {
@@ -3115,8 +3119,8 @@ namespace PFD
                 if (e.PropertyName == "sBuildingSide")
                 {
                     SetResultsAreNotValid();
-                    if (sender is DoorProperties) { if(!SetDoorsBays(sender as DoorProperties)) return; }
-                    if (sender is WindowProperties) { if(!SetWindowsBays(sender as WindowProperties)) return; }
+                    if (sender is DoorProperties) { if (!SetDoorsBays(sender as DoorProperties)) return; }
+                    if (sender is WindowProperties) { if (!SetWindowsBays(sender as WindowProperties)) return; }
                 }
                 else if (e.PropertyName == "iBayNumber")
                 {
@@ -3135,7 +3139,7 @@ namespace PFD
                 else if (e.PropertyName == "fWindowsHeight" || e.PropertyName == "fWindowsWidth" || e.PropertyName == "fWindowCoordinateXinBay" || e.PropertyName == "fWindowCoordinateZinBay")
                 {
                     SetResultsAreNotValid();
-                }                
+                }
                 this.PropertyChanged(sender, e);
             }
             catch (Exception ex)
@@ -3154,7 +3158,7 @@ namespace PFD
                 }
             }
 
-            
+
         }
 
         private void HandleComponentInfoPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -3244,7 +3248,7 @@ namespace PFD
 
             //toto som zakomentoval aby sa nezrubavalo ak nie su validne vysledky
             //if (ModelCalculatedResultsValid) // Skusame nacitat vysledky len ak su spocitane
-            
+
             data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
             data.sDesignResults_ULS = sDesignResults_ULS;
             data.sDesignResults_SLS = sDesignResults_SLS;
@@ -3298,7 +3302,7 @@ namespace PFD
 
             data.BayWidth = fBayWidth;
             data.ApexHeight_H2 = fHeight_H2;
-            
+
             data.RoofCladding = RoofCladding;
             data.WallCladding = WallCladding;
             data.RoofCladdingThickness_mm = RoofCladdingThickness;
@@ -3348,7 +3352,7 @@ namespace PFD
                 CMember governingMember = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
                 if (governingMember == null) continue;
                 CCalculMember cGoverningMemberResultsULS;
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334,_designOptionsVM.IgnoreWebStiffeners, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
                 dictULSDesignResults.Add(mGr.MemberType_FS_Position, cGoverningMemberResultsULS);
             }
             return dictULSDesignResults;
@@ -3603,14 +3607,14 @@ namespace PFD
             return sDisplayOptions;
         }
 
-        public void GetCTS_CoilProperties(out CTS_CrscProperties prop_RoofCladding, out CTS_CrscProperties prop_WallCladding, 
-            out CTS_CoilProperties prop_RoofCladdingCoil, out CTS_CoilProperties prop_WallCladdingCoil, 
+        public void GetCTS_CoilProperties(out CTS_CrscProperties prop_RoofCladding, out CTS_CrscProperties prop_WallCladding,
+            out CTS_CoilProperties prop_RoofCladdingCoil, out CTS_CoilProperties prop_WallCladdingCoil,
             out CoatingColour prop_RoofCladdingColor, out CoatingColour prop_WallCladdingColor)
         {
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
-                        
+
             prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
 
             CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();

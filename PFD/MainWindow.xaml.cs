@@ -345,14 +345,12 @@ namespace PFD
 
             SetUIElementsVisibility();
 
-            //load the popup
-            SplashScreen splashScreen = new SplashScreen("loading2.gif");
-            splashScreen.Show(false);
+            if (vm._generalOptionsVM.UpdateAutomatically)
+            {
+                Update();
+            }
 
-            //DeleteCalculationResults();
-            UpdateAll();
 
-            splashScreen.Close(TimeSpan.FromSeconds(0.1));
 
             //toto tu asi nepotrebujeme ak zakazeme pridavat cez klik na novy riadok
             //kvoli Doors Models,  najprv musi byt update
@@ -364,6 +362,17 @@ namespace PFD
             //{
             //    Datagrid_Windows_SelectionChanged(null, null);
             //}
+        }
+
+        private void Update()
+        {
+            //load the popup
+            SplashScreen splashScreen = new SplashScreen("loading2.gif");
+            splashScreen.Show(false);
+
+            UpdateAll();
+
+            splashScreen.Close(TimeSpan.FromSeconds(0.1));
 
             if (vm.RecreateFloorSlab) vm.RecreateFloorSlab = false;
             if (vm.RecreateJoints) vm.RecreateJoints = false;
@@ -1155,6 +1164,9 @@ namespace PFD
                 Part_List.Content = null;
                 Quotation.Content = null;
             }
+
+            if (vm._generalOptionsVM.UpdateAutomatically) ButtonGenerateModel.Visibility = Visibility.Collapsed;
+            else ButtonGenerateModel.Visibility = Visibility.Visible;
 
             SetUIElementsVisibilityAccordingPermissions();
         }
@@ -2453,6 +2465,11 @@ namespace PFD
 
             //just to fire some change
             vm.Width = vm.Width;
+        }
+
+        private void ButtonGenerateModel_Click(object sender, RoutedEventArgs e)
+        {
+            Update();
         }
     }
 }

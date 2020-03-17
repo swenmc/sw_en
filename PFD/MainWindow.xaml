@@ -290,6 +290,7 @@
                         <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ViewModelMemberFilters}}" SelectedIndex="{Binding Path=ViewModelMemberFilterIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
+                        <Button Name="ButtonGenerateModel" Grid.Row="15" Grid.Column="4" Click="ButtonGenerateModel_Click">Generate Model</Button>
                         
                     </Grid>
                 </ScrollViewer>
@@ -721,13 +722,13 @@
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <!--Base Grid 2 columns and 4 rows-->
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />                
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0 20 0 0">
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="10 0 0 10" VerticalAlignment="Bottom">
                 <Button Name="View_2D" Content ="View 2D" Height="20" Width="70" Margin="0 0 10 0" Click="View_2D_Click"/>
                 <Button Name="Clear3DModel" Content="Clear" Width="70" Margin="0 0 10 0" Click="Clear3DModel_Click" Height="20" />
                 <!--<Button Name="WindSpeedChart" Content="WindSpeed" Width="70" Margin="0 0 10 0" Click="WindSpeedChart_Click" Height="20" />-->
