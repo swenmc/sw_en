@@ -37,17 +37,104 @@ namespace PFD
                 { EUserPermission.ViewTabJointDesign, false },
                 { EUserPermission.ViewTabFootingDesign, false },
                 { EUserPermission.ViewTabPartList, false },
-                { EUserPermission.ViewTabQuoation, false }
+                { EUserPermission.ViewTabQuoation, false },
+                { EUserPermission.ExportQuotation, false },
+                { EUserPermission.ExportReport, false }
             };
-
+            
+            //"developer", "admin", "customer", "architect", "engineer", "salesperson"
             if (role.Equals("developer", StringComparison.OrdinalIgnoreCase))
             {
                 AddAllPermissions();
             }
             else if (role.Equals("admin", StringComparison.OrdinalIgnoreCase))
             {
-                //atd
                 Permissions[EUserPermission.ViewTabGeneral] = true;
+                Permissions[EUserPermission.ViewTabMember_Input] = true;
+                Permissions[EUserPermission.ViewTabDoorsAndWindows] = true;
+                Permissions[EUserPermission.ViewTabJoint_Input] = true;
+                Permissions[EUserPermission.ViewTabFooting_Input] = true;
+                Permissions[EUserPermission.ViewTabLoads] = true;
+                Permissions[EUserPermission.ViewTabLoadCases] = true;
+                Permissions[EUserPermission.ViewTabLoadCombinations] = true;
+                Permissions[EUserPermission.ViewTabInternalForces] = true;
+                Permissions[EUserPermission.ViewTabMemberDesign] = true;
+                Permissions[EUserPermission.ViewTabJointDesign] = true;
+                Permissions[EUserPermission.ViewTabFootingDesign] = true;
+                Permissions[EUserPermission.ViewTabPartList] = true;
+                Permissions[EUserPermission.ViewTabQuoation] = true;
+                Permissions[EUserPermission.ExportQuotation] = true;
+                Permissions[EUserPermission.ExportReport] = true;
+            }
+            else if (role.Equals("customer", StringComparison.OrdinalIgnoreCase))
+            {
+                Permissions[EUserPermission.ViewTabGeneral] = true;
+                Permissions[EUserPermission.ViewTabMember_Input] = true;
+                Permissions[EUserPermission.ViewTabDoorsAndWindows] = true;
+                Permissions[EUserPermission.ViewTabJoint_Input] = true;
+                Permissions[EUserPermission.ViewTabFooting_Input] = true;
+                //Permissions[EUserPermission.ViewTabLoads] = true;
+                //Permissions[EUserPermission.ViewTabLoadCases] = true;
+                //Permissions[EUserPermission.ViewTabLoadCombinations] = true;
+                //Permissions[EUserPermission.ViewTabInternalForces] = true;
+                //Permissions[EUserPermission.ViewTabMemberDesign] = true;
+                //Permissions[EUserPermission.ViewTabJointDesign] = true;
+                //Permissions[EUserPermission.ViewTabFootingDesign] = true;
+                //Permissions[EUserPermission.ViewTabPartList] = true;
+                //Permissions[EUserPermission.ViewTabQuoation] = true;
+            }
+            else if (role.Equals("architect", StringComparison.OrdinalIgnoreCase))
+            {
+                Permissions[EUserPermission.ViewTabGeneral] = true;
+                Permissions[EUserPermission.ViewTabMember_Input] = true;
+                Permissions[EUserPermission.ViewTabDoorsAndWindows] = true;
+                Permissions[EUserPermission.ViewTabJoint_Input] = true;
+                Permissions[EUserPermission.ViewTabFooting_Input] = true;
+                //Permissions[EUserPermission.ViewTabLoads] = true;
+                //Permissions[EUserPermission.ViewTabLoadCases] = true;
+                //Permissions[EUserPermission.ViewTabLoadCombinations] = true;
+                //Permissions[EUserPermission.ViewTabInternalForces] = true;
+                //Permissions[EUserPermission.ViewTabMemberDesign] = true;
+                //Permissions[EUserPermission.ViewTabJointDesign] = true;
+                //Permissions[EUserPermission.ViewTabFootingDesign] = true;
+                //Permissions[EUserPermission.ViewTabPartList] = true;
+                //Permissions[EUserPermission.ViewTabQuoation] = true;
+            }
+            else if (role.Equals("engineer", StringComparison.OrdinalIgnoreCase))
+            {
+                Permissions[EUserPermission.ViewTabGeneral] = true;
+                Permissions[EUserPermission.ViewTabMember_Input] = true;
+                Permissions[EUserPermission.ViewTabDoorsAndWindows] = true;
+                Permissions[EUserPermission.ViewTabJoint_Input] = true;
+                Permissions[EUserPermission.ViewTabFooting_Input] = true;
+                Permissions[EUserPermission.ViewTabLoads] = true;
+                Permissions[EUserPermission.ViewTabLoadCases] = true;
+                Permissions[EUserPermission.ViewTabLoadCombinations] = true;
+                Permissions[EUserPermission.ViewTabInternalForces] = true;
+                Permissions[EUserPermission.ViewTabMemberDesign] = true;
+                Permissions[EUserPermission.ViewTabJointDesign] = true;
+                Permissions[EUserPermission.ViewTabFootingDesign] = true;
+                //Permissions[EUserPermission.ViewTabPartList] = true;
+                //Permissions[EUserPermission.ViewTabQuoation] = true;                
+                Permissions[EUserPermission.ExportReport] = true;
+            }
+            else if (role.Equals("salesperson", StringComparison.OrdinalIgnoreCase))
+            {
+                Permissions[EUserPermission.ViewTabGeneral] = true;
+                Permissions[EUserPermission.ViewTabMember_Input] = true;
+                Permissions[EUserPermission.ViewTabDoorsAndWindows] = true;
+                Permissions[EUserPermission.ViewTabJoint_Input] = true;
+                Permissions[EUserPermission.ViewTabFooting_Input] = true;
+                Permissions[EUserPermission.ViewTabLoads] = true;
+                Permissions[EUserPermission.ViewTabLoadCases] = true;
+                Permissions[EUserPermission.ViewTabLoadCombinations] = true;
+                //Permissions[EUserPermission.ViewTabInternalForces] = true;
+                //Permissions[EUserPermission.ViewTabMemberDesign] = true;
+                //Permissions[EUserPermission.ViewTabJointDesign] = true;
+                //Permissions[EUserPermission.ViewTabFootingDesign] = true;
+                Permissions[EUserPermission.ViewTabPartList] = true;
+                Permissions[EUserPermission.ViewTabQuoation] = true;
+                Permissions[EUserPermission.ExportQuotation] = true;                
             }
         }
 
@@ -72,6 +159,9 @@ namespace PFD
         ViewTabJointDesign = 10,
         ViewTabFootingDesign = 11,
         ViewTabPartList = 12,
-        ViewTabQuoation = 13
+        ViewTabQuoation = 13,
+
+        ExportQuotation = 14,
+        ExportReport = 15
     }
 }

@@ -1155,6 +1155,29 @@ namespace PFD
                 Part_List.Content = null;
                 Quotation.Content = null;
             }
+
+            SetUIElementsVisibilityAccordingPermissions();
+        }
+
+        private void SetUIElementsVisibilityAccordingPermissions()
+        {
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabGeneral)) General.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabMember_Input)) Member_Input.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabDoorsAndWindows)) DoorsAndWindows.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabJoint_Input)) Joint_Input.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabFooting_Input)) Footing_Input.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabLoads)) Loads.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabLoadCases)) Load_Cases.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabLoadCombinations)) Load_Combinations.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabInternalForces)) Internal_Forces.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabMemberDesign)) Member_Design.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabJointDesign)) Joint_Design.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabFootingDesign)) Footing_Design.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabPartList)) Part_List.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabQuoation)) Quotation.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ExportQuotation)) ExportQuotation.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ExportReport)) { ExportWord.Visibility = Visibility.Collapsed; ExportPDF.Visibility = Visibility.Collapsed; }
+
         }
 
         private void SetAccesoriesButtonsVisibility()
