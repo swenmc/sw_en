@@ -102,10 +102,10 @@ namespace PFD
             if (!CheckLicenseKey()) { MessageBox.Show("Not valid license key!"); this.Close(); return; }
 
             // Initial Screen
-            SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
-            splashScreen.Show(false);
+            //SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
+            //splashScreen.Show(false);
             InitializeComponent();
-            splashScreen.Close(TimeSpan.FromMilliseconds(1000));
+            //splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
             // Set items in comboboxes and default values
             SetInitialItemsInComboboxes();
