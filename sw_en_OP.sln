@@ -152,8 +152,6 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupPFD", "SetupPFD\SetupP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicenseGenerator", "Test Projects\LicenseGenerator\LicenseGenerator.csproj", "{137CD750-CDB4-48D6-A72B-1876481D161D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTests", "Test Projects\AutoTests\AutoTests.csproj", "{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1106,26 +1104,6 @@ Global
 		{137CD750-CDB4-48D6-A72B-1876481D161D}.Release|x64.Build.0 = Release|Any CPU
 		{137CD750-CDB4-48D6-A72B-1876481D161D}.Release|x86.ActiveCfg = Release|Any CPU
 		{137CD750-CDB4-48D6-A72B-1876481D161D}.Release|x86.Build.0 = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|ARM.Build.0 = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|x64.Build.0 = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Debug|x86.Build.0 = Debug|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|ARM.ActiveCfg = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|ARM.Build.0 = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|x64.ActiveCfg = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|x64.Build.0 = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|x86.ActiveCfg = Release|Any CPU
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1183,11 +1161,10 @@ Global
 		{4E4269AB-A7B8-4E8C-B5FD-B3563F61BCF4} = {14CFC29E-FCF8-42C0-AA2E-9292034B04C0}
 		{BE0ADD86-073D-44E1-9B2E-66F2A523F203} = {E380D78C-3BFC-4FCB-B5A1-84CD77C5BF97}
 		{137CD750-CDB4-48D6-A72B-1876481D161D} = {14CFC29E-FCF8-42C0-AA2E-9292034B04C0}
-		{A2EEABEC-FAD5-4874-B7C5-3FE304F25CBA} = {14CFC29E-FCF8-42C0-AA2E-9292034B04C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
