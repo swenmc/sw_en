@@ -6,8 +6,9 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen"        
         WindowState="Maximized"
+        Name="PFDMainWindow"
         Icon="Resources/FSlogoNew_PFD.png"
         Title="FS - Engenius" Height="1000" Width="2500">
     <Window.Resources>
