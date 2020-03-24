@@ -10,11 +10,18 @@ namespace DATABASE
 {
     public static class CMaterialManager
     {
+        private static Dictionary<string, CMatProperties> materialsProps = null;
+        private static Dictionary<string, CMatPropertiesBOLT> materialsPropsBOLT = null;
+        private static Dictionary<string, CMatPropertiesRC> materialsPropsRC = null;
+        private static Dictionary<string, CMatPropertiesRF> materialsPropsRF = null;
+
         // STEEL
         public static Dictionary<string, CMatProperties> LoadSteelMaterialProperties()
         {
+            if (materialsProps != null) return materialsProps;
+
             CMatProperties mat = null;
-            Dictionary<string, CMatProperties> items = new Dictionary<string, CMatProperties>();
+            materialsProps = new Dictionary<string, CMatProperties>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
             {
@@ -25,11 +32,11 @@ namespace DATABASE
                     while (reader.Read())
                     {
                         mat = GetMaterialProperties(reader);
-                        items.Add(mat.Grade, mat);
+                        materialsProps.Add(mat.Grade, mat);
                     }
                 }
             }
-            return items;
+            return materialsProps;
         }
         public static List<CMaterialPropertiesText> LoadMaterialPropertiesNamesSymbolsUnits(string databaseName)
         {
@@ -194,28 +201,43 @@ namespace DATABASE
             properties = LoadSteelMaterialPropertiesString(name);
             return FillListOfSteelMaterialPropertiesString(properties);
         }
+                
         public static void LoadSteelMaterialProperties(CMat_03_00 mat, string matName) // Grade
         {
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
+            if (materialsProps == null) materialsProps = CMaterialManager.LoadSteelMaterialProperties();
 
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from materialSteelAS4600 WHERE Grade = @Grade", conn);
-                command.Parameters.AddWithValue("@Grade", matName);
+            CMatProperties s = null;
+            materialsProps.TryGetValue(matName, out s);
+            if (s == null) return;
 
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        mat.Name = matName;
-
-                        SetSteelMaterialProperties(reader, ref mat);
-                    }
-                }
-            }
+            //System.Diagnostics.Trace.WriteLine($"{count++} LoadSteelMaterialProperties from DB {matName}");
+            SetSteelMaterialProperties(s, ref mat);
         }
+
+        //refaktoring 24.3.2020 - tato metoda je neefektivna a volala sa viac ako 500 krat, ist tolko krat priamo do DB je neefektivne
+        //public static void LoadSteelMaterialProperties(CMat_03_00 mat, string matName) // Grade
+        //{
+        //    System.Diagnostics.Trace.WriteLine($"{count++} LoadSteelMaterialProperties from DB {matName}");
+        //    NumberFormatInfo nfi = new NumberFormatInfo();
+        //    nfi.NumberDecimalSeparator = ".";
+
+        //    using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
+        //    {
+        //        conn.Open();
+        //        SQLiteCommand command = new SQLiteCommand("Select * from materialSteelAS4600 WHERE Grade = @Grade", conn);
+        //        command.Parameters.AddWithValue("@Grade", matName);
+
+        //        using (SQLiteDataReader reader = command.ExecuteReader())
+        //        {
+        //            if (reader.Read())
+        //            {
+        //                mat.Name = matName;
+
+        //                SetSteelMaterialProperties(reader, ref mat);
+        //            }
+        //        }
+        //    }
+        //}
         private static void SetSteelMaterialProperties(SQLiteDataReader reader, ref CMat_03_00 mat)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -451,8 +473,9 @@ namespace DATABASE
 
         public static Dictionary<string, CMatPropertiesRC> LoadMaterialPropertiesRC()
         {
+            if (materialsPropsRC != null) return materialsPropsRC;
             CMatPropertiesRC mat = null;
-            Dictionary<string, CMatPropertiesRC> items = new Dictionary<string, CMatPropertiesRC>();
+            materialsPropsRC = new Dictionary<string, CMatPropertiesRC>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
             {
@@ -463,31 +486,38 @@ namespace DATABASE
                     while (reader.Read())
                     {
                         mat = GetMaterialProperties_RC(reader);
-                        items.Add(mat.Grade, mat);
+                        materialsPropsRC.Add(mat.Grade, mat);
                     }
                 }
             }
-            return items;
+            return materialsPropsRC;
         }
 
         public static CMatPropertiesRC LoadMaterialPropertiesRC(string name)
         {
-            CMatPropertiesRC properties = null;
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from Concrete_NZS3101 WHERE Grade = @Grade", conn);
-                command.Parameters.AddWithValue("@Grade", name);
+            if (materialsPropsRC == null) materialsPropsRC = CMaterialManager.LoadMaterialPropertiesRC();
 
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        properties = GetMaterialProperties_RC(reader);
-                    }
-                }
-            }
-            return properties;
+            CMatPropertiesRC s = null;
+            materialsPropsRC.TryGetValue(name, out s);
+            return s;
+
+            //24.3.2020 refaktorujem neefektivne metody s castym priamym pristupom do DB
+            //CMatPropertiesRC properties = null;
+            //using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
+            //{
+            //    conn.Open();
+            //    SQLiteCommand command = new SQLiteCommand("Select * from Concrete_NZS3101 WHERE Grade = @Grade", conn);
+            //    command.Parameters.AddWithValue("@Grade", name);
+
+            //    using (SQLiteDataReader reader = command.ExecuteReader())
+            //    {
+            //        if (reader.Read())
+            //        {
+            //            properties = GetMaterialProperties_RC(reader);
+            //        }
+            //    }
+            //}
+            //return properties;
         }
 
         private static List<string> FillListOfMaterialPropertiesString_RC(CMaterialProperties_RC properties)
@@ -533,8 +563,10 @@ namespace DATABASE
 
         public static Dictionary<string, CMatPropertiesRF> LoadMaterialPropertiesRF()
         {
+            if (materialsPropsRF != null) return materialsPropsRF;
+
             CMatPropertiesRF mat = null;
-            Dictionary<string, CMatPropertiesRF> items = new Dictionary<string, CMatPropertiesRF>();
+            materialsPropsRF = new Dictionary<string, CMatPropertiesRF>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
             {
@@ -545,31 +577,38 @@ namespace DATABASE
                     while (reader.Read())
                     {
                         mat = GetMaterialProperties_RF(reader);
-                        items.Add(mat.Grade, mat);
+                        materialsPropsRF.Add(mat.Grade, mat);
                     }
                 }
             }
-            return items;
+            return materialsPropsRF;
         }
 
         public static CMatPropertiesRF LoadMaterialPropertiesRF(string name)
         {
-            CMatPropertiesRF properties = null;
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from Reinforcement_NZS4671 WHERE Grade = @Grade", conn);
-                command.Parameters.AddWithValue("@Grade", name);
+            if (materialsPropsRF == null) materialsPropsRF = CMaterialManager.LoadMaterialPropertiesRF();
 
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        properties = GetMaterialProperties_RF(reader);
-                    }
-                }
-            }
-            return properties;
+            CMatPropertiesRF s = null;
+            materialsPropsRF.TryGetValue(name, out s);
+            return s;
+
+            //24.3.2020 refaktorujem takto neefektivne metody, ktore idu casto priamo do DB
+            //CMatPropertiesRF properties = null;
+            //using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
+            //{
+            //    conn.Open();
+            //    SQLiteCommand command = new SQLiteCommand("Select * from Reinforcement_NZS4671 WHERE Grade = @Grade", conn);
+            //    command.Parameters.AddWithValue("@Grade", name);
+
+            //    using (SQLiteDataReader reader = command.ExecuteReader())
+            //    {
+            //        if (reader.Read())
+            //        {
+            //            properties = GetMaterialProperties_RF(reader);
+            //        }
+            //    }
+            //}
+            //return properties;
         }
 
         // BOLTS / ANCHORS / THREATENED RODS
@@ -603,8 +642,10 @@ namespace DATABASE
 
         public static Dictionary<string, CMatPropertiesBOLT> LoadMaterialPropertiesBOLT()
         {
+            if (materialsPropsBOLT != null) return materialsPropsBOLT;
+
             CMatPropertiesBOLT mat = null;
-            Dictionary<string, CMatPropertiesBOLT> items = new Dictionary<string, CMatPropertiesBOLT>();
+            materialsPropsBOLT = new Dictionary<string, CMatPropertiesBOLT>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BoltsSQLiteDB"].ConnectionString))
             {
@@ -615,31 +656,38 @@ namespace DATABASE
                     while (reader.Read())
                     {
                         mat = GetMaterialProperties_BOLT(reader);
-                        items.Add(mat.Grade, mat);
+                        materialsPropsBOLT.Add(mat.Grade, mat);
                     }
                 }
             }
-            return items;
+            return materialsPropsBOLT;
         }
-
+        
         public static CMatPropertiesBOLT LoadMaterialPropertiesBOLT(string name)
         {
-            CMatPropertiesBOLT properties = null;
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BoltsSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from Material WHERE Grade = @Grade", conn);
-                command.Parameters.AddWithValue("@Grade", name);
+            if (materialsPropsBOLT == null) materialsPropsBOLT = CMaterialManager.LoadMaterialPropertiesBOLT();
 
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        properties = GetMaterialProperties_BOLT(reader);
-                    }
-                }
-            }
-            return properties;
+            CMatPropertiesBOLT s = null;
+            materialsPropsBOLT.TryGetValue(name, out s);
+            return s;
+
+            //CMatPropertiesBOLT properties = null;
+            //System.Diagnostics.Trace.WriteLine($"{count++} LoadMaterialPropertiesBOLT from DB {name}");
+            //using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BoltsSQLiteDB"].ConnectionString))
+            //{
+            //    conn.Open();
+            //    SQLiteCommand command = new SQLiteCommand("Select * from Material WHERE Grade = @Grade", conn);
+            //    command.Parameters.AddWithValue("@Grade", name);
+
+            //    using (SQLiteDataReader reader = command.ExecuteReader())
+            //    {
+            //        if (reader.Read())
+            //        {
+            //            properties = GetMaterialProperties_BOLT(reader);
+            //        }
+            //    }
+            //}
+            //return properties;
         }
     }
 }
