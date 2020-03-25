@@ -140,7 +140,7 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
-    <Compile Include="Infrastructure\Calculations\CMemberCalculations_IF_D_LC.cs" />
+    <Compile Include="Infrastructure\Calculations\CMemberCalculations.cs" />
     <Compile Include="Infrastructure\CPermissions.cs" />
     <Compile Include="Infrastructure\QuotationHelper.cs" />
     <Compile Include="Infrastructure\BaseHelper.cs" />

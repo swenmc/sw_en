@@ -122,7 +122,8 @@ namespace PFD.Infrastructure
             // Problem bol v tom,ze pocitali sa IF aj pre load case aj pre load combination, pricom pre load case bezal progress ale pre loadCombination uz nie, ani pre deflections
             
             //Calculate_InternalForces();
-            Calculate_InternalForces2();
+            //Async metoda s vyuzitim vsetkych vlakien procesora
+            Calculate_InternalForcesAsync();
 
             Calculate_MemberDesign_LoadCombinations();
 
@@ -160,7 +161,13 @@ namespace PFD.Infrastructure
             }
         }
 
-        public void Calculate_InternalForces2()
+        //TO Mato
+        //chcelo by to overit tuto metodu, ci je naozaj dobra, lebo nastalo brutalne zrychlenie vypoctu Calculate
+        //ide v podstate o to,ze CMemberCalculation ma interne 3 metody a kazda akoby riesi len ten konkretny member
+        // v Calculate_InternalForces_LoadCombinations som si vsimol,ze berie vysledky z Calculate_InternalForcesAndDeflections_LoadCases metody.
+        // pokial jej stacia vysledky len pre ten dany member ktory sa pocita, tak je to v poriadku vsetko a vypocet je mnohonasobne rychlejsi
+
+        public void Calculate_InternalForcesAsync()
         {
             int count = 0;
             SolverWindow.SetMemberDesignLoadCase();
@@ -170,29 +177,12 @@ namespace PFD.Infrastructure
             // Pre load cases nebudem urcovat MomentValuesforCb, pretoze neposudzujeme samostatne load case a pre kombinacie je to nepouzitelne, pretoze hodnoty Mmax mozu byt pre kazdy load case na inej casti segmentu, takze sa to neda pre segment
             // superponovat, ale je potrebne urcit maximum Mmax pre segment z priebehu vnutornych sil v kombinacii
 
-            //foreach (CMember m in Model.m_arrMembers)
-            //{
-            //    if (!m.BIsGenerated) continue;
-            //    if (!m.BIsSelectedForIFCalculation) continue; // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
-
-            //    SolverWindow.SetMemberDesignLoadCaseProgress(++count, membersIFCalcCount);
-
-            //    Calculate_InternalForcesAndDeflections_LoadCases(m);
-            //    Calculate_InternalForces_LoadCombinations(m);
-            //    Calculate_Deflections_LoadCombinations(m);
-
-            //    SolverWindow.Progress += step;
-            //    SolverWindow.UpdateProgress();
-            //}
-
-
-            
             List<WaitHandle> waitHandles = new List<WaitHandle>();
             int maxWaitHandleCount = 64;  //maximum is 64
 
-            List<CMemberCalculations_IF_D_LC> recs = new List<CMemberCalculations_IF_D_LC>();
+            List<CMemberCalculations> recs = new List<CMemberCalculations>();
             List<IAsyncResult> results = new List<IAsyncResult>();
-            CMemberCalculations_IF_D_LC recalc = null;
+            CMemberCalculations recalc = null;
             IAsyncResult result = null;
             Object lockObject = new Object();
 
@@ -201,9 +191,9 @@ namespace PFD.Infrastructure
                 if (!m.BIsGenerated) continue;
                 if (!m.BIsSelectedForIFCalculation) continue; // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
 
-                recalc = new CMemberCalculations_IF_D_LC(lockObject);
-                result = recalc.BeginMemberCalculations_IF_D_LC(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments, fx_positions, Model, frameModels,
-                    UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, null, null);
+                recalc = new CMemberCalculations(lockObject);
+                result = recalc.BeginMemberCalculations(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments, fx_positions, Model, frameModels,
+                    UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, DeterminateMemberLocalDisplacementsForULS, null, null);
                 waitHandles.Add(result.AsyncWaitHandle);
                 recs.Add(recalc);
                 results.Add(result);
@@ -211,10 +201,12 @@ namespace PFD.Infrastructure
                 {
                     int index = WaitHandle.WaitAny(waitHandles.ToArray());
                     waitHandles.RemoveAt(index);
-                    recs[index].EndMemberCalculations_IF_D_LC(results[index]);
+                    recs[index].EndMemberCalculations(results[index]);
 
                     MemberInternalForcesInLoadCases.AddRange(recs[index].MemberInternalForcesInLoadCases);
                     MemberDeflectionsInLoadCases.AddRange(recs[index].MemberDeflectionsInLoadCases);
+                    MemberInternalForcesInLoadCombinations.AddRange(recs[index].MemberInternalForcesInLoadCombinations);
+                    MemberDeflectionsInLoadCombinations.AddRange(recs[index].MemberDeflectionsInLoadCombinations);
 
                     recs.RemoveAt(index);
                     results.RemoveAt(index);
@@ -230,10 +222,13 @@ namespace PFD.Infrastructure
             {
                 int index = WaitHandle.WaitAny(waitHandles.ToArray());
                 waitHandles.RemoveAt(index);
-                recs[index].EndMemberCalculations_IF_D_LC(results[index]);
+                recs[index].EndMemberCalculations(results[index]);
 
                 MemberInternalForcesInLoadCases.AddRange(recs[index].MemberInternalForcesInLoadCases);
                 MemberDeflectionsInLoadCases.AddRange(recs[index].MemberDeflectionsInLoadCases);
+                MemberInternalForcesInLoadCombinations.AddRange(recs[index].MemberInternalForcesInLoadCombinations);
+                MemberDeflectionsInLoadCombinations.AddRange(recs[index].MemberDeflectionsInLoadCombinations);
+                MemberDeflectionsInLoadCombinations.AddRange(recs[index].MemberDeflectionsInLoadCombinations);
 
                 recs.RemoveAt(index);
                 results.RemoveAt(index);
@@ -247,7 +242,6 @@ namespace PFD.Infrastructure
             waitHandles.Clear();
             recs.Clear();
             results.Clear();
-
         }
 
 
@@ -488,6 +482,282 @@ namespace PFD.Infrastructure
                 }
             }
         }
+
+        //public void Calculate_MemberDesign_LoadCombinationsAsync()
+        //{
+        //    sDesignResults_ULSandSLS.sLimitStateType = "ULS and SLS";
+        //    sDesignResults_ULS.sLimitStateType = "ULS";
+        //    sDesignResults_SLS.sLimitStateType = "SLS";
+
+        //    // Design of members
+
+        //    int count = 0;
+        //    SolverWindow.SetMemberDesignLoadCombination();
+        //    SolverWindow.SetMemberDesignLoadCombinationProgress(count, membersDesignCalcCount);
+
+        //    List<WaitHandle> waitHandles = new List<WaitHandle>();
+        //    int maxWaitHandleCount = 64;  //maximum is 64
+
+        //    List<CMemberCalculations> recs = new List<CMemberCalculations>();
+        //    List<IAsyncResult> results = new List<IAsyncResult>();
+        //    CMemberCalculations recalc = null;
+        //    IAsyncResult result = null;
+        //    Object lockObject = new Object();
+
+        //    foreach (CMember m in Model.m_arrMembers)
+        //    {
+        //        if (!m.BIsGenerated) continue;
+        //        if (!m.BIsSelectedForIFCalculation) continue; // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+
+        //        recalc = new CMemberCalculations(lockObject);
+        //        result = recalc.BeginMemberCalculations(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments, fx_positions, Model, frameModels,
+        //            UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, DeterminateMemberLocalDisplacementsForULS, null, null);
+        //        waitHandles.Add(result.AsyncWaitHandle);
+        //        recs.Add(recalc);
+        //        results.Add(result);
+        //        if (waitHandles.Count >= maxWaitHandleCount)
+        //        {
+        //            int index = WaitHandle.WaitAny(waitHandles.ToArray());
+        //            waitHandles.RemoveAt(index);
+        //            recs[index].EndMemberCalculations(results[index]);
+
+        //            MemberInternalForcesInLoadCases.AddRange(recs[index].MemberInternalForcesInLoadCases);
+        //            MemberDeflectionsInLoadCases.AddRange(recs[index].MemberDeflectionsInLoadCases);
+        //            MemberInternalForcesInLoadCombinations.AddRange(recs[index].MemberInternalForcesInLoadCombinations);
+        //            MemberDeflectionsInLoadCombinations.AddRange(recs[index].MemberDeflectionsInLoadCombinations);
+
+        //            recs.RemoveAt(index);
+        //            results.RemoveAt(index);
+        //            count++;
+
+        //            SolverWindow.SetMemberDesignLoadCaseProgress(count, membersIFCalcCount);
+        //            SolverWindow.Progress += step;
+        //            SolverWindow.UpdateProgress();
+        //        }
+        //    }
+
+        //    while (waitHandles.Count > 0)
+        //    {
+        //        int index = WaitHandle.WaitAny(waitHandles.ToArray());
+        //        waitHandles.RemoveAt(index);
+        //        recs[index].EndMemberCalculations(results[index]);
+
+        //        MemberInternalForcesInLoadCases.AddRange(recs[index].MemberInternalForcesInLoadCases);
+        //        MemberDeflectionsInLoadCases.AddRange(recs[index].MemberDeflectionsInLoadCases);
+        //        MemberInternalForcesInLoadCombinations.AddRange(recs[index].MemberInternalForcesInLoadCombinations);
+        //        MemberDeflectionsInLoadCombinations.AddRange(recs[index].MemberDeflectionsInLoadCombinations);
+        //        MemberDeflectionsInLoadCombinations.AddRange(recs[index].MemberDeflectionsInLoadCombinations);
+
+        //        recs.RemoveAt(index);
+        //        results.RemoveAt(index);
+        //        count++;
+
+        //        SolverWindow.SetMemberDesignLoadCaseProgress(count, membersIFCalcCount);
+        //        SolverWindow.Progress += step;
+        //        SolverWindow.UpdateProgress();
+        //    }
+
+        //    waitHandles.Clear();
+        //    recs.Clear();
+        //    results.Clear();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //    foreach (CMember m in Model.m_arrMembers)
+        //    {
+        //        if (!m.BIsGenerated) continue;
+        //        if (!m.BIsSelectedForDesign) continue; // Only structural members (not auxiliary members or members with deactivated design)
+
+        //        SolverWindow.SetMemberDesignLoadCombinationProgress(++count, membersDesignCalcCount);
+
+        //        foreach (CLoadCombination lcomb in Model.m_arrLoadCombs)
+        //        {
+        //            if (lcomb.eLComType == ELSType.eLS_ULS) // Combination Type - ULS
+        //            {
+        //                // Member design internal forces
+        //                designInternalForces[] sMemberDIF_x;
+
+        //                // Member Design
+        //                CMemberDesign memberDesignModel = new CMemberDesign();
+        //                // TODO - sBucklingLengthFactors_design  a sMomentValuesforCb_design nemaju byt priradene prutu ale segmentu pruta pre kazdy load case / load combination
+
+        //                // Set basic internal forces, buckling lengths and bending moments for determination of Cb for member and load combination
+        //                CMemberInternalForcesInLoadCombinations mInternal_forces_and_design_parameters = MemberInternalForcesInLoadCombinations.Find(i => i.Member.ID == m.ID && i.LoadCombination.ID == lcomb.ID);
+
+        //                // Design check procedure
+        //                memberDesignModel.SetDesignForcesAndMemberDesign_PFD(MUseCRSCGeometricalAxes,
+        //                    MShearDesignAccording334,
+        //                    MIgnoreWebStiffeners,
+        //                    iNumberOfDesignSections,
+        //                    m,
+        //                    mInternal_forces_and_design_parameters.InternalForces, // TO Ondrej - toto by sme asi mohli predavat cele ako jeden parameter mInternal_forces_and_design_parameters namiesto troch
+        //                    mInternal_forces_and_design_parameters.BucklingLengthFactors,
+        //                    mInternal_forces_and_design_parameters.BendingMomentValues,
+        //                    out sMemberDIF_x);
+
+        //                // Add design check results to the list
+        //                MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], mInternal_forces_and_design_parameters.BucklingLengthFactors[memberDesignModel.fMaximumDesignRatioLocationID], mInternal_forces_and_design_parameters.BendingMomentValues[memberDesignModel.fMaximumDesignRatioLocationID]));
+
+        //                // Set maximum design ratio of whole structure
+        //                if (memberDesignModel.fMaximumDesignRatio > sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure)
+        //                {
+        //                    sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+        //                    sDesignResults_ULSandSLS.GoverningLoadCombinationStructure = lcomb;
+        //                    sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember = m;
+        //                }
+
+        //                if (memberDesignModel.fMaximumDesignRatio > sDesignResults_ULS.fMaximumDesignRatioWholeStructure)
+        //                {
+        //                    sDesignResults_ULS.fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+        //                    sDesignResults_ULS.GoverningLoadCombinationStructure = lcomb;
+        //                    sDesignResults_ULS.MaximumDesignRatioWholeStructureMember = m;
+        //                }
+
+        //                // Joint Design
+        //                CJointDesign jointDesignModel = new CJointDesign();
+        //                designInternalForces sjointStartDIF_x;
+        //                designInternalForces sjointEndDIF_x;
+        //                CConnectionJointTypes jointStart;
+        //                CConnectionJointTypes jointEnd;
+
+        //                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, MShearDesignAccording334, MUniformShearDistributionInAnchors, Model, m, FootingCalcSettings, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
+
+        //                // Validation - Main member of joint must be defined
+        //                if (jointStart.m_MainMember == null)
+        //                    throw new ArgumentNullException("Error" + "Joint No: " + jointStart.ID + " Main member is not defined.");
+        //                if (jointEnd.m_MainMember == null)
+        //                    throw new ArgumentNullException("Error" + "Joint No: " + jointEnd.ID + " Main member is not defined.");
+
+        //                // Start Joint
+        //                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointStart, lcomb, jointDesignModel.fDesignRatio_Start, sjointStartDIF_x));
+
+        //                // End Joint
+        //                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointEnd, lcomb, jointDesignModel.fDesignRatio_End, sjointEndDIF_x));
+
+        //                // Output (for debugging - member results)
+        //                bool bDebugging = false; // Testovacie ucely
+        //                if (bDebugging)
+        //                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+        //                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+        //                                      "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString() + "\n");
+
+        //                // Output (for debugging - member connection / joint results)
+        //                if (bDebugging)
+        //                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+        //                                      "Joint ID: " + jointStart.ID + "\t | " +
+        //                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+        //                                      "Design Ratio: " + Math.Round(jointDesignModel.fDesignRatio_Start, 3).ToString() + "\n");
+
+        //                if (bDebugging)
+        //                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+        //                                      "Joint ID: " + jointEnd.ID + "\t | " +
+        //                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+        //                                      "Design Ratio: " + Math.Round(jointDesignModel.fDesignRatio_End, 3).ToString() + "\n");
+
+        //                SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULSandSLS);
+        //                SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULS);
+        //            }
+        //            else // Combination Type - SLS (TODO - pre urcenie Ieff potrebujeme spocitat aj strength)
+        //            {
+        //                // Member design deflections
+        //                designDeflections[] sMemberDDeflection_x;
+
+        //                // Member Design
+        //                CMemberDesign memberDesignModel = new CMemberDesign();
+
+        //                // Set basic deflections for member and load combination
+        //                CMemberDeflectionsInLoadCombinations mDeflections = MemberDeflectionsInLoadCombinations.Find(i => i.Member.ID == m.ID && i.LoadCombination.ID == lcomb.ID);
+
+        //                float fDeflectionLimitDenominator_Fraction = 1; // 25-1000
+        //                float fDeflectionLimit = 0f;
+
+        //                // Find group of current member (definition of member type)
+        //                CMemberGroup currentMemberTypeGroupOfMembers = Model.listOfModelMemberGroups.FirstOrDefault(gr => gr.MemberType_FS == m.EMemberType);
+
+        //                // To Mato - pozor ak su to dvere, okno, tak currentMemberTypeGroupOfMembers je null
+        //                // Ak je to aktualne, tak musime teda este doplnit funkcionalitu tak, aby sa pre pruty blokov tiez vytvorili skupiny
+
+        //                if (currentMemberTypeGroupOfMembers != null)
+        //                {
+        //                    // Set deflection limit depending of member type and load combination type
+        //                    if (lcomb.IsCombinationOfPermanentLoadCasesOnly())
+        //                    {
+        //                        fDeflectionLimitDenominator_Fraction = currentMemberTypeGroupOfMembers.DeflectionLimitFraction_Denominator_PermanentLoad;
+        //                        fDeflectionLimit = currentMemberTypeGroupOfMembers.DeflectionLimit_PermanentLoad;
+        //                    }
+        //                    else
+        //                    {
+        //                        fDeflectionLimitDenominator_Fraction = currentMemberTypeGroupOfMembers.DeflectionLimitFraction_Denominator_Total;
+        //                        fDeflectionLimit = currentMemberTypeGroupOfMembers.DeflectionLimit_Total;
+        //                    }
+        //                }
+
+        //                // Design check procedure
+        //                memberDesignModel.SetDesignDeflections_PFD(MUseCRSCGeometricalAxes,
+        //                    MIsGableRoofModel,
+        //                    iNumberOfDesignSections,
+        //                    m,
+        //                    fDeflectionLimitDenominator_Fraction,
+        //                    fDeflectionLimit,
+        //                    mDeflections.Deflections,
+        //                    out sMemberDDeflection_x);
+
+        //                // Add design check results to the list
+        //                MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
+
+        //                // Set maximum design ratio of whole structure
+        //                if (memberDesignModel.fMaximumDesignRatio > sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure)
+        //                {
+        //                    sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+        //                    sDesignResults_ULSandSLS.GoverningLoadCombinationStructure = lcomb;
+        //                    sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember = m;
+        //                }
+
+        //                if (memberDesignModel.fMaximumDesignRatio > sDesignResults_SLS.fMaximumDesignRatioWholeStructure)
+        //                {
+        //                    sDesignResults_SLS.fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+        //                    sDesignResults_SLS.GoverningLoadCombinationStructure = lcomb;
+        //                    sDesignResults_SLS.MaximumDesignRatioWholeStructureMember = m;
+        //                }
+
+        //                // Output (for debugging)
+        //                bool bDebugging = false; // Testovacie ucely
+        //                if (bDebugging)
+        //                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+        //                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+        //                                      "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString());
+
+        //                SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULSandSLS);
+        //                SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_SLS);
+        //            }
+        //        }
+
+        //        SolverWindow.Progress += step;
+        //        SolverWindow.UpdateProgress();
+        //    }
+        //}
 
         public void Calculate_MemberDesign_LoadCombinations()
         {
