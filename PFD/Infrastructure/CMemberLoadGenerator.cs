@@ -1648,7 +1648,11 @@ namespace PFD
 
         public LoadCasesMemberLoads GetGeneratedMemberLoads(CLoadCase[] m_arrLoadCases, CMember[] allMembersInModel)
         {
+            //DateTime start = DateTime.Now;
             LoadCasesMemberLoads loadCasesMemberLoads = new LoadCasesMemberLoads();
+
+            //int totalCyclesCount = 0;
+            //int generateMemberLoad = 0;
 
             foreach (CLoadCase lc in m_arrLoadCases)
             {
@@ -1663,21 +1667,34 @@ namespace PFD
                     {
                         foreach (FreeSurfaceLoadsMemberTypeData mtypedata in csload.listOfLoadedMemberTypeData)
                         {
+                            //totalCyclesCount++;
                             if (m.EMemberType == mtypedata.memberType) // Prut je rovnakeho typu ako je niektory z typov prutov zo skupiny typov ktoru plocha zatazuje
                             {
                                 if (csload is CSLoad_FreeUniformGroup)
                                 {
                                     Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)csload).CreateTransformCoordGroupOfLoadGroup();
+                                    //System.Diagnostics.Trace.WriteLine("---->  ----> after CreateTransformCoordGroupOfLoadGroup(): " + (DateTime.Now - start).TotalMilliseconds);
                                     foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)csload).LoadList)
-                                    {
+                                    {                                        
                                         if (MemberLiesOnSurfaceLoadPlane(l, m, loadGroupTransform)) // Prut lezi na ploche
                                         {
                                             if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                             if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
+                                            {
+                                                //generateMemberLoad++;
                                                 GenerateMemberLoad(l, m, lc.MType_LS, lc.Type, lc.LC_Wind_Type, lc.MainDirection, lc.Type == ELCType.eWind ? wind : null, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                                //System.Diagnostics.Trace.WriteLine($"----> {totalCyclesCount}  ----> {generateMemberLoad} after GenerateMemberLoad: " + (DateTime.Now - start).TotalMilliseconds);
+                                            }
+                                            //System.Diagnostics.Trace.WriteLine($"---->  {totalCyclesCount}----> after LoadList : MemberLiesOnSurfaceLoadPlane" + (DateTime.Now - start).TotalMilliseconds);
                                         }
-                                        else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
+                                        else
+                                        {
+                                            /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/
+                                            //System.Diagnostics.Trace.WriteLine($"---->  {totalCyclesCount}----> after LoadList : Not MemberLiesOnSurfaceLoadPlane" + (DateTime.Now - start).TotalMilliseconds);
+                                            continue;
+                                        }
+                                        
                                     }
                                 }
                                 else if (csload is CSLoad_FreeUniform)
@@ -1689,9 +1706,16 @@ namespace PFD
                                         if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                         if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
+                                        {
                                             GenerateMemberLoad(l, m, lc.MType_LS, lc.Type, lc.LC_Wind_Type, lc.MainDirection, lc.Type == ELCType.eWind ? wind : null, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                            //System.Diagnostics.Trace.WriteLine($"----> {totalCyclesCount} ----> {generateMemberLoad} after GenerateMemberLoad: " + (DateTime.Now - start).TotalMilliseconds);
+                                        }
+                                        //System.Diagnostics.Trace.WriteLine($"---->  {totalCyclesCount}----> after CSLoad_FreeUniform : YES MemberLiesOnSurfaceLoadPlane" + (DateTime.Now - start).TotalMilliseconds);
                                     }
-                                    else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
+                                    else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/
+                                        //System.Diagnostics.Trace.WriteLine($"---->  {totalCyclesCount}----> after CSLoad_FreeUniform : NO MemberLiesOnSurfaceLoadPlane" + (DateTime.Now - start).TotalMilliseconds);
+                                        continue;
+                                    }                                    
                                 }
                             } // member type is included in group of types
                         } //foreach memberType in group of types loaded by surface load
@@ -1701,12 +1725,14 @@ namespace PFD
                 loadCasesMemberLoads.Add(lc.ID, listOfMemberLoads);
             } //foreach loadcase
 
+            //System.Diagnostics.Trace.WriteLine("----> totalCyclesCount: " + totalCyclesCount);
             return loadCasesMemberLoads;
         }
 
         private static bool MemberLiesOnSurfaceLoadPlane(CSLoad_FreeUniform l, CMember m, Transform3DGroup loadGroupTransform)
         {
-            l.PointsGCS = GetSurfaceLoadCoordinates_GCS(l, loadGroupTransform); // Positions in global coordinate system GCS
+            //25.3.2020 - doplneny if aby zbytovne nevytvaralo uz vytvorene points
+            if(l.PointsGCS == null) l.PointsGCS = GetSurfaceLoadCoordinates_GCS(l, loadGroupTransform); // Positions in global coordinate system GCS
 
             if (l.PointsGCS.Count < 2) { return false; }
 
@@ -1723,13 +1749,15 @@ namespace PFD
             Point3D pStartLCS = inverseTrans.Transform(pStart);
             Point3D pEndLCS = inverseTrans.Transform(pEnd);
 
+            //zakomentovane...nevidim pouzitie 25.3.2020
             // Transformacia bodov plochy do LCS pruta
-            Transform3DGroup trans = m.CreateTransformCoordGroup(m, true);
-            GeneralTransform3D inverseTrans2 = trans.Inverse;
-            List<Point3D> surfaceDefPointsGCS = GetSurfaceLoadCoordinates_GCS(l, loadGroupTransform);
+            //Transform3DGroup trans = m.CreateTransformCoordGroup(m, true);
+            //GeneralTransform3D inverseTrans2 = trans.Inverse;
+            //List<Point3D> surfaceDefPointsGCS = GetSurfaceLoadCoordinates_GCS(l, loadGroupTransform);
 
-            List<Point3D> surfaceDefPointsLCSMember = new List<Point3D>();
-            foreach (Point3D p in surfaceDefPointsGCS) surfaceDefPointsLCSMember.Add(inverseTrans.Transform(p));
+            //zakomentovane...nevidim pouzitie 25.3.2020
+            //List<Point3D> surfaceDefPointsLCSMember = new List<Point3D>();
+            //foreach (Point3D p in surfaceDefPointsGCS) surfaceDefPointsLCSMember.Add(inverseTrans.Transform(p));
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2051,7 +2079,7 @@ namespace PFD
         }
 
         public static GeneralTransform3D GetSurfaceLoadTransformFromGCSToLCS(CSLoad_FreeUniform load, Transform3D groupTransform)
-        {
+        {            
             Transform3DGroup trans = new Transform3DGroup();
             trans.Children.Add(load.CreateTransformCoordGroup());
             if (groupTransform != null)
