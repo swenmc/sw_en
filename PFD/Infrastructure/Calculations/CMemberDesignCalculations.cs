@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PFD.Infrastructure
@@ -119,7 +120,10 @@ namespace PFD.Infrastructure
 
             // To Mato - zamyslam sa preco pocitame aj IF a Deflections for LoadCases aj pre LoadCombinations
             // Problem bol v tom,ze pocitali sa IF aj pre load case aj pre load combination, pricom pre load case bezal progress ale pre loadCombination uz nie, ani pre deflections
-            Calculate_InternalForces();
+            
+            //Calculate_InternalForces();
+            Calculate_InternalForces2();
+
             Calculate_MemberDesign_LoadCombinations();
 
             SolverWindow.Progress = 100;
@@ -155,6 +159,97 @@ namespace PFD.Infrastructure
                 SolverWindow.UpdateProgress();
             }
         }
+
+        public void Calculate_InternalForces2()
+        {
+            int count = 0;
+            SolverWindow.SetMemberDesignLoadCase();
+            SolverWindow.SetMemberDesignLoadCaseProgress(count, membersIFCalcCount);
+            // Calculate Internal Forces For Load Cases
+
+            // Pre load cases nebudem urcovat MomentValuesforCb, pretoze neposudzujeme samostatne load case a pre kombinacie je to nepouzitelne, pretoze hodnoty Mmax mozu byt pre kazdy load case na inej casti segmentu, takze sa to neda pre segment
+            // superponovat, ale je potrebne urcit maximum Mmax pre segment z priebehu vnutornych sil v kombinacii
+
+            //foreach (CMember m in Model.m_arrMembers)
+            //{
+            //    if (!m.BIsGenerated) continue;
+            //    if (!m.BIsSelectedForIFCalculation) continue; // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+
+            //    SolverWindow.SetMemberDesignLoadCaseProgress(++count, membersIFCalcCount);
+
+            //    Calculate_InternalForcesAndDeflections_LoadCases(m);
+            //    Calculate_InternalForces_LoadCombinations(m);
+            //    Calculate_Deflections_LoadCombinations(m);
+
+            //    SolverWindow.Progress += step;
+            //    SolverWindow.UpdateProgress();
+            //}
+
+
+            
+            List<WaitHandle> waitHandles = new List<WaitHandle>();
+            int maxWaitHandleCount = 64;  //maximum is 64
+
+            List<CMemberCalculations_IF_D_LC> recs = new List<CMemberCalculations_IF_D_LC>();
+            List<IAsyncResult> results = new List<IAsyncResult>();
+            CMemberCalculations_IF_D_LC recalc = null;
+            IAsyncResult result = null;
+            Object lockObject = new Object();
+
+            foreach (CMember m in Model.m_arrMembers)
+            {
+                if (!m.BIsGenerated) continue;
+                if (!m.BIsSelectedForIFCalculation) continue; // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+
+                recalc = new CMemberCalculations_IF_D_LC(lockObject);
+                result = recalc.BeginMemberCalculations_IF_D_LC(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments, fx_positions, Model, frameModels,
+                    UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, null, null);
+                waitHandles.Add(result.AsyncWaitHandle);
+                recs.Add(recalc);
+                results.Add(result);
+                if (waitHandles.Count >= maxWaitHandleCount)
+                {
+                    int index = WaitHandle.WaitAny(waitHandles.ToArray());
+                    waitHandles.RemoveAt(index);
+                    recs[index].EndMemberCalculations_IF_D_LC(results[index]);
+
+                    MemberInternalForcesInLoadCases.AddRange(recs[index].MemberInternalForcesInLoadCases);
+                    MemberDeflectionsInLoadCases.AddRange(recs[index].MemberDeflectionsInLoadCases);
+
+                    recs.RemoveAt(index);
+                    results.RemoveAt(index);
+                    count++;
+
+                    SolverWindow.SetMemberDesignLoadCaseProgress(count, membersIFCalcCount);
+                    SolverWindow.Progress += step;
+                    SolverWindow.UpdateProgress();
+                }
+            }
+
+            while (waitHandles.Count > 0)
+            {
+                int index = WaitHandle.WaitAny(waitHandles.ToArray());
+                waitHandles.RemoveAt(index);
+                recs[index].EndMemberCalculations_IF_D_LC(results[index]);
+
+                MemberInternalForcesInLoadCases.AddRange(recs[index].MemberInternalForcesInLoadCases);
+                MemberDeflectionsInLoadCases.AddRange(recs[index].MemberDeflectionsInLoadCases);
+
+                recs.RemoveAt(index);
+                results.RemoveAt(index);
+                count++;
+
+                SolverWindow.SetMemberDesignLoadCaseProgress(count, membersIFCalcCount);
+                SolverWindow.Progress += step;
+                SolverWindow.UpdateProgress();
+            }
+
+            waitHandles.Clear();
+            recs.Clear();
+            results.Clear();
+
+        }
+
 
         public void Calculate_InternalForcesAndDeflections_LoadCases(CMember m)
         {
