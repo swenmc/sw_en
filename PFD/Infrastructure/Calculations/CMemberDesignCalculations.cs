@@ -125,7 +125,7 @@ namespace PFD.Infrastructure
             if (useAsync)
             {
                 //Async metoda s vyuzitim vsetkych vlakien procesora
-                Calculate_InternalForcesAsync();                
+                Calculate_InternalForcesAsync();
                 Calculate_MemberDesign_LoadCombinationsAsync();
             }
             else
@@ -133,6 +133,33 @@ namespace PFD.Infrastructure
                 Calculate_InternalForces();
                 Calculate_MemberDesign_LoadCombinations();
             }
+
+            //List<CMemberInternalForcesInLoadCases> MemberInternalForcesInLoadCases2 = new List<CMemberInternalForcesInLoadCases>(MemberInternalForcesInLoadCases.OrderBy(t=>t.Member.ID));
+            //List<CMemberDeflectionsInLoadCases> MemberDeflectionsInLoadCases2 = new List<CMemberDeflectionsInLoadCases>(MemberDeflectionsInLoadCases.OrderBy(t => t.Member.ID));
+
+            //List<CMemberInternalForcesInLoadCombinations> MemberInternalForcesInLoadCombinations2 = new List<CMemberInternalForcesInLoadCombinations>(MemberInternalForcesInLoadCombinations.OrderBy(t => t.Member.ID));
+            //List<CMemberDeflectionsInLoadCombinations> MemberDeflectionsInLoadCombinations2 = new List<CMemberDeflectionsInLoadCombinations>(MemberDeflectionsInLoadCombinations.OrderBy(t => t.Member.ID));
+
+
+            //MemberInternalForcesInLoadCases = new List<CMemberInternalForcesInLoadCases>();
+            //MemberDeflectionsInLoadCases = new List<CMemberDeflectionsInLoadCases>();
+            //MemberInternalForcesInLoadCombinations = new List<CMemberInternalForcesInLoadCombinations>();
+            //MemberDeflectionsInLoadCombinations = new List<CMemberDeflectionsInLoadCombinations>();
+
+            //Calculate_InternalForces();
+            //Calculate_MemberDesign_LoadCombinations();
+
+            //if (MemberInternalForcesInLoadCases.SequenceEqual(MemberInternalForcesInLoadCases2)) System.Diagnostics.Trace.WriteLine("!!!!!!!!! MemberInternalForcesInLoadCases2 same");
+            //else System.Diagnostics.Trace.WriteLine("!!!!!!!!! MemberInternalForcesInLoadCases2 NOT same");
+
+            //if (MemberDeflectionsInLoadCases.SequenceEqual(MemberDeflectionsInLoadCases2)) System.Diagnostics.Trace.WriteLine("!!!!!!!!! MemberDeflectionsInLoadCases same");
+            //else System.Diagnostics.Trace.WriteLine("!!!!!!!!! MemberDeflectionsInLoadCases NOT same");
+
+            //if (MemberInternalForcesInLoadCombinations.SequenceEqual(MemberInternalForcesInLoadCombinations2)) System.Diagnostics.Trace.WriteLine("!!!!!!!!! MemberInternalForcesInLoadCombinations same");
+            //else System.Diagnostics.Trace.WriteLine("!!!!!!!!! MemberInternalForcesInLoadCombinations NOT same");
+
+            //if (MemberDeflectionsInLoadCombinations.SequenceEqual(MemberDeflectionsInLoadCombinations2)) System.Diagnostics.Trace.WriteLine("!!!!!!!!! MemberDeflectionsInLoadCombinations same");
+            //else System.Diagnostics.Trace.WriteLine("!!!!!!!!! MemberDeflectionsInLoadCombinations NOT same");
 
             SolverWindow.Progress = 100;
             SolverWindow.UpdateProgress();
@@ -199,7 +226,7 @@ namespace PFD.Infrastructure
                 if (!m.BIsSelectedForIFCalculation) continue; // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
 
                 recalc = new CMemberCalculations(lockObject);
-                result = recalc.BeginMemberCalculations(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments, fx_positions, Model, frameModels,
+                result = recalc.BeginMemberCalculations(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments, fx_positions.ToArray(), Model, frameModels,
                     UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, DeterminateMemberLocalDisplacementsForULS, null, null);
                 waitHandles.Add(result.AsyncWaitHandle);
                 recs.Add(recalc);
@@ -234,7 +261,7 @@ namespace PFD.Infrastructure
                 MemberInternalForcesInLoadCases.AddRange(recs[index].MemberInternalForcesInLoadCases);
                 MemberDeflectionsInLoadCases.AddRange(recs[index].MemberDeflectionsInLoadCases);
                 MemberInternalForcesInLoadCombinations.AddRange(recs[index].MemberInternalForcesInLoadCombinations);
-                MemberDeflectionsInLoadCombinations.AddRange(recs[index].MemberDeflectionsInLoadCombinations);                
+                MemberDeflectionsInLoadCombinations.AddRange(recs[index].MemberDeflectionsInLoadCombinations);
 
                 recs.RemoveAt(index);
                 results.RemoveAt(index);
@@ -536,7 +563,7 @@ namespace PFD.Infrastructure
                     recs.RemoveAt(index);
                     results.RemoveAt(index);
                     count++;
-                                        
+
                     SolverWindow.SetMemberDesignLoadCombinationProgress(count, membersDesignCalcCount);
                     SolverWindow.Progress += step;
                     SolverWindow.UpdateProgress();
@@ -766,7 +793,7 @@ namespace PFD.Infrastructure
                     sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember = res.Member;
                 }
 
-                if (res.MaximumDesignRatio > sDesignResults_SLS.fMaximumDesignRatioWholeStructure)
+                if (res.MaximumDesignRatio > sDesignResults_ULS.fMaximumDesignRatioWholeStructure)
                 {
                     sDesignResults_ULS.fMaximumDesignRatioWholeStructure = res.MaximumDesignRatio;
                     sDesignResults_ULS.GoverningLoadCombinationStructure = res.LoadCombination;
@@ -1221,7 +1248,7 @@ namespace PFD.Infrastructure
                         sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
-                
+
             }
 
             return sb.ToString();

@@ -166,6 +166,8 @@ namespace PFD.Infrastructure
                         }
                     }
 
+                    //To Mato - tieto vysledky by sa nemali tak nahodou na zaciatku tohto cyklu nastavovat na null??? 
+                    // podla mna to funguje tak,ze ked sa nastavia sBIF_x pre LoadCase index 1 tak aj keby index 2 uz hodnoty sBIF_x nenastavil,tak sa ulozia lebo uz to nebude sBIF_x null
                     // Add results
                     if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, /*sMomentValuesforCb,*/ sBucklingLengthFactors));
                     if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
