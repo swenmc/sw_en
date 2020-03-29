@@ -2478,5 +2478,37 @@ namespace PFD
         {
             Update();
         }
+
+        private void ButtonDocumentation_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    WaitWindow ww = new WaitWindow("PDF");
+                    ww.Show();
+                    
+                    string parent_folder = dialog.SelectedPath;
+                    DocumentationHelper.CreateDocumentationFolder(parent_folder, projectInfoVM.ProjectNumber);
+
+                    //get all plates from material list
+
+                    //List<QuotationItem> quotationPlates = QuotationHelper.GetPlatesQuotation(vm.Model, 0);
+                    //List<string> plateNames = quotationPlates.Select(q => q.Prefix).ToList();
+
+                    List<CPlate> diff_plates = QuotationHelper.GetDifferentPlates(vm.Model);
+                    foreach (CPlate plate in diff_plates)
+                    {
+                        //draw plate to canvas
+                        //draw plate to PDF
+                        //save PDF with all plates
+                    }
+
+                    ww.Close();
+                }
+            }
+        }
+
+
     }
 }

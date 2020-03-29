@@ -744,6 +744,7 @@
                 <Button Name="ExportPDF" Content="Export Layouts" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Height="20" Click="ExportPDF_Click"/>
                 <Button Name="ExportWord" Content="Export Report" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Height="20" Click="ExportWord_Click"/>
                 <Button Name="ExportQuotation" Content="Export Quotation" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Height="20" Click="ExportQuotation_Click"/>
+                <Button Name="ButtonDocumentation" Content="Manufacturing Documentation" HorizontalAlignment="Left" Margin="0 0 10 0" Width="170" Height="20" Click="ButtonDocumentation_Click"/>
 
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0 20 0 0" HorizontalAlignment="Right">

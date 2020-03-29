@@ -246,105 +246,9 @@ namespace PFD
             const float fCFS_PricePerKg_Plates_Manufacture = 0.0f;   // NZD / kg
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
-            List<QuotationItem> quotation = new List<QuotationItem>();
             // Plates
-            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
-            {
-                joint.SetJointIsSelectedForMaterialListAccordingToMember();
-                
-                if (!joint.BIsSelectedForMaterialList) continue;
+            List<QuotationItem> quotation = GetPlatesQuotation(model, fCFS_PricePerKg_Plates_Total);            
 
-                foreach (CPlate plate in joint.m_arrPlates) // For each plate
-                {
-                    // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
-                    // Nie vsetky plechy budu mat parametre definovane v databaze
-                    // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
-
-                    #region Base Plate
-                    // TO Ondrej Blok1 Plate START
-                    // ----------------------------------------------------------------------------------------------------------------------------------------
-                    try
-                    {
-                        plate.SetParams(plate.Name, plate.m_ePlateSerieType_FS);
-                    }
-                    catch { };
-
-                    QuotationHelper.AddPlateToQuotation(plate, quotation, 1, fCFS_PricePerKg_Plates_Total);
-
-
-                    // TO Ondrej Blok1 Plate END
-                    // ----------------------------------------------------------------------------------------------------------------------------------------
-                    #endregion
-
-                    //temp
-                    // Anchors - WASHERS
-                    // TO Mato - nieco som skusal... chcelo by to asi mat jeden objekt na tieto veci a nie zoznamy kade tade
-                    //rovnako je asi problem,ze to nijako negrupujem...ale tak potreboval by som vediet na zaklade coho sa to bude grupovat
-
-                    // To Ondrej - K prvej vete nemam vyhrady. Urob ako sa to ma.
-                    // Zgrupovat to treba podla prefixu, ale kedze to este nie je dotiahnute tak porovnavam aj rozmery a plochu uz pridanych plates alebo washers s aktualnym
-                    // Vyrobil som 3 bloky kodu, resp. regiony
-                    // Jeden pre base plate, jeden washer plate top a jeden pre washer bearing
-                    // Funguje to tak ze sa v bloku nastavia parametre aktualnej plate / washer (pocet, rozmery cena, celkove pocty a cena atd)
-                    // Potom sa prechadza cyklus cez vsetky uz vytvorene riadky, resp ListOfPlateGroups a porovnava sa ci je aktualny objekt rovnaky ako niektory uz pridany do skupiny
-                    // Porovnava sa prefix, rozmery a plocha (ak by sme boli dosledni tak pre plates by sa este malo porovnat screw arrangement, anchor arrangement)
-                    // Ak sa zisti ze rovnaky plate/ washer uz bol pridany tak sa aktualizuju celkove parametre, celkovy pocet, celkova plocha, celkova hmotnost
-                    // Ak sa zisti ze taky plech v skupine este nie je alebo je to uplne prvy plech v cykle tak sa vyrobi novy zaznam
-
-                    // Dalo by sa to napriklad refaktorovat a urobit z toho jedna funkcia
-                    // ListOfPlateGroups by som asi zrusil, lebo tam nemame moznost nastavit pocet plechov v ramci skupiny
-                    // Ak tomu rozumiem spravne chces na to pouzit List<PlateView> a odstranit jednotlive zoznamy podla stplcov
-                    // Kazdopadne zase sa dostavame k tomu, ze to mame vselijako, niekde samostatne zoznamy pre jednotlive stlpce, inde zoznam objektov s properties, ktore odpovedaju jednemu riadku.
-
-                    if (plate is CConCom_Plate_B_basic)
-                    {
-                        CConCom_Plate_B_basic plateB = (CConCom_Plate_B_basic)plate;
-
-                        if (plateB.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
-                        {
-                            CAnchor anchor = plateB.AnchorArrangement.Anchors.FirstOrDefault();
-                            int anchorsNum = plateB.AnchorArrangement.Anchors.Length;
-
-                            #region Washer Plate Top
-                            // TO Ondrej Blok2 Washer Plate Top START
-                            // ----------------------------------------------------------------------------------------------------------------------------------------
-                            // Plate Top Washer
-                            try
-                            {
-                                if (anchor.WasherPlateTop != null)
-                                    anchor.WasherPlateTop.SetParams(anchor.WasherPlateTop.Name, anchor.WasherPlateTop.m_ePlateSerieType_FS);
-                            }
-                            catch { };
-
-                            QuotationHelper.AddPlateToQuotation(anchor.WasherPlateTop, quotation, anchorsNum, fCFS_PricePerKg_Plates_Total);
-
-
-                            // TO Ondrej Blok2 Washer Plate Top END
-                            // ----------------------------------------------------------------------------------------------------------------------------------------
-                            #endregion
-
-                            #region Washer Bearing 
-                            // TO Ondrej Blok3 Washer Bearing START
-                            // ----------------------------------------------------------------------------------------------------------------------------------------
-                            // Bearing Washer
-                            try
-                            {
-                                if(anchor.WasherBearing != null)
-                                    anchor.WasherBearing.SetParams(anchor.WasherBearing.Name, anchor.WasherBearing.m_ePlateSerieType_FS);
-                            }
-                            catch { };
-
-                            QuotationHelper.AddPlateToQuotation(anchor.WasherBearing, quotation, anchorsNum, fCFS_PricePerKg_Plates_Total);
-
-                            // TO Ondrej Blok3 Washer Bearing END
-                            // ----------------------------------------------------------------------------------------------------------------------------------------
-                            #endregion
-                        }
-                    }
-                    //end temp
-                }
-
-            }
             //System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
 
             // Check Data
@@ -458,6 +362,198 @@ namespace PFD
             table.Rows.Add(row);
             
             return ds;            
+        }
+
+        public static List<QuotationItem> GetPlatesQuotation(CModel model, float fCFS_PricePerKg_Plates_Total)
+        {
+            List<QuotationItem> quotation = new List<QuotationItem>();
+
+            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
+            {
+                joint.SetJointIsSelectedForMaterialListAccordingToMember();
+
+                if (!joint.BIsSelectedForMaterialList) continue;
+
+                foreach (CPlate plate in joint.m_arrPlates) // For each plate
+                {
+                    // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
+                    // Nie vsetky plechy budu mat parametre definovane v databaze
+                    // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
+
+                    #region Base Plate
+                    // TO Ondrej Blok1 Plate START
+                    // ----------------------------------------------------------------------------------------------------------------------------------------
+                    try
+                    {
+                        plate.SetParams(plate.Name, plate.m_ePlateSerieType_FS);
+                    }
+                    catch { };
+
+                    QuotationHelper.AddPlateToQuotation(plate, quotation, 1, fCFS_PricePerKg_Plates_Total);
+
+
+                    // TO Ondrej Blok1 Plate END
+                    // ----------------------------------------------------------------------------------------------------------------------------------------
+                    #endregion
+
+                    //temp
+                    // Anchors - WASHERS
+                    // TO Mato - nieco som skusal... chcelo by to asi mat jeden objekt na tieto veci a nie zoznamy kade tade
+                    //rovnako je asi problem,ze to nijako negrupujem...ale tak potreboval by som vediet na zaklade coho sa to bude grupovat
+
+                    // To Ondrej - K prvej vete nemam vyhrady. Urob ako sa to ma.
+                    // Zgrupovat to treba podla prefixu, ale kedze to este nie je dotiahnute tak porovnavam aj rozmery a plochu uz pridanych plates alebo washers s aktualnym
+                    // Vyrobil som 3 bloky kodu, resp. regiony
+                    // Jeden pre base plate, jeden washer plate top a jeden pre washer bearing
+                    // Funguje to tak ze sa v bloku nastavia parametre aktualnej plate / washer (pocet, rozmery cena, celkove pocty a cena atd)
+                    // Potom sa prechadza cyklus cez vsetky uz vytvorene riadky, resp ListOfPlateGroups a porovnava sa ci je aktualny objekt rovnaky ako niektory uz pridany do skupiny
+                    // Porovnava sa prefix, rozmery a plocha (ak by sme boli dosledni tak pre plates by sa este malo porovnat screw arrangement, anchor arrangement)
+                    // Ak sa zisti ze rovnaky plate/ washer uz bol pridany tak sa aktualizuju celkove parametre, celkovy pocet, celkova plocha, celkova hmotnost
+                    // Ak sa zisti ze taky plech v skupine este nie je alebo je to uplne prvy plech v cykle tak sa vyrobi novy zaznam
+
+                    // Dalo by sa to napriklad refaktorovat a urobit z toho jedna funkcia
+                    // ListOfPlateGroups by som asi zrusil, lebo tam nemame moznost nastavit pocet plechov v ramci skupiny
+                    // Ak tomu rozumiem spravne chces na to pouzit List<PlateView> a odstranit jednotlive zoznamy podla stplcov
+                    // Kazdopadne zase sa dostavame k tomu, ze to mame vselijako, niekde samostatne zoznamy pre jednotlive stlpce, inde zoznam objektov s properties, ktore odpovedaju jednemu riadku.
+
+                    if (plate is CConCom_Plate_B_basic)
+                    {
+                        CConCom_Plate_B_basic plateB = (CConCom_Plate_B_basic)plate;
+
+                        if (plateB.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+                        {
+                            CAnchor anchor = plateB.AnchorArrangement.Anchors.FirstOrDefault();
+                            int anchorsNum = plateB.AnchorArrangement.Anchors.Length;
+
+                            #region Washer Plate Top
+                            // TO Ondrej Blok2 Washer Plate Top START
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            // Plate Top Washer
+                            try
+                            {
+                                if (anchor.WasherPlateTop != null)
+                                    anchor.WasherPlateTop.SetParams(anchor.WasherPlateTop.Name, anchor.WasherPlateTop.m_ePlateSerieType_FS);
+                            }
+                            catch { };
+
+                            QuotationHelper.AddPlateToQuotation(anchor.WasherPlateTop, quotation, anchorsNum, fCFS_PricePerKg_Plates_Total);
+
+
+                            // TO Ondrej Blok2 Washer Plate Top END
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            #endregion
+
+                            #region Washer Bearing 
+                            // TO Ondrej Blok3 Washer Bearing START
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            // Bearing Washer
+                            try
+                            {
+                                if (anchor.WasherBearing != null)
+                                    anchor.WasherBearing.SetParams(anchor.WasherBearing.Name, anchor.WasherBearing.m_ePlateSerieType_FS);
+                            }
+                            catch { };
+
+                            QuotationHelper.AddPlateToQuotation(anchor.WasherBearing, quotation, anchorsNum, fCFS_PricePerKg_Plates_Total);
+
+                            // TO Ondrej Blok3 Washer Bearing END
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            #endregion
+                        }
+                    }
+                    //end temp
+                }
+
+            }
+
+            return quotation;
+        }
+
+        public static List<CPlate> GetDifferentPlates(CModel model)
+        {
+            List<CPlate> plates = new List<CPlate>();
+            List<QuotationItem> quotation = new List<QuotationItem>();
+            int quotationCount = 0;
+
+            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
+            {
+                joint.SetJointIsSelectedForMaterialListAccordingToMember();
+
+                if (!joint.BIsSelectedForMaterialList) continue;
+
+                foreach (CPlate plate in joint.m_arrPlates) // For each plate
+                {
+                    
+                    #region Base Plate
+                    // TO Ondrej Blok1 Plate START
+                    // ----------------------------------------------------------------------------------------------------------------------------------------
+                    try
+                    {
+                        plate.SetParams(plate.Name, plate.m_ePlateSerieType_FS);
+                    }
+                    catch { };
+
+                    quotationCount = quotation.Count;
+                    QuotationHelper.AddPlateToQuotation(plate, quotation, 1, 0);
+                    if (quotation.Count > quotationCount) { plates.Add(plate); }
+
+                    // TO Ondrej Blok1 Plate END
+                    // ----------------------------------------------------------------------------------------------------------------------------------------
+                    #endregion
+                                        
+                    if (plate is CConCom_Plate_B_basic)
+                    {
+                        CConCom_Plate_B_basic plateB = (CConCom_Plate_B_basic)plate;
+
+                        if (plateB.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+                        {
+                            CAnchor anchor = plateB.AnchorArrangement.Anchors.FirstOrDefault();
+                            int anchorsNum = plateB.AnchorArrangement.Anchors.Length;
+
+                            #region Washer Plate Top
+                            // TO Ondrej Blok2 Washer Plate Top START
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            // Plate Top Washer
+                            try
+                            {
+                                if (anchor.WasherPlateTop != null)
+                                    anchor.WasherPlateTop.SetParams(anchor.WasherPlateTop.Name, anchor.WasherPlateTop.m_ePlateSerieType_FS);
+                            }
+                            catch { };
+
+                            quotationCount = quotation.Count;
+                            QuotationHelper.AddPlateToQuotation(anchor.WasherPlateTop, quotation, anchorsNum, 0);
+                            if (quotation.Count > quotationCount) { plates.Add(anchor.WasherPlateTop); }
+
+                            // TO Ondrej Blok2 Washer Plate Top END
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            #endregion
+
+                            #region Washer Bearing 
+                            // TO Ondrej Blok3 Washer Bearing START
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            // Bearing Washer
+                            try
+                            {
+                                if (anchor.WasherBearing != null)
+                                    anchor.WasherBearing.SetParams(anchor.WasherBearing.Name, anchor.WasherBearing.m_ePlateSerieType_FS);
+                            }
+                            catch { };
+
+                            quotationCount = quotation.Count;
+                            QuotationHelper.AddPlateToQuotation(anchor.WasherBearing, quotation, anchorsNum, 0);
+                            if (quotation.Count > quotationCount) { plates.Add(anchor.WasherBearing); }
+                            // TO Ondrej Blok3 Washer Bearing END
+                            // ----------------------------------------------------------------------------------------------------------------------------------------
+                            #endregion
+                        }
+                    }
+                    //end temp
+                }
+
+            }
+
+            return plates;
         }
 
 
