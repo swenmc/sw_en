@@ -318,8 +318,8 @@ namespace DATABASE
             mat.ID = properties.ID;
             mat.Standard = properties.Standard;
             mat.Name = properties.Grade;
-            mat.m_fE = (float)properties.E;
-            mat.m_fG = (float)properties.G;
+            mat.m_fE = (float)properties.E * fFactorUnit_Stress; // From MPa -> Pa;
+            mat.m_fG = (float)properties.G * fFactorUnit_Stress; // From MPa -> Pa;
             mat.m_fNu = (float)properties.Nu;
             mat.m_fRho = 7850; // TODO - zapracovat do databazy pripadne do GUI
 
