@@ -2961,7 +2961,7 @@ namespace PFD
             CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners, _designOptionsVM.UniformShearDistributionInAnchors,
                 _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS,
                 footingSettings, frameModels, beamSimpleModels);
-            memberDesignCalculations.CalculateAll();
+            memberDesignCalculations.CalculateAll(_solverOptionsVM.MultiCoreCalculation);
             SetDesignMembersLists(memberDesignCalculations);
 
             System.Diagnostics.Trace.WriteLine("end of calculations: " + (DateTime.Now - start).TotalMilliseconds);

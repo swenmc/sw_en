@@ -1393,7 +1393,7 @@ namespace PFD
             // Load Cases
             CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator();
             m_arrLoadCases = loadCaseGenerator.GenerateLoadCases();
-            System.Diagnostics.Trace.WriteLine("----> after loadCaseGenerator.GenerateLoadCases(): " + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("----> after loadCaseGenerator.GenerateLoadCases(): " + (DateTime.Now - start).TotalMilliseconds);
             #endregion
 
             // Snow load factor - projection on roof
@@ -1409,7 +1409,7 @@ namespace PFD
                     fDist_Purlin, fDist_Girt, fDist_FrontGirts, fDist_BackGirts, fDist_FrontColumns, fDist_BackColumns,
                     fSlopeFactor, m_arrLoadCases, generalLoad, wind, snow);
                 surfaceLoadGenerator.GenerateSurfaceLoads();
-                System.Diagnostics.Trace.WriteLine("----> after surfaceLoadGenerator.GenerateSurfaceLoads(): " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("----> after surfaceLoadGenerator.GenerateSurfaceLoads(): " + (DateTime.Now - start).TotalMilliseconds);
             }
 
             #endregion
@@ -1424,7 +1424,7 @@ namespace PFD
 
                 CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, iFrameNodesNo, m_arrLoadCases, m_arrNodes,/* fL1_frame,*/ eq);
                 nodalLoadGenerator.GenerateNodalLoads();
-                System.Diagnostics.Trace.WriteLine("----> after nodalLoadGenerator.GenerateNodalLoads(): " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("----> after nodalLoadGenerator.GenerateNodalLoads(): " + (DateTime.Now - start).TotalMilliseconds);
             }
             #endregion
 
@@ -1452,7 +1452,7 @@ namespace PFD
                 generalLoad,
                 snow,
                 wind);
-                System.Diagnostics.Trace.WriteLine("----> after member loads loadGenerator: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("----> after member loads loadGenerator: " + (DateTime.Now - start).TotalMilliseconds);
 
                 #region Secondary Member Loads (girts, purlins, wind posts, door trimmers)
                 // Purlins, eave purlins, girts, ....
@@ -1461,9 +1461,9 @@ namespace PFD
                 if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns)
                 {
                     memberLoadsOnPurlinsGirtsColumns = loadGenerator.GetGeneratedMemberLoads(m_arrLoadCases, m_arrMembers);
-                    System.Diagnostics.Trace.WriteLine("----> after loadGenerator.GetGeneratedMemberLoads: " + (DateTime.Now - start).TotalMilliseconds);
+                    //System.Diagnostics.Trace.WriteLine("----> after loadGenerator.GetGeneratedMemberLoads: " + (DateTime.Now - start).TotalMilliseconds);
                     loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnPurlinsGirtsColumns);
-                    System.Diagnostics.Trace.WriteLine("----> after AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
+                    //System.Diagnostics.Trace.WriteLine("----> after AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
                 }
                 #endregion
 
@@ -1474,7 +1474,7 @@ namespace PFD
                 {
                     memberLoadsOnFrames = loadGenerator.GetGenerateMemberLoadsOnFrames();
                     loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
-                    System.Diagnostics.Trace.WriteLine("----> after Frame Member Loads AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
+                    //System.Diagnostics.Trace.WriteLine("----> after Frame Member Loads AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
                 }
                 #endregion
 
@@ -1490,7 +1490,7 @@ namespace PFD
                     memberLoadsOnFrames.Merge(memberLoadsOnPurlinsGirtsColumns); //Merge both to first LoadCasesMemberLoads
                     // Assign merged list of member loads to the load cases
                     loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
-                    System.Diagnostics.Trace.WriteLine("----> after Merge Member Load Lists AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
+                    //System.Diagnostics.Trace.WriteLine("----> after Merge Member Load Lists AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
                 }
                 #endregion
             }
@@ -1586,7 +1586,7 @@ namespace PFD
             generator.GenerateAll();
             m_arrLoadCombs = generator.Combinations.ToArray();
 
-            System.Diagnostics.Trace.WriteLine("----> after generator.GenerateAll(): " + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("----> after generator.GenerateAll(): " + (DateTime.Now - start).TotalMilliseconds);
             #endregion
 
             #region Limit states

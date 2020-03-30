@@ -354,7 +354,11 @@ namespace PFD
 
             if (vm._generalOptionsVM.UpdateAutomatically)
             {
-                Update();
+                UpdateModelAndGUI();
+            }
+            else if (vm.SynchronizeGUI)
+            {
+                DisplayMainModel();
             }
 
 
@@ -371,7 +375,7 @@ namespace PFD
             //}
         }
 
-        private void Update()
+        private void UpdateModelAndGUI()
         {
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
@@ -1028,24 +1032,29 @@ namespace PFD
 
             if (vm.SynchronizeGUI || programStart)
             {
-                // Create 3D window
-                //UpdateDisplayOptions();
-                sDisplayOptions = vm.GetDisplayOptions();
-                System.Diagnostics.Trace.WriteLine("GetDisplayOptions: " + (DateTime.Now - start).TotalMilliseconds);
-
-                Page3Dmodel page1;
-
-                if (vm.Model.m_arrLoadCases != null) // Ak existuju nejake load cases zobrazime vybrany
-                    page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex], vm.JointsVM.DictJoints);
-                else // Ak neexistuju load cases - docasne pre pripady IN WORK, kedy model nema este definovane ziadne load cases
-                    page1 = new Page3Dmodel(vm.Model, sDisplayOptions, null, vm.JointsVM.DictJoints);
-
-                System.Diagnostics.Trace.WriteLine("new Page3Dmodel: " + (DateTime.Now - start).TotalMilliseconds);
-                // Display model in 3D preview frame
-                Frame1.Content = page1;
-                Frame1.UpdateLayout();
-                System.Diagnostics.Trace.WriteLine("UpdateLayout: " + (DateTime.Now - start).TotalMilliseconds);
+                DisplayMainModel();
             }
+        }
+
+        private void DisplayMainModel()
+        {
+            // Create 3D window
+            //UpdateDisplayOptions();
+            sDisplayOptions = vm.GetDisplayOptions();
+            //System.Diagnostics.Trace.WriteLine("GetDisplayOptions: " + (DateTime.Now - start).TotalMilliseconds);
+
+            Page3Dmodel page1;
+
+            if (vm.Model.m_arrLoadCases != null) // Ak existuju nejake load cases zobrazime vybrany
+                page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex], vm.JointsVM.DictJoints);
+            else // Ak neexistuju load cases - docasne pre pripady IN WORK, kedy model nema este definovane ziadne load cases
+                page1 = new Page3Dmodel(vm.Model, sDisplayOptions, null, vm.JointsVM.DictJoints);
+
+            //System.Diagnostics.Trace.WriteLine("new Page3Dmodel: " + (DateTime.Now - start).TotalMilliseconds);
+            // Display model in 3D preview frame
+            Frame1.Content = page1;
+            Frame1.UpdateLayout();
+            //System.Diagnostics.Trace.WriteLine("UpdateLayout: " + (DateTime.Now - start).TotalMilliseconds);
         }
 
         private void UpdateUC_Joints()
@@ -1130,6 +1139,7 @@ namespace PFD
                 View_2D.IsEnabled = false;
                 Clear3DModel.IsEnabled = false;
                 ExportDXF_3D.IsEnabled = false;
+                ButtonDocumentation.Visibility = Visibility.Collapsed;
             }
 
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
@@ -2477,7 +2487,7 @@ namespace PFD
 
         private void ButtonGenerateModel_Click(object sender, RoutedEventArgs e)
         {
-            Update();
+            UpdateModelAndGUI();
         }
 
         private void ButtonDocumentation_Click(object sender, RoutedEventArgs e)

@@ -111,7 +111,7 @@ namespace PFD.Infrastructure
             JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
         }
 
-        public void CalculateAll()
+        public void CalculateAll(bool useMultiCore)
         {
             //if (debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
             //Calculate_InternalForcesAndDeflections_LoadCases();
@@ -121,8 +121,7 @@ namespace PFD.Infrastructure
             // To Mato - zamyslam sa preco pocitame aj IF a Deflections for LoadCases aj pre LoadCombinations
             // Problem bol v tom,ze pocitali sa IF aj pre load case aj pre load combination, pricom pre load case bezal progress ale pre loadCombination uz nie, ani pre deflections
 
-            bool useAsync = true;
-            if (useAsync)
+            if (useMultiCore)
             {
                 //Async metoda s vyuzitim vsetkych vlakien procesora
                 Calculate_InternalForcesAsync();

@@ -25,6 +25,8 @@ namespace PFD
         private bool MDeterminateCombinationResultsByFEMSolver;
         private bool MUseFEMSolverCalculationForSimpleBeam;
         private bool MDeterminateMemberLocalDisplacementsForULS;
+
+        private bool MMultiCoreCalculation;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
 
@@ -73,7 +75,19 @@ namespace PFD
             }
         }
 
+        public bool MultiCoreCalculation
+        {
+            get
+            {
+                return MMultiCoreCalculation;
+            }
 
+            set
+            {
+                MMultiCoreCalculation = value;
+                NotifyPropertyChanged("MultiCoreCalculation");
+            }
+        }
 
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
@@ -86,6 +100,8 @@ namespace PFD
             DeterminateCombinationResultsByFEMSolver = false;
             UseFEMSolverCalculationForSimpleBeam = false;
             DeterminateMemberLocalDisplacementsForULS = false;
+
+            MultiCoreCalculation = true;
 
             IsSetFromCode = false;
         }
