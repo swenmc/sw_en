@@ -290,9 +290,6 @@
                         <TextBlock Grid.Row="16" Grid.Column="0" Text="Filter:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                         <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ViewModelMemberFilters}}" SelectedIndex="{Binding Path=ViewModelMemberFilterIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-
-                        <Button Name="ButtonGenerateModel" Grid.Row="15" Grid.Column="4" Click="ButtonGenerateModel_Click">Generate Model</Button>
-                        
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -727,13 +724,14 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />                
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="10 0 0 10" VerticalAlignment="Bottom">
                 <Button Name="View_2D" Content ="View 2D" Height="20" Width="70" Margin="0 0 10 0" Click="View_2D_Click"/>
+                <Button Name="ButtonGenerateModel" Content="Generate" Height="20" Width="70"  Margin="0 0 10 0" Click="ButtonGenerateModel_Click"/>
                 <Button Name="Clear3DModel" Content="Clear" Width="70" Margin="0 0 10 0" Click="Clear3DModel_Click" Height="20" />
                 <!--<Button Name="WindSpeedChart" Content="WindSpeed" Width="70" Margin="0 0 10 0" Click="WindSpeedChart_Click" Height="20" />-->
-                <Button Name="ButtonCalculateForces" Content="Calculate" Width="100"  Margin="0 0 10 0" Click="Calculate_Click" Height="20"/>
+                <Button Name="ButtonCalculateForces" Content="Calculate" Height="20" Width="100"  Margin="0 0 10 0" Click="Calculate_Click"/>
                 <Button Name="SystemComponentViewer" Content="Component Viewer" Height="20" Width="120" Margin="0 0 10 0" Click="SystemComponentViewer_Click"/>
                 <Button Name="ExportDXF_3D" Content="Export DXF" Height="20" Width="100" Margin="0 0 10 0" Click="ExportDXF_3D_Click"/>
 

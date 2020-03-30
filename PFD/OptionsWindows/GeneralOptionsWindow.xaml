@@ -32,7 +32,7 @@
                 <TextBlock Text="Reinforcement Bar Shape" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbUseStraightReinforcementBars" IsChecked="{Binding Path=UseStraightReinforcementBars}" >Use straight reinforcement bars</CheckBox>
 
-                <TextBlock Text="Model Updates" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock Text="Update" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbUpdateAutomatically" IsChecked="{Binding Path=UpdateAutomatically}" >Update model automatically</CheckBox>
             </StackPanel>
             

@@ -1172,8 +1172,9 @@ namespace PFD
                 Quotation.Content = null;
             }
 
-            if (vm._generalOptionsVM.UpdateAutomatically) ButtonGenerateModel.Visibility = Visibility.Collapsed;
-            else ButtonGenerateModel.Visibility = Visibility.Visible;
+            // To Ondrej - uprava Nechcem tlacitka, resp. celkovo widgety skryvat a zobrazovat, skor len menit enabled a read-only mode
+            if (vm._generalOptionsVM.UpdateAutomatically) ButtonGenerateModel.IsEnabled = false; // ButtonGenerateModel.Visibility = Visibility.Hidden;
+            else ButtonGenerateModel.IsEnabled = true; //ButtonGenerateModel.Visibility = Visibility.Visible;
 
             SetUIElementsVisibilityAccordingPermissions();
         }
