@@ -374,16 +374,21 @@ namespace PFD
             {
                 fRafterLength = fb / (float)Math.Cos(fRoofPitch_radians);
                 fdist_purlin_end = fDefaultDistanceOfPurlins; // Posledna vaznica od konca rafteru
+                // Front and back column spacing (default 5 m)
+                fdist_frontcolumn = Math.Min(5, fb / 2); // Minimum - one column in the middle of width
             }
             else if (iSelectedKitsetTypeIndex == 1)
             {
                 fRafterLength = (0.5f * fb) / (float)Math.Cos(fRoofPitch_radians);
                 fdist_purlin_end = 0.25f; // Posledna vaznica od konca rafteru
+                // Front and back column spacing (default 5 m)
+                fdist_frontcolumn = Math.Min(5, fb / 3); // Minimum - two columns per width
             }
             else
             {
                 fRafterLength = 0; // Exception
                 fdist_purlin_end = 0;
+                fdist_frontcolumn = 0;
             }
 
             int iDefaultNumberOfGirtsPerColumn = (int)((fh - fdist_girt_bottom) / fDefaultDistanceOfGirts);
@@ -391,11 +396,6 @@ namespace PFD
 
             int iDefaultNumberOfPurlinsPerRafter = (int)((fRafterLength - fdist_purlin_end) / fDefaultDistanceOfPurlins);
             fdist_purlin = (fRafterLength - fdist_purlin_end) / Math.Max(iDefaultNumberOfPurlinsPerRafter, 1); // Minimalne 1 purlin
-
-            //fdist_girt = 0.25f * fL1;
-            //fdist_purlin = 0.25f * fL1;
-
-            fdist_frontcolumn = 0.6f * fL1;
 
             fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
             fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
