@@ -5004,6 +5004,7 @@ namespace BaseClasses
             _model.fDist_FrontColumns = model.fDist_FrontColumns;
             _model.fDist_BackColumns = model.fDist_BackColumns;
             _model.fBottomGirtPosition = model.fBottomGirtPosition;
+            _model.iOneRafterPurlinNo = model.iOneRafterPurlinNo;
 
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
             {

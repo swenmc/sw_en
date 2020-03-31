@@ -329,7 +329,7 @@ namespace PFD
             float fFirstPurlinPosition = fDist_Purlin;
             float fRafterLength = MathF.Sqrt(MathF.Pow2(fH2_frame - fH1_frame) + MathF.Pow2(0.5f * fW_frame));
 
-            int iOneRafterPurlinNo = 0;
+            iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
 
             bool bGeneratePurlins = componentList[(int)EMemberGroupNames.ePurlin].Generate.Value;

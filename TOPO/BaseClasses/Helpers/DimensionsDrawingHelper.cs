@@ -163,22 +163,37 @@ namespace BaseClasses.Helpers
                     }
 
                     // Bottom Girt
-                    CDimensionLinear3D dim7 = new CDimensionLinear3D(new Point3D(0, 0, 0), m6.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                    CDimensionLinear3D dim6 = new CDimensionLinear3D(new Point3D(0, 0, 0), m6.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
                        0.6, 0.6, 0.05, 0.15, (model.fBottomGirtPosition * 1000).ToString("F0"), false);
 
-                    listOfDimensions.Add(dim7);
+                    listOfDimensions.Add(dim6);
                 }
 
                 // Purlins
                 CMember m8 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.Purlin); // Prva purlin vlavo
+
                 if (m8 != null)
                 {
                     int index = Array.IndexOf(model.m_arrMembers, m8);
                     CMember m9 = model.m_arrMembers[index + 1]; // Nasledujuca purlin vlavo
 
-                    CDimensionLinear3D dim6 = new CDimensionLinear3D(m8.NodeStart.GetPoint3D(), m9.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+                    CDimensionLinear3D dim7 = new CDimensionLinear3D(m8.NodeStart.GetPoint3D(), m9.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
                        0.6, 0.6, 0.05, 0.15, (model.fDist_Purlin * 1000).ToString("F0"), false);
-                    listOfDimensions.Add(dim6);
+                    listOfDimensions.Add(dim7);
+                }
+
+                if (model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed) // Pre gable roof kotujeme vzdialenost poslednej purlin a konca raftera
+                {
+                    if (m8 != null) // Existuje aspon jedna purlin
+                    {
+                        int index = Array.IndexOf(model.m_arrMembers, m8);
+                        CMember m10 = model.m_arrMembers[index + model.iOneRafterPurlinNo - 1]; // Posledna purlin vlavo
+                        CMember m11 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter); // Rafter vlavo
+
+                        CDimensionLinear3D dim8 = new CDimensionLinear3D(m10.NodeStart.GetPoint3D(), m11.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+                           0.6, 0.6, 0.05, 0.15, (((m10.NodeStart.GetPoint3D()).GetDistanceTo(m11.NodeEnd.GetPoint3D())) * 1000).ToString("F0"), false);
+                        listOfDimensions.Add(dim8);
+                    }
                 }
 
                 DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);

@@ -21,6 +21,7 @@ namespace BaseClasses
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // TO Ondrej: Docasne su tieto parametre tu, ale nemali byt v CModel ale niekde v potomkoch, napriklad CModel_PFD
+        // Netykaju sa totiz uplne vseobecneho modelu - trieda CModel ale specifickeho modelu, ktory sme vytvorili pre projekt PFD (portal frame designer), teda CModel_PFD
         public EModelType_FS eKitset;
 
         public float fL_tot;
@@ -36,6 +37,8 @@ namespace BaseClasses
 
         public float fDist_FrontColumns;
         public float fDist_BackColumns;
+
+        public int iOneRafterPurlinNo;
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
