@@ -2482,11 +2482,11 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_G:
                     {
-                        return new List<string>(1) { "Undefined" };
+                        return dc.arr_Serie_G_ScrewArrangement_Names;
                     }
                 case ESerieTypePlate.eSerie_H:
                     {
-                        return new List<string>(1) { "Undefined" };
+                        return dc.arr_Serie_H_ScrewArrangement_Names;
                     }
                 case ESerieTypePlate.eSerie_Q:
                     {
