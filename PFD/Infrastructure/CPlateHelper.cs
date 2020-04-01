@@ -2590,19 +2590,15 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_G:
                     {
-                        //TODO
-                        /*if (plate.ScrewArrangement == null) return 0;
+                        if (plate.ScrewArrangement == null) return 0;
                         else if (plate.ScrewArrangement is CScrewArrangement_G) return 1;
-                        else*/
-                        return 0;
+                        else return 0;
                     }
                 case ESerieTypePlate.eSerie_H:
                     {
-                        //TODO
-                        /*if (plate.ScrewArrangement == null) return 0;
+                        if (plate.ScrewArrangement == null) return 0;
                         else if (plate.ScrewArrangement is CScrewArrangement_H) return 1;
-                        else*/
-                        return 0;
+                        else return 0;
                     }
                 case ESerieTypePlate.eSerie_Q:
                     {
