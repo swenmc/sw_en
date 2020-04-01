@@ -1366,7 +1366,7 @@ namespace PFD
                             break;
                         }
                     case ESerieTypePlate.eSerie_G:
-                        {                            
+                        {
                             if (vm.ScrewArrangementIndex == 0) // Undefined
                             {
                                 plate = new CConCom_Plate_G(dcomponents.arr_Serie_G_Names[vm.ComponentIndex], controlpoint, fb, fb2, fh, fh2, fl, 0.5f * fh2, ft, 0f, 0f, 0f, null); // G
@@ -1379,7 +1379,7 @@ namespace PFD
                             break;
                         }
                     case ESerieTypePlate.eSerie_H:
-                        {                            
+                        {
                             if (vm.ScrewArrangementIndex == 0) // Undefined
                             {
                                 plate = new CConCom_Plate_H(dcomponents.arr_Serie_H_Names[vm.ComponentIndex], controlpoint, fb, fh, fh2, 0.2f * fb, ft, 11f * MathF.fPI / 180f, 0f, 0f, 0f, null); // H

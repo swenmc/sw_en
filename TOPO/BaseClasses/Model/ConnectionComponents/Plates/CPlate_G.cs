@@ -238,6 +238,12 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
+            UpdatePlateData_Basic(screwArrangement);
+
+            Set_DimensionPoints2D();
+
+            Set_MemberOutlinePoints2D();
+
             bool bChangeRotationAngle_MirroredPlate = false;
 
             if (m_iLeftRightIndex % 2 != 0) // Change x-coordinates for odd index (RH)
