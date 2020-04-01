@@ -1333,7 +1333,7 @@ namespace PFD
                                 CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew);
                                 plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, fCrsc_h, 0, 0, 0, screwArrangement_L); // L
                             }
-                                
+
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:

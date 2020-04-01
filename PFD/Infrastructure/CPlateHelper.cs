@@ -1959,6 +1959,8 @@ namespace PFD
             CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = null;
             CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = null;
 
+            CDatabaseComponents dcomponents = new CDatabaseComponents(); // TODO Odstranit ked sa vsetky screw arrangement a plate properties budu nacitavat z DB a nie z tejto triedy v kode
+
             switch (plate.m_ePlateSerieType_FS)
             {
                 case ESerieTypePlate.eSerie_B:
@@ -1974,6 +1976,109 @@ namespace PFD
                         }
                         break;
                     }
+                case ESerieTypePlate.eSerie_L:
+                    {
+                        if (plate is CConCom_Plate_F_or_L)
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else // if (screwArrangementIndex == 1)
+                            {
+                                CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(plate.Name);
+                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew);
+                                plate.ScrewArrangement = screwArrangement_L;
+                            }
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_LL:
+                    {
+                        if (plate is CConCom_Plate_LL)
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else // if (screwArrangementIndex == 1)
+                            {
+                                CPlate_LL_Properties prop = CJointsManager.GetPlate_LL_Properties(plate.Name);
+                                CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(prop.NumberOfHolesScrews, referenceScrew);
+                                plate.ScrewArrangement = screwArrangement_LL;
+                            }
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_F:
+                    {
+                        if (plate is CConCom_Plate_F_or_L)
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else // if (screwArrangementIndex == 1)
+                            {
+                                CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(plate.Name);
+                                CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(prop.NumberOfHolesScrews, referenceScrew);
+                                plate.ScrewArrangement = screwArrangement_F;
+                            }
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_G:
+                    {
+                        if (plate is CConCom_Plate_G)
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else // if (screwArrangementIndex == 1)
+                            {
+                                CScrewArrangement_G screwArrangement_G = new CScrewArrangement_G(referenceScrew);
+                                plate.ScrewArrangement = screwArrangement_G;
+                            }
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_H:
+                    {
+                        if (plate is CConCom_Plate_H)
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else // if (screwArrangementIndex == 1)
+                            {
+                                CScrewArrangement_H screwArrangement_H = new CScrewArrangement_H(referenceScrew);
+                                plate.ScrewArrangement = screwArrangement_H;
+                            }
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_Q:
+                    {
+                        plate.ScrewArrangement = null;
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_S:
+                    {
+                        plate.ScrewArrangement = null;
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_T:
+                    {
+                        plate.ScrewArrangement = null;
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_X:
+                    {
+                        plate.ScrewArrangement = null;
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_Y:
+                    {
+                        plate.ScrewArrangement = null;
+                        break;
+                    }
                 case ESerieTypePlate.eSerie_J:
                     {
                         if (plate is CConCom_Plate_JA) // JA
@@ -1984,7 +2089,7 @@ namespace PFD
                             {
                                 GetDefaultScrewArrangements(joint, plate, out screwArrangementCircle, out screwArrangementRectangleApex, out screwArrangementRectangleKnee);
                                 plate.ScrewArrangement = screwArrangementRectangleApex;
-                            }                                
+                            }
                             else // Circle
                             {
                                 GetDefaultScrewArrangements(joint, plate, out screwArrangementCircle, out screwArrangementRectangleApex, out screwArrangementRectangleKnee);
@@ -2104,6 +2209,36 @@ namespace PFD
                                 plate.ScrewArrangement = screwArrangementCircle;
                             }
                         }
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_M:
+                    {
+                        if (plate is CConCom_Plate_M)
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else // if (screwArrangementIndex == 1)
+                            {
+                                CScrewArrangement_M screwArrangement_M = new CScrewArrangement_M((int)dcomponents.arr_Serie_M_Dimension[0, 3], referenceScrew);
+                                plate.ScrewArrangement = screwArrangement_M;
+                            }
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_N:
+                    {
+                        if (plate is CConCom_Plate_N)
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else // if (screwArrangementIndex == 1)
+                            {
+                                CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N((int)dcomponents.arr_Serie_N_Dimension[0, 5], referenceScrew);
+                                plate.ScrewArrangement = screwArrangement_N;
+                            }
+                        }
+
                         break;
                     }
                 case ESerieTypePlate.eSerie_O:
