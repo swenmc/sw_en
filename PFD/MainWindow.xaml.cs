@@ -81,7 +81,7 @@ namespace PFD
         ////////////////////////////////////////////////////////////////////////
 
         bool bDebugging = false;
-        bool bRelease = true;
+        bool bRelease = false;
 
         ////public ObservableCollection<DoorProperties> DoorBlocksProperties;
         //public ObservableCollection<WindowProperties> WindowBlocksProperties;
@@ -2500,20 +2500,11 @@ namespace PFD
                     ww.Show();
                     
                     string parent_folder = dialog.SelectedPath;
-                    DocumentationHelper.CreateDocumentationFolder(parent_folder, projectInfoVM.ProjectNumber);
+                    DirectoryInfo di = DocumentationHelper.CreateDocumentationFolder(parent_folder, projectInfoVM.ProjectNumber);
 
                     //get all plates from material list
-
-                    //List<QuotationItem> quotationPlates = QuotationHelper.GetPlatesQuotation(vm.Model, 0);
-                    //List<string> plateNames = quotationPlates.Select(q => q.Prefix).ToList();
-
                     List<CPlate> diff_plates = QuotationHelper.GetDifferentPlates(vm.Model);
-                    foreach (CPlate plate in diff_plates)
-                    {
-                        //draw plate to canvas
-                        //draw plate to PDF
-                        //save PDF with all plates
-                    }
+                    CDocumentationReportExport.ReportPDFFile(di.FullName, diff_plates);
 
                     ww.Close();
                 }
