@@ -1318,7 +1318,7 @@ namespace PFD
                             else
                             {
                                 plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, CJointHelper.GetBasePlateArrangement(prop.Name, referenceScrew/*, fh*/)); // B
-                            }                            
+                            }
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
@@ -1359,7 +1359,7 @@ namespace PFD
                                 plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, fCrsc_h, 0f, 0f, 0f, null); // F
                             }
                             else
-                            {                                
+                            {
                                 CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(prop.NumberOfHolesScrews, referenceScrew);
                                 plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, fCrsc_h, 0f, 0f, 0f, screwArrangement_F); // F
                             }

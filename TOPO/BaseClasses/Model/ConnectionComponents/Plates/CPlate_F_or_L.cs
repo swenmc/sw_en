@@ -176,7 +176,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement_L screwArrangement_temp)
+            CScrewArrangement_L screwArrangement)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -186,52 +186,18 @@ namespace BaseClasses
             ITotNoPointsin3D = 12;
 
             m_pControlPoint = controlpoint;
-            Fb_X1 = fbX_temp;
-            Fb_X2 = m_fbX1; // L Series - without slope
-            Fh_Y = fhY_temp;
-            Fl_Z = fl_Z_temp;
+            m_iLeftRightIndex = 0; // Side index -0 - left(original)
+            m_fbX1 = fbX_temp;
+            m_fbX2 = m_fbX1; // L Series - without slope
+            m_fhY = fhY_temp;
+            m_flZ = fl_Z_temp;
             Ft = ft_platethickness;
             m_fConnectedSectionDepth = fConnectedSectionDepth; // Vyska pripojeneho prierezu (zvycajne je to secondary member)
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
-            // Create Array - allocate memory
-            PointsOut2D = new Point[ITotNoPointsin2D];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
-
-            // Calculate point positions
-            Calc_Coord2D();
-            Calc_Coord3D();
-            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, Fh_Y, Fl_Z);
-            Calc_HolesControlPointsCoord3D(screwArrangement_temp);
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            GenerateConnectors(screwArrangement_temp, false);
-
-            Width_bx = m_fbX1;
-            Height_hy = m_fhY;
-            //SetFlatedPlateDimensions();
-            Width_bx_Stretched = m_fbX1 + m_flZ; // Total width
-            Height_hy_Stretched = m_fhY;
-            fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
-            fCuttingRouteDistance = GetCuttingRouteDistance();
-            fSurface = GetSurfaceIgnoringHoles();
-            fVolume = GetVolumeIgnoringHoles();
-            fMass = GetMassIgnoringHoles();
-
-            fA_g = Get_A_rect(Ft, m_fhY);
-            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
-            fA_v_zv = Get_A_rect(Ft, m_fhY);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
-            fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
-
-            ScrewArrangement = screwArrangement_temp;
+            UpdatePlateData(screwArrangement);
         }
 
         // F - with or without holes
@@ -280,6 +246,11 @@ namespace BaseClasses
             if (screwArrangement != null)
             {
                 arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            }
+
+            if (m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
+            {
+                m_fbX2 = m_fbX1;
             }
 
             // Calculate point positions
@@ -343,12 +314,22 @@ namespace BaseClasses
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
         {
-            Width_bx = m_fbX2; //Math.Max(m_fbX1, m_fbX2);
+            if (m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
+                Width_bx = m_fbX1;
+            else
+                Width_bx = m_fbX2; //Math.Max(m_fbX1, m_fbX2);
+
             Height_hy = m_fhY;
-            //SetFlatedPlateDimensions();
-            Width_bx_Stretched = m_fbX2 + m_flZ; // Total width
+
+            if (m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
+                Width_bx_Stretched = m_fbX1 + m_flZ; // Total width
+            else
+                Width_bx_Stretched = m_fbX2 + m_flZ; // Total width
+
             Height_hy_Stretched = m_fhY;
-            SetFlatedPlateDimensions();
+
+            //SetFlatedPlateDimensions();
+
             fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
@@ -356,7 +337,13 @@ namespace BaseClasses
             fMass = GetMassIgnoringHoles();
 
             fA_g = Get_A_rect(Ft, m_fhY);
-            int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
+
+            int iNumberOfScrewsInSection; // TODO, temporary - zavisi na rozmiestneni skrutiek
+
+            if (screwArrangement is CScrewArrangement_L)
+                iNumberOfScrewsInSection = 4;
+            else
+                iNumberOfScrewsInSection = 8;
 
             fA_n = fA_g;
             if (screwArrangement != null)
