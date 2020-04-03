@@ -324,9 +324,14 @@ namespace PFD
                     {
                         if (vm.ScrewArrangementIndex == 0) // Undefined
                             plate.ScrewArrangement = null;
-                        else if (vm.ScrewArrangementIndex == 1) // L
+                        else if (vm.ScrewArrangementIndex == 1) // LH, LI, LK
                         {
-                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
+                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16, referenceScrew);
+                            plate.ScrewArrangement = screwArrangement_L;
+                        }
+                        else if (vm.ScrewArrangementIndex == 2) // LJ
+                        {
+                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8, referenceScrew);
                             plate.ScrewArrangement = screwArrangement_L;
                         }
 
@@ -1323,9 +1328,10 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(vm.ComponentIndex + 1);                            
-                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                            CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(vm.ComponentIndex + 1);
+                            if (vm.ScrewArrangementIndex == 0 || prop.NumberOfHolesScrews == 0) // Undefined
                             {
+                                vm.ScrewArrangementIndex = 0;
                                 plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, fCrsc_h, 0, 0, 0, null); // L
                             }
                             else
@@ -1821,7 +1827,22 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
-                else if (plate is CConCom_Plate_F_or_L)
+                else if (plate is CConCom_Plate_F_or_L && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
+                {
+                    CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
+
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                    plateTemp.Fb_X2 = plateTemp.Fb_X1;
+                    //if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_F_or_L && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_F)
                 {
                     CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
 

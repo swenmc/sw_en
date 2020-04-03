@@ -1982,10 +1982,16 @@ namespace PFD
                         {
                             if (screwArrangementIndex == 0) // Undefined
                                 plate.ScrewArrangement = null;
-                            else // if (screwArrangementIndex == 1)
+                            else if (screwArrangementIndex == 1) // LH, LI, LK
                             {
-                                CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(plate.Name);
-                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew);
+                                //CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(plate.Name);
+                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16 /*prop.NumberOfHolesScrews*/, referenceScrew);
+                                plate.ScrewArrangement = screwArrangement_L;
+                            }
+                            else if (screwArrangementIndex == 2) // LJ
+                            {
+                                //CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(plate.Name);
+                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8 /*prop.NumberOfHolesScrews*/, referenceScrew);
                                 plate.ScrewArrangement = screwArrangement_L;
                             }
                         }

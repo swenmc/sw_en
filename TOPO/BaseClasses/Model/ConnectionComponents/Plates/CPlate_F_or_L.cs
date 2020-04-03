@@ -248,10 +248,11 @@ namespace BaseClasses
                 arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
             }
 
+            /*
             if (m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
             {
                 m_fbX2 = m_fbX1;
-            }
+            }*/
 
             // Calculate point positions
             Calc_Coord2D();
