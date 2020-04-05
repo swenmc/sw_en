@@ -2504,7 +2504,10 @@ namespace PFD
 
                     //get all plates from material list
                     List<CPlate> diff_plates = QuotationHelper.GetDifferentPlates(vm.Model);
-                    CDocumentationReportExport.ReportPDFFile(di.FullName, diff_plates);
+
+                    foreach (CPlate plate in diff_plates) DocumentationHelper.FindCNCPath(plate);
+
+                    //CDocumentationReportExport.ReportPDFFile(di.FullName, diff_plates);
 
                     ww.Close();
                 }
