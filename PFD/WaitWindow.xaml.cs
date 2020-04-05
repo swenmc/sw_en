@@ -32,7 +32,10 @@ namespace PFD
                 WaitImage.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/XLSfilelogo.png"));
             else if (fileType == "PDF")
                 //WaitImage.Source = new BitmapImage(new Uri("./Resources/PDFfilelogo.png", UriKind.Relative));
-                WaitImage.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/PDFfilelogo.png"));                
+                WaitImage.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/PDFfilelogo.png"));
+            else if (fileType == "CNC")
+                //WaitImage.Source = new BitmapImage(new Uri("./Resources/CNCfilelogo.png", UriKind.Relative));
+                WaitImage.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/CNCfilelogo.png"));
             else
             {
                 throw new Exception("Not defined file type icon.");

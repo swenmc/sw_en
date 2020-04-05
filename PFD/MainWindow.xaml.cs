@@ -2496,9 +2496,9 @@ namespace PFD
             {
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    WaitWindow ww = new WaitWindow("PDF");
+                    WaitWindow ww = new WaitWindow("CNC");
                     ww.Show();
-                    
+
                     string parent_folder = dialog.SelectedPath;
                     DirectoryInfo di = DocumentationHelper.CreateDocumentationFolder(parent_folder, projectInfoVM.ProjectNumber);
 
