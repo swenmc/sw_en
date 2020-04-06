@@ -62,6 +62,7 @@
     <Compile Include="EventRaiser.cs" />
     <Compile Include="IMainWindow.cs" />
     <Compile Include="Line.cs" />
+    <Compile Include="ModelSync.cs" />
     <Compile Include="WindowRunSalesman.xaml.cs">
       <DependentUpon>WindowRunSalesman.xaml</DependentUpon>
     </Compile>

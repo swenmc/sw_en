@@ -2502,12 +2502,14 @@ namespace PFD
                     string parent_folder = dialog.SelectedPath;
                     DirectoryInfo di = DocumentationHelper.CreateDocumentationFolder(parent_folder, projectInfoVM.ProjectNumber);
 
-                    //get all plates from material list
+                    //get all different plates from material list
                     List<CPlate> diff_plates = QuotationHelper.GetDifferentPlates(vm.Model);
 
-                    foreach (CPlate plate in diff_plates) DocumentationHelper.FindCNCPath(plate);
+                    //run salesman on every plate
+                    SalesmanPlatesCalculations.RunSalesmanPlatesCalculations(diff_plates);
 
-                    //CDocumentationReportExport.ReportPDFFile(di.FullName, diff_plates);
+                    //report to PDF
+                    CDocumentationReportExport.ReportPDFFile(di.FullName, diff_plates);
 
                     ww.Close();
                 }
