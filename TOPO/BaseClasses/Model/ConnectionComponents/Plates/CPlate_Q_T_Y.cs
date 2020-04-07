@@ -93,35 +93,19 @@ namespace BaseClasses
             Ft = ft_platethickness;
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
 
-            // Create Array - allocate memory
-            PointsOut2D = new Point[ITotNoPointsin2D];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-
-            // Calculate point positions
-            Calc_Coord2D();
-            Calc_Coord3D();
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            Width_bx = m_fbX;
-            Height_hy = m_fhY;
-            //SetFlatedPlateDimensions();
-            Width_bx_Stretched = m_flZ1 + m_fbX + m_flZ2;
-            Height_hy_Stretched = m_fhY;
-            fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
-            fCuttingRouteDistance = GetCuttingRouteDistance();
-            fSurface = GetSurfaceIgnoringHoles();
-            fVolume = GetVolumeIgnoringHoles();
-            fMass = GetMassIgnoringHoles();
+            // ScrewArrangement is not implemented
+            UpdatePlateData(null);
         }
 
         public CConCom_Plate_Q_T_Y(string sName_temp, Point3D controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float ft_platethickness, int iHolesNumber)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
-            //m_ePlateSerieType_FS = ESerieTypePlate.eSerie_Q;
-            //m_ePlateSerieType_FS = ESerieTypePlate.eSerie_T;
+
+            if (sName_temp == "Q")
+                m_ePlateSerieType_FS = ESerieTypePlate.eSerie_Q;
+            else if (sName_temp == "T")
+                m_ePlateSerieType_FS = ESerieTypePlate.eSerie_T;
 
             ITotNoPointsin2D = 8;
             ITotNoPointsin3D = 16;
@@ -134,33 +118,13 @@ namespace BaseClasses
             Ft = ft_platethickness;
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
 
-            // Create Array - allocate memory
-            PointsOut2D = new Point[ITotNoPointsin2D];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-
-            // Calculate point positions
-            Calc_Coord2D();
-            Calc_Coord3D();
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            Width_bx = m_fbX;
-            Height_hy = m_fhY;
-            //SetFlatedPlateDimensions();
-            Width_bx_Stretched = m_flZ1 + m_fbX + m_flZ2;
-            Height_hy_Stretched = m_fhY;
-            fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
-            fCuttingRouteDistance = GetCuttingRouteDistance();
-            fSurface = GetSurfaceIgnoringHoles();
-            fVolume = GetVolumeIgnoringHoles();
-            fMass = GetMassIgnoringHoles();
+            // ScrewArrangement is not implemented
+            UpdatePlateData(null);
         }
 
         //----------------------------------------------------------------------------
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
-            //TO Mato - skontrolovat a updatovat vo vsetkych triedach CPlate_*
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
@@ -170,25 +134,56 @@ namespace BaseClasses
                 arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
             }
 
-            // Fill Array Data
+            // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
 
             if (screwArrangement != null)
             {
-                //screwArrangement.Calc_ApexPlateData(0, m_fbX1, 0, m_fhY, Ft, m_fSlope_rad, ScrewInPlusZDirection);
+               // Not implemented
+               //screwArrangement.Calc_HolesCentersCoord2D
             }
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            //UpdatePlateData_Basic(screwArrangement);
+            UpdatePlateData_Basic();
 
             Set_DimensionPoints2D();
 
             Set_MemberOutlinePoints2D();
+
+            if (screwArrangement != null)
+            {
+                // Not implemented
+                //GenerateConnectors(screwArrangement, false);
+            }
         }
-        //----------------------------------------------------------------------------
+
+        public void UpdatePlateData_Basic()
+        {
+            Width_bx = m_fbX;
+            Height_hy = m_fhY;
+            //SetFlatedPlateDimensions();
+
+            if (m_ePlateSerieType_FS == ESerieTypePlate.eSerie_Y)
+                Width_bx_Stretched = m_flZ1 + m_fbX + m_flZ2;
+            else
+                Width_bx_Stretched = 2 * m_flZ1 + m_fbX;
+
+            Height_hy_Stretched = m_fhY;
+
+            fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fMass = GetMassIgnoringHoles();
+
+            ScrewArrangement = null;
+
+            DrillingRoutePoints = null;
+        }
+ 
         public override void Calc_Coord2D()
         {
             PointsOut2D[0].X = 0;
