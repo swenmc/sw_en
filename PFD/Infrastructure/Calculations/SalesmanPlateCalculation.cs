@@ -28,6 +28,13 @@ namespace PFD.Infrastructure
 
             if (plate.ScrewArrangement == null) return; // Screw arrangmenet must exists
 
+            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
+            {
+                //tu si nejako nie som isty, ci nahodou nezmenime nieco co menit nemozeme a nebude to mat dosah, lebo ak sa nieco meni tak nerobime s klonom objektu plate
+                plate.MirrorPlateAboutX();
+                plate.RotatePlateAboutZ_CW(-90);
+            }            
+
             points = plate.ScrewArrangement.HolesCentersPoints2D.ToList();
 
             if (points == null || points.Count == 0)

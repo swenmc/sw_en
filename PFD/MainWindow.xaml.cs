@@ -2511,6 +2511,12 @@ namespace PFD
                     //report to PDF
                     CDocumentationReportExport.ReportPDFFile(di.FullName, diff_plates);
 
+                    //report CNC files
+                    DocumentationHelper.CreateCNFilesDocumentation(diff_plates, di.FullName);
+
+                    //save .scw files
+                    DocumentationHelper.SavePlatesFiles(diff_plates, di.FullName);
+
                     ww.Close();
                 }
             }
