@@ -26,7 +26,7 @@ namespace PFD.Infrastructure
         {
             List<Point> points = null;
 
-            if (plate.ScrewArrangement == null) return; // Screw arrangmenet must exists
+            if (plate.ScrewArrangement == null || plate.ScrewArrangement.HolesCentersPoints2D == null || plate.ScrewArrangement.HolesCentersPoints2D.Length == 0) return; // Screw arrangmenet must exists, some screw holes must exist
 
             if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
             {
