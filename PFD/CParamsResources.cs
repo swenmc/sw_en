@@ -143,6 +143,14 @@ namespace PFD
             public const string Symbol = "α.1";
         }
 
+        public struct PlateAngle2S
+        {
+            public const string Name = "Angle 2";
+            public const string DBName = "PlateAngle2";
+            public const string Unit = sUnit_Rotation;
+            public const string Symbol = "α.2";
+        }
+
         public struct PlatePerimeterS
         {
             public const string Name = "Perimeter - Cutting route distance";

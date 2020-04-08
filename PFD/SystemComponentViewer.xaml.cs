@@ -1565,7 +1565,7 @@ namespace PFD
                             break;
                         }
                     case ESerieTypePlate.eSerie_M:
-                        {                            
+                        {
                             if (vm.ScrewArrangementIndex == 0) // Undefined
                             {
                                 plate = new CConCom_Plate_M(dcomponents.arr_Serie_M_Names[0], controlpoint, 0.5f * (fb - fb_B), 0.5f * (fb - fb_B), fh, ft, fb_B, fRoofPitch_rad, fGamma_rad, 0, 0, 0, null); // M
@@ -2176,6 +2176,23 @@ namespace PFD
 
                     if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.RoofPitch_rad = float.Parse(changedText) / fDegToRadianFactor;
                     if (item.Name.Equals(CParamsResources.PlateAngleS.Name)) plateTemp.Gamma1_rad = float.Parse(changedText) / fDegToRadianFactor;
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_N)
+                {
+                    CConCom_Plate_N plateTemp = (CConCom_Plate_N)plate;
+
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                    //if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth3S.Name)) plateTemp.Fb_X3 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) plateTemp.FZ = float.Parse(changedText) / fLengthUnitFactor;
+
+                    if (item.Name.Equals(CParamsResources.PlateAngle2S.Name)) plateTemp.Alpha2_rad = float.Parse(changedText) / fDegToRadianFactor;
 
                     // Update plate data
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);

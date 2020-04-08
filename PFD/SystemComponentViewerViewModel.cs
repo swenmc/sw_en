@@ -634,7 +634,7 @@ namespace PFD
                 {
                     case ESerieTypeCrSc_FS.eSerie_Box_10075:
                         {
-                            Components = databaseComponents.arr_Serie_Box_FS_Names;                            
+                            Components = databaseComponents.arr_Serie_Box_FS_Names;
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_Z:
@@ -781,7 +781,7 @@ namespace PFD
                         {
                             Components = databaseComponents.arr_Serie_M_Names;
                             ComponentIndex = 0;
-                            ScrewArrangements = new List<string>(1) { "Undefined" };
+                            ScrewArrangements = databaseComponents.arr_Serie_M_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
                         }
@@ -789,7 +789,7 @@ namespace PFD
                         {
                             Components = databaseComponents.arr_Serie_N_Names;
                             ComponentIndex = 0;
-                            ScrewArrangements = new List<string>(1) { "Undefined" };
+                            ScrewArrangements = new List<string>(2) { "Undefined", "Arrangement N" };
                             ScrewArrangementIndex = 0;
                             break;
                         }
@@ -929,11 +929,12 @@ namespace PFD
                 CConCom_Plate_N plateTemp = (CConCom_Plate_N)plate;
 
                 // Zatial len read-only
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit, false));
-                //geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth3S.Name, CParamsResources.PlateWidth3S.Symbol, (Math.Round(plateTemp.Fb_X3 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth3S.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit, false));
-                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateAngleS.Name, CParamsResources.PlateAngleS.Symbol, (Math.Round(plateTemp.Alpha1_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.PlateAngleS.Unit, false));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit));
+                //geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth3S.Name, CParamsResources.PlateWidth3S.Symbol, (Math.Round(plateTemp.Fb_X3 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth3S.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(plateTemp.FZ * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateAngle2S.Name, CParamsResources.PlateAngle2S.Symbol, (Math.Round(plateTemp.Alpha2_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.PlateAngle2S.Unit));
 
             }
             else if (plate is CConCom_Plate_O)

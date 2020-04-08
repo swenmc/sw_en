@@ -88,7 +88,21 @@ namespace BaseClasses
             }
         }
 
-        private float alpha2_rad;
+        private float m_alpha2_rad;
+
+        public float Alpha2_rad
+        {
+            get
+            {
+                return m_alpha2_rad;
+            }
+
+            set
+            {
+                m_alpha2_rad = value;
+            }
+        }
+
         private float x_a;
 
         public int m_iHolesNumber = 0;
@@ -139,7 +153,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement_N screwArrangement_temp)
+            CScrewArrangement_N screwArrangement)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -158,30 +172,52 @@ namespace BaseClasses
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
-            alpha2_rad = MathF.fPI / 8f; // 22.5 deg
-            m_alpha1_rad = MathF.fPI / 2f - alpha2_rad; // 67.5 deg
-            x_a = (float)Math.Tan(alpha2_rad) * m_fZ;
+            m_alpha2_rad = MathF.fPI / 8f; // 22.5 deg
+
+            UpdatePlateData(screwArrangement);
+        }
+
+        //----------------------------------------------------------------------------
+        public override void UpdatePlateData(CScrewArrangement screwArrangement)
+        {
+            // Update auxiliary geometry
+            m_alpha1_rad = MathF.fPI / 2f - m_alpha2_rad; // Default = 67.5 deg
+            x_a = (float)Math.Tan(m_alpha2_rad) * m_fZ;
             m_fbX2 = m_fZ / (float)Math.Sin(m_alpha1_rad);
 
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            // Calculate point positions
+            if (screwArrangement != null)
+            {
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            }
+
+            // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
 
-            if (screwArrangement_temp != null)
+            if (screwArrangement != null)
             {
-                screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, m_fbX2, Fb_X3, Fh_Y);
-                arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
-                Calc_HolesControlPointsCoord3D(screwArrangement_temp);
-                GenerateConnectors(screwArrangement_temp);
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+                ((CScrewArrangement_N)screwArrangement).Calc_HolesCentersCoord2D(m_fbX1, m_fbX2, m_fbX3, m_fhY);
+                Calc_HolesControlPointsCoord3D(screwArrangement);
+                GenerateConnectors(screwArrangement);
             }
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
+            UpdatePlateData_Basic(screwArrangement);
+
+            Set_DimensionPoints2D();
+
+            Set_MemberOutlinePoints2D();
+        }
+
+        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        {
             Width_bx = 2 * m_fbX1 + 2 * m_fbX2 + m_fbX3;
             Height_hy = m_fhY;
             //SetFlatedPlateDimensions();
@@ -198,58 +234,28 @@ namespace BaseClasses
 
             fA_n = fA_g;
 
-            if (screwArrangement_temp != null)
+            if (screwArrangement != null)
             {
-                fA_n -= iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
+                fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
             }
 
             fA_v_zv = Get_A_rect(Ft, m_fhY);
 
             fA_vn_zv = fA_v_zv;
 
-            if (screwArrangement_temp != null)
+            if (screwArrangement != null)
             {
-                fA_vn_zv -= iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
+                fA_vn_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
             }
 
             fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
 
-            ScrewArrangement = screwArrangement_temp;
+            ScrewArrangement = screwArrangement;
+
+            DrillingRoutePoints = null;
         }
 
-        //----------------------------------------------------------------------------
-        public override void UpdatePlateData(CScrewArrangement screwArrangement)
-        {
-            //TO Mato - skontrolovat a updatovat vo vsetkych triedach CPlate_*
-            // Create Array - allocate memory
-            PointsOut2D = new Point[ITotNoPointsin2D];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-
-            if (screwArrangement != null)
-            {
-                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
-            }
-
-            // Fill Array Data
-            Calc_Coord2D();
-            Calc_Coord3D();
-
-            if (screwArrangement != null)
-            {
-                //screwArrangement.Calc_ApexPlateData(0, m_fbX1, 0, m_fhY, Ft, m_fSlope_rad, ScrewInPlusZDirection);
-            }
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            //UpdatePlateData_Basic(screwArrangement);
-
-            Set_DimensionPoints2D();
-
-            Set_MemberOutlinePoints2D();
-        }
-        //----------------------------------------------------------------------------
         public override void Calc_Coord2D()
         {
             PointsOut2D[0].X = 0;
@@ -341,7 +347,7 @@ namespace BaseClasses
             arrPoints3D[11].Z = 0;
 
             // Second layer
-            float fangle_aux_rad = (MathF.fPI / 2f + alpha2_rad) / 2f; // Polovica uhla ktory zvieraju strana bx1 a bx2 (celna a sikma)
+            float fangle_aux_rad = (MathF.fPI / 2f + m_alpha2_rad) / 2f; // Polovica uhla ktory zvieraju strana bx1 a bx2 (celna a sikma)
             float fx_aux = Ft / (float)Math.Tan(fangle_aux_rad);
 
             arrPoints3D[12].X = arrPoints3D[0].X;
@@ -591,7 +597,7 @@ namespace BaseClasses
                 this.m_fhY = refPlate.m_fhY;
                 this.m_fZ = refPlate.m_fZ;
                 this.m_alpha1_rad = refPlate.m_alpha1_rad;
-                this.alpha2_rad = refPlate.alpha2_rad;
+                this.m_alpha2_rad = refPlate.m_alpha2_rad;
                 this.x_a = refPlate.x_a;
                 this.m_iHolesNumber = refPlate.m_iHolesNumber;
                 this.m_fe_min_x = refPlate.m_fe_min_x;
