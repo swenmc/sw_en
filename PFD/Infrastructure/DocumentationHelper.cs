@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace PFD
@@ -64,6 +65,34 @@ namespace PFD
             }
         }
 
+        public static void SavePlatesDXF_2D(List<CPlate> plates, string parent_folder)
+        {
+            foreach (CPlate plate in plates)
+            {
+                Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, true, true, true, true, true, true, true, true, true);
+
+                CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0, GetPlateFileName_DXF(plate.Name, parent_folder));
+            }
+        }
+
+        public static void SavePlatesDXF_3D(List<CPlate> plates, string parent_folder)
+        {
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            // Create 3D window
+            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+            sDisplayOptions.bUseLightAmbient = true;
+            sDisplayOptions.bDisplayConnectors = true;            
+            sDisplayOptions.bDisplayWireFrameModel = true;
+
+            foreach (CPlate plate in plates)
+            {
+                Page3Dmodel page3D = new Page3Dmodel(plate, sDisplayOptions);
+                page3D.UpdateLayout();                
+                CExportToDXF.ExportViewPort_DXF(page3D._trackport.ViewPort, GetPlateFileName_DXF_3D(plate.Name, parent_folder));
+            }
+        }
+
         private static string GetPlateFileName(string plateName, string parent_folder)
         {
             int count = 0;            
@@ -73,6 +102,30 @@ namespace PFD
             {
                 if (!System.IO.File.Exists(fileName)) nameOK = true;
                 else fileName = $"{parent_folder}\\Plate_{plateName}_{++count}.scw";
+            }
+            return fileName;
+        }
+        private static string GetPlateFileName_DXF(string plateName, string parent_folder)
+        {
+            int count = 0;
+            bool nameOK = false;
+            string fileName = $"{parent_folder}\\Plate_{plateName}_2D.dxf"; ;
+            while (!nameOK)
+            {
+                if (!System.IO.File.Exists(fileName)) nameOK = true;
+                else fileName = $"{parent_folder}\\Plate_{plateName}_{++count}_2D.dxf";
+            }
+            return fileName;
+        }
+        private static string GetPlateFileName_DXF_3D(string plateName, string parent_folder)
+        {
+            int count = 0;
+            bool nameOK = false;
+            string fileName = $"{parent_folder}\\Plate_{plateName}_3D.dxf"; ;
+            while (!nameOK)
+            {
+                if (!System.IO.File.Exists(fileName)) nameOK = true;
+                else fileName = $"{parent_folder}\\Plate_{plateName}_{++count}_3D.dxf";
             }
             return fileName;
         }

@@ -1645,12 +1645,12 @@ namespace PFD
             //Canvas dxfCanvas = new Canvas();
             //Drawing2D.DrawPlateToCanvas(plate, 400, 500, ref dxfCanvas, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
             //            vm.DrawDrillingRoute2D, vm.DrawDimensions2D, vm.DrawMemberOutline2D, vm.DrawBendLines2D);
-            CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0);
+            CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0, null);
         }
 
         private void BtnExportDXF_3D_Click(object sender, RoutedEventArgs e)
         {
-            CExportToDXF.ExportViewPort_DXF(page3D._trackport.ViewPort);
+            CExportToDXF.ExportViewPort_DXF(page3D._trackport.ViewPort, null);
         }
 
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)

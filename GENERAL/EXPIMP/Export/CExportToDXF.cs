@@ -14,7 +14,7 @@ namespace EXPIMP
     {
         //--------------------------------------------------------------------------------------------------
         //--------------------------------------------------------------------------------------------------
-        public static void ExportViewPort_DXF(Viewport3D viewPort)
+        public static void ExportViewPort_DXF(Viewport3D viewPort, string fileName)
         {
             DxfDocument doc = new DxfDocument();
             foreach (Visual3D objVisual3D in viewPort.Children)
@@ -28,9 +28,12 @@ namespace EXPIMP
                 }
             }
 
-            DateTime d = DateTime.Now;
-            string fileName = string.Format("3DExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
-                d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+            if (string.IsNullOrEmpty(fileName))
+            {
+                DateTime d = DateTime.Now;
+                fileName = string.Format("3DExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
+                    d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+            }            
 
             doc.Save(fileName);
         }
@@ -177,7 +180,13 @@ namespace EXPIMP
         //}
 
         
-        public static void ExportCanvas_DXF(Canvas canvas, double xx, double yy)
+        public static void ExportCanvas_DXF(Canvas canvas, double xx, double yy, string fileName)
+        {
+            DxfDocument doc = GetDXFFromCanvas(canvas, xx, yy);
+            SaveDXFDocument(doc, fileName);
+        }
+
+        public static DxfDocument GetDXFFromCanvas(Canvas canvas, double xx, double yy)
         {
             //---------------------------------------------------------------------------------------
             // TODO 305
@@ -193,13 +202,13 @@ namespace EXPIMP
             //---------------------------------------------------------------------------------------
 
             DxfDocument doc = new DxfDocument();
-            
+
             double Z = 0; //is is 2D so Z axis is always 0
             double fontSize = 10;
 
             double maxX = 0;
             double maxY = 0;
-            
+
             foreach (object o in canvas.Children)
             {
                 System.Diagnostics.Trace.WriteLine(o.GetType());
@@ -207,7 +216,7 @@ namespace EXPIMP
                 if (o is WindowsShapes.Rectangle)
                 {
                     WindowsShapes.Rectangle winRect = o as WindowsShapes.Rectangle;
-                    
+
                     double x = Canvas.GetLeft(winRect);
                     double y = Canvas.GetTop(winRect);
                     //double y = Canvas.GetTop(winRect) * -1; //pretocenim podla osi y dostanem body tak ako v canvase
@@ -237,7 +246,7 @@ namespace EXPIMP
                     solid.SecondVertex = new Vector2(pTR.X + x, -(pTR.Y + y));
                     solid.ThirdVertex = new Vector2(pBL.X + x, -(pBL.Y + y));
                     solid.FourthVertex = new Vector2(pBR.X + x, -(pBR.Y + y));
-                    solid.Layer = new netDxf.Tables.Layer( string.IsNullOrEmpty(winRect.Tag.ToString()) ? "Points" : winRect.Tag.ToString()); //"Points"
+                    solid.Layer = new netDxf.Tables.Layer(string.IsNullOrEmpty(winRect.Tag.ToString()) ? "Points" : winRect.Tag.ToString()); //"Points"
                     doc.AddEntity(solid);
                 }
                 else if (o is WindowsShapes.Polyline)
@@ -298,7 +307,7 @@ namespace EXPIMP
                     Text txt = new Text(winText.Text, new Vector2(x, y), fontSize);
                     //Text txt = new Text(winText.Text, new Vector2(x, -y), fontSize);  //pretocenim podla osi y dostanem body tak ako v canvase
                     txt.Color = AciColor.Yellow;
-                    txt.Layer = new netDxf.Tables.Layer(string.IsNullOrEmpty( winText.Tag.ToString()) ? "Text" : winText.Tag.ToString());
+                    txt.Layer = new netDxf.Tables.Layer(string.IsNullOrEmpty(winText.Tag.ToString()) ? "Text" : winText.Tag.ToString());
                     doc.AddEntity(txt);
 
                     //Takto sa da spravit zlozitejsi text, napr. Bold atd..
@@ -321,12 +330,20 @@ namespace EXPIMP
                 }
             }
 
-            doc.Viewport.ViewCenter = new Vector2(maxX / 2,maxY / 2);            
+            doc.Viewport.ViewCenter = new Vector2(maxX / 2, maxY / 2);
             doc.Viewport.ViewHeight = Math.Max(maxX, maxY);
-            
-            DateTime d = DateTime.Now;
-            string fileName = string.Format("ExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
-                d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+
+            return doc;
+        }
+
+        private static void SaveDXFDocument(DxfDocument doc, string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                DateTime d = DateTime.Now;
+                fileName = string.Format("ExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
+                    d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+            }
 
             doc.Save(fileName);
         }

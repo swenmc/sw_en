@@ -2517,6 +2517,12 @@ namespace PFD
                     //save .scw files
                     DocumentationHelper.SavePlatesFiles(diff_plates, di.FullName);
 
+                    //save .dxf 2D files
+                    DocumentationHelper.SavePlatesDXF_2D(diff_plates, di.FullName);
+
+                    //save .dxf 3D files
+                    DocumentationHelper.SavePlatesDXF_3D(diff_plates, di.FullName);
+
                     ww.Close();
                 }
             }

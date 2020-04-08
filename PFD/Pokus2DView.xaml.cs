@@ -922,7 +922,7 @@ namespace PFD
 
         private void saveDXF_Click(object sender, RoutedEventArgs e)
         {
-            CExportToDXF.ExportCanvas_DXF(CanvasSection2D, modelMarginLeft_x + 14, modelMarginBottom_y);
+            CExportToDXF.ExportCanvas_DXF(CanvasSection2D, modelMarginLeft_x + 14, modelMarginBottom_y, null);
         }
 
         //public void CalculateModelLimits(CModel cmodel, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y, out float fTempMax_Z, out float fTempMin_Z)
