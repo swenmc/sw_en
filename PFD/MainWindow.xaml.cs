@@ -43,6 +43,8 @@ using PFD.Infrastructure;
 using Microsoft.Win32;
 using BriefFiniteElementNet;
 using System.Configuration;
+using PFD.ViewModels;
+using BaseClasses.Results;
 //using BriefFiniteElementNet.Controls;
 
 namespace PFD
@@ -2522,6 +2524,11 @@ namespace PFD
 
                     //save .dxf 3D files
                     DocumentationHelper.SavePlatesDXF_3D(diff_plates, di.FullName);
+
+                    //xlsx document
+                    if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm.Model);
+                    CMaterialListViewModel materialListVM = (Part_List.Content as UC_MaterialList).DataContext as CMaterialListViewModel;
+                    DocumentationHelper.ExportMembersExcelDocument(materialListVM, di.FullName);
 
                     ww.Close();
                 }

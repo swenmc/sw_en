@@ -1,6 +1,8 @@
 ﻿using BaseClasses;
+using BaseClasses.Results;
 using EXPIMP;
 using MATH;
+using PFD.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -128,6 +130,20 @@ namespace PFD
                 else fileName = $"{parent_folder}\\Plate_{plateName}_{++count}_3D.dxf";
             }
             return fileName;
+        }
+
+
+        public static void ExportMembersExcelDocument(CMaterialListViewModel materialListVM, string parentFolder)
+        {            
+            List<string[]> tableParams = new List<string[]>();
+            tableParams.Add(new string[] { "Prefix", "Cross-section", "Count [-]", "Material Name", "Length [m]", "Unit Mass [kg/m]", "Mass Per Piece", "Total Length [m]", "Total Mass [kg]"});
+            foreach (MaterialListMember m in materialListVM.MembersMaterialList)
+            {
+                string[] arr = new string[] {m.Prefix, m.CrScName, m.Quantity.ToString(), m.MaterialName, m.LengthStr, m.MassPerLengthStr,
+                            m.MassPerPieceStr, m.TotalLength.ToString("F2"), m.TotalMass.ToString("F2") };
+                tableParams.Add(arr);
+            }
+            ExportToExcelDocument.ExportToExcel($"{parentFolder}//MembersData.xlsx", tableParams, "Data");
         }
 
 
