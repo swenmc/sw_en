@@ -150,6 +150,10 @@
     <Compile Include="Infrastructure\BaseHelper.cs" />
     <Compile Include="MODELS\CModel_PFD.cs" />
     <Compile Include="MODELS\CModel_PFD_01_GR.cs" />
+    <Compile Include="DocumentationExportOptionsWindow.xaml.cs">
+      <DependentUpon>DocumentationExportOptionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\DocumentationSettingsViewModel.cs" />
     <Compile Include="WindPressureCoefficients.xaml.cs">
       <DependentUpon>WindPressureCoefficients.xaml</DependentUpon>
     </Compile>
@@ -326,6 +330,10 @@
     <Page Include="DesignResultsSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DocumentationExportOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WindPressureCoefficients.xaml">
       <Generator>MSBuild:Compile</Generator>

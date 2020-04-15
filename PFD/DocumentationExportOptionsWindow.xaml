@@ -1,0 +1,41 @@
+﻿<Window x:Class="PFD.DocumentationExportOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Documentation Export Options" Height="310" Width="400">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Name="GridExportOptions" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0">
+                <CheckBox Name="chckExportMembersXLS" Margin="0 0 0 5" IsChecked="{Binding ExportMembersXLS, UpdateSourceTrigger=PropertyChanged}">Members XLS</CheckBox>
+                <CheckBox Name="chckExportPlatesPDF" Margin="0 0 0 5" IsChecked="{Binding ExportPlatesPDF, UpdateSourceTrigger=PropertyChanged}">Plates PDF</CheckBox>
+                <CheckBox Name="chckExportCNCSetup" Margin="0 0 0 5" IsChecked="{Binding ExportCNCSetup, UpdateSourceTrigger=PropertyChanged}">CNC Setup files</CheckBox>
+                <CheckBox Name="chckExportCNCDrilling" Margin="0 0 0 5" IsChecked="{Binding ExportCNCDrilling, UpdateSourceTrigger=PropertyChanged}">CNC Drilling files</CheckBox>
+                <CheckBox Name="chckExport2D_DXF" Margin="0 0 0 5" IsChecked="{Binding Export2D_DXF, UpdateSourceTrigger=PropertyChanged}">2D DXF files</CheckBox>
+                <CheckBox Name="chckExport3D_DXF" Margin="0 0 0 5" IsChecked="{Binding Export3D_DXF, UpdateSourceTrigger=PropertyChanged}">3D DXF files</CheckBox>
+                <CheckBox Name="chckExportSCV" Margin="0 0 0 5" IsChecked="{Binding ExportSCV, UpdateSourceTrigger=PropertyChanged}">SCV files</CheckBox>                
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+                
+                <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>

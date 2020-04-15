@@ -2297,6 +2297,9 @@ namespace PFD
         public QuotationDisplayOptionsViewModel _quotationExportOptionsVM;
 
         [NonSerialized]
+        public DocumentationSettingsViewModel _documentationExportOptionsVM;
+
+        [NonSerialized]
         public CPFDLoadInput _loadInput;
 
         private ObservableCollection<CAccessories_LengthItemProperties> m_Flashings;

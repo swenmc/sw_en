@@ -2494,43 +2494,68 @@ namespace PFD
 
         private void ButtonDocumentation_Click(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            DocumentationExportOptionsWindow exportOptions = new DocumentationExportOptionsWindow(vm);
+            var result = exportOptions.ShowDialog();
+
+            if (result.HasValue && result.Value == true)
             {
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
                 {
-                    WaitWindow ww = new WaitWindow("CNC");
-                    ww.Show();
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        WaitWindow ww = new WaitWindow("CNC");
+                        ww.Show();
 
-                    string parent_folder = dialog.SelectedPath;
-                    DirectoryInfo di = DocumentationHelper.CreateDocumentationFolder(parent_folder, projectInfoVM.ProjectNumber);
+                        string parent_folder = dialog.SelectedPath;
+                        DirectoryInfo di = DocumentationHelper.CreateDocumentationFolder(parent_folder, projectInfoVM.ProjectNumber);
+                                                
+                        //get all different plates from material list
+                        List<CPlate> diff_plates = QuotationHelper.GetDifferentPlates(vm.Model);
 
-                    //get all different plates from material list
-                    List<CPlate> diff_plates = QuotationHelper.GetDifferentPlates(vm.Model);
+                        //run salesman on every plate
+                        SalesmanPlatesCalculations.RunSalesmanPlatesCalculations(diff_plates);
 
-                    //run salesman on every plate
-                    SalesmanPlatesCalculations.RunSalesmanPlatesCalculations(diff_plates);
+                        if (vm._documentationExportOptionsVM.ExportPlatesPDF)
+                        {
+                            //report to PDF
+                            CDocumentationReportExport.ReportPDFFile(di.FullName, diff_plates);
+                        }
 
-                    //report to PDF
-                    CDocumentationReportExport.ReportPDFFile(di.FullName, diff_plates);
+                        //To Mato - toto nemam oddelene,lebo sa spolu robia CNC files, podla mna by mala byt len jedna volba v options a to Export CNC files
+                        if (vm._documentationExportOptionsVM.ExportCNCSetup || vm._documentationExportOptionsVM.ExportCNCDrilling)
+                        {
+                            //report CNC files
+                            DocumentationHelper.CreateCNFilesDocumentation(diff_plates, di.FullName);
+                        }
 
-                    //report CNC files
-                    DocumentationHelper.CreateCNFilesDocumentation(diff_plates, di.FullName);
+                        if (vm._documentationExportOptionsVM.ExportSCV)
+                        {
+                            //save .scw files
+                            DocumentationHelper.SavePlatesFiles(diff_plates, di.FullName);
+                        }
 
-                    //save .scw files
-                    DocumentationHelper.SavePlatesFiles(diff_plates, di.FullName);
+                        if (vm._documentationExportOptionsVM.Export2D_DXF)
+                        {
+                            //save .dxf 2D files
+                            DocumentationHelper.SavePlatesDXF_2D(diff_plates, di.FullName);
+                        }
 
-                    //save .dxf 2D files
-                    DocumentationHelper.SavePlatesDXF_2D(diff_plates, di.FullName);
+                        if (vm._documentationExportOptionsVM.Export3D_DXF)
+                        {
+                            //save .dxf 3D files
+                            DocumentationHelper.SavePlatesDXF_3D(diff_plates, di.FullName);
+                        }                            
 
-                    //save .dxf 3D files
-                    DocumentationHelper.SavePlatesDXF_3D(diff_plates, di.FullName);
+                        if (vm._documentationExportOptionsVM.ExportMembersXLS)
+                        {
+                            //xlsx document
+                            if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm.Model);
+                            CMaterialListViewModel materialListVM = (Part_List.Content as UC_MaterialList).DataContext as CMaterialListViewModel;
+                            DocumentationHelper.ExportMembersExcelDocument(materialListVM, di.FullName);
+                        }                            
 
-                    //xlsx document
-                    if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm.Model);
-                    CMaterialListViewModel materialListVM = (Part_List.Content as UC_MaterialList).DataContext as CMaterialListViewModel;
-                    DocumentationHelper.ExportMembersExcelDocument(materialListVM, di.FullName);
-
-                    ww.Close();
+                        ww.Close();
+                    }
                 }
             }
         }
