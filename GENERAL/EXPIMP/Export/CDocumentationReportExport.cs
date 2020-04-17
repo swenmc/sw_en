@@ -81,7 +81,7 @@ namespace EXPIMP
                 page = s_document.AddPage();
                 gfx = XGraphics.FromPdfPage(page);                
                 page2D = new Canvas();
-                page2D.RenderSize = new Size(Frame2DWidth, Frame2DHeight);                                
+                page2D.RenderSize = new Size(Frame2DWidth, Frame2DHeight);
 
                 //if (useTransformOptions)
                 //{
@@ -92,6 +92,12 @@ namespace EXPIMP
                 //}
                 //if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
+                CExportToPDF.DrawPlateInfo(gfx, plate);
+                string sFileName = CExportToPDF.Draw3DScheme(gfx, null, plate); //To Mato - production info???
+                CExportToPDF.DrawProductionNotes(gfx);
+                CExportToPDF.DrawLogo(gfx);
+                CExportToPDF.DrawFSAddress(gfx);
+                
                 Drawing2D.DrawPlateToCanvas(plate,
                    Frame2DWidth,
                    Frame2DHeight,
@@ -99,7 +105,9 @@ namespace EXPIMP
                    true, true, true, true, true, true, true, true, true);
 
                 XImage image2 = XImage.FromBitmapSource(ExportHelper.RenderVisual(page2D, scaleFor2D));
-                gfx.DrawImage(image2, 0, 20, Frame2DWidth * scaleFor2D, Frame2DHeight * scaleFor2D);
+                double y = 280;
+                if (string.IsNullOrEmpty(sFileName)) y = 100;
+                gfx.DrawImage(image2, 0, y, Frame2DWidth * scaleFor2D, Frame2DHeight * scaleFor2D);
                 image2.Dispose();
 
                 gfx.Dispose();

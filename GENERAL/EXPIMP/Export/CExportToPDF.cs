@@ -308,7 +308,7 @@ namespace EXPIMP
             gfx.Dispose();
         }
 
-        private static void DrawLogo(XGraphics gfx)
+        public static void DrawLogo(XGraphics gfx)
         {
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
             gfx.DrawImage(image, 50, 750);
@@ -317,7 +317,7 @@ namespace EXPIMP
             gfx.DrawImage(image2, 220, 750);
         }
 
-        private static void Draw3DScheme(XGraphics gfx, CProductionInfo pInfo, CPlate plate)
+        public static string Draw3DScheme(XGraphics gfx, CProductionInfo pInfo, CPlate plate)
         {
             // Display scheme
 
@@ -449,16 +449,18 @@ namespace EXPIMP
 
             if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
             {
-                if (plate is CConCom_Plate_KA) return;
-                if (plate is CConCom_Plate_KK) return;
+                if (plate is CConCom_Plate_KA) return sFileName;
+                if (plate is CConCom_Plate_KK) return sFileName;
                 //gfx.DrawString("RH: ", font, XBrushes.Black, 460, 20);
                 gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 486, 75);
                 //gfx.DrawString("LH: ", font, XBrushes.Black, 480, 20);
                 gfx.DrawString(pInfo.AmountLH.ToString(), font, XBrushes.Black, 546, 58);
             }
+
+            return sFileName;
         }
 
-        private static void DrawFSAddress(XGraphics gfx)
+        public static void DrawFSAddress(XGraphics gfx)
         {
             XFont font = new XFont(fontFamily, 6, XFontStyle.Regular);
 
@@ -502,7 +504,7 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawProductionNotes(XGraphics gfx)
+        public static void DrawProductionNotes(XGraphics gfx)
         {
             XFont font = new XFont(fontFamily, 12, XFontStyle.Regular);
 
@@ -510,7 +512,7 @@ namespace EXPIMP
             gfx.DrawString(sNote1, font, XBrushes.Black, 200, 700);
         }
 
-        private static void DrawPlateInfo(XGraphics gfx, CPlate plate)
+        public static void DrawPlateInfo(XGraphics gfx, CPlate plate)
         {
             string plateNamePrefix = plate.Name;
             string plateName = "";
