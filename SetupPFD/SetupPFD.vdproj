@@ -3027,6 +3027,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_E7C4B9E5B77C45EB855773F6EDE47223"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E84791B241C74349ABFAA2AF107EB5A6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -3508,12 +3514,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6B5BBDE669EF4FF4A73A3A6F815177F7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_FED21DD6239C4078ABAF7D68C4AABEB5"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3893,6 +3893,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6E64BF3DD98D4D0FA81FD55FFF9FA255"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6B5BBDE669EF4FF4A73A3A6F815177F7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -7190,7 +7196,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7388.26124, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7412.42261, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5131E559A61AF5BF33E8E890703090C0"
@@ -11889,7 +11895,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7388.26124, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7412.42261, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_DC854C5FE59B4089A0231BCB2772AF4D"
@@ -12259,6 +12265,26 @@
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E7C4B9E5B77C45EB855773F6EDE47223"
+            {
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\CNCfilelogo.png"
+            "TargetName" = "8:CNCfilelogo.png"
+            "Tag" = "8:"
+            "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

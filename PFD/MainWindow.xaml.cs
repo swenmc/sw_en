@@ -83,7 +83,7 @@ namespace PFD
         ////////////////////////////////////////////////////////////////////////
 
         bool bDebugging = false;
-        bool bRelease = false;
+        bool bRelease = true;
 
         ////public ObservableCollection<DoorProperties> DoorBlocksProperties;
         //public ObservableCollection<WindowProperties> WindowBlocksProperties;
@@ -1140,8 +1140,7 @@ namespace PFD
             {
                 View_2D.IsEnabled = false;
                 Clear3DModel.IsEnabled = false;
-                ExportDXF_3D.IsEnabled = false;
-                ButtonDocumentation.Visibility = Visibility.Collapsed;
+                ExportDXF_3D.IsEnabled = false;                
             }
 
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
