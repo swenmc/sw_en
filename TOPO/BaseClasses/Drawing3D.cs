@@ -603,18 +603,28 @@ namespace BaseClasses
                 List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
                 membersBaseNodes_FrontSide = GetMemberBaseNodesFrontSide(model);
 
+                List<Point3D?> controlPoints = new List<Point3D?>();
                 for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
                 {
                     Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
-                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(1, 0, 0), new Vector3D(0, 0, -1), labelsY[i].ToString(), fMarkCircleDiameter, fOffset, fLineLength_X, sDisplayOptions.GridLinePatternType);
-                    listOfGridlines.Add(gl);
+                    if (!CheckSymbolsOverlaps(controlPoints, controlPoint, fMarkCircleDiameter))
+                    {
+                        controlPoints.Add(controlPoint);
+                        CGridLine gl = new CGridLine(controlPoint, new Vector3D(1, 0, 0), new Vector3D(0, 0, -1), labelsY[i].ToString(), fMarkCircleDiameter, fOffset, fLineLength_X, sDisplayOptions.GridLinePatternType);
+                        listOfGridlines.Add(gl);
+                    }
                 }
 
+                controlPoints = new List<Point3D?>();
                 for (int i = 0; i < membersBaseNodes_FrontSide.Count; i++)
                 {
                     Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y, membersBaseNodes_FrontSide[i].Z);
-                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 1, 0), new Vector3D(0, 0, -1), (i + 1).ToString(), fMarkCircleDiameter, fOffset, fLineLength_Y, sDisplayOptions.GridLinePatternType);
-                    listOfGridlines.Add(gl);
+                    if (!CheckSymbolsOverlaps(controlPoints, controlPoint, fMarkCircleDiameter))
+                    {
+                        controlPoints.Add(controlPoint);
+                        CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 1, 0), new Vector3D(0, 0, -1), (i + 1).ToString(), fMarkCircleDiameter, fOffset, fLineLength_Y, sDisplayOptions.GridLinePatternType);
+                        listOfGridlines.Add(gl);
+                    }
                 }
             }
 
