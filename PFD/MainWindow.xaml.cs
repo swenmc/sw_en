@@ -83,7 +83,7 @@ namespace PFD
         ////////////////////////////////////////////////////////////////////////
 
         bool bDebugging = false;
-        bool bRelease = true;
+        bool bRelease = false;
 
         ////public ObservableCollection<DoorProperties> DoorBlocksProperties;
         //public ObservableCollection<WindowProperties> WindowBlocksProperties;

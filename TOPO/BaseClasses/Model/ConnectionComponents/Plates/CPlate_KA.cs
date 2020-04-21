@@ -429,6 +429,10 @@ namespace BaseClasses
             if (plate is CConCom_Plate_KA)
             {
                 CConCom_Plate_KA refPlate = (CConCom_Plate_KA)plate;
+
+                //skusam 557
+                this.Ft = refPlate.Ft;
+
                 this.m_fbX1 = refPlate.m_fbX1;
                 this.m_fhY1 = refPlate.m_fhY1;
                 this.m_fbX2 = refPlate.m_fbX2;

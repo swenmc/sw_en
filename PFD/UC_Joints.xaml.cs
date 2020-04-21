@@ -1748,30 +1748,30 @@ namespace PFD
                     int i = 0;
 
                     //pokusy 557
-                    if (joint is CConnectionJoint_B001)
-                    {
-                        if (jointsCount == 1 || jointsCount == 3)
-                        {
-                            joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
-                            joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
-                            joint.UpdateJoint();
-                            jointsCount++;
-                            continue;
-                        }
-                    }
-
                     foreach (CPlate plate in joint.m_arrPlates)
                     {
                         plate.CopyParams(refJoint.m_arrPlates[i]);
                         i++;
                     }
-                    if (joint is CConnectionJoint_B001)
+
+                    if (joint.JointType == EJointType.eKnee_EgdeRafter_Column && joint is CConnectionJoint_B001)
                     {
                         CConnectionJoint_B001 jb = joint as CConnectionJoint_B001;
-                        jb.IsFront = (jointsCount <= 1);
+                        jb.IsFront = (jointsCount == 0 || jointsCount == 2);
+
+                        if (!jb.IsFront)
+                        {
+                            joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
+                            joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
+
+                            joint.UpdateJoint();
+                            //UpdateConnectedMembers(joint);
+                        }
                     }
+
+                    
+
                     joint.UpdateJoint();
-                    //UpdateConnectedMembers(joint);
                     jointsCount++;
                 }
             }
