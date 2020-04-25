@@ -16,6 +16,7 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Xceed.Document.NET;
 using Xceed.Words.NET;
 
 namespace EXPIMP
@@ -1167,11 +1168,11 @@ namespace EXPIMP
             parSLS.RemoveText(0);
 
 
-            var t = parULS.FollowingTable;
+            var t = parULS.FollowingTables.First();
             // For each load case add one row
             foreach (CLoadCombination lc in data.Model.m_arrLoadCombs)
             {
-                t = (lc.eLComType == ELSType.eLS_ULS ? parULS.FollowingTable : parSLS.FollowingTable);
+                t = (lc.eLComType == ELSType.eLS_ULS ? parULS.FollowingTables.First() : parSLS.FollowingTables.First());
                 t.AutoFit = AutoFit.Fixed;
 
                 Row row = t.InsertRow();
@@ -1199,8 +1200,8 @@ namespace EXPIMP
             parULS.Remove(false);
             parSLS.Remove(false);
 
-            SetFontSizeForTable(parULS.FollowingTable);
-            SetFontSizeForTable(parSLS.FollowingTable);
+            SetFontSizeForTable(parULS.FollowingTables.First());
+            SetFontSizeForTable(parSLS.FollowingTables.First());
         }
 
         private static void SetFontSizeForTable(Table table, double? fontSize = null)

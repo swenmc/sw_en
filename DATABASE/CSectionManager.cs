@@ -9,13 +9,14 @@ namespace DATABASE
 {
     public static class CSectionManager
     {
-        private static Dictionary<string, CrScProperties> items = null;
+        private static Dictionary<string, CrScProperties> dict_sectionProps = null;
 
         public static Dictionary<string, CrScProperties> LoadSectionProperties()
         {
-            if (items != null) return items;
+            if (dict_sectionProps != null) return dict_sectionProps;
+
             CrScProperties crsc = null;
-            items = new Dictionary<string, CrScProperties>();
+            dict_sectionProps = new Dictionary<string, CrScProperties>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
@@ -26,19 +27,19 @@ namespace DATABASE
                     while (reader.Read())
                     {
                         crsc = GetCrScProperties(reader);
-                        items.Add(crsc.sectionName_short, crsc);
+                        dict_sectionProps.Add(crsc.sectionName_short, crsc);
                     }
                 }
             }
-            return items;
+            return dict_sectionProps;
         }
 
         public static CrScProperties GetSectionProperties(string sectionName_short)
         {
-            Dictionary<string, CrScProperties> dictItems = LoadSectionProperties();
+            if(dict_sectionProps == null) LoadSectionProperties();            
 
             CrScProperties crsc = null;
-            dictItems.TryGetValue(sectionName_short, out crsc);
+            dict_sectionProps.TryGetValue(sectionName_short, out crsc);
             return crsc;
         }
 

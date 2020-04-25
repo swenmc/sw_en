@@ -45,6 +45,8 @@ using BriefFiniteElementNet;
 using System.Configuration;
 using PFD.ViewModels;
 using BaseClasses.Results;
+using System.Threading;
+using _3DTools;
 //using BriefFiniteElementNet.Controls;
 
 namespace PFD
@@ -1818,6 +1820,9 @@ namespace PFD
             ww.ContentRendered += PDF_WaitWindow_ContentRendered;
             ww.Show();
         }
+
+        private static BackgroundWorker _worker = new BackgroundWorker();
+                
         private void PDF_WaitWindow_ContentRendered(object sender, EventArgs e)
         {
             //CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
@@ -1828,7 +1833,25 @@ namespace PFD
                 //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 //Canvas canvas = ((UC_FootingInput)Footing_Input.Content).Frame2D.Content as Canvas;
 
-                CMainReportExport.ReportAllDataToPDFFile(modelData);
+                //CMainReportExport.ReportAllDataToPDFFile(modelData);
+
+                //pokusy to dat do vlakien a a potom spojit PDFka do jedneho PDF
+                //temp                
+                CMainReportExport.ReportAllDataToPDFFiles_New(modelData);
+                Application.Current.Dispatcher.Invoke((Action)delegate
+                {
+                    // your code
+                    _worker.DoWork += _worker_DoWork;
+                    if (!_worker.IsBusy) _worker.RunWorkerAsync();
+                });
+
+                //Thread t = new Thread(new ThreadStart(() =>
+                //{
+                //    Trackport3D trackport = new Trackport3D();
+                //    CMainReportExport.Export3DModel(modelData, trackport);
+                //}));
+                //t.SetApartmentState(ApartmentState.STA);
+                //t.Start();
             }
             catch (Exception ex)
             {
@@ -1841,7 +1864,16 @@ namespace PFD
             }
         }
 
-
+        private void _worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Trackport3D trackport = new Trackport3D();
+                CModelData modelData = vm.GetModelData();
+                CMainReportExport.Export3DModel(modelData, trackport);
+            });
+            
+        }
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {

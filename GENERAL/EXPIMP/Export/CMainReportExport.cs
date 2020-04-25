@@ -12,6 +12,7 @@ using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -90,9 +91,105 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
+        static CModelData _modelData = null;
+        static string _fileName = null;
+        public static void ReportAllDataToPDFFiles_New(CModelData modelData)
+        {
+            _modelData = modelData;
+
+            sheetNo = 1;
+            // Set font encoding to unicode
+            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
+            string fileName = GetReportPDFName();
+            _fileName = fileName;
+
+            PdfDocument s_document = new PdfDocument();
+
+            CProjectInfo projectInfo = modelData.ProjectInfo; // GetProjectInfo();
+
+            s_document.Info.Title = projectInfo.ProjectName;
+            s_document.Info.Author = "Formsteel Technologies";
+            s_document.Info.Subject = "No " + projectInfo.ProjectNumber;
+            s_document.Info.Keywords = projectInfo.ProjectNumber + ", " +
+                                       "Formsteel Technologies" + ", " +
+                                       "cold-formed steel" + ", " +
+                                       "portal frame";
+
+            contents = new List<string[]>();
+
+            DateTime start = DateTime.Now;
+            System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
+            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
+            System.Diagnostics.Trace.WriteLine("After DrawTitlePage: " + (DateTime.Now - start).TotalMilliseconds);
+
+            PdfDocument s_document2 = new PdfDocument();
+            DrawModel3D(s_document2, modelData);
+            s_document2.Save($"EXP2_{fileName}");
+            s_document2.Close();
+            s_document2.Dispose();
+            System.Diagnostics.Trace.WriteLine("After DrawModel3D: " + (DateTime.Now - start).TotalMilliseconds);
+
+
+            PdfDocument s_document3 = new PdfDocument();
+            DrawModelViews(s_document3, modelData);
+            s_document3.Save($"EXP3_{fileName}");
+            s_document3.Close();
+            s_document3.Dispose();
+            System.Diagnostics.Trace.WriteLine("After DrawModelViews: " + (DateTime.Now - start).TotalMilliseconds);
+
+            PdfDocument s_document4 = new PdfDocument();
+            DrawJointTypes(s_document4, modelData);
+            s_document4.Save($"EXP4_{fileName}");
+            s_document4.Close();
+            s_document4.Dispose();
+            System.Diagnostics.Trace.WriteLine("After DrawJointTypes: " + (DateTime.Now - start).TotalMilliseconds);
+
+            PdfDocument s_document5 = new PdfDocument();
+            DrawFootingTypes(s_document5, modelData);
+            s_document5.Save($"EXP5_{fileName}");
+            s_document5.Close();
+            s_document5.Dispose();
+            System.Diagnostics.Trace.WriteLine("After DrawFootingTypes: " + (DateTime.Now - start).TotalMilliseconds);
+
+            PdfDocument s_document6 = new PdfDocument();
+            DrawFloorDetails(s_document6, modelData);
+            s_document6.Save($"EXP6_{fileName}");
+            s_document6.Close();
+            s_document6.Dispose();
+            System.Diagnostics.Trace.WriteLine("After DrawFloorDetails: " + (DateTime.Now - start).TotalMilliseconds);
+
+            PdfDocument s_document7 = new PdfDocument();
+            DrawStandardDetails(s_document7, modelData);
+            s_document7.Save($"EXP7_{fileName}");
+            s_document7.Close();
+            s_document7.Dispose();
+            System.Diagnostics.Trace.WriteLine("After DrawStandardDetails: " + (DateTime.Now - start).TotalMilliseconds);
+
+            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
+            System.Diagnostics.Trace.WriteLine("After AddTitlePageContentTableToDocument: " + (DateTime.Now - start).TotalMilliseconds);
+
+            // Save the s_document...
+            s_document.Save($"EXP1_{fileName}");
+            s_document.Close();
+            s_document.Dispose();
+
+            // ...and start a viewer
+            //Process.Start(fileName);
+        }
+
+        public static void Export3DModel(CModelData modelData, Trackport3D trackport)
+        {
+            PdfDocument s_document2 = new PdfDocument();
+            DrawModel3D_Async(s_document2, modelData, trackport);
+            s_document2.Save($"EXP2_{_fileName}");
+            s_document2.Close();
+            s_document2.Dispose();
+        }
+
+
         /// <summary>
         /// Draw scaled 3Model to PDF
-        /// </summary>
+        /// </summary>        
         private static void DrawModel3D(PdfDocument s_document, CModelData data)
         {
             // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
@@ -110,8 +207,52 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-
+                        
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport);
+            viewPort.UpdateLayout();
+
+            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+            gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
+
+            DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
+            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
+
+            int legendImgWidth = 100;
+            int legendTextWidth = 80;
+            DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth, legendImgWidth);
+
+            XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
+
+            double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
+            double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
+            double scaledImageHeight = image.PointHeight * scaleFactor;
+
+            gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+            image.Dispose();
+            viewPort.Dispose();
+            trackport.Dispose();
+            gfx.Dispose();
+            page.Close();
+        }
+
+        private static void DrawModel3D_Async(PdfDocument s_document, CModelData data, Trackport3D trackport)
+        {
+            // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
+            XGraphics gfx;
+            PdfPage page;
+            page = s_document.AddPage();
+            page.Size = PageSize.A3;
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            gfx = XGraphics.FromPdfPage(page);
+
+            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
+
+            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
+
+            CModel filteredModel = null;            
+
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPortAsync(opts, data, 1f, trackport, out filteredModel);
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -151,6 +292,9 @@ namespace EXPIMP
             int legendImgWidth = 100;
             int legendTextWidth = 70;
             float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
+
+            DateTime start = DateTime.Now;
+            System.Diagnostics.Trace.WriteLine("DrawModelViews Beginning: " + (DateTime.Now - start).TotalMilliseconds);
 
             foreach (EViewModelMemberFilters viewMembers in list_views)
             {
@@ -384,15 +528,20 @@ namespace EXPIMP
 
                 CModel filteredModel = null;
                 Trackport3D trackport = null;
+                System.Diagnostics.Trace.WriteLine("DrawModelViews before GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport);
                 viewPort.UpdateLayout();
+                System.Diagnostics.Trace.WriteLine("DrawModelViews after GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
                 DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth);
                 filteredModel = null;
+                System.Diagnostics.Trace.WriteLine("DrawModelViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
                 gfx.DrawString($"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
 
+                System.Diagnostics.Trace.WriteLine("DrawModelViews before RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
+                System.Diagnostics.Trace.WriteLine("DrawModelViews after RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
 
                 double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
                 double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
@@ -1495,7 +1644,10 @@ namespace EXPIMP
             List<string> list_crsc = GetCrscFromModel(model);
             int margins = 12;
             Document doc = new Document();
-            AddTableToDocument(doc, gfx, x - imgWidth - textWidth - margins, 20, GetCRSC_Table(doc, model, list_crsc, textWidth, imgWidth));
+            DateTime start = DateTime.Now;
+            System.Diagnostics.Trace.WriteLine("Beginning: DrawCrscLegendTable" + (DateTime.Now - start).TotalMilliseconds);
+            AddTableToDocument(doc, gfx, x - imgWidth - textWidth - margins, 20, GetCRSC_Table(doc, model, list_crsc, textWidth, imgWidth));            
+            System.Diagnostics.Trace.WriteLine("End: DrawCrscLegendTable " + (DateTime.Now - start).TotalMilliseconds);
         }
         
         private static Table GetCRSC_Table(Document document, CModel model, List<string> list_crsc, int textWidth, int imgWidth = 100, int imgHeight = 76)
@@ -1520,6 +1672,9 @@ namespace EXPIMP
             column2.Width = imgWidth + 4;
             column2.LeftPadding = 2;
 
+            DateTime start = DateTime.Now;
+            System.Diagnostics.Trace.WriteLine("Beginning: GetCRSC_Table" + (DateTime.Now - start).TotalMilliseconds);
+
             foreach (string crsc in list_crsc)
             {
                 Row row = table.AddRow();
@@ -1534,22 +1689,30 @@ namespace EXPIMP
                 // Cross-section name
                 cell.AddParagraph(crsc);
 
+                //System.Diagnostics.Trace.WriteLine(crsc + " before DATABASE.CSectionManager.GetSectionProperties(crsc)" + (DateTime.Now - start).TotalMilliseconds);
                 // TEK screws number, gauge and distance - TO Ondrej - mozem to nacitavat tu z databazy znova alebo je lepsie dostat sem nie len crsc string ale cely objekt a necitat to z neho
                 DATABASE.DTO.CrScProperties crscProp = DATABASE.CSectionManager.GetSectionProperties(crsc); // Load cross-section properties
+                //System.Diagnostics.Trace.WriteLine(crsc + " after DATABASE.CSectionManager.GetSectionProperties(crsc)" + (DateTime.Now - start).TotalMilliseconds);
+
                 if (crscProp.IsBuiltUp == true)
                 {
                     string sScrewsDescrtiption = crscProp.iScrewsNumber + "/" + crscProp.iScrewsGauge + "g" + " teks@" + (crscProp.dScrewDistance * 1000).ToString("F0") + "c/c";
                     cell.AddParagraph(sScrewsDescrtiption);
                 }
 
+                //System.Diagnostics.Trace.WriteLine(crsc + " before cell.AddImage" + (DateTime.Now - start).TotalMilliseconds);
                 cell = row.Cells[1];
                 MigraDoc.DocumentObjectModel.Shapes.Image img = cell.AddImage(ConfigurationManager.AppSettings[crsc]);
                 img.Width = imgWidth;
-                img.Height = imgHeight;               
+                img.Height = imgHeight;
+
+                
+                //System.Diagnostics.Trace.WriteLine(crsc + "end for" + (DateTime.Now - start).TotalMilliseconds);
             }
 
             table.SetEdge(0, 0, 2, list_crsc.Count, Edge.Box, BorderStyle.Single, 1, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
+            System.Diagnostics.Trace.WriteLine("End: GetCRSC_Table" + (DateTime.Now - start).TotalMilliseconds);
             return table;
         }
         //private static void DrawCrscLegend(XGraphics gfx, CModel model, int x, int textWidth)
@@ -2086,6 +2249,8 @@ namespace EXPIMP
         }
         private static void AddTableToDocument(Document doc, XGraphics gfx, double offsetX, double offsetY, Table t)
         {
+            DateTime start = DateTime.Now;
+            System.Diagnostics.Trace.WriteLine("Beginning: AddTableToDocument" + (DateTime.Now - start).TotalMilliseconds);
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
 
@@ -2094,10 +2259,23 @@ namespace EXPIMP
             pdfRenderer.RenderDocument();
             // Create a renderer and prepare (=layout) the document
             MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
-            docRenderer.PrepareDocument();
+            
+            try
+            {
+                // Render the paragraph. You can render tables or shapes the same way.
+                docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+                System.Diagnostics.Trace.WriteLine("after: docRenderer.RenderObject();" + (DateTime.Now - start).TotalMilliseconds);
+            }
+            catch
+            {
+                docRenderer.PrepareDocument();
+                System.Diagnostics.Trace.WriteLine("after: docRenderer.PrepareDocument();" + (DateTime.Now - start).TotalMilliseconds);
+                // Render the paragraph. You can render tables or shapes the same way.
+                docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+                System.Diagnostics.Trace.WriteLine("after: docRenderer.RenderObject();" + (DateTime.Now - start).TotalMilliseconds);
+            }
 
-            // Render the paragraph. You can render tables or shapes the same way.
-            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            System.Diagnostics.Trace.WriteLine("ENd: AddTableToDocument" + (DateTime.Now - start).TotalMilliseconds);
         }
 
         private static void AddTitlePageContentTableToDocument(XGraphics gfx, List<string[]> tableParams)

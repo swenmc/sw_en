@@ -578,7 +578,7 @@ namespace BaseClasses
             List<CGridLine> listOfGridlines = new List<CGridLine>();
 
             // Labels - Y-direction (edge and main frames)
-            List<string> labelsY = null;            
+            List<string> labelsY = null;
 
             if (sDisplayOptions.bCreateHorizontalGridlines)
             {
@@ -590,7 +590,7 @@ namespace BaseClasses
                 // Left side
                 CMember[] membersLeftSide = null;
                 membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
-                
+
                 List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
                 membersBaseNodes_LeftSide = GetMemberBaseNodesLeftSide(model);
 
@@ -1365,6 +1365,10 @@ namespace BaseClasses
         private static List<Point3D> GetFoundationPoints(CModel cmodel, DisplayOptions opts)
         {
             List<Point3D> allFoundationPoints = new List<Point3D>();
+
+            //toto rusim, lebo neviem ake nasledky to ma ak to tu je zbytocne
+            //Application.Current.Dispatcher.Invoke(() =>
+            //{
             foreach (CFoundation f in cmodel.m_arrFoundations)
             {
                 List<Point3D> foundationPoints = new List<Point3D>();
@@ -1393,6 +1397,7 @@ namespace BaseClasses
                 // Add member points to the main collection of all members
                 allFoundationPoints.AddRange(foundationPoints);
             }
+            //});
             return allFoundationPoints;
         }
 

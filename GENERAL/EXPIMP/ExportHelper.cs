@@ -997,6 +997,7 @@ namespace EXPIMP
             return joint;
         }
         
+        [STAThread]
         public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions, CModel model, float fZoomFactor, out Trackport3D _trackport/*, double width = 570, double height = 430*/)
         {
             double width = 570; double height = 430; // Todo 493 - vsade rovnake velkosti render size pre view port bez ohladu ci ide o export do doc alebo pdf
@@ -1230,6 +1231,7 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
+        [STAThread]
         public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions, CModel model, float fZoomFactor, out Trackport3D _trackport/*, double width = 570, double height = 430*/)
         {
             double width = 570; double height = 430; // Todo 493 - vsade rovnake velkosti render size pre view port bez ohladu ci ide o export do doc alebo pdf
@@ -1496,6 +1498,31 @@ namespace EXPIMP
             double width = 1400; double height = 1000; // Todo 493 - vsade rovnake velkosti render size pre view port bez ohladu ci ide o export do doc alebo pdf
 
             _trackport = new Trackport3D();
+            _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
+            //_trackport.Width = 2800;
+            //_trackport.Height = 2000;
+            //_trackport.ViewPort.RenderSize = new Size(2800, 2000);
+            _trackport.Width = width;
+            _trackport.Height = height;
+            _trackport.ViewPort.RenderSize = new Size(width, height);
+
+            //Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
+            //_trackport.ViewPort.Measure(size);
+            //_trackport.ViewPort.Arrange(new Rect(size));
+            //_trackport.ViewPort.UpdateLayout();
+
+            filteredModel = Drawing3D.DrawToTrackPort(_trackport, modelData.Model, fZoomFactor, sDisplayOptions, null, modelData.JointsDict);
+
+            //todo skusit refaktorovat Trackport3D a vyrobit mu nejaku dispose metodu na uvolennei pamate
+            //pripadne skusit stale pouzivat jeden Trackport napriec celym exportom a len mu mazat model a viewport
+
+            return _trackport.ViewPort;
+        }
+
+        public static Viewport3D GetBaseModelViewPortAsync(DisplayOptions sDisplayOptions, CModelData modelData, float fZoomFactor, Trackport3D _trackport, out CModel filteredModel)
+        {
+            double width = 1400; double height = 1000; // Todo 493 - vsade rovnake velkosti render size pre view port bez ohladu ci ide o export do doc alebo pdf
+                        
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
             //_trackport.Width = 2800;
             //_trackport.Height = 2000;
