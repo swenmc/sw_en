@@ -2254,26 +2254,34 @@ namespace EXPIMP
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
 
-            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
-            pdfRenderer.Document = doc;
-            pdfRenderer.RenderDocument();
+            //PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true);
+            //pdfRenderer.Document = doc;
+            //pdfRenderer.RenderDocument();
+            //System.Diagnostics.Trace.WriteLine("after: pdfRenderer.RenderDocument()" + (DateTime.Now - start).TotalMilliseconds);
             // Create a renderer and prepare (=layout) the document
             MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
-            
-            try
-            {
-                // Render the paragraph. You can render tables or shapes the same way.
-                docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
-                System.Diagnostics.Trace.WriteLine("after: docRenderer.RenderObject();" + (DateTime.Now - start).TotalMilliseconds);
-            }
-            catch
-            {
-                docRenderer.PrepareDocument();
-                System.Diagnostics.Trace.WriteLine("after: docRenderer.PrepareDocument();" + (DateTime.Now - start).TotalMilliseconds);
-                // Render the paragraph. You can render tables or shapes the same way.
-                docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
-                System.Diagnostics.Trace.WriteLine("after: docRenderer.RenderObject();" + (DateTime.Now - start).TotalMilliseconds);
-            }
+
+            docRenderer.PrepareDocument();
+            System.Diagnostics.Trace.WriteLine("after: docRenderer.PrepareDocument();" + (DateTime.Now - start).TotalMilliseconds);
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            System.Diagnostics.Trace.WriteLine("after: docRenderer.RenderObject();" + (DateTime.Now - start).TotalMilliseconds);
+
+            //try
+            //{
+            //    // Render the paragraph. You can render tables or shapes the same way.
+            //    System.Diagnostics.Trace.WriteLine("before: docRenderer.RenderObject();" + (DateTime.Now - start).TotalMilliseconds);
+            //    docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            //    System.Diagnostics.Trace.WriteLine("after: docRenderer.RenderObject();" + (DateTime.Now - start).TotalMilliseconds);
+            //}
+            //catch
+            //{
+            //    docRenderer.PrepareDocument();
+            //    System.Diagnostics.Trace.WriteLine("after: docRenderer.PrepareDocument();" + (DateTime.Now - start).TotalMilliseconds);
+            //    // Render the paragraph. You can render tables or shapes the same way.
+            //    docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            //    System.Diagnostics.Trace.WriteLine("after: docRenderer.RenderObject();" + (DateTime.Now - start).TotalMilliseconds);
+            //}
 
             System.Diagnostics.Trace.WriteLine("ENd: AddTableToDocument" + (DateTime.Now - start).TotalMilliseconds);
         }

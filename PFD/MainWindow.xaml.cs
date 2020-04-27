@@ -1833,17 +1833,18 @@ namespace PFD
                 //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 //Canvas canvas = ((UC_FootingInput)Footing_Input.Content).Frame2D.Content as Canvas;
 
-                //CMainReportExport.ReportAllDataToPDFFile(modelData);
+                CMainReportExport.ReportAllDataToPDFFile(modelData);
 
                 //pokusy to dat do vlakien a a potom spojit PDFka do jedneho PDF
                 //temp                
-                CMainReportExport.ReportAllDataToPDFFiles_New(modelData);
-                Application.Current.Dispatcher.Invoke((Action)delegate
-                {
-                    // your code
-                    _worker.DoWork += _worker_DoWork;
-                    if (!_worker.IsBusy) _worker.RunWorkerAsync();
-                });
+                //CMainReportExport.ReportAllDataToPDFFiles_New(modelData);
+
+                //Application.Current.Dispatcher.Invoke((Action)delegate
+                //{
+                //    // your code
+                //    _worker.DoWork += _worker_DoWork;
+                //    if (!_worker.IsBusy) _worker.RunWorkerAsync();
+                //});
 
                 //Thread t = new Thread(new ThreadStart(() =>
                 //{
