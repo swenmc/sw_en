@@ -52,12 +52,26 @@ namespace EXPIMP
             using (FileStream fs = File.OpenWrite(filename))
             {
                 excel.SaveAs(fs);
-            }                
+            }
         }
-
 
         public static void ExportToExcel(string filename, List<string[]> tableParams, string workSheetName)
         {
+            // TO Ondrej - Mam MS EXCEL 2007 a padalo mi to tu, tak som nastavil LicenseContext.NonCommercial
+
+            // If you are a commercial business and have
+            // purchased commercial licenses use the static property
+            // LicenseContext of the ExcelPackage class:
+            //ExcelPackage.LicenseContext = LicenseContext.Commercial;
+
+            // If you use EPPlus in a noncommercial context
+            // according to the Polyform Noncommercial license:
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            //using (var package = new ExcelPackage(new FileInfo("MyWorkbook.xlsx")))
+            //{
+            //}
+
             ExcelPackage excel = new ExcelPackage();
             var workSheet = excel.Workbook.Worksheets.Add(workSheetName);
             int rowCount = 0;
