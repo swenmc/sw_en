@@ -18,7 +18,7 @@ namespace PFD
         private string MCheckType;
         private bool MIsEnabled;
         private bool MIsReadOnly;
-
+    
         public string Name
         {
             get

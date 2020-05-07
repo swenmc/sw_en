@@ -286,7 +286,7 @@ namespace PFD
         out float fTempMin_Y,
         out float fTempMax_Z,
         out float fTempMin_Z
-         )
+        )
         {
             // TODO upravit tak aby sme vedeli ziskat obecne rozmery z modelu, z pruta, z plechu, telesa atd
             // Pripadne riesit vsetko ako cmodel, ale to je pre preview jedneho dielcieho objektu neumerne velke
