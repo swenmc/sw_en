@@ -166,7 +166,7 @@ namespace PFD
             calcModel.TensileStrength_fu = mat.Get_f_uk_by_thickness((float)cs.t_min);
 
             ////////////////////////////////////////////////////////////////////////////////
-            // TO ONDREJ - neviem ci ten komentar plati aj na tomto mieste :)
+            // TO ONDREJ - neviem ci ten komentar plati aj na tomto mieste :) Pokus
             ////////////////////////////////////////////////////////////////////////////////
             //toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", calcModel.RoofCladdingThicknessIndex);
