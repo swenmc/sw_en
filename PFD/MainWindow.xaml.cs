@@ -1836,7 +1836,7 @@ namespace PFD
                 CMainReportExport.ReportAllDataToPDFFile(modelData);
 
                 //pokusy to dat do vlakien a a potom spojit PDFka do jedneho PDF
-                //temp                
+                //temp
                 //CMainReportExport.ReportAllDataToPDFFiles_New(modelData);
 
                 //Application.Current.Dispatcher.Invoke((Action)delegate
@@ -1856,6 +1856,7 @@ namespace PFD
             }
             catch (Exception ex)
             {
+                // Bug 578 - To Ondrej - ak su rozmery budovy 80 x 300 m a pocet ramov 74, tak to tu hlasi vynimku ze hodnota je mimo ocakavany rozsah. Potreboval by som zistit presny dovod.
                 MessageBox.Show(ex.Message);
             }
             finally

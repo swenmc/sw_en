@@ -1101,8 +1101,8 @@ namespace PFD
 
             set
             {
-                if (value < 0f || value > 50)
-                    throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
+                if (value < 0f || value > 500)
+                    throw new ArgumentException("Number of saw cuts must be between 0 and 500 [-]");
 
                 m_NumberOfSawCutsInDirectionY = value;
 
