@@ -1857,6 +1857,13 @@ namespace PFD
             catch (Exception ex)
             {
                 // Bug 578 - To Ondrej - ak su rozmery budovy 80 x 300 m a pocet ramov 74, tak to tu hlasi vynimku ze hodnota je mimo ocakavany rozsah. Potreboval by som zistit presny dovod.
+                // Dovod je:
+                //Exception thrown: 'System.OutOfMemoryException' in mscorlib.dll
+                //Exception thrown: 'System.ArgumentException' in PresentationCore.dll
+                // Mne sa to zrubalo pri 10. FLOOR    DrawModelViews before RenderVisual: 136567,2418
+                //Ale uz aj pri 9. to vyzera skaredo:
+                //DrawModelViews before RenderVisual: 81034,5026
+                //DrawModelViews after RenderVisual: 119508,3673
                 MessageBox.Show(ex.Message);
             }
             finally
