@@ -84,6 +84,7 @@ namespace PFD
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 string header = ((DataGrid)sender).CurrentColumn.Header.ToString();
+                if (header == null) return; // To Ondrej - znejakeho dovodu sa mi tu pri scrolovani slideru na pravej strane nastavil null a spadlo to
                 if (header == "Generate" || header == "Prefix" || header == "ComponentName" || header == "Sections" || header == "Material" || header == "Com. Color" || header == "Sec.Color") return;
 
                 CComponentListVM vm = this.DataContext as CComponentListVM;
