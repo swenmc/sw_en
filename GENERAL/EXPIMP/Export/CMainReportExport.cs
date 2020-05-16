@@ -540,7 +540,11 @@ namespace EXPIMP
                 gfx.DrawString($"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
 
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
-                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
+
+                //XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
+                BitmapSource bs = ExportHelper.RenderVisual(viewPort);
+                XImage image = XImage.FromBitmapSource(bs);
+                bs = null;
                 System.Diagnostics.Trace.WriteLine("DrawModelViews after RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
 
                 double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;

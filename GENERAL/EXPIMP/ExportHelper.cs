@@ -75,15 +75,24 @@ namespace EXPIMP
 
         public static RenderTargetBitmap RenderVisual(UIElement elt)
         {
+            DateTime start = DateTime.Now;
+            
             Size size = new Size(elt.RenderSize.Width, elt.RenderSize.Height);
             elt.Measure(size);
             elt.Arrange(new Rect(size));
             elt.UpdateLayout();
+            System.Diagnostics.Trace.WriteLine("######## RenderVisual UpdateLayout: " + (DateTime.Now - start).TotalMilliseconds);
 
             var bitmap = new RenderTargetBitmap(
                 (int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
-
+                        
             bitmap.Render(elt);
+
+            //to mam pocit ze skor spomaluje, ale porebujem aby to neostavalo v pamati
+            bitmap.Freeze();
+            
+            System.Diagnostics.Trace.WriteLine("######## RenderVisual AFTER: " + (DateTime.Now - start).TotalMilliseconds);
+            
             return bitmap;
         }
         public static BitmapImage RenderVisual(UIElement elt, double scale)
