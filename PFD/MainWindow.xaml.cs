@@ -2592,14 +2592,12 @@ namespace PFD
                             if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm.Model);
                             CMaterialListViewModel materialListVM = (Part_List.Content as UC_MaterialList).DataContext as CMaterialListViewModel;
                             DocumentationHelper.ExportMembersExcelDocument(materialListVM, di.FullName);
-                        }                            
+                        }
 
                         ww.Close();
                     }
                 }
             }
         }
-
-
     }
 }

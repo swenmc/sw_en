@@ -27,7 +27,7 @@ namespace PFD
         public event PropertyChangedEventHandler PropertyChanged;
         
         //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------        
+        //-------------------------------------------------------------------------------------------------------------
         bool bDrawPoints;
         bool bDrawOutLine;
         bool bDrawPointNumbers;
@@ -40,7 +40,7 @@ namespace PFD
 
         bool bExportRequired;
 
-        //-------------------------------------------------------------------------------------------------------------        
+        //-------------------------------------------------------------------------------------------------------------
         public bool DrawPoints2D
         {
             get
@@ -198,8 +198,9 @@ namespace PFD
 
             ExportRequired = false;
         }
-        public SCVDisplayOptionsViewModel(bool drawPoints, bool drawOutLine, bool drawPointNumbers, bool drawHoles, bool drawHoleCentreSymbol, bool drawDrillingRoute,
-                                bool drawDimensions, bool drawMemberOutline, bool drawBendLines)
+        public SCVDisplayOptionsViewModel(bool drawPoints, bool drawOutLine, bool drawPointNumbers,
+                                          bool drawHoles, bool drawHoleCentreSymbol, bool drawDrillingRoute,
+                                          bool drawDimensions, bool drawMemberOutline, bool drawBendLines)
         {
             DrawPoints2D = drawPoints;
             DrawOutLine2D = drawOutLine;

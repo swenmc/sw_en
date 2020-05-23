@@ -51,9 +51,7 @@ namespace EXPIMP
 
             PdfDocument s_document = new PdfDocument();
 
-            
             DrawPlates(s_document, plates);
-            
 
             string fileName = GetReportPDFName(folder);
             // Save the s_document...
@@ -64,7 +62,6 @@ namespace EXPIMP
             // ...and start a viewer
             Process.Start(fileName);
         }
-
 
         private static void DrawPlates(PdfDocument s_document, List<CPlate> plates)
         {
@@ -79,7 +76,7 @@ namespace EXPIMP
             foreach (CPlate plate in plates)
             {
                 page = s_document.AddPage();
-                gfx = XGraphics.FromPdfPage(page);                
+                gfx = XGraphics.FromPdfPage(page); 
                 page2D = new Canvas();
                 page2D.RenderSize = new Size(Frame2DWidth, Frame2DHeight);
 
@@ -97,12 +94,12 @@ namespace EXPIMP
                 CExportToPDF.DrawProductionNotes(gfx);
                 CExportToPDF.DrawLogo(gfx);
                 CExportToPDF.DrawFSAddress(gfx);
-                
+
                 Drawing2D.DrawPlateToCanvas(plate,
                    Frame2DWidth,
                    Frame2DHeight,
                    ref page2D,
-                   true, true, true, true, true, true, true, true, true);
+                   true, true, true, true, true, true, true, true, true, true);
 
                 XImage image2 = XImage.FromBitmapSource(ExportHelper.RenderVisual(page2D, scaleFor2D));
                 double y = 280;
@@ -114,8 +111,6 @@ namespace EXPIMP
                 page.Close();
             }
         }
-
-       
 
         private static string GetReportPDFName(string folder)
         {
@@ -130,10 +125,5 @@ namespace EXPIMP
             }
             return fileName;
         }
-
-
-
-
-
     }
 }

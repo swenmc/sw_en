@@ -88,6 +88,7 @@ namespace BaseClasses
                      false,
                      false,
                      false,
+                     false,
                      bDrawDimensions,
                      false,
                      false,
@@ -119,6 +120,7 @@ namespace BaseClasses
             bool bDrawPoints,
             bool bDrawOutLine,
             bool bDrawPointNumbers,
+            bool bDrawOpenings,
             bool bDrawHoles,
             bool bDrawHoleCentreSymbols,
             bool bDrawDrillingRoute,
@@ -213,6 +215,7 @@ namespace BaseClasses
                     bDrawPoints,
                     bDrawOutLine,
                     bDrawPointNumbers,
+                    bDrawOpenings,
                     bDrawHoles,
                     bDrawHoleCentreSymbols,
                     bDrawDrillingRoute,
@@ -1783,6 +1786,7 @@ namespace BaseClasses
         public static void DrawComponent(bool bDrawPoints,
             bool bDrawOutLine,
             bool bDrawPointNumbers,
+            bool bDrawOpenings,
             bool bDrawHoles,
             bool bDrawHoleCentreSymbols,
             bool bDrawDrillingRoute,
@@ -1866,6 +1870,12 @@ namespace BaseClasses
 
             // Definition Point Numbers
             DrawPointNumbers(bDrawPointNumbers, canvasPointsOut, canvasPointsIn, canvasForImage);
+
+            // Openings (washers)
+            if(bDrawOpenings)
+            {
+                 // TODO
+            }
 
             // Holes
             if (PointsHolesScrews != null)

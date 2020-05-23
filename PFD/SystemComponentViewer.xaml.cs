@@ -1105,6 +1105,7 @@ namespace PFD
                vm.DrawPoints2D,
                vm.DrawOutLine2D,
                vm.DrawPointNumbers2D,
+               true, // Openings - Washers
                vm.DrawHoles2D,
                vm.DrawHoleCentreSymbol2D,
                vm.DrawDrillingRoute2D,
