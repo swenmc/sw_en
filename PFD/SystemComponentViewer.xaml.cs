@@ -1639,7 +1639,7 @@ namespace PFD
             // Spravne by sme CPlate podla mna nemali pre ucely vykreslenia klonovat, ale musime ustrazit, aby sme pri vykresleni alebo exporte
             // nezmenili jej povodne parametre
 
-            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
+            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, true, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
                         vm.DrawDrillingRoute2D, vm.DrawDimensions2D, vm.DrawMemberOutline2D, vm.DrawBendLines2D);
             //Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, true, true, true, true, true, true, true, true, true);
             //Canvas dxfCanvas = new Canvas();
