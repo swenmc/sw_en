@@ -305,7 +305,7 @@ namespace BaseClasses
 
             Set_DimensionPoints2D();
 
-            Set_MemberOutlinePoints2D();
+            //Set_MemberOutlinePoints2D();
 
             Set_BendLinesPoints2D();
 
@@ -681,6 +681,33 @@ namespace BaseClasses
                         screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0);
                     }
                 }
+            }
+        }
+
+        public override void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 4;
+
+            if (m_ePlateSerieType_FS == ESerieTypePlate.eSerie_F)
+                iNumberOfDimensions = 5;
+
+            Dimensions = new CDimension[iNumberOfDimensions];
+
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
+
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], false, true);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true);
+
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], false, true);
+
+            // Basic
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[2], false, true, 53);
+
+            if (m_ePlateSerieType_FS == ESerieTypePlate.eSerie_F)
+            {
+                // Basic
+                Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[5], PointsOut2D[3], true, true, 53);
+                Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[3], true, true);
             }
         }
 

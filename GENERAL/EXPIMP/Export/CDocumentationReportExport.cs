@@ -91,7 +91,8 @@ namespace EXPIMP
 
                 CExportToPDF.DrawPlateInfo(gfx, plate);
                 string sFileName = CExportToPDF.Draw3DScheme(gfx, null, plate); //To Mato - production info???
-                CExportToPDF.DrawProductionNotes(gfx);
+                if(plate.ScrewArrangement != null && plate.ScrewArrangement.IHolesNumber > 0)
+                   CExportToPDF.DrawProductionNotes(gfx);
                 //CExportToPDF.DrawLogo_Old(gfx);
                 CExportToPDF.DrawLogo_New(gfx);
                 CExportToPDF.DrawFSAddress(gfx);

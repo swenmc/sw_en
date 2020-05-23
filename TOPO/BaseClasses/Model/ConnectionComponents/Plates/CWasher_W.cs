@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj;
 using MATH;
 using _3DTools;
 
@@ -218,6 +219,17 @@ namespace BaseClasses
                 arrPoints3D[INoPoints2Dfor3D + i].Y = arrPoints3D[i].Y;
                 arrPoints3D[INoPoints2Dfor3D + i].Z = Ft;
             }
+        }
+
+        public override void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 2;
+            Dimensions = new CDimension[iNumberOfDimensions];
+
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
+
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], false, true);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[2], false, true);
         }
 
         protected override void loadIndices()

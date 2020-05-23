@@ -239,7 +239,7 @@ namespace BaseClasses
 
             UpdatePlateData_Basic(screwArrangement);
 
-            //Set_DimensionPoints2D();
+            Set_DimensionPoints2D();
 
             //Set_MemberOutlinePoints2D();
 

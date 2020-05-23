@@ -1,8 +1,9 @@
-﻿using _3DTools;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj;
+using _3DTools;
 
 namespace BaseClasses
 {
@@ -278,6 +279,20 @@ namespace BaseClasses
             arrPoints3D[15].X = arrPoints3D[8].X;
             arrPoints3D[15].Y = m_fhY;
             arrPoints3D[15].Z = arrPoints3D[8].Z;
+        }
+
+        public override void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 5;
+            Dimensions = new CDimension[iNumberOfDimensions];
+
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
+
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], false, true);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], false, true);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], false, true, 53);
+            Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], false, true);
         }
 
         public override void Set_BendLinesPoints2D()

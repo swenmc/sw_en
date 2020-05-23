@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
@@ -466,6 +467,24 @@ namespace BaseClasses
             }
         }
 
+        public override void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 7;
+            Dimensions = new CDimension[iNumberOfDimensions];
+
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
+
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], false, true);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[2], false, true, 53);
+
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], false, true);
+            Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[3], new Point(PointsOut2D[3].X, PointsOut2D[4].Y), false, true);
+            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[2], new Point(PointsOut2D[2].X, PointsOut2D[4].Y), false, true, 53);
+
+            Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[5], PointsOut2D[4], true, true);
+        }
+
         public override void Set_BendLinesPoints2D()
         {
             int iNumberOfLines = 1;
@@ -510,7 +529,6 @@ namespace BaseClasses
                 AddRectangleIndices_CCW_1234(TriangleIndices, 5, 4, 11, 12);
                 AddRectangleIndices_CCW_1234(TriangleIndices, 4, 3, 10, 11);
             }
-
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()

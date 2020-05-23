@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
@@ -453,6 +454,20 @@ namespace BaseClasses
             BendLines = new CLine2D[iNumberOfLines];
 
             BendLines[0] = new CLine2D(PointsOut2D[2], PointsOut2D[5]);
+        }
+
+        public override void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 4;
+            Dimensions = new CDimension[iNumberOfDimensions];
+
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
+
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], false, true);
+
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], false, true);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[3], false, true, 53);
         }
 
         protected override void loadIndices()

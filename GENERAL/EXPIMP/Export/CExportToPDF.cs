@@ -65,7 +65,8 @@ namespace EXPIMP
             DrawProductionInfo(gfx, pInfo, plate);
             DrawPlateInfo(gfx, plate);
             Draw3DScheme(gfx, pInfo, plate);
-            DrawProductionNotes(gfx);
+            if(plate.ScrewArrangement != null && plate.ScrewArrangement.IHolesNumber > 0)
+                DrawProductionNotes(gfx);
             //DrawLogo_Old(gfx);
             DrawLogo_New(gfx);
             DrawFSAddress(gfx);
@@ -108,7 +109,8 @@ namespace EXPIMP
             DrawProductionInfo(gfx, pInfo, plate);
             DrawPlateInfo(gfx, plate);
             Draw3DScheme(gfx, pInfo, plate);
-            DrawProductionNotes(gfx);
+            if(plate.ScrewArrangement != null && plate.ScrewArrangement.IHolesNumber > 0)
+                DrawProductionNotes(gfx);
             //DrawLogo_Old(gfx);
             DrawLogo_New(gfx);
             DrawFSAddress(gfx);

@@ -494,6 +494,20 @@ namespace BaseClasses
             }
         }
 
+        public override void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 5;
+            Dimensions = new CDimension[iNumberOfDimensions];
+
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
+
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], false, true);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], false, true);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], false, true, 53);
+            Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], false, true);
+        }
+
         public override void Set_BendLinesPoints2D()
         {
             int iNumberOfLines = 2;
