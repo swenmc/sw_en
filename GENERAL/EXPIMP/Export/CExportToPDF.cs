@@ -66,7 +66,8 @@ namespace EXPIMP
             DrawPlateInfo(gfx, plate);
             Draw3DScheme(gfx, pInfo, plate);
             DrawProductionNotes(gfx);
-            DrawLogo(gfx);
+            //DrawLogo_Old(gfx);
+            DrawLogo_New(gfx);
             DrawFSAddress(gfx);
             gfx.Dispose();
 
@@ -108,7 +109,8 @@ namespace EXPIMP
             DrawPlateInfo(gfx, plate);
             Draw3DScheme(gfx, pInfo, plate);
             DrawProductionNotes(gfx);
-            DrawLogo(gfx);
+            //DrawLogo_Old(gfx);
+            DrawLogo_New(gfx);
             DrawFSAddress(gfx);
             gfx.Dispose();
 
@@ -308,13 +310,22 @@ namespace EXPIMP
             gfx.Dispose();
         }
 
-        public static void DrawLogo(XGraphics gfx)
+        public static void DrawLogo_Old(XGraphics gfx)
         {
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
             gfx.DrawImage(image, 50, 750);
 
             XImage image2 = XImage.FromFile(ConfigurationManager.AppSettings["confStampForPDF"]);
             gfx.DrawImage(image2, 220, 750);
+        }
+
+        public static void DrawLogo_New(XGraphics gfx)
+        {
+            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
+            gfx.DrawImage(image, 50, 720);
+
+            XImage image2 = XImage.FromFile(ConfigurationManager.AppSettings["confStampForPDF"]);
+            gfx.DrawImage(image2, 420, 750);
         }
 
         public static string Draw3DScheme(XGraphics gfx, CProductionInfo pInfo, CPlate plate)
@@ -462,7 +473,7 @@ namespace EXPIMP
 
         public static void DrawFSAddress(XGraphics gfx)
         {
-            XFont font = new XFont(fontFamily, 6, XFontStyle.Regular);
+            XFont font = new XFont(fontFamily, 10/*6*/, XFontStyle.Regular);
 
             string sLine1 = "Enquires to:";
             string sLine2 = "FS Technologies Ltd";
@@ -470,9 +481,9 @@ namespace EXPIMP
             string sLine4 = "P.O.Box 23-718, Auckland";
             string sLine5 = "Telephone 09 275 0089";
 
-            double dposition_x = 100;
-            double dposition_y = 755;
-            double drowheight = 9.5;
+            double dposition_x = 280; //100; Old
+            double dposition_y = 738; //755; Old
+            double drowheight = 12; //9.5; Old
 
             gfx.DrawString(sLine1, font, XBrushes.Black, dposition_x, dposition_y);
             gfx.DrawString(sLine2, font, XBrushes.Black, dposition_x, dposition_y + 1 * drowheight);
