@@ -277,12 +277,6 @@ namespace BaseClasses
 
             UpdatePlateData_Basic(screwArrangement);
 
-            Set_DimensionPoints2D();
-
-            Set_MemberOutlinePoints2D();
-
-            Set_BendLinesPoints2D();
-
             bool bChangeRotationAngle_MirroredPlate = false;
 
             if (m_iLeftRightIndex % 2 != 0) // Change x-coordinates for odd index (RH)
@@ -308,6 +302,12 @@ namespace BaseClasses
                     arrPoints3D[i].X *= -1;
                 }
             }
+
+            Set_DimensionPoints2D();
+
+            Set_MemberOutlinePoints2D();
+
+            Set_BendLinesPoints2D();
 
             if (screwArrangement != null)
             {
