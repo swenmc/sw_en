@@ -150,6 +150,12 @@ namespace BaseClasses
             loadIndices();
 
             UpdatePlateData_Basic(screwArrangement);
+
+            //Set_DimensionPoints2D();
+
+            //Set_MemberOutlinePoints2D();
+
+            Set_BendLinesPoints2D();
         }
 
         public void UpdatePlateData_Basic( CScrewArrangement screwArrangement)

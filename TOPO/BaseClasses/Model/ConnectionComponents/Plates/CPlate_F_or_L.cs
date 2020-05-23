@@ -281,6 +281,8 @@ namespace BaseClasses
 
             Set_MemberOutlinePoints2D();
 
+            Set_BendLinesPoints2D();
+
             bool bChangeRotationAngle_MirroredPlate = false;
 
             if (m_iLeftRightIndex % 2 != 0) // Change x-coordinates for odd index (RH)
@@ -680,6 +682,14 @@ namespace BaseClasses
                     }
                 }
             }
+        }
+
+        public override void Set_BendLinesPoints2D()
+        {
+            int iNumberOfLines = 1;
+            BendLines = new CLine2D[iNumberOfLines];
+
+            BendLines[0] = new CLine2D(PointsOut2D[1], PointsOut2D[4]);
         }
 
         protected override void loadIndices()

@@ -33,9 +33,8 @@ namespace PFD
             return di;
         }
 
-
         public static void CreateCNFilesDocumentation(List<CPlate> plates, string parent_folder)
-        {            
+        {
             float fUnitFactor = 1000; // defined in m, exported in mm
 
             DirectoryInfo di = Directory.CreateDirectory($"{parent_folder}\\CNC");
@@ -44,14 +43,14 @@ namespace PFD
             {
                 //Export Plate to NC = create Setup and Holes NC files
                 CExportToNC.ExportPlateToNC(plate, fUnitFactor, di.FullName);
-            }            
+            }
         }
 
         public static void SavePlatesFiles(List<CPlate> plates, string parent_folder)
-        {   
+        {
             //CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
             foreach (CPlate plate in plates)
-            {                
+            {
                 string fileName = GetPlateFileName(plate.Name, parent_folder);
 
                 object[] arr = new object[2];
@@ -84,20 +83,20 @@ namespace PFD
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bUseEmissiveMaterial = true;
             sDisplayOptions.bUseLightAmbient = true;
-            sDisplayOptions.bDisplayConnectors = true;            
+            sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayWireFrameModel = true;
 
             foreach (CPlate plate in plates)
             {
                 Page3Dmodel page3D = new Page3Dmodel(plate, sDisplayOptions);
-                page3D.UpdateLayout();                
+                page3D.UpdateLayout();
                 CExportToDXF.ExportViewPort_DXF(page3D._trackport.ViewPort, GetPlateFileName_DXF_3D(plate.Name, parent_folder));
             }
         }
 
         private static string GetPlateFileName(string plateName, string parent_folder)
         {
-            int count = 0;            
+            int count = 0;
             bool nameOK = false;
             string fileName = $"{parent_folder}\\Plate_{plateName}.scw"; ;
             while (!nameOK)
@@ -132,9 +131,8 @@ namespace PFD
             return fileName;
         }
 
-
         public static void ExportMembersExcelDocument(CMaterialListViewModel materialListVM, string parentFolder)
-        {            
+        {
             List<string[]> tableParams = new List<string[]>();
             tableParams.Add(new string[] { "Prefix", "Cross-section", "Count [-]", "Material Name", "Length [m]", "Unit Mass [kg/m]", "Mass Per Piece", "Total Length [m]", "Total Mass [kg]"});
             foreach (MaterialListMember m in materialListVM.MembersMaterialList)
@@ -145,7 +143,5 @@ namespace PFD
             }
             ExportToExcelDocument.ExportToExcel($"{parentFolder}//MembersData.xlsx", tableParams, "Data");
         }
-
-
     }
 }

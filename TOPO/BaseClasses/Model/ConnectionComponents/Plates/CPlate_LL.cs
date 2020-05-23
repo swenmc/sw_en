@@ -249,6 +249,8 @@ namespace BaseClasses
 
             Set_MemberOutlinePoints2D();
 
+            Set_BendLinesPoints2D();
+
             if (screwArrangement != null)
             {
                 GenerateConnectors(screwArrangement);
@@ -546,6 +548,17 @@ namespace BaseClasses
                     }
                 }
             }
+        }
+
+        public override void Set_BendLinesPoints2D()
+        {
+            int iNumberOfLines = 4;
+            BendLines = new CLine2D[iNumberOfLines];
+
+            BendLines[0] = new CLine2D(PointsOut2D[1], PointsOut2D[10]);
+            BendLines[1] = new CLine2D(PointsOut2D[1], PointsOut2D[8]);
+            BendLines[2] = new CLine2D(PointsOut2D[2], PointsOut2D[5]);
+            BendLines[3] = new CLine2D(PointsOut2D[2], PointsOut2D[7]);
         }
 
         protected override void loadIndices()

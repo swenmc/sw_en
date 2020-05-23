@@ -99,7 +99,7 @@ namespace EXPIMP
                    Frame2DWidth,
                    Frame2DHeight,
                    ref page2D,
-                   true, true, true, true, true, true, true, true, true, true);
+                   false, true, false, true, true, true, true, true, true, true); // Pozn. Nekreslime body plechu a ich cislovanie
 
                 XImage image2 = XImage.FromBitmapSource(ExportHelper.RenderVisual(page2D, scaleFor2D));
                 double y = 280;

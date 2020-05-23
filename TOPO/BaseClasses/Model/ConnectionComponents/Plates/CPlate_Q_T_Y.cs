@@ -153,6 +153,8 @@ namespace BaseClasses
 
             Set_MemberOutlinePoints2D();
 
+            Set_BendLinesPoints2D();
+
             if (screwArrangement != null)
             {
                 // Not implemented
@@ -276,6 +278,15 @@ namespace BaseClasses
             arrPoints3D[15].X = arrPoints3D[8].X;
             arrPoints3D[15].Y = m_fhY;
             arrPoints3D[15].Z = arrPoints3D[8].Z;
+        }
+
+        public override void Set_BendLinesPoints2D()
+        {
+            int iNumberOfLines = 2;
+            BendLines = new CLine2D[iNumberOfLines];
+
+            BendLines[0] = new CLine2D(PointsOut2D[1], PointsOut2D[6]);
+            BendLines[1] = new CLine2D(PointsOut2D[2], PointsOut2D[5]);
         }
 
         protected override void loadIndices()
