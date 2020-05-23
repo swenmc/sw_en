@@ -97,10 +97,12 @@ namespace BaseClasses
                      null,
                      null,
                      null,
+                     null,
                      null, // TODO - dodefinovat koty i pre prierezy
                      null,
                      null,
                      null,
+                     0,
                      0,
                      0,
                      fmodelMarginLeft_x,
@@ -174,13 +176,25 @@ namespace BaseClasses
                     out dPointInOutDistance_x_page,
                     out dPointInOutDistance_y_page);
 
-            // Holes center points
+            // Opening center points
+            Point[] pHolesCentersPointsOpenings2D = null;
+
+            // Opening in washer
+            if (plate is CWasher_W) // Ak je plech typu washer "W" mozu sa vykreslovat otvory aj ked anchor k washer nie su priradene ako je to u base plate
+            {
+                CWasher_W washer = (CWasher_W)plate;
+                //pHolesCentersPointsOpenings2D = new Point[1] { new Point(0.5f * washer.Width_bx, 0.5f * washer.Height_hy) }
+                pHolesCentersPointsOpenings2D = new Point[1] { new Point(0, 0) };
+            }
+
+            // Screws - Holes center points
             Point[] pHolesCentersPointsScrews2D = null;
 
             // Check that object of screw arrangement is not null and set array items to the temporary array
             if (plate.ScrewArrangement != null && plate.ScrewArrangement.HolesCentersPoints2D != null)
                 pHolesCentersPointsScrews2D = plate.ScrewArrangement.HolesCentersPoints2D;
 
+            // Anchor - Holes center points
             Point[] pHolesCentersPointsAnchors2D = null;
 
             // Check that object of screw arrangement is not null and set array items to the temporary array
@@ -191,8 +205,16 @@ namespace BaseClasses
                     pHolesCentersPointsAnchors2D = basePlate.AnchorArrangement.HolesCentersPoints2D;
             }
 
+            float fDiameter_openingHole = 0;
             float fDiameter_screwPreDrilledHole = 0;
             float fDiameter_anchorPreDrilledHole = 0;
+
+            // Opening diameter - Washer
+            if (plate is CWasher_W)
+            {
+                CWasher_W washer = (CWasher_W)plate;
+                fDiameter_openingHole = washer.HoleDiameter;
+            }
 
             // Holes diameters
             if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
@@ -203,7 +225,6 @@ namespace BaseClasses
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
                 if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.referenceAnchor != null)
                     fDiameter_anchorPreDrilledHole = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread; // TODO - Doplnit do databazy velkost otvorov pre bolts a anchors
-
             }
 
             canvasForImage.Children.Clear();
@@ -224,6 +245,7 @@ namespace BaseClasses
                     bDrawBendLines,
                     Geom2D.TransformArrayToList(plate.PointsOut2D),
                     null,
+                    pHolesCentersPointsOpenings2D,
                     pHolesCentersPointsScrews2D,
                     pHolesCentersPointsAnchors2D,
                     plate.DrillingRoutePoints,
@@ -231,6 +253,7 @@ namespace BaseClasses
                     plate.MemberOutlines,
                     plate.BendLines,
                     note2D,
+                    fDiameter_openingHole * scale_unit,
                     fDiameter_screwPreDrilledHole * scale_unit,
                     fDiameter_anchorPreDrilledHole * scale_unit,
                     fmodelMarginLeft_x,
@@ -1795,6 +1818,7 @@ namespace BaseClasses
             bool bDrawBendLines,
             List<Point> PointsOut,
             List<Point> PointsIn,
+            Point[] PointsHolesOpenings,
             Point[] PointsHolesScrews,
             Point[] PointsHolesAnchors,
             List<Point> PointsDrillingRoute,
@@ -1802,6 +1826,7 @@ namespace BaseClasses
             CLine2D[] MemberOutline,
             CLine2D[] BendLines,
             CNote2D note2D,
+            double dHolesDiameterOpenings,
             double dHolesDiameterScrews,
             double dHolesDiameterAnchors,
             float fmodelMarginLeft_x,
@@ -1815,6 +1840,7 @@ namespace BaseClasses
         {
             List<Point> canvasPointsOut = null;
             List<Point> canvasPointsIn = null;
+            List<Point> canvasPointsHolesOpenings = null;
             List<Point> canvasPointsHolesScrews = null;
             List<Point> canvasPointsHolesAnchors = null;
             List<Point> canvasPointsDrillingRoute = null;
@@ -1827,6 +1853,7 @@ namespace BaseClasses
             {
                 canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsOut);
                 canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsIn);
+                canvasPointsHolesOpenings = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesOpenings);
                 canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesScrews);
                 canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors);
                 canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute);
@@ -1839,6 +1866,7 @@ namespace BaseClasses
             {
                 canvasPointsOut = new List<Point>(PointsOut);
                 canvasPointsIn = new List<Point>(PointsIn);
+                canvasPointsHolesOpenings = new List<Point>(PointsHolesOpenings);
                 canvasPointsHolesScrews = new List<Point>(PointsHolesScrews);
                 canvasPointsHolesAnchors = new List<Point>(PointsHolesAnchors);
                 canvasPointsDrillingRoute = new List<Point>(PointsDrillingRoute);
@@ -1854,6 +1882,7 @@ namespace BaseClasses
 
             canvasPointsOut = ConvertRealPointsToCanvasDrawingPoints(canvasPointsOut, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsIn = ConvertRealPointsToCanvasDrawingPoints(canvasPointsIn, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            canvasPointsHolesOpenings = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesOpenings, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsHolesAnchors = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesAnchors, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsDrillingRoute = ConvertRealPointsToCanvasDrawingPoints(canvasPointsDrillingRoute, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
@@ -1874,7 +1903,7 @@ namespace BaseClasses
             // Openings (washers)
             if(bDrawOpenings)
             {
-                 // TODO
+                DrawHoles(bDrawOpenings, bDrawHoleCentreSymbols, canvasPointsHolesOpenings, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterOpenings, canvasForImage, "Washer Holes", "Washer Hole Center Symbols");
             }
 
             // Holes

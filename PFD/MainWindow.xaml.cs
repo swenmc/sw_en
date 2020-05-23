@@ -2584,7 +2584,7 @@ namespace PFD
                         {
                             //save .dxf 3D files
                             DocumentationHelper.SavePlatesDXF_3D(diff_plates, di.FullName);
-                        }                            
+                        }
 
                         if (vm._documentationExportOptionsVM.ExportMembersXLS)
                         {
