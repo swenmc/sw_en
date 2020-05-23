@@ -253,9 +253,9 @@ namespace BaseClasses
                     plate.MemberOutlines,
                     plate.BendLines,
                     note2D,
-                    fDiameter_openingHole * scale_unit,
-                    fDiameter_screwPreDrilledHole * scale_unit,
-                    fDiameter_anchorPreDrilledHole * scale_unit,
+                    fDiameter_openingHole,
+                    fDiameter_screwPreDrilledHole,
+                    fDiameter_anchorPreDrilledHole,
                     fmodelMarginLeft_x,
                     fmodelMarginBottom_y,
                     dReal_Model_Zoom_Factor,
@@ -1903,19 +1903,19 @@ namespace BaseClasses
             // Openings (washers)
             if(bDrawOpenings)
             {
-                DrawHoles(bDrawOpenings, bDrawHoleCentreSymbols, canvasPointsHolesOpenings, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterOpenings, canvasForImage, "Washer Holes", "Washer Hole Center Symbols");
+                DrawHoles(bDrawOpenings, bDrawHoleCentreSymbols, canvasPointsHolesOpenings, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterOpenings * dReal_Model_Zoom_Factor, canvasForImage, "Washer Holes", "Washer Hole Center Symbols");
             }
 
             // Holes
             if (PointsHolesScrews != null)
             {
-                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterScrews, canvasForImage, "Holes", "Hole Center Symbols");
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterScrews * dReal_Model_Zoom_Factor, canvasForImage, "Holes", "Hole Center Symbols");
                 DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage);
             }
 
             if (PointsHolesAnchors != null)
             {
-                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterAnchors, canvasForImage, "Anchor Holes", "Anchor Hole Center Symbols");
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterAnchors * dReal_Model_Zoom_Factor, canvasForImage, "Anchor Holes", "Anchor Hole Center Symbols");
             }
 
             // Dimensions
