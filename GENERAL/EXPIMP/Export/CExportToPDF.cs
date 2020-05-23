@@ -519,7 +519,47 @@ namespace EXPIMP
             decimal plateThickness = (decimal)plate.Ft * 1000; // Convert to mm
             float platePitch_rad = 0;
 
-            if (plate is CConCom_Plate_JA)
+            if (plate is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic plateTemp = (CConCom_Plate_B_basic)plate;
+                plateName = "Base Plate";
+            }
+            else if (plate is CConCom_Plate_F_or_L && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
+            {
+                CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
+                plateName = "Angle Plate";
+            }
+            else if (plate is CConCom_Plate_LL)
+            {
+                CConCom_Plate_LL plateTemp = (CConCom_Plate_LL)plate;
+                plateName = "Purlin Plate";
+            }
+            else if (plate is CConCom_Plate_F_or_L && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_F)
+            {
+                CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
+                plateName = "Angle Plate - Fly Bracing";
+            }
+            else if (plate is CConCom_Plate_G)
+            {
+                CConCom_Plate_G plateTemp = (CConCom_Plate_G)plate;
+                plateName = "Wind Post Plate";
+            }
+            else if (plate is CConCom_Plate_H)
+            {
+                CConCom_Plate_H plateTemp = (CConCom_Plate_H)plate;
+                plateName = "Wind Post Plate";
+            }
+            else if (plate is CConCom_Plate_Q_T_Y && (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_Q || plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_T))
+            {
+                CConCom_Plate_Q_T_Y plateTemp = (CConCom_Plate_Q_T_Y)plate;
+                plateName = "Channel Plate - Equal";
+            }
+            else if (plate is CConCom_Plate_Q_T_Y && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_Y)
+            {
+                CConCom_Plate_Q_T_Y plateTemp = (CConCom_Plate_Q_T_Y)plate;
+                plateName = "Channel Plate - Unequal";
+            }
+            else if (plate is CConCom_Plate_JA)
             {
                 CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
                 plateName = "Apex Plate";
@@ -653,14 +693,28 @@ namespace EXPIMP
                 else
                     plateName = "Knee Face Plate - falling";
             }
+            else if (plate is CConCom_Plate_M)
+            {
+                CConCom_Plate_M plateTemp = (CConCom_Plate_M)plate;
+                platePitch_rad = plateTemp.RoofPitch_rad;
+                plateName = "Wind Post Strip Plate";
+            }
+            else if (plate is CConCom_Plate_N)
+            {
+                CConCom_Plate_N plateTemp = (CConCom_Plate_N)plate;
+                plateName = "Wind Post Strip Plate";
+            }
+            else if (plate is CWasher_W)
+            {
+                CWasher_W plateTemp = (CWasher_W)plate;
+                plateName = "Washer";
+            }
             else
             {
                 // Not defined
                 platePitch_rad = 0;
                 plateName = "";
             }
-
-            decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(Math.Abs(platePitch_rad)), 1); // Display absolute value in deg, 1 decimal place
 
             XFont font1 = new XFont(fontFamily, 14, XFontStyle.Bold);
             XFont font2 = new XFont(fontFamily, 12, XFontStyle.Regular);
@@ -671,8 +725,17 @@ namespace EXPIMP
 
             gfx.DrawString(Math.Round(plateThickness, 2).ToString(), font2, XBrushes.Black, 50, 730);
             gfx.DrawString("mm Plate", font2, XBrushes.Black, 80, 730);
-            gfx.DrawString(platePitch.ToString(), font2, XBrushes.Black, 485, 730);
-            gfx.DrawString("° Pitch", font2, XBrushes.Black, 513, 730);
+
+            // Sklon vypisovat len u plechov serie J, K a O
+            if(plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J || plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K || plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_O)
+            {
+                if(platePitch_rad != float.NaN) // Valid roof pitch value
+                {
+                    decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(Math.Abs(platePitch_rad)), 1); // Display absolute value in deg, 1 decimal place
+                    gfx.DrawString(platePitch.ToString(), font2, XBrushes.Black, 485, 730);
+                    gfx.DrawString("° Pitch", font2, XBrushes.Black, 513, 730);
+                }
+            }
         }
 
         private static double DrawCanvasImage(XGraphics gfx, Canvas canvas)

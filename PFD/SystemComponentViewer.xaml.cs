@@ -1580,7 +1580,6 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_N:
                         {
-                            
                             if (vm.ScrewArrangementIndex == 0) // Undefined
                             {
                                 plate = new CConCom_Plate_N(dcomponents.arr_Serie_N_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, null); // N
