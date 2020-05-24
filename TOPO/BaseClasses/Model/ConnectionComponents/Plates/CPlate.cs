@@ -871,5 +871,18 @@ namespace BaseClasses
             this.m_iNumberOfConnectorsInSection = plate.m_iNumberOfConnectorsInSection;
             this.ScrewArrangement = plate.ScrewArrangement;
         }
+
+        public double GetDimensionsMaxOffset()
+        {
+            double maxOffset = 0;
+            if (Dimensions == null) return maxOffset;
+            foreach (CDimension d in Dimensions)
+            {
+                if (!(d is CDimensionLinear)) continue;
+                CDimensionLinear ld = d as CDimensionLinear;
+                if (ld.OffsetFromOrigin_pxs > maxOffset) maxOffset = ld.OffsetFromOrigin_pxs;
+            }
+            return maxOffset;
+        }
     }
 }

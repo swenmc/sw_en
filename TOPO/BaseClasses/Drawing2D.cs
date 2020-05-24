@@ -135,6 +135,9 @@ namespace BaseClasses
             // Fill arrays of points
             if (plate.PointsOut2D != null && plate.PointsOut2D.Length > 1)
             {
+                //skusam novu metodu aby brala do uvahy aj Dimensions
+                //CalculatePlateLimits(plate, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y); //toto neide spravit,lebo tam nie su ine body len posun v px
+
                 CalculateModelLimits(plate.PointsOut2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
             }
 
@@ -152,7 +155,13 @@ namespace BaseClasses
             double dPointInOutDistance_x_page;
             double dPointInOutDistance_y_page;
 
-            CalculateBasicValue(
+            //todo - width a height zmensit o maximalny tento onen z dimensions
+            double maxDimensionOffset = plate.GetDimensionsMaxOffset();
+            double extraMargin = maxDimensionOffset / 2; //todo zapracovat extra margin
+            width -= maxDimensionOffset;
+            height -= maxDimensionOffset;
+
+            CalculateBasicValue2(
                     fTempMax_X,
                     fTempMin_X,
                     fTempMax_Y,
@@ -161,6 +170,7 @@ namespace BaseClasses
                     scale_unit,
                     width,
                     height,
+                    extraMargin,
                     null,
                     0,
                     0,
@@ -2128,6 +2138,65 @@ namespace BaseClasses
             }
         }
 
+        public static void CalculateBasicValue2(
+            double fTempMax_X,
+            double fTempMin_X,
+            double fTempMax_Y,
+            double fTempMin_Y,
+            double dScale_Factor, // 0-1
+            int scale_unit,
+            double dPageWidth,
+            double dPageHeight, 
+            double dExtraMargin,
+            List<Point> PointsIn,
+            double dPointInOutDistance_x_real,
+            double dPointInOutDistance_y_real,
+            out double dModel_Length_x_real,
+            out double dModel_Length_y_real,
+            out double dModel_Length_x_page,
+            out double dModel_Length_y_page,
+            out double dFactor_x,
+            out double dFactor_y,
+            out double dReal_Model_Zoom_Factor,
+            out float fmodelMarginLeft_x,
+            out float fmodelMarginTop_y,
+            out double dPointInOutDistance_x_page,
+            out double dPointInOutDistance_y_page
+            )
+        {
+            dModel_Length_x_real = fTempMax_X - fTempMin_X;
+            dModel_Length_y_real = fTempMax_Y - fTempMin_Y;
+
+            CalculateBasicValue_ZoomFactor(
+                dModel_Length_x_real,
+                dModel_Length_y_real,
+                dScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
+                scale_unit,
+                dPageWidth,
+                dPageHeight,
+                out dModel_Length_x_page,
+                out dModel_Length_y_page,
+                out dFactor_x,
+                out dFactor_y,
+                out dReal_Model_Zoom_Factor);
+
+            // Set new size of model on the page
+            dModel_Length_x_page = dReal_Model_Zoom_Factor * dModel_Length_x_real;
+            dModel_Length_y_page = dReal_Model_Zoom_Factor * dModel_Length_y_real;
+
+            fmodelMarginLeft_x = (float)(0.5 * (dPageWidth - dModel_Length_x_page)) + (float)dExtraMargin;
+            fmodelMarginTop_y = (float)(0.5 * (dPageHeight - dModel_Length_y_page)) + (float)dExtraMargin;
+
+            dPointInOutDistance_x_page = 0;
+            dPointInOutDistance_y_page = 0;
+
+            if (PointsIn != null && PointsIn.Count > 0)
+            {
+                dPointInOutDistance_x_page = dPointInOutDistance_x_real * dReal_Model_Zoom_Factor;
+                dPointInOutDistance_y_page = dPointInOutDistance_y_real * dReal_Model_Zoom_Factor;
+            }
+        }
+
         // TODO Ondrej - tento variant funkcie sa pouziva len na vykreslenie skrutky, chcelo by to prerobit a zjednotit
         // je potrebne zrusit fmodelMarginBottom_y a prerobit funkciu na vykreslovanie skrutky tak aby sa zadavalo fmodelMarginTop_y
         public static void CalculateBasicValue(
@@ -3511,6 +3580,48 @@ namespace BaseClasses
                     // Minimum Y - coordinate
                     if (Points_temp[i].Y < fTempMin_Y)
                         fTempMin_Y = Points_temp[i].Y;
+                }
+            }
+        }
+
+        public static void CalculatePlateLimits(CPlate plate, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
+        {
+            fTempMax_X = double.MinValue;
+            fTempMin_X = double.MaxValue;
+            fTempMax_Y = double.MinValue;
+            fTempMin_Y = double.MaxValue;
+
+            List<Point> points = plate.PointsOut2D.ToList();
+            if (plate.Dimensions != null)
+            {
+                foreach (CDimension d in plate.Dimensions)
+                {
+                    if (!(d is CDimensionLinear)) continue;
+                    CDimensionLinear ld = d as CDimensionLinear;
+                    points.Add(ld.ControlPointStart);
+                    points.Add(ld.ControlPointEnd);                    
+                }
+            }
+
+            if (points != null) // Some points exist
+            {
+                for (int i = 0; i < points.Count; i++)
+                {
+                    // Maximum X - coordinate
+                    if (points[i].X > fTempMax_X)
+                        fTempMax_X = points[i].X;
+
+                    // Minimum X - coordinate
+                    if (points[i].X < fTempMin_X)
+                        fTempMin_X = points[i].X;
+
+                    // Maximum Y - coordinate
+                    if (points[i].Y > fTempMax_Y)
+                        fTempMax_Y = points[i].Y;
+
+                    // Minimum Y - coordinate
+                    if (points[i].Y < fTempMin_Y)
+                        fTempMin_Y = points[i].Y;
                 }
             }
         }
