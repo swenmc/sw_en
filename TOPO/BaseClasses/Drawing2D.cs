@@ -157,6 +157,10 @@ namespace BaseClasses
 
             //todo - width a height zmensit o maximalny tento onen z dimensions
             double maxDimensionOffset = plate.GetDimensionsMaxOffset();
+            // To Ondrej - este to ma jednu chybicku. Zohladnujeme ciary kot ale ked je text z vonkajsej strany, tak musime este nieco pridat pre text,
+            // resp. by sme potrebovali do maxDimensionOffset zohladnit aj polohy textov a velkost ich obrysu
+            maxDimensionOffset += 10; // To Ondrej - Pridavam 10 bodov ako rezervu pre text
+
             double extraMargin = maxDimensionOffset / 2; //todo zapracovat extra margin
             width -= maxDimensionOffset;
             height -= maxDimensionOffset;
