@@ -76,13 +76,14 @@ namespace PFD
          "Rectangular",
          "Circle"};
 
-        public List<string> arr_Serie_K_Names = new List<string>(7)
+        public List<string> arr_Serie_K_Names = new List<string>(8)
         {"KA",
          "KB",
          "KC",
          "KD",
          "KE",
          "KF",
+         "KH",
          "KK"};
 
         public List<string> arr_Serie_K_ScrewArrangement_Names = new List<string>(3)
@@ -164,7 +165,7 @@ namespace PFD
                 {361, 260, 289, 50, 3, 20, 4}   // JC
         };
 
-        public float[,] arr_Serie_K_Dimension = new float[7, 9]
+        public float[,] arr_Serie_K_Dimension = new float[8, 9]
         {
                 // bR, b, h, b2, h2, l, t, radius holes, corner holes
                 {0, 630, 1250, 800, 1400, 0, 3, 20, 4},   // KA
@@ -173,6 +174,7 @@ namespace PFD
                 {0, 630, 1250, 800, 1400, 50, 3, 20, 4},  // KD
                 {0, 630, 1250, 800, 1400, 50, 3, 20, 4},  // KE
                 {0, 630, 1280, 800, 1430, 50, 3, 20, 4},  // KF
+                {0, 630, 1280, 800, 1430, 50, 3, 20, 4},  // KH
                 {200, 630, 1250, 800, 1400, 50, 3, 20, 4} // KK
         };
 

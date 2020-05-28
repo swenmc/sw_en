@@ -135,6 +135,7 @@
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_Frame.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_H.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_G.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_KHS.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_M.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CWasher_W.cs" />
     <Compile Include="Model\COpeningProperties.cs" />

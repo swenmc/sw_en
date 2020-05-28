@@ -1401,7 +1401,7 @@ namespace PFD
             dg.Columns.Add(tc3);
 
             //DataGridTextColumn tc3 = new DataGridTextColumn();
-            //tc3.Binding = new Binding("Value");            
+            //tc3.Binding = new Binding("Value");
             //Style style = new Style(typeof(TextBlock));
             //style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
             //tc3.ElementStyle = style;
@@ -1467,7 +1467,7 @@ namespace PFD
 
         private void UpdateConnectedMembers(CConnectionJointTypes joint)
         {
-            //task 555                        
+            //task 555
             if (joint is CConnectionJoint_B001 && joint.JointType == EJointType.eKnee_MainRafter_Column)
             {
                 UpdatePurlinRafterJoints(joint as CConnectionJoint_B001, EJointType.eEdgePurlin_MainRafter);
