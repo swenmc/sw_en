@@ -2298,6 +2298,8 @@ namespace PFD
 
         [NonSerialized]
         public DocumentationSettingsViewModel _documentationExportOptionsVM;
+        [NonSerialized]
+        public LayoutsExportOptionsViewModel _layoutsExportOptionsVM;
 
         [NonSerialized]
         public CPFDLoadInput _loadInput;
