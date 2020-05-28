@@ -123,6 +123,7 @@
     <Compile Include="Helpers\QuotationDisplayOptions.cs" />
     <Compile Include="Helpers\StringCipher.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="LayoutsExportOptionsViewModel.cs" />
     <Compile Include="ModelViews\QuotationItem.cs" />
     <Compile Include="ModelViews\PlateView.cs" />
     <Compile Include="Model\CAccessories_DownpipeProperties.cs" />

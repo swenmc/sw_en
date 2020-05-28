@@ -876,11 +876,20 @@ namespace BaseClasses
         {
             double maxOffset = 0;
             if (Dimensions == null) return maxOffset;
+            double textSize = 10;
             foreach (CDimension d in Dimensions)
             {
                 if (!(d is CDimensionLinear)) continue;
                 CDimensionLinear ld = d as CDimensionLinear;
-                if (ld.OffsetFromOrigin_pxs > maxOffset) maxOffset = ld.OffsetFromOrigin_pxs;
+                double offset = 0;
+
+                //berie sa do uvahy iba ak je kota smerom von a pokial je text von tak este plus velkost textu
+                if (ld.IsDimensionOutSide)
+                {
+                    offset = ld.OffsetFromOrigin_pxs;
+                    if (ld.IsTextOutSide) offset += textSize;
+                } 
+                if (offset > maxOffset) maxOffset = offset;
             }
             return maxOffset;
         }

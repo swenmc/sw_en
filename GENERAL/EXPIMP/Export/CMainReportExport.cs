@@ -45,7 +45,7 @@ namespace EXPIMP
         //private static PdfDocument document = null;
         private static List<string[]> contents = new List<string[]>();
 
-        public static void ReportAllDataToPDFFile(CModelData modelData)
+        public static void ReportAllDataToPDFFile(CModelData modelData, LayoutsExportOptionsViewModel exportO)
         {
             sheetNo = 1;
             // Set font encoding to unicode

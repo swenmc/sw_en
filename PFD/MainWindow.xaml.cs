@@ -1816,9 +1816,15 @@ namespace PFD
 
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
-            WaitWindow ww = new WaitWindow("PDF");
-            ww.ContentRendered += PDF_WaitWindow_ContentRendered;
-            ww.Show();
+            LayoutExportOptionsWindow exportOptions = new LayoutExportOptionsWindow(vm);
+            var result = exportOptions.ShowDialog();
+
+            if (result.HasValue && result.Value == true)
+            {
+                WaitWindow ww = new WaitWindow("PDF");
+                ww.ContentRendered += PDF_WaitWindow_ContentRendered;
+                ww.Show();
+            }
         }
 
         private static BackgroundWorker _worker = new BackgroundWorker();
@@ -1833,7 +1839,7 @@ namespace PFD
                 //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 //Canvas canvas = ((UC_FootingInput)Footing_Input.Content).Frame2D.Content as Canvas;
 
-                CMainReportExport.ReportAllDataToPDFFile(modelData);
+                CMainReportExport.ReportAllDataToPDFFile(modelData, vm._layoutsExportOptionsVM);
 
                 //pokusy to dat do vlakien a a potom spojit PDFka do jedneho PDF
                 //temp

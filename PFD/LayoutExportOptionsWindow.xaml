@@ -1,0 +1,51 @@
+﻿<Window x:Class="PFD.LayoutExportOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Layout Export Options" Height="310" Width="400">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Name="GridExportOptions" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0">
+                <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
+                <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Model Views</CheckBox>
+
+                <CheckBox Name="chckExportModelViewsFront" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsFront, UpdateSourceTrigger=PropertyChanged}">Front</CheckBox>
+                <CheckBox Name="chckExportModelViewsBack" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsBack, UpdateSourceTrigger=PropertyChanged}">Back</CheckBox>
+                <CheckBox Name="chckExportModelViewsLeft" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsLeft, UpdateSourceTrigger=PropertyChanged}">Left</CheckBox>
+                <CheckBox Name="chckExportModelViewsRight" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsRight, UpdateSourceTrigger=PropertyChanged}">Right</CheckBox>
+                <CheckBox Name="chckExportModelViewsRoof" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsRoof, UpdateSourceTrigger=PropertyChanged}">Roof</CheckBox>
+                <CheckBox Name="chckExportModelViewsMiddleFrame" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsMiddleFrame, UpdateSourceTrigger=PropertyChanged}">Middle Frame</CheckBox>
+                <CheckBox Name="chckExportModelViewsColumns" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsColumns, UpdateSourceTrigger=PropertyChanged}">Columns</CheckBox>
+                <CheckBox Name="chckExportModelViewsFoundations" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsFoundations, UpdateSourceTrigger=PropertyChanged}">Foundations</CheckBox>
+                <CheckBox Name="chckExportModelViewsFloor" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsFloor, UpdateSourceTrigger=PropertyChanged}">Floor</CheckBox>
+
+                <CheckBox Name="chckExportJointTypes" Margin="0 0 0 5" IsChecked="{Binding ExportJointTypes, UpdateSourceTrigger=PropertyChanged}">Joint Types</CheckBox>
+                <CheckBox Name="chckExportFootingTypes" Margin="0 0 0 5" IsChecked="{Binding ExportFootingTypes, UpdateSourceTrigger=PropertyChanged}">Footing Types</CheckBox>
+                <CheckBox Name="chckExportFloorDetails" Margin="0 0 0 5" IsChecked="{Binding ExportFloorDetails, UpdateSourceTrigger=PropertyChanged}">Floor Details</CheckBox>
+                <CheckBox Name="chckExportStandardDetails" Margin="0 0 0 5" IsChecked="{Binding ExportStandardDetails, UpdateSourceTrigger=PropertyChanged}">Standard Details</CheckBox>                
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+                
+                <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>
