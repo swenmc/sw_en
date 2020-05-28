@@ -434,7 +434,6 @@ namespace BaseClasses
             arrPoints3D[INoPoints2Dfor3D + 3].Y = arrPoints3D[2].Y;
             arrPoints3D[INoPoints2Dfor3D + 3].Z = Ft;
 
-
             arrPoints3D[INoPoints2Dfor3D + 4].X = arrPoints3D[INoPoints2Dfor3D + 3].X + fx_temp2;
             arrPoints3D[INoPoints2Dfor3D + 4].Y = arrPoints3D[INoPoints2Dfor3D + 3].Y - fy_temp2;
             arrPoints3D[INoPoints2Dfor3D + 4].Z = arrPoints3D[INoPoints2Dfor3D + 3].Z;
