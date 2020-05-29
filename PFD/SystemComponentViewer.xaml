@@ -24,13 +24,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
-
         </Grid.RowDefinitions>
 
         <StackPanel Name="WaitPanel" Visibility="Hidden" Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Grid.ColumnSpan="10" Panel.ZIndex="100" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image Name="WaitImage" Width="400" Height="400" gif:ImageBehavior.AnimatedSource="spin.gif" />
         </StackPanel>
-        
 
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.ColumnDefinitions>
@@ -51,9 +49,6 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="10" />
             </Grid.RowDefinitions>
-
-            
-            
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 5 0 0"/>
             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Type" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" Margin="0 5 0 0"
@@ -160,7 +155,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
-                                    <ContentControl.Style>                                        
+                                    <ContentControl.Style>
                                         <Style TargetType="ContentControl">
                                             <Style.Triggers>
                                                 <!--<DataTrigger Binding="{Binding IsReadonly}" Value="0" >
@@ -184,10 +179,10 @@
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">                                                    
+                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
-                                                            <DataTemplate>                                                                
+                                                            <DataTemplate>
                                                                 <TextBox TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                                                             </DataTemplate>
                                                         </Setter.Value>
@@ -236,7 +231,7 @@
                     <DataGridTextColumn Header="Value" Width="60" IsReadOnly="{Binding IsReadOnly}" Binding="{Binding Value, Mode=TwoWay}" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="HorizontalAlignment" Value="Right" />                                
+                                <Setter Property="HorizontalAlignment" Value="Right" />
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -347,7 +342,6 @@
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToPDFFromDirectory_Click"/>
             <Button Name="BtnExportToXLSFromDirectory" Content="Export to XLS from directory" Margin="5 0 5 0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToXLSFromDirectory_Click"/>
-
         </StackPanel>
     </Grid>
 </Window>

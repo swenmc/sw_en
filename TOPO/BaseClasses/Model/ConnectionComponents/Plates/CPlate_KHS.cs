@@ -498,13 +498,13 @@ namespace BaseClasses
             }
             else
             {
-                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[11], PointsOut2D[10], true, true);
+                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[8], new Point(PointsOut2D[8].X, PointsOut2D[9].Y), false, true, 63);
                 Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[10], true, true, 95);
 
                 Dimensions[10] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], false, true);
                 Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[6], PointsOut2D[7], false, true);
-                Dimensions[13] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[8].X, PointsOut2D[3].Y), PointsOut2D[8], false, true, 63);
-                Dimensions[14] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[7].X, PointsOut2D[3].Y), PointsOut2D[7], false, true, 75);
+                Dimensions[12] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[8].X, PointsOut2D[3].Y), PointsOut2D[8], false, true, 63);
+                Dimensions[13] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[7].X, PointsOut2D[3].Y), PointsOut2D[7], false, true, 75);
 
                 Dimensions[14] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[9], true, true, 80);
 
