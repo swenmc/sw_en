@@ -550,41 +550,40 @@ namespace BaseClasses
         protected override void loadIndices()
         {
             TriangleIndices = new Int32Collection();
-            /*
+ 
             // Front Side / Forehead
-            AddRectangleIndices_CW_1234(TriangleIndices, 13, 23, 20, 14);
-            AddRectangleIndices_CW_1234(TriangleIndices, 20, 23, 22, 21);
-            AddRectangleIndices_CW_1234(TriangleIndices, 14, 20, 19, 15);
+            AddRectangleIndices_CW_1234(TriangleIndices, 13, 24, 21, 14);
+            AddRectangleIndices_CW_1234(TriangleIndices, 21, 24, 23, 22);
+            AddRectangleIndices_CW_1234(TriangleIndices, 14, 21, 20, 15);
 
             // Back Side
             AddPenthagonIndices_CW_12345(TriangleIndices, 1, 2, 5, 8, 9);
             AddRectangleIndices_CW_1234(TriangleIndices, 5, 6, 7, 8);
 
             // Top Surface
-            AddRectangleIndices_CW_1234(TriangleIndices, 7, 22, 23, 8);
-            AddRectangleIndices_CW_1234(TriangleIndices, 10, 9, 8, 23);
-            AddRectangleIndices_CW_1234(TriangleIndices, 10, 23, 24, 11);
-            AddRectangleIndices_CW_1234(TriangleIndices, 5, 18, 19, 20);
-            AddRectangleIndices_CW_1234(TriangleIndices, 4, 17, 18, 5);
+            AddRectangleIndices_CW_1234(TriangleIndices, 7, 23, 24, 8);
+            AddRectangleIndices_CW_1234(TriangleIndices, 10, 9, 8, 24);
+            AddRectangleIndices_CW_1234(TriangleIndices, 10, 24, 25, 11);
+
+            AddRectangleIndices_CW_1234(TriangleIndices, 5, 19, 20, 21);
+            AddRectangleIndices_CW_1234(TriangleIndices, 4, 18, 19, 5);
 
             // Bottom Surface
             AddRectangleIndices_CW_1234(TriangleIndices, 0, 12, 13, 1);
             AddRectangleIndices_CW_1234(TriangleIndices, 1, 13, 14, 2);
-            AddRectangleIndices_CW_1234(TriangleIndices, 14, 15, 16, 3);
-            AddRectangleIndices_CW_1234(TriangleIndices, 5, 20, 21, 6);
-            */
-            // Side Surface
-            /*
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 11, 24, 12);
-            AddRectangleIndices_CW_1234(TriangleIndices, 12, 24, 23, 13);
-            AddRectangleIndices_CW_1234(TriangleIndices, 21, 22, 7, 6);
-            AddRectangleIndices_CW_1234(TriangleIndices, 6, 23, 24, 7);
+            AddRectangleIndices_CW_1234(TriangleIndices, 14, 15, 16, 2);
+            AddRectangleIndices_CW_1234(TriangleIndices, 2, 16, 17, 3);
 
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 11, 12);
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 12, 29, 13);
-            AddRectangleIndices_CW_1234(TriangleIndices, 13, 29, 27, 14);
-            AddRectangleIndices_CW_1234(TriangleIndices, 8, 25, 26, 9);
-            */
+            AddRectangleIndices_CW_1234(TriangleIndices, 5, 21, 22, 6);
+
+            // Side Surface
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 11, 25, 12);
+            AddRectangleIndices_CW_1234(TriangleIndices, 12, 25, 24, 13);
+            AddRectangleIndices_CW_1234(TriangleIndices, 22, 23, 7, 6);
+            AddRectangleIndices_CW_1234(TriangleIndices, 2, 3, 4, 5);
+            AddHexagonIndices_CW_123456(TriangleIndices, 15, 20, 19, 18, 17, 16);
+            AddPenthagonIndices_CW_12345(TriangleIndices, 0, 1, 9, 10, 11);
+            AddRectangleIndices_CW_1234(TriangleIndices, 17, 18, 4, 3);
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
