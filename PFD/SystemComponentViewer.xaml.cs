@@ -484,6 +484,15 @@ namespace PFD
                             else//(vm.ScrewArrangementIndex == 2) // Circle
                                 plate.ScrewArrangement = screwArrangementCircle;
                         }
+                        else if (vm.ComponentIndex == 6) // KH
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
                         else // KK - TODO - screws are not implemented !!!
                         {
                             if (vm.ScrewArrangementIndex == 0) // Undefined
