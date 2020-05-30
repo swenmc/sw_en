@@ -65,25 +65,25 @@ namespace EXPIMP
 
             contents = new List<string[]>();
 
-            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
+            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData, exportOpts);
 
             if(exportOpts.ExportModel3D)
-                DrawModel3D(s_document, modelData);
+                DrawModel3D(s_document, modelData, exportOpts);
 
             if (exportOpts.ExportModelViews)
                 DrawModelViews(s_document, modelData, exportOpts);
 
             if (exportOpts.ExportJointTypes)
-                DrawJointTypes(s_document, modelData);
+                DrawJointTypes(s_document, modelData, exportOpts);
 
             if (exportOpts.ExportFootingTypes)
-                DrawFootingTypes(s_document, modelData);
+                DrawFootingTypes(s_document, modelData, exportOpts);
 
             if (exportOpts.ExportFloorDetails)
-                DrawFloorDetails(s_document, modelData);
+                DrawFloorDetails(s_document, modelData, exportOpts);
 
             if (exportOpts.ExportStandardDetails)
-                DrawStandardDetails(s_document, modelData);
+                DrawStandardDetails(s_document, modelData, exportOpts);
 
             AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
@@ -195,17 +195,42 @@ namespace EXPIMP
         //}
 
 
+
+        private static PageSize GetPageSize(EPageSizes pageSize)
+        {
+            switch (pageSize)
+            {
+                case EPageSizes.A0: return PageSize.A0;
+                case EPageSizes.A1: return PageSize.A1;
+                case EPageSizes.A2: return PageSize.A2;
+                case EPageSizes.A3: return PageSize.A3;
+                case EPageSizes.A4: return PageSize.A4;
+                default:
+                    return PageSize.A3;
+            }
+
+        }
+        private static PageOrientation GetPageOrientation(EPageOrientation pageOrientation)
+        {
+            switch (pageOrientation)
+            {
+                case EPageOrientation.Portrait: return PageOrientation.Portrait;
+                default:
+                    return PageOrientation.Landscape;
+            }
+        }
+
         /// <summary>
         /// Draw scaled 3Model to PDF
         /// </summary>        
-        private static void DrawModel3D(PdfDocument s_document, CModelData data)
+        private static void DrawModel3D(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
             XGraphics gfx;
             PdfPage page;
             page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
+            page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
             gfx = XGraphics.FromPdfPage(page);
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
@@ -243,14 +268,16 @@ namespace EXPIMP
             page.Close();
         }
 
-        private static void DrawModel3D_Async(PdfDocument s_document, CModelData data, Trackport3D trackport)
+        private static void DrawModel3D_Async(PdfDocument s_document, CModelData data, Trackport3D trackport, LayoutsExportOptionsViewModel exportOpts)
         {
             // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
             XGraphics gfx;
             PdfPage page;
             page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            //page.Size = PageSize.A3;
+            //page.Orientation = PdfSharp.PageOrientation.Landscape;
+            page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
+            page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
             gfx = XGraphics.FromPdfPage(page);
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
@@ -308,8 +335,11 @@ namespace EXPIMP
                 sheetNo++;
                 Trace.WriteLine(sheetNo + ". " + viewMembers.ToString());
                 page = s_document.AddPage();
-                page.Size = PageSize.A3;
-                page.Orientation = PdfSharp.PageOrientation.Landscape;
+                //page.Size = PageSize.A3;
+                //page.Orientation = PdfSharp.PageOrientation.Landscape;
+                page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
+                page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
+
                 gfx = XGraphics.FromPdfPage(page);
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
                 DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
@@ -695,7 +725,7 @@ namespace EXPIMP
             return opts;
         }
 
-        private static void DrawJointTypes(PdfDocument s_document, CModelData data)
+        private static void DrawJointTypes(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             XGraphics gfx;
             PdfPage page;
@@ -703,7 +733,7 @@ namespace EXPIMP
             DisplayOptions opts = GetJointTypesDisplayOptions(data);
 
             sheetNo++;
-            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName());
+            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName(), exportOpts);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Joints.GetFriendlyName() });
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -740,7 +770,7 @@ namespace EXPIMP
                     page.Close();
 
                     sheetNo++;
-                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName());
+                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName(), exportOpts);
                     contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Joints.GetFriendlyName() });
                     tf = new XTextFormatter(gfx);
                 }
@@ -823,7 +853,7 @@ namespace EXPIMP
             return opts;
         }
 
-        private static void DrawFootingTypes(PdfDocument s_document, CModelData data)
+        private static void DrawFootingTypes(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             XGraphics gfx;
             PdfPage page;
@@ -833,7 +863,7 @@ namespace EXPIMP
             DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefaultForExport();
 
             sheetNo++;
-            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName());
+            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName(), exportOpts);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Footing_Pads.GetFriendlyName() });
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -863,7 +893,7 @@ namespace EXPIMP
                     page.Close();
 
                     sheetNo++;
-                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName());
+                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName(), exportOpts);
                     contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Footing_Pads.GetFriendlyName() });
                 }
 
@@ -970,11 +1000,14 @@ namespace EXPIMP
             return opts;
         }
 
-        private static void AddPageToDocument(PdfDocument s_document, CProjectInfo projectInfo, out PdfPage page, out XGraphics gfx, string pageDetails)
+        private static void AddPageToDocument(PdfDocument s_document, CProjectInfo projectInfo, out PdfPage page, out XGraphics gfx, string pageDetails, LayoutsExportOptionsViewModel exportOpts)
         {
             page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            //page.Size = PageSize.A3;
+            //page.Orientation = PdfSharp.PageOrientation.Landscape;
+            page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
+            page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
+
             gfx = XGraphics.FromPdfPage(page);
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
@@ -983,13 +1016,15 @@ namespace EXPIMP
             DrawTitleBlock(gfx, projectInfo, pageDetails, sheetNo, 0);
         }
 
-        private static void DrawStandardDetails(PdfDocument s_document, CModelData data)
+        private static void DrawStandardDetails(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             XGraphics gfx;
             PdfPage page;
             page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            //page.Size = PageSize.A3;
+            //page.Orientation = PdfSharp.PageOrientation.Landscape;
+            page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
+            page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
             gfx = XGraphics.FromPdfPage(page);
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
@@ -1126,13 +1161,15 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawFloorDetails(PdfDocument s_document, CModelData data)
+        private static void DrawFloorDetails(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             XGraphics gfx;
             PdfPage page;
             page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            //page.Size = PageSize.A3;
+            //page.Orientation = PdfSharp.PageOrientation.Landscape;
+            page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
+            page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
             gfx = XGraphics.FromPdfPage(page);
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
@@ -1471,11 +1508,13 @@ namespace EXPIMP
             page.Close();
         }
 
-        private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data)
+        private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             PdfPage page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            //page.Size = PageSize.A3;
+            //page.Orientation = PdfSharp.PageOrientation.Landscape;
+            page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
+            page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
             XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);

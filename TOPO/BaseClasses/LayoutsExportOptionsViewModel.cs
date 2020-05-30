@@ -32,6 +32,7 @@ namespace BaseClasses
         private bool m_ExportStandardDetails;
 
         private int m_ExportPageSize;
+        private int m_ExportPageOrientation;
 
         public bool ExportModel3D
         {
@@ -269,6 +270,15 @@ namespace BaseClasses
                 };
             }
         }
+        public List<ComboItem> PageOrientations
+        {
+            get
+            {
+                return new List<ComboItem>() { new ComboItem((int)EPageOrientation.Portrait, "Portrait"),
+                    new ComboItem((int)EPageOrientation.Landscape, "Landscape")
+                };
+            }
+        }
 
         public int ExportPageSize
         {
@@ -281,6 +291,20 @@ namespace BaseClasses
             {
                 m_ExportPageSize = value;
                 NotifyPropertyChanged("ExportPageSize");
+            }
+        }
+
+        public int ExportPageOrientation
+        {
+            get
+            {
+                return m_ExportPageOrientation;
+            }
+
+            set
+            {
+                m_ExportPageOrientation = value;
+                NotifyPropertyChanged("ExportPageOrientation");
             }
         }
 
@@ -304,6 +328,7 @@ namespace BaseClasses
             ExportStandardDetails = true;
 
             ExportPageSize = (int)EPageSizes.A4;
+            ExportPageOrientation = (int)EPageOrientation.Landscape;
         }
 
         protected void NotifyPropertyChanged(string propertyName)

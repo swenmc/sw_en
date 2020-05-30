@@ -742,12 +742,19 @@ namespace BaseClasses
 
     public enum EPageSizes
     {
-        A4 = 0,
-        A3 = 1,
+        A0 = 0,
+        A1 = 1,
         A2 = 2,
-        A1 = 3,
-        A0 = 4
+        A3 = 3,
+        A4 = 4
     }
+
+    public enum EPageOrientation
+    {
+        Portrait = 0,
+        Landscape = 1
+    }
+    
 
     // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
     public enum EGlobalPlane

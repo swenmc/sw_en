@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Layout Export Options" Height="420" Width="400">
+        Title="Layout Export Options" Height="420" Width="420">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -21,11 +21,13 @@
                 
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="300"/>                
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             
-            <StackPanel Grid.Row="0">
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="4">
                 <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
                 <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Model Views</CheckBox>
 
@@ -44,14 +46,20 @@
                 <CheckBox Name="chckExportFloorDetails" Margin="0 0 0 5" IsChecked="{Binding ExportFloorDetails, UpdateSourceTrigger=PropertyChanged}">Floor Details</CheckBox>
                 <CheckBox Name="chckExportStandardDetails" Margin="0 0 0 5" IsChecked="{Binding ExportStandardDetails, UpdateSourceTrigger=PropertyChanged}">Standard Details</CheckBox>                
             </StackPanel>
-
-            <TextBlock Grid.Column="1">Page Size:</TextBlock>
+            
+            <TextBlock Grid.Row="0" Grid.Column="1">Page Size:</TextBlock>
             <ComboBox Grid.Row="0" Grid.Column="2" Name ="Combobox_PageSize" HorizontalAlignment="Left" 
                       Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=PageSizes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <TextBlock Grid.Row="1" Grid.Column="1">Page Orientation:</TextBlock>
+            <ComboBox Grid.Row="1" Grid.Column="2" Name ="Combobox_PageOrientation" HorizontalAlignment="Left" 
+                      Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=PageOrientations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageOrientation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+            
+            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
             </StackPanel>
