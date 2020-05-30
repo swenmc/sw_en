@@ -31,6 +31,8 @@ namespace BaseClasses
         private bool m_ExportFloorDetails;
         private bool m_ExportStandardDetails;
 
+        private int m_ExportPageSize;
+
         public bool ExportModel3D
         {
             get
@@ -54,7 +56,21 @@ namespace BaseClasses
 
             set
             {
+                bool changed = m_ExportModelViews != value;
                 m_ExportModelViews = value;
+                if (changed)
+                {
+                    ExportModelViewsFront = m_ExportModelViews;
+                    ExportModelViewsBack = m_ExportModelViews;
+                    ExportModelViewsLeft = m_ExportModelViews;
+                    ExportModelViewsRight = m_ExportModelViews;
+                    ExportModelViewsRoof = m_ExportModelViews;
+                    ExportModelViewsMiddleFrame = m_ExportModelViews;
+                    ExportModelViewsColumns = m_ExportModelViews;
+                    ExportModelViewsFoundations = m_ExportModelViews;
+                    ExportModelViewsFloor = m_ExportModelViews;
+                }
+               
                 NotifyPropertyChanged("ExportModelViews");
             }
         }
@@ -241,6 +257,33 @@ namespace BaseClasses
             }
         }
 
+        public List<ComboItem> PageSizes
+        {
+            get
+            {
+                return new List<ComboItem>() { new ComboItem((int)EPageSizes.A4, "A4"),
+                    new ComboItem((int)EPageSizes.A3, "A3"),
+                    new ComboItem((int)EPageSizes.A2, "A2"),
+                    new ComboItem((int)EPageSizes.A1, "A1"),
+                    new ComboItem((int)EPageSizes.A0, "A0")
+                };
+            }
+        }
+
+        public int ExportPageSize
+        {
+            get
+            {
+                return m_ExportPageSize;
+            }
+
+            set
+            {
+                m_ExportPageSize = value;
+                NotifyPropertyChanged("ExportPageSize");
+            }
+        }
+
         public LayoutsExportOptionsViewModel()
         {
             ExportModel3D = true;
@@ -259,6 +302,8 @@ namespace BaseClasses
             ExportFootingTypes = true;
             ExportFloorDetails = true;
             ExportStandardDetails = true;
+
+            ExportPageSize = (int)EPageSizes.A4;
         }
 
         protected void NotifyPropertyChanged(string propertyName)

@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Layout Export Options" Height="310" Width="400">
+        Title="Layout Export Options" Height="420" Width="400">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -15,7 +15,10 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Name="GridExportOptions" Margin="5">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -26,15 +29,15 @@
                 <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
                 <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Model Views</CheckBox>
 
-                <CheckBox Name="chckExportModelViewsFront" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsFront, UpdateSourceTrigger=PropertyChanged}">Front</CheckBox>
-                <CheckBox Name="chckExportModelViewsBack" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsBack, UpdateSourceTrigger=PropertyChanged}">Back</CheckBox>
-                <CheckBox Name="chckExportModelViewsLeft" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsLeft, UpdateSourceTrigger=PropertyChanged}">Left</CheckBox>
-                <CheckBox Name="chckExportModelViewsRight" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsRight, UpdateSourceTrigger=PropertyChanged}">Right</CheckBox>
-                <CheckBox Name="chckExportModelViewsRoof" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsRoof, UpdateSourceTrigger=PropertyChanged}">Roof</CheckBox>
-                <CheckBox Name="chckExportModelViewsMiddleFrame" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsMiddleFrame, UpdateSourceTrigger=PropertyChanged}">Middle Frame</CheckBox>
-                <CheckBox Name="chckExportModelViewsColumns" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsColumns, UpdateSourceTrigger=PropertyChanged}">Columns</CheckBox>
-                <CheckBox Name="chckExportModelViewsFoundations" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsFoundations, UpdateSourceTrigger=PropertyChanged}">Foundations</CheckBox>
-                <CheckBox Name="chckExportModelViewsFloor" Margin="0 0 0 5" IsChecked="{Binding ExportModelViewsFloor, UpdateSourceTrigger=PropertyChanged}">Floor</CheckBox>
+                <CheckBox Name="chckExportModelViewsFront" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsFront, UpdateSourceTrigger=PropertyChanged}">Front</CheckBox>
+                <CheckBox Name="chckExportModelViewsBack" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsBack, UpdateSourceTrigger=PropertyChanged}">Back</CheckBox>
+                <CheckBox Name="chckExportModelViewsLeft" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsLeft, UpdateSourceTrigger=PropertyChanged}">Left</CheckBox>
+                <CheckBox Name="chckExportModelViewsRight" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsRight, UpdateSourceTrigger=PropertyChanged}">Right</CheckBox>
+                <CheckBox Name="chckExportModelViewsRoof" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsRoof, UpdateSourceTrigger=PropertyChanged}">Roof</CheckBox>
+                <CheckBox Name="chckExportModelViewsMiddleFrame" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsMiddleFrame, UpdateSourceTrigger=PropertyChanged}">Middle Frame</CheckBox>
+                <CheckBox Name="chckExportModelViewsColumns" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsColumns, UpdateSourceTrigger=PropertyChanged}">Columns</CheckBox>
+                <CheckBox Name="chckExportModelViewsFoundations" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsFoundations, UpdateSourceTrigger=PropertyChanged}">Foundations</CheckBox>
+                <CheckBox Name="chckExportModelViewsFloor" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsFloor, UpdateSourceTrigger=PropertyChanged}">Floor</CheckBox>
 
                 <CheckBox Name="chckExportJointTypes" Margin="0 0 0 5" IsChecked="{Binding ExportJointTypes, UpdateSourceTrigger=PropertyChanged}">Joint Types</CheckBox>
                 <CheckBox Name="chckExportFootingTypes" Margin="0 0 0 5" IsChecked="{Binding ExportFootingTypes, UpdateSourceTrigger=PropertyChanged}">Footing Types</CheckBox>
@@ -42,7 +45,13 @@
                 <CheckBox Name="chckExportStandardDetails" Margin="0 0 0 5" IsChecked="{Binding ExportStandardDetails, UpdateSourceTrigger=PropertyChanged}">Standard Details</CheckBox>                
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <TextBlock Grid.Column="1">Page Size:</TextBlock>
+            <ComboBox Grid.Row="0" Grid.Column="2" Name ="Combobox_PageSize" HorizontalAlignment="Left" 
+                      Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=PageSizes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
             </StackPanel>

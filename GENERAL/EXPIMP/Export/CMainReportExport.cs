@@ -45,7 +45,7 @@ namespace EXPIMP
         //private static PdfDocument document = null;
         private static List<string[]> contents = new List<string[]>();
 
-        public static void ReportAllDataToPDFFile(CModelData modelData, LayoutsExportOptionsViewModel exportO)
+        public static void ReportAllDataToPDFFile(CModelData modelData, LayoutsExportOptionsViewModel exportOpts)
         {
             sheetNo = 1;
             // Set font encoding to unicode
@@ -67,17 +67,23 @@ namespace EXPIMP
 
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
-            DrawModel3D(s_document, modelData);
+            if(exportOpts.ExportModel3D)
+                DrawModel3D(s_document, modelData);
 
-            DrawModelViews(s_document, modelData);
+            if (exportOpts.ExportModelViews)
+                DrawModelViews(s_document, modelData, exportOpts);
 
-            DrawJointTypes(s_document, modelData);
+            if (exportOpts.ExportJointTypes)
+                DrawJointTypes(s_document, modelData);
 
-            DrawFootingTypes(s_document, modelData);
+            if (exportOpts.ExportFootingTypes)
+                DrawFootingTypes(s_document, modelData);
 
-            DrawFloorDetails(s_document, modelData);
+            if (exportOpts.ExportFloorDetails)
+                DrawFloorDetails(s_document, modelData);
 
-            DrawStandardDetails(s_document, modelData);
+            if (exportOpts.ExportStandardDetails)
+                DrawStandardDetails(s_document, modelData);
 
             AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
@@ -91,100 +97,102 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
-        static CModelData _modelData = null;
-        static string _fileName = null;
-        public static void ReportAllDataToPDFFiles_New(CModelData modelData)
-        {
-            _modelData = modelData;
 
-            sheetNo = 1;
-            // Set font encoding to unicode
-            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
-            string fileName = GetReportPDFName();
-            _fileName = fileName;
+        //toto boli pokusy asi treba zmazat
+        //static CModelData _modelData = null;
+        //static string _fileName = null;
+        //public static void ReportAllDataToPDFFiles_New(CModelData modelData)
+        //{
+        //    _modelData = modelData;
 
-            PdfDocument s_document = new PdfDocument();
+        //    sheetNo = 1;
+        //    // Set font encoding to unicode
+        //    XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
+        //    string fileName = GetReportPDFName();
+        //    _fileName = fileName;
 
-            CProjectInfo projectInfo = modelData.ProjectInfo; // GetProjectInfo();
+        //    PdfDocument s_document = new PdfDocument();
 
-            s_document.Info.Title = projectInfo.ProjectName;
-            s_document.Info.Author = "Formsteel Technologies";
-            s_document.Info.Subject = "No " + projectInfo.ProjectNumber;
-            s_document.Info.Keywords = projectInfo.ProjectNumber + ", " +
-                                       "Formsteel Technologies" + ", " +
-                                       "cold-formed steel" + ", " +
-                                       "portal frame";
+        //    CProjectInfo projectInfo = modelData.ProjectInfo; // GetProjectInfo();
 
-            contents = new List<string[]>();
+        //    s_document.Info.Title = projectInfo.ProjectName;
+        //    s_document.Info.Author = "Formsteel Technologies";
+        //    s_document.Info.Subject = "No " + projectInfo.ProjectNumber;
+        //    s_document.Info.Keywords = projectInfo.ProjectNumber + ", " +
+        //                               "Formsteel Technologies" + ", " +
+        //                               "cold-formed steel" + ", " +
+        //                               "portal frame";
 
-            DateTime start = DateTime.Now;
-            System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
-            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
-            System.Diagnostics.Trace.WriteLine("After DrawTitlePage: " + (DateTime.Now - start).TotalMilliseconds);
+        //    contents = new List<string[]>();
 
-            PdfDocument s_document2 = new PdfDocument();
-            DrawModel3D(s_document2, modelData);
-            s_document2.Save($"EXP2_{fileName}");
-            s_document2.Close();
-            s_document2.Dispose();
-            System.Diagnostics.Trace.WriteLine("After DrawModel3D: " + (DateTime.Now - start).TotalMilliseconds);
+        //    DateTime start = DateTime.Now;
+        //    System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
+        //    XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
+        //    System.Diagnostics.Trace.WriteLine("After DrawTitlePage: " + (DateTime.Now - start).TotalMilliseconds);
+
+        //    PdfDocument s_document2 = new PdfDocument();
+        //    DrawModel3D(s_document2, modelData);
+        //    s_document2.Save($"EXP2_{fileName}");
+        //    s_document2.Close();
+        //    s_document2.Dispose();
+        //    System.Diagnostics.Trace.WriteLine("After DrawModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
 
-            PdfDocument s_document3 = new PdfDocument();
-            DrawModelViews(s_document3, modelData);
-            s_document3.Save($"EXP3_{fileName}");
-            s_document3.Close();
-            s_document3.Dispose();
-            System.Diagnostics.Trace.WriteLine("After DrawModelViews: " + (DateTime.Now - start).TotalMilliseconds);
+        //    PdfDocument s_document3 = new PdfDocument();
+        //    DrawModelViews(s_document3, modelData);
+        //    s_document3.Save($"EXP3_{fileName}");
+        //    s_document3.Close();
+        //    s_document3.Dispose();
+        //    System.Diagnostics.Trace.WriteLine("After DrawModelViews: " + (DateTime.Now - start).TotalMilliseconds);
 
-            PdfDocument s_document4 = new PdfDocument();
-            DrawJointTypes(s_document4, modelData);
-            s_document4.Save($"EXP4_{fileName}");
-            s_document4.Close();
-            s_document4.Dispose();
-            System.Diagnostics.Trace.WriteLine("After DrawJointTypes: " + (DateTime.Now - start).TotalMilliseconds);
+        //    PdfDocument s_document4 = new PdfDocument();
+        //    DrawJointTypes(s_document4, modelData);
+        //    s_document4.Save($"EXP4_{fileName}");
+        //    s_document4.Close();
+        //    s_document4.Dispose();
+        //    System.Diagnostics.Trace.WriteLine("After DrawJointTypes: " + (DateTime.Now - start).TotalMilliseconds);
 
-            PdfDocument s_document5 = new PdfDocument();
-            DrawFootingTypes(s_document5, modelData);
-            s_document5.Save($"EXP5_{fileName}");
-            s_document5.Close();
-            s_document5.Dispose();
-            System.Diagnostics.Trace.WriteLine("After DrawFootingTypes: " + (DateTime.Now - start).TotalMilliseconds);
+        //    PdfDocument s_document5 = new PdfDocument();
+        //    DrawFootingTypes(s_document5, modelData);
+        //    s_document5.Save($"EXP5_{fileName}");
+        //    s_document5.Close();
+        //    s_document5.Dispose();
+        //    System.Diagnostics.Trace.WriteLine("After DrawFootingTypes: " + (DateTime.Now - start).TotalMilliseconds);
 
-            PdfDocument s_document6 = new PdfDocument();
-            DrawFloorDetails(s_document6, modelData);
-            s_document6.Save($"EXP6_{fileName}");
-            s_document6.Close();
-            s_document6.Dispose();
-            System.Diagnostics.Trace.WriteLine("After DrawFloorDetails: " + (DateTime.Now - start).TotalMilliseconds);
+        //    PdfDocument s_document6 = new PdfDocument();
+        //    DrawFloorDetails(s_document6, modelData);
+        //    s_document6.Save($"EXP6_{fileName}");
+        //    s_document6.Close();
+        //    s_document6.Dispose();
+        //    System.Diagnostics.Trace.WriteLine("After DrawFloorDetails: " + (DateTime.Now - start).TotalMilliseconds);
 
-            PdfDocument s_document7 = new PdfDocument();
-            DrawStandardDetails(s_document7, modelData);
-            s_document7.Save($"EXP7_{fileName}");
-            s_document7.Close();
-            s_document7.Dispose();
-            System.Diagnostics.Trace.WriteLine("After DrawStandardDetails: " + (DateTime.Now - start).TotalMilliseconds);
+        //    PdfDocument s_document7 = new PdfDocument();
+        //    DrawStandardDetails(s_document7, modelData);
+        //    s_document7.Save($"EXP7_{fileName}");
+        //    s_document7.Close();
+        //    s_document7.Dispose();
+        //    System.Diagnostics.Trace.WriteLine("After DrawStandardDetails: " + (DateTime.Now - start).TotalMilliseconds);
 
-            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
-            System.Diagnostics.Trace.WriteLine("After AddTitlePageContentTableToDocument: " + (DateTime.Now - start).TotalMilliseconds);
+        //    AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
+        //    System.Diagnostics.Trace.WriteLine("After AddTitlePageContentTableToDocument: " + (DateTime.Now - start).TotalMilliseconds);
 
-            // Save the s_document...
-            s_document.Save($"EXP1_{fileName}");
-            s_document.Close();
-            s_document.Dispose();
+        //    // Save the s_document...
+        //    s_document.Save($"EXP1_{fileName}");
+        //    s_document.Close();
+        //    s_document.Dispose();
 
-            // ...and start a viewer
-            //Process.Start(fileName);
-        }
+        //    // ...and start a viewer
+        //    //Process.Start(fileName);
+        //}
 
-        public static void Export3DModel(CModelData modelData, Trackport3D trackport)
-        {
-            PdfDocument s_document2 = new PdfDocument();
-            DrawModel3D_Async(s_document2, modelData, trackport);
-            s_document2.Save($"EXP2_{_fileName}");
-            s_document2.Close();
-            s_document2.Dispose();
-        }
+        //public static void Export3DModel(CModelData modelData, Trackport3D trackport)
+        //{
+        //    PdfDocument s_document2 = new PdfDocument();
+        //    DrawModel3D_Async(s_document2, modelData, trackport);
+        //    s_document2.Save($"EXP2_{_fileName}");
+        //    s_document2.Close();
+        //    s_document2.Dispose();
+        //}
 
 
         /// <summary>
@@ -279,16 +287,15 @@ namespace EXPIMP
             page.Close();
         }
 
-        private static void DrawModelViews(PdfDocument s_document, CModelData data)
+        private static void DrawModelViews(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = GetModelViewsDisplayOptions(data);
 
-            List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
-             { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS, EViewModelMemberFilters.FLOOR};
-
+            List<EViewModelMemberFilters> list_views = GetViewsFromExportOptions(exportOpts);
+            
             int legendImgWidth = 100;
             int legendTextWidth = 70;
             float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
@@ -558,6 +565,21 @@ namespace EXPIMP
                 gfx.Dispose();
                 page.Close();
             }
+        }
+
+        private static List<EViewModelMemberFilters> GetViewsFromExportOptions(LayoutsExportOptionsViewModel exportOpts)
+        {
+            List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>();
+            if (exportOpts.ExportModelViewsFront) list_views.Add(EViewModelMemberFilters.FRONT);
+            if (exportOpts.ExportModelViewsBack) list_views.Add(EViewModelMemberFilters.BACK);
+            if (exportOpts.ExportModelViewsLeft) list_views.Add(EViewModelMemberFilters.LEFT);
+            if (exportOpts.ExportModelViewsRight) list_views.Add(EViewModelMemberFilters.RIGHT);
+            if (exportOpts.ExportModelViewsRoof) list_views.Add(EViewModelMemberFilters.ROOF);
+            if (exportOpts.ExportModelViewsMiddleFrame) list_views.Add(EViewModelMemberFilters.MIDDLE_FRAME);
+            if (exportOpts.ExportModelViewsColumns) list_views.Add(EViewModelMemberFilters.COLUMNS);
+            if (exportOpts.ExportModelViewsFoundations) list_views.Add(EViewModelMemberFilters.FOUNDATIONS);
+            if (exportOpts.ExportModelViewsFloor) list_views.Add(EViewModelMemberFilters.FLOOR);
+            return list_views;
         }
 
         private static DisplayOptions GetModelViewsDisplayOptions(CModelData data)

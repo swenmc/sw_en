@@ -740,6 +740,15 @@ namespace BaseClasses
         DIVIDE = 4
     }
 
+    public enum EPageSizes
+    {
+        A4 = 0,
+        A3 = 1,
+        A2 = 2,
+        A1 = 3,
+        A0 = 4
+    }
+
     // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
     public enum EGlobalPlane
     {

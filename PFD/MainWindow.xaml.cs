@@ -1879,16 +1879,16 @@ namespace PFD
             }
         }
 
-        private void _worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                Trackport3D trackport = new Trackport3D();
-                CModelData modelData = vm.GetModelData();
-                CMainReportExport.Export3DModel(modelData, trackport);
-            });
+        //private void _worker_DoWork(object sender, DoWorkEventArgs e)
+        //{
+        //    Application.Current.Dispatcher.Invoke(() =>
+        //    {
+        //        Trackport3D trackport = new Trackport3D();
+        //        CModelData modelData = vm.GetModelData();
+        //        CMainReportExport.Export3DModel(modelData, trackport);
+        //    });
             
-        }
+        //}
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {
