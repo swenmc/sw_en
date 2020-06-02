@@ -566,7 +566,7 @@ namespace EXPIMP
                 CModel filteredModel = null;
                 Trackport3D trackport = null;
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * 4, 1000 * 4);
                 viewPort.UpdateLayout();
                 System.Diagnostics.Trace.WriteLine("DrawModelViews after GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
                 DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth);
