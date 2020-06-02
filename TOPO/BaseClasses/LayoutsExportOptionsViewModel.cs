@@ -327,7 +327,7 @@ namespace BaseClasses
             ExportFloorDetails = true;
             ExportStandardDetails = true;
 
-            ExportPageSize = (int)EPageSizes.A4;
+            ExportPageSize = (int)EPageSizes.A3;
             ExportPageOrientation = (int)EPageOrientation.Landscape;
         }
 

@@ -268,51 +268,51 @@ namespace EXPIMP
             page.Close();
         }
 
-        private static void DrawModel3D_Async(PdfDocument s_document, CModelData data, Trackport3D trackport, LayoutsExportOptionsViewModel exportOpts)
-        {
-            // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
-            XGraphics gfx;
-            PdfPage page;
-            page = s_document.AddPage();
-            //page.Size = PageSize.A3;
-            //page.Orientation = PdfSharp.PageOrientation.Landscape;
-            page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
-            page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
-            gfx = XGraphics.FromPdfPage(page);
+        //private static void DrawModel3D_Async(PdfDocument s_document, CModelData data, Trackport3D trackport, LayoutsExportOptionsViewModel exportOpts)
+        //{
+        //    // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
+        //    XGraphics gfx;
+        //    PdfPage page;
+        //    page = s_document.AddPage();
+        //    //page.Size = PageSize.A3;
+        //    //page.Orientation = PdfSharp.PageOrientation.Landscape;
+        //    page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
+        //    page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
+        //    gfx = XGraphics.FromPdfPage(page);
 
-            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
-            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
+        //    DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+        //    DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
+        //    DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
 
-            CModel filteredModel = null;            
+        //    CModel filteredModel = null;            
 
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPortAsync(opts, data, 1f, trackport, out filteredModel);
-            viewPort.UpdateLayout();
+        //    Viewport3D viewPort = ExportHelper.GetBaseModelViewPortAsync(opts, data, 1f, trackport, out filteredModel);
+        //    viewPort.UpdateLayout();
 
-            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-            gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
+        //    XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+        //    gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
-            DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
-            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
+        //    DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
+        //    contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
 
-            int legendImgWidth = 100;
-            int legendTextWidth = 80;
-            DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth, legendImgWidth);
+        //    int legendImgWidth = 100;
+        //    int legendTextWidth = 80;
+        //    DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth, legendImgWidth);
 
-            XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
+        //    XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
 
-            double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
-            double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
-            double scaledImageHeight = image.PointHeight * scaleFactor;
+        //    double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
+        //    double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
+        //    double scaledImageHeight = image.PointHeight * scaleFactor;
 
-            gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
-            image.Dispose();
-            viewPort.Dispose();
-            trackport.Dispose();
-            gfx.Dispose();
-            page.Close();
-        }
+        //    gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+        //    image.Dispose();
+        //    viewPort.Dispose();
+        //    trackport.Dispose();
+        //    gfx.Dispose();
+        //    page.Close();
+        //}
 
         private static void DrawModelViews(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
@@ -1598,12 +1598,18 @@ namespace EXPIMP
 
             // Logo
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
-            gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, 630, 240, 75);
+            //gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, 630, 240, 75);
+            gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, gfx.PageSize.Height - 212, 240, 75);
             image.Dispose();
 
-            gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
-            gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);
-            gfx.DrawString("ENGINEERING PLAN SET", fontBoltTitle, XBrushes.Black, 530, 800);
+            //gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
+            //gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);
+            //gfx.DrawString("ENGINEERING PLAN SET", fontBoltTitle, XBrushes.Black, 530, 800);
+
+            gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, gfx.PageSize.Width - 291, gfx.PageSize.Height - 112);
+            gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, gfx.PageSize.Width - 244, gfx.PageSize.Height - 92);
+            gfx.DrawString("ENGINEERING PLAN SET", fontBoltTitle, XBrushes.Black, gfx.PageSize.Width - 661 , gfx.PageSize.Height - 42);
+
             return gfx;
         }
 
