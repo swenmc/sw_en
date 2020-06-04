@@ -33,6 +33,8 @@ namespace BaseClasses
 
         private int m_ExportPageSize;
         private int m_ExportPageOrientation;
+        private int m_ExportPageSizeViews;
+        private int m_ExportPageOrientationViews;
 
         public bool ExportModel3D
         {
@@ -308,6 +310,34 @@ namespace BaseClasses
             }
         }
 
+        public int ExportPageSizeViews
+        {
+            get
+            {
+                return m_ExportPageSizeViews;
+            }
+
+            set
+            {
+                m_ExportPageSizeViews = value;
+                NotifyPropertyChanged("ExportPageSizeViews");
+            }
+        }
+
+        public int ExportPageOrientationViews
+        {
+            get
+            {
+                return m_ExportPageOrientationViews;
+            }
+
+            set
+            {
+                m_ExportPageOrientationViews = value;
+                NotifyPropertyChanged("ExportPageOrientationViews");
+            }
+        }
+
         public LayoutsExportOptionsViewModel()
         {
             ExportModel3D = true;
@@ -329,6 +359,9 @@ namespace BaseClasses
 
             ExportPageSize = (int)EPageSizes.A3;
             ExportPageOrientation = (int)EPageOrientation.Landscape;
+
+            ExportPageSizeViews = (int)EPageSizes.A3;
+            ExportPageOrientationViews = (int)EPageOrientation.Landscape;
         }
 
         protected void NotifyPropertyChanged(string propertyName)

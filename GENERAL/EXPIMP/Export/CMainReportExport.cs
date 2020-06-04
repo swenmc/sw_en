@@ -337,8 +337,8 @@ namespace EXPIMP
                 page = s_document.AddPage();
                 //page.Size = PageSize.A3;
                 //page.Orientation = PdfSharp.PageOrientation.Landscape;
-                page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSize);
-                page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientation);
+                page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
+                page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientationViews);
 
                 gfx = XGraphics.FromPdfPage(page);
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
@@ -567,6 +567,7 @@ namespace EXPIMP
                 Trackport3D trackport = null;
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * 4, 1000 * 4);
+                System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
                 viewPort.UpdateLayout();
                 System.Diagnostics.Trace.WriteLine("DrawModelViews after GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
                 DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth);

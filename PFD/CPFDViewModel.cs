@@ -2776,9 +2776,11 @@ namespace PFD
             // Set default kitset model type
             KitsetTypeIndex = kitsetTypeIndex;
 
-            Width = 80;
-            Length = 300;
-            Frames = 74;
+            //temp defaults
+            Width = 30;
+            Length = 100;
+            Frames = 40;
+
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             //ModelIndex = modelIndex;
