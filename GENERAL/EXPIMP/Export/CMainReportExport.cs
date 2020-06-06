@@ -208,6 +208,20 @@ namespace EXPIMP
                 default:
                     return PageSize.A3;
             }
+        }
+        private static int GetCanvasSizeFactorAcordingToPageSize(EPageSizes pageSize)
+        {
+            int factor = 1;
+            switch (pageSize)
+            {
+                case EPageSizes.A0: return 4;
+                case EPageSizes.A1: return 3;
+                case EPageSizes.A2: return 2;
+                case EPageSizes.A3: return factor;
+                case EPageSizes.A4: return factor;
+                default:
+                    return factor;
+            }
 
         }
         private static PageOrientation GetPageOrientation(EPageOrientation pageOrientation)
@@ -388,7 +402,7 @@ namespace EXPIMP
                 float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
                 */
 
-                ChangeDisplayOptionsAcordingToView(viewMembers, opts);
+                ChangeDisplayOptionsAcordingToView(viewMembers, ref opts);
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
                 {
@@ -406,15 +420,15 @@ namespace EXPIMP
                 Trackport3D trackport = null;
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
 
-                
+                int factor = GetCanvasSizeFactorAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
 
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * 4, 1000 * 4);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * factor, 1000 * factor);
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
                 viewPort.UpdateLayout();
                 System.Diagnostics.Trace.WriteLine("DrawModelViews after GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
                 DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth);
                 filteredModel = null;
-                System.Diagnostics.Trace.WriteLine("DrawModelViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("DrawModelViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
                 gfx.DrawString($"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
@@ -568,7 +582,7 @@ namespace EXPIMP
             return opts;
         }
 
-        private static void ChangeDisplayOptionsAcordingToView(EViewModelMemberFilters viewMembers, DisplayOptions opts)
+        private static void ChangeDisplayOptionsAcordingToView(EViewModelMemberFilters viewMembers, ref DisplayOptions opts)
         {
             if (viewMembers == EViewModelMemberFilters.FRONT)
             {
@@ -1732,9 +1746,9 @@ namespace EXPIMP
             int margins = 12;
             Document doc = new Document();
             DateTime start = DateTime.Now;
-            System.Diagnostics.Trace.WriteLine("Beginning: DrawCrscLegendTable" + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("Beginning: DrawCrscLegendTable" + (DateTime.Now - start).TotalMilliseconds);
             AddTableToDocument(doc, gfx, x - imgWidth - textWidth - margins, 20, GetCRSC_Table(doc, model, list_crsc, textWidth, imgWidth));            
-            System.Diagnostics.Trace.WriteLine("End: DrawCrscLegendTable " + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("End: DrawCrscLegendTable " + (DateTime.Now - start).TotalMilliseconds);
         }
         
         private static Table GetCRSC_Table(Document document, CModel model, List<string> list_crsc, int textWidth, int imgWidth = 100, int imgHeight = 76)
@@ -1760,7 +1774,7 @@ namespace EXPIMP
             column2.LeftPadding = 2;
 
             DateTime start = DateTime.Now;
-            System.Diagnostics.Trace.WriteLine("Beginning: GetCRSC_Table" + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("Beginning: GetCRSC_Table" + (DateTime.Now - start).TotalMilliseconds);
 
             foreach (string crsc in list_crsc)
             {
@@ -1799,7 +1813,7 @@ namespace EXPIMP
 
             table.SetEdge(0, 0, 2, list_crsc.Count, Edge.Box, BorderStyle.Single, 1, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
-            System.Diagnostics.Trace.WriteLine("End: GetCRSC_Table" + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("End: GetCRSC_Table" + (DateTime.Now - start).TotalMilliseconds);
             return table;
         }
         //private static void DrawCrscLegend(XGraphics gfx, CModel model, int x, int textWidth)

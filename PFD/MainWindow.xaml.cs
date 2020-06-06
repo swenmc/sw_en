@@ -1021,7 +1021,10 @@ namespace PFD
             CalculateLoadingValues(vm.Model);
             System.Diagnostics.Trace.WriteLine("CalculateLoadingValues: " + (DateTime.Now - start).TotalMilliseconds);
 
-            vm.Model.CalculateLoadValuesAndGenerateLoads(vm.GeneralLoad,
+            bool calculateLoadingValues = false;
+            if (calculateLoadingValues)
+            {
+                vm.Model.CalculateLoadValuesAndGenerateLoads(vm.GeneralLoad,
                 vm.Wind,
                 vm.Snow,
                 vm.Eq,
@@ -1031,7 +1034,8 @@ namespace PFD
                 vm.GenerateLoadsOnColumns,
                 vm.GenerateLoadsOnFrameMembers,
                 generateSurfaceLoads);
-
+            }
+            
             System.Diagnostics.Trace.WriteLine("CalculateLoadValuesAndGenerateLoads: " + (DateTime.Now - start).TotalMilliseconds);
 
             if (vm.SynchronizeGUI || programStart)

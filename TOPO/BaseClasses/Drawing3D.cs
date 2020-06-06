@@ -64,6 +64,9 @@ namespace BaseClasses
                     centerModelTransGr.Children.Add(GetModelRotationAccordingToView(sDisplayOptions));
                 }
 
+                //temp
+                pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, (centerModel ? centerModelTransGr : null));
 
