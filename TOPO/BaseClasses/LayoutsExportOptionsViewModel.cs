@@ -340,22 +340,22 @@ namespace BaseClasses
 
         public LayoutsExportOptionsViewModel()
         {
-            ExportModel3D = true;
+            ExportModel3D = false;
             ExportModelViews = true;
             ExportModelViewsFront = true;
-            ExportModelViewsBack = true;
+            ExportModelViewsBack = false;
             ExportModelViewsLeft = true;
-            ExportModelViewsRight = true;
+            ExportModelViewsRight = false;
             ExportModelViewsRoof = true;
             ExportModelViewsMiddleFrame = true;
-            ExportModelViewsColumns = true;
-            ExportModelViewsFoundations = true;
-            ExportModelViewsFloor = true;
+            ExportModelViewsColumns = false;
+            ExportModelViewsFoundations = false;
+            ExportModelViewsFloor = false;
 
-            ExportJointTypes = true;
-            ExportFootingTypes = true;
-            ExportFloorDetails = true;
-            ExportStandardDetails = true;
+            ExportJointTypes = false;
+            ExportFootingTypes = false;
+            ExportFloorDetails = false;
+            ExportStandardDetails = false;
 
             ExportPageSize = (int)EPageSizes.A3;
             ExportPageOrientation = (int)EPageOrientation.Landscape;

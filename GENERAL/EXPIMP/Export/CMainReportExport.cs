@@ -388,177 +388,16 @@ namespace EXPIMP
                 float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
                 */
 
-                if (viewMembers == EViewModelMemberFilters.FRONT)
-                {
-                    opts.bDisplayMemberDescription = true;
-                    opts.bDisplayMemberPrefix = true;
-                    opts.bDisplayMemberRealLengthInMM = true;
-
-                    // opts.bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje, bude to zavisiet na tom ci je zapnute ich zobrazenie, alebo to budeme robit vzdy
-                    opts.bDisplayGridlines = true; // Vertical
-                    opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = true;
-                    //opts.bDisplayDimensions = true;
-
-                    opts.bCreateHorizontalGridlines = false;
-                    opts.bCreateVerticalGridlinesFront = true;
-                }
-
-                if (viewMembers == EViewModelMemberFilters.BACK)
-                {
-                    opts.bDisplayMemberDescription = true;
-                    opts.bDisplayMemberPrefix = true;
-                    opts.bDisplayMemberRealLengthInMM = true;
-
-                    opts.bDisplayGridlines = true; // Vertical
-                    opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = true;
-                    //opts.bDisplayDimensions = true;
-
-                    opts.bCreateHorizontalGridlines = false;
-                    opts.bCreateVerticalGridlinesBack = true;
-                }
-
-                if (viewMembers == EViewModelMemberFilters.LEFT)
-                {
-                    opts.bDisplayMemberDescription = true;
-                    opts.bDisplayMemberPrefix = true;
-                    opts.bDisplayMemberRealLengthInMM = true;
-
-                    opts.bDisplayGridlines = true;// Vertical
-                    opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = true;
-                    opts.bDisplayDimensions = true;
-
-                    opts.bCreateHorizontalGridlines = false;
-                    opts.bCreateVerticalGridlinesLeft = true;
-                }
-
-                if (viewMembers == EViewModelMemberFilters.RIGHT)
-                {
-                    opts.bDisplayMemberDescription = true;
-                    opts.bDisplayMemberPrefix = true;
-                    opts.bDisplayMemberRealLengthInMM = true;
-
-                    opts.bDisplayGridlines = true; // Vertical
-                    opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = true;
-                    //opts.bDisplayDimensions = true;
-
-                    opts.bCreateHorizontalGridlines = false;
-                    opts.bCreateVerticalGridlinesRight = true;
-                }
-
-                if (viewMembers == EViewModelMemberFilters.ROOF)
-                {
-                    opts.bDisplayMemberDescription = true;
-                    opts.bDisplayMemberPrefix = true;
-                    opts.bDisplayMemberRealLengthInMM = true;
-
-                    opts.bDisplayGridlines = true; // Horizontal
-                    opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = true;
-                    //opts.bDisplayDimensions = true;
-
-                    opts.bCreateHorizontalGridlines = true;
-                }
-
-                if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
-                {
-                    opts.bDisplayMemberDescription = true;
-                    opts.bDisplayMemberPrefix = true;
-                    opts.bDisplayMemberRealLengthInMM = true;
-
-                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                    //opts.bDisplayWireFrameModel = true;
-                    //opts.bDisplayMembersWireFrame = true;
-                    //opts.bTransformScreenLines3DToCylinders3D = true;
-
-                    opts.bDisplayGridlines = true; // Vertical
-                    opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = false;
-                    //opts.bDisplayDimensions = true;
-
-                    opts.bCreateVerticalGridlinesFront = true;
-                }
-
-                if (viewMembers == EViewModelMemberFilters.COLUMNS)
-                {
-                    opts.bDisplayMemberDescription = true;
-                    opts.bDisplayMemberPrefix = true;
-
-                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                    opts.bDisplayWireFrameModel = true;
-                    opts.bDisplayFloorSlabWireFrame = true;
-                    opts.bDisplayMembersWireFrame = true;
-                    opts.bTransformScreenLines3DToCylinders3D = true;
-                    //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-
-                    opts.bDisplayFoundations = false;
-                    opts.bDisplayReinforcementBars = false;
-                    opts.bDisplayFloorSlab = true;
-                    opts.bDisplayFloorSlabDescription = false;
-                    opts.bDisplayGridlines = true; // Horizontal
-                    opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = false;
-                    //opts.bDisplayDimensions = true;
-
-                    opts.bCreateHorizontalGridlines = true;
-                }
+                ChangeDisplayOptionsAcordingToView(viewMembers, opts);
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
                 {
-                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                    opts.bDisplayWireFrameModel = true;
-                    opts.bDisplayFoundationsWireFrame = true;
-                    opts.bDisplayFloorSlabWireFrame = true;
-                    opts.bTransformScreenLines3DToCylinders3D = true;
-                    //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-
-                    opts.bDisplayFoundations = true;
-                    opts.bDisplayReinforcementBars = true;
-                    opts.bDisplayFloorSlab = true;
-                    opts.bDisplayFloorSlabDescription = false;
-                    opts.bDisplayFoundationsDescription = true;
-                    opts.bDisplayMemberDescription = false;
-                    opts.bDisplayGridlines = true; // Horizontal
-                    opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = false;
-                    //opts.bDisplayDimensions = true;
-
-                    opts.bCreateHorizontalGridlines = true;
-
                     // Table - footing pads list
                     DrawFootingPadList(gfx, data, (int)page.Width.Point - 275, (int)page.Height.Point - 250);
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FLOOR)
-                {
-                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                    opts.bDisplayWireFrameModel = true;
-                    opts.bDisplayFoundationsWireFrame = true;
-                    opts.bDisplayFloorSlabWireFrame = true;
-                    opts.bTransformScreenLines3DToCylinders3D = true;
-                    //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-
-                    opts.bDisplayFoundations = true;
-                    opts.bDisplayReinforcementBars = false;
-                    opts.bDisplayFloorSlab = true;
-                    opts.bDisplayFloorSlabDescription = true;
-                    opts.bDisplayFoundationsDescription = false;
-                    opts.bDisplayMemberDescription = false;
-
-                    opts.bDisplaySawCuts = true;
-                    opts.bDisplaySawCutsDescription = true;
-                    opts.bDisplayControlJoints = true;
-                    opts.bDisplayControlJointsDescription = true;
-                    opts.bDisplayGridlines = true; // Horizontal
-                    opts.bDisplaySectionSymbols = true;
-                    opts.bDisplayDetailSymbols = false;
-                    //opts.bDisplayDimensions = true;
-
-                    opts.bCreateHorizontalGridlines = true;
-
+                {  
                     // Notes - floor
                     DrawNotes_Floor(gfx, data, (int)page.Width.Point - 275, (int)page.Height.Point - 250);
                 }
@@ -566,6 +405,9 @@ namespace EXPIMP
                 CModel filteredModel = null;
                 Trackport3D trackport = null;
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
+
+                
+
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * 4, 1000 * 4);
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
                 viewPort.UpdateLayout();
@@ -725,6 +567,179 @@ namespace EXPIMP
 
             return opts;
         }
+
+        private static void ChangeDisplayOptionsAcordingToView(EViewModelMemberFilters viewMembers, DisplayOptions opts)
+        {
+            if (viewMembers == EViewModelMemberFilters.FRONT)
+            {
+                opts.bDisplayMemberDescription = true;
+                opts.bDisplayMemberPrefix = true;
+                opts.bDisplayMemberRealLengthInMM = true;
+
+                // opts.bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje, bude to zavisiet na tom ci je zapnute ich zobrazenie, alebo to budeme robit vzdy
+                opts.bDisplayGridlines = true; // Vertical
+                opts.bDisplaySectionSymbols = false;
+                opts.bDisplayDetailSymbols = true;
+                //opts.bDisplayDimensions = true;
+
+                opts.bCreateHorizontalGridlines = false;
+                opts.bCreateVerticalGridlinesFront = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.BACK)
+            {
+                opts.bDisplayMemberDescription = true;
+                opts.bDisplayMemberPrefix = true;
+                opts.bDisplayMemberRealLengthInMM = true;
+
+                opts.bDisplayGridlines = true; // Vertical
+                opts.bDisplaySectionSymbols = false;
+                opts.bDisplayDetailSymbols = true;
+                //opts.bDisplayDimensions = true;
+
+                opts.bCreateHorizontalGridlines = false;
+                opts.bCreateVerticalGridlinesBack = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.LEFT)
+            {
+                opts.bDisplayMemberDescription = true;
+                opts.bDisplayMemberPrefix = true;
+                opts.bDisplayMemberRealLengthInMM = true;
+
+                opts.bDisplayGridlines = true;// Vertical
+                opts.bDisplaySectionSymbols = false;
+                opts.bDisplayDetailSymbols = true;
+                opts.bDisplayDimensions = true;
+
+                opts.bCreateHorizontalGridlines = false;
+                opts.bCreateVerticalGridlinesLeft = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.RIGHT)
+            {
+                opts.bDisplayMemberDescription = true;
+                opts.bDisplayMemberPrefix = true;
+                opts.bDisplayMemberRealLengthInMM = true;
+
+                opts.bDisplayGridlines = true; // Vertical
+                opts.bDisplaySectionSymbols = false;
+                opts.bDisplayDetailSymbols = true;
+                //opts.bDisplayDimensions = true;
+
+                opts.bCreateHorizontalGridlines = false;
+                opts.bCreateVerticalGridlinesRight = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.ROOF)
+            {
+                opts.bDisplayMemberDescription = true;
+                opts.bDisplayMemberPrefix = true;
+                opts.bDisplayMemberRealLengthInMM = true;
+
+                opts.bDisplayGridlines = true; // Horizontal
+                opts.bDisplaySectionSymbols = false;
+                opts.bDisplayDetailSymbols = true;
+                //opts.bDisplayDimensions = true;
+
+                opts.bCreateHorizontalGridlines = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
+            {
+                opts.bDisplayMemberDescription = true;
+                opts.bDisplayMemberPrefix = true;
+                opts.bDisplayMemberRealLengthInMM = true;
+
+                // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                //opts.bDisplayWireFrameModel = true;
+                //opts.bDisplayMembersWireFrame = true;
+                //opts.bTransformScreenLines3DToCylinders3D = true;
+
+                opts.bDisplayGridlines = true; // Vertical
+                opts.bDisplaySectionSymbols = false;
+                opts.bDisplayDetailSymbols = false;
+                //opts.bDisplayDimensions = true;
+
+                opts.bCreateVerticalGridlinesFront = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.COLUMNS)
+            {
+                opts.bDisplayMemberDescription = true;
+                opts.bDisplayMemberPrefix = true;
+
+                // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                opts.bDisplayWireFrameModel = true;
+                opts.bDisplayFloorSlabWireFrame = true;
+                opts.bDisplayMembersWireFrame = true;
+                opts.bTransformScreenLines3DToCylinders3D = true;
+                //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+
+                opts.bDisplayFoundations = false;
+                opts.bDisplayReinforcementBars = false;
+                opts.bDisplayFloorSlab = true;
+                opts.bDisplayFloorSlabDescription = false;
+                opts.bDisplayGridlines = true; // Horizontal
+                opts.bDisplaySectionSymbols = false;
+                opts.bDisplayDetailSymbols = false;
+                //opts.bDisplayDimensions = true;
+
+                opts.bCreateHorizontalGridlines = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
+            {
+                // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                opts.bDisplayWireFrameModel = true;
+                opts.bDisplayFoundationsWireFrame = true;
+                opts.bDisplayFloorSlabWireFrame = true;
+                opts.bTransformScreenLines3DToCylinders3D = true;
+                //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+
+                opts.bDisplayFoundations = true;
+                opts.bDisplayReinforcementBars = true;
+                opts.bDisplayFloorSlab = true;
+                opts.bDisplayFloorSlabDescription = false;
+                opts.bDisplayFoundationsDescription = true;
+                opts.bDisplayMemberDescription = false;
+                opts.bDisplayGridlines = true; // Horizontal
+                opts.bDisplaySectionSymbols = false;
+                opts.bDisplayDetailSymbols = false;
+                //opts.bDisplayDimensions = true;
+
+                opts.bCreateHorizontalGridlines = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.FLOOR)
+            {
+                // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                opts.bDisplayWireFrameModel = true;
+                opts.bDisplayFoundationsWireFrame = true;
+                opts.bDisplayFloorSlabWireFrame = true;
+                opts.bTransformScreenLines3DToCylinders3D = true;
+                //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+
+                opts.bDisplayFoundations = true;
+                opts.bDisplayReinforcementBars = false;
+                opts.bDisplayFloorSlab = true;
+                opts.bDisplayFloorSlabDescription = true;
+                opts.bDisplayFoundationsDescription = false;
+                opts.bDisplayMemberDescription = false;
+
+                opts.bDisplaySawCuts = true;
+                opts.bDisplaySawCutsDescription = true;
+                opts.bDisplayControlJoints = true;
+                opts.bDisplayControlJointsDescription = true;
+                opts.bDisplayGridlines = true; // Horizontal
+                opts.bDisplaySectionSymbols = true;
+                opts.bDisplayDetailSymbols = false;
+                //opts.bDisplayDimensions = true;
+
+                opts.bCreateHorizontalGridlines = true;
+            }
+        }
+
 
         private static void DrawJointTypes(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
