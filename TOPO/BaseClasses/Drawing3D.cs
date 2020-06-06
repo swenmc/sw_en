@@ -64,7 +64,7 @@ namespace BaseClasses
                     centerModelTransGr.Children.Add(GetModelRotationAccordingToView(sDisplayOptions));
                 }
 
-                //temp
+                //predchadzajuce bolo pouzite kvoli zacentrovaniu modelu, toto je kvoli zoomovanym prvkom podla velkosti modelu podla toho aky je view
                 pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 // Global coordinate system - axis
@@ -643,11 +643,17 @@ namespace BaseClasses
                 List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
                 membersBaseNodes_FrontSide = GetMemberBaseNodesFrontSide(model);
 
+                List<Point3D?> controlPoints = new List<Point3D?>();
                 for (int i = 0; i < membersBaseNodes_FrontSide.Count; i++)
                 {
                     Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y - fOffsetInViewDirection, membersBaseNodes_FrontSide[i].Z);
-                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
-                    listOfGridlines.Add(gl);
+                    if (!CheckSymbolsOverlaps(controlPoints, controlPoint, fMarkCircleDiameter))
+                    {
+                        controlPoints.Add(controlPoint);
+                        CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
+                        listOfGridlines.Add(gl);
+                    }
+                        
                 }
             }
 
@@ -656,11 +662,17 @@ namespace BaseClasses
                 List<CNode> membersBaseNodes_BackSide = null; // Wind posts and edge columns
                 membersBaseNodes_BackSide = GetMemberBaseNodesBackSide(model);
 
+                List<Point3D?> controlPoints = new List<Point3D?>();
                 for (int i = 0; i < membersBaseNodes_BackSide.Count; i++)
                 {
                     Point3D controlPoint = new Point3D(membersBaseNodes_BackSide[i].X, membersBaseNodes_BackSide[i].Y + fOffsetInViewDirection, membersBaseNodes_BackSide[i].Z);
-                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(0, -1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
-                    listOfGridlines.Add(gl);
+                    if (!CheckSymbolsOverlaps(controlPoints, controlPoint, fMarkCircleDiameter))
+                    {
+                        controlPoints.Add(controlPoint);
+                        CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(0, -1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
+                        listOfGridlines.Add(gl);
+                    }
+                        
                 }
             }
 
@@ -671,11 +683,16 @@ namespace BaseClasses
 
                 labelsY = GetLabelsForGridLines(membersBaseNodes_LeftSide.Count);
 
+                List<Point3D?> controlPoints = new List<Point3D?>();
                 for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
                 {
                     Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X - fOffsetInViewDirection, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
-                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
-                    listOfGridlines.Add(gl);
+                    if (!CheckSymbolsOverlaps(controlPoints, controlPoint, fMarkCircleDiameter))
+                    {
+                        controlPoints.Add(controlPoint);
+                        CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
+                        listOfGridlines.Add(gl);
+                    }                        
                 }
             }
 
@@ -686,11 +703,16 @@ namespace BaseClasses
 
                 labelsY = GetLabelsForGridLines(membersBaseNodes_RightSide.Count);
 
+                List<Point3D?> controlPoints = new List<Point3D?>();
                 for (int i = 0; i < membersBaseNodes_RightSide.Count; i++)
                 {
                     Point3D controlPoint = new Point3D(membersBaseNodes_RightSide[i].X + fOffsetInViewDirection, membersBaseNodes_RightSide[i].Y, membersBaseNodes_RightSide[i].Z);
-                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(-1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
-                    listOfGridlines.Add(gl);
+                    if (!CheckSymbolsOverlaps(controlPoints, controlPoint, fMarkCircleDiameter))
+                    {
+                        controlPoints.Add(controlPoint);
+                        CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(-1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
+                        listOfGridlines.Add(gl);
+                    }                        
                 }
             }
 
