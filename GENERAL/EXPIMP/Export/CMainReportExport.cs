@@ -224,6 +224,32 @@ namespace EXPIMP
             }
 
         }
+        private static int GetCanvasWidthAcordingToPageSize(EPageSizes pageSize)
+        {
+            int width = 1191;
+            switch (pageSize)
+            {
+                case EPageSizes.A0: return 3370;
+                case EPageSizes.A1: return 2384;
+                case EPageSizes.A2: return 1684;                
+                default:
+                    return width;
+            }
+        }
+        private static int GetCanvasHeightAcordingToPageSize(EPageSizes pageSize)
+        {
+            int height = 842;
+            switch (pageSize)
+            {
+                case EPageSizes.A0: return 2384;
+                case EPageSizes.A1: return 1684;
+                case EPageSizes.A2: return 1191;
+                default:
+                    return height;
+            }
+
+        }
+
         private static PageOrientation GetPageOrientation(EPageOrientation pageOrientation)
         {
             switch (pageOrientation)
@@ -334,6 +360,7 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = GetModelViewsDisplayOptions(data);
+            opts.ViewsPageSize = (EPageSizes) exportOpts.ExportPageSizeViews;
 
             List<EViewModelMemberFilters> list_views = GetViewsFromExportOptions(exportOpts);
             
@@ -421,8 +448,11 @@ namespace EXPIMP
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
 
                 int factor = GetCanvasSizeFactorAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
+                int width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
+                int height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
 
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * factor, 1000 * factor);
+                //Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * factor, 1000 * factor);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
                 viewPort.UpdateLayout();
                 System.Diagnostics.Trace.WriteLine("DrawModelViews after GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);

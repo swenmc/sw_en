@@ -121,7 +121,7 @@ namespace BaseClasses
                 DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
                 //System.Diagnostics.Trace.WriteLine("After DrawDimensionsToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
-                DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr);
+                DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr, sDisplayOptions.ViewsPageSize);
                 //System.Diagnostics.Trace.WriteLine("After DrawGridlinesToTrackport: " + (DateTime.Now - start).TotalMilliseconds);
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
@@ -570,12 +570,16 @@ namespace BaseClasses
             DimensionsDrawingHelper.DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
         }
 
-        private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
+        private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr, EPageSizes pageSize)
         {
             Model3DGroup gridlines3DGroup = null;
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fMarkCircleDiameter = maxModelLength / 28f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
+
+            float fMarkCircleDiameter = maxModelLength / 25f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
+            if (pageSize == EPageSizes.A2) fMarkCircleDiameter = fMarkCircleDiameter / 1.41275f;
+            if (pageSize == EPageSizes.A1) fMarkCircleDiameter = fMarkCircleDiameter / 1.41275f / 1.41275f;
+            if (pageSize == EPageSizes.A0) fMarkCircleDiameter = fMarkCircleDiameter / 1.41275f / 1.41275f / 1.41275f;
 
             // Create gridlines
             List<CGridLine> listOfGridlines = new List<CGridLine>();
@@ -3453,7 +3457,12 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fGridLineLabelTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 70f;
+            //            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 70f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;
+            if (displayOptions.ViewsPageSize == EPageSizes.A2) fTextBlockVerticalSize = fTextBlockVerticalSize / 1.41275f;
+            if (displayOptions.ViewsPageSize == EPageSizes.A1) fTextBlockVerticalSize = fTextBlockVerticalSize / 1.41275f / 1.41275f;
+            if (displayOptions.ViewsPageSize == EPageSizes.A0) fTextBlockVerticalSize = fTextBlockVerticalSize / 1.41275f / 1.41275f / 1.41275f;
+
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 

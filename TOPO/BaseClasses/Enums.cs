@@ -936,6 +936,7 @@ namespace BaseClasses
         public bool bCreateVerticalGridlinesLeft;
         public bool bCreateVerticalGridlinesRight;
 
+        public EPageSizes ViewsPageSize;
         //public DisplayOptionsFootingPad2D footingPadDisplayOptions;
     }
 
