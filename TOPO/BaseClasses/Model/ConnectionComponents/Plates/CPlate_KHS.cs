@@ -539,7 +539,7 @@ namespace BaseClasses
             float fx2 = Fl_Z;
             float fy2 = fy1;
 
-            float fy3 = fdepth * (float)Math.Cos(m_fSlope_rad);
+            float fy3 = fdepth / (float)Math.Cos(m_fSlope_rad);
 
             // Body su nezavisle na bodoch outline aj ked maju rovnake suradnice
             MemberOutlines[0] = new CLine2D(new Point(PointsOut2D[2].X, PointsOut2D[2].Y), new Point(fx1, fy1));
