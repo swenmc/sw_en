@@ -453,7 +453,8 @@ namespace BaseClasses
         eWF = 12, // Window Frame
         eBG = 13, // Base Girt
         eMR = 14, // Main Rafter
-        eMC = 15  // Main Column
+        eMC = 15,  // Main Column
+        eCB = 16 // Cross-bracing
     }
 
     public enum EMemberType_FS_Position
@@ -476,7 +477,9 @@ namespace BaseClasses
         DoorFrame = 16,
         WindowFrame = 17,
         DoorTrimmer = 18,
-        DoorLintel = 19
+        DoorLintel = 19,
+        CrossBracing_Wall = 20,
+        CrossBracing_Roof = 21
     }
 
     // TODO - Ondrej TOTO je asi zbytocna duplicita
