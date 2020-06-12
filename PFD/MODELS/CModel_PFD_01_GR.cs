@@ -575,6 +575,18 @@ namespace PFD
                 iNumberOfGB_BSMembersInOneFrame -= iArrGB_BS_NumberOfMembersPerBay[iOneRafterBackColumnNo];
             }
 
+
+
+
+
+            //----------------------------------------------------------------------------------------------------------------------------
+            // TO Ondrej - IN WORK Cross-bracing
+
+            // Ak chceme cross bracing zrusit toto nastavime v kode na false
+            bool bGenerateSideWallCrossBracing = true;
+            bool bGenerateRoofCrossBracing = true;
+
+
             // TEMPORARY - To Ondrej TOTO BY MALO PRIST Z GUI
             //Prva bay ma index 0
             crossBracingPropertiesBayIndex0 = new CrossBracingProperties();
@@ -604,8 +616,6 @@ namespace PFD
             listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex3);
             listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex6);
 
-
-            bool bGenerateSideWallCrossBracing = true;
             int iNumberOfCrossBracingMembers_Walls = 0;
 
             if(bGenerateSideWallCrossBracing)
@@ -626,8 +636,6 @@ namespace PFD
                 }
             }
 
-            bool bGenerateRoofCrossBracing = true;
-
             int iNumberOfCrossBracingMembers_Roof = 0;
 
             if (bGenerateRoofCrossBracing)
@@ -644,6 +652,8 @@ namespace PFD
                 iNumberOfCrossBracingMembers_Roof += cbProp.iNumberOfCrossBracingMembers_BayRoof; // Rozne podla vstupu v GUI a ine pre gable roof a monopitch
                 }
             }
+
+            //----------------------------------------------------------------------------------------------------------------------------
 
             m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame];
             m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls + iNumberOfCrossBracingMembers_Roof];
@@ -1210,29 +1220,32 @@ namespace PFD
 
 
 
-
+            //----------------------------------------------------------------------------------------------------------------------------
+            // TO Ondrej - IN WORK Cross-bracing
 
             // Cross-bracing
 
-            // IN WORK
-            // Current Bay - TODO - pridat cyklus cez jednotlive bay v GUI
-            // !!! spravne navysovat index i_temp_numberofMembers o tolko o kolko sa pridalo prutov v jednom cykle pre danu bay
+            if(bGenerateSideWallCrossBracing || bGenerateRoofCrossBracing)
+            {
+                // IN WORK
+                // Current Bay - TODO - pridat cyklus cez jednotlive bay v GUI v ktorych je nastavene cross-bracing
+                // !!! v cykle spravne navysovat index i_temp_numberofMembers o tolko o kolko sa pridalo prutov v jednom cykle pre danu bay (spolu walls aj roof)
 
-            GenerateCrossBracingMembersInBay(bGenerateSideWallCrossBracing,
-            bGenerateRoofCrossBracing,
-          listCrossBracingPropertiesInBays[0].iBayIndex,
-            i_temp_numberofMembers,
-            // CMemberEccentricity eccentricity,
-            0f,
-            0f,
-            // CCrSc section, // TODO - npojit na GUI, mali by byt 2 rozne prierezy, jeden pre wall, jeden pre roof cross bracing
-            // float fMemberRotation,
-            bGenerateGirts,
-            listCrossBracingPropertiesInBays[0].iNumberOfCrossBracingMembers_Walls,
-            listCrossBracingPropertiesInBays[0].iRoofCrossBracingCrossNumberPerRafter,
-            listCrossBracingPropertiesInBays[0].iRoofCrossBracingEveryXXPurlin);
-
-
+                GenerateCrossBracingMembersInBay(bGenerateSideWallCrossBracing,
+                bGenerateRoofCrossBracing,
+                listCrossBracingPropertiesInBays[0].iBayIndex,
+                i_temp_numberofMembers,
+                // CMemberEccentricity eccentricity,
+                0f,
+                0f,
+                // CCrSc section, // TODO - npojit na GUI, mali by byt 2 rozne prierezy, jeden pre wall, jeden pre roof cross bracing
+                // float fMemberRotation,
+                bGenerateGirts,
+                listCrossBracingPropertiesInBays[0].iNumberOfCrossBracingMembers_Walls,
+                listCrossBracingPropertiesInBays[0].iRoofCrossBracingCrossNumberPerRafter,
+                listCrossBracingPropertiesInBays[0].iRoofCrossBracingEveryXXPurlin);
+            }
+            //----------------------------------------------------------------------------------------------------------------------------
 
 
 
