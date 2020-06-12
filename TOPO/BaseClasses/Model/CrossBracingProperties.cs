@@ -26,7 +26,14 @@ namespace BaseClasses
         private bool m_bWallRigthSide;
         private bool m_bRoof;
 
-        private int m_iEveryXXPurlin;
+        private int m_iEveryXXPurlin; // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
+
+        private int m_iNumberOfCrossBracingMembers_WallLeftSide;
+        private int m_iNumberOfCrossBracingMembers_WallRightSide;
+
+        private int m_iMaximumNoOfCrossesPerRafter;
+        private int m_iBayRoofCrossBracingCrossNumberPerRafter;
+        private int m_iNumberOfCrossBracingMembers_BayRoof;
 
         public bool IsSetFromCode = false;
 
@@ -126,6 +133,71 @@ namespace BaseClasses
             set
             {
                 m_iBayNumber_old = value;
+            }
+        }
+
+        public int iNumberOfCrossBracingMembers_WallLeftSide
+        {
+            get
+            {
+                return m_iNumberOfCrossBracingMembers_WallLeftSide;
+            }
+
+            set
+            {
+                m_iNumberOfCrossBracingMembers_WallLeftSide = value;
+            }
+        }
+
+        public int iNumberOfCrossBracingMembers_WallRightSide
+        {
+            get
+            {
+                return m_iNumberOfCrossBracingMembers_WallRightSide;
+            }
+
+            set
+            {
+                m_iNumberOfCrossBracingMembers_WallRightSide = value;
+            }
+        }
+
+        public int iMaximumNoOfCrossesPerRafter
+        {
+            get
+            {
+                return m_iMaximumNoOfCrossesPerRafter;
+            }
+
+            set
+            {
+                m_iMaximumNoOfCrossesPerRafter = value;
+            }
+        }
+
+        public int iBayRoofCrossBracingCrossNumberPerRafter
+        {
+            get
+            {
+                return m_iBayRoofCrossBracingCrossNumberPerRafter;
+            }
+
+            set
+            {
+                m_iBayRoofCrossBracingCrossNumberPerRafter = value;
+            }
+        }
+
+        public int iNumberOfCrossBracingMembers_BayRoof
+        {
+            get
+            {
+                return m_iNumberOfCrossBracingMembers_BayRoof;
+            }
+
+            set
+            {
+                m_iNumberOfCrossBracingMembers_BayRoof = value;
             }
         }
 
