@@ -170,6 +170,7 @@ namespace BaseClasses
                 NotifyPropertyChanged("CoatingColor");
             }
         }
+
         public List<CoatingColour> CoatingColors
         {
             get
@@ -229,7 +230,6 @@ namespace BaseClasses
         {
             CoatingColor = CoatingColors.First(); //default color
         }
-
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)

@@ -132,7 +132,6 @@ namespace BaseClasses
                     m_fDoorsHeight = value;
                     NotifyPropertyChanged("fDoorsHeight");
                 }
-                
             }
         }
 
@@ -187,6 +186,7 @@ namespace BaseClasses
                 NotifyPropertyChanged("CoatingColor");
             }
         }
+
         public List<CoatingColour> CoatingColors
         {
             get
