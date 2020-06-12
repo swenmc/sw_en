@@ -250,7 +250,7 @@ namespace BaseClasses
         public string Serie
         {
             get
-            {               
+            {
                 return m_Serie;
             }
 
@@ -302,7 +302,7 @@ namespace BaseClasses
         }
 
         public DoorProperties()
-        {            
+        {
         }
 
         //-------------------------------------------------------------------------------------------------------------

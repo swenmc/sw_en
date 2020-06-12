@@ -290,7 +290,6 @@ namespace BaseClasses
             m_L1 = L1;
             m_distFrontColumns = distFrontColumns;
             m_distBackColumns = distBackColumns;
-
         }
     }
 }
