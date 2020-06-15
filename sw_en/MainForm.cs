@@ -21,17 +21,13 @@ namespace CENEX
         Content c;
         public MainForm()
         {
-
             InitializeComponent();
-            
-
+ 
             ////////////////////////////////////////////////////////////////////////////////////////////
             // Open File Data and Program Database
             ////////////////////////////////////////////////////////////////////////////////////////////
             dat_conn = DatabaseConnection.getInstance();
-            
-
-
+ 
             /////////////////////////////////////////////////////////////////////////////////////////////
             // MainTree and Table Tabpage
             /////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,19 +37,12 @@ namespace CENEX
             c = _manager.Contents.Add(new TreeForm(), "tree menu");
             _manager.AddContentWithState(c, State.DockLeft);
 
-
-
             ////////////////////////////////////////////////////////////////////////////////////////////
             // Main WorkSpace - Show main working window - display model graphics
             ////////////////////////////////////////////////////////////////////////////////////////////
 
             // ShowModelGraphicWindow();
-        
-
-        
-        
         }
-        
 
         private void treeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -222,12 +211,5 @@ namespace CENEX
             DXFImportForm f = new DXFImportForm();
             f.ShowDialog();
         }
-
-        
-
-        
-        
-
-        
     }
 }
