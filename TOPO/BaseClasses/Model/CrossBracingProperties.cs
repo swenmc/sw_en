@@ -22,26 +22,24 @@ namespace BaseClasses
 
         private ObservableCollection<int> m_Bays;
 
+        // Nove properties
+        private int m_iBayIndex;
+
         private bool m_bWallLeftSide;
         private bool m_bWallRightSide;
         private bool m_bRoof;
 
-        private int m_iEveryXXPurlin; // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
-
         private int m_iNumberOfCrossBracingMembers_WallLeftSide;
         private int m_iNumberOfCrossBracingMembers_WallRightSide;
+        private int m_iNumberOfCrossBracingMembers_Walls;
 
-        private int m_iMaximumNoOfCrossesPerRafter;
-        private int m_iBayRoofCrossBracingCrossNumberPerRafter;
+        private int m_iNumberOfCrossesPerRafter_Maximum;
+        private int m_iNumberOfCrossesPerRafter;
         private int m_iNumberOfCrossBracingMembers_BayRoof;
+        private int m_iEveryXXPurlin; // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
+        private bool m_bOnlyFirstCrossOnRafter;
 
-        private int iBayIndex;
-        private int iRoofCrossBracingEveryXXPurlin;
-        private int iNumberOfCrossBracingMembers_Walls;
-        private int iRoofCrossBracingCrossNumberPerRafter;
-
-
-
+        private int m_iNumberOfCrossBracingMembers_Bay;
 
         public bool IsSetFromCode = false;
 
@@ -57,6 +55,51 @@ namespace BaseClasses
                 m_iBayNumber_old = m_iBayNumber;
                 m_iBayNumber = value;
                 NotifyPropertyChanged("iBayNumber");
+            }
+        }
+
+        /*
+        public int iBayNumber_old
+        {
+            get
+            {
+                return m_iBayNumber_old;
+            }
+
+            set
+            {
+                m_iBayNumber_old = value;
+            }
+        }*/
+
+        public ObservableCollection<int> Bays
+        {
+            get
+            {
+                if (m_Bays == null) m_Bays = new ObservableCollection<int>();
+                return m_Bays;
+            }
+
+            set
+            {
+                m_Bays = value;
+                if (m_Bays != null) NotifyPropertyChanged("Bays");
+            }
+        }
+
+
+        // Nove properties
+
+        public int iBayIndex
+        {
+            get
+            {
+                return m_iBayIndex;
+            }
+
+            set
+            {
+                m_iBayIndex = value;
             }
         }
 
@@ -102,48 +145,6 @@ namespace BaseClasses
             }
         }
 
-        public int iEveryXXPurlin
-        {
-            get
-            {
-                return m_iEveryXXPurlin;
-            }
-
-            set
-            {
-                m_iEveryXXPurlin = value;
-                NotifyPropertyChanged("iEveryXXPurlin");
-            }
-        }
-
-        public ObservableCollection<int> Bays
-        {
-            get
-            {
-                if (m_Bays == null) m_Bays = new ObservableCollection<int>();
-                return m_Bays;
-            }
-
-            set
-            {
-                m_Bays = value;
-                if(m_Bays != null) NotifyPropertyChanged("Bays");
-            }
-        }
-
-        public int iBayNumber_old
-        {
-            get
-            {
-                return m_iBayNumber_old;
-            }
-
-            set
-            {
-                m_iBayNumber_old = value;
-            }
-        }
-
         public int iNumberOfCrossBracingMembers_WallLeftSide
         {
             get
@@ -170,29 +171,43 @@ namespace BaseClasses
             }
         }
 
-        public int iMaximumNoOfCrossesPerRafter
+        public int iNumberOfCrossBracingMembers_Walls
         {
             get
             {
-                return m_iMaximumNoOfCrossesPerRafter;
+                return m_iNumberOfCrossBracingMembers_Walls;
             }
 
             set
             {
-                m_iMaximumNoOfCrossesPerRafter = value;
+                m_iNumberOfCrossBracingMembers_Walls = value;
             }
         }
 
-        public int iBayRoofCrossBracingCrossNumberPerRafter
+        public int iNumberOfCrossesPerRafter_Maximum
         {
             get
             {
-                return m_iBayRoofCrossBracingCrossNumberPerRafter;
+                return m_iNumberOfCrossesPerRafter_Maximum;
+;
             }
 
             set
             {
-                m_iBayRoofCrossBracingCrossNumberPerRafter = value;
+                m_iNumberOfCrossesPerRafter_Maximum = value;
+            }
+        }
+
+        public int iNumberOfCrossesPerRafter
+        {
+            get
+            {
+                return m_iNumberOfCrossesPerRafter;
+            }
+
+            set
+            {
+                m_iNumberOfCrossesPerRafter = value;
             }
         }
 
@@ -209,55 +224,44 @@ namespace BaseClasses
             }
         }
 
-        public int BayIndex
+        public int iEveryXXPurlin
         {
             get
             {
-                return iBayIndex;
+                return m_iEveryXXPurlin;
             }
 
             set
             {
-                iBayIndex = value;
+                m_iEveryXXPurlin = value;
+                NotifyPropertyChanged("iEveryXXPurlin");
             }
         }
 
-        public int RoofCrossBracingEveryXXPurlin
+        public bool bOnlyFirstCrossOnRafter
         {
             get
             {
-                return iRoofCrossBracingEveryXXPurlin;
+                return m_bOnlyFirstCrossOnRafter;
             }
 
             set
             {
-                iRoofCrossBracingEveryXXPurlin = value;
+                m_bOnlyFirstCrossOnRafter = value;
+                NotifyPropertyChanged("bOnlyFirstCrossOnRafter");
             }
         }
 
-        public int NumberOfCrossBracingMembers_Walls
+        public int iNumberOfCrossBracingMembers_Bay
         {
             get
             {
-                return iNumberOfCrossBracingMembers_Walls;
+                return m_iNumberOfCrossBracingMembers_Bay;
             }
 
             set
             {
-                iNumberOfCrossBracingMembers_Walls = value;
-            }
-        }
-
-        public int RoofCrossBracingCrossNumberPerRafter
-        {
-            get
-            {
-                return iRoofCrossBracingCrossNumberPerRafter;
-            }
-
-            set
-            {
-                iRoofCrossBracingCrossNumberPerRafter = value;
+                m_iNumberOfCrossBracingMembers_Bay = value;
             }
         }
 
