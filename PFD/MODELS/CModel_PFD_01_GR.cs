@@ -589,24 +589,24 @@ namespace PFD
 
             // TEMPORARY - To Ondrej TOTO BY MALO PRIST Z GUI
             //Prva bay ma index 0
-            crossBracingPropertiesBayIndex0 = new CrossBracingProperties();
+            CrossBracingProperties crossBracingPropertiesBayIndex0 = new CrossBracingProperties();
             crossBracingPropertiesBayIndex0.iBayNumber = 0;
             crossBracingPropertiesBayIndex0.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex0.bWallRigthSide = true;
+            crossBracingPropertiesBayIndex0.bWallRightSide = true;
             crossBracingPropertiesBayIndex0.bRoof = true;
             crossBracingPropertiesBayIndex0.iEveryXXPurlin = 3;
 
-            crossBracingPropertiesBayIndex3 = new CrossBracingProperties();
+            CrossBracingProperties crossBracingPropertiesBayIndex3 = new CrossBracingProperties();
             crossBracingPropertiesBayIndex3.iBayNumber = 3;
             crossBracingPropertiesBayIndex3.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex3.bWallRigthSide = true;
+            crossBracingPropertiesBayIndex3.bWallRightSide = true;
             crossBracingPropertiesBayIndex3.bRoof = true;
             crossBracingPropertiesBayIndex3.iEveryXXPurlin = 4;
 
-            crossBracingPropertiesBayIndex6 = new CrossBracingProperties();
+            CrossBracingProperties crossBracingPropertiesBayIndex6 = new CrossBracingProperties();
             crossBracingPropertiesBayIndex6.iBayNumber = 6;
             crossBracingPropertiesBayIndex6.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex6.bWallRigthSide = true;
+            crossBracingPropertiesBayIndex6.bWallRightSide = true;
             crossBracingPropertiesBayIndex6.bRoof = true;
             crossBracingPropertiesBayIndex6.iEveryXXPurlin = 2;
 
@@ -645,7 +645,7 @@ namespace PFD
                 // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
 
                 cbProp.iMaximumNoOfCrossesPerRafter = iOneRafterPurlinNo + 1;
-                cbProp.iBayRoofCrossBracingCrossNumberPerRafter = cbProp.iMaximumNoOfCrossesPerRafter / cbProp.iRoofCrossBracingEveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
+                cbProp.iBayRoofCrossBracingCrossNumberPerRafter = cbProp.iMaximumNoOfCrossesPerRafter / cbProp.RoofCrossBracingEveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
 
                 // 2 pruty * 2 strany (gable roof !!!!) * pocet krizov na jeden rafter v danej bay
                 cbProp.iNumberOfCrossBracingMembers_BayRoof = 2 * 2 * cbProp.iBayRoofCrossBracingCrossNumberPerRafter;
@@ -1233,7 +1233,7 @@ namespace PFD
 
                 GenerateCrossBracingMembersInBay(bGenerateSideWallCrossBracing,
                 bGenerateRoofCrossBracing,
-                listCrossBracingPropertiesInBays[0].iBayIndex,
+                listCrossBracingPropertiesInBays[0].BayIndex,
                 i_temp_numberofMembers,
                 // CMemberEccentricity eccentricity,
                 0f,
@@ -1241,9 +1241,9 @@ namespace PFD
                 // CCrSc section, // TODO - npojit na GUI, mali by byt 2 rozne prierezy, jeden pre wall, jeden pre roof cross bracing
                 // float fMemberRotation,
                 bGenerateGirts,
-                listCrossBracingPropertiesInBays[0].iNumberOfCrossBracingMembers_Walls,
-                listCrossBracingPropertiesInBays[0].iRoofCrossBracingCrossNumberPerRafter,
-                listCrossBracingPropertiesInBays[0].iRoofCrossBracingEveryXXPurlin);
+                listCrossBracingPropertiesInBays[0].NumberOfCrossBracingMembers_Walls,
+                listCrossBracingPropertiesInBays[0].RoofCrossBracingCrossNumberPerRafter,
+                listCrossBracingPropertiesInBays[0].RoofCrossBracingEveryXXPurlin);
             }
             //----------------------------------------------------------------------------------------------------------------------------
 

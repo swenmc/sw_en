@@ -23,7 +23,7 @@ namespace BaseClasses
         private ObservableCollection<int> m_Bays;
 
         private bool m_bWallLeftSide;
-        private bool m_bWallRigthSide;
+        private bool m_bWallRightSide;
         private bool m_bRoof;
 
         private int m_iEveryXXPurlin; // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
@@ -34,6 +34,14 @@ namespace BaseClasses
         private int m_iMaximumNoOfCrossesPerRafter;
         private int m_iBayRoofCrossBracingCrossNumberPerRafter;
         private int m_iNumberOfCrossBracingMembers_BayRoof;
+
+        private int iBayIndex;
+        private int iRoofCrossBracingEveryXXPurlin;
+        private int iNumberOfCrossBracingMembers_Walls;
+        private int iRoofCrossBracingCrossNumberPerRafter;
+
+
+
 
         public bool IsSetFromCode = false;
 
@@ -198,6 +206,58 @@ namespace BaseClasses
             set
             {
                 m_iNumberOfCrossBracingMembers_BayRoof = value;
+            }
+        }
+
+        public int BayIndex
+        {
+            get
+            {
+                return iBayIndex;
+            }
+
+            set
+            {
+                iBayIndex = value;
+            }
+        }
+
+        public int RoofCrossBracingEveryXXPurlin
+        {
+            get
+            {
+                return iRoofCrossBracingEveryXXPurlin;
+            }
+
+            set
+            {
+                iRoofCrossBracingEveryXXPurlin = value;
+            }
+        }
+
+        public int NumberOfCrossBracingMembers_Walls
+        {
+            get
+            {
+                return iNumberOfCrossBracingMembers_Walls;
+            }
+
+            set
+            {
+                iNumberOfCrossBracingMembers_Walls = value;
+            }
+        }
+
+        public int RoofCrossBracingCrossNumberPerRafter
+        {
+            get
+            {
+                return iRoofCrossBracingCrossNumberPerRafter;
+            }
+
+            set
+            {
+                iRoofCrossBracingCrossNumberPerRafter = value;
             }
         }
 
