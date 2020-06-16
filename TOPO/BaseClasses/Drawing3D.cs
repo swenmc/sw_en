@@ -1114,6 +1114,10 @@ namespace BaseClasses
 
             float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;
             //float fMarkCircleDiameter = 0.5f;
+            if (opts.ViewsPageSize == EPageSizes.A2) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio;
+            if (opts.ViewsPageSize == EPageSizes.A1) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio / PageSizeRatio;
+            if (opts.ViewsPageSize == EPageSizes.A0) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio / PageSizeRatio / PageSizeRatio;
+
             float fOffsetLineLength = fMarkCircleDiameter / 3; //0.2f;
 
             List<Point3D?> symbolsPoints = new List<Point3D?>(jointsDict.Values.Count);
