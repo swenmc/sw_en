@@ -26,57 +26,46 @@ namespace BaseClasses.Helpers
             // Kota moze byt jedna alebo niekolko za sebou v linii - retazove kóty
             // Dalej mozu byt dalsie koty pridavane s nejakym odstupom voci prvej kolmo na hlavnu kotovaciu ciaru, tak ziskame niekolko kot pod sebou
             // Ja ich tu mam 1 - 3
-
-            // TODO - To Ondrej - nedame tu switch alebo else if ???
-
+                        
             // Defaultne koty - zakladne rozmery
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
                 // Basic dimension - GUI input
                 DrawDimensionsAll(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 DrawDimensionsLEFT(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 DrawDimensionsRIGHT(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
                 DrawDimensionsFRONT(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
                 DrawDimensionsBACK(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
             {
                 DrawDimensionsROOF(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
             {
                 DrawDimensionsCOLUMNS(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
             {
                 DrawDimensionsMIDDLE(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
             {
                 DrawDimensionsFOUNDATIONS(_trackport, model, sDisplayOptions, gr);
             }
-
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
                 DrawDimensionsFLOOR(_trackport, model, sDisplayOptions, gr);
             }
@@ -922,6 +911,7 @@ namespace BaseClasses.Helpers
                 // Create Dimensions
                 List<CDimensionLinear3D> listOfDimensions = null;
 
+                //TODO - toto sa mi tu nepaci, lebo to nie je relativne ale napevno
                 float fExtensionLineLength = 0.2f;
                 //float fMainLinePosition = 0.4f;
                 float fExtensionLineOffset = 0.1f;
@@ -1847,8 +1837,12 @@ namespace BaseClasses.Helpers
                 return null;
 
             float maxModelLength = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z);
-            float fLineRadius = maxModelLength / 1500;  //velkost podla modelu, ale to cislo "1500" je potrebne data do DisplayOptions
+            if (displayOptions.ViewsPageSize == EPageSizes.A2) maxModelLength = maxModelLength / Drawing3D.PageSizeRatio;
+            if (displayOptions.ViewsPageSize == EPageSizes.A1) maxModelLength = maxModelLength / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
+            if (displayOptions.ViewsPageSize == EPageSizes.A0) maxModelLength = maxModelLength / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
 
+            float fLineRadius = maxModelLength / 1500;  //velkost podla modelu, ale to cislo "1500" je potrebne data do DisplayOptions
+            
             float scale = maxModelLength / 10;
 
             // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
@@ -1884,7 +1878,10 @@ namespace BaseClasses.Helpers
             tb.FontFamily = new FontFamily("Arial");
 
             float fTextBlockVerticalSize = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z) / 100f;
-
+            if (displayOptions.ViewsPageSize == EPageSizes.A2) fTextBlockVerticalSize = fTextBlockVerticalSize / Drawing3D.PageSizeRatio;
+            if (displayOptions.ViewsPageSize == EPageSizes.A1) fTextBlockVerticalSize = fTextBlockVerticalSize / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
+            if (displayOptions.ViewsPageSize == EPageSizes.A0) fTextBlockVerticalSize = fTextBlockVerticalSize / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
+            
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;

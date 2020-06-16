@@ -580,9 +580,7 @@ namespace BaseClasses
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
             float fMarkCircleDiameter = maxModelLength / 25f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
-            if (sDisplayOptions.ViewsPageSize == EPageSizes.A2) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio;
-            if (sDisplayOptions.ViewsPageSize == EPageSizes.A1) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio / PageSizeRatio;
-            if (sDisplayOptions.ViewsPageSize == EPageSizes.A0) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio / PageSizeRatio / PageSizeRatio;
+            fMarkCircleDiameter = GetSizeBasedOnPageSize(sDisplayOptions, fMarkCircleDiameter);
 
             // Create gridlines
             List<CGridLine> listOfGridlines = new List<CGridLine>();
@@ -893,9 +891,7 @@ namespace BaseClasses
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             //vsetko sa nastavuje podla max rozmeru modelu a ten upravime podla velkosti strany v PDF
-            if (sDisplayOptions.ViewsPageSize == EPageSizes.A2) maxModelLength = maxModelLength / PageSizeRatio;
-            if (sDisplayOptions.ViewsPageSize == EPageSizes.A1) maxModelLength = maxModelLength / PageSizeRatio / PageSizeRatio;
-            if (sDisplayOptions.ViewsPageSize == EPageSizes.A0) maxModelLength = maxModelLength / PageSizeRatio / PageSizeRatio / PageSizeRatio;
+            maxModelLength = GetSizeBasedOnPageSize(sDisplayOptions, maxModelLength);            
             
             float textSize = maxModelLength * 4;
             float spaceToLine = maxModelLength;
@@ -1114,9 +1110,7 @@ namespace BaseClasses
 
             float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;
             //float fMarkCircleDiameter = 0.5f;
-            if (opts.ViewsPageSize == EPageSizes.A2) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio;
-            if (opts.ViewsPageSize == EPageSizes.A1) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio / PageSizeRatio;
-            if (opts.ViewsPageSize == EPageSizes.A0) fMarkCircleDiameter = fMarkCircleDiameter / PageSizeRatio / PageSizeRatio / PageSizeRatio;
+            fMarkCircleDiameter = GetSizeBasedOnPageSize(opts, fMarkCircleDiameter);            
 
             float fOffsetLineLength = fMarkCircleDiameter / 3; //0.2f;
 
@@ -2989,7 +2983,9 @@ namespace BaseClasses
 
                 //To Mato - na tomto mieste sa pripadne da dorobit aj nejaka podmienka a mat vacsie texty ak velkost modelu prekroci nejaku hranicu atd
                 //displayOptions.fMemberDescriptionTextFontSize je potrebne prerobit na pomer k velkosti modelu, cize nieco ako displayOptions.fMemberDescriptionTextFontSizeScale = 60f;
-                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;
+                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 70f;
+                fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -3326,6 +3322,8 @@ namespace BaseClasses
 
                 //To Mato - displayOptions.fNodeDescriptionTextFontSize by sme mali mat asi nieco ako displayOptions.fNodeDescriptionTextSizeScaleFactor = 80f
                 float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+                fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -3471,9 +3469,7 @@ namespace BaseClasses
             //float fTextBlockHorizontalSizeFactor = 0.5f;
             //            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 70f;
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;
-            if (displayOptions.ViewsPageSize == EPageSizes.A2) fTextBlockVerticalSize = fTextBlockVerticalSize / PageSizeRatio;
-            if (displayOptions.ViewsPageSize == EPageSizes.A1) fTextBlockVerticalSize = fTextBlockVerticalSize / PageSizeRatio / PageSizeRatio;
-            if (displayOptions.ViewsPageSize == EPageSizes.A0) fTextBlockVerticalSize = fTextBlockVerticalSize / PageSizeRatio / PageSizeRatio / PageSizeRatio;
+            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);            
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
@@ -3547,6 +3543,8 @@ namespace BaseClasses
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -3632,13 +3630,15 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fSawCutTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 85f;
+            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Thin;
+            tb.FontWeight = FontWeights.Normal;
             tb.Foreground = new SolidColorBrush(displayOptions.SawCutTextColor);
             //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sawcut.iVectorOverFactor_LCS, 0, 0);
@@ -3696,13 +3696,14 @@ namespace BaseClasses
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
-
-
+            
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Thin;
+            tb.FontWeight = FontWeights.Normal;
             tb.Foreground = new SolidColorBrush(displayOptions.ControlJointTextColor);
             //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * controlJoint.iVectorOverFactor_LCS, 0, 0);
@@ -3760,6 +3761,8 @@ namespace BaseClasses
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 90f;
+            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -3819,13 +3822,15 @@ namespace BaseClasses
             tb.Text = slab.Text;
             tb.FontFamily = new FontFamily("Arial");
 
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 20f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 18f;
+            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Thin;
+            tb.FontWeight = FontWeights.Bold;
             tb.Foreground = new SolidColorBrush(displayOptions.FloorSlabTextColor);
             //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
@@ -5374,6 +5379,15 @@ namespace BaseClasses
 
             return gm3D;
         }
+
+        public static float GetSizeBasedOnPageSize(DisplayOptions displayOptions, float value)
+        {
+            if (displayOptions.ViewsPageSize == EPageSizes.A2) return value / PageSizeRatio;
+            else if (displayOptions.ViewsPageSize == EPageSizes.A1) return value / PageSizeRatio / PageSizeRatio;
+            else if (displayOptions.ViewsPageSize == EPageSizes.A0) return value / PageSizeRatio / PageSizeRatio / PageSizeRatio;
+            else return value;
+        }
+
 
         #region not used methods
         private static List<Point3D> GetWireFramePointsFromGeometryPositions(Point3DCollection positions)
