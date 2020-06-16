@@ -31,6 +31,8 @@ namespace PFD
             pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
             
             this.DataContext = pfdVM._displayOptionsVM;
+
+            if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
 
         
@@ -51,6 +53,8 @@ namespace PFD
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            
+          
             //radioColorsIn3DMembers.IsChecked = _pfdVM._displayOptionsVM.ColorsAccordingToMembers;
 
 
