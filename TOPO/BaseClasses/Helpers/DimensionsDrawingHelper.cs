@@ -73,6 +73,9 @@ namespace BaseClasses.Helpers
 
         private static void DrawDimensionsAll(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {
+            if (model.m_arrMembers == null || model.m_arrMembers.Length == 1) // Docasne riesenie - ak nema model viac ako jeden prut tak negenerujeme koty
+                return; // TODO - Koty sa nedaju generovat univerzalne pre rozne modely, spravne by sme generovanie kot mali preniest pod CModel_PFD - CModel_PFD_01_MR a CModel_PFD_01_GR, kazdy model moze mat totiz iny algoritmus generovania kot
+
             // Basic dimensions
             bool bDrawBasicDimensions = true;
 
