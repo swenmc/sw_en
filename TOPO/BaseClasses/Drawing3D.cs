@@ -579,7 +579,7 @@ namespace BaseClasses
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
-            float fMarkCircleDiameter = maxModelLength / 25f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
+            float fMarkCircleDiameter = maxModelLength * sDisplayOptions.ExportGridlinesSize;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
             fMarkCircleDiameter = GetSizeBasedOnPageSize(sDisplayOptions, fMarkCircleDiameter);
 
             // Create gridlines
@@ -889,7 +889,7 @@ namespace BaseClasses
             // Create section symbols
             List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
 
-            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * sDisplayOptions.ExportSectionSymbolsSize;
             //vsetko sa nastavuje podla max rozmeru modelu a ten upravime podla velkosti strany v PDF
             maxModelLength = GetSizeBasedOnPageSize(sDisplayOptions, maxModelLength);            
             
@@ -1108,7 +1108,7 @@ namespace BaseClasses
             List<CDetailSymbol> detailSymbols = new List<CDetailSymbol>();
             if (model.m_arrConnectionJoints == null) return detailSymbols;
 
-            float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;
+            float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * opts.ExportDetailSymbolSize;
             //float fMarkCircleDiameter = 0.5f;
             fMarkCircleDiameter = GetSizeBasedOnPageSize(opts, fMarkCircleDiameter);            
 
@@ -2983,7 +2983,8 @@ namespace BaseClasses
 
                 //To Mato - na tomto mieste sa pripadne da dorobit aj nejaka podmienka a mat vacsie texty ak velkost modelu prekroci nejaku hranicu atd
                 //displayOptions.fMemberDescriptionTextFontSize je potrebne prerobit na pomer k velkosti modelu, cize nieco ako displayOptions.fMemberDescriptionTextFontSizeScale = 60f;
-                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 70f;
+                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportMembersDescriptionSize;
+
                 fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
 
                 float fTextBlockVerticalSizeFactor = 1f;
@@ -3321,7 +3322,7 @@ namespace BaseClasses
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
 
                 //To Mato - displayOptions.fNodeDescriptionTextFontSize by sme mali mat asi nieco ako displayOptions.fNodeDescriptionTextSizeScaleFactor = 80f
-                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportNodesDescriptionSize;
                 fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
 
                 float fTextBlockVerticalSizeFactor = 1f;
@@ -3468,7 +3469,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
             //            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 70f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportGridLineLabelSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);            
 
             float fTextBlockVerticalSizeFactor = 1f;
@@ -3542,7 +3543,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fSectionSymbolLabelTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportSectionSymbolLabelSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
 
             float fTextBlockVerticalSizeFactor = 1f;
@@ -3630,7 +3631,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fSawCutTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 85f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportSawCutTextSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
 
             float fTextBlockVerticalSizeFactor = 1f;
@@ -3695,7 +3696,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fControlJointTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportControlJointTextSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
 
             float fTextBlockVerticalSizeFactor = 1f;
@@ -3760,7 +3761,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fFoundationTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 90f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFoundationTextSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
 
             float fTextBlockVerticalSizeFactor = 1f;
@@ -3822,7 +3823,7 @@ namespace BaseClasses
             tb.Text = slab.Text;
             tb.FontFamily = new FontFamily("Arial");
 
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 18f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFloorSlabTextSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
 
             float fTextBlockVerticalSizeFactor = 1f;

@@ -234,6 +234,18 @@ namespace PFD
         private float m_FloorSlabSolidModelOpacity = 0.3f;
         private float m_SlabRebateSolidModelOpacity = 0.5f;
 
+        private float m_ExportFloorSlabTextSize;
+        private float m_ExportGridlinesSize;
+        private float m_ExportGridLineLabelSize;
+        private float m_ExportSectionSymbolsSize;
+        private float m_ExportSectionSymbolLabelSize;
+        private float m_ExportDetailSymbolSize;
+        private float m_ExportMembersDescriptionSize;
+        private float m_ExportNodesDescriptionSize;
+        private float m_ExportSawCutTextSize;
+        private float m_ExportControlJointTextSize;
+        private float m_ExportFoundationTextSize;
+        
 
         #region Loads
         // Load Case - display options
@@ -2480,6 +2492,160 @@ namespace PFD
             }
         }
 
+        public float ExportFloorSlabTextSize
+        {
+            get
+            {
+                return m_ExportFloorSlabTextSize;
+            }
+
+            set
+            {
+                m_ExportFloorSlabTextSize = value;
+                NotifyPropertyChanged("ExportFloorSlabTextSize");
+            }
+        }
+
+        public float ExportGridlinesSize
+        {
+            get
+            {
+                return m_ExportGridlinesSize;
+            }
+
+            set
+            {
+                m_ExportGridlinesSize = value;
+                NotifyPropertyChanged("ExportGridlinesSize");
+            }
+        }
+
+        public float ExportGridLineLabelSize
+        {
+            get
+            {
+                return m_ExportGridLineLabelSize;
+            }
+
+            set
+            {
+                m_ExportGridLineLabelSize = value;
+                NotifyPropertyChanged("ExportGridLineLabelSize");
+            }
+        }
+
+        public float ExportSectionSymbolsSize
+        {
+            get
+            {
+                return m_ExportSectionSymbolsSize;
+            }
+
+            set
+            {
+                m_ExportSectionSymbolsSize = value;
+                NotifyPropertyChanged("ExportSectionSymbolsSize");
+            }
+        }
+
+        public float ExportSectionSymbolLabelSize
+        {
+            get
+            {
+                return m_ExportSectionSymbolLabelSize;
+            }
+
+            set
+            {
+                m_ExportSectionSymbolLabelSize = value;
+                NotifyPropertyChanged("ExportSectionSymbolLabelSize");
+            }
+        }
+
+        public float ExportDetailSymbolSize
+        {
+            get
+            {
+                return m_ExportDetailSymbolSize;
+            }
+
+            set
+            {
+                m_ExportDetailSymbolSize = value;
+                NotifyPropertyChanged("ExportDetailSymbolSize");
+            }
+        }
+
+        public float ExportMembersDescriptionSize
+        {
+            get
+            {
+                return m_ExportMembersDescriptionSize;
+            }
+
+            set
+            {
+                m_ExportMembersDescriptionSize = value;
+                NotifyPropertyChanged("ExportMembersDescriptionSize");
+            }
+        }
+
+        public float ExportNodesDescriptionSize
+        {
+            get
+            {
+                return m_ExportNodesDescriptionSize;
+            }
+
+            set
+            {
+                m_ExportNodesDescriptionSize = value;
+                NotifyPropertyChanged("ExportNodesDescriptionSize");
+            }
+        }
+
+        public float ExportSawCutTextSize
+        {
+            get
+            {
+                return m_ExportSawCutTextSize;
+            }
+
+            set
+            {
+                m_ExportSawCutTextSize = value;
+                NotifyPropertyChanged("ExportSawCutTextSize");
+            }
+        }
+
+        public float ExportControlJointTextSize
+        {
+            get
+            {
+                return m_ExportControlJointTextSize;
+            }
+
+            set
+            {
+                m_ExportControlJointTextSize = value;
+                NotifyPropertyChanged("ExportControlJointTextSize");
+            }
+        }
+
+        public float ExportFoundationTextSize
+        {
+            get
+            {
+                return m_ExportFoundationTextSize;
+            }
+
+            set
+            {
+                m_ExportFoundationTextSize = value;
+                NotifyPropertyChanged("ExportFoundationTextSize");
+            }
+        }
+
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
@@ -2659,6 +2825,18 @@ namespace PFD
             SlabRebateSolidModelOpacity = 0.3f;
 
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+
+            ExportFloorSlabTextSize = 1f / 18f;
+            ExportGridlinesSize = 1f / 25f;
+            ExportGridLineLabelSize = 1f / 60f;
+            ExportSectionSymbolsSize = 1f;
+            ExportSectionSymbolLabelSize = 1f / 80f;
+            ExportDetailSymbolSize = 1f / 28f;
+            ExportMembersDescriptionSize = 1f / 70f;
+            ExportNodesDescriptionSize = 1f / 80f;
+            ExportSawCutTextSize = 1f / 85f;
+            ExportControlJointTextSize = 1f / 80f;
+            ExportFoundationTextSize = 1f / 90f;
 
             IsSetFromCode = false;
         }

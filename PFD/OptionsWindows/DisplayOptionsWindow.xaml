@@ -646,6 +646,61 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+
+                        <TextBlock Grid.Row="17" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="17" Grid.Column="3" Name ="ExportFloorSlabTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportFloorSlabTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="18" Grid.Column="2" Text="ExportGridlinesSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="18" Grid.Column="3" Name ="ExportGridlinesSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportGridlinesSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="19" Grid.Column="2" Text="ExportGridLineLabelSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="19" Grid.Column="3" Name ="ExportGridLineLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportGridLineLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="20" Grid.Column="2" Text="ExportSectionSymbolsSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="20" Grid.Column="3" Name ="ExportSectionSymbolsSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportSectionSymbolsSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="21" Grid.Column="2" Text="ExportSectionSymbolLabelSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="21" Grid.Column="3" Name ="ExportSectionSymbolLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportSectionSymbolLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="22" Grid.Column="2" Text="ExportDetailSymbolSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="22" Grid.Column="3" Name ="ExportDetailSymbolSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportDetailSymbolSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="23" Grid.Column="2" Text="ExportMembersDescriptionSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="23" Grid.Column="3" Name ="ExportMembersDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportMembersDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="24" Grid.Column="2" Text="ExportNodesDescriptionSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="24" Grid.Column="3" Name ="ExportNodesDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportNodesDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="25" Grid.Column="2" Text="ExportSawCutTextSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="25" Grid.Column="3" Name ="ExportSawCutTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportSawCutTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="26" Grid.Column="2" Text="ExportControlJointTextSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="26" Grid.Column="3" Name ="ExportControlJointTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportControlJointTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="27" Grid.Column="2" Text="ExportFoundationTextSize:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="27" Grid.Column="3" Name ="ExportFoundationTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportFoundationTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     </Grid>
                 </ScrollViewer>
 

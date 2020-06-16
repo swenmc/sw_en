@@ -3614,6 +3614,19 @@ namespace PFD
             sDisplayOptions.ModelView = ViewIndex;
             sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
 
+            //To Mato tu sa daju ponastavovat velkosti relativne podla velkosti modelu
+            sDisplayOptions.ExportFloorSlabTextSize = _displayOptionsVM.ExportFloorSlabTextSize;
+            sDisplayOptions.ExportGridlinesSize = _displayOptionsVM.ExportGridlinesSize;
+            sDisplayOptions.ExportGridLineLabelSize = _displayOptionsVM.ExportGridLineLabelSize;
+            sDisplayOptions.ExportSectionSymbolsSize = _displayOptionsVM.ExportSectionSymbolsSize;
+            sDisplayOptions.ExportSectionSymbolLabelSize = _displayOptionsVM.ExportSectionSymbolLabelSize;
+            sDisplayOptions.ExportDetailSymbolSize = _displayOptionsVM.ExportDetailSymbolSize;
+            sDisplayOptions.ExportMembersDescriptionSize = _displayOptionsVM.ExportMembersDescriptionSize;
+            sDisplayOptions.ExportNodesDescriptionSize = _displayOptionsVM.ExportNodesDescriptionSize;
+            sDisplayOptions.ExportSawCutTextSize = _displayOptionsVM.ExportSawCutTextSize;
+            sDisplayOptions.ExportControlJointTextSize = _displayOptionsVM.ExportControlJointTextSize;
+            sDisplayOptions.ExportFoundationTextSize = _displayOptionsVM.ExportFoundationTextSize;
+
             return sDisplayOptions;
         }
 

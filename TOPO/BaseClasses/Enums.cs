@@ -941,6 +941,22 @@ namespace BaseClasses
 
         public EPageSizes ViewsPageSize;
         //public DisplayOptionsFootingPad2D footingPadDisplayOptions;
+
+        public float ExportFloorSlabTextSize;
+        public float ExportGridlinesSize;
+        public float ExportSectionSymbolsSize;
+        public float ExportSectionSymbolLabelSize;
+        public float ExportDetailSymbolSize;
+        public float ExportMembersDescriptionSize;
+        public float ExportNodesDescriptionSize;
+        public float ExportGridLineLabelSize;
+        public float ExportSawCutTextSize;
+        public float ExportControlJointTextSize;
+        public float ExportFoundationTextSize;
+
+
+
+
     }
 
     public struct DisplayOptionsFootingPad2D
