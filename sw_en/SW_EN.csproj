@@ -485,6 +485,7 @@
     <None Include="Resources\pin_21_s.jpg" />
     <None Include="Resources\pin_32_h.jpg" />
     <None Include="Resources\pin_32_s.jpg" />
+    <Content Include="bin\Debug\MagicLibrary.dll" />
     <Content Include="pin_r2.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -578,9 +579,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <COMReference Include="ACTIVEXLib">
       <Guid>{012F24C1-35B0-11D0-BF2D-0000E8D0D146}</Guid>
