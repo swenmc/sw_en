@@ -693,8 +693,8 @@ namespace PFD
             // TO Ondrej - IN WORK Cross-bracing
 
             // Ak chceme cross bracing zrusit toto nastavime v kode na false
-            bool bGenerateSideWallCrossBracing = true;
-            bool bGenerateRoofCrossBracing = true;
+            bool bGenerateSideWallCrossBracing = false;
+            bool bGenerateRoofCrossBracing = false;
 
 
             // TEMPORARY - To Ondrej TOTO BY MALO PRIST Z GUI

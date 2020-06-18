@@ -55,8 +55,8 @@ namespace Examples
             //m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
             //m_arrNodes[01] = new CNode(02, 5f, 1f, 0000.0f, 0);
 
-            m_arrNodes[00] = new CNode(01, 1f, 1f, 1f, 0);
-            m_arrNodes[01] = new CNode(02, 1f, 3f, 1f, 0);
+            m_arrNodes[00] = new CNode(01, 1f, 3f, 1f, 0);
+            m_arrNodes[01] = new CNode(02, 1f, 1f, 2f, 0);
 
             //m_arrNodes[02] = new CNode(03, 0f, 2f, 0000.0f, 0);
             //m_arrNodes[03] = new CNode(04, 1f, 2f, 0000.0f, 0);
@@ -125,15 +125,15 @@ namespace Examples
             m_arrNLoads[0] = new CNLoadSingle(1, m_arrNodes[00], ENLoadType.eNLT_Fx, 20, true, 0);
 
             // Member loads
-            m_arrMLoads = new CMLoad[4];
-            m_arrMLoads[0] = new CMLoad_21(1, -150, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
-            m_arrMLoads[1] = new CMLoad_22(2, 160, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PA_22, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
-            m_arrMLoads[2] = new CMLoad_23(3, -250, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PB_23, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
-            m_arrMLoads[3] = new CMLoad_24(4, 260, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
-            //m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadDirection.eLD_Y, true, 0);
+            m_arrMLoads = new CMLoad[1];
+            //m_arrMLoads[0] = new CMLoad_21(1, -150, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
+            //m_arrMLoads[1] = new CMLoad_22(2, 160, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PA_22, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
+            //m_arrMLoads[2] = new CMLoad_23(3, -250, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PB_23, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            //m_arrMLoads[3] = new CMLoad_24(4, 260, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
 
             m_arrLoadCases = new CLoadCase[1];
-            m_arrLoadCases[0] = new CLoadCase(1, "LC1", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral, new List<CNLoad> { m_arrNLoads[0] }, new List<CMLoad> { m_arrMLoads[0], m_arrMLoads[1], m_arrMLoads[2], m_arrMLoads[3] });
+            m_arrLoadCases[0] = new CLoadCase(1, "LC1", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral, new List<CNLoad> { m_arrNLoads[0] }, new List<CMLoad> { m_arrMLoads[0]/*, m_arrMLoads[1], m_arrMLoads[2], m_arrMLoads[3]*/ });
         }
     }
 }
