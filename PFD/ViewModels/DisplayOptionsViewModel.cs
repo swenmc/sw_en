@@ -2826,17 +2826,21 @@ namespace PFD
 
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
-            ExportFloorSlabTextSize = 1f / 18f;
-            ExportGridlinesSize = 1f / 25f;
-            ExportGridLineLabelSize = 1f / 60f;
-            ExportSectionSymbolsSize = 1f;
-            ExportSectionSymbolLabelSize = 1f / 80f;
-            ExportDetailSymbolSize = 1f / 28f;
-            ExportMembersDescriptionSize = 1f / 70f;
-            ExportNodesDescriptionSize = 1f / 80f;
-            ExportSawCutTextSize = 1f / 85f;
-            ExportControlJointTextSize = 1f / 80f;
-            ExportFoundationTextSize = 1f / 90f;
+            // Text 7.0 mm
+            ExportGridlinesSize = 1f / 20f;
+            ExportGridLineLabelSize = 1f / 40f;
+
+            ExportSectionSymbolsSize = 1f / 1.5f;
+            ExportSectionSymbolLabelSize = 1f / 40f;
+            ExportDetailSymbolSize = 1f / 20f;
+
+            // Text 2.5 - 3.0 mm
+            ExportFloorSlabTextSize = 1f / 20f; // 4 riadky + 3 medzery
+            ExportMembersDescriptionSize = 1f / 100f;
+            ExportNodesDescriptionSize = 1f / 100f;
+            ExportSawCutTextSize = 1f / 100f;
+            ExportControlJointTextSize = 1f / 100f;
+            ExportFoundationTextSize = 1f / 100f;
 
             IsSetFromCode = false;
         }
