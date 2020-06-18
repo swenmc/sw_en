@@ -1361,7 +1361,14 @@ namespace BaseClasses
             dGammaZ = Geom2D.GetAlpha2D_CW(dDeltaX, dDeltaY);
 
             // Auxialiary angles for members graphics
-            double dBetaY_aux = Geom2D.GetAlpha2D_CW_3(dDeltaX, dDeltaZ, Math.Sqrt(Math.Pow(dLength_XY, 2) + Math.Pow(dDeltaZ, 2)));
+            double dBetaY_aux = Geom2D.GetAlpha2D_CW_3(dDeltaX/* FLength*/, dDeltaZ, Math.Sqrt(Math.Pow(dLength_XY, 2) + Math.Pow(dDeltaZ, 2)));
+
+            // TODO
+            // TO Ondrej - docasne čoro moro, aby cross-bracing bolo na svojom mieste - tuto funkciu treba nejako elegantne prepisat
+            if(MathF.d_equal(dDeltaX, 0))
+                dBetaY_aux = Geom2D.GetAlpha2D_CW_3(/*dDeltaX*/ FLength, dDeltaZ, Math.Sqrt(Math.Pow(dLength_XY, 2) + Math.Pow(dDeltaZ, 2)));
+
+
             double dGammaZ_aux = dGammaZ;
             if (Math.PI / 2 < dBetaY && dBetaY < 1.5 * Math.PI)
             {

@@ -12,7 +12,7 @@ namespace Examples
         {
             m_eSLN = ESLN.e3DD_1D; // 1D members in 3D model
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
-            m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
+            m_eGCS = EGCS.eGCSRightHanded; // Global coordinate system
 
             m_arrNodes = new CNode[2];
             m_arrMembers = new CMember[1];
