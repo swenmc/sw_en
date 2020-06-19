@@ -953,10 +953,6 @@ namespace BaseClasses
         public float ExportSawCutTextSize;
         public float ExportControlJointTextSize;
         public float ExportFoundationTextSize;
-
-
-
-
     }
 
     public struct DisplayOptionsFootingPad2D

@@ -2830,7 +2830,7 @@ namespace PFD
             ExportGridlinesSize = 1f / 20f;
             ExportGridLineLabelSize = 1f / 40f;
 
-            ExportSectionSymbolsSize = 1f / 1.5f;
+            ExportSectionSymbolsSize = 1f / 20f;
             ExportSectionSymbolLabelSize = 1f / 40f;
             ExportDetailSymbolSize = 1f / 20f;
 
