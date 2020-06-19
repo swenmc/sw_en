@@ -36,6 +36,8 @@ namespace DATABASE.DTO
         string MBracingBlockPurlins;
         string MBracingBlocksGirtsFrontSide;
         string MBracingBlocksGirtsBackSide;
+        string MCrossBracingWalls;
+        string MCrossBracingRoof;
 
         string MColumnFlyBracingEveryXXGirt;
         string MRafterFlyBracingEveryXXPurlin;
@@ -515,6 +517,32 @@ namespace DATABASE.DTO
             set
             {
                 MBracingBlocksGirtsBackSide = value;
+            }
+        }
+
+        public string CrossBracingWalls
+        {
+            get
+            {
+                return MCrossBracingWalls;
+            }
+
+            set
+            {
+                MCrossBracingWalls = value;
+            }
+        }
+
+        public string CrossBracingRoof
+        {
+            get
+            {
+                return MCrossBracingRoof;
+            }
+
+            set
+            {
+                MCrossBracingRoof = value;
             }
         }
 

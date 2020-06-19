@@ -73,6 +73,8 @@ namespace DATABASE
             model.BracingBlockPurlins = reader["bracingBlockPurlins"].ToString();
             model.BracingBlocksGirtsFrontSide = reader["bracingBlocksGirtsFrontSide"].ToString();
             model.BracingBlocksGirtsBackSide = reader["bracingBlocksGirtsBackSide"].ToString();
+            model.CrossBracingWalls = reader["crossBracingWalls"].ToString();
+            model.CrossBracingRoof = reader["crossBracingRoof"].ToString();
             model.DoorFrame = reader["doorFrame"].ToString();
             model.DoorTrimmer = reader["doorTrimmer"].ToString();
             model.DoorLintel = reader["doorLintel"].ToString();
