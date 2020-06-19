@@ -183,7 +183,7 @@ namespace BaseClasses.GraphObj
             fArrowWidthFactor = 0.25f;                           // Relativna sirka sipky (faktor pre cast z celkovej vysky) // TO Ondrej - mozno by malo byt nazavisle na vyske
             fArrowCylinderWidthFactor = 0.15f;                   // Relativna sirka ciary sipky (faktor pre cast zo sirky) // TO Ondrej - mozno by malo byt nazavisle na sirke sipky
 
-            fArrowSize = (fTextSize + fSpaceToLine) / 100f;                        // Celkova vyska sipky
+            fArrowSize = (fTextSize + fSpaceToLine) /*/ 100f*/;                        // Celkova vyska sipky
             fArrowWidth = fArrowWidthFactor * fArrowSize;                          // Sirka sipky, resp. vonkajsi priemer medzikruzia sipky
             fArrowCylinderDiameter = fArrowCylinderWidthFactor * fArrowWidth;      // Sirka ciary sipky, resp. priemer valca sipky
 
@@ -193,15 +193,15 @@ namespace BaseClasses.GraphObj
             fSymbolLineCylinderRadius = fArrowWidth / 4.5f;                         // Sirka ciary, resp. priemer valca ciary symbolu rezu // TODO Ondrej - nemala by byt viazana na sirku sipky, ale ako uplne nezavisly parameter, cca 0.7 mm na vykresoch
 
             fAdditionalOffset = 0.5f * fArrowWidth; // Pridavna konstanta (pre vzdialenost sipky od konca ciary)
-            float fDistanceOfTextCenterToTheArrow = 0.5f * fTextSize / 100f;
+            float fDistanceOfTextCenterToTheArrow = 0.5f * fTextSize /*/ 100f*/;
 
-            m_PointLabelText = new Point3D(-m_LineFarEndToControlPointOffsetDistance + 0.5f * fArrowWidth + fAdditionalOffset + fDistanceOfTextCenterToTheArrow, -fSymbolLineCylinderRadius - fArrowSize + (0.3f * fTextSize / 100f), 0); // Pozicia textu v LCS - text je pod osou x
+            m_PointLabelText = new Point3D(-m_LineFarEndToControlPointOffsetDistance + 0.5f * fArrowWidth + fAdditionalOffset + fDistanceOfTextCenterToTheArrow, -fSymbolLineCylinderRadius - fArrowSize + (0.3f * fTextSize /*/ 100f*/), 0); // Pozicia textu v LCS - text je pod osou x
 
             if (!m_bArrowLeftFromControlPoint)
             {
                 m_PointLineStart_LCS = new Point3D(m_LineFarEndToControlPointOffsetDistance - m_LineLength, 0, 0);
                 m_PointLineEnd_LCS = new Point3D(m_LineFarEndToControlPointOffsetDistance, 0, 0);
-                m_PointLabelText = new Point3D(m_LineFarEndToControlPointOffsetDistance - 0.5f * fArrowWidth - fAdditionalOffset - fDistanceOfTextCenterToTheArrow, -fSymbolLineCylinderRadius - fArrowSize + (0.3f * fTextSize / 100f), 0);
+                m_PointLabelText = new Point3D(m_LineFarEndToControlPointOffsetDistance - 0.5f * fArrowWidth - fAdditionalOffset - fDistanceOfTextCenterToTheArrow, -fSymbolLineCylinderRadius - fArrowSize + (0.3f * fTextSize /*/ 100f*/), 0);
             }
 
             SetTextPointInLCS();
