@@ -1021,7 +1021,7 @@ namespace PFD
             CalculateLoadingValues(vm.Model);
             System.Diagnostics.Trace.WriteLine("CalculateLoadingValues: " + (DateTime.Now - start).TotalMilliseconds);
 
-            bool calculateLoadingValues = false;
+            bool calculateLoadingValues = true;
             if (calculateLoadingValues)
             {
                 vm.Model.CalculateLoadValuesAndGenerateLoads(vm.GeneralLoad,
