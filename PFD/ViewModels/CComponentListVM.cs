@@ -33,6 +33,7 @@ namespace PFD
         private List<string> MSectionsForDoorOrWindowFrame;
         private List<string> MSectionsForRollerDoorTrimmer;
         private List<string> MSectionsForRollerDoorLintel;
+        private List<string> MSectionsForCrossBracing;
 
         private List<string> MColumnFlyBracingPosition_Items;
         private List<string> MRafterFlyBracingPosition_Items;
@@ -382,6 +383,20 @@ namespace PFD
             }
         }
 
+        public List<string> SectionsForCrossBracing
+        {
+            get
+            {
+                if (MSectionsForCrossBracing == null)
+                {
+                    MSectionsForCrossBracing = new List<string>(2);
+                    MSectionsForCrossBracing.Add(Sections[1]);   // DB ID 2
+                    MSectionsForCrossBracing.Add(Sections[2]);   // DB ID 3
+                }
+                return MSectionsForGirtsOrPurlinsBracing;
+            }
+        }
+
         public int SelectedComponentIndex
         {
             get
@@ -564,6 +579,15 @@ namespace PFD
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eGB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eGB].ComponentColorName)),
                 list_CompPref[(int)EMemberType_FS.eGB].ComponentName + " - Back Side", "27095", "Green", "G550‡", "None", true, true, false, false, true,
                 SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockGirtsBackSide);
+            MComponentList.Add(ci);
+
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
+                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Walls", "27095", "Green", "G550‡", "None", true, true, false, false, true,
+                SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracing_Wall);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
+                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Roof", "27095", "Green", "G550‡", "None", true, true, false, false, true,
+                SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracing_Roof);
             MComponentList.Add(ci);
 
             SetComponentSectionsColors();
