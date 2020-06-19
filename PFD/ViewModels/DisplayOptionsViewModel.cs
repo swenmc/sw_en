@@ -240,6 +240,7 @@ namespace PFD
         private float m_ExportSectionSymbolsSize;
         private float m_ExportSectionSymbolLabelSize;
         private float m_ExportDetailSymbolSize;
+        private float m_ExportDetailSymbolLabelSize;
         private float m_ExportMembersDescriptionSize;
         private float m_ExportNodesDescriptionSize;
         private float m_ExportSawCutTextSize;
@@ -2576,6 +2577,20 @@ namespace PFD
             }
         }
 
+        public float ExportDetailSymbolLabelSize
+        {
+            get
+            {
+                return m_ExportDetailSymbolLabelSize;
+            }
+
+            set
+            {
+                m_ExportDetailSymbolLabelSize = value;
+                NotifyPropertyChanged("ExportDetailSymbolLabelSize");
+            }
+        }
+
         public float ExportMembersDescriptionSize
         {
             get
@@ -2833,6 +2848,7 @@ namespace PFD
             ExportSectionSymbolsSize = 1f / 20f;
             ExportSectionSymbolLabelSize = 1f / 40f;
             ExportDetailSymbolSize = 1f / 20f;
+            ExportDetailSymbolLabelSize = 1 / 40f;
 
             // Text 2.5 - 3.0 mm
             ExportFloorSlabTextSize = 1f / 20f; // 4 riadky + 3 medzery

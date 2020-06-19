@@ -3621,6 +3621,7 @@ namespace PFD
             sDisplayOptions.ExportSectionSymbolsSize = _displayOptionsVM.ExportSectionSymbolsSize;
             sDisplayOptions.ExportSectionSymbolLabelSize = _displayOptionsVM.ExportSectionSymbolLabelSize;
             sDisplayOptions.ExportDetailSymbolSize = _displayOptionsVM.ExportDetailSymbolSize;
+            sDisplayOptions.ExportDetailSymbolLabelSize = _displayOptionsVM.ExportDetailSymbolLabelSize;
             sDisplayOptions.ExportMembersDescriptionSize = _displayOptionsVM.ExportMembersDescriptionSize;
             sDisplayOptions.ExportNodesDescriptionSize = _displayOptionsVM.ExportNodesDescriptionSize;
             sDisplayOptions.ExportSawCutTextSize = _displayOptionsVM.ExportSawCutTextSize;

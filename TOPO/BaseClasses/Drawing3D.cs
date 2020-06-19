@@ -895,9 +895,9 @@ namespace BaseClasses
             textSize = GetSizeBasedOnPageSize(sDisplayOptions, textSize);
 
             //    ——  ▪▪▪▪ ▪ ▪▪▪▪       ○      ○       ▪▪▪▪ ▪ ▪▪▪▪
-            // D |    /|\                                    /|\
-            //   |__   |                                      |
-            //         | XX                                XX |
+            // D |    /|\                                     /|\
+            //   |__   |                                       |
+            //         | XX                                 XX |
             //
             //               A                     B
             //       |/________________|/      |/______|/
@@ -1127,7 +1127,7 @@ namespace BaseClasses
 
             float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * opts.ExportDetailSymbolSize;
             //float fMarkCircleDiameter = 0.5f;
-            fMarkCircleDiameter = GetSizeBasedOnPageSize(opts, fMarkCircleDiameter);            
+            fMarkCircleDiameter = GetSizeBasedOnPageSize(opts, fMarkCircleDiameter); // Priemer kruhu znacky
 
             float fOffsetLineLength = fMarkCircleDiameter / 3; //0.2f;
 
@@ -3605,7 +3605,11 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fDetailSymbolLabelTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
-            float fTextBlockVerticalSize = detailSymbol.LineCylinderRadius * 30;
+
+            //float fTextBlockVerticalSize = detailSymbol.LineCylinderRadius * 30;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportDetailSymbolLabelSize; // Velkost textu popisu
+            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 

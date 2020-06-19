@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options" Height="890" Width="800" Loaded="Window_Loaded">
+        Title="Display Options" Height="940" Width="800" Loaded="Window_Loaded">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -647,35 +647,40 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="17" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="17" Grid.Column="3" Name ="ExportFloorSlabTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="16" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="16" Grid.Column="3" Name ="ExportFloorSlabTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportFloorSlabTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="18" Grid.Column="2" Text="Export Gridline Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="18" Grid.Column="3" Name ="ExportGridlinesSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="17" Grid.Column="2" Text="Export Gridline Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="17" Grid.Column="3" Name ="ExportGridlinesSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportGridlinesSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="19" Grid.Column="2" Text="Export Gridline Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="19" Grid.Column="3" Name ="ExportGridLineLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="18" Grid.Column="2" Text="Export Gridline Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="18" Grid.Column="3" Name ="ExportGridLineLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportGridLineLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="20" Grid.Column="2" Text="Export Section Symbol Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="20" Grid.Column="3" Name ="ExportSectionSymbolsSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="19" Grid.Column="2" Text="Export Section Symbol Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="19" Grid.Column="3" Name ="ExportSectionSymbolsSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportSectionSymbolsSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="21" Grid.Column="2" Text="Export Section Symbol Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="21" Grid.Column="3" Name ="ExportSectionSymbolLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="20" Grid.Column="2" Text="Export Section Symbol Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="20" Grid.Column="3" Name ="ExportSectionSymbolLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportSectionSymbolLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="22" Grid.Column="2" Text="Export Detail Symbol Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="22" Grid.Column="3" Name ="ExportDetailSymbolSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="21" Grid.Column="2" Text="Export Detail Symbol Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="21" Grid.Column="3" Name ="ExportDetailSymbolSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportDetailSymbolSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="22" Grid.Column="2" Text="Export Detail Symbol Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="22" Grid.Column="3" Name ="ExportDetailSymbolLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportDetailSymbolLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
                         <TextBlock Grid.Row="23" Grid.Column="2" Text="Export Member Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <TextBox Grid.Row="23" Grid.Column="3" Name ="ExportMembersDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"

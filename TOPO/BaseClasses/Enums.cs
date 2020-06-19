@@ -947,6 +947,7 @@ namespace BaseClasses
         public float ExportSectionSymbolsSize;
         public float ExportSectionSymbolLabelSize;
         public float ExportDetailSymbolSize;
+        public float ExportDetailSymbolLabelSize;
         public float ExportMembersDescriptionSize;
         public float ExportNodesDescriptionSize;
         public float ExportGridLineLabelSize;
