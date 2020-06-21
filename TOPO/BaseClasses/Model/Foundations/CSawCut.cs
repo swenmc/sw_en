@@ -14,58 +14,63 @@ namespace BaseClasses
     public class CSawCut : CEntity3D
     {
         private Point3D m_PointStart;
+        private Point3D m_PointEnd;
+        private Point3D m_PointText;
+        private float m_fLength;
+        private string m_Text;
+        private float m_CutWidth;
+        private float m_CutDepth;
+        private float m_fOffsetFromLine;
+
 
         public Point3D PointStart
         {
             get { return m_PointStart; }
             set { m_PointStart = value; }
         }
-        private Point3D m_PointEnd;
-
         public Point3D PointEnd
         {
             get { return m_PointEnd; }
             set { m_PointEnd = value; }
         }
-
-        private Point3D m_PointText;
-
         public Point3D PointText
         {
             get { return m_PointText; }
             set { m_PointText = value; }
         }
-
-        private float m_fLength;
-
         public float Length
         {
             get { return m_fLength; }
             set { m_fLength = value; }
         }
-
-        private string m_Text;
-
         public string Text
         {
             get { return m_Text; }
             set { m_Text = value; }
         }
-
-        private float m_CutWidth;
-
         public float CutWidth
         {
             get { return m_CutWidth; }
             set { m_CutWidth = value; }
         }
-
-        private float m_CutDepth;
-
         public float CutDepth
         {
             get { return m_CutDepth; }
             set { m_CutDepth = value; }
+        }
+        public float OffsetFromLine
+        {
+            get
+            {
+                return m_fOffsetFromLine;
+            }
+
+            set
+            {
+                m_fOffsetFromLine = value;
+                if(bTextAboveLine) m_PointText.Y = m_fOffsetFromLine;
+                else m_PointText.Y = -m_fOffsetFromLine;
+            }
         }
 
         // TO Ondrej - ak maju podla teba tie premenne zmysel tak z nich treba urobit properties, mozno by sa dalo riesit priamo v tomto objekte aky je smer textu
@@ -75,7 +80,7 @@ namespace BaseClasses
 
         public Transform3DGroup TransformGr;
 
-        public CSawCut(int id, Point3D start, Point3D end, float cutWidth, float cutDepth, bool bIsDiplayed_temp, int fTime)
+        public CSawCut(int id, Point3D start, Point3D end, float cutWidth, float cutDepth, bool bIsDiplayed_temp, int fTime, float offsetFromLine)
         {
             ID = id;
             m_PointStart = start;
@@ -86,6 +91,7 @@ namespace BaseClasses
             FTime = fTime;
 
             m_Text = "SAW CUT";
+            m_fOffsetFromLine = offsetFromLine;
 
             Length = Drawing3D.GetPoint3DDistanceFloat(m_PointStart, m_PointEnd);
 
@@ -99,19 +105,16 @@ namespace BaseClasses
 
             iVectorOverFactor_LCS = -1;
             iVectorUpFactor_LCS = -1;
-
-            float fOffsetFromLine;
+                        
             float fOffsetFromPlane = 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
-            if (bTextAboveLine)
-                fOffsetFromLine = 0.1f; // Mezera medzi ciarou a textom (kladna - text nad ciarou (+y), zaporna, text pod ciarou (-y))
-            else
-                fOffsetFromLine = -0.1f;
-
+            // Mezera medzi ciarou a textom (kladna - text nad ciarou (+y), zaporna, text pod ciarou (-y))
+            if (bTextAboveLine) m_fOffsetFromLine = Math.Abs(m_fOffsetFromLine) * -1;
+                
             m_PointText = new Point3D()
             {
                 X = 0.3 * m_fLength, // Kreslime v 30% dlzky od zaciatku
-                Y = fOffsetFromLine,
+                Y = OffsetFromLine,
                 Z = fOffsetFromPlane
             };
         }
@@ -121,7 +124,7 @@ namespace BaseClasses
             Model3DGroup model_gr = new Model3DGroup();
 
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color)); // TODO Ondrej - urobit nastavitelnu farbu
-            float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)            
+            //float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)            
             float dashSegmentLen = fLineCylinderRadius * 20;
 
             // LCS - line in x-direction
@@ -165,13 +168,13 @@ namespace BaseClasses
                 iVectorOverFactor_LCS = 1;
                 iVectorUpFactor_LCS = 1;
 
-                float fOffsetFromLine = 0.1f;
+                //float fOffsetFromLine = 0.1f;
                 float fOffsetFromPlane = 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
                 m_PointText = new Point3D()
                 {
                     X = 0.2 * m_fLength, // Kreslime v 20% dlzky od zaciatku
-                    Y = fOffsetFromLine,
+                    Y = OffsetFromLine,
                     Z = fOffsetFromPlane
                 };
             }

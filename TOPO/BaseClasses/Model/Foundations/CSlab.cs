@@ -1030,12 +1030,12 @@ namespace BaseClasses
                     if (i == 0) // First
                     {
                         coordX = m_pControlPoint.X + FirstSawCutPositionInDirectionX;
-                        SawCuts.Add(new CSawCut(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0));
+                        SawCuts.Add(new CSawCut(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0, 0.1f));
                     }
                     else
                     {
                         coordX = m_pControlPoint.X + FirstSawCutPositionInDirectionX + i * SawCutsSpacingInDirectionX;
-                        SawCuts.Add(new CSawCut(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0));
+                        SawCuts.Add(new CSawCut(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0, 0.1f));
                     }
                 }
                 // Sawcuts per Y axis - rezanie v smere X
@@ -1049,12 +1049,12 @@ namespace BaseClasses
                     if (i == 0) // First
                     {
                         coordY = m_pControlPoint.Y + FirstSawCutPositionInDirectionY;
-                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0));
+                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0, 0.1f));
                     }
                     else
                     {
                         coordY = m_pControlPoint.Y + FirstSawCutPositionInDirectionY + i * SawCutsSpacingInDirectionY;
-                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0));
+                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0, 0.1f));
                     }
                 }
             }

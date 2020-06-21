@@ -3654,6 +3654,7 @@ namespace BaseClasses
             //float fTextBlockHorizontalSizeFactor = 0.3f;
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportSawCutTextSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            sawcut.OffsetFromLine = fTextBlockVerticalSize / 2;
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
@@ -3719,6 +3720,7 @@ namespace BaseClasses
             //float fTextBlockHorizontalSizeFactor = 0.3f;
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportControlJointTextSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            controlJoint.OffsetFromLine = fTextBlockVerticalSize / 2;
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;

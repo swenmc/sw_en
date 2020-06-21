@@ -1726,7 +1726,7 @@ namespace PFD
                 CReinforcementMesh mesh = new CReinforcementMesh(sMeshGradeName);
 
                 // Saw Cuts
-                CSawCut refSawCut = new CSawCut(0, new Point3D(0, 0, 0), new Point3D(1, 0, 0), 0.01f, 0.03f, true, 0);
+                CSawCut refSawCut = new CSawCut(0, new Point3D(0, 0, 0), new Point3D(1, 0, 0), 0.01f, 0.03f, true, 0, 0.1f);
 
                 // Create raster of lines in XY-plane
                 float fFirstSawCutPositionInDirectionX = 0;
