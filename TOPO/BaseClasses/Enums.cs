@@ -757,7 +757,15 @@ namespace BaseClasses
         Portrait = 0,
         Landscape = 1
     }
-    
+
+    public enum EImagesQuality
+    {
+        Low = 1,
+        Normal = 2,
+        Hight = 3,
+        Best = 4
+    }
+
 
     // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
     public enum EGlobalPlane
@@ -940,6 +948,7 @@ namespace BaseClasses
         public bool bCreateVerticalGridlinesRight;
 
         public EPageSizes ViewsPageSize;
+        public EImagesQuality ExportImagesQuality;
         //public DisplayOptionsFootingPad2D footingPadDisplayOptions;
 
         public float ExportFloorSlabTextSize;

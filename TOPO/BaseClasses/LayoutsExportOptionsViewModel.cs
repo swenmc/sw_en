@@ -13,7 +13,7 @@ namespace BaseClasses
     {
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
         private bool m_ExportModel3D;
         private bool m_ExportModelViews;
         private bool m_ExportModelViewsFront;
@@ -24,7 +24,7 @@ namespace BaseClasses
         private bool m_ExportModelViewsMiddleFrame;
         private bool m_ExportModelViewsColumns;
         private bool m_ExportModelViewsFoundations;
-        private bool m_ExportModelViewsFloor;        
+        private bool m_ExportModelViewsFloor;
 
         private bool m_ExportJointTypes;
         private bool m_ExportFootingTypes;
@@ -35,6 +35,8 @@ namespace BaseClasses
         private int m_ExportPageOrientation;
         private int m_ExportPageSizeViews;
         private int m_ExportPageOrientationViews;
+
+        private int m_ExportImagesQuality;
 
         public bool ExportModel3D
         {
@@ -73,7 +75,7 @@ namespace BaseClasses
                     ExportModelViewsFoundations = m_ExportModelViews;
                     ExportModelViewsFloor = m_ExportModelViews;
                 }
-               
+
                 NotifyPropertyChanged("ExportModelViews");
             }
         }
@@ -282,6 +284,19 @@ namespace BaseClasses
             }
         }
 
+        public List<ComboItem> ImagesQualities
+        {
+            get
+            {
+                return new List<ComboItem>() { new ComboItem((int)EImagesQuality.Low, "Low"),
+                    new ComboItem((int)EImagesQuality.Normal, "Normal"),
+                    new ComboItem((int)EImagesQuality.Hight, "Hight"),
+                    new ComboItem((int)EImagesQuality.Best, "Best")                    
+                };
+            }
+        }
+        
+
         public int ExportPageSize
         {
             get
@@ -338,6 +353,20 @@ namespace BaseClasses
             }
         }
 
+        public int ExportImagesQuality
+        {
+            get
+            {
+                return m_ExportImagesQuality;
+            }
+
+            set
+            {
+                m_ExportImagesQuality = value;
+                NotifyPropertyChanged("ExportImagesQuality");
+            }
+        }
+
         public LayoutsExportOptionsViewModel()
         {
             ExportModel3D = false;
@@ -362,6 +391,8 @@ namespace BaseClasses
 
             ExportPageSizeViews = (int)EPageSizes.A3;
             ExportPageOrientationViews = (int)EPageOrientation.Landscape;
+
+            ExportImagesQuality = (int)EImagesQuality.Normal;
         }
 
         protected void NotifyPropertyChanged(string propertyName)

@@ -224,30 +224,47 @@ namespace EXPIMP
             }
 
         }
-        private static int GetCanvasWidthAcordingToPageSize(EPageSizes pageSize)
+        private static double GetCanvasWidthAcordingToPageSize(EPageSizes pageSize, EImagesQuality quality)
         {
             int width = 1191;
             switch (pageSize)
             {
-                case EPageSizes.A0: return 3370;
-                case EPageSizes.A1: return 2384;
-                case EPageSizes.A2: return 1684;                
-                default:
-                    return width;
+                case EPageSizes.A0: width = 3370; break;
+                case EPageSizes.A1: width = 2384; break;
+                case EPageSizes.A2: width = 1684; break;
             }
+
+            double factor = 1;
+            switch (quality)
+            {
+                case EImagesQuality.Low: factor = 0.5; break;
+                case EImagesQuality.Hight: factor = 2; break;
+                case EImagesQuality.Best: factor = 4; break;
+                default: factor = 1; break;
+            }
+
+            return width * factor;
         }
-        private static int GetCanvasHeightAcordingToPageSize(EPageSizes pageSize)
+        private static double GetCanvasHeightAcordingToPageSize(EPageSizes pageSize, EImagesQuality quality)
         {
             int height = 842;
             switch (pageSize)
             {
-                case EPageSizes.A0: return 2384;
-                case EPageSizes.A1: return 1684;
-                case EPageSizes.A2: return 1191;
-                default:
-                    return height;
+                case EPageSizes.A0: height = 2384; break;
+                case EPageSizes.A1: height = 1684; break;
+                case EPageSizes.A2: height = 1191; break;
             }
 
+            double factor = 1;
+            switch (quality)
+            {
+                case EImagesQuality.Low: factor = 0.5; break;
+                case EImagesQuality.Hight: factor = 2; break;
+                case EImagesQuality.Best: factor = 4; break;
+                default: factor = 1; break;
+            }
+
+            return height * factor;
         }
 
         private static PageOrientation GetPageOrientation(EPageOrientation pageOrientation)
@@ -280,8 +297,11 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-                        
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport);
+
+            double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.ExportImagesQuality);
+            double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSize, opts.ExportImagesQuality);
+
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -361,6 +381,7 @@ namespace EXPIMP
             double scale = 1;
             DisplayOptions opts = GetModelViewsDisplayOptions(data);
             opts.ViewsPageSize = (EPageSizes) exportOpts.ExportPageSizeViews;
+            opts.ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
 
             List<EViewModelMemberFilters> list_views = GetViewsFromExportOptions(exportOpts);
             
@@ -447,9 +468,9 @@ namespace EXPIMP
                 Trackport3D trackport = null;
                 System.Diagnostics.Trace.WriteLine("DrawModelViews before GetBaseModelViewPort: " + (DateTime.Now - start).TotalMilliseconds);
 
-                int factor = GetCanvasSizeFactorAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
-                int width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
-                int height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
+                //int factor = GetCanvasSizeFactorAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
+                double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.ExportImagesQuality);
+                double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.ExportImagesQuality);
 
                 //Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, 1400 * factor, 1000 * factor);
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);

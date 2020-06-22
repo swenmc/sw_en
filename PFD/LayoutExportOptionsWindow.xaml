@@ -23,13 +23,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>                
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="220"/>                
+                <RowDefinition Height="190"/>                
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="4">
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="5">
                 <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
                 <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Model Views</CheckBox>
 
@@ -73,6 +74,12 @@
                       ItemsSource="{Binding Path=PageOrientations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageOrientationViews, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
+            <TextBlock Grid.Row="4" Grid.Column="1">Images Quality:</TextBlock>
+            <ComboBox Grid.Row="4" Grid.Column="2" Name ="Combobox_ImagesQuality" HorizontalAlignment="Left" 
+                      Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=ImagesQualities, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportImagesQuality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+            
             <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>

@@ -246,7 +246,7 @@ namespace PFD
         private float m_ExportSawCutTextSize;
         private float m_ExportControlJointTextSize;
         private float m_ExportFoundationTextSize;
-        
+
 
         #region Loads
         // Load Case - display options
