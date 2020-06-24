@@ -963,6 +963,21 @@ namespace BaseClasses
         public float ExportSawCutTextSize;
         public float ExportControlJointTextSize;
         public float ExportFoundationTextSize;
+        public float ExportDimensionsTextSize;
+
+        public float GUIFloorSlabTextSize;
+        public float GUIGridlinesSize;
+        public float GUISectionSymbolsSize;
+        public float GUISectionSymbolLabelSize;
+        public float GUIDetailSymbolSize;
+        public float GUIDetailSymbolLabelSize;
+        public float GUIMembersDescriptionSize;
+        public float GUINodesDescriptionSize;
+        public float GUIGridLineLabelSize;
+        public float GUISawCutTextSize;
+        public float GUIControlJointTextSize;
+        public float GUIFoundationTextSize;
+        public float GUIDimensionsTextSize;
     }
 
     public struct DisplayOptionsFootingPad2D

@@ -246,6 +246,21 @@ namespace PFD
         private float m_ExportSawCutTextSize;
         private float m_ExportControlJointTextSize;
         private float m_ExportFoundationTextSize;
+        private float m_ExportDimensionsTextSize;
+
+        private float m_GUIFloorSlabTextSize;
+        private float m_GUIGridlinesSize;
+        private float m_GUIGridLineLabelSize;
+        private float m_GUISectionSymbolsSize;
+        private float m_GUISectionSymbolLabelSize;
+        private float m_GUIDetailSymbolSize;
+        private float m_GUIDetailSymbolLabelSize;
+        private float m_GUIMembersDescriptionSize;
+        private float m_GUINodesDescriptionSize;
+        private float m_GUISawCutTextSize;
+        private float m_GUIControlJointTextSize;
+        private float m_GUIFoundationTextSize;
+        private float m_GUIDimensionsTextSize;
 
 
         #region Loads
@@ -2661,6 +2676,202 @@ namespace PFD
             }
         }
 
+        public float GUIFloorSlabTextSize
+        {
+            get
+            {
+                return m_GUIFloorSlabTextSize;
+            }
+
+            set
+            {
+                m_GUIFloorSlabTextSize = value;
+                NotifyPropertyChanged("GUIFloorSlabTextSize");
+            }
+        }
+
+        public float GUIGridlinesSize
+        {
+            get
+            {
+                return m_GUIGridlinesSize;
+            }
+
+            set
+            {
+                m_GUIGridlinesSize = value;
+                NotifyPropertyChanged("GUIGridlinesSize");
+            }
+        }
+
+        public float GUIGridLineLabelSize
+        {
+            get
+            {
+                return m_GUIGridLineLabelSize;
+            }
+
+            set
+            {
+                m_GUIGridLineLabelSize = value;
+                NotifyPropertyChanged("GUIGridLineLabelSize");
+            }
+        }
+
+        public float GUISectionSymbolsSize
+        {
+            get
+            {
+                return m_GUISectionSymbolsSize;
+            }
+
+            set
+            {
+                m_GUISectionSymbolsSize = value;
+                NotifyPropertyChanged("GUISectionSymbolsSize");
+            }
+        }
+
+        public float GUISectionSymbolLabelSize
+        {
+            get
+            {
+                return m_GUISectionSymbolLabelSize;
+            }
+
+            set
+            {
+                m_GUISectionSymbolLabelSize = value;
+                NotifyPropertyChanged("GUISectionSymbolLabelSize");
+            }
+        }
+
+        public float GUIDetailSymbolSize
+        {
+            get
+            {
+                return m_GUIDetailSymbolSize;
+            }
+
+            set
+            {
+                m_GUIDetailSymbolSize = value;
+                NotifyPropertyChanged("GUIDetailSymbolSize");
+            }
+        }
+
+        public float GUIDetailSymbolLabelSize
+        {
+            get
+            {
+                return m_GUIDetailSymbolLabelSize;
+            }
+
+            set
+            {
+                m_GUIDetailSymbolLabelSize = value;
+                NotifyPropertyChanged("GUIDetailSymbolLabelSize");
+            }
+        }
+
+        public float GUIMembersDescriptionSize
+        {
+            get
+            {
+                return m_GUIMembersDescriptionSize;
+            }
+
+            set
+            {
+                m_GUIMembersDescriptionSize = value;
+                NotifyPropertyChanged("GUIMembersDescriptionSize");
+            }
+        }
+
+        public float GUINodesDescriptionSize
+        {
+            get
+            {
+                return m_GUINodesDescriptionSize;
+            }
+
+            set
+            {
+                m_GUINodesDescriptionSize = value;
+                NotifyPropertyChanged("GUINodesDescriptionSize");
+            }
+        }
+
+        public float GUISawCutTextSize
+        {
+            get
+            {
+                return m_GUISawCutTextSize;
+            }
+
+            set
+            {
+                m_GUISawCutTextSize = value;
+                NotifyPropertyChanged("GUISawCutTextSize");
+            }
+        }
+
+        public float GUIControlJointTextSize
+        {
+            get
+            {
+                return m_GUIControlJointTextSize;
+            }
+
+            set
+            {
+                m_GUIControlJointTextSize = value;
+                NotifyPropertyChanged("GUIControlJointTextSize");
+            }
+        }
+
+        public float GUIFoundationTextSize
+        {
+            get
+            {
+                return m_GUIFoundationTextSize;
+            }
+
+            set
+            {
+                m_GUIFoundationTextSize = value;
+                NotifyPropertyChanged("GUIFoundationTextSize");
+            }
+        }
+
+        public float ExportDimensionsTextSize
+        {
+            get
+            {
+                return m_ExportDimensionsTextSize;
+            }
+
+            set
+            {
+                m_ExportDimensionsTextSize = value;
+                NotifyPropertyChanged("ExportDimensionsTextSize");
+            }
+        }
+
+        public float GUIDimensionsTextSize
+        {
+            get
+            {
+                return m_GUIDimensionsTextSize;
+            }
+
+            set
+            {
+                m_GUIDimensionsTextSize = value;
+                NotifyPropertyChanged("GUIDimensionsTextSize");
+            }
+        }
+
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
@@ -2857,6 +3068,21 @@ namespace PFD
             ExportSawCutTextSize = 1f / 100f;
             ExportControlJointTextSize = 1f / 100f;
             ExportFoundationTextSize = 1f / 100f;
+            ExportDimensionsTextSize = 1f / 100f;
+            
+            GUIGridlinesSize = 1f / 20f;
+            GUIGridLineLabelSize = 1f / 40f;
+            GUISectionSymbolsSize = 1f / 20f;
+            GUISectionSymbolLabelSize = 1f / 40f;
+            GUIDetailSymbolSize = 1f / 20f;
+            GUIDetailSymbolLabelSize = 1 / 40f;            
+            GUIFloorSlabTextSize = 1f / 20f;
+            GUIMembersDescriptionSize = 1f / 100f;
+            GUINodesDescriptionSize = 1f / 100f;
+            GUISawCutTextSize = 1f / 100f;
+            GUIControlJointTextSize = 1f / 100f;
+            GUIFoundationTextSize = 1f / 100f;
+            GUIDimensionsTextSize = 1f / 100f;
 
             IsSetFromCode = false;
         }

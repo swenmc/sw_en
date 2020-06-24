@@ -3627,6 +3627,21 @@ namespace PFD
             sDisplayOptions.ExportSawCutTextSize = _displayOptionsVM.ExportSawCutTextSize;
             sDisplayOptions.ExportControlJointTextSize = _displayOptionsVM.ExportControlJointTextSize;
             sDisplayOptions.ExportFoundationTextSize = _displayOptionsVM.ExportFoundationTextSize;
+            sDisplayOptions.ExportDimensionsTextSize = _displayOptionsVM.ExportDimensionsTextSize;
+
+            sDisplayOptions.GUIFloorSlabTextSize = _displayOptionsVM.GUIFloorSlabTextSize;
+            sDisplayOptions.GUIGridlinesSize = _displayOptionsVM.GUIGridlinesSize;
+            sDisplayOptions.GUIGridLineLabelSize = _displayOptionsVM.GUIGridLineLabelSize;
+            sDisplayOptions.GUISectionSymbolsSize = _displayOptionsVM.GUISectionSymbolsSize;
+            sDisplayOptions.GUISectionSymbolLabelSize = _displayOptionsVM.GUISectionSymbolLabelSize;
+            sDisplayOptions.GUIDetailSymbolSize = _displayOptionsVM.GUIDetailSymbolSize;
+            sDisplayOptions.GUIDetailSymbolLabelSize = _displayOptionsVM.GUIDetailSymbolLabelSize;
+            sDisplayOptions.GUIMembersDescriptionSize = _displayOptionsVM.GUIMembersDescriptionSize;
+            sDisplayOptions.GUINodesDescriptionSize = _displayOptionsVM.GUINodesDescriptionSize;
+            sDisplayOptions.GUISawCutTextSize = _displayOptionsVM.GUISawCutTextSize;
+            sDisplayOptions.GUIControlJointTextSize = _displayOptionsVM.GUIControlJointTextSize;
+            sDisplayOptions.GUIFoundationTextSize = _displayOptionsVM.GUIFoundationTextSize;
+            sDisplayOptions.GUIDimensionsTextSize = _displayOptionsVM.GUIDimensionsTextSize;
 
             return sDisplayOptions;
         }
