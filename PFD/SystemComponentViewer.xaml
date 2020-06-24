@@ -133,7 +133,7 @@
             <DataGrid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ScrewArrangementParameters}"
                       HeadersVisibility="Column" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
-                      SelectionMode="Single" SelectionUnit="Cell" CanUserSortColumns="False" >
+                      SelectionMode="Extended" SelectionUnit="Cell" CanUserSortColumns="False" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
                         <DataGridTextColumn.CellStyle>
@@ -174,7 +174,7 @@
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <ComboBox HorizontalAlignment="Right" SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                <ComboBox HorizontalAlignment="Right" SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ItemsSource="{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                             </DataTemplate>
                                                         </Setter.Value>
                                                     </Setter>
