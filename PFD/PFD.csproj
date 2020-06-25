@@ -156,6 +156,10 @@
     <Compile Include="DocumentationExportOptionsWindow.xaml.cs">
       <DependentUpon>DocumentationExportOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\CrossBracingOptionsWindow.xaml.cs">
+      <DependentUpon>CrossBracingOptionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\CrossBracingOptionsViewModel.cs" />
     <Compile Include="ViewModels\DocumentationSettingsViewModel.cs" />
     <Compile Include="WindPressureCoefficients.xaml.cs">
       <DependentUpon>WindPressureCoefficients.xaml</DependentUpon>
@@ -339,6 +343,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DocumentationExportOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\CrossBracingOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
