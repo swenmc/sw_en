@@ -2609,5 +2609,12 @@ namespace PFD
                 }
             }
         }
+
+        private void BtnCrossBracingOptions_Click(object sender, RoutedEventArgs e)
+        {
+            CrossBracingOptionsWindow w = new CrossBracingOptionsWindow(vm);
+            w.ShowDialog();
+
+        }
     }
 }

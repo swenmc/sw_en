@@ -25,7 +25,7 @@ namespace BaseClasses
         private bool m_WallRight;
         private bool m_Roof;
         private string m_RoofPosition;
-        private List<string> m_RoofPositions;
+        //private List<string> m_RoofPositions;
         private bool m_FirstCrossOnRafter;
         private bool m_LastCrossOnRafter;
 
@@ -130,19 +130,19 @@ namespace BaseClasses
             }
         }
 
-        public List<string> RoofPositions
-        {
-            get
-            {
-                return m_RoofPositions;
-            }
+        //public List<string> RoofPositions
+        //{
+        //    get
+        //    {
+        //        return m_RoofPositions;
+        //    }
 
-            set
-            {
-                m_RoofPositions = value;
-                NotifyPropertyChanged("RoofPositions");
-            }
-        }
+        //    set
+        //    {
+        //        m_RoofPositions = value;
+        //        NotifyPropertyChanged("RoofPositions");
+        //    }
+        //}
 
         public bool FirstCrossOnRafter
         {
@@ -172,11 +172,19 @@ namespace BaseClasses
             }
         }
 
-        public CCrossBracingInfo()
+        public CCrossBracingInfo(int bayNumber, bool wallLeft, bool wallRight, bool roof, string roofPosition, bool firstCrossOnRafter, bool lastCrossOnRafter)
         {
             MIsSetFromCode = false;
-            
-            //todo
+
+            m_BayNumber = bayNumber;
+            m_BayIndex = bayNumber - 1;
+            m_WallLeft = wallLeft;
+            m_WallRight = wallRight;
+            m_Roof = roof;
+            m_RoofPosition = roofPosition;
+            //m_RoofPositions = roofPositions;
+            m_FirstCrossOnRafter = firstCrossOnRafter;
+            m_LastCrossOnRafter = lastCrossOnRafter;
         }
 
         protected void NotifyPropertyChanged(string propertyName)

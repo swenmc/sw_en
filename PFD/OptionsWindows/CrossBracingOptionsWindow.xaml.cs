@@ -19,18 +19,21 @@ namespace PFD
     public partial class CrossBracingOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-        private bool DisplayOptionsChanged = false;
+        private bool CrossBracingOptionsChanged = false;
         public CrossBracingOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
 
-            DisplayOptionsChanged = false;
+            CrossBracingOptionsChanged = false;
+
+            if (pfdVM._crossBracingOptionsVM == null) pfdVM._crossBracingOptionsVM = new CrossBracingOptionsViewModel(pfdVM.Frames);
+
+
+            pfdVM._crossBracingOptionsVM.PropertyChanged += HandleCrossBracingOptionsPropertyChangedEvent;
             
-            pfdVM._displayOptionsVM.PropertyChanged += HandleCrossBracingOptionsPropertyChangedEvent;
-            
-            this.DataContext = pfdVM._displayOptionsVM;
+            this.DataContext = pfdVM._crossBracingOptionsVM;
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
@@ -39,15 +42,15 @@ namespace PFD
         private void HandleCrossBracingOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            if (sender is DisplayOptionsViewModel)
+            if (sender is CrossBracingOptionsViewModel)
             {
-                DisplayOptionsChanged = true;
+                CrossBracingOptionsChanged = true;
             }
         }
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;
+            if (CrossBracingOptionsChanged) _pfdVM.SynchronizeGUI = true;
             this.Close();
         }
 
@@ -57,6 +60,16 @@ namespace PFD
           
             //radioColorsIn3DMembers.IsChecked = _pfdVM._displayOptionsVM.ColorsAccordingToMembers;
 
+
+        }
+
+        private void Datagrid_Components_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void Datagrid_Components_MouseDown(object sender, MouseButtonEventArgs e)
+        {
 
         }
     }

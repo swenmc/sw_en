@@ -577,6 +577,7 @@ namespace PFD
                 RecreateModel = true;
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
+                _crossBracingOptionsVM = null;
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -2288,6 +2289,8 @@ namespace PFD
         public GeneralOptionsViewModel _generalOptionsVM;
         public SolverOptionsViewModel _solverOptionsVM;
         public DesignOptionsViewModel _designOptionsVM;
+
+        public CrossBracingOptionsViewModel _crossBracingOptionsVM;
 
         [NonSerialized]
         public QuotationViewModel _quotationViewModel;
