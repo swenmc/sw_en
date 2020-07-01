@@ -1798,7 +1798,7 @@ namespace EXPIMP
             Document doc = new Document();
             DateTime start = DateTime.Now;
             //System.Diagnostics.Trace.WriteLine("Beginning: DrawCrscLegendTable" + (DateTime.Now - start).TotalMilliseconds);
-            AddTableToDocument(doc, gfx, x - imgWidth - textWidth - margins, 20, GetCRSC_Table(doc, model, list_crsc, textWidth, imgWidth));            
+            AddTableToDocument(doc, gfx, x - imgWidth - textWidth - margins, 20, GetCRSC_Table(doc, model, list_crsc, textWidth, imgWidth));
             //System.Diagnostics.Trace.WriteLine("End: DrawCrscLegendTable " + (DateTime.Now - start).TotalMilliseconds);
         }
         
@@ -1820,7 +1820,7 @@ namespace EXPIMP
             column1.LeftPadding = 2;
             //column1.Format.Font.Bold = true;
             Column column2 = table.AddColumn(Unit.FromCentimeter(2));
-            column2.Format.Alignment = ParagraphAlignment.Center;            
+            column2.Format.Alignment = ParagraphAlignment.Center;
             column2.Width = imgWidth + 4;
             column2.LeftPadding = 2;
 

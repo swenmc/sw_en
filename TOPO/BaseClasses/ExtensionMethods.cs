@@ -120,6 +120,11 @@ namespace BaseClasses
                 CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
                 clone = p.Clone();
             }
+            else if (plate is CConCom_Plate_KHS)
+            {
+                CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
+                clone = p.Clone();
+            }
             else if (plate is CConCom_Plate_KK)
             {
                 CConCom_Plate_KK p = plate as CConCom_Plate_KK;
@@ -358,30 +363,60 @@ namespace BaseClasses
             viewPort = null;
         }
 
-        
         public static string GetFriendlyName(this EMemberType_FS_Position pos)
         {
+            // TODO - toto by bolo lepsie mat v databaze
+
+            /*
+            MainColumn = 1,
+            MainRafter = 2,
+            EdgeColumn = 3,
+            EdgeRafter = 4,
+            EdgePurlin = 5,
+            Girt = 6,
+            Purlin = 7,
+            WindPostFrontSide = 8,
+            WindPostBackSide = 9,
+            GirtFrontSide = 10,
+            GirtBackSide = 11,
+            BracingBlockGirts = 12,
+            BracingBlockPurlins = 13,
+            BracingBlockGirtsFrontSide = 14,
+            BracingBlockGirtsBackSide = 15,
+            DoorFrame = 16,
+            WindowFrame = 17,
+            DoorTrimmer = 18,
+            DoorLintel = 19,
+            CrossBracing_Wall = 20,
+            CrossBracing_Roof = 21
+            */
+
             switch (pos)
             {
-                case EMemberType_FS_Position.EdgeColumn: return "Edge Column";
-                case EMemberType_FS_Position.EdgeRafter: return "Edge Rafter";
                 case EMemberType_FS_Position.MainColumn: return "Main Column";
                 case EMemberType_FS_Position.MainRafter: return "Main Rafter";
+                case EMemberType_FS_Position.EdgeColumn: return "Edge Column";
+                case EMemberType_FS_Position.EdgeRafter: return "Edge Rafter";
                 case EMemberType_FS_Position.EdgePurlin: return "Edge Purlin";
-                case EMemberType_FS_Position.Purlin: return "Purlin";
                 case EMemberType_FS_Position.Girt: return "Girt";
-                case EMemberType_FS_Position.GirtFrontSide: return "Girt Front Side";
-                case EMemberType_FS_Position.GirtBackSide: return "Girt Back Side";
+                case EMemberType_FS_Position.Purlin: return "Purlin";
                 case EMemberType_FS_Position.WindPostFrontSide: return "Wind Post Front Side";
                 case EMemberType_FS_Position.WindPostBackSide: return "Wind Post Back Side";
+                case EMemberType_FS_Position.GirtFrontSide: return "Girt Front Side";
+                case EMemberType_FS_Position.GirtBackSide: return "Girt Back Side";
+                case EMemberType_FS_Position.BracingBlockGirts: return "Bracing Block Girts";
+                case EMemberType_FS_Position.BracingBlockPurlins: return "Bracing Block Purlins";
+                case EMemberType_FS_Position.BracingBlockGirtsFrontSide: return "Bracing Block Girts Front Side";
+                case EMemberType_FS_Position.BracingBlockGirtsBackSide: return "Bracing Block Girts Back Side";
                 case EMemberType_FS_Position.DoorFrame: return "Door Frame";
-                case EMemberType_FS_Position.DoorLintel: return "Door Lintel";
-                case EMemberType_FS_Position.DoorTrimmer: return "Door Trimmer";
                 case EMemberType_FS_Position.WindowFrame: return "Window Frame";
+                case EMemberType_FS_Position.DoorTrimmer: return "Door Trimmer";
+                case EMemberType_FS_Position.DoorLintel: return "Door Lintel";
+                case EMemberType_FS_Position.CrossBracing_Wall: return "Cross Bracing Walls";
+                case EMemberType_FS_Position.CrossBracing_Roof: return "Cross Bracing Roof";
             }
             return "Unknown EMemberType_FS_Position";
         }
-
 
         public static string GetFriendlyName(this ELCType lcType)
         {
@@ -479,8 +514,6 @@ namespace BaseClasses
                 case EPDFPageContentType.Details_Joints: return "Details - Joints";
                 case EPDFPageContentType.Details_Footing_Pads: return "Details - Footing Pads";
                 case EPDFPageContentType.Details_Floor: return "Details - Floor";
-
-
             }
             return "Unknown EPDFPageContentType";
         }

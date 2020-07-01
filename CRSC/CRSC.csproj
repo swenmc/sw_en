@@ -95,6 +95,7 @@
     <Compile Include="CrSc_3\CCrSc_3_51_BOX_TEMP.cs" />
     <Compile Include="CrSc_3\CCrSc_3_51_TRIANGLE_TEMP.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_10075_BOX.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_FLAT.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_270XX_C.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_270XX_C_BACK_TO_BACK.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_270XX_C_NESTED.cs" />

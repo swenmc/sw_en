@@ -288,6 +288,14 @@ namespace PFD
         10  63020     Box 63020
         11  63020s1   Box 63020 single stiffener
         12  63020s2   Box 63020 double stiffener
+        13  1x50x1    Strip 1x50x1
+        14  2x50x1    Strip 2x50x1
+        15  3x50x1    Strip 3x50x1
+        16  4x50x1    Strip 4x50x1
+        17  1x100x1   Strip 1x100x1
+        18  2x100x1   Strip 2x100x1
+        19  3x100x1   Strip 3x100x1
+        20  4x100x1   Strip 4x100x1
         */
 
         public List<string> SectionsForColumnsOrRafters
@@ -389,11 +397,17 @@ namespace PFD
             {
                 if (MSectionsForCrossBracing == null)
                 {
-                    MSectionsForCrossBracing = new List<string>(2);
-                    MSectionsForCrossBracing.Add(Sections[1]);   // DB ID 2
-                    MSectionsForCrossBracing.Add(Sections[2]);   // DB ID 3
+                    MSectionsForCrossBracing = new List<string>(8);
+                    MSectionsForCrossBracing.Add(Sections[12]);   // DB ID 13
+                    MSectionsForCrossBracing.Add(Sections[13]);   // DB ID 14
+                    MSectionsForCrossBracing.Add(Sections[14]);   // DB ID 15
+                    MSectionsForCrossBracing.Add(Sections[15]);   // DB ID 16
+                    MSectionsForCrossBracing.Add(Sections[16]);   // DB ID 17
+                    MSectionsForCrossBracing.Add(Sections[17]);   // DB ID 18
+                    MSectionsForCrossBracing.Add(Sections[18]);   // DB ID 19
+                    MSectionsForCrossBracing.Add(Sections[19]);   // DB ID 20
                 }
-                return MSectionsForGirtsOrPurlinsBracing;
+                return MSectionsForCrossBracing;
             }
         }
 
@@ -580,13 +594,12 @@ namespace PFD
                 list_CompPref[(int)EMemberType_FS.eGB].ComponentName + " - Back Side", "27095", "Green", "G550‡", "None", true, true, false, false, true,
                 SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockGirtsBackSide);
             MComponentList.Add(ci);
-
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Walls", "27095", "Green", "G550‡", "None", true, true, false, false, true,
+                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Walls", "1x100x1", "Olive", "G550‡", "None", true, true, false, false, true,
                 SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracing_Wall);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Roof", "27095", "Green", "G550‡", "None", true, true, false, false, true,
+                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Roof", "1x100x1", "Olive", "G550‡", "None", true, true, false, false, true,
                 SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracing_Roof);
             MComponentList.Add(ci);
 
@@ -857,7 +870,7 @@ namespace PFD
 
             }
             ColumnFlyBracingPosition_Items = items;
-            CComponentInfo CFS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);            
+            CComponentInfo CFS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
             if (CFS != null) { CFS.IsSetFromCode = true; CFS.ILS_Items = items; SetComponentInfoILS(CFS); CFS.IsSetFromCode = false; }
         }
         public void SetBackColumnFlyBracingPosition_Items(int iBackColumnGirtsNum)
@@ -873,7 +886,7 @@ namespace PFD
 
             }
             ColumnFlyBracingPosition_Items = items;
-            CComponentInfo CBS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);            
+            CComponentInfo CBS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
             if (CBS != null) { CBS.IsSetFromCode = true; CBS.ILS_Items = items; SetComponentInfoILS(CBS); CBS.IsSetFromCode = false; }
         }
     }

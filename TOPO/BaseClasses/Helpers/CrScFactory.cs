@@ -50,6 +50,11 @@ namespace BaseClasses.Helpers
             {
                 return new CCrSc_3_63020_BOX((float)s.h, (float)s.b, (float)s.t_min, s.n_stiff);
             }
+            else if (SectionName == "1x50x1" || SectionName == "2x50x1" || SectionName == "3x50x1" || SectionName == "4x50x1" ||
+                     SectionName == "1x100x1" || SectionName == "2x100x1" || SectionName == "3x100x1" || SectionName == "4x100x1")
+            {
+                return new CCrSc_3_FLAT(Int32.Parse(SectionName.Substring(0,1)), (float)s.h, (float)s.t_min);
+            }
             else
             {
                 throw new Exception("Cross-section with name " + SectionName + " is not defined.");

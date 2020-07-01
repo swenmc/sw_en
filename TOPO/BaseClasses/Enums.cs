@@ -501,7 +501,9 @@ namespace BaseClasses
         eGirtBracing = 11,
         ePurlinBracing = 12,
         eFrontGirtBracing = 13,
-        eBackGirtBracing = 14
+        eBackGirtBracing = 14,
+        eCrossBracing_Walls = 15,
+        eCrossBracing_Roof = 16
     }
 
     public enum ECountry

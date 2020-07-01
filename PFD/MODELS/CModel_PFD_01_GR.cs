@@ -81,8 +81,8 @@ namespace PFD
             iOneColumnGirtNo = 0;
             iGirtNoInOneFrame = 0;
 
-            m_arrMat = new CMat[15];
-            m_arrCrSc = new CCrSc[15];
+            m_arrMat = new CMat[17];
+            m_arrCrSc = new CCrSc[17];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
@@ -102,6 +102,8 @@ namespace PFD
             m_arrMat[(int)EMemberGroupNames.ePurlinBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlinBracing].Material);
             m_arrMat[(int)EMemberGroupNames.eFrontGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Material);
             m_arrMat[(int)EMemberGroupNames.eBackGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirtBracing].Material);
+            m_arrMat[(int)EMemberGroupNames.eCrossBracing_Walls] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eCrossBracing_Walls].Material);
+            m_arrMat[(int)EMemberGroupNames.eCrossBracing_Roof] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eCrossBracing_Roof].Material);
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
@@ -124,6 +126,8 @@ namespace PFD
             m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.ePurlinBracing].Section);
             m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Section);
             m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eBackGirtBracing].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eCrossBracing_Walls].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eCrossBracing_Roof].Section);
 
             for (int i = 0; i < m_arrCrSc.Length; i++)
             {
@@ -145,9 +149,12 @@ namespace PFD
             m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing].CSColor = Colors.DarkOrange;   // 13 Purlin Bracing
             m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing].CSColor = Colors.LimeGreen; // 14 Girt Bracing - Front Side
             m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing].CSColor = Colors.LightSeaGreen; // 15 Girt Bracing - Back Side
+            m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].CSColor = Colors.Olive;         // 16 Cross Bracing - Walls
+            m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].CSColor = Colors.Olive;         // 17 Cross Bracing - Roof
+
 
             // Member Groups
-            listOfModelMemberGroups = new List<CMemberGroup>(15);
+            listOfModelMemberGroups = new List<CMemberGroup>(17);
 
             //CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
             // See UC component list
@@ -209,6 +216,8 @@ namespace PFD
             listOfModelMemberGroups.Add(new CMemberGroup(13, componentList[(int)EMemberGroupNames.ePurlinBracing].ComponentName, EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], 0, 0, 0, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(14, componentList[(int)EMemberGroupNames.eFrontGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirtsFrontSide, m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing], 0, 0, 0, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(15, componentList[(int)EMemberGroupNames.eBackGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirtsBackSide, m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(16, componentList[(int)EMemberGroupNames.eCrossBracing_Walls].ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracing_Wall, m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(17, componentList[(int)EMemberGroupNames.eCrossBracing_Roof].ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracing_Roof, m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof], 0, 0, 0, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
             if (m_arrMat.Length >= m_arrCrSc.Length)
@@ -1307,7 +1316,8 @@ namespace PFD
                     // CMemberEccentricity eccentricity,
                     0f,
                     0f,
-                    // CCrSc section, // TODO - npojit na GUI, mali by byt 2 rozne prierezy, jeden pre wall, jeden pre roof cross bracing
+                    m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls],
+                    m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
                     // float fMemberRotation,
                     bGenerateGirts,
                     cbProp.iNumberOfCrossBracingMembers_Walls,
