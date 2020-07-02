@@ -120,6 +120,11 @@ namespace BaseClasses
                 CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
                 clone = p.Clone();
             }
+            else if (plate is CConCom_Plate_KGS)
+            {
+                CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
+                clone = p.Clone();
+            }
             else if (plate is CConCom_Plate_KHS)
             {
                 CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;

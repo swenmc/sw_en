@@ -288,6 +288,13 @@ namespace BaseClasses
                 fh_Y1 = plate_KFS.Fh_Y1;
                 fh_Y2 = plate_KFS.Fh_Y2;
             }
+            else if (plate is CConCom_Plate_KGS)
+            {
+                CConCom_Plate_KGS plate_KHS = (CConCom_Plate_KGS)plate;
+                fb_X1 = plate_KHS.Fb_X1;
+                fh_Y1 = plate_KHS.Fh_Y1;
+                fh_Y2 = plate_KHS.Fh_Y2;
+            }
             else if (plate is CConCom_Plate_KHS)
             {
                 CConCom_Plate_KHS plate_KHS = (CConCom_Plate_KHS)plate;
