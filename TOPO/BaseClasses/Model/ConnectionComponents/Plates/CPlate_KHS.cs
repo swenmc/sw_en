@@ -404,7 +404,7 @@ namespace BaseClasses
             arrPoints3D[11].Z = arrPoints3D[0].Z;
 
             // Second layer
-            // INoPoints2Dfor3D = 12
+            // INoPoints2Dfor3D = 11
             arrPoints3D[INoPoints2Dfor3D + 1].X = Ft;
             arrPoints3D[INoPoints2Dfor3D + 1].Y = arrPoints3D[0].Y;
             arrPoints3D[INoPoints2Dfor3D + 1].Z = arrPoints3D[0].Z;
@@ -647,8 +647,8 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[4]);
             wireFrame.Points.Add(arrPoints3D[18]);
 
-            wireFrame.Points.Add(arrPoints3D[5]);
-            wireFrame.Points.Add(arrPoints3D[19]);
+            //wireFrame.Points.Add(arrPoints3D[5]);
+            //wireFrame.Points.Add(arrPoints3D[19]);
 
             wireFrame.Points.Add(arrPoints3D[5]);
             wireFrame.Points.Add(arrPoints3D[21]);
