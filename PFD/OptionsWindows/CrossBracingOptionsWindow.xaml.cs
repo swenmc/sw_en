@@ -72,5 +72,21 @@ namespace PFD
         {
 
         }
+
+        private void BtnApply_Click(object sender, RoutedEventArgs e)
+        {
+            CrossBracingOptionsViewModel vm = this.DataContext as CrossBracingOptionsViewModel;
+            if (vm.BayFrom > vm.BayTo) return;
+
+            for (int i = vm.BayFrom; i <= vm.BayTo; i++)
+            {
+                vm.CrossBracingList[i - 1].WallLeft = vm.WallLeft;
+                vm.CrossBracingList[i - 1].WallRight = vm.WallRight;
+                vm.CrossBracingList[i - 1].Roof = vm.Roof;
+                vm.CrossBracingList[i - 1].RoofPosition = vm.RoofPosition;
+                vm.CrossBracingList[i - 1].FirstCrossOnRafter = vm.FirstCrossOnRafter;
+                vm.CrossBracingList[i - 1].LastCrossOnRafter = vm.LastCrossOnRafter;
+            }
+        }
     }
 }

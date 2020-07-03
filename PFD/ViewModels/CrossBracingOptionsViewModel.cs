@@ -28,6 +28,16 @@ namespace PFD
         private List<string> m_RoofPositions;
         ObservableCollection<CCrossBracingInfo> m_CrossBracingList;
         private int m_SelectedCrossBracingIndex;
+        
+        private List<int> m_Bays;
+        private int m_BayFrom;
+        private int m_BayTo;
+        private bool m_WallLeft;
+        private bool m_WallRight;
+        private bool m_Roof;
+        private string m_RoofPosition;        
+        private bool m_FirstCrossOnRafter;
+        private bool m_LastCrossOnRafter;
 
 
 
@@ -78,6 +88,138 @@ namespace PFD
             }
         }
 
+        public List<int> Bays
+        {
+            get
+            {
+                return m_Bays;
+            }
+
+            set
+            {
+                m_Bays = value;
+                if (m_Bays != null && m_Bays.Count > 1)
+                {
+                    BayFrom = m_Bays.First();
+                    BayTo = m_Bays.Last();
+                }
+                
+                NotifyPropertyChanged("Bays");
+            }
+        }
+
+        public int BayFrom
+        {
+            get
+            {
+                return m_BayFrom;
+            }
+
+            set
+            {
+                m_BayFrom = value;
+                NotifyPropertyChanged("BayFrom");
+            }
+        }
+
+        public int BayTo
+        {
+            get
+            {
+                return m_BayTo;
+            }
+
+            set
+            {
+                m_BayTo = value;
+                NotifyPropertyChanged("BayTo");
+            }
+        }
+
+        public bool WallLeft
+        {
+            get
+            {
+                return m_WallLeft;
+            }
+
+            set
+            {
+                m_WallLeft = value;
+                NotifyPropertyChanged("WallLeft");
+            }
+        }
+
+        public bool WallRight
+        {
+            get
+            {
+                return m_WallRight;
+            }
+
+            set
+            {
+                m_WallRight = value;
+                NotifyPropertyChanged("WallRight");
+            }
+        }
+
+        public bool Roof
+        {
+            get
+            {
+                return m_Roof;
+            }
+
+            set
+            {
+                m_Roof = value;
+                NotifyPropertyChanged("Roof");
+            }
+        }
+
+        public string RoofPosition
+        {
+            get
+            {
+                return m_RoofPosition;
+            }
+
+            set
+            {
+                m_RoofPosition = value;
+                NotifyPropertyChanged("RoofPosition");
+            }
+        }
+
+        public bool FirstCrossOnRafter
+        {
+            get
+            {
+                return m_FirstCrossOnRafter;
+            }
+
+            set
+            {
+                m_FirstCrossOnRafter = value;
+                NotifyPropertyChanged("FirstCrossOnRafter");
+            }
+        }
+
+        public bool LastCrossOnRafter
+        {
+            get
+            {
+                return m_LastCrossOnRafter;
+            }
+
+            set
+            {
+                m_LastCrossOnRafter = value;
+                NotifyPropertyChanged("LastCrossOnRafter");
+            }
+        }
+
         private void crossBracingItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             
@@ -96,6 +238,8 @@ namespace PFD
         {
             IsSetFromCode = true;
 
+            initBays(baysNum);
+
             ObservableCollection<CCrossBracingInfo> items = new ObservableCollection<CCrossBracingInfo>();
 
             for (int i = 1; i <= baysNum; i++)
@@ -106,6 +250,14 @@ namespace PFD
 
             CrossBracingList = items;
 
+            WallLeft = false;
+            WallRight = false;
+            Roof = false;
+            RoofPosition = "None";
+
+            FirstCrossOnRafter = false;
+            LastCrossOnRafter = false;
+
             IsSetFromCode = false;
         }
 
@@ -114,6 +266,16 @@ namespace PFD
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void initBays(int baysNum)
+        {
+            List<int> bays = new List<int>(baysNum);
+            for (int i = 1; i <= baysNum; i++)
+            {
+                bays.Add(i);
+            }
+            Bays = bays;
         }
 
     }

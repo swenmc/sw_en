@@ -9,8 +9,8 @@
         WindowStartupLocation="CenterScreen"
         Title="Cross Bracing Options" Height="940" Width="800" Loaded="Window_Loaded">
     <Window.Resources>
-        <System:Double x:Key="theTextBoxWidth">90</System:Double>
-        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+        <System:Double x:Key="theTextBoxWidth">50</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">100</System:Double>
         <CollectionViewSource x:Key="RoofPositions" Source="{Binding RoofPositions}"/>
     </Window.Resources>
 
@@ -19,11 +19,46 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <DataGrid Name ="Datagrid_CrossBracing" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">            
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Bay From:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=BayFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+                <TextBlock Text="Bay To:" HorizontalAlignment="Left" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <ComboBox Name ="Combobox_BayTo" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=BayTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
+                <TextBlock Text="Roof Position:" HorizontalAlignment="Left" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <ComboBox Name ="Combobox_RoofPosition" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=RoofPositions, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=RoofPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
+                <Button Width="80" Height="25" Name="BtnApply" Margin="10 0 0 0" Click="BtnApply_Click">Apply</Button>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,3">
+                <StackPanel Orientation="Vertical" Width="150">
+                    <CheckBox Name="chbWallLeft" Margin="5,0" IsChecked="{Binding Path=WallLeft}">Wall-Left</CheckBox>
+                    <CheckBox Name="chbWallRight" Margin="5,0" IsChecked="{Binding Path=WallRight}">Wall-Right</CheckBox>
+                    <CheckBox Name="chbRoof" Margin="5,0" IsChecked="{Binding Path=Roof}">Roof</CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <CheckBox Name="chbFirstCrossOnRafter" Margin="5,0" IsChecked="{Binding Path=FirstCrossOnRafter}">First Cross On Rafter</CheckBox>
+                    <CheckBox Name="chbLastCrossOnRafter" Margin="5,0" IsChecked="{Binding Path=lastCrossOnRafter}">Last Cross On Rafter</CheckBox>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        
+        
+
+        <DataGrid Name ="Datagrid_CrossBracing" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedCrossBracingIndex}" ItemsSource="{Binding CrossBracingList}" 
                   MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False">
             <DataGrid.ColumnHeaderStyle>
