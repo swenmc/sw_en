@@ -301,7 +301,16 @@ namespace PFD
                 if (MModelIndex == -1) return;
 
                 //dolezite je volat private fields a nie Properties pokial nechceme aby sa volali setter metody
-                CDatabaseModels dmodel = new CDatabaseModels(MKitsetTypeIndex, MModelIndex);
+                CDatabaseModels dmodel = null;
+                try
+                {
+                    dmodel = new CDatabaseModels(MKitsetTypeIndex, MModelIndex);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                if (dmodel == null) { NotifyPropertyChanged("ModelIndex"); return; }  //Bug 593
 
                 bool isChangedFromCode = IsSetFromCode;
 
@@ -435,8 +444,15 @@ namespace PFD
                 RecreateModel = true;
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
+                if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("Width");
             }
+        }
+
+        private void SetCustomModel()
+        {
+            if (!ModelTypes.Contains("Custom")) ModelTypes.Add("Custom");
+            ModelIndex = ModelTypes.Count - 1;
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -463,6 +479,7 @@ namespace PFD
                 RecreateModel = true;
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
+                if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("Length");
             }
         }
@@ -496,6 +513,7 @@ namespace PFD
                 RecreateModel = true;
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
+                if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -549,6 +567,7 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
+                if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("RoofPitch_deg");
             }
         }
@@ -578,6 +597,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 _crossBracingOptionsVM = null;
+                if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
             }
         }

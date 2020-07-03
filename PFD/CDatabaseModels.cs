@@ -353,7 +353,7 @@ namespace PFD
                 throw new Exception("Selected kitset type is not implemented.");
 
             CKitsetMonoOrGableRoofEnclosed model = CModelsManager.LoadModelKitsetMonoOrGableRoofEnclosed(iSelectedModelIndex + 1, sDatabaseTableName);
-            if (model == null) throw new Exception("Model is null.");
+            if (model == null) throw new Exception("Model is null.");            
 
             fb = float.Parse(model.Width, nfi);
             fL = float.Parse(model.Length, nfi);
