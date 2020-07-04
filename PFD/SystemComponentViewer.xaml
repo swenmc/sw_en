@@ -89,7 +89,7 @@
                 <TextBlock Text="Display Options" HorizontalAlignment="Left"/>
                 <CheckBox Name="chbDrawScrews3D" IsChecked="{Binding Path=DrawScrews3D}" Content="Draw Screws" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawPoints3D" IsChecked="{Binding Path=DrawPoints3D}" Content="Draw Points" Margin="0 5 0 0"/>
-                <CheckBox Name="chbDrawNumbers3D" IsChecked="{Binding Path=DrawNumbers3D}" Content="Draw Numbers" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawPoint3DNumbers3D" IsChecked="{Binding Path=DrawPoint3DNumbers3D}" Content="Draw Point Numbers" Margin="0 5 0 0"/>
             </StackPanel>
 
             <StackPanel Name="panelOptionsTransform2D" Grid.Row="5" Grid.Column="2" Margin="10,35,0,0" Grid.RowSpan="2">

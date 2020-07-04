@@ -58,7 +58,7 @@ namespace PFD
         bool bRotate_90_CCW;
         bool bDrawScrews3D;
         bool bDrawPoints3D;
-        bool bDrawNumbers3D;
+        bool bDrawPoint3DNumbers3D;
 
         public bool IsSetFromCode = false;
         
@@ -463,17 +463,17 @@ namespace PFD
                 NotifyPropertyChanged("DrawPoints3D");
             }
         }
-        public bool DrawNumbers3D
+        public bool DrawPoint3DNumbers3D
         {
             get
             {
-                return bDrawNumbers3D;
+                return bDrawPoint3DNumbers3D;
             }
 
             set
             {
-                bDrawNumbers3D = value;
-                NotifyPropertyChanged("DrawNumbers3D");
+                bDrawPoint3DNumbers3D = value;
+                NotifyPropertyChanged("DrawPoint3DNumbers3D");
             }
         }
 
@@ -611,8 +611,8 @@ namespace PFD
             Amount = 1;
 
             DrawScrews3D = true;
-            DrawPoints3D = true;
-            DrawNumbers3D = true;
+            DrawPoints3D = false;
+            DrawPoint3DNumbers3D = false;
 
             IsSetFromCode = false;
         }
