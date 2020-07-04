@@ -32,7 +32,7 @@ namespace EXPIMP
         //private const string resourcesFolderPath = "./../../Resources/";
         private static string resourcesFolderPath = ConfigurationManager.AppSettings["ResourcesFolder"];
         private const double fontSizeInTable = 8;
-        private const int imageMaxWidth = 720;
+        private const int imageMaxWidth = 550;
 
         private const float quotationTableWidth = 520;
 
@@ -884,6 +884,16 @@ namespace EXPIMP
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
+            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES, view, filter);
+
+            opts.bCreateHorizontalGridlines = false;
+            opts.bCreateVerticalGridlinesFront = false;
+            opts.bCreateVerticalGridlinesBack = false;
+            opts.bCreateVerticalGridlinesLeft = false;
+            opts.bCreateVerticalGridlinesRight = false;
+
+            opts.bUseOrtographicCamera = true;
+
             string sParagraphName;
             string sImageName;
             string sTitle = "";
@@ -932,16 +942,9 @@ namespace EXPIMP
                 sParagraphName = "[3DModelImage_MemberSolidModel]";
                 sImageName = "ViewPort1.png";
                 sTitle = "";
+                opts.bUseOrtographicCamera = false;
             }
                         
-            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES, view, filter);
-
-            opts.bCreateHorizontalGridlines = false;
-            opts.bCreateVerticalGridlinesFront = false;
-            opts.bCreateVerticalGridlinesBack = false;
-            opts.bCreateVerticalGridlinesLeft = false;
-            opts.bCreateVerticalGridlinesRight = false;
-
             CModel filteredModel = null;
             Trackport3D trackport = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, fZoomFactor, out filteredModel, out trackport);
@@ -1853,9 +1856,9 @@ namespace EXPIMP
 
             int iContentMaxLevel = 2; // Maximalna uroven nadpisu "heading", ktora ma byt pridana do obsahu - TO Ondrej - nejako mi to nefunguje :(
             var toc = document.InsertTableOfContents(parTOC, "Table of Contents", TableOfContentsSwitches.H, null, iContentMaxLevel, 0);
-
+            parTOC.Remove(false);
             // Add a page break prior to the referenced paragraph so it starts on a fresh page after the Table of Content
-            parTOC.InsertPageBreakBeforeSelf();
+            //parTOC.InsertPageBreakBeforeSelf();
 
             //TableOfContents toc = document.InsertTableOfContents("Programatically generated TOC", TableOfContentsSwitches.H);
             //Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("Programatically generated TOC"));
