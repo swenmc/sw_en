@@ -124,7 +124,9 @@ namespace PFD
                     e.PropertyName == "DrawDimensions2D" ||
                     e.PropertyName == "DrawMemberOutline2D" ||
                     e.PropertyName == "DrawBendLines2D" ||
-                    e.PropertyName == "DrawScrews3D")
+                    e.PropertyName == "DrawScrews3D" ||
+                    e.PropertyName == "DrawPoints3D" ||
+                    e.PropertyName == "DrawNumbers3D")
                 {
                     DisplayComponent(vm);
                 }
@@ -1130,6 +1132,8 @@ namespace PFD
             sDisplayOptions.bUseEmissiveMaterial = true;
             sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
+            sDisplayOptions.bDisplayNodes = vm.DrawPoints3D;
+            sDisplayOptions.bDisplayNodesDescription = vm.DrawNumbers3D;
             page3D = new Page3Dmodel(plate, sDisplayOptions);
 
             // Display model in 3D preview frame

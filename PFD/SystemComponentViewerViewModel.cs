@@ -57,6 +57,8 @@ namespace PFD
         bool bRotate_90_CW;
         bool bRotate_90_CCW;
         bool bDrawScrews3D;
+        bool bDrawPoints3D;
+        bool bDrawNumbers3D;
 
         public bool IsSetFromCode = false;
         
@@ -448,6 +450,32 @@ namespace PFD
                 NotifyPropertyChanged("DrawScrews3D");
             }
         }
+        public bool DrawPoints3D
+        {
+            get
+            {
+                return bDrawPoints3D;
+            }
+
+            set
+            {
+                bDrawPoints3D = value;
+                NotifyPropertyChanged("DrawPoints3D");
+            }
+        }
+        public bool DrawNumbers3D
+        {
+            get
+            {
+                return bDrawNumbers3D;
+            }
+
+            set
+            {
+                bDrawNumbers3D = value;
+                NotifyPropertyChanged("DrawNumbers3D");
+            }
+        }
 
         public List<Point> DrillingRoutePoints
         {
@@ -583,6 +611,8 @@ namespace PFD
             Amount = 1;
 
             DrawScrews3D = true;
+            DrawPoints3D = true;
+            DrawNumbers3D = true;
 
             IsSetFromCode = false;
         }

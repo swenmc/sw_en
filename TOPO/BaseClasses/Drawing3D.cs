@@ -2180,7 +2180,7 @@ namespace BaseClasses
             return gr;
         }
 
-        private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model, DisplayOptions displayOptions)
+        public static Model3DGroup CreateModelNodes_Model3DGroup(CModel model, DisplayOptions displayOptions)
         {
             double nodesSize = 0.01; // Polovica dlzky strany kocky alebo polomer gule
             Model3DGroup model3D_group = new Model3DGroup();
@@ -2192,6 +2192,35 @@ namespace BaseClasses
                     if (model.m_arrNodes[i] != null) // Node object is valid (not empty)
                     {
                         Point3D p = new Point3D(model.m_arrNodes[i].X, model.m_arrNodes[i].Y, model.m_arrNodes[i].Z);
+
+                        // TODO Ondrej - presunut / refaktorovat metodu GetCube, aby bolo vsetko v balicku CVolume
+                        // Pridal som moznost ci chceme vykreslit uzol ako gulicku alebo kocku
+                        // Pripadne mozes upravit celu triedu CVolume, je tam teraz trosku chaos a duplicity, rozne mozne konstruktory pre to iste atd :)
+
+                        // Sphere
+                        model3D_group.Children.Add(CSphere.CreateM_3D_G_Volume_Sphere(p, (float)nodesSize, new DiffuseMaterial(new SolidColorBrush(displayOptions.NodeColor))));
+
+                        // Cube
+                        //model3D_group.Children.Add(GetCube(p, nodesSize, new SolidColorBrush(Colors.Cyan)));
+                    }
+                }
+            }
+
+            return model3D_group;
+        }
+
+        public static Model3DGroup CreateModelNodes_Model3DGroup(CPlate model, DisplayOptions displayOptions)
+        {
+            double nodesSize = 0.01; // Polovica dlzky strany kocky alebo polomer gule
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            if (model.arrPoints3D != null)
+            {
+                for (int i = 0; i < model.arrPoints3D.Length; i++)
+                {
+                    if (model.arrPoints3D[i] != null) // Node object is valid (not empty)
+                    {
+                        Point3D p = new Point3D(model.arrPoints3D[i].X, model.arrPoints3D[i].Y, model.arrPoints3D[i].Z);
 
                         // TODO Ondrej - presunut / refaktorovat metodu GetCube, aby bolo vsetko v balicku CVolume
                         // Pridal som moznost ci chceme vykreslit uzol ako gulicku alebo kocku
@@ -3378,6 +3407,58 @@ namespace BaseClasses
                         {
                             textlabel.Transform = centerModelTransGr;
                         }
+                        viewPort.Children.Add(textlabel);
+                    }
+                }
+            }
+        }
+        public static void CreateNodesDescriptionModel3D(CPlate model, Viewport3D viewPort, DisplayOptions displayOptions, float model_LX, float model_LY, float model_LZ)
+        {
+            if (model.arrPoints3D != null)
+            {
+                ModelVisual3D textlabel = null;
+
+                //float fTextBlockVerticalSize = displayOptions.fNodeDescriptionTextFontSize / 100f;
+                //float fTextBlockVerticalSizeFactor = 0.8f;
+                //float fTextBlockHorizontalSizeFactor = 0.3f;
+                                
+                //To Mato - displayOptions.fNodeDescriptionTextFontSize by sme mali mat asi nieco ako displayOptions.fNodeDescriptionTextSizeScaleFactor = 80f
+                float fTextBlockVerticalSize = MathF.Max(model_LX, model_LY, model_LZ) * displayOptions.ExportNodesDescriptionSize;
+                fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+
+                float fTextBlockVerticalSizeFactor = 1f;
+                float fTextBlockHorizontalSizeFactor = 1f;
+
+
+                for (int i = 0; i < model.arrPoints3D.Length; i++)
+                {
+                    if (model.arrPoints3D[i] != null) // Node object is valid (not empty)
+                    {
+                        Point3D p = new Point3D(model.arrPoints3D[i].X, model.arrPoints3D[i].Y, model.arrPoints3D[i].Z);
+                        string sTextToDisplay = (i+1).ToString();
+
+                        TextBlock tb = new TextBlock();
+                        tb.Text = sTextToDisplay;
+                        tb.FontFamily = new FontFamily("Arial");
+
+                        // Tieto nastavenia sa nepouziju
+                        tb.FontStretch = FontStretches.UltraCondensed;
+                        tb.FontStyle = FontStyles.Normal;
+                        tb.FontWeight = FontWeights.Thin;
+                        tb.Foreground = new SolidColorBrush(displayOptions.NodeDescriptionTextColor); // TO Ondrej - zda sa mi ze u textu je mozne nastavit rozne farby pre vypln a outline pismenok - vieme to nejako urobit ??? // Ina farba ako pre popis prutov
+                        //tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // Todo by mohlo byt nastavitelne // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
+
+                        float fOffsetZ = 0.06f;
+                        float fOffsetX = 0.06f;
+                        Point3D pTextPosition = new Point3D();
+                        pTextPosition.X = p.X - fOffsetX;
+                        pTextPosition.Y = p.Y;
+                        pTextPosition.Z = p.Z;
+
+                        // Create text
+                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, fTextBlockVerticalSizeFactor, 0), 0.5);
+                        textlabel.Transform = new TranslateTransform3D(-model_LX / 2.0f, -model_LY / 2.0f, -model_LZ / 2.0f);
+                        
                         viewPort.Children.Add(textlabel);
                     }
                 }
