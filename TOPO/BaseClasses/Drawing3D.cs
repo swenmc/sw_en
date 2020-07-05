@@ -1180,6 +1180,15 @@ namespace BaseClasses
             }
             return false;
         }
+        private static bool CheckTextsOverlaps(List<Point3D?> points, Point3D p, double minDist)
+        {
+            foreach (var p1 in points)
+            {
+                if (p1 == null) continue;
+                if (((Point3D)p1).DistanceTo(p) < minDist) return true;
+            }
+            return false;
+        }
         private static int GetOverlapingSymbolIndex(List<Point3D?> points, Point3D p, double minDist)
         {
             for (int i = 0; i < points.Count; i++)
@@ -3868,6 +3877,8 @@ namespace BaseClasses
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFoundationTextSize;
             fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
 
+            foundation.SetTextPoint(fTextBlockVerticalSize);
+
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -3882,7 +3893,7 @@ namespace BaseClasses
             Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
 
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up, 0.5);
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up, 0.5);            
             Transform3DGroup tr = new Transform3DGroup();
 
             if (foundation.GetFoundationTransformGroup_Complete() == null)
@@ -3903,11 +3914,14 @@ namespace BaseClasses
             {
                 textlabel.Transform = centerModelTransGr;
             }
-            viewPort.Children.Add(textlabel);
+            viewPort.Children.Add(textlabel);            
         }
 
         public static void CreateFoundationsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
+            List<Point3D?> points = new List<Point3D?>();
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFoundationTextSize;
+
             if (model.m_arrFoundations != null)
             {
                 for (int i = 0; i < model.m_arrFoundations.Count; i++)
@@ -3915,6 +3929,13 @@ namespace BaseClasses
                     if (model.m_arrFoundations[i] != null) // Foundation object is valid (not empty)
                     {
                         DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
+
+                        //tu je pokus riesit prekryvanie textov, ale ja mam pocit ze tie Foundations maju vsetky body ControlPoint aj PointText proste rovnake
+                        //if (!CheckTextsOverlaps(points, model.m_arrFoundations[i].PointText, fTextBlockVerticalSize * 3))
+                        //{
+                        //    points.Add(model.m_arrFoundations[i].PointText);
+                        //    DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
+                        //}
                     }
                 }
             }

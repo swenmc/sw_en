@@ -460,17 +460,17 @@ namespace BaseClasses
 
             CreateReinforcementBars();
 
-            SetTextPoint();
+            SetTextPoint(0.2f);
         }
 
-        public void SetTextPoint()
+        public void SetTextPoint(float textSize)
         {
             // V systeme GCS
-            float fCornerPointOffsetX = 0.3f;
-            float fCornerPointOffsetY = 0.2f;
+            //float fCornerPointOffsetX = 0.3f;
+            //float fCornerPointOffsetY = 0.2f;
 
-            float fOffsetX = m_fDim1 + m_EccentricityBasicColumn_x + m_Eccentricity_x + fCornerPointOffsetX;
-            float fOffsetY = m_fDim2 + m_EccentricityBasicColumn_y + m_Eccentricity_y + fCornerPointOffsetY;
+            float fOffsetX = m_fDim1 + m_EccentricityBasicColumn_x + m_Eccentricity_x + textSize;
+            float fOffsetY = m_fDim2 + m_EccentricityBasicColumn_y + m_Eccentricity_y + textSize;
             float fOffsetFromPlane = m_fDim3 + 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
             m_PointText = new Point3D()
