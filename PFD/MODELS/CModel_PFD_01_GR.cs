@@ -216,8 +216,8 @@ namespace PFD
             listOfModelMemberGroups.Add(new CMemberGroup(13, componentList[(int)EMemberGroupNames.ePurlinBracing].ComponentName, EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], 0, 0, 0, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(14, componentList[(int)EMemberGroupNames.eFrontGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirtsFrontSide, m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing], 0, 0, 0, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(15, componentList[(int)EMemberGroupNames.eBackGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirtsBackSide, m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing], 0, 0, 0, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(16, componentList[(int)EMemberGroupNames.eCrossBracing_Walls].ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracing_Wall, m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls], 0, 0, 0, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(17, componentList[(int)EMemberGroupNames.eCrossBracing_Roof].ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracing_Roof, m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(16, componentList[(int)EMemberGroupNames.eCrossBracing_Walls].ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(17, componentList[(int)EMemberGroupNames.eCrossBracing_Roof].ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof], 0, 0, 0, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
             if (m_arrMat.Length >= m_arrCrSc.Length)
@@ -592,8 +592,8 @@ namespace PFD
             // TO Ondrej - IN WORK Cross-bracing
 
             // Ak chceme cross bracing zrusit toto nastavime v kode na false
-            bool bGenerateSideWallCrossBracing = false;
-            bool bGenerateRoofCrossBracing = false;
+            bool bGenerateSideWallCrossBracing = true;
+            bool bGenerateRoofCrossBracing = true;
 
 
             // TEMPORARY - To Ondrej TOTO BY MALO PRIST Z GUI
@@ -683,8 +683,6 @@ namespace PFD
             listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex15);
             listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex16);
 
-            int iNumberOfCrossBracingMembers_Walls_Total = 0;
-
             if(bGenerateSideWallCrossBracing)
             {
                 foreach(CrossBracingProperties cbProp in listCrossBracingPropertiesInBays)
@@ -705,8 +703,6 @@ namespace PFD
                     iNumberOfCrossBracingMembers_Walls_Total += cbProp.iNumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing pre valls v celom modeli
                 }
             }
-
-            int iNumberOfCrossBracingMembers_Roof_Total = 0;
 
             if (bGenerateRoofCrossBracing)
             {
@@ -1343,7 +1339,7 @@ namespace PFD
             #region Joints
             if (joints == null)
                 CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
-                             bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, vm._generalOptionsVM.WindPostUnderRafter, iOneColumnGirtNo);
+                             bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, bGenerateSideWallCrossBracing, bGenerateRoofCrossBracing, vm._generalOptionsVM.WindPostUnderRafter, iOneColumnGirtNo);
             else
                 m_arrConnectionJoints = joints;
             #endregion

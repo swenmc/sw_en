@@ -1027,6 +1027,7 @@ namespace sw_en_GUI
         {
             model = new CExample_3D_902_OM();
             DisplayOptions sDisplayOptions = new DisplayOptions();
+
             sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bUseDiffuseMaterial = true;
             sDisplayOptions.bUseEmissiveMaterial = true;
@@ -1043,6 +1044,12 @@ namespace sw_en_GUI
 
             sDisplayOptions.memberCenterlineColor = Colors.Yellow;
             sDisplayOptions.fmemberCenterlineThickness = 1;
+
+            sDisplayOptions.PlateColor = Colors.Gray;
+            sDisplayOptions.ScrewColor = Colors.Blue;
+            sDisplayOptions.AnchorColor = Colors.LightGoldenrodYellow;
+            sDisplayOptions.WasherColor = Colors.LightGreen;
+            sDisplayOptions.NutColor = Colors.LightPink;
 
             sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 

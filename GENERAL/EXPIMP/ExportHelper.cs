@@ -1012,16 +1012,35 @@ namespace EXPIMP
             double width = 570; double height = 430; // Todo 493 - vsade rovnake velkosti render size pre view port bez ohladu ci ide o export do doc alebo pdf
 
             CConnectionJointTypes firstSameJoint = GetFirstSameJointFromModel(joint, model);
-            
+
             CConnectionJointTypes jointClone = firstSameJoint.Clone();
-            
+
             float fMainMemberLength = 0;
             float fSecondaryMemberLength = 0;
 
-            for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
+            if (jointClone.m_arrPlates != null && jointClone.m_arrPlates.Length > 0) // Nie vsetky spoje obsahuju plates
             {
-                fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
-                fSecondaryMemberLength = fMainMemberLength;
+                for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
+                {
+                    fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
+                    fSecondaryMemberLength = fMainMemberLength;
+                }
+            }
+            else // Ak nie su v spoji plates, nastavime defaultne dlzky podla maximalneho rozmeru prierezov prutov vynasobene x 2
+            {
+                if (jointClone.m_MainMember != null)
+                    fMainMemberLength = 2 * (float)MathF.Max(jointClone.m_MainMember.CrScStart.b, jointClone.m_MainMember.CrScStart.h);
+
+                if (jointClone.m_SecondaryMembers != null && jointClone.m_SecondaryMembers.Length > 0) // Nie vsetky spoje obsahuju secondary members
+                {
+                    for (int i = 0; i < jointClone.m_SecondaryMembers.Length; i++)
+                    {
+                        float tempLength = 2 * (float)MathF.Max(jointClone.m_SecondaryMembers[i].CrScStart.b, jointClone.m_SecondaryMembers[i].CrScStart.h);
+
+                        if (tempLength > fSecondaryMemberLength)
+                            fSecondaryMemberLength = tempLength;
+                    }
+                }
             }
 
             float fMainMemberLengthFactor = 1.1f;      // Upravi dlzku urcenu z maximalneho rozmeru plechu
@@ -1268,10 +1287,29 @@ namespace EXPIMP
                 float fMainMemberLength = 0;
                 float fSecondaryMemberLength = 0;
 
-                for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
+                if (jointClone.m_arrPlates != null && jointClone.m_arrPlates.Length > 0) // Nie vsetky spoje obsahuju plates
                 {
-                    fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
-                    fSecondaryMemberLength = fMainMemberLength;
+                    for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
+                    {
+                        fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
+                        fSecondaryMemberLength = fMainMemberLength;
+                    }
+                }
+                else // Ak nie su v spoji plates, nastavime defaultne dlzky podla maximalneho rozmeru prierezov prutov vynasobene x 2
+                {
+                    if (jointClone.m_MainMember != null)
+                        fMainMemberLength = 2 * (float)MathF.Max(jointClone.m_MainMember.CrScStart.b, jointClone.m_MainMember.CrScStart.h);
+
+                    if (jointClone.m_SecondaryMembers != null && jointClone.m_SecondaryMembers.Length > 0) // Nie vsetky spoje obsahuju secondary members
+                    {
+                        for (int i = 0; i < jointClone.m_SecondaryMembers.Length; i++)
+                        {
+                            float tempLength = 2 * (float)MathF.Max(jointClone.m_SecondaryMembers[i].CrScStart.b, jointClone.m_SecondaryMembers[i].CrScStart.h);
+
+                            if (tempLength > fSecondaryMemberLength)
+                                fSecondaryMemberLength = tempLength;
+                        }
+                    }
                 }
 
                 float fMainMemberLengthFactor = 1.1f;      // Upravi dlzku urcenu z maximalneho rozmeru plechu

@@ -2558,7 +2558,7 @@ namespace PFD
 
                         string parent_folder = dialog.SelectedPath;
                         DirectoryInfo di = DocumentationHelper.CreateDocumentationFolder(parent_folder, projectInfoVM.ProjectNumber);
-                                                
+
                         //get all different plates from material list
                         List<CPlate> diff_plates = QuotationHelper.GetDifferentPlates(vm.Model);
 

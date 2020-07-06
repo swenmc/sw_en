@@ -1909,6 +1909,10 @@ namespace M_AS4600
                         listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
                     }
                 }
+                else if (calc.joint is CConnectionJoint_U001)
+                {
+                    // TODO - detaily vysledkov
+                }
                 else
                 {
                     // Exception - not defined type
@@ -2139,6 +2143,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fEta_M_s_y_331_1_plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
+
             else
             {
                 // Exception - not defined type

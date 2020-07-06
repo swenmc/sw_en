@@ -1710,7 +1710,7 @@ namespace BaseClasses
                         }
 
                         // Connectors
-                        bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj pomocou screws priamo medzi nosnikmi bez plechu (tiahla - bracing)
+                        bool bUseAdditionalConnectors = true; // Spojovacie prvky, ktore nie su viazane na plechy (plates), napr. spoj pomocou screws priamo medzi nosnikmi bez plechu (plate) (teda spoj U001 - tiahla - bracing pripojene priamo k prutom main frame)
 
                         if (bUseAdditionalConnectors && cmodel.m_arrConnectionJoints[i].m_arrConnectors != null)
                         {
@@ -4935,10 +4935,29 @@ namespace BaseClasses
                 float fMainMemberLength = 0;
                 float fSecondaryMemberLength = 0;
 
-                for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
+                if (jointClone.m_arrPlates != null && jointClone.m_arrPlates.Length > 0) // Nie vsetky spoje obsahuju plates
                 {
-                    fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
-                    fSecondaryMemberLength = fMainMemberLength;
+                    for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
+                    {
+                        fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
+                        fSecondaryMemberLength = fMainMemberLength;
+                    }
+                }
+                else // Ak nie su v spoji plates, nastavime defaultne dlzky podla maximalneho rozmeru prierezov prutov vynasobene x 2
+                {
+                    if(jointClone.m_MainMember != null)
+                       fMainMemberLength = 2 * (float)MathF.Max(jointClone.m_MainMember.CrScStart.b, jointClone.m_MainMember.CrScStart.h);
+
+                    if (jointClone.m_SecondaryMembers != null && jointClone.m_SecondaryMembers.Length > 0) // Nie vsetky spoje obsahuju secondary members
+                    {
+                        for (int i = 0; i < jointClone.m_SecondaryMembers.Length; i++)
+                        {
+                            float tempLength = 2 * (float)MathF.Max(jointClone.m_SecondaryMembers[i].CrScStart.b, jointClone.m_SecondaryMembers[i].CrScStart.h);
+
+                            if (tempLength > fSecondaryMemberLength)
+                               fSecondaryMemberLength = tempLength;
+                        }
+                    }
                 }
 
                 float fMainMemberLengthFactor = 1.1f;      // Upravi dlzku urcenu z maximalneho rozmeru plechu

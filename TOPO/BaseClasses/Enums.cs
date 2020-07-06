@@ -478,8 +478,8 @@ namespace BaseClasses
         WindowFrame = 17,
         DoorTrimmer = 18,
         DoorLintel = 19,
-        CrossBracing_Wall = 20,
-        CrossBracing_Roof = 21
+        CrossBracingWall = 20,
+        CrossBracingRoof = 21
     }
 
     // TODO - Ondrej TOTO je asi zbytocna duplicita

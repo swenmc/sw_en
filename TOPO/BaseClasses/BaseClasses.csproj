@@ -132,6 +132,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BX.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_H.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_G.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_CB.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_M.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CNut.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_Frame.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KHS.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_M.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CWasher_W.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_U001.cs" />
     <Compile Include="Model\COpeningProperties.cs" />
     <Compile Include="Model\CrossBracingProperties.cs" />
     <Compile Include="Model\Foundations\CReinforcementBar.cs" />

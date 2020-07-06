@@ -41,16 +41,13 @@ namespace EXPIMP
         private const int fontSizeDetailTable = 8; // Details description tables text
         private static int sheetNo;
 
-        private static XPdfFontOptions options;
+        private static XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode); // Set font encoding to unicode
         //private static PdfDocument document = null;
         private static List<string[]> contents = new List<string[]>();
 
         public static void ReportAllDataToPDFFile(CModelData modelData, LayoutsExportOptionsViewModel exportOpts)
         {
             sheetNo = 1;
-            // Set font encoding to unicode
-            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
-
             PdfDocument s_document = new PdfDocument();
 
             CProjectInfo projectInfo = modelData.ProjectInfo; // GetProjectInfo();
@@ -860,6 +857,7 @@ namespace EXPIMP
                 CConnectionJointTypes joint = kvp.Value;
 
                 Trackport3D trackport = null;
+
                 Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, opts, data.Model, 1f, out trackport);
                 foreach (Visual3D obj3D in viewPort.Children)
                 {
@@ -2697,7 +2695,15 @@ namespace EXPIMP
                             tableParams.Add(new string[2] { "Note", "Drypack between plate and floor to suit" });
                         }
                     }
+                }
+            }
 
+            if(joint.m_arrConnectors != null && joint.m_arrConnectors.Length > 0)
+            {
+                if (joint.m_arrConnectors.FirstOrDefault() is CScrew) // TODO - zobecnit - Nemusia byt vsetky CScrew ani nemusi byt prvy typ CScrew ale zatial nemame ine
+                {
+                    tableParams.Add(new string[2] { "Screws", joint.m_arrConnectors.Length.ToString() + " x " +
+                    "TEKs " + (((CScrew)joint.m_arrConnectors.FirstOrDefault()).Gauge + "g").ToString() + " one side" });
                 }
             }
 

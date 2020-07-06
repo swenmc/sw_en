@@ -552,6 +552,7 @@ namespace PFD
             {
                 model.m_arrConnectionJoints[i].SetJointIsSelectedForMaterialListAccordingToMember();
                 if (!model.m_arrConnectionJoints[i].BIsSelectedForMaterialList) continue;
+                if (model.m_arrConnectionJoints[i].m_arrPlates == null || model.m_arrConnectionJoints[i].m_arrPlates.Length == 0) continue; // TODO - vylepsit... Zatial nemame ine spoje, ktore obsahuju bolts alebo anchors a neobsahuju plates
 
                 for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                 {

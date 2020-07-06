@@ -697,6 +697,7 @@ namespace PFD
                 case "TB01": return typeof(CConnectionJoint_TB01);
                 case "TC01": return typeof(CConnectionJoint_TC01);
                 case "TD01": return typeof(CConnectionJoint_TD01);
+                case "U001": return typeof(CConnectionJoint_U001);
                 default:
 
                     //temp it should throw exceoton if there is not recognized joint type

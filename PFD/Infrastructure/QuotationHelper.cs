@@ -263,6 +263,8 @@ namespace PFD
                 if (joint.BIsSelectedForMaterialList)
                 {
                     // Set plates and connectors data
+                    if (joint.m_arrPlates == null || joint.m_arrPlates.Length == 0) continue;
+
                     foreach (CPlate plate in joint.m_arrPlates)
                     {
                         dTotalPlatesArea_Model += plate.fArea;
@@ -360,8 +362,8 @@ namespace PFD
             row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = "";
             row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = dTotalPlatesPrice_Table.ToString("F2");
             table.Rows.Add(row);
-            
-            return ds;            
+
+            return ds;
         }
 
         public static List<QuotationItem> GetPlatesQuotation(CModel model, float fCFS_PricePerKg_Plates_Total)
@@ -373,6 +375,7 @@ namespace PFD
                 joint.SetJointIsSelectedForMaterialListAccordingToMember();
 
                 if (!joint.BIsSelectedForMaterialList) continue;
+                if (joint.m_arrPlates == null || joint.m_arrPlates.Length == 0) continue; // Spoj neobsahuje plates (napr. U001)
 
                 foreach (CPlate plate in joint.m_arrPlates) // For each plate
                 {
@@ -463,7 +466,6 @@ namespace PFD
                     }
                     //end temp
                 }
-
             }
 
             return quotation;
@@ -480,10 +482,11 @@ namespace PFD
                 joint.SetJointIsSelectedForMaterialListAccordingToMember();
 
                 if (!joint.BIsSelectedForMaterialList) continue;
+                if (joint.m_arrPlates == null || joint.m_arrPlates.Length == 0) continue; // Spoj neobsahuje plates (napr. U001)
 
                 foreach (CPlate plate in joint.m_arrPlates) // For each plate
                 {
-                    
+
                     #region Base Plate
                     // TO Ondrej Blok1 Plate START
                     // ----------------------------------------------------------------------------------------------------------------------------------------
@@ -500,7 +503,7 @@ namespace PFD
                     // TO Ondrej Blok1 Plate END
                     // ----------------------------------------------------------------------------------------------------------------------------------------
                     #endregion
-                                        
+
                     if (plate is CConCom_Plate_B_basic)
                     {
                         CConCom_Plate_B_basic plateB = (CConCom_Plate_B_basic)plate;
@@ -550,12 +553,10 @@ namespace PFD
                     }
                     //end temp
                 }
-
             }
 
             return plates;
         }
-
 
         public static DataSet GetTableConnectors(CModel model, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
@@ -572,36 +573,48 @@ namespace PFD
 
                 if (!joint.BIsSelectedForMaterialList) continue;
 
-                foreach (CPlate plate in joint.m_arrPlates) // For each plate
+                if (joint.m_arrPlates != null && joint.m_arrPlates.Length > 0) // Spoj obsahuje plates
                 {
-                    // Screws
-                    if (plate.ScrewArrangement != null && plate.ScrewArrangement.Screws != null)
+                    foreach (CPlate plate in joint.m_arrPlates) // For each plate
                     {
-                        QuotationHelper.AddConnector(plate.ScrewArrangement.Screws.FirstOrDefault(), quotation, plate.ScrewArrangement.Screws.Length);
-                    }
-
-                    // Anchors
-                    if (plate is CConCom_Plate_B_basic)
-                    {
-                        CConCom_Plate_B_basic plateB = (CConCom_Plate_B_basic)plate;
-
-                        if (plateB.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+                        // Screws
+                        if (plate.ScrewArrangement != null && plate.ScrewArrangement.Screws != null)
                         {
-                            // TASK 422
-                            // Doplnit data pre anchors
-                            // Refaktorovat anchors a screws
-                            // Pre Quantity asi zaviest Count a zjednotit nazov stlpca pre pocet vsade
+                            QuotationHelper.AddConnector(plate.ScrewArrangement.Screws.FirstOrDefault(), quotation, plate.ScrewArrangement.Screws.Length);
+                        }
 
-                            // Pre screws - gauge + dlzka (14g - 38)
-                            // Pre anchors  - name + dlzka (M16 - 330)
+                        // Anchors
+                        if (plate is CConCom_Plate_B_basic)
+                        {
+                            CConCom_Plate_B_basic plateB = (CConCom_Plate_B_basic)plate;
 
-                            // Prefix | Quantity |     Material     | Size    |   Mass per Piece [kg] | Total Mass [kg] | Unit Price [NZD / piece] | Total Price [NZD]
-                            // TEK    |     1515 | Class 3 / 4 / B8 |  14g-38 |                 0.052 |
-                            // Anchor |       65 |              8.8 | M16-330 |                 2.241 |
+                            if (plateB.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+                            {
+                                // TASK 422
+                                // Doplnit data pre anchors
+                                // Refaktorovat anchors a screws
+                                // Pre Quantity asi zaviest Count a zjednotit nazov stlpca pre pocet vsade
 
-                            QuotationHelper.AddConnector(plateB.AnchorArrangement.Anchors.FirstOrDefault(), quotation, plateB.AnchorArrangement.Anchors.Length);
+                                // Pre screws - gauge + dlzka (14g - 38)
+                                // Pre anchors  - name + dlzka (M16 - 330)
+
+                                // Prefix | Quantity |     Material     | Size    |   Mass per Piece [kg] | Total Mass [kg] | Unit Price [NZD / piece] | Total Price [NZD]
+                                // TEK    |     1515 | Class 3 / 4 / B8 |  14g-38 |                 0.052 |
+                                // Anchor |       65 |              8.8 | M16-330 |                 2.241 |
+
+                                QuotationHelper.AddConnector(plateB.AnchorArrangement.Anchors.FirstOrDefault(), quotation, plateB.AnchorArrangement.Anchors.Length);
+                            }
                         }
                     }
+                }
+
+                if(joint.m_arrConnectors != null && joint.m_arrConnectors.Length > 0)
+                {
+                    // Screws
+                    if (joint.m_arrConnectors.FirstOrDefault() is CScrew) // Nemalo by sa posuzovat podla prveho objektu, mozu tam byt rozne, ale zatial to necham tak. Mal to byt cyklus cez vsetky polozky a roztriedit ich podla typu
+                        QuotationHelper.AddConnector(joint.m_arrConnectors.FirstOrDefault(), quotation, joint.m_arrConnectors.Length);
+                    else
+                        throw new Exception("Not implemented type of connector.");
                 }
             }
 

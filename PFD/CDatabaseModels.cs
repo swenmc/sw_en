@@ -432,8 +432,8 @@ namespace PFD
             MembersSectionsDict.Add(EMemberType_FS_Position.BracingBlockGirtsFrontSide, model.BracingBlocksGirtsFrontSide);
             MembersSectionsDict.Add(EMemberType_FS_Position.BracingBlockGirtsBackSide, model.BracingBlocksGirtsBackSide);
 
-            MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracing_Wall, model.CrossBracingWalls);
-            MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracing_Roof, model.CrossBracingRoof);
+            MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracingWall, model.CrossBracingWalls);
+            MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracingRoof, model.CrossBracingRoof);
         }
     }
 }

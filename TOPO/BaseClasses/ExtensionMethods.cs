@@ -175,7 +175,9 @@ namespace BaseClasses
 
             //temp 23.1.2020 snazim sa ostranit OutOfMemoryException
             joint.Visual_ConnectionJoint = null;
-            foreach (CPlate plate in joint.m_arrPlates) plate.Visual_Plate = null;
+
+            if(joint.m_arrPlates !=null) // Nie vsetky spoje obsahuju plate, napr. U001
+               foreach (CPlate plate in joint.m_arrPlates) plate.Visual_Plate = null;
             //end temp
 
 
@@ -259,7 +261,11 @@ namespace BaseClasses
                 CConnectionJoint_TD01 j = joint as CConnectionJoint_TD01;
                 clone = j.Clone();
             }
-
+            else if (joint is CConnectionJoint_U001)
+            {
+                CConnectionJoint_U001 j = joint as CConnectionJoint_U001;
+                clone = j.Clone();
+            }
             return clone;
         }
 
@@ -417,8 +423,8 @@ namespace BaseClasses
                 case EMemberType_FS_Position.WindowFrame: return "Window Frame";
                 case EMemberType_FS_Position.DoorTrimmer: return "Door Trimmer";
                 case EMemberType_FS_Position.DoorLintel: return "Door Lintel";
-                case EMemberType_FS_Position.CrossBracing_Wall: return "Cross Bracing Walls";
-                case EMemberType_FS_Position.CrossBracing_Roof: return "Cross Bracing Roof";
+                case EMemberType_FS_Position.CrossBracingWall: return "Cross Bracing Walls";
+                case EMemberType_FS_Position.CrossBracingRoof: return "Cross Bracing Roof";
             }
             return "Unknown EMemberType_FS_Position";
         }
