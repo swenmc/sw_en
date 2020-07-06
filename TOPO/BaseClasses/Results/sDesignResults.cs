@@ -44,6 +44,9 @@ namespace BaseClasses
             m_DesignResults.Add(EMemberType_FS_Position.WindowFrame, new DesignResultItem());
             m_DesignResults.Add(EMemberType_FS_Position.DoorTrimmer, new DesignResultItem());
             m_DesignResults.Add(EMemberType_FS_Position.DoorLintel, new DesignResultItem());
+
+            m_DesignResults.Add(EMemberType_FS_Position.CrossBracingWall, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.CrossBracingRoof, new DesignResultItem());
         }
     }
 }
