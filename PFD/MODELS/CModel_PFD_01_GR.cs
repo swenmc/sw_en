@@ -581,8 +581,14 @@ namespace PFD
             bool bGenerateSideWallCrossBracing = true;
             bool bGenerateRoofCrossBracing = true;
 
+            // Bug 596
+            // TO ONDREJ - Tieto prepocty poctu prutov by sme mali asi dat niekam do CrossBracingOptionsViewModel, lebo ked sa model len pregeneruje tak sa povodne hodnoty z jednotlivych
+            // CCrossBracingInfo cb nezmazu ale pripocitavaju sa znova cez +=
+            // Cela pointa tychto vypoctov je urcit zo stupov v GUI kolko prutov cross bracing sa bude generovat a na zaklade toho alokovat velkost pola m_arrMembers
+            // !!! Vypocet pre cb.NumberOfCrossBracingMembers_BayRoof je iny pre GB a MR, ale dalo by sa to zjednotit a osetrit podmienkou
+
             //Prva bay ma index 0
-            if(bGenerateSideWallCrossBracing)
+            if (bGenerateSideWallCrossBracing)
             {
                 foreach(CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
@@ -603,7 +609,7 @@ namespace PFD
                 }
             }
 
-             if (bGenerateRoofCrossBracing)
+            if (bGenerateRoofCrossBracing)
             {
                 foreach(CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
@@ -622,7 +628,7 @@ namespace PFD
                             cb.NumberOfCrossesPerRafter = 2;
 
                         // 2 pruty * 2 strany (gable roof !!!!) * pocet krizov na jeden rafter v danej bay
-                        cb.NumberOfCrossBracingMembers_BayRoof = 2 * 2 * cb.NumberOfCrossesPerRafter;
+                        cb.NumberOfCrossBracingMembers_BayRoof = 2 * 2 * cb.NumberOfCrossesPerRafter; // Rozdiel oproti MR
                         cb.NumberOfCrossBracingMembers_Bay += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing v Bay
                         iNumberOfCrossBracingMembers_Roof_Total += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing pre roof v celom modeli // Rozne podla vstupu v GUI a ine pre gable roof a monopitch
                     }

@@ -2800,9 +2800,9 @@ namespace PFD
             KitsetTypeIndex = kitsetTypeIndex;
 
             //temp defaults
-            Width = 30;
-            Length = 100;
-            Frames = 40;
+            //Width = 30;
+            //Length = 100;
+            //Frames = 40;
 
             _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items);
 

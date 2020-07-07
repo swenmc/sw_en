@@ -35,11 +35,9 @@ namespace PFD
         private bool m_WallLeft;
         private bool m_WallRight;
         private bool m_Roof;
-        private string m_RoofPosition;        
+        private string m_RoofPosition;
         private bool m_FirstCrossOnRafter;
         private bool m_LastCrossOnRafter;
-
-
 
         public List<string> RoofPositions
         {
