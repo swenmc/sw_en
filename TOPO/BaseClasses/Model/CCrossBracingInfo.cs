@@ -283,7 +283,8 @@ namespace BaseClasses
             m_WallLeft = wallLeft;
             m_WallRight = wallRight;
             m_Roof = roof;
-            m_RoofPosition = roofPosition;            
+            m_RoofPosition = roofPosition;
+            m_EveryXXPurlin = everyXXpurlin;
             m_FirstCrossOnRafter = firstCrossOnRafter;
             m_LastCrossOnRafter = lastCrossOnRafter;
         }
