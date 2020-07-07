@@ -699,140 +699,53 @@ namespace PFD
             }
 
             //----------------------------------------------------------------------------------------------------------------------------
-            // TO Ondrej - IN WORK Cross-bracing
+            //Cross-bracing
 
             // Ak chceme cross bracing zrusit toto nastavime v kode na false
             bool bGenerateSideWallCrossBracing = false;
             bool bGenerateRoofCrossBracing = false;
 
-
-            // TEMPORARY - To Ondrej TOTO BY MALO PRIST Z GUI
-            //Prva bay ma index 0
-            CrossBracingProperties crossBracingPropertiesBayIndex0 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex0.iBayNumber = 1;
-            crossBracingPropertiesBayIndex0.iBayIndex = 0;
-            crossBracingPropertiesBayIndex0.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex0.bWallRightSide = true;
-            crossBracingPropertiesBayIndex0.bRoof = true;
-            crossBracingPropertiesBayIndex0.iEveryXXPurlin = 3;
-
-            CrossBracingProperties crossBracingPropertiesBayIndex3 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex3.iBayNumber = 4;
-            crossBracingPropertiesBayIndex3.iBayIndex = 3;
-            crossBracingPropertiesBayIndex3.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex3.bWallRightSide = true;
-            crossBracingPropertiesBayIndex3.bRoof = true;
-            crossBracingPropertiesBayIndex3.iEveryXXPurlin = 4;
-
-            CrossBracingProperties crossBracingPropertiesBayIndex6 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex6.iBayNumber = 7;
-            crossBracingPropertiesBayIndex6.iBayIndex = 6;
-            crossBracingPropertiesBayIndex6.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex6.bWallRightSide = true;
-            crossBracingPropertiesBayIndex6.bRoof = true;
-            crossBracingPropertiesBayIndex6.iEveryXXPurlin = 2;
-
-            CrossBracingProperties crossBracingPropertiesBayIndex8 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex8.iBayNumber = 9;
-            crossBracingPropertiesBayIndex8.iBayIndex = 8;
-            crossBracingPropertiesBayIndex8.bWallLeftSide = false;
-            crossBracingPropertiesBayIndex8.bWallRightSide = false;
-            crossBracingPropertiesBayIndex8.bRoof = true;
-            crossBracingPropertiesBayIndex8.iEveryXXPurlin = 5;
-
-            CrossBracingProperties crossBracingPropertiesBayIndex11 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex11.iBayNumber = 12;
-            crossBracingPropertiesBayIndex11.iBayIndex = 11;
-            crossBracingPropertiesBayIndex11.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex11.bWallRightSide = true;
-            crossBracingPropertiesBayIndex11.bRoof = false;
-            crossBracingPropertiesBayIndex11.iEveryXXPurlin = 0;
-
-            CrossBracingProperties crossBracingPropertiesBayIndex12 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex12.iBayNumber = 13;
-            crossBracingPropertiesBayIndex12.iBayIndex = 12;
-            crossBracingPropertiesBayIndex12.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex12.bWallRightSide = false;
-            crossBracingPropertiesBayIndex12.bRoof = true;
-            crossBracingPropertiesBayIndex12.iEveryXXPurlin = 1;
-
-            CrossBracingProperties crossBracingPropertiesBayIndex13 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex13.iBayNumber = 14;
-            crossBracingPropertiesBayIndex13.iBayIndex = 13;
-            crossBracingPropertiesBayIndex13.bWallLeftSide = false;
-            crossBracingPropertiesBayIndex13.bWallRightSide = true;
-            crossBracingPropertiesBayIndex13.bRoof = true;
-            crossBracingPropertiesBayIndex13.iEveryXXPurlin = 8;
-
-            CrossBracingProperties crossBracingPropertiesBayIndex15 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex15.iBayNumber = 16;
-            crossBracingPropertiesBayIndex15.iBayIndex = 15;
-            crossBracingPropertiesBayIndex15.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex15.bWallRightSide = true;
-            crossBracingPropertiesBayIndex15.bRoof = true;
-            crossBracingPropertiesBayIndex15.iEveryXXPurlin = 1;
-
-            CrossBracingProperties crossBracingPropertiesBayIndex16 = new CrossBracingProperties();
-            crossBracingPropertiesBayIndex16.iBayNumber = 17;
-            crossBracingPropertiesBayIndex16.iBayIndex = 16;
-            crossBracingPropertiesBayIndex16.bWallLeftSide = true;
-            crossBracingPropertiesBayIndex16.bWallRightSide = true;
-            crossBracingPropertiesBayIndex16.bRoof = true;
-            crossBracingPropertiesBayIndex16.iEveryXXPurlin = 3;
-            crossBracingPropertiesBayIndex16.bOnlyFirstCrossOnRafter = true;
-
-            List<CrossBracingProperties> listCrossBracingPropertiesInBays = new List<CrossBracingProperties>();
-
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex0);
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex3);
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex6);
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex8);
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex11);
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex12);
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex13);
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex15);
-            listCrossBracingPropertiesInBays.Add(crossBracingPropertiesBayIndex16);
-
             if (bGenerateSideWallCrossBracing)
             {
-                foreach (CrossBracingProperties cbProp in listCrossBracingPropertiesInBays)
+                foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
-                    if (cbProp.bWallLeftSide)
-                    {
-                        cbProp.iNumberOfCrossBracingMembers_WallLeftSide = 2;
-                        cbProp.iNumberOfCrossBracingMembers_Walls += cbProp.iNumberOfCrossBracingMembers_WallLeftSide;
+                    if (cb.WallLeft)
+                    {                        
+                        cb.NumberOfCrossBracingMembers_WallLeftSide = 2;
+                        cb.NumberOfCrossBracingMembers_Walls += cb.NumberOfCrossBracingMembers_WallLeftSide;
                     }
 
-                    if (cbProp.bWallRightSide)
+                    if (cb.WallRight)
                     {
-                        cbProp.iNumberOfCrossBracingMembers_WallRightSide = 2;
-                        cbProp.iNumberOfCrossBracingMembers_Walls += cbProp.iNumberOfCrossBracingMembers_WallRightSide;
+                        cb.NumberOfCrossBracingMembers_WallRightSide = 2;
+                        cb.NumberOfCrossBracingMembers_Walls += cb.NumberOfCrossBracingMembers_WallRightSide;
                     }
 
-                    cbProp.iNumberOfCrossBracingMembers_Bay += cbProp.iNumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing v Bay
-                    iNumberOfCrossBracingMembers_Walls_Total += cbProp.iNumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing pre valls v celom modeli
+                    cb.NumberOfCrossBracingMembers_Bay += cb.NumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing v Bay
+                    iNumberOfCrossBracingMembers_Walls_Total += cb.NumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing pre valls v celom modeli
                 }
             }
 
             if (bGenerateRoofCrossBracing)
             {
-                foreach (CrossBracingProperties cbProp in listCrossBracingPropertiesInBays)
+                foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
-                    if (cbProp.bRoof)
+                    if (cb.Roof)
                     {
                         // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
-                        if (cbProp.iEveryXXPurlin < 1) throw new ArgumentOutOfRangeException("Invalid index of purlin for cross-bracing. Index is " + cbProp.iEveryXXPurlin);
+                        //if (cb.EveryXXPurlin < 1) throw new ArgumentOutOfRangeException("Invalid index of purlin for cross-bracing. Index is " + cb.iEveryXXPurlin);
+                        if (cb.RoofPosition == "None") throw new ArgumentOutOfRangeException("Invalid count of purlins. Could not be NONE.");
 
-                        cbProp.iNumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;
-                        cbProp.iNumberOfCrossesPerRafter = cbProp.iNumberOfCrossesPerRafter_Maximum / cbProp.iEveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
+                        cb.NumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;
+                        cb.NumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
 
-                        if (cbProp.bOnlyFirstCrossOnRafter)
-                            cbProp.iNumberOfCrossesPerRafter = 1;
+                        if (cb.FirstCrossOnRafter)
+                            cb.NumberOfCrossesPerRafter = 1;
 
                         // 2 pruty * 2 strany (gable roof !!!!) * pocet krizov na jeden rafter v danej bay
-                        cbProp.iNumberOfCrossBracingMembers_BayRoof = /*2 **/ 2 * cbProp.iNumberOfCrossesPerRafter;
-                        cbProp.iNumberOfCrossBracingMembers_Bay += cbProp.iNumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing v Bay
-                        iNumberOfCrossBracingMembers_Roof_Total += cbProp.iNumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing pre roof v celom modeli // Rozne podla vstupu v GUI a ine pre gable roof a monopitch
+                        cb.NumberOfCrossBracingMembers_BayRoof = /*2 **/ 2 * cb.NumberOfCrossesPerRafter;
+                        cb.NumberOfCrossBracingMembers_Bay += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing v Bay
+                        iNumberOfCrossBracingMembers_Roof_Total += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing pre roof v celom modeli // Rozne podla vstupu v GUI a ine pre gable roof a monopitch
                     }
                 }
             }
@@ -1421,12 +1334,12 @@ namespace PFD
             if (bGenerateSideWallCrossBracing || bGenerateRoofCrossBracing)
             {
                 // Cyklus pre kazdu bay , cross bracing properties pre bay zadanu v GUI
-                foreach (CrossBracingProperties cbProp in listCrossBracingPropertiesInBays)
+                foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
                     // TODO - Ondrej - mozno by sa mala do funkcie poslat cela trieda CrossBracingProperties, funkcia bude mat ovela menej parametrov
                     GenerateCrossBracingMembersInBay(bGenerateSideWallCrossBracing,
                     bGenerateRoofCrossBracing,
-                    cbProp.iBayIndex,
+                    cb.BayIndex,
                     i_temp_numberofMembers,
                     // CMemberEccentricity eccentricity,
                     0f,
@@ -1435,12 +1348,12 @@ namespace PFD
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
                     // float fMemberRotation,
                     bGenerateGirts,
-                    cbProp.iNumberOfCrossBracingMembers_Walls,
-                    cbProp.iNumberOfCrossesPerRafter,
-                    cbProp.iEveryXXPurlin,
-                    cbProp.bOnlyFirstCrossOnRafter);
+                    cb.NumberOfCrossBracingMembers_Walls,
+                    cb.NumberOfCrossesPerRafter,
+                    cb.EveryXXPurlin,
+                    cb.FirstCrossOnRafter);
 
-                    i_temp_numberofMembers += cbProp.iNumberOfCrossBracingMembers_Bay; // Navysime celkovy pocet o pocet prutov, ktore boli vygenerovane v danej bay
+                    i_temp_numberofMembers += cb.NumberOfCrossBracingMembers_Bay; // Navysime celkovy pocet o pocet prutov, ktore boli vygenerovane v danej bay
                 }
             }
             //----------------------------------------------------------------------------------------------------------------------------

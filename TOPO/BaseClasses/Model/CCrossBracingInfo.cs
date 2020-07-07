@@ -29,6 +29,17 @@ namespace BaseClasses
         private bool m_FirstCrossOnRafter;
         private bool m_LastCrossOnRafter;
 
+        private int m_NumberOfCrossBracingMembers_WallLeftSide;
+        private int m_NumberOfCrossBracingMembers_WallRightSide;
+        private int m_NumberOfCrossBracingMembers_Walls;
+        private int m_NumberOfCrossBracingMembers_Bay;
+
+        private int m_NumberOfCrossesPerRafter_Maximum;
+        private int m_NumberOfCrossesPerRafter;
+        private int m_NumberOfCrossBracingMembers_BayRoof;
+        private int m_EveryXXPurlin; // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
+
+
 
         public bool IsSetFromCode
         {
@@ -125,24 +136,10 @@ namespace BaseClasses
 
             set
             {
-                m_RoofPosition = value;
+                m_RoofPosition = value;                
                 NotifyPropertyChanged("RoofPosition");
             }
         }
-
-        //public List<string> RoofPositions
-        //{
-        //    get
-        //    {
-        //        return m_RoofPositions;
-        //    }
-
-        //    set
-        //    {
-        //        m_RoofPositions = value;
-        //        NotifyPropertyChanged("RoofPositions");
-        //    }
-        //}
 
         public bool FirstCrossOnRafter
         {
@@ -172,7 +169,112 @@ namespace BaseClasses
             }
         }
 
-        public CCrossBracingInfo(int bayNumber, bool wallLeft, bool wallRight, bool roof, string roofPosition, bool firstCrossOnRafter, bool lastCrossOnRafter)
+        public int NumberOfCrossBracingMembers_WallLeftSide
+        {
+            get
+            {
+                return m_NumberOfCrossBracingMembers_WallLeftSide;
+            }
+
+            set
+            {
+                m_NumberOfCrossBracingMembers_WallLeftSide = value;
+            }
+        }
+
+        public int NumberOfCrossBracingMembers_WallRightSide
+        {
+            get
+            {
+                return m_NumberOfCrossBracingMembers_WallRightSide;
+            }
+
+            set
+            {
+                m_NumberOfCrossBracingMembers_WallRightSide = value;
+            }
+        }
+
+        public int NumberOfCrossBracingMembers_Walls
+        {
+            get
+            {
+                return m_NumberOfCrossBracingMembers_Walls;
+            }
+
+            set
+            {
+                m_NumberOfCrossBracingMembers_Walls = value;
+            }
+        }
+
+        public int NumberOfCrossBracingMembers_Bay
+        {
+            get
+            {
+                return m_NumberOfCrossBracingMembers_Bay;
+            }
+
+            set
+            {
+                m_NumberOfCrossBracingMembers_Bay = value;
+            }
+        }
+
+        public int NumberOfCrossesPerRafter_Maximum
+        {
+            get
+            {
+                return m_NumberOfCrossesPerRafter_Maximum;
+            }
+
+            set
+            {
+                m_NumberOfCrossesPerRafter_Maximum = value;
+            }
+        }
+
+        public int NumberOfCrossesPerRafter
+        {
+            get
+            {
+                return m_NumberOfCrossesPerRafter;
+            }
+
+            set
+            {
+                m_NumberOfCrossesPerRafter = value;
+            }
+        }
+
+        public int NumberOfCrossBracingMembers_BayRoof
+        {
+            get
+            {
+                return m_NumberOfCrossBracingMembers_BayRoof;
+            }
+
+            set
+            {
+                m_NumberOfCrossBracingMembers_BayRoof = value;
+            }
+        }
+
+        public int EveryXXPurlin
+        {
+            get
+            {
+                return m_EveryXXPurlin;
+            }
+
+            set
+            {
+                m_EveryXXPurlin = value;
+                NotifyPropertyChanged("EveryXXPurlin");
+            }
+        }
+
+        public CCrossBracingInfo(int bayNumber, bool wallLeft, bool wallRight, bool roof, string roofPosition, int everyXXpurlin, bool firstCrossOnRafter, bool lastCrossOnRafter)
         {
             MIsSetFromCode = false;
 
@@ -181,8 +283,7 @@ namespace BaseClasses
             m_WallLeft = wallLeft;
             m_WallRight = wallRight;
             m_Roof = roof;
-            m_RoofPosition = roofPosition;
-            //m_RoofPositions = roofPositions;
+            m_RoofPosition = roofPosition;            
             m_FirstCrossOnRafter = firstCrossOnRafter;
             m_LastCrossOnRafter = lastCrossOnRafter;
         }
