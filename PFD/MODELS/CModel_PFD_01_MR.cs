@@ -724,7 +724,7 @@ namespace PFD
                     {
                         // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
                         //if (cb.EveryXXPurlin < 1) throw new ArgumentOutOfRangeException("Invalid index of purlin for cross-bracing. Index is " + cb.iEveryXXPurlin);
-                        if (cb.RoofPosition == "None") throw new ArgumentOutOfRangeException("Invalid count of purlins. Could not be NONE.");
+                        if (cb.EveryXXPurlin == 0) throw new ArgumentOutOfRangeException("Invalid count of purlins. Could not be NONE.");
 
                         cb.NumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;
                         cb.NumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin

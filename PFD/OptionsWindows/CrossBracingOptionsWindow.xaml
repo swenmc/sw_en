@@ -37,8 +37,7 @@
 
                 <TextBlock Text="Roof Position:" HorizontalAlignment="Left" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                 <ComboBox Name ="Combobox_RoofPosition" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                  VerticalAlignment="Top" ItemsSource="{Binding Path=RoofPositions, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                  SelectedIndex="{Binding Path=EveryXXPurlin, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=RoofPositions, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                   
                   SelectedValue="{Binding Path=RoofPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
                 <Button Width="80" Height="25" Name="BtnApply" Margin="10 0 0 0" Click="BtnApply_Click">Apply</Button>
@@ -117,7 +116,7 @@
                 </DataGridCheckBoxColumn>
 
                 <DataGridComboBoxColumn Header="Roof Position" ToolTipService.ToolTip="Select roof position" Width="Auto"
-                    SelectedValueBinding="{Binding RoofPosition, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedValueBinding="{Binding RoofPosition, UpdateSourceTrigger=PropertyChanged}"                                        
                     ItemsSource ="{Binding Source={StaticResource RoofPositions}}">
                 </DataGridComboBoxColumn>
 

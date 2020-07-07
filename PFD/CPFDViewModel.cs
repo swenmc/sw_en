@@ -2804,7 +2804,7 @@ namespace PFD
             Length = 100;
             Frames = 40;
 
-            _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1);
+            _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items);
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex

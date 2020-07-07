@@ -234,9 +234,10 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CrossBracingOptionsViewModel(int baysNum)
+        public CrossBracingOptionsViewModel(int baysNum, List<string> roofPositions)
         {
             IsSetFromCode = true;
+            RoofPositions = roofPositions;
 
             initBays(baysNum);
 
@@ -247,11 +248,11 @@ namespace PFD
                 CCrossBracingInfo cbi = null;
                 if (i == 1 || i == baysNum)
                 {
-                    cbi = new CCrossBracingInfo(i, true, true, true, RoofPositions[2], 2, false, false);
+                    cbi = new CCrossBracingInfo(i, true, true, true, RoofPositions[2], 2, false, false, RoofPositions);
                 }
                 else
                 {
-                    cbi = new CCrossBracingInfo(i, false, false, false, "None", 0, false, false);
+                    cbi = new CCrossBracingInfo(i, false, false, false, RoofPositions[0], 0, false, false, RoofPositions);
                 }
                 
                 items.Add(cbi);

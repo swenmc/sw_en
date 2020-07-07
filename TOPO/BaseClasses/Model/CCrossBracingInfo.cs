@@ -24,8 +24,9 @@ namespace BaseClasses
         private bool m_WallLeft;
         private bool m_WallRight;
         private bool m_Roof;
+
         private string m_RoofPosition;
-        //private List<string> m_RoofPositions;
+        private List<string> m_RoofPositions;
         private bool m_FirstCrossOnRafter;
         private bool m_LastCrossOnRafter;
 
@@ -123,6 +124,14 @@ namespace BaseClasses
             set
             {
                 m_Roof = value;
+                if (!m_Roof)
+                {
+                    RoofPosition = RoofPositions[0];                    
+                }
+                else
+                {
+                    RoofPosition = RoofPositions[2];                    
+                }
                 NotifyPropertyChanged("Roof");
             }
         }
@@ -136,7 +145,12 @@ namespace BaseClasses
 
             set
             {
-                m_RoofPosition = value;                
+                m_RoofPosition = value;
+                if (!string.IsNullOrEmpty(m_RoofPosition)) EveryXXPurlin = RoofPositions.IndexOf(m_RoofPosition);
+                if (m_Roof)
+                {
+                    if (m_RoofPosition == "None") throw new ArgumentException("None is not valid value.");
+                }
                 NotifyPropertyChanged("RoofPosition");
             }
         }
@@ -270,13 +284,31 @@ namespace BaseClasses
             set
             {
                 m_EveryXXPurlin = value;
-                NotifyPropertyChanged("EveryXXPurlin");
+                if (m_Roof)
+                {
+                    if (m_EveryXXPurlin == 0) throw new ArgumentException("None is not valid value.");
+                }                
             }
         }
 
-        public CCrossBracingInfo(int bayNumber, bool wallLeft, bool wallRight, bool roof, string roofPosition, int everyXXpurlin, bool firstCrossOnRafter, bool lastCrossOnRafter)
+        public List<string> RoofPositions
+        {
+            get
+            {
+                return m_RoofPositions;
+            }
+
+            set
+            {
+                m_RoofPositions = value;
+            }
+        }
+
+        public CCrossBracingInfo(int bayNumber, bool wallLeft, bool wallRight, bool roof, string roofPosition, int everyXXpurlin, bool firstCrossOnRafter, bool lastCrossOnRafter, List<string> roofPositions)
         {
             MIsSetFromCode = false;
+
+            m_RoofPositions = roofPositions;
 
             m_BayNumber = bayNumber;
             m_BayIndex = bayNumber - 1;
