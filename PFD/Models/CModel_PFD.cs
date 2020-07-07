@@ -745,12 +745,12 @@ namespace PFD
         }
 
         public void GenerateCrossBracingMembersInBay(bool bGenerateSideWallCrossBracing,
-            bool bGenerateRoofCrossBracing,            
-            int i_numberofMembers,            
+            bool bGenerateRoofCrossBracing,
+            int i_numberofMembers,
             float fAlignmentStart,
             float fAlignmentEnd,
             CCrSc section_CB_Walls,
-            CCrSc section_CB_Roof,            
+            CCrSc section_CB_Roof,
             bool bGenerateGirts,
             CCrossBracingInfo cb
             )

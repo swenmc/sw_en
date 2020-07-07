@@ -20,13 +20,13 @@ namespace PFD
 
         public CModel_PFD_01_GR
         (
-                BuildingGeometryDataInput sGeometryInputData,                
+                BuildingGeometryDataInput sGeometryInputData,
                 CComponentListVM componentListVM,
                 List<CConnectionJointTypes> joints,
                 List<CFoundation> foundations,
                 List<CSlab> slabs,
                 CPFDViewModel vm
-            )
+        )
         {
             eKitset = EModelType_FS.eKitsetGableRoofEnclosed;
 
@@ -580,7 +580,7 @@ namespace PFD
             // Ak chceme cross bracing zrusit toto nastavime v kode na false
             bool bGenerateSideWallCrossBracing = true;
             bool bGenerateRoofCrossBracing = true;
-                        
+
             //Prva bay ma index 0
             if(bGenerateSideWallCrossBracing)
             {
@@ -603,7 +603,7 @@ namespace PFD
                 }
             }
 
-            if (bGenerateRoofCrossBracing)
+             if (bGenerateRoofCrossBracing)
             {
                 foreach(CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
@@ -613,11 +613,13 @@ namespace PFD
                         //if (cb.EveryXXPurlin < 1) throw new ArgumentOutOfRangeException("Invalid index of purlin for cross-bracing. Index is " + cb.iEveryXXPurlin);
                         if (cb.EveryXXPurlin == 0) throw new ArgumentOutOfRangeException("Invalid count of purlins. Could not be NONE.");
 
-                        cb.NumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;                        
+                        cb.NumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;
                         cb.NumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
 
-                        if (cb.FirstCrossOnRafter)
+                        if ((cb.FirstCrossOnRafter && !cb.LastCrossOnRafter) || (!cb.FirstCrossOnRafter && cb.LastCrossOnRafter))
                             cb.NumberOfCrossesPerRafter = 1;
+                        else if (cb.FirstCrossOnRafter && cb.LastCrossOnRafter)
+                            cb.NumberOfCrossesPerRafter = 2;
 
                         // 2 pruty * 2 strany (gable roof !!!!) * pocet krizov na jeden rafter v danej bay
                         cb.NumberOfCrossBracingMembers_BayRoof = 2 * 2 * cb.NumberOfCrossesPerRafter;

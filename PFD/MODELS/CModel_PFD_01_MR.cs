@@ -21,13 +21,13 @@ namespace PFD
 
         public CModel_PFD_01_MR
         (
-                BuildingGeometryDataInput sGeometryInputData,                
+                BuildingGeometryDataInput sGeometryInputData,
                 CComponentListVM componentListVM,
                 List<CConnectionJointTypes> joints,
                 List<CFoundation> foundations,
                 List<CSlab> slabs,
                 CPFDViewModel vm
-            )
+        )
         {
             eKitset = EModelType_FS.eKitsetMonoRoofEnclosed;
 
@@ -700,7 +700,7 @@ namespace PFD
                 foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
                     if (cb.WallLeft)
-                    {                        
+                    {
                         cb.NumberOfCrossBracingMembers_WallLeftSide = 2;
                         cb.NumberOfCrossBracingMembers_Walls += cb.NumberOfCrossBracingMembers_WallLeftSide;
                     }
@@ -729,10 +729,12 @@ namespace PFD
                         cb.NumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;
                         cb.NumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
 
-                        if (cb.FirstCrossOnRafter)
+                        if ((cb.FirstCrossOnRafter && !cb.LastCrossOnRafter) || (!cb.FirstCrossOnRafter && cb.LastCrossOnRafter))
                             cb.NumberOfCrossesPerRafter = 1;
+                        else if (cb.FirstCrossOnRafter && cb.LastCrossOnRafter)
+                            cb.NumberOfCrossesPerRafter = 2;
 
-                        // 2 pruty * 2 strany (gable roof !!!!) * pocet krizov na jeden rafter v danej bay
+                        // 2 pruty * 1 strana (monopitch roof !!!!) * pocet krizov na jeden rafter v danej bay
                         cb.NumberOfCrossBracingMembers_BayRoof = /*2 **/ 2 * cb.NumberOfCrossesPerRafter;
                         cb.NumberOfCrossBracingMembers_Bay += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing v Bay
                         iNumberOfCrossBracingMembers_Roof_Total += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing pre roof v celom modeli // Rozne podla vstupu v GUI a ine pre gable roof a monopitch
@@ -741,7 +743,6 @@ namespace PFD
             }
 
             //----------------------------------------------------------------------------------------------------------------------------
-
 
             m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame];
             m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total];
