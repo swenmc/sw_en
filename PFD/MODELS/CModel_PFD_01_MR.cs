@@ -21,16 +21,7 @@ namespace PFD
 
         public CModel_PFD_01_MR
         (
-                BuildingGeometryDataInput sGeometryInputData,
-                int iFrameNo_temp,
-                float fDist_Girt_temp,
-                float fDist_Purlin_temp,
-                float fDist_FrontColumns_temp,
-                float fBottomGirtPosition_temp,
-                float fFrontFrameRakeAngle_temp_deg,
-                float fBackFrameRakeAngle_temp_deg,
-                ObservableCollection<DoorProperties> doorBlocksProperties,
-                ObservableCollection<WindowProperties> windowBlocksProperties,
+                BuildingGeometryDataInput sGeometryInputData,                
                 CComponentListVM componentListVM,
                 List<CConnectionJointTypes> joints,
                 List<CFoundation> foundations,
@@ -44,30 +35,29 @@ namespace PFD
             fH1_frame = sGeometryInputData.fH_1;
             fW_frame = sGeometryInputData.fW;
             fL_tot = sGeometryInputData.fL;
-            iFrameNo = iFrameNo_temp;
+            iFrameNo = vm.Frames;
             fH2_frame = sGeometryInputData.fH_2;
-            fFrontFrameRakeAngle_deg = fFrontFrameRakeAngle_temp_deg;
-            fBackFrameRakeAngle_deg = fBackFrameRakeAngle_temp_deg;
+            fFrontFrameRakeAngle_deg = vm.FrontFrameRakeAngle;
+            fBackFrameRakeAngle_deg = vm.BackFrameRakeAngle;
 
             iFrameNodesNo = 4;
             iFrameMembersNo = iFrameNodesNo - 1;
             iEavesPurlinNoInOneFrame = 2;
-
-            iFrameNo = iFrameNo_temp;
+                        
             fL1_frame = fL_tot / (iFrameNo - 1);
 
-            fDist_Girt = fDist_Girt_temp;
-            fDist_Purlin = fDist_Purlin_temp;
-            fDist_FrontColumns = fDist_FrontColumns_temp;
+            fDist_Girt = vm.GirtDistance;
+            fDist_Purlin = vm.PurlinDistance;
+            fDist_FrontColumns = vm.ColumnDistance;
             fDist_BackColumns = fDist_FrontColumns; // TODO - docasne, nezadavame zatial rozne vzdialenosti medzi wind post na prednej a zadnej strane
 
-            fBottomGirtPosition = fBottomGirtPosition_temp;
-            fDist_FrontGirts = fDist_Girt_temp; // Ak nie je rovnake ako pozdlzne tak su koncove pruty sikmo pretoze sa uvazuje jeden uzol na stlpe pre pozdlzny aj priecny smer nosnikov
-            fDist_BackGirts = fDist_Girt_temp;
-            fFrontFrameRakeAngle_temp_rad = fFrontFrameRakeAngle_temp_deg * MathF.fPI / 180f;
-            fBackFrameRakeAngle_temp_rad = fBackFrameRakeAngle_temp_deg * MathF.fPI / 180f;
+            fBottomGirtPosition = vm.BottomGirtPosition;
+            fDist_FrontGirts = fDist_Girt; // Ak nie je rovnake ako pozdlzne tak su koncove pruty sikmo pretoze sa uvazuje jeden uzol na stlpe pre pozdlzny aj priecny smer nosnikov
+            fDist_BackGirts = fDist_Girt;
+            fFrontFrameRakeAngle_temp_rad = fFrontFrameRakeAngle_deg * MathF.fPI / 180f;
+            fBackFrameRakeAngle_temp_rad = fBackFrameRakeAngle_deg * MathF.fPI / 180f;
 
-            DoorBlocksProperties = doorBlocksProperties;
+            DoorBlocksProperties = vm.DoorBlocksProperties;
 
             m_eSLN = ESLN.e3DD_1D; // 1D members in 3D model
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
@@ -1335,11 +1325,9 @@ namespace PFD
             {
                 // Cyklus pre kazdu bay , cross bracing properties pre bay zadanu v GUI
                 foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
-                {
-                    // TODO - Ondrej - mozno by sa mala do funkcie poslat cela trieda CrossBracingProperties, funkcia bude mat ovela menej parametrov
+                {                    
                     GenerateCrossBracingMembersInBay(bGenerateSideWallCrossBracing,
-                    bGenerateRoofCrossBracing,
-                    cb.BayIndex,
+                    bGenerateRoofCrossBracing,                    
                     i_temp_numberofMembers,
                     // CMemberEccentricity eccentricity,
                     0f,
@@ -1347,19 +1335,13 @@ namespace PFD
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls],
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
                     // float fMemberRotation,
-                    bGenerateGirts,
-                    cb.NumberOfCrossBracingMembers_Walls,
-                    cb.NumberOfCrossesPerRafter,
-                    cb.EveryXXPurlin,
-                    cb.FirstCrossOnRafter);
+                    bGenerateGirts,                    
+                    cb);
 
                     i_temp_numberofMembers += cb.NumberOfCrossBracingMembers_Bay; // Navysime celkovy pocet o pocet prutov, ktore boli vygenerovane v danej bay
                 }
             }
             //----------------------------------------------------------------------------------------------------------------------------
-
-
-
 
 
             ValidateIDs();
@@ -1386,17 +1368,17 @@ namespace PFD
             vm.SetModelBays(iFrameNo);
             bool isChangedFromCode = vm.IsSetFromCode;
 
-            if (doorBlocksProperties != null)
+            if (DoorBlocksProperties != null)
             {
-                foreach (DoorProperties dp in doorBlocksProperties.ToList())
+                foreach (DoorProperties dp in DoorBlocksProperties.ToList())
                 {
-                    if (!bGenerateGirts && (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (!bGenerateFrontGirts && dp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (!bGenerateBackGirts && dp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    if (!bGenerateGirts && (dp.sBuildingSide == "Right" || dp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; DoorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (!bGenerateFrontGirts && dp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; DoorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (!bGenerateBackGirts && dp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; DoorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
 
-                    if (!dp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    if (!dp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; DoorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
 
-                    if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; doorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; DoorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
                     else if (dp.Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
                     {
                         float fSideWallHeight = fH1_frame;
@@ -1455,17 +1437,17 @@ namespace PFD
                 //}
             }
 
-            if (windowBlocksProperties != null)
+            if (vm.WindowBlocksProperties != null)
             {
-                foreach (WindowProperties wp in windowBlocksProperties.ToList())
+                foreach (WindowProperties wp in vm.WindowBlocksProperties.ToList())
                 {
-                    if (!bGenerateGirts && (wp.sBuildingSide == "Right" || wp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (!bGenerateFrontGirts && wp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
-                    else if (!bGenerateBackGirts && wp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    if (!bGenerateGirts && (wp.sBuildingSide == "Right" || wp.sBuildingSide == "Left")) { if (!isChangedFromCode) vm.IsSetFromCode = true; vm.WindowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (!bGenerateFrontGirts && wp.sBuildingSide == "Front") { if (!isChangedFromCode) vm.IsSetFromCode = true; vm.WindowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    else if (!bGenerateBackGirts && wp.sBuildingSide == "Back") { if (!isChangedFromCode) vm.IsSetFromCode = true; vm.WindowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
 
-                    if (!wp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    if (!wp.ValidateBays()) { if (!isChangedFromCode) vm.IsSetFromCode = true; vm.WindowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
 
-                    if (!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; windowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
+                    if (!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; vm.WindowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
                     else if (wp.Validate())
                     {
                         float fSideWallHeight = fH1_frame;

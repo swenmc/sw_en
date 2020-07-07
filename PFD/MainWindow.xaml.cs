@@ -956,35 +956,17 @@ namespace PFD
                 // Kitset Steel Gable Enclosed Buildings
                 // TODO - nove parametre pre nastavenie hodnot zatazenia
 
-                if (vm.KitsetTypeIndex == 0)
+                if (vm.KitsetTypeIndex == 0)                    
                     vm.Model = new CModel_PFD_01_MR(
-                        sGeometryInputData,
-                        vm.Frames,
-                        vm.GirtDistance,
-                        vm.PurlinDistance,
-                        vm.ColumnDistance,
-                        vm.BottomGirtPosition,
-                        vm.FrontFrameRakeAngle,
-                        vm.BackFrameRakeAngle,
-                        vm.DoorBlocksProperties,
-                        vm.WindowBlocksProperties,
+                        sGeometryInputData,                        
                         compList,
                         joints,
                         foundations,
                         slabs,
                         vm);
-                else if (vm.KitsetTypeIndex == 1)
-                    vm.Model = new CModel_PFD_01_GR(
-                    sGeometryInputData,
-                    vm.Frames,
-                    vm.GirtDistance,
-                    vm.PurlinDistance,
-                    vm.ColumnDistance,
-                    vm.BottomGirtPosition,
-                    vm.FrontFrameRakeAngle,
-                    vm.BackFrameRakeAngle,
-                    vm.DoorBlocksProperties,
-                    vm.WindowBlocksProperties,
+                else if (vm.KitsetTypeIndex == 1)                    
+                vm.Model = new CModel_PFD_01_GR(
+                    sGeometryInputData,                    
                     compList,
                     joints,
                     foundations,
