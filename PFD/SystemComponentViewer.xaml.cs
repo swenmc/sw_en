@@ -2379,7 +2379,13 @@ namespace PFD
             }
             CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
 
-            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFileForPlate(Frame2D.Content as Canvas, list, plate, pInfo);
+            if (Frame2D.Content is Canvas)
+            {
+                //Bug 595
+                Canvas canvas = Frame2D.Content as Canvas;
+                if (canvas.RenderSize.Width < 1) canvas.RenderSize = new System.Windows.Size(Frame2DWidth, Frame2DHeight);
+                CExportToPDF.CreatePDFFileForPlate(canvas, list, plate, pInfo);
+            } 
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
 
             ww.Close();
