@@ -581,11 +581,8 @@ namespace PFD
             bool bGenerateSideWallCrossBracing = true;
             bool bGenerateRoofCrossBracing = true;
 
-            // Bug 596
-            // TO ONDREJ - Tieto prepocty poctu prutov by sme mali asi dat niekam do CrossBracingOptionsViewModel, lebo ked sa model len pregeneruje tak sa povodne hodnoty z jednotlivych
-            // CCrossBracingInfo cb nezmazu ale pripocitavaju sa znova cez +=
-            // Cela pointa tychto vypoctov je urcit zo vstupov v GUI kolko prutov cross bracing sa bude generovat a na zaklade toho alokovat velkost pola m_arrMembers
-            // !!! Vypocet pre cb.NumberOfCrossBracingMembers_BayRoof je iny pre GB a MR, ale dalo by sa to zjednotit a osetrit podmienkou
+            // Bug 596 (vyrobena metoda resetCounters)
+            vm._crossBracingOptionsVM.ResetCounters();            
 
             //Prva bay ma index 0
             if (bGenerateSideWallCrossBracing)

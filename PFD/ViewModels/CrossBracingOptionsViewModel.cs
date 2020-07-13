@@ -286,5 +286,19 @@ namespace PFD
             Bays = bays;
         }
 
+        
+        public void ResetCounters()
+        {
+            foreach (CCrossBracingInfo cb in CrossBracingList)
+            {
+                cb.NumberOfCrossBracingMembers_WallLeftSide = 0;
+                cb.NumberOfCrossBracingMembers_WallRightSide = 0;
+                cb.NumberOfCrossBracingMembers_Walls = 0;
+
+                cb.NumberOfCrossBracingMembers_Bay = 0;
+                cb.NumberOfCrossBracingMembers_BayRoof = 0;
+            }
+        }
+
     }
 }
