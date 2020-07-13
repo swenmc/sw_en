@@ -578,9 +578,7 @@ namespace BaseClasses
             Model3DGroup gridlines3DGroup = null;
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-
-            float fMarkCircleDiameter = maxModelLength * sDisplayOptions.ExportGridlinesSize;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
-            fMarkCircleDiameter = GetSizeBasedOnPageSize(sDisplayOptions, fMarkCircleDiameter);
+            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, sDisplayOptions.GUIGridlinesSize, sDisplayOptions.ExportGridlinesSize, sDisplayOptions);
 
             // Create gridlines
             List<CGridLine> listOfGridlines = new List<CGridLine>();
@@ -886,13 +884,12 @@ namespace BaseClasses
 
             // Create section symbols
             List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
-
-            float fSymbolLineLength_basic = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * sDisplayOptions.ExportSectionSymbolsSize;
+                        
             //vsetko sa nastavuje podla max rozmeru modelu a ten upravime podla velkosti strany v PDF
-            fSymbolLineLength_basic = GetSizeBasedOnPageSize(sDisplayOptions, fSymbolLineLength_basic);
+            float fSymbolLineLength_basic = GetSizeIn3D(MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z), sDisplayOptions.GUISectionSymbolsSize, sDisplayOptions.ExportSectionSymbolsSize, sDisplayOptions);
 
-            float textSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * sDisplayOptions.ExportSectionSymbolLabelSize;
-            textSize = GetSizeBasedOnPageSize(sDisplayOptions, textSize);
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float textSize = GetSizeIn3D(maxModelLength, sDisplayOptions.GUISectionSymbolLabelSize, sDisplayOptions.ExportSectionSymbolLabelSize, sDisplayOptions);
 
             //    ——  ▪▪▪▪ ▪ ▪▪▪▪       ○      ○       ▪▪▪▪ ▪ ▪▪▪▪
             // D |    /|\                                     /|\
@@ -1125,9 +1122,8 @@ namespace BaseClasses
             List<CDetailSymbol> detailSymbols = new List<CDetailSymbol>();
             if (model.m_arrConnectionJoints == null) return detailSymbols;
 
-            float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * opts.ExportDetailSymbolSize;
-            //float fMarkCircleDiameter = 0.5f;
-            fMarkCircleDiameter = GetSizeBasedOnPageSize(opts, fMarkCircleDiameter); // Priemer kruhu znacky
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, opts.GUIDetailSymbolSize, opts.ExportDetailSymbolSize, opts);
 
             float fOffsetLineLength = fMarkCircleDiameter / 3; //0.2f;
 
@@ -3036,11 +3032,8 @@ namespace BaseClasses
                 //toto podla mna netreba robit, lebo pri vykresleni sa stale najprv urcia velkosti modelu a potom sa nieco dalej vykresluje...
                 //GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
-                //To Mato - na tomto mieste sa pripadne da dorobit aj nejaka podmienka a mat vacsie texty ak velkost modelu prekroci nejaku hranicu atd
-                //displayOptions.fMemberDescriptionTextFontSize je potrebne prerobit na pomer k velkosti modelu, cize nieco ako displayOptions.fMemberDescriptionTextFontSizeScale = 60f;
-                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportMembersDescriptionSize;
-
-                fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+                float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIMembersDescriptionSize, displayOptions.ExportMembersDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3376,9 +3369,8 @@ namespace BaseClasses
                 //float fTextBlockVerticalSizeFactor = 0.8f;
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
 
-                //To Mato - displayOptions.fNodeDescriptionTextFontSize by sme mali mat asi nieco ako displayOptions.fNodeDescriptionTextSizeScaleFactor = 80f
-                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportNodesDescriptionSize;
-                fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+                float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions.ExportNodesDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3431,9 +3423,8 @@ namespace BaseClasses
                 //float fTextBlockVerticalSizeFactor = 0.8f;
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
                                 
-                //To Mato - displayOptions.fNodeDescriptionTextFontSize by sme mali mat asi nieco ako displayOptions.fNodeDescriptionTextSizeScaleFactor = 80f
-                float fTextBlockVerticalSize = MathF.Max(model_LX, model_LY, model_LZ) * displayOptions.ExportNodesDescriptionSize;
-                fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+                float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions.ExportNodesDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3575,9 +3566,9 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fGridLineLabelTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
-            //            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 70f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportGridLineLabelSize;
-            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIGridLineLabelSize, displayOptions.ExportGridLineLabelSize, displayOptions);
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
@@ -3650,8 +3641,9 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fSectionSymbolLabelTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportSectionSymbolLabelSize;
-            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISectionSymbolLabelSize, displayOptions.ExportSectionSymbolLabelSize, displayOptions);
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
@@ -3696,9 +3688,10 @@ namespace BaseClasses
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
 
-            //float fTextBlockVerticalSize = detailSymbol.LineCylinderRadius * 30;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportDetailSymbolLabelSize; // Velkost textu popisu
-            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            //float fTextBlockVerticalSize = detailSymbol.LineCylinderRadius * 30;            
+
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDetailSymbolLabelSize, displayOptions.ExportDetailSymbolLabelSize, displayOptions);
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
@@ -3741,9 +3734,11 @@ namespace BaseClasses
             tb.FontFamily = new FontFamily("Arial");
             //float fTextBlockVerticalSize = displayOptions.fSawCutTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
-            //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportSawCutTextSize;
-            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            //float fTextBlockHorizontalSizeFactor = 0.3f;            
+
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISawCutTextSize, displayOptions.ExportSawCutTextSize, displayOptions);
+
             sawcut.OffsetFromLine = fTextBlockVerticalSize / 2;
 
             float fTextBlockVerticalSizeFactor = 1f;
@@ -3808,8 +3803,10 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fControlJointTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportControlJointTextSize;
-            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIControlJointTextSize, displayOptions.ExportControlJointTextSize, displayOptions);
+
             controlJoint.OffsetFromLine = fTextBlockVerticalSize / 2;
 
             float fTextBlockVerticalSizeFactor = 1f;
@@ -3874,8 +3871,9 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fFoundationTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFoundationTextSize;
-            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFoundationTextSize, displayOptions.ExportFoundationTextSize, displayOptions);
 
             foundation.SetTextPoint(fTextBlockVerticalSize);
 
@@ -3948,8 +3946,8 @@ namespace BaseClasses
             tb.Text = slab.Text;
             tb.FontFamily = new FontFamily("Arial");
 
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFloorSlabTextSize;
-            fTextBlockVerticalSize = GetSizeBasedOnPageSize(displayOptions, fTextBlockVerticalSize);
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFloorSlabTextSize, displayOptions.ExportFloorSlabTextSize, displayOptions);
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
@@ -5523,6 +5521,22 @@ namespace BaseClasses
             ((MeshGeometry3D)gm3D.Geometry).Positions = points;
 
             return gm3D;
+        }
+
+        public static float GetSizeIn3D(float maxModelLength, float sizeFactorGUI, float sizeFactorExport, DisplayOptions displayOptions)
+        {
+            float value = 0;
+            if (displayOptions.IsExport)
+            {
+                value = maxModelLength * sizeFactorExport;
+                value = GetSizeBasedOnPageSize(displayOptions, value);
+            }
+            else
+            {
+                value = maxModelLength * sizeFactorGUI;
+                
+            }
+            return value;
         }
 
         public static float GetSizeBasedOnPageSize(DisplayOptions displayOptions, float value)

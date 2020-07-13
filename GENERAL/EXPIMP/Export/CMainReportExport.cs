@@ -379,6 +379,7 @@ namespace EXPIMP
             DisplayOptions opts = GetModelViewsDisplayOptions(data);
             opts.ViewsPageSize = (EPageSizes) exportOpts.ExportPageSizeViews;
             opts.ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
+            opts.IsExport = true;
 
             List<EViewModelMemberFilters> list_views = GetViewsFromExportOptions(exportOpts);
             
@@ -809,6 +810,7 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = GetJointTypesDisplayOptions(data);
+            opts.IsExport = true;
 
             sheetNo++;
             AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName(), exportOpts);
@@ -938,6 +940,7 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = GetFootingTypesDisplayOptions(data);
+            opts.IsExport = true;
 
             DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefaultForExport();
 

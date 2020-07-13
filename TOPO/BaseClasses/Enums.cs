@@ -953,6 +953,7 @@ namespace BaseClasses
         public EImagesQuality ExportImagesQuality;
         //public DisplayOptionsFootingPad2D footingPadDisplayOptions;
 
+        public bool IsExport;
         public float ExportFloorSlabTextSize;
         public float ExportGridlinesSize;
         public float ExportSectionSymbolsSize;
@@ -966,7 +967,7 @@ namespace BaseClasses
         public float ExportControlJointTextSize;
         public float ExportFoundationTextSize;
         public float ExportDimensionsTextSize;
-
+        
         public float GUIFloorSlabTextSize;
         public float GUIGridlinesSize;
         public float GUISectionSymbolsSize;

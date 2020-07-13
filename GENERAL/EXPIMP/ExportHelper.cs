@@ -1597,6 +1597,7 @@ namespace EXPIMP
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
             DisplayOptions opts = data.DisplayOptions;
+            opts.IsExport = true;
             opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;

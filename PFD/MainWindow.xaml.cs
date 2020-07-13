@@ -1031,6 +1031,7 @@ namespace PFD
             // Create 3D window
             //UpdateDisplayOptions();
             sDisplayOptions = vm.GetDisplayOptions();
+            sDisplayOptions.IsExport = false;
             //System.Diagnostics.Trace.WriteLine("GetDisplayOptions: " + (DateTime.Now - start).TotalMilliseconds);
 
             Page3Dmodel page1;

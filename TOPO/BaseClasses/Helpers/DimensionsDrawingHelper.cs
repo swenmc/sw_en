@@ -1838,7 +1838,7 @@ namespace BaseClasses.Helpers
         {
             if (dimensions == null || dimensions.Count == 0)
                 return null;
-
+            //TODO - Ondrej
             float maxModelLength = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z);
             if (displayOptions.ViewsPageSize == EPageSizes.A2) maxModelLength = maxModelLength / Drawing3D.PageSizeRatio;
             if (displayOptions.ViewsPageSize == EPageSizes.A1) maxModelLength = maxModelLength / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
@@ -1880,11 +1880,8 @@ namespace BaseClasses.Helpers
             tb.Text = dimension.Text;
             tb.FontFamily = new FontFamily("Arial");
 
-            float fTextBlockVerticalSize = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z) * displayOptions.ExportDimensionsTextSize;
-
-            if (displayOptions.ViewsPageSize == EPageSizes.A2) fTextBlockVerticalSize = fTextBlockVerticalSize / Drawing3D.PageSizeRatio;
-            if (displayOptions.ViewsPageSize == EPageSizes.A1) fTextBlockVerticalSize = fTextBlockVerticalSize / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
-            if (displayOptions.ViewsPageSize == EPageSizes.A0) fTextBlockVerticalSize = fTextBlockVerticalSize / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
+            float maxModelLength = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z);
+            float fTextBlockVerticalSize = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsTextSize, displayOptions.ExportDimensionsTextSize, displayOptions);
             
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;

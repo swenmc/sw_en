@@ -3639,6 +3639,7 @@ namespace PFD
             sDisplayOptions.ModelView = ViewIndex;
             sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
 
+            sDisplayOptions.IsExport = false;
             //To Mato tu sa daju ponastavovat velkosti relativne podla velkosti modelu
             sDisplayOptions.ExportFloorSlabTextSize = _displayOptionsVM.ExportFloorSlabTextSize;
             sDisplayOptions.ExportGridlinesSize = _displayOptionsVM.ExportGridlinesSize;

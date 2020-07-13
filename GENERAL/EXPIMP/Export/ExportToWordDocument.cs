@@ -1495,6 +1495,7 @@ namespace EXPIMP
 
             // Refaktorovat s FootingDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
+            sDisplayOptions.IsExport = true;
             sDisplayOptions.bDisplayMembersCenterLines = false;
             sDisplayOptions.bDisplaySolidModel = true;
 
@@ -1609,6 +1610,7 @@ namespace EXPIMP
             float fZoomFactor = 1f;//3f;
             // Refaktorovat s JointDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
+            sDisplayOptions.IsExport = true;
             sDisplayOptions.bDisplayMembersCenterLines = false;
             sDisplayOptions.bDisplaySolidModel = true;
 
