@@ -595,8 +595,8 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
-                RecreateFoundations = true;
-                _crossBracingOptionsVM = null;
+                RecreateFoundations = true;                
+                _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items);
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
             }
@@ -2804,7 +2804,7 @@ namespace PFD
             //Length = 100;
             //Frames = 40;
 
-            _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items);
+            //_crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items);
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
