@@ -1837,17 +1837,12 @@ namespace BaseClasses.Helpers
         private static Model3DGroup CreateModelDimensions_Model3DGroup(List<CDimensionLinear3D> dimensions, CModel model, DisplayOptions displayOptions)
         {
             if (dimensions == null || dimensions.Count == 0)
-                return null;
-            //TODO - Ondrej
+                return null;            
+
             float maxModelLength = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z);
-            if (displayOptions.ViewsPageSize == EPageSizes.A2) maxModelLength = maxModelLength / Drawing3D.PageSizeRatio;
-            if (displayOptions.ViewsPageSize == EPageSizes.A1) maxModelLength = maxModelLength / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
-            if (displayOptions.ViewsPageSize == EPageSizes.A0) maxModelLength = maxModelLength / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio / Drawing3D.PageSizeRatio;
-
-            float fLineRadius = maxModelLength / 1500;  //velkost podla modelu, ale to cislo "1500" je potrebne data do DisplayOptions
+            float fLineRadius = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsLineRadius, displayOptions.ExportDimensionsLineRadius, displayOptions);
+            float scale = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsScale, displayOptions.ExportDimensionsScale, displayOptions);
             
-            float scale = maxModelLength / 10;
-
             // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
             // Draw 3D objects (cylinder as a line)
 

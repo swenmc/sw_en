@@ -967,7 +967,9 @@ namespace BaseClasses
         public float ExportControlJointTextSize;
         public float ExportFoundationTextSize;
         public float ExportDimensionsTextSize;
-        
+        public float ExportDimensionsLineRadius;
+        public float ExportDimensionsScale;
+
         public float GUIFloorSlabTextSize;
         public float GUIGridlinesSize;
         public float GUISectionSymbolsSize;
@@ -981,6 +983,8 @@ namespace BaseClasses
         public float GUIControlJointTextSize;
         public float GUIFoundationTextSize;
         public float GUIDimensionsTextSize;
+        public float GUIDimensionsLineRadius;
+        public float GUIDimensionsScale;
     }
 
     public struct DisplayOptionsFootingPad2D

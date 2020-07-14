@@ -247,6 +247,8 @@ namespace PFD
         private float m_ExportControlJointTextSize;
         private float m_ExportFoundationTextSize;
         private float m_ExportDimensionsTextSize;
+        private float m_ExportDimensionsLineRadius;
+        private float m_ExportDimensionsScale;
 
         private float m_GUIFloorSlabTextSize;
         private float m_GUIGridlinesSize;
@@ -261,6 +263,8 @@ namespace PFD
         private float m_GUIControlJointTextSize;
         private float m_GUIFoundationTextSize;
         private float m_GUIDimensionsTextSize;
+        private float m_GUIDimensionsLineRadius;
+        private float m_GUIDimensionsScale;
 
 
         #region Loads
@@ -2872,6 +2876,62 @@ namespace PFD
             }
         }
 
+        public float ExportDimensionsLineRadius
+        {
+            get
+            {
+                return m_ExportDimensionsLineRadius;
+            }
+
+            set
+            {
+                m_ExportDimensionsLineRadius = value;
+                NotifyPropertyChanged("ExportDimensionsLineRadius");
+            }
+        }
+
+        public float ExportDimensionsScale
+        {
+            get
+            {
+                return m_ExportDimensionsScale;
+            }
+
+            set
+            {
+                m_ExportDimensionsScale = value;
+                NotifyPropertyChanged("ExportDimensionsScale");
+            }
+        }
+
+        public float GUIDimensionsLineRadius
+        {
+            get
+            {
+                return m_GUIDimensionsLineRadius;
+            }
+
+            set
+            {
+                m_GUIDimensionsLineRadius = value;
+                NotifyPropertyChanged("GUIDimensionsLineRadius");
+            }
+        }
+
+        public float GUIDimensionsScale
+        {
+            get
+            {
+                return m_GUIDimensionsScale;
+            }
+
+            set
+            {
+                m_GUIDimensionsScale = value;
+                NotifyPropertyChanged("GUIDimensionsScale");
+            }
+        }
+
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
@@ -3069,7 +3129,9 @@ namespace PFD
             ExportControlJointTextSize = 1f / 100f;
             ExportFoundationTextSize = 1f / 100f;
             ExportDimensionsTextSize = 1f / 100f;
-            
+            ExportDimensionsLineRadius = 1f / 1500f;
+            ExportDimensionsScale = 1f / 10f;
+
             GUIGridlinesSize = 1f / 20f;
             GUIGridLineLabelSize = 1f / 40f;
             GUISectionSymbolsSize = 1f / 20f;
@@ -3083,6 +3145,8 @@ namespace PFD
             GUIControlJointTextSize = 1f / 100f;
             GUIFoundationTextSize = 1f / 100f;
             GUIDimensionsTextSize = 1f / 100f;
+            GUIDimensionsLineRadius = 1f / 1500f;
+            GUIDimensionsScale = 1f / 10f;
 
             IsSetFromCode = false;
         }

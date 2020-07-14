@@ -823,6 +823,16 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GUIDimensionsTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
+                        <TextBlock Grid.Row="14" Grid.Column="0" Text="GUI Dimensions Line Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="14" Grid.Column="1" Name ="GUIDimensionsLineRadius" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GUIDimensionsLineRadius, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F5}"/>
+
+                        <TextBlock Grid.Row="15" Grid.Column="0" Text="GUI Dimensions Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="15" Grid.Column="1" Name ="GUIDimensionsScale" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GUIDimensionsScale, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
 
                         <TextBlock Grid.Row="1" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <TextBox Grid.Row="1" Grid.Column="3" Name ="ExportFloorSlabTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -888,6 +898,16 @@
                         <TextBox Grid.Row="13" Grid.Column="3" Name ="ExportDimensionsTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportDimensionsTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="14" Grid.Column="2" Text="Export Dimensions Line Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="14" Grid.Column="3" Name ="ExportDimensionsLineRadius" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportDimensionsLineRadius, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F5}"/>
+
+                        <TextBlock Grid.Row="15" Grid.Column="2" Text="Export Dimensions Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="15" Grid.Column="3" Name ="ExportDimensionsScale" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportDimensionsScale, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
                     </Grid>
                 </ScrollViewer>
 

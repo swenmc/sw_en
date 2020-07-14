@@ -3654,6 +3654,8 @@ namespace PFD
             sDisplayOptions.ExportControlJointTextSize = _displayOptionsVM.ExportControlJointTextSize;
             sDisplayOptions.ExportFoundationTextSize = _displayOptionsVM.ExportFoundationTextSize;
             sDisplayOptions.ExportDimensionsTextSize = _displayOptionsVM.ExportDimensionsTextSize;
+            sDisplayOptions.ExportDimensionsLineRadius = _displayOptionsVM.ExportDimensionsLineRadius;
+            sDisplayOptions.ExportDimensionsScale = _displayOptionsVM.ExportDimensionsScale;
 
             sDisplayOptions.GUIFloorSlabTextSize = _displayOptionsVM.GUIFloorSlabTextSize;
             sDisplayOptions.GUIGridlinesSize = _displayOptionsVM.GUIGridlinesSize;
@@ -3668,6 +3670,8 @@ namespace PFD
             sDisplayOptions.GUIControlJointTextSize = _displayOptionsVM.GUIControlJointTextSize;
             sDisplayOptions.GUIFoundationTextSize = _displayOptionsVM.GUIFoundationTextSize;
             sDisplayOptions.GUIDimensionsTextSize = _displayOptionsVM.GUIDimensionsTextSize;
+            sDisplayOptions.GUIDimensionsLineRadius = _displayOptionsVM.GUIDimensionsLineRadius;
+            sDisplayOptions.GUIDimensionsScale = _displayOptionsVM.GUIDimensionsScale;
 
             return sDisplayOptions;
         }
