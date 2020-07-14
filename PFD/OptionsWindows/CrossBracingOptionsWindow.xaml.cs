@@ -50,7 +50,7 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (CrossBracingOptionsChanged) _pfdVM.SynchronizeGUI = true;
+            if (CrossBracingOptionsChanged) _pfdVM.CrossBracingOptionsChanged = true;
             this.Close();
         }
 

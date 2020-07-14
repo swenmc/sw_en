@@ -578,8 +578,8 @@ namespace PFD
             // Cross-bracing
 
             // Ak chceme cross bracing zrusit toto nastavime v kode na false
-            bool bGenerateSideWallCrossBracing = true;
-            bool bGenerateRoofCrossBracing = true;
+            bool bGenerateSideWallCrossBracing = false;
+            bool bGenerateRoofCrossBracing = false;
 
             // Bug 596 (vyrobena metoda resetCounters)
             vm._crossBracingOptionsVM.ResetCounters();            

@@ -297,6 +297,9 @@ namespace PFD
 
                 cb.NumberOfCrossBracingMembers_Bay = 0;
                 cb.NumberOfCrossBracingMembers_BayRoof = 0;
+
+                //cb.NumberOfCrossesPerRafter = 0;
+                //cb.NumberOfCrossesPerRafter_Maximum = 0;                
             }
         }
 
