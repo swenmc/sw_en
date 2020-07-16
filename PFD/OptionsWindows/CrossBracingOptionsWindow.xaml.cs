@@ -44,6 +44,10 @@ namespace PFD
             if (sender == null) return;
             if (sender is CrossBracingOptionsViewModel)
             {
+                //if(e.PropertyName == "CrossBracingItem_PropertyChanged") CrossBracingOptionsChanged = true;
+            }
+            if (sender is CCrossBracingInfo)
+            {
                 CrossBracingOptionsChanged = true;
             }
         }

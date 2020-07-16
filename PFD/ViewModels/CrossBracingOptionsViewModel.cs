@@ -220,7 +220,8 @@ namespace PFD
 
         private void crossBracingItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            
+            PropertyChanged(sender, e);
+            //NotifyPropertyChanged("CrossBracingItem_PropertyChanged");            
         }
 
         public bool IsSetFromCode = false;
