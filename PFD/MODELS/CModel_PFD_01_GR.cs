@@ -1213,11 +1213,18 @@ namespace PFD
                     GenerateCrossBracingMembersInBay(
                     bGenerateSideWallCrossBracing && (cb.WallLeft || cb.WallRight),
                     bGenerateRoofCrossBracing && cb.Roof,
+                    bGenerateGirts,
                     i_temp_numberofMembers,
-                    0f, 0f,
+                    new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_max + (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].t_min, 0f),
+                    new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max + (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].t_min, 0f),
+                    0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].b,
+                    0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].b,
+                    0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b,
+                    0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b,
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls],
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
-                    bGenerateGirts,
+                    0f,
+                    0.5f * MathF.fPI,
                     cb);
 
                     i_temp_numberofMembers += cb.NumberOfCrossBracingMembers_Bay; // Navysime celkovy pocet o pocet prutov, ktore boli vygenerovane v danej bay
