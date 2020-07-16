@@ -597,7 +597,16 @@ namespace PFD
                 RecreateModel = true;
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;                
+                //TODO - Bug - v tomto momente este nie su spravne nastavene ILS_Items - tie az ked sa model vytvara
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items);
+
+                //To Mato
+                //podla mna by sme tu potrebovali vediet tie  RafterFlyBracingPosition_Items
+                //tie vypocty co si mi dal, tak tu nevidim tie premenne s kt. pracujes
+                //iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
+                //float fFirstPurlinPosition = fDist_Purlin;
+                //float fRafterLength = MathF.Sqrt(MathF.Pow2(fH2_frame - fH1_frame) + MathF.Pow2(0.5f * fW_frame));
+
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
             }

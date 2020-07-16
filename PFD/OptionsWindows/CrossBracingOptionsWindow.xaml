@@ -119,14 +119,16 @@
                 </DataGridComboBoxColumn>
 
                 <DataGridCheckBoxColumn Binding="{Binding FirstCrossOnRafter, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="First Cross On Rafter" Width="Auto">
-                    <DataGridCheckBoxColumn.ElementStyle>
+                    <DataGridCheckBoxColumn.ElementStyle>                        
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding Roof}"/>
                         </Style>
                     </DataGridCheckBoxColumn.ElementStyle>
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding Roof}"/>
                         </Style>
                     </DataGridCheckBoxColumn.EditingElementStyle>
                 </DataGridCheckBoxColumn>
@@ -135,11 +137,13 @@
                     <DataGridCheckBoxColumn.ElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding Roof}"/>
                         </Style>
                     </DataGridCheckBoxColumn.ElementStyle>
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding Roof}"/>
                         </Style>
                     </DataGridCheckBoxColumn.EditingElementStyle>
                 </DataGridCheckBoxColumn>

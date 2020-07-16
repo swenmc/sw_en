@@ -23,7 +23,7 @@ namespace BaseClasses
         private int m_BayIndex;
         private bool m_WallLeft;
         private bool m_WallRight;
-        private bool m_Roof;
+        private bool m_Roof;        
 
         private string m_RoofPosition;
         private List<string> m_RoofPositions;
@@ -126,12 +126,15 @@ namespace BaseClasses
                 m_Roof = value;
                 if (!m_Roof)
                 {
-                    RoofPosition = RoofPositions[0];                    
+                    RoofPosition = RoofPositions[0];
+                    FirstCrossOnRafter = false;
+                    LastCrossOnRafter = false;
                 }
                 else
                 {
                     RoofPosition = RoofPositions[2];                    
                 }
+                
                 NotifyPropertyChanged("Roof");
             }
         }
@@ -301,6 +304,7 @@ namespace BaseClasses
             set
             {
                 m_RoofPositions = value;
+                NotifyPropertyChanged("RoofPositions");
             }
         }
 
@@ -314,7 +318,7 @@ namespace BaseClasses
             m_BayIndex = bayNumber - 1;
             m_WallLeft = wallLeft;
             m_WallRight = wallRight;
-            m_Roof = roof;
+            m_Roof = roof;            
             m_RoofPosition = roofPosition;
             m_EveryXXPurlin = everyXXpurlin;
             m_FirstCrossOnRafter = firstCrossOnRafter;
@@ -327,6 +331,16 @@ namespace BaseClasses
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public void SetRoofPositions(List<string> roofPositions)
+        {
+            if (roofPositions == null) return;
+            if (roofPositions.Count == 0) return;
+
+            string roofPos = RoofPosition;
+            RoofPositions = roofPositions;
+            if (RoofPositions.Contains(roofPos)) RoofPosition = roofPos;
+            else RoofPosition = RoofPositions[0];
+        }
        
     }
 }

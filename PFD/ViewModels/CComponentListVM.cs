@@ -831,7 +831,6 @@ namespace PFD
             }
             RafterFlyBracingPosition_Items = items;
 
-
             CComponentInfo MR = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
             if (MR != null) { MR.IsSetFromCode = true; MR.ILS_Items = items; SetComponentInfoILS(MR); MR.IsSetFromCode = false; }
             CComponentInfo ER = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);

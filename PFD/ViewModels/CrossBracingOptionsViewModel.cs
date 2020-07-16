@@ -220,7 +220,7 @@ namespace PFD
 
         private void crossBracingItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            PropertyChanged(sender, e);
+            if(PropertyChanged != null) PropertyChanged(sender, e);
             //NotifyPropertyChanged("CrossBracingItem_PropertyChanged");            
         }
 
@@ -301,6 +301,16 @@ namespace PFD
 
                 //cb.NumberOfCrossesPerRafter = 0;
                 //cb.NumberOfCrossesPerRafter_Maximum = 0;
+            }
+        }
+
+        public void SetRoofPositions(List<string> roofPositions)
+        {
+            RoofPositions = roofPositions;
+
+            foreach (CCrossBracingInfo cb in CrossBracingList)
+            {
+                cb.SetRoofPositions(roofPositions);                
             }
         }
 
