@@ -452,7 +452,7 @@ namespace PFD
                 bUseBackColumnFlyBracingPlates = false;
 
             // Sidewall girts bracing blocks
-            bool bGenerateGirtBracingSideWalls = true;
+            bool bGenerateGirtBracingSideWalls = componentList[(int)EMemberGroupNames.eGirtBracing].Generate.Value;
 
             int iNumberOfGBSideWallsNodesInOneBayOneSide = 0;
             int iNumberOfGBSideWallsNodesInOneBay = 0;
@@ -479,7 +479,7 @@ namespace PFD
             }
 
             // Purlin bracing blocks
-            bool bGeneratePurlinBracing = true;
+            bool bGeneratePurlinBracing = componentList[(int)EMemberGroupNames.ePurlinBracing].Generate.Value;
 
             int iNumberOfPBNodesInOneBayOneSide = 0;
             int iNumberOfPBNodesInOneBay = 0;
@@ -503,7 +503,7 @@ namespace PFD
             }
 
             // Front side girts bracing blocks
-            bool bGenerateGirtBracingFrontSide = true;
+            bool bGenerateGirtBracingFrontSide = componentList[(int)EMemberGroupNames.eFrontGirtBracing].Generate.Value;
 
             int[] iArrGB_FS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerFrontColumnFromLeft.Length + 1];
             int[] iArrGB_FS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerFrontColumnFromLeft.Length + 1];
@@ -539,7 +539,7 @@ namespace PFD
             }
 
             // Back side girts bracing blocks
-            bool bGenerateGirtBracingBackSide = true;
+            bool bGenerateGirtBracingBackSide = componentList[(int)EMemberGroupNames.eBackGirtBracing].Generate.Value;
 
             int[] iArrGB_BS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerBackColumnFromLeft.Length + 1];
             int[] iArrGB_BS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerBackColumnFromLeft.Length + 1];
@@ -577,12 +577,11 @@ namespace PFD
             //----------------------------------------------------------------------------------------------------------------------------
             // Cross-bracing
 
-            // Ak chceme cross bracing zrusit toto nastavime v kode na false
-            bool bGenerateSideWallCrossBracing = false;
-            bool bGenerateRoofCrossBracing = false;
+            bool bGenerateSideWallCrossBracing = componentList[(int)EMemberGroupNames.eCrossBracing_Walls].Generate.Value;
+            bool bGenerateRoofCrossBracing = componentList[(int)EMemberGroupNames.eCrossBracing_Roof].Generate.Value;
 
             // Bug 596 (vyrobena metoda resetCounters)
-            vm._crossBracingOptionsVM.ResetCounters();            
+            vm._crossBracingOptionsVM.ResetCounters();
 
             //Prva bay ma index 0
             if (bGenerateSideWallCrossBracing)
@@ -1209,11 +1208,16 @@ namespace PFD
                 // Cyklus pre kazdu bay , cross bracing properties pre bay zadanu v GUI
                 foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
-                    GenerateCrossBracingMembersInBay( bGenerateSideWallCrossBracing, bGenerateRoofCrossBracing, i_temp_numberofMembers,
+                    if (!cb.WallLeft && !cb.WallRight && !cb.Roof) continue; // Ak nie je v bay zaskrtnute generovanie cross bracing tak pokracujeme dalsou bay
+
+                    GenerateCrossBracingMembersInBay(
+                    bGenerateSideWallCrossBracing && (cb.WallLeft || cb.WallRight),
+                    bGenerateRoofCrossBracing && cb.Roof,
+                    i_temp_numberofMembers,
                     0f, 0f,
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls],
-                    m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],                    
-                    bGenerateGirts,                    
+                    m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
+                    bGenerateGirts,
                     cb);
 
                     i_temp_numberofMembers += cb.NumberOfCrossBracingMembers_Bay; // Navysime celkovy pocet o pocet prutov, ktore boli vygenerovane v danej bay

@@ -762,21 +762,17 @@ namespace PFD
                 if (cb.WallLeft)
                 {
                     m_arrMembers[i_numberofMembers + 0] = new CMember(i_numberofMembers + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + 0], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 1], section_CB_Walls, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, null, null, fAlignmentStart, fAlignmentEnd, 0f, 0);
-                    m_arrMembers[i_numberofMembers + 1] = new CMember(i_numberofMembers + 2, m_arrNodes[cb.BayIndex * iFrameNodesNo + 1], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 0], section_CB_Walls, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, null, null, fAlignmentStart, fAlignmentEnd, 0f, 0); i_numberofMembers += cb.NumberOfCrossBracingMembers_Walls;
-                    //To Mato - takto to ma byt, ale ked to spravim tak sa to inde zrubava. Problem nastane ak je left vypnute a wallright zapnute, vtedy tieto budu null
-                    //i_numberofMembers += cb.NumberOfCrossBracingMembers_WallLeftSide;
+                    m_arrMembers[i_numberofMembers + 1] = new CMember(i_numberofMembers + 2, m_arrNodes[cb.BayIndex * iFrameNodesNo + 1], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 0], section_CB_Walls, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, null, null, fAlignmentStart, fAlignmentEnd, 0f, 0);
+                    i_numberofMembers += cb.NumberOfCrossBracingMembers_WallLeftSide; // Pridame pruty v wall cross bracing na lavej strane bay
                 }
 
                 // Right
                 if (cb.WallRight)
                 {
-                    m_arrMembers[i_numberofMembers + 2] = new CMember(i_numberofMembers + 3, m_arrNodes[cb.BayIndex * iFrameNodesNo + (iFrameNodesNo - 1)], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + (iFrameNodesNo - 2)], section_CB_Walls, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, null, null, fAlignmentStart, fAlignmentEnd, 0f, 0);
-                    m_arrMembers[i_numberofMembers + 3] = new CMember(i_numberofMembers + 4, m_arrNodes[cb.BayIndex * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + (iFrameNodesNo - 1)], section_CB_Walls, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, null, null, fAlignmentStart, fAlignmentEnd, 0f, 0);
-                    //To Mato - takto to ma byt, ale ked to spravim tak sa to inde zrubava
-                    //i_numberofMembers += cb.NumberOfCrossBracingMembers_WallRightSide;
+                    m_arrMembers[i_numberofMembers + 0] = new CMember(i_numberofMembers + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + (iFrameNodesNo - 1)], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + (iFrameNodesNo - 2)], section_CB_Walls, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, null, null, fAlignmentStart, fAlignmentEnd, 0f, 0);
+                    m_arrMembers[i_numberofMembers + 1] = new CMember(i_numberofMembers + 2, m_arrNodes[cb.BayIndex * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + (iFrameNodesNo - 1)], section_CB_Walls, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, null, null, fAlignmentStart, fAlignmentEnd, 0f, 0);
+                    i_numberofMembers += cb.NumberOfCrossBracingMembers_WallRightSide; // Pridame pruty v wall cross bracing na pravej strane bay
                 }
-
-                i_numberofMembers += cb.NumberOfCrossBracingMembers_Walls;                
             }
 
             bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
