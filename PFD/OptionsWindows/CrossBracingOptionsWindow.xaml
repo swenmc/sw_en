@@ -24,7 +24,7 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">            
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Bay From:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                 <ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -37,7 +37,7 @@
 
                 <TextBlock Text="Roof Position:" HorizontalAlignment="Left" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                 <ComboBox Name ="Combobox_RoofPosition" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                  VerticalAlignment="Top" ItemsSource="{Binding Path=RoofPositions, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                   
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=RoofPositions, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                   SelectedValue="{Binding Path=RoofPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
                 <Button Width="80" Height="25" Name="BtnApply" Margin="10 0 0 0" Click="BtnApply_Click">Apply</Button>
@@ -51,12 +51,10 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <CheckBox Name="chbFirstCrossOnRafter" Margin="5,0" IsChecked="{Binding Path=FirstCrossOnRafter}">First Cross On Rafter</CheckBox>
-                    <CheckBox Name="chbLastCrossOnRafter" Margin="5,0" IsChecked="{Binding Path=lastCrossOnRafter}">Last Cross On Rafter</CheckBox>
+                    <CheckBox Name="chbLastCrossOnRafter" Margin="5,0" IsChecked="{Binding Path=LastCrossOnRafter}">Last Cross On Rafter</CheckBox>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        
-        
 
         <DataGrid Name ="Datagrid_CrossBracing" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedCrossBracingIndex}" ItemsSource="{Binding CrossBracingList}" 
@@ -79,12 +77,12 @@
                 <DataGridCheckBoxColumn Binding="{Binding WallLeft, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Wall-Left" Width="Auto">
                     <DataGridCheckBoxColumn.ElementStyle>
                         <Style TargetType="CheckBox">
-                            <Setter Property="HorizontalAlignment" Value="Center"/>                            
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
                         </Style>
                     </DataGridCheckBoxColumn.ElementStyle>
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
-                            <Setter Property="HorizontalAlignment" Value="Center"/>                            
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
                         </Style>
                     </DataGridCheckBoxColumn.EditingElementStyle>
                 </DataGridCheckBoxColumn>
@@ -116,7 +114,7 @@
                 </DataGridCheckBoxColumn>
 
                 <DataGridComboBoxColumn Header="Roof Position" ToolTipService.ToolTip="Select roof position" Width="Auto"
-                    SelectedValueBinding="{Binding RoofPosition, UpdateSourceTrigger=PropertyChanged}"                                        
+                    SelectedValueBinding="{Binding RoofPosition, UpdateSourceTrigger=PropertyChanged}"
                     ItemsSource ="{Binding Source={StaticResource RoofPositions}}">
                 </DataGridComboBoxColumn>
 
@@ -170,7 +168,4 @@
         </StackPanel>
 
     </Grid>
-
-
-
 </Window>
