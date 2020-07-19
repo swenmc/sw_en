@@ -596,7 +596,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
-                RecreateFoundations = true;                
+                RecreateFoundations = true;
                 //TODO - Bug - v tomto momente este nie su spravne nastavene ILS_Items - tie az ked sa model vytvara
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items);
 
@@ -606,6 +606,20 @@ namespace PFD
                 //iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
                 //float fFirstPurlinPosition = fDist_Purlin;
                 //float fRafterLength = MathF.Sqrt(MathF.Pow2(fH2_frame - fH1_frame) + MathF.Pow2(0.5f * fW_frame));
+
+                // To Ondrej - takto spocitas pocet purlins na jednom raftery, pocet je bez edge purlin (to je uplne na kraji)
+                // Problem je, ze MPurlinDistance nie je na zaciatku este nastavene, skus sa na to pozriet ci sa to da rozbehat aby sme pocet pozicii vedeli spocitat dynamicky a nepreberali to z UC Members
+                float fRafterLength;
+
+                if (MKitsetTypeIndex == 0)
+                    fRafterLength = MathF.Sqrt(MathF.Pow2(fHeight_H2 - MWallHeight) + MathF.Pow2(MWidth));
+                else if (MKitsetTypeIndex == 1)
+                    fRafterLength = MathF.Sqrt(MathF.Pow2(fHeight_H2 - MWallHeight) + MathF.Pow2(0.5f * MWidth));
+                else
+                    fRafterLength = 0; // Exception
+
+                float fFirstPurlinPosition = MPurlinDistance;
+                int iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / MPurlinDistance) + 1;
 
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
