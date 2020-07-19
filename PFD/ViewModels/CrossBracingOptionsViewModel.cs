@@ -233,10 +233,10 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CrossBracingOptionsViewModel(int baysNum, List<string> roofPositions)
+        public CrossBracingOptionsViewModel(int baysNum, int iOneRafterPurlinNo)
         {
-            IsSetFromCode = true;
-            RoofPositions = roofPositions;
+            IsSetFromCode = true;            
+            RoofPositions = GetRoofPositions(iOneRafterPurlinNo);
 
             initBays(baysNum);
 
@@ -312,6 +312,21 @@ namespace PFD
             {
                 cb.SetRoofPositions(roofPositions);                
             }
+        }
+
+        public List<string> GetRoofPositions(int iPurlinsNum)
+        {
+            List<string> items = new List<string>();
+            for (int i = 0; i <= iPurlinsNum; i++)
+            {
+                if (i == 0) items.Add("None");
+                if (i == 1) items.Add("Every purlin");
+                if (i == 2) items.Add("Every 2nd purlin");
+                if (i == 3) items.Add("Every 3rd purlin");
+                if (i >= 4) items.Add($"Every {i}th purlin");
+
+            }
+            return items;
         }
 
     }

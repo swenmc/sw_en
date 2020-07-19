@@ -28,7 +28,7 @@ namespace PFD
 
             CrossBracingOptionsChanged = false;
 
-            if (pfdVM._crossBracingOptionsVM == null) pfdVM._crossBracingOptionsVM = new CrossBracingOptionsViewModel(pfdVM.Frames - 1, pfdVM.ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items); // Počet bays = počet frames - 1
+            if (pfdVM._crossBracingOptionsVM == null) pfdVM._crossBracingOptionsVM = new CrossBracingOptionsViewModel(pfdVM.Frames - 1, pfdVM.OneRafterPurlinNo); // Počet bays = počet frames - 1
 
 
             pfdVM._crossBracingOptionsVM.PropertyChanged += HandleCrossBracingOptionsPropertyChangedEvent;

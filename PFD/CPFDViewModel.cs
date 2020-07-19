@@ -75,6 +75,8 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
 
+        private int MOneRafterPurlinNo;
+
         private int MRoofFibreglassThicknessIndex;
         private int MWallFibreglassThicknessIndex;
 
@@ -319,14 +321,17 @@ namespace PFD
                 Width = dmodel.fb;
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
-                Frames = dmodel.iFrNo;
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
                 ColumnDistance = dmodel.fdist_frontcolumn;
                 BottomGirtPosition = dmodel.fdist_girt_bottom;
+                Frames = dmodel.iFrNo;
+                fBayWidth = MLength / (MFrames - 1);
+
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
+                                
                 _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
                 _componentVM.SetILSProperties(dmodel);
@@ -339,7 +344,7 @@ namespace PFD
                 // Povodne to bolo tak ze properties boli len parametre ktore boli zadavane v GUI
                 // Ak je programatorsky spravnejsie, ze ma byt vsetko co sa tu pouziva property, tak nemam namietky
 
-                fBayWidth = MLength / (MFrames - 1);
+                
                 fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
 
                 if (MKitsetTypeIndex == 0)
@@ -597,8 +602,8 @@ namespace PFD
                 RecreateModel = true;
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
-                //TODO - Bug - v tomto momente este nie su spravne nastavene ILS_Items - tie az ked sa model vytvara
-                _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, ComponentList[(int)EMemberType_FS_Position.MainRafter - 1].ILS_Items);
+                
+                
 
                 //To Mato
                 //podla mna by sme tu potrebovali vediet tie  RafterFlyBracingPosition_Items
@@ -619,7 +624,10 @@ namespace PFD
                     fRafterLength = 0; // Exception
 
                 float fFirstPurlinPosition = MPurlinDistance;
-                int iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / MPurlinDistance) + 1;
+                OneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / MPurlinDistance) + 1;
+
+                //TODO - Bug - v tomto momente este nie su spravne nastavene ILS_Items - tie az ked sa model vytvara
+                _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
 
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
@@ -2787,6 +2795,19 @@ namespace PFD
             set
             {
                 m_KitsetTypes = value;
+            }
+        }
+
+        public int OneRafterPurlinNo
+        {
+            get
+            {
+                return MOneRafterPurlinNo;
+            }
+
+            set
+            {
+                MOneRafterPurlinNo = value;
             }
         }
 

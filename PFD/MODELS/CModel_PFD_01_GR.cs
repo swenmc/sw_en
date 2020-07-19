@@ -338,7 +338,7 @@ namespace PFD
                 iPurlinNoInOneFrame = 2 * iOneRafterPurlinNo;
             }
             componentListVM.SetRafterFlyBracingPosition_Items(iOneRafterPurlinNo); //zakomentovane 20.12.2019 - nechapem naco to tu je
-            vm._crossBracingOptionsVM.SetRoofPositions(componentListVM.RafterFlyBracingPosition_Items);
+            //vm._crossBracingOptionsVM.SetRoofPositions(componentListVM.RafterFlyBracingPosition_Items);
 
             if (!bGeneratePurlins || iRafterFlyBracing_EveryXXPurlin == 0 || iRafterFlyBracing_EveryXXPurlin > iPurlinNoInOneFrame) // Index 0 means do not use fly bracing, more than number of purlins per rafter means no fly bracing too
                 bUseRafterFlyBracingPlates = false;
@@ -618,6 +618,8 @@ namespace PFD
 
                         cb.NumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;
                         cb.NumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
+                        //to Mato - takto som myslel,ze vyriesim ten stav ze kazdu 10tu z 12 ale nie, lebo potom dava vsade dvojmo posledny cross
+                        //cb.NumberOfCrossesPerRafter = (int)Math.Ceiling((decimal)cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin); // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
 
                         if ((cb.FirstCrossOnRafter && !cb.LastCrossOnRafter) || (!cb.FirstCrossOnRafter && cb.LastCrossOnRafter))
                             cb.NumberOfCrossesPerRafter = 1;
