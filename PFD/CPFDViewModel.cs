@@ -461,6 +461,7 @@ namespace PFD
             ModelIndex = ModelTypes.Count - 1;
         }
 
+        //L_tot
         //-------------------------------------------------------------------------------------------------------------
         public float Length
         {
@@ -625,10 +626,10 @@ namespace PFD
 
                 float fFirstPurlinPosition = MPurlinDistance;
                 OneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / MPurlinDistance) + 1;
-
-                //TODO - Bug - v tomto momente este nie su spravne nastavene ILS_Items - tie az ked sa model vytvara
+                                
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
-
+                _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, fBayWidth);
+                
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
             }
@@ -2343,6 +2344,7 @@ namespace PFD
         public DesignOptionsViewModel _designOptionsVM;
 
         public CrossBracingOptionsViewModel _crossBracingOptionsVM;
+        public BayWidthOptionsViewModel _baysWidthOptionsVM;
 
         [NonSerialized]
         public QuotationViewModel _quotationViewModel;

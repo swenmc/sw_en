@@ -2599,5 +2599,11 @@ namespace PFD
             w.ShowDialog();
 
         }
+
+        private void BtnBayWidthsOptions_Click(object sender, RoutedEventArgs e)
+        {
+            BaysWidthOptionsWindow w = new BaysWidthOptionsWindow(vm);
+            w.ShowDialog();
+        }
     }
 }
