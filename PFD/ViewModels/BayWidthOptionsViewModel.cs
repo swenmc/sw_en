@@ -202,6 +202,16 @@ namespace PFD
             else return float.NaN;
         }
 
+        public List<float> GetBaysWidths()
+        {
+            List<float> values = new List<float>();
+            foreach (CBayInfo bi in BayWidthList)
+            {
+                values.Add(bi.Width);
+            }
+            return values;
+        }
+
 
     }
 }

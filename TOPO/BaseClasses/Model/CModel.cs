@@ -18,6 +18,7 @@ namespace BaseClasses
     public class CModel
     {
         public bool debugging = false;
+        private List<float> m_L1_Bays;
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // TO Ondrej: Docasne su tieto parametre tu, ale nemali byt v CModel ale niekde v potomkoch, napriklad CModel_PFD
@@ -26,6 +27,7 @@ namespace BaseClasses
 
         public float fL_tot;
         public float fL1_frame;
+        
         public float fW_frame;
         public float fH1_frame;
         public float fH2_frame;
@@ -125,6 +127,19 @@ namespace BaseClasses
         Dictionary<Tuple<float, string, string>, List<CMember>> GroupedMembers;
 
         public LoadCombinationsInternalForces LoadCombInternalForcesResults { get; set; }
+
+        public List<float> L1_Bays
+        {
+            get
+            {
+                return m_L1_Bays;
+            }
+
+            set
+            {
+                m_L1_Bays = value;
+            }
+        }
 
         [NonSerialized]
         public Model BFEMNetModel;
