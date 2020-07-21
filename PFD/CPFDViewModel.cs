@@ -124,6 +124,7 @@ namespace PFD
         private bool m_DesignOptionsChanged;
         private bool m_DisplayOptionsChanged;
         private bool m_CrossBracingOptionsChanged;
+        private bool m_BaysWidthOptionsChanged;
 
         //private bool m_BracingEverySecondRowOfGirts;
         //private bool m_BracingEverySecondRowOfPurlins;
@@ -2698,6 +2699,25 @@ namespace PFD
                 RecreateModel = true;
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CrossBracingOptionsChanged");
+
+            }
+        }
+
+        public bool BaysWidthOptionsChanged
+        {
+            get
+            {
+                return m_BaysWidthOptionsChanged;
+            }
+
+            set
+            {
+                m_BaysWidthOptionsChanged = value;
+
+                SetResultsAreNotValid();
+                RecreateModel = true;
+
+                if (MSynchronizeGUI) NotifyPropertyChanged("BaysWidthOptionsChanged");
 
             }
         }

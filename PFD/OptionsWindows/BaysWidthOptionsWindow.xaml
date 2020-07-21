@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Bays Width Options" Height="940" Width="800" Loaded="Window_Loaded">
+        Title="Bays Width Options" Height="940" Width="600" Loaded="Window_Loaded">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">50</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">100</System:Double>
@@ -34,7 +34,7 @@
                   Margin="0,5" SelectedValue="{Binding Path=BayTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
             <TextBlock Text="Width:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
-            <TextBox Margin="0 5 5 0" Name="TextBox_Width" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Margin="0 5 5 0" Name="TextBox_Width" Width="{StaticResource theTextBoxWidthLarge}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Width, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
@@ -42,8 +42,8 @@
 
         </StackPanel>
 
-        <DataGrid Name ="Datagrid_CrossBracing" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedCrossBracingIndex}" ItemsSource="{Binding CrossBracingList}" 
+        <DataGrid Name ="Datagrid_CrossBracing" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                  IsReadOnly="False" AutoGenerateColumns="False" ItemsSource="{Binding BayWidthList}" 
                   MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
@@ -58,8 +58,9 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding BayNumber}" IsReadOnly="True" Header="BayNumber" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding Width}" IsReadOnly="True" Header="Width." Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding BayNumber}" IsReadOnly="True" Header="BayNumber" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding Width}" IsReadOnly="False" Header="Width" Width="*"></DataGridTextColumn>
+                
 
             </DataGrid.Columns>
         </DataGrid>

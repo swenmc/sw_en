@@ -28,25 +28,23 @@ namespace PFD
 
             BaysWidthOptionsChanged = false;
 
-            if (pfdVM._crossBracingOptionsVM == null) pfdVM._crossBracingOptionsVM = new CrossBracingOptionsViewModel(pfdVM.Frames - 1, pfdVM.OneRafterPurlinNo);
+            if (pfdVM._baysWidthOptionsVM == null) pfdVM._baysWidthOptionsVM = new BayWidthOptionsViewModel(pfdVM.Frames - 1, pfdVM.fBayWidth);
 
-
-            pfdVM._crossBracingOptionsVM.PropertyChanged += HandleCrossBracingOptionsPropertyChangedEvent;
+            pfdVM._baysWidthOptionsVM.PropertyChanged += HandleBayWidthsOptionsPropertyChangedEvent;
             
-            this.DataContext = pfdVM._crossBracingOptionsVM;
+            this.DataContext = pfdVM._baysWidthOptionsVM;
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
 
-        
-        private void HandleCrossBracingOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void HandleBayWidthsOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            if (sender is CrossBracingOptionsViewModel)
+            if (sender is BayWidthOptionsViewModel)
             {
-                //if(e.PropertyName == "CrossBracingItem_PropertyChanged") CrossBracingOptionsChanged = true;
+                
             }
-            if (sender is CCrossBracingInfo)
+            if (sender is CBayInfo)
             {
                 BaysWidthOptionsChanged = true;
             }
@@ -54,17 +52,13 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (BaysWidthOptionsChanged) _pfdVM.CrossBracingOptionsChanged = true;
+            if (BaysWidthOptionsChanged) _pfdVM.BaysWidthOptionsChanged = true;
             this.Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
-          
-            //radioColorsIn3DMembers.IsChecked = _pfdVM._displayOptionsVM.ColorsAccordingToMembers;
-
-
         }
 
         private void Datagrid_Components_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -79,20 +73,13 @@ namespace PFD
 
         private void BtnApply_Click(object sender, RoutedEventArgs e)
         {
-            //CrossBracingOptionsViewModel vm = this.DataContext as CrossBracingOptionsViewModel;
-            //if (vm.BayFrom > vm.BayTo) return;
+            BayWidthOptionsViewModel vm = this.DataContext as BayWidthOptionsViewModel;
+            if (vm.BayFrom > vm.BayTo) return;
 
-            //if (vm.Roof && vm.RoofPosition == "None") { MessageBox.Show("None is not a valid value when roof is selected."); return; }
-
-            //for (int i = vm.BayFrom; i <= vm.BayTo; i++)
-            //{
-            //    vm.CrossBracingList[i - 1].WallLeft = vm.WallLeft;
-            //    vm.CrossBracingList[i - 1].WallRight = vm.WallRight;
-            //    vm.CrossBracingList[i - 1].Roof = vm.Roof;
-            //    vm.CrossBracingList[i - 1].RoofPosition = vm.RoofPosition;
-            //    vm.CrossBracingList[i - 1].FirstCrossOnRafter = vm.FirstCrossOnRafter;
-            //    vm.CrossBracingList[i - 1].LastCrossOnRafter = vm.LastCrossOnRafter;
-            //}
+            for (int i = vm.BayFrom; i <= vm.BayTo; i++)
+            {
+                vm.BayWidthList[i - 1].Width = vm.Width;                
+            }
         }
     }
 }

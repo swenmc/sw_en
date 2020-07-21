@@ -175,5 +175,33 @@ namespace PFD
             return totalW;
         }
 
+        public float GetBayWidth(int bayID)
+        {
+            CBayInfo bi = BayWidthList.FirstOrDefault(b => b.BayNumber == bayID);
+            if (bi != null) return bi.Width;
+            else return float.NaN;
+        }
+
+        public float GetBayWidth_ByIndex(int bayIndex)
+        {
+            CBayInfo bi = BayWidthList.FirstOrDefault(b => b.BayIndex == bayIndex);
+            if (bi != null) return bi.Width;
+            else return float.NaN;
+        }
+
+        public float GetPreviousBayWidth_ForFrameIndex(int frameIndex)
+        {
+            CBayInfo bi = BayWidthList.ElementAtOrDefault(frameIndex - 1);
+            if (bi != null) return bi.Width;
+            else return float.NaN;
+        }
+        public float GetNextBayWidth_ForFrameIndex(int frameIndex)
+        {
+            CBayInfo bi = BayWidthList.ElementAtOrDefault(frameIndex);
+            if (bi != null) return bi.Width;
+            else return float.NaN;
+        }
+
+
     }
 }
