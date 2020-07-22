@@ -44,6 +44,7 @@ namespace PFD
             iEavesPurlinNoInOneFrame = 2;
                         
             fL1_frame = fL_tot / (iFrameNo - 1);
+            L1_Bays = vm._baysWidthOptionsVM.GetBaysWidths();
 
             fDist_Girt = vm.GirtDistance;
             fDist_Purlin = vm.PurlinDistance;

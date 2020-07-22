@@ -482,6 +482,8 @@ namespace PFD
                     // Recalculate fBayWidth
                     fBayWidth = MLength / (MFrames - 1);
                 }
+                if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, fBayWidth);
+
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
@@ -598,7 +600,8 @@ namespace PFD
                 {
                     // Recalculate L1
                     fBayWidth = MLength / (MFrames - 1);
-                }
+                }                
+
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
@@ -2713,6 +2716,10 @@ namespace PFD
             set
             {
                 m_BaysWidthOptionsChanged = value;
+
+                if (!IsSetFromCode) IsSetFromCode = true;                                
+                Length = _baysWidthOptionsVM.GetTotalWidth();
+                IsSetFromCode = false;
 
                 SetResultsAreNotValid();
                 RecreateModel = true;
