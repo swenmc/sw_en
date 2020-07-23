@@ -1501,8 +1501,12 @@ namespace PFD
                 // UC - Footings
                 float fMainColumnFooting_aX_MaxByCrscWidth = 20 * MathF.Max((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b, (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].b);
                 float fMainColumnFooting_bY_MaxByCrscDepth = 5 * MathF.Max((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h);
-                float fTributaryArea_Wall = MathF.Average(fH1_frame, fH2_frame) * fL1_frame;
-                float fTributaryArea_Roof = 0.5f * fW_frame * fL1_frame;
+                //task 600
+                //to Mato - netusim co tu ma byt
+                //float fTributaryArea_Wall = MathF.Average(fH1_frame, fH2_frame) * fL1_frame;
+                //float fTributaryArea_Roof = 0.5f * fW_frame * fL1_frame;
+                float fTributaryArea_Wall = MathF.Average(fH1_frame, fH2_frame) * L1_Bays[0];
+                float fTributaryArea_Roof = 0.5f * fW_frame * L1_Bays[0];
                 float fMainColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.7f, 0.014f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_aX_MaxByCrscWidth), 1);
                 float fMainColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.8f, 0.015f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_bY_MaxByCrscDepth), 1);
                 float fMainColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
@@ -1864,7 +1868,9 @@ namespace PFD
                 float fSawCutsSpacingInDirectionX = 0;
                 float fSawCutsSpacingInDirectionY = 0;
 
-                float fSawCutMaximumDistanceY = Math.Min(6, fL1_frame); // 6 m // V kazdej bay alebo maximalne 6 metrov od seba
+                //task 600
+                //float fSawCutMaximumDistanceY = Math.Min(6, fL1_frame); // 6 m // V kazdej bay alebo maximalne 6 metrov od seba
+                float fSawCutMaximumDistanceY = Math.Min(6, L1_Bays[0]); // 6 m // V kazdej bay alebo maximalne 6 metrov od seba
                 float fSawCutMaximumDistanceX = 0.5f * fSawCutMaximumDistanceY; // Pomer Y : X = 2:1
 
                 if (fSawCutMaximumDistanceY < fFloorSlab_bY)
@@ -2328,7 +2334,9 @@ namespace PFD
 
                 int iBayColumnLeft = (iBlockFrame * (iFrameMembersNo + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iFrameMembersNo - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
                 int iBayColumnRight = ((iBlockFrame + 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iFrameMembersNo - 1));
-                fBayWidth = fL1_frame;
+                //task 600
+                //fBayWidth = fL1_frame;
+                fBayWidth = GetBayWidth(iBayNumber);
 
                 int iLeftGirtNoInOneFrame = 0;
                 if (sBuildingSide == "Right") iLeftGirtNoInOneFrame = iSideWallLeftColumnGirtNoInOneFrame;

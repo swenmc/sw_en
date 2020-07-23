@@ -1518,7 +1518,9 @@ namespace PFD
                         if (m.EMemberType != EMemberType_FS.eMC && m.EMemberType != EMemberType_FS.eMR &&
                             m.EMemberType != EMemberType_FS.eEC && m.EMemberType != EMemberType_FS.eER) continue;
 
-                        if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+                        //task 600
+                        //if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+                        if (MathF.d_equal(m.PointStart.Y, model.GetBaysWidthUntilFrameIndex(i), limit))
                         {
                             frameMembers.Add(m);
 
@@ -1594,7 +1596,10 @@ namespace PFD
                                         */
                                     }
 
-                                    GetTributaryWidth_B(l, m, model.fL1_frame);
+                                    //task 600
+                                    //to Mato - netusim co tu ma ist
+                                    //GetTributaryWidth_B(l, m, model.fL1_frame);
+                                    GetTributaryWidth_B(l, m, model.GetBayWidth(1));
 
                                     //if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(loadCase, l, m, model.fL1_frame, isOuterFrame);
                                 }
@@ -1615,7 +1620,10 @@ namespace PFD
                                     */
                                 }
 
-                                GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.fL1_frame);
+                                //task 600
+                                //To Mato - netusim co tu ma ist
+                                //GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.fL1_frame);
+                                GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.GetBayWidth(1));
                                 //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
                             }
                             else throw new Exception("Load type not known.");
@@ -2071,7 +2079,9 @@ namespace PFD
                 bool errorOccurs = false;
                 foreach (DoorProperties dp in doorProperties)
                 {
-                    dp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    //task 600
+                    //dp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    dp.SetValidationValues(vm.WallHeight, vm.Model.GetBayWidth(dp.iBayNumber), vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
                     if (!dp.ValidateDoorInsideBay())
                     {
                         if (!errorOccurs) MessageBox.Show("Door is defined out of frame bay.");
@@ -2142,7 +2152,9 @@ namespace PFD
                 bool errorOccurs = false;
                 foreach (WindowProperties wp in windowProperties)
                 {
-                    wp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    //task 600
+                    //wp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    wp.SetValidationValues(vm.WallHeight, vm.Model.GetBayWidth(wp.iBayNumber), vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
                     if (!wp.ValidateWindowInsideBay())
                     {
                         if (!errorOccurs) MessageBox.Show("Window is defined out of frame bay.");

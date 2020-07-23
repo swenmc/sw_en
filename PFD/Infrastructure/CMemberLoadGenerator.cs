@@ -4,6 +4,7 @@ using M_EC1.AS_NZS;
 using MATH;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media.Media3D;
 
@@ -21,7 +22,8 @@ namespace PFD
         private int iFrameNodesNo;
         private int iEavesPurlinNoInOneFrame;
         private int iFramesNo;
-        private float fL1_frame;
+        //private float fL1_frame;
+        private List<float> m_L1_Bays;
         private float fL_tot;
         private CLoadCase[] m_arrLoadCases;
         private CMember[] m_arrMembers;
@@ -54,7 +56,8 @@ namespace PFD
             int frameNodesNo,
             int eavesPurlinNoInOneFrame,
             int framesNo,
-            float L1_frame,
+            //float L1_frame,
+            List<float> L1_Bays,
             float L_tot,
             float fSlopeFactor,
             CCrSc GirtCrSc_temp,
@@ -74,7 +77,8 @@ namespace PFD
             iFrameNodesNo = frameNodesNo;
             iEavesPurlinNoInOneFrame =eavesPurlinNoInOneFrame;
             iFramesNo = framesNo;
-            fL1_frame = L1_frame;
+            //fL1_frame = L1_frame;
+            m_L1_Bays = L1_Bays;
             fL_tot = L_tot;
             m_arrLoadCases = arrLoadCases;
             m_arrMembers = arrMembers;
@@ -106,7 +110,8 @@ namespace PFD
             iFrameNodesNo = model.iFrameNodesNo;
             iEavesPurlinNoInOneFrame = model.iEavesPurlinNoInOneFrame;
             iFramesNo = model.iFrameNo;
-            fL1_frame = model.fL1_frame;
+            //fL1_frame = model.fL1_frame;
+            m_L1_Bays = model.L1_Bays;
             fL_tot = model.fL_tot;
             m_arrLoadCases = model.m_arrLoadCases;
             m_arrMembers = model.m_arrMembers;
@@ -419,9 +424,6 @@ namespace PFD
             int indexRafter1Left = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * iFrameMembersNo + 1;
             int indexRafter2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * iFrameMembersNo + (iFrameMembersNo - 1 - 1);
 
-            float fFrameTributaryWidth = fL1_frame;
-            float fFrameGCSCoordinate_Y = iFrameIndex * fL1_frame;
-
             // Additional surface dead load
             float fSelfWeight_Girts_SurfaceLoad = -(float)(GirtCrSc.A_g * GirtCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION / fDistanceGirts);
             float fSelfWeight_Purlins_SurfaceLoad = -(float)(PurlinCrSc.A_g * PurlinCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION / fDistancePurlins);
@@ -429,12 +431,25 @@ namespace PFD
             float fSelfWeightColumn = -(float)(ColumnCrSc.A_g * ColumnCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
             float fSelfWeightRafter = -(float)(RafterCrSc.A_g * RafterCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
 
+            //task 600
+            //float fFrameTributaryWidth = fL1_frame;
+            //float fFrameGCSCoordinate_Y = iFrameIndex * fL1_frame;
+            float fFrameTributaryWidth = 0;
+            float fFrameGCSCoordinate_Y = GetBaysWidthUntilFrameIndex(iFrameIndex);
+
             // Half tributary width - first and last frame
             if (iFrameIndex == 0 || iFrameIndex == iFramesNo - 1)
             {
+                if (iFrameIndex == 0) fFrameTributaryWidth = m_L1_Bays.First();
+                else fFrameTributaryWidth = m_L1_Bays.Last();
+
                 fFrameTributaryWidth *= 0.5f;
                 fSelfWeightColumn = -(float)(ColumnCrSc_EF.A_g * ColumnCrSc_EF.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
                 fSelfWeightRafter = -(float)(RafterCrSc_EF.A_g * RafterCrSc_EF.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
+            }
+            else
+            {
+                fFrameTributaryWidth = m_L1_Bays[iFrameIndex - 1];
             }
 
             // Total surface dead load
@@ -1258,31 +1273,56 @@ namespace PFD
             if (iWindDirectionIndex != (int)ELCMainDirection.ePlusY && iWindDirectionIndex != (int)ELCMainDirection.eMinusY)
                 return; // Invalid direction - return empty list of loads
 
-            float fFrameCoordinate_GCS_Y = iFrameIndex * fL1_frame; // Expected equal distance between frames (bay width)
+            //task 600
+            //float fFrameCoordinate_GCS_Y = iFrameIndex * fL1_frame; // Expected equal distance between frames (bay width)
+            float fFrameCoordinate_GCS_Y = GetBaysWidthUntilFrameIndex(iFrameIndex);
 
             if (iWindDirectionIndex != (int)ELCMainDirection.ePlusY) // Minus Y - Rear Wind Pressure
             {
                 fFrameCoordinate_GCS_Y = fL_tot - fFrameCoordinate_GCS_Y;
             }
 
+            //task 600
             // Set minimum and maximum coordinate of tributary area
-            float fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * fL1_frame;
-            float fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * fL1_frame;
+            //float fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * fL1_frame;
+            //float fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * fL1_frame;
+            float fTributaryWidth_Y_Coordinate_Min = 0;
+            float fTributaryWidth_Y_Coordinate_Max = 0;
 
             if (iFrameIndex == 0) // First Frame
             {
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY) // First frame
+                {
                     fTributaryWidth_Y_Coordinate_Min = 0;
+                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex];
+                }
                 else // Last frame
-                    fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
+                {
+                    //fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
+                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y;
+                    fTributaryWidth_Y_Coordinate_Max = GetBaysWidthUntilFrameIndex(iFrameIndex);
+                }
             }
-
-            if (iFrameIndex == iFramesNo - 1) // Last Frame
+            else if (iFrameIndex == iFramesNo - 1) // Last Frame
             {
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY) // First frame
-                    fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
+                {
+                    //fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
+                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1];
+                    fTributaryWidth_Y_Coordinate_Max = GetBaysWidthUntilFrameIndex(iFrameIndex);
+                }
                 else // Last frame
+                {
                     fTributaryWidth_Y_Coordinate_Min = 0;
+                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y;
+                }
+            }
+            else
+            {
+                //fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * fL1_frame;
+                //fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * fL1_frame;
+                fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1];
+                fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex];
             }
 
             // Find all x-coordinates of wind load zones that start within interval < fTributaryWidth_Y_Coordinate_Min; fTributaryWidth_Y_Coordinate_Max>
@@ -2187,6 +2227,16 @@ namespace PFD
                 1);
 
             return GlobalToLocalTransformMatrix;
+        }
+
+        public float GetBaysWidthUntilFrameIndex(int frameIndex)
+        {
+            float w = 0;
+            for (int i = 0; i < frameIndex; i++)
+            {
+                w += m_L1_Bays[i];
+            }
+            return w;
         }
     }
 }

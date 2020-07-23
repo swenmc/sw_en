@@ -2309,7 +2309,9 @@ namespace PFD
 
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
-                d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
+                //task 600
+                //d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
+                d.SetValidationValues(MWallHeight, model.GetBayWidth(d.iBayNumber), model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
 
@@ -2329,7 +2331,9 @@ namespace PFD
 
             foreach (WindowProperties w in MWindowBlocksProperties)
             {
-                w.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
+                //task 600
+                //w.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
+                w.SetValidationValues(MWallHeight, model.GetBayWidth(w.iBayNumber), model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
 

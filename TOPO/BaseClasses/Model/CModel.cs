@@ -26,7 +26,7 @@ namespace BaseClasses
         public EModelType_FS eKitset;
 
         public float fL_tot;
-        public float fL1_frame;
+        //public float fL1_frame;
         
         public float fW_frame;
         public float fH1_frame;
@@ -313,6 +313,21 @@ namespace BaseClasses
                 if (joint.m_Node.ID == f.m_Node.ID) return f;
             }
             return null;
+        }
+
+        public float GetBayWidth(int bayID)
+        {
+            return L1_Bays.ElementAtOrDefault(bayID - 1);            
+        }
+
+        public float GetBaysWidthUntilFrameIndex(int frameIndex)
+        {
+            float w = 0;
+            for (int i = 0; i < frameIndex; i++)
+            {
+                w += L1_Bays[i];
+            }
+            return w;
         }
     }
 }
