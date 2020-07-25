@@ -329,5 +329,20 @@ namespace BaseClasses
             }
             return w;
         }
+        public float GetBayWidthPrevious(int frameIndex)
+        {
+            if (frameIndex > 0) return L1_Bays[frameIndex - 1];
+            else return 0;
+        }
+        public float GetBayWidthNext(int frameIndex)
+        {
+            if (frameIndex >= L1_Bays.Count) return 0;
+            else return L1_Bays[frameIndex];
+        }
+
+        public float GetTributaryWidth(int frameIndex)
+        {
+            return 0.5f * GetBayWidthPrevious(frameIndex) + 0.5f * GetBayWidthNext(frameIndex);            
+        }
     }
 }

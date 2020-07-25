@@ -294,14 +294,9 @@ namespace PFD
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iMainColumnFlyBracing_EveryXXGirt = sGeometryInputData.iMainColumnFlyBracingEveryXXGirt;
             else
-            {
-                //task 600
-                //iMainColumnFlyBracing_EveryXXGirt = Math.Max(0, (int)(fL1_frame / fDist_Girt));
-                //To Mato: netusim ako to ma byt
+            {                
                 iMainColumnFlyBracing_EveryXXGirt = Math.Max(0, (int)(L1_Bays[0] / fDist_Girt));
             }
-
-                
 
             // Rafter fly bracing
             // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
@@ -908,11 +903,6 @@ namespace PFD
             // Members - Girts
             int i_temp_numberofMembers = iMainColumnNo + iRafterNo + iEavesPurlinNoInOneFrame * (iFrameNo - 1);
 
-            //task 600
-            //To Mato - netusim co tu ma byt
-            //float fIntermediateSupportSpacingGirts = fL1_frame / (iNumberOfTransverseSupports_Girts + 1); // number of LTB segments = number of support + 1
-            float fIntermediateSupportSpacingGirts = L1_Bays[0] / (iNumberOfTransverseSupports_Girts + 1); // number of LTB segments = number of support + 1
-
             if (bGenerateGirts)
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
@@ -935,11 +925,6 @@ namespace PFD
 
             // Nodes - Purlins
             i_temp_numberofNodes += bGenerateGirts ? (iGirtNoInOneFrame * iFrameNo) : 0;
-
-            //task 600
-            //to Mato - netusim co tu ma byt
-            //float fIntermediateSupportSpacingPurlins = fL1_frame / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
-            float fIntermediateSupportSpacingPurlins = L1_Bays[0] / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
 
             if (bGeneratePurlins)
             {
@@ -1086,6 +1071,8 @@ namespace PFD
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
+                    float fIntermediateSupportSpacingGirts = L1_Bays[i] / (iNumberOfTransverseSupports_Girts + 1); // number of LTB segments = number of support + 1
+
                     for (int j = 0; j < (iLeftColumnGirtNo + 1); j++) // Left side
                     {
                         float zCoord = j < iLeftColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
@@ -1093,7 +1080,7 @@ namespace PFD
                         for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
                         {
                             //task 600
-                            //m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
+                            //m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);                            
                             m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, GetBaysWidthUntilFrameIndex(i) + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
                         }
                     }
@@ -1170,7 +1157,9 @@ namespace PFD
             if (bGeneratePurlinBracing)
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
-                {
+                {                    
+                    float fIntermediateSupportSpacingPurlins = L1_Bays[i] / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
+
                     for (int j = 0; j < (iOneRafterPurlinNo + 1 + iLastPurlin); j++) // Left side - eave purlin and purlins
                     {
                         float x_glob, z_glob;

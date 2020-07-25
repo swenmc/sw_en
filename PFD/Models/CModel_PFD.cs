@@ -1501,44 +1501,43 @@ namespace PFD
                 // UC - Footings
                 float fMainColumnFooting_aX_MaxByCrscWidth = 20 * MathF.Max((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b, (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].b);
                 float fMainColumnFooting_bY_MaxByCrscDepth = 5 * MathF.Max((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h);
-                //task 600
-                //to Mato - netusim co tu ma byt
-                //float fTributaryArea_Wall = MathF.Average(fH1_frame, fH2_frame) * fL1_frame;
-                //float fTributaryArea_Roof = 0.5f * fW_frame * fL1_frame;
-                float fTributaryArea_Wall = MathF.Average(fH1_frame, fH2_frame) * L1_Bays[0];
-                float fTributaryArea_Roof = 0.5f * fW_frame * L1_Bays[0];
-                float fMainColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.7f, 0.014f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_aX_MaxByCrscWidth), 1);
-                float fMainColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.8f, 0.015f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_bY_MaxByCrscDepth), 1);
+
                 float fMainColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
                 float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
 
-                CReinforcementBar MainColumnFootingReference_Top_Bar_x;
-                CReinforcementBar MainColumnFootingReference_Top_Bar_y;
-                CReinforcementBar MainColumnFootingReference_Bottom_Bar_x;
-                CReinforcementBar MainColumnFootingReference_Bottom_Bar_y;
-
-                int iMainColumnFootingNumberOfBarsTop_x;
-                int iMainColumnFootingNumberOfBarsTop_y;
-                int iMainColumnFootingNumberOfBarsBottom_x;
-                int iMainColumnFootingNumberOfBarsBottom_y;
-
-                CreateReferenceReinforcementBars(
-                    bIsReinforcementBarStraight,
-                    fMainColumnFooting_aX,
-                    fMainColumnFooting_bY,
-                    fMainColumnFooting_h,
-                    out MainColumnFootingReference_Top_Bar_x,
-                    out MainColumnFootingReference_Top_Bar_y,
-                    out MainColumnFootingReference_Bottom_Bar_x,
-                    out MainColumnFootingReference_Bottom_Bar_y,
-                    out iMainColumnFootingNumberOfBarsTop_x,
-                    out iMainColumnFootingNumberOfBarsTop_y,
-                    out iMainColumnFootingNumberOfBarsBottom_x,
-                    out iMainColumnFootingNumberOfBarsBottom_y
-                    );
-
                 for (int i = 0; i < iFrameNo; i++)
-                {
+                {                    
+                    float tributaryWidth = GetTributaryWidth(i);
+                    float fTributaryArea_Wall = MathF.Average(fH1_frame, fH2_frame) * tributaryWidth;
+                    float fTributaryArea_Roof = 0.5f * fW_frame * tributaryWidth;
+                    float fMainColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.7f, 0.014f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_aX_MaxByCrscWidth), 1);
+                    float fMainColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.8f, 0.015f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_bY_MaxByCrscDepth), 1);
+                
+                    CReinforcementBar MainColumnFootingReference_Top_Bar_x;
+                    CReinforcementBar MainColumnFootingReference_Top_Bar_y;
+                    CReinforcementBar MainColumnFootingReference_Bottom_Bar_x;
+                    CReinforcementBar MainColumnFootingReference_Bottom_Bar_y;
+
+                    int iMainColumnFootingNumberOfBarsTop_x;
+                    int iMainColumnFootingNumberOfBarsTop_y;
+                    int iMainColumnFootingNumberOfBarsBottom_x;
+                    int iMainColumnFootingNumberOfBarsBottom_y;
+
+                    CreateReferenceReinforcementBars(
+                        bIsReinforcementBarStraight,
+                        fMainColumnFooting_aX,
+                        fMainColumnFooting_bY,
+                        fMainColumnFooting_h,
+                        out MainColumnFootingReference_Top_Bar_x,
+                        out MainColumnFootingReference_Top_Bar_y,
+                        out MainColumnFootingReference_Bottom_Bar_x,
+                        out MainColumnFootingReference_Bottom_Bar_y,
+                        out iMainColumnFootingNumberOfBarsTop_x,
+                        out iMainColumnFootingNumberOfBarsTop_y,
+                        out iMainColumnFootingNumberOfBarsBottom_x,
+                        out iMainColumnFootingNumberOfBarsBottom_y
+                        );
+
                     float fMainColumnFooting_Eccentricity_x = 0f;
                     float fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h);
 
@@ -2334,8 +2333,7 @@ namespace PFD
 
                 int iBayColumnLeft = (iBlockFrame * (iFrameMembersNo + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iFrameMembersNo - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
                 int iBayColumnRight = ((iBlockFrame + 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iFrameMembersNo - 1));
-                //task 600
-                //fBayWidth = fL1_frame;
+                
                 fBayWidth = GetBayWidth(iBayNumber);
 
                 int iLeftGirtNoInOneFrame = 0;

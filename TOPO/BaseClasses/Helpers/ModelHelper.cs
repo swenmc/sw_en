@@ -136,27 +136,21 @@ namespace BaseClasses.Helpers
         public static CMember[] GetMiddleFrameMembers(CModel model, bool bAddGirtsAndPurlins = true)
         {
             int iDirectionCode = 1; // iDirectionCode 0- direction X, 1-direction Y, 2 - direction Z
-
-            //task 600
-            if (!bAddGirtsAndPurlins)
-                //return GetMembersInDistance(model, model.fL1_frame, iDirectionCode);
-                return GetMembersInDistance(model, model.L1_Bays[0], iDirectionCode);
-            else
-                //return GetMembersInDistanceInterval(model, 0, model.fL1_frame, iDirectionCode, false, true, true);
-                return GetMembersInDistanceInterval(model, 0, model.L1_Bays[0], iDirectionCode, false, true, true);
+                        
+            if (!bAddGirtsAndPurlins)                
+                return GetMembersInDistance(model, model.L1_Bays[0], iDirectionCode); //bay number 1
+            else                
+                return GetMembersInDistanceInterval(model, 0, model.L1_Bays[0], iDirectionCode, false, true, true); //bay number 1
         }
 
         public static CNode[] GetMiddleFrameNodes(CModel model, bool bAddGirtsAndPurlins = true)
         {
             int iDirectionCode = 1; // iDirectionCode 0- direction X, 1-direction Y, 2 - direction Z
-
-            //task 600
-            if (!bAddGirtsAndPurlins)
-                //return GetNodesInDistance(model, model.fL1_frame, iDirectionCode);
-                return GetNodesInDistance(model, model.L1_Bays[0], iDirectionCode);
-            else
-                //return GetNodesInDistanceInterval(model, 0, model.fL1_frame, iDirectionCode, false, true);
-                return GetNodesInDistanceInterval(model, 0, model.L1_Bays[0], iDirectionCode, false, true);
+                        
+            if (!bAddGirtsAndPurlins)                
+                return GetNodesInDistance(model, model.L1_Bays[0], iDirectionCode); //bay number 1 
+            else                
+                return GetNodesInDistanceInterval(model, 0, model.L1_Bays[0], iDirectionCode, false, true); //bay number 1
         }
 
         public static CMember[] GetMembersInDistance(CModel model, double coordinate, int iDirectionCode)

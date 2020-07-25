@@ -1308,13 +1308,13 @@ namespace PFD
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY) // First frame
                 {
                     //fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
-                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1];
+                    fTributaryWidth_Y_Coordinate_Min = fL_tot - 0.5f * m_L1_Bays.Last();
                     fTributaryWidth_Y_Coordinate_Max = fL_tot;
                 }
                 else // Last frame
                 {
                     fTributaryWidth_Y_Coordinate_Min = 0;
-                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y;
+                    fTributaryWidth_Y_Coordinate_Max = 0.5f * m_L1_Bays.Last();
                 }
             }
             else
