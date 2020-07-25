@@ -449,7 +449,7 @@ namespace PFD
             }
             else
             {
-                fFrameTributaryWidth = m_L1_Bays[iFrameIndex - 1];
+                fFrameTributaryWidth = 0.5f * m_L1_Bays[iFrameIndex - 1] + 0.5f * m_L1_Bays[iFrameIndex];
             }
 
             // Total surface dead load
@@ -1294,13 +1294,13 @@ namespace PFD
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY) // First frame
                 {
                     fTributaryWidth_Y_Coordinate_Min = 0;
-                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex];
+                    fTributaryWidth_Y_Coordinate_Max = 0.5f * m_L1_Bays.First();
                 }
                 else // Last frame
                 {
                     //fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
-                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y;
-                    fTributaryWidth_Y_Coordinate_Max = GetBaysWidthUntilFrameIndex(iFrameIndex);
+                    fTributaryWidth_Y_Coordinate_Min = fL_tot - 0.5f * m_L1_Bays.First();
+                    fTributaryWidth_Y_Coordinate_Max = fL_tot;
                 }
             }
             else if (iFrameIndex == iFramesNo - 1) // Last Frame
@@ -1309,7 +1309,7 @@ namespace PFD
                 {
                     //fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
                     fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1];
-                    fTributaryWidth_Y_Coordinate_Max = GetBaysWidthUntilFrameIndex(iFrameIndex);
+                    fTributaryWidth_Y_Coordinate_Max = fL_tot;
                 }
                 else // Last frame
                 {
