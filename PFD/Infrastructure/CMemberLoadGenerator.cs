@@ -1321,13 +1321,13 @@ namespace PFD
             {
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY)
                 {                    
-                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1];
-                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex];
+                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1]; //polka z predchadzajucej
+                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex]; //polka z nasledujucej
                 }
                 else
                 {
-                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[(iFramesNo - 1) - iFrameIndex - 1];
-                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[(iFramesNo - 1) - iFrameIndex];
+                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex];  //polka z nasledujucej
+                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex - 1]; //polka z predchadzajucej
                 }
             }
 
