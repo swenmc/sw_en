@@ -1319,10 +1319,16 @@ namespace PFD
             }
             else
             {
-                //fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * fL1_frame;
-                //fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * fL1_frame;
-                fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1];
-                fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex];
+                if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY)
+                {                    
+                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1];
+                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex];
+                }
+                else
+                {
+                    fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[(iFramesNo - 1) - iFrameIndex - 1];
+                    fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[(iFramesNo - 1) - iFrameIndex];
+                }
             }
 
             // Find all x-coordinates of wind load zones that start within interval < fTributaryWidth_Y_Coordinate_Min; fTributaryWidth_Y_Coordinate_Max>
