@@ -244,7 +244,7 @@ namespace PFD
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr2);
 
-            bool bUseExtraScrews = true;
+            bool bUseExtraScrews = false;
             int iExtraScrewsRows = 1;
             int iExtraScrewsInRow = 6;
 
@@ -1300,7 +1300,7 @@ namespace PFD
                 gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
                 screwSeqGroups.Add(gr2);
 
-                bool bUseExtraScrews = true;
+                bool bUseExtraScrews = false;
                 int iExtraScrewsRows = 1;
                 int iExtraScrewsInRow = 6;
 
