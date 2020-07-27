@@ -365,6 +365,27 @@ namespace PFD
             public const string Unit = sUnit_None;
             public const string Symbol = sSymbol_None;
         }
+        public struct UseExtraScrewsS
+        {
+            public const string Name = "Use extra screws";
+            public const string DBName = "UseExtraScrews";
+            public const string Unit = sUnit_None;
+            public const string Symbol = sSymbol_None;
+        }
+        public struct ExtraScrewsRowsS
+        {
+            public const string Name = "Number of extra screws rows";
+            public const string DBName = "";
+            public const string Unit = sUnit_None;
+            public const string Symbol = sSymbol_None;
+        }
+        public struct ExtraScrewsInRowS
+        {
+            public const string Name = "Number of extra screws in row";
+            public const string DBName = "";
+            public const string Unit = sUnit_None;
+            public const string Symbol = sSymbol_None;
+        }
 
         public struct PositionOfCornerSequence_xS
         {

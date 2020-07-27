@@ -374,6 +374,10 @@ namespace PFD
                 screwArrangmenetProperties.Add(new CComponentParamsViewList(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name, CParamsResources.NumberOfAdditionalScrewsInCornerS.Symbol, circArrangement.IAdditionalConnectorInCornerNumber.ToString(nfi), listAdditionalScrewsInCorner, CParamsResources.NumberOfAdditionalScrewsInCornerS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfAdditionalScrewsInxS.Name, CParamsResources.DistanceOfAdditionalScrewsInxS.Symbol, (Math.Round(circArrangement.FAdditionalScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInxS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfAdditionalScrewsInyS.Name, CParamsResources.DistanceOfAdditionalScrewsInyS.Symbol, (Math.Round(circArrangement.FAdditionalScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInyS.Unit));
+                
+                screwArrangmenetProperties.Add(new CComponentParamsViewBool(CParamsResources.UseExtraScrewsS.Name, CParamsResources.UseExtraScrewsS.Symbol, circArrangement.UseExtraScrews, CParamsResources.UseExtraScrewsS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.ExtraScrewsInRowS.Name, CParamsResources.ExtraScrewsInRowS.Symbol, circArrangement.ExtraNumberOfScrewsInRow.ToString(), CParamsResources.ExtraScrewsInRowS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.ExtraScrewsRowsS.Name, CParamsResources.ExtraScrewsRowsS.Symbol, circArrangement.ExtraNumberOfRows.ToString(), CParamsResources.ExtraScrewsRowsS.Unit));                
             }
             else if (screwArrangement != null && screwArrangement is CScrewArrangementRectApexOrKnee)
             {
@@ -751,6 +755,10 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PositionOfCornerSequence_yS.Name)) arrangementTemp.FPositionOfCornerSequence_y = item_val / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = item_val / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = item_val / fLengthUnitFactor;
+
+                    //Extra screws
+                    if (item.Name.Equals(CParamsResources.ExtraScrewsInRowS.Name)) arrangementTemp.ExtraNumberOfScrewsInRow = (int)item_val;
+                    if (item.Name.Equals(CParamsResources.ExtraScrewsRowsS.Name)) arrangementTemp.ExtraNumberOfRows = (int)item_val;
                 }
                 else if (item is CComponentParamsViewBool)
                 {
@@ -758,6 +766,10 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name))
                     {
                         arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;
+                    }
+                    if (item.Name.Equals(CParamsResources.UseExtraScrewsS.Name))
+                    {
+                        arrangementTemp.UseExtraScrews = itemBool.Value;
                     }
                 }
                 else if (item is CComponentParamsViewList)

@@ -239,6 +239,10 @@ namespace BaseClasses.Helpers
                 fDistanceBetweenScrewsInCircle = 0.030f;
             }
 
+            bool bUseExtraScrews = true;
+            int iExtraScrewsRows = 1;
+            int iExtraScrewsInRow = 6;
+
             // http://www.ambrsoft.com/TrigoCalc/Sphere/Arc_.htm
             float fAngle = 2f * (float)Math.Acos((0.5f * (fCrscWebMiddlePart + 2f * fMinimumDistanceBetweenScrews)) / fConnectorRadiusInCircleSequence);
             int iConnectorNumberInCircleSequence = (int)((fAngle * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle) + 1; // Pocet medzier + 1
@@ -257,7 +261,7 @@ namespace BaseClasses.Helpers
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr2);
 
-            return new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fCrscWebMiddlePart, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            return new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fCrscWebMiddlePart, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow);
         }
     }
 }

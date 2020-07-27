@@ -33,6 +33,11 @@ namespace BaseClasses
         private float m_fAdditionalScrewsDistance_x;
         private float m_fAdditionalScrewsDistance_y;
 
+        //Extra screws
+        private bool bUseExtraScrews;
+        private int iExtraNumberOfRows;
+        private int iExtraNumberOfScrewsInRow;
+
         #region properties
 
         public float FCrscRafterDepth
@@ -230,6 +235,45 @@ namespace BaseClasses
             }
         }
 
+        public bool UseExtraScrews
+        {
+            get
+            {
+                return bUseExtraScrews;
+            }
+
+            set
+            {
+                bUseExtraScrews = value;
+            }
+        }
+
+        public int ExtraNumberOfRows
+        {
+            get
+            {
+                return iExtraNumberOfRows;
+            }
+
+            set
+            {
+                iExtraNumberOfRows = value;
+            }
+        }
+
+        public int ExtraNumberOfScrewsInRow
+        {
+            get
+            {
+                return iExtraNumberOfScrewsInRow;
+            }
+
+            set
+            {
+                iExtraNumberOfScrewsInRow = value;
+            }
+        }
+
         #endregion
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -249,7 +293,11 @@ namespace BaseClasses
             float fPositionOfCornerSequence_y,
             int iAdditionalConnectorInCornerNumber,
             float fAdditionalScrewsDistance_x,
-            float fAdditionalScrewsDistance_y)
+            float fAdditionalScrewsDistance_y,
+            bool bUseExtraScrews,
+            int iExtraNumberOfRows,
+            int iExtraNumberOfScrewsInRow
+            )
         {
             referenceScrew = referenceScrew_temp;
             FCrscRafterDepth = fCrscRafterDepth;
@@ -267,9 +315,14 @@ namespace BaseClasses
             FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x;
             FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y;
 
+            //Extra screws
+            UseExtraScrews = bUseExtraScrews;
+            ExtraNumberOfRows = iExtraNumberOfRows;
+            ExtraNumberOfScrewsInRow = iExtraNumberOfScrewsInRow;
+
             ListOfSequenceGroups = screwSequenceGroup;
 
-            UpdateAdditionalCornerScrews();
+            UpdateAdditionalScrews();
         }
 
         public void NumberOfCirclesInGroup_Updated(int newNumberOfCirclesInGroup)
@@ -342,48 +395,106 @@ namespace BaseClasses
             INumberOfCirclesInGroup = newNumberOfCirclesInGroup;
         }
 
-        public void UpdateAdditionalCornerScrews()
+        //public void UpdateAdditionalCornerScrews()
+        //{
+        //    IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere x, pocet v riadku
+        //    IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere y, pocet v stlpci
+
+        //    //---------------------------------------------------------------------------------------------------------------------------------
+        //    if (BUseAdditionalCornerScrews) // 4 corners in one group
+        //    {
+        //        foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
+        //        {
+        //            bool bAddNewSequences;
+
+        //            if (group.NumberOfRectangularSequences == 0) // if number of rectangular sequences is less than 4 set four (each corner)
+        //                bAddNewSequences = true;
+        //            else if (group.NumberOfRectangularSequences == 4)
+        //                bAddNewSequences = false;
+        //            else
+        //            {
+        //                if (group.NumberOfRectangularSequences < 4)
+        //                {
+        //                    // Exception - not all rectangular sequences in corner were deleted!
+        //                    throw new Exception("Not all rectangular sequences in corner were deleted!");
+        //                }
+        //                else
+        //                {
+        //                    // Exception - more than 4 corner sequences
+        //                    throw new Exception("More than 4 corner sequences were defined!");
+        //                }
+        //            }
+
+        //            // Set number of rectangular sequences
+        //            group.NumberOfRectangularSequences = 4;
+
+        //            for (int i = 0; i < group.NumberOfRectangularSequences; i++)
+        //            {
+        //                CScrewRectSequence seq_Corner = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //                seq_Corner.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //                seq_Corner.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+
+        //                if (bAddNewSequences)
+        //                    group.ListSequence.Add(seq_Corner); // Add new sequence
+        //                else
+        //                {
+        //                    CScrewSequence seq = (CScrewSequence)group.ListSequence.Where(s => s is CScrewRectSequence).ElementAtOrDefault(i);
+        //                    if (seq == null) group.ListSequence.Add(seq_Corner);
+        //                    else
+        //                    {
+        //                        int index = group.ListSequence.IndexOf(seq);
+        //                        if (index != -1) group.ListSequence[index] = seq_Corner;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    else // Corner screws are deactivated (remove all sequences - type rectangluar from group
+        //    {
+        //        // Remove all rectangular sequences
+        //        foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
+        //        {
+        //            group.ListSequence.RemoveAll(s => s is CScrewRectSequence);
+        //            // Set current number of rectangular sequences (it should be "0" in case that corner screw sequences are not used, all other sequences are half-circle)
+        //            group.NumberOfRectangularSequences = 0;
+        //        }
+        //    }
+
+        //    // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
+        //    RecalculateTotalNumberOfScrews();
+
+        //    HolesCentersPoints2D = new Point[IHolesNumber];
+        //    arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+        //}
+
+        public void UpdateAdditionalScrews()
         {
             IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere x, pocet v riadku
             IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere y, pocet v stlpci
 
             //---------------------------------------------------------------------------------------------------------------------------------
-            if (BUseAdditionalCornerScrews) // 4 corners in one group
+            if (BUseAdditionalCornerScrews || UseExtraScrews) // 4 corners in one group, 2 extra lines
             {
                 foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
                 {
-                    bool bAddNewSequences;
-
-                    if (group.NumberOfRectangularSequences == 0) // if number of rectangular sequences is less than 4 set four (each corner)
-                        bAddNewSequences = true;
-                    else if (group.NumberOfRectangularSequences == 4)
-                        bAddNewSequences = false;
-                    else
-                    {
-                        if (group.NumberOfRectangularSequences < 4)
-                        {
-                            // Exception - not all rectangular sequences in corner were deleted!
-                            throw new Exception("Not all rectangular sequences in corner were deleted!");
-                        }
-                        else
-                        {
-                            // Exception - more than 4 corner sequences
-                            throw new Exception("More than 4 corner sequences were defined!");
-                        }
-                    }
+                    //bool bAddNewCornerSequences = false;
+                    //if (group.NumberOfRectangularSequences < 4 && BUseAdditionalCornerScrews) bAddNewCornerSequences = true;
+                    
+                    //bool bAddNewExtraSequences = false;
+                    //if (UseExtraScrews && bAddNewCornerSequences && group.NumberOfRectangularSequences == 0) bAddNewExtraSequences = true;
+                    //else if (UseExtraScrews && !bAddNewCornerSequences && group.NumberOfRectangularSequences < 6) bAddNewExtraSequences = true;
 
                     // Set number of rectangular sequences
-                    group.NumberOfRectangularSequences = 4;
+                    if (BUseAdditionalCornerScrews && UseExtraScrews) group.NumberOfRectangularSequences = 6;
+                    else if (BUseAdditionalCornerScrews) group.NumberOfRectangularSequences = 4;
+                    else if (UseExtraScrews) group.NumberOfRectangularSequences = 2;
 
-                    for (int i = 0; i < group.NumberOfRectangularSequences; i++)
+                    if (BUseAdditionalCornerScrews)
                     {
                         CScrewRectSequence seq_Corner = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
                         seq_Corner.DistanceOfPointsX = FAdditionalScrewsDistance_x;
                         seq_Corner.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-
-                        if (bAddNewSequences)
-                            group.ListSequence.Add(seq_Corner); // Add new sequence
-                        else
+                        for (int i = 0; i < 4; i++)
                         {
                             CScrewSequence seq = (CScrewSequence)group.ListSequence.Where(s => s is CScrewRectSequence).ElementAtOrDefault(i);
                             if (seq == null) group.ListSequence.Add(seq_Corner);
@@ -394,6 +505,24 @@ namespace BaseClasses
                             }
                         }
                     }
+                    if (UseExtraScrews)
+                    {
+                        CScrewRectSequence seq_Extra = new CScrewRectSequence(ExtraNumberOfScrewsInRow, ExtraNumberOfRows);
+                        seq_Extra.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+                        seq_Extra.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+                        int startIndex = BUseAdditionalCornerScrews ? 4 : 0;
+                        
+                        for (int i = startIndex; i < startIndex + 2; i++)
+                        {
+                            CScrewSequence seq = (CScrewSequence)group.ListSequence.Where(s => s is CScrewRectSequence).ElementAtOrDefault(i);
+                            if (seq == null) group.ListSequence.Add(seq_Extra);
+                            else
+                            {
+                                int index = group.ListSequence.IndexOf(seq);
+                                if (index != -1) group.ListSequence[index] = seq_Extra;
+                            }
+                        }
+                    }
                 }
             }
             else // Corner screws are deactivated (remove all sequences - type rectangluar from group
@@ -401,9 +530,17 @@ namespace BaseClasses
                 // Remove all rectangular sequences
                 foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
                 {
-                    group.ListSequence.RemoveAll(s => s is CScrewRectSequence);
-                    // Set current number of rectangular sequences (it should be "0" in case that corner screw sequences are not used, all other sequences are half-circle)
-                    group.NumberOfRectangularSequences = 0;
+                    if (UseExtraScrews)
+                    {
+                        group.ListSequence.RemoveRange(2, 4);                        
+                        group.NumberOfRectangularSequences = 2;
+                    }
+                    else
+                    {
+                        group.ListSequence.RemoveAll(s => s is CScrewRectSequence);
+                        // Set current number of rectangular sequences (it should be "0" in case that corner screw sequences are not used, all other sequences are half-circle)
+                        group.NumberOfRectangularSequences = 0;
+                    }
                 }
             }
 
@@ -413,6 +550,7 @@ namespace BaseClasses
             HolesCentersPoints2D = new Point[IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
+
 
         public override void UpdateArrangmentData()
         {
@@ -440,7 +578,7 @@ namespace BaseClasses
 
 
             // Additional Corner Screws
-            UpdateAdditionalCornerScrews();
+            UpdateAdditionalScrews();
 
             
         }
