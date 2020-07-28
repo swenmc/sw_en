@@ -697,8 +697,19 @@ namespace BaseClasses
             // Add extra line of points
             if (UseExtraScrews && group.NumberOfRectangularSequences > 0)
             {
+                // TODO Ondrej - pridat tieto 3 parametre pre extra screws do GUI
+                // Parametre su nezavisle na corner screws
+                float FPositionOfExtraSequence_y = FPositionOfCornerSequence_y + 0.015f; // Docasne, aby bolo vidno rozdiel // TODO Ondrej - z tohto tiez urobit samostatny parameter v GUI pre extra screws
+                float FAdditionalExtraScrewsDistance_x = FAdditionalScrewsDistance_x * 2f; // Docasne, aby bolo vidno rozdiel
+                float FAdditionalExtraScrewsDistance_y = FAdditionalScrewsDistance_x * 1.2f; // Docasne, aby bolo vidno rozdiel
+
+                // Pozicia rows pre smer x ma byt symetrická podla stredu group (polohu urcuje stred polkruhovej sekvencie)
+                // Spocitame celkovú dĺžku radu skrutiek - suradnica je vlavo od stredu, takze je to zaporna polovica dlzky radu skrutiek
+                float fExtraScrewsRowLength_x_Direction = (iExtraNumberOfScrewsInRow - 1) * FAdditionalExtraScrewsDistance_x;
+                float fPositionOfExtraSequence_x = 0.5f * fExtraScrewsRowLength_x_Direction; // Toto nebude parameter, ale urcuje sa automaticky
+
                 // Top part of group
-                Point[] extraConnectorsInGroupTop = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FPositionOfCornerSequence_x, FPositionOfCornerSequence_y - (iExtraNumberOfRows - 1) * FAdditionalScrewsDistance_y), ExtraNumberOfScrewsInRow, iExtraNumberOfRows, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
+                Point[] extraConnectorsInGroupTop = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-fPositionOfExtraSequence_x, FPositionOfExtraSequence_y - (iExtraNumberOfRows - 1) * FAdditionalExtraScrewsDistance_y), ExtraNumberOfScrewsInRow, iExtraNumberOfRows, FAdditionalExtraScrewsDistance_x, FAdditionalExtraScrewsDistance_y);
 
                 // Bottom part of group
                 Point[] extraConnectorsInGroupBottom = new Point[extraConnectorsInGroupTop.Length];
