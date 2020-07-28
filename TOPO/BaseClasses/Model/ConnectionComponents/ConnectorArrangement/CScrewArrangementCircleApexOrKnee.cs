@@ -491,12 +491,13 @@ namespace BaseClasses
                     else if (UseExtraScrews) group.NumberOfRectangularSequences = 2;
 
                     if (BUseAdditionalCornerScrews)
-                    {
-                        CScrewRectSequence seq_Corner = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                        seq_Corner.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                        seq_Corner.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+                    {   
                         for (int i = 0; i < 4; i++)
                         {
+                            CScrewRectSequence seq_Corner = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+                            seq_Corner.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+                            seq_Corner.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+
                             CScrewSequence seq = (CScrewSequence)group.ListSequence.Where(s => s is CScrewRectSequence).ElementAtOrDefault(i);
                             if (seq == null) group.ListSequence.Add(seq_Corner);
                             else
@@ -507,14 +508,15 @@ namespace BaseClasses
                         }
                     }
                     if (UseExtraScrews)
-                    {
-                        CScrewRectSequence seq_Extra = new CScrewRectSequence(ExtraNumberOfScrewsInRow, ExtraNumberOfRows);
-                        seq_Extra.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                        seq_Extra.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+                    {   
                         int startIndex = BUseAdditionalCornerScrews ? 4 : 0;
                         
                         for (int i = startIndex; i < startIndex + 2; i++)
                         {
+                            CScrewRectSequence seq_Extra = new CScrewRectSequence(ExtraNumberOfScrewsInRow, ExtraNumberOfRows);
+                            seq_Extra.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+                            seq_Extra.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+
                             CScrewSequence seq = (CScrewSequence)group.ListSequence.Where(s => s is CScrewRectSequence).ElementAtOrDefault(i);
                             if (seq == null) group.ListSequence.Add(seq_Extra);
                             else
@@ -694,18 +696,18 @@ namespace BaseClasses
 
             // Add extra line of points
             if (UseExtraScrews && group.NumberOfRectangularSequences > 0)
-            {                
+            {
                 // Top part of group
                 Point[] extraConnectorsInGroupTop = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FPositionOfCornerSequence_x, FPositionOfCornerSequence_y - (iExtraNumberOfRows - 1) * FAdditionalScrewsDistance_y), ExtraNumberOfScrewsInRow, iExtraNumberOfRows, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
-                
+
                 // Bottom part of group
                 Point[] extraConnectorsInGroupBottom = new Point[extraConnectorsInGroupTop.Length];
-                
+
                 // Copy items
-                extraConnectorsInGroupTop.CopyTo(extraConnectorsInGroupBottom, 0);                
+                extraConnectorsInGroupTop.CopyTo(extraConnectorsInGroupBottom, 0);
 
                 // Rotate bottom part
-                Geom2D.TransformPositions_CCW_deg(0, 0, 180, ref extraConnectorsInGroupBottom);                
+                Geom2D.TransformPositions_CCW_deg(0, 0, 180, ref extraConnectorsInGroupBottom);
 
                 // Set group parameters
                 IEnumerable<CConnectorSequence> rectSequences = group.ListSequence.Where(s => s is CScrewRectSequence);
