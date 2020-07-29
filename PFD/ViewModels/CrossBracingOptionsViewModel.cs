@@ -172,6 +172,16 @@ namespace PFD
             set
             {
                 m_Roof = value;
+                if (!m_Roof)
+                {
+                    RoofPosition = RoofPositions[0];
+                    FirstCrossOnRafter = false;
+                    LastCrossOnRafter = false;
+                }
+                else
+                {
+                    RoofPosition = RoofPositions[2];
+                }
                 NotifyPropertyChanged("Roof");
             }
         }
@@ -186,6 +196,10 @@ namespace PFD
             set
             {
                 m_RoofPosition = value;
+                if (m_Roof)
+                {
+                    if (m_RoofPosition == "None") throw new ArgumentException("None is not valid value.");
+                }
                 NotifyPropertyChanged("RoofPosition");
             }
         }

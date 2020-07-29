@@ -1518,7 +1518,9 @@ namespace PFD
                         if (m.EMemberType != EMemberType_FS.eMC && m.EMemberType != EMemberType_FS.eMR &&
                             m.EMemberType != EMemberType_FS.eEC && m.EMemberType != EMemberType_FS.eER) continue;
 
-                        if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+                        //task 600
+                        //if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+                        if (MathF.d_equal(m.PointStart.Y, model.GetBaysWidthUntilFrameIndex(i), limit))
                         {
                             frameMembers.Add(m);
 
@@ -1564,13 +1566,11 @@ namespace PFD
 
             //Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001)
 
-            int frameCount = 0;
+            int frameIndex = 0;
             foreach (List<CMember> frame in frames)
             {
                 foreach (CMember m in frame)
-                {
-                    frameCount++;
-                    bool isOuterFrame = (frameCount == 1 || frameCount == frames.Count);
+                {                    
                     foreach (CLoadCase loadCase in model.m_arrLoadCases)
                     {
                         foreach (CSLoad_Free load in loadCase.SurfaceLoadsList)
@@ -1593,8 +1593,8 @@ namespace PFD
                                            "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
                                         */
                                     }
-
-                                    GetTributaryWidth_B(l, m, model.fL1_frame);
+                                                                        
+                                    GetTributaryWidth_B(l, m, model.GetBayWidth(frameIndex));
 
                                     //if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(loadCase, l, m, model.fL1_frame, isOuterFrame);
                                 }
@@ -1614,14 +1614,15 @@ namespace PFD
                                        "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
                                     */
                                 }
-
-                                GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.fL1_frame);
+                                                                
+                                GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.GetBayWidth(frameIndex));
                                 //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
                             }
                             else throw new Exception("Load type not known.");
                         }
                     }
                 }
+                frameIndex++;
             }
 
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
@@ -1719,24 +1720,6 @@ namespace PFD
             }
 
             return new List<double> { x1, x2 };
-        }
-
-        private void CreateLoadOnMember(CLoadCase loadCase, CSLoad_FreeUniform load, CMember m, float fL1_frame, bool isOuterFrame)
-        {
-            if (isOuterFrame)
-            {
-                CMLoad_21 l_21 = new CMLoad_21();
-                l_21.Fq = load.fValue * fL1_frame * 0.5f;
-                l_21.Member = m;
-                //loadCase.MemberLoadsList.Add(l_21);
-            }
-            else
-            {
-                CMLoad_24 l_24 = new CMLoad_24();
-                l_24.Fq = load.fValue * fL1_frame * 0.5f;
-                l_24.Member = m;
-                //loadCase.MemberLoadsList.Add(l_24);
-            }
         }
 
         public void ShowBFEMNetModel(Model model)
@@ -2071,7 +2054,9 @@ namespace PFD
                 bool errorOccurs = false;
                 foreach (DoorProperties dp in doorProperties)
                 {
-                    dp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    //task 600
+                    //dp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    dp.SetValidationValues(vm.WallHeight, vm.Model.GetBayWidth(dp.iBayNumber), vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
                     if (!dp.ValidateDoorInsideBay())
                     {
                         if (!errorOccurs) MessageBox.Show("Door is defined out of frame bay.");
@@ -2142,7 +2127,9 @@ namespace PFD
                 bool errorOccurs = false;
                 foreach (WindowProperties wp in windowProperties)
                 {
-                    wp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    //task 600
+                    //wp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    wp.SetValidationValues(vm.WallHeight, vm.Model.GetBayWidth(wp.iBayNumber), vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
                     if (!wp.ValidateWindowInsideBay())
                     {
                         if (!errorOccurs) MessageBox.Show("Window is defined out of frame bay.");
@@ -2598,6 +2585,12 @@ namespace PFD
             CrossBracingOptionsWindow w = new CrossBracingOptionsWindow(vm);
             w.ShowDialog();
 
+        }
+
+        private void BtnBayWidthsOptions_Click(object sender, RoutedEventArgs e)
+        {
+            BaysWidthOptionsWindow w = new BaysWidthOptionsWindow(vm);
+            w.ShowDialog();
         }
     }
 }

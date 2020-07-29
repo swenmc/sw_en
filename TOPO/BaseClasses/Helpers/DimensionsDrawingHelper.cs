@@ -122,8 +122,11 @@ namespace BaseClasses.Helpers
                     CDimensionLinear3D dim3 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
                         0.7, 0.7, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
 
+                    //CDimensionLinear3D dim4 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                    //    0.5, 0.5, 0.05, 0.15, (model.fL1_frame * 1000).ToString("F0"), true);
                     CDimensionLinear3D dim4 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
-                        0.5, 0.5, 0.05, 0.15, (model.fL1_frame * 1000).ToString("F0"), true);
+                        0.5, 0.5, 0.05, 0.15, (model.L1_Bays.First() * 1000).ToString("F0"), true);
+
 
                     listOfDimensions.Add(dim1);
                     listOfDimensions.Add(dim2);
@@ -221,7 +224,7 @@ namespace BaseClasses.Helpers
 
             membersLeftSideGirts = ModelHelper.GetMembersInDistance(model, 0, 0, EMemberType_FS.eG); // smer X
 
-            CMember[] membersLeftSideFirstBayGirts = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eG, true, true, false); // smer Y
+            CMember[] membersLeftSideFirstBayGirts = ModelHelper.GetMembersInDistanceInterval(model, 0, model.L1_Bays.First(), 1, EMemberType_FS.eG, true, true, false); // smer Y
 
             if (membersLeftSideFirstBayGirts != null)
             {
@@ -233,18 +236,18 @@ namespace BaseClasses.Helpers
                 membersLeftSideFirstBayGirtsNodes_1 = new List<CNode>();
 
                 // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
-                membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.fL1_frame, 0, 0));
-                membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
+                membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.L1_Bays.First(), 0, 0));
+                membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
 
                 foreach (CMember m in membersLeftSideFirstBayGirts)
                 {
-                    if (MathF.d_equal(m.NodeStart.Y, model.fL1_frame))
+                    if (MathF.d_equal(m.NodeStart.Y, model.L1_Bays.First()))
                     {
                         if(!membersLeftSideFirstBayGirtsNodes_1.Contains(m.NodeStart)) // Uzol pridame len v pripade, ze este nie je v zozname
                           membersLeftSideFirstBayGirtsNodes_1.Add(m.NodeStart);
                     }
 
-                    if (MathF.d_equal(m.NodeEnd.Y, model.fL1_frame))
+                    if (MathF.d_equal(m.NodeEnd.Y, model.L1_Bays.First()))
                     {
                         if (!membersLeftSideFirstBayGirtsNodes_1.Contains(m.NodeEnd)) // Uzol pridame len v pripade, ze este nie je v zozname
                             membersLeftSideFirstBayGirtsNodes_1.Add(m.NodeEnd);
@@ -366,7 +369,7 @@ namespace BaseClasses.Helpers
             // Purlins and edge purlins
             CMember[] membersPurlinsAndEdgePurlinsFront = null;
 
-            membersPurlinsAndEdgePurlinsFront = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, false, false); // smer Y
+            membersPurlinsAndEdgePurlinsFront = ModelHelper.GetMembersInDistanceInterval(model, 0, model.L1_Bays.First(), 1, false, false); // smer Y
 
             // Left side
             CMember[] membersLeftSide = null;
@@ -592,12 +595,12 @@ namespace BaseClasses.Helpers
             // Girts
             CMember[] membersFrontSideGirts = null;
 
-            membersFrontSideGirts = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eG, true, true, false); // smer Y
+            membersFrontSideGirts = ModelHelper.GetMembersInDistanceInterval(model, 0, model.L1_Bays.First(), 1, EMemberType_FS.eG, true, true, false); // smer Y
 
             // Purlins
             CMember[] membersFrontSidePurlins = null;
 
-            membersFrontSidePurlins = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eP, true, true, false); // smer Y
+            membersFrontSidePurlins = ModelHelper.GetMembersInDistanceInterval(model, 0, model.L1_Bays.First(), 1, EMemberType_FS.eP, true, true, false); // smer Y
 
             List<CNode> membersBaseNodes_FrontSideGirts_1 = null; // Girts
                                                                   // Tuto celkovu kotu kreslime vzdy
@@ -608,25 +611,25 @@ namespace BaseClasses.Helpers
             List<CNode> membersBaseNodes_FrontSideRafter_2 = new List<CNode>(); // Overall rafter length
 
             // Kedze chceme kotovat od spodnej hrany a vo vyske H1 musime pridat uzly na koncoch stlpa
-            membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.fL1_frame, 0, 0));
-            membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
+            membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.L1_Bays.First(), 0, 0));
+            membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
 
             // Kedze chceme kotovat od zaciatku po koniec raftera musime pridat uzly na koncoch
             CMember leftRafter = model.m_arrMembers.FirstOrDefault(m => m.EMemberType == EMemberType_FS.eMR);
 
-            membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
-            membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, leftRafter.NodeEnd.X, model.fL1_frame, leftRafter.NodeEnd.Z, 0));
+            membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
+            membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, leftRafter.NodeEnd.X, model.L1_Bays.First(), leftRafter.NodeEnd.Z, 0));
 
             if (membersFrontSideGirts != null)
             {
                 membersBaseNodes_FrontSideGirts_1 = new List<CNode>(); // Girts
 
-                membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.fL1_frame, 0, 0));
-                membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
+                membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.L1_Bays.First(), 0, 0));
+                membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
 
                 foreach (CMember m in membersFrontSideGirts)
                 {
-                    if (MathF.d_equal(m.NodeEnd.X, 0) && MathF.d_equal(m.NodeEnd.Y, model.fL1_frame)) // Koncovy bod pruta typu girt je na rame // Girt je na lavom stlpe
+                    if (MathF.d_equal(m.NodeEnd.X, 0) && MathF.d_equal(m.NodeEnd.Y, model.L1_Bays.First())) // Koncovy bod pruta typu girt je na rame // Girt je na lavom stlpe
                     {
                         membersBaseNodes_FrontSideGirts_1.Add(m.NodeEnd);
                     }
@@ -637,12 +640,12 @@ namespace BaseClasses.Helpers
             {
                 membersBaseNodes_FrontSidePurlins_1 = new List<CNode>(); // Purlins
 
-                membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
-                membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, leftRafter.NodeEnd.X, model.fL1_frame, leftRafter.NodeEnd.Z, 0));
+                membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
+                membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, leftRafter.NodeEnd.X, model.L1_Bays.First(), leftRafter.NodeEnd.Z, 0));
 
                 foreach (CMember m in membersFrontSidePurlins)
                 {
-                    if ((m.NodeEnd.X < leftRafter.NodeEnd.X) && MathF.d_equal(m.NodeEnd.Y, model.fL1_frame)) // Koncovy bod pruta typu purlin je na rame // Purlin je na lavom raftery
+                    if ((m.NodeEnd.X < leftRafter.NodeEnd.X) && MathF.d_equal(m.NodeEnd.Y, model.L1_Bays.First())) // Koncovy bod pruta typu purlin je na rame // Purlin je na lavom raftery
                     {
                         membersBaseNodes_FrontSidePurlins_1.Add(m.NodeEnd);
                     }

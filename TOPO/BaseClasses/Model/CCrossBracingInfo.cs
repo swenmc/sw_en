@@ -132,7 +132,7 @@ namespace BaseClasses
                 }
                 else
                 {
-                    RoofPosition = RoofPositions[2];                    
+                    RoofPosition = RoofPositions[2];
                 }
                 
                 NotifyPropertyChanged("Roof");

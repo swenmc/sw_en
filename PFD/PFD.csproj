@@ -156,9 +156,13 @@
     <Compile Include="DocumentationExportOptionsWindow.xaml.cs">
       <DependentUpon>DocumentationExportOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\BaysWidthOptionsWindow.xaml.cs">
+      <DependentUpon>BaysWidthOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsWindows\CrossBracingOptionsWindow.xaml.cs">
       <DependentUpon>CrossBracingOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BayWidthOptionsViewModel.cs" />
     <Compile Include="ViewModels\CrossBracingOptionsViewModel.cs" />
     <Compile Include="ViewModels\DocumentationSettingsViewModel.cs" />
     <Compile Include="WindPressureCoefficients.xaml.cs">
@@ -343,6 +347,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DocumentationExportOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\BaysWidthOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -742,6 +750,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\options_crossbracing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\options_bay_widths.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />

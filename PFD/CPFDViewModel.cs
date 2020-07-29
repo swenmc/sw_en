@@ -124,6 +124,7 @@ namespace PFD
         private bool m_DesignOptionsChanged;
         private bool m_DisplayOptionsChanged;
         private bool m_CrossBracingOptionsChanged;
+        private bool m_BaysWidthOptionsChanged;
 
         //private bool m_BracingEverySecondRowOfGirts;
         //private bool m_BracingEverySecondRowOfPurlins;
@@ -461,6 +462,7 @@ namespace PFD
             ModelIndex = ModelTypes.Count - 1;
         }
 
+        //L_tot
         //-------------------------------------------------------------------------------------------------------------
         public float Length
         {
@@ -480,6 +482,8 @@ namespace PFD
                     // Recalculate fBayWidth
                     fBayWidth = MLength / (MFrames - 1);
                 }
+                if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, fBayWidth);
+
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
@@ -596,7 +600,8 @@ namespace PFD
                 {
                     // Recalculate L1
                     fBayWidth = MLength / (MFrames - 1);
-                }
+                }                
+
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
@@ -625,10 +630,10 @@ namespace PFD
 
                 float fFirstPurlinPosition = MPurlinDistance;
                 OneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / MPurlinDistance) + 1;
-
-                //TODO - Bug - v tomto momente este nie su spravne nastavene ILS_Items - tie az ked sa model vytvara
+                                
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
-
+                _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, fBayWidth);
+                
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
             }
@@ -2304,7 +2309,9 @@ namespace PFD
 
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
-                d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
+                //task 600
+                //d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
+                d.SetValidationValues(MWallHeight, model.GetBayWidth(d.iBayNumber), model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
 
@@ -2324,7 +2331,9 @@ namespace PFD
 
             foreach (WindowProperties w in MWindowBlocksProperties)
             {
-                w.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
+                //task 600
+                //w.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
+                w.SetValidationValues(MWallHeight, model.GetBayWidth(w.iBayNumber), model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
 
@@ -2343,6 +2352,7 @@ namespace PFD
         public DesignOptionsViewModel _designOptionsVM;
 
         public CrossBracingOptionsViewModel _crossBracingOptionsVM;
+        public BayWidthOptionsViewModel _baysWidthOptionsVM;
 
         [NonSerialized]
         public QuotationViewModel _quotationViewModel;
@@ -2696,6 +2706,29 @@ namespace PFD
                 RecreateModel = true;
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CrossBracingOptionsChanged");
+
+            }
+        }
+
+        public bool BaysWidthOptionsChanged
+        {
+            get
+            {
+                return m_BaysWidthOptionsChanged;
+            }
+
+            set
+            {
+                m_BaysWidthOptionsChanged = value;
+
+                if (!IsSetFromCode) IsSetFromCode = true;                                
+                Length = _baysWidthOptionsVM.GetTotalWidth();
+                IsSetFromCode = false;
+
+                SetResultsAreNotValid();
+                RecreateModel = true;
+
+                if (MSynchronizeGUI) NotifyPropertyChanged("BaysWidthOptionsChanged");
 
             }
         }

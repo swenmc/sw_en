@@ -82,6 +82,8 @@ namespace PFD
             CrossBracingOptionsViewModel vm = this.DataContext as CrossBracingOptionsViewModel;
             if (vm.BayFrom > vm.BayTo) return;
 
+            if (vm.Roof && vm.RoofPosition == "None") { MessageBox.Show("None is not a valid value when roof is selected."); return; }
+
             for (int i = vm.BayFrom; i <= vm.BayTo; i++)
             {
                 vm.CrossBracingList[i - 1].WallLeft = vm.WallLeft;

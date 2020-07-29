@@ -40,7 +40,9 @@ namespace PFD
                     // It is not Main Column and it is not Main rafter
                     if (m.EMemberType != EMemberType_FS.eMC && m.EMemberType != EMemberType_FS.eMR && m.EMemberType != EMemberType_FS.eEC && m.EMemberType != EMemberType_FS.eER) continue;
 
-                    if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+                    //task 600
+                    //if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+                    if (MathF.d_equal(m.PointStart.Y, model.GetBaysWidthUntilFrameIndex(i), limit))
                     {
                         frameMembers.Add(m);
                         //System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
@@ -70,8 +72,8 @@ namespace PFD
 
                 // Add nodes to the beam
 
-                simpleBeamNodes.Add(new CNode(model.m_arrMembers[i].NodeStart.ID, 0,0,0,0));
-                simpleBeamNodes.Add(new CNode(model.m_arrMembers[i].NodeEnd.ID, model.m_arrMembers[i].FLength,0,0,0));
+                simpleBeamNodes.Add(new CNode(model.m_arrMembers[i].NodeStart.ID, 0, 0, 0, 0));
+                simpleBeamNodes.Add(new CNode(model.m_arrMembers[i].NodeEnd.ID, model.m_arrMembers[i].FLength, 0, 0, 0));
 
                 // Create Member Is case that simple beam model should be created for member with specific member type
                 // Purlin, Eave Purlin, Girts, Columns (wind posts)
@@ -147,7 +149,7 @@ namespace PFD
 
             // Pre ramy pouzijeme prvu existujucu podporu is indexom [0] // Docasne riesenie
 
-            bool [] bRestrain = new bool[3];
+            bool[] bRestrain = new bool[3];
             bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Ux] = model.m_arrNSupports[0].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux];
             bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Uy] = model.m_arrNSupports[0].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz];
             bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz] = model.m_arrNSupports[0].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry];
@@ -261,10 +263,10 @@ namespace PFD
 
                 //if (loads.Count > 0)
                 //{
-                    lc_new.NodeLoadsList = listOfNewNodalLoads;
-                    lc_new.SurfaceLoadsList = null;
-                    lc_new.MemberLoadsList = listOfNewMemberLoads;
-                    listOfNewLoadCases.Add(lc_new);
+                lc_new.NodeLoadsList = listOfNewNodalLoads;
+                lc_new.SurfaceLoadsList = null;
+                lc_new.MemberLoadsList = listOfNewMemberLoads;
+                listOfNewLoadCases.Add(lc_new);
                 //}
             }
             return listOfNewLoadCases;
@@ -289,7 +291,7 @@ namespace PFD
 
                 for (int i = 0; i < lcomb.LoadCasesList.Count; i++) // Asi sa to da zapisat jednoduchsie, najst vsetky load cases ktorych ID je v kombinacii a nastavit namiesto nich zatazovaci stav z allLoadCases, load factor by mal zostat rovnaky
                 {
-                    for(int j = 0; j < memberLoadCases.Count; j++)
+                    for (int j = 0; j < memberLoadCases.Count; j++)
                     {
                         if (lcomb.LoadCasesList[i].Name == memberLoadCases[j].Name) // Dany load case v originalnej kombinacii je rovnaky ako load case v memberLoadCases
                         {
@@ -431,14 +433,14 @@ namespace PFD
 
             foreach (CMember m in m_arrMembers)
             {
-                foreach(CComponentInfo cInfo in componentList)
+                foreach (CComponentInfo cInfo in componentList)
                 {
-                    
+
                     // Ak deaktivujeme prut kvoli tomu, ze bol na jeho miesto vlozeny blok, tak tu mu uz nesmieme nastavit ze je znova aktivny
                     // Myslel som ze taky prut bude mat nastavene BIsGenerated na false ale bude v m_arrMembers existovat, aby mi sedeli cisla pri generovani prutov blokov atd
                     //if (m.Prefix == cInfo.Prefix &&
                     //    m.CrScStart.ID == (int)cInfo.MemberTypePosition &&
-                    if(m.EMemberTypePosition == cInfo.MemberTypePosition && //takto to chcem pouzit, Mato skusis kazdemu member nastavit typ?
+                    if (m.EMemberTypePosition == cInfo.MemberTypePosition && //takto to chcem pouzit, Mato skusis kazdemu member nastavit typ?
                         m.BIsGenerated) // !!! Set member properties only for already generated members - deactivated members (especially girts in place where block is inserted) shouldn't be activated
                     {
                         count++;
@@ -458,18 +460,18 @@ namespace PFD
 
                         // Set Member Color
                         m.Color = (Color)ColorConverter.ConvertFromString(cInfo.Color.Name);
-                        if(m.CrScStart != null) m.CrScStart.CSColor = (Color)ColorConverter.ConvertFromString(cInfo.SectionColor);
+                        if (m.CrScStart != null) m.CrScStart.CSColor = (Color)ColorConverter.ConvertFromString(cInfo.SectionColor);
                         break;
                     }
-                    else if(m.Prefix == cInfo.Prefix &&
+                    else if (m.Prefix == cInfo.Prefix &&
                         m.CrScStart.ID == (int)cInfo.MemberTypePosition && !m.BIsGenerated)
                     {
-                        if(debugging) System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", " + m.BIsGenerated + ", " + m.BIsDisplayed);
+                        if (debugging) System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", " + m.BIsGenerated + ", " + m.BIsDisplayed);
                     }
                 }
             }
 
-            
+
             if (debugging) System.Diagnostics.Trace.WriteLine("SetMembersAccordingTo count: " + count);
         }
 
@@ -500,7 +502,7 @@ namespace PFD
             List<CMember> members = model.m_arrMembers.Where(m => m.EMemberTypePosition == cInfo.MemberTypePosition).ToList();
             foreach (CMember m in members)
             {
-                if(m.CrScStart != null) m.CrScStart.m_Mat.Name = cInfo.Material;
+                if (m.CrScStart != null) m.CrScStart.m_Mat.Name = cInfo.Material;
                 if (m.CrScEnd != null) m.CrScEnd.m_Mat.Name = cInfo.Material;
             }
 
@@ -514,19 +516,19 @@ namespace PFD
                 m.BIsSelectedForMaterialList = cInfo.MaterialList;
             }
         }
-        public static void ChangeMembersIsSelectedForMaterialList(CPFDViewModel vm)           
+        public static void ChangeMembersIsSelectedForMaterialList(CPFDViewModel vm)
         {
             foreach (CComponentInfo cInfo in vm.ComponentList)
-            {                
+            {
                 foreach (CMember m in vm.Model.m_arrMembers)
                 {
-                    if(m.EMemberTypePosition == cInfo.MemberTypePosition)
+                    if (m.EMemberTypePosition == cInfo.MemberTypePosition)
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
                 }
             }
         }
 
-        
+
 
 
 

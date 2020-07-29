@@ -104,6 +104,9 @@
                             <Button Name="btnCrossBracingOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Cross bracing options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnCrossBracingOptions_Click">
                                 <Image Source="Resources/options_crossbracing.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
+                            <Button Name="btnBayWidthsOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Bay widths options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnBayWidthsOptions_Click">
+                                <Image Source="Resources/options_bay_widths.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            </Button>
                         </StackPanel>
                         <!-- TODO To Ondrej: Navrhujem prepracovat vsetko na DataGridView, bude to jednoduchsie lebo budeme mat len jeden typ objektu pre vstupy a vystupy a budeme tie tabulky vkladat do protokolu, napr. export do Wordu-->
                         <!-- Nemyslim si,ze to nejako extra pomoze. Export je vacsinou specificky a chces ho aj nejako stylovat, nie len nasmarat tabulky a koniec. -->
