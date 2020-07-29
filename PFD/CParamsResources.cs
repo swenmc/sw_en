@@ -435,7 +435,7 @@ namespace PFD
             public const string Symbol = "No";
         }
 
-        public struct DistanceOfAdditionalScrewsInxS
+        public struct DistanceOfAdditionalCornerScrewsInxS
         {
             public const string Name = "Distance of additional screws x";
             public const string DBName = "DistanceOfAdditionalScrewsInx";
@@ -443,10 +443,35 @@ namespace PFD
             public const string Symbol = "bx";
         }
 
-        public struct DistanceOfAdditionalScrewsInyS
+        public struct DistanceOfAdditionalCornerScrewsInyS
         {
             public const string Name = "Distance of additional screws y";
             public const string DBName = "DistanceOfAdditionalScrewsIny";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "by";
+        }
+
+
+        public struct PositionOfExtraScrewsSequence_yS
+        {
+            public const string Name = "Position of extra screws y";
+            public const string DBName = "PositionOfExtraScrewsY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "ay";
+        }
+
+        public struct DistanceOfExtraScrewsInxS
+        {
+            public const string Name = "Distance of extra screws x";
+            public const string DBName = "DistanceOfExtraScrewsInx";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "bx";
+        }
+
+        public struct DistanceOfExtraScrewsInyS
+        {
+            public const string Name = "Distance of extra screws y";
+            public const string DBName = "DistanceOfExtraScrewsIny";
             public const string Unit = sUnit_PlateLength;
             public const string Symbol = "by";
         }

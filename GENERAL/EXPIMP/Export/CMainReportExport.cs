@@ -2681,8 +2681,8 @@ namespace EXPIMP
                                 tableParams.Add(new string[2] { "Corner screws", "2 x 4 x " + circleArrangement.IAdditionalConnectorInCornerNumber + " " +
                             "TEKs " + (screwArrangement.referenceScrew.Gauge + "g").ToString() +
                             "\nspacing: "+
-                              (circleArrangement.FAdditionalScrewsDistance_x * 1000).ToString("F0") + " x "
-                            + (circleArrangement.FAdditionalScrewsDistance_y * 1000).ToString("F0") + " [mm]" });
+                              (circleArrangement.FAdditionalCornerScrewsDistance_x * 1000).ToString("F0") + " x "
+                            + (circleArrangement.FAdditionalCornerScrewsDistance_y * 1000).ToString("F0") + " [mm]" });
                             }
                         }
                     }
