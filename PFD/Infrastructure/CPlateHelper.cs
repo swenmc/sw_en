@@ -372,12 +372,16 @@ namespace PFD
                 //screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name, CParamsResources.NumberOfAdditionalScrewsInCornerS.Symbol, circArrangement.IAdditionalConnectorInCornerNumber.ToString(nfi), CParamsResources.NumberOfAdditionalScrewsInCornerS.Unit));
                 List<string> listAdditionalScrewsInCorner = new List<string>() { "1", "4", "9", "16", "25", "36", "49", "64", "81", "100" };
                 screwArrangmenetProperties.Add(new CComponentParamsViewList(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name, CParamsResources.NumberOfAdditionalScrewsInCornerS.Symbol, circArrangement.IAdditionalConnectorInCornerNumber.ToString(nfi), listAdditionalScrewsInCorner, CParamsResources.NumberOfAdditionalScrewsInCornerS.Unit));
-                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfAdditionalScrewsInxS.Name, CParamsResources.DistanceOfAdditionalScrewsInxS.Symbol, (Math.Round(circArrangement.FAdditionalScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInxS.Unit));
-                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfAdditionalScrewsInyS.Name, CParamsResources.DistanceOfAdditionalScrewsInyS.Symbol, (Math.Round(circArrangement.FAdditionalScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInyS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfAdditionalCornerScrewsInxS.Name, CParamsResources.DistanceOfAdditionalCornerScrewsInxS.Symbol, (Math.Round(circArrangement.FAdditionalCornerScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalCornerScrewsInxS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfAdditionalCornerScrewsInyS.Name, CParamsResources.DistanceOfAdditionalCornerScrewsInyS.Symbol, (Math.Round(circArrangement.FAdditionalCornerScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalCornerScrewsInyS.Unit));
                 
                 screwArrangmenetProperties.Add(new CComponentParamsViewBool(CParamsResources.UseExtraScrewsS.Name, CParamsResources.UseExtraScrewsS.Symbol, circArrangement.UseExtraScrews, CParamsResources.UseExtraScrewsS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.ExtraScrewsInRowS.Name, CParamsResources.ExtraScrewsInRowS.Symbol, circArrangement.ExtraNumberOfScrewsInRow.ToString(), CParamsResources.ExtraScrewsInRowS.Unit));
-                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.ExtraScrewsRowsS.Name, CParamsResources.ExtraScrewsRowsS.Symbol, circArrangement.ExtraNumberOfRows.ToString(), CParamsResources.ExtraScrewsRowsS.Unit));                
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.ExtraScrewsRowsS.Name, CParamsResources.ExtraScrewsRowsS.Symbol, circArrangement.ExtraNumberOfRows.ToString(), CParamsResources.ExtraScrewsRowsS.Unit));
+
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.PositionOfExtraScrewsSequence_yS.Name, CParamsResources.PositionOfExtraScrewsSequence_yS.Symbol, (Math.Round(circArrangement.PositionOfExtraScrewsSequence_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PositionOfExtraScrewsSequence_yS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfExtraScrewsInxS.Name, CParamsResources.DistanceOfExtraScrewsInxS.Symbol, (Math.Round(circArrangement.ExtraScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfExtraScrewsInxS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfExtraScrewsInyS.Name, CParamsResources.DistanceOfExtraScrewsInyS.Symbol, (Math.Round(circArrangement.ExtraScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfExtraScrewsInyS.Unit));
             }
             else if (screwArrangement != null && screwArrangement is CScrewArrangementRectApexOrKnee)
             {
@@ -753,12 +757,15 @@ namespace PFD
                     // Corner screws
                     if (item.Name.Equals(CParamsResources.PositionOfCornerSequence_xS.Name)) arrangementTemp.FPositionOfCornerSequence_x = item_val / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.PositionOfCornerSequence_yS.Name)) arrangementTemp.FPositionOfCornerSequence_y = item_val / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = item_val / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalCornerScrewsInxS.Name)) arrangementTemp.FAdditionalCornerScrewsDistance_x = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalCornerScrewsInyS.Name)) arrangementTemp.FAdditionalCornerScrewsDistance_y = item_val / fLengthUnitFactor;
 
                     //Extra screws
                     if (item.Name.Equals(CParamsResources.ExtraScrewsInRowS.Name)) arrangementTemp.ExtraNumberOfScrewsInRow = (int)item_val;
                     if (item.Name.Equals(CParamsResources.ExtraScrewsRowsS.Name)) arrangementTemp.ExtraNumberOfRows = (int)item_val;
+                    if (item.Name.Equals(CParamsResources.PositionOfExtraScrewsSequence_yS.Name)) arrangementTemp.PositionOfExtraScrewsSequence_y = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.DistanceOfExtraScrewsInxS.Name)) arrangementTemp.ExtraScrewsDistance_x = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.DistanceOfExtraScrewsInyS.Name)) arrangementTemp.ExtraScrewsDistance_y = item_val / fLengthUnitFactor;
                 }
                 else if (item is CComponentParamsViewBool)
                 {

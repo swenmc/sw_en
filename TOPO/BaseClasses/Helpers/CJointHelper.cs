@@ -261,7 +261,7 @@ namespace BaseClasses.Helpers
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr2);
 
-            return new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fCrscWebMiddlePart, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow);
+            return new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fCrscWebMiddlePart, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow, fConnectorRadiusInCircleSequence, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
         }
     }
 }
