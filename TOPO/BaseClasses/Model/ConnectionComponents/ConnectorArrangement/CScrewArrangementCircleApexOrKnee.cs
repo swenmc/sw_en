@@ -757,7 +757,7 @@ namespace BaseClasses
                 float fPositionOfExtraSequence_x = 0.5f * fExtraScrewsRowLength_x_Direction; // Toto nebude parameter, ale urcuje sa automaticky
 
                 // Top part of group
-                Point[] extraConnectorsInGroupTop = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-fPositionOfExtraSequence_x, PositionOfExtraScrewsSequence_y - (iExtraNumberOfRows - 1) * PositionOfExtraScrewsSequence_y), ExtraNumberOfScrewsInRow, iExtraNumberOfRows, ExtraScrewsDistance_x, ExtraScrewsDistance_y);
+                Point[] extraConnectorsInGroupTop = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-fPositionOfExtraSequence_x, PositionOfExtraScrewsSequence_y - (iExtraNumberOfRows - 1) * ExtraScrewsDistance_y), ExtraNumberOfScrewsInRow, iExtraNumberOfRows, ExtraScrewsDistance_x, ExtraScrewsDistance_y);
 
                 // Bottom part of group
                 Point[] extraConnectorsInGroupBottom = new Point[extraConnectorsInGroupTop.Length];
