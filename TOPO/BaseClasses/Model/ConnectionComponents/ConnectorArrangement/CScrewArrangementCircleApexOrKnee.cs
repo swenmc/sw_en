@@ -525,14 +525,7 @@ namespace BaseClasses
             if (BUseAdditionalCornerScrews || UseExtraScrews) // 4 corners in one group, 2 extra lines
             {
                 foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
-                {
-                    //bool bAddNewCornerSequences = false;
-                    //if (group.NumberOfRectangularSequences < 4 && BUseAdditionalCornerScrews) bAddNewCornerSequences = true;
-
-                    //bool bAddNewExtraSequences = false;
-                    //if (UseExtraScrews && bAddNewCornerSequences && group.NumberOfRectangularSequences == 0) bAddNewExtraSequences = true;
-                    //else if (UseExtraScrews && !bAddNewCornerSequences && group.NumberOfRectangularSequences < 6) bAddNewExtraSequences = true;
-
+                {                    
                     // Set number of rectangular sequences
                     if (BUseAdditionalCornerScrews && UseExtraScrews) group.NumberOfRectangularSequences = 6;
                     else if (BUseAdditionalCornerScrews) group.NumberOfRectangularSequences = 4;
@@ -584,9 +577,10 @@ namespace BaseClasses
                 {
                     if (UseExtraScrews)
                     {
-                        if (group.ListSequence.Count == 8)
-                        {
-                            group.ListSequence.RemoveRange(2, 4);
+                        if (group.ListSequence.Where(s=> s is CScrewRectSequence).Count() == 6)
+                        {                            
+                            List<CConnectorSequence> sequencesToRemove = group.ListSequence.Where(s => s is CScrewRectSequence).ToList().GetRange(0, 4);
+                            group.ListSequence.RemoveAll(s=> sequencesToRemove.Contains(s));                            
                             group.NumberOfRectangularSequences = 2;
                         }
                     }
@@ -605,9 +599,10 @@ namespace BaseClasses
                 {
                     if (BUseAdditionalCornerScrews)
                     {
-                        if (group.ListSequence.Count == 8)
+                        if (group.ListSequence.Where(s => s is CScrewRectSequence).Count() == 6)
                         {
-                            group.ListSequence.RemoveRange(6, 2);
+                            List<CConnectorSequence> sequencesToRemove = group.ListSequence.Where(s => s is CScrewRectSequence).ToList().GetRange(4, 2);
+                            group.ListSequence.RemoveAll(s => sequencesToRemove.Contains(s));                            
                             group.NumberOfRectangularSequences = 4;
                         }
                     }
@@ -745,12 +740,6 @@ namespace BaseClasses
             // Add extra line of points
             if (UseExtraScrews && group.NumberOfRectangularSequences > 0)
             {
-                // TODO Ondrej - pridat tieto 3 parametre pre extra screws do GUI
-                // Parametre su nezavisle na corner screws
-                //float FPositionOfExtraSequence_y = FPositionOfCornerSequence_y + 0.015f; // Docasne, aby bolo vidno rozdiel // TODO Ondrej - z tohto tiez urobit samostatny parameter v GUI pre extra screws
-                //float FAdditionalExtraScrewsDistance_x = FAdditionalCornerScrewsDistance_x * 2f; // Docasne, aby bolo vidno rozdiel
-                //float FAdditionalExtraScrewsDistance_y = FAdditionalCornerScrewsDistance_x * 1.2f; // Docasne, aby bolo vidno rozdiel
-
                 // Pozicia rows pre smer x ma byt symetrická podla stredu group (polohu urcuje stred polkruhovej sekvencie)
                 // Spocitame celkovú dĺžku radu skrutiek - suradnica je vlavo od stredu, takze je to zaporna polovica dlzky radu skrutiek
                 float fExtraScrewsRowLength_x_Direction = (iExtraNumberOfScrewsInRow - 1) * ExtraScrewsDistance_x;
