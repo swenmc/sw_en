@@ -699,9 +699,10 @@ namespace BaseClasses
             {
                 // TODO Ondrej - pridat tieto 3 parametre pre extra screws do GUI
                 // Parametre su nezavisle na corner screws
-                float FPositionOfExtraSequence_y = FPositionOfCornerSequence_y + 0.015f; // Docasne, aby bolo vidno rozdiel // TODO Ondrej - z tohto tiez urobit samostatny parameter v GUI pre extra screws
-                float FAdditionalExtraScrewsDistance_x = FAdditionalScrewsDistance_x * 2f; // Docasne, aby bolo vidno rozdiel
-                float FAdditionalExtraScrewsDistance_y = FAdditionalScrewsDistance_x * 1.2f; // Docasne, aby bolo vidno rozdiel
+                // Default pre 8 skrutiek v rade
+                float FPositionOfExtraSequence_y = 0.27f; // FPositionOfCornerSequence_y + 0.015f; // Docasne, aby bolo vidno rozdiel // TODO Ondrej - z tohto tiez urobit samostatny parameter v GUI pre extra screws
+                float FAdditionalExtraScrewsDistance_x = 0.05f; // FAdditionalScrewsDistance_x * 2f; // Docasne, aby bolo vidno rozdiel
+                float FAdditionalExtraScrewsDistance_y = 0.03f; // FAdditionalScrewsDistance_x * 1.2f; // Docasne, aby bolo vidno rozdiel
 
                 // Pozicia rows pre smer x ma byt symetrická podla stredu group (polohu urcuje stred polkruhovej sekvencie)
                 // Spocitame celkovú dĺžku radu skrutiek - suradnica je vlavo od stredu, takze je to zaporna polovica dlzky radu skrutiek
