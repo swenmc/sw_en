@@ -31,6 +31,7 @@ namespace PFD
 
         private bool m_UseStraightReinforcementBars;
         private bool m_UpdateAutomatically;
+        private bool m_VariousCrossSections;
 
         public bool BracingEverySecondRowOfGirts
         {
@@ -107,6 +108,19 @@ namespace PFD
             }
         }
 
+        public bool VariousCrossSections
+        {
+            get
+            {
+                return m_VariousCrossSections;
+            }
+            set
+            {
+                m_VariousCrossSections = value;
+                NotifyPropertyChanged("VariousCrossSections");
+            }
+        }
+
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -123,6 +137,8 @@ namespace PFD
             m_UseStraightReinforcementBars = false;
 
             m_UpdateAutomatically = false;
+
+            m_VariousCrossSections = false;
 
             IsSetFromCode = false;
         }

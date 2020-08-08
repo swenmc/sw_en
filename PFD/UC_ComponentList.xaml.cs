@@ -157,5 +157,15 @@ namespace PFD
                 }
             }
         }
+
+        private void BtnBaysApply_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnFramesApply_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
