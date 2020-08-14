@@ -44,6 +44,36 @@ namespace PFD
         private List<CSectionPropertiesText> m_ComponentDetailsList;
         private List<CMaterialPropertiesText> m_MaterialDetailsList;
 
+
+        //#############################################
+        private List<int> m_FramesIDs;
+        private int m_FrameFrom;
+        private int m_FrameTo;
+        private List<int> m_BaysIDs;
+        private int m_BayFrom;
+        private int m_BayTo;
+
+        private string m_ColumnSection;
+        private string m_RafterSection;
+        private string m_ColumnMaterial;
+        private string m_RafterMaterial;
+
+        private string m_Section_EP;
+        private string m_Section_G;
+        private string m_Section_P;
+        private string m_Section_GB;
+        private string m_Section_PB;
+        private string m_Section_CBW;
+        private string m_Section_CBR;
+        private string m_Material_EP;
+        private string m_Material_G;
+        private string m_Material_P;
+        private string m_Material_GB;
+        private string m_Material_PB;
+        private string m_Material_CBW;
+        private string m_Material_CBR;
+
+
         private bool m_allMaterialListChanged;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -520,6 +550,371 @@ namespace PFD
             }
         }
 
+        public List<int> FramesIDs
+        {
+            get
+            {
+                return m_FramesIDs;
+            }
+            set
+            {
+                m_FramesIDs = value;
+                if (m_FramesIDs != null && m_FramesIDs.Count > 1)
+                {
+                    FrameFrom = m_FramesIDs.First();
+                    FrameTo = m_FramesIDs.Last();
+                }
+                NotifyPropertyChanged("FramesIDs");
+            }
+        }
+
+        public int FrameFrom
+        {
+            get
+            {
+                return m_FrameFrom;
+            }
+
+            set
+            {
+                m_FrameFrom = value;
+                NotifyPropertyChanged("FrameFrom");
+            }
+        }
+
+        public int FrameTo
+        {
+            get
+            {
+                return m_FrameTo;
+            }
+
+            set
+            {
+                m_FrameTo = value;
+                NotifyPropertyChanged("FrameTo");
+            }
+        }
+
+        public List<int> BaysIDs
+        {
+            get
+            {
+                return m_BaysIDs;
+            }
+
+            set
+            {
+                m_BaysIDs = value;
+                if (m_BaysIDs != null && m_BaysIDs.Count > 1)
+                {
+                    BayFrom = m_BaysIDs.First();
+                    BayTo = m_BaysIDs.Last();
+                }
+                NotifyPropertyChanged("BaysIDs");
+            }
+        }
+
+        public int BayFrom
+        {
+            get
+            {
+                return m_BayFrom;
+            }
+
+            set
+            {
+                m_BayFrom = value;
+                NotifyPropertyChanged("BayFrom");
+            }
+        }
+
+        public int BayTo
+        {
+            get
+            {
+                return m_BayTo;
+            }
+
+            set
+            {
+                m_BayTo = value;
+                NotifyPropertyChanged("BayTo");
+            }
+        }
+
+        public string ColumnSection
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ColumnSection))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+                    if (ci != null) m_ColumnSection = ci.Section;
+                }
+                return m_ColumnSection;
+            }
+
+            set
+            {
+                m_ColumnSection = value;
+                NotifyPropertyChanged("ColumnSection");
+            }
+        }
+
+        public string RafterSection
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ColumnSection))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+                    if (ci != null) m_RafterSection = ci.Section;
+                }
+                return m_RafterSection;
+            }
+
+            set
+            {
+                m_RafterSection = value;
+                NotifyPropertyChanged("RafterSection");
+            }
+        }
+
+        public string ColumnMaterial
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_ColumnMaterial))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+                    if (ci != null) m_ColumnMaterial = ci.Material;
+                }
+                return m_ColumnMaterial;
+            }
+
+            set
+            {
+                m_ColumnMaterial = value;
+                NotifyPropertyChanged("ColumnMaterial");
+            }
+        }
+
+        public string RafterMaterial
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_RafterMaterial))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+                    if (ci != null) m_RafterMaterial = ci.Material;
+                }
+                return m_RafterMaterial;
+            }
+
+            set
+            {
+                m_RafterMaterial = value;
+                NotifyPropertyChanged("RafterMaterial");
+            }
+        }
+
+        public string Section_EP
+        {
+            get
+            {
+                return m_Section_EP;
+            }
+
+            set
+            {
+                m_Section_EP = value;
+                NotifyPropertyChanged("Section_EP");
+            }
+        }
+
+        public string Section_G
+        {
+            get
+            {
+                return m_Section_G;
+            }
+
+            set
+            {
+                m_Section_G = value;
+                NotifyPropertyChanged("Section_G");
+            }
+        }
+
+        public string Section_P
+        {
+            get
+            {
+                return m_Section_P;
+            }
+
+            set
+            {
+                m_Section_P = value;
+                NotifyPropertyChanged("Section_P");
+            }
+        }
+
+        public string Section_GB
+        {
+            get
+            {
+                return m_Section_GB;
+            }
+
+            set
+            {
+                m_Section_GB = value;
+                NotifyPropertyChanged("Section_GB");
+            }
+        }
+
+        public string Section_PB
+        {
+            get
+            {
+                return m_Section_PB;
+            }
+
+            set
+            {
+                m_Section_PB = value;
+                NotifyPropertyChanged("Section_PB");
+            }
+        }
+
+        public string Section_CBW
+        {
+            get
+            {
+                return m_Section_CBW;
+            }
+
+            set
+            {
+                m_Section_CBW = value;
+                NotifyPropertyChanged("Section_CBW");
+            }
+        }
+
+        public string Section_CBR
+        {
+            get
+            {
+                return m_Section_CBR;
+            }
+
+            set
+            {
+                m_Section_CBR = value;
+                NotifyPropertyChanged("Section_CBR");
+            }
+        }
+
+        public string Material_EP
+        {
+            get
+            {
+                return m_Material_EP;
+            }
+
+            set
+            {
+                m_Material_EP = value;
+                NotifyPropertyChanged("Material_EP");
+            }
+        }
+
+        public string Material_G
+        {
+            get
+            {
+                return m_Material_G;
+            }
+
+            set
+            {
+                m_Material_G = value;
+                NotifyPropertyChanged("Material_G");
+            }
+        }
+
+        public string Material_P
+        {
+            get
+            {
+                return m_Material_P;
+            }
+
+            set
+            {
+                m_Material_P = value;
+                NotifyPropertyChanged("Material_P");
+            }
+        }
+
+        public string Material_GB
+        {
+            get
+            {
+                return m_Material_GB;
+            }
+
+            set
+            {
+                m_Material_GB = value;
+                NotifyPropertyChanged("Material_GB");
+            }
+        }
+
+        public string Material_PB
+        {
+            get
+            {
+                return m_Material_PB;
+            }
+
+            set
+            {
+                m_Material_PB = value;
+                NotifyPropertyChanged("Material_PB");
+            }
+        }
+
+        public string Material_CBW
+        {
+            get
+            {
+                return m_Material_CBW;
+            }
+
+            set
+            {
+                m_Material_CBW = value;
+                NotifyPropertyChanged("Material_CBW");
+            }
+        }
+
+        public string Material_CBR
+        {
+            get
+            {
+                return m_Material_CBR;
+            }
+
+            set
+            {
+                m_Material_CBR = value;
+                NotifyPropertyChanged("Material_CBR");
+            }
+        }
+
         private List<CComponentPrefixes> list_CompPref;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -609,6 +1004,31 @@ namespace PFD
             {
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             }
+        }
+
+        public void InitControlsAccordingToFrames(int framesNum)
+        {
+            initBays(framesNum - 1);
+            initFrames(framesNum);
+        }
+
+        private void initBays(int baysNum)
+        {
+            List<int> bays = new List<int>(baysNum);
+            for (int i = 1; i <= baysNum; i++)
+            {
+                bays.Add(i);
+            }
+            BaysIDs = bays;
+        }
+        private void initFrames(int framesNum)
+        {
+            List<int> frames = new List<int>(framesNum);
+            for (int i = 1; i <= framesNum; i++)
+            {
+                frames.Add(i);
+            }
+            FramesIDs = frames;
         }
 
         private void SetComponentSectionsColors()

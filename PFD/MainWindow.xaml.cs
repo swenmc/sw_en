@@ -1272,6 +1272,8 @@ namespace PFD
             {
                 //defined in xaml
                 //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+                CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
+                compListVM.InitControlsAccordingToFrames(vm.Frames);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
             {
