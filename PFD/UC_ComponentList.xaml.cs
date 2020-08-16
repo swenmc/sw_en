@@ -29,7 +29,7 @@ namespace PFD
         public UC_ComponentList()
         {
             InitializeComponent();
-            
+
             // Obsah tejto tabulky co sa tyka prierezov by sa mal prebrat z modelu CExample_3D_901_PF - m_arrSections
             // Material prevziat z prierezov
 
@@ -99,7 +99,7 @@ namespace PFD
                 if (vm == null) return;
 
                 foreach (CComponentInfo cInfo in vm.ComponentList)
-                {                    
+                {
                     cInfo.IsSetFromCode = true;
 
                     if (header == "Calculate" && cInfo.IsCalculateEnabled) cInfo.Calculate = !calc;
@@ -109,7 +109,7 @@ namespace PFD
 
                     cInfo.IsSetFromCode = false;
                 }
-                
+
                 //fire change event at the end
                 CComponentInfo ci = vm.ComponentList.FirstOrDefault();
                 if (ci != null)
@@ -137,7 +137,7 @@ namespace PFD
                 bool design = selectedInfo.Design;
                 bool display = selectedInfo.Display;
                 bool material = selectedInfo.MaterialList;
-                
+
                 if (vm == null) return;
 
                 foreach (CComponentInfo cInfo in vm.ComponentList)
@@ -147,7 +147,7 @@ namespace PFD
                         cInfo.IsSetFromCode = false;
                     }
                     else cInfo.IsSetFromCode = true;
-                    
+
                     if (header == "Calculate" && cInfo.IsCalculateEnabled) cInfo.Calculate = !calc;
                     if (header == "Design" && cInfo.IsDesignEnabled) cInfo.Design = !design;
                     if (header == "Display") cInfo.Display = !display;
@@ -165,9 +165,21 @@ namespace PFD
 
             for (int i = vm.BayFrom; i <= vm.BayTo; i++)
             {
-                //vm.BayComponentList[i - 1].ColumnSection = vm.ColumnSection;
+                vm.BaysComponentList[i - 1].Section_EP = vm.Section_EP;
+                vm.BaysComponentList[i - 1].Section_G = vm.Section_G;
+                vm.BaysComponentList[i - 1].Section_P = vm.Section_P;
+                vm.BaysComponentList[i - 1].Section_GB = vm.Section_GB;
+                vm.BaysComponentList[i - 1].Section_PB = vm.Section_PB;
+                vm.BaysComponentList[i - 1].Section_CBW = vm.Section_CBW;
+                vm.BaysComponentList[i - 1].Section_CBR = vm.Section_CBR;
 
-                
+                vm.BaysComponentList[i - 1].Material_EP = vm.Material_EP;
+                vm.BaysComponentList[i - 1].Material_G = vm.Material_G;
+                vm.BaysComponentList[i - 1].Material_P = vm.Material_P;
+                vm.BaysComponentList[i - 1].Material_GB = vm.Material_GB;
+                vm.BaysComponentList[i - 1].Material_PB = vm.Material_PB;
+                vm.BaysComponentList[i - 1].Material_CBW = vm.Material_CBW;
+                vm.BaysComponentList[i - 1].Material_CBR = vm.Material_CBR;
             }
 
         }

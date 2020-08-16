@@ -361,9 +361,8 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
-                            <RowDefinition Height="250"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="205"/>
+                            <RowDefinition Height="*"/>                            
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
@@ -388,14 +387,14 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="Section:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -477,20 +476,20 @@
                                                         SelectedValueBinding="{Binding Section_EP, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlins}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlins}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridTextColumn Binding="{Binding SectionColor_EP}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding SectionColor_EP}"/>
+                                            <Setter Property="Foreground" Value="{Binding SectionColor_EP}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
@@ -502,20 +501,20 @@
                                                         SelectedValueBinding="{Binding Section_G, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlins}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlins}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridTextColumn Binding="{Binding SectionColor_G}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding SectionColor_G}"/>
+                                            <Setter Property="Foreground" Value="{Binding SectionColor_G}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
@@ -528,20 +527,20 @@
                                                         SelectedValueBinding="{Binding Section_P, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlins}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlins}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridTextColumn Binding="{Binding SectionColor_P}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding SectionColor_P}"/>
+                                            <Setter Property="Foreground" Value="{Binding SectionColor_P}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
@@ -554,20 +553,20 @@
                                                         SelectedValueBinding="{Binding Section_GB, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlinsBracing}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlinsBracing}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridTextColumn Binding="{Binding SectionColor_GB}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding SectionColor_GB}"/>
+                                            <Setter Property="Foreground" Value="{Binding SectionColor_GB}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
@@ -580,20 +579,20 @@
                                                         SelectedValueBinding="{Binding Section_PB, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlinsBracing}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForGirtsOrPurlinsBracing}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridTextColumn Binding="{Binding SectionColor_PB}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding SectionColor_PB}"/>
+                                            <Setter Property="Foreground" Value="{Binding SectionColor_PB}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
@@ -606,20 +605,20 @@
                                                         SelectedValueBinding="{Binding Section_CBW, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForCrossBracing}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForCrossBracing}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridTextColumn Binding="{Binding SectionColor_CBW}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding SectionColor_CBW}"/>
+                                            <Setter Property="Foreground" Value="{Binding SectionColor_CBW}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
@@ -631,20 +630,20 @@
                                                         SelectedValueBinding="{Binding Section_CBR, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGridComboBoxColumn.ElementStyle>
                                     <Style TargetType="ComboBox">
-                                        <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForCrossBracing}"/>
                                     </Style>
                                 </DataGridComboBoxColumn.ElementStyle>
                                 <DataGridComboBoxColumn.EditingElementStyle>
                                     <Style TargetType="ComboBox">
-                                        <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                                            <Setter Property="ItemsSource" Value="{Binding SectionsForCrossBracing}"/>
                                     </Style>
                                 </DataGridComboBoxColumn.EditingElementStyle>
                             </DataGridComboBoxColumn>
                             <DataGridTextColumn Binding="{Binding SectionColor_CBR}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                 <DataGridTextColumn.CellStyle>
                                     <Style TargetType="DataGridCell">
-                                        <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                        <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding SectionColor_CBR}"/>
+                                            <Setter Property="Foreground" Value="{Binding SectionColor_CBR}"/>
                                     </Style>
                                 </DataGridTextColumn.CellStyle>
                             </DataGridTextColumn>

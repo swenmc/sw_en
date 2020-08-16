@@ -44,7 +44,9 @@ namespace BaseClasses
         private string m_Material_CBR;
 
         private List<Helpers.CComboColor> m_Colors;
-        private List<string> m_Sections;
+        private List<string> m_SectionsForGirtsOrPurlins;
+        private List<string> m_SectionsForGirtsOrPurlinsBracing;
+        private List<string> m_SectionsForCrossBracing;
 
         public bool IsSetFromCode
         {
@@ -86,7 +88,7 @@ namespace BaseClasses
             set
             {
                 m_Section_EP = value;
-                m_SectionColor_EP = CSectionManager.GetSectionColor(m_Section_EP);
+                SectionColor_EP = CSectionManager.GetSectionColor(m_Section_EP);
                 NotifyPropertyChanged("Section_EP");
             }
         }
@@ -101,7 +103,7 @@ namespace BaseClasses
             set
             {
                 m_Section_G = value;
-                m_SectionColor_G = CSectionManager.GetSectionColor(m_Section_G);
+                SectionColor_G = CSectionManager.GetSectionColor(m_Section_G);
                 NotifyPropertyChanged("Section_G");
             }
         }
@@ -116,7 +118,7 @@ namespace BaseClasses
             set
             {
                 m_Section_P = value;
-                m_SectionColor_P = CSectionManager.GetSectionColor(m_Section_P);
+                SectionColor_P = CSectionManager.GetSectionColor(m_Section_P);
                 NotifyPropertyChanged("Section_P");
             }
         }
@@ -131,7 +133,7 @@ namespace BaseClasses
             set
             {
                 m_Section_GB = value;
-                m_SectionColor_GB = CSectionManager.GetSectionColor(m_Section_GB);
+                SectionColor_GB = CSectionManager.GetSectionColor(m_Section_GB);
                 NotifyPropertyChanged("Section_GB");
             }
         }
@@ -146,7 +148,7 @@ namespace BaseClasses
             set
             {
                 m_Section_PB = value;
-                m_SectionColor_PB = CSectionManager.GetSectionColor(m_Section_PB);
+                SectionColor_PB = CSectionManager.GetSectionColor(m_Section_PB);
                 NotifyPropertyChanged("Section_PB");
             }
         }
@@ -161,7 +163,7 @@ namespace BaseClasses
             set
             {
                 m_Section_CBW = value;
-                m_SectionColor_CBW = CSectionManager.GetSectionColor(m_Section_CBW);
+                SectionColor_CBW = CSectionManager.GetSectionColor(m_Section_CBW);
                 NotifyPropertyChanged("Section_CBW");
             }
         }
@@ -176,7 +178,7 @@ namespace BaseClasses
             set
             {
                 m_Section_CBR = value;
-                m_SectionColor_CBR = CSectionManager.GetSectionColor(m_Section_CBR);
+                SectionColor_CBR = CSectionManager.GetSectionColor(m_Section_CBR);
                 NotifyPropertyChanged("Section_CBR");
             }
         }
@@ -390,25 +392,68 @@ namespace BaseClasses
             }
         }
 
-        public List<string> Sections
+        //public List<string> Sections
+        //{
+        //    get
+        //    {
+        //        return m_Sections;
+        //    }
+
+        //    set
+        //    {
+        //        m_Sections = value;
+        //    }
+        //}
+
+        public List<string> SectionsForGirtsOrPurlins
         {
             get
             {
-                return m_Sections;
+                return m_SectionsForGirtsOrPurlins;
             }
 
             set
             {
-                m_Sections = value;
+                m_SectionsForGirtsOrPurlins = value;
+            }
+        }
+
+        public List<string> SectionsForGirtsOrPurlinsBracing
+        {
+            get
+            {
+                return m_SectionsForGirtsOrPurlinsBracing;
+            }
+
+            set
+            {
+                m_SectionsForGirtsOrPurlinsBracing = value;
+            }
+        }
+
+        public List<string> SectionsForCrossBracing
+        {
+            get
+            {
+                return m_SectionsForCrossBracing;
+            }
+
+            set
+            {
+                m_SectionsForCrossBracing = value;
             }
         }
 
         public BayMembersInfo(int bayID, string section_EP, string section_G, string section_P, string section_GB, string section_PB, string section_CBW, string section_CBR,
             string material_EP, string material_G, string material_P, string material_GB, string material_PB, string material_CBW, string material_CBR,
-            List<Helpers.CComboColor> colors, List<string> sections)
+            List<Helpers.CComboColor> colors, List<string> sectionsForGirtsOrPurlins, List<string> sectionsForGirtsOrPurlinsBracing, List<string> sectionsForCrossBracing)
         {
             IsSetFromCode = false;
-            Sections = sections;
+
+            SectionsForGirtsOrPurlins = sectionsForGirtsOrPurlins;
+            SectionsForGirtsOrPurlinsBracing = sectionsForGirtsOrPurlinsBracing;
+            SectionsForCrossBracing = sectionsForCrossBracing;
+
             BayID = bayID;
 
             Section_EP = section_EP;

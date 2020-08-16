@@ -43,7 +43,7 @@ namespace PFD
 
         private List<string> MMaterials;
         private List<CSectionPropertiesText> m_ComponentDetailsList;
-        private List<CMaterialPropertiesText> m_MaterialDetailsList;
+        private List<CMaterialPropertiesText> m_MaterialDetailsList;        
 
 
         //#############################################
@@ -80,6 +80,7 @@ namespace PFD
 
         ObservableCollection<FrameMembersInfo> m_FramesComponentList;
         ObservableCollection<BayMembersInfo> m_BaysComponentList;
+        ObservableCollection<OthersMembersInfo> m_OthersComponentList;
 
 
         private bool m_allMaterialListChanged;
@@ -1028,6 +1029,24 @@ namespace PFD
             }
         }
 
+        public ObservableCollection<OthersMembersInfo> OthersComponentList
+        {
+            get
+            {
+                return m_OthersComponentList;
+            }
+
+            set
+            {
+                m_OthersComponentList = value;
+                foreach (OthersMembersInfo omi in OthersComponentList)
+                {
+                    omi.PropertyChanged += ComponentListItem_PropertyChanged;
+                }
+                NotifyPropertyChanged("OthersComponentList");
+            }
+        }
+
         public int SelectedFrameIndex
         {
             get
@@ -1169,6 +1188,8 @@ namespace PFD
             InitFrames(framesNum);
 
             LoadFramesComponents();
+            LoadBaysComponents();
+            LoadOthersComponents();
         }
 
         private void InitBays(int baysNum)
@@ -1210,10 +1231,31 @@ namespace PFD
             foreach (int id in BaysIDs)
             {
                 BayMembersInfo bmi = new BayMembersInfo(id, Section_EP, Section_G, Section_P, Section_GB, Section_PB, Section_CBW, Section_CBR, 
-                    Material_EP, Material_G, Material_P, Material_GB, Material_PB, Material_CBW, Material_CBR, CComboBoxHelper.ColorList, SectionsForColumnsOrRafters);
+                    Material_EP, Material_G, Material_P, Material_GB, Material_PB, Material_CBW, Material_CBR, CComboBoxHelper.ColorList, SectionsForGirtsOrPurlins, SectionsForGirtsOrPurlinsBracing, SectionsForCrossBracing);
                 baysInfos.Add(bmi);
             }
             BaysComponentList = new ObservableCollection<BayMembersInfo>(baysInfos);
+        }
+
+        private void LoadOthersComponents()
+        {
+            if (OthersComponentList != null) return;
+
+            List<OthersMembersInfo> othersInfos = new List<OthersMembersInfo>();
+
+            CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorFrame);
+            if (ci != null) { othersInfos.Add(new OthersMembersInfo(ci.ComponentName, ci.Section, ci.Material, CComboBoxHelper.ColorList, ci.Sections)); }
+
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorLintel);
+            if (ci != null) { othersInfos.Add(new OthersMembersInfo(ci.ComponentName, ci.Section, ci.Material, CComboBoxHelper.ColorList, ci.Sections)); }
+
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorTrimmer);
+            if (ci != null) { othersInfos.Add(new OthersMembersInfo(ci.ComponentName, ci.Section, ci.Material, CComboBoxHelper.ColorList, ci.Sections)); }
+
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindowFrame);
+            if (ci != null) { othersInfos.Add(new OthersMembersInfo(ci.ComponentName, ci.Section, ci.Material, CComboBoxHelper.ColorList, ci.Sections)); }
+
+            OthersComponentList = new ObservableCollection<OthersMembersInfo>(othersInfos);
         }
 
         private void SetComponentSectionsColors()
