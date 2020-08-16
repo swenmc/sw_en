@@ -43,6 +43,13 @@ namespace DATABASE
             return crsc;
         }
 
+        public static string GetSectionColor(string sectionName_short)
+        {
+            CrScProperties prop = GetSectionProperties(sectionName_short);
+            if (prop != null) return prop.colorName;
+            else return string.Empty;            
+        }
+
         public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
         {
             CSectionPropertiesText properties;

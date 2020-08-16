@@ -160,11 +160,30 @@ namespace PFD
 
         private void BtnBaysApply_Click(object sender, RoutedEventArgs e)
         {
+            CComponentListVM vm = this.DataContext as CComponentListVM;
+            if (vm.BayFrom > vm.BayTo) return;
+
+            for (int i = vm.BayFrom; i <= vm.BayTo; i++)
+            {
+                //vm.BayComponentList[i - 1].ColumnSection = vm.ColumnSection;
+
+                
+            }
 
         }
 
         private void BtnFramesApply_Click(object sender, RoutedEventArgs e)
         {
+            CComponentListVM vm = this.DataContext as CComponentListVM;
+            if (vm.FrameFrom > vm.FrameTo) return;
+
+            for (int i = vm.FrameFrom; i <= vm.FrameTo; i++)
+            {
+                vm.FramesComponentList[i - 1].ColumnSection = vm.ColumnSection;
+                vm.FramesComponentList[i - 1].ColumnMaterial = vm.ColumnMaterial;
+                vm.FramesComponentList[i - 1].RafterSection = vm.RafterSection;
+                vm.FramesComponentList[i - 1].RafterMaterial = vm.RafterMaterial;
+            }
 
         }
     }

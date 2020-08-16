@@ -23,6 +23,7 @@ namespace PFD
         public event PropertyChangedEventHandler PropertyChanged;
 
         ObservableCollection<CComponentInfo> MComponentList;
+        
         private int MSelectedComponentIndex;
 
         private List<string> MSections;
@@ -72,6 +73,13 @@ namespace PFD
         private string m_Material_PB;
         private string m_Material_CBW;
         private string m_Material_CBR;
+
+        private int m_SelectedFrameIndex;
+        private int m_SelectedBayIndex;
+        private int m_SelectedOthersIndex;
+
+        ObservableCollection<FrameMembersInfo> m_FramesComponentList;
+        ObservableCollection<BayMembersInfo> m_BaysComponentList;
 
 
         private bool m_allMaterialListChanged;
@@ -666,7 +674,7 @@ namespace PFD
         {
             get
             {
-                if (string.IsNullOrEmpty(m_ColumnSection))
+                if (string.IsNullOrEmpty(m_RafterSection))
                 {
                     CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
                     if (ci != null) m_RafterSection = ci.Section;
@@ -723,6 +731,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Section_EP))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+                    if (ci != null) m_Section_EP = ci.Section;
+                }
                 return m_Section_EP;
             }
 
@@ -737,6 +750,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Section_G))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+                    if (ci != null) m_Section_G = ci.Section;
+                }
                 return m_Section_G;
             }
 
@@ -751,6 +769,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Section_P))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                    if (ci != null) m_Section_P = ci.Section;
+                }
                 return m_Section_P;
             }
 
@@ -765,6 +788,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Section_GB))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
+                    if (ci != null) m_Section_GB = ci.Section;
+                }
                 return m_Section_GB;
             }
 
@@ -779,6 +807,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Section_PB))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+                    if (ci != null) m_Section_PB = ci.Section;
+                }
                 return m_Section_PB;
             }
 
@@ -793,6 +826,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Section_CBW))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
+                    if (ci != null) m_Section_CBW = ci.Section;
+                }
                 return m_Section_CBW;
             }
 
@@ -807,6 +845,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Section_CBR))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
+                    if (ci != null) m_Section_CBR = ci.Section;
+                }
                 return m_Section_CBR;
             }
 
@@ -821,6 +864,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Material_EP))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+                    if (ci != null) m_Material_EP = ci.Material;
+                }
                 return m_Material_EP;
             }
 
@@ -835,6 +883,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Material_G))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+                    if (ci != null) m_Material_G = ci.Material;
+                }
                 return m_Material_G;
             }
 
@@ -849,6 +902,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Material_P))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                    if (ci != null) m_Material_P = ci.Material;
+                }
                 return m_Material_P;
             }
 
@@ -863,6 +921,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Material_GB))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
+                    if (ci != null) m_Material_GB = ci.Material;
+                }
                 return m_Material_GB;
             }
 
@@ -877,6 +940,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Material_PB))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+                    if (ci != null) m_Material_PB = ci.Material;
+                }
                 return m_Material_PB;
             }
 
@@ -891,6 +959,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Material_CBW))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
+                    if (ci != null) m_Material_CBW = ci.Material;
+                }
                 return m_Material_CBW;
             }
 
@@ -905,6 +978,11 @@ namespace PFD
         {
             get
             {
+                if (string.IsNullOrEmpty(m_Material_CBR))
+                {
+                    CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
+                    if (ci != null) m_Material_CBR = ci.Material;
+                }
                 return m_Material_CBR;
             }
 
@@ -914,6 +992,85 @@ namespace PFD
                 NotifyPropertyChanged("Material_CBR");
             }
         }
+
+        public ObservableCollection<FrameMembersInfo> FramesComponentList
+        {
+            get
+            {
+                return m_FramesComponentList;
+            }
+
+            set
+            {
+                m_FramesComponentList = value;
+                foreach (FrameMembersInfo fmi in FramesComponentList)
+                {
+                    fmi.PropertyChanged += ComponentListItem_PropertyChanged;
+                }
+                NotifyPropertyChanged("FramesComponentList");
+            }
+        }
+        public ObservableCollection<BayMembersInfo> BaysComponentList
+        {
+            get
+            {
+                return m_BaysComponentList;
+            }
+
+            set
+            {
+                m_BaysComponentList = value;
+                foreach (BayMembersInfo bmi in BaysComponentList)
+                {
+                    bmi.PropertyChanged += ComponentListItem_PropertyChanged;
+                }
+                NotifyPropertyChanged("BaysComponentList");
+            }
+        }
+
+        public int SelectedFrameIndex
+        {
+            get
+            {
+                return m_SelectedFrameIndex;
+            }
+
+            set
+            {
+                m_SelectedFrameIndex = value;
+                NotifyPropertyChanged("SelectedFrameIndex");
+            }
+        }
+
+        public int SelectedBayIndex
+        {
+            get
+            {
+                return m_SelectedBayIndex;
+            }
+
+            set
+            {
+                m_SelectedBayIndex = value;
+                NotifyPropertyChanged("SelectedBayIndex");
+            }
+        }
+
+        public int SelectedOthersIndex
+        {
+            get
+            {
+                return m_SelectedOthersIndex;
+            }
+
+            set
+            {
+                m_SelectedOthersIndex = value;
+                NotifyPropertyChanged("SelectedOthersIndex");
+            }
+        }
+
+        
 
         private List<CComponentPrefixes> list_CompPref;
         //-------------------------------------------------------------------------------------------------------------
@@ -1008,11 +1165,13 @@ namespace PFD
 
         public void InitControlsAccordingToFrames(int framesNum)
         {
-            initBays(framesNum - 1);
-            initFrames(framesNum);
+            InitBays(framesNum - 1);
+            InitFrames(framesNum);
+
+            LoadFramesComponents();
         }
 
-        private void initBays(int baysNum)
+        private void InitBays(int baysNum)
         {
             List<int> bays = new List<int>(baysNum);
             for (int i = 1; i <= baysNum; i++)
@@ -1021,7 +1180,7 @@ namespace PFD
             }
             BaysIDs = bays;
         }
-        private void initFrames(int framesNum)
+        private void InitFrames(int framesNum)
         {
             List<int> frames = new List<int>(framesNum);
             for (int i = 1; i <= framesNum; i++)
@@ -1029,6 +1188,32 @@ namespace PFD
                 frames.Add(i);
             }
             FramesIDs = frames;
+        }
+
+        private void LoadFramesComponents()
+        {
+            if (FramesComponentList != null) return;
+
+            List<FrameMembersInfo> framesInfos = new List<FrameMembersInfo>();
+            foreach (int id in FramesIDs)
+            {
+                FrameMembersInfo fmi = new FrameMembersInfo(id, ColumnSection, RafterSection, ColumnMaterial, RafterMaterial, CComboBoxHelper.ColorList, SectionsForColumnsOrRafters);
+                framesInfos.Add(fmi);
+            }
+            FramesComponentList = new ObservableCollection<FrameMembersInfo>(framesInfos);
+        }
+        private void LoadBaysComponents()
+        {
+            if (BaysComponentList != null) return;
+
+            List<BayMembersInfo> baysInfos = new List<BayMembersInfo>();
+            foreach (int id in BaysIDs)
+            {
+                BayMembersInfo bmi = new BayMembersInfo(id, Section_EP, Section_G, Section_P, Section_GB, Section_PB, Section_CBW, Section_CBR, 
+                    Material_EP, Material_G, Material_P, Material_GB, Material_PB, Material_CBW, Material_CBR, CComboBoxHelper.ColorList, SectionsForColumnsOrRafters);
+                baysInfos.Add(bmi);
+            }
+            BaysComponentList = new ObservableCollection<BayMembersInfo>(baysInfos);
         }
 
         private void SetComponentSectionsColors()

@@ -14,6 +14,7 @@
         <System:Double x:Key="theColumnWidthValue">100</System:Double>
         <System:Double x:Key="theColumnWidthUnit">70</System:Double>
         <System:Double x:Key="theTextBoxWidth">50</System:Double>
+        <System:Double x:Key="theComboWidth">90</System:Double>
         <Style x:Key="RightAligned" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
@@ -214,9 +215,8 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
-                            <RowDefinition Height="100"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="90"/>
+                            <RowDefinition Height="*"/>                            
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
@@ -252,17 +252,17 @@
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="Column:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="Rafter:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
 
-                            <ComboBox Grid.Row="1" Grid.Column="1" Name="Combobox_ColumnSection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="1" Grid.Column="1" Name="Combobox_ColumnSection" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForColumnsOrRafters, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=ColumnSection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="2" Grid.Column="1" Name="Combobox_RafterSection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="2" Grid.Column="1" Name="Combobox_RafterSection" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForColumnsOrRafters, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=RafterSection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-                            <ComboBox Grid.Row="1" Grid.Column="2" Name="Combobox_ColumnMaterial" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="1" Grid.Column="2" Name="Combobox_ColumnMaterial" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=ColumnMaterial, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="2" Grid.Column="2" Name="Combobox_RafterMaterial" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="2" Grid.Column="2" Name="Combobox_RafterMaterial" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=RafterMaterial, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
@@ -286,7 +286,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Visibility="Visible" Binding="{Binding FrameID}" IsReadOnly="True" Header="Frame Number" Width="Auto"></DataGridTextColumn>
                                 <DataGridComboBoxColumn Header="Column section" ToolTipService.ToolTip="Select column section" Width="70" 
-                                                        SelectedValueBinding="{Binding ColumnsSection, UpdateSourceTrigger=PropertyChanged}">
+                                                        SelectedValueBinding="{Binding ColumnSection, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Sections}"/>
@@ -301,8 +301,8 @@
                                 <DataGridTextColumn Binding="{Binding ColumnSectionColor}" ToolTipService.ToolTip="Select column section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding ColumnSectionColor}"/>
+                                            <Setter Property="Foreground" Value="{Binding ColumnSectionColor}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
@@ -329,8 +329,8 @@
                                 <DataGridTextColumn Binding="{Binding RafterSectionColor}" ToolTipService.ToolTip="Select rafter section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding RafterSectionColor}"/>
+                                            <Setter Property="Foreground" Value="{Binding RafterSectionColor}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
@@ -409,47 +409,47 @@
                             <TextBlock Grid.Row="6" Grid.Column="0" Text="Cross Bracing - Walls:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                             <TextBlock Grid.Row="7" Grid.Column="0" Text="Cross Bracing - Roof:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
 
-                            <ComboBox Grid.Row="1" Grid.Column="1" Name="Combobox_Section_EP" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="1" Grid.Column="1" Name="Combobox_Section_EP" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForGirtsOrPurlins, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Section_EP, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="2" Grid.Column="1" Name="Combobox_Section_G" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="2" Grid.Column="1" Name="Combobox_Section_G" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForGirtsOrPurlins, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Section_G, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="3" Grid.Column="1" Name="Combobox_Section_P" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="3" Grid.Column="1" Name="Combobox_Section_P" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForGirtsOrPurlins, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Section_P, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="4" Grid.Column="1" Name="Combobox_Section_GB" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="4" Grid.Column="1" Name="Combobox_Section_GB" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForGirtsOrPurlinsBracing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Section_GB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="5" Grid.Column="1" Name="Combobox_Section_PB" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="5" Grid.Column="1" Name="Combobox_Section_PB" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForGirtsOrPurlinsBracing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Section_PB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="6" Grid.Column="1" Name="Combobox_Section_CBW" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="6" Grid.Column="1" Name="Combobox_Section_CBW" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForCrossBracing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Section_CBW, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="7" Grid.Column="1" Name="Combobox_Section_CBR" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="7" Grid.Column="1" Name="Combobox_Section_CBR" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=SectionsForCrossBracing, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Section_CBR, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-                            <ComboBox Grid.Row="1" Grid.Column="2" Name="Combobox_Material_EP" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="1" Grid.Column="2" Name="Combobox_Material_EP" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Material_EP, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="2" Grid.Column="2" Name="Combobox_Material_G" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="2" Grid.Column="2" Name="Combobox_Material_G" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Material_G, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="3" Grid.Column="2" Name="Combobox_Material_P" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="3" Grid.Column="2" Name="Combobox_Material_P" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Material_P, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="4" Grid.Column="2" Name="Combobox_Material_GB" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="4" Grid.Column="2" Name="Combobox_Material_GB" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Material_GB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="5" Grid.Column="2" Name="Combobox_Material_PB" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="5" Grid.Column="2" Name="Combobox_Material_PB" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Material_PB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="6" Grid.Column="2" Name="Combobox_Material_CBW" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="6" Grid.Column="2" Name="Combobox_Material_CBW" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Material_CBW, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                            <ComboBox Grid.Row="7" Grid.Column="2" Name="Combobox_Material_CBR" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                            <ComboBox Grid.Row="7" Grid.Column="2" Name="Combobox_Material_CBR" HorizontalAlignment="Left" Width="{StaticResource theComboWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Materials, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Material_CBR, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
                   
@@ -457,7 +457,7 @@
                         </Grid>
 
                         <DataGrid Name="Datagrid_BaysComponents" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedBayIndex}" ItemsSource="{Binding FramesComponentList}" 
+                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedBayIndex}" ItemsSource="{Binding BaysComponentList}" 
                   CanUserSortColumns="False">
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">
@@ -675,7 +675,7 @@
                         </Grid.RowDefinitions>
                         
                         <DataGrid Name="Datagrid_OthersComponents" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedOthersIndex}" ItemsSource="{Binding FramesComponentList}" 
+                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedOthersIndex}" ItemsSource="{Binding OthersComponentList}" 
                   CanUserSortColumns="False">
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">

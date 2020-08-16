@@ -129,6 +129,8 @@
     <Compile Include="Model\CAccessories_DownpipeProperties.cs" />
     <Compile Include="Model\CAccessories_LengthItemProperties.cs" />
     <Compile Include="Model\CBayInfo.cs" />
+    <Compile Include="Model\BayMembersInfo.cs" />
+    <Compile Include="Model\FrameMembersInfo.cs" />
     <Compile Include="Model\CCrossBracingInfo.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BX.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_H.cs" />
