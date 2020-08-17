@@ -6,7 +6,10 @@ using DATABASE.DTO;
 using MATH;
 using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses
@@ -585,6 +588,30 @@ namespace BaseClasses
 
             getMeshMemberGeometry3DFromCrSc_One(eGCS, CrScStart, CrScEnd, DTheta_x, out mesh); // Mesh one member
 
+            //temp
+            // Set the points' texture coordinates.            
+            //mesh.TextureCoordinates.Add(new Point(0, 0));
+            //mesh.TextureCoordinates.Add(new Point(0, 1));
+            //mesh.TextureCoordinates.Add(new Point(1, 1));
+            //mesh.TextureCoordinates.Add(new Point(1, 0));
+
+            //for (int i = 0; i < mesh.TriangleIndices.Count; i = i + 3)
+            //{
+            //    mesh.TextureCoordinates.Add(new Point(0, 0));
+            //    mesh.TextureCoordinates.Add(new Point(0, 1));
+            //    mesh.TextureCoordinates.Add(new Point(1, 1));
+            //}
+
+            for (int i = 0; i < mesh.Positions.Count; i = i + 4)
+            {
+                mesh.TextureCoordinates.Add(new Point(0, 0));
+                mesh.TextureCoordinates.Add(new Point(0, 1));
+                mesh.TextureCoordinates.Add(new Point(1, 1));
+                mesh.TextureCoordinates.Add(new Point(1, 0));
+            }
+            //end temp
+
+
             model.Geometry = mesh;
 
             MaterialGroup materialGroup = new MaterialGroup();
@@ -599,7 +626,23 @@ namespace BaseClasses
             }
             else
             {
-                throw new Exception("Exception - material is not valid");
+
+                //ImageBrush imageBrush = new ImageBrush();
+                //imageBrush.ImageSource = new BitmapImage(new Uri("wallTexture2.jpg", UriKind.Relative));
+                //imageBrush.TileMode = TileMode.Tile;
+                //materialGroup.Children.Add(new DiffuseMaterial(imageBrush));
+
+                var image = new Image { Source = new BitmapImage(new Uri("wallTexture2.jpg", UriKind.Relative)) };
+                RenderOptions.SetCachingHint(image, CachingHint.Cache);
+                RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
+                var material = new DiffuseMaterial(new VisualBrush(image));
+                materialGroup.Children.Add(material);
+                model.BackMaterial = material;
+
+                // Make the surface visible from both sides.
+                //model.BackMaterial = new DiffuseMaterial(imageBrush);
+
+                //throw new Exception("Exception - material is not valid");
 
                 // Temporary - default in case that material si not defined
                 //bUseDiffuseMaterial = true;
