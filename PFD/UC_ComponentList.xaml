@@ -201,7 +201,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <TabControl Grid.Row="2">
+        <TabControl Name="FramesBaysTabControl" Grid.Row="2">
             <TabItem Name="Frames">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -706,8 +706,8 @@
                                 <DataGridTextColumn Binding="{Binding OthersSectionColor}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
-                                            <Setter Property="Background" Value="{Binding SectionColor}"/>
-                                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                                            <Setter Property="Background" Value="{Binding OthersSectionColor}"/>
+                                            <Setter Property="Foreground" Value="{Binding OthersSectionColor}"/>
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>

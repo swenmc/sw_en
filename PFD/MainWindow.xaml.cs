@@ -1176,6 +1176,23 @@ namespace PFD
             if (vm._generalOptionsVM.UpdateAutomatically) ButtonGenerateModel.IsEnabled = false; // ButtonGenerateModel.Visibility = Visibility.Hidden;
             else ButtonGenerateModel.IsEnabled = true; //ButtonGenerateModel.Visibility = Visibility.Visible;
 
+            if (vm._generalOptionsVM.VariousCrossSections)
+            {
+                uc_ComponentList.FramesBaysTabControl.Visibility = Visibility.Visible;
+                uc_ComponentList.VariousCrossSectionRD.Height = new GridLength(5.0, GridUnitType.Star);
+                uc_ComponentList.Datagrid_Components.Columns[3].Visibility = Visibility.Collapsed;
+                uc_ComponentList.Datagrid_Components.Columns[4].Visibility = Visibility.Collapsed;
+                uc_ComponentList.Datagrid_Components.Columns[5].Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                uc_ComponentList.FramesBaysTabControl.Visibility = Visibility.Collapsed;
+                uc_ComponentList.VariousCrossSectionRD.Height = new GridLength(0, GridUnitType.Pixel);
+                uc_ComponentList.Datagrid_Components.Columns[3].Visibility = Visibility.Visible;
+                uc_ComponentList.Datagrid_Components.Columns[4].Visibility = Visibility.Visible;
+                uc_ComponentList.Datagrid_Components.Columns[5].Visibility = Visibility.Visible;
+            }
+
             SetUIElementsVisibilityAccordingPermissions();
         }
 

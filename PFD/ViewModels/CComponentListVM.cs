@@ -113,7 +113,7 @@ namespace PFD
                 CComponentInfo cInfo = sender as CComponentInfo;
                 if (cInfo.IsSetFromCode) return;
                 if (e.PropertyName == "GenerateIsEnabled") return;
-                if (e.PropertyName == "ILS_Items") return; 
+                if (e.PropertyName == "ILS_Items") return;
 
                 if (e.PropertyName == "Material") SetComponentDetails();
                 else if (e.PropertyName == "Section") SetComponentDetails();
@@ -130,7 +130,23 @@ namespace PFD
                     // Napriklad ak je nastavene girts ILS = "None" a zmenim to na "2", tak sa zmeni premenna v modeli a dogeneruju sa pruty girt bracing block
                 }
             }
+            else if (sender is FrameMembersInfo)
+            {
+                if (e.PropertyName.Contains("Material")) SetComponentDetailsForFrame();
+                else if (e.PropertyName.Contains("Section")) SetComponentDetailsForFrame();
+            }
+            else if (sender is BayMembersInfo)
+            {
+                if (e.PropertyName.Contains("Material")) SetComponentDetailsForBay();
+                else if (e.PropertyName.Contains("Section")) SetComponentDetailsForBay();
 
+            }
+            else if (sender is OthersMembersInfo)
+            {
+                if (e.PropertyName == "OthersSection") SetComponentDetailsForOthers();
+                else if (e.PropertyName == "OthersMaterial") SetComponentDetailsForOthers();
+
+            }
             PropertyChanged(sender, e);
         }
 
@@ -1057,6 +1073,7 @@ namespace PFD
             set
             {
                 m_SelectedFrameIndex = value;
+                SetComponentDetailsForFrame();
                 NotifyPropertyChanged("SelectedFrameIndex");
             }
         }
@@ -1071,6 +1088,7 @@ namespace PFD
             set
             {
                 m_SelectedBayIndex = value;
+                SetComponentDetailsForBay();
                 NotifyPropertyChanged("SelectedBayIndex");
             }
         }
@@ -1085,6 +1103,7 @@ namespace PFD
             set
             {
                 m_SelectedOthersIndex = value;
+                SetComponentDetailsForOthers();
                 NotifyPropertyChanged("SelectedOthersIndex");
             }
         }
@@ -1239,8 +1258,6 @@ namespace PFD
 
         private void LoadOthersComponents()
         {
-            if (OthersComponentList != null) return;
-
             List<OthersMembersInfo> othersInfos = new List<OthersMembersInfo>();
 
             CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorFrame);
@@ -1254,6 +1271,8 @@ namespace PFD
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindowFrame);
             if (ci != null) { othersInfos.Add(new OthersMembersInfo(ci.ComponentName, ci.Section, ci.Material, CComboBoxHelper.ColorList, ci.Sections)); }
+
+            if (OthersComponentList != null && OthersComponentList.Count == othersInfos.Count) return;
 
             OthersComponentList = new ObservableCollection<OthersMembersInfo>(othersInfos);
         }
@@ -1348,8 +1367,40 @@ namespace PFD
             CComponentInfo cInfo = ComponentList[MSelectedComponentIndex];
             if (cInfo == null) return;
 
+            SetComponentDetails(cInfo.Section, cInfo.Material);
+        }
+        private void SetComponentDetailsForFrame()
+        {            
+            if (m_SelectedFrameIndex == -1) return;
+            FrameMembersInfo info = FramesComponentList[m_SelectedFrameIndex];
+            if (info == null) return;
+
+            //To Mato - coho properties mam zobrazovat ked tam je aj column aj rafter
+            SetComponentDetails(info.ColumnSection, info.ColumnMaterial);
+        }
+        private void SetComponentDetailsForBay()
+        {
+            if (m_SelectedBayIndex == -1) return;
+            BayMembersInfo info = BaysComponentList[m_SelectedBayIndex];
+            if (info == null) return;
+
+            //To Mato - coho properties mam zobrazovat ked tam je toho po blud
+            SetComponentDetails(info.Section_EP, info.Material_EP);
+        }
+        private void SetComponentDetailsForOthers()
+        {
+            if (m_SelectedOthersIndex == -1) return;
+            OthersMembersInfo info = OthersComponentList[m_SelectedOthersIndex];
+            if (info == null) return;
+                        
+            SetComponentDetails(info.OthersSection, info.OthersMaterial);
+        }
+
+        private void SetComponentDetails(string section, string material)
+        {
+            // Cross-section details
             // Cross-section properties
-            List<string> listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(cInfo.Section);
+            List<string> listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(section);
 
             for (int i = 0; i < ComponentDetailsList.Count; i++)
             {
@@ -1360,7 +1411,7 @@ namespace PFD
             ComponentDetailsList = new List<CSectionPropertiesText>(ComponentDetailsList);
 
             // Material properties
-            List<string> listMaterialPropertyValue = CMaterialManager.LoadSteelMaterialPropertiesStringList(cInfo.Material);
+            List<string> listMaterialPropertyValue = CMaterialManager.LoadSteelMaterialPropertiesStringList(material);
 
             for (int i = 0; i < MaterialDetailsList.Count; i++)
             {
@@ -1368,7 +1419,6 @@ namespace PFD
             }
             MaterialDetailsList = new List<CMaterialPropertiesText>(MaterialDetailsList);
         }
-
         public void AddPersonelDoor()
         {
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorFrame);
