@@ -89,7 +89,7 @@ namespace BaseClasses
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
                     membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
                 //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -141,7 +141,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersCenterLines)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                     Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -152,7 +152,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -311,7 +311,7 @@ namespace BaseClasses
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
                     membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
                 //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -337,7 +337,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersCenterLines)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                     Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -348,7 +348,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -468,7 +468,7 @@ namespace BaseClasses
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
                     membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -492,7 +492,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersCenterLines)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                     Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -503,7 +503,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -1509,6 +1509,7 @@ namespace BaseClasses
             bool bUseEmissiveMaterial = true,
             bool bColorsAccordingToMembers = true,
             bool bColorsAccordingToSections = false,
+            bool bUseTextures = false,
             SolidColorBrush front = null,
             SolidColorBrush shell = null,
             SolidColorBrush back = null,
@@ -1553,11 +1554,8 @@ namespace BaseClasses
                             {
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
-                                
-                                //temp
-                                //GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial);
-                                GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, false, false);
-
+                                                                
+                                GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial, bUseTextures);
                                 model3D.Children.Add(geom3D); // Use shell color for whole member
                             }
                             else
@@ -1617,7 +1615,9 @@ namespace BaseClasses
                                 cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_pControlPoint != null &&
                                 cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
                                 {
-                                    GeometryModel3D plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
+                                    GeometryModel3D plateGeom = null;
+                                    if (sDisplayOptions.bUseTextures) plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3DWithTexture();
+                                    else plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
                                     cmodel.m_arrConnectionJoints[i].m_arrPlates[l].Visual_Plate = plateGeom;
 
                                     if (sDisplayOptions.bDisplayPlates)
@@ -5187,7 +5187,7 @@ namespace BaseClasses
         public static void UpdateWireFramePoints(CModel jointModel, DisplayOptions sDisplayOptions)
         {
             Model3DGroup membersModel = Drawing3D.CreateMembersModel3D(jointModel, true, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                    sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
 
             // Tu sa snazim nastavit prutom Wireframe indices podla aktualnej geometrie
             for (int i = 0; i < jointModel.m_arrMembers.Length; i++)

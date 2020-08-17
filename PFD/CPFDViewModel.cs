@@ -3723,6 +3723,8 @@ namespace PFD
             sDisplayOptions.WasherColor = _displayOptionsVM.WasherColor;
             sDisplayOptions.NutColor = _displayOptionsVM.NutColor;
 
+            sDisplayOptions.bUseTextures = _displayOptionsVM.UseTextures;
+
             sDisplayOptions.fMemberSolidModelOpacity = _displayOptionsVM.MemberSolidModelOpacity;
             sDisplayOptions.fPlateSolidModelOpacity = _displayOptionsVM.PlateSolidModelOpacity;
             sDisplayOptions.fScrewSolidModelOpacity = _displayOptionsVM.ScrewSolidModelOpacity;

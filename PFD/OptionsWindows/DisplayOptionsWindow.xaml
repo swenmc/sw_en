@@ -646,7 +646,10 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                       
+
+
+                        <CheckBox Grid.Row="17" Grid.Column="2" Name="chbUseTextures" IsChecked="{Binding Path=UseTextures}">Use Textures</CheckBox>
+
                     </Grid>
                 </ScrollViewer>
 

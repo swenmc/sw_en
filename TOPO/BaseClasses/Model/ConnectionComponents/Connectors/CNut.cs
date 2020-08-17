@@ -10,6 +10,8 @@ using MATH;
 using _3DTools;
 using BaseClasses.GraphObj;
 using BaseClasses.GraphObj.Objects_3D;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace BaseClasses
 {
@@ -341,6 +343,39 @@ namespace BaseClasses
 
             return model;
         }
+        public override GeometryModel3D CreateGeomModel3DWithTexture()
+        {
+            GeometryModel3D model = new GeometryModel3D();
+
+            // All in one mesh
+            MeshGeometry3D mesh = new MeshGeometry3D();
+            mesh.Positions = GetDefinitionPoints();
+
+            // Add Positions of plate edge nodes
+            loadIndices();
+            mesh.TriangleIndices = TriangleIndices;
+
+            for (int i = 0; i < mesh.Positions.Count; i = i + 4)
+            {
+                mesh.TextureCoordinates.Add(new Point(0, 0));
+                mesh.TextureCoordinates.Add(new Point(0, 1));
+                mesh.TextureCoordinates.Add(new Point(1, 1));
+                mesh.TextureCoordinates.Add(new Point(1, 0));
+            }
+
+            model.Geometry = mesh;            // Set Model Geometry
+
+            var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture.jpg", UriKind.RelativeOrAbsolute)) };
+            RenderOptions.SetCachingHint(image, CachingHint.Cache);
+            RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
+            var material = new DiffuseMaterial(new VisualBrush(image));
+            model.BackMaterial = material;
+
+            model.Material = material;  // Set Model Material
+            TransformCoord(model);
+            return model;
+        }
+
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
             return CreateWireFrameModel(iEdgesOutBasic, iNumberOfSegmentsPerSideOut, false);

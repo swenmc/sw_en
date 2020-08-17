@@ -270,6 +270,11 @@ namespace BaseClasses
             return geometryModel;
         }
 
+        public override GeometryModel3D CreateGeomModel3DWithTexture()
+        {
+            throw new Exception("Not implemented");            
+        }
+
         /*
         public override void loadWireFrameIndices()
         { }*/

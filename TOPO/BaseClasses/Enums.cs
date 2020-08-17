@@ -934,6 +934,8 @@ namespace BaseClasses
         public System.Windows.Media.Color WasherColor;
         public System.Windows.Media.Color NutColor;
 
+        public bool bUseTextures;
+
         public float fMemberSolidModelOpacity;
         public float fPlateSolidModelOpacity;
         public float fScrewSolidModelOpacity;

@@ -580,7 +580,7 @@ namespace BaseClasses
             return MObject3DModel;
         }
 
-        public GeometryModel3D getG_M_3D_Member(EGCS eGCS, SolidColorBrush brush, bool bUseDiffuseMaterial, bool bUseEmissiveMaterial)
+        public GeometryModel3D getG_M_3D_Member(EGCS eGCS, SolidColorBrush brush, bool bUseDiffuseMaterial, bool bUseEmissiveMaterial, bool useTextures)
         {
             GeometryModel3D model = new GeometryModel3D();
 
@@ -588,35 +588,51 @@ namespace BaseClasses
 
             getMeshMemberGeometry3DFromCrSc_One(eGCS, CrScStart, CrScEnd, DTheta_x, out mesh); // Mesh one member
 
-            //temp
-            // Set the points' texture coordinates.            
-            //mesh.TextureCoordinates.Add(new Point(0, 0));
-            //mesh.TextureCoordinates.Add(new Point(0, 1));
-            //mesh.TextureCoordinates.Add(new Point(1, 1));
-            //mesh.TextureCoordinates.Add(new Point(1, 0));
-
-            //for (int i = 0; i < mesh.TriangleIndices.Count; i = i + 3)
-            //{
-            //    mesh.TextureCoordinates.Add(new Point(0, 0));
-            //    mesh.TextureCoordinates.Add(new Point(0, 1));
-            //    mesh.TextureCoordinates.Add(new Point(1, 1));
-            //}
-
-            for (int i = 0; i < mesh.Positions.Count; i = i + 4)
+            if (useTextures)
             {
-                mesh.TextureCoordinates.Add(new Point(0, 0));
-                mesh.TextureCoordinates.Add(new Point(0, 1));
-                mesh.TextureCoordinates.Add(new Point(1, 1));
-                mesh.TextureCoordinates.Add(new Point(1, 0));
-            }
-            //end temp
+                // Set the points' texture coordinates.            
+                //mesh.TextureCoordinates.Add(new Point(0, 0));
+                //mesh.TextureCoordinates.Add(new Point(0, 1));
+                //mesh.TextureCoordinates.Add(new Point(1, 1));
+                //mesh.TextureCoordinates.Add(new Point(1, 0));
 
+                //for (int i = 0; i < mesh.TriangleIndices.Count; i = i + 3)
+                //{
+                //    mesh.TextureCoordinates.Add(new Point(0, 0));
+                //    mesh.TextureCoordinates.Add(new Point(0, 1));
+                //    mesh.TextureCoordinates.Add(new Point(1, 1));
+                //}
+
+                for (int i = 0; i < mesh.Positions.Count; i = i + 4)
+                {
+                    mesh.TextureCoordinates.Add(new Point(0, 0));
+                    mesh.TextureCoordinates.Add(new Point(0, 1));
+                    mesh.TextureCoordinates.Add(new Point(1, 1));
+                    mesh.TextureCoordinates.Add(new Point(1, 0));
+                }
+            }
 
             model.Geometry = mesh;
 
             MaterialGroup materialGroup = new MaterialGroup();
 
-            if (bUseDiffuseMaterial || bUseEmissiveMaterial)
+            if (useTextures)
+            {
+                //ImageBrush imageBrush = new ImageBrush();
+                //imageBrush.ImageSource = new BitmapImage(new Uri("wallTexture4.jpg", UriKind.Relative));
+                //imageBrush.TileMode = TileMode.Tile;
+                //materialGroup.Children.Add(new DiffuseMaterial(imageBrush));                
+                //model.BackMaterial = new DiffuseMaterial(imageBrush);
+
+                var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture.jpg", UriKind.RelativeOrAbsolute)) };                
+                RenderOptions.SetCachingHint(image, CachingHint.Cache);
+                RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
+                var material = new DiffuseMaterial(new VisualBrush(image));
+                materialGroup.Children.Add(material);
+                model.BackMaterial = material;
+
+            }
+            else if (bUseDiffuseMaterial || bUseEmissiveMaterial)
             {
                 if (bUseDiffuseMaterial)
                     materialGroup.Children.Add(new DiffuseMaterial(brush));
@@ -626,22 +642,6 @@ namespace BaseClasses
             }
             else
             {
-
-                //ImageBrush imageBrush = new ImageBrush();
-                //imageBrush.ImageSource = new BitmapImage(new Uri("wallTexture2.jpg", UriKind.Relative));
-                //imageBrush.TileMode = TileMode.Tile;
-                //materialGroup.Children.Add(new DiffuseMaterial(imageBrush));
-
-                var image = new Image { Source = new BitmapImage(new Uri("wallTexture2.jpg", UriKind.Relative)) };
-                RenderOptions.SetCachingHint(image, CachingHint.Cache);
-                RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
-                var material = new DiffuseMaterial(new VisualBrush(image));
-                materialGroup.Children.Add(material);
-                model.BackMaterial = material;
-
-                // Make the surface visible from both sides.
-                //model.BackMaterial = new DiffuseMaterial(imageBrush);
-
                 //throw new Exception("Exception - material is not valid");
 
                 // Temporary - default in case that material si not defined

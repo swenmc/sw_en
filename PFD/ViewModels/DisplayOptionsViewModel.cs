@@ -267,6 +267,8 @@ namespace PFD
         private float m_GUIDimensionsScale;
 
 
+        private bool m_UseTextures;
+
         #region Loads
         // Load Case - display options
         private bool MShowLoads;
@@ -2932,6 +2934,20 @@ namespace PFD
             }
         }
 
+        public bool UseTextures
+        {
+            get
+            {
+                return m_UseTextures;
+            }
+
+            set
+            {
+                m_UseTextures = value;
+                NotifyPropertyChanged("UseTextures");
+            }
+        }
+
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
@@ -3011,6 +3027,8 @@ namespace PFD
             ShowSectionSymbols = false;
             ShowDetailSymbols = false;
             ShowSlabRebates = true;
+
+            UseTextures = true;
 
             if(bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
             {

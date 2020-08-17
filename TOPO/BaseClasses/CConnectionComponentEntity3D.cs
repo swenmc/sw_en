@@ -51,6 +51,7 @@ namespace BaseClasses
 
         protected abstract Point3DCollection GetDefinitionPoints();
         public abstract GeometryModel3D CreateGeomModel3D(SolidColorBrush brush);
+        public abstract GeometryModel3D CreateGeomModel3DWithTexture();
         public abstract ScreenSpaceLines3D CreateWireFrameModel();
 
         public void LoadIndicesPrismWithOpening(int iNumberOfPointsInExternalOutline)
