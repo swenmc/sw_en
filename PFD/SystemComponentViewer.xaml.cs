@@ -1856,6 +1856,8 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
+                if (item.Name.Equals(CParamsResources.PlateNameS.Name) && !string.IsNullOrEmpty(changedText)) plate.Name = changedText;
+
                 // Set current basic geometry of plate
                 if (plate is CConCom_Plate_B_basic)
                 {
