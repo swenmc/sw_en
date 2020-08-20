@@ -14,6 +14,15 @@
         <SolidColorBrush x:Key="colorReadOnlyCellText" Color="Black" />
         <!-- Black color of readonly cell text -->
         <SolidColorBrush x:Key="colorCellError" Color="Red" />
+        <Style TargetType="{x:Type TextBox}">            
+            <EventSetter Event="GotFocus"  Handler="SA_TextBox_GotFocus"/>
+            <!--<EventSetter Event="Loaded"  Handler="TextBox_Loaded"/>-->
+        </Style>
+        <Style x:Key="NotFocusableCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Focusable" Value="False"></Setter>
+            <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>            
+            
+        </Style>
     </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -142,6 +151,7 @@
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
@@ -150,14 +160,15 @@
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" >
+                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" CellStyle="{StaticResource NotFocusableCellStyle}" >                        
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
-                                    <ContentControl.Style>
+                                    <ContentControl.Style>                                        
                                         <Style TargetType="ContentControl">
                                             <Style.Triggers>
                                                 <!--<DataTrigger Binding="{Binding IsReadonly}" Value="0" >
@@ -185,12 +196,13 @@
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <TextBox TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                                                            </DataTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
+                                                                <TextBox Name="SA_TextBox" FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                                            </DataTemplate>                                                            
+                                                        </Setter.Value>                                                        
+                                                    </Setter>                                                    
                                                 </DataTrigger>
                                             </Style.Triggers>
+                                            
                                         </Style>
                                     </ContentControl.Style>
                                 </ContentControl>
@@ -202,6 +214,7 @@
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
@@ -212,13 +225,15 @@
             <DataGrid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ComponentGeometry}" 
                       HeadersVisibility="Column" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
-                      SelectionMode="Single" SelectionUnit="Cell" CellEditEnding="DataGridGeometry_CellEditEnding" CanUserSortColumns="False" >
+                      SelectionMode="Single" CellEditEnding="DataGridGeometry_CellEditEnding" CanUserSortColumns="False" 
+                      SelectionUnit="Cell" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
@@ -227,6 +242,7 @@
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
@@ -242,6 +258,7 @@
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
@@ -251,13 +268,14 @@
             <TextBlock Grid.Row="8" Grid.Column="0" Text="Parameters" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails" Margin="10 0 0 0" 
                       ItemsSource="{Binding Path=ComponentDetails}" HeadersVisibility="Column" 
-                      AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False">
+                      AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" SelectionUnit="Cell">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
@@ -266,6 +284,7 @@
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
@@ -287,6 +306,7 @@
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
                                 <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>

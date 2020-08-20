@@ -2759,6 +2759,19 @@ namespace PFD
             }
         }
 
+        private void SA_TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox)
+            {
+                TextBox txt = sender as TextBox;
+                txt.SelectAll();
+            }
+        }
+
+        
+
+
+
 
 
         //private void RedrawComponentIn2D()
