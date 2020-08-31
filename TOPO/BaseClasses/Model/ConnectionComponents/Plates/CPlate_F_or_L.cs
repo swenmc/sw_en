@@ -264,9 +264,15 @@ namespace BaseClasses
                 {
                     ((CScrewArrangement_L)screwArrangement).Calc_HolesCentersCoord2D(Fb_X1, Fh_Y, Fl_Z);
                 }
-                else //if (screwArrangement is CScrewArrangement_F)
+                else if (screwArrangement is CScrewArrangement_F)
                 {
                     ((CScrewArrangement_F)screwArrangement).Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y, Fl_Z);
+                }
+                else
+                {
+                    //???
+                    ((CScrewArrangement_F)screwArrangement).Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y, Fl_Z);
+                    //((CScrewArrangementRectApexOrKnee)screwArrangement).Calc_HolesCentersCoord2DApexPlate(Fb_X1, Fb_X2, Fh_Y, Fl_Z);
                 }
 
                 Calc_HolesControlPointsCoord3D(screwArrangement);

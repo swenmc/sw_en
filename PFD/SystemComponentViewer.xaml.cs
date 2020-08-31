@@ -341,6 +341,10 @@ namespace PFD
                             CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8, referenceScrew);
                             plate.ScrewArrangement = screwArrangement_L;
                         }
+                        else if (vm.ScrewArrangementIndex == 3) // Rectangular
+                        {                            
+                            plate.ScrewArrangement = screwArrangementRectangleApex;
+                        }
 
                         break;
                     }
