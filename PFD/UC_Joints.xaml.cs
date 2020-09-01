@@ -830,7 +830,7 @@ namespace PFD
             spSA.Children.Add(selectSA);
             sp.Children.Add(spSA);
 
-            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate);
             //lSA.SetValue(Grid.RowProperty, 0);
             sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
 
@@ -1344,7 +1344,7 @@ namespace PFD
             CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
             CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
             paramsChanged = true;
-            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate);
 
             CPlateHelper.UpdatePlateScrewArrangementData(plate);
 

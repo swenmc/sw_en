@@ -291,7 +291,7 @@ namespace BaseClasses
                     // Staci ak bude v group len jeden stlpec a napriklad v nom 4 skrutky. Skus to niekde doplnit, aby sa to volalo a ja si to uz poupravujem.
 
 
-                    ((CScrewArrangementRectApexOrKnee)screwArrangement).Calc_HolesCentersCoord2DApexPlate(0.0f, Fb_X1 + Fb_X2, /*Fb_X2,*/ Fl_Z, Fh_Y, 0);
+                    ((CScrewArrangementRect_PlateType_JKL)screwArrangement).Calc_HolesCentersCoord2D_PlateL(0.0f, Fb_X1 + Fb_X2, /*Fb_X2,*/ Fl_Z, Fh_Y, 0);
                 }
 
                 Calc_HolesControlPointsCoord3D(screwArrangement);

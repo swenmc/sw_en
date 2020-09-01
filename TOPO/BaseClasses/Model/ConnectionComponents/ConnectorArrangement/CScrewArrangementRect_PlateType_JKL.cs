@@ -12,7 +12,7 @@ using BaseClasses.GraphObj;
 namespace BaseClasses
 {
     [Serializable]
-    public class CScrewArrangementRectApexOrKnee : CScrewArrangement
+    public class CScrewArrangementRect_PlateType_JKL : CScrewArrangement
     {
         // TODO - Ondrej, TODO No. 105
         // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
@@ -135,12 +135,12 @@ namespace BaseClasses
             }
         }
 
-        public CScrewArrangementRectApexOrKnee()
+        public CScrewArrangementRect_PlateType_JKL()
         { }
 
         // Jedna sekvencia s rovnakymi vzdialenostami na jednej strane plate
         // Apex
-        public CScrewArrangementRectApexOrKnee(
+        public CScrewArrangementRect_PlateType_JKL(
             CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
             float fCrscWebStraightDepth_temp,
@@ -179,7 +179,7 @@ namespace BaseClasses
         // Apex - 2 groups a v kazdej 2 nezavisle sekvencie (vyuzijeme mirror)
         // Knee - 2 groups a kazdej 1 sekvencia
 
-        public CScrewArrangementRectApexOrKnee(
+        public CScrewArrangementRect_PlateType_JKL(
             CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
             float fCrscWebStraightDepth_temp,
@@ -235,7 +235,7 @@ namespace BaseClasses
         }
 
         // Knee
-        public CScrewArrangementRectApexOrKnee(
+        public CScrewArrangementRect_PlateType_JKL(
             CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
             float fCrscWebStraightDepth_temp,
@@ -628,6 +628,60 @@ namespace BaseClasses
             
 
             //FillArrayOfHolesCentersInWholeArrangement();
+        }
+
+        public void Calc_HolesCentersCoord2D_PlateL(
+            float fbX_1,
+            float fbX_2,
+            float flZ,
+            float fhY_1,
+            float fSlope_rad)
+        {
+            //TODO - toto nie je nakodene,iba skopirovane
+
+
+            // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
+            float fx_cBG = flZ + FCrscRafterDepth;
+            float fy_cBG = 0;
+
+            float fx_cUG = flZ + FCrscRafterDepth * (float)Math.Sin(fSlope_rad);
+            float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
+
+            int grCount = 0;
+            foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
+            {
+                grCount++;
+                foreach (CScrewRectSequence sc in gr.ListSequence)
+                {
+                    sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);
+
+                    if (grCount % 2 == 1)
+                    {
+                        // Bottom Group
+
+                        // Rotate about [0,0] 90 deg
+                        RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, sc);
+
+                        // Translate from [0,0] on plate to the final position
+                        TranslateSequence(fx_cBG, fy_cBG, sc);
+                    }
+                    else
+                    {
+                        // Upper Group
+
+                        // Rotate screws by roof slope
+                        // Rotate about [0,0]
+                        RotateSequence_CCW_rad(0, 0, fSlope_rad, sc);
+
+                        // Translate from [0,0] on plate to the final position
+                        TranslateSequence(fx_cUG, fy_cUG, sc);
+                    }
+                }
+
+                gr.HolesRadii = gr.Get_RadiiOfConnectorsInGroup();
+            }
+
+            FillArrayOfHolesCentersInWholeArrangement();
         }
 
         public override void Calc_ApexPlateData(

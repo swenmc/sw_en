@@ -221,7 +221,7 @@
     <Compile Include="Model\CMemberEccentricity.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorSequence.cs" />
-    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangementRectApexOrKnee.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangementRect_PlateType_JKL.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangementCircleApexOrKnee.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement_BB_BG.cs" />

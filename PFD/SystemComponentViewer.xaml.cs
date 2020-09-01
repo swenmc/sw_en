@@ -211,7 +211,7 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             CPlateHelper.DataGridScrewArrangement_ValueChanged(cpw, plate);
 
-            vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+            vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate);
             CPlateHelper.UpdatePlateScrewArrangementData(plate);
             
             // Delete drilling route
@@ -250,9 +250,9 @@ namespace PFD
             float positionOfExtraScrews_y = fConnectorRadiusInCircleSequence + 0.02f;
 
             CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow, positionOfExtraScrews_y, 0.05f, 0.03f);
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f, true);
-            //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
+            CScrewArrangementRect_PlateType_JKL screwArrangementRectangleApex = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f, true);
+            //CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
+            CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
 
             // 270xx default
             bool bUseAdditionalConnectors_270xx = false;
@@ -275,7 +275,7 @@ namespace PFD
             screwSeqGroups_270xx.Add(gr2_270xx);
 
             CScrewArrangementCircleApexOrKnee screwArrangementCircle_270 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 1, screwSeqGroups_270xx, bUseAdditionalConnectors_270xx, fConnectorRadiusInCircleSequence_270xx, fConnectorRadiusInCircleSequence_270xx, iNumberOfAdditionalConnectorsInCorner_270xx, 0.025f, 0.025f, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow, positionOfExtraScrews_y, 0.05f, 0.03f);
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex_270 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 5, 2, 0.025f, 0.015f, 0.035f, 0.03f, 5, 2, 0.025f, 0.225f, 0.035f, 0.03f, true);
+            CScrewArrangementRect_PlateType_JKL screwArrangementRectangleApex_270 = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 5, 2, 0.025f, 0.015f, 0.035f, 0.03f, 5, 2, 0.025f, 0.225f, 0.035f, 0.03f, true);
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             switch ((ESerieTypePlate)vm.ComponentSerieIndex)
@@ -559,7 +559,7 @@ namespace PFD
             }
             vm.SetComponentProperties(plate);
             //if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
-            if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+            if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate);
         }
 
         private void SetUIElementsVisibility(SystemComponentViewerViewModel vm)
@@ -1312,9 +1312,9 @@ namespace PFD
 
                 // 63020 default
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow, positionOfExtraScrews_y, 0.05f, 0.03f);
-                CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f, true);
-                //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
-                CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
+                CScrewArrangementRect_PlateType_JKL screwArrangementRectangleApex = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f, true);
+                //CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
+                CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
 
                 // 270xx default
                 bool bUseAdditionalConnectors_270xx = false;
@@ -1337,7 +1337,7 @@ namespace PFD
                 screwSeqGroups_270xx.Add(gr2_270xx);
 
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle_270 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 1, screwSeqGroups_270xx, bUseAdditionalConnectors_270xx, fConnectorRadiusInCircleSequence_270xx, fConnectorRadiusInCircleSequence_270xx, iNumberOfAdditionalConnectorsInCorner_270xx, 0.025f, 0.025f, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow, positionOfExtraScrews_y, 0.05f, 0.03f);
-                CScrewArrangementRectApexOrKnee screwArrangementRectangleApex_270 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 5, 2, 0.025f, 0.015f, 0.035f, 0.03f, 5, 2, 0.025f, 0.225f, 0.035f, 0.03f, true);
+                CScrewArrangementRect_PlateType_JKL screwArrangementRectangleApex_270 = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 5, 2, 0.025f, 0.015f, 0.035f, 0.03f, 5, 2, 0.025f, 0.225f, 0.035f, 0.03f, true);
 
                 switch ((ESerieTypePlate)vm.ComponentSerieIndex)
                 {
@@ -1655,7 +1655,7 @@ namespace PFD
                 }
                 vm.SetComponentProperties(plate);
                 //if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
-                if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+                if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate);
             }
             else
             {
@@ -2649,14 +2649,14 @@ namespace PFD
                 // samozrejme preto,ze nie je mozne serializovat vsetko ako je napr. Material, 3DTriedy ktore nie su urcene na serializaciu atd
 
                 if (deserializedPlate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
-                else if (deserializedPlate.ScrewArrangement is CScrewArrangementRectApexOrKnee) vm.ScrewArrangementIndex = 1;
+                else if (deserializedPlate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL) vm.ScrewArrangementIndex = 1;
                 else if (deserializedPlate.ScrewArrangement is CScrewArrangement_O) vm.ScrewArrangementIndex = 1;
                 else vm.ScrewArrangementIndex = 0;
 
                 plate = deserializedPlate;
                 vm.SetComponentProperties(plate);
                 //if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
-                if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+                if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate);
 
                 DisplayComponent(vm);
                 
@@ -2763,14 +2763,14 @@ namespace PFD
             }
         }
 
-        private void SA_TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is TextBox)
-            {
-                TextBox txt = sender as TextBox;
-                txt.SelectAll();
-            }
-        }
+        //private void SA_TextBox_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is TextBox)
+        //    {
+        //        TextBox txt = sender as TextBox;
+        //        txt.SelectAll();
+        //    }
+        //}
 
         
 
@@ -2886,9 +2886,9 @@ namespace PFD
         //            arrangementTemp.UpdateArrangmentData();         // Update data of screw arrangement
         //            plate.ScrewArrangement = arrangementTemp;       // Set current screw arrangement to the plate
         //        }
-        //        else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
+        //        else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL)
         //        {
-        //            CScrewArrangementRectApexOrKnee arrangementTemp = (CScrewArrangementRectApexOrKnee)plate.ScrewArrangement;
+        //            CScrewArrangementRect_PlateType_JKL arrangementTemp = (CScrewArrangementRect_PlateType_JKL)plate.ScrewArrangement;
 
         //            if (item is CComponentParamsViewString)
         //            {

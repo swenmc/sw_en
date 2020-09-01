@@ -14,15 +14,14 @@
         <SolidColorBrush x:Key="colorReadOnlyCellText" Color="Black" />
         <!-- Black color of readonly cell text -->
         <SolidColorBrush x:Key="colorCellError" Color="Red" />
-        <Style TargetType="{x:Type TextBox}">            
-            <EventSetter Event="GotFocus"  Handler="SA_TextBox_GotFocus"/>
-            <!--<EventSetter Event="Loaded"  Handler="TextBox_Loaded"/>-->
-        </Style>
-        <Style x:Key="NotFocusableCellStyle" TargetType="{x:Type DataGridCell}">
+        <!--<Style TargetType="{x:Type TextBox}">            
+            <EventSetter Event="GotFocus"  Handler="SA_TextBox_GotFocus"/>            
+        </Style>-->
+        <!--<Style x:Key="NotFocusableCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="Focusable" Value="False"></Setter>
             <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>            
             
-        </Style>
+        </Style>-->
     </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -164,7 +163,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" CellStyle="{StaticResource NotFocusableCellStyle}" >                        
+                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False">                        
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -196,7 +195,7 @@
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <TextBox Name="SA_TextBox" FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                                                <TextBox Name="SA_TextBox" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                                                             </DataTemplate>                                                            
                                                         </Setter.Value>                                                        
                                                     </Setter>                                                    

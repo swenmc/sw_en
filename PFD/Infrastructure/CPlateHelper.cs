@@ -329,8 +329,9 @@ namespace PFD
         }
 
         // Screws
-        public static List<CComponentParamsView> GetScrewArrangementProperties(CScrewArrangement screwArrangement)
+        public static List<CComponentParamsView> GetScrewArrangementProperties(CPlate plate)
         {
+            CScrewArrangement screwArrangement = plate.ScrewArrangement;
             int iNumberOfDecimalPlaces_Length = 1;
             float fUnitFactor_Length = 1000;
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -383,16 +384,28 @@ namespace PFD
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfExtraScrewsInxS.Name, CParamsResources.DistanceOfExtraScrewsInxS.Symbol, (Math.Round(circArrangement.ExtraScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfExtraScrewsInxS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfExtraScrewsInyS.Name, CParamsResources.DistanceOfExtraScrewsInyS.Symbol, (Math.Round(circArrangement.ExtraScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfExtraScrewsInyS.Unit));
             }
-            else if (screwArrangement != null && screwArrangement is CScrewArrangementRectApexOrKnee)
+            else if (screwArrangement != null && screwArrangement is CScrewArrangementRect_PlateType_JKL)
             {
-                CScrewArrangementRectApexOrKnee rectArrangement = (CScrewArrangementRectApexOrKnee)screwArrangement;
+                CScrewArrangementRect_PlateType_JKL rectArrangement = (CScrewArrangementRect_PlateType_JKL)screwArrangement;
 
                 List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
 
                 screwArrangmenetProperties.Add(new CComponentParamsViewList(CParamsResources.ScrewGaugeS.Name, CParamsResources.ScrewGaugeS.Symbol, rectArrangement.referenceScrew.Gauge.ToString(), listScrewGauges, CParamsResources.ScrewGaugeS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
-                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(rectArrangement.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit, false));
-                //screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(rectArrangement.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
-                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(rectArrangement.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit, false));
+
+                if (plate is CConCom_Plate_F_or_L)
+                {
+                    screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of groups", "No", rectArrangement.NumberOfGroups.ToString(), "[-]"));
+                    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Mirror groups", $"", rectArrangement.MirroredGroups, ""));
+                }
+                else
+                {
+                    screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(rectArrangement.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit, false));
+                    //screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(rectArrangement.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
+                    screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(rectArrangement.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit, false));
+
+                    //nedovolim editovat pocet skupin ak su mirrorovane skupiny, vtedy su napevno 2
+                    if (!rectArrangement.MirroredGroups) screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of groups", "No", rectArrangement.NumberOfGroups.ToString(), "[-]"));
+                }
 
                 // TODO Ondrej, toto by malo byt obecne pre rozny pocet rectangular sequences, pripadne groups
 
@@ -401,8 +414,9 @@ namespace PFD
                 // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                 // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
 
-                //nedovolim editovat pocet skupin ak su mirrorovane skupiny, vtedy su napevno 2
-                if (!rectArrangement.MirroredGroups) screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of groups", "No", rectArrangement.NumberOfGroups.ToString(), "[-]"));
+                
+
+                
 
                 screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of sequence in group", "No", rectArrangement.NumberOfSequenceInGroup.ToString(), "[-]"));
 
@@ -789,9 +803,9 @@ namespace PFD
                 arrangementTemp.UpdateArrangmentData();         // Update data of screw arrangement
                 plate.ScrewArrangement = arrangementTemp;       // Set current screw arrangement to the plate
             }
-            else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
+            else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL)
             {
-                CScrewArrangementRectApexOrKnee arrangementTemp = (CScrewArrangementRectApexOrKnee)plate.ScrewArrangement;
+                CScrewArrangementRect_PlateType_JKL arrangementTemp = (CScrewArrangementRect_PlateType_JKL)plate.ScrewArrangement;
 
                 if (item is CComponentParamsViewString)
                 {
@@ -893,6 +907,11 @@ namespace PFD
                     {
                         int seqIndex = GetSequenceNumFromName(item.Name) - 1;
                         arrangementTemp.RectSequences[seqIndex].SameDistancesY = itemBool.Value;
+                    }
+
+                    if (item.Name.Equals("Mirror groups"))
+                    {
+                        arrangementTemp.MirroredGroups = itemBool.Value;
                     }
                 }
                 else if (item is CComponentParamsViewList)
@@ -1129,7 +1148,7 @@ namespace PFD
 
 
         //pokusy
-        public static void UpdateRectangularSequencesNumberOfScrews(int iSeqNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementRectApexOrKnee arrangementTemp)
+        public static void UpdateRectangularSequencesNumberOfScrews(int iSeqNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementRect_PlateType_JKL arrangementTemp)
         {
             //int numberOfScrews = int.Parse(itemNewValueString.Value);
             //if (numberOfScrews < 2) return; // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
@@ -2050,8 +2069,8 @@ namespace PFD
                 referenceScrew = plate.ScrewArrangement.referenceScrew;
 
             CScrewArrangementCircleApexOrKnee screwArrangementCircle = null;
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = null;
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = null;
+            CScrewArrangementRect_PlateType_JKL screwArrangementRectangleApex = null;
+            CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee = null;
 
             CDatabaseComponents dcomponents = new CDatabaseComponents(); // TODO Odstranit ked sa vsetky screw arrangement a plate properties budu nacitavat z DB a nie z tejto triedy v kode
 
@@ -2421,7 +2440,7 @@ namespace PFD
         }
 
         private static void GetDefaultScrewArrangements(CConnectionJointTypes joint, CPlate plate, 
-            out CScrewArrangementCircleApexOrKnee screwArrangementCircle, out CScrewArrangementRectApexOrKnee screwArrangementRectangleApex, out CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee)
+            out CScrewArrangementCircleApexOrKnee screwArrangementCircle, out CScrewArrangementRect_PlateType_JKL screwArrangementRectangleApex, out CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee)
         {
             CScrew referenceScrew = new CScrew("TEK", "14");
 
@@ -2597,7 +2616,7 @@ namespace PFD
                         fy_c_SQ2_apex = fRafterDepth - fWebEndArcExternalRadius_Rafter - fMinimumStraightEdgeDistance - (iNumberOfScrewsInColumn_yDirection_SQ2_apex - 1) * fDistanceOfPointsY_SQ2_apex;
 
                         //To Mato - tak tu by ma fakt zaujimalo co sa to tu robi a hlavne naco???
-                        screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_SQ1_apex, iNumberOfScrewsInColumn_yDirection_SQ1_apex, fx_c_SQ1_apex, fy_c_SQ1_apex, fDistanceOfPointsX_SQ1_apex, fDistanceOfPointsY_SQ1_apex,
+                        screwArrangementRectangleApex = new CScrewArrangementRect_PlateType_JKL(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_SQ1_apex, iNumberOfScrewsInColumn_yDirection_SQ1_apex, fx_c_SQ1_apex, fy_c_SQ1_apex, fDistanceOfPointsX_SQ1_apex, fDistanceOfPointsY_SQ1_apex,
                                                                                                                                                                          iNumberOfScrewsInRow_xDirection_SQ2_apex, iNumberOfScrewsInColumn_yDirection_SQ2_apex, fx_c_SQ2_apex, fy_c_SQ2_apex, fDistanceOfPointsX_SQ2_apex, fDistanceOfPointsY_SQ2_apex, true);
                     }
                     else if (bIsOneSequenceApex)
@@ -2617,7 +2636,7 @@ namespace PFD
                         fy_c_SQ1_apex = fWebEndArcExternalRadius_Rafter + fMinimumStraightEdgeDistance;
 
                         //To Mato - tak tu by ma fakt zaujimalo co sa to tu robi a hlavne naco???
-                        screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_SQ1_apex, iNumberOfScrewsInColumn_yDirection_SQ1_apex, fx_c_SQ1_apex, fy_c_SQ1_apex, fDistanceOfPointsX_SQ1_apex, fDistanceOfPointsY_SQ1_apex);
+                        screwArrangementRectangleApex = new CScrewArrangementRect_PlateType_JKL(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_SQ1_apex, iNumberOfScrewsInColumn_yDirection_SQ1_apex, fx_c_SQ1_apex, fy_c_SQ1_apex, fDistanceOfPointsX_SQ1_apex, fDistanceOfPointsY_SQ1_apex);
                     }
 
                     // Knee Joint
@@ -2677,7 +2696,7 @@ namespace PFD
                         fy_c_SQ4_knee = fRafterDepth - fWebEndArcExternalRadius_Rafter - fMinimumStraightEdgeDistance - (iNumberOfScrewsInColumn_yDirection_G2_SQ4_knee - 1) * fDistanceOfPointsY_SQ4_knee;
 
                         //To Mato - tak tu by ma fakt zaujimalo co sa to tu robi a hlavne naco???
-                        screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_G1_SQ1_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee, fx_c_SQ1_knee, fy_c_SQ1_knee, fDistanceOfPointsX_SQ1_knee, fDistanceOfPointsY_SQ1_knee,
+                        screwArrangementRectangleKnee = new CScrewArrangementRect_PlateType_JKL(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_G1_SQ1_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee, fx_c_SQ1_knee, fy_c_SQ1_knee, fDistanceOfPointsX_SQ1_knee, fDistanceOfPointsY_SQ1_knee,
                                                                                                                                                                          iNumberOfScrewsInRow_xDirection_G1_SQ2_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ2_knee, fx_c_SQ2_knee, fy_c_SQ2_knee, fDistanceOfPointsX_SQ2_knee, fDistanceOfPointsY_SQ2_knee,
                                                                                                                                                                          iNumberOfScrewsInRow_xDirection_G2_SQ3_knee, iNumberOfScrewsInColumn_yDirection_G2_SQ3_knee, fx_c_SQ3_knee, fy_c_SQ3_knee, fDistanceOfPointsX_SQ3_knee, fDistanceOfPointsY_SQ3_knee,
                                                                                                                                                                          iNumberOfScrewsInRow_xDirection_G2_SQ4_knee, iNumberOfScrewsInColumn_yDirection_G2_SQ4_knee, fx_c_SQ4_knee, fy_c_SQ4_knee, fDistanceOfPointsX_SQ4_knee, fDistanceOfPointsY_SQ4_knee);
@@ -2707,13 +2726,13 @@ namespace PFD
                         fy_c_SQ3_knee = fWebEndArcExternalRadius_Rafter + fMinimumStraightEdgeDistance;
 
                         //To Mato - tak tu by ma fakt zaujimalo co sa to tu robi a hlavne naco???
-                        screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_G1_SQ1_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee, fx_c_SQ1_knee, fy_c_SQ1_knee, fDistanceOfPointsX_SQ1_knee, fDistanceOfPointsY_SQ1_knee,
+                        screwArrangementRectangleKnee = new CScrewArrangementRect_PlateType_JKL(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_G1_SQ1_knee, iNumberOfScrewsInColumn_yDirection_G1_SQ1_knee, fx_c_SQ1_knee, fy_c_SQ1_knee, fDistanceOfPointsX_SQ1_knee, fDistanceOfPointsY_SQ1_knee,
                                                                                                                                                                          iNumberOfScrewsInRow_xDirection_G2_SQ3_knee, iNumberOfScrewsInColumn_yDirection_G2_SQ3_knee, fx_c_SQ3_knee, fy_c_SQ3_knee, fDistanceOfPointsX_SQ3_knee, fDistanceOfPointsY_SQ3_knee, false);
                     }
 
-                    //CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
-                    //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
-                    //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
+                    //CScrewArrangementRect_PlateType_JKL screwArrangementRectangleApex = new CScrewArrangementRect_PlateType_JKL(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
+                    //CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
+                    //CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee = new CScrewArrangementRect_PlateType_JKL(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
                 }
             }
 
@@ -2917,14 +2936,14 @@ namespace PFD
                 case ESerieTypePlate.eSerie_J:
                     {
                         if (plate.ScrewArrangement == null) return 0;
-                        else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) return 1;
+                        else if (plate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL) return 1;
                         else if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) return 2;
                         else return 0;
                     }
                 case ESerieTypePlate.eSerie_K:
                     {
                         if (plate.ScrewArrangement == null) return 0;
-                        else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) return 1;
+                        else if (plate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL) return 1;
                         else if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) return 2;
                         else return 0;
                     }
