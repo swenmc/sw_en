@@ -271,8 +271,27 @@ namespace BaseClasses
                 else
                 {
                     //???
-                    ((CScrewArrangement_F)screwArrangement).Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y, Fl_Z);
-                    //((CScrewArrangementRectApexOrKnee)screwArrangement).Calc_HolesCentersCoord2DApexPlate(Fb_X1, Fb_X2, Fh_Y, Fl_Z);
+                    //((CScrewArrangement_F)screwArrangement).Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y, Fl_Z);
+
+                    //To Ondrej - aby to bolo korektne mali by sme asi premenovat CScrewArrangementRectApexOrKnee na nieco univerzalnejsie,
+                    // Napriklad nejaky kod ze je to screw arrangement pre plate typu J,K,L (CScrewArrangementRect_PlateType_JKL)???
+
+                    // Legenda
+                    // Plate Type J - Apex plate
+                    // Plate Type K - Knee plate
+
+                    // TO Ondrej 
+                    // Bude potrebne pre zobrazenie GUI odlisit ze pracujeme s Rectangular arrangement a plate L -> skryt riadky cross section depth
+                    // a middle stiffener size
+                    // Bude potrebne pridat do screw arrangment properties checkbox, ci sa maju groups zrkladlit a v kode funkcie Calc_HolesCentersCoord2DApexPlate
+                    // osetrit pripad kedy sa zrkadli vzdy natvrdo ked je pocet group 2 (lebo pre Apex plate chceme zrkadlit automaticky vzdy),
+                    // Mozno bude lepsie ak v tomto objekte screw arrangement vytvorime samostatnu funkciu Calc_HolesCentersCoord2D_PlateL analogicky k
+                    // Calc_HolesCentersCoord2DApexPlate a Calc_HolesCentersCoord2DKneePlate
+                    // Plate Plate L v kombinacii s rectangular arrangement budeme potrebovat zmenit defaultne hodnoty, tak aby sme mali skrutky v plechu
+                    // Staci ak bude v group len jeden stlpec a napriklad v nom 4 skrutky. Skus to niekde doplnit, aby sa to volalo a ja si to uz poupravujem.
+
+
+                    ((CScrewArrangementRectApexOrKnee)screwArrangement).Calc_HolesCentersCoord2DApexPlate(0.0f, Fb_X1 + Fb_X2, /*Fb_X2,*/ Fl_Z, Fh_Y, 0);
                 }
 
                 Calc_HolesControlPointsCoord3D(screwArrangement);
@@ -578,7 +597,7 @@ namespace BaseClasses
                     // Not defined expected number of holes for L or F plate
                 }
             }
-            else
+            else if (screwArrangement is CScrewArrangement_F)
             {
                 m_e_min_x_LeftLeg = m_flZ * 0.5f; // Middle of left leg
 
@@ -647,6 +666,12 @@ namespace BaseClasses
                 arrConnectorControlPoints3D[13].X = arrConnectorControlPoints3D[12].X + fx_edge21;
                 arrConnectorControlPoints3D[13].Y = arrConnectorControlPoints3D[10].Y;
                 arrConnectorControlPoints3D[13].Z = arrConnectorControlPoints3D[8].Z;
+            }
+            else // Rectangular
+            {
+                // Bude treba doriesit lebo L plate nie je v 3D flat
+                // Lava strana plechu sa musi vykreslovat inak ako prava, ina pozicia bodov a rotacia skrutiek v 3D
+                screwArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, Ft, true);
             }
         }
 
