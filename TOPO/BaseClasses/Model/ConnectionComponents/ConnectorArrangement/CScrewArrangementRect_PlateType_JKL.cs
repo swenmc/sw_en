@@ -20,12 +20,14 @@ namespace BaseClasses
         // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
 
         private int m_NumberOfGroups;  //default 2
-        private int m_NumberOfSequenceInGroup;
+        //private int m_NumberOfSequenceInGroup;
         private List<CScrewRectSequence> m_RectSequences;
         private bool m_MirroredGroups;
         private bool m_IsApex;
 
         private float m_fCrscRafterDepth;
+
+        private int m_DefaultNumberOfSequencesInGroup;
 
         public float FCrscRafterDepth
         {
@@ -83,16 +85,28 @@ namespace BaseClasses
             }
         }
 
-        public int NumberOfSequenceInGroup
+        //public int NumberOfSequenceInGroup
+        //{
+        //    get
+        //    {
+        //        return m_NumberOfSequenceInGroup;
+        //    }
+
+        //    set
+        //    {
+        //        m_NumberOfSequenceInGroup = value;
+        //    }
+        //}
+        public int DefaultNumberOfSequencesInGroup
         {
             get
             {
-                return m_NumberOfSequenceInGroup;
+                return m_DefaultNumberOfSequencesInGroup;
             }
 
             set
             {
-                m_NumberOfSequenceInGroup = value;
+                m_DefaultNumberOfSequencesInGroup = value;
             }
         }
 
@@ -135,6 +149,8 @@ namespace BaseClasses
             }
         }
 
+        
+
         public CScrewArrangementRect_PlateType_JKL()
         { }
 
@@ -170,7 +186,8 @@ namespace BaseClasses
             //RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));
 
             NumberOfGroups = 2;
-            NumberOfSequenceInGroup = 1;
+            //NumberOfSequenceInGroup = 1;
+            DefaultNumberOfSequencesInGroup = 1;
 
             IHolesNumber = 0;
             foreach (CScrewRectSequence rectS in RectSequences)
@@ -224,11 +241,11 @@ namespace BaseClasses
 
             if (m_IsApex)
             {
-                NumberOfSequenceInGroup = 2; // Pre Apex 2 sekvencie v jednej group
+                DefaultNumberOfSequencesInGroup = 2; // Pre Apex 2 sekvencie v jednej group
             }
             else
             {
-                NumberOfSequenceInGroup = 1; // Pre Knee jedna sekvencia v jednej group
+                DefaultNumberOfSequencesInGroup = 1; // Pre Knee jedna sekvencia v jednej group
             }
 
             IHolesNumber = 0;
@@ -285,7 +302,7 @@ namespace BaseClasses
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_G2_SQ4_temp, iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp, fx_c_SQ2_temp, fy_c_SQ2_temp, fDistanceOfPointsX_SQ2_temp, fDistanceOfPointsY_SQ2_temp));
 
             NumberOfGroups = 2;
-            NumberOfSequenceInGroup = 2;
+            DefaultNumberOfSequencesInGroup = 2;
 
             IHolesNumber = 0;
             foreach (CScrewRectSequence rectS in RectSequences)
@@ -306,30 +323,37 @@ namespace BaseClasses
             DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
             referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
 
-            ListOfSequenceGroups = new List<CScrewSequenceGroup>(NumberOfGroups);
-            int index = 0;
-            for (int i = 0; i < NumberOfGroups; i++)
-            {
-                CScrewSequenceGroup gr = new CScrewSequenceGroup();
-                gr.NumberOfHalfCircleSequences = 0;
-                gr.NumberOfRectangularSequences = NumberOfSequenceInGroup;
 
-                for (int j = 0; j < NumberOfSequenceInGroup; j++)
+            //co je toto za blud? to nanovo stale vytvarame?
+            //upravene,ze iba ak nie je inicializovane vobec tak vtedy
+            if (ListOfSequenceGroups == null || ListOfSequenceGroups.Count == 0)
+            {
+                ListOfSequenceGroups = new List<CScrewSequenceGroup>(NumberOfGroups);
+                int index = 0;
+                for (int i = 0; i < NumberOfGroups; i++)
                 {
-                    // Pridame sekvenciu do skupiny
-                    if (MirroredGroups)
+                    CScrewSequenceGroup gr = new CScrewSequenceGroup();
+                    gr.NumberOfHalfCircleSequences = 0;
+                    gr.NumberOfRectangularSequences = DefaultNumberOfSequencesInGroup;
+
+                    for (int j = 0; j < DefaultNumberOfSequencesInGroup; j++)
                     {
-                        if (i == 0) gr.ListSequence.Add(RectSequences[j]);
-                        else gr.ListSequence.Add(RectSequences[j].Copy());
+                        // Pridame sekvenciu do skupiny
+                        if (MirroredGroups)
+                        {
+                            if (i == 0) gr.ListSequence.Add(RectSequences[j]);
+                            else gr.ListSequence.Add(RectSequences[j].Copy());
+                        }
+                        else
+                        {
+                            gr.ListSequence.Add(RectSequences[index]);
+                            index++;
+                        }
                     }
-                    else
-                    {
-                        gr.ListSequence.Add(RectSequences[index]);
-                        index++;
-                    }
+                    ListOfSequenceGroups.Add(gr);
                 }
-                ListOfSequenceGroups.Add(gr);
             }
+            
             // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
             RecalculateTotalNumberOfScrews();
 
@@ -777,33 +801,37 @@ namespace BaseClasses
             }
         }
 
-        public void NumberOfSequenceInGroup_Updated(int newNumberOfSequenceInGroup)
-        {
-            if (newNumberOfSequenceInGroup < 0) return;
-            if (newNumberOfSequenceInGroup > 10) return;
+        //public void NumberOfSequenceInGroup_Updated(int newNumberOfSequenceInGroup)
+        //{
+        //    if (newNumberOfSequenceInGroup < 0) return;
+        //    if (newNumberOfSequenceInGroup > 10) return;
 
-            if (newNumberOfSequenceInGroup < NumberOfSequenceInGroup)
-            {
-                while (newNumberOfSequenceInGroup < NumberOfSequenceInGroup)
-                {
-                    RemoveSequenceFromEachGroup();
-                    NumberOfSequenceInGroup--;
-                }
-            }
-            else if (newNumberOfSequenceInGroup > NumberOfSequenceInGroup)
-            {
-                while (newNumberOfSequenceInGroup > NumberOfSequenceInGroup)
-                {
-                    AddSequenceToEachGroup();
-                    NumberOfSequenceInGroup++;
-                }
-            }
-        }
+        //    if (newNumberOfSequenceInGroup < NumberOfSequenceInGroup)
+        //    {
+        //        while (newNumberOfSequenceInGroup < NumberOfSequenceInGroup)
+        //        {
+        //            RemoveSequenceFromEachGroup();
+        //            NumberOfSequenceInGroup--;
+        //        }
+        //    }
+        //    else if (newNumberOfSequenceInGroup > NumberOfSequenceInGroup)
+        //    {
+        //        while (newNumberOfSequenceInGroup > NumberOfSequenceInGroup)
+        //        {
+        //            AddSequenceToEachGroup();
+        //            NumberOfSequenceInGroup++;
+        //        }
+        //    }
+        //}
 
         private void AddSequenceGroup()
         {
+            CScrewSequenceGroup gr_toCopy = ListOfSequenceGroups.FirstOrDefault();
+            int rectSeqNum = 1;
+            if (gr_toCopy != null) rectSeqNum = gr_toCopy.NumberOfRectangularSequences;
+
             CScrewSequenceGroup gr = new CScrewSequenceGroup();
-            for (int i = 0; i < NumberOfSequenceInGroup; i++)
+            for (int i = 0; i < rectSeqNum; i++)
             {
                 CScrewRectSequence rS = new CScrewRectSequence();
                 RectSequences.Add(rS);
@@ -813,48 +841,52 @@ namespace BaseClasses
         }
         private void RemoveSequenceGroup()
         {
-            ListOfSequenceGroups.RemoveAt(ListOfSequenceGroups.Count - 1);
-            for (int i = 0; i < NumberOfSequenceInGroup; i++)
+            CScrewSequenceGroup gr = ListOfSequenceGroups.LastOrDefault();
+            int rectSeqNum = gr.NumberOfRectangularSequences;
+            if (gr == null) return;
+
+            ListOfSequenceGroups.Remove(gr);
+            for (int i = 0; i < rectSeqNum; i++)
             {
                 RectSequences.RemoveAt(RectSequences.Count - 1);
             }
         }
 
-        private void AddSequenceToEachGroup()
-        {
-            int grIndex = 0;
-            foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
-            {
-                CScrewRectSequence rS = new CScrewRectSequence();
-                gr.ListSequence.Add(rS);
+        //private void AddSequenceToEachGroup()
+        //{
+        //    int grIndex = 0;
+        //    foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
+        //    {
+        //        CScrewRectSequence rS = new CScrewRectSequence();
+        //        gr.ListSequence.Add(rS);
 
-                if (MirroredGroups)
-                {
-                    if (grIndex == 0) RectSequences.Insert(NumberOfSequenceInGroup, rS);
-                }
-                else
-                {
-                    RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup, rS);
-                }
+        //        if (MirroredGroups)
+        //        {
+        //            if (grIndex == 0) RectSequences.Insert(NumberOfSequenceInGroup, rS);
+        //        }
+        //        else
+        //        {
+        //            RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup, rS);
+        //        }
 
-                grIndex++;
-            }
-        }
-        private void RemoveSequenceFromEachGroup()
-        {
-            for (int i = ListOfSequenceGroups.Count - 1; i >= 0; i--)
-            {
-                ListOfSequenceGroups[i].ListSequence.RemoveAt(ListOfSequenceGroups[i].ListSequence.Count - 1);
-                if (MirroredGroups)
-                {
-                    if (i == 0) RectSequences.RemoveAt(NumberOfSequenceInGroup - 1);
-                }
-                else
-                {
-                    RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
-                }
-            }
-        }
+        //        grIndex++;
+        //    }
+        //}
+        //private void RemoveSequenceFromEachGroup()
+        //{
+        //    for (int i = ListOfSequenceGroups.Count - 1; i >= 0; i--)
+        //    {
+        //        ListOfSequenceGroups[i].ListSequence.RemoveAt(ListOfSequenceGroups[i].ListSequence.Count - 1);
+        //        if (MirroredGroups)
+        //        {
+        //            if (i == 0) RectSequences.RemoveAt(NumberOfSequenceInGroup - 1);
+        //        }
+        //        else
+        //        {
+        //            RectSequences.RemoveAt(i * NumberOfSequenceInGroup + NumberOfSequenceInGroup - 1);
+        //        }
+        //    }
+        //}
 
         private void AddSequenceToGroup(int grIndex)
         {
