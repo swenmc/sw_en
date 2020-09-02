@@ -139,7 +139,7 @@ namespace BaseClasses
         { }
 
         // Jedna sekvencia s rovnakymi vzdialenostami na jednej strane plate
-        // Apex
+        // Apex or Plate L
         public CScrewArrangementRect_PlateType_JKL(
             CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
@@ -150,14 +150,20 @@ namespace BaseClasses
             float fx_c_SQ1_temp,
             float fy_c_SQ1_temp,
             float fDistanceOfPointsX_SQ1_temp,
-            float fDistanceOfPointsY_SQ1_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp, referenceScrew_temp)
+            float fDistanceOfPointsY_SQ1_temp,
+            bool bIsApex,
+            bool bIsMirroredGroups) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp, referenceScrew_temp)
         {
             referenceScrew = referenceScrew_temp;
             FCrscRafterDepth = fCrscRafterDepth_temp;
             FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             FStiffenerSize = fStiffenerSize_temp;
-            m_IsApex = true;
-            m_MirroredGroups = true;
+            m_IsApex = bIsApex;
+
+            if (bIsApex) // Plate J
+                m_MirroredGroups = true;
+            else // Plate L
+                m_MirroredGroups = bIsMirroredGroups;
 
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection_SQ1_temp, iNumberOfScrewsInColumn_yDirection_SQ1_temp, fx_c_SQ1_temp, fy_c_SQ1_temp, fDistanceOfPointsX_SQ1_temp, fDistanceOfPointsY_SQ1_temp));

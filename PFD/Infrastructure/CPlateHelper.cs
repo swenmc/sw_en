@@ -2678,7 +2678,7 @@ namespace PFD
                         fy_c_SQ1_apex = fWebEndArcExternalRadius_Rafter + fMinimumStraightEdgeDistance;
 
                         //To Mato - tak tu by ma fakt zaujimalo co sa to tu robi a hlavne naco???
-                        screwArrangementRectangleApex = new CScrewArrangementRect_PlateType_JKL(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_SQ1_apex, iNumberOfScrewsInColumn_yDirection_SQ1_apex, fx_c_SQ1_apex, fy_c_SQ1_apex, fDistanceOfPointsX_SQ1_apex, fDistanceOfPointsY_SQ1_apex);
+                        screwArrangementRectangleApex = new CScrewArrangementRect_PlateType_JKL(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebMiddlePart, iNumberOfScrewsInRow_xDirection_SQ1_apex, iNumberOfScrewsInColumn_yDirection_SQ1_apex, fx_c_SQ1_apex, fy_c_SQ1_apex, fDistanceOfPointsX_SQ1_apex, fDistanceOfPointsY_SQ1_apex, true, true);
                     }
 
                     // Knee Joint

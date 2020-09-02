@@ -346,7 +346,7 @@ namespace PFD
                             // Upraveny default pre plate L
                             // Jedna skupina v lavom ramene fl_Z, 4 skrutky v stlpci, mirrored na druhe rameno sirky (fb_X1)
                             // To znamena prekopirovanie na poziciu 0.5 * fl_Z + 0.5 * (0.5 * fl_Z + 0.5 * fb_X1)
-                            CScrewArrangementRect_PlateType_JKL screwArrangementRectanglePlateL = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, 4, ((CConCom_Plate_F_or_L)plate).Fl_Z * 0.5f, 0.015f, 0.00f, (((CConCom_Plate_F_or_L)plate).Fh_Y - 0.015f - 0.015f) / (4 - 1));
+                            CScrewArrangementRect_PlateType_JKL screwArrangementRectanglePlateL = new CScrewArrangementRect_PlateType_JKL(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, 4, ((CConCom_Plate_F_or_L)plate).Fl_Z * 0.5f, 0.015f, 0.00f, (((CConCom_Plate_F_or_L)plate).Fh_Y - 0.015f - 0.015f) / (4 - 1), false, true);
                             plate.ScrewArrangement = screwArrangementRectanglePlateL;
                         }
 
