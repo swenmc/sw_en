@@ -32,5 +32,10 @@ namespace PFD
             MValue = value;
         }
 
+        public CComponentParamsViewString(string name, string shortcut, string value, string unit, string checkType, bool isEnabled = true) : base(name, shortcut, unit, checkType, isEnabled)
+        {
+            MValue = value;
+        }
+
     }
 }

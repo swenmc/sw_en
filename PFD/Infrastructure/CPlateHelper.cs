@@ -375,7 +375,7 @@ namespace PFD
                 screwArrangmenetProperties.Add(new CComponentParamsViewList(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name, CParamsResources.NumberOfAdditionalScrewsInCornerS.Symbol, circArrangement.IAdditionalConnectorInCornerNumber.ToString(nfi), listAdditionalScrewsInCorner, CParamsResources.NumberOfAdditionalScrewsInCornerS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfAdditionalCornerScrewsInxS.Name, CParamsResources.DistanceOfAdditionalCornerScrewsInxS.Symbol, (Math.Round(circArrangement.FAdditionalCornerScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalCornerScrewsInxS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.DistanceOfAdditionalCornerScrewsInyS.Name, CParamsResources.DistanceOfAdditionalCornerScrewsInyS.Symbol, (Math.Round(circArrangement.FAdditionalCornerScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalCornerScrewsInyS.Unit));
-                
+
                 screwArrangmenetProperties.Add(new CComponentParamsViewBool(CParamsResources.UseExtraScrewsS.Name, CParamsResources.UseExtraScrewsS.Symbol, circArrangement.UseExtraScrews, CParamsResources.UseExtraScrewsS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.ExtraScrewsInRowS.Name, CParamsResources.ExtraScrewsInRowS.Symbol, circArrangement.ExtraNumberOfScrewsInRow.ToString(), CParamsResources.ExtraScrewsInRowS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.ExtraScrewsRowsS.Name, CParamsResources.ExtraScrewsRowsS.Symbol, circArrangement.ExtraNumberOfRows.ToString(), CParamsResources.ExtraScrewsRowsS.Unit));
@@ -414,47 +414,89 @@ namespace PFD
                 // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
                 // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
 
-                
 
                 
 
-                screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of sequence in group", "No", rectArrangement.NumberOfSequenceInGroup.ToString(), "[-]"));
-
-                int num = 0;
-                foreach (CScrewRectSequence src in rectArrangement.RectSequences)
+                int grID = 0;
+                int seqID = 0;
+                foreach (CScrewSequenceGroup gr in rectArrangement.ListOfSequenceGroups)
                 {
-                    num++;
-                    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in row SQ{num}", "No", src.NumberOfScrewsInRow_xDirection.ToString(), "[-]"));
-                    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in column SQ{num}", "No", src.NumberOfScrewsInColumn_yDirection.ToString(), "[-]"));
-                    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y SQ{num}", $"yc{num}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                    seqID = 0;
+                    grID++;
+                    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Group G{grID}", "", "", "", "TextBlock"));
+                    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of sequence in group G{grID}", "No", gr.NumberOfRectangularSequences.ToString(), "[-]"));
+                    
+                    foreach (CScrewRectSequence src in gr.ListSequence)
+                    {
+                        seqID++;
+                        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in row G{grID}SQ{seqID}", "No", src.NumberOfScrewsInRow_xDirection.ToString(), "[-]"));
+                        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in column G{grID}SQ{seqID}", "No", src.NumberOfScrewsInColumn_yDirection.ToString(), "[-]"));
+                        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x G{grID}SQ{seqID}", $"xc{grID}_{seqID}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y G{grID}SQ{seqID}", $"yc{grID}_{seqID}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-                    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
-                    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws y SQ{num}", $"by{num}", src.SameDistancesY, ""));
-                    if (src.SameDistancesX)
-                    {
-                        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x SQ{num}", $"x{num}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    }
-                    else
-                    {
-                        for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
+                        screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws x G{grID}SQ{seqID}", $"bx{grID}_{seqID}", src.SameDistancesX, ""));
+                        screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws y G{grID}SQ{seqID}", $"by{grID}_{seqID}", src.SameDistancesY, ""));
+                        if (src.SameDistancesX)
                         {
-                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x G{grID}SQ{seqID}", $"x{grID}_{seqID}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        }
+                        else
+                        {
+                            for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
+                            {
+                                screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x{i + 1} G{grID}SQ{seqID}", $"x{i + 1}_{grID}_{seqID}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            }
+                        }
+                        if (src.SameDistancesY)
+                        {
+                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y G{grID}SQ{seqID}", $"y{grID}_{seqID}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        }
+                        else
+                        {
+                            for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
+                            {
+                                screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y{i + 1} G{grID}SQ{seqID}", $"y{i + 1}_{grID}_{seqID}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                            }
                         }
                     }
-                    if (src.SameDistancesY)
-                    {
-                        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y SQ{num}", $"y{num}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    }
-                    else
-                    {
-                        for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
-                        {
-                            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                        }
-                    }
-
                 }
+
+                
+
+                //foreach (CScrewRectSequence src in rectArrangement.RectSequences)
+                //{
+                //    num++;
+                //    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in row SQ{num}", "No", src.NumberOfScrewsInRow_xDirection.ToString(), "[-]"));
+                //    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of screws in column SQ{num}", "No", src.NumberOfScrewsInColumn_yDirection.ToString(), "[-]"));
+                //    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //    screwArrangmenetProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y SQ{num}", $"yc{num}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+
+                //    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws x SQ{num}", $"bx{num}", src.SameDistancesX, ""));
+                //    screwArrangmenetProperties.Add(new CComponentParamsViewBool($"Same distance between screws y SQ{num}", $"by{num}", src.SameDistancesY, ""));
+                //    if (src.SameDistancesX)
+                //    {
+                //        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x SQ{num}", $"x{num}", (Math.Round(src.DistanceOfPointsX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //    }
+                //    else
+                //    {
+                //        for (int i = 0; i < src.DistancesOfPointsX.Count; i++)
+                //        {
+                //            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws x{i + 1} SQ{num}", $"x{i + 1}_{num}", (Math.Round(src.DistancesOfPointsX[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //        }
+                //    }
+                //    if (src.SameDistancesY)
+                //    {
+                //        screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y SQ{num}", $"y{num}", (Math.Round(src.DistanceOfPointsY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //    }
+                //    else
+                //    {
+                //        for (int i = 0; i < src.DistancesOfPointsY.Count; i++)
+                //        {
+                //            screwArrangmenetProperties.Add(new CComponentParamsViewString($"Distance between screws y{i + 1} SQ{num}", $"y{i + 1}_{num}", (Math.Round(src.DistancesOfPointsY[i] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                //        }
+                //    }
+
+                //}
 
                 //screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of screws in row SQ1", "No", rectArrangement.iNumberOfScrewsInRow_xDirection_SQ1.ToString(), "[-]"));
                 //screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of screws in column SQ1", "No", rectArrangement.iNumberOfScrewsInColumn_yDirection_SQ1.ToString(), "[-]"));
@@ -2214,7 +2256,7 @@ namespace PFD
                                 GetDefaultScrewArrangements(joint, plate, out screwArrangementCircle, out screwArrangementRectangleApex, out screwArrangementRectangleKnee);
                                 plate.ScrewArrangement = screwArrangementCircle;
                             }
-                                
+
                         }
                         else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS)// JB
                         {
@@ -2439,7 +2481,7 @@ namespace PFD
             }
         }
 
-        private static void GetDefaultScrewArrangements(CConnectionJointTypes joint, CPlate plate, 
+        private static void GetDefaultScrewArrangements(CConnectionJointTypes joint, CPlate plate,
             out CScrewArrangementCircleApexOrKnee screwArrangementCircle, out CScrewArrangementRect_PlateType_JKL screwArrangementRectangleApex, out CScrewArrangementRect_PlateType_JKL screwArrangementRectangleKnee)
         {
             CScrew referenceScrew = new CScrew("TEK", "14");
@@ -2523,7 +2565,7 @@ namespace PFD
             float fy_c_SQ4_knee = 0f;
             float fDistanceOfPointsX_SQ4_knee = 0f;
             float fDistanceOfPointsY_SQ4_knee = 0f;
-            
+
             // V pripade ze plate je priradena spoju, mozeme ako default pouzit parametre urcene podla members definovanych v spoji
             if (joint != null)
             {

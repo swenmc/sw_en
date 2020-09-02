@@ -200,6 +200,15 @@
                                                         </Setter.Value>                                                        
                                                     </Setter>                                                    
                                                 </DataTrigger>
+                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBlock">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock TextAlignment="Right" Text="{Binding Value}" />
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
                                             </Style.Triggers>
                                             
                                         </Style>
