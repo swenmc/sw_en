@@ -983,16 +983,22 @@ namespace PFD
                 else if (item is CComponentParamsViewBool)
                 {
                     CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
-                    if (item.Name.Contains("Same distance between screws x SQ"))
+                    if (item.Name.Contains("SQ"))
                     {
-                        int seqIndex = GetSequenceNumFromName(item.Name) - 1;
-                        arrangementTemp.RectSequences[seqIndex].SameDistancesX = itemBool.Value;
-                    }
-                    if (item.Name.Contains("Same distance between screws y SQ"))
-                    {
-                        int seqIndex = GetSequenceNumFromName(item.Name) - 1;
-                        arrangementTemp.RectSequences[seqIndex].SameDistancesY = itemBool.Value;
-                    }
+                        int grSeqIndex = GetSequenceNumFromName(item.Name) - 1;
+                        int grID = GetGroupNumFromName(item.Name, false);
+
+                        int seqIndex = arrangementTemp.GetTotalSequenceIndex(grID - 1, grSeqIndex);
+
+                        if (item.Name.Contains($"Same distance between screws x G{grID}SQ"))
+                        {
+                            arrangementTemp.RectSequences[seqIndex].SameDistancesX = itemBool.Value;
+                        }
+                        if (item.Name.Contains($"Same distance between screws y G{grID}SQ"))
+                        {
+                            arrangementTemp.RectSequences[seqIndex].SameDistancesY = itemBool.Value;
+                        }
+                    }                    
 
                     if (item.Name.Equals("Mirror groups"))
                     {
