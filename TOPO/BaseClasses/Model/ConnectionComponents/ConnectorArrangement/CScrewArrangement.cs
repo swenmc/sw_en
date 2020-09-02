@@ -266,5 +266,18 @@ namespace BaseClasses
                 }
             }
         }
+
+
+        public int GetTotalSequenceIndex(int groupIndex, int seqIndex)
+        {
+            int index = 0;
+            for (int i = 0; i < groupIndex; i++)
+            {
+                index += ListOfSequenceGroups[i].ListSequence.Count;
+            }
+            index += seqIndex;
+
+            return index;
+        }
     }
 }
