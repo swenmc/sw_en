@@ -763,7 +763,7 @@ namespace BaseClasses
             {
                 while (newNumberOfSequenceInGroup < gr.NumberOfRectangularSequences)
                 {
-                    RemoveSequenceFromGroup(gr);
+                    RemoveSequenceFromGroup(groupIndex);
                     gr.NumberOfRectangularSequences--;
                 }
             }
@@ -771,7 +771,7 @@ namespace BaseClasses
             {
                 while (newNumberOfSequenceInGroup > gr.NumberOfRectangularSequences)
                 {
-                    AddSequenceToGroup(gr);
+                    AddSequenceToGroup(groupIndex);
                     gr.NumberOfRectangularSequences++;
                 }
             }
@@ -856,10 +856,14 @@ namespace BaseClasses
             }
         }
 
-        private void AddSequenceToGroup(CScrewSequenceGroup gr)
+        private void AddSequenceToGroup(int grIndex)
         {
+            int seqIndex = GetTotalSequenceIndex(grIndex + 1, 0);
             CScrewRectSequence rS = new CScrewRectSequence();
-            gr.ListSequence.Add(rS);
+            ListOfSequenceGroups[grIndex].ListSequence.Add(rS);
+            RectSequences.Insert(seqIndex, rS);
+
+               
 
             //if (MirroredGroups)
             //{
@@ -870,9 +874,11 @@ namespace BaseClasses
             //    RectSequences.Insert(grIndex * NumberOfSequenceInGroup + NumberOfSequenceInGroup, rS);
             //}
         }
-        private void RemoveSequenceFromGroup(CScrewSequenceGroup gr)
+        private void RemoveSequenceFromGroup(int grIndex)
         {
-            gr.ListSequence.RemoveAt(gr.ListSequence.Count - 1);
+            ListOfSequenceGroups[grIndex].ListSequence.RemoveAt(ListOfSequenceGroups[grIndex].ListSequence.Count - 1);
+            int seqIndex = GetTotalSequenceIndex(grIndex + 1, 0);
+            RectSequences.RemoveAt(seqIndex - 1);
 
             //if (MirroredGroups)
             //{
