@@ -848,8 +848,6 @@ namespace PFD
             }
         }
 
-        
-
         public void SetComponentProperties(CPlate plate)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
