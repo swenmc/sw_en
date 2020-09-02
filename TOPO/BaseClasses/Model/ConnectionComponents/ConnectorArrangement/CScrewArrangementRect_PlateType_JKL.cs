@@ -651,6 +651,12 @@ namespace BaseClasses
                     // Pre Plate L nerotujeme sekvencie ani skupiny
                     // Translate from [0,0] on plate to the final position
                     TranslateSequence(fx_c, fy_c, sc);
+
+                    if (grCount == 2 /*&& TODO Ondrej IsMirrored - zohladnit parameter z GUI*/) //second group is mirrored
+                    {
+                        // Pozicia osi zrkadlenia pre L 0.5 * fl_Z + 0.5 * (0.5 * fl_Z + 0.5 * fb_X1)
+                        sc.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * flZ + 0.5f * (0.5f * flZ + 0.5f * fbX_1), sc);
+                    }
                 }
 
                 gr.HolesRadii = gr.Get_RadiiOfConnectorsInGroup();
