@@ -20,6 +20,7 @@ namespace BaseClasses
         // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
 
         private int m_NumberOfGroups;  //default 2
+        private int m_NumberOfGroupsWithoutMirrored;
         //private int m_NumberOfSequenceInGroup;
         private List<CScrewRectSequence> m_RectSequences;
         private bool m_MirroredGroups;
@@ -82,6 +83,20 @@ namespace BaseClasses
             set
             {
                 m_NumberOfGroups = value;
+                m_NumberOfGroupsWithoutMirrored = (MirroredGroups ? m_NumberOfGroups / 2 : m_NumberOfGroups);
+            }
+        }
+
+        public int NumberOfGroupsWithoutMirrored
+        {
+            get
+            {
+                return m_NumberOfGroupsWithoutMirrored;
+            }
+
+            set
+            {
+                m_NumberOfGroupsWithoutMirrored = value;
             }
         }
 
@@ -133,6 +148,7 @@ namespace BaseClasses
             set
             {
                 m_MirroredGroups = value;
+                m_NumberOfGroupsWithoutMirrored = (MirroredGroups ? m_NumberOfGroups / 2 : m_NumberOfGroups);
             }
         }
 
@@ -341,6 +357,7 @@ namespace BaseClasses
                         // Pridame sekvenciu do skupiny
                         if (MirroredGroups)
                         {
+                            //toto tu nechapem, preco len ak je i = 0
                             if (i == 0) gr.ListSequence.Add(RectSequences[j]);
                             else gr.ListSequence.Add(RectSequences[j].Copy());
                         }
@@ -682,7 +699,7 @@ namespace BaseClasses
                     // Translate from [0,0] on plate to the final position
                     TranslateSequence(fx_c, fy_c, sc);
 
-                    if (grCount == 2 /*&& TODO Ondrej IsMirrored - zohladnit parameter z GUI*/) //second group is mirrored
+                    if (grCount > NumberOfGroupsWithoutMirrored) 
                     {
                         // Pozicia osi zrkadlenia pre L 0.5 * fl_Z + 0.5 * (0.5 * fl_Z + 0.5 * fb_X1)
                         sc.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * flZ + 0.5f * (0.5f * flZ + 0.5f * fbX_1), sc);
@@ -755,22 +772,39 @@ namespace BaseClasses
             if (newNumberOfGroups < 0) return;
             if (newNumberOfGroups > 5) return;
 
-            if (newNumberOfGroups < NumberOfGroups)
+            if (newNumberOfGroups < NumberOfGroupsWithoutMirrored)
             {
-                while (newNumberOfGroups < NumberOfGroups)
+                while (newNumberOfGroups < NumberOfGroupsWithoutMirrored)
                 {
                     RemoveSequenceGroup();
                     NumberOfGroups--;
                 }
             }
-            else if (newNumberOfGroups > NumberOfGroups)
+            else if (newNumberOfGroups > NumberOfGroupsWithoutMirrored)
             {
-                while (newNumberOfGroups > NumberOfGroups)
+                while (newNumberOfGroups > NumberOfGroupsWithoutMirrored)
                 {
                     AddSequenceGroup();
                     NumberOfGroups++;
                 }
             }
+        }
+
+        public void MirrorGroupsChanged(bool mirrorGroups)
+        {
+            while(NumberOfGroupsWithoutMirrored > RectSequences.Count) RectSequences.Add(RectSequences.First().Copy());
+            while (NumberOfGroupsWithoutMirrored < RectSequences.Count) RectSequences.Remove(RectSequences.Last());
+
+            if (mirrorGroups)
+            {
+                ListOfSequenceGroups = null;
+            }
+
+            System.Diagnostics.Trace.WriteLine("----------------------------------------");
+            System.Diagnostics.Trace.WriteLine("NumberOfGroups:" + NumberOfGroups);
+            System.Diagnostics.Trace.WriteLine("NumberOfGroupsWithoutMirrored:" + NumberOfGroupsWithoutMirrored);
+            System.Diagnostics.Trace.WriteLine("MirroredGroups:" + MirroredGroups);
+            System.Diagnostics.Trace.WriteLine("RectSequences:" + RectSequences.Count);
         }
 
         public void NumberOfSequenceInGroup_Updated(int groupID, int newNumberOfSequenceInGroup)
