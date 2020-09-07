@@ -263,10 +263,12 @@ namespace BaseClasses
                 if (screwArrangement is CScrewArrangement_L)
                 {
                     ((CScrewArrangement_L)screwArrangement).Calc_HolesCentersCoord2D(Fb_X1, Fh_Y, Fl_Z);
+                    Calc_HolesControlPointsCoord3D(screwArrangement);
                 }
                 else if (screwArrangement is CScrewArrangement_F)
                 {
                     ((CScrewArrangement_F)screwArrangement).Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y, Fl_Z);
+                    Calc_HolesControlPointsCoord3D(screwArrangement);
                 }
                 else
                 {
@@ -290,11 +292,9 @@ namespace BaseClasses
                     // Plate Plate L v kombinacii s rectangular arrangement budeme potrebovat zmenit defaultne hodnoty, tak aby sme mali skrutky v plechu
                     // Staci ak bude v group len jeden stlpec a napriklad v nom 4 skrutky. Skus to niekde doplnit, aby sa to volalo a ja si to uz poupravujem.
 
-
-                    ((CScrewArrangementRect_PlateType_JKL)screwArrangement).Calc_HolesCentersCoord2D_PlateL(Fb_X1, Fb_X2, Fl_Z, Fh_Y);
+                    ((CScrewArrangementRect_PlateType_JKL)screwArrangement).Calc_HolesCentersCoord2D_PlateL(Fb_X1, /*Fb_X2,*/ Fl_Z/*, Fh_Y*/);
+                    ((CScrewArrangementRect_PlateType_JKL)screwArrangement).Calc_HolesControlPointsCoord3D_PlateL(Fl_Z, 0, Ft);
                 }
-
-                Calc_HolesControlPointsCoord3D(screwArrangement);
             }
 
             // Fill list of indices for drawing of surface
@@ -336,7 +336,10 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                GenerateConnectors(screwArrangement, bChangeRotationAngle_MirroredPlate);
+                if (screwArrangement is CScrewArrangementRect_PlateType_JKL)
+                    ((CScrewArrangementRect_PlateType_JKL)screwArrangement).GenerateConnectors_PlateL(Ft, bChangeRotationAngle_MirroredPlate);
+                else
+                    GenerateConnectors(screwArrangement, bChangeRotationAngle_MirroredPlate); // Tato funkcia by sa asi dala zrusit resp refaktorovat s GenerateConnectors_PlateL
             }
         }
 
@@ -686,9 +689,8 @@ namespace BaseClasses
             }
             else // Rectangular
             {
-                // Bude treba doriesit lebo L plate nie je v 3D flat
                 // Lava strana plechu sa musi vykreslovat inak ako prava, ina pozicia bodov a rotacia skrutiek v 3D
-                screwArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, Ft, true);
+                screwArrangement.Calc_HolesControlPointsCoord3D_PlateL(0, 0, Ft);
             }
         }
 

@@ -116,12 +116,21 @@ namespace BaseClasses
             float fSlope_rad,
             bool bScrewInPlusZDirection)
         { }
+
         public virtual void Calc_HolesCentersCoord2DApexPlate(
             float fOffset_x,
             float fbX,
             float flZ,
             float fhY_1,
             float fSlope_rad)
+        { }
+
+        public virtual void Calc_PlateData_PlateL(
+            float fbX_1,
+            float fbX_2,
+            float flZ,
+            float fhY,
+            float ft)
         { }
 
         public virtual void UpdateArrangmentData() { }
@@ -152,6 +161,63 @@ namespace BaseClasses
                     Screws[i] = new CScrew(referenceScrew, controlpoint, 0, -90, 0);
                 else
                     Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 90, 0);
+            }
+        }
+
+        public virtual void Calc_HolesControlPointsCoord3D_PlateL(float fx, float fy, float ft/*, bool bScrewInPlusZDirection*/)
+        {
+            for (int i = 0; i < IHolesNumber; i++)
+            {
+                //if (bScrewInPlusZDirection)
+                //    arrConnectorControlPoints3D[i].Z = -referenceScrew.T_ht_headTotalThickness;
+                //else
+                    arrConnectorControlPoints3D[i].Z = ft + referenceScrew.T_ht_headTotalThickness;
+
+                if(HolesCentersPoints2D[i].X < fx) // fx - sirka laveho ramena
+                {
+                    // Left Leg
+                    arrConnectorControlPoints3D[i].X = ft + referenceScrew.T_ht_headTotalThickness; // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - fy;
+                    arrConnectorControlPoints3D[i].Z = fx - HolesCentersPoints2D[i].X;
+                }
+                else
+                {
+                    // Right Leg
+                    arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X - fx;
+                    arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - fy;
+                    arrConnectorControlPoints3D[i].Z = ft + referenceScrew.T_ht_headTotalThickness; // TODO Position depends on screw length
+                }
+            }
+        }
+
+        public virtual void GenerateConnectors_PlateL(float ft, bool bChangeRotationAngle_MirroredPlate)
+        {
+            if (IHolesNumber > 0)
+            {
+                Screws = new CScrew[IHolesNumber];
+
+                float fRotationAngleAboutYAxis = 180; // Vertical Axis
+
+                if (bChangeRotationAngle_MirroredPlate)
+                    fRotationAngleAboutYAxis = 0;
+
+                for (int i = 0; i < IHolesNumber; i++)
+                {
+                    if (MathF.d_equal(arrConnectorControlPoints3D[i].X, ft + referenceScrew.T_ht_headTotalThickness)) // Left Leg
+                    {
+                        // Lave rameno ma X = 0 a smeruje do +Z
+                        // Skrutky smeruju v smere osi X, vsetky maju rovnaku suradnicu x
+                        Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
+                        Screws[i] = new CScrew(referenceScrew, controlpoint, 0, fRotationAngleAboutYAxis, 0);
+                    }
+                    else // Right Leg
+                    {
+                        // Prave rameno ma Z = 0 a smeruje do +X
+                        // Skrutky smeruju v smere osi -Z
+                        Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
+                        Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 90, 0);
+                    }
+                }
             }
         }
 

@@ -165,8 +165,6 @@ namespace BaseClasses
             }
         }
 
-        
-
         public CScrewArrangementRect_PlateType_JKL()
         { }
 
@@ -679,9 +677,9 @@ namespace BaseClasses
 
         public void Calc_HolesCentersCoord2D_PlateL(
             float fbX_1,
-            float fbX_2,
-            float flZ,
-            float fhY)
+            //float fbX_2,
+            float flZ//,
+            /*float fhY*/)
         {
             // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
             float fx_c = 0;
@@ -738,6 +736,18 @@ namespace BaseClasses
             Calc_HolesCentersCoord2DKneePlate(fbX_1, fbX_2, flZ, fhY_1, fSlope_rad);
             Calc_HolesControlPointsCoord3D_FlatPlate(flZ, 0, ft, bScrewInPlusZDirection);
             GenerateConnectors_FlatPlate(bScrewInPlusZDirection);
+        }
+
+        public override void Calc_PlateData_PlateL(
+            float fbX_1,
+            float fbX_2,
+            float flZ,
+            float fhY,
+            float ft)
+        {
+            Calc_HolesCentersCoord2D_PlateL(fbX_1, /*fbX_2,*/ flZ/*, fhY*/);
+            Calc_HolesControlPointsCoord3D_PlateL(flZ, 0, ft);
+            GenerateConnectors_PlateL(ft, false /* bIsMirroredPlate TODO - doplnit tento parameter */);
         }
 
         public Point[] GetMirroredSequenceAboutY(float fXDistanceOfMirrorAxis, CScrewSequence InputSequence)
