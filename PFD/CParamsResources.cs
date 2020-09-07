@@ -451,7 +451,6 @@ namespace PFD
             public const string Symbol = "by";
         }
 
-
         public struct PositionOfExtraScrewsSequence_yS
         {
             public const string Name = "Position of extra screws y";
@@ -478,6 +477,55 @@ namespace PFD
 
         // RECTANGULAR
 
+
+        // Plate L - screw arrangement
+        public struct EdgePositionOfCornerScrews_xS
+        {
+            public const string Name = "Edge position of corner screws x";
+            public const string DBName = "EdgePositionOfCornerScrewsX";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "ec.x";
+        }
+
+        public struct EdgePositionOfCornerScrews_yS
+        {
+            public const string Name = "Edge position of corner screws y";
+            public const string DBName = "EdgePositionOfCornerScrewsY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "ec.y";
+        }
+
+        public struct EdgePositionOfScrews_yS
+        {
+            public const string Name = "Edge position of screws y";
+            public const string DBName = "EdgePositionOfScrewsY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "ey";
+        }
+
+        public struct SpacingOfScrews_yS
+        {
+            public const string Name = "Spacing of screws y";
+            public const string DBName = "SpacingOfScrewsY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "sy";
+        }
+
+        public struct LeftLegEdgeOffset_yS
+        {
+            public const string Name = "Left leg edge offset y";
+            public const string DBName = "LeftLegEdgeOffsetY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "eo.y.l";
+        }
+
+        public struct RightLegEdgeOffset_yS
+        {
+            public const string Name = "Right leg edge offset y";
+            public const string DBName = "RightLegEdgeOffsetY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "eo.y.r";
+        }
 
         // SCREW PROPERTIES
         public struct ScrewGaugeS

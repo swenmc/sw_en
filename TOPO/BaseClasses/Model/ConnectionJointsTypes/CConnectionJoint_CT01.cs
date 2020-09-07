@@ -38,7 +38,7 @@ namespace BaseClasses
 
             Point3D ControlPoint_P1 = new Point3D(fAlignment_x, /*m_MainMember.CrScStart.y_min*/ - 0.5f * fb_plate, -0.5f * fh_plate);
             CScrew referenceScrew = new CScrew("TEK", "14");
-            CScrewArrangement_L screwArrangement = new CScrewArrangement_L(m_iHoleNo, referenceScrew);
+            CScrewArrangement_L screwArrangement = new CScrewArrangement_L(m_iHoleNo, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, 0f, 0f);
 
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_F_or_L("LJ", ControlPoint_P1, fb_plate, fh_plate, 0, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 90, screwArrangement); // Rotation angle in degrees

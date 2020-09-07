@@ -418,13 +418,13 @@ namespace PFD
                 int grID = 0;
                 int seqID = 0;
                 foreach (CScrewSequenceGroup gr in rectArrangement.ListOfSequenceGroups)
-                {                    
+                {
                     seqID = 0;
                     grID++;
                     if (rectArrangement.NumberOfGroupsWithoutMirrored < grID) continue;
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Group G{grID}", "", "", "", "TextBlock"));
                     screwArrangmenetProperties.Add(new CComponentParamsViewString($"Number of sequence in group G{grID}", "No", gr.NumberOfRectangularSequences.ToString(), "[-]"));
-                    
+
                     foreach (CScrewRectSequence src in gr.ListSequence)
                     {
                         seqID++;
@@ -460,7 +460,7 @@ namespace PFD
                     }
                 }
 
-                
+
 
                 //foreach (CScrewRectSequence src in rectArrangement.RectSequences)
                 //{
@@ -718,6 +718,26 @@ namespace PFD
             //    //    screwArrangmenetProperties.Add(new CComponentParamsViewString("Distance between screws y SQ4", "y4", (Math.Round(rectArrangement.fDistanceOfPointsY_SQ4 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             //    //}
             //}
+            else if (screwArrangement != null && screwArrangement is CScrewArrangement_L)
+            {
+                CScrewArrangement_L arrangement = (CScrewArrangement_L)screwArrangement;
+
+                List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
+
+                screwArrangmenetProperties.Add(new CComponentParamsViewList(CParamsResources.ScrewGaugeS.Name, CParamsResources.ScrewGaugeS.Symbol, arrangement.referenceScrew.Gauge.ToString(), listScrewGauges, CParamsResources.ScrewGaugeS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
+
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.EdgePositionOfCornerScrews_xS.Name, CParamsResources.EdgePositionOfCornerScrews_xS.Symbol, (Math.Round(arrangement.Fecx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.EdgePositionOfCornerScrews_xS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.EdgePositionOfCornerScrews_yS.Name, CParamsResources.EdgePositionOfCornerScrews_yS.Symbol, (Math.Round(arrangement.Fecy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.EdgePositionOfCornerScrews_yS.Unit));
+
+                if (arrangement.IHolesNumber != 8)  // Ine plechy ako LJ
+                {
+                    screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.EdgePositionOfScrews_yS.Name, CParamsResources.EdgePositionOfScrews_yS.Symbol, (Math.Round(arrangement.Fey * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.EdgePositionOfScrews_yS.Unit));
+                    screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.SpacingOfScrews_yS.Name, CParamsResources.SpacingOfScrews_yS.Symbol, (Math.Round(arrangement.Fsy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.SpacingOfScrews_yS.Unit));
+                }
+
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.LeftLegEdgeOffset_yS.Name, CParamsResources.LeftLegEdgeOffset_yS.Symbol, (Math.Round(arrangement.Feoy_left * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.LeftLegEdgeOffset_yS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.RightLegEdgeOffset_yS.Name, CParamsResources.RightLegEdgeOffset_yS.Symbol, (Math.Round(arrangement.Feoy_right * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RightLegEdgeOffset_yS.Unit));
+            }
             else if (screwArrangement != null && screwArrangement is CScrewArrangement_O)
             {
                 CScrewArrangement_O rectArrangement = (CScrewArrangement_O)screwArrangement;
@@ -1167,6 +1187,31 @@ namespace PFD
                 }
                 else if (item is CComponentParamsViewList)
                 {
+                    CComponentParamsViewList itemList = item as CComponentParamsViewList;
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                }
+
+                arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
+                plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
+            }
+            else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_L)
+            {
+                CScrewArrangement_L arrangementTemp = (CScrewArrangement_L)plate.ScrewArrangement;
+
+                if (item is CComponentParamsViewString)
+                {
+                    CComponentParamsViewString itemStr = item as CComponentParamsViewString;
+                    if (string.IsNullOrEmpty(itemStr.Value)) return;
+                    float item_val = 0;
+                    if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
+
+                    if (item.Name == CParamsResources.EdgePositionOfCornerScrews_xS.Name) arrangementTemp.Fecx = item_val / fLengthUnitFactor;
+                    if (item.Name == CParamsResources.EdgePositionOfCornerScrews_yS.Name) arrangementTemp.Fecy = item_val / fLengthUnitFactor;
+                    if (item.Name == CParamsResources.EdgePositionOfScrews_yS.Name) arrangementTemp.Fey = item_val / fLengthUnitFactor;
+                    if (item.Name == CParamsResources.SpacingOfScrews_yS.Name) arrangementTemp.Fsy = item_val / fLengthUnitFactor;
+                    if (item.Name == CParamsResources.LeftLegEdgeOffset_yS.Name) arrangementTemp.Feoy_left = item_val / fLengthUnitFactor;
+                    if (item.Name == CParamsResources.RightLegEdgeOffset_yS.Name) arrangementTemp.Feoy_right = item_val / fLengthUnitFactor;
+
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
                     if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
                 }
@@ -2235,13 +2280,13 @@ namespace PFD
                             else if (screwArrangementIndex == 1) // LH, LI, LK
                             {
                                 //CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(plate.Name);
-                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16 /*prop.NumberOfHolesScrews*/, referenceScrew);
+                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16 /*prop.NumberOfHolesScrews*/, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, 0f, 0f);
                                 plate.ScrewArrangement = screwArrangement_L;
                             }
                             else if (screwArrangementIndex == 2) // LJ
                             {
                                 //CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(plate.Name);
-                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8 /*prop.NumberOfHolesScrews*/, referenceScrew);
+                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8 /*prop.NumberOfHolesScrews*/, referenceScrew, 0.010f, 0.010f, 0f, 0f);
                                 plate.ScrewArrangement = screwArrangement_L;
                             }
                         }

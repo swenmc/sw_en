@@ -480,7 +480,16 @@ namespace BaseClasses
 
             if (screwArrangement is CScrewArrangement_L)
             {
-                float fy_edge3 = 0.120f;
+                m_e_min_x_LeftLeg = ((CScrewArrangement_L)screwArrangement).Fecx;  // 0.010f; // Left leg
+                m_e_min_z_RightLeg = ((CScrewArrangement_L)screwArrangement).Fecx; // 0.010f; // Right leg
+
+                m_e_min_y_LeftLeg = m_e_min_y_RightLeg = ((CScrewArrangement_L)screwArrangement).Fecy; // 0.010f;
+
+                fy_edge2 = ((CScrewArrangement_L)screwArrangement).Fey; // 0.030f;
+
+                float fy_edge3 = ((CScrewArrangement_L)screwArrangement).Fey + ((CScrewArrangement_L)screwArrangement).Fsy; // 0.120f;
+                float fy_legOffsetLeft = ((CScrewArrangement_L)screwArrangement).Feoy_left;
+                float fy_legOffsetRight = ((CScrewArrangement_L)screwArrangement).Feoy_right;
 
                 // TODO nahradit enumom a switchom
 
@@ -595,6 +604,14 @@ namespace BaseClasses
                 else
                 {
                     // Not defined expected number of holes for L or F plate
+                }
+
+                // Zohladnime pridavny offset v smere y
+                // Pre polovicu pridame offset na lavom ramene, pre druhu polovicu na pravom ramene
+                for (int i = 0; i < screwArrangement.IHolesNumber / 2; i++)
+                {
+                    arrConnectorControlPoints3D[i].Y += fy_legOffsetLeft;
+                    arrConnectorControlPoints3D[screwArrangement.IHolesNumber / 2 + i].Y += fy_legOffsetRight;
                 }
             }
             else if (screwArrangement is CScrewArrangement_F)
