@@ -333,12 +333,12 @@ namespace PFD
                             plate.ScrewArrangement = null;
                         else if (vm.ScrewArrangementIndex == 1) // LH, LI, LK
                         {
-                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, 0f, 0f);
+                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, plate.Height_hy, plate.Height_hy, 0f, 0f);
                             plate.ScrewArrangement = screwArrangement_L;
                         }
                         else if (vm.ScrewArrangementIndex == 2) // LJ
                         {
-                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8, referenceScrew, 0.010f, 0.010f, 0f, 0f);
+                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8, referenceScrew, 0.010f, 0.010f, plate.Height_hy, plate.Height_hy, 0f, 0f);
                             plate.ScrewArrangement = screwArrangement_L;
                         }
                         else if (vm.ScrewArrangementIndex == 3) // Rectangular
@@ -1368,7 +1368,7 @@ namespace PFD
                             }
                             else
                             {
-                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, 0f, 0f);
+                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, fh, fh, 0f, 0f);
                                 plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, fCrsc_h, 0, 0, 0, screwArrangement_L); // L
                             }
 

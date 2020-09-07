@@ -735,6 +735,8 @@ namespace PFD
                     screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.SpacingOfScrews_yS.Name, CParamsResources.SpacingOfScrews_yS.Symbol, (Math.Round(arrangement.Fsy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.SpacingOfScrews_yS.Unit));
                 }
 
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.LeftLegScrewZone_yS.Name, CParamsResources.LeftLegScrewZone_yS.Symbol, (Math.Round(arrangement.Fszy_left * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.LeftLegScrewZone_yS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.RightLegScrewZone_yS.Name, CParamsResources.RightLegScrewZone_yS.Symbol, (Math.Round(arrangement.Fszy_right * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RightLegScrewZone_yS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.LeftLegEdgeOffset_yS.Name, CParamsResources.LeftLegEdgeOffset_yS.Symbol, (Math.Round(arrangement.Feoy_left * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.LeftLegEdgeOffset_yS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.RightLegEdgeOffset_yS.Name, CParamsResources.RightLegEdgeOffset_yS.Symbol, (Math.Round(arrangement.Feoy_right * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RightLegEdgeOffset_yS.Unit));
             }
@@ -1209,6 +1211,8 @@ namespace PFD
                     if (item.Name == CParamsResources.EdgePositionOfCornerScrews_yS.Name) arrangementTemp.Fecy = item_val / fLengthUnitFactor;
                     if (item.Name == CParamsResources.EdgePositionOfScrews_yS.Name) arrangementTemp.Fey = item_val / fLengthUnitFactor;
                     if (item.Name == CParamsResources.SpacingOfScrews_yS.Name) arrangementTemp.Fsy = item_val / fLengthUnitFactor;
+                    if (item.Name == CParamsResources.LeftLegScrewZone_yS.Name) arrangementTemp.Fszy_left = item_val / fLengthUnitFactor;
+                    if (item.Name == CParamsResources.RightLegScrewZone_yS.Name) arrangementTemp.Fszy_right = item_val / fLengthUnitFactor;
                     if (item.Name == CParamsResources.LeftLegEdgeOffset_yS.Name) arrangementTemp.Feoy_left = item_val / fLengthUnitFactor;
                     if (item.Name == CParamsResources.RightLegEdgeOffset_yS.Name) arrangementTemp.Feoy_right = item_val / fLengthUnitFactor;
 
@@ -2280,14 +2284,18 @@ namespace PFD
                             else if (screwArrangementIndex == 1) // LH, LI, LK
                             {
                                 //CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(plate.Name);
-                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16 /*prop.NumberOfHolesScrews*/, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, 0f, 0f);
+                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16 /*prop.NumberOfHolesScrews*/, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, plate.Height_hy, plate.Height_hy, 0f, 0f);
                                 plate.ScrewArrangement = screwArrangement_L;
                             }
                             else if (screwArrangementIndex == 2) // LJ
                             {
                                 //CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(plate.Name);
-                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8 /*prop.NumberOfHolesScrews*/, referenceScrew, 0.010f, 0.010f, 0f, 0f);
+                                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(8 /*prop.NumberOfHolesScrews*/, referenceScrew, 0.010f, 0.010f, plate.Height_hy, plate.Height_hy, 0f, 0f);
                                 plate.ScrewArrangement = screwArrangement_L;
+                            }
+                            else if(screwArrangementIndex == 3)
+                            {
+                                // TODO - rectangular
                             }
                         }
 

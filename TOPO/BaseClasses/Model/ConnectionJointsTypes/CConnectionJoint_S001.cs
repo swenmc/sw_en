@@ -197,7 +197,7 @@ namespace BaseClasses
 
                 CScrew referenceScrew = new CScrew("TEK", "14");
                 CScrewArrangement_M screwArrangement = new CScrewArrangement_M(iConnectorNumberinOnePlate, referenceScrew);
-                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, 0f, 0f);
+                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, fh_Plate2, fh_Plate2, 0f, 0f);
 
                 CConCom_Plate_M pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1_Plate1, fbX1_Plate1, fh_Plate1, ft_Plate1, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 90, screwArrangement); // Rotation angle in degrees
 

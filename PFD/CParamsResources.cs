@@ -511,6 +511,22 @@ namespace PFD
             public const string Symbol = "sy";
         }
 
+        public struct LeftLegScrewZone_yS
+        {
+            public const string Name = "Left leg screw zone y";
+            public const string DBName = "LeftLegScrewZoneY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "es.z.y.l";
+        }
+
+        public struct RightLegScrewZone_yS
+        {
+            public const string Name = "Right leg screw zone y";
+            public const string DBName = "RightLegScrewZoneY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "es.z.y.r";
+        }
+
         public struct LeftLegEdgeOffset_yS
         {
             public const string Name = "Left leg edge offset y";

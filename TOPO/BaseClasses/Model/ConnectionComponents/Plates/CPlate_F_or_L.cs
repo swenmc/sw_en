@@ -491,6 +491,9 @@ namespace BaseClasses
                 fy_edge2 = ((CScrewArrangement_L)screwArrangement).Fey; // 0.030f;
 
                 float fy_edge3 = ((CScrewArrangement_L)screwArrangement).Fey + ((CScrewArrangement_L)screwArrangement).Fsy; // 0.120f;
+                float fy_legScrewZoneLeft = ((CScrewArrangement_L)screwArrangement).Fszy_left;
+                float fy_legScrewZoneRight = ((CScrewArrangement_L)screwArrangement).Fszy_right;
+
                 float fy_legOffsetLeft = ((CScrewArrangement_L)screwArrangement).Feoy_left;
                 float fy_legOffsetRight = ((CScrewArrangement_L)screwArrangement).Feoy_right;
 
@@ -517,25 +520,25 @@ namespace BaseClasses
                     arrConnectorControlPoints3D[3].Z = arrConnectorControlPoints3D[2].Z;
 
                     arrConnectorControlPoints3D[4].X = arrConnectorControlPoints3D[0].X;
-                    arrConnectorControlPoints3D[4].Y = m_fhY - fy_edge3;
+                    arrConnectorControlPoints3D[4].Y = fy_legScrewZoneLeft - fy_edge3;
                     arrConnectorControlPoints3D[4].Z = arrConnectorControlPoints3D[2].Z;
 
                     arrConnectorControlPoints3D[5].X = arrConnectorControlPoints3D[0].X;
-                    arrConnectorControlPoints3D[5].Y = m_fhY - fy_edge2;
+                    arrConnectorControlPoints3D[5].Y = fy_legScrewZoneLeft - fy_edge2;
                     arrConnectorControlPoints3D[5].Z = arrConnectorControlPoints3D[2].Z;
 
                     arrConnectorControlPoints3D[6].X = arrConnectorControlPoints3D[0].X;
-                    arrConnectorControlPoints3D[6].Y = m_fhY - m_e_min_y_LeftLeg;
+                    arrConnectorControlPoints3D[6].Y = fy_legScrewZoneLeft - m_e_min_y_LeftLeg;
                     arrConnectorControlPoints3D[6].Z = arrConnectorControlPoints3D[0].Z;
 
                     arrConnectorControlPoints3D[7].X = arrConnectorControlPoints3D[0].X;
-                    arrConnectorControlPoints3D[7].Y = m_fhY - m_e_min_y_LeftLeg;
+                    arrConnectorControlPoints3D[7].Y = fy_legScrewZoneLeft - m_e_min_y_LeftLeg;
                     arrConnectorControlPoints3D[7].Z = arrConnectorControlPoints3D[1].Z;
 
                     // Right Leg
 
                     arrConnectorControlPoints3D[8].X = m_e_min_x_LeftLeg;
-                    arrConnectorControlPoints3D[8].Y = m_fhY - m_e_min_y_RightLeg;
+                    arrConnectorControlPoints3D[8].Y = fy_legScrewZoneRight - m_e_min_y_RightLeg;
                     arrConnectorControlPoints3D[8].Z = Ft + fScrewOffset;  // TODO Position depends on screw length
 
                     arrConnectorControlPoints3D[9].X = m_fbX1 - m_e_min_x_LeftLeg;
@@ -543,11 +546,11 @@ namespace BaseClasses
                     arrConnectorControlPoints3D[9].Z = arrConnectorControlPoints3D[8].Z;
 
                     arrConnectorControlPoints3D[10].X = 0.5f * m_fbX1;
-                    arrConnectorControlPoints3D[10].Y = m_fhY - fy_edge2;
+                    arrConnectorControlPoints3D[10].Y = fy_legScrewZoneRight - fy_edge2;
                     arrConnectorControlPoints3D[10].Z = arrConnectorControlPoints3D[8].Z;
 
                     arrConnectorControlPoints3D[11].X = arrConnectorControlPoints3D[10].X;
-                    arrConnectorControlPoints3D[11].Y = m_fhY - fy_edge3;
+                    arrConnectorControlPoints3D[11].Y = fy_legScrewZoneRight - fy_edge3;
                     arrConnectorControlPoints3D[11].Z = arrConnectorControlPoints3D[8].Z;
 
                     arrConnectorControlPoints3D[12].X = arrConnectorControlPoints3D[10].X;
@@ -579,7 +582,7 @@ namespace BaseClasses
                     arrConnectorControlPoints3D[1].Z = m_e_min_x_LeftLeg;
 
                     arrConnectorControlPoints3D[2].X = arrConnectorControlPoints3D[0].X;
-                    arrConnectorControlPoints3D[2].Y = m_fhY - m_e_min_y_LeftLeg;
+                    arrConnectorControlPoints3D[2].Y = fy_legScrewZoneLeft - m_e_min_y_LeftLeg;
                     arrConnectorControlPoints3D[2].Z = arrConnectorControlPoints3D[0].Z;
 
                     arrConnectorControlPoints3D[3].X = arrConnectorControlPoints3D[0].X;
@@ -589,7 +592,7 @@ namespace BaseClasses
                     // Right Leg
 
                     arrConnectorControlPoints3D[4].X = m_e_min_x_LeftLeg;
-                    arrConnectorControlPoints3D[4].Y = m_fhY - m_e_min_y_RightLeg;
+                    arrConnectorControlPoints3D[4].Y = fy_legScrewZoneRight - m_e_min_y_RightLeg;
                     arrConnectorControlPoints3D[4].Z = Ft + fScrewOffset; // TODO Position depends on screw length
 
                     arrConnectorControlPoints3D[5].X = m_fbX1 - m_e_min_x_LeftLeg;

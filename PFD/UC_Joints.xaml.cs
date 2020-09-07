@@ -919,7 +919,7 @@ namespace PFD
                 case ESerieTypePlate.eSerie_L:
                     {
                         CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(componentIndex + 1);
-                        CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, 0f, 0f);
+                        CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew, 0.010f, 0.010f, 0.030f, 0.090f, (float)prop.dim2y, (float)prop.dim2y, 0f, 0f);
                         fb = (float)prop.dim1;
                         fb2 = fb;
                         fh = (float)prop.dim2y;
