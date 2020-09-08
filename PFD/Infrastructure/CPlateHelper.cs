@@ -868,7 +868,7 @@ namespace PFD
             }
             else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL)
             {
-                CScrewArrangementRect_PlateType_JKL arrangementTemp = (CScrewArrangementRect_PlateType_JKL)plate.ScrewArrangement;
+                CScrewArrangementRect_PlateType_JKL sa_JKL = (CScrewArrangementRect_PlateType_JKL)plate.ScrewArrangement;
 
                 if (item is CComponentParamsViewString)
                 {
@@ -877,9 +877,9 @@ namespace PFD
                     float item_val = 0;
                     if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = item_val / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = item_val / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) sa_JKL.FCrscRafterDepth = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) sa_JKL.FCrscWebStraightDepth = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) sa_JKL.FStiffenerSize = item_val / fLengthUnitFactor;
 
                     // TODO - Ondrej, TODO No. 105
                     // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
@@ -890,7 +890,7 @@ namespace PFD
                     if (item.Name.Equals("Number of groups"))
                     {
                         int numberOfGroups = int.Parse(itemStr.Value);
-                        arrangementTemp.NumberOfGroups_Updated(numberOfGroups);
+                        sa_JKL.NumberOfGroups_Updated(numberOfGroups);
                     }
                     //if (item.Name.Equals("Number of sequence in group"))
                     //{
@@ -902,7 +902,7 @@ namespace PFD
                     {
                         int grID = GetGroupNumFromName(item.Name, true);
                         int numberOfSequenceInGroup = int.Parse(itemStr.Value);
-                        arrangementTemp.NumberOfSequenceInGroup_Updated(grID, numberOfSequenceInGroup);
+                        sa_JKL.NumberOfSequenceInGroup_Updated(grID, numberOfSequenceInGroup);
                     }
 
                     if (item.Name.Contains("SQ"))
@@ -911,64 +911,72 @@ namespace PFD
                         int grID = GetGroupNumFromName(item.Name, false);
                         int grIndex = grID - 1;
 
-                        int seqIndex = arrangementTemp.GetTotalSequenceIndex(grIndex, grSeqIndex);
+                        int seqIndex = sa_JKL.GetTotalSequenceIndex(grIndex, grSeqIndex);
 
                         if (item.Name.Contains($"Number of screws in row G{grID}SQ"))
                         {
-                            arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
-                            ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
+                            sa_JKL.RectSequences[seqIndex].NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
+                            ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
+                            if(sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).NumberOfScrewsInRow_xDirection = int.Parse(itemStr.Value);
                         }
                         if (item.Name.Contains($"Number of screws in column G{grID}SQ"))
                         {
-                            arrangementTemp.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
-                            ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
+                            sa_JKL.RectSequences[seqIndex].NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
+                            ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
+                            if (sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).NumberOfScrewsInColumn_yDirection = int.Parse(itemStr.Value);
                         }
                         if (item.Name.Contains($"Inserting point coordinate x G{grID}SQ"))
                         {
-                            arrangementTemp.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                            ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            sa_JKL.RectSequences[seqIndex].RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).RefPointX = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         }
                         if (item.Name.Contains($"Inserting point coordinate y G{grID}SQ"))
                         {
-                            arrangementTemp.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                            ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            sa_JKL.RectSequences[seqIndex].RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).RefPointY = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         }
 
-                        if (arrangementTemp.RectSequences[seqIndex].SameDistancesX)
+                        if (sa_JKL.RectSequences[seqIndex].SameDistancesX)
                         {
                             if (item.Name.Contains($"Distance between screws x G{grID}SQ"))
                             {
-                                arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                                ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                sa_JKL.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                if (sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
                             }
                         }
                         else
                         {
-                            for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX.Count; i++)
+                            for (int i = 0; i < sa_JKL.RectSequences[seqIndex].DistancesOfPointsX.Count; i++)
                             {
                                 if (item.Name.Contains($"Distance between screws x{i + 1} G{grID}SQ"))
                                 {
-                                    arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                                    ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                    sa_JKL.RectSequences[seqIndex].DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                    ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                    if (sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
                                 }
                             }
                         }
-                        if (arrangementTemp.RectSequences[seqIndex].SameDistancesY)
+                        if (sa_JKL.RectSequences[seqIndex].SameDistancesY)
                         {
                             if (item.Name.Contains($"Distance between screws y G{grID}SQ"))
                             {
-                                arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                                ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                sa_JKL.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                if (sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
                             }
                         }
                         else
                         {
-                            for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY.Count; i++)
+                            for (int i = 0; i < sa_JKL.RectSequences[seqIndex].DistancesOfPointsY.Count; i++)
                             {
                                 if (item.Name.Contains($"Distance between screws y{i + 1} G{grID}SQ"))
                                 {
-                                    arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                                    ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                    sa_JKL.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                    ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex].ListSequence[grSeqIndex]).DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                    if (sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grIndex + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
                                 }
                             }
                         }
@@ -1044,34 +1052,37 @@ namespace PFD
                         int grSeqIndex = GetSequenceNumFromName(item.Name) - 1;
                         int grID = GetGroupNumFromName(item.Name, false);
 
-                        int seqIndex = arrangementTemp.GetTotalSequenceIndex(grID - 1, grSeqIndex);
+                        int seqIndex = sa_JKL.GetTotalSequenceIndex(grID - 1, grSeqIndex);
 
                         if (item.Name.Contains($"Same distance between screws x G{grID}SQ"))
                         {
-                            arrangementTemp.RectSequences[seqIndex].SameDistancesX = itemBool.Value;
-                            ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grID - 1].ListSequence[grSeqIndex]).SameDistancesX = itemBool.Value;
+                            sa_JKL.RectSequences[seqIndex].SameDistancesX = itemBool.Value;
+                            ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grID - 1].ListSequence[grSeqIndex]).SameDistancesX = itemBool.Value;
+                            if(sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grID - 1 + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).SameDistancesX = itemBool.Value;
                         }
                         if (item.Name.Contains($"Same distance between screws y G{grID}SQ"))
                         {
-                            arrangementTemp.RectSequences[seqIndex].SameDistancesY = itemBool.Value;
-                            ((CScrewRectSequence)arrangementTemp.ListOfSequenceGroups[grID - 1].ListSequence[grSeqIndex]).SameDistancesY = itemBool.Value;
+                            sa_JKL.RectSequences[seqIndex].SameDistancesY = itemBool.Value;
+                            ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grID - 1].ListSequence[grSeqIndex]).SameDistancesY = itemBool.Value;
+
+                            if(sa_JKL.MirroredGroups) ((CScrewRectSequence)sa_JKL.ListOfSequenceGroups[grID - 1 + sa_JKL.NumberOfGroupsWithoutMirrored].ListSequence[grSeqIndex]).SameDistancesY = itemBool.Value;
                         }
                     }                    
 
                     if (item.Name.Equals("Mirror groups"))
                     {
-                        arrangementTemp.MirroredGroups = itemBool.Value;
-                        arrangementTemp.MirrorGroupsChanged(itemBool.Value);
+                        sa_JKL.MirroredGroups = itemBool.Value;
+                        sa_JKL.MirrorGroupsChanged(itemBool.Value);
                     }
                 }
                 else if (item is CComponentParamsViewList)
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) sa_JKL.referenceScrew.Gauge = int.Parse(itemList.Value);
                 }
 
-                arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
-                plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
+                sa_JKL.UpdateArrangmentData();        // Update data of screw arrangement
+                plate.ScrewArrangement = sa_JKL;      // Set current screw arrangement to the plate
             }
             else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_BX)
             {

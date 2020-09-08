@@ -697,6 +697,7 @@ namespace BaseClasses
                     // Translate from [0,0] on plate to the final position
                     TranslateSequence(fx_c, fy_c, sc);
 
+                    //if(MirroredGroups && grCount % 2 == 1)
                     if (grCount > NumberOfGroupsWithoutMirrored) 
                     {
                         // Pozicia osi zrkadlenia pre L 0.5 * fl_Z + 0.5 * (0.5 * fl_Z + 0.5 * fb_X1)
@@ -782,33 +783,67 @@ namespace BaseClasses
             if (newNumberOfGroups < 0) return;
             if (newNumberOfGroups > 5) return;
 
-            if (newNumberOfGroups < NumberOfGroupsWithoutMirrored)
+            if (!MirroredGroups)
             {
-                while (newNumberOfGroups < NumberOfGroupsWithoutMirrored)
+                if (newNumberOfGroups < NumberOfGroups)
                 {
-                    RemoveSequenceGroup();
-                    NumberOfGroups--;
+                    while (newNumberOfGroups < NumberOfGroups)
+                    {
+                        RemoveSequenceGroup();
+                        NumberOfGroups--;
+                    }
+                }
+                else if (newNumberOfGroups > NumberOfGroups)
+                {
+                    while (newNumberOfGroups > NumberOfGroups)
+                    {
+                        AddSequenceGroup();
+                        NumberOfGroups++;
+                    }
                 }
             }
-            else if (newNumberOfGroups > NumberOfGroupsWithoutMirrored)
+            else //su mirorovane
             {
-                while (newNumberOfGroups > NumberOfGroupsWithoutMirrored)
+                if (newNumberOfGroups < NumberOfGroupsWithoutMirrored)
                 {
-                    AddSequenceGroup();
-                    NumberOfGroups++;
+                    while (newNumberOfGroups < NumberOfGroupsWithoutMirrored)
+                    {
+                        RemoveMirroredSequenceGroup();
+                        NumberOfGroups-=2;
+                    }
                 }
+                else if (newNumberOfGroups > NumberOfGroupsWithoutMirrored)
+                {
+                    while (newNumberOfGroups > NumberOfGroupsWithoutMirrored)
+                    {
+                        AddMirroredSequenceGroup();
+                        NumberOfGroups+=2;
+                    }
+                }
+
             }
+            
         }
 
         public void MirrorGroupsChanged(bool mirrorGroups)
         {
-            while(NumberOfGroupsWithoutMirrored > RectSequences.Count) RectSequences.Add(RectSequences.First().Copy());
-            while (NumberOfGroupsWithoutMirrored < RectSequences.Count) RectSequences.Remove(RectSequences.Last());
-
-            if (mirrorGroups)
+            if (mirrorGroups) //zaskrtnute = polku treba zmazat
             {
-                ListOfSequenceGroups = null;
+                RectSequences.RemoveRange(RectSequences.Count / 2, RectSequences.Count / 2);
             }
+            else
+            {
+                int originalCount = RectSequences.Count;
+                for (int i = 0; i < originalCount; i++)
+                {
+                    RectSequences.Add(RectSequences[i].Copy());
+                }
+            }
+            
+            //if (mirrorGroups)
+            //{
+            //    ListOfSequenceGroups = null;
+            //}
 
             System.Diagnostics.Trace.WriteLine("----------------------------------------");
             System.Diagnostics.Trace.WriteLine("NumberOfGroups:" + NumberOfGroups);
@@ -817,32 +852,43 @@ namespace BaseClasses
             System.Diagnostics.Trace.WriteLine("RectSequences:" + RectSequences.Count);
         }
 
-        public void NumberOfSequenceInGroup_Updated(int groupID, int newNumberOfSequenceInGroup)
+        public void NumberOfSequenceInGroup_Updated(int groupID, int newNumberOfSequencesInGroup)
         {
-            if (newNumberOfSequenceInGroup < 0) return;
-            if (newNumberOfSequenceInGroup > 10) return;
+            if (newNumberOfSequencesInGroup < 0) return;
+            if (newNumberOfSequencesInGroup > 10) return;
 
             int groupIndex = groupID - 1;
 
             CScrewSequenceGroup gr = ListOfSequenceGroups.ElementAtOrDefault(groupIndex);
             if (gr == null) return;
+            UpdateSequencesInGroup(gr, groupIndex, newNumberOfSequencesInGroup);
 
-            if (newNumberOfSequenceInGroup < gr.NumberOfRectangularSequences)
+            if (MirroredGroups)
             {
-                while (newNumberOfSequenceInGroup < gr.NumberOfRectangularSequences)
+                CScrewSequenceGroup grMirror = ListOfSequenceGroups.ElementAtOrDefault(groupIndex + NumberOfGroupsWithoutMirrored);
+                UpdateSequencesInGroup(grMirror, groupIndex + NumberOfGroupsWithoutMirrored, newNumberOfSequencesInGroup);
+            }
+        }
+
+        private void UpdateSequencesInGroup(CScrewSequenceGroup gr, int groupIndex, int newNumberOfSequencesInGroup)
+        {
+            if (newNumberOfSequencesInGroup < gr.NumberOfRectangularSequences)
+            {
+                while (newNumberOfSequencesInGroup < gr.NumberOfRectangularSequences)
                 {
                     RemoveSequenceFromGroup(groupIndex);
                     gr.NumberOfRectangularSequences--;
                 }
             }
-            else if (newNumberOfSequenceInGroup > gr.NumberOfRectangularSequences)
+            else if (newNumberOfSequencesInGroup > gr.NumberOfRectangularSequences)
             {
-                while (newNumberOfSequenceInGroup > gr.NumberOfRectangularSequences)
+                while (newNumberOfSequencesInGroup > gr.NumberOfRectangularSequences)
                 {
                     AddSequenceToGroup(groupIndex);
                     gr.NumberOfRectangularSequences++;
                 }
             }
+
         }
 
         //public void NumberOfSequenceInGroup_Updated(int newNumberOfSequenceInGroup)
@@ -870,9 +916,9 @@ namespace BaseClasses
 
         private void AddSequenceGroup()
         {
-            CScrewSequenceGroup gr_toCopy = ListOfSequenceGroups.FirstOrDefault();
+            //CScrewSequenceGroup gr_toCopy = ListOfSequenceGroups.FirstOrDefault();
             int rectSeqNum = 1;
-            if (gr_toCopy != null) rectSeqNum = gr_toCopy.NumberOfRectangularSequences;
+            //if (gr_toCopy != null) rectSeqNum = gr_toCopy.NumberOfRectangularSequences;
 
             CScrewSequenceGroup gr = new CScrewSequenceGroup();
             for (int i = 0; i < rectSeqNum; i++)
@@ -895,6 +941,37 @@ namespace BaseClasses
                 RectSequences.RemoveAt(RectSequences.Count - 1);
             }
         }
+        private void AddMirroredSequenceGroup()
+        {
+            CScrewSequenceGroup gr = new CScrewSequenceGroup();
+            CScrewRectSequence rS = new CScrewRectSequence();
+            RectSequences.Add(rS);
+            gr.ListSequence.Add(rS);
+            ListOfSequenceGroups.Insert(NumberOfGroupsWithoutMirrored, gr);
+
+            CScrewSequenceGroup grMirror = new CScrewSequenceGroup();
+            CScrewRectSequence rSMirror = new CScrewRectSequence();
+            grMirror.ListSequence.Add(rSMirror);
+            ListOfSequenceGroups.Add(grMirror);
+        }
+        private void RemoveMirroredSequenceGroup()
+        {
+            CScrewSequenceGroup gr = ListOfSequenceGroups[NumberOfGroupsWithoutMirrored - 1];
+            CScrewSequenceGroup grMirrored = ListOfSequenceGroups.LastOrDefault();
+
+            int rectSeqNum = gr.NumberOfRectangularSequences;
+            if (gr == null) return;
+
+            ListOfSequenceGroups.Remove(gr);
+            for (int i = 0; i < rectSeqNum; i++)
+            {
+                RectSequences.RemoveAt(RectSequences.Count - 1);
+            }
+                        
+            if (grMirrored == null) return;
+            ListOfSequenceGroups.Remove(grMirrored);
+        }
+
 
         //private void AddSequenceToEachGroup()
         //{
@@ -937,7 +1014,7 @@ namespace BaseClasses
             int seqIndex = GetTotalSequenceIndex(grIndex + 1, 0);
             CScrewRectSequence rS = new CScrewRectSequence();
             ListOfSequenceGroups[grIndex].ListSequence.Add(rS);
-            RectSequences.Insert(seqIndex, rS);
+            if(RectSequences.Count >= seqIndex ) RectSequences.Insert(seqIndex, rS);
 
                
 
@@ -954,7 +1031,7 @@ namespace BaseClasses
         {
             ListOfSequenceGroups[grIndex].ListSequence.RemoveAt(ListOfSequenceGroups[grIndex].ListSequence.Count - 1);
             int seqIndex = GetTotalSequenceIndex(grIndex + 1, 0);
-            RectSequences.RemoveAt(seqIndex - 1);
+            if (RectSequences.Count > seqIndex) RectSequences.RemoveAt(seqIndex - 1);
 
             //if (MirroredGroups)
             //{

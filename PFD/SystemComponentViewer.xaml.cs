@@ -94,13 +94,9 @@ namespace PFD
 
             if (MainTabControl.SelectedIndex == 0) // 2D View TabItem
             {
-                //// Bug No 96 - prekreslit plech - TODO - Ondrej - ma to tu byt ??
-                //// Ak je okno defaultne a som 2D, prepnem na 3D, maximalizujem okno a prepnem na 2D tak sa sem nacitaju hodnoty z defaultnej velkosti, nie z maximalizovanej
-                //Frame2DWidth = Frame2D.ActualWidth;
-                //Frame2DHeight = Frame2D.ActualHeight;
-                //RedrawComponentIn2D();
-
-                SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
+                SystemComponentViewer scv = sender as SystemComponentViewer;
+                if (scv == null) return;
+                SystemComponentViewerViewModel vm = scv.DataContext as SystemComponentViewerViewModel;
                 DisplayComponent(vm);
             }
         }
