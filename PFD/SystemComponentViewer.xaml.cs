@@ -87,18 +87,7 @@ namespace PFD
 
         protected void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WindowHeight = e.NewSize.Height;
-            WindowWidth = e.NewSize.Width;
-            double prevWindowHeight = e.PreviousSize.Height;
-            double prevWindowWidth = e.PreviousSize.Width;
-
-            if (MainTabControl.SelectedIndex == 0) // 2D View TabItem
-            {
-                SystemComponentViewer scv = sender as SystemComponentViewer;
-                if (scv == null) return;
-                SystemComponentViewerViewModel vm = scv.DataContext as SystemComponentViewerViewModel;
-                DisplayComponent(vm);
-            }
+            //vyriesene v Frame2D_SizeChanged
         }
 
         private void HandleComponentViewerPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -1025,8 +1014,12 @@ namespace PFD
 
         private void SetFrame2DSize()
         {
-            Frame2DWidth = Frame2D.ActualWidth;
-            Frame2DHeight = Frame2D.ActualHeight;
+            if (MainTabControl.SelectedIndex == 0)
+            {
+                Frame2DWidth = Frame2D.ActualWidth;
+                Frame2DHeight = Frame2D.ActualHeight;
+            }            
+            
             // Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna System Component Viewer
             if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
             if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
@@ -2763,6 +2756,15 @@ namespace PFD
             }
         }
 
+        private void Frame2D_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WindowHeight = e.NewSize.Height;
+            WindowWidth = e.NewSize.Width;            
+                        
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            DisplayComponent(vm);
+        }
+
         //private void SA_TextBox_GotFocus(object sender, RoutedEventArgs e)
         //{
         //    if (sender is TextBox)
@@ -2772,7 +2774,7 @@ namespace PFD
         //    }
         //}
 
-        
+
 
 
 

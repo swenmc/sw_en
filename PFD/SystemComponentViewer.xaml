@@ -332,7 +332,7 @@
             <TabControl Name="MainTabControl" Grid.Row="0" Grid.Column="0" SelectionChanged="MainTabControl_SelectionChanged">
                 <TabItem Name="tabItem2D" Header="View 2D">
                     <Frame Name ="Frame2D" Content="2D Preview" NavigationUIVisibility="Hidden"
-                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SizeChanged="Frame2D_SizeChanged"/>
                 </TabItem>
                 <TabItem Name="tabItem3D" Header="View 3D">
                     <Frame Name ="Frame3D" Content="3D Preview" NavigationUIVisibility="Hidden"
