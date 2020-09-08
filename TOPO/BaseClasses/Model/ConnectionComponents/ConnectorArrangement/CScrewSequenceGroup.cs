@@ -13,6 +13,7 @@ namespace BaseClasses
     {
         public CScrewSequenceGroup()
         {
+            NumberOfRectangularSequences = 1;
             ListSequence = new List<CConnectorSequence>();
         }
     }

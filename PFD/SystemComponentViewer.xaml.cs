@@ -196,7 +196,10 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             CPlateHelper.DataGridScrewArrangement_ValueChanged(cpw, plate);
 
-            vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate);
+            List<CComponentParamsView> sa_params = CPlateHelper.GetScrewArrangementProperties(plate);
+            //toto tu je preto,ze ked sa robi tab, tak aby to chodilo do dalsich riadkov, plati iba ak sa nemeni pocet riadkov
+            if (vm.ScrewArrangementParameters.Count != sa_params.Count) vm.ScrewArrangementParameters = sa_params;
+             
             CPlateHelper.UpdatePlateScrewArrangementData(plate);
             
             // Delete drilling route
@@ -2765,14 +2768,16 @@ namespace PFD
             DisplayComponent(vm);
         }
 
-        //private void SA_TextBox_GotFocus(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is TextBox)
-        //    {
-        //        TextBox txt = sender as TextBox;
-        //        txt.SelectAll();
-        //    }
-        //}
+        private void SA_TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox)
+            {
+                TextBox txt = sender as TextBox;
+                txt.SelectAll();
+            }
+        }
+
+        
 
 
 

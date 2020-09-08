@@ -943,15 +943,13 @@ namespace BaseClasses
         }
         private void AddMirroredSequenceGroup()
         {
-            CScrewSequenceGroup gr = new CScrewSequenceGroup();
-            gr.NumberOfRectangularSequences = 1;
+            CScrewSequenceGroup gr = new CScrewSequenceGroup();            
             CScrewRectSequence rS = new CScrewRectSequence();
             RectSequences.Add(rS);
             gr.ListSequence.Add(rS);
             ListOfSequenceGroups.Insert(NumberOfGroupsWithoutMirrored, gr);
 
-            CScrewSequenceGroup grMirror = new CScrewSequenceGroup();
-            grMirror.NumberOfRectangularSequences = 1;
+            CScrewSequenceGroup grMirror = new CScrewSequenceGroup();            
             CScrewRectSequence rSMirror = new CScrewRectSequence();
             grMirror.ListSequence.Add(rSMirror);
             ListOfSequenceGroups.Add(grMirror);

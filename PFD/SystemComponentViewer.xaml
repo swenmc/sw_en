@@ -14,14 +14,15 @@
         <SolidColorBrush x:Key="colorReadOnlyCellText" Color="Black" />
         <!-- Black color of readonly cell text -->
         <SolidColorBrush x:Key="colorCellError" Color="Red" />
-        <!--<Style TargetType="{x:Type TextBox}">            
-            <EventSetter Event="GotFocus"  Handler="SA_TextBox_GotFocus"/>            
-        </Style>-->
-        <!--<Style x:Key="NotFocusableCellStyle" TargetType="{x:Type DataGridCell}">
+        <Style TargetType="{x:Type TextBox}">            
+            <EventSetter Event="GotFocus"  Handler="SA_TextBox_GotFocus"/>
+            <!--<EventSetter Event="LostFocus"  Handler="TextBox_LostFocus"/>-->
+        </Style>
+        
+        <Style x:Key="NotFocusableCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="Focusable" Value="False"></Setter>
-            <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>            
-            
-        </Style>-->
+            <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
+        </Style>
     </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -143,7 +144,8 @@
             <DataGrid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ScrewArrangementParameters}"
                       HeadersVisibility="Column" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
-                      SelectionMode="Extended" SelectionUnit="Cell" CanUserSortColumns="False" >
+                      SelectionMode="Extended" SelectionUnit="Cell" CanUserSortColumns="False"                       
+                      >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
                         <DataGridTextColumn.CellStyle>
@@ -163,7 +165,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False">                        
+                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" CellStyle="{StaticResource NotFocusableCellStyle}">                        
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
