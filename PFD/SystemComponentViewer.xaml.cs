@@ -25,6 +25,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Threading;
 using System.Configuration;
 using BaseClasses.Helpers;
+using System.Windows.Input;
 
 namespace PFD
 {
@@ -66,6 +67,22 @@ namespace PFD
         double WindowHeight;
         double WindowWidth;
 
+        private List<CScrewArrangement> m_ParamsHistory;
+
+        public List<CScrewArrangement> ParamsHistory
+        {
+            get
+            {
+                if (m_ParamsHistory == null) m_ParamsHistory = new List<CScrewArrangement>();
+                return m_ParamsHistory;
+            }
+
+            set
+            {
+                m_ParamsHistory = value;
+            }
+        }
+
         public SystemComponentViewer()
         {
             sDisplayOptions.bDisplayMembers = true;
@@ -98,7 +115,7 @@ namespace PFD
                 SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
                 if (vm != null && vm.IsSetFromCode) return;
 
-                if (e.PropertyName == "ComponentIndex") { vm.DrillingRoutePoints = null; UpdateAll(); SetUIElementsVisibility(vm); this.Title = "System Component Viewer"; }
+                if (e.PropertyName == "ComponentIndex") { vm.DrillingRoutePoints = null; UpdateAll(); SetUIElementsVisibility(vm); this.Title = "System Component Viewer"; ClearHistory(); }
 
                 if (e.PropertyName == "DrawPoints2D" ||
                     e.PropertyName == "DrawOutLine2D" ||
@@ -166,6 +183,8 @@ namespace PFD
 
                     ScrewArrangementChanged();
                     UpdateAndDisplayPlate();
+
+                    ClearHistory();
                 }
             }
             else if (sender is CComponentParamsViewBool)
@@ -196,6 +215,8 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             CPlateHelper.DataGridScrewArrangement_ValueChanged(cpw, plate);
 
+            ParamsHistory.Add(plate.ScrewArrangement);
+            
             List<CComponentParamsView> sa_params = CPlateHelper.GetScrewArrangementProperties(plate);
             //toto tu je preto,ze ked sa robi tab, tak aby to chodilo do dalsich riadkov, plati iba ak sa nemeni pocet riadkov
             if (vm.ScrewArrangementParameters.Count != sa_params.Count) vm.ScrewArrangementParameters = sa_params;
@@ -2777,7 +2798,44 @@ namespace PFD
             }
         }
 
-        
+        private void ClearHistory()
+        {
+            ParamsHistory = new List<CScrewArrangement>();
+        }
+
+        private void MakeParamsUndo()
+        {
+            if (ParamsHistory.Count < 1) return;
+
+            CScrewArrangement sa = ParamsHistory.Last();
+            plate.ScrewArrangement = sa;
+            ParamsHistory.Remove(sa);
+            
+            List<CComponentParamsView> sa_params = CPlateHelper.GetScrewArrangementProperties(plate);
+            
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            vm.ScrewArrangementParameters = sa_params;
+
+            CPlateHelper.UpdatePlateScrewArrangementData(plate);
+
+            // Delete drilling route
+            vm.DrillingRoutePoints = null;
+            // Redraw plate in 2D and 3D
+            UpdateAndDisplayPlate();
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                if (e.Key == System.Windows.Input.Key.Z)
+                {
+                    MakeParamsUndo();
+                }
+            }            
+        }
+
+
 
 
 
