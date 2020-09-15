@@ -169,6 +169,38 @@ namespace BaseClasses
             return clone;
         }
 
+        public static CScrewArrangement GetClonedScrewArrangement(this CScrewArrangement sa)
+        {
+            CScrewArrangement clone = null;
+            if (sa is CScrewArrangementCircleApexOrKnee)
+            {
+                CScrewArrangementCircleApexOrKnee p = sa as CScrewArrangementCircleApexOrKnee;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangementRect_PlateType_JKL)
+            {
+                CScrewArrangementRect_PlateType_JKL p = sa as CScrewArrangementRect_PlateType_JKL;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_BX)
+            {
+                CScrewArrangement_BX p = sa as CScrewArrangement_BX;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_L)
+            {
+                CScrewArrangement_L p = sa as CScrewArrangement_L;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_O)
+            {
+                CScrewArrangement_O p = sa as CScrewArrangement_O;
+                clone = p.Clone();
+            }
+            
+            return clone;
+        }
+
         public static CConnectionJointTypes GetClonedJoint(this CConnectionJointTypes joint)
         {
             CConnectionJointTypes clone = null;

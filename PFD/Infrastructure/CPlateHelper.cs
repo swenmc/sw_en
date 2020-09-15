@@ -787,6 +787,7 @@ namespace PFD
 
         public static void DataGridScrewArrangement_ValueChanged(CComponentParamsView item, CPlate plate)
         {
+            CComponentParamsView prevItem = item.Clone();
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 

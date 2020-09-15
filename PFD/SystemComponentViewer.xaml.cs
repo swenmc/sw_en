@@ -68,6 +68,7 @@ namespace PFD
         double WindowWidth;
 
         private List<CScrewArrangement> m_ParamsHistory;
+        private List<CComponentParamsViewString> m_ParamsHistoryGeometry;
 
         public List<CScrewArrangement> ParamsHistory
         {
@@ -80,6 +81,20 @@ namespace PFD
             set
             {
                 m_ParamsHistory = value;
+            }
+        }
+
+        public List<CComponentParamsViewString> ParamsHistoryGeometry
+        {
+            get
+            {
+                if (m_ParamsHistoryGeometry == null) m_ParamsHistoryGeometry = new List<CComponentParamsViewString>();
+                return m_ParamsHistoryGeometry;
+            }
+
+            set
+            {
+                m_ParamsHistoryGeometry = value;
             }
         }
 
@@ -213,10 +228,10 @@ namespace PFD
         private void DataGridScrewArrangement_ValueChanged(CComponentParamsView cpw)
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            ParamsHistory.Add(plate.ScrewArrangement.GetClonedScrewArrangement());
+
             CPlateHelper.DataGridScrewArrangement_ValueChanged(cpw, plate);
 
-            ParamsHistory.Add(plate.ScrewArrangement);
-            
             List<CComponentParamsView> sa_params = CPlateHelper.GetScrewArrangementProperties(plate);
             //toto tu je preto,ze ked sa robi tab, tak aby to chodilo do dalsich riadkov, plati iba ak sa nemeni pocet riadkov
             if (vm.ScrewArrangementParameters.Count != sa_params.Count) vm.ScrewArrangementParameters = sa_params;
@@ -1864,11 +1879,6 @@ namespace PFD
             CComponentParamsViewString item = ((CComponentParamsViewString)e.Row.Item);
             if (changedText == item.Value) return;
 
-            float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
-            float fDegToRadianFactor = 180f / MathF.fPI;
-
-            bool bUseRoofSlope = true;
-
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
             {
@@ -1877,474 +1887,485 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                if (item.Name.Equals(CParamsResources.PlateNameS.Name) && !string.IsNullOrEmpty(changedText)) plate.Name = changedText;
-
-                // Set current basic geometry of plate
-                if (plate is CConCom_Plate_B_basic)
-                {
-                    CConCom_Plate_B_basic plateTemp = (CConCom_Plate_B_basic)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_F_or_L && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
-                {
-                    CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    plateTemp.Fb_X2 = plateTemp.Fb_X1;
-                    //if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_LL)
-                {
-                    CConCom_Plate_LL plateTemp = (CConCom_Plate_LL)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_F_or_L && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_F)
-                {
-                    CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_G)
-                {
-                    CConCom_Plate_G plateTemp = (CConCom_Plate_G)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_H)
-                {
-                    CConCom_Plate_H plateTemp = (CConCom_Plate_H)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_Q_T_Y && (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_Q || plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_T))
-                {
-                    CConCom_Plate_Q_T_Y plateTemp = (CConCom_Plate_Q_T_Y)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z1 = float.Parse(changedText) / fLengthUnitFactor;
-                    plateTemp.Fl_Z2 = plateTemp.Fl_Z1;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_Q_T_Y && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_Y)
-                {
-                    CConCom_Plate_Q_T_Y plateTemp = (CConCom_Plate_Q_T_Y)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateLip1S.Name)) plateTemp.Fl_Z1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateLip2S.Name)) plateTemp.Fl_Z2 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_JA)
-                {
-                    CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS)
-                {
-                    CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_JCS)
-                {
-                    CConCom_Plate_JCS plateTemp = (CConCom_Plate_JCS)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fw_apexHalfLength = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) plateTemp.Fd_crsc = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        // Not implemented !!!
-                        //if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KA)
-                {
-                    CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS)
-                {
-                    CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
-                {
-                    CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS)
-                {
-                    CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KES)
-                {
-                    CConCom_Plate_KES plateTemp = (CConCom_Plate_KES)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KFS)
-                {
-                    CConCom_Plate_KFS plateTemp = (CConCom_Plate_KFS)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KGS)
-                {
-                    CConCom_Plate_KGS plateTemp = (CConCom_Plate_KGS)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KHS)
-                {
-                    CConCom_Plate_KHS plateTemp = (CConCom_Plate_KHS)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_KK) // Nepouzivat, kym nebude zobecnene screw arrangement
-                {
-                    CConCom_Plate_KK plateTemp = (CConCom_Plate_KK)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (bUseRoofSlope)
-                    {
-                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    }
-                    else
-                    {
-                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-                    }
-
-                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (item.Name.Equals(CParamsResources.RafterWidthS.Name)) plateTemp.Fb_XR = float.Parse(changedText) / fLengthUnitFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_M)
-                {
-                    CConCom_Plate_M plateTemp = (CConCom_Plate_M)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth3S.Name)) plateTemp.Fb_X3 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.RoofPitch_rad = float.Parse(changedText) / fDegToRadianFactor;
-                    if (item.Name.Equals(CParamsResources.PlateAngleS.Name)) plateTemp.Gamma1_rad = float.Parse(changedText) / fDegToRadianFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_N)
-                {
-                    CConCom_Plate_N plateTemp = (CConCom_Plate_N)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    //if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth3S.Name)) plateTemp.Fb_X3 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) plateTemp.FZ = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (item.Name.Equals(CParamsResources.PlateAngle2S.Name)) plateTemp.Alpha2_rad = float.Parse(changedText) / fDegToRadianFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else if (plate is CConCom_Plate_O)
-                {
-                    CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
-
-                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor; // Oznacene ako BR ale premenna je bX2
-                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
-
-                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
-
-                    // Update plate data
-                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
-                    plate = plateTemp;
-                }
-                else
-                {
-                    // Plate is not implemented
-                }
-
-                //Delete drilling route
-                vm.DrillingRoutePoints = null;
-                plate.DrillingRoutePoints = null;
-                // Redraw plate in 2D and 3D
-                DisplayPlate(true);
-
-                //Update ComponentDetails Datagrid
-                vm.SetComponentProperties(plate);
+                ParamsHistoryGeometry.Add(item);
+                PlateGeometryChanged(changedText, item);
             }
             else // Screw
             {
                 bool bDrawCentreSymbol = true;
                 Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
             }
+        }
+
+        private void PlateGeometryChanged(string changedText, CComponentParamsViewString item)
+        {
+            float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
+            float fDegToRadianFactor = 180f / MathF.fPI;
+            bool bUseRoofSlope = true;
+
+            if (item.Name.Equals(CParamsResources.PlateNameS.Name) && !string.IsNullOrEmpty(changedText)) plate.Name = changedText;
+
+            // Set current basic geometry of plate
+            if (plate is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic plateTemp = (CConCom_Plate_B_basic)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_F_or_L && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
+            {
+                CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                plateTemp.Fb_X2 = plateTemp.Fb_X1;
+                //if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_LL)
+            {
+                CConCom_Plate_LL plateTemp = (CConCom_Plate_LL)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_F_or_L && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_F)
+            {
+                CConCom_Plate_F_or_L plateTemp = (CConCom_Plate_F_or_L)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_G)
+            {
+                CConCom_Plate_G plateTemp = (CConCom_Plate_G)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_H)
+            {
+                CConCom_Plate_H plateTemp = (CConCom_Plate_H)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_Q_T_Y && (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_Q || plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_T))
+            {
+                CConCom_Plate_Q_T_Y plateTemp = (CConCom_Plate_Q_T_Y)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z1 = float.Parse(changedText) / fLengthUnitFactor;
+                plateTemp.Fl_Z2 = plateTemp.Fl_Z1;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_Q_T_Y && plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_Y)
+            {
+                CConCom_Plate_Q_T_Y plateTemp = (CConCom_Plate_Q_T_Y)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateLip1S.Name)) plateTemp.Fl_Z1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateLip2S.Name)) plateTemp.Fl_Z2 = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_JA)
+            {
+                CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS)
+            {
+                CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_JCS)
+            {
+                CConCom_Plate_JCS plateTemp = (CConCom_Plate_JCS)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fw_apexHalfLength = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) plateTemp.Fd_crsc = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    // Not implemented !!!
+                    //if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KA)
+            {
+                CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS)
+            {
+                CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
+            {
+                CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS)
+            {
+                CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KES)
+            {
+                CConCom_Plate_KES plateTemp = (CConCom_Plate_KES)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KFS)
+            {
+                CConCom_Plate_KFS plateTemp = (CConCom_Plate_KFS)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KGS)
+            {
+                CConCom_Plate_KGS plateTemp = (CConCom_Plate_KGS)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KHS)
+            {
+                CConCom_Plate_KHS plateTemp = (CConCom_Plate_KHS)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KK) // Nepouzivat, kym nebude zobecnene screw arrangement
+            {
+                CConCom_Plate_KK plateTemp = (CConCom_Plate_KK)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (item.Name.Equals(CParamsResources.RafterWidthS.Name)) plateTemp.Fb_XR = float.Parse(changedText) / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_M)
+            {
+                CConCom_Plate_M plateTemp = (CConCom_Plate_M)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth3S.Name)) plateTemp.Fb_X3 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.RoofPitch_rad = float.Parse(changedText) / fDegToRadianFactor;
+                if (item.Name.Equals(CParamsResources.PlateAngleS.Name)) plateTemp.Gamma1_rad = float.Parse(changedText) / fDegToRadianFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_N)
+            {
+                CConCom_Plate_N plateTemp = (CConCom_Plate_N)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                //if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth3S.Name)) plateTemp.Fb_X3 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) plateTemp.FZ = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (item.Name.Equals(CParamsResources.PlateAngle2S.Name)) plateTemp.Alpha2_rad = float.Parse(changedText) / fDegToRadianFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_O)
+            {
+                CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor; // Oznacene ako BR ale premenna je bX2
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+
+                if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else
+            {
+                // Plate is not implemented
+            }
+
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            //Delete drilling route
+            vm.DrillingRoutePoints = null;
+            plate.DrillingRoutePoints = null;
+            // Redraw plate in 2D and 3D
+            DisplayPlate(true);
+
+            //Update ComponentDetails Datagrid
+            vm.SetComponentProperties(plate);
         }
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2805,12 +2826,27 @@ namespace PFD
 
         private void MakeParamsUndo()
         {
-            if (ParamsHistory.Count < 1) return;
+            if (DataGridGeometry.IsFocused)
+            {
+                MakeGeometryParamsUndo();
+            }
+            else
+            {
+                MakeScrewArrangementParamsUndo();
+            }
+            
+        }
+
+
+        private void MakeScrewArrangementParamsUndo()
+        {
+            if (ParamsHistory.Count < 1) { MakeGeometryParamsUndo(); return; }
 
             CScrewArrangement sa = ParamsHistory.Last();
+            //CPlateHelper.DataGridScrewArrangement_ValueChanged(cpw, plate);
             plate.ScrewArrangement = sa;
             ParamsHistory.Remove(sa);
-            
+
             List<CComponentParamsView> sa_params = CPlateHelper.GetScrewArrangementProperties(plate);
             
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
@@ -2822,6 +2858,16 @@ namespace PFD
             vm.DrillingRoutePoints = null;
             // Redraw plate in 2D and 3D
             UpdateAndDisplayPlate();
+        }
+
+        private void MakeGeometryParamsUndo()
+        {
+            if (ParamsHistoryGeometry.Count < 1) return;
+
+            CComponentParamsViewString item = ParamsHistoryGeometry.Last();
+            string changedText = item.Value;
+            PlateGeometryChanged(changedText, item);
+            ParamsHistoryGeometry.Remove(item);
         }
 
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
