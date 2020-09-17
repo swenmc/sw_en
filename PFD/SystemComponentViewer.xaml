@@ -21,8 +21,11 @@
         
         <Style x:Key="NotFocusableCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="Focusable" Value="False"></Setter>
-            <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
+            <!--<Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>-->
+            <Setter Property="IsTabStop" Value="False"/>
         </Style>
+        
+            
     </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -144,7 +147,7 @@
             <DataGrid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ScrewArrangementParameters}"
                       HeadersVisibility="Column" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
-                      SelectionMode="Extended" SelectionUnit="Cell" CanUserSortColumns="False"                       
+                      SelectionMode="Extended" SelectionUnit="Cell" CanUserSortColumns="False"                                              
                       >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
@@ -166,7 +169,7 @@
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
                     <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" CellStyle="{StaticResource NotFocusableCellStyle}">                        
-                        <DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellTemplate>                            
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
                                     <ContentControl.Style>                                        
@@ -183,6 +186,7 @@
                                                             </DataTemplate>
                                                         </Setter.Value>
                                                     </Setter>
+                                                    <Setter Property="Focusable" Value="False"></Setter>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding CheckType}" Value="ComboBox">
                                                     <Setter Property="ContentTemplate">
@@ -192,15 +196,17 @@
                                                             </DataTemplate>
                                                         </Setter.Value>
                                                     </Setter>
+                                                    <Setter Property="Focusable" Value="False"></Setter>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding CheckType}" Value="TextBox">
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <TextBox Name="SA_TextBox" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                                                <TextBox Name="SA_TextBox" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" local:FocusAttacher.Focus="True" />
                                                             </DataTemplate>                                                            
                                                         </Setter.Value>                                                        
-                                                    </Setter>                                                    
+                                                    </Setter>
+                                                    <Setter Property="Focusable" Value="False"></Setter>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding CheckType}" Value="TextBlock">
                                                     <Setter Property="ContentTemplate">
@@ -210,6 +216,7 @@
                                                             </DataTemplate>
                                                         </Setter.Value>
                                                     </Setter>
+                                                    <Setter Property="Focusable" Value="False"></Setter>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                             

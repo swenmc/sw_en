@@ -172,7 +172,10 @@ namespace BaseClasses
         }
 
         public CScrewRectSequence()
-        { }
+        {
+            SameDistancesX = true;
+            SameDistancesY = true;
+        }
 
         public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection_temp, int iNumberOfScrewsInColumn_yDirection_temp)
         {

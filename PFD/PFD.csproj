@@ -140,6 +140,7 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="FocusAttacher.cs" />
     <Compile Include="LayoutExportOptionsWindow.xaml.cs">
       <DependentUpon>LayoutExportOptionsWindow.xaml</DependentUpon>
     </Compile>

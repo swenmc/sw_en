@@ -26,6 +26,7 @@ using System.Windows.Threading;
 using System.Configuration;
 using BaseClasses.Helpers;
 using System.Windows.Input;
+using System.Windows.Controls.Primitives;
 
 namespace PFD
 {
@@ -2815,7 +2816,7 @@ namespace PFD
             if (sender is TextBox)
             {
                 TextBox txt = sender as TextBox;
-                txt.SelectAll();
+                txt.SelectAll();                
             }
         }
 
@@ -2880,6 +2881,16 @@ namespace PFD
                 }
             }            
         }
+
+        
+
+        //private void DataGridScrewArrangement_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        //{
+            
+        //    //MessageBox.Show("SelectedCellsChanged");
+        //}
+
+        
 
 
 

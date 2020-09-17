@@ -1013,6 +1013,7 @@ namespace BaseClasses
         {
             int seqIndex = GetTotalSequenceIndex(grIndex + 1, 0);
             CScrewRectSequence rS = new CScrewRectSequence();
+            
             ListOfSequenceGroups[grIndex].ListSequence.Add(rS);
             if(RectSequences.Count >= seqIndex ) RectSequences.Insert(seqIndex, rS);
 
