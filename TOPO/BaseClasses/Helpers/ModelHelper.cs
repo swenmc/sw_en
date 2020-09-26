@@ -395,9 +395,9 @@ namespace BaseClasses.Helpers
         {
             // Funckia vrati suradnicu uzla pre specificky smer GCS ktory chceme uvazovat
 
-            if(iDirectionCode == 0) // Direction X
+            if(iDirectionCode == (int)EGCSDirection.X) // Direction X
                 return n.X;
-            if (iDirectionCode == 1) // Direction Y
+            if (iDirectionCode == (int)EGCSDirection.Y) // Direction Y
                 return n.Y;
             else //if (iDirectionCode == 2) // Direction Z
                 return n.Z;
@@ -407,9 +407,9 @@ namespace BaseClasses.Helpers
         {
             // Funckia vrati suradnicu bodu pre specificky smer GCS ktory chceme uvazovat
 
-            if (iDirectionCode == 0) // Direction X
+            if (iDirectionCode == (int)EGCSDirection.X) // Direction X
                 return p.X;
-            if (iDirectionCode == 1) // Direction Y
+            if (iDirectionCode == (int)EGCSDirection.Y) // Direction Y
                 return p.Y;
             else //if (iDirectionCode == 2) // Direction Z
                 return p.Z;

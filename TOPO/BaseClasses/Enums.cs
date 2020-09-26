@@ -779,6 +779,16 @@ namespace BaseClasses
         UNDEFINED = -1
     }
 
+    //smer GCS
+    public enum EGCSDirection
+    {
+        X = 0,
+        Y = 1,
+        Z = 2,
+
+        UNDEFINED = -1
+    }
+
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
     public struct DisplayOptions

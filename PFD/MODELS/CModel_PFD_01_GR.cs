@@ -17,6 +17,7 @@ namespace PFD
     public class CModel_PFD_01_GR : CModel_PFD
     {
         private int iOneColumnGirtNo;
+        private CComponentListVM clVM;
 
         public CModel_PFD_01_GR
         (
@@ -29,7 +30,7 @@ namespace PFD
         )
         {
             eKitset = EModelType_FS.eKitsetGableRoofEnclosed;
-
+            clVM = componentListVM;
             ObservableCollection<CComponentInfo> componentList = componentListVM?.ComponentList;
             fH1_frame = sGeometryInputData.fH_1;
             fW_frame = sGeometryInputData.fW;
@@ -1276,6 +1277,12 @@ namespace PFD
 
             FillIntermediateNodesForMembers();
 
+            if (vm._generalOptionsVM.VariousCrossSections)
+            {
+                changeMembersVariousCrsc();
+            }
+
+
             #region Joints
             if (joints == null)
                 CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
@@ -1528,6 +1535,39 @@ namespace PFD
             else
                 m_arrSlabs = slabs;
             #endregion
+        }
+
+        //temp test zatial task 612
+        private void changeMembersVariousCrsc()
+        {
+            double dist = 0;
+            int index = 0;
+            foreach (FrameMembersInfo fmi in clVM.FramesComponentList)
+            {                
+                CMember[] frameColumns = ModelHelper.GetMembersInDistance(this, dist, (int)EGCSDirection.X, EMemberType_FS.eMC);
+                CMember[] frameRafters = ModelHelper.GetMembersInDistance(this, dist, (int)EGCSDirection.X, EMemberType_FS.eMR);
+
+                foreach (CMember m in frameColumns)
+                {
+                    m.CrScStart = CrScFactory.GetCrSc(fmi.ColumnSection);
+                    m.m_Mat = MaterialFactory.GetMaterial(fmi.ColumnMaterial);
+                }
+                foreach (CMember m in frameRafters)
+                {
+                    m.CrScStart = CrScFactory.GetCrSc(fmi.RafterSection);
+                    m.m_Mat = MaterialFactory.GetMaterial(fmi.RafterMaterial);
+                }
+
+
+                dist += L1_Bays[index++];
+            }
+
+            
+            
+            foreach (CMember m in m_arrMembers)
+            {
+
+            }
         }
 
         public override void CalculateLoadValuesAndGenerateLoads(

@@ -3028,7 +3028,7 @@ namespace PFD
             ShowDetailSymbols = false;
             ShowSlabRebates = true;
 
-            UseTextures = true;
+            UseTextures = false;
 
             if(bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
             {
