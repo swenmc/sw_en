@@ -17,7 +17,8 @@ namespace PFD
     public class CModel_PFD_01_GR : CModel_PFD
     {
         private int iOneColumnGirtNo;
-        private CComponentListVM clVM;
+        private CComponentListVM _clVM;
+        private CPFDViewModel _pfdVM;
 
         public CModel_PFD_01_GR
         (
@@ -30,7 +31,8 @@ namespace PFD
         )
         {
             eKitset = EModelType_FS.eKitsetGableRoofEnclosed;
-            clVM = componentListVM;
+            _clVM = componentListVM;
+            _pfdVM = vm;
             ObservableCollection<CComponentInfo> componentList = componentListVM?.ComponentList;
             fH1_frame = sGeometryInputData.fH_1;
             fW_frame = sGeometryInputData.fW;
@@ -1540,12 +1542,17 @@ namespace PFD
         //temp test zatial task 612
         private void changeMembersVariousCrsc()
         {
+            if (_clVM.FramesComponentList == null)
+            {
+                _clVM.InitControlsAccordingToFrames(_pfdVM.Frames);
+            }
+            
             double dist = 0;
             int index = 0;
-            foreach (FrameMembersInfo fmi in clVM.FramesComponentList)
+            foreach (FrameMembersInfo fmi in _clVM.FramesComponentList)
             {                
-                CMember[] frameColumns = ModelHelper.GetMembersInDistance(this, dist, (int)EGCSDirection.X, EMemberType_FS.eMC);
-                CMember[] frameRafters = ModelHelper.GetMembersInDistance(this, dist, (int)EGCSDirection.X, EMemberType_FS.eMR);
+                CMember[] frameColumns = ModelHelper.GetMembersInDistance(this, dist, (int)EGCSDirection.Y, EMemberType_FS.eMC, EMemberType_FS.eEC);
+                CMember[] frameRafters = ModelHelper.GetMembersInDistance(this, dist, (int)EGCSDirection.Y, EMemberType_FS.eMR, EMemberType_FS.eER);
 
                 foreach (CMember m in frameColumns)
                 {
@@ -1558,8 +1565,7 @@ namespace PFD
                     m.m_Mat = MaterialFactory.GetMaterial(fmi.RafterMaterial);
                 }
 
-
-                dist += L1_Bays[index++];
+                dist += L1_Bays.ElementAtOrDefault(index++);
             }
 
             

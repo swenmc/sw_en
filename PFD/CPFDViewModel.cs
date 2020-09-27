@@ -2966,6 +2966,21 @@ namespace PFD
                 if (PropertyChanged != null) PropertyChanged(sender, e);
             }
 
+            if (sender is FrameMembersInfo)
+            {
+                if (e.PropertyName == "ColumnSectionColor") return;
+                if (e.PropertyName == "RafterSectionColor") return;
+                if (PropertyChanged != null) PropertyChanged(sender, e);
+            }
+            else if (sender is BayMembersInfo)
+            {
+                if (PropertyChanged != null) PropertyChanged(sender, e);
+            }
+            else if (sender is OthersMembersInfo)
+            {
+                if (PropertyChanged != null) PropertyChanged(sender, e);
+            }
+
         }
 
         public void Run()

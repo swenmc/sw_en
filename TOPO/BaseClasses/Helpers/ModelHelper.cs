@@ -168,15 +168,18 @@ namespace BaseClasses.Helpers
             return members.ToArray();
         }
 
-        public static CMember[] GetMembersInDistance(CModel model, double coordinate, int iDirectionCode, EMemberType_FS type)
+        public static CMember[] GetMembersInDistance(CModel model, double coordinate, int iDirectionCode, params EMemberType_FS[] types)
         {
             CMember[] membersAll = GetMembersInDistance(model, coordinate, iDirectionCode);
 
             List<CMember> members = new List<CMember>();
             foreach (CMember m in membersAll)
             {
-                if (m.EMemberType == type)
-                    members.Add(m);
+                foreach (EMemberType_FS t in types)
+                {
+                    if (m.EMemberType == t)
+                        members.Add(m);
+                }                
             }
             return members.ToArray();
         }
