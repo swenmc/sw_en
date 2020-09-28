@@ -1542,21 +1542,28 @@ namespace PFD
         //temp test zatial task 612
         private void changeMembersVariousCrsc()
         {
+            ChangeFrameMembersVariousCrsc();
+
+            ChangeBayMembersVariousCrsc();
+        }
+        private void ChangeFrameMembersVariousCrsc()
+        {
             if (_clVM.FramesComponentList == null)
             {
                 _clVM.InitControlsAccordingToFrames(_pfdVM.Frames);
             }
-            
+
             double dist = 0;
             int index = 0;
             foreach (FrameMembersInfo fmi in _clVM.FramesComponentList)
-            {                
+            {
                 CMember[] frameColumns = ModelHelper.GetMembersInDistance(this, dist, (int)EGCSDirection.Y, EMemberType_FS.eMC, EMemberType_FS.eEC);
                 CMember[] frameRafters = ModelHelper.GetMembersInDistance(this, dist, (int)EGCSDirection.Y, EMemberType_FS.eMR, EMemberType_FS.eER);
 
                 foreach (CMember m in frameColumns)
                 {
                     m.CrScStart = CrScFactory.GetCrSc(fmi.ColumnSection);
+                    //m.EccentricityStart  niekde bude potrebne asi prestavit eccentricity
                     m.m_Mat = MaterialFactory.GetMaterial(fmi.ColumnMaterial);
                 }
                 foreach (CMember m in frameRafters)
@@ -1567,12 +1574,61 @@ namespace PFD
 
                 dist += L1_Bays.ElementAtOrDefault(index++);
             }
+        }
 
-            
-            
-            foreach (CMember m in m_arrMembers)
+        private void ChangeBayMembersVariousCrsc()
+        {
+            if (_clVM.BaysComponentList == null)
             {
+                _clVM.InitControlsAccordingToFrames(_pfdVM.Frames);
+            }
 
+            double dist = 0;
+            int index = 0;
+            foreach (BayMembersInfo bmi in _clVM.BaysComponentList)
+            {
+                CMember[] bayMembers = ModelHelper.GetMembersInDistanceInterval(this, dist, dist + L1_Bays.ElementAtOrDefault(index++), (int)EGCSDirection.Y, true, true, false);
+                
+                foreach (CMember m in bayMembers)
+                {
+                    if (m.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
+                    {
+                        m.CrScStart = CrScFactory.GetCrSc(bmi.Section_EP);
+                        m.m_Mat = MaterialFactory.GetMaterial(bmi.Material_EP);
+                    }
+                    else if (m.EMemberTypePosition == EMemberType_FS_Position.Purlin)
+                    {
+                        m.CrScStart = CrScFactory.GetCrSc(bmi.Section_P);
+                        m.m_Mat = MaterialFactory.GetMaterial(bmi.Material_P);
+                    }
+                    else if (m.EMemberTypePosition == EMemberType_FS_Position.Girt)
+                    {
+                        m.CrScStart = CrScFactory.GetCrSc(bmi.Section_G);
+                        m.m_Mat = MaterialFactory.GetMaterial(bmi.Material_G);
+                    }
+                    else if (m.EMemberTypePosition == EMemberType_FS_Position.BracingBlockGirts)
+                    {
+                        m.CrScStart = CrScFactory.GetCrSc(bmi.Section_GB);
+                        m.m_Mat = MaterialFactory.GetMaterial(bmi.Material_GB);
+                    }
+                    else if (m.EMemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins)
+                    {
+                        m.CrScStart = CrScFactory.GetCrSc(bmi.Section_PB);
+                        m.m_Mat = MaterialFactory.GetMaterial(bmi.Material_PB);
+                    }
+                    else if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
+                    {
+                        m.CrScStart = CrScFactory.GetCrSc(bmi.Section_CBW);
+                        m.m_Mat = MaterialFactory.GetMaterial(bmi.Material_CBW);
+                    }
+                    else if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
+                    {
+                        m.CrScStart = CrScFactory.GetCrSc(bmi.Section_CBR);
+                        m.m_Mat = MaterialFactory.GetMaterial(bmi.Material_CBR);
+                    }
+                }
+
+                dist += L1_Bays.ElementAtOrDefault(index);
             }
         }
 

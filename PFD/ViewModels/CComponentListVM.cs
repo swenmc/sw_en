@@ -1234,17 +1234,92 @@ namespace PFD
         {
             if (FramesComponentList != null) return;
 
+            string MC_section = ColumnSection;
+            string MC_material = ColumnMaterial;
+            string EC_section = ColumnSection;
+            string EC_material = ColumnMaterial;
+
+            string MR_section = RafterSection;
+            string MR_material = RafterMaterial;
+            string ER_section = RafterSection;
+            string ER_material = RafterMaterial;
+            
+            CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+            if (ci != null)
+            {
+                MC_section = ci.Section; MC_material = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            if (ci != null)
+            {
+                EC_section = ci.Section; EC_material = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+            if (ci != null)
+            {
+                MR_section = ci.Section; MR_material = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
+            if (ci != null)
+            {
+                ER_section = ci.Section; ER_material = ci.Material;
+            }
+
             List<FrameMembersInfo> framesInfos = new List<FrameMembersInfo>();
             foreach (int id in FramesIDs)
             {
-                FrameMembersInfo fmi = new FrameMembersInfo(id, ColumnSection, RafterSection, ColumnMaterial, RafterMaterial, CComboBoxHelper.ColorList, SectionsForColumnsOrRafters);
-                framesInfos.Add(fmi);
+                if (id == FramesIDs.First() || id == FramesIDs.Last())
+                {
+                    FrameMembersInfo fmi = new FrameMembersInfo(id, EC_section, ER_section, EC_material, ER_material, CComboBoxHelper.ColorList, SectionsForColumnsOrRafters);
+                    framesInfos.Add(fmi);
+                }
+                else
+                {
+                    FrameMembersInfo fmi = new FrameMembersInfo(id, MC_section, MR_section, MC_material, MR_material, CComboBoxHelper.ColorList, SectionsForColumnsOrRafters);
+                    framesInfos.Add(fmi);
+                }                
             }
             FramesComponentList = new ObservableCollection<FrameMembersInfo>(framesInfos);
         }
         private void LoadBaysComponents()
         {
             if (BaysComponentList != null) return;
+
+            CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+            if (ci != null)
+            {
+                Section_EP = ci.Section; Material_EP = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (ci != null)
+            {
+                Section_G = ci.Section; Material_G = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (ci != null)
+            {
+                Section_P = ci.Section; Material_P = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
+            if (ci != null)
+            {
+                Section_GB = ci.Section; Material_GB = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+            if (ci != null)
+            {
+                Section_PB = ci.Section; Material_PB = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
+            if (ci != null)
+            {
+                Section_CBW = ci.Section; Material_CBW = ci.Material;
+            }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
+            if (ci != null)
+            {
+                Section_CBR = ci.Section; Material_CBR = ci.Material;
+            }
 
             List<BayMembersInfo> baysInfos = new List<BayMembersInfo>();
             foreach (int id in BaysIDs)
