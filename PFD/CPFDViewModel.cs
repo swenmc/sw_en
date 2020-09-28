@@ -2970,14 +2970,25 @@ namespace PFD
             {
                 if (e.PropertyName == "ColumnSectionColor") return;
                 if (e.PropertyName == "RafterSectionColor") return;
+                RecreateModel = true;
                 if (PropertyChanged != null) PropertyChanged(sender, e);
             }
             else if (sender is BayMembersInfo)
             {
+                if (e.PropertyName == "SectionColor_EP") return;
+                if (e.PropertyName == "SectionColor_G") return;
+                if (e.PropertyName == "SectionColor_P") return;
+                if (e.PropertyName == "SectionColor_GB") return;
+                if (e.PropertyName == "SectionColor_PB") return;
+                if (e.PropertyName == "SectionColor_CBW") return;
+                if (e.PropertyName == "SectionColor_CBR") return;
+
+                RecreateModel = true;
                 if (PropertyChanged != null) PropertyChanged(sender, e);
             }
             else if (sender is OthersMembersInfo)
             {
+                RecreateModel = true;
                 if (PropertyChanged != null) PropertyChanged(sender, e);
             }
 
