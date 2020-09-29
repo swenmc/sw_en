@@ -590,7 +590,7 @@ namespace BaseClasses
 
             if (useTextures)
             {
-                // Set the points' texture coordinates.            
+                // Set the points' texture coordinates.
                 //mesh.TextureCoordinates.Add(new Point(0, 0));
                 //mesh.TextureCoordinates.Add(new Point(0, 1));
                 //mesh.TextureCoordinates.Add(new Point(1, 1));
@@ -621,7 +621,7 @@ namespace BaseClasses
                 //ImageBrush imageBrush = new ImageBrush();
                 //imageBrush.ImageSource = new BitmapImage(new Uri("wallTexture4.jpg", UriKind.Relative));
                 //imageBrush.TileMode = TileMode.Tile;
-                //materialGroup.Children.Add(new DiffuseMaterial(imageBrush));                
+                //materialGroup.Children.Add(new DiffuseMaterial(imageBrush));
                 //model.BackMaterial = new DiffuseMaterial(imageBrush);
 
                 var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture.jpg", UriKind.RelativeOrAbsolute)) };                

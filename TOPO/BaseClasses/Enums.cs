@@ -824,6 +824,8 @@ namespace BaseClasses
         public bool bDisplayFloorSlabWireFrame;
         public bool bDisplaySlabRebateWireFrame;
 
+        public bool bDisplayCladding;
+
         public bool bDisplayMembersCenterLines;
         public bool bDisplaySolidModel;
         public bool bDisplayWireFrameModel;

@@ -108,7 +108,7 @@ namespace BaseClasses
         public CLimitState[] m_arrLimitStates;
 
         // Geometrical graphical model objects
-        // Points        
+        // Points
         public Point3D[] m_arrGOPoints;
         // Lines
         public CLine[] m_arrGOLines;
@@ -118,6 +118,7 @@ namespace BaseClasses
         public CVolume[] m_arrGOVolumes;
 
         // 3D Objects
+        public List<CCladding> m_arrGOCladding;
         public CStructure_Window[] m_arrGOStrWindows;
 
         // Group of structure parts / components - each of them has its own member list
@@ -317,7 +318,7 @@ namespace BaseClasses
 
         public float GetBayWidth(int bayID)
         {
-            return L1_Bays.ElementAtOrDefault(bayID - 1);            
+            return L1_Bays.ElementAtOrDefault(bayID - 1);
         }
 
         public float GetBaysWidthUntilFrameIndex(int frameIndex)
@@ -329,11 +330,13 @@ namespace BaseClasses
             }
             return w;
         }
+
         public float GetBayWidthPrevious(int frameIndex)
         {
             if (frameIndex > 0) return L1_Bays[frameIndex - 1];
             else return 0;
         }
+
         public float GetBayWidthNext(int frameIndex)
         {
             if (frameIndex >= L1_Bays.Count) return 0;
@@ -342,7 +345,7 @@ namespace BaseClasses
 
         public float GetTributaryWidth(int frameIndex)
         {
-            return 0.5f * GetBayWidthPrevious(frameIndex) + 0.5f * GetBayWidthNext(frameIndex);            
+            return 0.5f * GetBayWidthPrevious(frameIndex) + 0.5f * GetBayWidthNext(frameIndex);
         }
     }
 }

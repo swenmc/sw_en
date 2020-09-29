@@ -28,8 +28,6 @@ namespace BaseClasses
 
         public const float PageSizeRatio = 1.41275f;
 
-        
-
         #region DrawToTrackPort methods
         public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, float fZoomFactor, DisplayOptions sDisplayOptions)
         {
@@ -1554,7 +1552,7 @@ namespace BaseClasses
                             {
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
-                                                                
+
                                 GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial, bUseTextures);
                                 model3D.Children.Add(geom3D); // Use shell color for whole member
                             }
@@ -2077,6 +2075,25 @@ namespace BaseClasses
                             default:
                                 //TODO - prepracovat a dopracovat
                                 break;
+                        }
+                    }
+                }
+            }
+
+            if (cmodel.m_arrGOCladding != null && sDisplayOptions.bDisplayCladding) // Some cladding exists
+            {
+                // Model Groups of Cladding
+                for (int i = 0; i < cmodel.m_arrGOCladding.Count; i++)
+                {
+                    if (cmodel.m_arrGOCladding[i] != null &&
+                        cmodel.m_arrGOCladding[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
+                    {
+                        if (true/*cmodel.m_arrCladding[i].EShapeType == EWindowShapeType.eClassic*/) // moznost rozlisovat rozne geometricke tvary alebo podtypy
+                            model3D_group.Children.Add(cmodel.m_arrGOCladding[i].GetCladdingModel(Colors.Green, Colors.Gold, sDisplayOptions.bUseTextures)); // Add to model group
+                        else
+                        {
+                            //Exception - not implemented
                         }
                     }
                 }

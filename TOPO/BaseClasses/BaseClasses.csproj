@@ -108,6 +108,10 @@
     <Compile Include="ComboItem.cs" />
     <Compile Include="CProjectInfo.cs" />
     <Compile Include="CProductionInfo.cs" />
+    <Compile Include="GraphObj\Areas\CAreaPolygonal.cs" />
+    <Compile Include="GraphObj\Areas\CAreaCircle.cs" />
+    <Compile Include="GraphObj\Areas\CAreaRectangular.cs" />
+    <Compile Include="GraphObj\CCladding.cs" />
     <Compile Include="GraphObj\CDimensionLinear3D.cs" />
     <Compile Include="GraphObj\CDetailSymbol.cs" />
     <Compile Include="GraphObj\CGridLine.cs" />
@@ -273,7 +277,7 @@
     <Compile Include="CEntity3D.cs" />
     <Compile Include="GraphObj\CLine.cs" />
     <Compile Include="GraphObj\CPoint.cs" />
-    <Compile Include="GraphObj\CArea.cs" />
+    <Compile Include="GraphObj\Areas\CArea.cs" />
     <Compile Include="GraphObj\CVolume.cs" />
     <Compile Include="GraphObj\Objects_3D\Arrow3DTip.cs" />
     <Compile Include="GraphObj\Objects_3D\CStructure_Window.cs" />

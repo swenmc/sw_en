@@ -43,7 +43,7 @@ namespace PFD
             iFrameNodesNo = 4;
             iFrameMembersNo = iFrameNodesNo - 1;
             iEavesPurlinNoInOneFrame = 2;
-                        
+
             //fL1_frame = fL_tot / (iFrameNo - 1);
             L1_Bays = vm._baysWidthOptionsVM.GetBaysWidths();
 
@@ -1649,6 +1649,10 @@ namespace PFD
             }
             else
                 m_arrSlabs = slabs;
+            #endregion
+
+            #region Cladding
+            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], true, 0) };
             #endregion
         }
 

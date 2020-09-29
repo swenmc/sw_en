@@ -62,8 +62,6 @@ namespace PFD
         private bool m_DisplaySolidModel;
         private bool m_DisplayWireFrameModel;
 
-
-
         private bool m_DisplayMembersWireFrame;
         private bool m_DisplayJointsWireFrame;
         private bool m_DisplayPlatesWireFrame;
@@ -73,11 +71,11 @@ namespace PFD
         private bool m_DisplayReinforcementBarsWireFrame;
         private bool m_DisplayFloorSlabWireFrame;
 
+        private bool m_DisplayCladding;
+
         // Labels and axes
         private bool MShowLoadsLabels;
         private bool MShowLoadsLabelsUnits;
-
-
 
         // Member description options
         private bool MShowMemberDescription;
@@ -98,9 +96,6 @@ namespace PFD
         private bool MShowSectionSymbols;
         private bool MShowDetailSymbols;
         private bool MShowSlabRebates;
-
-
-
 
         [NonSerialized]
         private Color m_WireframeColor;
@@ -2514,6 +2509,20 @@ namespace PFD
             }
         }
 
+        public bool DisplayCladding
+        {
+            get
+            {
+                return m_DisplayCladding;
+            }
+
+            set
+            {
+                m_DisplayCladding = value;
+                NotifyPropertyChanged("DisplayCladding");
+            }
+        }
+
         public float ExportFloorSlabTextSize
         {
             get
@@ -3002,6 +3011,9 @@ namespace PFD
             DisplayNodesWireFrame = false;
             DisplayFoundationsWireFrame = false;
             DisplayReinforcementBarsWireFrame = false;
+
+            DisplayCladding = false;
+
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = false;
             DisplaySolidModel = true;
@@ -3155,7 +3167,7 @@ namespace PFD
             GUISectionSymbolsSize = 1f / 20f;
             GUISectionSymbolLabelSize = 1f / 40f;
             GUIDetailSymbolSize = 1f / 20f;
-            GUIDetailSymbolLabelSize = 1 / 40f;            
+            GUIDetailSymbolLabelSize = 1 / 40f;
             GUIFloorSlabTextSize = 1f / 20f;
             GUIMembersDescriptionSize = 1f / 100f;
             GUINodesDescriptionSize = 1f / 100f;
@@ -3203,6 +3215,7 @@ namespace PFD
             DisplayNodesWireFrame = newVM.DisplayNodesWireFrame;
             DisplayFoundationsWireFrame = newVM.DisplayFoundationsWireFrame;
             DisplayReinforcementBarsWireFrame = newVM.DisplayReinforcementBarsWireFrame;
+            DisplayCladding = newVM.DisplayCladding;
             DisplayNodalSupports = newVM.DisplayNodalSupports;
             DisplayMembersCenterLines = newVM.DisplayMembersCenterLines;
             DisplaySolidModel = newVM.DisplaySolidModel;

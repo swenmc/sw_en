@@ -1537,6 +1537,10 @@ namespace PFD
             else
                 m_arrSlabs = slabs;
             #endregion
+
+            #region Cladding
+            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], true, 0) };
+            #endregion
         }
 
         //temp test zatial task 612

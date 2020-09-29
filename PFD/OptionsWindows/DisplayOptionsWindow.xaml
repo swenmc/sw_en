@@ -84,9 +84,10 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="200"/>
-                            <RowDefinition Height="280"/>
                             <RowDefinition Height="180"/>
+                            <RowDefinition Height="250"/>
+                            <RowDefinition Height="150"/>
+                            <RowDefinition Height="050"/>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
@@ -139,6 +140,9 @@
                             <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab</CheckBox>
                         </StackPanel>
 
+                        <StackPanel Grid.Row="3" Grid.Column="0">
+                            <CheckBox Name="chbDisplayCladding" IsChecked="{Binding Path=DisplayCladding}">Display Cladding</CheckBox>
+                        </StackPanel>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
