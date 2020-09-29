@@ -38,7 +38,7 @@ namespace BaseClasses.GraphObj
             FTime = fTime;
         }
 
-        public GeometryModel3D CreateArea(bool useTextures, DiffuseMaterial material)
+        public GeometryModel3D CreateArea(bool useTextures, bool vertical, DiffuseMaterial material)
         {
             if (m_EdgePointList == null) return null;
 
@@ -56,16 +56,30 @@ namespace BaseClasses.GraphObj
 
             if (useTextures)
             {
-                //mesh.TextureCoordinates.Add(new Point(0, 0));
-                //mesh.TextureCoordinates.Add(new Point(1, 0));
-                //mesh.TextureCoordinates.Add(new Point(1, 1));
-
-                for (int i = 0; i < mesh.Positions.Count; i = i + 3)
+                //vertical
+                if (vertical)
                 {
+                    mesh.TextureCoordinates.Add(new Point(0, 0));
+                    mesh.TextureCoordinates.Add(new Point(1, 0));
+                    mesh.TextureCoordinates.Add(new Point(1, 1));
+                    mesh.TextureCoordinates.Add(new Point(0, 1));                    
+                }
+                else
+                {
+                    //horizontal
                     mesh.TextureCoordinates.Add(new Point(0, 0));
                     mesh.TextureCoordinates.Add(new Point(0, 1));
                     mesh.TextureCoordinates.Add(new Point(1, 1));
+                    mesh.TextureCoordinates.Add(new Point(1, 0));
                 }
+
+
+                //for (int i = 0; i < mesh.Positions.Count; i = i + 3)
+                //{
+                //    mesh.TextureCoordinates.Add(new Point(0, 0));
+                //    mesh.TextureCoordinates.Add(new Point(0, 1));
+                //    mesh.TextureCoordinates.Add(new Point(1, 1));
+                //}
 
                 /*
                 for (int i = 0; i < mesh.Positions.Count; i = i + 3)

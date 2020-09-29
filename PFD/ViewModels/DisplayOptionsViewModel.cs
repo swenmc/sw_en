@@ -3012,7 +3012,7 @@ namespace PFD
             DisplayFoundationsWireFrame = false;
             DisplayReinforcementBarsWireFrame = false;
 
-            DisplayCladding = false;
+            DisplayCladding = true;
 
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = false;
@@ -3040,7 +3040,7 @@ namespace PFD
             ShowDetailSymbols = false;
             ShowSlabRebates = true;
 
-            UseTextures = false;
+            UseTextures = true;
 
             if(bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
             {

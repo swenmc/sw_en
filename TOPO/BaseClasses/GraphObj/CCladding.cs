@@ -50,27 +50,38 @@ namespace BaseClasses.GraphObj
 
             if (bUseTextures)
             {
-                var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute)) };
-                RenderOptions.SetCachingHint(image, CachingHint.Cache);
-                RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
-                material_Wall = new DiffuseMaterial(new VisualBrush(image));
+                //var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute)) };
+                //RenderOptions.SetCachingHint(image, CachingHint.Cache);
+                //RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
+                //material_Wall = new DiffuseMaterial(new VisualBrush(image));
 
-                image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute)) };
-                material_Roof = new DiffuseMaterial(new VisualBrush(image));
+                //image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute)) };
+                //material_Roof = new DiffuseMaterial(new VisualBrush(image));
 
                 //materialGroup.Children.Add(material);
                 //model.BackMaterial = material;
 
-                // Nejake pokusy z 2D vykreslovania
+
+                
                 ImageBrush brush = new ImageBrush();
+                brush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
+                brush.TileMode = TileMode.Tile;
+                brush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;                
+                brush.Stretch = Stretch.UniformToFill;
+                brush.Viewport = new System.Windows.Rect(0, 0, 0.05, 0.05);                
+                material_Wall = new DiffuseMaterial(brush);
+                               
+                
+                brush = new ImageBrush();
                 brush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
                 brush.TileMode = TileMode.Tile;
-                brush.ViewportUnits = BrushMappingMode.Absolute;
-                brush.ViewboxUnits = BrushMappingMode.Absolute;
-                brush.Stretch = Stretch.None;
+                brush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
+                //brush.ViewboxUnits = BrushMappingMode.Absolute;
+                brush.Stretch = Stretch.UniformToFill;
+                brush.Viewport = new System.Windows.Rect(0, 0, 0.05, 0.05);
                 //brush.AlignmentX = AlignmentX.Left;
                 //brush.AlignmentY = AlignmentY.Top;
-                //brush.Viewport = new Rect(0, 0, brush.ImageSource.Width, brush.ImageSource.Height);
+                //brush.Viewport = new System.Windows.Rect(0, 0, brush.ImageSource.Width, brush.ImageSource.Height);
                 material_Roof = new DiffuseMaterial(brush);
             }
 
@@ -108,15 +119,15 @@ namespace BaseClasses.GraphObj
                 if (bUseTextures)
                 {
                     // Front Wall
-                    model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_heightright, pfront3_heightleft }, 0).CreateArea(bUseTextures, material_Wall));
+                    model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_heightright, pfront3_heightleft }, 0).CreateArea(bUseTextures, true, material_Wall));
                     // Back Wall
-                    model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pback3_heightleft, pback2_heightright }, 0).CreateArea(bUseTextures, material_Wall));
+                    model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pback3_heightleft, pback2_heightright }, 0).CreateArea(bUseTextures, true, material_Wall));
                     // Left Wall
-                    model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pfront3_heightleft, pback3_heightleft }, 0).CreateArea(bUseTextures, material_Wall));
+                    model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pfront3_heightleft, pback3_heightleft }, 0).CreateArea(bUseTextures, true, material_Wall));
                     // Right Wall
-                    model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pback2_heightright, pfront2_heightright }, 0).CreateArea(bUseTextures, material_Wall));
+                    model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pback2_heightright, pfront2_heightright }, 0).CreateArea(bUseTextures, true, material_Wall));
                     // Roof
-                    model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pback3_heightleft, pfront3_heightleft, pfront2_heightright, pback2_heightright }, 0).CreateArea(bUseTextures, material_Roof));
+                    model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pback3_heightleft, pfront3_heightleft, pfront2_heightright, pback2_heightright }, 0).CreateArea(bUseTextures, false, material_Roof));
                 }
             }
             else if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
@@ -138,17 +149,17 @@ namespace BaseClasses.GraphObj
                 if (bUseTextures)
                 {
                     // Front Wall
-                    model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_heightright, pfront4_top, pfront3_heightleft }, 0).CreateArea(bUseTextures, material_Wall));
+                    model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_heightright, pfront4_top, pfront3_heightleft }, 0).CreateArea(bUseTextures, true, material_Wall));
                     // Back Wall
-                    model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pback3_heightleft, pback4_top, pback2_heightright }, 0).CreateArea(bUseTextures, material_Wall));
+                    model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pback3_heightleft, pback4_top, pback2_heightright }, 0).CreateArea(bUseTextures, true, material_Wall));
                     // Left Wall
-                    model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pfront3_heightleft, pback3_heightleft }, 0).CreateArea(bUseTextures, material_Wall));
+                    model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pfront3_heightleft, pback3_heightleft }, 0).CreateArea(bUseTextures, true, material_Wall));
                     // Right Wall
-                    model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pback2_heightright, pfront2_heightright }, 0).CreateArea(bUseTextures, material_Wall));
+                    model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pback2_heightright, pfront2_heightright }, 0).CreateArea(bUseTextures, true, material_Wall));
                     // Roof - Left Side
-                    model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pback3_heightleft, pfront3_heightleft, pfront4_top, pback4_top }, 0).CreateArea(bUseTextures, material_Roof));
+                    model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pback3_heightleft, pfront3_heightleft, pfront4_top, pback4_top }, 0).CreateArea(bUseTextures, false, material_Roof));
                     // Roof - Right Side
-                    model_gr.Children.Add(new CAreaPolygonal(5, new List<Point3D>() { pfront2_heightright, pback2_heightright, pback4_top, pfront4_top }, 0).CreateArea(bUseTextures, material_Roof));
+                    model_gr.Children.Add(new CAreaPolygonal(5, new List<Point3D>() { pfront2_heightright, pback2_heightright, pback4_top, pfront4_top }, 0).CreateArea(bUseTextures, false, material_Roof));
                 }
             }
             else
