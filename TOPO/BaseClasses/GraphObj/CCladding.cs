@@ -61,6 +61,7 @@ namespace BaseClasses.GraphObj
                 //materialGroup.Children.Add(material);
                 //model.BackMaterial = material;
 
+                // Nejake pokusy z 2D vykreslovania
                 ImageBrush brush = new ImageBrush();
                 brush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
                 brush.TileMode = TileMode.Tile;
