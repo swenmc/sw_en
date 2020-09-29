@@ -809,20 +809,20 @@ namespace PFD
             // Nodes - Frames
             for (int i = 0; i < iFrameNo; i++)
             {
-                m_arrNodes[i * iFrameNodesNo + 0] = new CNode(i * iFrameNodesNo + 1, 000000, i * L1_Bays[i], 00000, 0);
+                m_arrNodes[i * iFrameNodesNo + 0] = new CNode(i * iFrameNodesNo + 1, 000000, i * GetBaysWidthUntilFrameIndex(i), 00000, 0);
                 m_arrNodes[i * iFrameNodesNo + 0].Name = "Main Column Base Node - left";
                 listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 0]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 0]);
 
-                m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, i * L1_Bays[i], fH1_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, i * GetBaysWidthUntilFrameIndex(i), fH1_frame, 0);
                 m_arrNodes[i * iFrameNodesNo + 1].Name = "Main Column Top Node - left";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 1]);
 
-                m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, fW_frame, i * L1_Bays[i], fH2_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, fW_frame, i * GetBaysWidthUntilFrameIndex(i), fH2_frame, 0);
                 m_arrNodes[i * iFrameNodesNo + 2].Name = "Main Column Top Node - right";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 2]);
 
-                m_arrNodes[i * iFrameNodesNo + 3] = new CNode(i * iFrameNodesNo + 4, fW_frame, i * L1_Bays[i], 00000, 0);
+                m_arrNodes[i * iFrameNodesNo + 3] = new CNode(i * iFrameNodesNo + 4, fW_frame, i * GetBaysWidthUntilFrameIndex(i), 00000, 0);
                 m_arrNodes[i * iFrameNodesNo + 3].Name = "Main Column Base Node - right";
                 listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 3]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 3]);
@@ -1652,7 +1652,7 @@ namespace PFD
             #endregion
 
             #region Cladding
-            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], true, 0) };
+            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], true, 0) };
             #endregion
         }
 

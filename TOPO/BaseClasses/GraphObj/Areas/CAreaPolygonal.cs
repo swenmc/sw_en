@@ -56,12 +56,17 @@ namespace BaseClasses.GraphObj
 
             if (useTextures)
             {
+                mesh.TextureCoordinates.Add(new Point(0, 0));
+                mesh.TextureCoordinates.Add(new Point(1, 0));
+                mesh.TextureCoordinates.Add(new Point(1, 1));
+
+                /*
                 for (int i = 0; i < mesh.Positions.Count; i = i + 3)
                 {
                     mesh.TextureCoordinates.Add(new Point(0, 0));
                     mesh.TextureCoordinates.Add(new Point(0, 1));
                     mesh.TextureCoordinates.Add(new Point(1, 1));
-                }
+                }*/
             }
 
             return new GeometryModel3D(mesh, material);

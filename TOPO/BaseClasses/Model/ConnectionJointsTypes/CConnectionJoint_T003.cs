@@ -52,9 +52,11 @@ namespace BaseClasses
 
             //--------------------------------------------------------------------------------------------------
             // Prepisem default hodnotami z databazy
-            string sPlatePrefix;
-            CPlate_F_Properties plateProp;
-            SetPlate_F_Type(m_MainMember.CrScStart.Name_short, out sPlatePrefix, out plateProp);
+            string sPlatePrefix = "";
+            CPlate_F_Properties plateProp = null;
+
+            if(m_MainMember != null) // Todo - treba osetrit aby sa toto nestavalo a vzdy bol priradeny main member
+               SetPlate_F_Type(m_MainMember.CrScStart.Name_short, out sPlatePrefix, out plateProp);
 
             if (plateProp != null)
             {
