@@ -19,6 +19,9 @@ namespace PFD
         public int iLeftColumnGirtNo;
         public int iRightColumnGirtNo;
 
+        private CComponentListVM _clVM;
+        private CPFDViewModel _pfdVM;
+
         public CModel_PFD_01_MR
         (
                 BuildingGeometryDataInput sGeometryInputData,
@@ -30,7 +33,8 @@ namespace PFD
         )
         {
             eKitset = EModelType_FS.eKitsetMonoRoofEnclosed;
-
+            _clVM = componentListVM;
+            _pfdVM = vm;
             ObservableCollection<CComponentInfo> componentList = componentListVM?.ComponentList;
             fH1_frame = sGeometryInputData.fH_1;
             fW_frame = sGeometryInputData.fW;
@@ -1652,7 +1656,9 @@ namespace PFD
             #endregion
 
             #region Cladding
-            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], true, 0) };
+            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF],
+               (Color)ColorConverter.ConvertFromString(_pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).CodeHEX),
+               (Color)ColorConverter.ConvertFromString(_pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).CodeHEX), true, 0) };
             #endregion
         }
 

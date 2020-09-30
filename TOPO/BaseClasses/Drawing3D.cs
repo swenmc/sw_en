@@ -2090,7 +2090,7 @@ namespace BaseClasses
                         cmodel.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
                     {
                         if (true/*cmodel.m_arrCladding[i].EShapeType == EWindowShapeType.eClassic*/) // moznost rozlisovat rozne geometricke tvary alebo podtypy
-                            model3D_group.Children.Add(cmodel.m_arrGOCladding[i].GetCladdingModel(Colors.Green, Colors.Gold, sDisplayOptions.bUseTextures)); // Add to model group
+                            model3D_group.Children.Add(cmodel.m_arrGOCladding[i].GetCladdingModel(sDisplayOptions.bUseTextures)); // Add to model group
                         else
                         {
                             //Exception - not implemented

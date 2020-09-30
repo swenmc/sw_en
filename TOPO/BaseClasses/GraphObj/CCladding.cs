@@ -24,13 +24,17 @@ namespace BaseClasses.GraphObj
         double column_crsc_y_minus;
         double column_crsc_y_plus;
 
+        Color m_ColorWall;
+        Color m_ColorRoof;
+
         public CCladding()
         {
 
         }
 
         // Constructor 2
-        public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData, CRSC.CCrSc_TW columnSection, bool bIsDisplayed, int fTime)
+        public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData, CRSC.CCrSc_TW columnSection,
+            Color colorWall, Color colorRoof, bool bIsDisplayed, int fTime)
         {
             ID = iCladding_ID;
             eModelType = modelType_FS;
@@ -38,11 +42,13 @@ namespace BaseClasses.GraphObj
             column_crsc_z_plus = columnSection.z_max;
             column_crsc_y_minus = columnSection.y_min;
             column_crsc_y_plus = columnSection.y_max;
+            m_ColorWall = colorWall;
+            m_ColorRoof = colorRoof;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
         }
 
-        public Model3DGroup GetCladdingModel(Color colorWall, Color colorRoof, bool bUseTextures = false)
+        public Model3DGroup GetCladdingModel(bool bUseTextures = false)
         {
             m_pControlPoint = new Point3D(0, 0, 0);
 
@@ -70,9 +76,9 @@ namespace BaseClasses.GraphObj
             Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, bottomEdge_z);
             Point3D pback1_baseright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, bottomEdge_z);
 
-            DiffuseMaterial material_SideWall = new DiffuseMaterial(new SolidColorBrush(colorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
-            DiffuseMaterial material_FrontBackWall = new DiffuseMaterial(new SolidColorBrush(colorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
-            DiffuseMaterial material_Roof = new DiffuseMaterial(new SolidColorBrush(colorRoof)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
+            DiffuseMaterial material_SideWall = new DiffuseMaterial(new SolidColorBrush(m_ColorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
+            DiffuseMaterial material_FrontBackWall = new DiffuseMaterial(new SolidColorBrush(m_ColorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
+            DiffuseMaterial material_Roof = new DiffuseMaterial(new SolidColorBrush(m_ColorRoof)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
 
             if (bUseTextures)
             {
