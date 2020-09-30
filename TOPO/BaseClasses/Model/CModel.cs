@@ -120,6 +120,7 @@ namespace BaseClasses
         // 3D Objects
         public List<CCladding> m_arrGOCladding;
         public CStructure_Window[] m_arrGOStrWindows;
+        public CStructure_Door[] m_arrGOStrDoors;
 
         // Group of structure parts / components - each of them has its own member list
         public List<CMemberGroup> listOfModelMemberGroups;

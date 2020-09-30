@@ -2118,6 +2118,26 @@ namespace BaseClasses
                 }
             }
 
+
+            if (cmodel.m_arrGOStrDoors != null) // Some doors exist
+            {
+                // Model Groups of Doors
+                for (int i = 0; i < cmodel.m_arrGOStrDoors.Length; i++)
+                {
+                    if (cmodel.m_arrGOStrDoors[i] != null &&
+                        cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
+                            model3D_group.Children.Add(cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door()); // Add solid to model group
+                        //else
+                        //{
+                        //    //Exception - not implemented
+                        //}
+                    }
+                }
+            }
+
             // Structural Model
 
             if (cmodel.m_arrNSupports != null && sDisplayOptions.bDisplayNodalSupports) // Some nodal supports exist

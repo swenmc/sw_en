@@ -1544,16 +1544,49 @@ namespace PFD
                (Color)ColorConverter.ConvertFromString(_pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).CodeHEX), true, 0) };
             #endregion
 
+            #region Doors
+            if (_pfdVM.DoorBlocksProperties != null)
+            {
+                float fRotationZDegrees = 0f;
+                Point3D pControlEdgePoint = new Point3D((_pfdVM.DoorBlocksProperties[0].iBayNumber - 1) * fDist_FrontColumns + _pfdVM.DoorBlocksProperties[0].fDoorCoordinateXinBlock, -0.15, 0);
+
+                if (_pfdVM.DoorBlocksProperties[0].sBuildingSide == "Left" || _pfdVM.DoorBlocksProperties[0].sBuildingSide == "Right")
+                {
+                    fRotationZDegrees = 90f;
+                    pControlEdgePoint = new Point3D(-0.15, GetBaysWidthUntilFrameIndex(_pfdVM.DoorBlocksProperties[0].iBayNumber - 1) + _pfdVM.DoorBlocksProperties[0].fDoorCoordinateXinBlock, 0);
+                }
+
+                BaseClasses.GraphObj.CStructure_Door door1 = new BaseClasses.GraphObj.CStructure_Door(0, 1,
+                   pControlEdgePoint, _pfdVM.DoorBlocksProperties[0].fDoorsWidth, _pfdVM.DoorBlocksProperties[0].fDoorsHeight, 0.1f,
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Roller Door Trimmer")).CoatingColor.CodeHEX))),
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[0].CoatingColor.CodeHEX))), 0.010f, fRotationZDegrees, true, 0f);
+
+                m_arrGOStrDoors = new BaseClasses.GraphObj.CStructure_Door[1] { door1 };
+            }
+            #endregion
+
             #region Windows
             if (_pfdVM.WindowBlocksProperties != null)
             {
-                BaseClasses.GraphObj.CStructure_Window window1 = new BaseClasses.GraphObj.CStructure_Window(0, EWindowShapeType.eClassic, 1,
-                   new Point3D(_pfdVM.WindowBlocksProperties[0].fWindowCoordinateXinBay, -0.15, _pfdVM.WindowBlocksProperties[0].fWindowCoordinateZinBay), _pfdVM.WindowBlocksProperties[0].fWindowsWidth, _pfdVM.WindowBlocksProperties[0].fWindowsHeight, 0.1f,
-                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Window")).CoatingColor.CodeHEX))), new DiffuseMaterial(Brushes.LightBlue), 0.010f, 0f, true, 0f);
+                float fRotationZDegrees = 0f;
+                Point3D pControlEdgePoint = new Point3D((_pfdVM.WindowBlocksProperties[0].iBayNumber - 1) * fDist_FrontColumns + _pfdVM.WindowBlocksProperties[0].fWindowCoordinateXinBay, -0.15, _pfdVM.WindowBlocksProperties[0].fWindowCoordinateZinBay);
 
+                if (_pfdVM.WindowBlocksProperties[0].sBuildingSide == "Left" || _pfdVM.WindowBlocksProperties[0].sBuildingSide == "Right")
+                {
+                    fRotationZDegrees = 90f;
+                    pControlEdgePoint = new Point3D(-0.15, GetBaysWidthUntilFrameIndex(_pfdVM.WindowBlocksProperties[0].iBayNumber - 1) + _pfdVM.WindowBlocksProperties[0].fWindowCoordinateXinBay, _pfdVM.WindowBlocksProperties[0].fWindowCoordinateZinBay);
+                }
+
+                BaseClasses.GraphObj.CStructure_Window window1 = new BaseClasses.GraphObj.CStructure_Window(0, EWindowShapeType.eClassic, 1,
+                   pControlEdgePoint, _pfdVM.WindowBlocksProperties[0].fWindowsWidth, _pfdVM.WindowBlocksProperties[0].fWindowsHeight, 0.1f,
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Window")).CoatingColor.CodeHEX))),
+                   new DiffuseMaterial(Brushes.LightBlue), 0.010f, fRotationZDegrees, true, 0f);
+
+                fRotationZDegrees = 0f;
                 BaseClasses.GraphObj.CStructure_Window window2_temp = new BaseClasses.GraphObj.CStructure_Window(1, EWindowShapeType.eClassic, 3,
                    new Point3D(2, -0.15, 1.2f), 1.5f / 3.0f, 0.95f, 0.1f,
-                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Window")).CoatingColor.CodeHEX))), new DiffuseMaterial(Brushes.LightBlue), 0.010f, 0f, true, 0f);
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Window")).CoatingColor.CodeHEX))),
+                   new DiffuseMaterial(Brushes.LightBlue), 0.010f, 0f, true, 0f);
 
                 m_arrGOStrWindows = new BaseClasses.GraphObj.CStructure_Window[2] { window1, window2_temp };
             }
