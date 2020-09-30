@@ -62,15 +62,15 @@ namespace BaseClasses.GraphObj
                     mesh.TextureCoordinates.Add(new Point(0, 0));
                     mesh.TextureCoordinates.Add(new Point(1, 0));
                     mesh.TextureCoordinates.Add(new Point(1, 1));
-                    mesh.TextureCoordinates.Add(new Point(0, 1));                    
+                    mesh.TextureCoordinates.Add(new Point(0, 1));
                 }
                 else
                 {
                     //horizontal
                     mesh.TextureCoordinates.Add(new Point(0, 0));
-                    mesh.TextureCoordinates.Add(new Point(0, 1));
-                    mesh.TextureCoordinates.Add(new Point(1, 1));
                     mesh.TextureCoordinates.Add(new Point(1, 0));
+                    mesh.TextureCoordinates.Add(new Point(1, 1));
+                    mesh.TextureCoordinates.Add(new Point(0, 1));
                 }
 
 
