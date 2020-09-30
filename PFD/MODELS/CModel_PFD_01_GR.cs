@@ -1550,10 +1550,16 @@ namespace PFD
                 float fRotationZDegrees = 0f;
                 Point3D pControlEdgePoint = new Point3D((_pfdVM.DoorBlocksProperties[0].iBayNumber - 1) * fDist_FrontColumns + _pfdVM.DoorBlocksProperties[0].fDoorCoordinateXinBlock, -0.15, 0);
 
+                if (_pfdVM.DoorBlocksProperties[0].sBuildingSide == "Back")
+                    pControlEdgePoint.Y = fL_tot + 0.15f;
+
                 if (_pfdVM.DoorBlocksProperties[0].sBuildingSide == "Left" || _pfdVM.DoorBlocksProperties[0].sBuildingSide == "Right")
                 {
                     fRotationZDegrees = 90f;
-                    pControlEdgePoint = new Point3D(-0.15, GetBaysWidthUntilFrameIndex(_pfdVM.DoorBlocksProperties[0].iBayNumber - 1) + _pfdVM.DoorBlocksProperties[0].fDoorCoordinateXinBlock, 0);
+                    pControlEdgePoint = new Point3D(-0.30, GetBaysWidthUntilFrameIndex(_pfdVM.DoorBlocksProperties[0].iBayNumber - 1) + _pfdVM.DoorBlocksProperties[0].fDoorCoordinateXinBlock, 0);
+
+                    if (_pfdVM.DoorBlocksProperties[0].sBuildingSide == "Right")
+                        pControlEdgePoint.X = fW_frame + 0.30f;
                 }
 
                 BaseClasses.GraphObj.CStructure_Door door1 = new BaseClasses.GraphObj.CStructure_Door(0, 1,
@@ -1571,10 +1577,16 @@ namespace PFD
                 float fRotationZDegrees = 0f;
                 Point3D pControlEdgePoint = new Point3D((_pfdVM.WindowBlocksProperties[0].iBayNumber - 1) * fDist_FrontColumns + _pfdVM.WindowBlocksProperties[0].fWindowCoordinateXinBay, -0.15, _pfdVM.WindowBlocksProperties[0].fWindowCoordinateZinBay);
 
+                if (_pfdVM.WindowBlocksProperties[0].sBuildingSide == "Back")
+                    pControlEdgePoint.Y = fL_tot + 0.15f;
+
                 if (_pfdVM.WindowBlocksProperties[0].sBuildingSide == "Left" || _pfdVM.WindowBlocksProperties[0].sBuildingSide == "Right")
                 {
                     fRotationZDegrees = 90f;
-                    pControlEdgePoint = new Point3D(-0.15, GetBaysWidthUntilFrameIndex(_pfdVM.WindowBlocksProperties[0].iBayNumber - 1) + _pfdVM.WindowBlocksProperties[0].fWindowCoordinateXinBay, _pfdVM.WindowBlocksProperties[0].fWindowCoordinateZinBay);
+                    pControlEdgePoint = new Point3D(-0.30, GetBaysWidthUntilFrameIndex(_pfdVM.WindowBlocksProperties[0].iBayNumber - 1) + _pfdVM.WindowBlocksProperties[0].fWindowCoordinateXinBay, _pfdVM.WindowBlocksProperties[0].fWindowCoordinateZinBay);
+
+                    if (_pfdVM.WindowBlocksProperties[0].sBuildingSide == "Right")
+                        pControlEdgePoint.X = fW_frame + 0.30f;
                 }
 
                 BaseClasses.GraphObj.CStructure_Window window1 = new BaseClasses.GraphObj.CStructure_Window(0, EWindowShapeType.eClassic, 1,
