@@ -1541,6 +1541,21 @@ namespace PFD
             #region Cladding
             m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], true, 0) };
             #endregion
+
+            #region Windows
+            if (_pfdVM.WindowBlocksProperties != null)
+            {
+                BaseClasses.GraphObj.CStructure_Window window1 = new BaseClasses.GraphObj.CStructure_Window(0, EWindowShapeType.eClassic, 1,
+                   new Point3D(_pfdVM.WindowBlocksProperties[0].fWindowCoordinateXinBay, -0.15, _pfdVM.WindowBlocksProperties[0].fWindowCoordinateZinBay), _pfdVM.WindowBlocksProperties[0].fWindowsWidth, _pfdVM.WindowBlocksProperties[0].fWindowsHeight, 0.1f,
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Window")).CoatingColor.CodeHEX))), new DiffuseMaterial(Brushes.LightBlue), 0.010f, 0f, true, 0f);
+
+                BaseClasses.GraphObj.CStructure_Window window2_temp = new BaseClasses.GraphObj.CStructure_Window(1, EWindowShapeType.eClassic, 3,
+                   new Point3D(2, -0.15, 1.2f), 1.5f, 0.95f, 0.1f,
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Window")).CoatingColor.CodeHEX))), new DiffuseMaterial(Brushes.LightBlue), 0.010f, 0f, true, 0f);
+
+                m_arrGOStrWindows = new BaseClasses.GraphObj.CStructure_Window[2] { window1, window2_temp };
+            }
+            #endregion
         }
 
         //temp test zatial task 612
