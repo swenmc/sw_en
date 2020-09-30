@@ -59,10 +59,49 @@ namespace BaseClasses.GraphObj
                 //vertical
                 if (vertical)
                 {
-                    mesh.TextureCoordinates.Add(new Point(0, 0));
-                    mesh.TextureCoordinates.Add(new Point(1, 0));
-                    mesh.TextureCoordinates.Add(new Point(1, 1));
-                    mesh.TextureCoordinates.Add(new Point(0, 1));
+                    if (m_EdgePointList.Count == 4)
+                    {
+                        mesh.TextureCoordinates.Add(new Point(0, 0));
+                        mesh.TextureCoordinates.Add(new Point(1, 0));
+                        mesh.TextureCoordinates.Add(new Point(1, 1));
+                        mesh.TextureCoordinates.Add(new Point(0, 1));
+                    }
+                    else
+                    {
+                        mesh.TextureCoordinates.Add(new Point(0, 1));
+                        mesh.TextureCoordinates.Add(new Point(1, 1));
+                        mesh.TextureCoordinates.Add(new Point(1, 0));
+                        mesh.TextureCoordinates.Add(new Point(0, 0));
+
+                        //mesh.TextureCoordinates.Add(new Point(0, 1));
+                        //mesh.TextureCoordinates.Add(new Point(1, 1));
+                        //mesh.TextureCoordinates.Add(new Point(1, 1 - (m_EdgePointList[2].Z / m_EdgePointList[3].Z)));
+
+                        //mesh.TextureCoordinates.Add(new Point(0, 1));
+                        //mesh.TextureCoordinates.Add(new Point(1, 1 - (m_EdgePointList[2].Z / m_EdgePointList[3].Z)));
+                        //mesh.TextureCoordinates.Add(new Point(0.5, 0));
+
+                        //mesh.TextureCoordinates.Add(new Point(0, 1));
+                        //mesh.TextureCoordinates.Add(new Point(0.5, 0));
+                        //mesh.TextureCoordinates.Add(new Point(0, 1 - (m_EdgePointList[2].Z / m_EdgePointList[3].Z)));
+
+                        /*
+                        mesh.TextureCoordinates.Add(new Point(0, 0));
+                        mesh.TextureCoordinates.Add(new Point(1, 0));
+                        mesh.TextureCoordinates.Add(new Point(1, 1));
+                        //mesh.TextureCoordinates.Add(new Point(0, 1));
+
+                        mesh.TextureCoordinates.Add(new Point(0, 0));
+                        mesh.TextureCoordinates.Add(new Point(1, m_EdgePointList[2].Z / m_EdgePointList[3].Z));
+                        mesh.TextureCoordinates.Add(new Point(0.5, 1));
+                        //mesh.TextureCoordinates.Add(new Point(0, 1));
+
+                        mesh.TextureCoordinates.Add(new Point(0, 0));
+                        mesh.TextureCoordinates.Add(new Point(0.5, 1));
+                        mesh.TextureCoordinates.Add(new Point(0, 1));
+                        //mesh.TextureCoordinates.Add(new Point(0, 1));
+                        */
+                    }
                 }
                 else
                 {
