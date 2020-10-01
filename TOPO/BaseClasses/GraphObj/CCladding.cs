@@ -81,10 +81,9 @@ namespace BaseClasses.GraphObj
             DiffuseMaterial material_FrontBackWall = new DiffuseMaterial(new SolidColorBrush(m_ColorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
             DiffuseMaterial material_Roof = new DiffuseMaterial(new SolidColorBrush(m_ColorRoof)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
 
-            double textureRealSize = 0.13; //130mm
             ImageBrush brushFront = null;
             ImageBrush brushSide = null;
-            ImageBrush brushGold = null;
+            ImageBrush brushRoof = null;
             double wpWidth = 0;
             double wpHeight = 0;
 
@@ -138,11 +137,11 @@ namespace BaseClasses.GraphObj
                 brushSide.ViewportUnits = BrushMappingMode.Absolute;
                 brushSide.Stretch = Stretch.Fill;
 
-                brushGold = new ImageBrush();
-                brushGold.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
-                brushGold.TileMode = TileMode.Tile;
-                brushGold.ViewportUnits = BrushMappingMode.Absolute;
-                brushGold.Stretch = Stretch.Fill;
+                brushRoof = new ImageBrush();
+                brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
+                brushRoof.TileMode = TileMode.Tile;
+                brushRoof.ViewportUnits = BrushMappingMode.Absolute;
+                brushRoof.Stretch = Stretch.Fill;
             }
 
             if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
@@ -155,36 +154,43 @@ namespace BaseClasses.GraphObj
                 Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_2_final);
                 Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
 
-                wpWidth = textureRealSize / (pfront1_baseright.X - pfront0_baseleft.X);
-                wpHeight = textureRealSize / (pfront2_heightright.Z - pfront1_baseright.Z);
-                brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                material_FrontBackWall = new DiffuseMaterial(brushFront);
+                if (bUseTextures) // Pouzijeme len ak vykreslujeme textury, inak sa pouzije material vytvoreny z SolidColorBrush podla vybranej farby cladding v GUI
+                {
+                    wpWidth = claddingWidthRibModular_Wall / (pfront1_baseright.X - pfront0_baseleft.X);
+                    wpHeight = claddingWidthRibModular_Wall / (pfront2_heightright.Z - pfront1_baseright.Z);
+                    brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                    material_FrontBackWall = new DiffuseMaterial(brushFront);
+                }
 
                 // Front Wall
                 model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_heightright, pfront3_heightleft }, 0).CreateArea(bUseTextures, material_FrontBackWall));
                 // Back Wall
                 model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pback3_heightleft, pback2_heightright }, 0).CreateArea(bUseTextures, material_FrontBackWall));
 
-
-                wpWidth = textureRealSize / (pback0_baseleft.Y - pfront0_baseleft.Y);
-                wpHeight = textureRealSize / (pback2_heightright.Z - pback0_baseleft.Z);
-                brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                material_SideWall = new DiffuseMaterial(brushSide);
+                if (bUseTextures)
+                {
+                    wpWidth = claddingWidthRibModular_Wall / (pback0_baseleft.Y - pfront0_baseleft.Y);
+                    wpHeight = claddingWidthRibModular_Wall / (pback2_heightright.Z - pback0_baseleft.Z);
+                    brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                    material_SideWall = new DiffuseMaterial(brushSide);
+                }
 
                 // Left Wall
                 model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pfront3_heightleft, pback3_heightleft }, 0).CreateArea(bUseTextures, material_SideWall));
                 // Right Wall
                 model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pback2_heightright, pfront2_heightright }, 0).CreateArea(bUseTextures, material_SideWall));
 
-                double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront2_heightright, pfront3_heightleft);
-                wpWidth = textureRealSize / (pback2_heightright.Y - pfront2_heightright.Y);
-                wpHeight = textureRealSize / poinstsDist;
-                brushGold.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                material_Roof = new DiffuseMaterial(brushGold);
+                if (bUseTextures)
+                {
+                    double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront2_heightright, pfront3_heightleft);
+                    wpWidth = claddingWidthRibModular_Roof / (pback2_heightright.Y - pfront2_heightright.Y);
+                    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                    brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                    material_Roof = new DiffuseMaterial(brushRoof);
+                }
 
                 // Roof
                 model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pfront2_heightright, pback2_heightright, pback3_heightleft, pfront3_heightleft }, 0).CreateArea(bUseTextures, material_Roof));
-
             }
             else if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
             {
@@ -197,32 +203,41 @@ namespace BaseClasses.GraphObj
                 Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
                 Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
                 Point3D pback4_top = new Point3D(0.5 * sBuildingGeomInputData.fW, sBuildingGeomInputData.fL + column_crsc_y_plus, height_2_final);
-                
-                wpWidth = textureRealSize / (pfront1_baseright.X - pfront0_baseleft.X);
-                wpHeight = textureRealSize / (pfront4_top.Z - pfront1_baseright.Z);
-                brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                material_FrontBackWall = new DiffuseMaterial(brushFront);
+
+                if (bUseTextures)
+                {
+                    wpWidth = claddingWidthRibModular_Wall / (pfront1_baseright.X - pfront0_baseleft.X);
+                    wpHeight = claddingWidthRibModular_Wall / (pfront4_top.Z - pfront1_baseright.Z);
+                    brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                    material_FrontBackWall = new DiffuseMaterial(brushFront);
+                }
 
                 // Front Wall
                 model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_heightright, pfront4_top, pfront3_heightleft }, 0).CreateArea(bUseTextures, material_FrontBackWall));
                 // Back Wall
                 model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pback3_heightleft, pback4_top, pback2_heightright }, 0).CreateArea(bUseTextures, material_FrontBackWall));
 
-                wpWidth = textureRealSize / (pback0_baseleft.Y - pfront0_baseleft.Y);
-                wpHeight = textureRealSize / (pback2_heightright.Z - pback0_baseleft.Z);
-                brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                material_SideWall = new DiffuseMaterial(brushSide);
+                if (bUseTextures)
+                {
+                    wpWidth = claddingWidthRibModular_Wall / (pback0_baseleft.Y - pfront0_baseleft.Y);
+                    wpHeight = claddingWidthRibModular_Wall / (pback2_heightright.Z - pback0_baseleft.Z);
+                    brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                    material_SideWall = new DiffuseMaterial(brushSide);
+                }
 
                 // Left Wall
                 model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pfront3_heightleft, pback3_heightleft }, 0).CreateArea(bUseTextures, material_SideWall));
                 // Right Wall
                 model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pback2_heightright, pfront2_heightright }, 0).CreateArea(bUseTextures, material_SideWall));
 
-                double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pback4_top, pfront3_heightleft);                
-                wpWidth = textureRealSize / (pback4_top.Y - pfront4_top.Y);
-                wpHeight = textureRealSize / poinstsDist;
-                brushGold.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                material_Roof = new DiffuseMaterial(brushGold);
+                if (bUseTextures)
+                {
+                    double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pback4_top, pfront3_heightleft);
+                    wpWidth = claddingWidthRibModular_Roof / (pback4_top.Y - pfront4_top.Y);
+                    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                    brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                    material_Roof = new DiffuseMaterial(brushRoof);
+                }
 
                 // Roof - Left Side
                 model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pfront4_top, pback4_top, pback3_heightleft, pfront3_heightleft }, 0).CreateArea(bUseTextures, material_Roof));
