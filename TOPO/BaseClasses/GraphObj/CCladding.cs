@@ -89,14 +89,7 @@ namespace BaseClasses.GraphObj
 
             if (bUseTextures)
             {
-                // TODO Ondrej - potrebujeme nejako prepocitat faktor pre pomer absolutnej a relativnej velkosti
-                // Nejako som to urobil prosim o kontrolu (pripadne dorobit alternativu pre absolutne zadavanie)
-
-                // Obrazok textury ma a = 213.9 x 213.9 mm. velkost v pixeloch je c = 800 x 800 pxs, 3.74 pxs / mm
-                // Povedzme ze osova vzialenost rebier plechu je b = 130 mm
-                // Ak chceme na budove dlzky 10000 mm vykreslit 77 vln (textur), tak bude velkost strany Rect 130/10000
-                // Ak chceme mat vlny (sekvencie textur) rovnako velke bez ohladu na rozmery musime pouzit absolutne vykreslovanie alebo pre kazdu plochu (ktora ma inak dlhu zakladnu pre kreslenie textury)
-                // vypocitat specificky pomer
+                // Obrazok textury ma a = 213.9 x 213.9 mm. velkost v pixeloch je b = 800 x 800 pxs, tj. 3.74 pxs / mm
 
                 //ImageBrush brush = new ImageBrush();
                 //brush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
