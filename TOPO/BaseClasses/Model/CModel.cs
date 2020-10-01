@@ -119,8 +119,8 @@ namespace BaseClasses
 
         // 3D Objects
         public List<CCladding> m_arrGOCladding;
-        public CStructure_Window[] m_arrGOStrWindows;
-        public CStructure_Door[] m_arrGOStrDoors;
+        public List<CStructure_Window> m_arrGOStrWindows;
+        public List<CStructure_Door> m_arrGOStrDoors;
 
         // Group of structure parts / components - each of them has its own member list
         public List<CMemberGroup> listOfModelMemberGroups;
@@ -206,7 +206,7 @@ namespace BaseClasses
             //m_arrMembers = new CMember[iMemNum];
             m_arrGOAreas = new CArea[iAreaNum];
             m_arrGOVolumes = new CVolume[iVolumeNum];
-            m_arrGOStrWindows = new CStructure_Window[iWindNum];
+            m_arrGOStrWindows = new List<CStructure_Window>(iWindNum);
         }
 
         //Funkcia vytvori Dictionary z rovnakych Members - kriterium je tu (FLength, CrScStart.GetType().Name, CrScEnd.GetType().Name)

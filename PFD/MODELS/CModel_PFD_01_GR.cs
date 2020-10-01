@@ -1593,10 +1593,10 @@ namespace PFD
 
                 BaseClasses.GraphObj.CStructure_Door door1 = new BaseClasses.GraphObj.CStructure_Door(0, 1,
                    pControlEdgePoint, _pfdVM.DoorBlocksProperties[0].fDoorsWidth, _pfdVM.DoorBlocksProperties[0].fDoorsHeight, fRollerDoorFrameThickness,
-                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Roller Door Trimmer")).CoatingColor.CodeHEX))),
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "Roller Door Trimmer")).CoatingColor.CodeHEX))),
                    new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[0].CoatingColor.CodeHEX))), fPanelThickness, fRotationZDegrees, true, 0f);
 
-                m_arrGOStrDoors = new BaseClasses.GraphObj.CStructure_Door[1] { door1 };
+                m_arrGOStrDoors = new List<BaseClasses.GraphObj.CStructure_Door>(1) { door1 };
             }
             #endregion
 
@@ -1620,16 +1620,16 @@ namespace PFD
 
                 BaseClasses.GraphObj.CStructure_Window window1 = new BaseClasses.GraphObj.CStructure_Window(0, EWindowShapeType.eClassic, 1,
                    pControlEdgePoint, _pfdVM.WindowBlocksProperties[0].fWindowsWidth, _pfdVM.WindowBlocksProperties[0].fWindowsHeight, fWindowFrameThickness,
-                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Window")).CoatingColor.CodeHEX))),
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "Window")).CoatingColor.CodeHEX))),
                    new DiffuseMaterial(Brushes.LightBlue), fPanelThickness, fRotationZDegrees, true, 0f);
 
                 fRotationZDegrees = 0f;
                 BaseClasses.GraphObj.CStructure_Window window2_temp = new BaseClasses.GraphObj.CStructure_Window(1, EWindowShapeType.eClassic, 3,
                    new Point3D(2, -0.15, 1.2f), 1.5f / 3.0f, 0.95f, fWindowFrameThickness,
-                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(i => i.Name == "Window")).CoatingColor.CodeHEX))),
+                   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "Window")).CoatingColor.CodeHEX))),
                    new DiffuseMaterial(Brushes.LightBlue), fPanelThickness, 0f, true, 0f);
 
-                m_arrGOStrWindows = new BaseClasses.GraphObj.CStructure_Window[2] { window1, window2_temp };
+                m_arrGOStrWindows = new List<BaseClasses.GraphObj.CStructure_Window>(2) { window1, window2_temp };
             }
             #endregion
         }

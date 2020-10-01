@@ -2102,7 +2102,7 @@ namespace BaseClasses
             if (cmodel.m_arrGOStrWindows != null) // Some windows exist
             {
                 // Model Groups of Windows
-                for (int i = 0; i < cmodel.m_arrGOStrWindows.Length; i++)
+                for (int i = 0; i < cmodel.m_arrGOStrWindows.Count; i++)
                 {
                     if (cmodel.m_arrGOStrWindows[i] != null &&
                         cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
@@ -2122,7 +2122,7 @@ namespace BaseClasses
             if (cmodel.m_arrGOStrDoors != null) // Some doors exist
             {
                 // Model Groups of Doors
-                for (int i = 0; i < cmodel.m_arrGOStrDoors.Length; i++)
+                for (int i = 0; i < cmodel.m_arrGOStrDoors.Count; i++)
                 {
                     if (cmodel.m_arrGOStrDoors[i] != null &&
                         cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&

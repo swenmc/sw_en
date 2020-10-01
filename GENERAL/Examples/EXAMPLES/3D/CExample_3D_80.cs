@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using System.Collections.Generic;
 
 namespace Examples
 {
@@ -21,7 +22,7 @@ namespace Examples
             //m_arrGOLines = new BaseClasses.GraphObj.CLine[21];
             m_arrGOAreas = new BaseClasses.GraphObj.CArea[0];
             m_arrGOVolumes = new BaseClasses.GraphObj.CVolume[434];
-            m_arrGOStrWindows = new BaseClasses.GraphObj.CStructure_Window[16];
+            m_arrGOStrWindows = new List<BaseClasses.GraphObj.CStructure_Window>(16);
 
             m_arrMat = new CMat[1];
             //m_arrCrSc = new CRSC.CCrSc[1];

@@ -124,7 +124,7 @@ namespace PFD
             //m_arrMembers = new CMember[iMemNum];
             m_arrGOAreas = new CArea[iAreaNum];
             m_arrGOVolumes = new CVolume[iVolumeNum];
-            m_arrGOStrWindows = new CStructure_Window[iWindNum];
+            m_arrGOStrWindows = new List<CStructure_Window>(iWindNum);
         }
     }
 }
