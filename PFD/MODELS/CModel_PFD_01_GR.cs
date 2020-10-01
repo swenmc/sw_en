@@ -1555,7 +1555,7 @@ namespace PFD
             double column_crsc_y_minus = ((CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF]).y_min;
             double column_crsc_y_plus = ((CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF]).y_max;
 
-            double additionalOffset = 0.050;  // 50 mm (40 mm pre fasadny plech, ten ma odsadenie 10 mm)
+            double additionalOffset = 0.080;  // 80 mm (70 mm pre fasadny plech, ten ma odsadenie 10 mm)
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
             column_crsc_y_minus -= additionalOffset;
