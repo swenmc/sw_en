@@ -298,7 +298,7 @@ namespace PFD
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iMainColumnFlyBracing_EveryXXGirt = sGeometryInputData.iMainColumnFlyBracingEveryXXGirt;
             else
-            {                
+            {
                 iMainColumnFlyBracing_EveryXXGirt = Math.Max(0, (int)(L1_Bays[0] / fDist_Girt));
             }
 
@@ -317,8 +317,6 @@ namespace PFD
                 //To Mato: netusim ako to ma byt
                 iRafterFlyBracing_EveryXXPurlin = Math.Max(0, (int)(L1_Bays[0] / fDist_Purlin));
             }
-
-               
 
             // Front and Back Wind Post
             bool bUseFrontColumnFlyBracingPlates = true; // Use fly bracing plates in girt to column joint
@@ -813,20 +811,20 @@ namespace PFD
             // Nodes - Frames
             for (int i = 0; i < iFrameNo; i++)
             {
-                m_arrNodes[i * iFrameNodesNo + 0] = new CNode(i * iFrameNodesNo + 1, 000000, i * GetBaysWidthUntilFrameIndex(i), 00000, 0);
+                m_arrNodes[i * iFrameNodesNo + 0] = new CNode(i * iFrameNodesNo + 1, 000000, GetBaysWidthUntilFrameIndex(i), 00000, 0);
                 m_arrNodes[i * iFrameNodesNo + 0].Name = "Main Column Base Node - left";
                 listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 0]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 0]);
 
-                m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, i * GetBaysWidthUntilFrameIndex(i), fH1_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, GetBaysWidthUntilFrameIndex(i), fH1_frame, 0);
                 m_arrNodes[i * iFrameNodesNo + 1].Name = "Main Column Top Node - left";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 1]);
 
-                m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, fW_frame, i * GetBaysWidthUntilFrameIndex(i), fH2_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, fW_frame, GetBaysWidthUntilFrameIndex(i), fH2_frame, 0);
                 m_arrNodes[i * iFrameNodesNo + 2].Name = "Main Column Top Node - right";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 2]);
 
-                m_arrNodes[i * iFrameNodesNo + 3] = new CNode(i * iFrameNodesNo + 4, fW_frame, i * GetBaysWidthUntilFrameIndex(i), 00000, 0);
+                m_arrNodes[i * iFrameNodesNo + 3] = new CNode(i * iFrameNodesNo + 4, fW_frame, GetBaysWidthUntilFrameIndex(i), 00000, 0);
                 m_arrNodes[i * iFrameNodesNo + 3].Name = "Main Column Base Node - right";
                 listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 3]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 3]);
@@ -1084,7 +1082,7 @@ namespace PFD
                         for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
                         {
                             //task 600
-                            //m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);                            
+                            //m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
                             m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, GetBaysWidthUntilFrameIndex(i) + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
                         }
                     }
@@ -1161,7 +1159,7 @@ namespace PFD
             if (bGeneratePurlinBracing)
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
-                {                    
+                {
                     float fIntermediateSupportSpacingPurlins = L1_Bays[i] / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
 
                     for (int j = 0; j < (iOneRafterPurlinNo + 1 + iLastPurlin); j++) // Left side - eave purlin and purlins

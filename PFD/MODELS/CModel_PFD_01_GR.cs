@@ -280,7 +280,6 @@ namespace PFD
                 //iMainColumnFlyBracing_EveryXXGirt = Math.Max(0, (int)(fL1_frame / fDist_Girt));
                 iMainColumnFlyBracing_EveryXXGirt = Math.Max(0, (int)(L1_Bays[0] / fDist_Girt));
             }
-                
 
             // Rafter fly bracing
             // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
@@ -827,7 +826,6 @@ namespace PFD
 
             // Nodes - Purlins
             i_temp_numberofNodes += bGenerateGirts ? (iGirtNoInOneFrame * iFrameNo) : 0;
-            
 
             if (bGeneratePurlins)
             {
