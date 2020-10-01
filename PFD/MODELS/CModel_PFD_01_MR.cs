@@ -1658,6 +1658,125 @@ namespace PFD
                (Color)ColorConverter.ConvertFromString(_pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).CodeHEX),
                (Color)ColorConverter.ConvertFromString(_pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).CodeHEX), true, 0) };
             #endregion
+
+            ///*******************************************************************************
+            // TODO Ondrej
+            // Toto by sa dalo nejako zabalit a posielat do konstruktora pre CCladding, resp. pouzit pre Door a Windows
+            // Teraz sa niektore veci nacitavaju v CCladding znova
+
+            double claddingThickness_Wall = 0.030; // Dopracovat napojenie z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
+            //double claddingThickness_Roof = 0.060; // Dopracovat napojenie z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
+
+            double column_crsc_z_plus = ((CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF]).z_max;
+            double column_crsc_y_minus = ((CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF]).y_min;
+            double column_crsc_y_plus = ((CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF]).y_max;
+
+            double additionalOffset = 0.080;  // 80 mm (70 mm pre fasadny plech, ten ma odsadenie 10 mm)
+
+            // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
+            column_crsc_y_minus -= additionalOffset;
+            column_crsc_y_plus += additionalOffset;
+            column_crsc_z_plus += additionalOffset;
+            ///*******************************************************************************
+
+            float fPanelThickness = 0.010f; // Hrubka vyplne dveri, resp hrubka skla v okne - 10 mm
+            float fPersonnelDoorFrameThickness = 0.08f; // Rozmer ramu - plati pre stvorec, treba prerobit pre obdlznik, rozmer podla sirky Flashings
+            float fRollerDoorFrameThickness = 0.12f; // Rozmer ramu - plati pre stvorec, treba prerobit pre obdlznik, rozmer podla sirky Flashings
+            float fWindowFrameThickness = 0.1f; // Rozmer ramu - plati pre stvorec, treba prerobit pre obdlznik, rozmer podla sirky Flashings
+
+            #region Doors
+            if (_pfdVM.DoorBlocksProperties != null)
+            {
+                m_arrGOStrDoors = new List<BaseClasses.GraphObj.CStructure_Door>();
+
+                for (int i = 0; i < _pfdVM.DoorBlocksProperties.Count; i++)
+                {
+                    Color doorFlashingColor = Colors.White;
+                    float fDoorFrameThickness = 0;
+
+                    double leftEdge = -column_crsc_z_plus - claddingThickness_Wall;
+                    double frontEdge = column_crsc_y_minus;
+                    double rightEdge = fW_frame + column_crsc_z_plus + claddingThickness_Wall;
+                    double backEdge = fL_tot + column_crsc_y_plus;
+
+                    if (_pfdVM.DoorBlocksProperties[i].sDoorType == "Personnel Door")
+                    {
+                        doorFlashingColor = (Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "PA Door Trimmer")).CoatingColor.CodeHEX);
+                        fDoorFrameThickness = fPersonnelDoorFrameThickness;
+                        leftEdge += fPersonnelDoorFrameThickness;
+                        backEdge -= fPersonnelDoorFrameThickness;
+                    }
+                    else if (_pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door")
+                    {
+                        doorFlashingColor = (Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "Roller Door Trimmer")).CoatingColor.CodeHEX);
+                        fDoorFrameThickness = fRollerDoorFrameThickness;
+                        leftEdge += fRollerDoorFrameThickness;
+                        backEdge -= fRollerDoorFrameThickness;
+                    }
+                    else
+                        throw new Exception("Invalid door type");
+
+                    float fRotationZDegrees = 0f;
+                    Point3D pControlEdgePoint = new Point3D((_pfdVM.DoorBlocksProperties[i].iBayNumber - 1) * fDist_FrontColumns + _pfdVM.DoorBlocksProperties[i].fDoorCoordinateXinBlock, frontEdge, 0);
+
+                    if (_pfdVM.DoorBlocksProperties[i].sBuildingSide == "Back")
+                        pControlEdgePoint.Y = backEdge;
+
+                    if (_pfdVM.DoorBlocksProperties[i].sBuildingSide == "Left" || _pfdVM.DoorBlocksProperties[i].sBuildingSide == "Right")
+                    {
+                        fRotationZDegrees = 90f;
+                        pControlEdgePoint = new Point3D(leftEdge, GetBaysWidthUntilFrameIndex(_pfdVM.DoorBlocksProperties[i].iBayNumber - 1) + _pfdVM.DoorBlocksProperties[i].fDoorCoordinateXinBlock, 0);
+
+                        if (_pfdVM.DoorBlocksProperties[i].sBuildingSide == "Right")
+                            pControlEdgePoint.X = rightEdge;
+                    }
+
+                    BaseClasses.GraphObj.CStructure_Door door_temp = new BaseClasses.GraphObj.CStructure_Door(i + 1, 1,
+                       pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness,
+                       new DiffuseMaterial(new SolidColorBrush(doorFlashingColor)),
+                       new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX))), fPanelThickness, fRotationZDegrees, true, 0f);
+
+                    m_arrGOStrDoors.Add(door_temp);
+                }
+            }
+            #endregion
+
+            #region Windows
+            if (_pfdVM.WindowBlocksProperties != null)
+            {
+                m_arrGOStrWindows = new List<BaseClasses.GraphObj.CStructure_Window>();
+
+                for (int i = 0; i < _pfdVM.WindowBlocksProperties.Count; i++)
+                {
+                    double leftEdge = -column_crsc_z_plus - claddingThickness_Wall + fWindowFrameThickness;
+                    double frontEdge = column_crsc_y_minus;
+                    double rightEdge = fW_frame + column_crsc_z_plus + claddingThickness_Wall;
+                    double backEdge = fL_tot + column_crsc_y_plus - fWindowFrameThickness;
+
+                    float fRotationZDegrees = 0f;
+                    Point3D pControlEdgePoint = new Point3D((_pfdVM.WindowBlocksProperties[i].iBayNumber - 1) * fDist_FrontColumns + _pfdVM.WindowBlocksProperties[i].fWindowCoordinateXinBay, frontEdge, _pfdVM.WindowBlocksProperties[i].fWindowCoordinateZinBay);
+
+                    if (_pfdVM.WindowBlocksProperties[i].sBuildingSide == "Back")
+                        pControlEdgePoint.Y = backEdge;
+
+                    if (_pfdVM.WindowBlocksProperties[i].sBuildingSide == "Left" || _pfdVM.WindowBlocksProperties[i].sBuildingSide == "Right")
+                    {
+                        fRotationZDegrees = 90f;
+                        pControlEdgePoint = new Point3D(leftEdge, GetBaysWidthUntilFrameIndex(_pfdVM.WindowBlocksProperties[i].iBayNumber - 1) + _pfdVM.WindowBlocksProperties[i].fWindowCoordinateXinBay, _pfdVM.WindowBlocksProperties[i].fWindowCoordinateZinBay);
+
+                        if (_pfdVM.WindowBlocksProperties[i].sBuildingSide == "Right")
+                            pControlEdgePoint.X = rightEdge;
+                    }
+
+                    BaseClasses.GraphObj.CStructure_Window window_temp = new BaseClasses.GraphObj.CStructure_Window(i + 1, EWindowShapeType.eClassic, _pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1,
+                       pControlEdgePoint, _pfdVM.WindowBlocksProperties[i].fWindowsWidth / (_pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1), _pfdVM.WindowBlocksProperties[i].fWindowsHeight, fWindowFrameThickness,
+                       new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "Window")).CoatingColor.CodeHEX))),
+                       new DiffuseMaterial(Brushes.LightBlue), fPanelThickness, fRotationZDegrees, true, 0f);
+
+                    m_arrGOStrWindows.Add(window_temp);
+                }
+            }
+            #endregion
         }
 
         public override void CalculateLoadValuesAndGenerateLoads(
