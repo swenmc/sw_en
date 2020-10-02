@@ -61,7 +61,7 @@ namespace PFD.Infrastructure
                 PathPoints.Add(points[model._tour.GetCities()[i]]);
             }
 
-            plate.DrillingRoutePoints = PathPoints;            
+            plate.DrillingRoutePoints = PathPoints;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -77,8 +77,5 @@ namespace PFD.Infrastructure
         {
             stub.EndInvoke(call);
         }
-
-
-
     }
 }

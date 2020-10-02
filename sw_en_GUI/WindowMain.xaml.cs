@@ -1041,6 +1041,7 @@ namespace sw_en_GUI
 
             sDisplayOptions.bDisplayGlobalAxis = true;
             sDisplayOptions.bDisplayMembersCenterLines = true;
+            sDisplayOptions.bDisplayLocalMembersAxis = true;
 
             sDisplayOptions.memberCenterlineColor = Colors.Yellow;
             sDisplayOptions.fmemberCenterlineThickness = 1;
