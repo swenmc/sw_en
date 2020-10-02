@@ -196,6 +196,12 @@ namespace PFD
 
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility(); } return; }
 
+                if (e.PropertyName == "RoofCladdingColorIndex" || e.PropertyName == "WallCladdingColorIndex"
+                    || e.PropertyName == "RoofCladdingCoatingIndex" || e.PropertyName == "WallCladdingCoatingIndex")
+                {
+                    vm.RecreateModel = true;
+                }
+
                 //if (e.PropertyName == "DoorBlocksProperties_Add") { vm.RecreateJoints = true; }
                 //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged") { vm.RecreateJoints = true; }
                 //if (e.PropertyName == "WindowBlocksProperties_Add") { vm.RecreateJoints = true; }
@@ -203,10 +209,20 @@ namespace PFD
             }
             else if (sender is CAccessories_LengthItemProperties)
             {
-                //only reset quotation do not regenerate model
-                vm.RecreateQuotation = true;
-                //Quotation.Content = null;
-                return;
+                //todo flashings
+                if (e.PropertyName == "CoatingColor")
+                {                    
+                    vm.RecreateModel = true; vm.RecreateQuotation = true;
+                }
+                else
+                {
+                    //only reset quotation do not regenerate model
+                    vm.RecreateQuotation = true;
+                    //Quotation.Content = null;
+                    return;
+                }
+
+                
             }
             else if (sender is CAccessories_DownpipeProperties)
             {
@@ -244,15 +260,23 @@ namespace PFD
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "Series") return;
                 if (e.PropertyName == "Serie") return;
-                if (e.PropertyName == "SerieEnabled") return;
-                if (e.PropertyName == "CoatingColor") return;
+                if (e.PropertyName == "SerieEnabled") return;                
+                
                 DoorProperties doorProperties = sender as DoorProperties;
                 if (doorProperties.IsSetFromCode) return;
 
-                Datagrid_DoorsAndGates_SelectionChanged(null, null);
-                vm.RecreateModel = true;
-                vm.RecreateJoints = true;
-                vm.RecreateFloorSlab = true;
+                if (e.PropertyName == "CoatingColor")
+                {
+                    //recreate model after color changed
+                    vm.RecreateModel = true;        
+                }
+                else
+                {
+                    Datagrid_DoorsAndGates_SelectionChanged(null, null);
+                    vm.RecreateModel = true;
+                    vm.RecreateJoints = true;
+                    vm.RecreateFloorSlab = true;
+                }
             }
             else if (sender is WindowProperties)
             {
@@ -988,8 +1012,14 @@ namespace PFD
                 //vm.Flashings = null;
                 //vm.Gutters = null;
                 //vm.Downpipes = null;
-                vm.SetDefaultFlashings();
-                vm.SetDefaultDownpipes();
+
+                //toto sa ma udiat iba ak sa menila nejaka property z modelu, rozmer a podobne
+                if (vm.RecreateJoints)
+                {
+                    vm.SetDefaultFlashings();
+                    vm.SetDefaultDownpipes();
+                }
+                
             }
 
 

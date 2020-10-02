@@ -3238,7 +3238,11 @@ namespace PFD
                     SetResultsAreNotValid();
                     SetComponentListAccordingToDoors();
                 }
-                else if (e.PropertyName == "CoatingColor" || e.PropertyName == "Series" || e.PropertyName == "Series")
+                else if(e.PropertyName == "CoatingColor")
+                {
+                    //SetResultsAreNotValid(); //regenerate after change
+                }
+                else if (e.PropertyName == "Series" || e.PropertyName == "Series")
                 {
                     return;
                 }
