@@ -63,7 +63,13 @@ namespace BaseClasses
             // Tuto skupinu skrutiek (cele screw arrangement_CB) potrebujeme podobne ako to robime u plates otocit a umiestnit v ramci spoja v LCS pruta na zaciatok a na koniec podla toho na ktorom uzle pruta sa spoj nachadza
             // Mali by sme k tomu pouzit ControlPoint_P1 a RotationVector_P1
 
+            // Asi by to malo fungovat tak, že objekt CConnectorArrangement, resp. CScrewArrangement bude mať pre 3D transformačné funkcie podobné ako CPlate
+            // Tomuto objektu by sa potom nastavoval ControlPoint_P1 a RotationVector_P1 a podla tohto by sa transformovali vsetci Screws ktore su sucastou objektu, resp. vsetkych jeho groups a ich sekvencii
+            // Treba si vsak uvedomit ze CScrewArrangement ako take nie je realny 3D utvar, ale len zdruzuje jednotlive realne CScrews, aby sa s nimi dalo pracovat ako s jednou skupinkou
 
+            // Alebo potrebujeme vytvorit nejaky zastupny objekt, nieco ako virtualPlate v ramci ktoreho sa budu Screws vykreslovat a transformovat ako celok, hoci objekt by realne vlastne neexistoval
+
+            // Tretou moznostou je, ze CScrewArrangement by patrilo pod CMember ktory je pripajany, ale tu je problem ze U001 sa priradzuje CMember, takze by sa to asi cyklilo
 
 
             m_arrConnectors = new CConnector[iConnectorNumber];
