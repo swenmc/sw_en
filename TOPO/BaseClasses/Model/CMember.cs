@@ -136,6 +136,13 @@ namespace BaseClasses
             get { return eMemberType_DB; }
             set { eMemberType_DB = value; }
         }
+        private EMemberType_FEM eMemberType_FEM;
+
+        public EMemberType_FEM EMemberType_FEM
+        {
+            get { return eMemberType_FEM; }
+            set { eMemberType_FEM = value; }
+        }
 
         // Priemet do osi GCS - rozdiel suradnic v GCS
         private double dDelta_X;
@@ -530,6 +537,11 @@ namespace BaseClasses
 
             // Set as default property that member is calculated
             m_bIsSelectedForIFCalculation = true;
+            // Set FEM type
+            if (component.ComponentPrefix != "CB")
+                eMemberType_FEM = EMemberType_FEM.General;
+            else
+                eMemberType_FEM = EMemberType_FEM.Tension; // Cross-bracing
         }
 
         public void SetStartPoint3DCoord()

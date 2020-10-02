@@ -485,6 +485,27 @@ namespace BaseClasses
     // TODO - Ondrej TOTO je asi zbytocna duplicita
     // EMemberType_FS_Position a EMemberGroupNames by sme mali zlucit
 
+    public enum EMemberType_FEM
+    {
+        General = 1,
+        Column = 2,
+        Beam = 3,
+        BeamColumn = 4,
+        Cable = 5,
+        Tendon = 6,
+        Truss = 7,
+        Tension = 8,
+        Compression = 9,
+        OnSubsoil = 10,
+        Rigid = 11,
+        Spring = 12,
+        Coupling_RigidRigid = 13,
+        Coupling_RigidHinge = 14,
+        Coupling_HingeRigid = 15,
+        Coupling_HingeHinge = 16,
+        Dummy_Null = 17
+    }
+
     public enum EMemberGroupNames
     {
         eMainColumn = 0,    // Internal frame
