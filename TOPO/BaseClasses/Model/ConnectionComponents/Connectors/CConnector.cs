@@ -272,7 +272,7 @@ namespace BaseClasses
 
         public override GeometryModel3D CreateGeomModel3DWithTexture()
         {
-            throw new Exception("Not implemented");            
+            throw new Exception("Not implemented");
         }
 
         /*

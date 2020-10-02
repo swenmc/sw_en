@@ -55,6 +55,17 @@ namespace BaseClasses
             sa.Calc_HolesControlPointsCoord3D_FlatPlate(0.02f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.t_min, false);
             sa.GenerateConnectors_FlatPlate(false);
 
+            // TODO Ondrej - Task 616
+
+            // Vytvorili sme objekty skrutiek v 3D - vid trieda CConnector
+            // Takto vygenerovane skrutky smeruju v smere LCS z
+
+            // Tuto skupinu skrutiek (cele screw arrangement_CB) potrebujeme podobne ako to robime u plates otocit a umiestnit v ramci spoja v LCS pruta na zaciatok a na koniec podla toho na ktorom uzle pruta sa spoj nachadza
+            // Mali by sme k tomu pouzit ControlPoint_P1 a RotationVector_P1
+
+
+
+
             m_arrConnectors = new CConnector[iConnectorNumber];
 
             // Nakopirujeme skrutky z screw arrangement do pola skrutiek patriacich priamo do jointu (mozno by sa to mohlo zjednotit s tym ze v jointe nebude pole connectors ale priamo connector arrangement)
