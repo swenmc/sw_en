@@ -1722,9 +1722,13 @@ namespace BaseClasses
                                 cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].m_pControlPoint != null &&
                                 cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
                                 {
-                                    JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].CreateGeomModel3D(brushScrews)); // Add bolt 3D model to the model group
+                                    GeometryModel3D connectorModel3D = cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].CreateGeomModel3D(brushScrews);
+                                    //connectorModel3D.Transform = cmodel.m_arrConnectionJoints[i].CreateTransformCoordGroup(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers.First());
+                                    JointModelGroup.Children.Add(connectorModel3D); // Add bolt 3D model to the model group
                                 }
                             }
+                            //pokusy
+                            //cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
                         }
 
                         // Welds
