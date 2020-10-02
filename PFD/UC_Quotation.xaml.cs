@@ -701,13 +701,14 @@ namespace PFD
             //-----------------------------------------------------------------------------
             // TODO Ondrej - Toto treba refaktorovat s MainWindow.xaml.cs
             // TODO 438
-            CTS_CrscProperties prop_RoofCladding;
-            CTS_CrscProperties prop_WallCladding;
+            CTS_CrscProperties prop_RoofCladding = vm.RoofCladdingProps;
+            CTS_CrscProperties prop_WallCladding = vm.WallCladdingProps;
             CTS_CoilProperties prop_RoofCladdingCoil;
             CTS_CoilProperties prop_WallCladdingCoil;
             CoatingColour prop_RoofCladdingColor;
             CoatingColour prop_WallCladdingColor;
-            vm.GetCTS_CoilProperties(out prop_RoofCladding, out prop_WallCladding, out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            vm.GetCTS_CoilProperties(/*out prop_RoofCladding, out prop_WallCladding, */out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            
             //List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
             //CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
             //prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{vm.RoofCladdingThickness}");

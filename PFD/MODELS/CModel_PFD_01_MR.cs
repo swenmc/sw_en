@@ -1656,7 +1656,8 @@ namespace PFD
             #region Cladding
             m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF],
                (Color)ColorConverter.ConvertFromString(_pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).CodeHEX),
-               (Color)ColorConverter.ConvertFromString(_pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).CodeHEX), true, 0) };
+               (Color)ColorConverter.ConvertFromString(_pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).CodeHEX), true, 0, 
+               _pfdVM.WallCladdingProps.height_m, _pfdVM.RoofCladdingProps.height_m, _pfdVM.WallCladdingProps.widthRib_m, _pfdVM.RoofCladdingProps.widthRib_m) };
             #endregion
 
             ///*******************************************************************************

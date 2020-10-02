@@ -15,11 +15,11 @@ namespace BaseClasses.GraphObj
         BuildingGeometryDataInput sBuildingGeomInputData;
 
         // TODO Ondrej
-        double claddingThickness_Wall = 0.030; // Dopracovat napojenie z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
-        double claddingThickness_Roof = 0.060; // Dopracovat napojenie z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
+        double claddingThickness_Wall = 0.030; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
+        double claddingThickness_Roof = 0.060; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
 
-        double claddingWidthRibModular_Wall = 0.190; // m // Dopracovat napojenie z databazy cladding MDBTrapezoidalSheeting widthRib_m
-        double claddingWidthRibModular_Roof = 0.300; // m // Dopracovat napojenie z databazy cladding MDBTrapezoidalSheeting widthRib_m
+        double claddingWidthRibModular_Wall = 0.190; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
+        double claddingWidthRibModular_Roof = 0.300; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
 
         double column_crsc_z_plus;
         double column_crsc_y_minus;
@@ -35,7 +35,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 2
         public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData, CRSC.CCrSc_TW columnSection,
-            Color colorWall, Color colorRoof, bool bIsDisplayed, int fTime)
+            Color colorWall, Color colorRoof, bool bIsDisplayed, int fTime, double wallCladdingThickness, double roofCladdingThickness, double wallCladdingWidthRib, double roofCladdingWidthRib)
         {
             ID = iCladding_ID;
             eModelType = modelType_FS;
@@ -47,6 +47,11 @@ namespace BaseClasses.GraphObj
             m_ColorRoof = colorRoof;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
+
+            claddingThickness_Wall = wallCladdingThickness;
+            claddingThickness_Roof = roofCladdingThickness;
+            claddingWidthRibModular_Wall = wallCladdingWidthRib;
+            claddingWidthRibModular_Roof = roofCladdingWidthRib;
         }
 
         public Model3DGroup GetCladdingModel(bool bUseTextures = false)

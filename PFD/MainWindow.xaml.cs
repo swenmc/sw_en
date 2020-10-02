@@ -602,13 +602,13 @@ namespace PFD
             // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
 
             //-----------------------------------------------------------------------------            
-            CTS_CrscProperties prop_RoofCladding;
-            CTS_CrscProperties prop_WallCladding;
+            CTS_CrscProperties prop_RoofCladding = vm.RoofCladdingProps;
+            CTS_CrscProperties prop_WallCladding = vm.WallCladdingProps;
             CTS_CoilProperties prop_RoofCladdingCoil;
             CTS_CoilProperties prop_WallCladdingCoil;
             CoatingColour prop_RoofCladdingColor;
             CoatingColour prop_WallCladdingColor;
-            vm.GetCTS_CoilProperties(out prop_RoofCladding, out prop_WallCladding, out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            vm.GetCTS_CoilProperties(/*out prop_RoofCladding, out prop_WallCladding, */out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
 
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);

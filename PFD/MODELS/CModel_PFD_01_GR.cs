@@ -1539,16 +1539,13 @@ namespace PFD
             #region Cladding
             m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset, sGeometryInputData, (CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF],
                (Color)ColorConverter.ConvertFromString(_pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).CodeHEX),
-               (Color)ColorConverter.ConvertFromString(_pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).CodeHEX), true, 0) };
+               (Color)ColorConverter.ConvertFromString(_pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).CodeHEX), true, 0,
+               _pfdVM.WallCladdingProps.height_m, _pfdVM.RoofCladdingProps.height_m, _pfdVM.WallCladdingProps.widthRib_m, _pfdVM.RoofCladdingProps.widthRib_m) };
             #endregion
 
-            ///*******************************************************************************
-            // TODO Ondrej
-            // Toto by sa dalo nejako zabalit a posielat do konstruktora pre CCladding, resp. pouzit pre Door a Windows
-            // Teraz sa niektore veci nacitavaju v CCladding znova
+            double claddingThickness_Wall = _pfdVM.WallCladdingProps.height_m;  // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
+            //double claddingThickness_Roof = _pfdVM.RoofCladdingProps.height_m;  // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
 
-            double claddingThickness_Wall = 0.030; // Dopracovat napojenie z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
-            //double claddingThickness_Roof = 0.060; // Dopracovat napojenie z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
 
             double column_crsc_z_plus = ((CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF]).z_max;
             double column_crsc_y_minus = ((CCrSc_TW)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF]).y_min;
