@@ -12,6 +12,9 @@ namespace BaseClasses
 {
     public class CConnectionJoint_U001 : CConnectionJointTypes
     {
+        Point3D ControlPoint_P1;
+        Vector3D RotationVector_P1;
+
         // Cross Bracing to Main Column / Edge Column / Main Rafter / Edge Rafter / Purlin ???
 
         public CConnectionJoint_U001() { }
@@ -37,8 +40,8 @@ namespace BaseClasses
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
-            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
-            Vector3D RotationVector_P1 = new Vector3D(90, 0, 0);
+            ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
+            RotationVector_P1 = new Vector3D(90, 0, 0);
 
             int iConnectorNumber = 4;
 
@@ -110,8 +113,8 @@ namespace BaseClasses
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
-            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
-            Vector3D RotationVector_P1 = new Vector3D(90, 0, 0);
+            ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
+            RotationVector_P1 = new Vector3D(90, 0, 0);
 
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
@@ -123,5 +126,28 @@ namespace BaseClasses
                 RotationVector_P1 = new Vector3D(90, 0, 180 + 0);
             }
         }
+
+        public Transform3DGroup CreateTransformCoordGroup()
+        {
+            // Rotate Plate from its cs to joint cs system in LCS of member or GCS
+            RotateTransform3D RotateTrans3D_AUX_X = new RotateTransform3D();
+            RotateTransform3D RotateTrans3D_AUX_Y = new RotateTransform3D();
+            RotateTransform3D RotateTrans3D_AUX_Z = new RotateTransform3D();
+
+            RotateTrans3D_AUX_X.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), RotationVector_P1.X); // Rotation in degrees
+            RotateTrans3D_AUX_Y.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), RotationVector_P1.Y); // Rotation in degrees
+            RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), RotationVector_P1.Z); // Rotation in degrees
+
+            // Move 0,0,0 to control point in LCS of member or GCS
+            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(ControlPoint_P1.X, ControlPoint_P1.Y, ControlPoint_P1.Z);
+
+            Transform3DGroup Trans3DGroup = new Transform3DGroup();
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_X);
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_Y);
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_Z);
+            Trans3DGroup.Children.Add(Translate3D_AUX);
+            return Trans3DGroup;
+        }
+        
     }
 }
