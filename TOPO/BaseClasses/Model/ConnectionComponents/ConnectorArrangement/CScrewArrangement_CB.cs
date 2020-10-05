@@ -21,12 +21,13 @@ namespace BaseClasses
         public void Calc_HolesCentersCoord2D(float fhY, float fx_edge, float fy_edge, float fx/*, float fy*/)
         {
             /*
-            float fx_edge = 0.02f;  // x-direction
+            float fx_edge = 0.03f;  // x-direction
             float fy_edge = 0.02f;  // y-direction
             float fx = 0.06f;  // x-direction
             float fy = 0.06f;  // y-direction
             */
 
+            // TODO - urobit toto dynamicke, aby sa generovalo podla rect screw arrangement - rovnake alebo rozne vzdialenosti medzi jednotlivymi radmi alebo stlpcami skrutiek
             if (IHolesNumber > 0)
             {
                 HolesCentersPoints2D = new Point[IHolesNumber];
@@ -38,6 +39,10 @@ namespace BaseClasses
                 HolesCentersPoints2D[2] = new Point(fx_edge + fx, fy_edge);
 
                 HolesCentersPoints2D[3] = new Point(fx_edge + fx, fhY - fy_edge);
+
+                HolesCentersPoints2D[4] = new Point(fx_edge + 2*fx, fy_edge);
+
+                HolesCentersPoints2D[5] = new Point(fx_edge + 2*fx, fhY - fy_edge);
             }
         }
     }

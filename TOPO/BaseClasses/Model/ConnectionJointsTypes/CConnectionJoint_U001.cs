@@ -40,23 +40,23 @@ namespace BaseClasses
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
-            ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
+            ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z);
             RotationVector_P1 = new Vector3D(90, 0, 0);
 
-            int iConnectorNumber = 4;
+            int iConnectorNumber = 6;
 
             CScrew referenceScrew = new CScrew("TEK", "14");
 
-            CScrewRectSequence seq = new CScrewRectSequence(2, 2, 0.02f, 0.02f, 0.06f, 0.6f); // Create rectangular sequence of screws
+            CScrewRectSequence seq = new CScrewRectSequence(3, 2, 0.03f, 0.02f, 0.06f, 0.10f); // Create rectangular sequence of screws
             CScrewSequenceGroup gr = new CScrewSequenceGroup();
             gr.ListSequence.Add(seq); // Add screw sequence to screw group
             CScrewArrangement_CB sa = new CScrewArrangement_CB(iConnectorNumber, referenceScrew);
             sa.ListOfSequenceGroups = new List<CScrewSequenceGroup>(1) {gr}; // Add screw group to screw arrangement
 
-            sa.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.02f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
+            sa.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.03f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
             sa.arrConnectorControlPoints3D = new Point3D[sa.IHolesNumber];
-            sa.Calc_HolesControlPointsCoord3D_FlatPlate(0.02f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.t_min, false);
-            sa.GenerateConnectors_FlatPlate(false);
+            sa.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, /*0.03f, 0.02f,*/ (float)m_SecondaryMembers[0].CrScStart.t_min, true);
+            sa.GenerateConnectors_FlatPlate(true);
 
             // TODO Ondrej - Task 616
 
@@ -90,8 +90,8 @@ namespace BaseClasses
                     fAlignment_x = -m_SecondaryMembers[0].FAlignment_End;
 
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
-                RotationVector_P1 = new Vector3D(90, 0, 180 + 0);
+                ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
+                RotationVector_P1 = new Vector3D(180 + 90, 0, 180 + 0);
             }
         }
 
@@ -113,7 +113,7 @@ namespace BaseClasses
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
-            ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*-0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
+            ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z);
             RotationVector_P1 = new Vector3D(90, 0, 0);
 
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -122,8 +122,8 @@ namespace BaseClasses
                     fAlignment_x = -m_SecondaryMembers[0].FAlignment_End;
 
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ + flocaleccentricity_z);
-                RotationVector_P1 = new Vector3D(90, 0, 180 + 0);
+                ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
+                RotationVector_P1 = new Vector3D(180 + 90, 0, 180 + 0);
             }
         }
 
