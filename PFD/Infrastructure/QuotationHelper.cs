@@ -608,13 +608,23 @@ namespace PFD
                     }
                 }
 
-                if(joint.m_arrConnectors != null && joint.m_arrConnectors.Length > 0)
+                if(joint.ConnectorGroups != null && joint.ConnectorGroups.Count > 0)
                 {
-                    // Screws
-                    if (joint.m_arrConnectors.FirstOrDefault() is CScrew) // Nemalo by sa posuzovat podla prveho objektu, mozu tam byt rozne, ale zatial to necham tak. Mal to byt cyklus cez vsetky polozky a roztriedit ich podla typu
-                        QuotationHelper.AddConnector(joint.m_arrConnectors.FirstOrDefault(), quotation, joint.m_arrConnectors.Length);
-                    else
-                        throw new Exception("Not implemented type of connector.");
+                    CConnector screw = null;
+                    int screwsCount = 0;
+                    foreach (CConnectorGroup connectorGroup in joint.ConnectorGroups)
+                    {
+                        foreach (CConnector connector in connectorGroup.Connectors)
+                        {
+                            // Screws
+                            if (connector is CScrew) // TODO Nemalo by sa posuzovat podla prveho objektu, mozu tam byt rozne, ale zatial to necham tak. Mal to byt cyklus cez vsetky polozky a roztriedit ich podla typu
+                            {
+                                screw = connector;                                
+                            }
+                            else throw new Exception("Not implemented type of connector.");
+                        }                        
+                    }
+                    if(screw != null) QuotationHelper.AddConnector(screw, quotation, screwsCount);
                 }
             }
 

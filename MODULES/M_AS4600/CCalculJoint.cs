@@ -112,7 +112,7 @@ namespace M_AS4600
                 throw new ArgumentNullException("Error " + "Joint No: " + joint_temp.ID + " Main member is not defined.");
 
             // Check that some connector or plates and connectors are defined
-            if (joint_temp.m_arrConnectors == null && (joint_temp.m_arrPlates == null || joint_temp.m_arrPlates.Length == 0))
+            if (joint_temp.ConnectorGroups == null && (joint_temp.m_arrPlates == null || joint_temp.m_arrPlates.Length == 0))
                 throw new ArgumentNullException("Error " + "Joint No: " + joint_temp.ID + " The connectors or plates and connectors are not defined.");
 
             // Plate / plates properties
@@ -140,10 +140,10 @@ namespace M_AS4600
                 ff_yk_1_plate = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness((float)ft_1_plate);
                 ff_uk_1_plate = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness((float)ft_1_plate);
             }
-            else if (joint_temp.m_arrConnectors != null && joint_temp.m_arrConnectors.Length > 0)
+            else if (joint_temp.ConnectorGroups != null && joint_temp.ConnectorGroups.Count > 0)
             {
-                if(joint_temp.m_arrConnectors[0] is CScrew)
-                   screw = (CScrew)joint_temp.m_arrConnectors[0];
+                if(joint_temp.ConnectorGroups[0].Connectors[0] is CScrew)
+                   screw = (CScrew)joint_temp.ConnectorGroups[0].Connectors[0];
                 else
                     throw new Exception("Invalid connector type. Screw object is expected.");
             }

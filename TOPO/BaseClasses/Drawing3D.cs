@@ -1714,22 +1714,23 @@ namespace BaseClasses
                         // Connectors
                         bool bUseAdditionalConnectors = true; // Spojovacie prvky, ktore nie su viazane na plechy (plates), napr. spoj pomocou screws priamo medzi nosnikmi bez plechu (plate) (teda spoj U001 - tiahla - bracing pripojene priamo k prutom main frame)
 
-                        if (bUseAdditionalConnectors && cmodel.m_arrConnectionJoints[i].m_arrConnectors != null)
+                        if (bUseAdditionalConnectors && cmodel.m_arrConnectionJoints[i].ConnectorGroups != null)
                         {
-                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrConnectors.Length; l++)
+                            foreach (CConnectorGroup connectorGR in cmodel.m_arrConnectionJoints[i].ConnectorGroups)
                             {
-                                if (cmodel.m_arrConnectionJoints[i].m_arrConnectors[l] != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].m_pControlPoint != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
+                                Model3DGroup modelGroup = new Model3DGroup();
+                                foreach (CConnector connector in connectorGR.Connectors)
                                 {
-                                    GeometryModel3D connectorModel3D = cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].CreateGeomModel3D(brushScrews);                                    
-                                    JointModelGroup.Children.Add(connectorModel3D); // Add bolt 3D model to the model group
+                                    if (connector != null &&
+                                        connector.m_pControlPoint != null &&
+                                        connector.BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
+                                    {
+                                        GeometryModel3D connectorModel3D = connector.CreateGeomModel3D(brushScrews);
+                                        modelGroup.Children.Add(connectorModel3D); // Add bolt 3D model to the model group
+                                    }
                                 }
-                            }
-                            if (cmodel.m_arrConnectionJoints[i] is CConnectionJoint_U001)
-                            {
-                                CConnectionJoint_U001 jU001 = cmodel.m_arrConnectionJoints[i] as CConnectionJoint_U001;                                
-                                JointModelGroup.Transform = jU001.CreateTransformCoordGroup();
+                                modelGroup.Transform = connectorGR.CreateTransformCoordGroup();
+                                JointModelGroup.Children.Add(modelGroup);
                             }
                         }
 
@@ -2651,16 +2652,19 @@ namespace BaseClasses
                         // Connectors
                         bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
 
-                        if (bUseAdditionalConnectors && model.m_arrConnectionJoints[i].m_arrConnectors != null)
+                        if (bUseAdditionalConnectors && model.m_arrConnectionJoints[i].ConnectorGroups != null)
                         {
-                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrConnectors.Length; j++)
+                            foreach (CConnectorGroup connectorGroup in model.m_arrConnectionJoints[i].ConnectorGroups)
                             {
-                                // Create WireFrame in LCS
-                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrConnectors[j].CreateWireFrameModel();
+                                foreach (CConnector connector in connectorGroup.Connectors)
+                                {
+                                    // Create WireFrame in LCS
+                                    ScreenSpaceLines3D wireFrame = connector.CreateWireFrameModel();
 
-                                // Rotate from LCS to GCS
-                                // TODO
-                                jointPoints.AddRange(wireFrame.Points);
+                                    // Rotate from LCS to GCS
+                                    // TODO
+                                    jointPoints.AddRange(wireFrame.Points);
+                                }                                
                             }
                         }
 

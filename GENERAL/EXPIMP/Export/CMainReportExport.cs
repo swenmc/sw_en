@@ -2703,12 +2703,14 @@ namespace EXPIMP
                 }
             }
 
-            if(joint.m_arrConnectors != null && joint.m_arrConnectors.Length > 0)
+            if(joint.ConnectorGroups != null && joint.ConnectorGroups.Count > 0)
             {
-                if (joint.m_arrConnectors.FirstOrDefault() is CScrew) // TODO - zobecnit - Nemusia byt vsetky CScrew ani nemusi byt prvy typ CScrew ale zatial nemame ine
+                // TODO - zobecnit - Nemusia byt vsetky CScrew ani nemusi byt prvy typ CScrew ale zatial nemame ine
+                if (joint.ConnectorGroups.First().Connectors.FirstOrDefault() is CScrew) 
                 {
-                    tableParams.Add(new string[2] { "Screws", joint.m_arrConnectors.Length.ToString() + " x " +
-                    "TEKs " + (((CScrew)joint.m_arrConnectors.FirstOrDefault()).Gauge + "g").ToString() + " one side" });
+                    int connectorsCount = joint.ConnectorGroups.Sum(g => g.Connectors.Count);
+                    tableParams.Add(new string[2] { "Screws", connectorsCount + " x " +
+                    "TEKs " + (((CScrew)joint.ConnectorGroups.First().Connectors.FirstOrDefault()).Gauge + "g").ToString() + " one side" });
                 }
             }
 

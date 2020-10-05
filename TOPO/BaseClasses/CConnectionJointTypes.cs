@@ -11,14 +11,17 @@ namespace BaseClasses
     {
         private EJointType m_JointType;
 
-        public CPlate[] m_arrPlates;
-        public CConnector[] m_arrConnectors;
+        public CPlate[] m_arrPlates;        
         public CWeld[] m_arrWelds;
         public CMember m_MainMember; // hlavny prvok (spravidla najmasivnejsi) ku ktoremu sa pripajaju jeden alebo viacero dalsich sekundarnych
         public CMember[] m_SecondaryMembers; // zoznam sekundarnych prvkov, TODO - asi bude potrebne upravit podla jednotlivych typov prvkov v spoji (nosnik / diagonala / stlp)
         public CNode m_Node;
         public CNode[] m_arrAssignedNodesWithJointType;
         public bool bIsJointDefinedinGCS;
+
+        //public CConnector[] m_arrConnectors;
+        private List<CConnectorGroup> m_ConnectorGroups;
+
 
         [NonSerialized]
         public Model3DGroup Visual_ConnectionJoint;
@@ -43,42 +46,58 @@ namespace BaseClasses
             }
         }
 
+        public List<CConnectorGroup> ConnectorGroups
+        {
+            get
+            {
+                return m_ConnectorGroups;
+            }
+
+            set
+            {
+                m_ConnectorGroups = value;
+            }
+        }
+
         public CConnectionJointTypes() { }
 
-        public CConnectionJointTypes(int iNumberOfAssignedNodes, int arrPlatesSize, int arrConnectorsSize, int arrWeldsSize)
-        {
-            m_arrAssignedNodesWithJointType = new CNode[iNumberOfAssignedNodes];
 
-            m_arrPlates = arrPlatesSize != 0 ? new CPlate[arrPlatesSize] : null;
-            m_arrConnectors = arrConnectorsSize != 0 ? new CConnector[arrConnectorsSize] : null;
-            m_arrWelds = arrWeldsSize != 0 ? new CWeld[arrWeldsSize] : null;
+        //tieto konstruktory sa niekde pouzivaju?
 
-            m_Mat = new CMat();
-        }
+        //public CConnectionJointTypes(int iNumberOfAssignedNodes, int arrPlatesSize, int arrConnectorsSize, int arrWeldsSize)
+        //{
+        //    m_arrAssignedNodesWithJointType = new CNode[iNumberOfAssignedNodes];
 
-        public CConnectionJointTypes(CPlate[] arrPlatesTemp, CBolt[] arrBoltsTemp, CWeld[] arrWeldsTemp)
-        {
-            m_arrPlates = new CPlate[arrPlatesTemp.Length];
+        //    m_arrPlates = arrPlatesSize != 0 ? new CPlate[arrPlatesSize] : null;
+        //    m_arrConnectors = arrConnectorsSize != 0 ? new CConnector[arrConnectorsSize] : null;
+        //    m_arrWelds = arrWeldsSize != 0 ? new CWeld[arrWeldsSize] : null;
 
-            for (int i = 0; i < arrPlatesTemp.Length; i++)
-            {
-                m_arrPlates[i] = arrPlatesTemp[i];
-            }
+        //    m_Mat = new CMat();
+        //}
 
-            m_arrConnectors = new CConnector[arrBoltsTemp.Length];
+        //public CConnectionJointTypes(CPlate[] arrPlatesTemp, CBolt[] arrBoltsTemp, CWeld[] arrWeldsTemp)
+        //{
+        //    m_arrPlates = new CPlate[arrPlatesTemp.Length];
 
-            for (int i = 0; i < arrBoltsTemp.Length; i++)
-            {
-                m_arrConnectors[i] = arrBoltsTemp[i];
-            }
+        //    for (int i = 0; i < arrPlatesTemp.Length; i++)
+        //    {
+        //        m_arrPlates[i] = arrPlatesTemp[i];
+        //    }
 
-            m_arrWelds = new CWeld[arrWeldsTemp.Length];
+        //    m_arrConnectors = new CConnector[arrBoltsTemp.Length];
 
-            for (int i = 0; i < arrWeldsTemp.Length; i++)
-            {
-                m_arrWelds[i] = arrWeldsTemp[i];
-            }
-        }
+        //    for (int i = 0; i < arrBoltsTemp.Length; i++)
+        //    {
+        //        m_arrConnectors[i] = arrBoltsTemp[i];
+        //    }
+
+        //    m_arrWelds = new CWeld[arrWeldsTemp.Length];
+
+        //    for (int i = 0; i < arrWeldsTemp.Length; i++)
+        //    {
+        //        m_arrWelds[i] = arrWeldsTemp[i];
+        //    }
+        //}
 
         // Pomocna funkcia pre base plates - nastavenie typu plechu podla prierezu a nastavenie screwArrangement
         protected void SetBasePlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew, CAnchor referenceAnchor,

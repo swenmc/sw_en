@@ -1318,14 +1318,11 @@ namespace PFD
 
                 // Deactivate joint components
 
-                if (j.m_arrConnectors != null && j.m_arrConnectors.Length > 0)
+                if (j.ConnectorGroups != null && j.ConnectorGroups.Count > 0)
                 {
-                    foreach (CConnector connector in j.m_arrConnectors)
+                    foreach (CConnectorGroup connectorGr in j.ConnectorGroups)
                     {
-                        connector.BIsGenerated = false;
-                        connector.BIsDisplayed = false;
-                        connector.BIsSelectedForDesign = false;
-                        connector.BIsSelectedForMaterialList = false;
+                        connectorGr.Deactivate();                        
                     }
                 }
 
