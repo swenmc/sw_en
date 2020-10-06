@@ -81,6 +81,8 @@ namespace BaseClasses
             //{
             //    m_arrConnectors[i] = sa.Screws[i];
             //}
+
+            if (ConnectorGroups == null) ConnectorGroups = new List<CConnectorGroup>(); // TODO Ondrej - nebolo to inicializovane, ak to ma byt inde tak to prosim presun
             ConnectorGroups.Add(new CConnectorGroup(sa.Screws));
 
             ConnectorGroups.First().ControlPoint = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z);
