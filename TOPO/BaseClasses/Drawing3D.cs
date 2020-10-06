@@ -2106,7 +2106,26 @@ namespace BaseClasses
                 }
             }
 
-            if (cmodel.m_arrGOStrWindows != null) // Some windows exist
+            if (cmodel.m_arrGOStrDoors != null && sDisplayOptions.bDisplayDoors) // Some doors exist
+            {
+                // Model Groups of Doors
+                for (int i = 0; i < cmodel.m_arrGOStrDoors.Count; i++)
+                {
+                    if (cmodel.m_arrGOStrDoors[i] != null &&
+                        cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
+                        model3D_group.Children.Add(cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door()); // Add solid to model group
+                        //else
+                        //{
+                        //    //Exception - not implemented
+                        //}
+                    }
+                }
+            }
+
+            if (cmodel.m_arrGOStrWindows != null && sDisplayOptions.bDisplayWindows) // Some windows exist
             {
                 // Model Groups of Windows
                 for (int i = 0; i < cmodel.m_arrGOStrWindows.Count; i++)
@@ -2121,26 +2140,6 @@ namespace BaseClasses
                         {
                             //Exception - not implemented
                         }
-                    }
-                }
-            }
-
-
-            if (cmodel.m_arrGOStrDoors != null) // Some doors exist
-            {
-                // Model Groups of Doors
-                for (int i = 0; i < cmodel.m_arrGOStrDoors.Count; i++)
-                {
-                    if (cmodel.m_arrGOStrDoors[i] != null &&
-                        cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&
-                        cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
-                    {
-                        //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
-                            model3D_group.Children.Add(cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door()); // Add solid to model group
-                        //else
-                        //{
-                        //    //Exception - not implemented
-                        //}
                     }
                 }
             }

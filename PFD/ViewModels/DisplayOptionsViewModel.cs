@@ -72,6 +72,8 @@ namespace PFD
         private bool m_DisplayFloorSlabWireFrame;
 
         private bool m_DisplayCladding;
+        private bool m_DisplayDoors;
+        private bool m_DisplayWindows;
 
         // Labels and axes
         private bool MShowLoadsLabels;
@@ -2523,6 +2525,34 @@ namespace PFD
             }
         }
 
+        public bool DisplayDoors
+        {
+            get
+            {
+                return m_DisplayDoors;
+            }
+
+            set
+            {
+                m_DisplayDoors = value;
+                NotifyPropertyChanged("DisplayDoors");
+            }
+        }
+
+        public bool DisplayWindows
+        {
+            get
+            {
+                return m_DisplayWindows;
+            }
+
+            set
+            {
+                m_DisplayWindows = value;
+                NotifyPropertyChanged("DisplayWindows");
+            }
+        }
+
         public float ExportFloorSlabTextSize
         {
             get
@@ -3013,6 +3043,8 @@ namespace PFD
             DisplayReinforcementBarsWireFrame = false;
 
             DisplayCladding = true;
+            DisplayDoors = true;
+            DisplayWindows = true;
 
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = false;
@@ -3216,6 +3248,8 @@ namespace PFD
             DisplayFoundationsWireFrame = newVM.DisplayFoundationsWireFrame;
             DisplayReinforcementBarsWireFrame = newVM.DisplayReinforcementBarsWireFrame;
             DisplayCladding = newVM.DisplayCladding;
+            DisplayDoors = newVM.DisplayDoors;
+            DisplayWindows = newVM.DisplayWindows;
             DisplayNodalSupports = newVM.DisplayNodalSupports;
             DisplayMembersCenterLines = newVM.DisplayMembersCenterLines;
             DisplaySolidModel = newVM.DisplaySolidModel;

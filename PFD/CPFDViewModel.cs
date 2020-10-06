@@ -3685,6 +3685,8 @@ namespace PFD
             sDisplayOptions.bDisplayFloorSlabWireFrame = _displayOptionsVM.DisplayFloorSlabWireFrame;
 
             sDisplayOptions.bDisplayCladding = _displayOptionsVM.DisplayCladding;
+            sDisplayOptions.bDisplayDoors = _displayOptionsVM.DisplayDoors;
+            sDisplayOptions.bDisplayWindows = _displayOptionsVM.DisplayWindows;
 
             sDisplayOptions.bDisplayMemberDescription = _displayOptionsVM.ShowMemberDescription;
             sDisplayOptions.bDisplayMemberID = _displayOptionsVM.ShowMemberID;

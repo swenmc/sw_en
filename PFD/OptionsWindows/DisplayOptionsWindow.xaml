@@ -142,6 +142,8 @@
 
                         <StackPanel Grid.Row="3" Grid.Column="0">
                             <CheckBox Name="chbDisplayCladding" IsChecked="{Binding Path=DisplayCladding}">Display Cladding</CheckBox>
+                            <CheckBox Name="chbDisplayDoors" IsChecked="{Binding Path=DisplayDoors}">Display Doors</CheckBox>
+                            <CheckBox Name="chbDisplayWindows" IsChecked="{Binding Path=DisplayWindows}">Display Windows</CheckBox>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
