@@ -14,9 +14,8 @@ namespace BaseClasses.GraphObj
         EModelType_FS eModelType;
         BuildingGeometryDataInput sBuildingGeomInputData;
 
-        // TODO Ondrej
-        double claddingThickness_Wall = 0.030; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
-        double claddingThickness_Roof = 0.060; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
+        double claddingHeight_Wall = 0.030; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
+        double claddingHeight_Roof = 0.075; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
 
         double claddingWidthRibModular_Wall = 0.190; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
         double claddingWidthRibModular_Roof = 0.300; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
@@ -35,7 +34,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 2
         public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData, CRSC.CCrSc_TW columnSection,
-            Color colorWall, Color colorRoof, bool bIsDisplayed, int fTime, double wallCladdingThickness, double roofCladdingThickness, double wallCladdingWidthRib, double roofCladdingWidthRib)
+            Color colorWall, Color colorRoof, bool bIsDisplayed, int fTime, double wallCladdingHeight, double roofCladdingHeight, double wallCladdingWidthRib, double roofCladdingWidthRib)
         {
             ID = iCladding_ID;
             eModelType = modelType_FS;
@@ -48,8 +47,8 @@ namespace BaseClasses.GraphObj
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
-            claddingThickness_Wall = wallCladdingThickness;
-            claddingThickness_Roof = roofCladdingThickness;
+            claddingHeight_Wall = wallCladdingHeight;
+            claddingHeight_Roof = roofCladdingHeight;
             claddingWidthRibModular_Wall = wallCladdingWidthRib;
             claddingWidthRibModular_Roof = roofCladdingWidthRib;
         }
@@ -64,8 +63,8 @@ namespace BaseClasses.GraphObj
 
             double bottomEdge_z = 0;
 
-            double height_1_final = sBuildingGeomInputData.fH_1 + column_crsc_z_plus + claddingThickness_Roof; // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
-            double height_2_final = sBuildingGeomInputData.fH_2 + column_crsc_z_plus + claddingThickness_Roof; // TODO - dopocitat presne, zohladnit edge purlin a sklon
+            double height_1_final = sBuildingGeomInputData.fH_1 + column_crsc_z_plus + claddingHeight_Roof; // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
+            double height_2_final = sBuildingGeomInputData.fH_2 + column_crsc_z_plus + claddingHeight_Roof; // TODO - dopocitat presne, zohladnit edge purlin a sklon
 
             double additionalOffset = 0.010;  // 10 mm
 
@@ -76,11 +75,11 @@ namespace BaseClasses.GraphObj
 
             // Cladding Edges
 
-            Point3D pfront0_baseleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, column_crsc_y_minus, bottomEdge_z);
-            Point3D pfront1_baseright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, column_crsc_y_minus, bottomEdge_z);
+            Point3D pfront0_baseleft = new Point3D(-column_crsc_z_plus - claddingHeight_Wall, column_crsc_y_minus, bottomEdge_z);
+            Point3D pfront1_baseright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingHeight_Wall, column_crsc_y_minus, bottomEdge_z);
 
-            Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, bottomEdge_z);
-            Point3D pback1_baseright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, bottomEdge_z);
+            Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus - claddingHeight_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, bottomEdge_z);
+            Point3D pback1_baseright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingHeight_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, bottomEdge_z);
 
             DiffuseMaterial material_SideWall = new DiffuseMaterial(new SolidColorBrush(m_ColorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
             DiffuseMaterial material_FrontBackWall = new DiffuseMaterial(new SolidColorBrush(m_ColorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
@@ -146,11 +145,11 @@ namespace BaseClasses.GraphObj
             {
                 // Monopitch Roof
 
-                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, column_crsc_y_minus, height_2_final);
-                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, column_crsc_y_minus, height_1_final);
+                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingHeight_Wall, column_crsc_y_minus, height_2_final);
+                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus - claddingHeight_Wall, column_crsc_y_minus, height_1_final);
 
-                Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_2_final);
-                Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
+                Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingHeight_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_2_final);
+                Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus - claddingHeight_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
 
                 if (bUseTextures) // Pouzijeme len ak vykreslujeme textury, inak sa pouzije material vytvoreny z SolidColorBrush podla vybranej farby cladding v GUI
                 {
@@ -194,12 +193,12 @@ namespace BaseClasses.GraphObj
             {
                 // Gable Roof
 
-                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, column_crsc_y_minus, height_1_final);
-                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, column_crsc_y_minus, height_1_final);
+                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingHeight_Wall, column_crsc_y_minus, height_1_final);
+                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus - claddingHeight_Wall, column_crsc_y_minus, height_1_final);
                 Point3D pfront4_top = new Point3D(0.5 * sBuildingGeomInputData.fW, column_crsc_y_minus, height_2_final);
 
-                Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
-                Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus - claddingThickness_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
+                Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW + column_crsc_z_plus + claddingHeight_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
+                Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus - claddingHeight_Wall, sBuildingGeomInputData.fL + column_crsc_y_plus, height_1_final);
                 Point3D pback4_top = new Point3D(0.5 * sBuildingGeomInputData.fW, sBuildingGeomInputData.fL + column_crsc_y_plus, height_2_final);
 
                 if (bUseTextures)
