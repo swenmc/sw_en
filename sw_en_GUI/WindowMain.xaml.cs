@@ -1052,7 +1052,7 @@ namespace sw_en_GUI
             sDisplayOptions.WasherColor = Colors.LightGreen;
             sDisplayOptions.NutColor = Colors.LightPink;
 
-            sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
+            sDisplayOptions.bDistinguishedColor = false; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
             sDisplayOptions.bDisplayLoads = true;
 
