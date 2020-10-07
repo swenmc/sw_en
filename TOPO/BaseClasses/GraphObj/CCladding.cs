@@ -135,7 +135,8 @@ namespace BaseClasses.GraphObj
                 brushSide.Stretch = Stretch.Fill;
 
                 brushRoof = new ImageBrush();
-                brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
+                //brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
+                brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Purlindek_RichGraphite.png", UriKind.RelativeOrAbsolute));
                 brushRoof.TileMode = TileMode.Tile;
                 brushRoof.ViewportUnits = BrushMappingMode.Absolute;
                 brushRoof.Stretch = Stretch.Fill;
