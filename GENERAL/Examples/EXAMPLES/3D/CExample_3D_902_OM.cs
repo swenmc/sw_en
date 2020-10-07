@@ -14,8 +14,8 @@ namespace Examples
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSRightHanded; // Global coordinate system
 
-            m_arrNodes = new CNode[2];
-            m_arrMembers = new CMember[1];
+            m_arrNodes = new CNode[4];
+            m_arrMembers = new CMember[2];
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[1];
             m_arrNSupports = new CNSupport[2];
@@ -62,8 +62,8 @@ namespace Examples
             m_arrNodes[00] = new CNode(01, 0f, 2f, 1f, 0);
             m_arrNodes[01] = new CNode(02, 0f, 1f, 2f, 0);
 
-            //m_arrNodes[02] = new CNode(03, 0f, 2f, 0000.0f, 0);
-            //m_arrNodes[03] = new CNode(04, 1f, 2f, 0000.0f, 0);
+            m_arrNodes[02] = new CNode(03, 1f, 1f, 2f, 0);
+            m_arrNodes[03] = new CNode(04, 1f, 2f, 1f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrNodes, new CCompare_NodeID());
@@ -79,6 +79,7 @@ namespace Examples
             listOfModelMemberGroups = new List<CMemberGroup>(1);
             //listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eWP, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 200, 200, 200, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(1, "Girt", EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[0], 200, 200, 200, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, "Girt", EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[0], 200, 200, 200, 0));
 
             // Members
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
@@ -87,6 +88,7 @@ namespace Examples
 
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eWP, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, -0.2f, -0.3f, 0.0f, 0);
             m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eG, EMemberType_FS_Position.Girt, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
+            m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[0], EMemberType_FS.eG, EMemberType_FS_Position.Girt, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
             //m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[1], EMemberType_FS.eWP, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
 
             // Setridit pole podle ID
@@ -126,20 +128,24 @@ namespace Examples
             m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[000].NodeStart, null, m_arrMembers[000]));
             m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[000].NodeEnd, null, m_arrMembers[000]));
 
+            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[001].NodeStart, null, m_arrMembers[001]));
+            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[001].NodeEnd, null, m_arrMembers[001]));
+
             // Nodal loads
             m_arrNLoads = new CNLoad[1];
             m_arrNLoads[0] = new CNLoadSingle(1, m_arrNodes[00], ENLoadType.eNLT_Fx, 20, true, 0);
 
             // Member loads
-            m_arrMLoads = new CMLoad[1];
+            m_arrMLoads = new CMLoad[2];
             //m_arrMLoads[0] = new CMLoad_21(1, -150, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
             //m_arrMLoads[1] = new CMLoad_22(2, 160, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PA_22, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
             //m_arrMLoads[2] = new CMLoad_23(3, -250, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PB_23, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             //m_arrMLoads[3] = new CMLoad_24(4, 260, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
+            m_arrMLoads[1] = new CMLoad_24(2, -250, 0.3f * m_arrMembers[1].FLength, 0.6f * m_arrMembers[1].FLength, m_arrMembers[1], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
 
             m_arrLoadCases = new CLoadCase[1];
-            m_arrLoadCases[0] = new CLoadCase(1, "LC1", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral, new List<CNLoad> { m_arrNLoads[0] }, new List<CMLoad> { m_arrMLoads[0]/*, m_arrMLoads[1], m_arrMLoads[2], m_arrMLoads[3]*/ });
+            m_arrLoadCases[0] = new CLoadCase(1, "LC1", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral, new List<CNLoad> { m_arrNLoads[0] }, new List<CMLoad> { m_arrMLoads[0], m_arrMLoads[1]/*, m_arrMLoads[2], m_arrMLoads[3]*/ });
         }
     }
 }

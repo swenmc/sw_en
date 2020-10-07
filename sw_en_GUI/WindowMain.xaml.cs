@@ -1026,6 +1026,8 @@ namespace sw_en_GUI
         private void menuItemExample3D_902_OM_Click(object sender, RoutedEventArgs e)
         {
             model = new CExample_3D_902_OM();
+            model.eKitset = EModelType_FS.eKitsetSheltersSingleSpan; // Len docasne kvoli kotam
+
             DisplayOptions sDisplayOptions = new DisplayOptions();
 
             sDisplayOptions.bUseLightAmbient = true;
