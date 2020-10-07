@@ -127,12 +127,14 @@ namespace BaseClasses.GraphObj
                 brushFront.TileMode = TileMode.Tile;
                 brushFront.ViewportUnits = BrushMappingMode.Absolute;
                 brushFront.Stretch = Stretch.Fill;
+                brushFront.Opacity = 0.8;
 
                 brushSide = new ImageBrush();
                 brushSide.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
                 brushSide.TileMode = TileMode.Tile;
                 brushSide.ViewportUnits = BrushMappingMode.Absolute;
                 brushSide.Stretch = Stretch.Fill;
+                brushSide.Opacity = 0.8;
 
                 brushRoof = new ImageBrush();
                 //brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
@@ -140,6 +142,7 @@ namespace BaseClasses.GraphObj
                 brushRoof.TileMode = TileMode.Tile;
                 brushRoof.ViewportUnits = BrushMappingMode.Absolute;
                 brushRoof.Stretch = Stretch.Fill;
+                brushRoof.Opacity = 0.95;
             }
 
             if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
