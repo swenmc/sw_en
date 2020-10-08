@@ -231,6 +231,10 @@ namespace PFD
         private float m_FloorSlabSolidModelOpacity = 0.3f;
         private float m_SlabRebateSolidModelOpacity = 0.5f;
 
+        private float m_FrontCladdingOpacity = 0.95f;
+        private float m_LeftCladdingOpacity = 0.95f;
+        private float m_RoofCladdingOpacity = 0.95f;
+
         private float m_ExportFloorSlabTextSize;
         private float m_ExportGridlinesSize;
         private float m_ExportGridLineLabelSize;
@@ -2987,6 +2991,48 @@ namespace PFD
             }
         }
 
+        public float FrontCladdingOpacity
+        {
+            get
+            {
+                return m_FrontCladdingOpacity;
+            }
+
+            set
+            {
+                m_FrontCladdingOpacity = value;
+                NotifyPropertyChanged("FrontCladdingOpacity");
+            }
+        }
+
+        public float LeftCladdingOpacity
+        {
+            get
+            {
+                return m_LeftCladdingOpacity;
+            }
+
+            set
+            {
+                m_LeftCladdingOpacity = value;
+                NotifyPropertyChanged("LeftCladdingOpacity");
+            }
+        }
+
+        public float RoofCladdingOpacity
+        {
+            get
+            {
+                return m_RoofCladdingOpacity;
+            }
+
+            set
+            {
+                m_RoofCladdingOpacity = value;
+                NotifyPropertyChanged("RoofCladdingOpacity");
+            }
+        }
+
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
@@ -3172,6 +3218,10 @@ namespace PFD
             FloorSlabSolidModelOpacity = 0.3f;
             SlabRebateSolidModelOpacity = 0.3f;
 
+            FrontCladdingOpacity = 0.95f;
+            LeftCladdingOpacity = 0.95f;
+            RoofCladdingOpacity = 0.95f;
+
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             // Text 7.0 mm
@@ -3354,6 +3404,10 @@ namespace PFD
             ReinforcementBarSolidModelOpacity = newVM.ReinforcementBarSolidModelOpacity;
             FloorSlabSolidModelOpacity = newVM.FloorSlabSolidModelOpacity;
             SlabRebateSolidModelOpacity = newVM.SlabRebateSolidModelOpacity;
+
+            FrontCladdingOpacity = newVM.FrontCladdingOpacity;
+            LeftCladdingOpacity = newVM.LeftCladdingOpacity;
+            RoofCladdingOpacity = newVM.RoofCladdingOpacity;
 
             BackgroundColorIndex = newVM.BackgroundColorIndex;
 

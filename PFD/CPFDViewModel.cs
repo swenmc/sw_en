@@ -3813,6 +3813,10 @@ namespace PFD
             sDisplayOptions.fFloorSlabSolidModelOpacity = _displayOptionsVM.FloorSlabSolidModelOpacity;
             sDisplayOptions.fSlabRebateSolidModelOpacity = _displayOptionsVM.SlabRebateSolidModelOpacity;
 
+            sDisplayOptions.fFrontCladdingOpacity = _displayOptionsVM.FrontCladdingOpacity;
+            sDisplayOptions.fLeftCladdingOpacity = _displayOptionsVM.LeftCladdingOpacity;
+            sDisplayOptions.fRoofCladdingOpacity = _displayOptionsVM.RoofCladdingOpacity;
+
             sDisplayOptions.backgroundColor = _displayOptionsVM.BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;
             sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;

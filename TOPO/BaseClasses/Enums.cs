@@ -980,6 +980,10 @@ namespace BaseClasses
         public float fFloorSlabSolidModelOpacity;
         public float fSlabRebateSolidModelOpacity;
 
+        public float fFrontCladdingOpacity;
+        public float fLeftCladdingOpacity;
+        public float fRoofCladdingOpacity;
+
         public bool bCreateHorizontalGridlines; 
         public bool bCreateVerticalGridlinesFront;
         public bool bCreateVerticalGridlinesBack;
