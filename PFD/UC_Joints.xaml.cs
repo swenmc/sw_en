@@ -1748,6 +1748,8 @@ namespace PFD
                 {
                     int i = 0;
 
+                    if (joint.m_arrPlates == null) continue;
+
                     //pokusy 557
                     foreach (CPlate plate in joint.m_arrPlates)
                     {
