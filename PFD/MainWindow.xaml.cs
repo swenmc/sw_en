@@ -1080,19 +1080,39 @@ namespace PFD
 
         private void UpdateUC_Joints()
         {
-            if (Joint_Input.Content == null)
+            if (vm._generalOptionsVM.VariousCrossSections)
             {
-                UC_Joints uc_joints = new UC_Joints(vm);
-                Joint_Input.Content = uc_joints;
-                vm.JointsVM = uc_joints.DataContext as CJointsVM;
-            }
+                if (Joint_Input.Content == null || Joint_Input.Content is UC_Joints)
+                {
+                    UC_JointsVarMemCrsc uc_joints = new UC_JointsVarMemCrsc(vm);
+                    Joint_Input.Content = uc_joints;
+                    vm.JointsVM = uc_joints.DataContext as CJointsVarMemCrscVM;
+                }
 
-            if (vm.RecreateJoints)
-            {
-                UC_Joints uc_joints = Joint_Input.Content as UC_Joints;
-                uc_joints.ArrangeConnectionJoints();
-                vm.JointsVM.JointTypeIndex = vm.JointsVM.JointTypeIndex; //redraw same selected joint
+                if (vm.RecreateJoints)
+                {
+                    UC_JointsVarMemCrsc uc_joints = Joint_Input.Content as UC_JointsVarMemCrsc;
+                    uc_joints.ArrangeConnectionJoints();
+                    vm.JointsVM.JointTypeIndex = vm.JointsVM.JointTypeIndex; //redraw same selected joint
+                }
             }
+            else
+            {
+                if (Joint_Input.Content == null || Joint_Input.Content is UC_JointsVarMemCrsc)
+                {
+                    UC_Joints uc_joints = new UC_Joints(vm);
+                    Joint_Input.Content = uc_joints;
+                    vm.JointsVM = uc_joints.DataContext as CJointsVM;
+                }
+
+                if (vm.RecreateJoints)
+                {
+                    UC_Joints uc_joints = Joint_Input.Content as UC_Joints;
+                    uc_joints.ArrangeConnectionJoints();
+                    vm.JointsVM.JointTypeIndex = vm.JointsVM.JointTypeIndex; //redraw same selected joint
+                }
+            }
+            
         }
 
         private void UpdateUC_Footings()
