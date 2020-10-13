@@ -37,6 +37,8 @@ namespace PFD
         double m_BuildingPrice_PCM;
         double m_BuildingPrice_PPKG;
 
+        double m_Freight;
+        
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -251,6 +253,20 @@ namespace PFD
             {
                 m_Markup_Percentage = value;
                 NotifyPropertyChanged("Markup_Percentage");
+            }
+        }
+
+        public double Freight
+        {
+            get
+            {
+                return m_Freight;
+            }
+
+            set
+            {
+                m_Freight = value;                
+                NotifyPropertyChanged("Freight");
             }
         }
 

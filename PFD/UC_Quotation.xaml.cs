@@ -260,6 +260,7 @@ namespace PFD
 
             double dMarginPercentage = 40; // Default
             double dGST_Percentage = 15;   // Default
+            double dFreight = 0;           // Default
 
             double dMarginAbsolute,
                    dMarkupAbsolute,
@@ -278,6 +279,7 @@ namespace PFD
                    dBuildingMass,
                    dMarginPercentage,
                    dGST_Percentage,
+                   dFreight,
                    out dMarginAbsolute,
                    out dMarkupAbsolute,
                    out dMarkupPercentage,
@@ -346,7 +348,7 @@ namespace PFD
 
         private void QVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Margin_Percentage" || e.PropertyName == "GST_Percentage")
+            if (e.PropertyName == "Margin_Percentage" || e.PropertyName == "GST_Percentage" || e.PropertyName == "Freight")
             {
                 QuotationViewModel vm = sender as QuotationViewModel;
 
@@ -367,6 +369,7 @@ namespace PFD
                        vm.BuildingMass,
                        vm.Margin_Percentage,
                        vm.GST_Percentage,
+                       vm.Freight,
                        out dMarginAbsolute,
                        out dMarkupAbsolute,
                        out dMarkupPercentage,
@@ -397,6 +400,7 @@ namespace PFD
             double dBuildingMass,
             double dMarginPercentage,
             double dGST_Percentage,
+            double dFreight,
             out double dMarginAbsolute,
             out double dMarkupAbsolute,
             out double dMarkupPercentage,
@@ -427,8 +431,14 @@ namespace PFD
             buildingPrice_PCM = fBuildingVolume_Gross > 0 ? buildingPrice_WithMargin_WithoutGST / fBuildingVolume_Gross : 0;
             buildingPrice_PPKG = dBuildingMass > 0 ? buildingPrice_WithMargin_WithoutGST / dBuildingMass : 0;
 
+            //predpokladam,ze cenu za dopravu treba priratat az nakoniec a neriesit tam ani Margin ani Markup
+            buildingPrice_WithMargin_WithoutGST += dFreight;
+
             dGST_Absolute = dGST_Percentage / 100f * buildingPrice_WithMargin_WithoutGST;
             dTotalBuildingPrice_IncludingGST = buildingPrice_WithMargin_WithoutGST + dGST_Absolute;
+
+            
+
         }
 
         private void CreateTableMembers(CModel model)
