@@ -251,6 +251,8 @@ namespace PFD
 
             set
             {
+                //if (value < 0.0 || value > 70)
+                //    throw new ArgumentException("Markup must be between 0.0 and 70 [%]");
                 m_Markup_Percentage = value;
                 NotifyPropertyChanged("Markup_Percentage");
             }
@@ -265,7 +267,9 @@ namespace PFD
 
             set
             {
-                m_Freight = value;                
+                if (value < 0.0 || value > 1000000)
+                    throw new ArgumentException("Freight must be between 0.0 and 1000000 NZD");
+                m_Freight = value;
                 NotifyPropertyChanged("Freight");
             }
         }
