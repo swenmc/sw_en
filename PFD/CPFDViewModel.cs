@@ -3880,6 +3880,122 @@ namespace PFD
             prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
         }
 
+        public void SetAllDoorCoatingColorAccordingTo(DoorProperties doorProperties)
+        {
+            if (DoorBlocksProperties == null) return;
+            if (doorProperties == null) return;
 
+            foreach (DoorProperties dp in DoorBlocksProperties)
+            {
+                if (dp.CoatingColor.ID != doorProperties.CoatingColor.ID)
+                {                    
+                    dp.IsSetFromCode = true;
+                    dp.CoatingColor = dp.CoatingColors.FirstOrDefault(c => c.ID == doorProperties.CoatingColor.ID);
+                    dp.IsSetFromCode = false;
+                }                
+            }
+        }
+        public void SetAllDoorCoatingColorToSame()
+        {
+            if (DoorBlocksProperties == null) return;
+
+            SetAllDoorCoatingColorAccordingTo(DoorBlocksProperties.FirstOrDefault());
+        }
+
+        public void SetAllFlashingsCoatingColorAccordingTo(CoatingColour colour)
+        {
+            if (Flashings == null) return;            
+
+            IsSetFromCode = true;
+            foreach (CAccessories_LengthItemProperties p in Flashings)
+            {
+                if (p.CoatingColor.ID != colour.ID)
+                {
+                    //p.IsSetFromCode = true;
+                    p.CoatingColor = p.CoatingColors.FirstOrDefault(c => c.ID == colour.ID);
+                    //p.IsSetFromCode = false;
+                }
+            }
+            IsSetFromCode = false;
+        }
+        public void SetAllGuttersCoatingColorAccordingTo(CoatingColour colour)
+        {
+            if (Gutters == null) return;            
+
+            IsSetFromCode = true;
+            foreach (CAccessories_LengthItemProperties p in Gutters)
+            {
+                if (p.CoatingColor.ID != colour.ID)
+                {
+                    //p.IsSetFromCode = true;
+                    p.CoatingColor = p.CoatingColors.FirstOrDefault(c => c.ID == colour.ID);
+                    //p.IsSetFromCode = false;
+                }
+            }
+            IsSetFromCode = false;
+        }
+        
+        public void SetAllDownpipeCoatingColorAccordingTo(CoatingColour colour)
+        {
+            if (Downpipes == null) return;            
+
+            IsSetFromCode = true;
+            foreach (CAccessories_DownpipeProperties p in Downpipes)
+            {
+                if (p.CoatingColor.ID != colour.ID)
+                {
+                    //p.IsSetFromCode = true;
+                    p.CoatingColor = p.CoatingColors.FirstOrDefault(c => c.ID == colour.ID);
+                    //p.IsSetFromCode = false;
+                }
+            }
+            IsSetFromCode = false;
+        }
+
+        public void SetAll_FGD_CoatingColorAccordingTo(CoatingColour colour)
+        {
+            SetAllFlashingsCoatingColorAccordingTo(colour);
+            SetAllGuttersCoatingColorAccordingTo(colour);
+            SetAllDownpipeCoatingColorAccordingTo(colour);
+        }
+
+        public void SetAllFlashingsCoatingColorToSame()
+        {
+            CoatingColour col = null;
+            if (Flashings != null) col = Flashings.FirstOrDefault().CoatingColor;            
+
+            if (col != null) SetAllFlashingsCoatingColorAccordingTo(col);
+        }
+        public void SetAllGuttersCoatingColorToSame()
+        {
+            CoatingColour col = null;
+            if (Gutters != null) col = Gutters.FirstOrDefault().CoatingColor;
+
+            if (col != null) SetAllGuttersCoatingColorAccordingTo(col);
+        }
+        public void SetAllDownpipesCoatingColorToSame()
+        {
+            CoatingColour col = null;
+            if (Downpipes != null) col = Downpipes.FirstOrDefault().CoatingColor;
+
+            if (col != null) SetAllDownpipeCoatingColorAccordingTo(col);
+        }
+
+        public void SetAll_FGD_CoatingColorToSame()
+        {
+            CoatingColour col = GetActual_FGD_Color();            
+
+            if(col != null) SetAll_FGD_CoatingColorAccordingTo(col);
+        }
+
+        public CoatingColour GetActual_FGD_Color()
+        {
+            CoatingColour col = null;
+            if (Flashings != null) col = Flashings.FirstOrDefault().CoatingColor;
+            else if (Gutters != null) col = Gutters.FirstOrDefault().CoatingColor;
+            else if (Downpipes != null) col = Downpipes.FirstOrDefault().CoatingColor;
+
+            return col;
+        }
     }
 }

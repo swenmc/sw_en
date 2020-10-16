@@ -19,7 +19,7 @@ namespace PFD
     public partial class GeneralOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-        private bool GeneralOptionsChanged = false;
+        private bool GeneralOptionsChanged = false;        
         public GeneralOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
@@ -48,7 +48,19 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (GeneralOptionsChanged) _pfdVM.GeneralOptionsChanged = true;
+            if (GeneralOptionsChanged)
+            {
+                if (_pfdVM._generalOptionsVM.SameColorsDoor) _pfdVM.SetAllDoorCoatingColorToSame();
+                if (_pfdVM._generalOptionsVM.SameColorsFGD) _pfdVM.SetAll_FGD_CoatingColorToSame();
+                else
+                {
+                    if (_pfdVM._generalOptionsVM.SameColorsFlashings) _pfdVM.SetAllFlashingsCoatingColorToSame();
+                    if (_pfdVM._generalOptionsVM.SameColorsGutters) _pfdVM.SetAllGuttersCoatingColorToSame();
+                    if (_pfdVM._generalOptionsVM.SameColorsDownpipes) _pfdVM.SetAllDownpipesCoatingColorToSame();
+                }
+                
+                _pfdVM.GeneralOptionsChanged = true;
+            }
             this.Close();
         }
     }

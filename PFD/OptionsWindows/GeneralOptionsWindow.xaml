@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="General Options" Height="240" Width="400">
+        Title="General Options" Height="340" Width="400">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -37,6 +37,15 @@
 
                 <TextBlock Text="Cross-sections" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbVariousCrossSections" IsChecked="{Binding Path=VariousCrossSections}" >Enable various cross-sections in bays</CheckBox>
+
+                <TextBlock Text="Colors - Use same colors for all" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <CheckBox Name="chbSameColorsDoor" IsChecked="{Binding Path=SameColorsDoor}">Doors</CheckBox>
+                <CheckBox Name="chbSameColorsFlashings" IsChecked="{Binding Path=SameColorsFlashings}">Flashings</CheckBox>
+                <CheckBox Name="chbSameColorsGutters" IsChecked="{Binding Path=SameColorsGutters}">Gutters</CheckBox>
+                <CheckBox Name="chbSameColorsDownpipes" IsChecked="{Binding Path=SameColorsDownpipes}">Downpipes</CheckBox>
+                <CheckBox Name="chbSameColorsFGD" IsChecked="{Binding Path=SameColorsFGD}">Flashings gutters and downpipes </CheckBox>
+
+
             </StackPanel>
             
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >

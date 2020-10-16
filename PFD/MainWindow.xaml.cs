@@ -213,6 +213,17 @@ namespace PFD
                 if (e.PropertyName == "CoatingColor")
                 {                    
                     vm.RecreateModel = true; vm.RecreateQuotation = true;
+                    CAccessories_LengthItemProperties prop = sender as CAccessories_LengthItemProperties;
+                    if (prop.DatabaseTable == "Flashings")
+                    {
+                        if (vm._generalOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                        else if (vm._generalOptionsVM.SameColorsFlashings) vm.SetAllFlashingsCoatingColorAccordingTo(prop.CoatingColor); 
+                    }
+                    else if (prop.DatabaseTable == "Gutters")
+                    {
+                        if (vm._generalOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                        else if (vm._generalOptionsVM.SameColorsGutters) vm.SetAllGuttersCoatingColorAccordingTo(prop.CoatingColor);
+                    }
                 }
                 else
                 {
@@ -226,6 +237,15 @@ namespace PFD
             }
             else if (sender is CAccessories_DownpipeProperties)
             {
+                if (e.PropertyName == "CoatingColor")
+                {
+                    vm.RecreateModel = true;
+
+                    CAccessories_DownpipeProperties prop = sender as CAccessories_DownpipeProperties;
+                    if (vm._generalOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                    else if (vm._generalOptionsVM.SameColorsDownpipes) vm.SetAllDownpipeCoatingColorAccordingTo(prop.CoatingColor);
+                }
+                
                 //only reset quotation do not regenerate model
                 vm.RecreateQuotation = true;
                 //Quotation.Content = null;
@@ -268,7 +288,8 @@ namespace PFD
                 if (e.PropertyName == "CoatingColor")
                 {
                     //recreate model after color changed
-                    vm.RecreateModel = true;        
+                    vm.RecreateModel = true;
+                    if(vm._generalOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorAccordingTo(doorProperties);
                 }
                 else
                 {
@@ -2164,6 +2185,7 @@ namespace PFD
                 }
 
                 vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
+                if (vm._generalOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorToSame();
             }
             else if (doorGeneratorViewModel.DeleteDoors)
             {
@@ -2376,7 +2398,23 @@ namespace PFD
             string flashingName = FindNotUsedFlashingName();
             if (string.IsNullOrEmpty(flashingName)) return;
 
-            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties(flashingName, "Flashings", 0, 2);
+            int colorIndex = 2;
+
+            if (vm._generalOptionsVM.SameColorsFGD)
+            {
+                CoatingColour colour = vm.GetActual_FGD_Color();
+                if (colour != null)
+                {
+                    CAccessories_LengthItemProperties p = new CAccessories_LengthItemProperties();
+                    colorIndex = p.CoatingColors.IndexOf(colour);
+                }
+            }
+            else if (vm._generalOptionsVM.SameColorsFlashings)
+            {
+                CAccessories_LengthItemProperties prop = vm.Flashings.FirstOrDefault();
+                if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
+            }
+            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties(flashingName, "Flashings", 0, colorIndex);
             item.PropertyChanged += vm.FlashingsItem_PropertyChanged;
             vm.Flashings.Add(item);
             vm.RecreateQuotation = true;
@@ -2408,7 +2446,24 @@ namespace PFD
         private void btnAddGutter_Click(object sender, RoutedEventArgs e)
         {
             float fGuttersTotalLength = 2 * vm.Model.fL_tot; // na dvoch okrajoch strechy
-            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
+
+            int colorIndex = 2;
+            if (vm._generalOptionsVM.SameColorsFGD)
+            {
+                CoatingColour colour = vm.GetActual_FGD_Color();
+                if (colour != null)
+                {
+                    CAccessories_LengthItemProperties p = new CAccessories_LengthItemProperties();
+                    colorIndex = p.CoatingColors.IndexOf(colour);
+                }
+            }
+            else if (vm._generalOptionsVM.SameColorsGutters)
+            {
+                CAccessories_LengthItemProperties prop = vm.Gutters.FirstOrDefault();
+                if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
+            }
+
+            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, colorIndex);
             item.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
             vm.Gutters.Add(item);
             vm.RecreateQuotation = true;
@@ -2436,7 +2491,23 @@ namespace PFD
                 fDownpipesTotalLength = 0;
             }
 
-            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);
+            int colorIndex = 2;
+            if (vm._generalOptionsVM.SameColorsFGD)
+            {
+                CoatingColour colour = vm.GetActual_FGD_Color();
+                if (colour != null)
+                {
+                    CAccessories_DownpipeProperties p = new CAccessories_DownpipeProperties();
+                    colorIndex = p.CoatingColors.IndexOf(colour);
+                }
+            }
+            else if (vm._generalOptionsVM.SameColorsDownpipes)
+            {
+                CAccessories_DownpipeProperties prop = vm.Downpipes.FirstOrDefault();
+                if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
+            }
+
+            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, colorIndex);
             downpipe.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
 
             vm.Downpipes.Add(downpipe);

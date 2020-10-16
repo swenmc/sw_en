@@ -95,5 +95,14 @@ namespace DATABASE.DTO
         }
 
         public CoatingColour() { }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is CoatingColour)
+            {
+                return this.ID == ((CoatingColour)obj).ID;
+            }
+            else return false;            
+        }
     }
 }

@@ -33,6 +33,12 @@ namespace PFD
         private bool m_UpdateAutomatically;
         private bool m_VariousCrossSections;
 
+        private bool m_SameColorsDoor;
+        private bool m_SameColorsFlashings;
+        private bool m_SameColorsGutters;
+        private bool m_SameColorsDownpipes;
+        private bool m_SameColorsFGD;
+
         public bool BracingEverySecondRowOfGirts
         {
             get
@@ -121,6 +127,81 @@ namespace PFD
             }
         }
 
+        public bool SameColorsDoor
+        {
+            get
+            {
+                return m_SameColorsDoor;
+            }
+
+            set
+            {
+                m_SameColorsDoor = value;
+                NotifyPropertyChanged("SameColorsDoor");
+            }
+        }
+
+        public bool SameColorsFlashings
+        {
+            get
+            {
+                return m_SameColorsFlashings;
+            }
+
+            set
+            {
+                m_SameColorsFlashings = value;
+                NotifyPropertyChanged("SameColorsFlashings");
+            }
+        }
+
+        public bool SameColorsGutters
+        {
+            get
+            {
+                return m_SameColorsGutters;
+            }
+
+            set
+            {
+                m_SameColorsGutters = value;
+                NotifyPropertyChanged("SameColorsGutters");
+            }
+        }
+
+        public bool SameColorsDownpipes
+        {
+            get
+            {
+                return m_SameColorsDownpipes;
+            }
+
+            set
+            {
+                m_SameColorsDownpipes = value;
+                NotifyPropertyChanged("SameColorsDownpipes");
+            }
+        }
+
+        public bool SameColorsFGD
+        {
+            get
+            {
+                return m_SameColorsFGD;
+            }
+
+            set
+            {
+                m_SameColorsFGD = value;
+                IsSetFromCode = true;
+                SameColorsFlashings = m_SameColorsFGD;
+                SameColorsGutters = m_SameColorsFGD;
+                SameColorsDownpipes = m_SameColorsFGD;                
+                IsSetFromCode = false;
+                NotifyPropertyChanged("SameColorsFGD");
+            }
+        }
+
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -139,6 +220,12 @@ namespace PFD
             m_UpdateAutomatically = true;
 
             m_VariousCrossSections = false;
+
+            m_SameColorsDoor = false;
+            m_SameColorsFGD = false;
+            m_SameColorsFlashings = false;
+            m_SameColorsGutters = false;
+            m_SameColorsDownpipes = false;
 
             IsSetFromCode = false;
         }
