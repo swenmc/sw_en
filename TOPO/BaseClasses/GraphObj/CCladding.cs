@@ -123,7 +123,8 @@ namespace BaseClasses.GraphObj
                 //material_Roof = new DiffuseMaterial(brush);
 
                 brushFront = new ImageBrush();
-                brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
+                //brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
+                brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/thumbnail_Smartdek_PermanentGreen.png", UriKind.RelativeOrAbsolute));
                 brushFront.TileMode = TileMode.Tile;
                 brushFront.ViewportUnits = BrushMappingMode.Absolute;
                 brushFront.Stretch = Stretch.Fill;
