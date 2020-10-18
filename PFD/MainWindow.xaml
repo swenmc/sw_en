@@ -129,6 +129,14 @@
                         <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
+                        <TextBlock Name="LabelWidthOverall" Grid.Row="3" Grid.Column="0" Text="Width Overall:" HorizontalAlignment="Left" Margin="5,20,0,0" 
+                         VerticalAlignment="Top"  />
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="0 20 0 0" Name ="TextBox_WidthOverall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WidthOverall, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                        <TextBlock Name="LabelWidthOverallUnit" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,20,0,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0,0,0"
                          VerticalAlignment="Top"  />
                         <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -137,12 +145,28 @@
                         <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
+                        <TextBlock Name="LabelLengthOverall" Grid.Row="4" Grid.Column="0" Text="Length Overall:" HorizontalAlignment="Left" Margin="5,20,0,0"
+                         VerticalAlignment="Top"  />
+                        <TextBox Grid.Row="4" Grid.Column="1" Margin="0,20,0,0" Name ="TextBox_LengthOverall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  
+                         Text="{Binding Path=LengthOverall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                        <TextBlock Name="LabelLengthOverallUnit" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,20,0,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
                         <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
                          Text="{Binding Path=WallHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
                         <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+                        <TextBlock Name="LabelWallHeightOverall" Grid.Row="5" Grid.Column="0" Text="Wall Height Overall:" HorizontalAlignment="Left" Margin="5,20,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="5" Grid.Column="1" Margin="0,20,0,0" Name ="TextBox_Wall_HeightOverall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  
+                         Text="{Binding Path=WallHeightOverall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                        <TextBlock Name="LabelWallHeightOverallUnit" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,20,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                         <TextBlock Grid.Row="6" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0,0,0"

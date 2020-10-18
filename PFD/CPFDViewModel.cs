@@ -52,6 +52,9 @@ namespace PFD
         private float MWidth;
         private float MLength;
         private float MWallHeight;
+        private float MWidthOverall;
+        private float MLengthOverall;
+        private float MWallHeightOverall;
         private float MRoofPitch_deg;
         private int MFrames;
         private float MGirtDistance;
@@ -414,6 +417,7 @@ namespace PFD
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidth = value;
+                WidthOverall = MWidth + m_crscHalf;
 
                 if (MModelIndex != 0)
                 {
@@ -479,6 +483,7 @@ namespace PFD
                 if (value < 3 || value > 300)
                     throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLength = value;
+                LengthOverall = MLength + m_crscHalf;
 
                 if (MModelIndex != 0)
                 {
@@ -510,6 +515,7 @@ namespace PFD
                 if (value < 2 || value > 30)
                     throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeight = value;
+                WallHeightOverall = MWallHeight + m_crscHalf;
 
                 if (MModelIndex != 0)
                 {
@@ -528,6 +534,51 @@ namespace PFD
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("WallHeight");
+            }
+        }
+
+        //todo vsetko to co v Width,Length,Height + rozmer crsc
+        //To Mato ako zistime ten rozmer o ktory to treba pripocitat?
+        public float m_crscHalf = 0.1f;
+        public float WidthOverall
+        {
+            get
+            {
+                return MWidthOverall;
+            }
+
+            set
+            {
+                MWidthOverall = value;
+                NotifyPropertyChanged("WidthOverall");
+            }
+        }
+
+        public float LengthOverall
+        {
+            get
+            {
+                return MLengthOverall;
+            }
+
+            set
+            {
+                MLengthOverall = value;
+                NotifyPropertyChanged("LengthOverall");
+            }
+        }
+
+        public float WallHeightOverall
+        {
+            get
+            {
+                return MWallHeightOverall;
+            }
+
+            set
+            {
+                MWallHeightOverall = value;
+                NotifyPropertyChanged("WallHeightOverall");
             }
         }
 
@@ -2888,6 +2939,8 @@ namespace PFD
                 m_WallCladdingProps = value;
             }
         }
+
+        
 
 
 
