@@ -55,6 +55,10 @@ namespace PFD
         private float MWidthOverall;
         private float MLengthOverall;
         private float MWallHeightOverall;
+
+        private float MColumnCrscHalf;
+
+
         private float MRoofPitch_deg;
         private int MFrames;
         private float MGirtDistance;
@@ -417,7 +421,7 @@ namespace PFD
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidth = value;
-                WidthOverall = MWidth + m_crscHalf;
+                WidthOverall = MWidth + ColumnCrscHalf;
 
                 if (MModelIndex != 0)
                 {
@@ -483,7 +487,7 @@ namespace PFD
                 if (value < 3 || value > 300)
                     throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLength = value;
-                LengthOverall = MLength + m_crscHalf;
+                LengthOverall = MLength + ColumnCrscHalf;
 
                 if (MModelIndex != 0)
                 {
@@ -515,7 +519,7 @@ namespace PFD
                 if (value < 2 || value > 30)
                     throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeight = value;
-                WallHeightOverall = MWallHeight + m_crscHalf;
+                WallHeightOverall = MWallHeight + ColumnCrscHalf;
 
                 if (MModelIndex != 0)
                 {
@@ -539,7 +543,7 @@ namespace PFD
 
         //todo vsetko to co v Width,Length,Height + rozmer crsc
         //To Mato ako zistime ten rozmer o ktory to treba pripocitat?
-        public float m_crscHalf = 0.1f;
+        
         public float WidthOverall
         {
             get
@@ -2940,7 +2944,30 @@ namespace PFD
             }
         }
 
-        
+        public float ColumnCrscHalf
+        {
+            get
+            {
+                if (ComponentList == null) return 0;
+                CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+                if (ci != null)
+                {
+                    CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    //To Mato - neviem ktoru property treba
+                    //prop.b
+                    MColumnCrscHalf = (float)prop.b / 2;
+                }
+                
+                return MColumnCrscHalf;
+            }
+
+            set
+            {
+                MColumnCrscHalf = value;
+            }
+        }
+
+
 
 
 
