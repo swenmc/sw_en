@@ -56,8 +56,10 @@ namespace PFD
         private float MLengthOverall;
         private float MWallHeightOverall;
 
-        private float MColumnCrscHalf;
-
+        private float MMainColumnCrsc_z_plus;
+        private float MMainRafterCrsc_z_plus;
+        private float MEdgeColumnCrsc_y_minus;
+        private float MEdgeColumnCrsc_y_plus;
 
         private float MRoofPitch_deg;
         private int MFrames;
@@ -421,7 +423,7 @@ namespace PFD
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidth = value;
-                WidthOverall = MWidth + ColumnCrscHalf;
+                WidthOverall = MWidth + 2 * MMainColumnCrsc_z_plus;
 
                 if (MModelIndex != 0)
                 {
@@ -487,7 +489,7 @@ namespace PFD
                 if (value < 3 || value > 300)
                     throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLength = value;
-                LengthOverall = MLength + ColumnCrscHalf;
+                LengthOverall = MLength + Math.Abs(MEdgeColumnCrsc_y_minus) + MEdgeColumnCrsc_y_plus;
 
                 if (MModelIndex != 0)
                 {
@@ -519,7 +521,7 @@ namespace PFD
                 if (value < 2 || value > 30)
                     throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeight = value;
-                WallHeightOverall = MWallHeight + ColumnCrscHalf;
+                WallHeightOverall = MWallHeight + MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
 
                 if (MModelIndex != 0)
                 {
@@ -541,9 +543,6 @@ namespace PFD
             }
         }
 
-        //todo vsetko to co v Width,Length,Height + rozmer crsc
-        //To Mato ako zistime ten rozmer o ktory to treba pripocitat?
-        
         public float WidthOverall
         {
             get
@@ -553,7 +552,10 @@ namespace PFD
 
             set
             {
+                if (value < 3 || value > 100)
+                    throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidthOverall = value;
+                Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
                 NotifyPropertyChanged("WidthOverall");
             }
         }
@@ -567,7 +569,10 @@ namespace PFD
 
             set
             {
+                if (value < 3 || value > 300)
+                    throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLengthOverall = value;
+                Length = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
                 NotifyPropertyChanged("LengthOverall");
             }
         }
@@ -581,7 +586,10 @@ namespace PFD
 
             set
             {
+                if (value < 2 || value > 30)
+                    throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeightOverall = value;
+                WallHeight = MWallHeightOverall - MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
                 NotifyPropertyChanged("WallHeightOverall");
             }
         }
@@ -2944,7 +2952,7 @@ namespace PFD
             }
         }
 
-        public float ColumnCrscHalf
+        public float MainColumnCrsc_z_plus
         {
             get
             {
@@ -2952,22 +2960,81 @@ namespace PFD
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
                 if (ci != null)
                 {
-                    CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
-                    //To Mato - neviem ktoru property treba
-                    //prop.b
-                    MColumnCrscHalf = (float)prop.b / 2;
+                    //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    MMainColumnCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn].Section).z_max;
                 }
                 
-                return MColumnCrscHalf;
+                return MMainColumnCrsc_z_plus;
             }
 
             set
             {
-                MColumnCrscHalf = value;
+                MMainColumnCrsc_z_plus = value;
             }
         }
 
+        public float EdgeColumnCrsc_y_minus
+        {
+            get
+            {
+                if (ComponentList == null) return 0;
+                CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                if (ci != null)
+                {
+                    //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    MEdgeColumnCrsc_y_minus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_min;
+                }
 
+                return MEdgeColumnCrsc_y_minus;
+            }
+
+            set
+            {
+                MEdgeColumnCrsc_y_minus = value;
+            }
+        }
+
+        public float EdgeColumnCrsc_y_plus
+        {
+            get
+            {
+                if (ComponentList == null) return 0;
+                CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                if (ci != null)
+                {
+                    //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    MEdgeColumnCrsc_y_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_max;
+                }
+
+                return MEdgeColumnCrsc_y_plus;
+            }
+
+            set
+            {
+                MEdgeColumnCrsc_y_plus = value;
+            }
+        }
+
+        public float MainRafterCrsc_z_plus
+        {
+            get
+            {
+                if (ComponentList == null) return 0;
+                CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+                if (ci != null)
+                {
+                    //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    MMainRafterCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eRafter].Section).z_max;
+                }
+
+                return MMainRafterCrsc_z_plus;
+            }
+
+            set
+            {
+                MMainRafterCrsc_z_plus = value;
+            }
+        }
 
 
 
