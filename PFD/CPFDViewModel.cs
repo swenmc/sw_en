@@ -423,7 +423,11 @@ namespace PFD
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidth = value;
-                WidthOverall = MWidth + 2 * MMainColumnCrsc_z_plus;
+
+                //bool isChangedFromCode = IsSetFromCode;
+                //IsSetFromCode = true;
+                MWidthOverall = MWidth + 2 * MMainColumnCrsc_z_plus;
+                //IsSetFromCode = isChangedFromCode;
 
                 if (MModelIndex != 0)
                 {
@@ -489,7 +493,10 @@ namespace PFD
                 if (value < 3 || value > 300)
                     throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLength = value;
-                LengthOverall = MLength + Math.Abs(MEdgeColumnCrsc_y_minus) + MEdgeColumnCrsc_y_plus;
+                //bool isChangedFromCode = IsSetFromCode;
+                //IsSetFromCode = true;
+                MLengthOverall = MLength + Math.Abs(MEdgeColumnCrsc_y_minus) + MEdgeColumnCrsc_y_plus;
+                //IsSetFromCode = isChangedFromCode;
 
                 if (MModelIndex != 0)
                 {
@@ -521,7 +528,10 @@ namespace PFD
                 if (value < 2 || value > 30)
                     throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeight = value;
-                WallHeightOverall = MWallHeight + MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+                //bool isChangedFromCode = IsSetFromCode;
+                //IsSetFromCode = true;
+                MWallHeightOverall = MWallHeight + MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+                //IsSetFromCode = isChangedFromCode;
 
                 if (MModelIndex != 0)
                 {
@@ -555,7 +565,11 @@ namespace PFD
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidthOverall = value;
-                Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
+                //bool isChangedFromCode = IsSetFromCode;
+                //IsSetFromCode = true;
+                MWidth = MWidthOverall - 2 * MainColumnCrsc_z_plus;
+                //IsSetFromCode = isChangedFromCode;
+
                 NotifyPropertyChanged("WidthOverall");
             }
         }
@@ -572,7 +586,11 @@ namespace PFD
                 if (value < 3 || value > 300)
                     throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLengthOverall = value;
-                Length = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
+                //bool isChangedFromCode = IsSetFromCode;
+                //IsSetFromCode = true;
+                MLength = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;                
+                //IsSetFromCode = isChangedFromCode;
+
                 NotifyPropertyChanged("LengthOverall");
             }
         }
@@ -589,7 +607,11 @@ namespace PFD
                 if (value < 2 || value > 30)
                     throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeightOverall = value;
-                WallHeight = MWallHeightOverall - MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+                //bool isChangedFromCode = IsSetFromCode;
+                //IsSetFromCode = true;
+                MWallHeight = MWallHeightOverall - MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+                //IsSetFromCode = isChangedFromCode;
+
                 NotifyPropertyChanged("WallHeightOverall");
             }
         }
