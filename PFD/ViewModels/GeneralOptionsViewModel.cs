@@ -39,7 +39,8 @@ namespace PFD
         private bool m_SameColorsDownpipes;
         private bool m_SameColorsFGD;
 
-        private bool m_AllowOverallDimensions;
+        private bool m_CenterlinesDimensions;
+        private bool m_OverallDimensions;
 
         public bool BracingEverySecondRowOfGirts
         {
@@ -204,21 +205,38 @@ namespace PFD
             }
         }
 
-        public bool AllowOverallDimensions
+
+        public bool CenterlinesDimensions
         {
             get
             {
-                return m_AllowOverallDimensions;
+                return m_CenterlinesDimensions;
             }
 
             set
             {
-                m_AllowOverallDimensions = value;
-                NotifyPropertyChanged("AllowOverallDimensions");
+                if (value == false && m_OverallDimensions == false) return;
+
+                m_CenterlinesDimensions = value;
+                NotifyPropertyChanged("CenterlinesDimensions");
             }
         }
 
-        
+        public bool OverallDimensions
+        {
+            get
+            {
+                return m_OverallDimensions;
+            }
+
+            set
+            {
+                if (value == false && m_CenterlinesDimensions == false) return;
+
+                m_OverallDimensions = value;
+                NotifyPropertyChanged("OverallDimensions");
+            }
+        }
 
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
@@ -245,7 +263,8 @@ namespace PFD
             m_SameColorsGutters = false;
             m_SameColorsDownpipes = false;
 
-            m_AllowOverallDimensions = false;
+            m_CenterlinesDimensions = true;
+            m_OverallDimensions = false;
 
             IsSetFromCode = false;
         }

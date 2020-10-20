@@ -45,7 +45,15 @@
                 <CheckBox Name="chbSameColorsDownpipes" IsChecked="{Binding Path=SameColorsDownpipes}">Downpipes</CheckBox>
                 <CheckBox Name="chbSameColorsFGD" IsChecked="{Binding Path=SameColorsFGD}">Flashings gutters and downpipes </CheckBox>
 
-                <CheckBox Name="chbAllowOveralDimensions" Margin="0 10 0 0" IsChecked="{Binding Path=AllowOverallDimensions}">Allow overall dimensions</CheckBox>
+                <!--<CheckBox Name="chbAllowOveralDimensions" Margin="0 10 0 0" IsChecked="{Binding Path=AllowOverallDimensions}">Allow overall dimensions</CheckBox>-->
+
+                <TextBlock Text="Model Dimensions" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Name="radioCenterlineDimensions" GroupName="Dimensions"  IsChecked="{Binding Path=CenterlinesDimensions, Mode=TwoWay}">Centerline dimensions</RadioButton>
+                    <RadioButton Name="radioOverAllDimensions" Margin="15 0 0 0" GroupName="Dimensions" IsChecked="{Binding Path=OverallDimensions, Mode=TwoWay}">Overall dimensions</RadioButton>
+                </StackPanel>
+
+                
 
             </StackPanel>
             
