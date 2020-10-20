@@ -331,9 +331,13 @@ namespace PFD
                 bool isChangedFromCode = IsSetFromCode;
 
                 if (!isChangedFromCode) IsSetFromCode = true;
-                Width = dmodel.fb;
+                Width = dmodel.fb;                
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
+                WidthOverall = MWidth + 2 * MainColumnCrsc_z_plus;
+                LengthOverall = MLength + Math.Abs(EdgeColumnCrsc_y_minus) + EdgeColumnCrsc_y_plus;
+                WallHeightOverall = MWallHeight + MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
@@ -424,10 +428,13 @@ namespace PFD
                     throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidth = value;
 
-                //bool isChangedFromCode = IsSetFromCode;
-                //IsSetFromCode = true;
-                MWidthOverall = MWidth + 2 * MMainColumnCrsc_z_plus;
-                //IsSetFromCode = isChangedFromCode;
+                bool isChangedFromCode = IsSetFromCode;
+                if (!isChangedFromCode)
+                {
+                    IsSetFromCode = true;
+                    WidthOverall = MWidth + 2 * MMainColumnCrsc_z_plus;
+                    IsSetFromCode = isChangedFromCode;
+                }                
 
                 if (MModelIndex != 0)
                 {
@@ -493,10 +500,14 @@ namespace PFD
                 if (value < 3 || value > 300)
                     throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLength = value;
-                //bool isChangedFromCode = IsSetFromCode;
-                //IsSetFromCode = true;
-                MLengthOverall = MLength + Math.Abs(MEdgeColumnCrsc_y_minus) + MEdgeColumnCrsc_y_plus;
-                //IsSetFromCode = isChangedFromCode;
+
+                bool isChangedFromCode = IsSetFromCode;
+                if (!isChangedFromCode)
+                {
+                    IsSetFromCode = true;
+                    LengthOverall = MLength + Math.Abs(MEdgeColumnCrsc_y_minus) + MEdgeColumnCrsc_y_plus;
+                    IsSetFromCode = isChangedFromCode;
+                }
 
                 if (MModelIndex != 0)
                 {
@@ -528,10 +539,14 @@ namespace PFD
                 if (value < 2 || value > 30)
                     throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeight = value;
-                //bool isChangedFromCode = IsSetFromCode;
-                //IsSetFromCode = true;
-                MWallHeightOverall = MWallHeight + MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
-                //IsSetFromCode = isChangedFromCode;
+
+                bool isChangedFromCode = IsSetFromCode;
+                if (!isChangedFromCode)
+                {
+                    IsSetFromCode = true;
+                    WallHeightOverall = MWallHeight + MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+                    IsSetFromCode = isChangedFromCode;
+                }
 
                 if (MModelIndex != 0)
                 {
@@ -565,10 +580,14 @@ namespace PFD
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidthOverall = value;
-                //bool isChangedFromCode = IsSetFromCode;
-                //IsSetFromCode = true;
-                MWidth = MWidthOverall - 2 * MainColumnCrsc_z_plus;
-                //IsSetFromCode = isChangedFromCode;
+                
+                bool isChangedFromCode = IsSetFromCode;
+                if (!isChangedFromCode)
+                {
+                    IsSetFromCode = true;
+                    Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
+                    IsSetFromCode = isChangedFromCode;
+                }                
 
                 NotifyPropertyChanged("WidthOverall");
             }
@@ -586,10 +605,14 @@ namespace PFD
                 if (value < 3 || value > 300)
                     throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLengthOverall = value;
-                //bool isChangedFromCode = IsSetFromCode;
-                //IsSetFromCode = true;
-                MLength = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;                
-                //IsSetFromCode = isChangedFromCode;
+                
+                bool isChangedFromCode = IsSetFromCode;
+                if (!isChangedFromCode)
+                {
+                    IsSetFromCode = true;
+                    Length = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
+                    IsSetFromCode = isChangedFromCode;
+                }                
 
                 NotifyPropertyChanged("LengthOverall");
             }
@@ -607,10 +630,14 @@ namespace PFD
                 if (value < 2 || value > 30)
                     throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeightOverall = value;
-                //bool isChangedFromCode = IsSetFromCode;
-                //IsSetFromCode = true;
-                MWallHeight = MWallHeightOverall - MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
-                //IsSetFromCode = isChangedFromCode;
+
+                bool isChangedFromCode = IsSetFromCode;
+                if (!isChangedFromCode)
+                {
+                    IsSetFromCode = true;
+                    WallHeight = MWallHeightOverall - MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+                    IsSetFromCode = isChangedFromCode;
+                }
 
                 NotifyPropertyChanged("WallHeightOverall");
             }
