@@ -13,13 +13,13 @@ namespace BaseClasses
 {
     public class CConnectionJoint_U001 : CConnectionJointTypes
     {
-        
-
         // Cross Bracing to Main Column / Edge Column / Main Rafter / Edge Rafter / Purlin ???
+
+        public bool m_bScrewInPlusZDirection;
 
         public CConnectionJoint_U001() { }
 
-        public CConnectionJoint_U001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp)
+        public CConnectionJoint_U001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, bool bScrewInPlusZDirection)
         {
             bIsJointDefinedinGCS = false;
 
@@ -28,6 +28,7 @@ namespace BaseClasses
             m_MainMember = MainMember_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;
+            m_bScrewInPlusZDirection = bScrewInPlusZDirection;
 
             float fAlignment_x = 0;
 
@@ -39,8 +40,6 @@ namespace BaseClasses
 
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
-
-            
 
             int iConnectorNumber = 6;
 
@@ -54,8 +53,8 @@ namespace BaseClasses
 
             sa.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.03f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
             sa.arrConnectorControlPoints3D = new Point3D[sa.IHolesNumber];
-            sa.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, /*0.03f, 0.02f,*/ (float)m_SecondaryMembers[0].CrScStart.t_min, true);
-            sa.GenerateConnectors_FlatPlate(true);
+            sa.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, /*0.03f, 0.02f,*/ (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
+            sa.GenerateConnectors_FlatPlate(m_bScrewInPlusZDirection);
 
             // TODO Ondrej - Task 616
 
@@ -102,7 +101,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_U001(m_Node, m_MainMember, m_SecondaryMembers[0]);
+            return new CConnectionJoint_U001(m_Node, m_MainMember, m_SecondaryMembers[0], m_bScrewInPlusZDirection);
         }
 
         public override void UpdateJoint()
@@ -131,8 +130,5 @@ namespace BaseClasses
                 ConnectorGroups.First().RotationVector = new Vector3D(180 + 90, 0, 180 + 0);
             }
         }
-
-        
-        
     }
 }

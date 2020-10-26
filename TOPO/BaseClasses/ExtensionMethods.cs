@@ -375,7 +375,7 @@ namespace BaseClasses
             }
             else if (bar is CReinforcementBar_U)
             {
-                CReinforcementBar_U r = bar as CReinforcementBar_U;                
+                CReinforcementBar_U r = bar as CReinforcementBar_U;
                 clone = r.Clone();
                 clone.BIsDisplayed = bar.BIsDisplayed;
             }

@@ -1259,7 +1259,7 @@ namespace PFD
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls],
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
                     0f,
-                    0.5f * MathF.fPI,
+                    0.5f * MathF.fPI, // Zakladne pootocenie prierezu / roof pitch sa riesi priamo vo funkcii podla strany budovy pre gable roof
                     cb);
 
                     i_temp_numberofMembers += cb.NumberOfCrossBracingMembers_Bay; // Navysime celkovy pocet o pocet prutov, ktore boli vygenerovane v danej bay

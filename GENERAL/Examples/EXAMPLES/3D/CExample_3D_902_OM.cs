@@ -125,11 +125,11 @@ namespace Examples
             //m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", m_arrMembers[000].NodeEnd, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.3f, false, true, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[000], 0.2f, false, true, true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[000].NodeStart, null, m_arrMembers[000]));
-            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[000].NodeEnd, null, m_arrMembers[000]));
+            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[000].NodeStart, null, m_arrMembers[000], true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[000].NodeEnd, null, m_arrMembers[000], true));
 
-            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[001].NodeStart, null, m_arrMembers[001]));
-            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[001].NodeEnd, null, m_arrMembers[001]));
+            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[001].NodeStart, null, m_arrMembers[001], true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_U001(m_arrMembers[001].NodeEnd, null, m_arrMembers[001], true));
 
             // Nodal loads
             m_arrNLoads = new CNLoad[1];

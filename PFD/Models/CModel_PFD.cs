@@ -464,7 +464,7 @@ namespace PFD
             // Cross Bracing - Side Walls
             if(bGenerateSideWallCrossBracing)
             {
-                // TODO - pripoje cross bracing
+                // Pripoje cross bracing
                 for (int i = 0; i < iNumberOfCrossBracingMembers_Walls_Total; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + i];
@@ -477,23 +477,45 @@ namespace PFD
                     // Bolo by dobre mat moznost v akej skupine uzlov hladame node, ci je to len medzi member.NodeStart alebo len member.NodeEnd alebo len member.IntermediateNodes alebo kombinacie tychto moznosti
                     // Ak funkcia najde viac prutov, ktore splnaju kriteria, vrati ten s nizsim ID
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[0], current_member));
-
-                    m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[0], current_member));
+                    if (MathF.d_equal(current_member.NodeStart.X, 0)) // Left side
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[0], current_member, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[0], current_member, true));
+                    }
+                    else // Right side
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[0], current_member, false));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[0], current_member, false));
+                    }
                 }
             }
 
             // Cross Bracing - Roof
             if(bGenerateRoofCrossBracing)
             {
-                // TODO - pripoje cross bracing
+                // Pripoje cross bracing
                 for (int i = 0; i < iNumberOfCrossBracingMembers_Roof_Total; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + i];
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[1], current_member));
-
-                    m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[1], current_member));
+                    if (bIsGableRoof)
+                    {
+                        if (current_member.NodeStart.Y <= 0.5 * fW_frame) // Left side
+                        {
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[1], current_member, true));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[1], current_member, true));
+                        }
+                        else // Right side
+                        {
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[1], current_member, false));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[1], current_member, false));
+                        }
+                    }
+                    else // Monopitch
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[1], current_member, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[1], current_member, true));
+                    }
                 }
             }
 
@@ -795,68 +817,33 @@ namespace PFD
 
                 for (int i = 0; i < cb.NumberOfCrossesPerRafter; i++)
                 {
+                    float fMemberRotation_Roof_Left_rad_1 = fMemberRotation_Roof_rad - fRoofPitch_rad;
+                    float fMemberRotation_Roof_Left_rad_2 = fMemberRotation_Roof_rad + fRoofPitch_rad;
+
                     if ((cb.FirstCrossOnRafter && i == 0) || (!cb.FirstCrossOnRafter && (i == 0 && cb.NumberOfCrossesPerRafter > 1))) // Len prvy alebo prvy z viacerych
                     {
-                        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + 1], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 1], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
+                        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + 1], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 1], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_2, 0);
                     }
                     else if ((cb.LastCrossOnRafter && cb.NumberOfCrossesPerRafter == 1) || (cb.LastCrossOnRafter && cb.FirstCrossOnRafter && cb.NumberOfCrossesPerRafter == 2) || (!cb.LastCrossOnRafter && (cb.NumberOfCrossesPerRafter > 1 && i == (cb.NumberOfCrossesPerRafter - 1)))) // Len posledny alebo posledny z viacerych
                     {
                         int iTheoreticalNumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin;
 
-                        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
+                        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_2, 0);
                     }
                     else if (cb.NumberOfCrossesPerRafter == 1) // Len jeden na cely rafter
                     {
                         // Only one cross per rafter
-                        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + 1], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 1], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
+                        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + 1], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 1], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_2, 0);
                     }
                     else
                     {
                         // Intermediate cross
-                        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
+                        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_2, 0);
                     }
-
-                    //// Left
-                    //if (i == 0)
-                    //{
-                    //    // First cross
-
-                    //    if (cb.FirstCrossOnRafter || cb.NumberOfCrossesPerRafter > 1)
-                    //    {
-                    //        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + 1], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 1], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //    }
-                    //    else if (!cb.FirstCrossOnRafter && cb.LastCrossOnRafter) // Only one cross which is the last cross
-                    //    {
-                    //        int iTheoreticalNumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin;
-
-                    //        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //    }
-                    //    else // Only one cross per rafter
-                    //    {
-                    //        m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + 1], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //        m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 1], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //    }
-                    //}
-                    //else if (i < cb.NumberOfCrossesPerRafter - 1)
-                    //{
-                    //    // Intermediate cross
-
-                    //    m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex-1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex-1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + (i+1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //    m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex-1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex-1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + (i+1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //}
-                    //else
-                    //{
-                    //    // Last cross
-
-                    //    m_arrMembers[i_numberofMembers + i * 2 + 0] = new CMember(i_numberofMembers + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex-1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + i * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //    m_arrMembers[i_numberofMembers + i * 2 + 1] = new CMember(i_numberofMembers + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex-1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + i * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                    //}
                 }
 
                 // Right
@@ -869,70 +856,34 @@ namespace PFD
 
                     for (int i = 0; i < cb.NumberOfCrossesPerRafter; i++)
                     {
+                        float fMemberRotation_Roof_Right_rad_1 = fMemberRotation_Roof_rad + fRoofPitch_rad;
+                        float fMemberRotation_Roof_Right_rad_2 = fMemberRotation_Roof_rad - fRoofPitch_rad;
+
                         if ((cb.FirstCrossOnRafter && i == 0) || (!cb.FirstCrossOnRafter && (i == 0 && cb.NumberOfCrossesPerRafter > 1))) // Len prvy alebo prvy z viacerych
                         {
-                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
+                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_2, 0);
                         }
                         else if ((cb.LastCrossOnRafter && cb.NumberOfCrossesPerRafter == 1) || (cb.LastCrossOnRafter && cb.FirstCrossOnRafter && cb.NumberOfCrossesPerRafter == 2) || (!cb.LastCrossOnRafter && (cb.NumberOfCrossesPerRafter > 1 && i == (cb.NumberOfCrossesPerRafter - 1)))) // Len posledny alebo posledny z viacerych
                         {
                             int iTheoreticalNumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin;
 
-                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
+                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_2, 0);
                         }
                         else if (cb.NumberOfCrossesPerRafter == 1) // Len jeden na cely rafter
                         {
                             // Only one cross per rafter
 
-                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
+                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_2, 0);
                         }
                         else
                         {
                             // Intermediate cross
-                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
+                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+                            m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_2, 0);
                         }
-
-                        //// Right
-                        //
-                        //if (i == 0)
-                        //{
-                        //    // First cross
-                        //
-                        //    if (cb.FirstCrossOnRafter || cb.NumberOfCrossesPerRafter > 1)
-                        //    {
-                        //        m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //        m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //    }
-                        //    else if (!cb.FirstCrossOnRafter && cb.LastCrossOnRafter) // Only one cross which is the last cross
-                        //    {
-                        //        int iTheoreticalNumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin;
-                        //
-                        //        m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //        m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (iTheoreticalNumberOfCrossesPerRafter - 1) * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //    }
-                        //    else // Only one cross per rafter
-                        //    {
-                        //        m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[cb.BayIndex * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //        m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + (iFrameNodesNo - 2)], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //    }
-                        //}
-                        //else if (i < cb.NumberOfCrossesPerRafter - 1)
-                        //{
-                        //    // Intermediate cross
-                        //
-                        //    m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //    m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + (i + 1) * cb.EveryXXPurlin], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //}
-                        //else
-                        //{
-                        //    // Last cross
-                        //
-                        //    m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 0] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 0) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[(cb.BayIndex + 1) * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //    m_arrMembers[i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 1] = new CMember(i_numberofMembers + iNumberOfRoofCrossBracingMembersPerRafter + i * 2 + 2, m_arrNodes[(iFirstPurlinNodeIndex - 1) + (cb.BayIndex + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + i * cb.EveryXXPurlin], m_arrNodes[cb.BayIndex * iFrameNodesNo + 2], section_CB_Roof, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof_Right, eccentricity_Roof_Right, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_rad, 0);
-                        //}
                     }
                 }
             }

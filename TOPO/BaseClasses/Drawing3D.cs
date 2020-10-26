@@ -1714,7 +1714,7 @@ namespace BaseClasses
                         // Connectors
                         bool bUseAdditionalConnectors = true; // Spojovacie prvky, ktore nie su viazane na plechy (plates), napr. spoj pomocou screws priamo medzi nosnikmi bez plechu (plate) (teda spoj U001 - tiahla - bracing pripojene priamo k prutom main frame)
 
-                        if (bUseAdditionalConnectors && cmodel.m_arrConnectionJoints[i].ConnectorGroups != null)
+                        if (bUseAdditionalConnectors && sDisplayOptions.bDisplayConnectors && cmodel.m_arrConnectionJoints[i].ConnectorGroups != null)
                         {
                             foreach (CConnectorGroup connectorGR in cmodel.m_arrConnectionJoints[i].ConnectorGroups)
                             {
