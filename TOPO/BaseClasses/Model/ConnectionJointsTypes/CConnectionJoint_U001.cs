@@ -45,6 +45,8 @@ namespace BaseClasses
 
             CScrew referenceScrew = new CScrew("TEK", "14");
 
+            // TODO 624 Umožniť editovať v GUI a nastavovať podobne ako je to v CScrewArrangementRect_PlateType_JKL
+            // Toto moze byt defaultny stav
             CScrewRectSequence seq = new CScrewRectSequence(3, 2, 0.03f, 0.02f, 0.06f, 0.10f); // Create rectangular sequence of screws
             CScrewSequenceGroup gr = new CScrewSequenceGroup();
             gr.ListSequence.Add(seq); // Add screw sequence to screw group

@@ -10,6 +10,9 @@ namespace BaseClasses
     [Serializable]
     public class CScrewArrangement_CB:CScrewArrangement
     {
+        // TODO 624
+        // Tento objekt moze byt samostatny alebo ho mozeme zlucit s CScrewArrangementRect_PlateType_JKL
+        // Podla mna by mal byt radsej samostatny kedze tento objekt ma byt nezavisly na plates, ale obsah Calc_HolesCentersCoord2D by sa refaktoroval
         public CScrewArrangement_CB() { }
 
         public CScrewArrangement_CB(int iScrewsNumber_temp, CScrew referenceScrew_temp)
@@ -27,7 +30,7 @@ namespace BaseClasses
             float fy = 0.06f;  // y-direction
             */
 
-            // TODO - urobit toto dynamicke, aby sa generovalo podla rect screw arrangement - rovnake alebo rozne vzdialenosti medzi jednotlivymi radmi alebo stlpcami skrutiek
+            // TODO 624 - urobit toto dynamicke, aby sa generovalo podla rect screw arrangement - rovnake alebo rozne vzdialenosti medzi jednotlivymi radmi alebo stlpcami skrutiek
             if (IHolesNumber > 0)
             {
                 HolesCentersPoints2D = new Point[IHolesNumber];

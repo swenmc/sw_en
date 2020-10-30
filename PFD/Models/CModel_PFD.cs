@@ -469,9 +469,9 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + i];
 
-                    // TODO Ondrej - potrebujeme spravne priradit mainMemberForStartJoint a mainMemberForEndJoint
+                    // TODO 624 - Ondrej - potrebujeme spravne priradit mainMemberForStartJoint a mainMemberForEndJoint
 
-                    // TODO Ondrej - pripravit zlozitejsie vyhladavacie funkcie pre tieto pruty
+                    // TODO 624 - Ondrej - pripravit zlozitejsie vyhladavacie funkcie pre tieto pruty
                     // Pre dany node najdi take pruty, ktore maju zaciatocny, koncovy alebo medzilahly node rovnaky a pritom splnaju nejake dalsie specificke podmienky, napriklad su zadaneho typu / typov
                     // napr. EMemberType_FS alebo EMemberType_FS_Position alebo su zo skupiny typov napr. MC alebo EC
                     // Bolo by dobre mat moznost v akej skupine uzlov hladame node, ci je to len medzi member.NodeStart alebo len member.NodeEnd alebo len member.IntermediateNodes alebo kombinacie tychto moznosti
@@ -479,7 +479,7 @@ namespace PFD
 
                     if (MathF.d_equal(current_member.NodeStart.X, 0)) // Left side
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[0], current_member, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /* TODO 624 mainMemberForStartJoint*/ m_arrMembers[0], current_member, true));
                         m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[0], current_member, true));
                     }
                     else // Right side
@@ -502,7 +502,7 @@ namespace PFD
                     {
                         if (current_member.NodeStart.Y <= 0.5 * fW_frame) // Left side
                         {
-                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /*mainMemberForStartJoint*/ m_arrMembers[1], current_member, true));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, /* TODO 624 mainMemberForStartJoint*/ m_arrMembers[1], current_member, true));
                             m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, /*mainMemberForEndJoint*/ m_arrMembers[1], current_member, true));
                         }
                         else // Right side
