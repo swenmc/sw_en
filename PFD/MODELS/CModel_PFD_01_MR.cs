@@ -1702,14 +1702,16 @@ namespace PFD
 
                     if (_pfdVM.DoorBlocksProperties[i].sDoorType == "Personnel Door")
                     {
-                        doorFlashingColor = (Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "PA Door Trimmer")).CoatingColor.CodeHEX);
+                        CAccessories_LengthItemProperties prop = _pfdVM.Flashings.FirstOrDefault(f => f.Name == "PA Door Trimmer");
+                        if (prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fPersonnelDoorFrameThickness;
                         leftEdge += fPersonnelDoorFrameThickness;
                         backEdge -= fPersonnelDoorFrameThickness;
                     }
                     else if (_pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door")
                     {
-                        doorFlashingColor = (Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "Roller Door Trimmer")).CoatingColor.CodeHEX);
+                        CAccessories_LengthItemProperties prop = _pfdVM.Flashings.FirstOrDefault(f => f.Name == "Roller Door Trimmer");
+                        if(prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fRollerDoorFrameThickness;
                         leftEdge += fRollerDoorFrameThickness;
                         backEdge -= fRollerDoorFrameThickness;
@@ -1747,6 +1749,10 @@ namespace PFD
             {
                 m_arrGOStrWindows = new List<BaseClasses.GraphObj.CStructure_Window>();
 
+                Color windowFlashingColor = Colors.White;
+                CAccessories_LengthItemProperties prop = _pfdVM.Flashings.FirstOrDefault(f => f.Name == "Window");
+                if (prop != null) windowFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
+
                 for (int i = 0; i < _pfdVM.WindowBlocksProperties.Count; i++)
                 {
                     double leftEdge = -column_crsc_z_plus - claddingThickness_Wall + fWindowFrameThickness;
@@ -1771,7 +1777,7 @@ namespace PFD
 
                     BaseClasses.GraphObj.CStructure_Window window_temp = new BaseClasses.GraphObj.CStructure_Window(i + 1, EWindowShapeType.eClassic, _pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1,
                        pControlEdgePoint, _pfdVM.WindowBlocksProperties[i].fWindowsWidth / (_pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1), _pfdVM.WindowBlocksProperties[i].fWindowsHeight, fWindowFrameThickness,
-                       new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString((_pfdVM.Flashings.Single(f => f.Name == "Window")).CoatingColor.CodeHEX))),
+                       new DiffuseMaterial(new SolidColorBrush(windowFlashingColor)),
                        new DiffuseMaterial(Brushes.LightBlue), fPanelThickness, fRotationZDegrees, true, 0f);
 
                     m_arrGOStrWindows.Add(window_temp);

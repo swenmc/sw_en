@@ -41,8 +41,8 @@
                 <TextBlock Text="Colors - Use same colors for all" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbSameColorsDoor" IsChecked="{Binding Path=SameColorsDoor}">Doors</CheckBox>
                 <CheckBox Name="chbSameColorsFlashings" IsChecked="{Binding Path=SameColorsFlashings}">Flashings</CheckBox>
-                <CheckBox Name="chbSameColorsGutters" IsChecked="{Binding Path=SameColorsGutters}">Gutters</CheckBox>
-                <CheckBox Name="chbSameColorsDownpipes" IsChecked="{Binding Path=SameColorsDownpipes}">Downpipes</CheckBox>
+                <CheckBox Name="chbSameColorsGutters" IsChecked="{Binding Path=SameColorsGutters}" IsEnabled="False">Gutters</CheckBox>
+                <CheckBox Name="chbSameColorsDownpipes" IsChecked="{Binding Path=SameColorsDownpipes}" IsEnabled="False">Downpipes</CheckBox>
                 <CheckBox Name="chbSameColorsFGD" IsChecked="{Binding Path=SameColorsFGD}">Flashings gutters and downpipes </CheckBox>
 
                 <TextBlock Text="Model Dimensions" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
