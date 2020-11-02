@@ -13,9 +13,24 @@ namespace BaseClasses
 {
     public class CConnectionJoint_U001 : CConnectionJointTypes
     {
+        private CScrewArrangement_CB m_ScrewArrangement;
+
         // Cross Bracing to Main Column / Edge Column / Main Rafter / Edge Rafter / Purlin ???
 
         public bool m_bScrewInPlusZDirection;
+
+        public CScrewArrangement_CB ScrewArrangement
+        {
+            get
+            {
+                return m_ScrewArrangement;
+            }
+
+            set
+            {
+                m_ScrewArrangement = value;
+            }
+        }
 
         public CConnectionJoint_U001() { }
 
@@ -50,13 +65,13 @@ namespace BaseClasses
             CScrewRectSequence seq = new CScrewRectSequence(3, 2, 0.03f, 0.02f, 0.06f, 0.10f); // Create rectangular sequence of screws
             CScrewSequenceGroup gr = new CScrewSequenceGroup();
             gr.ListSequence.Add(seq); // Add screw sequence to screw group
-            CScrewArrangement_CB sa = new CScrewArrangement_CB(iConnectorNumber, referenceScrew);
-            sa.ListOfSequenceGroups = new List<CScrewSequenceGroup>(1) {gr}; // Add screw group to screw arrangement
+            m_ScrewArrangement = new CScrewArrangement_CB(iConnectorNumber, referenceScrew);
+            m_ScrewArrangement.ListOfSequenceGroups = new List<CScrewSequenceGroup>(1) {gr}; // Add screw group to screw arrangement
 
-            sa.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.03f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
-            sa.arrConnectorControlPoints3D = new Point3D[sa.IHolesNumber];
-            sa.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, /*0.03f, 0.02f,*/ (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
-            sa.GenerateConnectors_FlatPlate(m_bScrewInPlusZDirection);
+            m_ScrewArrangement.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.03f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
+            m_ScrewArrangement.arrConnectorControlPoints3D = new Point3D[m_ScrewArrangement.IHolesNumber];
+            m_ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, /*0.03f, 0.02f,*/ (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
+            m_ScrewArrangement.GenerateConnectors_FlatPlate(m_bScrewInPlusZDirection);
 
             // TODO Ondrej - Task 616
 
@@ -84,7 +99,7 @@ namespace BaseClasses
             //}
 
             if (ConnectorGroups == null) ConnectorGroups = new List<CConnectorGroup>();
-            ConnectorGroups.Add(new CConnectorGroup(sa.Screws));
+            ConnectorGroups.Add(new CConnectorGroup(m_ScrewArrangement.Screws));
 
             ConnectorGroups.First().ControlPoint = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z);
             ConnectorGroups.First().RotationVector = new Vector3D(90, 0, 0);

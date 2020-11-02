@@ -736,6 +736,15 @@ namespace PFD
                         tabItems.Add(ti);
                     }
                 }
+                else
+                {
+                    TabItem ti = new TabItem();
+                    ti.Header = "CB";
+
+                    if(joint is CConnectionJoint_U001) SetTabContent(ti, (joint as CConnectionJoint_U001).ScrewArrangement);
+
+                    tabItems.Add(ti);
+                }
 
                 displayJoint(joint);
             }
@@ -853,6 +862,45 @@ namespace PFD
             ti.IsEnabled = true;
         }
 
+        private void SetTabContent(TabItem ti, CScrewArrangement_CB sa)
+        {
+            //ScrollViewer sw = new ScrollViewer();
+            //sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            //sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            //sw.Width = 560;
+            StackPanel sp = new StackPanel();
+            sp.Width = 560;
+            sp.VerticalAlignment = VerticalAlignment.Top;
+            sp.HorizontalAlignment = HorizontalAlignment.Left;
+
+            // Screw Arrangement
+
+            StackPanel spSA = new StackPanel();
+            sp.Width = 550;
+            spSA.Orientation = Orientation.Horizontal;
+            Label lSA = new Label() { Content = "Screw Arrangement: " };
+            lSA.Width = 150;
+            ComboBox selectSA = new ComboBox();
+            selectSA.Width = 120;
+            selectSA.Height = 20;
+            var marginSA = selectSA.Margin;
+            marginSA.Top = 5;
+            marginSA.Bottom = 5;
+            selectSA.Margin = marginSA;
+            selectSA.ItemsSource = new List<string>() { "Rectangular" };
+            selectSA.SelectedIndex = 0;
+            selectSA.SelectionChanged += SelectSA_SelectionChanged;
+            spSA.Children.Add(lSA);
+            spSA.Children.Add(selectSA);
+            sp.Children.Add(spSA);
+
+            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(sa);
+            //lSA.SetValue(Grid.RowProperty, 0);
+            sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
+            
+            ti.Content = sp;
+            ti.IsEnabled = true;
+        }
 
         private void SelectPlateSerie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1341,28 +1389,37 @@ namespace PFD
             CComponentParamsView item = sender as CComponentParamsView;
 
             CConnectionJointTypes joint = GetSelectedJoint();
-            CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
-            CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
-            paramsChanged = true;
-            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate);
-
-            CPlateHelper.UpdatePlateScrewArrangementData(plate);
-
-            if (screwArrangementParams != null)
+            if (joint.m_arrPlates != null)
             {
-                StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+                CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+                CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
+                paramsChanged = true;
+                List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate);
 
-                int screwArrangementGridIndex = 2;
-                if (plate is CConCom_Plate_B_basic) { screwArrangementGridIndex = 4; }
+                CPlateHelper.UpdatePlateScrewArrangementData(plate);
 
-                DataGrid dgSA = sp.Children[screwArrangementGridIndex] as DataGrid;
-                dgSA.ItemsSource = screwArrangementParams;
-                foreach (CComponentParamsView cpw in screwArrangementParams)
+                if (screwArrangementParams != null)
                 {
-                    cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
+                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+
+                    int screwArrangementGridIndex = 2;
+                    if (plate is CConCom_Plate_B_basic) { screwArrangementGridIndex = 4; }
+
+                    DataGrid dgSA = sp.Children[screwArrangementGridIndex] as DataGrid;
+                    dgSA.ItemsSource = screwArrangementParams;
+                    foreach (CComponentParamsView cpw in screwArrangementParams)
+                    {
+                        cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
+                    }
                 }
+                vm.ChangedScrewArrangementParameter = item;
             }
-            vm.ChangedScrewArrangementParameter = item;
+            else
+            {
+                //TODO
+                //implement ScrewArrangement_CB change
+            }
+            
         }
         private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
         {
@@ -1634,6 +1691,16 @@ namespace PFD
             </DataTemplate>
             </Setter.Value>
             </Setter>
+            </DataTrigger>
+            <DataTrigger Binding='{ Binding CheckType}' Value='TextBlock'>
+            <Setter Property = 'ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <TextBlock TextAlignment='Right' Text = '{Binding Value}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            <Setter Property='Focusable' Value='False'></Setter>
             </DataTrigger>
             </Style.Triggers>
             </Style>
