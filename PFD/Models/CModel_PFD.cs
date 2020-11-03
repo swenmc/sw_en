@@ -477,25 +477,29 @@ namespace PFD
                     // Bolo by dobre mat moznost v akej skupine uzlov hladame node, ci je to len medzi member.NodeStart alebo len member.NodeEnd alebo len member.IntermediateNodes alebo kombinacie tychto moznosti
                     // Ak funkcia najde viac prutov, ktore splnaju kriteria, vrati ten s nizsim ID
 
-                    //To Mato - podla mna netreba specialnu funkciu, ked sa to vsetko da zapisat takto jednoducho vid nizsie
-                    //TODO Mato: Tu mi to pada, neviem aku podmienku mam dat na typ Member
                     // Joint at member start
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn || m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)  
+                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
                             && (m.IntermediateNodes.Contains(current_member.NodeStart) || m.NodeStart.Equals(current_member.NodeStart) || m.NodeEnd.Equals(current_member.NodeStart)));
 
                     // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn || m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
                             && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
 
-                    if (MathF.d_equal(current_member.NodeStart.X, 0)) // Left side
+                    // To Ondrej - hladame prut typu Main alebo Edge Column, ktore su pripojene k zaciatku alebo koncu pruta cross-bracing na side wall
+                    // Ak taky prut nenajdeme znamena to, ze prut cross-bracing sa nachadza na streche a spoje nepridavame
+
+                    if (mainMemberForStartJoint != null && mainMemberForEndJoint != null)
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint /*m_arrMembers[0]*/, current_member, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint /*m_arrMembers[0]*/, current_member, true));
-                    }
-                    else // Right side
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint /*m_arrMembers[0]*/, current_member, false));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint /*m_arrMembers[0]*/, current_member, false));
+                        if (MathF.d_equal(current_member.NodeStart.X, 0)) // Left side
+                        {
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint, current_member, true));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
+                        }
+                        else // Right side
+                        {
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint, current_member, false));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint, current_member, false));
+                        }
                     }
                 }
             }
@@ -508,33 +512,37 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + i];
 
-                    //To Mato - podla mna netreba specialnu funkciu, ked sa to vsetko da zapisat takto jednoducho vid nizsie
-                    //TODO Mato: Tu mi to pada, neviem aku podmienku mam dat na typ Member
                     // Joint at member start
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter || m.EMemberTypePosition == EMemberType_FS_Position.Purlin || m.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin || m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
                             && (m.IntermediateNodes.Contains(current_member.NodeStart) || m.NodeStart.Equals(current_member.NodeStart) || m.NodeEnd.Equals(current_member.NodeStart)));
 
                     // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter || m.EMemberTypePosition == EMemberType_FS_Position.Purlin || m.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin || m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
                             && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
 
-                    if (bIsGableRoof)
+                    // To Ondrej - hladame pruty typu Main alebo Edge Rafter, ktore su pripojene k zaciatku alebo koncu pruta cross-bracing na roof
+                    // Ak taky prut nenajdeme znamena to, ze prut cross-bracing sa nachadza na wall a spoje nepridavame
+
+                    if (mainMemberForStartJoint != null && mainMemberForEndJoint != null)
                     {
-                        if (current_member.NodeStart.Y <= 0.5 * fW_frame) // Left side
+                        if (bIsGableRoof)
                         {
-                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint /*m_arrMembers[1]*/, current_member, true));
-                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint /*m_arrMembers[1]*/, current_member, true));
+                            if (current_member.NodeStart.Y <= 0.5 * fW_frame) // Left side
+                            {
+                                m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint, current_member, true));
+                                m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
+                            }
+                            else // Right side
+                            {
+                                m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint, current_member, false));
+                                m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint, current_member, false));
+                            }
                         }
-                        else // Right side
+                        else // Monopitch
                         {
-                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint /*m_arrMembers[1]*/, current_member, false));
-                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint /*m_arrMembers[1]*/, current_member, false));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint, current_member, true));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
                         }
-                    }
-                    else // Monopitch
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint /*m_arrMembers[1]*/, current_member, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint /*m_arrMembers[1]*/, current_member, true));
                     }
                 }
             }
