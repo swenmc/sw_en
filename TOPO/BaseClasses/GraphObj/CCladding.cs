@@ -24,6 +24,12 @@ namespace BaseClasses.GraphObj
         double column_crsc_y_minus;
         double column_crsc_y_plus;
 
+
+        string m_claddingShape_Wall = "Smartdek"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding
+        string m_claddingCoatingType_Wall = "CS Endura®";  // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding coating type
+        string m_claddingShape_Roof = "Smartdek"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding
+        string m_claddingCoatingType_Roof = "CS MAXX®"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding coating type
+
         string m_ColorNameWall;
         string m_ColorNameRoof;
 
@@ -37,7 +43,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 2
         public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData, CRSC.CCrSc_TW columnSection,
-            string colorName_Wall, string colorName_Roof,
+            string colorName_Wall, string colorName_Roof, string claddingShape_Wall, string claddingCoatingType_Wall, string claddingShape_Roof, string claddingCoatingType_Roof,
             Color colorWall, Color colorRoof,
             bool bIsDisplayed, int fTime, double wallCladdingHeight, double roofCladdingHeight, double wallCladdingWidthRib, double roofCladdingWidthRib)
         {
@@ -49,6 +55,11 @@ namespace BaseClasses.GraphObj
             column_crsc_y_plus = columnSection.y_max;
             m_ColorNameWall = colorName_Wall;
             m_ColorNameRoof = colorName_Roof;
+            m_claddingShape_Wall = claddingShape_Wall;
+            m_claddingCoatingType_Wall = claddingCoatingType_Wall;
+            m_claddingShape_Roof = claddingShape_Roof;
+            m_claddingCoatingType_Roof = claddingCoatingType_Roof;
+
             m_ColorWall = colorWall;
             m_ColorRoof = colorRoof;
             BIsDisplayed = bIsDisplayed;
@@ -102,47 +113,14 @@ namespace BaseClasses.GraphObj
             {
                 // Obrazok textury ma a = 213.9 x 213.9 mm. velkost v pixeloch je b = 800 x 800 pxs, tj. 3.74 pxs / mm
 
-                //ImageBrush brush = new ImageBrush();
-                //brush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
-                //brush.TileMode = TileMode.Tile;
-                //brush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
-                //brush.Stretch = Stretch.UniformToFill;
-                //double rectSize = claddingWidthRibModular_Wall / (pfront1_baseright.X - pfront0_baseleft.X);
-                //brush.Viewport = new System.Windows.Rect(0, 0, rectSize, rectSize);
-                //material_FrontBackWall = new DiffuseMaterial(brush);
+                brushFront = new ImageBrush();                
+                //CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
+                string uriString_Wall = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Wall + "/" + m_claddingShape_Wall + "_" + m_ColorNameWall + ".jpg";
 
-                //brush = new ImageBrush();
-                //brush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
-                //brush.TileMode = TileMode.Tile;
-                //brush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
-                //brush.Stretch = Stretch.UniformToFill;
-                //rectSize = claddingWidthRibModular_Wall / (pback0_baseleft.Y - pfront0_baseleft.Y);
-                //brush.Viewport = new System.Windows.Rect(0, 0, rectSize, rectSize);
-                //material_SideWall = new DiffuseMaterial(brush);
-
-                //brush = new ImageBrush();
-                //brush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
-                //brush.TileMode = TileMode.Tile;
-                //brush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
-                //brush.Stretch = Stretch.UniformToFill;
-                //rectSize = claddingWidthRibModular_Roof / (pback0_baseleft.Y - pfront0_baseleft.Y);
-                //brush.Viewport = new System.Windows.Rect(0, 0, rectSize, rectSize); // Rozmer v smere Y pre side wall a strechu nemusi byt rovnaky ak sa pouzije iny plech
-                //material_Roof = new DiffuseMaterial(brush);
-
-                brushFront = new ImageBrush();
-                //brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
-
-                string claddingShape_Wall = "Smartdek"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding
-                string claddingCoatingType_Wall = "CS Endura®";  // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding coating type
-
-                // TO Ondrej CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
-
-                string uriString_Wall = "pack://application:,,,/Resources/Textures/" + claddingShape_Wall + "/" + claddingShape_Wall + "_" + m_ColorNameWall + ".jpg";
-
-                if (claddingCoatingType_Wall == "FORMCLAD®")
+                if (m_claddingCoatingType_Wall == "FORMCLAD®")
                 {
                     string claddingCoatingType_Wall_string = "FORMCLAD";
-                    uriString_Wall = "pack://application:,,,/Resources/Textures/" + claddingShape_Wall + "/" + claddingShape_Wall + "_" + claddingCoatingType_Wall_string + "_" + m_ColorNameWall + ".jpg";
+                    uriString_Wall = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Wall + "/" + m_claddingShape_Wall + "_" + claddingCoatingType_Wall_string + "_" + m_ColorNameWall + ".jpg";
                 }
 
                 //brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/Smartdek/Smartdek_Azure.jpg", UriKind.RelativeOrAbsolute));
@@ -152,30 +130,23 @@ namespace BaseClasses.GraphObj
                 brushFront.Stretch = Stretch.Fill;
                 brushFront.Opacity = options.fFrontCladdingOpacity;
 
-                brushSide = new ImageBrush();
-                //brushSide.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
+                brushSide = new ImageBrush();                
                 brushSide.ImageSource = new BitmapImage(new Uri(uriString_Wall, UriKind.RelativeOrAbsolute));
                 brushSide.TileMode = TileMode.Tile;
                 brushSide.ViewportUnits = BrushMappingMode.Absolute;
                 brushSide.Stretch = Stretch.Fill;
                 brushSide.Opacity = options.fLeftCladdingOpacity;
 
-                string claddingShape_Roof = "Smartdek"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding
-                string claddingCoatingType_Roof = "CS MAXX®"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding coating type
+                // CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
+                string uriString_Roof = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Roof + "/" + m_claddingShape_Roof + "_" + m_ColorNameRoof + ".jpg";
 
-                // TO Ondrej CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
-
-                string uriString_Roof = "pack://application:,,,/Resources/Textures/" + claddingShape_Roof + "/" + claddingShape_Roof + "_" + m_ColorNameRoof + ".jpg";
-
-                if (claddingCoatingType_Roof == "FORMCLAD®")
+                if (m_claddingCoatingType_Roof == "FORMCLAD®")
                 {
                     string claddingCoatingType_Roof_string = "FORMCLAD";
-                    uriString_Roof = "pack://application:,,,/Resources/Textures/" + claddingShape_Roof + "/" + claddingShape_Roof + "_" + claddingCoatingType_Roof_string + "_" + m_ColorNameRoof + ".jpg";
+                    uriString_Roof = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Roof + "/" + m_claddingShape_Roof + "_" + claddingCoatingType_Roof_string + "_" + m_ColorNameRoof + ".jpg";
                 }
 
-                brushRoof = new ImageBrush();
-                //brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
-                //brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Purlindek_RichGraphite.png", UriKind.RelativeOrAbsolute));
+                brushRoof = new ImageBrush();                                
                 brushRoof.ImageSource = new BitmapImage(new Uri(uriString_Roof, UriKind.RelativeOrAbsolute));
                 brushRoof.TileMode = TileMode.Tile;
                 brushRoof.ViewportUnits = BrushMappingMode.Absolute;

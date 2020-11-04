@@ -3069,10 +3069,10 @@ namespace PFD
             LightAmbient = true;
             MaterialDiffuse = true;
             MaterialEmissive = false;
-            DisplayMembers = false;
+            DisplayMembers = true;
             DisplayJoints = true; // Vypnute v defaulte
             DisplayPlates = true; // Vypnute v defaulte
-            DisplayConnectors = false; // Vypnute v defaulte
+            DisplayConnectors = true; // Vypnute v defaulte
             DisplayNodes = false;
             DisplayFoundations = true;
             DisplayReinforcementBars = false;
@@ -3088,9 +3088,9 @@ namespace PFD
             DisplayFoundationsWireFrame = false;
             DisplayReinforcementBarsWireFrame = false;
 
-            DisplayCladding = false;
-            DisplayDoors = false;
-            DisplayWindows = false;
+            DisplayCladding = true;
+            DisplayDoors = true;
+            DisplayWindows = true;
 
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = false;

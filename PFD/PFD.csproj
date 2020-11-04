@@ -808,6 +808,70 @@
     <Resource Include="Resources\Textures\Smartdek\Smartdek_Windsor Grey.jpg" />
     <Resource Include="Resources\Textures\Smartdek\Smartdek_Zinc.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Azure.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Bone White.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Cloud.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Desert Sand.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Ebony.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Flaxpod.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_FORMCLAD_Ash Grey.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_FORMCLAD_Charcoal Black.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_FORMCLAD_Rich Graphite.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_FORMCLAD_Warm White.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_FORMCLAD_Zinc.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Grey Friars.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Gull Grey.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Indigo Blue.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Ironsand.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Karaka.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Lichen.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Lignite.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Mist Green.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_New Denim Blue.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Permanent Green.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Pioneer Red.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Sandstone Grey.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Scoria.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Slate.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Smooth Cream.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Thunder Grey.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Titania.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Windsor Grey.jpg" />
+    <Resource Include="Resources\Textures\Purlindek\Purlindek_Zinc.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Azure.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Bone White.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Cloud.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Desert Sand.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Ebony.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Flaxpod.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_FORMCLAD_Ash Grey.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_FORMCLAD_Charcoal Black.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_FORMCLAD_Rich Graphite.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_FORMCLAD_Warm White.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_FORMCLAD_Zinc.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Grey Friars.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Gull Grey.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Indigo Blue.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Ironsand.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Karaka.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Lichen.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Lignite.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Mist Green.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_New Denim Blue.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Permanent Green.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Pioneer Red.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Sandstone Grey.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Scoria.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Slate.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Smooth Cream.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Thunder Grey.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Titania.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Windsor Grey.jpg" />
+    <Resource Include="Resources\Textures\Speedclad\Speedclad_Zinc.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
