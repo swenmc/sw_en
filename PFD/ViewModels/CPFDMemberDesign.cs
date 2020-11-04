@@ -107,7 +107,7 @@ namespace PFD
 
             set
             {
-                MComponentList = value;                
+                MComponentList = value;
                 NotifyPropertyChanged("ComponentList");
             }
         }
@@ -136,9 +136,9 @@ namespace PFD
         {
             List<CLimitState> listLimitStates = limitStates.ToList();
             listLimitStates.Add(new CLimitState("All", ELSType.eLS_ALL));
-            MLimitStates = listLimitStates.ToArray();            
+            MLimitStates = listLimitStates.ToArray();
 
-            SetComponentList(componentList);            
+            SetComponentList(componentList);
             m_allLoadCombinations = allLoadCombinations;
 
             // Set default

@@ -179,7 +179,7 @@ namespace PFD
         public CPFDMemberInternalForces(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
             MLimitStates = limitStates;
-            SetComponentList(componentList);            
+            SetComponentList(componentList);
             m_allLoadCombinations = allLoadCombinations;
             
 

@@ -235,7 +235,7 @@ namespace PFD
         private void crossBracingItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if(PropertyChanged != null) PropertyChanged(sender, e);
-            //NotifyPropertyChanged("CrossBracingItem_PropertyChanged");            
+            //NotifyPropertyChanged("CrossBracingItem_PropertyChanged");
         }
 
         public bool IsSetFromCode = false;
@@ -249,7 +249,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CrossBracingOptionsViewModel(int baysNum, int iOneRafterPurlinNo)
         {
-            IsSetFromCode = true;            
+            IsSetFromCode = true;
             RoofPositions = GetRoofPositions(iOneRafterPurlinNo);
 
             initBays(baysNum);
@@ -324,7 +324,7 @@ namespace PFD
 
             foreach (CCrossBracingInfo cb in CrossBracingList)
             {
-                cb.SetRoofPositions(roofPositions);                
+                cb.SetRoofPositions(roofPositions);
             }
         }
 

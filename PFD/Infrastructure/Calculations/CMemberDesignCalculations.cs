@@ -1236,6 +1236,7 @@ namespace PFD.Infrastructure
                         sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
+
                 item = s.DesignResults[EMemberType_FS_Position.GirtBackSide];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
@@ -1248,6 +1249,29 @@ namespace PFD.Infrastructure
                     }
                 }
 
+                item = s.DesignResults[EMemberType_FS_Position.CrossBracingWall];
+                if (item.MemberWithMaximumDesignRatio != null)
+                {
+                    sb.Append("Maximum design ratio - cross-bracing - side wall\n");
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
+                    {
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
+                    }
+                }
+
+                item = s.DesignResults[EMemberType_FS_Position.CrossBracingRoof];
+                if (item.MemberWithMaximumDesignRatio != null)
+                {
+                    sb.Append("Maximum design ratio - cross-bracing - roof\n");
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
+                    {
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
+                    }
+                }
             }
 
             return sb.ToString();

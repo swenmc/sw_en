@@ -43,7 +43,7 @@ namespace PFD
 
         private List<string> MMaterials;
         private List<CSectionPropertiesText> m_ComponentDetailsList;
-        private List<CMaterialPropertiesText> m_MaterialDetailsList;        
+        private List<CMaterialPropertiesText> m_MaterialDetailsList;
 
 
         //#############################################
@@ -1185,11 +1185,11 @@ namespace PFD
                 SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockGirtsBackSide);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Walls", "1x100x1", "Olive", "G550‡", "None", true, true, false, false, true,
+                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Walls", "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
                 SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingWall);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Roof", "1x100x1", "Olive", "G550‡", "None", true, true, false, false, true,
+                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Roof", "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
                 SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingRoof);
             MComponentList.Add(ci);
 
