@@ -131,22 +131,49 @@ namespace BaseClasses.GraphObj
 
                 brushFront = new ImageBrush();
                 //brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
-                brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/Smartdek/Smartdek_Azure.jpg", UriKind.RelativeOrAbsolute));
+
+                string claddingShape_Wall = "Smartdek"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding
+                string claddingCoatingType_Wall = "CS Endura®";  // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding coating type
+
+                // TO Ondrej CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type nepouzivam
+
+                string uriString_Wall = "pack://application:,,,/Resources/Textures/" + claddingShape_Wall + "/" + claddingShape_Wall + "_" + m_ColorNameWall + ".jpg";
+
+                if (claddingCoatingType_Wall == "FORMCLAD®")
+                {
+                    string claddingCoatingType_Wall_string = "FORMCLAD";
+                    uriString_Wall = "pack://application:,,,/Resources/Textures/" + claddingShape_Wall + "/" + claddingShape_Wall + "_" + claddingCoatingType_Wall_string + "_" + m_ColorNameWall + ".jpg";
+                }
+
+                //brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/Smartdek/Smartdek_Azure.jpg", UriKind.RelativeOrAbsolute));
+                brushFront.ImageSource = new BitmapImage(new Uri(uriString_Wall, UriKind.RelativeOrAbsolute));
                 brushFront.TileMode = TileMode.Tile;
                 brushFront.ViewportUnits = BrushMappingMode.Absolute;
                 brushFront.Stretch = Stretch.Fill;
                 brushFront.Opacity = options.fFrontCladdingOpacity;
 
                 brushSide = new ImageBrush();
-                brushSide.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
+                //brushSide.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
+                brushSide.ImageSource = new BitmapImage(new Uri(uriString_Wall, UriKind.RelativeOrAbsolute));
                 brushSide.TileMode = TileMode.Tile;
                 brushSide.ViewportUnits = BrushMappingMode.Absolute;
                 brushSide.Stretch = Stretch.Fill;
                 brushSide.Opacity = options.fLeftCladdingOpacity;
 
+                string claddingShape_Roof = "Smartdek"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding
+                string claddingCoatingType_Roof = "FORMCLAD®"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding coating type
+                string uriString_Roof = "pack://application:,,,/Resources/Textures/" + claddingShape_Roof + "/" + claddingShape_Roof + "_" + m_ColorNameRoof + ".jpg";
+
+                if (claddingCoatingType_Roof == "FORMCLAD®")
+                {
+                    string claddingCoatingType_Roof_string = "FORMCLAD";
+                    uriString_Roof = "pack://application:,,,/Resources/Textures/" + claddingShape_Roof + "/" + claddingShape_Roof + "_" + claddingCoatingType_Roof_string + "_" + m_ColorNameRoof + ".jpg";
+                }
+
                 brushRoof = new ImageBrush();
                 //brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Gold.jpg", UriKind.RelativeOrAbsolute));
-                brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Purlindek_RichGraphite.png", UriKind.RelativeOrAbsolute));
+                //brushRoof.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/roofTexture_Purlindek_RichGraphite.png", UriKind.RelativeOrAbsolute));
+                brushRoof.ImageSource = new BitmapImage(new Uri(uriString_Roof, UriKind.RelativeOrAbsolute));
                 brushRoof.TileMode = TileMode.Tile;
                 brushRoof.ViewportUnits = BrushMappingMode.Absolute;
                 brushRoof.Stretch = Stretch.Fill;
