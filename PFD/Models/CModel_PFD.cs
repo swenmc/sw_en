@@ -502,7 +502,7 @@ namespace PFD
 
                     if (bIsGableRoof)
                     {
-                        if (current_member.NodeStart.Y <= 0.5 * fW_frame) // Left side
+                        if (current_member.NodeStart.X < 0.5 * fW_frame) // Left side
                         {
                             m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint, current_member, true));
                             m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
