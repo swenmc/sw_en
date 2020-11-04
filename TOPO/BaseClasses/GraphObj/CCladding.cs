@@ -24,6 +24,9 @@ namespace BaseClasses.GraphObj
         double column_crsc_y_minus;
         double column_crsc_y_plus;
 
+        string m_ColorNameWall;
+        string m_ColorNameRoof;
+
         Color m_ColorWall;
         Color m_ColorRoof;
 
@@ -34,7 +37,9 @@ namespace BaseClasses.GraphObj
 
         // Constructor 2
         public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData, CRSC.CCrSc_TW columnSection,
-            Color colorWall, Color colorRoof, bool bIsDisplayed, int fTime, double wallCladdingHeight, double roofCladdingHeight, double wallCladdingWidthRib, double roofCladdingWidthRib)
+            string colorName_Wall, string colorName_Roof,
+            Color colorWall, Color colorRoof,
+            bool bIsDisplayed, int fTime, double wallCladdingHeight, double roofCladdingHeight, double wallCladdingWidthRib, double roofCladdingWidthRib)
         {
             ID = iCladding_ID;
             eModelType = modelType_FS;
@@ -42,6 +47,8 @@ namespace BaseClasses.GraphObj
             column_crsc_z_plus = columnSection.z_max;
             column_crsc_y_minus = columnSection.y_min;
             column_crsc_y_plus = columnSection.y_max;
+            m_ColorNameWall = colorName_Wall;
+            m_ColorNameRoof = colorName_Roof;
             m_ColorWall = colorWall;
             m_ColorRoof = colorRoof;
             BIsDisplayed = bIsDisplayed;
@@ -124,7 +131,7 @@ namespace BaseClasses.GraphObj
 
                 brushFront = new ImageBrush();
                 //brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture_PermanentGreen.jpg", UriKind.RelativeOrAbsolute));
-                brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/thumbnail_Smartdek_PermanentGreen.png", UriKind.RelativeOrAbsolute));
+                brushFront.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/Smartdek/Smartdek_Azure.jpg", UriKind.RelativeOrAbsolute));
                 brushFront.TileMode = TileMode.Tile;
                 brushFront.ViewportUnits = BrushMappingMode.Absolute;
                 brushFront.Stretch = Stretch.Fill;
