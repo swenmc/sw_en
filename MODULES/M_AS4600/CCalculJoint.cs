@@ -217,10 +217,9 @@ namespace M_AS4600
                 {
                     CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(joint_temp, sDIF_AS4600, bSaveDetails);
                 }
-                else if (joint_temp is CConnectionJoint_U001)
+                else if (joint_temp is CConnectionJoint_U001) // Cross-bracing joint - only tension
                 {
-                    // TODO - dopracovat vypocetg a posudenie cross-bracing
-                    //throw new Exception("Joint type design is not implemented!");
+                    CalculateDesignRatioCrossBracingJoint(joint_temp, sDIF_AS4600, bSaveDetails);
                 }
                 else
                 {
@@ -1078,6 +1077,23 @@ namespace M_AS4600
             // Store details
             if (bSaveDetails)
                 joint_temp.DesignDetails = designDetails;
+        }
+
+        public void CalculateDesignRatioCrossBracingJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, bool bSaveDetails = false)
+        {
+            CJointDesignDetails_CrossBracing designDetails = new CJointDesignDetails_CrossBracing();
+
+            // Secondary member tension design
+            designDetails.fPhi_SecondaryMember = 0.65f;
+
+            // TODO
+            designDetails.fA_n_SecondaryMember = (float)crsc_secMember.A_g - (0.0063f * 2 * ft_2_crscsecMember); // TODO - dopracovat vypocet oslabenej plochy prierezu podla screw arrangement - pocet skrutiek v smere y v jednom reze
+
+            // TODO - urcit podla screw arrangement - vzdialenost e_y
+            float fs_min_SecondaryMember = 0.010f;  // Minimalna vzdialenost skrutiek kolmo na smer osovej sily v prute
+            designDetails.fN_t_SecondaryMember = eq.Eq_5423_2__(screw.Diameter_thread, fs_min_SecondaryMember, designDetails.fA_n_SecondaryMember, ff_uk_2_SecondaryMember);
+            designDetails.fEta_N_t_5423_SecondaryMember = eq.Eq_5423_1__(designDetails.fN_t_SecondaryMember, designDetails.fPhi_SecondaryMember, designDetails.fN_t_SecondaryMember);
+            fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_N_t_5423_SecondaryMember);
         }
 
         public void CalculateDesignRatioBaseJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, bool bSaveDetails = false)
