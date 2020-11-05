@@ -343,9 +343,8 @@ namespace M_AS4600
             // Design
 
             // Tension
-
-            fN_t_min = fA_g * ff_y; // Resistance // Todo
-            fEta_Nt = sDIF.fN_t / fN_t_min;
+            fN_t_min = eq.Eq_322_1___(fA_g, ff_y); // Neuvazujeme oslabeny prierez - ten sa posudi az v spoji lebo pri posudeni prierezu nevieme An
+            fEta_Nt = eq.Eq_321_____(sDIF.fN_t, fPhi_t, fN_t_min);
 
             // Compression
             fx_o = (float)cs.D_y_s;

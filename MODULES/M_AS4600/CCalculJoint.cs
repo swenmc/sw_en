@@ -198,6 +198,7 @@ namespace M_AS4600
             // Apex - CConnectionJoint_A001, plates serie J
             // Knee - CConnectionJoint_B001, plates serie K
             // Ostatne spoje CConnectionJoint_T001, plates serie CConCom_Plate_F_or_L, L resp. LL
+            // Cross-bracing joints (neobsahuje plates)
 
             // Kotvenie k zakladu
             // Main Columns - CConnectionJoint_TA01, plates serie B
@@ -1083,17 +1084,73 @@ namespace M_AS4600
         {
             CJointDesignDetails_CrossBracing designDetails = new CJointDesignDetails_CrossBracing();
 
+            // 5.4.2.3 Tension in the connected part
             // Secondary member tension design
-            designDetails.fPhi_SecondaryMember = 0.65f;
+            designDetails.fPhi_CrSc = 0.65f; // TODO - overit ci je to spravne
+            designDetails.fPhi_shear_Vb_5424 = 0.5f; // Shear Capacity Factor
 
             // TODO
-            designDetails.fA_n_SecondaryMember = (float)crsc_secMember.A_g - (0.0063f * 2 * ft_2_crscsecMember); // TODO - dopracovat vypocet oslabenej plochy prierezu podla screw arrangement - pocet skrutiek v smere y v jednom reze
+            designDetails.iNumberOfScrewsInShear = joint_temp.ConnectorGroups[0].Connectors.Count; // Todo - overit ci je to spravne, asi by sa malo zobrat zo screw arrangement, lebo skupin moze byt viac
+            int iNumberOfConnectorColumns = 1; // Pocet stlpcov v smere x pruta // TODO - napojit na SA
+            int iNumberOfConnectorsInSection = 2; // TODO - napojit na SA
+            designDetails.fe_x = 0.03f; // Poloha krajnej skrutky v smere x, TODO - napojit na SA
+            designDetails.fA_n_SecondaryMember = (float)crsc_secMember.A_g - (screw.Diameter_thread * iNumberOfConnectorsInSection * ft_2_crscsecMember); // TODO - dopracovat vypocet oslabenej plochy prierezu podla screw arrangement - pocet skrutiek v smere y v jednom reze
 
-            // TODO - urcit podla screw arrangement - vzdialenost e_y
-            float fs_min_SecondaryMember = 0.010f;  // Minimalna vzdialenost skrutiek kolmo na smer osovej sily v prute
-            designDetails.fN_t_SecondaryMember = eq.Eq_5423_2__(screw.Diameter_thread, fs_min_SecondaryMember, designDetails.fA_n_SecondaryMember, ff_uk_2_SecondaryMember);
-            designDetails.fEta_N_t_5423_SecondaryMember = eq.Eq_5423_1__(designDetails.fN_t_SecondaryMember, designDetails.fPhi_SecondaryMember, designDetails.fN_t_SecondaryMember);
+            if (iNumberOfConnectorColumns == 1)
+            {
+                // 5.4.2.3(2) - a single screw, or a single row of screws perpendicular to the force
+                // TODO - urcit podla screw arrangement - vzdialenost s_y
+                // spacing of screws perpendicular to the line of the force; or width of sheet, in the case of a single screw
+                float fs_min_SecondaryMember = 0.010f;  // Minimalna vzdialenost skrutiek kolmo na smer osovej sily v prute, pre jeden rad skrutiek je to sirka plechu (crsc.h)
+                designDetails.fN_t_Section_SecondaryMember = eq.Eq_5423_2__(screw.Diameter_thread, fs_min_SecondaryMember, designDetails.fA_n_SecondaryMember, ff_uk_2_SecondaryMember);
+            }
+            else
+            {
+                // 5.4.2.3(3) - for multiple screws in the line parallel to the force
+                designDetails.fN_t_Section_SecondaryMember = eq.Eq_5423_3__(designDetails.fA_n_SecondaryMember, ff_uk_2_SecondaryMember);
+            }
+
+            designDetails.fEta_N_t_5423_SecondaryMember = eq.Eq_5423_1__(sDIF_temp.fN_t, designDetails.fPhi_CrSc, designDetails.fN_t_Section_SecondaryMember);
             fEta_max_joint = MathF.Max(fEta_max_joint, designDetails.fEta_N_t_5423_SecondaryMember);
+
+            DesignScrewedConnectionInShear(
+                sDIF_temp.fN_t,
+                designDetails.iNumberOfScrewsInShear,
+                ft_2_crscsecMember, // (V norme index 1) je v styku s hlavou skrutky
+                ff_yk_2_SecondaryMember,
+                ff_uk_2_SecondaryMember,
+                ft_2_crscmainMember, // (V norme index 2) nie je v styku s hlavou skrutky
+                ff_uk_2_MainMember,
+                designDetails.fe_x, // e = distance measured in the line of force from the centre of a standard hole to the nearest end of the connected part
+                designDetails.fPhi_shear_Vb_5424,
+                out designDetails.fC_for5424,
+                out designDetails.fV_b_for5424,
+                out designDetails.fV_asterix_b_for5424,
+                out designDetails.fEta_5424_1,
+                out designDetails.fV_asterix_fv,
+                out designDetails.fV_fv,
+                out designDetails.fEta_V_fv_5425,
+                out designDetails.fV_w_nom_screw_5426,
+                out designDetails.fEta_V_w_5426);
+
+            // Validation - negative design ratio
+            if (designDetails.fEta_N_t_5423_SecondaryMember < 0 ||
+                designDetails.fEta_5424_1 < 0 ||
+                designDetails.fEta_V_fv_5425 < 0 ||
+                designDetails.fEta_V_w_5426 < 0)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            // Validation - infinity design ratio
+            if (fEta_max_joint > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            // Store details
+            if (bSaveDetails)
+                joint_temp.DesignDetails = designDetails;
         }
 
         public void CalculateDesignRatioBaseJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, bool bSaveDetails = false)

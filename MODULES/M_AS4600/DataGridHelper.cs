@@ -1911,7 +1911,92 @@ namespace M_AS4600
                 }
                 else if (calc.joint is CConnectionJoint_U001)
                 {
-                    // TODO - detaily vysledkov
+                    listPhysicalQuantity_Symbols.Add("Cross-bracing Connection");
+                    listPhysicalQuantity_Values.Add("");
+                    listPhysicalQuantity_Units.Add("");
+
+                    listPhysicalQuantity_Symbols.Add(""); // TODO - umoznit zlucenie buniek v riadku
+                    listPhysicalQuantity_Values.Add("");
+                    listPhysicalQuantity_Units.Add("");
+
+                    listPhysicalQuantity_Symbols.Add(""); // TODO - umoznit zlucenie buniek v riadku
+                    listPhysicalQuantity_Values.Add("");
+                    listPhysicalQuantity_Units.Add("");
+
+                    DisplayBasicValues_IF(calc);
+
+                    CJointDesignDetails_CrossBracing det = (CJointDesignDetails_CrossBracing)calc.joint.DesignDetails;
+
+                    if (det == null) // No calculation details
+                        return;
+
+                    // 5.4.2.3 Tension in the connected part
+                    listPhysicalQuantity_Symbols.Add("Φsection");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_CrSc, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("An");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_SecondaryMember * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                    listPhysicalQuantity_Symbols.Add("Nt");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_Section_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Nt");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("n screws.V"); // Number of screws in shear
+                    listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInShear.ToString());
+                    listPhysicalQuantity_Units.Add("");
+
+                    // 5.4.2.4 Tilting and hole bearing
+                    listPhysicalQuantity_Symbols.Add("Φv.screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_shear_Vb_5424, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("C");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fC_for5424, iNumberOfDecimalPlaces_Factor).ToString(sNumberOfDecimalPlaces_Factor));
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Vb.screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_for5424 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("V*b");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_for5424  * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5424_1, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 5.4.2.5 Connection shear as limited by end distance
+                    listPhysicalQuantity_Symbols.Add("e");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("Vfv");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("V*fv");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_fv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vfv");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 5.4.2.6 Screws in shear
+                    listPhysicalQuantity_Symbols.Add("Vw.screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_w_nom_screw_5426 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString(sNumberOfDecimalPlaces));
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_w_5426, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
                 }
                 else
                 {

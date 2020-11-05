@@ -172,18 +172,113 @@ namespace PFD.Infrastructure
                             // TODO - vypocet vnutornych sil v cross-bracing
                             sBucklingLengthFactors = new designBucklingLengthFactors[iNumberOfDesignSections];
                             sMomentValuesforCb = new designMomentValuesForCb[iNumberOfDesignSections];
+
                             sBIF_x = new basicInternalForces[iNumberOfDesignSections];
-                            sBIF_x[0].fN = 15000f;
-                            sBIF_x[1].fN = 15000f;
-                            sBIF_x[2].fN = 15000f;
-                            sBIF_x[3].fN = 15000f;
-                            sBIF_x[4].fN = 15000f;
-                            sBIF_x[5].fN = 15000f;
-                            sBIF_x[6].fN = 15000f;
-                            sBIF_x[7].fN = 15000f;
-                            sBIF_x[8].fN = 15000f;
-                            sBIF_x[9].fN = 15000f;
-                            sBIF_x[10].fN = 15000f;
+                            sBIF_x[0].fN = 1000f;
+                            sBIF_x[1].fN = 1000f;
+                            sBIF_x[2].fN = 1000f;
+                            sBIF_x[3].fN = 1000f;
+                            sBIF_x[4].fN = 1000f;
+                            sBIF_x[5].fN = 1000f;
+                            sBIF_x[6].fN = 1000f;
+                            sBIF_x[7].fN = 1000f;
+                            sBIF_x[8].fN = 1000f;
+                            sBIF_x[9].fN = 1000f;
+                            sBIF_x[10].fN = 1000f; // Docasne hodnoty
+
+                            // Side wall cross-bracing - Wind in + /- Y direction
+                            if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
+                            {
+                                float fN_left  = 0, fN_right = 0; // Axial force in member (left or right side wall)
+
+                                float angle_rad = (float)Math.Atan(m.Delta_Z / m.Delta_Y); // Uhol sklonu cross-bracing member of horizontaly - ziskat z priemetu pruta do GCS Z a Y
+
+                                // Number of wall side bracing crosses (pocet krizov na jednej strane)
+                                int iNumberOfActiveCrosses_left = 2;
+                                int iNumberOfActiveCrosses_right = 2;
+                                // Uvazujeme rovnomerne rozdelenie do jednotlivych krizov, neplati to vsak pre dlhe budovy
+
+                                // Pomocny vypocet - vietor alebo zemetrasenie
+                                if (lc.Type == ELCType.eWind || lc.Type == ELCType.eEarthquake)
+                                {
+                                    // Wind
+                                    if (lc.Type == ELCType.eWind && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
+                                    {
+                                        // Wind load - Vietor 
+                                        float fp_tot;
+
+                                        if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max || lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
+                                        {
+                                            // Windward - W
+                                            float fp_e_W = 586f; // Pa  // TODO - tlak vetra na stenu (front alebo back) // Napojit
+                                                                    // Leeward - L
+                                            float fp_e_L = -419f; // Pa  // TODO - sanie vetra na stenu (front alebo back)
+
+                                            fp_tot = Math.Abs(fp_e_W) + Math.Abs(fp_e_L);
+                                        }
+                                        else
+                                        {
+                                            // Internal pressure
+                                            fp_tot = 150f;
+                                        }
+
+                                        // Area - Left Side
+                                        // // TODO - ziskat zakladne rozmery budovy - overall width W, overal height  H1 a H2
+
+                                        float fA_trib_left = 8 * 0.5f * 4f; // TODO - polovica plochy cela budovy (pre monopitch je A left a A right rozdielne podla vysky)
+                                                                            // Area - Right Side
+                                        float fA_trib_right = 8 * 0.5f * 4f; // TODO - polovica plochy cela budovy
+
+                                        // Force in corner of edge frame
+                                        float fW_left = fA_trib_left * fp_tot;
+                                        float fW_right = fA_trib_right * fp_tot;
+
+                                        // Force in side wall cross bracing member
+                                        fN_left = Math.Abs((fA_trib_left * fp_tot / iNumberOfActiveCrosses_left) * (float)Math.Cos(angle_rad));
+                                        fN_right = Math.Abs((fA_trib_right * fp_tot / iNumberOfActiveCrosses_right) * (float)Math.Cos(angle_rad));
+                                    }
+
+                                    // Earthquake
+                                    if (lc.Type == ELCType.eEarthquake && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
+                                    {
+                                        float fE_left = 240; // N // TODO - napojit na EQ
+                                        float fE_right = 240; // N // TODO - napojit na EQ
+
+                                        fN_left = Math.Abs((fE_left / iNumberOfActiveCrosses_left) * (float)Math.Cos(angle_rad));
+                                        fN_right = Math.Abs((fE_right / iNumberOfActiveCrosses_right) * (float)Math.Cos(angle_rad));
+                                    }
+                                }
+
+                                if (MathF.d_equal(m.NodeStart.X, 0) && MathF.d_equal(m.NodeEnd.X, 0))
+                                {
+                                    sBIF_x[0].fN = fN_left;
+                                    sBIF_x[1].fN = fN_left;
+                                    sBIF_x[2].fN = fN_left;
+                                    sBIF_x[3].fN = fN_left;
+                                    sBIF_x[4].fN = fN_left;
+                                    sBIF_x[5].fN = fN_left;
+                                    sBIF_x[6].fN = fN_left;
+                                    sBIF_x[7].fN = fN_left;
+                                    sBIF_x[8].fN = fN_left;
+                                    sBIF_x[9].fN = fN_left;
+                                    sBIF_x[10].fN = fN_left;
+                                }
+                                else
+                                {
+                                    sBIF_x[0].fN = fN_right;
+                                    sBIF_x[1].fN = fN_right;
+                                    sBIF_x[2].fN = fN_right;
+                                    sBIF_x[3].fN = fN_right;
+                                    sBIF_x[4].fN = fN_right;
+                                    sBIF_x[5].fN = fN_right;
+                                    sBIF_x[6].fN = fN_right;
+                                    sBIF_x[7].fN = fN_right;
+                                    sBIF_x[8].fN = fN_right;
+                                    sBIF_x[9].fN = fN_right;
+                                    sBIF_x[10].fN = fN_right;
+                                }
+                            }
+
                             sBDeflections_x = new basicDeflections[iNumberOfDesignSections];
                         }
                     }

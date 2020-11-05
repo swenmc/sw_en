@@ -7,6 +7,29 @@ namespace M_AS4600
 {
     public class AS_4600
     {
+        // 3.2 MEMBERS SUBJECT TO AXIAL TENSION
+        public float Eq_321_____(float fN_asterix, float fPhi_t, float fN_t)
+        {
+            return Math.Abs(fN_asterix) / (fPhi_t * fN_t); // Eq. (3.2.1) // fN_t design ratio
+        }
+        public float Eq_322_1___(float fA_g, float ff_y)
+        {
+            return fA_g * ff_y; // Eq. (3.2.2(1)) // fN_t
+        }
+        public float Eq_322_2___(float fk_t, float fA_n, float ff_u)
+        {
+            return 0.85f * fk_t * fA_n * ff_u; // Eq. (3.2.2(2)) // fN_t
+        }
+        public float Get_kt_Table_32(string sConfigurationCase) // TODO Prerobit na enum?
+        {
+            if (sConfigurationCase == "i_1" || sConfigurationCase == "ii_1")
+                return 0.75f;
+            else if (sConfigurationCase == "i_2" || sConfigurationCase == "ii_2" || sConfigurationCase == "iii")
+                return 0.85f;
+            else
+                return 1.00f;
+        }
+
         // 3.3 MEMBERS SUBJECT TO BENDING
         public float Eq_331_1___(float fM_asterix, float fPhi_b, float fM_s)
         {
@@ -201,7 +224,7 @@ namespace M_AS4600
         {
             return Math.Min((2.5f * fd_f / fs_f) * fA_n * ff_u, fA_n * ff_u); // Eq. (5.4.2.3(2)) // fN_t
         }
-        public float Eq_5423_3__(float fd_f, float fs_f, float fA_n, float ff_u)
+        public float Eq_5423_3__(float fA_n, float ff_u)
         {
             return fA_n * ff_u; // Eq. (5.4.2.3(3)) // fN_t
         }
