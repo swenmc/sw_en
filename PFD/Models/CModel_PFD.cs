@@ -1054,9 +1054,12 @@ namespace PFD
             {
                 foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
                 {
-                    if (member.BIsGenerated && member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
+                    //OMG MATO!!! - to co za kravina to tu je???
+                    //if (member.BIsGenerated && member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
+                    if (member.BIsGenerated && member.EMemberTypePosition == group.MemberType_FS_Position) // In case that cross-section ID is same add member to the list
                     {
-                        member.EMemberTypePosition = group.MemberType_FS_Position; // TODO - docasne riesenie, nastavime prutu typ podla pozicie (referencny typ pruta nastaveny v skupine), spravne by sme ho mohli nastavit uz v konstruktore pruta pri jeho vytvoreni
+                        //docasne mazem
+                        //member.EMemberTypePosition = group.MemberType_FS_Position; // TODO - docasne riesenie, nastavime prutu typ podla pozicie (referencny typ pruta nastaveny v skupine), spravne by sme ho mohli nastavit uz v konstruktore pruta pri jeho vytvoreni
                         group.ListOfMembers.Add(member);
                         //listOfModelMemberGroups[group.CrossSection.ICrSc_ID].ListOfMembers.Add(member);
                         i++;

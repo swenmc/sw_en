@@ -3088,9 +3088,9 @@ namespace PFD
             DisplayFoundationsWireFrame = false;
             DisplayReinforcementBarsWireFrame = false;
 
-            DisplayCladding = true;
-            DisplayDoors = true;
-            DisplayWindows = true;
+            DisplayCladding = false;
+            DisplayDoors = false;
+            DisplayWindows = false;
 
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = false;

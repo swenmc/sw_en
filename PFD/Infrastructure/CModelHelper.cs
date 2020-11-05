@@ -10,7 +10,7 @@ namespace PFD
 {
     public static class CModelHelper
     {
-        const bool debugging = false;
+        const bool debugging = true;
         //Extension method
         //returns list of frames with members from Model
         public static List<CFrame> GetFramesFromModel(this CModel_PFD model)
@@ -461,6 +461,7 @@ namespace PFD
                         // Set Member Color
                         m.Color = (Color)ColorConverter.ConvertFromString(cInfo.Color.Name);
                         if (m.CrScStart != null) m.CrScStart.CSColor = (Color)ColorConverter.ConvertFromString(cInfo.SectionColor);
+                        if (debugging) System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", "+ m.EMemberTypePosition + ", " + m.BIsGenerated + ", " + m.BIsDisplayed + ", " + cInfo.Color.Name);
                         break;
                     }
                     else if (m.Prefix == cInfo.Prefix &&
