@@ -1043,25 +1043,18 @@ namespace PFD
         }
 
         // Add members to the member group list
-        // Base on cross-section ID 
         // TODO - spravnejsie by bolo pridavat member do zoznamu priamo pri vytvoreni
         public void AddMembersToMemberGroupsLists()
         {
             int i = 0;
 
-            // Opravene ID prierezu sa bralo z poradia v databaze a prepisovalo ID prierezu z modelu
             foreach (CMember member in m_arrMembers)
             {
                 foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
                 {
-                    //OMG MATO!!! - to co za kravina to tu je???
-                    //if (member.BIsGenerated && member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
-                    if (member.BIsGenerated && member.EMemberTypePosition == group.MemberType_FS_Position) // In case that cross-section ID is same add member to the list
+                    if (member.BIsGenerated && member.EMemberTypePosition == group.MemberType_FS_Position)
                     {
-                        //docasne mazem
-                        //member.EMemberTypePosition = group.MemberType_FS_Position; // TODO - docasne riesenie, nastavime prutu typ podla pozicie (referencny typ pruta nastaveny v skupine), spravne by sme ho mohli nastavit uz v konstruktore pruta pri jeho vytvoreni
                         group.ListOfMembers.Add(member);
-                        //listOfModelMemberGroups[group.CrossSection.ICrSc_ID].ListOfMembers.Add(member);
                         i++;
                         break;
                     }
@@ -1069,11 +1062,16 @@ namespace PFD
             }
 
             // Check
-            // TODO - aktivovat po vyrieseni mazania nevygenerovanych prutov zo zoznamu a pridani prutov tvoriacich bloky (dvere, okna, ...)
-            /*
-            if (i != m_arrMembers.Length)
-                throw new Exception("Not all members were added.");
-            */
+            // Aktivovat po vyrieseni mazania nevygenerovanych prutov zo zoznamu a pridani prutov tvoriacich bloky (dvere, okna, ...)
+            //if (i != m_arrMembers.Length)
+            //    throw new Exception("Not all members were added.");
+
+            // TODO 626  - Popis pre Ondreja
+            // Chcel by som odkomentovat kontrolu, ktora je vyssie. Malo by to osetrit pripad ked prut nie je priradeny do ziadnej group
+            // Potrebujeme vyriesit
+            // 1 Chceme do group pridavat len member ktore maju BIsGenerated true alebo vsetky pruty daneho EMemberTypePosition? Asi by mali byt v skupine vsetky ????
+            // 2 Defaultne sa vytvori 17 skupin, ale ked pridavame pred zavolanim tejto funckie dvere a okna, tak by sme mali do listOfModelMemberGroups pridat este podla potreby 1 - 4 skupiny pre roller door trimmer / header, personnel door frame, window door frame (aby pocet skupin sedel s poctom riadkov v GUI)
+            //   potom by sa v tomto cykle priradili do skupin aj tieto pruty pre oramovanie openings. Tym padom by nemal existovat prut ktory nie je v skupine a mali by sme moznost skontrolovat ci su vsetky pruty v modeli spravne priradene do skupin
         }
 
         protected List<CSegment_LTB> GenerateIntermediateLTBSegmentsOnMember(List<CIntermediateTransverseSupport> lTransverseSupportGroup, bool bIsRelativeCoordinate_x, float fMemberLength)
