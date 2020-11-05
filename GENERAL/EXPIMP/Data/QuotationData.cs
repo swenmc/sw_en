@@ -18,10 +18,10 @@ namespace EXPIMP
         private int MKitSetTypeIndex;
         private string MRoofShape;
 
-        private float MWidth;
-        private float MLength;
-        private float MWallHeight;
-        private float MApexHeight_H2;
+        private float MWidth_Overall;
+        private float MLength_Overall;
+        private float MWallHeight_Overall;
+        private float MApexHeight_H2_Overall;
         private float MRoofPitch_deg;
         private int MFrames;
         private float MGirtDistance;
@@ -92,54 +92,54 @@ namespace EXPIMP
             }
         }
 
-        public float Width
+        public float Width_Overall
         {
             get
             {
-                return MWidth;
+                return MWidth_Overall;
             }
             set
             {
-                MWidth = value;
+                MWidth_Overall = value;
             }
         }
 
-        public float Length
+        public float Length_Overall
         {
             get
             {
-                return MLength;
+                return MLength_Overall;
             }
 
             set
             {
-                MLength = value;
+                MLength_Overall = value;
             }
         }
 
-        public float WallHeight
+        public float WallHeight_Overall
         {
             get
             {
-                return MWallHeight;
+                return MWallHeight_Overall;
             }
 
             set
             {
-                MWallHeight = value;
+                MWallHeight_Overall = value;
             }
         }
 
-        public float ApexHeight_H2
+        public float ApexHeight_H2_Overall
         {
             get
             {
-                return MApexHeight_H2;
+                return MApexHeight_H2_Overall;
             }
 
             set
             {
-                MApexHeight_H2 = value;
+                MApexHeight_H2_Overall = value;
             }
         }
 

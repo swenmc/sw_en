@@ -36,13 +36,18 @@ namespace PFD
             _clVM = componentListVM;
             _pfdVM = vm;
             ObservableCollection<CComponentInfo> componentList = componentListVM?.ComponentList;
-            fH1_frame = sGeometryInputData.fH_1;
-            fW_frame = sGeometryInputData.fW;
-            fL_tot = sGeometryInputData.fL;
+            fH1_frame_centerline = sGeometryInputData.fH_1_centerline;
+            fW_frame_centerline = sGeometryInputData.fW_centerline;
+            fL_tot_centerline = sGeometryInputData.fL_centerline;
             iFrameNo = vm.Frames;
-            fH2_frame = sGeometryInputData.fH_2;
+            fH2_frame_centerline = sGeometryInputData.fH_2_centerline;
             fFrontFrameRakeAngle_deg = vm.FrontFrameRakeAngle;
             fBackFrameRakeAngle_deg = vm.BackFrameRakeAngle;
+
+            fL_tot_overall = sGeometryInputData.fLength_overall;
+            fW_frame_overall = sGeometryInputData.fWidth_overall;
+            fH1_frame_overall = sGeometryInputData.fHeight_1_overall;
+            fH2_frame_overall = sGeometryInputData.fHeight_2_overall;
 
             iFrameNodesNo = 4;
             iFrameMembersNo = iFrameNodesNo - 1;
@@ -68,7 +73,7 @@ namespace PFD
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            fRoofPitch_rad = (float)Math.Atan((fH2_frame - fH1_frame) / fW_frame);
+            fRoofPitch_rad = (float)Math.Atan((fH2_frame_centerline - fH1_frame_centerline) / fW_frame_centerline);
 
             iEavesPurlinNo = iEavesPurlinNoInOneFrame * (iFrameNo - 1);
             iMainColumnNo = iFrameNo * 2;
@@ -350,8 +355,8 @@ namespace PFD
             bool bGenerateGirts = componentList[(int)EMemberGroupNames.eGirtWall].Generate.Value;
             if (bGenerateGirts)
             {
-                iLeftColumnGirtNo = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
-                iRightColumnGirtNo = (int)((fH2_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
+                iLeftColumnGirtNo = (int)((fH1_frame_centerline - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
+                iRightColumnGirtNo = (int)((fH2_frame_centerline - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
                 iGirtNoInOneFrame = iLeftColumnGirtNo + iRightColumnGirtNo;
             }
 
@@ -362,7 +367,7 @@ namespace PFD
 
             float fFirstGirtPosition = fBottomGirtPosition;
             float fFirstPurlinPosition = fDist_Purlin;
-            float fRafterLength = MathF.Sqrt(MathF.Pow2(fH2_frame - fH1_frame) + MathF.Pow2(fW_frame));
+            float fRafterLength = MathF.Sqrt(MathF.Pow2(fH2_frame_centerline - fH1_frame_centerline) + MathF.Pow2(fW_frame_centerline));
 
             iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
@@ -384,10 +389,10 @@ namespace PFD
             bool bGenerateFrontColumns = componentList[(int)EMemberGroupNames.eFrontWindPost].Generate.Value;
             if (bGenerateFrontColumns)
             {
-                iOneRafterFrontColumnNo = (int)((fW_frame - 0.95 * fDist_FrontColumns) / fDist_FrontColumns);
+                iOneRafterFrontColumnNo = (int)((fW_frame_centerline - 0.95 * fDist_FrontColumns) / fDist_FrontColumns);
                 iFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
                 // Update value of distance between columns
-                fDist_FrontColumns = (fW_frame / (iFrontColumnNoInOneFrame + 1));
+                fDist_FrontColumns = (fW_frame_centerline / (iFrontColumnNoInOneFrame + 1));
             }
 
             const int iFrontColumnNodesNo = 2; // Number of Nodes for Front Wind Post
@@ -399,10 +404,10 @@ namespace PFD
             bool bGenerateBackColumns = componentList[(int)EMemberGroupNames.eBackWindPost].Generate.Value;
             if (bGenerateBackColumns)
             {
-                iOneRafterBackColumnNo = (int)((fW_frame - 0.95 * fDist_BackColumns) / fDist_BackColumns);
+                iOneRafterBackColumnNo = (int)((fW_frame_centerline - 0.95 * fDist_BackColumns) / fDist_BackColumns);
                 iBackColumnNoInOneFrame = 1 * iOneRafterBackColumnNo;
                 // Update value of distance between columns
-                fDist_BackColumns = (fW_frame / (iBackColumnNoInOneFrame + 1));
+                fDist_BackColumns = (fW_frame_centerline / (iBackColumnNoInOneFrame + 1));
             }
 
             const int iBackColumnNodesNo = 2; // Number of Nodes for Back Wind Post
@@ -421,7 +426,7 @@ namespace PFD
             {
                 if (fRoofPitch_rad > 0)
                 {
-                    iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(false, iOneRafterFrontColumnNo, fH1_frame, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts);
+                    iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(false, iOneRafterFrontColumnNo, fH1_frame_centerline, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts);
                     iFrontIntermediateColumnNodesForGirtsOneFrameNo = 1 * iFrontIntermediateColumnNodesForGirtsOneRafterNo;
 
                     // Number of Girts - Main Frame Column
@@ -435,7 +440,7 @@ namespace PFD
                     // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                     for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                     {
-                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(false, fH1_frame, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts, i);
+                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(false, fH1_frame_centerline, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts, i);
                         //iFrontGirtsNoInOneFrame += temp;
                         iArrNumberOfGirtsPerFrontColumnFromLeft[i + 1] = temp;
                         iArrNumberOfNodesPerFrontColumnFromLeft[i] = temp;
@@ -445,7 +450,7 @@ namespace PFD
                 }
                 else
                 {
-                    iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(true, iOneRafterFrontColumnNo, fH2_frame, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts);
+                    iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(true, iOneRafterFrontColumnNo, fH2_frame_centerline, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts);
                     iFrontIntermediateColumnNodesForGirtsOneFrameNo = 1 * iFrontIntermediateColumnNodesForGirtsOneRafterNo;
 
                     // Number of Girts - Main Frame Column
@@ -459,7 +464,7 @@ namespace PFD
                     // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                     for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                     {
-                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(true, fH2_frame, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts, i);
+                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(true, fH2_frame_centerline, fBottomGirtPosition, fDist_FrontColumns, fz_UpperLimitForFrontGirts, i);
                         //iFrontGirtsNoInOneFrame += temp;
                         iArrNumberOfGirtsPerFrontColumnFromLeft[i + 1] = temp;
                         iArrNumberOfNodesPerFrontColumnFromLeft[i] = temp;
@@ -492,7 +497,7 @@ namespace PFD
             {
                 if (fRoofPitch_rad > 0)
                 {
-                    iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(false, iOneRafterBackColumnNo, fH1_frame, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts);
+                    iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(false, iOneRafterBackColumnNo, fH1_frame_centerline, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts);
                     iBackIntermediateColumnNodesForGirtsOneFrameNo = 1 * iBackIntermediateColumnNodesForGirtsOneRafterNo;
 
                     // Number of Girts - Main Frame Column
@@ -506,7 +511,7 @@ namespace PFD
                     // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                     for (int i = 0; i < iOneRafterBackColumnNo; i++)
                     {
-                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(false, fH1_frame, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts, i);
+                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(false, fH1_frame_centerline, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts, i);
                         //iBackGirtsNoInOneFrame += temp;
                         iArrNumberOfGirtsPerBackColumnFromLeft[i + 1] = temp;
                         iArrNumberOfNodesPerBackColumnFromLeft[i] = temp;
@@ -516,7 +521,7 @@ namespace PFD
                 }
                 else
                 {
-                    iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(true, iOneRafterBackColumnNo, fH2_frame, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts);
+                    iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(true, iOneRafterBackColumnNo, fH2_frame_centerline, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts);
                     iBackIntermediateColumnNodesForGirtsOneFrameNo = 1 * iBackIntermediateColumnNodesForGirtsOneRafterNo;
 
                     // Number of Girts - Main Frame Column
@@ -530,7 +535,7 @@ namespace PFD
                     // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                     for (int i = 0; i < iOneRafterBackColumnNo; i++)
                     {
-                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(true, fH2_frame, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts, i);
+                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(true, fH2_frame_centerline, fBottomGirtPosition, fDist_BackColumns, fz_UpperLimitForBackGirts, i);
                         //iBackGirtsNoInOneFrame += temp;
                         iArrNumberOfGirtsPerBackColumnFromLeft[i + 1] = temp;
                         iArrNumberOfNodesPerBackColumnFromLeft[i] = temp;
@@ -816,15 +821,15 @@ namespace PFD
                 listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 0]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 0]);
 
-                m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, GetBaysWidthUntilFrameIndex(i), fH1_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, GetBaysWidthUntilFrameIndex(i), fH1_frame_centerline, 0);
                 m_arrNodes[i * iFrameNodesNo + 1].Name = "Main Column Top Node - left";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 1]);
 
-                m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, fW_frame, GetBaysWidthUntilFrameIndex(i), fH2_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, fW_frame_centerline, GetBaysWidthUntilFrameIndex(i), fH2_frame_centerline, 0);
                 m_arrNodes[i * iFrameNodesNo + 2].Name = "Main Column Top Node - right";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 2]);
 
-                m_arrNodes[i * iFrameNodesNo + 3] = new CNode(i * iFrameNodesNo + 4, fW_frame, GetBaysWidthUntilFrameIndex(i), 00000, 0);
+                m_arrNodes[i * iFrameNodesNo + 3] = new CNode(i * iFrameNodesNo + 4, fW_frame_centerline, GetBaysWidthUntilFrameIndex(i), 00000, 0);
                 m_arrNodes[i * iFrameNodesNo + 3].Name = "Main Column Base Node - right";
                 listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 3]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 3]);
@@ -896,7 +901,7 @@ namespace PFD
                     {
                         //task 600
                         //m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iLeftColumnGirtNo + j] = new CNode(i_temp_numberofNodes + i * iGirtNoInOneFrame + iLeftColumnGirtNo + j + 1, fW_frame, i * fL1_frame, fBottomGirtPosition + j * fDist_Girt, 0);
-                        m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iLeftColumnGirtNo + j] = new CNode(i_temp_numberofNodes + i * iGirtNoInOneFrame + iLeftColumnGirtNo + j + 1, fW_frame, GetBaysWidthUntilFrameIndex(i), fBottomGirtPosition + j * fDist_Girt, 0);
+                        m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iLeftColumnGirtNo + j] = new CNode(i_temp_numberofNodes + i * iGirtNoInOneFrame + iLeftColumnGirtNo + j + 1, fW_frame_centerline, GetBaysWidthUntilFrameIndex(i), fBottomGirtPosition + j * fDist_Girt, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iLeftColumnGirtNo + j]);
                     }
                 }
@@ -997,7 +1002,7 @@ namespace PFD
             i_temp_numberofNodes += bGeneratePurlins ? (iPurlinNoInOneFrame * iFrameNo) : 0;
             if (bGenerateFrontColumns)
             {
-                AddColumnsNodes(false, i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fH1_frame, fDist_FrontColumns, 0);
+                AddColumnsNodes(false, i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fH1_frame_centerline, fDist_FrontColumns, 0);
             }
 
             // Members - Front Wind Posts
@@ -1013,7 +1018,7 @@ namespace PFD
 
             if (bGenerateBackColumns)
             {
-                AddColumnsNodes(false, i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fH1_frame, fDist_BackColumns, fL_tot);
+                AddColumnsNodes(false, i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fH1_frame_centerline, fDist_BackColumns, fL_tot_centerline);
             }
 
             // Members - Back Wind Posts
@@ -1030,7 +1035,7 @@ namespace PFD
 
             if (bGenerateFrontGirts)
             {
-                AddFrontOrBackGirtsNodes(true, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumnFromLeft, i_temp_numberofNodes, iFrontIntermediateColumnNodesForGirtsOneRafterNo, fH1_frame, fDist_FrontGirts, fDist_FrontColumns, 0);
+                AddFrontOrBackGirtsNodes(true, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumnFromLeft, i_temp_numberofNodes, iFrontIntermediateColumnNodesForGirtsOneRafterNo, fH1_frame_centerline, fDist_FrontGirts, fDist_FrontColumns, 0);
             }
 
             // Front Girts
@@ -1053,7 +1058,7 @@ namespace PFD
 
             if (bGenerateBackGirts)
             {
-                AddFrontOrBackGirtsNodes(true, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumnFromLeft, i_temp_numberofNodes, iBackIntermediateColumnNodesForGirtsOneRafterNo, fH1_frame, fDist_BackGirts, fDist_BackColumns, fL_tot);
+                AddFrontOrBackGirtsNodes(true, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumnFromLeft, i_temp_numberofNodes, iBackIntermediateColumnNodesForGirtsOneRafterNo, fH1_frame_centerline, fDist_BackGirts, fDist_BackColumns, fL_tot_centerline);
             }
 
             // Back Girts
@@ -1077,7 +1082,7 @@ namespace PFD
 
                     for (int j = 0; j < (iLeftColumnGirtNo + 1); j++) // Left side
                     {
-                        float zCoord = j < iLeftColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame;
+                        float zCoord = j < iLeftColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame_centerline;
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
                         {
@@ -1089,13 +1094,13 @@ namespace PFD
 
                     for (int j = 0; j < (iRightColumnGirtNo + 1); j++) // Right side
                     {
-                        float zCoord = j < iRightColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH2_frame;
+                        float zCoord = j < iRightColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH2_frame_centerline;
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
                         {
                             //task 600
                             //m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k + 1, fW_frame, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
-                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k + 1, fW_frame, GetBaysWidthUntilFrameIndex(i) + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
+                            m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + iNumberOfGBSideWallsNodesInOneBayOneSideLeft + j * iNumberOfTransverseSupports_Girts + k + 1, fW_frame_centerline, GetBaysWidthUntilFrameIndex(i) + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
                         }
                     }
                 }
@@ -1167,13 +1172,13 @@ namespace PFD
                         float x_glob, z_glob;
 
                         if (j == 0) // First row of nodes
-                        { x_glob = 0; z_glob = fH1_frame; } // Left edge of roof
+                        { x_glob = 0; z_glob = fH1_frame_centerline; } // Left edge of roof
                         else
                         {
                             if (iLastPurlin == 0 || j < (iOneRafterPurlinNo + iLastPurlin)) // Gable roof or intermediate points of monopitch
                                 CalcPurlinNodeCoord(fFirstPurlinPosition + (j - 1) * fDist_Purlin, out x_glob, out z_glob);
                             else
-                            { x_glob = fW_frame; z_glob = fH2_frame; } // Right edge of roof - monopitch
+                            { x_glob = fW_frame_centerline; z_glob = fH2_frame_centerline; } // Right edge of roof - monopitch
                         }
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
@@ -1308,7 +1313,7 @@ namespace PFD
             if (bGenerateGirtBracingFrontSide)
             {
                 AddFrontOrBackGirtsBracingBlocksNodes(false, i_temp_numberofNodes, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode,
-                iNumberOfTransverseSupports_FrontGirts, fH1_frame, fIntermediateSupportSpacingGirtsFrontSide, fDist_FrontGirts, fDist_FrontColumns, 0, out iNumberOfGB_FSNodesInOneSideAndMiddleBay);
+                iNumberOfTransverseSupports_FrontGirts, fH1_frame_centerline, fIntermediateSupportSpacingGirtsFrontSide, fDist_FrontGirts, fDist_FrontColumns, 0, out iNumberOfGB_FSNodesInOneSideAndMiddleBay);
             }
 
             // Members - Girt Bracing - Front side
@@ -1330,7 +1335,7 @@ namespace PFD
             if (bGenerateGirtBracingBackSide)
             {
                 AddFrontOrBackGirtsBracingBlocksNodes(false, i_temp_numberofNodes, iArrGB_BS_NumberOfNodesPerBay, iArrGB_BS_NumberOfNodesPerBayFirstNode,
-                iNumberOfTransverseSupports_BackGirts, fH1_frame, fIntermediateSupportSpacingGirtsBackSide, fDist_BackGirts, fDist_BackColumns, fL_tot, out iNumberOfGB_BSNodesInOneSideAndMiddleBay);
+                iNumberOfTransverseSupports_BackGirts, fH1_frame_centerline, fIntermediateSupportSpacingGirtsBackSide, fDist_BackGirts, fDist_BackColumns, fL_tot_centerline, out iNumberOfGB_BSNodesInOneSideAndMiddleBay);
             }
 
             // Members - Girt Bracing - Back side
@@ -1418,13 +1423,13 @@ namespace PFD
                     if (!dp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; DoorBlocksProperties.Remove(dp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
                     else if (dp.Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
                     {
-                        float fSideWallHeight = fH1_frame;
+                        float fSideWallHeight = fH1_frame_centerline;
                         if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
                         {
                             if(dp.sBuildingSide == "Right")
-                                fSideWallHeight = fH2_frame;
+                                fSideWallHeight = fH2_frame_centerline;
                             else if(dp.sBuildingSide == "Front" || dp.sBuildingSide == "Back")
-                                fSideWallHeight = Math.Max(fH1_frame, fH2_frame);
+                                fSideWallHeight = Math.Max(fH1_frame_centerline, fH2_frame_centerline);
                         }
                         AddDoorBlock(dp, iLeftColumnGirtNo, iRightColumnGirtNo, 0.5f, fSideWallHeight, vm.RecreateJoints);
 
@@ -1497,13 +1502,13 @@ namespace PFD
                     if (!wp.Validate()) { if (!isChangedFromCode) vm.IsSetFromCode = true; vm.WindowBlocksProperties.Remove(wp); if (!isChangedFromCode) vm.IsSetFromCode = false; continue; }
                     else if (wp.Validate())
                     {
-                        float fSideWallHeight = fH1_frame;
+                        float fSideWallHeight = fH1_frame_centerline;
                         if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
                         {
                             if (wp.sBuildingSide == "Right")
-                                fSideWallHeight = fH2_frame;
+                                fSideWallHeight = fH2_frame_centerline;
                             else if (wp.sBuildingSide == "Front" || wp.sBuildingSide == "Back")
-                                fSideWallHeight = Math.Max(fH1_frame, fH2_frame);
+                                fSideWallHeight = Math.Max(fH1_frame_centerline, fH2_frame_centerline);
                         }
                         AddWindowBlock(wp, iLeftColumnGirtNo, iRightColumnGirtNo, 0.5f, fSideWallHeight, vm.RecreateJoints);
                     }
@@ -1701,8 +1706,8 @@ namespace PFD
 
                     double leftEdge = -column_crsc_z_plus - claddingThickness_Wall;
                     double frontEdge = column_crsc_y_minus;
-                    double rightEdge = fW_frame + column_crsc_z_plus + claddingThickness_Wall;
-                    double backEdge = fL_tot + column_crsc_y_plus;
+                    double rightEdge = fW_frame_centerline + column_crsc_z_plus + claddingThickness_Wall;
+                    double backEdge = fL_tot_centerline + column_crsc_y_plus;
 
                     if (_pfdVM.DoorBlocksProperties[i].sDoorType == "Personnel Door")
                     {
@@ -1761,8 +1766,8 @@ namespace PFD
                 {
                     double leftEdge = -column_crsc_z_plus - claddingThickness_Wall + fWindowFrameThickness;
                     double frontEdge = column_crsc_y_minus;
-                    double rightEdge = fW_frame + column_crsc_z_plus + claddingThickness_Wall;
-                    double backEdge = fL_tot + column_crsc_y_plus - fWindowFrameThickness;
+                    double rightEdge = fW_frame_centerline + column_crsc_z_plus + claddingThickness_Wall;
+                    double backEdge = fL_tot_centerline + column_crsc_y_plus - fWindowFrameThickness;
 
                     float fRotationZDegrees = 0f;
                     Point3D pControlEdgePoint = new Point3D((_pfdVM.WindowBlocksProperties[i].iBayNumber - 1) * fDist_FrontColumns + _pfdVM.WindowBlocksProperties[i].fWindowCoordinateXinBay, frontEdge, _pfdVM.WindowBlocksProperties[i].fWindowCoordinateZinBay);
@@ -1811,14 +1816,14 @@ namespace PFD
 
             // Snow load factor - projection on roof
             // Faktor ktory prepocita zatazenie z podorysneho rozmeru premietnute na stresnu rovinu
-            fSlopeFactor = (fW_frame / (fW_frame / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
+            fSlopeFactor = (fW_frame_centerline / (fW_frame_centerline / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
 
             #region Surface Loads
             // Surface Loads
 
             if (bGenerateSurfaceLoads)
             {
-                CSurfaceLoadGenerator surfaceLoadGenerator = new CSurfaceLoadGenerator(fH1_frame, fH2_frame, fW_frame, fL_tot, fRoofPitch_rad,
+                CSurfaceLoadGenerator surfaceLoadGenerator = new CSurfaceLoadGenerator(fH1_frame_centerline, fH2_frame_centerline, fW_frame_centerline, fL_tot_centerline, fRoofPitch_rad,
                     fDist_Purlin, fDist_Girt, fDist_FrontGirts, fDist_BackGirts, fDist_FrontColumns, fDist_BackColumns,
                     fSlopeFactor, m_arrLoadCases, generalLoad, wind, snow);
                 surfaceLoadGenerator.GenerateSurfaceLoads_M();
@@ -1849,7 +1854,7 @@ namespace PFD
                 iFrameNo,
                 //fL1_frame,
                 L1_Bays,
-                fL_tot,
+                fL_tot_centerline,
                 fSlopeFactor,
                 m_arrCrSc[(int)EMemberGroupNames.eGirtWall],
                 m_arrCrSc[(int)EMemberGroupNames.ePurlin],

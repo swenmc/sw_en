@@ -108,19 +108,19 @@ namespace BaseClasses.Helpers
                 if (m1 != null && m2 != null && m3 != null && m4 != null)
                 {
                     CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
-                    0.7, 0.7, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
+                    0.7, 0.7, 0.05, 0.15, (model.fW_frame_centerline * 1000).ToString("F0"), true);
 
                     // stlp vpravo - vyskova kota
-                    float fh = model.fH1_frame;
+                    float fh = model.fH1_frame_centerline;
 
                     if (model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed) // Pre monopitch kotujeme pravu vysku steny
-                        fh = model.fH2_frame;
+                        fh = model.fH2_frame_centerline;
 
                     CDimensionLinear3D dim2 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m2.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, 1,
                         0.6, 0.6, 0.05, 0.15, (fh * 1000).ToString("F0"), true);
 
                     CDimensionLinear3D dim3 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
-                        0.7, 0.7, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
+                        0.7, 0.7, 0.05, 0.15, (model.fL_tot_centerline * 1000).ToString("F0"), true);
 
                     //CDimensionLinear3D dim4 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
                     //    0.5, 0.5, 0.05, 0.15, (model.fL1_frame * 1000).ToString("F0"), true);
@@ -137,7 +137,7 @@ namespace BaseClasses.Helpers
                     {
                         // stlp vlavo - vyskova kota
                         CDimensionLinear3D dim41 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
-                            0.8, 0.8, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+                            0.8, 0.8, 0.05, 0.15, (model.fH1_frame_centerline * 1000).ToString("F0"), false);
 
                         listOfDimensions.Add(dim41);
                     }
@@ -207,11 +207,11 @@ namespace BaseClasses.Helpers
 
                 // stlpy na lavej strane maju PointStart v Z = 0
                 CDimensionLinear3D dim1 = new CDimensionLinear3D(m2.NodeStart.GetPoint3D(), m1.NodeStart.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
-                    0.4, 0.4, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
+                    0.4, 0.4, 0.05, 0.15, (model.fL_tot_centerline * 1000).ToString("F0"), true);
 
                 // stlp vlavo - vyskova kota
                 CDimensionLinear3D dim2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
-                    0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+                    0.4, 0.4, 0.05, 0.15, (model.fH1_frame_centerline * 1000).ToString("F0"), false);
 
                 List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dim1, dim2 };
 
@@ -237,7 +237,7 @@ namespace BaseClasses.Helpers
 
                 // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
                 membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.L1_Bays.First(), 0, 0));
-                membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
+                membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame_centerline, 0));
 
                 foreach (CMember m in membersLeftSideFirstBayGirts)
                 {
@@ -311,11 +311,11 @@ namespace BaseClasses.Helpers
 
                 // stlpy na pravej strane maju PointEnd v Z = 0
                 CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
-                    0.4, 0.4, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
+                    0.4, 0.4, 0.05, 0.15, (model.fL_tot_centerline * 1000).ToString("F0"), true);
 
                 // stlp vlavo - vyskova kota
                 CDimensionLinear3D dim2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
-                    0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+                    0.4, 0.4, 0.05, 0.15, (model.fH1_frame_centerline * 1000).ToString("F0"), false);
 
                 List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dim1, dim2 };
 
@@ -330,9 +330,9 @@ namespace BaseClasses.Helpers
             //CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
             CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
-                 0.4, 0.4, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
+                 0.4, 0.4, 0.05, 0.15, (model.fW_frame_centerline * 1000).ToString("F0"), true);
             CDimensionLinear3D dim2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
-                 0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+                 0.4, 0.4, 0.05, 0.15, (model.fH1_frame_centerline * 1000).ToString("F0"), false);
             CDimensionLinear3D dim3 = new CDimensionLinear3D(m3.NodeStart.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
                  0.4, 0.4, 0.05, 0.15, (m3.FLength * 1000).ToString("F0"), false);
 
@@ -347,9 +347,9 @@ namespace BaseClasses.Helpers
             CMember m3 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter);
 
             CDimensionLinear3D dim1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
-                 0.4, 0.4, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
+                 0.4, 0.4, 0.05, 0.15, (model.fW_frame_centerline * 1000).ToString("F0"), true);
             CDimensionLinear3D dim2 = new CDimensionLinear3D(m2.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
-                 0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+                 0.4, 0.4, 0.05, 0.15, (model.fH1_frame_centerline * 1000).ToString("F0"), false);
             CDimensionLinear3D dim3 = new CDimensionLinear3D(m3.NodeStart.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
                  0.4, 0.4, 0.05, 0.15, (m3.FLength * 1000).ToString("F0"), false);
 
@@ -374,7 +374,7 @@ namespace BaseClasses.Helpers
             // Left side
             CMember[] membersLeftSide = null;
 
-            membersLeftSide = ModelHelper.GetMembersInDistanceInterval(model, 0, 0.5f * model.fW_frame, 0, false, false); // smer X // Hladame rafters - left side
+            membersLeftSide = ModelHelper.GetMembersInDistanceInterval(model, 0, 0.5f * model.fW_frame_centerline, 0, false, false); // smer X // Hladame rafters - left side
 
             // TO Ondrej - ak by sa toto zobecnilo mohlo by sa to pouzit aj v inych pohladoch alebo podorysoch
 
@@ -394,29 +394,29 @@ namespace BaseClasses.Helpers
 
                 // Tuto celkovu kotu kreslime vzdy
                 membersNodes_FrontSide_2 = new List<CNode>();
-                membersNodes_FrontSide_2.Add(new CNode(0, -0.5f * fh, 0, model.fH1_frame, 0)); // Suradnice sa menia pre smer X
-                membersNodes_FrontSide_2.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, model.fH1_frame, 0));
+                membersNodes_FrontSide_2.Add(new CNode(0, -0.5f * fh, 0, model.fH1_frame_centerline, 0)); // Suradnice sa menia pre smer X
+                membersNodes_FrontSide_2.Add(new CNode(0, model.fW_frame_centerline + 0.5f * fh, 0, model.fH1_frame_centerline, 0));
 
                 membersNotesPurlinsAndEdgePurlins_FrontSide_1 = new List<CNode>();
 
                 // Kedze chceme kotovat od hrany musime pridat uzly na krajoch + stred
-                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, -0.5f * fh, 0, model.fH1_frame, 0));
-                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, 0.5f * model.fW_frame, 0, model.fH1_frame, 0)); // Stred budovy
-                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, model.fH1_frame, 0));
+                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, -0.5f * fh, 0, model.fH1_frame_centerline, 0));
+                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, 0.5f * model.fW_frame_centerline, 0, model.fH1_frame_centerline, 0)); // Stred budovy
+                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, model.fW_frame_centerline + 0.5f * fh, 0, model.fH1_frame_centerline, 0));
 
                 foreach (CMember m in membersPurlinsAndEdgePurlinsFront)
                 {
                     // Selektujeme uzly, ktore su na zaciatku v suradnici Y = 0 a nad urovnou edge purlin v smere Z
-                    if (MathF.d_equal(m.NodeStart.Y, 0) && m.NodeStart.Z >= model.fH1_frame)
+                    if (MathF.d_equal(m.NodeStart.Y, 0) && m.NodeStart.Z >= model.fH1_frame_centerline)
                     {
                         if (m.EMemberType == EMemberType_FS.eP || m.EMemberType == EMemberType_FS.eEP)
-                            membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(m.NodeStart.ID, m.NodeStart.X, m.NodeStart.Y, model.fH1_frame, m.NodeStart.FTime));
+                            membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(m.NodeStart.ID, m.NodeStart.X, m.NodeStart.Y, model.fH1_frame_centerline, m.NodeStart.FTime));
                     }
 
-                    if (MathF.d_equal(m.NodeEnd.Y, 0) && m.NodeEnd.Z >= model.fH1_frame)
+                    if (MathF.d_equal(m.NodeEnd.Y, 0) && m.NodeEnd.Z >= model.fH1_frame_centerline)
                     {
                         if (m.EMemberType == EMemberType_FS.eP || m.EMemberType == EMemberType_FS.eEP)
-                            membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(m.NodeEnd.ID, m.NodeEnd.X, m.NodeEnd.Y, model.fH1_frame, m.NodeEnd.FTime));
+                            membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(m.NodeEnd.ID, m.NodeEnd.X, m.NodeEnd.Y, model.fH1_frame_centerline, m.NodeEnd.FTime));
                     }
                 }
 
@@ -501,14 +501,14 @@ namespace BaseClasses.Helpers
 
                 // Toto celkovu kotu kreslime vzdy
                 membersBaseNodes_LeftSide_2 = new List<CNode>();
-                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, -0.5f * fb, model.fH1_frame, 0)); // Suradnice sa menia pre smer Y
-                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, model.fH1_frame, 0));
+                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, -0.5f * fb, model.fH1_frame_centerline, 0)); // Suradnice sa menia pre smer Y
+                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, model.fL_tot_centerline + 0.5f * fb, model.fH1_frame_centerline, 0));
 
                 membersBaseNodes_LeftSide_1 = new List<CNode>();
 
                 // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
-                membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, -0.5f * fb, model.fH1_frame, 0));
-                membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, model.fH1_frame, 0));
+                membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, -0.5f * fb, model.fH1_frame_centerline, 0));
+                membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, model.fL_tot_centerline + 0.5f * fb, model.fH1_frame_centerline, 0));
 
                 foreach (CMember m in membersLeftSide)
                 {
@@ -612,12 +612,12 @@ namespace BaseClasses.Helpers
 
             // Kedze chceme kotovat od spodnej hrany a vo vyske H1 musime pridat uzly na koncoch stlpa
             membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.L1_Bays.First(), 0, 0));
-            membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
+            membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame_centerline, 0));
 
             // Kedze chceme kotovat od zaciatku po koniec raftera musime pridat uzly na koncoch
             CMember leftRafter = model.m_arrMembers.FirstOrDefault(m => m.EMemberType == EMemberType_FS.eMR);
 
-            membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
+            membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame_centerline, 0));
             membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, leftRafter.NodeEnd.X, model.L1_Bays.First(), leftRafter.NodeEnd.Z, 0));
 
             if (membersFrontSideGirts != null)
@@ -625,7 +625,7 @@ namespace BaseClasses.Helpers
                 membersBaseNodes_FrontSideGirts_1 = new List<CNode>(); // Girts
 
                 membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.L1_Bays.First(), 0, 0));
-                membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
+                membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame_centerline, 0));
 
                 foreach (CMember m in membersFrontSideGirts)
                 {
@@ -640,7 +640,7 @@ namespace BaseClasses.Helpers
             {
                 membersBaseNodes_FrontSidePurlins_1 = new List<CNode>(); // Purlins
 
-                membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame, 0));
+                membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, 0, model.L1_Bays.First(), model.fH1_frame_centerline, 0));
                 membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, leftRafter.NodeEnd.X, model.L1_Bays.First(), leftRafter.NodeEnd.Z, 0));
 
                 foreach (CMember m in membersFrontSidePurlins)
@@ -812,7 +812,7 @@ namespace BaseClasses.Helpers
             // Back side
             CMember[] membersBackSide = null;
 
-            membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot, 1); // smer Y
+            membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot_centerline, 1); // smer Y
 
             // Left side
             CMember[] membersLeftSide = null;
@@ -822,7 +822,7 @@ namespace BaseClasses.Helpers
             // Right side
             CMember[] membersRightSide = null;
 
-            membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame, 0); // smer X
+            membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame_centerline, 0); // smer X
 
             // TO Ondrej - ak by sa toto zobecnilo mohlo by sa to pouzit aj v inych pohladoch alebo podorysoch
 
@@ -847,17 +847,17 @@ namespace BaseClasses.Helpers
                 // Tuto celkovu kotu kreslime vzdy
                 membersBaseNodes_FrontSide_3 = new List<CNode>();
                 membersBaseNodes_FrontSide_3.Add(new CNode(0, -0.5f * fh, 0, 0, 0)); // Suradnice sa menia pre smer X
-                membersBaseNodes_FrontSide_3.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
+                membersBaseNodes_FrontSide_3.Add(new CNode(0, model.fW_frame_centerline + 0.5f * fh, 0, 0, 0));
 
                 membersBaseNodes_FrontSide_1 = new List<CNode>();
                 membersBaseNodes_FrontSide_2 = new List<CNode>();
 
                 // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
                 membersBaseNodes_FrontSide_1.Add(new CNode(0, -0.5f * fh, 0, 0, 0));
-                membersBaseNodes_FrontSide_1.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
+                membersBaseNodes_FrontSide_1.Add(new CNode(0, model.fW_frame_centerline + 0.5f * fh, 0, 0, 0));
 
                 membersBaseNodes_FrontSide_2.Add(new CNode(0, -0.5f * fh, 0, 0, 0));
-                membersBaseNodes_FrontSide_2.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
+                membersBaseNodes_FrontSide_2.Add(new CNode(0, model.fW_frame_centerline + 0.5f * fh, 0, 0, 0));
 
                 foreach (CMember m in membersFrontSide)
                 {
@@ -1008,17 +1008,17 @@ namespace BaseClasses.Helpers
                 // Toto celkovu kotu kreslime vzdy
                 membersBaseNodes_LeftSide_3 = new List<CNode>();
                 membersBaseNodes_LeftSide_3.Add(new CNode(0, 0, -0.5f * fb, 0, 0)); // Suradnice sa menia pre smer Y
-                membersBaseNodes_LeftSide_3.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, 0, 0));
+                membersBaseNodes_LeftSide_3.Add(new CNode(0, 0, model.fL_tot_centerline + 0.5f * fb, 0, 0));
 
                 membersBaseNodes_LeftSide_1 = new List<CNode>();
                 membersBaseNodes_LeftSide_2 = new List<CNode>();
 
                 // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
                 membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, -0.5f * fb, 0, 0));
-                membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, 0, 0));
+                membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, model.fL_tot_centerline + 0.5f * fb, 0, 0));
 
                 membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, -0.5f * fb, 0, 0));
-                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, 0, 0));
+                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, model.fL_tot_centerline + 0.5f * fb, 0, 0));
 
                 foreach (CMember m in membersLeftSide)
                 {
@@ -1148,7 +1148,7 @@ namespace BaseClasses.Helpers
             if (bDrawDimension_Right == true) // Kota vpravo od budovy
             {
                 // Maximum right coordinate points Z = 0
-                List<Point3D> foundationPointsX = ModelHelper.GetPointsInDistanceInterval(foundationPoints, model.fW_frame, model.fW_frame + 10, 0, true, false); // X
+                List<Point3D> foundationPointsX = ModelHelper.GetPointsInDistanceInterval(foundationPoints, model.fW_frame_centerline, model.fW_frame_centerline + 10, 0, true, false); // X
                 List<Point3D> dimensionPoints_1 = ModelHelper.GetPointsInDistance(foundationPointsX, 0, 2); // Z
 
                 dimensionPoints_1 = dimensionPoints_1.OrderBy(p => p.Y).ToList(); // Sort by Y coordinate
@@ -1208,7 +1208,7 @@ namespace BaseClasses.Helpers
             {
                 // Maximum back coordinate points Z = 0
                 // Maximalna suradnica zakladu pre wind post Y moze byt teoreticky byt mensia dlzka budovy (je to nespravne, ale je to mozne tak zadat :)
-                List<Point3D> foundationPointsY = ModelHelper.GetPointsInDistanceInterval(foundationPoints, model.fL_tot - 0.2f, model.fL_tot + 10, 1, true, false); // Y
+                List<Point3D> foundationPointsY = ModelHelper.GetPointsInDistanceInterval(foundationPoints, model.fL_tot_centerline - 0.2f, model.fL_tot_centerline + 10, 1, true, false); // Y
                 List<Point3D> dimensionPoints_1 = ModelHelper.GetPointsInDistance(foundationPointsY, 0, 2); // Z
 
                 dimensionPoints_1 = dimensionPoints_1.OrderBy(p => p.X).ToList(); // Sort by X coordinate
@@ -1279,7 +1279,7 @@ namespace BaseClasses.Helpers
             // Back side
             CMember[] membersBackSide = null;
 
-            membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot, 1); // smer Y
+            membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot_centerline, 1); // smer Y
 
             // Left side
             CMember[] membersLeftSide = null;
@@ -1289,7 +1289,7 @@ namespace BaseClasses.Helpers
             // Right side
             CMember[] membersRightSide = null;
 
-            membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame, 0); // smer X
+            membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame_centerline, 0); // smer X
 
             // TO Ondrej - ak by sa toto zobecnilo mohlo by sa to pouzit aj v inych pohladoch alebo podorysoch
 
@@ -1314,7 +1314,7 @@ namespace BaseClasses.Helpers
                 // Tuto celkovu kotu kreslime vzdy
                 membersBaseNodes_FrontSide_3 = new List<CNode>();
                 membersBaseNodes_FrontSide_3.Add(new CNode(0, -0.5f * fh, 0, 0, 0)); // Suradnice sa menia pre smer X
-                membersBaseNodes_FrontSide_3.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
+                membersBaseNodes_FrontSide_3.Add(new CNode(0, model.fW_frame_centerline + 0.5f * fh, 0, 0, 0));
 
                 //membersBaseNodes_FrontSide_1 = new List<CNode>();
                 membersBaseNodes_FrontSide_2 = new List<CNode>();
@@ -1324,7 +1324,7 @@ namespace BaseClasses.Helpers
                 //membersBaseNodes_FrontSide_1.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
 
                 membersBaseNodes_FrontSide_2.Add(new CNode(0, -0.5f * fh, 0, 0, 0));
-                membersBaseNodes_FrontSide_2.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
+                membersBaseNodes_FrontSide_2.Add(new CNode(0, model.fW_frame_centerline + 0.5f * fh, 0, 0, 0));
 
                 foreach (CMember m in membersFrontSide)
                 {
@@ -1477,7 +1477,7 @@ namespace BaseClasses.Helpers
                 // Toto celkovu kotu kreslime vzdy
                 membersBaseNodes_LeftSide_3 = new List<CNode>();
                 membersBaseNodes_LeftSide_3.Add(new CNode(0, 0, -0.5f * fb, 0, 0)); // Suradnice sa menia pre smer Y
-                membersBaseNodes_LeftSide_3.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, 0, 0));
+                membersBaseNodes_LeftSide_3.Add(new CNode(0, 0, model.fL_tot_centerline + 0.5f * fb, 0, 0));
 
                 //membersBaseNodes_LeftSide_1 = new List<CNode>();
                 membersBaseNodes_LeftSide_2 = new List<CNode>();
@@ -1487,7 +1487,7 @@ namespace BaseClasses.Helpers
                 //membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, 0, 0));
 
                 membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, -0.5f * fb, 0, 0));
-                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, 0, 0));
+                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, model.fL_tot_centerline + 0.5f * fb, 0, 0));
 
                 foreach (CMember m in membersLeftSide)
                 {
@@ -1632,7 +1632,7 @@ namespace BaseClasses.Helpers
                 List<Point3D> points_FrontSide_2 = null; // Wind posts and edge columns
 
                 // Position Y
-                double position_Y = 0.4 * model.fL_tot; // TODO Ondrej - skusit vymysliet ako by sme urcili poziciu aby sa to neprekryvalo s inymi objektami
+                double position_Y = 0.4 * model.fL_tot_centerline; // TODO Ondrej - skusit vymysliet ako by sme urcili poziciu aby sa to neprekryvalo s inymi objektami
 
                 if (model.m_arrSlabs.FirstOrDefault().NumberOfSawCutsInDirectionX > 0)
                 {
@@ -1642,7 +1642,7 @@ namespace BaseClasses.Helpers
 
                     // Kedze chceme kotovat od hrany musime pridat body na krajoch
                     points_FrontSide_1.Add(new Point3D(-0.5f * fh, position_Y, 0));
-                    points_FrontSide_1.Add(new Point3D(model.fW_frame + 0.5f * fh, position_Y, 0));
+                    points_FrontSide_1.Add(new Point3D(model.fW_frame_centerline + 0.5f * fh, position_Y, 0));
 
                     for (int i = 0; i < model.m_arrSlabs.FirstOrDefault().NumberOfSawCutsInDirectionX; i++)
                         points_FrontSide_1.Add(new Point3D(model.m_arrSlabs.FirstOrDefault().SawCuts[i].PointStart.X, position_Y, 0));
@@ -1658,7 +1658,7 @@ namespace BaseClasses.Helpers
 
                     // Kedze chceme kotovat od hrany musime pridat body na krajoch
                     points_FrontSide_2.Add(new Point3D(-0.5f * fh, position_Y, 0));
-                    points_FrontSide_2.Add(new Point3D(model.fW_frame + 0.5f * fh, position_Y, 0));
+                    points_FrontSide_2.Add(new Point3D(model.fW_frame_centerline + 0.5f * fh, position_Y, 0));
 
                     for (int i = 0; i < model.m_arrSlabs.FirstOrDefault().NumberOfControlJointsInDirectionX; i++)
                         points_FrontSide_2.Add(new Point3D(model.m_arrSlabs.FirstOrDefault().ControlJoints[i].PointStart.X, position_Y, 0));
@@ -1735,7 +1735,7 @@ namespace BaseClasses.Helpers
                 List<Point3D> points_FrontSide_2 = null; // Wind posts and edge columns
 
                 // Position Y
-                double position_X = 0.75 * model.fW_frame; // TODO Ondrej - skusit vymysliet ako by sme urcili poziciu aby sa to neprekryvalo s inymi objektami
+                double position_X = 0.75 * model.fW_frame_centerline; // TODO Ondrej - skusit vymysliet ako by sme urcili poziciu aby sa to neprekryvalo s inymi objektami
 
                 if (model.m_arrSlabs.FirstOrDefault().NumberOfSawCutsInDirectionX > 0)
                 {
@@ -1745,7 +1745,7 @@ namespace BaseClasses.Helpers
 
                     // Kedze chceme kotovat od hrany musime pridat body na krajoch
                     points_FrontSide_1.Add(new Point3D(position_X, -0.5f * fb, 0)); // Suradnice sa menia pre smer Y
-                    points_FrontSide_1.Add(new Point3D(position_X, model.fL_tot + 0.5f * fb, 0));
+                    points_FrontSide_1.Add(new Point3D(position_X, model.fL_tot_centerline + 0.5f * fb, 0));
 
                     for (int i = 0; i < model.m_arrSlabs.FirstOrDefault().NumberOfSawCutsInDirectionY; i++)
                         points_FrontSide_1.Add(new Point3D(position_X,model.m_arrSlabs.FirstOrDefault().SawCuts[model.m_arrSlabs.FirstOrDefault().NumberOfSawCutsInDirectionX + i].PointStart.Y, 0));
@@ -1761,7 +1761,7 @@ namespace BaseClasses.Helpers
 
                     // Kedze chceme kotovat od hrany musime pridat body na krajoch
                     points_FrontSide_2.Add(new Point3D(position_X, -0.5f * fb, 0)); // Suradnice sa menia pre smer Y
-                    points_FrontSide_2.Add(new Point3D(position_X, model.fL_tot + 0.5f * fb, 0));
+                    points_FrontSide_2.Add(new Point3D(position_X, model.fL_tot_centerline + 0.5f * fb, 0));
 
                     for (int i = 0; i < model.m_arrSlabs.FirstOrDefault().NumberOfControlJointsInDirectionY; i++)
                         points_FrontSide_2.Add(new Point3D(position_X,model.m_arrSlabs.FirstOrDefault().ControlJoints[model.m_arrSlabs.FirstOrDefault().NumberOfControlJointsInDirectionX + i].PointStart.Y, 0));

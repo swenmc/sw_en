@@ -674,8 +674,8 @@ namespace PFD
             {
                 iNumberOfMainRafters_x = 1;
                 fRafterLength = vm.Width / (float)Math.Cos(vm.fRoofPitch_radians); // Sirka budovy premietnuta do sklonu raftera
-                fWallHeight_Left = vm.Model.fH1_frame;
-                fWallHeight_Right = vm.Model.fH2_frame;
+                fWallHeight_Left = vm.Model.fH1_frame_centerline;
+                fWallHeight_Right = vm.Model.fH2_frame_centerline;
                 float fk_ex_LeftColumn = GetEquivalentStiffness(fWallHeight_Left, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E); // Tuhost laveho stlpa
                 float fk_ex_RightColumn = GetEquivalentStiffness(fWallHeight_Right, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E); // Tuhost praveho stlpa
                 fk_ex = fk_ex_LeftColumn + fk_ex_RightColumn; // Celkova tuhost stlpov ramu
@@ -692,8 +692,8 @@ namespace PFD
             {
                 iNumberOfMainRafters_x = 2;
                 fRafterLength = (0.5f * vm.Width) / (float)Math.Cos(vm.fRoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
-                fWallHeight_Left = vm.Model.fH1_frame;
-                fWallHeight_Right = vm.Model.fH1_frame;
+                fWallHeight_Left = vm.Model.fH1_frame_centerline;
+                fWallHeight_Right = vm.Model.fH1_frame_centerline;
                 fk_ex = GetEquivalentStiffness(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E);
                 fDelta_x = GetCantileverDeflection(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E);
             }
@@ -1160,11 +1160,16 @@ namespace PFD
         {
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
             // Set current geometry data to calculate loads
-            sGeometryInputData.fH_2 = vm.fHeight_H2;
-            sGeometryInputData.fH_1 = vm.WallHeight;
-            sGeometryInputData.fW = vm.Width;
-            sGeometryInputData.fL = vm.Length;
+            sGeometryInputData.fW_centerline = vm.Width;
+            sGeometryInputData.fL_centerline = vm.Length;
+            sGeometryInputData.fH_1_centerline = vm.WallHeight;
+            sGeometryInputData.fH_2_centerline = vm.fHeight_H2;
             sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
+
+            sGeometryInputData.fWidth_overall = vm.WidthOverall;
+            sGeometryInputData.fLength_overall = vm.LengthOverall;
+            sGeometryInputData.fHeight_1_overall = vm.WallHeightOverall;
+            sGeometryInputData.fHeight_2_overall = vm.fHeight_H2_Overall;
 
             CComponentInfo ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
             if (ci != null) sGeometryInputData.iMainColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
@@ -1183,11 +1188,13 @@ namespace PFD
 
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
             if (ci != null) sGeometryInputData.iFrontWindPostFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
+
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
             if (ci != null) sGeometryInputData.iBackWindPostFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
 
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
             if (ci != null) sGeometryInputData.iGirtFrontSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (ci != null) sGeometryInputData.iGirtBackSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
 
@@ -2478,7 +2485,7 @@ namespace PFD
 
         private void btnAddGutter_Click(object sender, RoutedEventArgs e)
         {
-            float fGuttersTotalLength = 2 * vm.Model.fL_tot; // na dvoch okrajoch strechy
+            float fGuttersTotalLength = 2 * vm.LengthOverall; // na dvoch okrajoch strechy
 
             int colorIndex = 2;
             if (vm._generalOptionsVM.SameColorsFGD)
@@ -2510,12 +2517,12 @@ namespace PFD
             if (vm.Model is CModel_PFD_01_MR)
             {
                 iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
-                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(vm.Model.fH1_frame, vm.Model.fH2_frame); // Pocet zvodov krat vyska steny
+                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(vm.WallHeightOverall, vm.fHeight_H2_Overall); // Pocet zvodov krat vyska steny
             }
             else if (vm.Model is CModel_PFD_01_GR)
             {
                 iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-                fDownpipesTotalLength = iCountOfDownpipePoints * vm.Model.fH1_frame; // Pocet zvodov krat vyska steny
+                fDownpipesTotalLength = iCountOfDownpipePoints * vm.WallHeightOverall; // Pocet zvodov krat vyska steny
             }
             else
             {

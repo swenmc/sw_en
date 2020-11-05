@@ -588,8 +588,8 @@ namespace BaseClasses
             {
                 float fOffset = maxModelLength * 0.08f; //  0.8f; // Nastavit tak, aby sa znacky neprekryvali s horizontalnymi kotami
                 float fOffsetBehind = maxModelLength * 0.03f; // 0.3f;
-                float fLineLength_X = fOffset + model.fW_frame + fOffsetBehind;
-                float fLineLength_Y = fOffset + model.fL_tot + fOffsetBehind;
+                float fLineLength_X = fOffset + model.fW_frame_centerline + fOffsetBehind;
+                float fLineLength_Y = fOffset + model.fL_tot_centerline + fOffsetBehind;
 
                 // Left side
                 CMember[] membersLeftSide = null;
@@ -632,7 +632,7 @@ namespace BaseClasses
                 }
             }
 
-            float fOffsetTop = maxModelLength * 0.05f + model.fH2_frame; // H2 (ridge height)
+            float fOffsetTop = maxModelLength * 0.05f + model.fH2_frame_centerline; // H2 (ridge height)
             float fOffsetBottom = maxModelLength * 0.03f;
             float fLineLength = fOffsetTop + fOffsetBottom;
 
@@ -790,7 +790,7 @@ namespace BaseClasses
         {
             // Back side
             CMember[] membersBackSide = null;
-            membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot, 1); // smer Y
+            membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot_centerline, 1); // smer Y
 
             List<CNode> membersBaseNodes_BackSide = null; // Wind posts and edge columns
             membersBaseNodes_BackSide = new List<CNode>();
@@ -850,7 +850,7 @@ namespace BaseClasses
         {
             // Right side
             CMember[] membersRightSide = null;
-            membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame, 0); // smer X
+            membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame_centerline, 0); // smer X
 
             List<CNode> membersBaseNodes_RightSide = null; // Main columns and edge columns
             membersBaseNodes_RightSide = new List<CNode>();
@@ -952,8 +952,8 @@ namespace BaseClasses
                         firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
                         
                         fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay - 1) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
-                        pointLeft = new Point3D(model.fW_frame, fAbsolutePosition, 0);
-                        pointRight = new Point3D(model.fW_frame, fAbsolutePosition, 0);
+                        pointLeft = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
+                        pointRight = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                         listOfSectionSymbols.Add(secSymbolLeft);
@@ -970,8 +970,8 @@ namespace BaseClasses
 
                         firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Back");
                         fAbsolutePosition = firstFreeBay * model.fDist_BackColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_BackColumns;
-                        pointLeft = new Point3D(fAbsolutePosition, model.fL_tot, 0);
-                        pointRight = new Point3D(fAbsolutePosition, model.fL_tot, 0);
+                        pointLeft = new Point3D(fAbsolutePosition, model.fL_tot_centerline, 0);
+                        pointRight = new Point3D(fAbsolutePosition, model.fL_tot_centerline, 0);
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                         listOfSectionSymbols.Add(secSymbolLeft);
@@ -994,8 +994,8 @@ namespace BaseClasses
                             firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
                             
                             fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay - 1) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
-                            pointLeft = new Point3D(model.fW_frame, fAbsolutePosition, 0);
-                            pointRight = new Point3D(model.fW_frame, fAbsolutePosition, 0);
+                            pointLeft = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
+                            pointRight = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
                             secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
                             secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                             listOfSectionSymbols.Add(secSymbolLeft);
@@ -1014,8 +1014,8 @@ namespace BaseClasses
 
                             firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Back");
                             fAbsolutePosition = firstFreeBay * model.fDist_BackColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_BackColumns;
-                            pointLeft = new Point3D(fAbsolutePosition, model.fL_tot, 0);
-                            pointRight = new Point3D(fAbsolutePosition, model.fL_tot, 0);
+                            pointLeft = new Point3D(fAbsolutePosition, model.fL_tot_centerline, 0);
+                            pointRight = new Point3D(fAbsolutePosition, model.fL_tot_centerline, 0);
                             secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
                             secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                             listOfSectionSymbols.Add(secSymbolLeft);
@@ -1052,8 +1052,8 @@ namespace BaseClasses
                                 }
                                 else if (perimeter.BuildingSide == "Right")
                                 {
-                                    pointLeft = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
-                                    pointRight = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
+                                    pointLeft = new Point3D(model.fW_frame_centerline, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
+                                    pointRight = new Point3D(model.fW_frame_centerline, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
 
                                     secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
                                     secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
@@ -1068,8 +1068,8 @@ namespace BaseClasses
                                 }
                                 else if (perimeter.BuildingSide == "Back")
                                 {
-                                    pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
-                                    pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
+                                    pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot_centerline, 0);
+                                    pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot_centerline, 0);
 
                                     secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
                                     secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
@@ -5258,10 +5258,10 @@ namespace BaseClasses
         {
             CModel _model = new CModel();            
             _model.L1_Bays = model.L1_Bays;
-            _model.fL_tot = model.fL_tot;
-            _model.fW_frame = model.fW_frame;
-            _model.fH1_frame = model.fH1_frame;
-            _model.fH2_frame = model.fH2_frame;
+            _model.fL_tot_centerline = model.fL_tot_centerline;
+            _model.fW_frame_centerline = model.fW_frame_centerline;
+            _model.fH1_frame_centerline = model.fH1_frame_centerline;
+            _model.fH2_frame_centerline = model.fH2_frame_centerline;
             _model.fDist_Girt = model.fDist_Girt;
             _model.fDist_Purlin = model.fDist_Purlin;
             _model.fDist_FrontColumns = model.fDist_FrontColumns;

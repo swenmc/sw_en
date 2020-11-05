@@ -19,7 +19,7 @@ namespace PFD
             float fDist_FrontColumns_temp,             // Pridane kvoli pripoju trimmer to rafter - Horizontal regular distance between columns in the front wall / side
             float fDist_BackColumns_temp,              // Pridane kvoli pripoju trimmer to rafter - Horizontal regular distance between columns in the front wall / side
             float fH1_frame_Left,                      // Pridane kvoli pripoju trimmer to rafter - Height of frame column on the left side
-            float fW_rame_temp,                        // Pridane kvoli pripoju trimmer to rafter - Frame Width
+            float fW_frame_temp,                       // Pridane kvoli pripoju trimmer to rafter - Frame Width
             float fRoofPitch_rad_temp,                 // Pridane kvoli pripoju trimmer to rafter - Roof Pitch
             EModelType_FS eKitset_temp,                // Pridane kvoli pripoju trimmer to rafter - Building shape 0 - monopitch roof, 1 - gable roof
             CMember referenceGirt_temp,                // Reference girt object in bay
@@ -196,7 +196,7 @@ namespace PFD
                     float fz_abs_LeftBay = 0;
                     float fz_abs_RightBay = 0;
 
-                    fW_frame = fW_rame_temp;
+                    fW_frame_centerline = fW_frame_temp;
                     fRoofPitch_rad = fRoofPitch_rad_temp;
                     eKitset = eKitset_temp; // Nastavime tvar budovy do modelu bloku
                     CalcColumnNodeCoord_Z(bConsiderAbsoluteValueOfRoofPitch, fH1_frame_Left, fx_abs_Bay_Left, out fz_abs_LeftBay);

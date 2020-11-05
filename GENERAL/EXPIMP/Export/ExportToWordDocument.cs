@@ -99,15 +99,15 @@ namespace EXPIMP
                 //-----------------------------------------------------------------------------------------------------------
                 document.ReplaceText("[RoofShape]", data.RoofShape); // Tvar budovy
 
-                document.ReplaceText("[Length]", data.Length.ToString(sStringFormat_Length));
-                document.ReplaceText("[Width]", data.Width.ToString(sStringFormat_Length));
-                document.ReplaceText("[WallHeight]", data.WallHeight.ToString(sStringFormat_Length));
-                document.ReplaceText("[ApexHeight_H2]", data.ApexHeight_H2.ToString(sStringFormat_Length));
+                document.ReplaceText("[Length]", data.Length_Overall.ToString(sStringFormat_Length));
+                document.ReplaceText("[Width]", data.Width_Overall.ToString(sStringFormat_Length));
+                document.ReplaceText("[WallHeight]", data.WallHeight_Overall.ToString(sStringFormat_Length));
+                document.ReplaceText("[ApexHeight_H2]", data.ApexHeight_H2_Overall.ToString(sStringFormat_Length));
                                 
                 if (data.KitSetTypeIndex == 0) //Monopitch
                 {
                     document.ReplaceText("[lblWallH1]", "Wall Height 1");
-                    document.ReplaceText("[lblWallH2]", "Wall Height 2");                    
+                    document.ReplaceText("[lblWallH2]", "Wall Height 2");
                 }
                 else if (data.KitSetTypeIndex == 1) //Gable
                 {
@@ -241,7 +241,7 @@ namespace EXPIMP
 
         private static string GetCoatingType(DataTable dt)
         {
-            // Colour Steel, Zinc, Colour Steel / Zinc             
+            // Colour Steel, Zinc, Colour Steel / Zinc
             bool containsZinc = false;
             bool containsNotZinc = false;
             foreach (DataRow row in dt.Rows)

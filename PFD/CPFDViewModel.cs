@@ -218,6 +218,7 @@ namespace PFD
         //tieto treba spracovat nejako
         public float fBayWidth;
         public float fHeight_H2; // Apex height for gable roof or right side wall heigth for monopitch roof
+        public float fHeight_H2_Overall; // Celkova vyska vratane rozmeru prierezu
         public float fRoofPitch_radians;
         public float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov)
 
@@ -367,6 +368,7 @@ namespace PFD
                 if (MKitsetTypeIndex == 0)
                 {
                     fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
+                    fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
@@ -375,6 +377,7 @@ namespace PFD
                 else if (MKitsetTypeIndex == 1)
                 {
                     fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
+                    fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
@@ -383,6 +386,7 @@ namespace PFD
                 else
                 {
                     fHeight_H2 = 0; // Exception
+                    fHeight_H2_Overall = 0;
                     IFrontColumnNoInOneFrame = 0;
                 }
 
@@ -449,6 +453,7 @@ namespace PFD
                     if (MKitsetTypeIndex == 0)
                     {
                         fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
                         int iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
@@ -457,6 +462,7 @@ namespace PFD
                     else if (MKitsetTypeIndex == 1)
                     {
                         fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
                         int iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
@@ -465,6 +471,7 @@ namespace PFD
                     else
                     {
                         fHeight_H2 = 0; // Exception
+                        fHeight_H2_Overall = 0;
                         IFrontColumnNoInOneFrame = 0;
                     }
 
@@ -552,11 +559,20 @@ namespace PFD
                 {
                     // Recalculate roof heigth
                     if (MKitsetTypeIndex == 0)
+                    {
                         fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                    }
                     else if (MKitsetTypeIndex == 1)
+                    {
                         fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                    }
                     else
+                    {
                         fHeight_H2 = 0; // Exception
+                        fHeight_H2_Overall = 0;
+                    }
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -683,11 +699,20 @@ namespace PFD
 
                     // Recalculate h2
                     if (MKitsetTypeIndex == 0)
+                    {
                         fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                    }
                     else if (MKitsetTypeIndex == 1)
+                    {
                         fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
+                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                    }
                     else
+                    {
                         fHeight_H2 = 0; // Exception
+                        fHeight_H2_Overall = 0;
+                    }
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -745,7 +770,7 @@ namespace PFD
 
                 float fFirstPurlinPosition = MPurlinDistance;
                 OneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / MPurlinDistance) + 1;
-                                
+
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
                 _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, fBayWidth);
                 
@@ -2543,11 +2568,11 @@ namespace PFD
 
             if (Model is CModel_PFD_01_MR)
             {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(Model.fW_frame)); // Dlzka hrany strechy
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(fHeight_H2_Overall - MWallHeightOverall) + MathF.Pow2(MWidthOverall)); // Dlzka hrany strechy
             }
             else if (Model is CModel_PFD_01_GR)
             {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(0.5f * Model.fW_frame)); // Dlzka hrany strechy
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(fHeight_H2_Overall - MWallHeightOverall) + MathF.Pow2(0.5f * MWidthOverall)); // Dlzka hrany strechy
             }
             else
             {
@@ -2562,13 +2587,13 @@ namespace PFD
             if (Model is CModel_PFD_01_MR)
             {
                 fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 2 * Model.fH1_frame + 2 * Model.fH2_frame;
+                fWallCornerFlashing_TotalLength = 2 * MWallHeightOverall + 2 * fHeight_H2_Overall;
                 fBargeFlashing_TotalLength = 2 * fRoofSideLength;
             }
             else if (Model is CModel_PFD_01_GR)
             {
-                fRoofRidgeFlashing_TotalLength = Model.fL_tot;
-                fWallCornerFlashing_TotalLength = 4 * Model.fH1_frame;
+                fRoofRidgeFlashing_TotalLength = MLengthOverall;
+                fWallCornerFlashing_TotalLength = 4 * MWallHeightOverall;
                 fBargeFlashing_TotalLength = 4 * fRoofSideLength;
             }
             else
@@ -2646,11 +2671,11 @@ namespace PFD
 
                     if (MModel is CModel_PFD_01_MR)
                     {
-                        fGuttersTotalLength = Model.fL_tot; // na jednom okraji strechy
+                        fGuttersTotalLength = MLengthOverall; // na jednom okraji strechy
                     }
                     else if (MModel is CModel_PFD_01_GR)
                     {
-                        fGuttersTotalLength = 2 * Model.fL_tot; // na dvoch okrajoch strechy
+                        fGuttersTotalLength = 2 * MLengthOverall; // na dvoch okrajoch strechy
                     }
                     else
                     {
@@ -2714,12 +2739,12 @@ namespace PFD
             if (MModel is CModel_PFD_01_MR)
             {
                 iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
-                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(MModel.fH1_frame, MModel.fH2_frame); // Pocet zvodov krat vyska steny
+                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(MWallHeightOverall, fHeight_H2_Overall); // Pocet zvodov krat vyska steny
             }
             else if (MModel is CModel_PFD_01_GR)
             {
                 iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-                fDownpipesTotalLength = iCountOfDownpipePoints * MModel.fH1_frame; // Pocet zvodov krat vyska steny
+                fDownpipesTotalLength = iCountOfDownpipePoints * MWallHeightOverall; // Pocet zvodov krat vyska steny
             }
             else
             {
@@ -3693,9 +3718,9 @@ namespace PFD
                 throw new Exception("Model shape is not implemented.");
             }
             data.KitSetTypeIndex = MKitsetTypeIndex;
-            data.Width = MWidth;
-            data.Length = MLength;
-            data.WallHeight = MWallHeight;
+            data.Width_Overall =  MWidthOverall;
+            data.Length_Overall = MLengthOverall;
+            data.WallHeight_Overall = MWallHeightOverall;
             data.RoofPitch_deg = MRoofPitch_deg;
             data.Frames = MFrames;
             data.GirtDistance = MGirtDistance;
@@ -3704,7 +3729,7 @@ namespace PFD
             data.BottomGirtPosition = MBottomGirtPosition;
 
             data.BayWidth = fBayWidth;
-            data.ApexHeight_H2 = fHeight_H2;
+            data.ApexHeight_H2_Overall = fHeight_H2_Overall;
 
             data.RoofCladding = RoofCladding;
             data.WallCladding = WallCladding;

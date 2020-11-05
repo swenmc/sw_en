@@ -30,12 +30,12 @@ namespace BaseClasses.Helpers
 
         public static CMember[] GetBackViewMembers(CModel model)
         {
-            return GetMembersInDistance(model, model.fL_tot, 1); // smer Y
+            return GetMembersInDistance(model, model.fL_tot_centerline, 1); // smer Y
         }
 
         public static CNode[] GetBackViewNodes(CModel model)
         {
-            return GetNodesInDistance(model, model.fL_tot, 1); // smer Y
+            return GetNodesInDistance(model, model.fL_tot_centerline, 1); // smer Y
         }
 
         public static CMember[] GetLeftViewMembers(CModel model)
@@ -50,12 +50,12 @@ namespace BaseClasses.Helpers
 
         public static CMember[] GetRightViewMembers(CModel model)
         {
-            return GetMembersInDistance(model, model.fW_frame, 0); // smer X
+            return GetMembersInDistance(model, model.fW_frame_centerline, 0); // smer X
         }
 
         public static CNode[] GetRightViewNodes(CModel model)
         {
-            return GetNodesInDistance(model, model.fW_frame, 0); // smer X
+            return GetNodesInDistance(model, model.fW_frame_centerline, 0); // smer X
         }
 
         // Roof
@@ -66,8 +66,8 @@ namespace BaseClasses.Helpers
             foreach (CMember m in model.m_arrMembers)
             {
                 // Coordinates are higher than (eave) wall height
-                if (((m.NodeStart.Z >= model.fH1_frame || MathF.d_equal(m.NodeStart.Z, model.fH1_frame)) &&
-                    ((m.NodeEnd.Z >= model.fH1_frame) || MathF.d_equal(m.NodeEnd.Z, model.fH1_frame))) &&
+                if (((m.NodeStart.Z >= model.fH1_frame_centerline || MathF.d_equal(m.NodeStart.Z, model.fH1_frame_centerline)) &&
+                    ((m.NodeEnd.Z >= model.fH1_frame_centerline) || MathF.d_equal(m.NodeEnd.Z, model.fH1_frame_centerline))) &&
                     (
                     m.EMemberType == EMemberType_FS.eER || // Edge rafter
                     m.EMemberType == EMemberType_FS.eMR || // Main rafter
@@ -87,7 +87,7 @@ namespace BaseClasses.Helpers
 
             foreach (CNode n in model.m_arrNodes)
             {
-                if (n.Z >= model.fH1_frame || MathF.d_equal(n.Z, model.fH1_frame)) nodes.Add(n);
+                if (n.Z >= model.fH1_frame_centerline || MathF.d_equal(n.Z, model.fH1_frame_centerline)) nodes.Add(n);
             }
             return nodes;
         }

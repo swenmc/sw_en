@@ -224,19 +224,15 @@ namespace M_EC1.AS_NZS
             sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            // Gable roof
-            // TODO - k tymto rozmerom treba pridat rozmery prierezov
-            sGeometryInput.fWidthTotal = sGeometryInput.fW + 0.63f; // vyska prierezu stlpov + 2 x plech....
-            sGeometryInput.fLengthTotal = sGeometryInput.fL + 0.18f; // sirka prierezu stlpov + 2x plech....
-            sGeometryInput.fEaveHeight = sGeometryInput.fH_1 + 0.63f/2f; // 0.5 * vyska prierezu stlpov (faktor pootocenia) + plech....
-            sGeometryInput.fRidgeHeight = sGeometryInput.fH_2 + 0.63f / 2f; // 0.5 * vyska prierezu stlpov (faktor pootocenia) + plech....
+            // TODO - bolo by dobre do rozmerov budovy pre vypocet zatazenia zohladnit aj vysku plechov cladding
 
-            fz = sGeometryInput.fEaveHeight + 0.5f * (sGeometryInput.fRidgeHeight - sGeometryInput.fEaveHeight); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            // Gable roof
+            fz = sGeometryInput.fHeight_1_overall + 0.5f * (sGeometryInput.fHeight_2_overall - sGeometryInput.fHeight_1_overall); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
             fh = fz;
 
-            fRoofArea = sGeometryInput.fWidthTotal / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fLengthTotal;
-            fWallArea_0or180 = sGeometryInput.fEaveHeight * sGeometryInput.fLengthTotal;
-            fWallArea_90or270 = sGeometryInput.fEaveHeight * sGeometryInput.fWidthTotal + 0.5f * (sGeometryInput.fRidgeHeight - sGeometryInput.fEaveHeight) * sGeometryInput.fWidthTotal; // Gable Roof
+            fRoofArea = sGeometryInput.fWidth_overall / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fLength_overall;
+            fWallArea_0or180 = sGeometryInput.fHeight_1_overall * sGeometryInput.fLength_overall;
+            fWallArea_90or270 = sGeometryInput.fHeight_1_overall * sGeometryInput.fWidth_overall + 0.5f * (sGeometryInput.fHeight_2_overall - sGeometryInput.fHeight_1_overall) * sGeometryInput.fWidth_overall; // Gable Roof
 
             fM_lee = 1.0f;
             fM_h = 1.0f;
@@ -289,7 +285,7 @@ namespace M_EC1.AS_NZS
             float fh_s = 0.1f;     // Average roof height of shielding buildings
             float fb_s = 0.1f;     // Average breadth of shielding buildings, normal to the wind stream
             int in_s = 1;          // Number of upwind shielding buildings within a 45° sector of radius 20h and with hs >= z
-            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sGeometryInput.fRidgeHeight, in_s);
+            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sGeometryInput.fHeight_2_overall, in_s);
             SetShieldingMultiplier();
 
             // M_t
@@ -321,7 +317,7 @@ namespace M_EC1.AS_NZS
             sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            fz = sGeometryInput.fEaveHeight + 0.5f * (sGeometryInput.fRidgeHeight - sGeometryInput.fEaveHeight); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            fz = sGeometryInput.fHeight_1_overall + 0.5f * (sGeometryInput.fHeight_2_overall - sGeometryInput.fHeight_1_overall); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
             fh = fz;
 
             //fz = sWinDataSpecific_temp.fz;
@@ -331,7 +327,7 @@ namespace M_EC1.AS_NZS
             fWallArea_0or180 = fRoofArea; // Temp
             fWallArea_90or270 = fRoofArea; // Temp
 
-            float fa = MathF.Min(0.2f * sGeometryInput.fWidthTotal, 0.2f * sGeometryInput.fLengthTotal, fh); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
+            float fa = MathF.Min(0.2f * sGeometryInput.fWidth_overall, 0.2f * sGeometryInput.fLength_overall, fh); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
 
             bConsiderLocalPressureFactor_Kl = true;
             float fK_l_upwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceUpwind);
@@ -486,11 +482,11 @@ namespace M_EC1.AS_NZS
             float fb; // Width perpendicular to the wind direction
             float fd; // Length in wind direction;
 
-            float fRatioDtoB_Theta0or180 = sGeometryInput.fLengthTotal / sGeometryInput.fWidthTotal;
-            float fRatioHtoD_Theta0or180 = fh / sGeometryInput.fLengthTotal;
+            float fRatioDtoB_Theta0or180 = sGeometryInput.fLength_overall / sGeometryInput.fWidth_overall;
+            float fRatioHtoD_Theta0or180 = fh / sGeometryInput.fLength_overall;
 
-            float fRatioDtoB_Theta90or270 = sGeometryInput.fWidthTotal / sGeometryInput.fLengthTotal;
-            float fRatioHtoD_Theta90or270 = fh / sGeometryInput.fWidthTotal;
+            float fRatioDtoB_Theta90or270 = sGeometryInput.fWidth_overall / sGeometryInput.fLength_overall;
+            float fRatioHtoD_Theta90or270 = fh / sGeometryInput.fWidth_overall;
 
             if (bConsiderInternalPressureCoefficient_Cpi_Cpe)
             {
@@ -558,7 +554,7 @@ namespace M_EC1.AS_NZS
                     {
                         // Find dimension corresponding to the half of building width (change of gable roof slope from U to D)
                         // and set factor for U
-                        if ((fC_pe_UD_roof_dimensions[i] < fC_pe_UD_roof_dimensions[fC_pe_UD_roof_dimensions.Length - 1]) && fC_pe_UD_roof_dimensions[i + 1] >= 0.5f * sGeometryInput.fW) // Half of building width for gable roof
+                        if ((fC_pe_UD_roof_dimensions[i] < fC_pe_UD_roof_dimensions[fC_pe_UD_roof_dimensions.Length - 1]) && fC_pe_UD_roof_dimensions[i + 1] >= 0.5f * sGeometryInput.fW_centerline) // Half of building width for gable roof
                         {
                             fC_pe_D_roof_dimensions = new float[fC_pe_UD_roof_dimensions.Length - i];
                             fC_pe_D_roof_values_min = new float[fC_pe_UD_roof_values_min.Length - i];
@@ -571,7 +567,7 @@ namespace M_EC1.AS_NZS
                                 if (k == i) // First segment on D side
                                     fC_pe_D_roof_dimensions[k - i] = 0;
                                 else if (k < fC_pe_UD_roof_dimensions.Length - 1)
-                                    fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k] - 0.5f * sGeometryInput.fW; // subtract U side length from UD coordinates // D side starts with zero coordinate
+                                    fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k] - 0.5f * sGeometryInput.fW_centerline; // subtract U side length from UD coordinates // D side starts with zero coordinate
                                 else // Last item in the array
                                     fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k];
 
@@ -828,8 +824,8 @@ namespace M_EC1.AS_NZS
             // 0 or 180 deg
             if (fRatioDtoH_Theta0or180 > 4 || fRatioDtoB_Theta0or180 > 4)
             {
-                fb = sGeometryInput.fLengthTotal;
-                fd = sGeometryInput.fWidthTotal;
+                fb = sGeometryInput.fLength_overall;
+                fd = sGeometryInput.fWidth_overall;
 
                 float fx_length = MathF.Max(fd, MathF.Min(4 * fh, 4 * fb));
 
@@ -840,8 +836,8 @@ namespace M_EC1.AS_NZS
 
             if (fRatioDtoH_Theta90or270 > 4 || fRatioDtoB_Theta90or270 > 4)
             {
-                fb = sGeometryInput.fWidthTotal;
-                fd = sGeometryInput.fLengthTotal;
+                fb = sGeometryInput.fWidth_overall;
+                fd = sGeometryInput.fLength_overall;
 
                 float fx_length = MathF.Max(fd, MathF.Min(4 * fh, 4 * fb));
 

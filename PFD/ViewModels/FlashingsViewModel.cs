@@ -45,11 +45,11 @@ namespace PFD
  
             if (model is CModel_PFD_01_MR)
             {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(model.fW_frame)); // Dlzka hrany strechy
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame_overall - model.fH1_frame_overall) + MathF.Pow2(model.fW_frame_overall)); // Dlzka hrany strechy
             }
             else if (model is CModel_PFD_01_GR)
             {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame)); // Dlzka hrany strechy
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame_overall - model.fH1_frame_overall) + MathF.Pow2(0.5f * model.fW_frame_overall)); // Dlzka hrany strechy
             }
             else
             {
@@ -64,13 +64,13 @@ namespace PFD
             if (model is CModel_PFD_01_MR)
             {
                 fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 2 * model.fH1_frame + 2 * model.fH2_frame;
+                fWallCornerFlashing_TotalLength = 2 * model.fH1_frame_overall + 2 * model.fH2_frame_overall;
                 fBargeFlashing_TotalLength = 2 * fRoofSideLength;
             }
             else if (model is CModel_PFD_01_GR)
             {
-                fRoofRidgeFlashing_TotalLength = model.fL_tot;
-                fWallCornerFlashing_TotalLength = 4 * model.fH1_frame;
+                fRoofRidgeFlashing_TotalLength = model.fL_tot_overall;
+                fWallCornerFlashing_TotalLength = 4 * model.fH1_frame_overall;
                 fBargeFlashing_TotalLength = 4 * fRoofSideLength;
             }
             else

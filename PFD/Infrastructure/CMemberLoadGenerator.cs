@@ -112,7 +112,7 @@ namespace PFD
             iFramesNo = model.iFrameNo;
             //fL1_frame = model.fL1_frame;
             m_L1_Bays = model.L1_Bays;
-            fL_tot = model.fL_tot;
+            fL_tot = model.fL_tot_centerline;
             m_arrLoadCases = model.m_arrLoadCases;
             m_arrMembers = model.m_arrMembers;
 

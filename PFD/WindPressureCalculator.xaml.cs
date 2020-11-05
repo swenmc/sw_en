@@ -93,11 +93,11 @@ namespace PFD
 
             sBuildingInputData.fE = input.SiteElevation;
 
-            sGeometryInputData.fW = input.GableWidth;
-            sGeometryInputData.fL = input.Length;
-            sGeometryInputData.fH_1 = input.WallHeight;
+            sGeometryInputData.fW_centerline = input.GableWidth;
+            sGeometryInputData.fL_centerline = input.Length;
+            sGeometryInputData.fH_1_centerline = input.WallHeight;
             sGeometryInputData.fRoofPitch_deg = input.RoofPitch_deg;
-            sGeometryInputData.fH_2 = sGeometryInputData.fH_1 + (float)Math.Tan(sGeometryInputData.fRoofPitch_deg / 180 * Math.PI) * 0.5f * sGeometryInputData.fW;
+            sGeometryInputData.fH_2_centerline = sGeometryInputData.fH_1_centerline + (float)Math.Tan(sGeometryInputData.fRoofPitch_deg / 180 * Math.PI) * 0.5f * sGeometryInputData.fW_centerline;
 
             sWindInputData.eWindRegion = input.WindRegion;
             sWindInputData.iAngleWindDirection = input.AngleWindDirectionIndex;

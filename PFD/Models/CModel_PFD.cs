@@ -184,7 +184,7 @@ namespace PFD
                     //iNumberOfGirtsPerLeftColumnInOneFrame = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt);
                     //iNumberOfGirtsPerLeftColumnInOneFrame = (int)Math.Ceiling((fH1_frame - fBottomGirtPosition) / fDist_Girt);
                     //iNumberOfGirtsPerLeftColumnInOneFrame = (int)Math.Floor((fH1_frame - fBottomGirtPosition) / fDist_Girt);
-                    iNumberOfGirtsPerLeftColumnInOneFrame = (int)Math.Round((fH1_frame - fBottomGirtPosition) / fDist_Girt);
+                    iNumberOfGirtsPerLeftColumnInOneFrame = (int)Math.Round((fH1_frame_overall - fBottomGirtPosition) / fDist_Girt);
                     iNumberOfGirtsPerRightColumnInOneFrame = iGirtNoInOneFrame - iNumberOfGirtsPerLeftColumnInOneFrame;
                 }
 
@@ -502,7 +502,7 @@ namespace PFD
 
                     if (bIsGableRoof)
                     {
-                        if (current_member.NodeStart.X < 0.5 * fW_frame) // Left side
+                        if (current_member.NodeStart.X < 0.5 * fW_frame_centerline) // Left side
                         {
                             m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeStart, mainMemberForStartJoint, current_member, true));
                             m_arrConnectionJoints.Add(new CConnectionJoint_U001(current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
@@ -563,7 +563,7 @@ namespace PFD
                 for (int i = 0; i < iOneRafterColumnNo; i++)
                 {
                     CalcColumnNodeCoord_Z(bConsiderAbsoluteValueOfRoofPitch, fHeight, (i + 1) * fDist_Columns, out z_glob);
-                    m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + iOneRafterColumnNo + i + 1, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, 0, 0);
+                    m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + iOneRafterColumnNo + i + 1, fW_frame_centerline - ((i + 1) * fDist_Columns), fy_Global_Coord, 0, 0);
                     listOfSupportedNodes_S2.Add(m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i]);
                     RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i]);
                 }
@@ -583,7 +583,7 @@ namespace PFD
                 for (int i = 0; i < iOneRafterColumnNo; i++)
                 {
                     CalcColumnNodeCoord_Z(bConsiderAbsoluteValueOfRoofPitch, fHeight, (i + 1) * fDist_Columns, out z_glob);
-                    m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + (iSideNo + 1) * iOneRafterColumnNo + i + 1, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, z_glob, 0);
+                    m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + (iSideNo + 1) * iOneRafterColumnNo + i + 1, fW_frame_centerline - ((i + 1) * fDist_Columns), fy_Global_Coord, z_glob, 0);
                     RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i]);
                 }
             }
@@ -674,7 +674,7 @@ namespace PFD
 
                     for (int j = 0; j < iArrNumberOfNodesPerColumn[i]; j++)
                     {
-                        m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j] = new CNode(i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j + 1, fW_frame - (i + 1) * fDist_Columns, fy_Global_Coord, fBottomGirtPosition + j * fDist_Girts, 0);
+                        m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j] = new CNode(i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j + 1, fW_frame_centerline - (i + 1) * fDist_Columns, fy_Global_Coord, fBottomGirtPosition + j * fDist_Girts, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j]);
                     }
 
@@ -915,7 +915,7 @@ namespace PFD
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
         {
             x_global = (float)Math.Cos(fRoofPitch_rad) * x_rel;
-            z_global = fH1_frame + (float)Math.Sin(fRoofPitch_rad) * x_rel;
+            z_global = fH1_frame_centerline + (float)Math.Sin(fRoofPitch_rad) * x_rel;
         }
 
         public void CalcColumnNodeCoord_Z(bool bConsiderAbsoluteValueOfRoofPitch, float fHeight, float x, out float z_global)
@@ -928,10 +928,10 @@ namespace PFD
                 fRoofPitch_temp = Math.Abs(fRoofPitch_rad);
 
             // Ocakava sa ze vyska je mensia z oboch stran a uhol je vzdy brany ako kladny
-            if (x<= 0.5f * fW_frame || !bIsGableRoof)
+            if (x<= 0.5f * fW_frame_centerline || !bIsGableRoof)
                 z_global = fHeight + (float)Math.Tan(fRoofPitch_temp) * x;
             else
-                z_global = fHeight + (float)Math.Tan(fRoofPitch_temp) * (fW_frame - x);
+                z_global = fHeight + (float)Math.Tan(fRoofPitch_temp) * (fW_frame_centerline - x);
         }
 
         // Rotate Node in Front or Back Frame about Z (angle between X and Front or Back Frame
@@ -949,7 +949,7 @@ namespace PFD
                     node_temp.Y += node_temp.X * (float)Math.Tan(fFrontFrameRakeAngle_temp_rad);
                 }
 
-                if (MathF.d_equal(node_temp.Y, fL_tot) && !MathF.d_equal(fBackFrameRakeAngle_temp_rad, 0)) // Back Frame
+                if (MathF.d_equal(node_temp.Y, fL_tot_centerline) && !MathF.d_equal(fBackFrameRakeAngle_temp_rad, 0)) // Back Frame
                 {
                     node_temp.Y += node_temp.X * (float)Math.Tan(fBackFrameRakeAngle_temp_rad);
                 }
@@ -1458,10 +1458,10 @@ namespace PFD
                 float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
 
                 for (int i = 0; i < iFrameNo; i++)
-                {                    
+                {
                     float tributaryWidth = GetTributaryWidth(i);
-                    float fTributaryArea_Wall = MathF.Average(fH1_frame, fH2_frame) * tributaryWidth;
-                    float fTributaryArea_Roof = 0.5f * fW_frame * tributaryWidth;
+                    float fTributaryArea_Wall = MathF.Average(fH1_frame_centerline, fH2_frame_centerline) * tributaryWidth;
+                    float fTributaryArea_Roof = 0.5f * fW_frame_centerline * tributaryWidth;
                     float fMainColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.7f, 0.014f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_aX_MaxByCrscWidth), 1);
                     float fMainColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.8f, 0.015f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_bY_MaxByCrscDepth), 1);
                 
@@ -1596,7 +1596,7 @@ namespace PFD
                 {
                     float fFrontColumnFooting_aX_MaxByCrscWidth = 20 * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].b;
                     float fFrontColumnFooting_bY_MaxByCrscDepth = 5 * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].h;
-                    float fFrontColumnFootingTributaryArea = MathF.Average(fH1_frame, fH2_frame) * fDist_FrontColumns;
+                    float fFrontColumnFootingTributaryArea = MathF.Average(fH1_frame_centerline, fH2_frame_centerline) * fDist_FrontColumns;
                     float fFrontColumnFootingSizeFactor = 0.045f;
                     float fFrontColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.6f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), fFrontColumnFooting_aX_MaxByCrscWidth), 1);
                     float fFrontColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.7f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), fFrontColumnFooting_bY_MaxByCrscDepth), 1);
@@ -1685,7 +1685,7 @@ namespace PFD
                 {
                     float fBackColumnFooting_aX_MaxByCrscWidth = 20 * (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].b;
                     float fBackColumnFooting_bY_MaxByCrscDepth = 5 * (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].h;
-                    float fBackColumnFootingTributaryArea = MathF.Average(fH1_frame, fH2_frame) * fDist_BackColumns;
+                    float fBackColumnFootingTributaryArea = MathF.Average(fH1_frame_centerline, fH2_frame_centerline) * fDist_BackColumns;
                     float fBackColumnFootingSizeFactor = 0.045f;
                     float fBackColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.6f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), fBackColumnFooting_aX_MaxByCrscWidth), 1);
                     float fBackColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.7f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), fBackColumnFooting_bY_MaxByCrscDepth), 1);
@@ -1797,8 +1797,8 @@ namespace PFD
                 float fFloorSlabOffset_y_Front = (float)m_arrCrSc[0].y_min - fFloorSlab_AdditionalOffset_Y;
                 float fFloorSlabOffset_y_Back = (float)m_arrCrSc[0].y_max + fFloorSlab_AdditionalOffset_Y;
 
-                float fFloorSlab_aX = fW_frame + 2 * (-fFloorSlabOffset_x);
-                float fFloorSlab_bY = fL_tot + (-fFloorSlabOffset_y_Front) + fFloorSlabOffset_y_Back;
+                float fFloorSlab_aX = fW_frame_centerline + 2 * (-fFloorSlabOffset_x);
+                float fFloorSlab_bY = fL_tot_centerline + (-fFloorSlabOffset_y_Front) + fFloorSlabOffset_y_Back;
                 float fFloorSlab_h = 0.125f;
                 float fFloorSlab_eX = fFloorSlabOffset_x;
                 float fFloorSlab_eY = fFloorSlabOffset_y_Front;
@@ -2162,8 +2162,8 @@ namespace PFD
                 fDist_Girt,
                 fDist_FrontColumns,
                 fDist_BackColumns,
-                fH1_frame,
-                fW_frame,
+                fH1_frame_centerline,
+                fW_frame_centerline,
                 fRoofPitch_rad,
                 eKitset,
                 mReferenceGirt,
@@ -2229,8 +2229,8 @@ namespace PFD
                 fDist_Girt,
                 fDist_FrontColumns,
                 fDist_BackColumns,
-                fH1_frame,
-                fW_frame,
+                fH1_frame_centerline,
+                fW_frame_centerline,
                 fRoofPitch_rad,
                 eKitset,
                 mReferenceGirt,

@@ -1128,15 +1128,15 @@ namespace BaseClasses
 
     public struct BuildingGeometryDataInput
     {
-        public float fW;     // Width X -axis - centerlines
-        public float fL;     // Length Y -axis - centerlines
-        public float fH_2;   // Height of building - centerlines
-        public float fH_1;   // Height of wall - centerlines
+        public float fW_centerline;     // Width X -axis - centerlines
+        public float fL_centerline;     // Length Y -axis - centerlines
+        public float fH_1_centerline;   // Height of wall - centerlines
+        public float fH_2_centerline;   // Height of building - centerlines
 
-        public float fWidthTotal;
-        public float fLengthTotal;
-        public float fEaveHeight;
-        public float fRidgeHeight;
+        public float fWidth_overall;
+        public float fLength_overall;
+        public float fHeight_1_overall; // Eave
+        public float fHeight_2_overall; // Ridge
 
         public float fRoofPitch_deg;
 

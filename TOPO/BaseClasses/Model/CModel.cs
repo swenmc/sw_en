@@ -25,12 +25,10 @@ namespace BaseClasses
         // Netykaju sa totiz uplne vseobecneho modelu - trieda CModel ale specifickeho modelu, ktory sme vytvorili pre projekt PFD (portal frame designer), teda CModel_PFD
         public EModelType_FS eKitset;
 
-        public float fL_tot;
-        //public float fL1_frame;
-        
-        public float fW_frame;
-        public float fH1_frame;
-        public float fH2_frame;
+        public float fL_tot_centerline;
+        public float fW_frame_centerline;
+        public float fH1_frame_centerline;
+        public float fH2_frame_centerline;
 
         public float fDist_Girt;
         public float fDist_Purlin;
@@ -41,10 +39,12 @@ namespace BaseClasses
         public float fDist_BackColumns;
 
         public int iOneRafterPurlinNo;
+
+        public float fL_tot_overall;
+        public float fW_frame_overall;
+        public float fH1_frame_overall;
+        public float fH2_frame_overall;
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
 
