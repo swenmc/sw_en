@@ -207,19 +207,30 @@ namespace PFD.Infrastructure
                                         // Wind load - Vietor 
                                         float fp_tot;
 
+                                        List<CSLoad_Free> surfaceLoads = lc.SurfaceLoadsList;
+
+                                        if (surfaceLoads == null)
+                                            fp_tot = 0;
+
                                         if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max || lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
                                         {
                                             // Windward - W
-                                            float fp_e_W = 586f; // Pa  // TODO - tlak vetra na stenu (front alebo back) // Napojit
-                                                                    // Leeward - L
-                                            float fp_e_L = -419f; // Pa  // TODO - sanie vetra na stenu (front alebo back)
+                                            float fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue); // Pa - tlak vetra na stenu (front alebo back)
+                                            // Leeward - L
+                                            float fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue); // Pa - sanie vetra na stenu (front alebo back)
+
+                                            if(lc.MainDirection == ELCMainDirection.eMinusY)
+                                            {
+                                                fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue);
+                                                fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue);
+                                            }
 
                                             fp_tot = Math.Abs(fp_e_W) + Math.Abs(fp_e_L);
                                         }
                                         else
                                         {
                                             // Internal pressure
-                                            fp_tot = 150f;
+                                            fp_tot = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[0]).fValue);
                                         }
 
                                         // Area - Left Side
@@ -241,8 +252,18 @@ namespace PFD.Infrastructure
                                     // Earthquake
                                     if (lc.Type == ELCType.eEarthquake && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
                                     {
-                                        float fE_left = 240; // N // TODO - napojit na EQ
-                                        float fE_right = 240; // N // TODO - napojit na EQ
+                                        float fE_left; // N - EQ
+                                        float fE_right; // N - EQ
+
+                                        List<CNLoad> nodalLoads = lc.NodeLoadsList;
+
+                                        if (nodalLoads == null)
+                                        { fE_left = 0; fE_right = 0; }
+                                        else
+                                        {
+                                            fE_left = ((CNLoadSingle)nodalLoads[0]).Value;
+                                            fE_right = ((CNLoadSingle)nodalLoads[1]).Value;
+                                        }
 
                                         fN_left = Math.Abs((fE_left / iNumberOfActiveCrosses_left) * (float)Math.Cos(angle_rad));
                                         fN_right = Math.Abs((fE_right / iNumberOfActiveCrosses_right) * (float)Math.Cos(angle_rad));
