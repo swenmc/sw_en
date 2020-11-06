@@ -52,10 +52,13 @@ namespace DATABASE
             CKitsetMonoOrGableRoofEnclosed model = new CKitsetMonoOrGableRoofEnclosed();
             model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             model.ModelName = reader["modelName"].ToString();
+
+            // TODO 628 - Ondrej
             model.Width = reader["width"].ToString();
             model.Length = reader["length"].ToString();
             model.Wall_height = reader["wall_height"].ToString();
-            model.Distance_L1 = reader["distance_L1"].ToString();
+
+            model.Distance_L1 = reader["distance_L1"].ToString(); // TODO 628 To musim opravit v DB, resp by sa to malo prepocitavat z rozmeru L_tot_centerline a poctu bays
             model.IFrames = reader["iFrames"].ToString();
             model.C_array_code = reader["c_array_code"].ToString();
             model.MainColumn = reader["mainColumn"].ToString();

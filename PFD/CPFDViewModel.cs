@@ -332,14 +332,14 @@ namespace PFD
                 bool isChangedFromCode = IsSetFromCode;
 
                 if (!isChangedFromCode) IsSetFromCode = true;
-                Width = dmodel.fb;                
+                Width = dmodel.fb;
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
                 WidthOverall = MWidth + 2 * MainColumnCrsc_z_plus;
                 LengthOverall = MLength + Math.Abs(EdgeColumnCrsc_y_minus) + EdgeColumnCrsc_y_plus;
-                WallHeightOverall = MWallHeight + MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
-
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
+                WallHeightOverall = GetOverallHeight_H1();
+
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
                 ColumnDistance = dmodel.fdist_frontcolumn;
@@ -368,7 +368,7 @@ namespace PFD
                 if (MKitsetTypeIndex == 0)
                 {
                     fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                    fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                    fHeight_H2_Overall = GetOverallHeight_H2();
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
@@ -377,7 +377,7 @@ namespace PFD
                 else if (MKitsetTypeIndex == 1)
                 {
                     fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                    fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                    fHeight_H2_Overall = GetOverallHeight_H2();
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
@@ -438,7 +438,7 @@ namespace PFD
                     IsSetFromCode = true;
                     WidthOverall = MWidth + 2 * MMainColumnCrsc_z_plus;
                     IsSetFromCode = isChangedFromCode;
-                }                
+                }
 
                 if (MModelIndex != 0)
                 {
@@ -453,7 +453,7 @@ namespace PFD
                     if (MKitsetTypeIndex == 0)
                     {
                         fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                        fHeight_H2_Overall = GetOverallHeight_H2();
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
                         int iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
@@ -462,7 +462,7 @@ namespace PFD
                     else if (MKitsetTypeIndex == 1)
                     {
                         fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                        fHeight_H2_Overall = GetOverallHeight_H2();
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
                         int iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
@@ -551,7 +551,7 @@ namespace PFD
                 if (!isChangedFromCode)
                 {
                     IsSetFromCode = true;
-                    WallHeightOverall = MWallHeight + MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+                    WallHeightOverall = GetOverallHeight_H1();
                     IsSetFromCode = isChangedFromCode;
                 }
 
@@ -561,12 +561,12 @@ namespace PFD
                     if (MKitsetTypeIndex == 0)
                     {
                         fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                        fHeight_H2_Overall = GetOverallHeight_H2();
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
                         fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                        fHeight_H2_Overall = GetOverallHeight_H2();
                     }
                     else
                     {
@@ -603,7 +603,7 @@ namespace PFD
                     IsSetFromCode = true;
                     Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
                     IsSetFromCode = isChangedFromCode;
-                }                
+                }
 
                 NotifyPropertyChanged("WidthOverall");
             }
@@ -651,7 +651,7 @@ namespace PFD
                 if (!isChangedFromCode)
                 {
                     IsSetFromCode = true;
-                    WallHeight = MWallHeightOverall - MMainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians); // TODO  vypocitat presne podla uhla, rozmeru stlpa, polohy eave purlin atd
+                    WallHeight = GetCenterLineHeight_H1();
                     IsSetFromCode = isChangedFromCode;
                 }
 
@@ -701,12 +701,12 @@ namespace PFD
                     if (MKitsetTypeIndex == 0)
                     {
                         fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                        fHeight_H2_Overall = GetOverallHeight_H2();
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
                         fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = fHeight_H2 + 0.315f; // TODO - dopocitat
+                        fHeight_H2_Overall = GetOverallHeight_H2();
                     }
                     else
                     {
@@ -747,8 +747,6 @@ namespace PFD
                 RecreateModel = true;
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
-                
-                
 
                 //To Mato
                 //podla mna by sme tu potrebovali vediet tie  RafterFlyBracingPosition_Items
@@ -3035,9 +3033,10 @@ namespace PFD
                 if (ci != null)
                 {
                     //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    // TODO 627 Ondrej
                     MMainColumnCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn].Section).z_max;
                 }
-                
+
                 return MMainColumnCrsc_z_plus;
             }
 
@@ -3056,6 +3055,7 @@ namespace PFD
                 if (ci != null)
                 {
                     //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    // TODO 627 Ondrej
                     MEdgeColumnCrsc_y_minus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_min;
                 }
 
@@ -3077,6 +3077,7 @@ namespace PFD
                 if (ci != null)
                 {
                     //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    // TODO 627 Ondrej
                     MEdgeColumnCrsc_y_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_max;
                 }
 
@@ -3098,6 +3099,7 @@ namespace PFD
                 if (ci != null)
                 {
                     //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
+                    // TODO 627 Ondrej - toto mi nefunguje pri spusteni ale az pri nejakych zmenach v dialogu, chcem nacitat rozmer z aktualne nastaveneho prierezu 270xxx nested, takze 290/2 = 145 mm, nacitava mi to 630 / 2 = 315 mm z prierezu 63020
                     MMainRafterCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eRafter].Section).z_max;
                 }
 
@@ -3766,6 +3768,49 @@ namespace PFD
             return data;
         }
 
+        private float GetOverallHeight_H1()
+        {
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz2 = fz3 - fz1;
+
+            return MWallHeight + fz2;
+        }
+
+        private float GetCenterLineHeight_H1()
+        {
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz2 = fz3 - fz1;
+
+            return MWallHeightOverall - fz2;
+        }
+
+        private float GetOverallHeight_H2()
+        {
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz2 = fz3 + fz1;
+
+            if (MKitsetTypeIndex == 1) // Gable roof
+                fz2 = fz3;
+
+            return fHeight_H2 + fz2;
+        }
+
+
+        private float GetCenterlineHeight_H2()
+        {
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz2 = fz3 + fz1;
+
+            if (MKitsetTypeIndex == 1) // Gable roof
+                fz2 = fz3;
+
+            return fHeight_H2_Overall - fz2;
+        }
+
         private Dictionary<EMemberType_FS_Position, CCalculMember> GetDesignResultsULS()
         {
             Dictionary<EMemberType_FS_Position, CCalculMember> dictULSDesignResults = new Dictionary<EMemberType_FS_Position, CCalculMember>();
@@ -4109,11 +4154,11 @@ namespace PFD
             foreach (DoorProperties dp in DoorBlocksProperties)
             {
                 if (dp.CoatingColor.ID != doorProperties.CoatingColor.ID)
-                {                    
+                {
                     dp.IsSetFromCode = true;
                     dp.CoatingColor = dp.CoatingColors.FirstOrDefault(c => c.ID == doorProperties.CoatingColor.ID);
                     dp.IsSetFromCode = false;
-                }                
+                } 
             }
         }
         public void SetAllDoorCoatingColorToSame()
@@ -4125,7 +4170,7 @@ namespace PFD
 
         public void SetAllFlashingsCoatingColorAccordingTo(CoatingColour colour)
         {
-            if (Flashings == null) return;            
+            if (Flashings == null) return;
 
             IsSetFromCode = true;
             foreach (CAccessories_LengthItemProperties p in Flashings)
@@ -4141,7 +4186,7 @@ namespace PFD
         }
         public void SetAllGuttersCoatingColorAccordingTo(CoatingColour colour)
         {
-            if (Gutters == null) return;            
+            if (Gutters == null) return;
 
             IsSetFromCode = true;
             foreach (CAccessories_LengthItemProperties p in Gutters)
@@ -4158,7 +4203,7 @@ namespace PFD
         
         public void SetAllDownpipeCoatingColorAccordingTo(CoatingColour colour)
         {
-            if (Downpipes == null) return;            
+            if (Downpipes == null) return;
 
             IsSetFromCode = true;
             foreach (CAccessories_DownpipeProperties p in Downpipes)
@@ -4204,7 +4249,7 @@ namespace PFD
 
         public void SetAll_FGD_CoatingColorToSame()
         {
-            CoatingColour col = GetActual_FGD_Color();            
+            CoatingColour col = GetActual_FGD_Color();
 
             if(col != null) SetAll_FGD_CoatingColorAccordingTo(col);
         }

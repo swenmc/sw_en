@@ -1001,17 +1001,17 @@ namespace PFD
                 // Kitset Steel Gable Enclosed Buildings
                 // TODO - nove parametre pre nastavenie hodnot zatazenia
 
-                if (vm.KitsetTypeIndex == 0)                    
+                if (vm.KitsetTypeIndex == 0)
                     vm.Model = new CModel_PFD_01_MR(
-                        sGeometryInputData,                        
+                        sGeometryInputData,
                         compList,
                         joints,
                         foundations,
                         slabs,
                         vm);
-                else if (vm.KitsetTypeIndex == 1)                    
+                else if (vm.KitsetTypeIndex == 1)
                 vm.Model = new CModel_PFD_01_GR(
-                    sGeometryInputData,                    
+                    sGeometryInputData,
                     compList,
                     joints,
                     foundations,
@@ -1207,7 +1207,7 @@ namespace PFD
             {
                 View_2D.IsEnabled = false;
                 Clear3DModel.IsEnabled = false;
-                ExportDXF_3D.IsEnabled = false;                
+                ExportDXF_3D.IsEnabled = false;
             }
 
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
@@ -1274,34 +1274,34 @@ namespace PFD
             if (vm._generalOptionsVM.OverallDimensions)
             {
                 LabelWidthOverall.Visibility = Visibility.Visible;
-                TextBox_WidthOverall.Visibility = Visibility.Visible;                
+                TextBox_WidthOverall.Visibility = Visibility.Visible;
                 LabelLengthOverall.Visibility = Visibility.Visible;
-                TextBox_LengthOverall.Visibility = Visibility.Visible;                
+                TextBox_LengthOverall.Visibility = Visibility.Visible;
                 LabelWallHeightOverall.Visibility = Visibility.Visible;
-                TextBox_Wall_HeightOverall.Visibility = Visibility.Visible;                
+                TextBox_Wall_HeightOverall.Visibility = Visibility.Visible;
 
                 LabelWidth.Visibility = Visibility.Collapsed;
-                TextBox_Width.Visibility = Visibility.Collapsed;                
+                TextBox_Width.Visibility = Visibility.Collapsed;
                 LabelLength.Visibility = Visibility.Collapsed;
-                TextBox_Length.Visibility = Visibility.Collapsed;                
+                TextBox_Length.Visibility = Visibility.Collapsed;
                 LabelWallHeight.Visibility = Visibility.Collapsed;
-                TextBox_Wall_Height.Visibility = Visibility.Collapsed;                
+                TextBox_Wall_Height.Visibility = Visibility.Collapsed;
             }
             else
             {
                 LabelWidthOverall.Visibility = Visibility.Collapsed;
-                TextBox_WidthOverall.Visibility = Visibility.Collapsed;                
+                TextBox_WidthOverall.Visibility = Visibility.Collapsed;
                 LabelLengthOverall.Visibility = Visibility.Collapsed;
-                TextBox_LengthOverall.Visibility = Visibility.Collapsed;                
+                TextBox_LengthOverall.Visibility = Visibility.Collapsed;
                 LabelWallHeightOverall.Visibility = Visibility.Collapsed;
-                TextBox_Wall_HeightOverall.Visibility = Visibility.Collapsed;                
+                TextBox_Wall_HeightOverall.Visibility = Visibility.Collapsed;
 
                 LabelWidth.Visibility = Visibility.Visible;
-                TextBox_Width.Visibility = Visibility.Visible;                
+                TextBox_Width.Visibility = Visibility.Visible;
                 LabelLength.Visibility = Visibility.Visible;
-                TextBox_Length.Visibility = Visibility.Visible;                
+                TextBox_Length.Visibility = Visibility.Visible;
                 LabelWallHeight.Visibility = Visibility.Visible;
-                TextBox_Wall_Height.Visibility = Visibility.Visible;                
+                TextBox_Wall_Height.Visibility = Visibility.Visible;
             }
 
             SetUIElementsVisibilityAccordingPermissions();
@@ -1325,7 +1325,6 @@ namespace PFD
             if (!CPermissions.UserHasPermission(EUserPermission.ViewTabQuoation)) Quotation.Visibility = Visibility.Collapsed;
             if (!CPermissions.UserHasPermission(EUserPermission.ExportQuotation)) ExportQuotation.Visibility = Visibility.Collapsed;
             if (!CPermissions.UserHasPermission(EUserPermission.ExportReport)) { ExportWord.Visibility = Visibility.Collapsed; ExportPDF.Visibility = Visibility.Collapsed; }
-
         }
 
         private void SetAccesoriesButtonsVisibility()
