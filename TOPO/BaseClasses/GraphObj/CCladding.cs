@@ -24,11 +24,10 @@ namespace BaseClasses.GraphObj
         double column_crsc_y_minus;
         double column_crsc_y_plus;
 
-
-        string m_claddingShape_Wall = "Smartdek"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding
-        string m_claddingCoatingType_Wall = "CS Endura®";  // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding coating type
-        string m_claddingShape_Roof = "Smartdek"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding
-        string m_claddingCoatingType_Roof = "CS MAXX®"; // TODO Ondrej - napojit na combobox pre wall, resp. roof cladding coating type
+        string m_claddingShape_Wall;
+        string m_claddingCoatingType_Wall;
+        string m_claddingShape_Roof;
+        string m_claddingCoatingType_Roof;
 
         string m_ColorNameWall;
         string m_ColorNameRoof;
@@ -113,7 +112,7 @@ namespace BaseClasses.GraphObj
             {
                 // Obrazok textury ma a = 213.9 x 213.9 mm. velkost v pixeloch je b = 800 x 800 pxs, tj. 3.74 pxs / mm
 
-                brushFront = new ImageBrush();                
+                brushFront = new ImageBrush();
                 //CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
                 string uriString_Wall = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Wall + "/" + m_claddingShape_Wall + "_" + m_ColorNameWall + ".jpg";
 
@@ -130,7 +129,7 @@ namespace BaseClasses.GraphObj
                 brushFront.Stretch = Stretch.Fill;
                 brushFront.Opacity = options.fFrontCladdingOpacity;
 
-                brushSide = new ImageBrush();                
+                brushSide = new ImageBrush();
                 brushSide.ImageSource = new BitmapImage(new Uri(uriString_Wall, UriKind.RelativeOrAbsolute));
                 brushSide.TileMode = TileMode.Tile;
                 brushSide.ViewportUnits = BrushMappingMode.Absolute;
@@ -146,7 +145,7 @@ namespace BaseClasses.GraphObj
                     uriString_Roof = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Roof + "/" + m_claddingShape_Roof + "_" + claddingCoatingType_Roof_string + "_" + m_ColorNameRoof + ".jpg";
                 }
 
-                brushRoof = new ImageBrush();                                
+                brushRoof = new ImageBrush();
                 brushRoof.ImageSource = new BitmapImage(new Uri(uriString_Roof, UriKind.RelativeOrAbsolute));
                 brushRoof.TileMode = TileMode.Tile;
                 brushRoof.ViewportUnits = BrushMappingMode.Absolute;
