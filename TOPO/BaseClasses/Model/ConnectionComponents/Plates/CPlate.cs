@@ -332,10 +332,10 @@ namespace BaseClasses
 
             model.Geometry = mesh;            // Set Model Geometry
 
-            var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture.jpg", UriKind.RelativeOrAbsolute)) };
+            var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/zinc04.jpg", UriKind.RelativeOrAbsolute)) };
             RenderOptions.SetCachingHint(image, CachingHint.Cache);
             RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
-            var material = new DiffuseMaterial(new VisualBrush(image));            
+            var material = new DiffuseMaterial(new VisualBrush(image));
             model.BackMaterial = material;
 
             model.Material = material;  // Set Model Material
