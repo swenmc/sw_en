@@ -345,11 +345,11 @@ namespace PFD
                 ColumnDistance = dmodel.fdist_frontcolumn;
                 BottomGirtPosition = dmodel.fdist_girt_bottom;
                 Frames = dmodel.iFrNo;
-                fBayWidth = MLength / (MFrames - 1);
+                fBayWidth = MLength / (MFrames - 1); // TODO 628 - je sice v DB, ale istejsie je to tu prepocitavat
 
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
-                                
+
                 _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
                 _componentVM.SetILSProperties(dmodel);
@@ -362,7 +362,6 @@ namespace PFD
                 // Povodne to bolo tak ze properties boli len parametre ktore boli zadavane v GUI
                 // Ak je programatorsky spravnejsie, ze ma byt vsetko co sa tu pouziva property, tak nemam namietky
 
-                
                 fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
 
                 if (MKitsetTypeIndex == 0)
@@ -740,7 +739,7 @@ namespace PFD
                 {
                     // Recalculate L1
                     fBayWidth = MLength / (MFrames - 1);
-                }                
+                }
 
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -771,7 +770,7 @@ namespace PFD
 
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
                 _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, fBayWidth);
-                
+
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
             }
