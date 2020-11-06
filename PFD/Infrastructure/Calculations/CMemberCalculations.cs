@@ -234,11 +234,16 @@ namespace PFD.Infrastructure
                                         }
 
                                         // Area - Left Side
-                                        // // TODO - ziskat zakladne rozmery budovy - overall width W, overal height  H1 a H2
+                                        float fA_trib_left = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f; // Polovica plochy cela budovy
+                                        // Area - Right Side
+                                        float fA_trib_right = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f; // Polovica plochy cela budovy
 
-                                        float fA_trib_left = 8 * 0.5f * 4f; // TODO - polovica plochy cela budovy (pre monopitch je A left a A right rozdielne podla vysky)
-                                                                            // Area - Right Side
-                                        float fA_trib_right = 8 * 0.5f * 4f; // TODO - polovica plochy cela budovy
+                                        if(Model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                                        {
+                                            // Pre monopitch je A left a A right rozdielne podla vysky
+                                            fA_trib_left = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f) / 2f;
+                                            fA_trib_right = Model.fW_frame_overall * 0.5f * (Model.fH2_frame_overall + (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f) / 2f;
+                                        }
 
                                         // Force in corner of edge frame
                                         float fW_left = fA_trib_left * fp_tot;
