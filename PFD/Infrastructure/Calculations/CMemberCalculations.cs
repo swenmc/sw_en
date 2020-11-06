@@ -189,13 +189,17 @@ namespace PFD.Infrastructure
                             // Side wall cross-bracing - Wind in + /- Y direction
                             if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
                             {
+                                // TODO - dopracovat vypocet pre ROOF BRACING pre WIND - ohybovy moment
+                                // Pocet aktivnych bays je minimum pre walls vlavo, vpravo a roof
+
+
                                 float fN_left  = 0, fN_right = 0; // Axial force in member (left or right side wall)
 
                                 float angle_rad = (float)Math.Atan(m.Delta_Z / m.Delta_Y); // Uhol sklonu cross-bracing member of horizontaly - ziskat z priemetu pruta do GCS Z a Y
 
                                 // Number of wall side bracing crosses (pocet krizov na jednej strane)
-                                int iNumberOfActiveCrosses_left = 2;
-                                int iNumberOfActiveCrosses_right = 2;
+                                int iNumberOfActiveCrosses_left = 2; // TODO - napojit
+                                int iNumberOfActiveCrosses_right = 2; // TODO - napojit
                                 // Uvazujeme rovnomerne rozdelenie do jednotlivych krizov, neplati to vsak pre dlhe budovy
 
                                 // Pomocny vypocet - vietor alebo zemetrasenie
