@@ -554,7 +554,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FoundationSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="5" Grid.Column="2" Text="ReinforcementBar Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="Reinforcement Bar Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <TextBox Grid.Row="5" Grid.Column="3" Name ="ReinforcementBarSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ReinforcementBarSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
