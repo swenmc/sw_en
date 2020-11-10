@@ -17,6 +17,9 @@ namespace BaseClasses
     [Serializable]
     public class CMember : CEntity3D
     {
+        //TODO - or to Discuss
+        //Naco nam je v tejto triede tolko konstruktorov, ked niektore neinicializuju niektore zakladne property???
+
         private CNode m_NodeStart;
 
         public CNode NodeStart
@@ -319,7 +322,7 @@ namespace BaseClasses
             ID = 0;
             m_CrScStart = null;
             m_CrScEnd =null;
-            //eMemberType_FS;
+            eMemberType_DB = EMemberType_FS_Position.Unknown;
             EccentricityStart = new CMemberEccentricity(0,0);
             EccentricityEnd = new CMemberEccentricity(0, 0);
             FAlignment_Start = 0;
@@ -342,6 +345,8 @@ namespace BaseClasses
             m_cnRelease1 = null;
             m_cnRelease2 = null;
             FTime = fTime;
+
+            eMemberType_DB = EMemberType_FS_Position.Unknown;
 
             Fill_Basic();
         }
@@ -382,6 +387,8 @@ namespace BaseClasses
             m_cnRelease2 = null;
             m_CrScStart = objCrSc1;
             FTime = fTime;
+
+            eMemberType_DB = EMemberType_FS_Position.Unknown;
 
             Fill_Basic();
         }
@@ -468,6 +475,8 @@ namespace BaseClasses
             FAlignment_Start = fAligment1;
             FAlignment_End = fAligment2;
             FTime = fTime;
+
+            eMemberType_DB = EMemberType_FS_Position.Unknown;
 
             Fill_Basic();
         }

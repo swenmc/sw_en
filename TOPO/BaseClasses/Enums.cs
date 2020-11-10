@@ -459,6 +459,7 @@ namespace BaseClasses
 
     public enum EMemberType_FS_Position
     {
+        Unknown = 0,
         MainColumn = 1,
         MainRafter = 2,
         EdgeColumn = 3,

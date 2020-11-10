@@ -73,7 +73,7 @@ namespace PFD
         protected List<CNode> listOfSupportedNodes_S1;
         protected List<CNode> listOfSupportedNodes_S2;
 
-        public List<CEntity3D> componentList;
+        //public List<CEntity3D> componentList;
         public List<CBlock_3D_001_DoorInBay> DoorsModels;
         public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
@@ -87,7 +87,8 @@ namespace PFD
                 bool bGenerateLoadsOnPurlins,
                 bool bGenerateLoadsOnColumns,
                 bool bGenerateLoadsOnFrameMembers,
-                bool bGenerateSurfaceLoads) { }
+                bool bGenerateSurfaceLoads)
+        { }
 
 
 
@@ -924,11 +925,11 @@ namespace PFD
 
             float fRoofPitch_temp = fRoofPitch_rad;
 
-            if(bConsiderAbsoluteValueOfRoofPitch)
+            if (bConsiderAbsoluteValueOfRoofPitch)
                 fRoofPitch_temp = Math.Abs(fRoofPitch_rad);
 
             // Ocakava sa ze vyska je mensia z oboch stran a uhol je vzdy brany ako kladny
-            if (x<= 0.5f * fW_frame_centerline || !bIsGableRoof)
+            if (x <= 0.5f * fW_frame_centerline || !bIsGableRoof)
                 z_global = fHeight + (float)Math.Tan(fRoofPitch_temp) * x;
             else
                 z_global = fHeight + (float)Math.Tan(fRoofPitch_temp) * (fW_frame_centerline - x);
@@ -1044,15 +1045,44 @@ namespace PFD
 
         // Add members to the member group list
         // TODO - spravnejsie by bolo pridavat member do zoznamu priamo pri vytvoreni
-        public void AddMembersToMemberGroupsLists()
+        public void AddMembersToMemberGroupsLists(IEnumerable<CComponentInfo> componentList)
         {
-            int i = 0;
+            IEnumerable<CMember> members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.DoorFrame);
+            if (members.Count() > 0)
+            {
+                string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorFrame).ComponentName;
+                //To Mato ktore m_arrCrSc[] tam ma ist namiesto toho null?
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDF, EMemberType_FS_Position.DoorFrame, null, 0, 0, 0, 0));
+            }
 
+            members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer);
+            if (members.Count() > 0)
+            {
+                string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorTrimmer).ComponentName;
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDT, EMemberType_FS_Position.DoorTrimmer, null, 0, 0, 0, 0));
+            }
+
+            members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.DoorLintel);
+            if (members.Count() > 0)
+            {
+                string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorLintel).ComponentName;
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDL, EMemberType_FS_Position.DoorLintel, null, 0, 0, 0, 0));
+            }
+
+            members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.WindowFrame);
+            if (members.Count() > 0)
+            {
+                string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindowFrame).ComponentName;
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, null, 0, 0, 0, 0));
+            }
+
+            int i = 0;
             foreach (CMember member in m_arrMembers)
             {
                 foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
                 {
-                    if (member.BIsGenerated && member.EMemberTypePosition == group.MemberType_FS_Position)
+                    //if (member.BIsGenerated && member.EMemberTypePosition == group.MemberType_FS_Position)
+                    if (member.EMemberTypePosition == group.MemberType_FS_Position)
                     {
                         group.ListOfMembers.Add(member);
                         i++;
@@ -1063,15 +1093,24 @@ namespace PFD
 
             // Check
             // Aktivovat po vyrieseni mazania nevygenerovanych prutov zo zoznamu a pridani prutov tvoriacich bloky (dvere, okna, ...)
-            //if (i != m_arrMembers.Length)
-            //    throw new Exception("Not all members were added.");
+            if (i != m_arrMembers.Length)
+                throw new Exception("Not all members were added.");
 
             // TODO 626  - Popis pre Ondreja
             // Chcel by som odkomentovat kontrolu, ktora je vyssie. Malo by to osetrit pripad ked prut nie je priradeny do ziadnej group
             // Potrebujeme vyriesit
             // 1 Chceme do group pridavat len member ktore maju BIsGenerated true alebo vsetky pruty daneho EMemberTypePosition? Asi by mali byt v skupine vsetky ????
-            // 2 Defaultne sa vytvori 17 skupin, ale ked pridavame pred zavolanim tejto funckie dvere a okna, tak by sme mali do listOfModelMemberGroups pridat este podla potreby 1 - 4 skupiny pre roller door trimmer / header, personnel door frame, window door frame (aby pocet skupin sedel s poctom riadkov v GUI)
-            //   potom by sa v tomto cykle priradili do skupin aj tieto pruty pre oramovanie openings. Tym padom by nemal existovat prut ktory nie je v skupine a mali by sme moznost skontrolovat ci su vsetky pruty v modeli spravne priradene do skupin
+            // 2 Defaultne sa vytvori 17 skupin, ale ked pridavame pred zavolanim tejto funckie dvere a okna, tak by sme mali do listOfModelMemberGroups pridat este 
+            // podla potreby 1 - 4 skupiny pre roller door trimmer / header, personnel door frame, window door frame (aby pocet skupin sedel s poctom riadkov v GUI)
+            // potom by sa v tomto cykle priradili do skupin aj tieto pruty pre oramovanie openings. Tym padom by nemal existovat prut ktory nie je v skupine 
+            // a mali by sme moznost skontrolovat ci su vsetky pruty v modeli spravne priradene do skupin
+        }
+
+        //task 626
+        public bool CheckMembersHasNoGroup()
+        {
+            bool areAnyMembersWithNoPosition = m_arrMembers.Any(m => m.EMemberTypePosition == EMemberType_FS_Position.Unknown);
+            return areAnyMembersWithNoPosition;
         }
 
         protected List<CSegment_LTB> GenerateIntermediateLTBSegmentsOnMember(List<CIntermediateTransverseSupport> lTransverseSupportGroup, bool bIsRelativeCoordinate_x, float fMemberLength)
@@ -1276,7 +1315,7 @@ namespace PFD
                 {
                     foreach (CConnectorGroup connectorGr in j.ConnectorGroups)
                     {
-                        connectorGr.Deactivate();                        
+                        connectorGr.Deactivate();
                     }
                 }
 
@@ -1464,7 +1503,7 @@ namespace PFD
                     float fTributaryArea_Roof = 0.5f * fW_frame_centerline * tributaryWidth;
                     float fMainColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.7f, 0.014f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_aX_MaxByCrscWidth), 1);
                     float fMainColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.8f, 0.015f * (fTributaryArea_Wall + fTributaryArea_Roof)), fMainColumnFooting_bY_MaxByCrscDepth), 1);
-                
+
                     CReinforcementBar MainColumnFootingReference_Top_Bar_x;
                     CReinforcementBar MainColumnFootingReference_Top_Bar_y;
                     CReinforcementBar MainColumnFootingReference_Bottom_Bar_x;
@@ -2077,8 +2116,8 @@ namespace PFD
 
                             foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
                             {
-                                if(anchor.WasherBearing != null)
-                                   iNumberOfPlates++; // anchor.WasherBearing
+                                if (anchor.WasherBearing != null)
+                                    iNumberOfPlates++; // anchor.WasherBearing
                                 if (anchor.WasherPlateTop != null)
                                     iNumberOfPlates++; // anchor.WasherPlateTop
 
@@ -2285,7 +2324,7 @@ namespace PFD
 
                 int iBayColumnLeft = (iBlockFrame * (iFrameMembersNo + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iFrameMembersNo - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
                 int iBayColumnRight = ((iBlockFrame + 1) * (iFrameMembersNo + iEavesPurlinNoInOneFrame)) + (iSideMultiplier == 0 ? 0 : (iFrameMembersNo - 1));
-                
+
                 fBayWidth = GetBayWidth(iBayNumber);
 
                 int iLeftGirtNoInOneFrame = 0;
@@ -2368,7 +2407,7 @@ namespace PFD
                         for (int i = 0; i < iBlockSequence - 1; i++)
                             iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i + 1];
 
-                        if(!bIsGable && iBlockSequence == iNumberOfIntermediateColumns) // Monopitch - posledna bay
+                        if (!bIsGable && iBlockSequence == iNumberOfIntermediateColumns) // Monopitch - posledna bay
                             bIsLastBayInFrontorBackSide = true;
 
                         if (sBuildingSide == "Front")
@@ -2387,13 +2426,13 @@ namespace PFD
                         iNumberOfFirstGirtInWallToDeactivate += iSideWallRightColumnGirtNoInOneFrame;
 
                         for (int i = 0; i < (int)(iNumberOfIntermediateColumns / 2); i++)
-                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i+1];
+                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i + 1];
 
                         if (iBlockSequence < iNumberOfIntermediateColumns)
                             iNumberOfFirstGirtInWallToDeactivate += iSideWallRightColumnGirtNoInOneFrame;
 
                         for (int i = 0; i < iNumberOfIntermediateColumns - iBlockSequence - 1; i++)
-                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i+1];
+                            iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i + 1];
 
                         if (iBlockSequence == iNumberOfIntermediateColumns) // Last bay
                         {

@@ -1479,7 +1479,7 @@ namespace PFD
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             #endregion
 
-            AddMembersToMemberGroupsLists();
+            AddMembersToMemberGroupsLists(_clVM.ComponentList.ToList());
 
 
             vm.SetComponentListAccordingToDoorsAndWindows();
