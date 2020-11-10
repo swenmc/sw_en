@@ -332,13 +332,27 @@ namespace PFD
                 bool isChangedFromCode = IsSetFromCode;
 
                 if (!isChangedFromCode) IsSetFromCode = true;
-                Width = dmodel.fb;
-                Length = dmodel.fL;
-                WallHeight = dmodel.fh;
-                WidthOverall = MWidth + 2 * MainColumnCrsc_z_plus;
-                LengthOverall = MLength + Math.Abs(EdgeColumnCrsc_y_minus) + EdgeColumnCrsc_y_plus;
+
+                WidthOverall = dmodel.fb;
+                Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
+                //to Mato  otazka: Kedy a kde sa nastavi MainColumnCrsc_z_plus???
+                LengthOverall = dmodel.fL;      //interne nastavi Length
+                Length = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
+
+                //to Mato - kedy a kde sa nastavi Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
+                WallHeightOverall = dmodel.fh;  //interne nastavi WallHeight
+                WallHeight = GetCenterLineHeight_H1();
+
+                //Width = dmodel.fb; 
+                //Length = dmodel.fL;
+                //WallHeight = dmodel.fh;
+
+                //WidthOverall = MWidth + 2 * MainColumnCrsc_z_plus;
+                //LengthOverall = MLength + Math.Abs(EdgeColumnCrsc_y_minus) + EdgeColumnCrsc_y_plus;                
+                //WallHeightOverall = GetOverallHeight_H1();
+
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
-                WallHeightOverall = GetOverallHeight_H1();
+
 
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;

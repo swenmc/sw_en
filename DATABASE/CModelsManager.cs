@@ -53,7 +53,7 @@ namespace DATABASE
             model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             model.ModelName = reader["modelName"].ToString();
 
-            // TODO 628 - Ondrej
+            // TODO 628 - Ondrej            
             model.Width = reader["width"].ToString();
             model.Length = reader["length"].ToString();
             model.Wall_height = reader["wall_height"].ToString();
