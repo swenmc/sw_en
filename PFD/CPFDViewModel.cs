@@ -336,11 +336,10 @@ namespace PFD
                 WidthOverall = dmodel.fb;
                 Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
                 //to Mato  otazka: Kedy a kde sa nastavi MainColumnCrsc_z_plus???
-                LengthOverall = dmodel.fL;      //interne nastavi Length
+                LengthOverall = dmodel.fL;
                 Length = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
-
                 //to Mato - kedy a kde sa nastavi Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
-                WallHeightOverall = dmodel.fh;  //interne nastavi WallHeight
+                WallHeightOverall = dmodel.fh;
                 WallHeight = GetCenterLineHeight_H1();
 
                 //Width = dmodel.fb; 

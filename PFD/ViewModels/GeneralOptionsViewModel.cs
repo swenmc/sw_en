@@ -263,8 +263,8 @@ namespace PFD
             m_SameColorsGutters = false;
             m_SameColorsDownpipes = false;
 
-            m_CenterlinesDimensions = true;
-            m_OverallDimensions = false;
+            m_CenterlinesDimensions = false;
+            m_OverallDimensions = true;
 
             IsSetFromCode = false;
         }
