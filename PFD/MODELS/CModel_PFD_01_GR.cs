@@ -364,7 +364,7 @@ namespace PFD
             bool bGenerateFrontColumns = componentList[(int)EMemberGroupNames.eFrontWindPost].Generate.Value;
             if (bGenerateFrontColumns)
             {
-                iOneRafterFrontColumnNo = (int)((0.5f * fW_frame_centerline - 0.45f * fDist_FrontColumns) / fDist_FrontColumns);
+                iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * fW_frame_centerline - 0.45f * fDist_FrontColumns) / fDist_FrontColumns));
                 iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                 // Update value of distance between columns
                 fDist_FrontColumns = (fW_frame_centerline / (iFrontColumnNoInOneFrame + 1));
@@ -379,7 +379,7 @@ namespace PFD
             bool bGenerateBackColumns = componentList[(int)EMemberGroupNames.eBackWindPost].Generate.Value;
             if (bGenerateBackColumns)
             {
-                iOneRafterBackColumnNo = (int)((0.5f * fW_frame_centerline - 0.45f * fDist_BackColumns) / fDist_BackColumns);
+                iOneRafterBackColumnNo = Math.Max(1, (int)((0.5f * fW_frame_centerline - 0.45f * fDist_BackColumns) / fDist_BackColumns));
                 iBackColumnNoInOneFrame = 2 * iOneRafterBackColumnNo;
                 // Update value of distance between columns
                 fDist_BackColumns = (fW_frame_centerline / (iBackColumnNoInOneFrame + 1));
