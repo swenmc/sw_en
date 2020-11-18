@@ -383,7 +383,7 @@ namespace PFD
                     fHeight_H2_Overall = GetOverallHeight_H2();
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
+                    int iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
                     IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
                 }
                 else if (MKitsetTypeIndex == 1)
@@ -392,7 +392,7 @@ namespace PFD
                     fHeight_H2_Overall = GetOverallHeight_H2();
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
+                    int iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance));
                     IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                 }
                 else
@@ -468,7 +468,7 @@ namespace PFD
                         fHeight_H2_Overall = GetOverallHeight_H2();
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
-                        int iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
+                        int iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
                         IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
                     }
                     else if (MKitsetTypeIndex == 1)
@@ -477,7 +477,7 @@ namespace PFD
                         fHeight_H2_Overall = GetOverallHeight_H2();
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
-                        int iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
+                        int iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance));
                         IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     }
                     else
@@ -856,12 +856,12 @@ namespace PFD
 
                     if (MKitsetTypeIndex == 0)
                     {
-                        iOneRafterFrontColumnNo = (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance);
+                        iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
                         IFrontColumnNoInOneFrame = iOneRafterFrontColumnNo;
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
-                        iOneRafterFrontColumnNo = (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance);
+                        iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance));
                         IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     }
                     else
