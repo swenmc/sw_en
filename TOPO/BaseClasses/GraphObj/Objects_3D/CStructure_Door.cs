@@ -48,7 +48,7 @@ namespace BaseClasses.GraphObj
         
         // Constructor 3
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
-            Color doorFlashingColor, Color doorCladdingColor, string doorCladdingColorName, string claddingCoatingType_Wall, bool useTextures)
+            Color doorFlashingColor, Color doorCladdingColor, string doorCladdingColorName, bool useTextures)
         {
             ID = iW_ID;
             m_iSegmentNum = iSegmentNum;
@@ -65,7 +65,6 @@ namespace BaseClasses.GraphObj
             m_volColor_1 = doorFlashingColor;
             m_Material_1 = new DiffuseMaterial(new SolidColorBrush(m_volColor_1));
 
-            m_claddingCoatingType_Wall = claddingCoatingType_Wall;
             m_doorCladdingColorName = doorCladdingColorName;
             m_volColor_2 = doorCladdingColor;
             if (!useTextures)
@@ -119,16 +118,10 @@ namespace BaseClasses.GraphObj
 
             if (useTextures) // Použijeme len pre typ roller door
             {
-                //CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
-                string uriString_Wall = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_" + m_doorCladdingColorName + ".jpg";
-
-                if (m_claddingCoatingType_Wall == "FORMCLAD®")
-                {
-                    uriString_Wall = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_FORMCLAD_" + m_doorCladdingColorName + ".jpg";
-                }
+                string uriString = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_" + m_doorCladdingColorName + ".jpg";
 
                 imgBrush = new ImageBrush();
-                imgBrush.ImageSource = new BitmapImage(new Uri(uriString_Wall, UriKind.RelativeOrAbsolute));
+                imgBrush.ImageSource = new BitmapImage(new Uri(uriString, UriKind.RelativeOrAbsolute));
                 imgBrush.TileMode = TileMode.Tile;
                 imgBrush.ViewportUnits = BrushMappingMode.Absolute;
                 imgBrush.Stretch = Stretch.Fill;
