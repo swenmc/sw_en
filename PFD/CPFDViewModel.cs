@@ -4083,6 +4083,8 @@ namespace PFD
             sDisplayOptions.fFrontCladdingOpacity = _displayOptionsVM.FrontCladdingOpacity;
             sDisplayOptions.fLeftCladdingOpacity = _displayOptionsVM.LeftCladdingOpacity;
             sDisplayOptions.fRoofCladdingOpacity = _displayOptionsVM.RoofCladdingOpacity;
+            sDisplayOptions.fDoorPanelOpacity = _displayOptionsVM.DoorPanelOpacity;
+            sDisplayOptions.fWindowPanelOpacity = _displayOptionsVM.WindowPanelOpacity;
 
             sDisplayOptions.backgroundColor = _displayOptionsVM.BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;

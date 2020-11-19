@@ -234,6 +234,8 @@ namespace PFD
         private float m_FrontCladdingOpacity = 0.95f;
         private float m_LeftCladdingOpacity = 0.95f;
         private float m_RoofCladdingOpacity = 0.95f;
+        private float m_DoorPanelOpacity = 0.98f;
+        private float m_WindowPanelOpacity = 0.98f;
 
         private float m_ExportFloorSlabTextSize;
         private float m_ExportGridlinesSize;
@@ -3033,6 +3035,34 @@ namespace PFD
             }
         }
 
+        public float DoorPanelOpacity
+        {
+            get
+            {
+                return m_DoorPanelOpacity;
+            }
+
+            set
+            {
+                m_DoorPanelOpacity = value;
+                NotifyPropertyChanged("DoorPanelOpacity");
+            }
+        }
+
+        public float WindowPanelOpacity
+        {
+            get
+            {
+                return m_WindowPanelOpacity;
+            }
+
+            set
+            {
+                m_WindowPanelOpacity = value;
+                NotifyPropertyChanged("WindowPanelOpacity");
+            }
+        }
+
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
@@ -3221,6 +3251,8 @@ namespace PFD
             FrontCladdingOpacity = 0.95f;
             LeftCladdingOpacity = 0.95f;
             RoofCladdingOpacity = 0.95f;
+            DoorPanelOpacity = 0.98f;
+            WindowPanelOpacity = 0.98f;
 
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
@@ -3408,6 +3440,8 @@ namespace PFD
             FrontCladdingOpacity = newVM.FrontCladdingOpacity;
             LeftCladdingOpacity = newVM.LeftCladdingOpacity;
             RoofCladdingOpacity = newVM.RoofCladdingOpacity;
+            DoorPanelOpacity = newVM.DoorPanelOpacity;
+            WindowPanelOpacity = newVM.WindowPanelOpacity;
 
             BackgroundColorIndex = newVM.BackgroundColorIndex;
 
