@@ -2116,7 +2116,7 @@ namespace BaseClasses
                         cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
-                        model3D_group.Children.Add(cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door()); // Add solid to model group
+                        model3D_group.Children.Add(cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door(sDisplayOptions)); // Add solid to model group
                         //else
                         //{
                         //    //Exception - not implemented

@@ -1743,10 +1743,16 @@ namespace PFD
                             pControlEdgePoint.X = rightEdge;
                     }
 
+                    //BaseClasses.GraphObj.CStructure_Door door_temp = new BaseClasses.GraphObj.CStructure_Door(i + 1, 1,
+                    //   pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness,
+                    //   new DiffuseMaterial(new SolidColorBrush(doorFlashingColor)),
+                    //   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX))), fPanelThickness, fRotationZDegrees, true, 0f);
+
                     BaseClasses.GraphObj.CStructure_Door door_temp = new BaseClasses.GraphObj.CStructure_Door(i + 1, 1,
-                       pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness,
-                       new DiffuseMaterial(new SolidColorBrush(doorFlashingColor)),
-                       new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX))), fPanelThickness, fRotationZDegrees, true, 0f);
+                       pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness, fPanelThickness, fRotationZDegrees, true, 0f,
+                       doorFlashingColor,
+                       (Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX), 
+                       _pfdVM.DoorBlocksProperties[i].CoatingColor.Name, _pfdVM.WallCladdingCoating, vm._displayOptionsVM.UseTextures);
 
                     m_arrGOStrDoors.Add(door_temp);
                 }
