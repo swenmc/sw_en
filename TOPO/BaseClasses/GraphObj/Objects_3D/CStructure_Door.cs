@@ -18,9 +18,7 @@ namespace BaseClasses.GraphObj
         //    set { m_eShapeType = value; }
         //}
 
-            
-
-        private float m_fvolOpacity;        
+        private float m_fvolOpacity;
         private Color m_volColor_1; 
         private string m_doorCladdingColorName;
         private Color m_volColor_2;
@@ -52,13 +50,13 @@ namespace BaseClasses.GraphObj
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
             Color doorFlashingColor, Color doorCladdingColor, string doorCladdingColorName, string claddingCoatingType_Wall, bool useTextures)
         {
-            ID = iW_ID;            
+            ID = iW_ID;
             m_iSegmentNum = iSegmentNum;
             m_pControlPoint = pControlEdgePoint;
             m_fDim1 = fL;
             m_fDim2 = fH;
-            m_fDim3 = ft;            
-            m_fvolOpacity = 1.0f;            
+            m_fDim3 = ft;
+            m_fvolOpacity = 1.0f;
             m_fGThickness = fDoorPanelThickness;
             m_fRotationZDegrees = fRotationZDegrees;
             BIsDisplayed = bIsDisplayed;
@@ -71,10 +69,10 @@ namespace BaseClasses.GraphObj
             m_doorCladdingColorName = doorCladdingColorName;
             m_volColor_2 = doorCladdingColor;
             if (!useTextures)
-            {                
+            {
                 m_Material_2 = new DiffuseMaterial(new SolidColorBrush(m_volColor_2));
-            } 
-            
+            }
+
             CreateM_3D_G_Door(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fDoorPanelThickness, fRotationZDegrees, useTextures);
         }
 
@@ -118,13 +116,14 @@ namespace BaseClasses.GraphObj
             Model3DGroup gr = new Model3DGroup();
 
             ImageBrush imgBrush = null;
-            if (useTextures)
+
+            if (useTextures) // Použijeme len pre typ roller door
             {
                 //CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
                 string uriString_Wall = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_" + m_doorCladdingColorName + ".jpg";
 
                 if (m_claddingCoatingType_Wall == "FORMCLAD®")
-                {                    
+                {
                     uriString_Wall = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_FORMCLAD_" + m_doorCladdingColorName + ".jpg";
                 }
 
@@ -143,7 +142,6 @@ namespace BaseClasses.GraphObj
                 imgBrush.Transform = new RotateTransform(90);
                 m_Material_2 = new DiffuseMaterial(imgBrush);
             }
-            
 
             // Create Door in LCS
             for (int i = 0; i < iSegmentNum; i++) // Add segments

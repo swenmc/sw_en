@@ -1630,7 +1630,7 @@ namespace PFD
                        pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness, fPanelThickness, fRotationZDegrees, true, 0f,
                        doorFlashingColor,
                        (Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX), 
-                       _pfdVM.DoorBlocksProperties[i].CoatingColor.Name, _pfdVM.WallCladdingCoating, vm._displayOptionsVM.UseTextures);
+                       _pfdVM.DoorBlocksProperties[i].CoatingColor.Name, _pfdVM.WallCladdingCoating, _pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door" && vm._displayOptionsVM.UseTextures);
 
                     m_arrGOStrDoors.Add(door_temp);
                 }
