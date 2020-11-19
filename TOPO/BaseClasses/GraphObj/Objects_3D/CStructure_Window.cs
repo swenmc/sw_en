@@ -17,12 +17,14 @@ namespace BaseClasses.GraphObj
             set { m_eShapeType = value; }
         }
 
-        public float m_fvolOpacity;
-        public Color m_volColor_1 = new Color(); // Default
-        public Color m_volColor_2 = new Color();
+        public float m_fvolOpacity_1;
+        public Color m_volColor_1;
 
-        public DiffuseMaterial m_Material_1 = new DiffuseMaterial();
-        public DiffuseMaterial m_Material_2 = new DiffuseMaterial();
+        private float m_fvolOpacity_2;
+        public Color m_volColor_2;
+
+        public DiffuseMaterial m_Material_1 = null;
+        public DiffuseMaterial m_Material_2 = null;
 
         public float m_fDim1;
         public float m_fDim2;
@@ -56,7 +58,6 @@ namespace BaseClasses.GraphObj
             m_fDim3 = fZ;
             m_Material_1 = volMat1;
             m_volColor_2 = volMat1.Color;
-            m_fvolOpacity = 1.0f;
             m_Material_2 = volMat2;
             m_volColor_2 = volMat2.Color;
             BIsDisplayed = bIsDisplayed;
@@ -64,7 +65,8 @@ namespace BaseClasses.GraphObj
         }
 
         // Constructor 5
-        public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, DiffuseMaterial volMat1, DiffuseMaterial volMat2, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime)
+        public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft,
+            Color windowFlashingColor, Color windowPanelColor, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime)
         {
             ID = iW_ID;
             m_eShapeType = iShapeType;
@@ -73,18 +75,49 @@ namespace BaseClasses.GraphObj
             m_fDim1 = fL;
             m_fDim2 = fH;
             m_fDim3 = ft;
-            m_Material_1 = volMat1;
-            m_volColor_2 = volMat1.Color;
-            m_fvolOpacity = 1.0f;
-            // Set same properties for both materials
-            m_Material_2 = volMat2;
-            m_volColor_2 = volMat2.Color;
+
+            m_fvolOpacity_1 = 1.0f; // Flashings - TODO
+            m_fvolOpacity_2 = fGlassPanelOpacity; // Vypln okna - sklo
+
+            m_volColor_1 = windowFlashingColor;
+            m_volColor_2 = windowPanelColor;
+
+            SolidColorBrush flashingSolidBrush = new SolidColorBrush(m_volColor_1);
+            flashingSolidBrush.Opacity = m_fvolOpacity_1;
+            m_Material_1 = new DiffuseMaterial(flashingSolidBrush);
+
+            SolidColorBrush glassPanelSolidBrush = new SolidColorBrush(m_volColor_2);
+            glassPanelSolidBrush.Opacity = m_fvolOpacity_2;
+            m_Material_2 = new DiffuseMaterial(glassPanelSolidBrush);
+
             m_fGThickness = fGlassThickness;
             m_fRotationZDegrees = fRotationZDegrees;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
-            /*MObject3DModel =*/ CreateM_3D_G_Window(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, volMat1, volMat2, fGlassThickness, fRotationZDegrees);
+            CreateM_3D_G_Window(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fGlassThickness, fRotationZDegrees);
+        }
+
+        public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft,
+        DiffuseMaterial matF, DiffuseMaterial matG, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime)
+        {
+            ID = iW_ID;
+            m_eShapeType = iShapeType;
+            m_iSegmentNum = iSegmentNum;
+            m_pControlPoint = pControlEdgePoint;
+            m_fDim1 = fL;
+            m_fDim2 = fH;
+            m_fDim3 = ft;
+
+            m_Material_1 = matF;
+            m_Material_2 = matG;
+
+            m_fGThickness = fGlassThickness;
+            m_fRotationZDegrees = fRotationZDegrees;
+            BIsDisplayed = bIsDisplayed;
+            FTime = fTime;
+
+            CreateM_3D_G_Window(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fGlassThickness, fRotationZDegrees);
         }
 
         // Temporary auxiliary function - glass window (3D HOUSE)
@@ -126,14 +159,14 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Model3DGroup CreateM_3D_G_Window(int iSegmentNum, Point3D pControlPoint, float fL_X, float fH_Z, float fT_Y, DiffuseMaterial DiffMatF, DiffuseMaterial DiffMatG, float fGlassThickness, float fRotationZDegrees)
+        public Model3DGroup CreateM_3D_G_Window(int iSegmentNum, Point3D pControlPoint, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, float fRotationZDegrees)
         {
             Model3DGroup gr = new Model3DGroup();
 
             // Create Window in LCS
             for (int i = 0; i < iSegmentNum; i++) // Add segments
             {
-                gr.Children.Add(CreateM_3D_G_SegmWindow(i, fL_X, fH_Z, fT_Y, DiffMatF, DiffMatG, fGlassThickness));
+                gr.Children.Add(CreateM_3D_G_SegmWindow(i, fL_X, fH_Z, fT_Y, m_Material_1, m_Material_2, fGlassThickness));
             }
 
             // Move and rotate window
@@ -158,7 +191,7 @@ namespace BaseClasses.GraphObj
 
             Point3D pControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
 
-            m3Dg.Children.Add(CreateM_3D_G_Window(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_Material_1, m_Material_2, m_fGThickness, m_fRotationZDegrees));
+            m3Dg.Children.Add(CreateM_3D_G_Window(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees));
 
             return m3Dg;
         }

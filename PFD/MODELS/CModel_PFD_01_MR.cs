@@ -1752,7 +1752,9 @@ namespace PFD
                        pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness, fPanelThickness, fRotationZDegrees, true, 0f,
                        doorFlashingColor,
                        (Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX), 
-                       _pfdVM.DoorBlocksProperties[i].CoatingColor.Name, _pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door" && vm._displayOptionsVM.UseTextures);
+                       _pfdVM.DoorBlocksProperties[i].CoatingColor.Name,
+                       0.8f,
+                       _pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door" && vm._displayOptionsVM.UseTextures);
 
                     m_arrGOStrDoors.Add(door_temp);
                 }
@@ -1792,8 +1794,9 @@ namespace PFD
 
                     BaseClasses.GraphObj.CStructure_Window window_temp = new BaseClasses.GraphObj.CStructure_Window(i + 1, EWindowShapeType.eClassic, _pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1,
                        pControlEdgePoint, _pfdVM.WindowBlocksProperties[i].fWindowsWidth / (_pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1), _pfdVM.WindowBlocksProperties[i].fWindowsHeight, fWindowFrameThickness,
-                       new DiffuseMaterial(new SolidColorBrush(windowFlashingColor)),
-                       new DiffuseMaterial(Brushes.LightBlue), fPanelThickness, fRotationZDegrees, true, 0f);
+                       windowFlashingColor, Colors.LightBlue,
+                       0.8f,
+                       fPanelThickness, fRotationZDegrees, true, 0f);
 
                     m_arrGOStrWindows.Add(window_temp);
                 }

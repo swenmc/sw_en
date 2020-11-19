@@ -98,9 +98,17 @@ namespace BaseClasses.GraphObj
             Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, bottomEdge_z);
             Point3D pback1_baseright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, bottomEdge_z);
 
-            DiffuseMaterial material_SideWall = new DiffuseMaterial(new SolidColorBrush(m_ColorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
-            DiffuseMaterial material_FrontBackWall = new DiffuseMaterial(new SolidColorBrush(m_ColorWall)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
-            DiffuseMaterial material_Roof = new DiffuseMaterial(new SolidColorBrush(m_ColorRoof)); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
+            Brush solidBrushFront = new SolidColorBrush(m_ColorWall);
+            Brush solidBrushSide = new SolidColorBrush(m_ColorWall);
+            Brush solidBrushRoof = new SolidColorBrush(m_ColorRoof);
+
+            solidBrushFront.Opacity = options.fFrontCladdingOpacity;
+            solidBrushSide.Opacity = options.fLeftCladdingOpacity;
+            solidBrushRoof.Opacity = options.fRoofCladdingOpacity;
+
+            DiffuseMaterial material_SideWall = new DiffuseMaterial(solidBrushSide); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
+            DiffuseMaterial material_FrontBackWall = new DiffuseMaterial(solidBrushFront); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
+            DiffuseMaterial material_Roof = new DiffuseMaterial(solidBrushRoof); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
 
             ImageBrush brushFront = null;
             ImageBrush brushSide = null;

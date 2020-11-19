@@ -18,13 +18,14 @@ namespace BaseClasses.GraphObj
         //    set { m_eShapeType = value; }
         //}
 
-        private float m_fvolOpacity;
-        private Color m_volColor_1; 
-        private string m_doorCladdingColorName;
+        private float m_fvolOpacity_1;
+        private Color m_volColor_1;
+
+        private string m_doorPanelColorName;
+        private float m_fvolOpacity_2;
         private Color m_volColor_2;
         private DiffuseMaterial m_Material_1 = null;
         private DiffuseMaterial m_Material_2 = null;
-        private string m_claddingCoatingType_Wall;
 
         public float m_fDim1;
         public float m_fDim2;
@@ -48,7 +49,7 @@ namespace BaseClasses.GraphObj
         
         // Constructor 3
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
-            Color doorFlashingColor, Color doorCladdingColor, string doorCladdingColorName, bool useTextures)
+            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float doorPanelOpacity, bool useTextures)
         {
             ID = iW_ID;
             m_iSegmentNum = iSegmentNum;
@@ -56,20 +57,28 @@ namespace BaseClasses.GraphObj
             m_fDim1 = fL;
             m_fDim2 = fH;
             m_fDim3 = ft;
-            m_fvolOpacity = 1.0f;
+
+            m_fvolOpacity_1 = 1.0f; // Flashings - TODO
+            m_fvolOpacity_2 = doorPanelOpacity; // Vypln dveri
+
             m_fGThickness = fDoorPanelThickness;
             m_fRotationZDegrees = fRotationZDegrees;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
             m_volColor_1 = doorFlashingColor;
-            m_Material_1 = new DiffuseMaterial(new SolidColorBrush(m_volColor_1));
 
-            m_doorCladdingColorName = doorCladdingColorName;
-            m_volColor_2 = doorCladdingColor;
+            SolidColorBrush flashingSolidBrush = new SolidColorBrush(m_volColor_1);
+            flashingSolidBrush.Opacity = m_fvolOpacity_1;
+            m_Material_1 = new DiffuseMaterial(flashingSolidBrush);
+
+            m_doorPanelColorName = doorPanelColorName;
+            m_volColor_2 = doorPanelColor;
             if (!useTextures)
             {
-                m_Material_2 = new DiffuseMaterial(new SolidColorBrush(m_volColor_2));
+                SolidColorBrush panelSolidBrush = new SolidColorBrush(m_volColor_2);
+                panelSolidBrush.Opacity = m_fvolOpacity_2;
+                m_Material_2 = new DiffuseMaterial();
             }
 
             CreateM_3D_G_Door(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fDoorPanelThickness, fRotationZDegrees, useTextures);
@@ -109,7 +118,7 @@ namespace BaseClasses.GraphObj
 
             return gr;
         }
-        
+
         public Model3DGroup CreateM_3D_G_Door(int iSegmentNum, Point3D pControlPoint, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, float fRotationZDegrees, bool useTextures)
         {
             Model3DGroup gr = new Model3DGroup();
@@ -118,14 +127,14 @@ namespace BaseClasses.GraphObj
 
             if (useTextures) // Použijeme len pre typ roller door
             {
-                string uriString = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_" + m_doorCladdingColorName + ".jpg";
+                string uriString = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_" + m_doorPanelColorName + ".jpg";
 
                 imgBrush = new ImageBrush();
                 imgBrush.ImageSource = new BitmapImage(new Uri(uriString, UriKind.RelativeOrAbsolute));
                 imgBrush.TileMode = TileMode.Tile;
                 imgBrush.ViewportUnits = BrushMappingMode.Absolute;
                 imgBrush.Stretch = Stretch.Fill;
-                imgBrush.Opacity = m_fvolOpacity;
+                imgBrush.Opacity = m_fvolOpacity_2;
 
                 double claddingWidthRibModular_door = 0.09; // m  TODO Mato
 
