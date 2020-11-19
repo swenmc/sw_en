@@ -47,33 +47,8 @@ namespace BaseClasses.GraphObj
             ID = i_ID;
             FTime = fTime;
         }
-
+        
         // Constructor 3
-        public CStructure_Door(int iW_ID/*, EWindowShapeType iShapeType*/, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, DiffuseMaterial volMat1, DiffuseMaterial volMat2, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, DisplayOptions opts)
-        {
-            ID = iW_ID;
-            //m_eShapeType = iShapeType;
-            m_iSegmentNum = iSegmentNum;
-            m_pControlPoint = pControlEdgePoint;
-            m_fDim1 = fL;
-            m_fDim2 = fH;
-            m_fDim3 = ft;
-            m_Material_1 = volMat1;
-            m_volColor_1 = volMat1.Color;
-            m_fvolOpacity = 1.0f;
-            // Set same properties for both materials
-            m_Material_2 = volMat2;
-            m_volColor_2 = volMat2.Color;
-            m_fGThickness = fDoorPanelThickness;
-            m_fRotationZDegrees = fRotationZDegrees;
-            BIsDisplayed = bIsDisplayed;
-            FTime = fTime;
-
-            /*MObject3DModel =*/
-            CreateM_3D_G_Door(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, volMat1, volMat2, fDoorPanelThickness, fRotationZDegrees, opts);
-        }
-
-        // Constructor 4
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
             Color doorFlashingColor, Color doorCladdingColor, string doorCladdingColorName, string claddingCoatingType_Wall, bool useTextures)
         {
@@ -99,8 +74,7 @@ namespace BaseClasses.GraphObj
             {                
                 m_Material_2 = new DiffuseMaterial(new SolidColorBrush(m_volColor_2));
             } 
-
-            /*MObject3DModel =*/
+            
             CreateM_3D_G_Door(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fDoorPanelThickness, fRotationZDegrees, useTextures);
         }
 
@@ -138,62 +112,7 @@ namespace BaseClasses.GraphObj
 
             return gr;
         }
-
-        public Model3DGroup CreateM_3D_G_Door(int iSegmentNum, Point3D pControlPoint, float fL_X, float fH_Z, float fT_Y, DiffuseMaterial DiffMatF, DiffuseMaterial DiffMatG, float fGlassThickness, float fRotationZDegrees, DisplayOptions options)
-        {
-            Model3DGroup gr = new Model3DGroup();
-
-            //ImageBrush brushFront = null;
-            //if (options.bUseTextures)
-            //{
-            //    //CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
-            //    string uriString_Wall = "pack://application:,,,/Resources/Textures/Corrugate/" + m_claddingShape_Wall + "/" + m_claddingShape_Wall + "_" + m_ColorNameWall + ".jpg";
-
-            //    if (m_claddingCoatingType_Wall == "FORMCLAD®")
-            //    {
-            //        string claddingCoatingType_Wall_string = "FORMCLAD";
-            //        uriString_Wall = "pack://application:,,,/Resources/Textures/Corrugate/" + m_claddingShape_Wall + "/" + m_claddingShape_Wall + "_" + claddingCoatingType_Wall_string + "_" + m_ColorNameWall + ".jpg";
-            //    }
-
-            //    brushFront = new ImageBrush();
-            //    brushFront.ImageSource = new BitmapImage(new Uri(uriString_Wall, UriKind.RelativeOrAbsolute));
-            //    brushFront.TileMode = TileMode.Tile;
-            //    brushFront.ViewportUnits = BrushMappingMode.Absolute;
-            //    brushFront.Stretch = Stretch.Fill;
-            //    brushFront.Opacity = options.fFrontCladdingOpacity;
-            //}
-
-            //if (options.bUseTextures) // Pouzijeme len ak vykreslujeme textury, inak sa pouzije material vytvoreny z SolidColorBrush podla vybranej farby cladding v GUI
-            //{
-            //    wpWidth = claddingWidthRibModular_Wall / (pfront1_baseright.X - pfront0_baseleft.X);
-            //    wpHeight = claddingWidthRibModular_Wall / (pfront2_heightright.Z - pfront1_baseright.Z);
-            //    brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-            //    material_FrontBackWall = new DiffuseMaterial(brushFront);
-            //}
-
-
-            // Create Door in LCS
-            for (int i = 0; i < iSegmentNum; i++) // Add segments
-            {
-                gr.Children.Add(CreateM_3D_G_SegmDoor(i, fL_X, fH_Z, fT_Y, DiffMatF, DiffMatG, fGlassThickness));
-            }
-
-            // Move and rotate door
-
-            Transform3DGroup transform3DGroup = new Transform3DGroup();
-            // Rotation about Y axis
-            RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZDegrees));
-            // Translation - move to control point
-            TranslateTransform3D translateTransform3D = new TranslateTransform3D(pControlPoint.X, pControlPoint.Y, pControlPoint.Z);
-            // Adding transforms
-            transform3DGroup.Children.Add(rotateTransformation3D);
-            transform3DGroup.Children.Add(translateTransform3D);
-            // Set transformation to group
-            gr.Transform = transform3DGroup;
-
-            return gr;
-        }
-
+        
         public Model3DGroup CreateM_3D_G_Door(int iSegmentNum, Point3D pControlPoint, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, float fRotationZDegrees, bool useTextures)
         {
             Model3DGroup gr = new Model3DGroup();
@@ -213,7 +132,7 @@ namespace BaseClasses.GraphObj
                 imgBrush.ImageSource = new BitmapImage(new Uri(uriString_Wall, UriKind.RelativeOrAbsolute));
                 imgBrush.TileMode = TileMode.Tile;
                 imgBrush.ViewportUnits = BrushMappingMode.Absolute;
-                imgBrush.Stretch = Stretch.Fill;                
+                imgBrush.Stretch = Stretch.Fill;
                 imgBrush.Opacity = m_fvolOpacity;
 
                 double claddingWidthRibModular_door = 0.09; // m  TODO Mato
@@ -233,7 +152,6 @@ namespace BaseClasses.GraphObj
             }
 
             // Move and rotate door
-
             Transform3DGroup transform3DGroup = new Transform3DGroup();
             // Rotation about Y axis
             RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZDegrees));
@@ -248,13 +166,13 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Model3DGroup CreateM_3D_G_Door(DisplayOptions opts)
+        public Model3DGroup CreateM_3D_G_Door(bool useTextures)
         {
             Model3DGroup m3Dg = new Model3DGroup();
 
             Point3D pControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
 
-            m3Dg.Children.Add(CreateM_3D_G_Door(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_Material_1, m_Material_2, m_fGThickness, m_fRotationZDegrees, opts));
+            m3Dg.Children.Add(CreateM_3D_G_Door(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees, useTextures));
 
             return m3Dg;
         }

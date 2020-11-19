@@ -40,7 +40,7 @@ namespace PFD
         {
             if (sender == null) return;
             if (sender is DisplayOptionsViewModel)
-            {
+            {                
                 DisplayOptionsChanged = true;
             }
         }
