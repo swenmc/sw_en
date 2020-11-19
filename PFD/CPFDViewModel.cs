@@ -334,31 +334,20 @@ namespace PFD
                 if (!isChangedFromCode) IsSetFromCode = true;
 
                 WidthOverall = dmodel.fb;
-                Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
-                //to Mato  otazka: Kedy a kde sa nastavi MainColumnCrsc_z_plus???
+                Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;                
                 LengthOverall = dmodel.fL;
-                Length = MLengthOverall - Math.Abs(EdgeColumnCrsc_y_minus) - EdgeColumnCrsc_y_plus;
-                //to Mato - kedy a kde sa nastavi Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
+                Length = MLengthOverall - Math.Abs(EdgeColumnCrsc_y_minus) - EdgeColumnCrsc_y_plus;                
                 WallHeightOverall = dmodel.fh;
-                WallHeight = GetCenterLineHeight_H1();
-
-                //Width = dmodel.fb; 
-                //Length = dmodel.fL;
-                //WallHeight = dmodel.fh;
-
-                //WidthOverall = MWidth + 2 * MainColumnCrsc_z_plus;
-                //LengthOverall = MLength + Math.Abs(EdgeColumnCrsc_y_minus) + EdgeColumnCrsc_y_plus;                
-                //WallHeightOverall = GetOverallHeight_H1();
+                WallHeight = GetCenterLineHeight_H1();                
 
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
-
-
+                
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
                 ColumnDistance = dmodel.fdist_frontcolumn;
                 BottomGirtPosition = dmodel.fdist_girt_bottom;
                 Frames = dmodel.iFrNo;
-                fBayWidth = MLength / (MFrames - 1); // TODO 628 - je sice v DB, ale istejsie je to tu prepocitavat
+                fBayWidth = MLength / (MFrames - 1); // je sice v DB, ale istejsie je to tu prepocitavat
 
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
