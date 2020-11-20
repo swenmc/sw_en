@@ -26,6 +26,7 @@ namespace BaseClasses.GraphObj
         private Color m_volColor_2;
         private DiffuseMaterial m_Material_1 = null;
         private DiffuseMaterial m_Material_2 = null;
+        private bool m_isRollerDoor;
 
         public float m_fDim1;
         public float m_fDim2;
@@ -34,6 +35,19 @@ namespace BaseClasses.GraphObj
         public int m_iSegmentNum;
         public float m_fGThickness;
         public float m_fRotationZDegrees;
+
+        public bool IsRollerDoor
+        {
+            get
+            {
+                return m_isRollerDoor;
+            }
+
+            set
+            {
+                m_isRollerDoor = value;
+            }
+        }
 
         // Constructor 1
         public CStructure_Door()
@@ -49,7 +63,7 @@ namespace BaseClasses.GraphObj
         
         // Constructor 3
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
-            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float doorPanelOpacity, bool useTextures)
+            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float doorPanelOpacity, bool isRollerDoor, bool useTextures)
         {
             ID = iW_ID;
             m_iSegmentNum = iSegmentNum;
@@ -65,6 +79,7 @@ namespace BaseClasses.GraphObj
             m_fRotationZDegrees = fRotationZDegrees;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
+            IsRollerDoor = isRollerDoor;
 
             m_volColor_1 = doorFlashingColor;
 
@@ -73,13 +88,7 @@ namespace BaseClasses.GraphObj
             m_Material_1 = new DiffuseMaterial(flashingSolidBrush);
 
             m_doorPanelColorName = doorPanelColorName;
-            m_volColor_2 = doorPanelColor;
-            if (!useTextures)
-            {
-                SolidColorBrush panelSolidBrush = new SolidColorBrush(m_volColor_2);
-                panelSolidBrush.Opacity = m_fvolOpacity_2;
-                m_Material_2 = new DiffuseMaterial();
-            }
+            m_volColor_2 = doorPanelColor;            
 
             CreateM_3D_G_Door(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fDoorPanelThickness, fRotationZDegrees, useTextures);
         }
@@ -125,7 +134,7 @@ namespace BaseClasses.GraphObj
 
             ImageBrush imgBrush = null;
 
-            if (useTextures) // Použijeme len pre typ roller door
+            if (useTextures && IsRollerDoor) // Použijeme len pre typ roller door
             {
                 string uriString = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_" + m_doorPanelColorName + ".jpg";
 
@@ -143,6 +152,12 @@ namespace BaseClasses.GraphObj
                 imgBrush.Viewport = new System.Windows.Rect(0, 0, wpHeight, wpWidth); //lebo otocene o 90stupnov
                 imgBrush.Transform = new RotateTransform(90);
                 m_Material_2 = new DiffuseMaterial(imgBrush);
+            }
+            else
+            {   
+                SolidColorBrush panelSolidBrush = new SolidColorBrush(m_volColor_2);
+                panelSolidBrush.Opacity = m_fvolOpacity_2;
+                m_Material_2 = new DiffuseMaterial(panelSolidBrush);
             }
 
             // Create Door in LCS

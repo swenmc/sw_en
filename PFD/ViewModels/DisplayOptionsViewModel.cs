@@ -222,20 +222,21 @@ namespace PFD
         [NonSerialized]
         private Color m_BackgroundColor = Colors.Black;
 
-        private float m_MemberSolidModelOpacity = 0.8f;
-        private float m_PlateSolidModelOpacity = 0.5f;
-        private float m_ScrewSolidModelOpacity = 0.9f;
-        private float m_AnchorSolidModelOpacity = 0.9f;
-        private float m_FoundationSolidModelOpacity = 0.4f;
-        private float m_ReinforcementBarSolidModelOpacity = 0.9f;
-        private float m_FloorSlabSolidModelOpacity = 0.3f;
-        private float m_SlabRebateSolidModelOpacity = 0.5f;
+        //To Mato: naco sa to tu inicializovalo, nato je konstruktor
+        private float m_MemberSolidModelOpacity;
+        private float m_PlateSolidModelOpacity;
+        private float m_ScrewSolidModelOpacity;
+        private float m_AnchorSolidModelOpacity;
+        private float m_FoundationSolidModelOpacity;
+        private float m_ReinforcementBarSolidModelOpacity;
+        private float m_FloorSlabSolidModelOpacity;
+        private float m_SlabRebateSolidModelOpacity;
 
-        private float m_FrontCladdingOpacity = 0.95f;
-        private float m_LeftCladdingOpacity = 0.95f;
-        private float m_RoofCladdingOpacity = 0.95f;
-        private float m_DoorPanelOpacity = 0.98f;
-        private float m_WindowPanelOpacity = 0.98f;
+        private float m_FrontCladdingOpacity;
+        private float m_LeftCladdingOpacity;
+        private float m_RoofCladdingOpacity;
+        private float m_DoorPanelOpacity;
+        private float m_WindowPanelOpacity;
 
         private float m_ExportFloorSlabTextSize;
         private float m_ExportGridlinesSize;
@@ -3251,9 +3252,9 @@ namespace PFD
             FrontCladdingOpacity = 0.95f;
             LeftCladdingOpacity = 0.95f;
             RoofCladdingOpacity = 0.95f;
-            DoorPanelOpacity = 0.98f;
-            WindowPanelOpacity = 0.98f;
-
+            DoorPanelOpacity = 0.95f;  //to Mato, nepride mi to spravne nastavit na 0.98f ked tick je 0.05 = si to odporuje, upravujem na 0.95f
+            WindowPanelOpacity = 0.95f; //to Mato, nepride mi to spravne nastavit na 0.98f ked tick je 0.05 = si to odporuje, upravujem na 0.95f
+            
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             // Text 7.0 mm

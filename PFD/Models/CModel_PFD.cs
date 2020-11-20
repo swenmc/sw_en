@@ -1057,7 +1057,7 @@ namespace PFD
 
             members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer);
             if (members.Count() > 0)
-            {
+            {                
                 string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorTrimmer).ComponentName;
                 listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDT, EMemberType_FS_Position.DoorTrimmer, null, 0, 0, 0, 0));
             }

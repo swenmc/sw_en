@@ -20,6 +20,7 @@ namespace PFD
     {
         private CPFDViewModel _pfdVM;
         private bool DisplayOptionsChanged = false;
+        private bool RecreateModelRequired = false;
         public DisplayOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
@@ -40,14 +41,23 @@ namespace PFD
         {
             if (sender == null) return;
             if (sender is DisplayOptionsViewModel)
-            {                
+            {
+                if (e.PropertyName == "DisplayCladding" || e.PropertyName == "DisplayDoors" || e.PropertyName == "DisplayWindows" ||
+                    e.PropertyName == "FrontCladdingOpacity" || e.PropertyName == "LeftCladdingOpacity" || e.PropertyName == "RoofCladdingOpacity" ||
+                    e.PropertyName == "DoorPanelOpacity" || e.PropertyName == "WindowPanelOpacity")
+                    RecreateModelRequired = true;
+
                 DisplayOptionsChanged = true;
             }
         }
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;
+            if (DisplayOptionsChanged)
+            {
+                _pfdVM.RecreateModel = RecreateModelRequired;
+                _pfdVM.SynchronizeGUI = true;                
+            }
             this.Close();
         }
 

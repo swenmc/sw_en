@@ -1479,11 +1479,10 @@ namespace PFD
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             #endregion
 
-            AddMembersToMemberGroupsLists(_clVM.ComponentList.ToList());
-
-
             vm.SetComponentListAccordingToDoorsAndWindows();
 
+            AddMembersToMemberGroupsLists(_clVM.ComponentList.ToList());
+            
             // Set members Generate, Display, Calculate, Design, MaterialList properties
             CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
 
@@ -1621,18 +1620,14 @@ namespace PFD
                         if (_pfdVM.DoorBlocksProperties[i].sBuildingSide == "Right")
                             pControlEdgePoint.X = rightEdge;
                     }
-
-                    //BaseClasses.GraphObj.CStructure_Door door_temp = new BaseClasses.GraphObj.CStructure_Door(i + 1, 1,
-                    //   pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness,
-                    //   new DiffuseMaterial(new SolidColorBrush(doorFlashingColor)),
-                    //   new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX))), fPanelThickness, fRotationZDegrees, true, 0f);
+                    
                     BaseClasses.GraphObj.CStructure_Door door_temp = new BaseClasses.GraphObj.CStructure_Door(i + 1, 1,
                        pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness, fPanelThickness, fRotationZDegrees, true, 0f,
                        doorFlashingColor,
                        (Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX), 
                        _pfdVM.DoorBlocksProperties[i].CoatingColor.Name,
-                       0.8f,
-                       _pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door" && vm._displayOptionsVM.UseTextures);
+                       vm._displayOptionsVM.DoorPanelOpacity,
+                       _pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door", vm._displayOptionsVM.UseTextures);
 
                     m_arrGOStrDoors.Add(door_temp);
                 }
@@ -1673,7 +1668,7 @@ namespace PFD
                     BaseClasses.GraphObj.CStructure_Window window_temp = new BaseClasses.GraphObj.CStructure_Window(i + 1, EWindowShapeType.eClassic, _pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1,
                        pControlEdgePoint, _pfdVM.WindowBlocksProperties[i].fWindowsWidth / (_pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1), _pfdVM.WindowBlocksProperties[i].fWindowsHeight, fWindowFrameThickness,
                        windowFlashingColor, Colors.LightBlue,
-                       0.8f,
+                       vm._displayOptionsVM.WindowPanelOpacity,
                        fPanelThickness, fRotationZDegrees, true, 0f);
 
                     m_arrGOStrWindows.Add(window_temp);
