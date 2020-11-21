@@ -169,7 +169,24 @@ namespace PFD.Infrastructure
                         }
                         else // Tension only
                         {
-                            // TODO - vypocet vnutornych sil v cross-bracing
+                            //---------------------------------------------------------------------------------------------
+                            //---------------------------------------------------------------------------------------------
+                            //---------------------------------------------------------------------------------------------
+
+                            // TODO 633 - vypocet vnutornych sil v cross-bracing
+                            // Novy kod v Tension only bloku, prosim o review
+
+                            // Potrebujem tu dostat nejake vstupne hodnoty vid nizsie - popis TODO 633
+
+                            // Alternativna moznost je, ze toto cele by sa vysunuho pred klasicky vypocet vnutornych sil a zaviedlo by sa cosi ako
+                            // "inicializacne" vnutorne sily
+                            // Tie by sa dali nastavit roznym prutom pre jednotlive load cases este pred spustenim vypoctu
+                            // a v ramci vypoctu by sa k nim pridali vnutorne sily, ktore pocitame teraz
+
+                            // Predstav si to ako nieco co vznikne napriklad už pri stavbe budovy,
+                            // napriklad uz pri montazi cross-bracing member napneme prut tak aby bol priamy, a je v nom osova sila N= 10 kN
+                            // Potom pri vypocte vetra sa k tomu prida dalsich 50 kN od vetra, takze vysledna sila v load case Wind by bolo 60 kN
+
                             sBucklingLengthFactors = new designBucklingLengthFactors[iNumberOfDesignSections];
                             sMomentValuesforCb = new designMomentValuesForCb[iNumberOfDesignSections];
 
@@ -184,7 +201,7 @@ namespace PFD.Infrastructure
                             sBIF_x[7].fN = 1000f;
                             sBIF_x[8].fN = 1000f;
                             sBIF_x[9].fN = 1000f;
-                            sBIF_x[10].fN = 1000f; // Docasne hodnoty
+                            sBIF_x[10].fN = 1000f; // TODO 633 Docasne hodnoty, ked bude vsetko napojene a funkcne tak by sa mali tieto hodnoty odstraniť
 
                             // Cross-bracing - Wind in + /- Y direction
                             if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall || m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
@@ -194,12 +211,12 @@ namespace PFD.Infrastructure
                                 float angle_rad = (float)Math.Atan(m.Delta_Z / m.Delta_Y); // Uhol sklonu cross-bracing member od horizontály - ziskat z priemetu pruta do GCS Z a Y
 
                                 // Number of wall side bracing crosses (pocet krizov na jednej strane)
-                                int iNumberOfActiveCrosses_left = 2; // TODO - napojit
-                                int iNumberOfActiveCrosses_right = 2; // TODO - napojit
+                                int iNumberOfActiveCrosses_left = 2; // TODO 633 - napojit na GUI - pocet krizov side wall na lavej strane budovy
+                                int iNumberOfActiveCrosses_right = 2; // TODO 633 - napojit na GUI - pocet krizov side wall na pravej strane budovy
                                 // Uvazujeme rovnomerne rozdelenie do jednotlivych krizov, neplati to vsak pre dlhe budovy
 
                                 // Roof cross-bracing - active bays - uvazovat len tie bays ktore maju krize na celej streche a ktore maju aj krize na oboch stranach side wall bracing
-                                int iNumberOfActiveBays_RoofBracing = 2; // TODO - napojit
+                                int iNumberOfActiveBays_RoofBracing = 2; // TODO - napojit na GUI - pocet bays na roof kde je uplne vyplnenie krizmi
                                 int iNumberOfActiveBays = Math.Min(Math.Min(iNumberOfActiveCrosses_left, iNumberOfActiveCrosses_right), iNumberOfActiveBays_RoofBracing);
 
                                 // Pomocny vypocet - vietor alebo zemetrasenie
@@ -268,7 +285,6 @@ namespace PFD.Infrastructure
 
                                         //-------------------------------------------------------------------------------------------------------------------------------
                                         // Roof cross-bracing
-                                        // TODO - dopracovat vypocet pre ROOF BRACING pre WIND - ohybovy moment
                                         // Pocet aktivnych bays je minimum pre walls vlavo, vpravo a roof
 
                                         if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
@@ -346,14 +362,18 @@ namespace PFD.Infrastructure
                                         {
                                             // Roof cross-bracing
 
-                                            // TODO - dopocitat zo sil indikovanych hmotnostou strechy
+                                            // TODO 633 - dopocitat zo sil indikovanych hmotnostou strechy
+                                            // Tu by sme sa potrebovali dostat k hmotnosti strechy, ktora sa pouziva pre vypocet zatazovacich sil v EQ load cases
+                                            // Tento vypocet je v MainWindow.xaml.cs na riadku 762
+                                            // Potrebujeme pre cross-bracing urcit aka cast hmotnosti prislucha k zatazeniu ktore je na roof bracing, takze rafters, eave purlins, purlins a roof
                                             // !!!!!!!!!!!!!!! Docasne uvazujem 10 % zo zatazenia pouziteho pre wall cross-bracing
+                                            float fRoofMassFactorTemp = 0.1f;
 
                                             angle_rad = (float)Math.Atan(m.Delta_X / m.Delta_Y); // Uhol sklonu cross-bracing member - ziskat z priemetu pruta do GCS X a Y
 
                                             // Force in end cross bracing member
-                                            fN_left = 0.1f * Math.Abs((fE_left / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
-                                            fN_right = 0.1f * Math.Abs((fE_right / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
+                                            fN_left = fRoofMassFactorTemp * Math.Abs((fE_left / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
+                                            fN_right = fRoofMassFactorTemp * Math.Abs((fE_right / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
                                         }
                                     }
                                 }
@@ -389,6 +409,10 @@ namespace PFD.Infrastructure
                             }
 
                             sBDeflections_x = new basicDeflections[iNumberOfDesignSections];
+
+                            //---------------------------------------------------------------------------------------------
+                            //---------------------------------------------------------------------------------------------
+                            //---------------------------------------------------------------------------------------------
                         }
                     }
 
