@@ -178,7 +178,7 @@ namespace PFD.Infrastructure
 
                             // Potrebujem tu dostat nejake vstupne hodnoty vid nizsie - popis TODO 633
 
-                            // Alternativna moznost je, ze toto cele by sa vysunuho pred klasicky vypocet vnutornych sil a zaviedlo by sa cosi ako
+                            // Alternativna ale pracnejsia moznost je, ze toto cele by sa vysunuho pred klasicky vypocet vnutornych sil a zaviedlo by sa cosi ako
                             // "inicializacne" vnutorne sily
                             // Tie by sa dali nastavit roznym prutom pre jednotlive load cases este pred spustenim vypoctu
                             // a v ramci vypoctu by sa k nim pridali vnutorne sily, ktore pocitame teraz
