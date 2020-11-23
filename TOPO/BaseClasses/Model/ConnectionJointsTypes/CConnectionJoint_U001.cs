@@ -62,11 +62,12 @@ namespace BaseClasses
 
             // TODO 624 Umožniť editovať v GUI a nastavovať podobne ako je to v CScrewArrangementRect_PlateType_JKL
             // Toto moze byt defaultny stav
-            CScrewRectSequence seq = new CScrewRectSequence(3, 2, 0.03f, 0.02f, 0.06f, 0.10f); // Create rectangular sequence of screws
-            CScrewSequenceGroup gr = new CScrewSequenceGroup();
-            gr.ListSequence.Add(seq); // Add screw sequence to screw group
-            m_ScrewArrangement = new CScrewArrangement_CB(iConnectorNumber, referenceScrew);
-            m_ScrewArrangement.ListOfSequenceGroups = new List<CScrewSequenceGroup>(1) {gr}; // Add screw group to screw arrangement
+            //CScrewRectSequence seq = new CScrewRectSequence(3, 2, 0.03f, 0.02f, 0.06f, 0.10f); // Create rectangular sequence of screws
+            //CScrewSequenceGroup gr = new CScrewSequenceGroup();
+            //gr.ListSequence.Add(seq); // Add screw sequence to screw group
+
+            m_ScrewArrangement = new CScrewArrangement_CB(iConnectorNumber, referenceScrew, 3, 2, 0.03f, 0.02f, 0.06f, 0.10f);
+            //m_ScrewArrangement.ListOfSequenceGroups = new List<CScrewSequenceGroup>(1) {gr}; // Add screw group to screw arrangement
 
             m_ScrewArrangement.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.03f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
             m_ScrewArrangement.arrConnectorControlPoints3D = new Point3D[m_ScrewArrangement.IHolesNumber];
@@ -147,5 +148,17 @@ namespace BaseClasses
                 ConnectorGroups.First().RotationVector = new Vector3D(180 + 90, 0, 180 + 0);
             }
         }
+
+        public void UpdateJointScrewArrangementData()
+        {
+            if (ScrewArrangement != null)
+                ScrewArrangement.UpdateArrangmentData();
+
+            ScrewArrangement.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.03f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
+            ScrewArrangement.arrConnectorControlPoints3D = new Point3D[ScrewArrangement.IHolesNumber];
+            ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0, 0, /*0.03f, 0.02f,*/ (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
+            ScrewArrangement.GenerateConnectors_FlatPlate(m_bScrewInPlusZDirection);
+        }
+
     }
 }

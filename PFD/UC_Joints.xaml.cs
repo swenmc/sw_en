@@ -1418,6 +1418,29 @@ namespace PFD
             {
                 //TODO
                 //implement ScrewArrangement_CB change
+                if (joint is CConnectionJoint_U001)
+                {
+                    CPlateHelper.DataGridScrewArrangement_ValueChanged(item, (CConnectionJoint_U001)joint);
+                    paramsChanged = true;
+                    List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(((CConnectionJoint_U001)joint).ScrewArrangement);
+
+                    //CPlateHelper.UpdateJointScrewArrangementData((CConnectionJoint_U001)joint);
+                    ((CConnectionJoint_U001)joint).UpdateJointScrewArrangementData();
+
+                    if (screwArrangementParams != null)
+                    {
+                        StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+                        int screwArrangementGridIndex = 1;
+
+                        DataGrid dgSA = sp.Children[screwArrangementGridIndex] as DataGrid;
+                        dgSA.ItemsSource = screwArrangementParams;
+                        foreach (CComponentParamsView cpw in screwArrangementParams)
+                        {
+                            cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
+                        }
+                    }
+                    vm.ChangedScrewArrangementParameter = item;
+                }
             }
             
         }
