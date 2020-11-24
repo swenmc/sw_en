@@ -69,9 +69,10 @@ namespace BaseClasses
             m_ScrewArrangement = new CScrewArrangement_CB(iConnectorNumber, referenceScrew, 3, 2, 0.03f, 0.02f, 0.06f, 0.10f);
             //m_ScrewArrangement.ListOfSequenceGroups = new List<CScrewSequenceGroup>(1) {gr}; // Add screw group to screw arrangement
 
-            m_ScrewArrangement.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.03f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
+            //m_ScrewArrangement.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
+            m_ScrewArrangement.Calc_HolesCentersCoord2D();
             m_ScrewArrangement.arrConnectorControlPoints3D = new Point3D[m_ScrewArrangement.IHolesNumber];
-            m_ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, /*0.03f, 0.02f,*/ (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
+            m_ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
             m_ScrewArrangement.GenerateConnectors_FlatPlate(m_bScrewInPlusZDirection);
 
             // TODO Ondrej - Task 616
@@ -129,6 +130,9 @@ namespace BaseClasses
             if (m_SecondaryMembers[0] != null)
                 fAlignment_x = -m_SecondaryMembers[0].FAlignment_Start;
 
+
+            ConnectorGroups = new List<CConnectorGroup>();
+            ConnectorGroups.Add(new CConnectorGroup(m_ScrewArrangement.Screws));
             // Joint is defined in start point and LCS of secondary member [0,y,z]
             // Plates are usually defined in x,y coordinates
 
@@ -154,9 +158,10 @@ namespace BaseClasses
             if (ScrewArrangement != null)
                 ScrewArrangement.UpdateArrangmentData();
 
-            ScrewArrangement.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, 0.03f, 0.02f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
+            //ScrewArrangement.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
+            ScrewArrangement.Calc_HolesCentersCoord2D();
             ScrewArrangement.arrConnectorControlPoints3D = new Point3D[ScrewArrangement.IHolesNumber];
-            ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0, 0, /*0.03f, 0.02f,*/ (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
+            ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0, 0, (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
             ScrewArrangement.GenerateConnectors_FlatPlate(m_bScrewInPlusZDirection);
         }
 

@@ -112,33 +112,39 @@ namespace BaseClasses
                 m_DefaultNumberOfSequencesInGroup = value;
             }
         }
-
-        public void Calc_HolesCentersCoord2D(float fhY, float fx_edge, float fy_edge, float fx/*, float fy*/)
+                
+        public void Calc_HolesCentersCoord2D()
         {
-            /*
-            float fx_edge = 0.03f;  // x-direction
-            float fy_edge = 0.02f;  // y-direction
-            float fx = 0.06f;  // x-direction
-            float fy = 0.06f;  // y-direction
-            */
+            // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
+            float fx_edge = (float)RectSequences.First().RefPointX;
+            float fy_edge = (float)RectSequences.First().RefPointY;
 
-            // TODO 624 - urobit toto dynamicke, aby sa generovalo podla rect screw arrangement - rovnake alebo rozne vzdialenosti medzi jednotlivymi radmi alebo stlpcami skrutiek
-            if (IHolesNumber > 0)
+            int grCount = 0;
+            foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
             {
-                HolesCentersPoints2D = new Point[IHolesNumber];
+                grCount++;
+                foreach (CScrewRectSequence sc in gr.ListSequence)
+                {
+                    sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);
+                    
+                    // Translate from [0,0] on plate to the final position
+                    TranslateSequence(fx_edge, fy_edge, sc);                    
+                }
 
-                HolesCentersPoints2D[0] = new Point(fx_edge, fy_edge);
-
-                HolesCentersPoints2D[1] = new Point(fx_edge, fhY - fy_edge);
-
-                HolesCentersPoints2D[2] = new Point(fx_edge + fx, fy_edge);
-
-                HolesCentersPoints2D[3] = new Point(fx_edge + fx, fhY - fy_edge);
-
-                HolesCentersPoints2D[4] = new Point(fx_edge + 2*fx, fy_edge);
-
-                HolesCentersPoints2D[5] = new Point(fx_edge + 2*fx, fhY - fy_edge);
+                gr.HolesRadii = gr.Get_RadiiOfConnectorsInGroup();
             }
+
+            FillArrayOfHolesCentersInWholeArrangement();
+        }
+
+        public Point[] Get_ScrewSequencePointCoordinates(CScrewRectSequence srectSeq)
+        {
+            // Connectors in Sequence
+            if (srectSeq.SameDistancesX && srectSeq.SameDistancesY) // Ak su pre oba smery vzdialenosti skrutiek rovnake, posielame do konstruktora len jedno cislo pre rozostup (vzdialenost) skrutiek
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+            else // Ak su aspon pre jeden smer vzdialenosti skrutiek rozdielne, posielame do konstruktora zoznam rozostupov (rozne vzdialenosti) skrutiek
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistancesOfPointsX.ToArray(), srectSeq.DistancesOfPointsY.ToArray());
+            
         }
 
 
@@ -151,9 +157,7 @@ namespace BaseClasses
             // Update reference screw properties
             DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
             referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
-
-
-            //co je toto za blud? to nanovo stale vytvarame?
+            
             //upravene,ze iba ak nie je inicializovane vobec tak vtedy
             if (ListOfSequenceGroups == null || ListOfSequenceGroups.Count == 0)
             {
