@@ -507,6 +507,10 @@ namespace BaseClasses
         Dummy_Null = 17
     }
 
+    //to Mato- keby bolo na mne,tak cele toto vyhodim
+    //Mne sa vobec nepaci,ze sa enum pouziva ako index v poli vid:
+    //ComponentList[(int)EMemberGroupNames.eRafter].ComponentName
+    //malo by sa to vyberat ako ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter).ComponentName potom je jedno ako su usporiadane v tom zozname
     public enum EMemberGroupNames
     {
         eMainColumn = 0,    // Internal frame

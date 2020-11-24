@@ -333,14 +333,19 @@ namespace PFD
 
                 if (!isChangedFromCode) IsSetFromCode = true;
 
+                //najprv sa nastavi component list view model podla DB
+                _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
+                _componentVM.SetILSProperties(dmodel);
+
+                RoofPitch_deg = dmodel.fRoof_Pitch_deg;
+                fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
+
                 WidthOverall = dmodel.fb;
                 Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
                 LengthOverall = dmodel.fL;
                 Length = MLengthOverall - Math.Abs(EdgeColumnCrsc_y_minus) - EdgeColumnCrsc_y_plus;
                 WallHeightOverall = dmodel.fh;
                 WallHeight = GetCenterLineHeight_H1();
-
-                RoofPitch_deg = dmodel.fRoof_Pitch_deg;
                 
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
@@ -351,47 +356,37 @@ namespace PFD
 
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
-
-                _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
-
-                _componentVM.SetILSProperties(dmodel);
-
+                
                 SetResultsAreNotValid();
+                
+                //refaktoring 24.11.2020 - toto mi pride,ze je davno nastavene a je to tu dvojmo
+                // ak bude vsekto OK, tak treba zmazat zakomentovane
+                //if (MKitsetTypeIndex == 0)
+                //{
+                //    fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
+                //    fHeight_H2_Overall = GetOverallHeight_H2();
 
-                //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
+                //    // Re-calculate value of distance between columns (number of columns per frame is always even
+                //    int iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
+                //    IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
+                //}
+                //else if (MKitsetTypeIndex == 1)
+                //{
+                //    fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
+                //    fHeight_H2_Overall = GetOverallHeight_H2();
 
-                // TO Ondrej - prerob to ako treba
-                // Povodne to bolo tak ze properties boli len parametre ktore boli zadavane v GUI
-                // Ak je programatorsky spravnejsie, ze ma byt vsetko co sa tu pouziva property, tak nemam namietky
+                //    // Re-calculate value of distance between columns (number of columns per frame is always even
+                //    int iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance));
+                //    IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                //}
+                //else
+                //{
+                //    fHeight_H2 = 0; // Exception
+                //    fHeight_H2_Overall = 0;
+                //    IFrontColumnNoInOneFrame = 0;
+                //}
+                //MColumnDistance = MWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
 
-                fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
-
-                if (MKitsetTypeIndex == 0)
-                {
-                    fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                    fHeight_H2_Overall = GetOverallHeight_H2();
-
-                    // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
-                    IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
-                }
-                else if (MKitsetTypeIndex == 1)
-                {
-                    fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                    fHeight_H2_Overall = GetOverallHeight_H2();
-
-                    // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance));
-                    IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
-                }
-                else
-                {
-                    fHeight_H2 = 0; // Exception
-                    fHeight_H2_Overall = 0;
-                    IFrontColumnNoInOneFrame = 0;
-                }
-
-                MColumnDistance = MWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
 
                 RoofCladdingIndex = 1;
                 RoofCladdingCoatingIndex = 1;
@@ -791,7 +786,8 @@ namespace PFD
                 if (value < 0.5 || value > 4)
                     throw new ArgumentException("Girt distance must be between 0.5 and 4.0 [m]");
 
-                MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
+                //TO Mato - je toto cisto iba na zobrazovanie? pokial to pouzivas aj na vypocty, tak je to zle, nemozes len tak poslat dokelu cislo a zaokruhlit
+                MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
@@ -814,7 +810,8 @@ namespace PFD
                 if (value < 0.5 || value > 4)
                     throw new ArgumentException("Purlin distance must be between 0.5 and 4.0 [m]");
 
-                MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
+                //TO Mato - je toto cisto iba na zobrazovanie? pokial to pouzivas aj na vypocty, tak je to zle, nemozes len tak poslat dokelu cislo a zaokruhlit
+                MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
@@ -3032,9 +3029,7 @@ namespace PFD
                 if (ComponentList == null) return 0;
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
                 if (ci != null)
-                {
-                    //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
-                    // TODO 627 Ondrej
+                {                    
                     MMainColumnCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn].Section).z_max;
                 }
 
@@ -3054,9 +3049,7 @@ namespace PFD
                 if (ComponentList == null) return 0;
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                 if (ci != null)
-                {
-                    //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
-                    // TODO 627 Ondrej
+                {                    
                     MEdgeColumnCrsc_y_minus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_min;
                 }
 
@@ -3076,9 +3069,7 @@ namespace PFD
                 if (ComponentList == null) return 0;
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                 if (ci != null)
-                {
-                    //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
-                    // TODO 627 Ondrej
+                {                    
                     MEdgeColumnCrsc_y_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_max;
                 }
 
@@ -3098,9 +3089,7 @@ namespace PFD
                 if (ComponentList == null) return 0;
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
                 if (ci != null)
-                {
-                    //CrScProperties prop = CSectionManager.GetSectionProperties(ci.Section);
-                    // TODO 627 Ondrej - toto mi nefunguje pri spusteni ale az pri nejakych zmenach v dialogu, chcem nacitat rozmer z aktualne nastaveneho prierezu 270xxx nested, takze 290/2 = 145 mm, nacitava mi to 630 / 2 = 315 mm z prierezu 63020
+                {                    
                     MMainRafterCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eRafter].Section).z_max;
                 }
 
