@@ -731,8 +731,8 @@ namespace PFD
             if (model is CModel_PFD_01_MR) // Rozdielny pocet girts na lavej a pravej strane budovy
             {
                 CModel_PFD_01_MR modelMonoPitch = (CModel_PFD_01_MR)model;
-                iNumberOfGirtsInLeftWallPerMainColumn = modelMonoPitch.iLeftColumnGirtNo;
-                iNumberOfGirtsInRightWallPerMainColumn = modelMonoPitch.iRightColumnGirtNo;
+                iNumberOfGirtsInLeftWallPerMainColumn = modelMonoPitch.LeftColumnGirtNo;
+                iNumberOfGirtsInRightWallPerMainColumn = modelMonoPitch.RightColumnGirtNo;
             }
 
             int iNumberOfGirts_y_Left = (iNumberOfMainColumns_y - 1) * iNumberOfGirtsInLeftWallPerMainColumn;

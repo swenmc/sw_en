@@ -20,6 +20,25 @@ namespace PFD
         private CComponentListVM _clVM;
         private CPFDViewModel _pfdVM;
 
+        //--------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------------
+        public int OneColumnGirtNo
+        {
+            get
+            {
+                return iOneColumnGirtNo;
+            }
+
+            set
+            {
+                iOneColumnGirtNo = value;
+            }
+        }
+
+
+        //--------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------------
         public CModel_PFD_01_GR
         (
                 BuildingGeometryDataInput sGeometryInputData,
@@ -77,7 +96,7 @@ namespace PFD
             iMainColumnNo = iFrameNo * 2;
             iRafterNo = iFrameNo * 2;
 
-            iOneColumnGirtNo = 0;
+            OneColumnGirtNo = 0;
             iGirtNoInOneFrame = 0;
 
             m_arrMat = new CMat[17];
