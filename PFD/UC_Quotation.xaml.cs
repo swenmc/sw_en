@@ -708,8 +708,7 @@ namespace PFD
             // Plocha strechy bez fibre glass
             float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
 
-            //-----------------------------------------------------------------------------
-            // TODO Ondrej - Toto treba refaktorovat s MainWindow.xaml.cs
+            //-----------------------------------------------------------------------------            
             // TODO 438
             CTS_CrscProperties prop_RoofCladding = vm.RoofCladdingProps;
             CTS_CrscProperties prop_WallCladding = vm.WallCladdingProps;
@@ -717,27 +716,8 @@ namespace PFD
             CTS_CoilProperties prop_WallCladdingCoil;
             CoatingColour prop_RoofCladdingColor;
             CoatingColour prop_WallCladdingColor;
-            vm.GetCTS_CoilProperties(/*out prop_RoofCladding, out prop_WallCladding, */out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            vm.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
             
-            //List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
-            //CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
-            //prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{vm.RoofCladdingThickness}");
-
-            //CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
-            //prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.WallCladding}-{vm.WallCladdingThickness}");
-
-            //CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
-            //prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.RoofCladdingCoating);
-
-            //CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
-            //prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.WallCladdingCoating);
-
-            //CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-            //CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
-
-            //CTS_CoilProperties prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
-            //CTS_CoilProperties prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
-
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
             //-----------------------------------------------------------------------------
@@ -1013,7 +993,7 @@ namespace PFD
                 Datagrid_DoorsAndWindows.ItemsSource = ds.Tables[0].AsDataView();
                 Datagrid_DoorsAndWindows.Loaded += Datagrid_DoorsAndWindows_Loaded;
             }
-            else // TODO Ondrej - Tabulka je prazdna - nezobrazime ju
+            else // Tabulka je prazdna - nezobrazime ju
             {
                 TextBlock_DoorsAndWindows.IsEnabled = false;
                 TextBlock_DoorsAndWindows.Visibility = Visibility.Collapsed;
@@ -1163,7 +1143,7 @@ namespace PFD
                 Datagrid_Fibreglass.ItemsSource = ds.Tables[0].AsDataView();
                 Datagrid_Fibreglass.Loaded += Datagrid_Fibreglass_Loaded;
             }
-            else // TODO Ondrej - Tabulka je prazdna - nezobrazime ju
+            else // Tabulka je prazdna - nezobrazime ju
             {
                 TextBlock_Fibreglass.IsEnabled = false;
                 TextBlock_Fibreglass.Visibility = Visibility.Collapsed;
@@ -1765,6 +1745,41 @@ namespace PFD
             _pfdVM.RecreateQuotation = true;
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //ODKALDAM SI PLATES METODU AK BY SOM V REFAKTORINGU NIECO DOBABRAL TAK odtialto sa vezme
         //private void CreateTablePlates(CModel model)
         //{
@@ -1805,12 +1820,12 @@ namespace PFD
         //            count++;
         //            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
         //            {
-        //                // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
+        //                // Nastavime parametre plechu z databazy - toto by sa malo diat uz asi pri vytvarani plechov
         //                // Nie vsetky plechy budu mat parametre definovane v databaze
         //                // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
 
         //                #region Base Plate
-        //                // TO Ondrej Blok1 Plate START
+        //                // Blok1 Plate START
         //                // ----------------------------------------------------------------------------------------------------------------------------------------
         //                try
         //                {
@@ -1883,7 +1898,7 @@ namespace PFD
         //                    ListOfPlateGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j]);
         //                }
 
-        //                // TO Ondrej Blok1 Plate END
+        //                // Blok1 Plate END
         //                // ----------------------------------------------------------------------------------------------------------------------------------------
         //                #endregion
 
@@ -1892,7 +1907,7 @@ namespace PFD
         //                // TO Mato - nieco som skusal... chcelo by to asi mat jeden objekt na tieto veci a nie zoznamy kade tade
         //                //rovnako je asi problem,ze to nijako negrupujem...ale tak potreboval by som vediet na zaklade coho sa to bude grupovat
 
-        //                // To Ondrej - K prvej vete nemam vyhrady. Urob ako sa to ma.
+        //                // K prvej vete nemam vyhrady. Urob ako sa to ma.
         //                // Zgrupovat to treba podla prefixu, ale kedze to este nie je dotiahnute tak porovnavam aj rozmery a plochu uz pridanych plates alebo washers s aktualnym
         //                // Vyrobil som 3 bloky kodu, resp. regiony
         //                // Jeden pre base plate, jeden washer plate top a jeden pre washer bearing
@@ -1917,7 +1932,7 @@ namespace PFD
         //                        int anchorsNum = plate.AnchorArrangement.Anchors.Length;
 
         //                        #region Washer Plate Top
-        //                        // TO Ondrej Blok2 Washer Plate Top START
+        //                        // Blok2 Washer Plate Top START
         //                        // ----------------------------------------------------------------------------------------------------------------------------------------
         //                        // Plate Top Washer
         //                        try
@@ -1990,12 +2005,12 @@ namespace PFD
         //                            // Add first plate in the group to the list of plate groups
         //                            ListOfPlateGroups.Add(anchor.WasherPlateTop);
         //                        }
-        //                        // TO Ondrej Blok2 Washer Plate Top END
+        //                        // Blok2 Washer Plate Top END
         //                        // ----------------------------------------------------------------------------------------------------------------------------------------
         //                        #endregion
 
         //                        #region Washer Bearing 
-        //                        // TO Ondrej Blok3 Washer Bearing START
+        //                        // Blok3 Washer Bearing START
         //                        // ----------------------------------------------------------------------------------------------------------------------------------------
         //                        // Bearing Washer
         //                        try
@@ -2068,7 +2083,7 @@ namespace PFD
         //                            // Add first plate in the group to the list of plate groups
         //                            ListOfPlateGroups.Add(anchor.WasherBearing);
         //                        }
-        //                        // TO Ondrej Blok3 Washer Bearing END
+        //                        // Blok3 Washer Bearing END
         //                        // ----------------------------------------------------------------------------------------------------------------------------------------
         //                        #endregion
         //                    }
@@ -2378,7 +2393,7 @@ namespace PFD
         //    }
 
         //    //To Mato...toto tu treba???
-        //    // TO Ondrej
+        //    // 
         //    // Tie kontroly znikli pre to aby som mal istotu ze som vsetko spravne pridal z modelu do zoznamov
         //    // V debugu by sa nam to mohlo zist aby sme nic nevynechali ani neodfiltrovali
 

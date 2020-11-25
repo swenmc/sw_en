@@ -6,27 +6,12 @@ using System.Data;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization.Formatters.Binary;
-//using System.Threading;
-//using System.Data.SQLite;
-//using System.Configuration;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Globalization;
-//using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Navigation;
-//using System.Windows.Shapes;
-//using System.Data.SqlClient;
 using BaseClasses;
 using BaseClasses.Helpers;
-//using BaseClasses.GraphObj;
 using DATABASE;
 using MATH;
 using MATERIAL;
@@ -36,10 +21,6 @@ using EXPIMP;
 using Examples;
 using DATABASE.DTO;
 using PFD.Infrastructure;
-//using HelixToolkit.Wpf;
-//using _3DTools;
-//using FEM_CALC_BASE;
-//using M_BASE;
 using Microsoft.Win32;
 using BriefFiniteElementNet;
 using System.Configuration;
@@ -47,7 +28,7 @@ using PFD.ViewModels;
 using BaseClasses.Results;
 using System.Threading;
 using _3DTools;
-//using BriefFiniteElementNet.Controls;
+
 
 namespace PFD
 {
@@ -87,8 +68,6 @@ namespace PFD
         bool bDebugging = false;
         bool bRelease = false;
 
-        ////public ObservableCollection<DoorProperties> DoorBlocksProperties;
-        //public ObservableCollection<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
         public DisplayOptions sDisplayOptions;
         public BuildingDataInput sBuildingInputData;
@@ -99,7 +78,7 @@ namespace PFD
         public SeisLoadDataInput sSeisInputData;
 
         private CProjectInfoVM projectInfoVM;
-        //private DisplayOptionsViewModel displayOptionsVM;
+        
 
         public MainWindow()
         {
@@ -116,10 +95,9 @@ namespace PFD
             else
             {
                 InitializeComponent();
-            }
-            
+            }            
             // Set items in comboboxes and default values
-            SetInitialItemsInComboboxes();
+            //SetInitialItemsInComboboxes();
 
             // Prepare data for generating of door blocks
             ObservableCollection<DoorProperties> DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties(bRelease);
@@ -490,72 +468,7 @@ namespace PFD
             }
             return false;
         }
-
-        //SplashScreen splashScreen = null;
-        //bool waiting = true;
-        public void bckWrk_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //while (waiting) { Thread.Sleep(1000); }
-        }
-
-        public void bckWrk_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //hide the popup
-        }
-
-        //private void DeleteCalculationResults()
-        //{
-        //    // TODO - Ondrej - je potrebne zmazat vysledky a updatovat UC_InternalForces, UC_MemberDesign, UC_JointDesign (tieto UC by sa nemali zobrazovat pokial nie su k dispozicii vysledky)
-        //    // tj. nebola spustena metoda Calculate_Click, vysledky boli z dovodu zmeny topologickeho 3D modelu zmazane a pod
-
-        //    //Todo - asi sa to da jednoduchsie
-        //    /*
-        //    DeleteLists();
-        //    Results_GridView.ItemsSource = null;
-        //    Results_GridView.Items.Clear();
-        //    Results_GridView.Items.Refresh();
-        //    */
-        //}
-
-        private void RunFEMSOlver()
-        {
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // Calculate Internal Forces
-            // Todo - napojit FEM vypocet
-
-            // TODO - Ondrej Task No 41
-            // Todo - nefunguje implementovany 2D solver, asi je chybna detekcia zakladnej tuhostnej matici pruta
-            // Treba sa na to pozriet podrobnejsie
-            // Navrhujem napojit nejaky externy solver
-
-            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.Width, vm.WallHeight, vm.Height_H2, 1000, 0, 1000, 1000, 1000);
-            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
-
-            // Auxialiary string - result data
-            int iDispDecPrecision = 3; // Precision of numerical values of displacement and rotations
-            string sDOFResults = null;
-
-            for (int i = 0; i < obj_Calc.m_V_Displ.FVectorItems.Length; i++)
-            {
-                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Increase index (1st member "0" to "1"
-                int iNodeDOFNumber = obj_Calc.m_fDisp_Vector_CN[i, 2] + 1;
-
-                sDOFResults += "Node No:" + "\t" + iNodeNumber + "\t" +
-                               "Node DOF No:" + "\t" + iNodeDOFNumber + "\t" +
-                               "Value:" + "\t" + String.Format("{0:0.000}", Math.Round(obj_Calc.m_V_Displ.FVectorItems[i], iDispDecPrecision))
-                               + "\n";
-            }
-
-            // Main String
-            string sMessageCalc =
-                "Calculation was successful!" + "\n\n" +
-                "Result - vector of calculated values of unrestraint DOF displacement or rotation" + "\n\n" + sDOFResults;
-
-            // Display Message
-            MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
-        }
-
+        
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
             List<ModelValidationError> errors = ValidationHelper.ValidateModel(vm.Model);
@@ -629,7 +542,7 @@ namespace PFD
             CTS_CoilProperties prop_WallCladdingCoil;
             CoatingColour prop_RoofCladdingColor;
             CoatingColour prop_WallCladdingColor;
-            vm.GetCTS_CoilProperties(/*out prop_RoofCladding, out prop_WallCladding, */out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            vm.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
 
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
@@ -783,8 +696,7 @@ namespace PFD
             // Earthquake / Seismic Design  (NZS 1170.5)
             CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y);
         }
-
-
+        
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
         {
             vm.GeneralLoad = new CCalcul_1170_1(
@@ -901,28 +813,7 @@ namespace PFD
             double fP = 1; // Unit Force
             return (float)(2 * MathF.fPI * Math.Sqrt((fMass_Total * GlobalConstants.G_ACCELERATION * MathF.Pow2(fDelta_x)) / (GlobalConstants.G_ACCELERATION * fP * fDelta_x))); // Eq. 4.1(1)
         }
-
-        //public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)
-        //{
-        //    CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
-        //}
-
-        public void FillComboboxTrapezoidalSheetingThickness(int coatingID, int claddingID, ComboBox combobox)
-        {
-            List<CTS_ThicknessProperties> props = CTrapezoidalSheetingManager.LoadThicknessPropertiesList();
-
-            var items = props.Where(p => p.coatingIDs.Contains(coatingID) && p.claddingIDs.Contains(claddingID)).Select(p => (p.thicknessCore * 100).ToString() + " mm");
-
-            combobox.ItemsSource = items;
-            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
-        }
-
-        //not used
-        //public void FillComboboxFibreglassThickness(string sTableName, ComboBox combobox)
-        //{
-        //    CComboBoxHelper.FillComboboxValues("FibreglassSQLiteDB", sTableName, "name", combobox);
-        //}
-
+        
         public void SetMaterialValuesFromDatabase()
         {
             foreach (CMat m in vm.Model.m_arrMat)
@@ -975,7 +866,7 @@ namespace PFD
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
 
             UpdateGeometryInputData();
-            System.Diagnostics.Trace.WriteLine("UpdateGeometryInputData: " + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("UpdateGeometryInputData: " + (DateTime.Now - start).TotalMilliseconds);
 
             List<CConnectionJointTypes> joints = null;
             if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
@@ -1029,11 +920,7 @@ namespace PFD
                 System.Diagnostics.Trace.WriteLine("UpdateUC_Joints: " + (DateTime.Now - start).TotalMilliseconds);
                 UpdateUC_Footings();
                 System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);
-
-                //vm.Flashings = null;
-                //vm.Gutters = null;
-                //vm.Downpipes = null;
-
+                
                 //toto sa ma udiat iba ak sa menila nejaka property z modelu, rozmer a podobne
                 if (vm.RecreateJoints)
                 {
@@ -1197,12 +1084,10 @@ namespace PFD
 
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (ci != null) sGeometryInputData.iGirtBackSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
-
         }
 
         private void SetUIElementsVisibility()
         {
-            // TO Ondrej - tu som taketo nieco pridal, neviem ci je to dobry napad :)
             if (bRelease) // Disablujeme prvky ktore nemaju byt v release verzii
             {
                 View_2D.IsEnabled = false;
@@ -1250,7 +1135,7 @@ namespace PFD
                 Quotation.Content = null;
             }
 
-            // To Ondrej - uprava Nechcem tlacitka, resp. celkovo widgety skryvat a zobrazovat, skor len menit enabled a read-only mode
+            // Nechcem tlacitka, resp. celkovo widgety skryvat a zobrazovat, skor len menit enabled a read-only mode
             if (vm._generalOptionsVM.UpdateAutomatically) ButtonGenerateModel.IsEnabled = false; // ButtonGenerateModel.Visibility = Visibility.Hidden;
             else ButtonGenerateModel.IsEnabled = true; //ButtonGenerateModel.Visibility = Visibility.Visible;
 
@@ -1615,261 +1500,7 @@ namespace PFD
             PurlinDesigner win = new PurlinDesigner();
             win.Show();
         }
-
-
-        private void chbDisplayLoadsOnFrames_Checked(object sender, RoutedEventArgs e)
-        {
-            // To Ondrej - popis
-
-            // 1. nacitat objekt CModel_PFD_01_GR
-
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-            CModel_PFD model = vm.Model as CModel_PFD;
-            double limit = 0.0000001;
-
-            // 2. Najst pruty ramu
-            // 2.(a) prva moznost - najst members v rovinach s Y = i * fL1_frame, ktore su typu Main Column (EMemberGroupNames.eMainColumn) alebo Rafter (EMemberGroupNames.eRafter) vid listOfModelMemberGroups
-            // i je index ramu 0 - iFrameNo
-            // 2.(b) druha moznost - pruty ramu sa generuju ako prve spolu s eaves purlins, vieme ze ram ma 2 stlpy a 2 raftery, ramy su spojene na konci dvomi eave purlins takze v jednom cykle je vyrobenych 6 prutov
-            // vid CModel_PFD_01_GR line 338 - 354
-
-            List<List<CMember>> frames = new List<List<CMember>>();
-
-            for (int i = 0; i < model.iFrameNo; i++)
-            {
-                List<CMember> frameMembers = new List<CMember>();
-
-                foreach (CMemberGroup gr in model.listOfModelMemberGroups)
-                {
-                    foreach (CMember m in gr.ListOfMembers)
-                    {
-                        //it is not Main/End Column and it is not Main/End rafter
-                        if (m.EMemberType != EMemberType_FS.eMC && m.EMemberType != EMemberType_FS.eMR &&
-                            m.EMemberType != EMemberType_FS.eEC && m.EMemberType != EMemberType_FS.eER) continue;
-
-                        //task 600
-                        //if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
-                        if (MathF.d_equal(m.PointStart.Y, model.GetBaysWidthUntilFrameIndex(i), limit))
-                        {
-                            frameMembers.Add(m);
-
-                            if (bDebugging)
-                                System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
-                        }
-                    }
-                }
-
-                frames.Add(frameMembers);
-            }
-
-            // Frame 1
-            // Member ID 1 - Main Column
-            // Member ID 2 - Rafter
-            // Member ID 3 - Rafter
-            // Member ID 4 - Main Column
-            // Member ID 5 - Eave Purlin
-            // Member ID 6 - Eave Purlin
-            // Frame 2
-            // Member ID 1+6 - Main Column
-            // Member ID 2+6 - Rafter
-            // Member ID 3+6 - Rafter
-            // Member ID 4+6 - Main Column
-            // Member ID 5+6 - Eave Purlin
-            // Member ID 6+6 - Eave Purlin
-
-            // a takto sa to opakuje s tym ze posledne 2 eave purlin sa nevytvoria lebo ramov je o jeden viac nez bays
-
-            // 3. Ked mame uspesne identifikovane pruty ramu na ktore chceme generovat zatazenie
-            // tak pre kazdy load case a kazdy objekt SurfaceLoad zo zoznamu zatazeni v danom load case
-            // aplikujeme funkciu ktora zisti ci sa plocha zatazenia alebo jej cast nachadza v takzvanej zatazovacej ploche pruta L_member * fL1_frame (resp. 0.5 fL1_frame pre krajne ramy)
-            // To znamena ze niektory z definicnych bodov Surface Load ma globalnu suradnicu Y z intervalu <i*Y - 0.5 * L1; i*Y + 0.5 * L1>
-
-            // Zistime ci je prut ramu v danej ploche SurfaceLoad len z casti alebo cely (podla suradnice x pruta)
-            // Podla toho sa potom vygeneruje objekt CMLoad_21 alebo CMLoad_24
-            // 4. Hodnota zatazenia sa urci zo zatazovacej sirky ramu fL1_frame, pripadne 0.5 * fL1_frame ak sa v oblasti <i*Y - 0.5 * L1; i*Y + 0.5 * L1> v lokacii x pruta nachadza len jedna plocha (vid obrazok 10)
-            // 5. Hodnota zatazenia sa urci zo sumy zatazovacich sirok * SurfaceLoad fValue, pre vsetky surface loads, ktore spadaju do oblasti <i*Y - 0.5 * L1; i*Y + 0.5 * L1> v lokacii x pruta (vid obrazok 11)
-
-            // Do hodnoty zatazenia sa zohladnia vsetky objekty SurfaceLoad ktore sa nachadzaju v danej zatazovacej sirke pruta
-            // Je potrebne prepocitat smer a urcit znamienko zatazenia medzi SurfaceLoad a novym CM_Load. Zatazenie mozeme generovat v LCS pruta alebo v GCS.
-            // Asi bude lepsie pouzit vzdy LCS.
-
-            //Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001)
-
-            int frameIndex = 0;
-            foreach (List<CMember> frame in frames)
-            {
-                foreach (CMember m in frame)
-                {                    
-                    foreach (CLoadCase loadCase in model.m_arrLoadCases)
-                    {
-                        foreach (CSLoad_Free load in loadCase.SurfaceLoadsList)
-                        {
-                            //musis najst CSLoad_Free ktorych niektory bod ma suradnicu Y do v intervale < i * Y - 0.5L1, i* Y +0.5L1 >
-                            if (load is CSLoad_FreeUniformGroup)
-                            {
-                                foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)load).LoadList)
-                                {
-                                    SetLoadGCSCoordinates(l);
-
-                                    if (l.pSurfacePoints == null || l.pSurfacePoints.Count == 0 ||
-                                        l.PointsGCS == null || l.PointsGCS.Count == 0)
-                                    {
-                                        /*
-                                        // Model group sa nevyrobi ak je hodnota zatazenia nulova, mali by sme to vsetko preskakovat ak zatazenie neexistuje alebo je zatazenie nulove
-                                        Model3DGroup gr = load.CreateM_3D_G_Load();
-                                        // Catch null or empty list of definition points
-                                        throw new ArgumentNullException("Load Case Name: " + loadCase.Name + "\n" +
-                                           "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
-                                        */
-                                    }
-                                                                        
-                                    GetTributaryWidth_B(l, m, model.GetBayWidth(frameIndex));
-
-                                    //if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(loadCase, l, m, model.fL1_frame, isOuterFrame);
-                                }
-                            }
-                            else if (load is CSLoad_FreeUniform)
-                            {
-                                SetLoadGCSCoordinates((CSLoad_FreeUniform)load);
-
-                                if (load.pSurfacePoints == null || load.pSurfacePoints.Count == 0 ||
-                                    load.PointsGCS == null || load.PointsGCS.Count == 0)
-                                {
-                                    /*
-                                    // Model group sa nevyrobi ak je hodnota zatazenia nulova, mali by sme to vsetko preskakovat ak zatazenie neexistuje alebo je zatazenie nulove
-                                    Model3DGroup gr = load.CreateM_3D_G_Load();
-                                    // Catch null or empty list of definition points
-                                    throw new ArgumentNullException("Load Case Name: " + loadCase.Name + "\n" +
-                                       "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
-                                    */
-                                }
-                                                                
-                                GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.GetBayWidth(frameIndex));
-                                //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
-                            }
-                            else throw new Exception("Load type not known.");
-                        }
-                    }
-                }
-                frameIndex++;
-            }
-
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                //chbDisplayLoadsOnPurlinsAndGirts.IsChecked = false;
-
-
-
-
-                //foreach (CLoadCase load in model.m_arrLoadCases)
-                //{
-                //    System.Diagnostics.Trace.WriteLine(load.Name);
-                //    List<CSLoad_Free> loadList = load.SurfaceLoadsList;
-                //    foreach (CSLoad_Free l_free in load.SurfaceLoadsList)
-                //    {
-                //        if(l_free is CSLoad_FreeUniform)
-                //            System.Diagnostics.Trace.WriteLine($"CSLoad_Free: {l_free.Name}, Points: {l_free.pSurfacePoints.ToString()}");
-
-                //    }
-
-                //}
-
-                //UpdateAll();
-            }
-        }
-
-        private void SetLoadGCSCoordinates(CSLoad_FreeUniform load)
-        {
-            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load, null, 0.001f);
-        }
-
-        private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)
-        {
-            foreach (Point3D p in load.PointsGCS)
-            {
-                if (m.NodeStart.Y - 0.5 * fL1_frame <= p.Y && m.NodeStart.Y + 0.5 * fL1_frame >= p.Y
-                    || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
-                {
-                    if (bDebugging)
-                        System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID}");
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // Returns tributary width "b" which is representing a portion of surface load area transferred to the member
-        // "b" is a dimension perpendicular to the member local x-axis
-        private double GetTributaryWidth_B(CSLoad_FreeUniform load, CMember m, float fL1_frame)
-        {
-            // TO Ondrej, odpoved na tento problem je v podmienke if (Math.Abs(fValue) > 0) public class CSLoad_FreeUniform, line 257
-            // Ak je hodnota zatazenia nulova tak sa ModelGroup nevyrobi a vracia to ModelGroup = null;
-
-            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane // TO Ondrej - nastava pre nulovu hodnotu zatazenia, nevyrobi sa ModelGroup3D
-
-            double MinLoadY = load.PointsGCS.Min(p => p.Y);
-            double MaxLoadY = load.PointsGCS.Max(p => p.Y);
-
-            double minY = m.NodeStart.Y - 0.5 * fL1_frame;
-            double maxY = m.NodeStart.Y + 0.5 * fL1_frame;
-
-            if (MaxLoadY < minY) return 0;
-            else if (MinLoadY > maxY) return 0;
-
-            if (MinLoadY < minY) MinLoadY = minY;
-            if (MaxLoadY > maxY) MaxLoadY = maxY;
-
-            double b = (MaxLoadY - MinLoadY) / (maxY - minY);
-            if (bDebugging)
-                System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID} b: {b}");
-            return b;
-        }
-
-        private List<double> GetMemberX1X2(CSLoad_FreeUniform load, CMember m, float fL1_frame)
-        {
-            double x1 = 0;
-            double x2 = 0;
-
-            if (load.PointsGCS.Count == 0) return null; //toto by podla mna nemalo nastavat a just nastane // To Ondrej - vid komentar vyssie GetTributaryWidth_B
-
-            if (load.ELoadDir == ELoadDirection.eLD_Z)
-            {
-                if (m.EMemberType == EMemberType_FS.eMR)
-                {
-                    //urcit x1,x2 pre member v LCS
-
-                    //double minLoadY = load.PointsGCS
-                    //m.NodeStart.Y
-
-                }
-            }
-            else
-            {
-                //todo
-            }
-
-            return new List<double> { x1, x2 };
-        }
-
-        public void ShowBFEMNetModel(Model model)
-        {
-            //tu by som chcel zobrazit BFEMNEt model
-            // stiahol som do projektu PFD HelixToolkit aj DynamicDataDisplay nuget packages...ale aj tak sa to nerozbehlo
-
-            /*
-            Dispatcher.Invoke(() =>
-            {
-                var wnd = new Window();
-                var ctrl = new ModelVisualizerControl();
-                ctrl.ModelToVisualize = model;
-
-                wnd.Content = ctrl;
-
-                wnd.ShowDialog();
-
-            });*/
-        }
-
+        
         private void Datagrid_DoorsAndGates_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
             Frame1.UpdateLayout();  // Nutne kvôli pridaniu riadku a update v GUI
@@ -1879,40 +1510,7 @@ namespace PFD
         {
             Frame1.UpdateLayout(); // Nutne kvôli pridaniu riadku a update v GUI
         }
-
-        private void SetInitialItemsInComboboxes()
-        {
-            // Fill kitset type combobox items
-            //CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "ModelType", "modelTypeName_short", Combobox_KitsetType);
-
-            // Fill model combobox items
-            //CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
-
-            // Cladding (type and colors)
-            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
-            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_WallCladding);
-
-            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_RoofCladdingCoating);
-            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_WallCladdingCoating);
-
-            // TODO Ondrej  toto asi musime presunut ak ma obsah tychto comboboxov zavisiet na vybranej polozke v comboboxoch Coating
-            //CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
-            //CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
-
-            //Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
-            //Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
-
-            //Combobox_SupportType.Items.Add("Fixed");
-            //Combobox_SupportType.Items.Add("Pinned");
-            //Combobox_SupportType.SelectedIndex = 1;
-
-            //CComboBoxHelper.FillComboboxWithColors_All(Combobox_WireframeColor);
-            //Combobox_WireframeColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
-
-            //CComboBoxHelper.FillComboboxWithColors_All(Combobox_BackgroundColor);
-            //Combobox_BackgroundColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-        }
-
+        
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
             LayoutExportOptionsWindow exportOptions = new LayoutExportOptionsWindow(vm);
@@ -2007,8 +1605,6 @@ namespace PFD
             try
             {
                 CModelData modelData = vmPFD.GetModelData();
-
-                //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
 
                 ExportToWordDocument.ReportAllDataToWordDoc(modelData);
             }
@@ -2166,8 +1762,7 @@ namespace PFD
         {
             e.Handled = true;
         }
-
-
+        
 
         private void BtnDoorGenerator_Click(object sender, RoutedEventArgs e)
         {
@@ -2478,10 +2073,7 @@ namespace PFD
             }
             return null;
         }
-
-
-
-
+        
         private void btnAddGutter_Click(object sender, RoutedEventArgs e)
         {
             float fGuttersTotalLength = 2 * vm.LengthOverall; // na dvoch okrajoch strechy
@@ -2771,5 +2363,387 @@ namespace PFD
             BaysWidthOptionsWindow w = new BaysWidthOptionsWindow(vm);
             w.ShowDialog();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //Zdaju sa mi nepouzite tieto metody
+        //Treba prehodnotit,ci chceme si ponechat a ak nie, tak zmazat
+
+        private void RunFEMSOlver()
+        {
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Calculate Internal Forces
+            // Todo - napojit FEM vypocet
+
+            // TODO - Ondrej Task No 41
+            // Todo - nefunguje implementovany 2D solver, asi je chybna detekcia zakladnej tuhostnej matici pruta
+            // Treba sa na to pozriet podrobnejsie
+            // Navrhujem napojit nejaky externy solver
+
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.Width, vm.WallHeight, vm.Height_H2, 1000, 0, 1000, 1000, 1000);
+            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
+
+            // Auxialiary string - result data
+            int iDispDecPrecision = 3; // Precision of numerical values of displacement and rotations
+            string sDOFResults = null;
+
+            for (int i = 0; i < obj_Calc.m_V_Displ.FVectorItems.Length; i++)
+            {
+                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Increase index (1st member "0" to "1"
+                int iNodeDOFNumber = obj_Calc.m_fDisp_Vector_CN[i, 2] + 1;
+
+                sDOFResults += "Node No:" + "\t" + iNodeNumber + "\t" +
+                               "Node DOF No:" + "\t" + iNodeDOFNumber + "\t" +
+                               "Value:" + "\t" + String.Format("{0:0.000}", Math.Round(obj_Calc.m_V_Displ.FVectorItems[i], iDispDecPrecision))
+                               + "\n";
+            }
+
+            // Main String
+            string sMessageCalc =
+                "Calculation was successful!" + "\n\n" +
+                "Result - vector of calculated values of unrestraint DOF displacement or rotation" + "\n\n" + sDOFResults;
+
+            // Display Message
+            MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
+        }
+
+        private void SetLoadGCSCoordinates(CSLoad_FreeUniform load)
+        {
+            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load, null, 0.001f);
+        }
+
+        private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        {
+            foreach (Point3D p in load.PointsGCS)
+            {
+                if (m.NodeStart.Y - 0.5 * fL1_frame <= p.Y && m.NodeStart.Y + 0.5 * fL1_frame >= p.Y
+                    || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
+                {
+                    if (bDebugging)
+                        System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID}");
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Returns tributary width "b" which is representing a portion of surface load area transferred to the member
+        // "b" is a dimension perpendicular to the member local x-axis
+        private double GetTributaryWidth_B(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        {
+            // Odpoved na tento problem je v podmienke if (Math.Abs(fValue) > 0) public class CSLoad_FreeUniform, line 257
+            // Ak je hodnota zatazenia nulova tak sa ModelGroup nevyrobi a vracia to ModelGroup = null;
+
+            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane // TO Ondrej - nastava pre nulovu hodnotu zatazenia, nevyrobi sa ModelGroup3D
+
+            double MinLoadY = load.PointsGCS.Min(p => p.Y);
+            double MaxLoadY = load.PointsGCS.Max(p => p.Y);
+
+            double minY = m.NodeStart.Y - 0.5 * fL1_frame;
+            double maxY = m.NodeStart.Y + 0.5 * fL1_frame;
+
+            if (MaxLoadY < minY) return 0;
+            else if (MinLoadY > maxY) return 0;
+
+            if (MinLoadY < minY) MinLoadY = minY;
+            if (MaxLoadY > maxY) MaxLoadY = maxY;
+
+            double b = (MaxLoadY - MinLoadY) / (maxY - minY);
+            if (bDebugging)
+                System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID} b: {b}");
+            return b;
+        }
+
+        private List<double> GetMemberX1X2(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        {
+            double x1 = 0;
+            double x2 = 0;
+
+            if (load.PointsGCS.Count == 0) return null; //toto by podla mna nemalo nastavat a just nastane // To Ondrej - vid komentar vyssie GetTributaryWidth_B
+
+            if (load.ELoadDir == ELoadDirection.eLD_Z)
+            {
+                if (m.EMemberType == EMemberType_FS.eMR)
+                {
+                    //urcit x1,x2 pre member v LCS
+
+                    //double minLoadY = load.PointsGCS
+                    //m.NodeStart.Y
+
+                }
+            }
+            else
+            {
+                //todo
+            }
+
+            return new List<double> { x1, x2 };
+        }
+
+        public void ShowBFEMNetModel(Model model)
+        {
+            //tu by som chcel zobrazit BFEMNEt model
+            // stiahol som do projektu PFD HelixToolkit aj DynamicDataDisplay nuget packages...ale aj tak sa to nerozbehlo
+
+            /*
+            Dispatcher.Invoke(() =>
+            {
+                var wnd = new Window();
+                var ctrl = new ModelVisualizerControl();
+                ctrl.ModelToVisualize = model;
+
+                wnd.Content = ctrl;
+
+                wnd.ShowDialog();
+
+            });*/
+        }
+
+
+        //private void SetInitialItemsInComboboxes()
+        //{
+        //    // Fill kitset type combobox items
+        //    //CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "ModelType", "modelTypeName_short", Combobox_KitsetType);
+
+        //    // Fill model combobox items
+        //    //CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
+
+        //    // Cladding (type and colors)
+        //    //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
+        //    //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_WallCladding);
+
+        //    //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_RoofCladdingCoating);
+        //    //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_WallCladdingCoating);
+
+        //    // TODO Ondrej  toto asi musime presunut ak ma obsah tychto comboboxov zavisiet na vybranej polozke v comboboxoch Coating
+        //    //CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
+        //    //CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
+
+        //    //Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
+        //    //Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
+
+        //    //Combobox_SupportType.Items.Add("Fixed");
+        //    //Combobox_SupportType.Items.Add("Pinned");
+        //    //Combobox_SupportType.SelectedIndex = 1;
+
+        //    //CComboBoxHelper.FillComboboxWithColors_All(Combobox_WireframeColor);
+        //    //Combobox_WireframeColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
+
+        //    //CComboBoxHelper.FillComboboxWithColors_All(Combobox_BackgroundColor);
+        //    //Combobox_BackgroundColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+        //}
+
+        //public void FillComboboxTrapezoidalSheetingThickness(int coatingID, int claddingID, ComboBox combobox)
+        //{
+        //    List<CTS_ThicknessProperties> props = CTrapezoidalSheetingManager.LoadThicknessPropertiesList();
+
+        //    var items = props.Where(p => p.coatingIDs.Contains(coatingID) && p.claddingIDs.Contains(claddingID)).Select(p => (p.thicknessCore * 100).ToString() + " mm");
+
+        //    combobox.ItemsSource = items;
+        //    //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
+        //}
+
+        //private void chbDisplayLoadsOnFrames_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    // To Ondrej - popis
+
+        //    // 1. nacitat objekt CModel_PFD_01_GR
+
+        //    CPFDViewModel vm = this.DataContext as CPFDViewModel;
+        //    CModel_PFD model = vm.Model as CModel_PFD;
+        //    double limit = 0.0000001;
+
+        //    // 2. Najst pruty ramu
+        //    // 2.(a) prva moznost - najst members v rovinach s Y = i * fL1_frame, ktore su typu Main Column (EMemberGroupNames.eMainColumn) alebo Rafter (EMemberGroupNames.eRafter) vid listOfModelMemberGroups
+        //    // i je index ramu 0 - iFrameNo
+        //    // 2.(b) druha moznost - pruty ramu sa generuju ako prve spolu s eaves purlins, vieme ze ram ma 2 stlpy a 2 raftery, ramy su spojene na konci dvomi eave purlins takze v jednom cykle je vyrobenych 6 prutov
+        //    // vid CModel_PFD_01_GR line 338 - 354
+
+        //    List<List<CMember>> frames = new List<List<CMember>>();
+
+        //    for (int i = 0; i < model.iFrameNo; i++)
+        //    {
+        //        List<CMember> frameMembers = new List<CMember>();
+
+        //        foreach (CMemberGroup gr in model.listOfModelMemberGroups)
+        //        {
+        //            foreach (CMember m in gr.ListOfMembers)
+        //            {
+        //                //it is not Main/End Column and it is not Main/End rafter
+        //                if (m.EMemberType != EMemberType_FS.eMC && m.EMemberType != EMemberType_FS.eMR &&
+        //                    m.EMemberType != EMemberType_FS.eEC && m.EMemberType != EMemberType_FS.eER) continue;
+
+        //                //task 600
+        //                //if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+        //                if (MathF.d_equal(m.PointStart.Y, model.GetBaysWidthUntilFrameIndex(i), limit))
+        //                {
+        //                    frameMembers.Add(m);
+
+        //                    if (bDebugging)
+        //                        System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
+        //                }
+        //            }
+        //        }
+
+        //        frames.Add(frameMembers);
+        //    }
+
+        //    // Frame 1
+        //    // Member ID 1 - Main Column
+        //    // Member ID 2 - Rafter
+        //    // Member ID 3 - Rafter
+        //    // Member ID 4 - Main Column
+        //    // Member ID 5 - Eave Purlin
+        //    // Member ID 6 - Eave Purlin
+        //    // Frame 2
+        //    // Member ID 1+6 - Main Column
+        //    // Member ID 2+6 - Rafter
+        //    // Member ID 3+6 - Rafter
+        //    // Member ID 4+6 - Main Column
+        //    // Member ID 5+6 - Eave Purlin
+        //    // Member ID 6+6 - Eave Purlin
+
+        //    // a takto sa to opakuje s tym ze posledne 2 eave purlin sa nevytvoria lebo ramov je o jeden viac nez bays
+
+        //    // 3. Ked mame uspesne identifikovane pruty ramu na ktore chceme generovat zatazenie
+        //    // tak pre kazdy load case a kazdy objekt SurfaceLoad zo zoznamu zatazeni v danom load case
+        //    // aplikujeme funkciu ktora zisti ci sa plocha zatazenia alebo jej cast nachadza v takzvanej zatazovacej ploche pruta L_member * fL1_frame (resp. 0.5 fL1_frame pre krajne ramy)
+        //    // To znamena ze niektory z definicnych bodov Surface Load ma globalnu suradnicu Y z intervalu <i*Y - 0.5 * L1; i*Y + 0.5 * L1>
+
+        //    // Zistime ci je prut ramu v danej ploche SurfaceLoad len z casti alebo cely (podla suradnice x pruta)
+        //    // Podla toho sa potom vygeneruje objekt CMLoad_21 alebo CMLoad_24
+        //    // 4. Hodnota zatazenia sa urci zo zatazovacej sirky ramu fL1_frame, pripadne 0.5 * fL1_frame ak sa v oblasti <i*Y - 0.5 * L1; i*Y + 0.5 * L1> v lokacii x pruta nachadza len jedna plocha (vid obrazok 10)
+        //    // 5. Hodnota zatazenia sa urci zo sumy zatazovacich sirok * SurfaceLoad fValue, pre vsetky surface loads, ktore spadaju do oblasti <i*Y - 0.5 * L1; i*Y + 0.5 * L1> v lokacii x pruta (vid obrazok 11)
+
+        //    // Do hodnoty zatazenia sa zohladnia vsetky objekty SurfaceLoad ktore sa nachadzaju v danej zatazovacej sirke pruta
+        //    // Je potrebne prepocitat smer a urcit znamienko zatazenia medzi SurfaceLoad a novym CM_Load. Zatazenie mozeme generovat v LCS pruta alebo v GCS.
+        //    // Asi bude lepsie pouzit vzdy LCS.
+
+        //    //Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001)
+
+        //    int frameIndex = 0;
+        //    foreach (List<CMember> frame in frames)
+        //    {
+        //        foreach (CMember m in frame)
+        //        {
+        //            foreach (CLoadCase loadCase in model.m_arrLoadCases)
+        //            {
+        //                foreach (CSLoad_Free load in loadCase.SurfaceLoadsList)
+        //                {
+        //                    //musis najst CSLoad_Free ktorych niektory bod ma suradnicu Y do v intervale < i * Y - 0.5L1, i* Y +0.5L1 >
+        //                    if (load is CSLoad_FreeUniformGroup)
+        //                    {
+        //                        foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)load).LoadList)
+        //                        {
+        //                            SetLoadGCSCoordinates(l);
+
+        //                            if (l.pSurfacePoints == null || l.pSurfacePoints.Count == 0 ||
+        //                                l.PointsGCS == null || l.PointsGCS.Count == 0)
+        //                            {
+        //                                /*
+        //                                // Model group sa nevyrobi ak je hodnota zatazenia nulova, mali by sme to vsetko preskakovat ak zatazenie neexistuje alebo je zatazenie nulove
+        //                                Model3DGroup gr = load.CreateM_3D_G_Load();
+        //                                // Catch null or empty list of definition points
+        //                                throw new ArgumentNullException("Load Case Name: " + loadCase.Name + "\n" +
+        //                                   "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
+        //                                */
+        //                            }
+
+        //                            GetTributaryWidth_B(l, m, model.GetBayWidth(frameIndex));
+
+        //                            //if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(loadCase, l, m, model.fL1_frame, isOuterFrame);
+        //                        }
+        //                    }
+        //                    else if (load is CSLoad_FreeUniform)
+        //                    {
+        //                        SetLoadGCSCoordinates((CSLoad_FreeUniform)load);
+
+        //                        if (load.pSurfacePoints == null || load.pSurfacePoints.Count == 0 ||
+        //                            load.PointsGCS == null || load.PointsGCS.Count == 0)
+        //                        {
+        //                            /*
+        //                            // Model group sa nevyrobi ak je hodnota zatazenia nulova, mali by sme to vsetko preskakovat ak zatazenie neexistuje alebo je zatazenie nulove
+        //                            Model3DGroup gr = load.CreateM_3D_G_Load();
+        //                            // Catch null or empty list of definition points
+        //                            throw new ArgumentNullException("Load Case Name: " + loadCase.Name + "\n" +
+        //                               "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
+        //                            */
+        //                        }
+
+        //                        GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.GetBayWidth(frameIndex));
+        //                        //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
+        //                    }
+        //                    else throw new Exception("Load type not known.");
+        //                }
+        //            }
+        //        }
+        //        frameIndex++;
+        //    }
+
+        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+        //    {
+        //        //chbDisplayLoadsOnPurlinsAndGirts.IsChecked = false;
+
+
+
+
+        //        //foreach (CLoadCase load in model.m_arrLoadCases)
+        //        //{
+        //        //    System.Diagnostics.Trace.WriteLine(load.Name);
+        //        //    List<CSLoad_Free> loadList = load.SurfaceLoadsList;
+        //        //    foreach (CSLoad_Free l_free in load.SurfaceLoadsList)
+        //        //    {
+        //        //        if(l_free is CSLoad_FreeUniform)
+        //        //            System.Diagnostics.Trace.WriteLine($"CSLoad_Free: {l_free.Name}, Points: {l_free.pSurfacePoints.ToString()}");
+
+        //        //    }
+
+        //        //}
+
+        //        //UpdateAll();
+        //    }
+        //}
+
+
+
     }
 }
