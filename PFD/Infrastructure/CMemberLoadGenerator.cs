@@ -24,7 +24,7 @@ namespace PFD
         private int iFramesNo;
         //private float fL1_frame;
         private List<float> m_L1_Bays;
-        private float fL_tot;
+        private float fL_tot_centerline;
         private CLoadCase[] m_arrLoadCases;
         private CMember[] m_arrMembers;
 
@@ -58,7 +58,7 @@ namespace PFD
             int framesNo,
             //float L1_frame,
             List<float> L1_Bays,
-            float L_tot,
+            float L_tot_centerline,
             float fSlopeFactor,
             CCrSc GirtCrSc_temp,
             CCrSc PurlinCrSc_temp,
@@ -79,7 +79,7 @@ namespace PFD
             iFramesNo = framesNo;
             //fL1_frame = L1_frame;
             m_L1_Bays = L1_Bays;
-            fL_tot = L_tot;
+            fL_tot_centerline = L_tot_centerline;
             m_arrLoadCases = arrLoadCases;
             m_arrMembers = arrMembers;
 
@@ -112,7 +112,7 @@ namespace PFD
             iFramesNo = model.iFrameNo;
             //fL1_frame = model.fL1_frame;
             m_L1_Bays = model.L1_Bays;
-            fL_tot = model.fL_tot_centerline;
+            fL_tot_centerline = model.fL_tot_centerline;
             m_arrLoadCases = model.m_arrLoadCases;
             m_arrMembers = model.m_arrMembers;
 
@@ -1279,7 +1279,7 @@ namespace PFD
 
             if (iWindDirectionIndex != (int)ELCMainDirection.ePlusY) // Minus Y - Rear Wind Pressure
             {
-                fFrameCoordinate_GCS_Y = fL_tot - fFrameCoordinate_GCS_Y;
+                fFrameCoordinate_GCS_Y = fL_tot_centerline - fFrameCoordinate_GCS_Y;
             }
 
             //task 600
@@ -1299,8 +1299,8 @@ namespace PFD
                 else // Last frame
                 {
                     //fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
-                    fTributaryWidth_Y_Coordinate_Min = fL_tot - 0.5f * m_L1_Bays.First();
-                    fTributaryWidth_Y_Coordinate_Max = fL_tot;
+                    fTributaryWidth_Y_Coordinate_Min = fL_tot_centerline - 0.5f * m_L1_Bays.First();
+                    fTributaryWidth_Y_Coordinate_Max = fL_tot_centerline;
                 }
             }
             else if (iFrameIndex == iFramesNo - 1) // Last Frame
@@ -1308,8 +1308,8 @@ namespace PFD
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY) // First frame
                 {
                     //fTributaryWidth_Y_Coordinate_Max = (iFramesNo - 1) * fL1_frame;
-                    fTributaryWidth_Y_Coordinate_Min = fL_tot - 0.5f * m_L1_Bays.Last();
-                    fTributaryWidth_Y_Coordinate_Max = fL_tot;
+                    fTributaryWidth_Y_Coordinate_Min = fL_tot_centerline - 0.5f * m_L1_Bays.Last();
+                    fTributaryWidth_Y_Coordinate_Max = fL_tot_centerline;
                 }
                 else // Last frame
                 {
@@ -1320,7 +1320,7 @@ namespace PFD
             else
             {
                 if (iWindDirectionIndex == (int)ELCMainDirection.ePlusY)
-                {                    
+                {
                     fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * m_L1_Bays[iFrameIndex - 1]; //polka z predchadzajucej
                     fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * m_L1_Bays[iFrameIndex]; //polka z nasledujucej
                 }

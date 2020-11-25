@@ -13,10 +13,10 @@ namespace PFD
 {
     public class CSurfaceLoadGenerator
     {
-        float fH1_frame;
-        float fH2_frame;
-        float fW_frame;
-        float fL_tot;
+        float fH1_frame_centerline;
+        float fH2_frame_centerline;
+        float fW_frame_centerline;
+        float fL_tot_centerline;
         float fRoofPitch_rad;
         float fDist_Purlin;
         float fDist_Girt;
@@ -74,8 +74,8 @@ namespace PFD
         public List<CSLoad_Free> surfaceWindLoad_SLS_MinusY_Cpemax;
         #endregion
 
-        public CSurfaceLoadGenerator(float H1_frame, float H2_frame,
-            float W_frame, float L_tot, float RoofPitch_rad,
+        public CSurfaceLoadGenerator(float H1_frame_centerline, float H2_frame_centerline,
+            float W_frame_centerline, float L_tot_centerline, float RoofPitch_rad,
             float Dist_Purlin,
             float Dist_Girt,
             float Dist_FrontGirts,
@@ -88,10 +88,10 @@ namespace PFD
             CCalcul_1170_2 calc_wind,
             CCalcul_1170_3 calc_snow)
         {
-            fH1_frame = H1_frame;
-            fH2_frame = H2_frame;
-            fW_frame = W_frame;
-            fL_tot = L_tot;
+            fH1_frame_centerline = H1_frame_centerline;
+            fH2_frame_centerline = H2_frame_centerline;
+            fW_frame_centerline = W_frame_centerline;
+            fL_tot_centerline = L_tot_centerline;
             fRoofPitch_rad = RoofPitch_rad;
             fDist_Purlin = Dist_Purlin;
             fDist_Girt = Dist_Girt;
@@ -106,37 +106,38 @@ namespace PFD
             generalLoad = calc_generalLoad;
         }
 
+        // Gable Roof
         public void GenerateSurfaceLoads()
         {
             // Surface Free Loads
             // Roof Surface Geometry
             // Control Points
-            Point3D pRoofFrontLeft = new Point3D(0, 0, fH1_frame);
-            Point3D pRoofFrontApex = new Point3D(0.5f * fW_frame, 0, fH2_frame);
-            Point3D pRoofFrontRight = new Point3D(fW_frame, 0, fH1_frame);
-            Point3D pRoofBackLeft = new Point3D(0, fL_tot, fH1_frame);
-            Point3D pRoofBackApex = new Point3D(0.5f * fW_frame, fL_tot, fH2_frame);
-            Point3D pRoofBackRight = new Point3D(fW_frame, fL_tot, fH1_frame);
+            Point3D pRoofFrontLeft = new Point3D(0, 0, fH1_frame_centerline);
+            Point3D pRoofFrontApex = new Point3D(0.5f * fW_frame_centerline, 0, fH2_frame_centerline);
+            Point3D pRoofFrontRight = new Point3D(fW_frame_centerline, 0, fH1_frame_centerline);
+            Point3D pRoofBackLeft = new Point3D(0, fL_tot_centerline, fH1_frame_centerline);
+            Point3D pRoofBackApex = new Point3D(0.5f * fW_frame_centerline, fL_tot_centerline, fH2_frame_centerline);
+            Point3D pRoofBackRight = new Point3D(fW_frame_centerline, fL_tot_centerline, fH1_frame_centerline);
 
             // Dimensions
-            float fRoof_X = fL_tot;
-            float fRoof_Y = 0.5f * fW_frame / (float)Math.Cos(fRoofPitch_rad);
+            float fRoof_X = fL_tot_centerline;
+            float fRoof_Y = 0.5f * fW_frame_centerline / (float)Math.Cos(fRoofPitch_rad);
 
             // Wall Surface Geometry
             // Control Point
             Point3D pWallFrontLeft = new Point3D(0, 0, 0);
-            Point3D pWallFrontRight = new Point3D(fW_frame, 0, 0);
-            Point3D pWallBackRight = new Point3D(fW_frame, fL_tot, 0);
-            Point3D pWallBackLeft = new Point3D(0, fL_tot, 0);
+            Point3D pWallFrontRight = new Point3D(fW_frame_centerline, 0, 0);
+            Point3D pWallBackRight = new Point3D(fW_frame_centerline, fL_tot_centerline, 0);
+            Point3D pWallBackLeft = new Point3D(0, fL_tot_centerline, 0);
 
             // Dimensions
-            float fWallLeftOrRight_X = fL_tot;
-            float fWallLeftOrRight_Y = fH1_frame;
+            float fWallLeftOrRight_X = fL_tot_centerline;
+            float fWallLeftOrRight_Y = fH1_frame_centerline;
 
             // Dimensions
-            float fWallFrontOrBack_X = fW_frame;
-            float fWallFrontOrBack_Y1 = fH1_frame;
-            float fWallFrontOrBack_Y2 = fH2_frame;
+            float fWallFrontOrBack_X = fW_frame_centerline;
+            float fWallFrontOrBack_Y1 = fH1_frame_centerline;
+            float fWallFrontOrBack_Y2 = fH2_frame_centerline;
 
             // Types and loading widths of loaded members under free surface loads
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataRoof = new List<FreeSurfaceLoadsMemberTypeData>(2);
@@ -964,39 +965,39 @@ namespace PFD
 
 
 
-
+        // Monopitch roof
         public void GenerateSurfaceLoads_M()
         {
             // Surface Free Loads
             // Roof Surface Geometry
             // Control Points
-            Point3D pRoofFrontLeft = new Point3D(0, 0, fH1_frame);
-            Point3D pRoofFrontMiddle = new Point3D(0.5f * fW_frame, 0, 0.5f * (fH1_frame + fH2_frame));
-            Point3D pRoofFrontRight = new Point3D(fW_frame, 0, fH2_frame);
-            Point3D pRoofBackLeft = new Point3D(0, fL_tot, fH1_frame);
-            Point3D pRoofBackMiddle = new Point3D(0.5f * fW_frame, fL_tot, 0.5f * (fH1_frame + fH2_frame));
-            Point3D pRoofBackRight = new Point3D(fW_frame, fL_tot, fH2_frame);
+            Point3D pRoofFrontLeft = new Point3D(0, 0, fH1_frame_centerline);
+            Point3D pRoofFrontMiddle = new Point3D(0.5f * fW_frame_centerline, 0, 0.5f * (fH1_frame_centerline + fH2_frame_centerline));
+            Point3D pRoofFrontRight = new Point3D(fW_frame_centerline, 0, fH2_frame_centerline);
+            Point3D pRoofBackLeft = new Point3D(0, fL_tot_centerline, fH1_frame_centerline);
+            Point3D pRoofBackMiddle = new Point3D(0.5f * fW_frame_centerline, fL_tot_centerline, 0.5f * (fH1_frame_centerline + fH2_frame_centerline));
+            Point3D pRoofBackRight = new Point3D(fW_frame_centerline, fL_tot_centerline, fH2_frame_centerline);
 
             // Dimensions
-            float fRoof_X = fL_tot;
-            float fRoof_Y = fW_frame / (float)Math.Cos(fRoofPitch_rad);
+            float fRoof_X = fL_tot_centerline;
+            float fRoof_Y = fW_frame_centerline / (float)Math.Cos(fRoofPitch_rad);
 
             // Wall Surface Geometry
             // Control Point
             Point3D pWallFrontLeft = new Point3D(0, 0, 0);
-            Point3D pWallFrontRight = new Point3D(fW_frame, 0, 0);
-            Point3D pWallBackRight = new Point3D(fW_frame, fL_tot, 0);
-            Point3D pWallBackLeft = new Point3D(0, fL_tot, 0);
+            Point3D pWallFrontRight = new Point3D(fW_frame_centerline, 0, 0);
+            Point3D pWallBackRight = new Point3D(fW_frame_centerline, fL_tot_centerline, 0);
+            Point3D pWallBackLeft = new Point3D(0, fL_tot_centerline, 0);
 
             // Dimensions
-            float fWallLeftOrRight_X = fL_tot;
-            float fWallLeft_Y = fH1_frame;
-            float fWallRight_Y = fH2_frame;
+            float fWallLeftOrRight_X = fL_tot_centerline;
+            float fWallLeft_Y = fH1_frame_centerline;
+            float fWallRight_Y = fH2_frame_centerline;
 
             // Dimensions
-            float fWallFrontOrBack_X = fW_frame;
-            float fWallFrontOrBack_Y1 = fH1_frame;
-            float fWallFrontOrBack_Y2 = fH2_frame;
+            float fWallFrontOrBack_X = fW_frame_centerline;
+            float fWallFrontOrBack_Y1 = fH1_frame_centerline;
+            float fWallFrontOrBack_Y2 = fH2_frame_centerline;
 
             // Types and loading widths of loaded members under free surface loads
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataRoof = new List<FreeSurfaceLoadsMemberTypeData>(2);
