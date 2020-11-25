@@ -135,7 +135,7 @@ namespace PFD
             WindPressureCalculatorViewModel vm = this.DataContext as WindPressureCalculatorViewModel;
 
             // Set results
-            vm.AverageStructureHeight_h = windCalcResults.fh;
+            vm.AverageStructureHeight_h = windCalcResults.fh_overall;
 
             vm.TopographicMultiplier_Mt = windCalcResults.fM_t;
             //vm.WindDirectionMultiplier_Md;

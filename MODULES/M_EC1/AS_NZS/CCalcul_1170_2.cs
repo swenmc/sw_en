@@ -37,8 +37,10 @@ namespace M_EC1.AS_NZS
         public bool bCondiderPermeableCladdingFactor_Kp = false;
 
         float fz_max = 200f; // m
-        public float fz;
-        public float fh;
+        public float fz_overall;
+        public float fh_overall;
+        public float fz_centerline;
+        public float fh_centerline;
 
         public float fRoofArea;
         public float fWallArea_0or180;
@@ -227,8 +229,14 @@ namespace M_EC1.AS_NZS
             // TODO - bolo by dobre do rozmerov budovy pre vypocet zatazenia zohladnit aj vysku plechov cladding
 
             // Gable roof
-            fz = sGeometryInput.fHeight_1_overall + 0.5f * (sGeometryInput.fHeight_2_overall - sGeometryInput.fHeight_1_overall); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
-            fh = fz;
+            fz_overall = sGeometryInput.fHeight_1_overall + 0.5f * (sGeometryInput.fHeight_2_overall - sGeometryInput.fHeight_1_overall); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            fh_overall = fz_overall;
+
+            fz_centerline = sGeometryInput.fH_1_centerline + 0.5f * (sGeometryInput.fH_2_centerline - sGeometryInput.fH_1_centerline); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            fh_centerline = fz_centerline;
+
+            if (fz_overall > fz_max)
+                throw new Exception("Invalid value of reference building height.");
 
             fRoofArea = sGeometryInput.fWidth_overall / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fLength_overall;
             fWallArea_0or180 = sGeometryInput.fHeight_1_overall * sGeometryInput.fLength_overall;
@@ -293,7 +301,7 @@ namespace M_EC1.AS_NZS
 
             if (bConsiderHillSlope)
             {
-                fM_h = AS_NZS_1170_2.Get_Mh_v1__(false, 0, 0, 0, fz); // TODO - fill values
+                fM_h = AS_NZS_1170_2.Get_Mh_v1__(false, 0, 0, 0, fz_overall); // TODO - fill values
                 fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
             }
 
@@ -317,8 +325,15 @@ namespace M_EC1.AS_NZS
             sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            fz = sGeometryInput.fHeight_1_overall + 0.5f * (sGeometryInput.fHeight_2_overall - sGeometryInput.fHeight_1_overall); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
-            fh = fz;
+            fz_overall = sGeometryInput.fHeight_1_overall + 0.5f * (sGeometryInput.fHeight_2_overall - sGeometryInput.fHeight_1_overall); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            fh_overall = fz_overall;
+
+            fz_centerline = sGeometryInput.fH_1_centerline + 0.5f * (sGeometryInput.fH_2_centerline - sGeometryInput.fH_1_centerline); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            fh_centerline = fz_centerline;
+
+            if (fz_overall > fz_max)
+                throw new Exception("Invalid value of reference building height.");
+
 
             //fz = sWinDataSpecific_temp.fz;
             //fh = sWinDataSpecific_temp.fh;
@@ -327,7 +342,7 @@ namespace M_EC1.AS_NZS
             fWallArea_0or180 = fRoofArea; // Temp
             fWallArea_90or270 = fRoofArea; // Temp
 
-            float fa = MathF.Min(0.2f * sGeometryInput.fWidth_overall, 0.2f * sGeometryInput.fLength_overall, fh); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
+            float fa = MathF.Min(0.2f * sGeometryInput.fWidth_overall, 0.2f * sGeometryInput.fLength_overall, fh_overall); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
 
             bConsiderLocalPressureFactor_Kl = true;
             float fK_l_upwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceUpwind);
@@ -387,7 +402,7 @@ namespace M_EC1.AS_NZS
             // Terrain-height multiplier Mz.cat
             // Table 4.1
             SetTerrainHeightMultiplier();
-            float fM_z_cat_second = AS_NZS_1170_2.Table41_Interpolation_positive(fz, sWindInput.fTerrainCategory);
+            float fM_z_cat_second = AS_NZS_1170_2.Table41_Interpolation_positive(fz_overall, sWindInput.fTerrainCategory);
 
             // Validation
             if(fM_z_cat > 0 && fM_z_cat_second > 0 && !MathF.d_equal(fM_z_cat, fM_z_cat_second,0.001))
@@ -483,10 +498,10 @@ namespace M_EC1.AS_NZS
             float fd; // Length in wind direction;
 
             float fRatioDtoB_Theta0or180 = sGeometryInput.fLength_overall / sGeometryInput.fWidth_overall;
-            float fRatioHtoD_Theta0or180 = fh / sGeometryInput.fLength_overall;
+            float fRatioHtoD_Theta0or180 = fh_overall / sGeometryInput.fLength_overall;
 
             float fRatioDtoB_Theta90or270 = sGeometryInput.fWidth_overall / sGeometryInput.fLength_overall;
-            float fRatioHtoD_Theta90or270 = fh / sGeometryInput.fWidth_overall;
+            float fRatioHtoD_Theta90or270 = fh_overall / sGeometryInput.fWidth_overall;
 
             if (bConsiderInternalPressureCoefficient_Cpi_Cpe)
             {
@@ -494,7 +509,7 @@ namespace M_EC1.AS_NZS
                 bool bIsBuildingOnGround = true;
                 bool bIsVariableWindSpeedinHeight = false;
 
-                if (fh > 25 || (fh <= 25f && bIsVariableWindSpeedinHeight) || !bIsBuildingOnGround)
+                if (fh_overall > 25 || (fh_overall <= 25f && bIsVariableWindSpeedinHeight) || !bIsBuildingOnGround)
                     fC_pe_W_wall = 0.8f;
                 else
                     fC_pe_W_wall = 0.7f;
@@ -528,7 +543,7 @@ namespace M_EC1.AS_NZS
                 fC_pe_L_wall_Theta90or270 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta90or270, fx, fy);
 
                 // Table 5.2(C) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - side walls (S)
-                fC_pe_S_wall_dimensions = new float[5] { 0, fh, 2 * fh, 3 * fh, 9999 };
+                fC_pe_S_wall_dimensions = new float[5] { 0, fh_centerline, 2 * fh_centerline, 3 * fh_centerline, 9999 };
                 fC_pe_S_wall_values = new float[5] { -0.65f, -0.5f, -0.3f, -0.2f, -0.2f };
 
                 // Roof
@@ -544,7 +559,7 @@ namespace M_EC1.AS_NZS
                     float[] fC_pe_UD_roof_values_min = new float[6];
                     float[] fC_pe_UD_roof_values_max = new float[6];
 
-                    Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta0or180, ref fC_pe_UD_roof_dimensions, ref fC_pe_UD_roof_values_min, ref fC_pe_UD_roof_values_max);
+                    Calculate_Cpe_Table_5_3_A(fh_centerline, fRatioHtoD_Theta0or180, ref fC_pe_UD_roof_dimensions, ref fC_pe_UD_roof_values_min, ref fC_pe_UD_roof_values_max);
 
                     fC_pe_U_roof_dimensions = fC_pe_UD_roof_dimensions;
                     fC_pe_U_roof_values_min = fC_pe_UD_roof_values_min;
@@ -590,17 +605,17 @@ namespace M_EC1.AS_NZS
                     fC_pe_D_roof_values_max = new float[2];
 
                     // Table 5.3(B) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - for upwind slope (U) Alpha >= 10°
-                    Calculate_Cpe_Table_5_3_B(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, ref fC_pe_U_roof_values_min, ref fC_pe_U_roof_values_max);
+                    Calculate_Cpe_Table_5_3_B(/*fh,*/ sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, ref fC_pe_U_roof_values_min, ref fC_pe_U_roof_values_max);
 
                     // Table 5.3(C) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - downhill slope (D), and (R) for hip roofs, for Alpha >= 10°
-                    Calculate_Cpe_Table_5_3_C(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, fRatioDtoB_Theta0or180, ref fC_pe_D_roof_values_min, ref fC_pe_D_roof_values_max);
+                    Calculate_Cpe_Table_5_3_C(/*fh,*/ sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, fRatioDtoB_Theta0or180, ref fC_pe_D_roof_values_min, ref fC_pe_D_roof_values_max);
                 }
 
                 // Wind 90 or 270 deg
                 fC_pe_R_roof_dimensions = new float[6];
                 fC_pe_R_roof_values_min = new float[6];
                 fC_pe_R_roof_values_max = new float[6];
-                Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta90or270, ref fC_pe_R_roof_dimensions, ref fC_pe_R_roof_values_min, ref fC_pe_R_roof_values_max);
+                Calculate_Cpe_Table_5_3_A(fh_centerline, fRatioHtoD_Theta90or270, ref fC_pe_R_roof_dimensions, ref fC_pe_R_roof_values_min, ref fC_pe_R_roof_values_max);
             }
 
             // 5.4.2 Area reduction factor(Ka) for roofs and side walls
@@ -827,11 +842,11 @@ namespace M_EC1.AS_NZS
                 fb = sGeometryInput.fLength_overall;
                 fd = sGeometryInput.fWidth_overall;
 
-                float fx_length = MathF.Max(fd, MathF.Min(4 * fh, 4 * fb));
+                float fx_length = MathF.Max(fd, MathF.Min(4 * fh_overall, 4 * fb));
 
-                fArea_Theta0or180 = GetArea_Table_5_9(fh, fb, fd);
+                fArea_Theta0or180 = GetArea_Table_5_9(fh_overall, fb, fd);
 
-                fC_f_Theta0or180 = GetFrictionalDragCoefficient_Table_5_9(fx_length, fh, fb, eSurfaceDescription);
+                fC_f_Theta0or180 = GetFrictionalDragCoefficient_Table_5_9(fx_length, fh_overall, fb, eSurfaceDescription);
             }
 
             if (fRatioDtoH_Theta90or270 > 4 || fRatioDtoB_Theta90or270 > 4)
@@ -839,11 +854,11 @@ namespace M_EC1.AS_NZS
                 fb = sGeometryInput.fWidth_overall;
                 fd = sGeometryInput.fLength_overall;
 
-                float fx_length = MathF.Max(fd, MathF.Min(4 * fh, 4 * fb));
+                float fx_length = MathF.Max(fd, MathF.Min(4 * fh_overall, 4 * fb));
 
-                fArea_Theta90or270 = GetArea_Table_5_9(fh, fb, fd);
+                fArea_Theta90or270 = GetArea_Table_5_9(fh_overall, fb, fd);
 
-                fC_f_Theta90or270 = GetFrictionalDragCoefficient_Table_5_9(fx_length, fh, fb, eSurfaceDescription);
+                fC_f_Theta90or270 = GetFrictionalDragCoefficient_Table_5_9(fx_length, fh_overall, fb, eSurfaceDescription);
             }
 
             float fK_c = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
@@ -916,7 +931,7 @@ namespace M_EC1.AS_NZS
             }
         }
 
-        protected void Calculate_Cpe_Table_5_3_B(float fh, float fAlpha_deg, float fRatioHtoD, ref float[] fC_pe_roof_values_min, ref float[] fC_pe_roof_values_max)
+        protected void Calculate_Cpe_Table_5_3_B(/*float fh,*/ float fAlpha_deg, float fRatioHtoD, ref float[] fC_pe_roof_values_min, ref float[] fC_pe_roof_values_max)
         {
             float[] fx = new float[8] { 10, 15, 20, 25, 30, 35, 45, 9999 };
             float[] fy_min_htod_025 = new float[8] { -0.7f, -0.5f, -0.3f, -0.2f, -0.2f,  0.0f, 0, 0};
@@ -1007,7 +1022,7 @@ namespace M_EC1.AS_NZS
             }
         }
 
-        protected void Calculate_Cpe_Table_5_3_C(float fh, float fAlpha_deg, float fRatioHtoD, float fRatioBtoD, ref float[] fC_pe_roof_values_min, ref float[] fC_pe_roof_values_max)
+        protected void Calculate_Cpe_Table_5_3_C(/*float fh,*/ float fAlpha_deg, float fRatioHtoD, float fRatioBtoD, ref float[] fC_pe_roof_values_min, ref float[] fC_pe_roof_values_max)
         {
             float[] fx = new float[5] { 10, 15, 20, 25, 9999 };
             float[] fy_htod_025 = new float[5] { -0.3f, -0.5f, -0.6f, -0.6f, -0.6f };
@@ -1240,7 +1255,7 @@ namespace M_EC1.AS_NZS
 
             // Bilinear Interpolation
             float[] arrayHeaderColumnValues = new float[] { 1, 2, 3, 4 }; // Terrain categories in table 4.1
-            fM_z_cat = ArrayF.GetBilinearInterpolationValuePositive(Table_4_1, arrayHeaderColumnValues, fz, sWindInput.fTerrainCategory);
+            fM_z_cat = ArrayF.GetBilinearInterpolationValuePositive(Table_4_1, arrayHeaderColumnValues, fz_overall, sWindInput.fTerrainCategory);
         }
 
         protected void SetDesignWindSpeedValue(int initialAngleBetweenBetaAndTheta_deg, float[] fV_sit_Theta_360, ref float fV_des_Theta)

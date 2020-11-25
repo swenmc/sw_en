@@ -646,8 +646,8 @@ namespace EXPIMP
             document.ReplaceText("[R_ULS_Wind]", data.R_ULS_Wind.ToString(sStringFormat_TimeYears, nfi));
             document.ReplaceText("[EWindRegion]", data.WindRegion);
             document.ReplaceText("[TerrainCategory]", data.TerrainCategory);
-            document.ReplaceText("[CCalcul_1170_2.z]", data.Wind.fz.ToString(sStringFormat_Distance, nfi));
-            document.ReplaceText("[CCalcul_1170_2.h]", data.Wind.fh.ToString(sStringFormat_Distance, nfi));
+            document.ReplaceText("[CCalcul_1170_2.z]", data.Wind.fz_overall.ToString(sStringFormat_Distance, nfi));
+            document.ReplaceText("[CCalcul_1170_2.h]", data.Wind.fh_overall.ToString(sStringFormat_Distance, nfi));
             document.ReplaceText("[CCalcul_1170_2.V_R_ULS]", data.Wind.fV_R_ULS.ToString(sStringFormat_Speed, nfi));
             document.ReplaceText("[CCalcul_1170_2.V_R_SLS]", data.Wind.fV_R_SLS.ToString(sStringFormat_Speed, nfi));
             document.ReplaceText("[CCalcul_1170_2.M_z_cat]", data.Wind.fM_z_cat.ToString(sStringFormat_Factor, nfi));
