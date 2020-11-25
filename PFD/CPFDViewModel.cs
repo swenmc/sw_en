@@ -214,13 +214,13 @@ namespace PFD
 
         [NonSerialized]
         private CModel_PFD MModel;
-        //-------------------------------------------------------------------------------------------------------------
-        //tieto treba spracovat nejako
-        public float fBayWidth;
-        public float fHeight_H2; // Apex height for gable roof or right side wall heigth for monopitch roof
-        public float fHeight_H2_Overall; // Celkova vyska vratane rozmeru prierezu
-        public float fRoofPitch_radians;
-        public float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov)
+        
+        //-------------------------------------------------------------------------------------------------------------        
+        private float m_fBayWidth;
+        private float m_fHeight_H2; // Apex height for gable roof or right side wall heigth for monopitch roof
+        private float m_fHeight_H2_Overall; // Celkova vyska vratane rozmeru prierezu
+        private float m_fRoofPitch_radians;
+        //private float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov) //nebolo to pouzite nikde
 
         [NonSerialized]
         public CCalcul_1170_1 GeneralLoad;
@@ -338,7 +338,7 @@ namespace PFD
                 _componentVM.SetILSProperties(dmodel);
 
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
-                fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
+                RoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
 
                 WidthOverall = dmodel.fb;
                 Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
@@ -352,7 +352,7 @@ namespace PFD
                 ColumnDistance = dmodel.fdist_frontcolumn;
                 BottomGirtPosition = dmodel.fdist_girt_bottom;
                 Frames = dmodel.iFrNo;
-                fBayWidth = MLength / (MFrames - 1); // je sice v DB, ale istejsie je to tu prepocitavat
+                BayWidth = MLength / (MFrames - 1); // je sice v DB, ale istejsie je to tu prepocitavat
 
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
@@ -363,8 +363,8 @@ namespace PFD
                 // ak bude vsekto OK, tak treba zmazat zakomentovane
                 //if (MKitsetTypeIndex == 0)
                 //{
-                //    fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                //    fHeight_H2_Overall = GetOverallHeight_H2();
+                //    Height_H2 = MWallHeight + MWidth * (float)Math.Tan(RoofPitch_radians);
+                //    Height_H2_Overall = GetOverallHeight_H2();
 
                 //    // Re-calculate value of distance between columns (number of columns per frame is always even
                 //    int iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
@@ -372,8 +372,8 @@ namespace PFD
                 //}
                 //else if (MKitsetTypeIndex == 1)
                 //{
-                //    fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                //    fHeight_H2_Overall = GetOverallHeight_H2();
+                //    Height_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(RoofPitch_radians);
+                //    Height_H2_Overall = GetOverallHeight_H2();
 
                 //    // Re-calculate value of distance between columns (number of columns per frame is always even
                 //    int iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance));
@@ -381,8 +381,8 @@ namespace PFD
                 //}
                 //else
                 //{
-                //    fHeight_H2 = 0; // Exception
-                //    fHeight_H2_Overall = 0;
+                //    Height_H2 = 0; // Exception
+                //    Height_H2_Overall = 0;
                 //    IFrontColumnNoInOneFrame = 0;
                 //}
                 //MColumnDistance = MWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
@@ -441,15 +441,15 @@ namespace PFD
                     // UHOL ZACHOVAME ROVNAKY - V OPACNOM PRIPADE SA NEUPDATOVALA SPRAVNE VYSKA h2
 
                     // Recalculate roof pitch
-                    //fRoofPitch_radians = (float)Math.Atan((fHeight_H2 - MWallHeight) / (0.5f * MWidth));
+                    //RoofPitch_radians = (float)Math.Atan((Height_H2 - MWallHeight) / (0.5f * MWidth));
                     // Set new value in GUI
-                    //MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
+                    //MRoofPitch_deg = (RoofPitch_radians * 180f / MathF.fPI);
                     // Recalculate roof height
 
                     if (MKitsetTypeIndex == 0)
                     {
-                        fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = GetOverallHeight_H2();
+                        Height_H2 = MWallHeight + MWidth * (float)Math.Tan(RoofPitch_radians);
+                        Height_H2_Overall = GetOverallHeight_H2();
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
                         int iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
@@ -457,8 +457,8 @@ namespace PFD
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
-                        fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = GetOverallHeight_H2();
+                        Height_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(RoofPitch_radians);
+                        Height_H2_Overall = GetOverallHeight_H2();
 
                         // Re-calculate value of distance between columns (number of columns per frame is always even
                         int iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance));
@@ -466,8 +466,8 @@ namespace PFD
                     }
                     else
                     {
-                        fHeight_H2 = 0; // Exception
-                        fHeight_H2_Overall = 0;
+                        Height_H2 = 0; // Exception
+                        Height_H2_Overall = 0;
                         IFrontColumnNoInOneFrame = 0;
                     }
 
@@ -514,10 +514,10 @@ namespace PFD
 
                 if (MModelIndex != 0)
                 {
-                    // Recalculate fBayWidth
-                    fBayWidth = MLength / (MFrames - 1);
+                    // Recalculate BayWidth
+                    BayWidth = MLength / (MFrames - 1);
                 }
-                if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, fBayWidth);
+                if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
 
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -556,18 +556,18 @@ namespace PFD
                     // Recalculate roof heigth
                     if (MKitsetTypeIndex == 0)
                     {
-                        fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = GetOverallHeight_H2();
+                        Height_H2 = MWallHeight + MWidth * (float)Math.Tan(RoofPitch_radians);
+                        Height_H2_Overall = GetOverallHeight_H2();
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
-                        fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = GetOverallHeight_H2();
+                        Height_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(RoofPitch_radians);
+                        Height_H2_Overall = GetOverallHeight_H2();
                     }
                     else
                     {
-                        fHeight_H2 = 0; // Exception
-                        fHeight_H2_Overall = 0;
+                        Height_H2 = 0; // Exception
+                        Height_H2_Overall = 0;
                     }
                 }
                 SetResultsAreNotValid();
@@ -691,23 +691,23 @@ namespace PFD
 
                 if (MModelIndex != 0)
                 {
-                    fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
+                    RoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
 
                     // Recalculate h2
                     if (MKitsetTypeIndex == 0)
                     {
-                        fHeight_H2 = MWallHeight + MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = GetOverallHeight_H2();
+                        Height_H2 = MWallHeight + MWidth * (float)Math.Tan(RoofPitch_radians);
+                        Height_H2_Overall = GetOverallHeight_H2();
                     }
                     else if (MKitsetTypeIndex == 1)
                     {
-                        fHeight_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(fRoofPitch_radians);
-                        fHeight_H2_Overall = GetOverallHeight_H2();
+                        Height_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(RoofPitch_radians);
+                        Height_H2_Overall = GetOverallHeight_H2();
                     }
                     else
                     {
-                        fHeight_H2 = 0; // Exception
-                        fHeight_H2_Overall = 0;
+                        Height_H2 = 0; // Exception
+                        Height_H2_Overall = 0;
                     }
                 }
                 SetResultsAreNotValid();
@@ -735,7 +735,7 @@ namespace PFD
                 if (MModelIndex != 0)
                 {
                     // Recalculate L1
-                    fBayWidth = MLength / (MFrames - 1);
+                    BayWidth = MLength / (MFrames - 1);
                 }
 
                 SetResultsAreNotValid();
@@ -756,9 +756,9 @@ namespace PFD
                 float fRafterLength;
 
                 if (MKitsetTypeIndex == 0)
-                    fRafterLength = MathF.Sqrt(MathF.Pow2(fHeight_H2 - MWallHeight) + MathF.Pow2(MWidth));
+                    fRafterLength = MathF.Sqrt(MathF.Pow2(Height_H2 - MWallHeight) + MathF.Pow2(MWidth));
                 else if (MKitsetTypeIndex == 1)
-                    fRafterLength = MathF.Sqrt(MathF.Pow2(fHeight_H2 - MWallHeight) + MathF.Pow2(0.5f * MWidth));
+                    fRafterLength = MathF.Sqrt(MathF.Pow2(Height_H2 - MWallHeight) + MathF.Pow2(0.5f * MWidth));
                 else
                     fRafterLength = 0; // Exception
 
@@ -766,7 +766,7 @@ namespace PFD
                 OneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / MPurlinDistance) + 1;
 
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
-                _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, fBayWidth);
+                _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
 
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
@@ -907,7 +907,7 @@ namespace PFD
 
             set
             {
-                float frontFrameRakeAngle_limit_rad = (float)(Math.Atan(fBayWidth / MWidth) - (Math.PI / 180)); // minus 1 radian
+                float frontFrameRakeAngle_limit_rad = (float)(Math.Atan(BayWidth / MWidth) - (Math.PI / 180)); // minus 1 radian
                 float frontFrameRakeAngle_limit_deg = frontFrameRakeAngle_limit_rad * 180f / MathF.fPI;
 
                 if (value < -frontFrameRakeAngle_limit_deg || value > frontFrameRakeAngle_limit_deg)
@@ -933,7 +933,7 @@ namespace PFD
 
             set
             {
-                float backFrameRakeAngle_limit_rad = (float)(Math.Atan(fBayWidth / MWidth) - (Math.PI / 180)); // minus 1 radian
+                float backFrameRakeAngle_limit_rad = (float)(Math.Atan(BayWidth / MWidth) - (Math.PI / 180)); // minus 1 radian
                 float backFrameRakeAngle_limit_deg = backFrameRakeAngle_limit_rad * 180f / MathF.fPI;
 
                 if (value < -backFrameRakeAngle_limit_deg || value > backFrameRakeAngle_limit_deg)
@@ -2564,11 +2564,11 @@ namespace PFD
 
             if (Model is CModel_PFD_01_MR)
             {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(fHeight_H2_Overall - MWallHeightOverall) + MathF.Pow2(MWidthOverall)); // Dlzka hrany strechy
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - MWallHeightOverall) + MathF.Pow2(MWidthOverall)); // Dlzka hrany strechy
             }
             else if (Model is CModel_PFD_01_GR)
             {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(fHeight_H2_Overall - MWallHeightOverall) + MathF.Pow2(0.5f * MWidthOverall)); // Dlzka hrany strechy
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - MWallHeightOverall) + MathF.Pow2(0.5f * MWidthOverall)); // Dlzka hrany strechy
             }
             else
             {
@@ -2583,7 +2583,7 @@ namespace PFD
             if (Model is CModel_PFD_01_MR)
             {
                 fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 2 * MWallHeightOverall + 2 * fHeight_H2_Overall;
+                fWallCornerFlashing_TotalLength = 2 * MWallHeightOverall + 2 * Height_H2_Overall;
                 fBargeFlashing_TotalLength = 2 * fRoofSideLength;
             }
             else if (Model is CModel_PFD_01_GR)
@@ -2735,7 +2735,7 @@ namespace PFD
             if (MModel is CModel_PFD_01_MR)
             {
                 iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
-                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(MWallHeightOverall, fHeight_H2_Overall); // Pocet zvodov krat vyska steny
+                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(MWallHeightOverall, Height_H2_Overall); // Pocet zvodov krat vyska steny
             }
             else if (MModel is CModel_PFD_01_GR)
             {
@@ -3099,6 +3099,58 @@ namespace PFD
             set
             {
                 MMainRafterCrsc_z_plus = value;
+            }
+        }
+
+        public float BayWidth
+        {
+            get
+            {
+                return m_fBayWidth;
+            }
+
+            set
+            {
+                m_fBayWidth = value;
+            }
+        }
+
+        public float Height_H2
+        {
+            get
+            {
+                return m_fHeight_H2;
+            }
+
+            set
+            {
+                m_fHeight_H2 = value;
+            }
+        }
+
+        public float Height_H2_Overall
+        {
+            get
+            {
+                return m_fHeight_H2_Overall;
+            }
+
+            set
+            {
+                m_fHeight_H2_Overall = value;
+            }
+        }
+
+        public float RoofPitch_radians
+        {
+            get
+            {
+                return m_fRoofPitch_radians;
+            }
+
+            set
+            {
+                m_fRoofPitch_radians = value;
             }
         }
 
@@ -3720,8 +3772,8 @@ namespace PFD
             data.ColumnDistance = MColumnDistance;
             data.BottomGirtPosition = MBottomGirtPosition;
 
-            data.BayWidth = fBayWidth;
-            data.ApexHeight_H2_Overall = fHeight_H2_Overall;
+            data.BayWidth = BayWidth;
+            data.ApexHeight_H2_Overall = Height_H2_Overall;
 
             data.RoofCladding = RoofCladding;
             data.WallCladding = WallCladding;
@@ -3760,8 +3812,8 @@ namespace PFD
 
         private float GetOverallHeight_H1()
         {
-            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
-            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(RoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(RoofPitch_radians);
             float fz2 = fz3 - fz1;
 
             return MWallHeight + fz2;
@@ -3769,8 +3821,8 @@ namespace PFD
 
         private float GetCenterLineHeight_H1()
         {
-            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
-            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(RoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(RoofPitch_radians);
             float fz2 = fz3 - fz1;
 
             return MWallHeightOverall - fz2;
@@ -3778,27 +3830,27 @@ namespace PFD
 
         private float GetOverallHeight_H2()
         {
-            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
-            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(RoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(RoofPitch_radians);
             float fz2 = fz3 + fz1;
 
             if (MKitsetTypeIndex == 1) // Gable roof
                 fz2 = fz3;
 
-            return fHeight_H2 + fz2;
+            return Height_H2 + fz2;
         }
 
 
         private float GetCenterlineHeight_H2()
         {
-            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
-            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(RoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(RoofPitch_radians);
             float fz2 = fz3 + fz1;
 
             if (MKitsetTypeIndex == 1) // Gable roof
                 fz2 = fz3;
 
-            return fHeight_H2_Overall - fz2;
+            return Height_H2_Overall - fz2;
         }
 
         private Dictionary<EMemberType_FS_Position, CCalculMember> GetDesignResultsULS()

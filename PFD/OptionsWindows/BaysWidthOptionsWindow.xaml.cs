@@ -28,7 +28,7 @@ namespace PFD
 
             BaysWidthOptionsChanged = false;
 
-            if (pfdVM._baysWidthOptionsVM == null) pfdVM._baysWidthOptionsVM = new BayWidthOptionsViewModel(pfdVM.Frames - 1, pfdVM.fBayWidth);
+            if (pfdVM._baysWidthOptionsVM == null) pfdVM._baysWidthOptionsVM = new BayWidthOptionsViewModel(pfdVM.Frames - 1, pfdVM.BayWidth);
 
             pfdVM._baysWidthOptionsVM.PropertyChanged += HandleBayWidthsOptionsPropertyChangedEvent;
             

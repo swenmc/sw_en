@@ -529,7 +529,7 @@ namespace PFD
             // Treba sa na to pozriet podrobnejsie
             // Navrhujem napojit nejaky externy solver
 
-            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.Width, vm.WallHeight, vm.fHeight_H2, 1000, 0, 1000, 1000, 1000);
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.Width, vm.WallHeight, vm.Height_H2, 1000, 0, 1000, 1000, 1000);
             FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
 
             // Auxialiary string - result data
@@ -673,7 +673,7 @@ namespace PFD
             if (model is CModel_PFD_01_MR)
             {
                 iNumberOfMainRafters_x = 1;
-                fRafterLength = vm.Width / (float)Math.Cos(vm.fRoofPitch_radians); // Sirka budovy premietnuta do sklonu raftera
+                fRafterLength = vm.Width / (float)Math.Cos(vm.RoofPitch_radians); // Sirka budovy premietnuta do sklonu raftera
                 fWallHeight_Left = vm.Model.fH1_frame_centerline;
                 fWallHeight_Right = vm.Model.fH2_frame_centerline;
                 float fk_ex_LeftColumn = GetEquivalentStiffness(fWallHeight_Left, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E); // Tuhost laveho stlpa
@@ -691,7 +691,7 @@ namespace PFD
             else if (model is CModel_PFD_01_GR)
             {
                 iNumberOfMainRafters_x = 2;
-                fRafterLength = (0.5f * vm.Width) / (float)Math.Cos(vm.fRoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
+                fRafterLength = (0.5f * vm.Width) / (float)Math.Cos(vm.RoofPitch_radians); // Polovica sirky budovy premietnuta do sklonu raftera
                 fWallHeight_Left = vm.Model.fH1_frame_centerline;
                 fWallHeight_Right = vm.Model.fH1_frame_centerline;
                 fk_ex = GetEquivalentStiffness(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E);
@@ -704,7 +704,7 @@ namespace PFD
             }
 
             // X - direction
-            float fLoadingWidth_Frame_x = vm.fBayWidth; // Zatazovacia sirka ramu
+            float fLoadingWidth_Frame_x = vm.BayWidth; // Zatazovacia sirka ramu
 
             float fMass_Purlins_x = iNumberOfPurlins_x * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_EavePurlins_x = iNumberOfEavePurlins_x * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
@@ -1163,13 +1163,13 @@ namespace PFD
             sGeometryInputData.fW_centerline = vm.Width;
             sGeometryInputData.fL_centerline = vm.Length;
             sGeometryInputData.fH_1_centerline = vm.WallHeight;
-            sGeometryInputData.fH_2_centerline = vm.fHeight_H2;
+            sGeometryInputData.fH_2_centerline = vm.Height_H2;
             sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
 
             sGeometryInputData.fWidth_overall = vm.WidthOverall;
             sGeometryInputData.fLength_overall = vm.LengthOverall;
             sGeometryInputData.fHeight_1_overall = vm.WallHeightOverall;
-            sGeometryInputData.fHeight_2_overall = vm.fHeight_H2_Overall;
+            sGeometryInputData.fHeight_2_overall = vm.Height_H2_Overall;
 
             CComponentInfo ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
             if (ci != null) sGeometryInputData.iMainColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
@@ -2244,7 +2244,7 @@ namespace PFD
 
         private void btnWindowsGenerator_Click(object sender, RoutedEventArgs e)
         {
-            WindowsGeneratorWindow generatorWindow = new WindowsGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1, vm.WallHeight, vm.fBayWidth, vm.ColumnDistance);
+            WindowsGeneratorWindow generatorWindow = new WindowsGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1, vm.WallHeight, vm.BayWidth, vm.ColumnDistance);
             generatorWindow.ShowDialog();
 
             WindowGeneratorViewModel windowGeneratorViewModel = generatorWindow.DataContext as WindowGeneratorViewModel;
@@ -2516,7 +2516,7 @@ namespace PFD
             if (vm.Model is CModel_PFD_01_MR)
             {
                 iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
-                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(vm.WallHeightOverall, vm.fHeight_H2_Overall); // Pocet zvodov krat vyska steny
+                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(vm.WallHeightOverall, vm.Height_H2_Overall); // Pocet zvodov krat vyska steny
             }
             else if (vm.Model is CModel_PFD_01_GR)
             {

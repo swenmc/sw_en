@@ -65,13 +65,13 @@ namespace PFD
 
             if (_pfdVM.Model is CModel_PFD_01_MR)
             {
-                WallDefinitionPoints_Right = new List<Point>(4) { new Point(0, 0), new Point(_pfdVM.LengthOverall, 0), new Point(_pfdVM.LengthOverall, _pfdVM.fHeight_H2_Overall), new Point(0, _pfdVM.fHeight_H2_Overall) };
-                WallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(_pfdVM.WidthOverall, 0), new Point(_pfdVM.WidthOverall, _pfdVM.fHeight_H2_Overall), new Point(0, _pfdVM.WallHeightOverall) };
+                WallDefinitionPoints_Right = new List<Point>(4) { new Point(0, 0), new Point(_pfdVM.LengthOverall, 0), new Point(_pfdVM.LengthOverall, _pfdVM.Height_H2_Overall), new Point(0, _pfdVM.Height_H2_Overall) };
+                WallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(_pfdVM.WidthOverall, 0), new Point(_pfdVM.WidthOverall, _pfdVM.Height_H2_Overall), new Point(0, _pfdVM.WallHeightOverall) };
             }
             else if (_pfdVM.Model is CModel_PFD_01_GR)
             {
                 WallDefinitionPoints_Right = WallDefinitionPoints_Left;
-                WallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(_pfdVM.WidthOverall, 0), new Point(_pfdVM.WidthOverall, _pfdVM.WallHeightOverall), new Point(0.5 * _pfdVM.WidthOverall, _pfdVM.fHeight_H2_Overall), new Point(0, _pfdVM.WallHeightOverall) };
+                WallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(_pfdVM.WidthOverall, 0), new Point(_pfdVM.WidthOverall, _pfdVM.WallHeightOverall), new Point(0.5 * _pfdVM.WidthOverall, _pfdVM.Height_H2_Overall), new Point(0, _pfdVM.WallHeightOverall) };
             }
             else
             {
@@ -163,12 +163,12 @@ namespace PFD
 
             if (_pfdVM.Model is CModel_PFD_01_MR)
             {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(_pfdVM.fHeight_H2_Overall - _pfdVM.WallHeightOverall) + MathF.Pow2(_pfdVM.WidthOverall)); // Dlzka hrany strechy
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(_pfdVM.Height_H2_Overall - _pfdVM.WallHeightOverall) + MathF.Pow2(_pfdVM.WidthOverall)); // Dlzka hrany strechy
                 iNumberOfRoofSides = 1;
             }
             else if(_pfdVM.Model is CModel_PFD_01_GR)
             {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(_pfdVM.fHeight_H2_Overall - _pfdVM.WallHeightOverall) + MathF.Pow2(0.5f * _pfdVM.WidthOverall)); // Dlzka hrany strechy
+                fRoofSideLength = MathF.Sqrt(MathF.Pow2(_pfdVM.Height_H2_Overall - _pfdVM.WallHeightOverall) + MathF.Pow2(0.5f * _pfdVM.WidthOverall)); // Dlzka hrany strechy
                 iNumberOfRoofSides = 2;
             }
             else
@@ -1284,7 +1284,7 @@ namespace PFD
             if (model is CModel_PFD_01_MR)
             {
                 fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 2 * _pfdVM.WallHeightOverall + 2 * _pfdVM.fHeight_H2_Overall;
+                fWallCornerFlashing_TotalLength = 2 * _pfdVM.WallHeightOverall + 2 * _pfdVM.Height_H2_Overall;
                 fBargeFlashing_TotalLength = 2 * fRoofSideLength;
             }
             else if(model is CModel_PFD_01_GR)
@@ -1510,7 +1510,7 @@ namespace PFD
 
             if (model is CModel_PFD_01_MR)
             {
-                fDownpipesTotalLength = downpipe.CountOfDownpipePoints * Math.Min(_pfdVM.WallHeightOverall, _pfdVM.fHeight_H2_Overall); // Pocet zvodov krat mensia z vysok stien vlavo a vpravo (H1 alebo H2)
+                fDownpipesTotalLength = downpipe.CountOfDownpipePoints * Math.Min(_pfdVM.WallHeightOverall, _pfdVM.Height_H2_Overall); // Pocet zvodov krat mensia z vysok stien vlavo a vpravo (H1 alebo H2)
             }
             else if (model is CModel_PFD_01_GR)
             {

@@ -68,12 +68,10 @@ namespace PFD
         protected CMemberEccentricity eccentricityGirtBack_YL;
 
         protected ObservableCollection<DoorProperties> DoorBlocksProperties; // Pridane kvoli Rebates
-        //protected ObservableCollection<CrossBracingProperties> crossBracingProperties;
-
+        
         protected List<CNode> listOfSupportedNodes_S1;
         protected List<CNode> listOfSupportedNodes_S2;
-
-        //public List<CEntity3D> componentList;
+                
         public List<CBlock_3D_001_DoorInBay> DoorsModels;
         public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
