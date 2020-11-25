@@ -314,9 +314,9 @@ namespace PFD
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iRafterFlyBracing_EveryXXPurlin = sGeometryInputData.iRafterFlyBracingEveryXXPurlin;
             else
-            {                
+            {
                 iRafterFlyBracing_EveryXXPurlin = Math.Max(0, (int)(L1_Bays[0] / fDist_Purlin));
-            }                
+            }
 
             // Front and Back Wind Post
             bool bUseFrontColumnFlyBracingPlates = true; // Use fly bracing plates in girt to column joint
@@ -1501,7 +1501,7 @@ namespace PFD
             vm.SetComponentListAccordingToDoorsAndWindows();
 
             AddMembersToMemberGroupsLists(_clVM.ComponentList.ToList());
-            
+
             // Set members Generate, Display, Calculate, Design, MaterialList properties
             CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
 
