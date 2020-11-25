@@ -1084,24 +1084,49 @@ namespace M_AS4600
         {
             CJointDesignDetails_CrossBracing designDetails = new CJointDesignDetails_CrossBracing();
 
+            CScrewArrangement_CB sa = null;
+
+            if (joint_temp is CConnectionJoint_U001)
+                sa = ((CConnectionJoint_U001)joint_temp).ScrewArrangement;
+            else
+                throw new Exception("Invalid joint type.");
+
             // 5.4.2.3 Tension in the connected part
             // Secondary member tension design
             designDetails.fPhi_CrSc = 0.65f; // TODO - overit ci je to spravne
             designDetails.fPhi_shear_Vb_5424 = 0.5f; // Shear Capacity Factor
 
-            // TODO
+            // TODO - toto nemusi platit ak je viac groups alebo sekvencii v ramci group
+            // Chcelo by to zapracovat funkcie ktore z celej kolekcie skrutiek najdu min vzdialenosti v jednom aj v druhom smere a min vzdialenosti od okraja.
+
             designDetails.iNumberOfScrewsInShear = joint_temp.ConnectorGroups[0].Connectors.Count; // Todo - overit ci je to spravne, asi by sa malo zobrat zo screw arrangement, lebo skupin moze byt viac
-            int iNumberOfConnectorColumns = 1; // Pocet stlpcov v smere x pruta // TODO - napojit na SA
-            int iNumberOfConnectorsInSection = 2; // TODO - napojit na SA
-            designDetails.fe_x = 0.03f; // Poloha krajnej skrutky v smere x, TODO - napojit na SA
-            designDetails.fA_n_SecondaryMember = (float)crsc_secMember.A_g - (screw.Diameter_thread * iNumberOfConnectorsInSection * ft_2_crscsecMember); // TODO - dopracovat vypocet oslabenej plochy prierezu podla screw arrangement - pocet skrutiek v smere y v jednom reze
+            int iNumberOfConnectorColumns = ((CScrewRectSequence)sa.ListOfSequenceGroups[0].ListSequence[0]).NumberOfScrewsInRow_xDirection; // Pocet stlpcov v smere x pruta
+            int iNumberOfConnectorsInSection = ((CScrewRectSequence)sa.ListOfSequenceGroups[0].ListSequence[0]).NumberOfScrewsInColumn_yDirection;
+            designDetails.fe_x = (float)((CScrewRectSequence)sa.ListOfSequenceGroups[0].ListSequence[0]).RefPointX; // Poloha krajnej skrutky v smere x
+            designDetails.fA_n_SecondaryMember = (float)crsc_secMember.A_g - (screw.Diameter_thread * iNumberOfConnectorsInSection * ft_2_crscsecMember);
 
             if (iNumberOfConnectorColumns == 1)
             {
                 // 5.4.2.3(2) - a single screw, or a single row of screws perpendicular to the force
-                // TODO - urcit podla screw arrangement - vzdialenost s_y
+                // Vzdialenost s_y
                 // spacing of screws perpendicular to the line of the force; or width of sheet, in the case of a single screw
-                float fs_min_SecondaryMember = 0.010f;  // Minimalna vzdialenost skrutiek kolmo na smer osovej sily v prute, pre jeden rad skrutiek je to sirka plechu (crsc.h)
+                float fs_min_SecondaryMember = 0.0f; // Minimalna vzdialenost skrutiek kolmo na smer osovej sily v prute, pre jeden rad skrutiek je to sirka plechu (crsc.h)
+
+                if (iNumberOfConnectorsInSection == 1)
+                    fs_min_SecondaryMember = (float)crsc_secMember.h;
+                else
+                {
+                    if (((CScrewRectSequence)sa.ListOfSequenceGroups[0].ListSequence[0]).SameDistancesY)
+                        fs_min_SecondaryMember = ((CScrewRectSequence)sa.ListOfSequenceGroups[0].ListSequence[0]).DistanceOfPointsY;
+                    else if (((CScrewRectSequence)sa.ListOfSequenceGroups[0].ListSequence[0]).DistancesOfPointsY != null)
+                        fs_min_SecondaryMember = ((CScrewRectSequence)sa.ListOfSequenceGroups[0].ListSequence[0]).DistancesOfPointsY.Min();
+                    else
+                    {
+                        // Exception
+                        throw new Exception("Spacing of screws perpendicular to the line of the force can't be evaluated.");
+                    }
+                }
+
                 designDetails.fN_t_Section_SecondaryMember = eq.Eq_5423_2__(screw.Diameter_thread, fs_min_SecondaryMember, designDetails.fA_n_SecondaryMember, ff_uk_2_SecondaryMember);
             }
             else

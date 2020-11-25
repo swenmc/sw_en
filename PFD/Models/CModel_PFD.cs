@@ -1049,29 +1049,33 @@ namespace PFD
             if (members.Count() > 0)
             {
                 string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorFrame).ComponentName;
+                // TODO 626
                 //To Mato ktore m_arrCrSc[] tam ma ist namiesto toho null?
-                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDF, EMemberType_FS_Position.DoorFrame, null, 0, 0, 0, 0));
+                //To Ondrej - zobral by som prvy prut z tej skupiny members, ktore chcem priradit do skupiny a pouzije jeho crsc start
+                // Standardne to hladame takto m_arrCrSc[(int)EMemberGroupNames.eDoorFrame]
+                // ale EMemberGroupNames pre tieto 4 typy prutov nemame implementovane, asi to treba pridat do enumu
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDF, EMemberType_FS_Position.DoorFrame, members.First().CrScStart, 0, 0, 0, 0));
             }
 
             members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer);
             if (members.Count() > 0)
-            {                
+            {
                 string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorTrimmer).ComponentName;
-                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDT, EMemberType_FS_Position.DoorTrimmer, null, 0, 0, 0, 0));
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDT, EMemberType_FS_Position.DoorTrimmer, members.First().CrScStart, 0, 0, 0, 0));
             }
 
             members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.DoorLintel);
             if (members.Count() > 0)
             {
                 string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorLintel).ComponentName;
-                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDL, EMemberType_FS_Position.DoorLintel, null, 0, 0, 0, 0));
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDL, EMemberType_FS_Position.DoorLintel, members.First().CrScStart, 0, 0, 0, 0));
             }
 
             members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.WindowFrame);
             if (members.Count() > 0)
             {
                 string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindowFrame).ComponentName;
-                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, null, 0, 0, 0, 0));
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, members.First().CrScStart, 0, 0, 0, 0));
             }
 
             int i = 0;
