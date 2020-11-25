@@ -139,11 +139,15 @@ namespace BaseClasses
 
         public Point[] Get_ScrewSequencePointCoordinates(CScrewRectSequence srectSeq)
         {
+            // TODO 624
+            // TO Ondrej - musime urobit trosku poriadok v tom co znamena referencny bod sekvencie, referencny bod group a referencny bod arrangement
+            // Tu musime vyvorit body sekvencie zacinajuc v [0,0] lebo potom to cele posuvame do srectSeq.RefPointX a srectSeq.RefPointY
+
             // Connectors in Sequence
             if (srectSeq.SameDistancesX && srectSeq.SameDistancesY) // Ak su pre oba smery vzdialenosti skrutiek rovnake, posielame do konstruktora len jedno cislo pre rozostup (vzdialenost) skrutiek
-                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(0, 0), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
             else // Ak su aspon pre jeden smer vzdialenosti skrutiek rozdielne, posielame do konstruktora zoznam rozostupov (rozne vzdialenosti) skrutiek
-                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistancesOfPointsX.ToArray(), srectSeq.DistancesOfPointsY.ToArray());
+                return GetRegularArrayOfPointsInCartesianCoordinates(new Point(0, 0), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistancesOfPointsX.ToArray(), srectSeq.DistancesOfPointsY.ToArray());
         }
 
         public override void UpdateArrangmentData()

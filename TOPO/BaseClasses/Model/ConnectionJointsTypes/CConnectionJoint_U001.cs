@@ -57,10 +57,10 @@ namespace BaseClasses
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
             // Defaultny stav
-            int iConnectorNumber = 6;
+            int iConnectorNumber = 4; // Default 4
             CScrew referenceScrew = new CScrew("TEK", "14");
-            float fe_edge = 0.01f;
-            m_ScrewArrangement = new CScrewArrangement_CB(iConnectorNumber, referenceScrew, 3, 2, fe_edge, fe_edge, 0.05f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * fe_edge);
+            float fe_edge = 0.015f; // Defaultna vzdialenost of okraja 15 mm
+            m_ScrewArrangement = new CScrewArrangement_CB(iConnectorNumber, referenceScrew, 2, 2, fe_edge, fe_edge, 0.05f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * fe_edge);
             m_ScrewArrangement.Calc_HolesCentersCoord2D();
             m_ScrewArrangement.arrConnectorControlPoints3D = new Point3D[m_ScrewArrangement.IHolesNumber];
             m_ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);
