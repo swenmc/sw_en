@@ -353,6 +353,7 @@ namespace PFD
                 BottomGirtPosition = dmodel.fdist_girt_bottom;
                 Frames = dmodel.iFrNo;
                 BayWidth = MLength / (MFrames - 1); // je sice v DB, ale istejsie je to tu prepocitavat
+                _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
 
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
