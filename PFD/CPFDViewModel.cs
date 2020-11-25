@@ -618,14 +618,21 @@ namespace PFD
                 if (value < 3 || value > 300)
                     throw new ArgumentException("Length must be between 3 and 300 [m]");
                 MLengthOverall = value;
-                
+
                 bool isChangedFromCode = IsSetFromCode;
                 if (!isChangedFromCode)
                 {
                     IsSetFromCode = true;
                     Length = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
                     IsSetFromCode = isChangedFromCode;
-                }                
+                }
+
+                if (MModelIndex != 0)
+                {
+                    // Recalculate BayWidth
+                    BayWidth = MLength / (MFrames - 1);
+                }
+                if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
 
                 NotifyPropertyChanged("LengthOverall");
             }
