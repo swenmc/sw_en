@@ -56,20 +56,11 @@ namespace BaseClasses
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
+            // Defaultny stav
             int iConnectorNumber = 6;
-
             CScrew referenceScrew = new CScrew("TEK", "14");
-
-            // TODO 624 Umožniť editovať v GUI a nastavovať podobne ako je to v CScrewArrangementRect_PlateType_JKL
-            // Toto moze byt defaultny stav
-            //CScrewRectSequence seq = new CScrewRectSequence(3, 2, 0.03f, 0.02f, 0.06f, 0.10f); // Create rectangular sequence of screws
-            //CScrewSequenceGroup gr = new CScrewSequenceGroup();
-            //gr.ListSequence.Add(seq); // Add screw sequence to screw group
-
-            m_ScrewArrangement = new CScrewArrangement_CB(iConnectorNumber, referenceScrew, 3, 2, 0.03f, 0.02f, 0.06f, 0.10f);
-            //m_ScrewArrangement.ListOfSequenceGroups = new List<CScrewSequenceGroup>(1) {gr}; // Add screw group to screw arrangement
-
-            //m_ScrewArrangement.Calc_HolesCentersCoord2D((float)m_SecondaryMembers[0].CrScStart.h, (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.02f);
+            float fe_edge = 0.01f;
+            m_ScrewArrangement = new CScrewArrangement_CB(iConnectorNumber, referenceScrew, 3, 2, fe_edge, fe_edge, 0.05f, (float)m_SecondaryMembers[0].CrScStart.h - 2 * fe_edge);
             m_ScrewArrangement.Calc_HolesCentersCoord2D();
             m_ScrewArrangement.arrConnectorControlPoints3D = new Point3D[m_ScrewArrangement.IHolesNumber];
             m_ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(0,0, (float)m_SecondaryMembers[0].CrScStart.t_min, m_bScrewInPlusZDirection);

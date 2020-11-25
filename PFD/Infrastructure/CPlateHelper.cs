@@ -1360,7 +1360,7 @@ namespace PFD
 
             if (joint == null) return;
 
-            // Set current screw arrangement parameters  
+            // Set current screw arrangement parameters
 
             CScrewArrangement_CB sa_CB = joint.ScrewArrangement;
 
@@ -1460,9 +1460,6 @@ namespace PFD
                         }
                     }
                 }
-
-
-
             }
             else if (item is CComponentParamsViewBool)
             {
@@ -1503,9 +1500,8 @@ namespace PFD
 
             sa_CB.UpdateArrangmentData();        // Update data of screw arrangement
             joint.ScrewArrangement = sa_CB;      // Set current screw arrangement to the plate
-            
-
         }
+
         private static int GetSequenceNumFromName(string name)
         {
             int seqNum = 0;
@@ -1513,6 +1509,7 @@ namespace PFD
 
             return seqNum;
         }
+
         private static int GetGroupNumFromName(string name, bool isAtTheEnd)
         {
             int grNum = 0;
@@ -1521,7 +1518,6 @@ namespace PFD
 
             return grNum;
         }
-
 
         public static void UpdateCircleSequencesNumberOfScrews(int iCircleNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
         {

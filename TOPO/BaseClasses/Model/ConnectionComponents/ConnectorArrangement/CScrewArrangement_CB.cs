@@ -28,12 +28,12 @@ namespace BaseClasses
         {
             IHolesNumber = iScrewsNumber_temp;
             referenceScrew = referenceScrew_temp;
-            
+
             m_MirroredGroups = false;
-            
+
             RectSequences = new List<CScrewRectSequence>();
             RectSequences.Add(new CScrewRectSequence(iNumberOfScrewsInRow_xDirection, iNumberOfScrewsInColumn_yDirection, refPointX, refPointY, distanceOfPointsX, distanceOfPointsY));
-            
+
             NumberOfGroups = 1;
             //NumberOfSequenceInGroup = 1;
             DefaultNumberOfSequencesInGroup = 1;
@@ -112,7 +112,7 @@ namespace BaseClasses
                 m_DefaultNumberOfSequencesInGroup = value;
             }
         }
-                
+
         public void Calc_HolesCentersCoord2D()
         {
             // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
@@ -126,9 +126,9 @@ namespace BaseClasses
                 foreach (CScrewRectSequence sc in gr.ListSequence)
                 {
                     sc.HolesCentersPoints = Get_ScrewSequencePointCoordinates(sc);
-                    
+
                     // Translate from [0,0] on plate to the final position
-                    TranslateSequence(fx_edge, fy_edge, sc);                    
+                    TranslateSequence(fx_edge, fy_edge, sc);
                 }
 
                 gr.HolesRadii = gr.Get_RadiiOfConnectorsInGroup();
@@ -144,9 +144,7 @@ namespace BaseClasses
                 return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
             else // Ak su aspon pre jeden smer vzdialenosti skrutiek rozdielne, posielame do konstruktora zoznam rozostupov (rozne vzdialenosti) skrutiek
                 return GetRegularArrayOfPointsInCartesianCoordinates(new Point(srectSeq.RefPointX, srectSeq.RefPointY), srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistancesOfPointsX.ToArray(), srectSeq.DistancesOfPointsY.ToArray());
-            
         }
-
 
         public override void UpdateArrangmentData()
         {
@@ -194,7 +192,6 @@ namespace BaseClasses
             HolesCentersPoints2D = new Point[IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
-
 
         public void MirrorGroupsChanged(bool mirrorGroups)
         {
@@ -260,10 +257,9 @@ namespace BaseClasses
                         NumberOfGroups += 2;
                     }
                 }
-
             }
-
         }
+
         public void NumberOfSequenceInGroup_Updated(int groupID, int newNumberOfSequencesInGroup)
         {
             if (newNumberOfSequencesInGroup < 0) return;
@@ -300,7 +296,6 @@ namespace BaseClasses
                     gr.NumberOfRectangularSequences++;
                 }
             }
-
         }
 
         private void AddSequenceGroup()
@@ -318,6 +313,7 @@ namespace BaseClasses
             }
             ListOfSequenceGroups.Add(gr);
         }
+
         private void RemoveSequenceGroup()
         {
             CScrewSequenceGroup gr = ListOfSequenceGroups.LastOrDefault();
@@ -330,6 +326,7 @@ namespace BaseClasses
                 RectSequences.RemoveAt(RectSequences.Count - 1);
             }
         }
+
         private void AddMirroredSequenceGroup()
         {
             CScrewSequenceGroup gr = new CScrewSequenceGroup();
@@ -343,6 +340,7 @@ namespace BaseClasses
             grMirror.ListSequence.Add(rSMirror);
             ListOfSequenceGroups.Add(grMirror);
         }
+
         private void RemoveMirroredSequenceGroup()
         {
             CScrewSequenceGroup gr = ListOfSequenceGroups[NumberOfGroupsWithoutMirrored - 1];
@@ -369,12 +367,12 @@ namespace BaseClasses
             ListOfSequenceGroups[grIndex].ListSequence.Add(rS);
             if (RectSequences.Count >= seqIndex) RectSequences.Insert(seqIndex, rS);
         }
+
         private void RemoveSequenceFromGroup(int grIndex)
         {
             ListOfSequenceGroups[grIndex].ListSequence.RemoveAt(ListOfSequenceGroups[grIndex].ListSequence.Count - 1);
             int seqIndex = GetTotalSequenceIndex(grIndex + 1, 0);
             if (RectSequences.Count > seqIndex) RectSequences.RemoveAt(seqIndex - 1);
         }
-
     }
 }
