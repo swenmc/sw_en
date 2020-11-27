@@ -75,7 +75,7 @@ namespace PFD
         public CPFDLoadInput loadInput;
         public SnowLoadDataInput sSnowInputData;
         public WindLoadDataInput sWindInputData;
-        public SeisLoadDataInput sSeisInputData;
+        //public SeisLoadDataInput sSeisInputData;
 
         private CProjectInfoVM projectInfoVM;
         
@@ -758,15 +758,15 @@ namespace PFD
 
         public void CalculateEQParameters(float fT_1x_param, float fT_1y_param, float fMass_Total_x_param, float fMass_Total_y_param)
         {
-            sSeisInputData.eSiteSubsoilClass = loadInput.SiteSubSoilClass;
-            sSeisInputData.fProximityToFault_D_km = loadInput.FaultDistanceDmin_km; // km
-            sSeisInputData.fZoneFactor_Z = loadInput.ZoneFactorZ;
-            //sSeisInputData.fPeriodAlongXDirection_Tx = loadInput.PeriodAlongXDirectionTx; //sec
-            //sSeisInputData.fPeriodAlongYDirection_Ty = loadInput.PeriodAlongYDirectionTy; //sec
-            //sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadInput.SpectralShapeFactorChTx;
-            //sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadInput.SpectralShapeFactorChTy;
-
-            vm.Eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, sSeisInputData);
+            vm.sSeisInputData.eSiteSubsoilClass = loadInput.SiteSubSoilClass;
+            vm.sSeisInputData.fProximityToFault_D_km = loadInput.FaultDistanceDmin_km; // km
+            vm.sSeisInputData.fZoneFactor_Z = loadInput.ZoneFactorZ;
+            //vm.sSeisInputData.fPeriodAlongXDirection_Tx = loadInput.PeriodAlongXDirectionTx; //sec
+            //vm.sSeisInputData.fPeriodAlongYDirection_Ty = loadInput.PeriodAlongYDirectionTy; //sec
+            //vm.sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadInput.SpectralShapeFactorChTx;
+            //vm.sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadInput.SpectralShapeFactorChTy;
+            
+            vm.Eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, vm.sSeisInputData);
         }
 
         public float GetEquivalentStiffness(float fL, float fI_column, float fE)

@@ -29,6 +29,11 @@ namespace PFD.Infrastructure
         private bool DeterminateMemberLocalDisplacementsForULS;
         CalculationSettingsFoundation FootingCalcSettings;
 
+        private int m_LeftWallCrosses;
+        private int m_RightWallCrosses;
+        private int m_RoofCrosses;
+        private float m_RoofMassFactor;
+
         private bool MIsGableRoofModel;
 
         private int membersIFCalcCount;
@@ -52,52 +57,34 @@ namespace PFD.Infrastructure
         public sDesignResults sDesignResults_ULS = new sDesignResults();
         public sDesignResults sDesignResults_SLS = new sDesignResults();
 
-        public CMemberDesignCalculations(Solver solverWindow,
-            CModel_PFD model,
-            bool useCRSCGeometricalAxes,
-            bool bshearDesignAccording334,
-            bool bIgnoreWebStiffeners,
-            bool bUniformShearDistributionInAnchors,
-            bool determinateCombinationResultsByFEMSolver,
-            bool bUseFEMSolverCalculationForSimpleBeam,
-            bool determinateMemberLocalDisplacementsForULS,
-            CalculationSettingsFoundation footingCalcSettings,
-            List<CFrame> FrameModels,
-            List<CBeam_Simple> BeamSimpleModels)
+
+        public CMemberDesignCalculations(Solver solverWindow, CPFDViewModel vm)
         {
             SolverWindow = solverWindow;
-            Model = model;
-            MUseCRSCGeometricalAxes = useCRSCGeometricalAxes;
-            MShearDesignAccording334 = bshearDesignAccording334;
-            MIgnoreWebStiffeners = bIgnoreWebStiffeners;
-            MUniformShearDistributionInAnchors = bUniformShearDistributionInAnchors;
-            DeterminateCombinationResultsByFEMSolver = determinateCombinationResultsByFEMSolver;
-            UseFEMSolverCalculationForSimpleBeam = bUseFEMSolverCalculationForSimpleBeam;
-            DeterminateMemberLocalDisplacementsForULS = determinateMemberLocalDisplacementsForULS;
+            Model = vm.Model;
+            MUseCRSCGeometricalAxes = vm.UseCRSCGeometricalAxes;
+            MShearDesignAccording334 = vm._designOptionsVM.ShearDesignAccording334;
+            MIgnoreWebStiffeners = vm._designOptionsVM.IgnoreWebStiffeners;
+            MUniformShearDistributionInAnchors = vm._designOptionsVM.UniformShearDistributionInAnchors;            
+            DeterminateCombinationResultsByFEMSolver = vm._solverOptionsVM.DeterminateCombinationResultsByFEMSolver;
+            UseFEMSolverCalculationForSimpleBeam = vm._solverOptionsVM.UseFEMSolverCalculationForSimpleBeam;
+            DeterminateMemberLocalDisplacementsForULS = vm._solverOptionsVM.DeterminateMemberLocalDisplacementsForULS;
 
-            ////-------------------------------------------------------------------------------------------------------------
-            //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
-            //FootingCalcSettings = new CalculationSettingsFoundation();
-            //FootingCalcSettings.ConcreteGrade = "30";
-            //FootingCalcSettings.AggregateSize = 0.02f;
-            //FootingCalcSettings.ConcreteDensity = 2300f;
-            //FootingCalcSettings.ReinforcementGrade = "500E";
-            //FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
-            //FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
-            //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
-            //FootingCalcSettings.FloorSlabThickness = 0.125f;
-            ////-------------------------------------------------------------------------------------------------------------
+            m_LeftWallCrosses = vm._crossBracingOptionsVM.GetLeftWallCrosses();
+            m_RightWallCrosses = vm._crossBracingOptionsVM.GetRightWallCrosses();
+            m_RoofCrosses = vm._crossBracingOptionsVM.GetRoofCrosses(); //to Mato - tu si mozes skontrolovat tie metody,ci maju spravne podmienky
+            m_RoofMassFactor = vm.sSeisInputData.fProximityToFault_D_km; //TO Mato - tuto property som ma vybrat???
 
-            if (model is CModel_PFD_01_GR)
+            if (Model is CModel_PFD_01_GR)
                 MIsGableRoofModel = true;
 
-            FootingCalcSettings = footingCalcSettings;
-            beamSimpleModels = BeamSimpleModels;
-            frameModels = FrameModels;
+            FootingCalcSettings = vm.FootingVM.GetCalcSettings();
+            beamSimpleModels = vm.beamSimpleModels;
+            frameModels = vm.frameModels;
 
             fx_positions = new float[iNumberOfDesignSections];
-            membersIFCalcCount = CModelHelper.GetMembersSetForCalculationsCount(model.m_arrMembers);
-            membersDesignCalcCount = CModelHelper.GetMembersSetForDesignCalculationsCount(model.m_arrMembers);
+            membersIFCalcCount = CModelHelper.GetMembersSetForCalculationsCount(Model.m_arrMembers);
+            membersDesignCalcCount = CModelHelper.GetMembersSetForDesignCalculationsCount(Model.m_arrMembers);
             step = (100.0 - SolverWindow.Progress) / (membersIFCalcCount + membersDesignCalcCount);
 
             MemberInternalForcesInLoadCases = new List<CMemberInternalForcesInLoadCases>();
@@ -110,6 +97,53 @@ namespace PFD.Infrastructure
             MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
             JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
         }
+
+        //public CMemberDesignCalculations(Solver solverWindow,
+        //    CModel_PFD model,
+        //    bool useCRSCGeometricalAxes,
+        //    bool bshearDesignAccording334,
+        //    bool bIgnoreWebStiffeners,
+        //    bool bUniformShearDistributionInAnchors,
+        //    bool determinateCombinationResultsByFEMSolver,
+        //    bool bUseFEMSolverCalculationForSimpleBeam,
+        //    bool determinateMemberLocalDisplacementsForULS,
+        //    CalculationSettingsFoundation footingCalcSettings,
+        //    List<CFrame> FrameModels,
+        //    List<CBeam_Simple> BeamSimpleModels)
+        //{
+        //    SolverWindow = solverWindow;
+        //    Model = model;
+        //    MUseCRSCGeometricalAxes = useCRSCGeometricalAxes;
+        //    MShearDesignAccording334 = bshearDesignAccording334;
+        //    MIgnoreWebStiffeners = bIgnoreWebStiffeners;
+        //    MUniformShearDistributionInAnchors = bUniformShearDistributionInAnchors;
+        //    DeterminateCombinationResultsByFEMSolver = determinateCombinationResultsByFEMSolver;
+        //    UseFEMSolverCalculationForSimpleBeam = bUseFEMSolverCalculationForSimpleBeam;
+        //    DeterminateMemberLocalDisplacementsForULS = determinateMemberLocalDisplacementsForULS;
+
+            
+        //    if (model is CModel_PFD_01_GR)
+        //        MIsGableRoofModel = true;
+
+        //    FootingCalcSettings = footingCalcSettings;
+        //    beamSimpleModels = BeamSimpleModels;
+        //    frameModels = FrameModels;
+
+        //    fx_positions = new float[iNumberOfDesignSections];
+        //    membersIFCalcCount = CModelHelper.GetMembersSetForCalculationsCount(model.m_arrMembers);
+        //    membersDesignCalcCount = CModelHelper.GetMembersSetForDesignCalculationsCount(model.m_arrMembers);
+        //    step = (100.0 - SolverWindow.Progress) / (membersIFCalcCount + membersDesignCalcCount);
+
+        //    MemberInternalForcesInLoadCases = new List<CMemberInternalForcesInLoadCases>();
+        //    MemberDeflectionsInLoadCases = new List<CMemberDeflectionsInLoadCases>();
+
+        //    MemberInternalForcesInLoadCombinations = new List<CMemberInternalForcesInLoadCombinations>();
+        //    MemberDeflectionsInLoadCombinations = new List<CMemberDeflectionsInLoadCombinations>();
+
+        //    MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
+        //    MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
+        //    JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
+        //}
 
         public void CalculateAll(bool useMultiCore)
         {
@@ -226,7 +260,8 @@ namespace PFD.Infrastructure
 
                 recalc = new CMemberCalculations(lockObject);
                 result = recalc.BeginMemberCalculations(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments, fx_positions.ToArray(), Model, frameModels,
-                    UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, DeterminateMemberLocalDisplacementsForULS, null, null);
+                    UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, DeterminateMemberLocalDisplacementsForULS, 
+                    m_LeftWallCrosses, m_RightWallCrosses, m_RoofCrosses, m_RoofMassFactor, null, null);
                 waitHandles.Add(result.AsyncWaitHandle);
                 recs.Add(recalc);
                 results.Add(result);

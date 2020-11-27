@@ -343,5 +343,23 @@ namespace PFD
             return items;
         }
 
+
+        public int GetLeftWallCrosses()
+        {
+            int count = CrossBracingList.Count(c => c.WallLeft == true);            
+            return count;
+        }
+        public int GetRightWallCrosses()
+        {
+            int count = CrossBracingList.Count(c => c.WallRight == true);            
+            return count;
+        }
+
+        public int GetRoofCrosses()
+        {
+            int count = CrossBracingList.Count(c => c.Roof == true && c.RoofPosition != "None" && c.FirstCrossOnRafter == false && c.LastCrossOnRafter == false);
+            return count;
+        }
+
     }
 }

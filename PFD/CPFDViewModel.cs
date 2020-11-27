@@ -260,6 +260,8 @@ namespace PFD
         [NonSerialized]
         public List<CBeam_Simple> beamSimpleModels;
 
+        public SeisLoadDataInput sSeisInputData;
+
         //-------------------------------------------------------------------------------------------------------------
         public bool IsRelease
         {
@@ -3433,10 +3435,11 @@ namespace PFD
                 if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
             }
 
-            CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
-            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners, _designOptionsVM.UniformShearDistributionInAnchors,
-                _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS,
-                footingSettings, frameModels, beamSimpleModels);
+            //CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
+            //CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners, _designOptionsVM.UniformShearDistributionInAnchors,
+            //    _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS,
+            //    footingSettings, frameModels, beamSimpleModels);
+            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, this);
             memberDesignCalculations.CalculateAll(_solverOptionsVM.MultiCoreCalculation);
             SetDesignMembersLists(memberDesignCalculations);
 

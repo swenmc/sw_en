@@ -15,7 +15,7 @@ namespace PFD.Infrastructure
         CMemberCalculationsAsyncStub stub = null;
         public delegate void CMemberCalculationsAsyncStub(CMember m, bool DeterminateCombinationResultsByFEMSolver, int iNumberOfDesignSections, int iNumberOfDesignSegments,
             float[] fx_positions, CModel_PFD Model, List<CFrame> frameModels, bool UseFEMSolverCalculationForSimpleBeam, List<CBeam_Simple> beamSimpleModels, 
-            bool MUseCRSCGeometricalAxes, bool DeterminateMemberLocalDisplacementsForULS);
+            bool MUseCRSCGeometricalAxes, bool DeterminateMemberLocalDisplacementsForULS, int leftWallCrosses, int rightWallCrosses, int roofCrosses, float roofMassFactor);
 
         private Object theLock;
 
@@ -36,12 +36,13 @@ namespace PFD.Infrastructure
         //-------------------------------------------------------------------------------------------------------------------------------
         public IAsyncResult BeginMemberCalculations(CMember m, bool DeterminateCombinationResultsByFEMSolver, int iNumberOfDesignSections, int iNumberOfDesignSegments,
             float[] fx_positions, CModel_PFD Model, List<CFrame> frameModels, bool UseFEMSolverCalculationForSimpleBeam, List<CBeam_Simple> beamSimpleModels, 
-            bool MUseCRSCGeometricalAxes, bool DeterminateMemberLocalDisplacementsForULS, AsyncCallback cb, object s)
+            bool MUseCRSCGeometricalAxes, bool DeterminateMemberLocalDisplacementsForULS, int leftWallCrosses, int rightWallCrosses, int roofCrosses, float roofMassFactor, AsyncCallback cb, object s)
         {
             stub = new CMemberCalculationsAsyncStub(Calculate);
             //using delegate for asynchronous implementation
             return stub.BeginInvoke(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments,
-                    fx_positions, Model, frameModels, UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, DeterminateMemberLocalDisplacementsForULS, cb, null);
+                    fx_positions, Model, frameModels, UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, DeterminateMemberLocalDisplacementsForULS,
+                    leftWallCrosses, rightWallCrosses, roofCrosses, roofMassFactor, cb, null);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -52,10 +53,10 @@ namespace PFD.Infrastructure
 
         public void Calculate(CMember m, bool DeterminateCombinationResultsByFEMSolver, int iNumberOfDesignSections, int iNumberOfDesignSegments,
             float[] fx_positions, CModel_PFD Model, List<CFrame> frameModels, bool UseFEMSolverCalculationForSimpleBeam, List<CBeam_Simple> beamSimpleModels, 
-            bool MUseCRSCGeometricalAxes, bool DeterminateMemberLocalDisplacementsForULS)
+            bool MUseCRSCGeometricalAxes, bool DeterminateMemberLocalDisplacementsForULS, int leftWallCrosses, int rightWallCrosses, int roofCrosses, float roofMassFactor)
         {
             Calculate_InternalForcesAndDeflections_LoadCases(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments,
-                fx_positions, Model, frameModels, UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes);
+                fx_positions, Model, frameModels, UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, leftWallCrosses, rightWallCrosses, roofCrosses, roofMassFactor);
 
             Calculate_InternalForces_LoadCombinations(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments,
                 fx_positions, Model, frameModels, beamSimpleModels, MUseCRSCGeometricalAxes);
@@ -65,7 +66,8 @@ namespace PFD.Infrastructure
         }
 
         public void Calculate_InternalForcesAndDeflections_LoadCases(CMember m, bool DeterminateCombinationResultsByFEMSolver, int iNumberOfDesignSections, int iNumberOfDesignSegments,
-            float[] fx_positions, CModel_PFD Model, List<CFrame> frameModels, bool UseFEMSolverCalculationForSimpleBeam, List<CBeam_Simple> beamSimpleModels, bool MUseCRSCGeometricalAxes)
+            float[] fx_positions, CModel_PFD Model, List<CFrame> frameModels, bool UseFEMSolverCalculationForSimpleBeam, List<CBeam_Simple> beamSimpleModels, bool MUseCRSCGeometricalAxes,
+            int leftWallCrosses, int rightWallCrosses, int roofCrosses, float roofMassFactor)
         {
             designMomentValuesForCb[] sMomentValuesforCb = null;
             basicInternalForces[] sBIF_x = null;
@@ -173,10 +175,7 @@ namespace PFD.Infrastructure
                             //---------------------------------------------------------------------------------------------
                             //---------------------------------------------------------------------------------------------
 
-                            // TODO 633 - vypocet vnutornych sil v cross-bracing
-                            // Novy kod v Tension only bloku, prosim o review
-
-                            // Potrebujem tu dostat nejake vstupne hodnoty vid nizsie - popis TODO 633
+                            // Vypocet vnutornych sil v cross-bracing                            
 
                             // Alternativna ale pracnejsia moznost je, ze toto cele by sa vysunuho pred klasicky vypocet vnutornych sil a zaviedlo by sa cosi ako
                             // "inicializacne" vnutorne sily
@@ -191,17 +190,17 @@ namespace PFD.Infrastructure
                             sMomentValuesforCb = new designMomentValuesForCb[iNumberOfDesignSections];
 
                             sBIF_x = new basicInternalForces[iNumberOfDesignSections];
-                            sBIF_x[0].fN = 1000f;
-                            sBIF_x[1].fN = 1000f;
-                            sBIF_x[2].fN = 1000f;
-                            sBIF_x[3].fN = 1000f;
-                            sBIF_x[4].fN = 1000f;
-                            sBIF_x[5].fN = 1000f;
-                            sBIF_x[6].fN = 1000f;
-                            sBIF_x[7].fN = 1000f;
-                            sBIF_x[8].fN = 1000f;
-                            sBIF_x[9].fN = 1000f;
-                            sBIF_x[10].fN = 1000f; // TODO 633 Docasne hodnoty, ked bude vsetko napojene a funkcne tak by sa mali tieto hodnoty odstraniť
+                            //sBIF_x[0].fN = 1000f;
+                            //sBIF_x[1].fN = 1000f;
+                            //sBIF_x[2].fN = 1000f;
+                            //sBIF_x[3].fN = 1000f;
+                            //sBIF_x[4].fN = 1000f;
+                            //sBIF_x[5].fN = 1000f;
+                            //sBIF_x[6].fN = 1000f;
+                            //sBIF_x[7].fN = 1000f;
+                            //sBIF_x[8].fN = 1000f;
+                            //sBIF_x[9].fN = 1000f;
+                            //sBIF_x[10].fN = 1000f; // TODO 633 Docasne hodnoty, ked bude vsetko napojene a funkcne tak by sa mali tieto hodnoty odstraniť
 
                             // Cross-bracing - Wind in + /- Y direction
                             if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall || m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
@@ -211,12 +210,12 @@ namespace PFD.Infrastructure
                                 float angle_rad = (float)Math.Atan(m.Delta_Z / m.Delta_Y); // Uhol sklonu cross-bracing member od horizontály - ziskat z priemetu pruta do GCS Z a Y
 
                                 // Number of wall side bracing crosses (pocet krizov na jednej strane)
-                                int iNumberOfActiveCrosses_left = 2; // TODO 633 - napojit na GUI - pocet krizov side wall na lavej strane budovy
-                                int iNumberOfActiveCrosses_right = 2; // TODO 633 - napojit na GUI - pocet krizov side wall na pravej strane budovy
+                                int iNumberOfActiveCrosses_left = leftWallCrosses;
+                                int iNumberOfActiveCrosses_right = rightWallCrosses;
                                 // Uvazujeme rovnomerne rozdelenie do jednotlivych krizov, neplati to vsak pre dlhe budovy
-
+                                
                                 // Roof cross-bracing - active bays - uvazovat len tie bays ktore maju krize na celej streche a ktore maju aj krize na oboch stranach side wall bracing
-                                int iNumberOfActiveBays_RoofBracing = 2; // TODO - napojit na GUI - pocet bays na roof kde je uplne vyplnenie krizmi
+                                int iNumberOfActiveBays_RoofBracing = roofCrosses;
                                 int iNumberOfActiveBays = Math.Min(Math.Min(iNumberOfActiveCrosses_left, iNumberOfActiveCrosses_right), iNumberOfActiveBays_RoofBracing);
 
                                 // Pomocny vypocet - vietor alebo zemetrasenie
@@ -362,12 +361,13 @@ namespace PFD.Infrastructure
                                         {
                                             // Roof cross-bracing
 
-                                            // TODO 633 - dopocitat zo sil indikovanych hmotnostou strechy
+                                            // Dopocitat zo sil indikovanych hmotnostou strechy
                                             // Tu by sme sa potrebovali dostat k hmotnosti strechy, ktora sa pouziva pre vypocet zatazovacich sil v EQ load cases
                                             // Tento vypocet je v MainWindow.xaml.cs na riadku 762
                                             // Potrebujeme pre cross-bracing urcit aka cast hmotnosti prislucha k zatazeniu ktore je na roof bracing, takze rafters, eave purlins, purlins a roof
                                             // !!!!!!!!!!!!!!! Docasne uvazujem 10 % zo zatazenia pouziteho pre wall cross-bracing
-                                            float fRoofMassFactorTemp = 0.1f;
+                                            //float fRoofMassFactorTemp = 0.1f;
+                                            float fRoofMassFactorTemp = roofMassFactor;
 
                                             angle_rad = (float)Math.Atan(m.Delta_X / m.Delta_Y); // Uhol sklonu cross-bracing member - ziskat z priemetu pruta do GCS X a Y
 
