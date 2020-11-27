@@ -1838,31 +1838,37 @@ namespace PFD
                 {
                     int i = 0;
 
-                    if (joint.m_arrPlates == null) continue;
-
-                    //pokusy 557
-                    foreach (CPlate plate in joint.m_arrPlates)
+                    if (joint.m_arrPlates != null)
                     {
-                        plate.CopyParams(refJoint.m_arrPlates[i]);
-                        i++;
-                    }
-
-                    if (joint.JointType == EJointType.eKnee_EgdeRafter_Column && joint is CConnectionJoint_B001)
-                    {
-                        CConnectionJoint_B001 jb = joint as CConnectionJoint_B001;
-                        jb.IsFront = (jointsCount == 0 || jointsCount == 2);
-
-                        if (!jb.IsFront)
+                        //pokusy 557
+                        foreach (CPlate plate in joint.m_arrPlates)
                         {
-                            joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
-                            joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
+                            plate.CopyParams(refJoint.m_arrPlates[i]);
+                            i++;
+                        }
 
-                            joint.UpdateJoint();
-                            //UpdateConnectedMembers(joint);
+                        if (joint.JointType == EJointType.eKnee_EgdeRafter_Column && joint is CConnectionJoint_B001)
+                        {
+                            CConnectionJoint_B001 jb = joint as CConnectionJoint_B001;
+                            jb.IsFront = (jointsCount == 0 || jointsCount == 2);
+
+                            if (!jb.IsFront)
+                            {
+                                joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
+                                joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
+
+                                joint.UpdateJoint();
+                                //UpdateConnectedMembers(joint);
+                            }
                         }
                     }
-
-                    
+                    else
+                    {
+                        if (joint is CConnectionJoint_U001)
+                        {
+                            ((CConnectionJoint_U001)joint).ScrewArrangement = ((CConnectionJoint_U001)refJoint).ScrewArrangement;
+                        }                        
+                    }
 
                     joint.UpdateJoint();
                     jointsCount++;
