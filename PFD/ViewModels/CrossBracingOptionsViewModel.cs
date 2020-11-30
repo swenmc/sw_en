@@ -346,16 +346,16 @@ namespace PFD
 
         public int GetLeftWallCrosses()
         {
-            int count = CrossBracingList.Count(c => c.WallLeft == true);            
+            int count = CrossBracingList.Count(c => c.WallLeft == true);
             return count;
         }
         public int GetRightWallCrosses()
         {
-            int count = CrossBracingList.Count(c => c.WallRight == true);            
+            int count = CrossBracingList.Count(c => c.WallRight == true);
             return count;
         }
 
-        public int GetRoofCrosses()
+        public int GetRoofFullCrossesBays()
         {
             int count = CrossBracingList.Count(c => c.Roof == true && c.RoofPosition != "None" && c.FirstCrossOnRafter == false && c.LastCrossOnRafter == false);
             return count;

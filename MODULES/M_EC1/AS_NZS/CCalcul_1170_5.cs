@@ -63,6 +63,7 @@ namespace M_EC1.AS_NZS
 
         public float fG_tot_x;
         public float fG_tot_y;
+        public float fRoofMassFactor_y;
 
         public float fPeriodAlongXDirection_Tx;
         public float fPeriodAlongYDirection_Ty;
@@ -92,12 +93,16 @@ namespace M_EC1.AS_NZS
         public float fC_Ty_SLS;
         public float fk_Nu_Ty_SLS;
 
-        public CCalcul_1170_5(float fT_1x, float fT_1y, float param_fG_tot_x, float param_fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
+        public CCalcul_1170_5(float fT_1x, float fT_1y, float param_fG_tot_x, float param_fG_tot_y, float param_fG_tot_y_roofIncludingRaftersAndPurlins, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
         {
             fPeriodAlongXDirection_Tx = fT_1x;
             fPeriodAlongYDirection_Ty = fT_1y;
             fG_tot_x = param_fG_tot_x;
             fG_tot_y = param_fG_tot_y;
+
+            // Hmotnosť strechy vrátane rafters a purlins na polovici budovy pre pozdlžný smer y / celkova hmotnost prisluchajuca pre jednu stranu budovy (smer sily y)
+            fRoofMassFactor_y = param_fG_tot_y_roofIncludingRaftersAndPurlins / param_fG_tot_y;
+            if (fRoofMassFactor_y > 0.95) throw new Exception("Invalid earthquake parameters. Significant roof mass.");
 
             // AS/NZS 4600:2018 - 1.6.4.2.4 Structural performance factor (a)
             if (1 < fNu_ULS && fNu_ULS <= 2)

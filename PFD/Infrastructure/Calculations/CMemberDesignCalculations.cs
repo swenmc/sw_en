@@ -32,7 +32,7 @@ namespace PFD.Infrastructure
         private int m_LeftWallCrosses;
         private int m_RightWallCrosses;
         private int m_RoofCrosses;
-        private float m_RoofMassFactor;
+        private float m_fRoofMassFactor;
 
         private bool MIsGableRoofModel;
 
@@ -72,8 +72,8 @@ namespace PFD.Infrastructure
 
             m_LeftWallCrosses = vm._crossBracingOptionsVM.GetLeftWallCrosses();
             m_RightWallCrosses = vm._crossBracingOptionsVM.GetRightWallCrosses();
-            m_RoofCrosses = vm._crossBracingOptionsVM.GetRoofCrosses(); //to Mato - tu si mozes skontrolovat tie metody,ci maju spravne podmienky
-            m_RoofMassFactor = vm.sSeisInputData.fProximityToFault_D_km; //TO Mato - tuto property som ma vybrat???
+            m_RoofCrosses = vm._crossBracingOptionsVM.GetRoofFullCrossesBays();
+            m_fRoofMassFactor = vm.Eq.fRoofMassFactor_y;
 
             if (Model is CModel_PFD_01_GR)
                 MIsGableRoofModel = true;
@@ -261,7 +261,7 @@ namespace PFD.Infrastructure
                 recalc = new CMemberCalculations(lockObject);
                 result = recalc.BeginMemberCalculations(m, DeterminateCombinationResultsByFEMSolver, iNumberOfDesignSections, iNumberOfDesignSegments, fx_positions.ToArray(), Model, frameModels,
                     UseFEMSolverCalculationForSimpleBeam, beamSimpleModels, MUseCRSCGeometricalAxes, DeterminateMemberLocalDisplacementsForULS, 
-                    m_LeftWallCrosses, m_RightWallCrosses, m_RoofCrosses, m_RoofMassFactor, null, null);
+                    m_LeftWallCrosses, m_RightWallCrosses, m_RoofCrosses, m_fRoofMassFactor, null, null);
                 waitHandles.Add(result.AsyncWaitHandle);
                 recs.Add(recalc);
                 results.Add(result);

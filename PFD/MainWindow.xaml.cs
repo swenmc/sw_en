@@ -78,7 +78,6 @@ namespace PFD
         //public SeisLoadDataInput sSeisInputData;
 
         private CProjectInfoVM projectInfoVM;
-        
 
         public MainWindow()
         {
@@ -130,7 +129,7 @@ namespace PFD
         }
 
         private bool CheckLicenseKey()
-        {            
+        {
             string customerName = ConfigurationManager.AppSettings["CustomerName"];
             string key = ConfigurationManager.AppSettings["LicenseKey"];
             string passPhrase = $"opmc_{customerName}";
@@ -210,8 +209,6 @@ namespace PFD
                     //Quotation.Content = null;
                     return;
                 }
-
-                
             }
             else if (sender is CAccessories_DownpipeProperties)
             {
@@ -258,7 +255,7 @@ namespace PFD
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "Series") return;
                 if (e.PropertyName == "Serie") return;
-                if (e.PropertyName == "SerieEnabled") return;                
+                if (e.PropertyName == "SerieEnabled") return;
                 
                 DoorProperties doorProperties = sender as DoorProperties;
                 if (doorProperties.IsSetFromCode) return;
@@ -388,8 +385,6 @@ namespace PFD
                 DisplayMainModel();
             }
 
-
-
             //toto tu asi nepotrebujeme ak zakazeme pridavat cez klik na novy riadok
             //kvoli Doors Models,  najprv musi byt update
             //if (sender is DoorProperties || e.PropertyName == "DoorBlocksProperties_Add")
@@ -513,6 +508,7 @@ namespace PFD
             return loadInput;
         }
 
+        // TO Ondrej - tieto vypocty zatazeni line 511-808 by bolo lepsie presunut do nejakej pomocnej statickej triedy. Do MainWindow.xaml.cs sa mi to velmi nehodi
         private void CalculateLoadingValues(CModel_PFD model)
         {
             // Basic data
@@ -617,7 +613,7 @@ namespace PFD
             }
 
             // X - direction
-            float fLoadingWidth_Frame_x = vm.BayWidth; // Zatazovacia sirka ramu
+            float fLoadingWidth_Frame_x = vm.BayWidth; // Zatazovacia sirka ramu /*/ TODO  - treba dopracovat rozne zatazovacie sirky pre various bay widths
 
             float fMass_Purlins_x = iNumberOfPurlins_x * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_EavePurlins_x = iNumberOfEavePurlins_x * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
@@ -634,7 +630,7 @@ namespace PFD
 
             // Y - direction
             int iNumberOfMainColumns_y = model.iFrameNo;
-            int iNumberOfMainRafters_y = iNumberOfMainRafters_x * model.iFrameNo; // Pocet rafters
+            int iNumberOfMainRaftersOneSide_y = model.iFrameNo; // Pocet rafters prisluchajuci jednej strane budovy, takze pocet ramov
             int iNumberOfPurlins_y = (iNumberOfMainColumns_y - 1) * (iNumberOfPurlins_x / 2); // Number of bays (number of frames - 1) * Number of purlins per half of building width
             int iNumberOfEavePurlins_y = (iNumberOfMainColumns_y - 1);
 
@@ -656,8 +652,21 @@ namespace PFD
             float fMass_Girts_y_Left = iNumberOfGirts_y_Left * fGirtMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_Girts_y_Right = iNumberOfGirts_y_Right * fGirtMassPerMeter * fLoadingWidth_Frame_x;
 
-            float fMass_Frame_y_Left = iNumberOfMainColumns_y * fMainColumnMassPerMeter * 0.5f * fWallHeight_Left + iNumberOfMainRafters_y * fMainRafterMassPerMeter * fRafterLength;
-            float fMass_Frame_y_Right = iNumberOfMainColumns_y * fMainColumnMassPerMeter * 0.5f * fWallHeight_Right + iNumberOfMainRafters_y * fMainRafterMassPerMeter * fRafterLength;
+            float fTributaryRafterLength_y;
+
+            if (model is CModel_PFD_01_MR)
+                fTributaryRafterLength_y = 0.5f * fRafterLength;
+            else if (model is CModel_PFD_01_GR)
+                fTributaryRafterLength_y = fRafterLength;
+            else
+            {
+                fTributaryRafterLength_y = 0;
+                throw new Exception("Kitset model is not implemented.");
+            }
+
+            float fMass_Rafter_Tributary = iNumberOfMainRaftersOneSide_y * fMainRafterMassPerMeter * fTributaryRafterLength_y;
+            float fMass_Frame_y_Left = iNumberOfMainColumns_y * fMainColumnMassPerMeter * 0.5f * fWallHeight_Left + fMass_Rafter_Tributary;
+            float fMass_Frame_y_Right = iNumberOfMainColumns_y * fMainColumnMassPerMeter * 0.5f * fWallHeight_Right + fMass_Rafter_Tributary;
 
             // TODO - pre smer Y pripocitat vahu polovice sirky * polovice vysky prednej a zadnej steny
 
@@ -666,10 +675,13 @@ namespace PFD
             float fMass_Wall_y_Left_kg = vm.Length * 0.5f * fWallHeight_Left * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
             float fMass_Wall_y_Right_kg = vm.Length * 0.5f * fWallHeight_Right * (fWallCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
-            float fMass_Roof_y_kg = vm.Length * fRafterLength * (fRoofCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            // Hmotnosti pre polovicu strechy
+            float fMass_Roof_y_kg = vm.Length * fTributaryRafterLength_y * (fRoofCladdingUnitMass_kg_m2 + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Roof_IncludingPurlins_y_kg = fMass_Purlins_y + fMass_Roof_y_kg; // TODO 633
+            float fMass_Roof_IncludingRaftersAndPurlins_y_kg = fMass_Rafter_Tributary + fMass_Roof_IncludingPurlins_y_kg; // TODO 633
 
-            float fMass_Total_y_Left = fMass_Frame_y_Left + fMass_Girts_y_Left + fMass_Wall_y_Left_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
-            float fMass_Total_y_Right = fMass_Frame_y_Right + fMass_Girts_y_Right + fMass_Wall_y_Right_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
+            float fMass_Total_y_Left = fMass_Frame_y_Left + fMass_Girts_y_Left + fMass_Wall_y_Left_kg + fMass_EavePurlins_y + fMass_Roof_IncludingPurlins_y_kg;
+            float fMass_Total_y_Right = fMass_Frame_y_Right + fMass_Girts_y_Right + fMass_Wall_y_Right_kg + fMass_EavePurlins_y + fMass_Roof_IncludingPurlins_y_kg;
 
             float fk_ey = GetEquivalentStiffness(iNumberOfMainColumns_y, vm.WallHeight, fMainColumnMomentOfInteria_zv, fMainColumnMaterial_E);
             float fMass_Total_y = MathF.Average(fMass_Total_y_Left, fMass_Total_y_Right); // Priemerna hmotnost - pre monopitch roof by mala byt hodnota ina pre lavu a pravu stranu
@@ -694,9 +706,9 @@ namespace PFD
                     "T1.y.rm = " + Math.Round(fT_1y_RM_411, 5).ToString() + " s" + " Eq. (4.1(1))");
 
             // Earthquake / Seismic Design  (NZS 1170.5)
-            CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y);
+            CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y, fMass_Roof_IncludingRaftersAndPurlins_y_kg);
         }
-        
+
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
         {
             vm.GeneralLoad = new CCalcul_1170_1(
@@ -756,7 +768,7 @@ namespace PFD
             }
         }
 
-        public void CalculateEQParameters(float fT_1x_param, float fT_1y_param, float fMass_Total_x_param, float fMass_Total_y_param)
+        public void CalculateEQParameters(float fT_1x_param, float fT_1y_param, float fMass_Total_x_param, float fMass_Total_y_param, float fMass_Roof_IncludingRaftersAndPurlins_y_kg)
         {
             vm.sSeisInputData.eSiteSubsoilClass = loadInput.SiteSubSoilClass;
             vm.sSeisInputData.fProximityToFault_D_km = loadInput.FaultDistanceDmin_km; // km
@@ -765,8 +777,8 @@ namespace PFD
             //vm.sSeisInputData.fPeriodAlongYDirection_Ty = loadInput.PeriodAlongYDirectionTy; //sec
             //vm.sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadInput.SpectralShapeFactorChTx;
             //vm.sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadInput.SpectralShapeFactorChTy;
-            
-            vm.Eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, vm.sSeisInputData);
+
+            vm.Eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, fMass_Roof_IncludingRaftersAndPurlins_y_kg, sBuildingInputData, vm.sSeisInputData);
         }
 
         public float GetEquivalentStiffness(float fL, float fI_column, float fE)
@@ -893,7 +905,7 @@ namespace PFD
                 // TODO - nove parametre pre nastavenie hodnot zatazenia
 
                 if (vm.KitsetTypeIndex == 0)
-                    vm.Model = new CModel_PFD_01_MR(
+                        vm.Model = new CModel_PFD_01_MR(
                         sGeometryInputData,
                         compList,
                         joints,
@@ -901,13 +913,13 @@ namespace PFD
                         slabs,
                         vm);
                 else if (vm.KitsetTypeIndex == 1)
-                vm.Model = new CModel_PFD_01_GR(
-                    sGeometryInputData,
-                    compList,
-                    joints,
-                    foundations,
-                    slabs,
-                    vm);
+                        vm.Model = new CModel_PFD_01_GR(
+                        sGeometryInputData,
+                        compList,
+                        joints,
+                        foundations,
+                        slabs,
+                        vm);
                 else
                 {
                     vm.Model = null;
