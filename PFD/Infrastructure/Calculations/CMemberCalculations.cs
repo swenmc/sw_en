@@ -544,7 +544,7 @@ namespace PFD.Infrastructure
                             sMomentValuesforCb_design[j] = sMomentValuesforCb_temp;
                         }
                     }
-                    else if (DeterminateCombinationResultsByFEMSolver) // Single Beam Members - vysledky pocitane v BFENet pre Load Combinations
+                    else if (DeterminateCombinationResultsByFEMSolver && m.EMemberType_FEM != EMemberType_FEM.Tension) // Single Beam Members - vysledky pocitane v BFENet pre Load Combinations
                     {
                         int iSimpleBeamIndex = CModelHelper.GetSimpleBeamIndexForMember(m, beamSimpleModels);  //podla ID pruta treba identifikovat do ktoreho simple beam modelu patri
                         sBIF_x_design = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces.ToArray();
@@ -742,7 +742,7 @@ namespace PFD.Infrastructure
 
                             sBDeflection_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
                         }
-                        else if (DeterminateCombinationResultsByFEMSolver) // Single Beam Members - vysledky pocitane v BFENet pre Load Combinations
+                        else if (DeterminateCombinationResultsByFEMSolver && m.EMemberType_FEM != EMemberType_FEM.Tension) // Single Beam Members - vysledky pocitane v BFENet pre Load Combinations
                         {
                             int iSimpleBeamIndex = CModelHelper.GetSimpleBeamIndexForMember(m, beamSimpleModels);  //podla ID pruta treba identifikovat do ktoreho simple beam modelu patri
 
