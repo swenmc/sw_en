@@ -1465,7 +1465,7 @@ namespace M_AS4600
 
             // Material properties
             CMat_02_00 materialConcrete = new CMat_02_00();
-            materialConcrete = (CMat_02_00)foundation.m_Mat;
+            materialConcrete = (CMat_02_00)foundation.m_Mat; // BUG 639 - tu to pada lebo sa to neinicializovalo
             designDetails.ff_apostrophe_c = (float)materialConcrete.Fck; // Characteristic compressive (cylinder) concrete strength
             designDetails.fRho_c = materialConcrete.m_fRho; // Density of concrete
 
