@@ -1419,7 +1419,7 @@ namespace EXPIMP
             {
                 par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
                 //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                AppendImageFromCanvas(document, canvas, par);
+                AppendImageFromCanvas(document, canvas, par, true);
             }
             return par;
         }
@@ -1433,7 +1433,7 @@ namespace EXPIMP
                 {
                     par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
                     //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                    AppendImageFromCanvas(document, canvas, par);
+                    AppendImageFromCanvas(document, canvas, par, true);
                 }
             }
             return par;
@@ -1446,7 +1446,7 @@ namespace EXPIMP
             {
                 par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
                 //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                AppendImageFromCanvas(document, canvas, par);
+                AppendImageFromCanvas(document, canvas, par, true);
             }
             return par;
         }
@@ -1458,20 +1458,30 @@ namespace EXPIMP
             {
                 par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
                 //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                AppendImageFromCanvas(document, canvas, par);
+                AppendImageFromCanvas(document, canvas, par, true);
 
             }
             return par;
         }
 
-        private static void AppendImageFromCanvas(DocX document, Canvas canvas, Paragraph par)
+        private static void AppendImageFromCanvas(DocX document, Canvas canvas, Paragraph par, bool maximizeSize)
         {
             using (Stream stream = ExportHelper.GetCanvasStream(canvas))
             {
                 // Add a simple image from disk.
                 var image = document.AddImage(stream);
                 // Set Picture Height and Width.
-                var picture = image.CreatePicture((int)canvas.ActualHeight, (int)canvas.ActualWidth);
+                Picture picture = null;
+                if (maximizeSize)
+                {
+                    double ratio = imageMaxWidth / canvas.ActualWidth;
+                    picture = image.CreatePicture((int)(canvas.ActualHeight * ratio), imageMaxWidth);                    
+                }
+                else
+                {
+                    picture = image.CreatePicture((int)canvas.ActualHeight, (int)canvas.ActualWidth);
+                }
+                
                 // Insert Picture in paragraph.             
                 par.AppendPicture(picture);
             }
