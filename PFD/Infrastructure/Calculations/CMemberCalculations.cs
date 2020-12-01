@@ -581,7 +581,7 @@ namespace PFD.Infrastructure
                             sMomentValuesforCb_design[j] = sMomentValuesforCb_temp;
                         }
                     }
-                    else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
+                    else // Single Member or Frame Member (only LC calculated) - vysledky boli pocitane len pre load cases, kombinacie urobime pomocou analytickej metody SetMemberInternalForcesInLoadCombination nizsie
                     {
                         if (m.EMemberType_FEM == EMemberType_FEM.Tension)
                         {
