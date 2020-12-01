@@ -1844,6 +1844,7 @@ namespace PFD
                         foreach (CPlate plate in joint.m_arrPlates)
                         {
                             plate.CopyParams(refJoint.m_arrPlates[i]);
+                            plate.UpdatePlateData(refJoint.m_arrPlates[i].ScrewArrangement);
                             i++;
                         }
 
@@ -1857,9 +1858,16 @@ namespace PFD
                                 joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
                                 joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
 
+                                joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
+                                joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
+
+                                //joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
+                                //joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
+
                                 //joint.UpdateJoint();
                                 //UpdateConnectedMembers(joint);
                             }
+                            
                         }
                     }
                     else
