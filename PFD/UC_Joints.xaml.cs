@@ -1867,7 +1867,12 @@ namespace PFD
                                 //joint.UpdateJoint();
                                 //UpdateConnectedMembers(joint);
                             }
-                            
+
+                            //POZOR LEN TEMP = DOCASNE
+                            jb.m_arrPlates[0].Ft = (100 + 100 * jointsCount) / 100;
+                            jb.m_arrPlates[0].UpdatePlateData(jb.m_arrPlates[0].ScrewArrangement);
+
+
                         }
                     }
                     else
