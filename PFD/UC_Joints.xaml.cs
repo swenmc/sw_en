@@ -1857,7 +1857,7 @@ namespace PFD
                                 joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
                                 joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
 
-                                joint.UpdateJoint();
+                                //joint.UpdateJoint();
                                 //UpdateConnectedMembers(joint);
                             }
                         }
@@ -1865,10 +1865,9 @@ namespace PFD
                     else
                     {
                         if (joint is CConnectionJoint_U001)
-                        {
-                            bool screwsInPlusZDirection = ((CConnectionJoint_U001)joint).ScrewInPlusZDirection;
+                        {                            
                             ((CConnectionJoint_U001)joint).ScrewArrangement = ((CConnectionJoint_U001)refJoint).ScrewArrangement;
-                            ((CConnectionJoint_U001)joint).ScrewInPlusZDirection = screwsInPlusZDirection;
+                            ((CConnectionJoint_U001)joint).UpdateJointScrewArrangementData();
                         }                        
                     }
 

@@ -696,8 +696,8 @@ namespace BaseClasses
                 this.m_fd_crsc = refPlate.m_fd_crsc;
                 this.m_fw_apexHalfLength = refPlate.m_fw_apexHalfLength;
                 this.m_flZ = refPlate.m_flZ;
-                this.m_fSlope_rad = refPlate.m_fSlope_rad;
-                this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
+                this.m_fSlope_rad = refPlate.m_fSlope_rad;                
+                //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;  //toto kopirovat nechceme
 
                 this.m_fbX1 = refPlate.m_fbX1;
                 this.m_fbX1_AndLips = refPlate.m_fbX1_AndLips;

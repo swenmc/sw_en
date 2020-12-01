@@ -438,7 +438,7 @@ namespace BaseClasses
                 this.m_fbX2 = refPlate.m_fbX2;
                 this.m_fhY2 = refPlate.m_fhY2;
                 this.m_fSlope_rad = refPlate.m_fSlope_rad;
-                this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;
+                //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;  //toto kopirovat nechceme
             }
         }
     }
