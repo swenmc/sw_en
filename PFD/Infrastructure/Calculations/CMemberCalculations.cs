@@ -561,7 +561,7 @@ namespace PFD.Infrastructure
                             sMomentValuesforCb_design[j] = sMomentValuesforCb_temp;
                         }
                     }
-                    else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
+                    else // Single Member or Frame Member (only LC calculated) - vysledky boli pocitane len pre load cases, kombinacie urobime pomocou analytickej metody SetMemberInternalForcesInLoadCombination nizsie
                     {
                         CMemberResultsManager.SetMemberInternalForcesInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
                     }
