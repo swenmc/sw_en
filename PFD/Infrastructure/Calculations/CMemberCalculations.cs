@@ -424,11 +424,6 @@ namespace PFD.Infrastructure
 
         private void SetBucklingFactors_SimpleBeamSegment(float fx, int iSimpleBeamIndex, int lcombID, CMember member, CModel_PFD Model, ref designBucklingLengthFactors bucklingLengthFactors)
         {
-            if (iSimpleBeamIndex < 0)
-            {
-                //To Mato - V Load Cases som zaskrtol druhe option a tu sa mi dostalo iSimpleBeamIndex = -1;
-                return;
-            }
             // Create load combination (FEM solver object)
             BriefFiniteElementNet.LoadCombination lcomb = new BriefFiniteElementNet.LoadCombination();
             lcomb = ConvertLoadCombinationtoBFENet(Model.m_arrLoadCombs[lcombID - 1], Model);
@@ -520,7 +515,6 @@ namespace PFD.Infrastructure
             }
         }
 
-
         public void Calculate_InternalForces_LoadCombinations(CMember m, bool DeterminateCombinationResultsByFEMSolver, int iNumberOfDesignSections, int iNumberOfDesignSegments,
             float[] fx_positions, CModel_PFD Model, List<CFrame> frameModels, List<CBeam_Simple> beamSimpleModels, bool MUseCRSCGeometricalAxes)
         {
@@ -582,7 +576,7 @@ namespace PFD.Infrastructure
                         //if (m.EMemberType_FEM == EMemberType_FEM.Tension)
                         //{
                         //    System.Diagnostics.Trace.WriteLine("FEM Tension: m.Type " + m.EMemberTypePosition + ", MemberInternalForcesInLoadCases.Count: " + MemberInternalForcesInLoadCases.Count);
-                        //}                        
+                        //}
                         CMemberResultsManager.SetMemberInternalForcesInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
                     }
 
@@ -714,12 +708,6 @@ namespace PFD.Infrastructure
 
         private void SetMomentValuesforCb_design_And_BucklingFactors_SimpleBeamSegment(float fx, int iSimpleBeamIndex, int lcombID, CMember member, CModel_PFD Model, List<CBeam_Simple> beamSimpleModels, int iNumberOfDesignSections, int iNumberOfDesignSegments, ref designBucklingLengthFactors bucklingLengthFactors, ref designMomentValuesForCb sMomentValuesforCb_design)
         {
-            if (iSimpleBeamIndex < 0)
-            {
-                //To Mato - V Load Cases som zaskrtol druhe option a tu sa mi dostalo iSimpleBeamIndex = -1;
-                // To Ondrej - Vyskusal som to a prebehlo to bez problemov
-                return;
-            }
             // Create load combination (FEM solver object)
             BriefFiniteElementNet.LoadCombination lcomb = new BriefFiniteElementNet.LoadCombination();
             lcomb = ConvertLoadCombinationtoBFENet(Model.m_arrLoadCombs[lcombID - 1], Model);
@@ -734,7 +722,6 @@ namespace PFD.Infrastructure
             sMomentValuesforCb_design.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[2].fM_yy;
             */
         }
-
 
         public void Calculate_Deflections_LoadCombinations(CMember m, bool DeterminateCombinationResultsByFEMSolver, int iNumberOfDesignSections, int iNumberOfDesignSegments,
             float[] fx_positions, CModel_PFD Model, List<CFrame> frameModels, List<CBeam_Simple> beamSimpleModels, bool MUseCRSCGeometricalAxes, bool DeterminateMemberLocalDisplacementsForULS)
@@ -780,6 +767,5 @@ namespace PFD.Infrastructure
                 }
             }
         }
-
     }
 }
