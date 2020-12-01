@@ -97,6 +97,10 @@ namespace PFD.Infrastructure
 
                 foreach (CLoadCase lc in Model.m_arrLoadCases)
                 {
+                    //pridavam nastavenie na null, lebo tak mi to pride spravne, aby sa pridali len tie load cases, co aj nieco spocitali
+                    sBIF_x = null;
+                    sBDeflections_x = null;
+
                     // Frame member
                     if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR ||
                         m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER)
@@ -192,12 +196,17 @@ namespace PFD.Infrastructure
         {
             designMomentValuesForCb[] sMomentValuesforCb = null;
             basicInternalForces[] sBIF_x = null;
-            basicDeflections[] sBDeflections_x = null;
+            //basicDeflections[] sBDeflections_x = null;
             designBucklingLengthFactors[] sBucklingLengthFactors = null;
 
             foreach (CLoadCase lc in Model.m_arrLoadCases)
             // Tension only
             {
+                //pridavam nastavenie na null, lebo tak mi to pride spravne, aby sa pridali len tie load cases, co aj nieco spocitali
+                sBIF_x = null;
+                //sBDeflections_x = null;
+
+
                 //---------------------------------------------------------------------------------------------
                 //---------------------------------------------------------------------------------------------
                 //---------------------------------------------------------------------------------------------
@@ -415,9 +424,9 @@ namespace PFD.Infrastructure
                 }
 
                 if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, /*sMomentValuesforCb,*/ sBucklingLengthFactors));
-                if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+                //if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
 
-                sBDeflections_x = new basicDeflections[iNumberOfDesignSections];
+                
 
                 //---------------------------------------------------------------------------------------------
                 //---------------------------------------------------------------------------------------------
