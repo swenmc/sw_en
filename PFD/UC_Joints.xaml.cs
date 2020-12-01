@@ -1875,6 +1875,7 @@ namespace PFD
                 }
             }
 
+            _pfdVM.ModelCalculatedResultsValid = false;
             if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
         }
 
