@@ -85,7 +85,12 @@ namespace PFD.Infrastructure
             if (!m.BIsGenerated) return;
             if (!m.BIsSelectedForIFCalculation) return; // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
 
-            if (!DeterminateCombinationResultsByFEMSolver)
+            //tension sa pocita bez ohladu na DeterminateCombinationResultsByFEMSolver
+            if (m.EMemberType_FEM == EMemberType_FEM.Tension)
+            {
+                CalculateCrossBracingInternalForces(m, Model, iNumberOfDesignSections, leftWallCrosses, rightWallCrosses, roofFullCrossesBays, fRoofMassFactor);
+            }
+            else if (!DeterminateCombinationResultsByFEMSolver)
             {
                 for (int i = 0; i < iNumberOfDesignSections; i++)
                     fx_positions[i] = ((float)i / (float)iNumberOfDesignSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
@@ -169,230 +174,7 @@ namespace PFD.Infrastructure
                                 calcModel.CalculateDeflectionsOnSimpleBeam_PFD(MUseCRSCGeometricalAxes, iNumberOfDesignSections, fx_positions, m, lc, out sBDeflections_x);
                             }
                         }
-                        else // Tension only
-                        {
-                            //---------------------------------------------------------------------------------------------
-                            //---------------------------------------------------------------------------------------------
-                            //---------------------------------------------------------------------------------------------
-
-                            // Vypocet vnutornych sil v cross-bracing
-
-                            // To Ondrej - tento popis tu nechavam keby sme to niekedy chceli prerabat
-
-                            // Alternativna ale pracnejsia moznost je, ze toto cele by sa vysunuho pred klasicky vypocet vnutornych sil a zaviedlo by sa cosi ako
-                            // "inicializacne" vnutorne sily
-                            // Tie by sa dali nastavit roznym prutom pre jednotlive load cases este pred spustenim vypoctu
-                            // a v ramci vypoctu by sa k nim pridali vnutorne sily, ktore pocitame teraz
-
-                            // Predstav si to ako nieco co vznikne napriklad už pri stavbe budovy,
-                            // napriklad uz pri montazi cross-bracing member napneme prut tak aby bol priamy, a je v nom osova sila N= 10 kN
-                            // Potom pri vypocte vetra sa k tomu prida dalsich 50 kN od vetra, takze vysledna sila v load case Wind by bolo 60 kN
-
-                            sBucklingLengthFactors = new designBucklingLengthFactors[iNumberOfDesignSections];
-                            sMomentValuesforCb = new designMomentValuesForCb[iNumberOfDesignSections];
-
-                            sBIF_x = new basicInternalForces[iNumberOfDesignSections];
-
-                            // Cross-bracing - Wind in + /- Y direction
-                            if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall || m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
-                            {
-                                float fN_left = 0, fN_right = 0; // Axial force in member (left or right side)
-
-                                float angle_rad = (float)Math.Atan(m.Delta_Z / m.Delta_Y); // Uhol sklonu cross-bracing member od horizontály - ziskat z priemetu pruta do GCS Z a Y
-
-                                // Number of wall side bracing crosses (pocet krizov na jednej strane)
-                                int iNumberOfActiveCrosses_left = leftWallCrosses;
-                                int iNumberOfActiveCrosses_right = rightWallCrosses;
-                                // Uvazujeme rovnomerne rozdelenie do jednotlivych krizov, neplati to vsak pre dlhe budovy
-                                // Roof cross-bracing - active bays - uvazovat len tie bays ktore maju krize na celej streche a ktore maju aj krize na oboch stranach side wall bracing
-                                // Pocet aktivnych roof bays je minimum pre walls vlavo, vpravo a full crosses bays pre roof
-                                int iNumberOfActiveBays = Math.Min(Math.Min(iNumberOfActiveCrosses_left, iNumberOfActiveCrosses_right), roofFullCrossesBays);
-
-                                // Pomocny vypocet - vietor alebo zemetrasenie
-                                if (lc.Type == ELCType.eWind || lc.Type == ELCType.eEarthquake)
-                                {
-                                    // Wind
-                                    if (lc.Type == ELCType.eWind && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
-                                    {
-                                        // Wind load - Vietor
-                                        // Wall cross-bracing
-                                        float fp_tot;
-
-                                        List<CSLoad_Free> surfaceLoads = lc.SurfaceLoadsList;
-
-                                        if (surfaceLoads == null)
-                                            fp_tot = 0;
-
-                                        if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max || lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
-                                        {
-                                            // Windward - W
-                                            float fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue); // Pa - tlak vetra na stenu (front alebo back)
-                                            // Leeward - L
-                                            float fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue); // Pa - sanie vetra na stenu (front alebo back)
-
-                                            if (lc.MainDirection == ELCMainDirection.eMinusY)
-                                            {
-                                                fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue);
-                                                fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue);
-                                            }
-
-                                            fp_tot = Math.Abs(fp_e_W) + Math.Abs(fp_e_L);
-                                        }
-                                        else
-                                        {
-                                            // Internal pressure
-                                            fp_tot = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[0]).fValue);
-                                        }
-
-                                        float fA_trib_left, fA_trib_right;
-
-                                        if (Model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
-                                        {
-                                            // Pre monopitch je A left a A right rozdielne podla vysky
-                                            fA_trib_left = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f) / 2f;
-                                            fA_trib_right = Model.fW_frame_overall * 0.5f * (Model.fH2_frame_overall + (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f) / 2f;
-                                        }
-                                        else if (Model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
-                                        {
-                                            // Area - Left Side
-                                            fA_trib_left = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f; // Polovica plochy cela budovy
-                                            // Area - Right Side
-                                            fA_trib_right = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f; // Polovica plochy cela budovy
-                                        }
-                                        else
-                                        {
-                                            throw new NotImplementedException("Building model is not implemented.");
-                                        }
-
-                                        // Force in corner of edge frame
-                                        float fW_left = fA_trib_left * fp_tot;
-                                        float fW_right = fA_trib_right * fp_tot;
-
-                                        // Force in side wall cross bracing member
-                                        fN_left = Math.Abs((fA_trib_left * fp_tot / iNumberOfActiveCrosses_left) * (float)Math.Cos(angle_rad));
-                                        fN_right = Math.Abs((fA_trib_right * fp_tot / iNumberOfActiveCrosses_right) * (float)Math.Cos(angle_rad));
-
-                                        //-------------------------------------------------------------------------------------------------------------------------------
-                                        // Roof cross-bracing
-                                        if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
-                                        {
-                                            float fWidth_trib_left, fWidth_trib_right;
-                                            float fR_left, fR_right;
-
-                                            if (Model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
-                                            {
-                                                // Pre monopitch je Width left a A right rozdielne podla vysky
-                                                fWidth_trib_left = 0.5f * Model.fH1_frame_overall;
-                                                fWidth_trib_right = 0.5f * Model.fH2_frame_overall;
-                                                float fWidth_trib_middle = 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall); // Polovica výšky čela budovy
-
-                                                // Linear Loads
-                                                float fq_wind_left = fp_tot * fWidth_trib_left;
-                                                float fq_wind_right = fp_tot * fWidth_trib_right;
-                                                float fq_wind_middle = fp_tot * fWidth_trib_middle;
-
-                                                fR_left = 0.5f * (fq_wind_left + fq_wind_middle) * 0.5f * Model.fW_frame_overall;
-                                                fR_right = 0.5f * (fq_wind_right + fq_wind_middle) * 0.5f * Model.fW_frame_overall;
-                                            }
-                                            else if (Model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
-                                            {
-                                                // Tributary width - Left Side
-                                                fWidth_trib_left = 0.5f * Model.fH1_frame_overall; // Polovica výšky čela budovy
-                                                 // Tributary width - Right Side
-                                                fWidth_trib_right = 0.5f * Model.fH1_frame_overall; // Polovica výšky čela budovy
-                                                // Tributary width - Middle - Apex (Ridge)
-                                                float fWidth_trib_ridge = 0.5f * Model.fH2_frame_overall; // Polovica výšky čela budovy
-
-                                                // Linear Loads
-                                                float fq_wind_left = fp_tot * fWidth_trib_left;
-                                                float fq_wind_right = fp_tot * fWidth_trib_right;
-                                                float fq_wind_ridge = fp_tot * fWidth_trib_ridge;
-
-                                                fR_left = 0.5f * (fq_wind_left + fq_wind_ridge) * 0.5f * Model.fW_frame_overall;
-                                                fR_right = 0.5f * (fq_wind_right + fq_wind_ridge) * 0.5f * Model.fW_frame_overall;
-                                            }
-                                            else
-                                            {
-                                                throw new NotImplementedException("Building model is not implemented.");
-                                            }
-
-                                            angle_rad = (float)Math.Atan(m.Delta_X / m.Delta_Y); // Uhol sklonu cross-bracing member - ziskat z priemetu pruta do GCS X a Y
-
-                                            // Force in end cross bracing member
-                                            fN_left = Math.Abs((fR_left / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
-                                            fN_right = Math.Abs((fR_right / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
-                                        }
-                                    }
-
-                                    // Earthquake
-
-                                    // Side cross-bracing
-                                    if (lc.Type == ELCType.eEarthquake && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
-                                    {
-                                        float fE_left; // N - EQ
-                                        float fE_right; // N - EQ
-
-                                        List<CNLoad> nodalLoads = lc.NodeLoadsList;
-
-                                        if (nodalLoads == null)
-                                        { fE_left = 0; fE_right = 0; }
-                                        else
-                                        {
-                                            fE_left = ((CNLoadSingle)nodalLoads[0]).Value;
-                                            fE_right = ((CNLoadSingle)nodalLoads[1]).Value;
-                                        }
-
-                                        fN_left = Math.Abs((fE_left / iNumberOfActiveCrosses_left) * (float)Math.Cos(angle_rad));
-                                        fN_right = Math.Abs((fE_right / iNumberOfActiveCrosses_right) * (float)Math.Cos(angle_rad));
-
-                                        if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
-                                        {
-                                            // Roof cross-bracing
-                                            angle_rad = (float)Math.Atan(m.Delta_X / m.Delta_Y); // Uhol sklonu cross-bracing member - ziskat z priemetu pruta do GCS X a Y
-
-                                            // Force in end cross bracing member
-                                            fN_left = fRoofMassFactor * Math.Abs((fE_left / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
-                                            fN_right = fRoofMassFactor * Math.Abs((fE_right / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
-                                        }
-                                    }
-                                }
-
-                                if (MathF.d_equal(m.NodeStart.X, 0) && MathF.d_equal(m.NodeEnd.X, 0))
-                                {
-                                    sBIF_x[0].fN = fN_left;
-                                    sBIF_x[1].fN = fN_left;
-                                    sBIF_x[2].fN = fN_left;
-                                    sBIF_x[3].fN = fN_left;
-                                    sBIF_x[4].fN = fN_left;
-                                    sBIF_x[5].fN = fN_left;
-                                    sBIF_x[6].fN = fN_left;
-                                    sBIF_x[7].fN = fN_left;
-                                    sBIF_x[8].fN = fN_left;
-                                    sBIF_x[9].fN = fN_left;
-                                    sBIF_x[10].fN = fN_left;
-                                }
-                                else
-                                {
-                                    sBIF_x[0].fN = fN_right;
-                                    sBIF_x[1].fN = fN_right;
-                                    sBIF_x[2].fN = fN_right;
-                                    sBIF_x[3].fN = fN_right;
-                                    sBIF_x[4].fN = fN_right;
-                                    sBIF_x[5].fN = fN_right;
-                                    sBIF_x[6].fN = fN_right;
-                                    sBIF_x[7].fN = fN_right;
-                                    sBIF_x[8].fN = fN_right;
-                                    sBIF_x[9].fN = fN_right;
-                                    sBIF_x[10].fN = fN_right;
-                                }
-                            }
-
-                            sBDeflections_x = new basicDeflections[iNumberOfDesignSections];
-
-                            //---------------------------------------------------------------------------------------------
-                            //---------------------------------------------------------------------------------------------
-                            //---------------------------------------------------------------------------------------------
-                        }
+                        
                     }
 
                     //To Mato - tieto vysledky by sa nemali tak nahodou na zaciatku tohto cyklu nastavovat na null??? 
@@ -402,7 +184,245 @@ namespace PFD.Infrastructure
                     if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
 
                 } //end foreach load case
-            }
+            } //end of !DeterminateCombinationResultsByFEMSolver
+
+        }
+
+        private void CalculateCrossBracingInternalForces(CMember m, CModel_PFD Model, int iNumberOfDesignSections, int leftWallCrosses, int rightWallCrosses, int roofFullCrossesBays, float fRoofMassFactor)
+        {
+            designMomentValuesForCb[] sMomentValuesforCb = null;
+            basicInternalForces[] sBIF_x = null;
+            basicDeflections[] sBDeflections_x = null;
+            designBucklingLengthFactors[] sBucklingLengthFactors = null;
+
+            foreach (CLoadCase lc in Model.m_arrLoadCases)
+            // Tension only
+            {
+                //---------------------------------------------------------------------------------------------
+                //---------------------------------------------------------------------------------------------
+                //---------------------------------------------------------------------------------------------
+
+                // Vypocet vnutornych sil v cross-bracing
+
+                // To Ondrej - tento popis tu nechavam keby sme to niekedy chceli prerabat
+
+                // Alternativna ale pracnejsia moznost je, ze toto cele by sa vysunuho pred klasicky vypocet vnutornych sil a zaviedlo by sa cosi ako
+                // "inicializacne" vnutorne sily
+                // Tie by sa dali nastavit roznym prutom pre jednotlive load cases este pred spustenim vypoctu
+                // a v ramci vypoctu by sa k nim pridali vnutorne sily, ktore pocitame teraz
+
+                // Predstav si to ako nieco co vznikne napriklad už pri stavbe budovy,
+                // napriklad uz pri montazi cross-bracing member napneme prut tak aby bol priamy, a je v nom osova sila N= 10 kN
+                // Potom pri vypocte vetra sa k tomu prida dalsich 50 kN od vetra, takze vysledna sila v load case Wind by bolo 60 kN
+
+                sBucklingLengthFactors = new designBucklingLengthFactors[iNumberOfDesignSections];
+                sMomentValuesforCb = new designMomentValuesForCb[iNumberOfDesignSections];
+
+                sBIF_x = new basicInternalForces[iNumberOfDesignSections];
+
+                // Cross-bracing - Wind in + /- Y direction
+                if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall || m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
+                {
+                    float fN_left = 0, fN_right = 0; // Axial force in member (left or right side)
+
+                    float angle_rad = (float)Math.Atan(m.Delta_Z / m.Delta_Y); // Uhol sklonu cross-bracing member od horizontály - ziskat z priemetu pruta do GCS Z a Y
+
+                    // Number of wall side bracing crosses (pocet krizov na jednej strane)
+                    int iNumberOfActiveCrosses_left = leftWallCrosses;
+                    int iNumberOfActiveCrosses_right = rightWallCrosses;
+                    // Uvazujeme rovnomerne rozdelenie do jednotlivych krizov, neplati to vsak pre dlhe budovy
+                    // Roof cross-bracing - active bays - uvazovat len tie bays ktore maju krize na celej streche a ktore maju aj krize na oboch stranach side wall bracing
+                    // Pocet aktivnych roof bays je minimum pre walls vlavo, vpravo a full crosses bays pre roof
+                    int iNumberOfActiveBays = Math.Min(Math.Min(iNumberOfActiveCrosses_left, iNumberOfActiveCrosses_right), roofFullCrossesBays);
+
+                    // Pomocny vypocet - vietor alebo zemetrasenie
+                    if (lc.Type == ELCType.eWind || lc.Type == ELCType.eEarthquake)
+                    {
+                        // Wind
+                        if (lc.Type == ELCType.eWind && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
+                        {
+                            // Wind load - Vietor
+                            // Wall cross-bracing
+                            float fp_tot;
+
+                            List<CSLoad_Free> surfaceLoads = lc.SurfaceLoadsList;
+
+                            if (surfaceLoads == null)
+                                fp_tot = 0;
+
+                            if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max || lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
+                            {
+                                // Windward - W
+                                float fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue); // Pa - tlak vetra na stenu (front alebo back)
+                                                                                                       // Leeward - L
+                                float fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue); // Pa - sanie vetra na stenu (front alebo back)
+
+                                if (lc.MainDirection == ELCMainDirection.eMinusY)
+                                {
+                                    fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue);
+                                    fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue);
+                                }
+
+                                fp_tot = Math.Abs(fp_e_W) + Math.Abs(fp_e_L);
+                            }
+                            else
+                            {
+                                // Internal pressure
+                                fp_tot = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[0]).fValue);
+                            }
+
+                            float fA_trib_left, fA_trib_right;
+
+                            if (Model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                            {
+                                // Pre monopitch je A left a A right rozdielne podla vysky
+                                fA_trib_left = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f) / 2f;
+                                fA_trib_right = Model.fW_frame_overall * 0.5f * (Model.fH2_frame_overall + (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f) / 2f;
+                            }
+                            else if (Model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
+                            {
+                                // Area - Left Side
+                                fA_trib_left = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f; // Polovica plochy cela budovy
+                                                                                                                                         // Area - Right Side
+                                fA_trib_right = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f; // Polovica plochy cela budovy
+                            }
+                            else
+                            {
+                                throw new NotImplementedException("Building model is not implemented.");
+                            }
+
+                            // Force in corner of edge frame
+                            float fW_left = fA_trib_left * fp_tot;
+                            float fW_right = fA_trib_right * fp_tot;
+
+                            // Force in side wall cross bracing member
+                            fN_left = Math.Abs((fA_trib_left * fp_tot / iNumberOfActiveCrosses_left) * (float)Math.Cos(angle_rad));
+                            fN_right = Math.Abs((fA_trib_right * fp_tot / iNumberOfActiveCrosses_right) * (float)Math.Cos(angle_rad));
+
+                            //-------------------------------------------------------------------------------------------------------------------------------
+                            // Roof cross-bracing
+                            if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
+                            {
+                                float fWidth_trib_left, fWidth_trib_right;
+                                float fR_left, fR_right;
+
+                                if (Model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                                {
+                                    // Pre monopitch je Width left a A right rozdielne podla vysky
+                                    fWidth_trib_left = 0.5f * Model.fH1_frame_overall;
+                                    fWidth_trib_right = 0.5f * Model.fH2_frame_overall;
+                                    float fWidth_trib_middle = 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall); // Polovica výšky čela budovy
+
+                                    // Linear Loads
+                                    float fq_wind_left = fp_tot * fWidth_trib_left;
+                                    float fq_wind_right = fp_tot * fWidth_trib_right;
+                                    float fq_wind_middle = fp_tot * fWidth_trib_middle;
+
+                                    fR_left = 0.5f * (fq_wind_left + fq_wind_middle) * 0.5f * Model.fW_frame_overall;
+                                    fR_right = 0.5f * (fq_wind_right + fq_wind_middle) * 0.5f * Model.fW_frame_overall;
+                                }
+                                else if (Model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
+                                {
+                                    // Tributary width - Left Side
+                                    fWidth_trib_left = 0.5f * Model.fH1_frame_overall; // Polovica výšky čela budovy
+                                                                                       // Tributary width - Right Side
+                                    fWidth_trib_right = 0.5f * Model.fH1_frame_overall; // Polovica výšky čela budovy
+                                                                                        // Tributary width - Middle - Apex (Ridge)
+                                    float fWidth_trib_ridge = 0.5f * Model.fH2_frame_overall; // Polovica výšky čela budovy
+
+                                    // Linear Loads
+                                    float fq_wind_left = fp_tot * fWidth_trib_left;
+                                    float fq_wind_right = fp_tot * fWidth_trib_right;
+                                    float fq_wind_ridge = fp_tot * fWidth_trib_ridge;
+
+                                    fR_left = 0.5f * (fq_wind_left + fq_wind_ridge) * 0.5f * Model.fW_frame_overall;
+                                    fR_right = 0.5f * (fq_wind_right + fq_wind_ridge) * 0.5f * Model.fW_frame_overall;
+                                }
+                                else
+                                {
+                                    throw new NotImplementedException("Building model is not implemented.");
+                                }
+
+                                angle_rad = (float)Math.Atan(m.Delta_X / m.Delta_Y); // Uhol sklonu cross-bracing member - ziskat z priemetu pruta do GCS X a Y
+
+                                // Force in end cross bracing member
+                                fN_left = Math.Abs((fR_left / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
+                                fN_right = Math.Abs((fR_right / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
+                            }
+                        }
+
+                        // Earthquake
+
+                        // Side cross-bracing
+                        if (lc.Type == ELCType.eEarthquake && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
+                        {
+                            float fE_left; // N - EQ
+                            float fE_right; // N - EQ
+
+                            List<CNLoad> nodalLoads = lc.NodeLoadsList;
+
+                            if (nodalLoads == null)
+                            { fE_left = 0; fE_right = 0; }
+                            else
+                            {
+                                fE_left = ((CNLoadSingle)nodalLoads[0]).Value;
+                                fE_right = ((CNLoadSingle)nodalLoads[1]).Value;
+                            }
+
+                            fN_left = Math.Abs((fE_left / iNumberOfActiveCrosses_left) * (float)Math.Cos(angle_rad));
+                            fN_right = Math.Abs((fE_right / iNumberOfActiveCrosses_right) * (float)Math.Cos(angle_rad));
+
+                            if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
+                            {
+                                // Roof cross-bracing
+                                angle_rad = (float)Math.Atan(m.Delta_X / m.Delta_Y); // Uhol sklonu cross-bracing member - ziskat z priemetu pruta do GCS X a Y
+
+                                // Force in end cross bracing member
+                                fN_left = fRoofMassFactor * Math.Abs((fE_left / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
+                                fN_right = fRoofMassFactor * Math.Abs((fE_right / iNumberOfActiveBays) * (float)Math.Cos(angle_rad));
+                            }
+                        }
+                    }
+
+                    if (MathF.d_equal(m.NodeStart.X, 0) && MathF.d_equal(m.NodeEnd.X, 0))
+                    {
+                        sBIF_x[0].fN = fN_left;
+                        sBIF_x[1].fN = fN_left;
+                        sBIF_x[2].fN = fN_left;
+                        sBIF_x[3].fN = fN_left;
+                        sBIF_x[4].fN = fN_left;
+                        sBIF_x[5].fN = fN_left;
+                        sBIF_x[6].fN = fN_left;
+                        sBIF_x[7].fN = fN_left;
+                        sBIF_x[8].fN = fN_left;
+                        sBIF_x[9].fN = fN_left;
+                        sBIF_x[10].fN = fN_left;
+                    }
+                    else
+                    {
+                        sBIF_x[0].fN = fN_right;
+                        sBIF_x[1].fN = fN_right;
+                        sBIF_x[2].fN = fN_right;
+                        sBIF_x[3].fN = fN_right;
+                        sBIF_x[4].fN = fN_right;
+                        sBIF_x[5].fN = fN_right;
+                        sBIF_x[6].fN = fN_right;
+                        sBIF_x[7].fN = fN_right;
+                        sBIF_x[8].fN = fN_right;
+                        sBIF_x[9].fN = fN_right;
+                        sBIF_x[10].fN = fN_right;
+                    }
+                }
+
+                if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, /*sMomentValuesforCb,*/ sBucklingLengthFactors));
+                if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+
+                sBDeflections_x = new basicDeflections[iNumberOfDesignSections];
+
+                //---------------------------------------------------------------------------------------------
+                //---------------------------------------------------------------------------------------------
+                //---------------------------------------------------------------------------------------------
+            } //end tenstion only
         }
 
 
