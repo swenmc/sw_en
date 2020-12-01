@@ -18,6 +18,18 @@ namespace BaseClasses
         // Cross Bracing to Main Column / Edge Column / Main Rafter / Edge Rafter / Purlin ???
 
         public bool m_bScrewInPlusZDirection;
+        public bool ScrewInPlusZDirection
+        {
+            get
+            {
+                return m_bScrewInPlusZDirection;
+            }
+
+            set
+            {
+                m_bScrewInPlusZDirection = value;
+            }
+        }
 
         public CScrewArrangement_CB ScrewArrangement
         {

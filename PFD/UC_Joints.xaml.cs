@@ -1866,7 +1866,9 @@ namespace PFD
                     {
                         if (joint is CConnectionJoint_U001)
                         {
+                            bool screwsInPlusZDirection = ((CConnectionJoint_U001)joint).ScrewInPlusZDirection;
                             ((CConnectionJoint_U001)joint).ScrewArrangement = ((CConnectionJoint_U001)refJoint).ScrewArrangement;
+                            ((CConnectionJoint_U001)joint).ScrewInPlusZDirection = screwsInPlusZDirection;
                         }                        
                     }
 
