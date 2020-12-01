@@ -563,6 +563,11 @@ namespace PFD.Infrastructure
                     }
                     else // Single Member or Frame Member (only LC calculated) - vysledky boli pocitane len pre load cases, kombinacie urobime pomocou analytickej metody SetMemberInternalForcesInLoadCombination nizsie
                     {
+                        if (m.EMemberType_FEM == EMemberType_FEM.Tension)
+                        {
+                            System.Diagnostics.Trace.WriteLine("FEM Tension: m.Type " + m.EMemberTypePosition + ", MemberInternalForcesInLoadCases.Count: " + MemberInternalForcesInLoadCases.Count);
+                        }
+                        
                         CMemberResultsManager.SetMemberInternalForcesInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
                     }
 
@@ -572,7 +577,8 @@ namespace PFD.Infrastructure
                     {
                         // BFENet ma vracia vysledky pre ohybove momenty s opacnym znamienkom ako je nasa znamienkova dohoda
                         // Preto hodnoty momentov prenasobime
-                        float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
+                        float fInternalForceSignFactor = -1; 
+                        // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
 
                         for (int i = 0; i < sBIF_x_design.Length; i++)
                         {
