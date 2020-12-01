@@ -85,7 +85,8 @@ namespace PFD.Infrastructure
             if (!m.BIsGenerated) return;
             if (!m.BIsSelectedForIFCalculation) return; // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
 
-            //tension sa pocita bez ohladu na DeterminateCombinationResultsByFEMSolver
+            // Member typu tension sa pocita bez ohladu na nastavenie DeterminateCombinationResultsByFEMSolver
+            // Pre tento typ pruta vzdy musime ziskat vysledky pre load cases
             if (m.EMemberType_FEM == EMemberType_FEM.Tension)
             {
                 CalculateCrossBracingInternalForces(m, Model, iNumberOfDesignSections, leftWallCrosses, rightWallCrosses, roofFullCrossesBays, fRoofMassFactor);
@@ -97,7 +98,7 @@ namespace PFD.Infrastructure
 
                 foreach (CLoadCase lc in Model.m_arrLoadCases)
                 {
-                    //pridavam nastavenie na null, lebo tak mi to pride spravne, aby sa pridali len tie load cases, co aj nieco spocitali
+                    // Nastavenie na null - lc ktore nemaju vysledky budu null
                     sBIF_x = null;
                     sBDeflections_x = null;
 
@@ -178,18 +179,14 @@ namespace PFD.Infrastructure
                                 calcModel.CalculateDeflectionsOnSimpleBeam_PFD(MUseCRSCGeometricalAxes, iNumberOfDesignSections, fx_positions, m, lc, out sBDeflections_x);
                             }
                         }
-                        
                     }
 
-                    //To Mato - tieto vysledky by sa nemali tak nahodou na zaciatku tohto cyklu nastavovat na null??? 
-                    // podla mna to funguje tak,ze ked sa nastavia sBIF_x pre LoadCase index 1 tak aj keby index 2 uz hodnoty sBIF_x nenastavil,tak sa ulozia lebo uz to nebude sBIF_x null
                     // Add results
                     if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, /*sMomentValuesforCb,*/ sBucklingLengthFactors));
                     if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
 
-                } //end foreach load case
-            } //end of !DeterminateCombinationResultsByFEMSolver
-
+                } // End foreach load case
+            } // End of !DeterminateCombinationResultsByFEMSolver
         }
 
         private void CalculateCrossBracingInternalForces(CMember m, CModel_PFD Model, int iNumberOfDesignSections, int leftWallCrosses, int rightWallCrosses, int roofFullCrossesBays, float fRoofMassFactor)
@@ -202,14 +199,9 @@ namespace PFD.Infrastructure
             foreach (CLoadCase lc in Model.m_arrLoadCases)
             // Tension only
             {
-                //pridavam nastavenie na null, lebo tak mi to pride spravne, aby sa pridali len tie load cases, co aj nieco spocitali
+                // Nastavenie na null
                 sBIF_x = null;
-                //sBDeflections_x = null;
-
-
-                //---------------------------------------------------------------------------------------------
-                //---------------------------------------------------------------------------------------------
-                //---------------------------------------------------------------------------------------------
+                //sBDeflections_x = null; // Pre pruty typu tension neriesime deflections
 
                 // Vypocet vnutornych sil v cross-bracing
 
@@ -251,6 +243,7 @@ namespace PFD.Infrastructure
                         if (lc.Type == ELCType.eWind && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
                         {
                             // Wind load - Vietor
+                            //-------------------------------------------------------------------------------------------------------------------------------
                             // Wall cross-bracing
                             float fp_tot;
 
@@ -263,7 +256,7 @@ namespace PFD.Infrastructure
                             {
                                 // Windward - W
                                 float fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue); // Pa - tlak vetra na stenu (front alebo back)
-                                                                                                       // Leeward - L
+                                // Leeward - L
                                 float fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue); // Pa - sanie vetra na stenu (front alebo back)
 
                                 if (lc.MainDirection == ELCMainDirection.eMinusY)
@@ -292,7 +285,7 @@ namespace PFD.Infrastructure
                             {
                                 // Area - Left Side
                                 fA_trib_left = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f; // Polovica plochy cela budovy
-                                                                                                                                         // Area - Right Side
+                                // Area - Right Side
                                 fA_trib_right = Model.fW_frame_overall * 0.5f * (Model.fH1_frame_overall + Model.fH2_frame_overall) / 2f; // Polovica plochy cela budovy
                             }
                             else
@@ -334,9 +327,9 @@ namespace PFD.Infrastructure
                                 {
                                     // Tributary width - Left Side
                                     fWidth_trib_left = 0.5f * Model.fH1_frame_overall; // Polovica výšky čela budovy
-                                                                                       // Tributary width - Right Side
+                                    // Tributary width - Right Side
                                     fWidth_trib_right = 0.5f * Model.fH1_frame_overall; // Polovica výšky čela budovy
-                                                                                        // Tributary width - Middle - Apex (Ridge)
+                                    // Tributary width - Middle - Apex (Ridge)
                                     float fWidth_trib_ridge = 0.5f * Model.fH2_frame_overall; // Polovica výšky čela budovy
 
                                     // Linear Loads
@@ -361,8 +354,6 @@ namespace PFD.Infrastructure
                         }
 
                         // Earthquake
-
-                        // Side cross-bracing
                         if (lc.Type == ELCType.eEarthquake && (lc.MainDirection == ELCMainDirection.ePlusY || lc.MainDirection == ELCMainDirection.eMinusY))
                         {
                             float fE_left; // N - EQ
@@ -378,12 +369,15 @@ namespace PFD.Infrastructure
                                 fE_right = ((CNLoadSingle)nodalLoads[1]).Value;
                             }
 
+                            //-------------------------------------------------------------------------------------------------------------------------------
+                            // Wall cross-bracing
                             fN_left = Math.Abs((fE_left / iNumberOfActiveCrosses_left) * (float)Math.Cos(angle_rad));
                             fN_right = Math.Abs((fE_right / iNumberOfActiveCrosses_right) * (float)Math.Cos(angle_rad));
 
-                            if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
+                            //-------------------------------------------------------------------------------------------------------------------------------
+                            // Roof cross-bracing
+                            if (m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
                             {
-                                // Roof cross-bracing
                                 angle_rad = (float)Math.Atan(m.Delta_X / m.Delta_Y); // Uhol sklonu cross-bracing member - ziskat z priemetu pruta do GCS X a Y
 
                                 // Force in end cross bracing member
@@ -425,15 +419,8 @@ namespace PFD.Infrastructure
 
                 if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, /*sMomentValuesforCb,*/ sBucklingLengthFactors));
                 //if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
-
-                
-
-                //---------------------------------------------------------------------------------------------
-                //---------------------------------------------------------------------------------------------
-                //---------------------------------------------------------------------------------------------
-            } //end tenstion only
+            }
         }
-
 
         private void SetBucklingFactors_SimpleBeamSegment(float fx, int iSimpleBeamIndex, int lcombID, CMember member, CModel_PFD Model, ref designBucklingLengthFactors bucklingLengthFactors)
         {
