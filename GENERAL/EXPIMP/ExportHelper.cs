@@ -1657,7 +1657,7 @@ namespace EXPIMP
 
                 opts.MemberDescriptionTextColor = Colors.Black;
                 opts.memberCenterlineColor = Colors.Black;
-            }
+            }            
 
             return opts;
         }

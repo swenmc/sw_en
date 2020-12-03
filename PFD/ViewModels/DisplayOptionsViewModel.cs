@@ -253,6 +253,7 @@ namespace PFD
         private float m_ExportDimensionsTextSize;
         private float m_ExportDimensionsLineRadius;
         private float m_ExportDimensionsScale;
+        private float m_ExportDescriptionTextWidthScaleFactor;
 
         private float m_GUIFloorSlabTextSize;
         private float m_GUIGridlinesSize;
@@ -269,6 +270,7 @@ namespace PFD
         private float m_GUIDimensionsTextSize;
         private float m_GUIDimensionsLineRadius;
         private float m_GUIDimensionsScale;
+        private float m_GUIDescriptionTextWidthScaleFactor;
 
 
         private bool m_UseTextures;
@@ -3064,6 +3066,32 @@ namespace PFD
             }
         }
 
+        public float ExportDescriptionTextWidthScaleFactor
+        {
+            get
+            {
+                return m_ExportDescriptionTextWidthScaleFactor;
+            }
+
+            set
+            {
+                m_ExportDescriptionTextWidthScaleFactor = value;
+            }
+        }
+
+        public float GUIDescriptionTextWidthScaleFactor
+        {
+            get
+            {
+                return m_GUIDescriptionTextWidthScaleFactor;
+            }
+
+            set
+            {
+                m_GUIDescriptionTextWidthScaleFactor = value;
+            }
+        }
+
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
@@ -3124,8 +3152,8 @@ namespace PFD
             DisplayWindows = false;
 
             DisplayNodalSupports = false;
-            DisplayMembersCenterLines = false;
-            DisplaySolidModel = true;
+            DisplayMembersCenterLines = true;
+            DisplaySolidModel = false;
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
@@ -3133,7 +3161,7 @@ namespace PFD
             ColorsAccordingToSections = false;
 
             ShowNodesDescription = false;
-            ShowMemberDescription = false;
+            ShowMemberDescription = true;
             ShowMemberID = true;
             ShowMemberPrefix = true;
             ShowMemberRealLength = true;
@@ -3276,6 +3304,7 @@ namespace PFD
             ExportDimensionsTextSize = 1f / 100f;
             ExportDimensionsLineRadius = 1f / 1500f;
             ExportDimensionsScale = 1f / 10f;
+            ExportDescriptionTextWidthScaleFactor = 0.6f;
 
             GUIGridlinesSize = 1f / 20f;
             GUIGridLineLabelSize = 1f / 40f;
@@ -3292,6 +3321,7 @@ namespace PFD
             GUIDimensionsTextSize = 1f / 100f;
             GUIDimensionsLineRadius = 1f / 1500f;
             GUIDimensionsScale = 1f / 10f;
+            GUIDescriptionTextWidthScaleFactor = 0.3f;
 
             IsSetFromCode = false;
         }

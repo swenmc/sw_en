@@ -886,6 +886,9 @@ namespace EXPIMP
         {
             DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES, view, filter);
 
+            //toto nastavenie by mohlo byt inde, ale zase nechcem to rozbit inde
+            opts.ExportMembersDescriptionSize = 1f / 60f;
+            opts.ViewsPageSize = EPageSizes.A4;
             opts.bCreateHorizontalGridlines = false;
             opts.bCreateVerticalGridlinesFront = false;
             opts.bCreateVerticalGridlinesBack = false;

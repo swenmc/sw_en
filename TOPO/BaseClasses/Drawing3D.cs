@@ -3077,7 +3077,9 @@ namespace BaseClasses
 
         public static void CreateMembersDescriptionModel3D_POKUS_MC(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            double descriptionTextWidthScaleFactor = 0.3;
+            double descriptionTextWidthScaleFactor = displayOptions.GUIDescriptionTextWidthScaleFactor;
+            if(displayOptions.IsExport) descriptionTextWidthScaleFactor = displayOptions.ExportDescriptionTextWidthScaleFactor;
+
             // Members
             if (model.m_arrMembers != null)
             {

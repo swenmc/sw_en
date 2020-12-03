@@ -3439,11 +3439,7 @@ namespace PFD
                 int beamsCount = model.GetSimpleBeamsCount();
                 SolverWindow.SetBeamsProgress(beamsCount, beamsCount);
             }
-
-            //CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
-            //CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners, _designOptionsVM.UniformShearDistributionInAnchors,
-            //    _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS,
-            //    footingSettings, frameModels, beamSimpleModels);
+                        
             CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, this);
             memberDesignCalculations.CalculateAll(_solverOptionsVM.MultiCoreCalculation);
             SetDesignMembersLists(memberDesignCalculations);
@@ -4066,18 +4062,18 @@ namespace PFD
             sDisplayOptions.memberCenterlineColor = _displayOptionsVM.MemberCenterlineColor;
             sDisplayOptions.fmemberCenterlineThickness = _displayOptionsVM.MemberCenterlineThickness;
 
-            sDisplayOptions.fNodeDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fDimensionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fGridLineLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fSectionSymbolLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fDetailSymbolLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fNodeDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fDimensionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fGridLineLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fSectionSymbolLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fDetailSymbolLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
-            sDisplayOptions.fSawCutTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fControlJointTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fSawCutTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fControlJointTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
-            sDisplayOptions.fFoundationTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fFloorSlabTextFontSize = 12;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fFoundationTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            //sDisplayOptions.fFloorSlabTextFontSize = 12;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.NodeColor = _displayOptionsVM.NodeColor;
             sDisplayOptions.NodeDescriptionTextColor = _displayOptionsVM.NodeDescriptionTextColor;
@@ -4164,6 +4160,7 @@ namespace PFD
             sDisplayOptions.ExportDimensionsTextSize = _displayOptionsVM.ExportDimensionsTextSize;
             sDisplayOptions.ExportDimensionsLineRadius = _displayOptionsVM.ExportDimensionsLineRadius;
             sDisplayOptions.ExportDimensionsScale = _displayOptionsVM.ExportDimensionsScale;
+            sDisplayOptions.ExportDescriptionTextWidthScaleFactor = _displayOptionsVM.ExportDescriptionTextWidthScaleFactor;
 
             sDisplayOptions.GUIFloorSlabTextSize = _displayOptionsVM.GUIFloorSlabTextSize;
             sDisplayOptions.GUIGridlinesSize = _displayOptionsVM.GUIGridlinesSize;
@@ -4180,6 +4177,7 @@ namespace PFD
             sDisplayOptions.GUIDimensionsTextSize = _displayOptionsVM.GUIDimensionsTextSize;
             sDisplayOptions.GUIDimensionsLineRadius = _displayOptionsVM.GUIDimensionsLineRadius;
             sDisplayOptions.GUIDimensionsScale = _displayOptionsVM.GUIDimensionsScale;
+            sDisplayOptions.GUIDescriptionTextWidthScaleFactor = _displayOptionsVM.GUIDescriptionTextWidthScaleFactor;
 
             return sDisplayOptions;
         }
