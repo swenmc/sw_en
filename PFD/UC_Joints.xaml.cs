@@ -1836,43 +1836,43 @@ namespace PFD
                 int jointsCount = 0;
                 foreach (CConnectionJointTypes joint in sameJoints)
                 {
-                    int i = 0;
-
                     if (joint.m_arrPlates != null)
-                    {
-                        //pokusy 557
-                        foreach (CPlate plate in joint.m_arrPlates)
-                        {
-                            plate.CopyParams(refJoint.m_arrPlates[i]);
-                            plate.UpdatePlateData(refJoint.m_arrPlates[i].ScrewArrangement);
-                            i++;
-                        }
-
+                    {                        
                         if (joint.JointType == EJointType.eKnee_EgdeRafter_Column && joint is CConnectionJoint_B001)
                         {
                             CConnectionJoint_B001 jb = joint as CConnectionJoint_B001;
                             jb.IsFront = (jointsCount == 0 || jointsCount == 2);
 
-                            if (!jb.IsFront)
+                            if (jb.IsFront)
+                            {
+                                joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[0]);
+                                joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[1]);
+                                joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
+                                joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
+                            }
+                            else
                             {
                                 joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
                                 joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
-
                                 joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
                                 joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
-
-                                //joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
-                                //joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
-
-                                //joint.UpdateJoint();
-                                //UpdateConnectedMembers(joint);
                             }
+                            
 
                             //POZOR LEN TEMP = DOCASNE
-                            jb.m_arrPlates[0].Ft = (100 + 100 * jointsCount) / 100;
-                            jb.m_arrPlates[0].UpdatePlateData(jb.m_arrPlates[0].ScrewArrangement);
-
-
+                            //jb.m_arrPlates[0].Ft = (100 + 100 * jointsCount) / 100;
+                            //jb.m_arrPlates[0].UpdatePlateData(jb.m_arrPlates[0].ScrewArrangement);
+                        }
+                        else
+                        {
+                            int i = 0;
+                            //pokusy 557
+                            foreach (CPlate plate in joint.m_arrPlates)
+                            {
+                                plate.CopyParams(refJoint.m_arrPlates[i]);
+                                plate.UpdatePlateData(refJoint.m_arrPlates[i].ScrewArrangement);
+                                i++;
+                            }
                         }
                     }
                     else

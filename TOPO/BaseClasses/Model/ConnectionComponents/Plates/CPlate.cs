@@ -904,7 +904,7 @@ namespace BaseClasses
             this.m_fs_f_min = plate.m_fs_f_min;
             this.m_fs_f_max = plate.m_fs_f_max;
             this.m_iNumberOfConnectorsInSection = plate.m_iNumberOfConnectorsInSection;
-            this.ScrewArrangement = plate.ScrewArrangement;
+            this.ScrewArrangement = plate.ScrewArrangement.GetClonedScrewArrangement();
         }
 
         public double GetDimensionsMaxOffset()
