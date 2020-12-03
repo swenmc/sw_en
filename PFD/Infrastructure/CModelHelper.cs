@@ -101,6 +101,31 @@ namespace PFD
             }
             return simpleBeams;
         }
+        public static int GetSimpleBeamsCount(this CModel_PFD model)
+        {
+            int simpleBeamsCount = 0;
+            
+
+            for (int i = 0; i < model.m_arrMembers.Length; i++)
+            {
+                if (!model.m_arrMembers[i].BIsSelectedForIFCalculation) continue; //member is not selected for calculations
+                
+                // Purlin, Eave Purlin, Girts, Columns (wind posts)
+                if (model.m_arrMembers[i].BIsDisplayed && // TODO - nemusi byt zobrazeny ale mal by ist do vypoctu BCalculate = true
+                    (model.m_arrMembers[i].EMemberType == EMemberType_FS.eP ||
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eEP ||
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eG ||
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eWP))
+                {
+                    // Validate - pridat len prut s priradenym prierezom
+                    if (model.m_arrMembers[i].CrScStart == null)
+                        continue;
+                    
+                    simpleBeamsCount++;
+                }
+            }
+            return simpleBeamsCount;
+        }
 
         public static List<CNSupport> GetFrameCNSupports(this CModel_PFD model)
         {

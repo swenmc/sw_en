@@ -253,7 +253,7 @@ namespace PFD
 
             m_UseStraightReinforcementBars = false;
 
-            m_UpdateAutomatically = true;
+            m_UpdateAutomatically = false;
 
             m_VariousCrossSections = false;
 

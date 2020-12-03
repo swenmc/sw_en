@@ -3425,14 +3425,19 @@ namespace PFD
                 if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
             }
 
+            SolverWindow.SetBeams();
             if (_solverOptionsVM.DeterminateCombinationResultsByFEMSolver || _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam)
             {
-                SolverWindow.SetBeams();
                 // Calculation of simple beam model
                 beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
                 if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels = model.GetMembersFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
                 CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !_solverOptionsVM.DeterminateCombinationResultsByFEMSolver, SolverWindow);
                 if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
+            }
+            else
+            {
+                int beamsCount = model.GetSimpleBeamsCount();
+                SolverWindow.SetBeamsProgress(beamsCount, beamsCount);
             }
 
             //CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
