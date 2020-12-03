@@ -256,6 +256,10 @@ namespace BaseClasses
             return m_arrMembers.Where(m => m.CrScStart.DatabaseID == databaseID || (m.CrScEnd != null && m.CrScEnd.DatabaseID == databaseID)).ToList();
         }
 
+
+        //Pozor tu som nasiel ze
+        //m_arrConnectionJoints s m_Node.ID == 6 najde 2 jeden je TA01 a duhy T001
+        //skusit treba m_arrConnectionJoints.Where(c=> c.m_Node.ID == 6).ElementAt(1)
         public void GetModelMemberStartEndConnectionJoints(CMember m, out CConnectionJointTypes jStart, out CConnectionJointTypes jEnd)
         {
             jStart = null;
@@ -273,8 +277,9 @@ namespace BaseClasses
                         if (secMem.NodeEnd.ID == cj.m_Node.ID) jEnd = cj;
                     }
                 }
+                if (jStart != null && jEnd != null) return;
             }
-            if (jStart != null && jEnd != null) return;
+            
 
             foreach (CConnectionJointTypes cj in m_arrConnectionJoints)
             {
@@ -286,6 +291,7 @@ namespace BaseClasses
                     if (cj.m_MainMember.NodeStart.ID == cj.m_Node.ID) jStart = cj; // Zatial je lepsie porovnavat len ID a nie cele objekty Node, pretoze pri vytvarani dielcich modelov sa objekty Node modifikuju
                     if (cj.m_MainMember.NodeEnd.ID == cj.m_Node.ID) jEnd = cj;
                 }
+                if (jStart != null && jEnd != null) return;
             }
 
             // Validation - start or end joint wasn't found.
