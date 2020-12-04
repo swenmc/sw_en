@@ -940,7 +940,7 @@ namespace BaseClasses
                     {
                         int firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");
                         
-                        float fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay - 1) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
+                        float fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
                         
                         pointLeft = new Point3D(0, fAbsolutePosition, 0);
                         pointRight = new Point3D(0, fAbsolutePosition, 0);
@@ -951,7 +951,7 @@ namespace BaseClasses
 
                         firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
                         
-                        fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay - 1) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
+                        fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
                         pointLeft = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
                         pointRight = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
@@ -983,7 +983,7 @@ namespace BaseClasses
                         {
                             int firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");                            
                             
-                            float fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay - 1) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
+                            float fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
                             pointLeft = new Point3D(0, fAbsolutePosition, 0);
                             pointRight = new Point3D(0, fAbsolutePosition, 0);
                             secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
@@ -993,7 +993,7 @@ namespace BaseClasses
 
                             firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
                             
-                            fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay - 1) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
+                            fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
                             pointLeft = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
                             pointRight = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
                             secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
