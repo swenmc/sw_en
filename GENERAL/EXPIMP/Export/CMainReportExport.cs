@@ -304,7 +304,7 @@ namespace EXPIMP
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
-            DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
+            DrawTitleBlock(gfx, data.ProjectInfo, page, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
 
             int legendImgWidth = 100;
@@ -404,7 +404,7 @@ namespace EXPIMP
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
                 DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-                DrawTitleBlock(gfx, data.ProjectInfo, ((EPDFPageContentType)viewMembers).GetFriendlyName(), sheetNo, 0);
+                DrawTitleBlock(gfx, data.ProjectInfo, page,((EPDFPageContentType)viewMembers).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)viewMembers).GetFriendlyName() });
 
                 opts.ModelView = GetView(viewMembers);
@@ -1097,7 +1097,7 @@ namespace EXPIMP
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-            DrawTitleBlock(gfx, projectInfo, pageDetails, sheetNo, 0);
+            DrawTitleBlock(gfx, projectInfo, page, pageDetails, sheetNo, 0);
         }
 
         private static void DrawStandardDetails(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
@@ -1115,7 +1115,7 @@ namespace EXPIMP
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
             sheetNo++;
-            DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Details_Standard_1.GetFriendlyName(), sheetNo, 0);
+            DrawTitleBlock(gfx, data.ProjectInfo, page, EPDFPageContentType.Details_Standard_1.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Standard_1.GetFriendlyName() });
 
             double scale = 0.2; // 20% of original file dimensions in pixels
@@ -1209,7 +1209,7 @@ namespace EXPIMP
                 DrawCopyRightNote(gfx2, 400, (int)page.Height.Point - 15);
 
                 sheetNo++;
-                DrawTitleBlock(gfx2, data.ProjectInfo, EPDFPageContentType.Details_Standard_2.GetFriendlyName(), sheetNo, 0);
+                DrawTitleBlock(gfx2, data.ProjectInfo, page, EPDFPageContentType.Details_Standard_2.GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Standard_2.GetFriendlyName() });
 
                 dImagePosition_x = 2;
@@ -1261,7 +1261,7 @@ namespace EXPIMP
 
             sheetNo++;
 
-            DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Details_Floor.GetFriendlyName(), sheetNo, 0);
+            DrawTitleBlock(gfx, data.ProjectInfo, page, EPDFPageContentType.Details_Floor.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Floor.GetFriendlyName() });
 
             double scale = 0.2; // 20% of original file dimensions in pixels
@@ -1709,11 +1709,11 @@ namespace EXPIMP
         }
 
         // TO Ondrej - ma zmysel mat tieto vnorene metody ak maju rovnake parametre, neviem ci je opodstatnene - ja som to urobil len aby malo vsetko nazov Draw
-        private static void DrawTitleBlock(XGraphics gfx, CProjectInfo pInfo, string contents, int sheetNo, int issue) // Tabulka s rozpiskou
+        private static void DrawTitleBlock(XGraphics gfx, CProjectInfo pInfo, PdfPage pdfPage, string contents, int sheetNo, int issue) // Tabulka s rozpiskou
         {
             // Velkost pisma mozes nastavit tak, aby bolo zhruba 2.5-3 mm velke, aby nam ta tabulka nezaberal prilis vela miesta, nazov projektu moze byt 5 mm pismom
 
-            AddPageTitleBlockTableToDocument(gfx, pInfo, contents, sheetNo, issue);
+            AddPageTitleBlockTableToDocument(gfx, pInfo, pdfPage, contents, sheetNo, issue);
         }
 
         private static void DrawFootingPadList(XGraphics gfx, CModelData data, int x, int y)
@@ -2508,14 +2508,14 @@ namespace EXPIMP
 
 
 
-        private static void AddPageTitleBlockTableToDocument(XGraphics gfx, CProjectInfo projectInfo, string contents, int sheetNo, int issue)
+        private static void AddPageTitleBlockTableToDocument(XGraphics gfx, CProjectInfo projectInfo, PdfPage pdfPage, string contents, int sheetNo, int issue)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
-            Table t = GetPageTitleBlockTable(doc, projectInfo, contents, sheetNo, issue);
+            Table t = GetPageTitleBlockTable(doc, projectInfo, pdfPage, contents, sheetNo, issue);
 
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfRenderer.Document = doc;
@@ -2532,7 +2532,7 @@ namespace EXPIMP
             docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
         }
 
-        private static Table GetPageTitleBlockTable(Document document, CProjectInfo projectInfo, string contents, int sheetNo, int issue)
+        private static Table GetPageTitleBlockTable(Document document, CProjectInfo projectInfo, PdfPage pdfPage, string contents, int sheetNo, int issue)
         {
             Section sec = document.AddSection();
             Table table = new Table();
@@ -2609,7 +2609,11 @@ namespace EXPIMP
             cell = row.Cells[2];
             cell.AddParagraph("Size:");
             cell = row.Cells[3];
-            cell.AddParagraph("420x297 - A3");
+            //cell.AddParagraph("420x297 - A3");
+            //cell.AddParagraph($"{pdfPage.Width.Point}x{pdfPage.Height.Point} - {pdfPage.Size.ToString()}");
+            cell.AddParagraph($"{(int)pdfPage.Width.Millimeter}x{(int)pdfPage.Height.Millimeter} - {pdfPage.Size.ToString()}");
+
+
 
             table.SetEdge(0, 0, 4, 6, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
