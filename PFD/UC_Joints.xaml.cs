@@ -656,6 +656,39 @@ namespace PFD
                                 )
                                 resItems.Add(joint);
                             break;
+                        //TO Mato - skontrolovat treba
+                        //57  CrossBracing_MainColumn
+                        case 57:
+                            if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn &&
+                                joint.m_SecondaryMembers != null &&
+                                    (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
+                                )
+                                resItems.Add(joint);
+                            break;
+                        //58  CrossBracing_EdgeColumn
+                        case 58:
+                            if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn &&
+                                joint.m_SecondaryMembers != null &&
+                                    (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
+                                )
+                                resItems.Add(joint);
+                            break;
+                        //59  CrossBracing_MainRafter
+                        case 59:
+                            if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainRafter &&
+                                joint.m_SecondaryMembers != null &&
+                                    (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
+                                )
+                                resItems.Add(joint);
+                            break;
+                        //60  CrossBracing_EdgeRafter
+                        case 60:
+                            if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
+                                joint.m_SecondaryMembers != null &&
+                                    (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
+                                )
+                                resItems.Add(joint);
+                            break;
                         default:
                             throw new Exception("Type of joint can't be determined"); // Vynimka spoj sme nepriradili do ziadneho znameho typu - nemalo by to nastat
                     } //end switch

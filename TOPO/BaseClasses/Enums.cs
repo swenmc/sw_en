@@ -714,7 +714,12 @@ namespace BaseClasses
         eGirtBracing_Girt_Back = 53,
         eGirtBracing_EdgeRafter_Back = 54,
         ePurlinBracing_Purlin = 55,
-        ePurlinBracing_EdgePurlin = 56
+        ePurlinBracing_EdgePurlin = 56,
+        eCrossBracing_MainColumn = 57,
+        eCrossBracing_EdgeColumn = 58,
+        eCrossBracing_MainRafter = 59,
+        eCrossBracing_EdgeRafter = 60
+
     }
 
     public enum EModelViews

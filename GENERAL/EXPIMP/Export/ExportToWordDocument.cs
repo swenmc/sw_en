@@ -1489,14 +1489,24 @@ namespace EXPIMP
                 par.AppendPicture(picture);
             }
         }
-        private static void AppendImageFromViewPort(DocX document, Viewport3D viewPort, Paragraph par)
+        private static void AppendImageFromViewPort(DocX document, Viewport3D viewPort, Paragraph par, bool maximizeSize = true)
         {
             using (Stream stream = ExportHelper.GetViewPortStream(viewPort))
             {
                 // Add a simple image from disk.
                 var image = document.AddImage(stream);
                 // Set Picture Height and Width.
-                var picture = image.CreatePicture((int)viewPort.ActualHeight, (int)viewPort.ActualWidth);
+                Picture picture = null;
+                if (maximizeSize)
+                {
+                    double ratio = imageMaxWidth / viewPort.ActualWidth;
+                    picture = image.CreatePicture((int)(viewPort.ActualHeight * ratio), imageMaxWidth);
+                }
+                else
+                {
+                    picture = image.CreatePicture((int)viewPort.ActualHeight, (int)viewPort.ActualWidth);
+                }
+
                 // Insert Picture in paragraph.
                 par.AppendPicture(picture);
             }
@@ -1577,7 +1587,7 @@ namespace EXPIMP
                     Trackport3D trackport = null;
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, fZoomFactor, out trackport);
                     viewPort.UpdateLayout();
-                    AppendImageFromViewPort(document, viewPort, par);
+                    AppendImageFromViewPort(document, viewPort, par, true);
                     viewPort.Dispose();
                     trackport.Dispose();
 
@@ -1606,7 +1616,7 @@ namespace EXPIMP
                     Trackport3D trackport = null;
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, fZoomFactor, out trackport);
                     viewPort.UpdateLayout();
-                    AppendImageFromViewPort(document, viewPort, par);
+                    AppendImageFromViewPort(document, viewPort, par, true);
                     viewPort.Dispose();
                     trackport.Dispose();
 
@@ -1714,7 +1724,7 @@ namespace EXPIMP
                     Trackport3D trackport = null;
                     Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, data.Model, fZoomFactor, out trackport);
                     viewPort.UpdateLayout();
-                    AppendImageFromViewPort(document, viewPort, par);
+                    AppendImageFromViewPort(document, viewPort, par, true);
                     viewPort.Dispose();
                     trackport.Dispose();
 

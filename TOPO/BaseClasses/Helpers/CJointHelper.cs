@@ -122,6 +122,17 @@ namespace BaseClasses.Helpers
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.ePurlinBracing_EdgePurlin:
                     opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                case EJointType.eCrossBracing_MainColumn:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eCrossBracing_EdgeColumn:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eCrossBracing_MainRafter:
+                    opt.RotateModelX = 45; opt.RotateModelY = 45; opt.RotateModelZ = 45; break;
+                case EJointType.eCrossBracing_EdgeRafter:
+                    opt.RotateModelX = -45; opt.RotateModelY = 45; opt.RotateModelZ = -45; break;
+                default:
+                    System.Diagnostics.Trace.WriteLine("ERROR!!! Joint type: " + joint.JointType + " not recognized." + joint.GetType().ToString()); break;
+                
             }
         }
 
