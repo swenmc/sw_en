@@ -2850,6 +2850,8 @@ namespace PFD
 
                 SetResultsAreNotValid();
                 RecreateModel = true;
+                RecreateJoints = true;
+                RecreateQuotation = true;                
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CrossBracingOptionsChanged");
 

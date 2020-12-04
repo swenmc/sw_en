@@ -231,7 +231,12 @@ namespace M_AS4600
             else if (joint_temp is CConnectionJoint_TA01 || joint_temp is CConnectionJoint_TB01 || joint_temp is CConnectionJoint_TC01 || joint_temp is CConnectionJoint_TD01)
             {
                 CalculateDesignRatioBaseJoint(joint_temp, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back wind post connection to the foundation)
-                CalculateDesignRatioBaseJointFooting(foundation, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back wind post connection to the foundation)
+                if (foundation != null)
+                {
+                    CalculateDesignRatioBaseJointFooting(foundation, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back wind post connection to the foundation)                    
+                }
+                else System.Diagnostics.Trace.WriteLine(joint_temp.GetType());
+
             }
             else
             {
