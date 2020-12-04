@@ -73,7 +73,8 @@ namespace BaseClasses.Helpers
                     m.EMemberType == EMemberType_FS.eMR || // Main rafter
                     m.EMemberType == EMemberType_FS.eEP || // Eave purlin
                     m.EMemberType == EMemberType_FS.eP ||  // Purlin
-                    m.EMemberType == EMemberType_FS.ePB    // Purlin Block
+                    m.EMemberType == EMemberType_FS.ePB ||    // Purlin Block
+                    m.EMemberType == EMemberType_FS.eCB
                     )
                     )
                     members.Add(m);

@@ -23,6 +23,7 @@ namespace PFD
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        #region private fields
         #region general
         private bool m_LightDirectional;
         private bool m_LightPoint;
@@ -292,11 +293,13 @@ namespace PFD
         private float MDisplayIn3DRatio;
         #endregion Loads
 
+        #endregion private fields
 
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        #region Properties
         public bool LightDirectional
         {
             get
@@ -3092,28 +3095,9 @@ namespace PFD
             }
         }
 
-        private void SetIsEnabledLocalMembersAxis()
-        {
-            //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
-            //tak by malo byt zobrazenie os Local Member Axis disabled.            
-            if (m_DisplayMembers)
-            {
-                if (m_DisplayMembersCenterLines || m_DisplaySolidModel || m_DisplayWireFrameModel) IsEnabledLocalMembersAxis = true;
-                else { IsEnabledLocalMembersAxis = false; }
-            }
-            else { IsEnabledLocalMembersAxis = false; }
+        #endregion Properties
 
-            if (!IsEnabledLocalMembersAxis && ShowLocalMembersAxis) ShowLocalMembersAxis = false;
-        }
-
-        private void SetIsEnabledSurfaceLoadsAxis()
-        {
-            //Podobne ak su sice zapnute Surface loads, ale nie su zapnute Loads ako celok, tak by Surface Loads Axis malo byt disabled.
-            if (MShowSurfaceLoads && MShowLoads) IsEnabledSurfaceLoadsAxis = true;
-            else IsEnabledSurfaceLoadsAxis = false;
-
-            if (!IsEnabledSurfaceLoadsAxis && ShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
-        }
+        
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -3152,8 +3136,8 @@ namespace PFD
             DisplayWindows = false;
 
             DisplayNodalSupports = false;
-            DisplayMembersCenterLines = true;
-            DisplaySolidModel = false;
+            DisplayMembersCenterLines = false;
+            DisplaySolidModel = true;
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
@@ -3478,5 +3462,29 @@ namespace PFD
 
             IsSetFromCode = false;
         }
+
+        private void SetIsEnabledLocalMembersAxis()
+        {
+            //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
+            //tak by malo byt zobrazenie os Local Member Axis disabled.            
+            if (m_DisplayMembers)
+            {
+                if (m_DisplayMembersCenterLines || m_DisplaySolidModel || m_DisplayWireFrameModel) IsEnabledLocalMembersAxis = true;
+                else { IsEnabledLocalMembersAxis = false; }
+            }
+            else { IsEnabledLocalMembersAxis = false; }
+
+            if (!IsEnabledLocalMembersAxis && ShowLocalMembersAxis) ShowLocalMembersAxis = false;
+        }
+
+        private void SetIsEnabledSurfaceLoadsAxis()
+        {
+            //Podobne ak su sice zapnute Surface loads, ale nie su zapnute Loads ako celok, tak by Surface Loads Axis malo byt disabled.
+            if (MShowSurfaceLoads && MShowLoads) IsEnabledSurfaceLoadsAxis = true;
+            else IsEnabledSurfaceLoadsAxis = false;
+
+            if (!IsEnabledSurfaceLoadsAxis && ShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
+        }
+
     }
 }
