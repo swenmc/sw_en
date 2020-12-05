@@ -1870,7 +1870,7 @@ namespace PFD
                 foreach (CConnectionJointTypes joint in sameJoints)
                 {
                     if (joint.m_arrPlates != null)
-                    {                        
+                    {
                         if (joint.JointType == EJointType.eKnee_EgdeRafter_Column && joint is CConnectionJoint_B001)
                         {
                             CConnectionJoint_B001 jb = joint as CConnectionJoint_B001;
@@ -1911,10 +1911,10 @@ namespace PFD
                     else
                     {
                         if (joint is CConnectionJoint_U001)
-                        {                            
+                        {
                             ((CConnectionJoint_U001)joint).ScrewArrangement = ((CConnectionJoint_U001)refJoint).ScrewArrangement;
                             ((CConnectionJoint_U001)joint).UpdateJointScrewArrangementData();
-                        }                        
+                        }
                     }
 
                     joint.UpdateJoint();

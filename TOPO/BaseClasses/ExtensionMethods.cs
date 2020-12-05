@@ -187,9 +187,44 @@ namespace BaseClasses
                 CScrewArrangement_BX p = sa as CScrewArrangement_BX;
                 clone = p.Clone();
             }
+            else if (sa is CScrewArrangement_CB)
+            {
+                CScrewArrangement_CB p = sa as CScrewArrangement_CB;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_F)
+            {
+                CScrewArrangement_F p = sa as CScrewArrangement_F;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_G)
+            {
+                CScrewArrangement_G p = sa as CScrewArrangement_G;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_H)
+            {
+                CScrewArrangement_H p = sa as CScrewArrangement_H;
+                clone = p.Clone();
+            }
             else if (sa is CScrewArrangement_L)
             {
                 CScrewArrangement_L p = sa as CScrewArrangement_L;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_LL)
+            {
+                CScrewArrangement_LL p = sa as CScrewArrangement_LL;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_M)
+            {
+                CScrewArrangement_M p = sa as CScrewArrangement_M;
+                clone = p.Clone();
+            }
+            else if (sa is CScrewArrangement_N)
+            {
+                CScrewArrangement_N p = sa as CScrewArrangement_N;
                 clone = p.Clone();
             }
             else if (sa is CScrewArrangement_O)
@@ -197,7 +232,7 @@ namespace BaseClasses
                 CScrewArrangement_O p = sa as CScrewArrangement_O;
                 clone = p.Clone();
             }
-            
+
             return clone;
         }
 
