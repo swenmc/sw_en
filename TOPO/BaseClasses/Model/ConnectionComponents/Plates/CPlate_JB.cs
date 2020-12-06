@@ -71,36 +71,6 @@ namespace BaseClasses
             }
         }
 
-        float m_fSlope_rad;
-
-        public float FSlope_rad
-        {
-            get
-            {
-                return m_fSlope_rad;
-            }
-
-            set
-            {
-                m_fSlope_rad = value;
-            }
-        }
-
-        bool m_bScrewInPlusZDirection;
-
-        public bool ScrewInPlusZDirection
-        {
-            get
-            {
-                return m_bScrewInPlusZDirection;
-            }
-
-            set
-            {
-                m_bScrewInPlusZDirection = value;
-            }
-        }
-
         public CConCom_Plate_JB()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -136,17 +106,17 @@ namespace BaseClasses
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
-            m_bScrewInPlusZDirection = bScrewInPlusZDirection;
+            ScrewInPlusZDirection = bScrewInPlusZDirection;
 
             UpdatePlateData(screwArrangement);
         }
 
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
-            if (MathF.d_equal(m_fSlope_rad, 0))
-                m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+            if (MathF.d_equal(FSlope_rad, 0))
+                FSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
             else
-                Fh_Y2 = Fh_Y1 + ((float)Math.Tan(m_fSlope_rad) * (0.5f * Fb_X));
+                Fh_Y2 = Fh_Y1 + ((float)Math.Tan(FSlope_rad) * (0.5f * Fb_X));
 
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
@@ -163,7 +133,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                screwArrangement.Calc_ApexPlateData(0, m_fbX, m_flZ, m_fhY1, Ft, m_fSlope_rad, m_bScrewInPlusZDirection);
+                screwArrangement.Calc_ApexPlateData(0, m_fbX, m_flZ, m_fhY1, Ft, FSlope_rad, ScrewInPlusZDirection);
             }
 
             // Fill list of indices for drawing of surface
@@ -221,9 +191,9 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         public override void Calc_Coord2D()
         {
-            float fx_temp = m_flZ * (float)Math.Sin(m_fSlope_rad);
-            float fy_temp = m_flZ * (float)Math.Cos(m_fSlope_rad);
-            float fx_temp2 = Ft * (float)Math.Sin(m_fSlope_rad);
+            float fx_temp = m_flZ * (float)Math.Sin(FSlope_rad);
+            float fy_temp = m_flZ * (float)Math.Cos(FSlope_rad);
+            float fx_temp2 = Ft * (float)Math.Sin(FSlope_rad);
 
             PointsOut2D[0].X = 0;
             PointsOut2D[0].Y = 0;
@@ -264,10 +234,10 @@ namespace BaseClasses
 
         public override void Calc_Coord3D()
         {
-            float fx_temp = m_flZ * (float)Math.Sin(m_fSlope_rad);
-            float fy_temp = m_flZ * (float)Math.Cos(m_fSlope_rad);
-            float fx_temp2 = Ft * (float)Math.Sin(m_fSlope_rad);
-            float fy_temp2 = Ft * (float)Math.Cos(m_fSlope_rad);
+            float fx_temp = m_flZ * (float)Math.Sin(FSlope_rad);
+            float fy_temp = m_flZ * (float)Math.Cos(FSlope_rad);
+            float fx_temp2 = Ft * (float)Math.Sin(FSlope_rad);
+            float fy_temp2 = Ft * (float)Math.Cos(FSlope_rad);
 
             arrPoints3D[0].X = 0;
             arrPoints3D[0].Y = 0;
@@ -580,7 +550,7 @@ namespace BaseClasses
                 this.m_fhY1 = refPlate.m_fhY1;
                 this.m_fhY2 = refPlate.m_fhY2;
                 this.m_flZ = refPlate.m_flZ;
-                this.m_fSlope_rad = refPlate.m_fSlope_rad;                
+                this.FSlope_rad = refPlate.FSlope_rad;                
                 //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;  //toto kopirovat nechceme
             }
         }

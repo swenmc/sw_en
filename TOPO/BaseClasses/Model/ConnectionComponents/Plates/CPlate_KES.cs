@@ -85,36 +85,6 @@ namespace BaseClasses
             }
         }
 
-        float m_fSlope_rad;
-
-        public float FSlope_rad
-        {
-            get
-            {
-                return m_fSlope_rad;
-            }
-
-            set
-            {
-                m_fSlope_rad = value;
-            }
-        }
-
-        bool m_bScrewInPlusZDirection;
-
-        public bool ScrewInPlusZDirection
-        {
-            get
-            {
-                return m_bScrewInPlusZDirection;
-            }
-
-            set
-            {
-                m_bScrewInPlusZDirection = value;
-            }
-        }
-
         public Point pTip;
 
         public CConCom_Plate_KES()
@@ -155,7 +125,7 @@ namespace BaseClasses
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
-            m_bScrewInPlusZDirection = bScrewInPlusZDirection;
+            ScrewInPlusZDirection = bScrewInPlusZDirection;
 
             UpdatePlateData(screwArrangement);
         }
@@ -626,7 +596,7 @@ namespace BaseClasses
                 this.m_fbX2 = refPlate.m_fbX2;
                 this.m_fhY2 = refPlate.m_fhY2;
                 this.m_flZ = refPlate.m_flZ;
-                this.m_fSlope_rad = refPlate.m_fSlope_rad;                
+                this.FSlope_rad = refPlate.FSlope_rad;
                 //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;  //toto kopirovat nechceme
                 this.pTip = refPlate.pTip;
             }

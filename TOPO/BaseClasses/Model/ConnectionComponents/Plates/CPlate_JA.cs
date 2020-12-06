@@ -56,36 +56,6 @@ namespace BaseClasses
             }
         }
 
-        float m_fSlope_rad;
-
-        public float FSlope_rad
-        {
-            get
-            {
-                return m_fSlope_rad;
-            }
-
-            set
-            {
-                m_fSlope_rad = value;
-            }
-        }
-
-        bool m_bScrewInPlusZDirection;
-
-        public bool ScrewInPlusZDirection
-        {
-            get
-            {
-                return m_bScrewInPlusZDirection;
-            }
-
-            set
-            {
-                m_bScrewInPlusZDirection = value;
-            }
-        }
-
         public CConCom_Plate_JA()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -126,10 +96,10 @@ namespace BaseClasses
 
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
-            if (MathF.d_equal(m_fSlope_rad, 0))
-                m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+            if (MathF.d_equal(FSlope_rad, 0))
+                FSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
             else
-                Fh_Y2 = Fh_Y1 + ((float)Math.Tan(m_fSlope_rad) * (0.5f * Fb_X));
+                Fh_Y2 = Fh_Y1 + ((float)Math.Tan(FSlope_rad) * (0.5f * Fb_X));
 
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
@@ -146,7 +116,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                screwArrangement.Calc_ApexPlateData(0, m_fbX, 0, m_fhY1, Ft, m_fSlope_rad, ScrewInPlusZDirection);
+                screwArrangement.Calc_ApexPlateData(0, m_fbX, 0, m_fhY1, Ft, FSlope_rad, ScrewInPlusZDirection);
             }
 
             // Fill list of indices for drawing of surface
@@ -364,7 +334,7 @@ namespace BaseClasses
                 this.m_fbX = refPlate.m_fbX;
                 this.m_fhY1 = refPlate.m_fhY1;
                 this.m_fhY2 = refPlate.m_fhY2;
-                this.m_fSlope_rad = refPlate.m_fSlope_rad;                
+                this.FSlope_rad = refPlate.FSlope_rad;
                 //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;  //toto kopirovat nechceme
             }
         }

@@ -56,36 +56,6 @@ namespace BaseClasses
             }
         }
 
-        float m_fSlope_rad;
-
-        public float FSlope_rad
-        {
-            get
-            {
-                return m_fSlope_rad;
-            }
-
-            set
-            {
-                m_fSlope_rad = value;
-            }
-        }
-
-        bool m_bScrewInPlusZDirection;
-
-        public bool ScrewInPlusZDirection
-        {
-            get
-            {
-                return m_bScrewInPlusZDirection;
-            }
-
-            set
-            {
-                m_bScrewInPlusZDirection = value;
-            }
-        }
-
         // Private
         private float m_fbX1;
 
@@ -230,18 +200,18 @@ namespace BaseClasses
 
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
-            if (MathF.d_equal(m_fSlope_rad, 0))
-                m_fSlope_rad = (float)Math.Atan((m_fhY2 - m_fhY1) / (0.5 * m_fbX2));
+            if (MathF.d_equal(FSlope_rad, 0))
+                FSlope_rad = (float)Math.Atan((m_fhY2 - m_fhY1) / (0.5 * m_fbX2));
             //else
                 //m_fhY2 = m_fhY1 + ((float)Math.Tan(m_fSlope_rad) * (0.5f * m_fbX2)); // ! not implemented
 
             // Recalculate dimensions
-            m_fhY1 = m_fd_crsc * (float)Math.Cos(m_fSlope_rad);
-            m_fbX2 = 2 * m_fw_apexHalfLength * (float)Math.Cos(m_fSlope_rad);
-            m_fbX1 = m_fbX2 - 2 * m_fd_crsc * (float)Math.Sin(m_fSlope_rad);
-            m_fhY2 = m_fhY1 + m_fw_apexHalfLength * (float)Math.Sin(m_fSlope_rad);
+            m_fhY1 = m_fd_crsc * (float)Math.Cos(FSlope_rad);
+            m_fbX2 = 2 * m_fw_apexHalfLength * (float)Math.Cos(FSlope_rad);
+            m_fbX1 = m_fbX2 - 2 * m_fd_crsc * (float)Math.Sin(FSlope_rad);
+            m_fhY2 = m_fhY1 + m_fw_apexHalfLength * (float)Math.Sin(FSlope_rad);
 
-            m_fLipBase_dim_x = m_flZ / (float)Math.Cos(m_fSlope_rad);
+            m_fLipBase_dim_x = m_flZ / (float)Math.Cos(FSlope_rad);
             m_fbX1_AndLips = 2 * m_fLipBase_dim_x + m_fbX1;
             m_fbX2_AndLips = 2 * m_fLipBase_dim_x + m_fbX2;
 
@@ -260,7 +230,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                screwArrangement.Calc_ApexPlateData(m_fLipBase_dim_x, m_fbX1_AndLips, 0, m_fhY1, Ft, m_fSlope_rad, ScrewInPlusZDirection);
+                screwArrangement.Calc_ApexPlateData(m_fLipBase_dim_x, m_fbX1_AndLips, 0, m_fhY1, Ft, FSlope_rad, ScrewInPlusZDirection);
             }
 
             // Fill list of indices for drawing of surface
@@ -326,8 +296,8 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         public override void Calc_Coord2D()
         {
-            float fx1_temp = m_flZ * (float)Math.Cos(m_fSlope_rad);
-            float fy1_temp = m_flZ * (float)Math.Sin(m_fSlope_rad);
+            float fx1_temp = m_flZ * (float)Math.Cos(FSlope_rad);
+            float fy1_temp = m_flZ * (float)Math.Sin(FSlope_rad);
 
             PointsOut2D[0].X = 0;
             PointsOut2D[0].Y = 0;
@@ -342,7 +312,7 @@ namespace BaseClasses
             PointsOut2D[3].Y = 0;
 
             float fy_5_temp = m_fhY1 - fy1_temp;
-            PointsOut2D[4].X = PointsOut2D[3].X + fy_5_temp * Math.Tan(m_fSlope_rad);
+            PointsOut2D[4].X = PointsOut2D[3].X + fy_5_temp * Math.Tan(FSlope_rad);
             PointsOut2D[4].Y = fy_5_temp;
 
             PointsOut2D[5].X = PointsOut2D[4].X - fx1_temp;
@@ -696,7 +666,7 @@ namespace BaseClasses
                 this.m_fd_crsc = refPlate.m_fd_crsc;
                 this.m_fw_apexHalfLength = refPlate.m_fw_apexHalfLength;
                 this.m_flZ = refPlate.m_flZ;
-                this.m_fSlope_rad = refPlate.m_fSlope_rad;                
+                this.FSlope_rad = refPlate.FSlope_rad;
                 //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;  //toto kopirovat nechceme
 
                 this.m_fbX1 = refPlate.m_fbX1;

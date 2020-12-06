@@ -39,6 +39,36 @@ namespace BaseClasses
             }
         }
 
+        float m_fSlope_rad;
+
+        public float FSlope_rad
+        {
+            get
+            {
+                return m_fSlope_rad;
+            }
+
+            set
+            {
+                m_fSlope_rad = value;
+            }
+        }
+
+        bool m_bScrewInPlusZDirection;
+
+        public bool ScrewInPlusZDirection
+        {
+            get
+            {
+                return m_bScrewInPlusZDirection;
+            }
+
+            set
+            {
+                m_bScrewInPlusZDirection = value;
+            }
+        }
+
         public void SetMinimumScrewToEdgeDistances_Basic(CScrewArrangement screwArrangement)
         {
             e_min_x = 0;

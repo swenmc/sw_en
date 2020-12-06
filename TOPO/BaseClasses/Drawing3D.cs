@@ -1692,6 +1692,26 @@ namespace BaseClasses
                                         cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws != null &&
                                         cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length > 0)
                                         {
+                                            // BUG 638 - DOCASNE TESTING
+                                            if (cmodel.m_arrConnectionJoints[i].JointType == EJointType.eKnee_MainRafter_Column && cmodel.m_arrConnectionJoints[i] is CConnectionJoint_B001)
+                                            {
+                                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[0] is CConCom_Plate_KDS)
+                                                {
+                                                    System.Diagnostics.Debug.WriteLine("Joint ID: " + cmodel.m_arrConnectionJoints[i].ID);
+
+                                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] is CPlate_Frame &&
+                                                        ((CPlate_Frame)cmodel.m_arrConnectionJoints[i].m_arrPlates[l]).ScrewInPlusZDirection == false)
+                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint screw is plate -Z-direction");
+                                                    else
+                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint screw is plate +Z-direction");
+
+                                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[0].m_pControlPoint.Z > 0)
+                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint Screw Control Point positive Z coordinate");
+                                                    else
+                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint Screw Control Point negative Z coordinate");
+                                                }
+                                            }
+
                                             Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
                                             for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length; m++)
                                             {
@@ -1706,7 +1726,6 @@ namespace BaseClasses
                                             }
                                         }
                                     }
-
                                 }
                             }
                         }

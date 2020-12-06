@@ -100,21 +100,6 @@ namespace BaseClasses
             }
         }
 
-        float m_fSlope_rad;
-
-        public float FSlope_rad
-        {
-            get
-            {
-                return m_fSlope_rad;
-            }
-
-            set
-            {
-                m_fSlope_rad = value;
-            }
-        }
-
         public CConCom_Plate_KK()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -162,10 +147,10 @@ namespace BaseClasses
         {
             // TODO - screw arrangement pre tento plech nie je implementovany!!!! (zdvojene usporiadanie pre obe strany)
 
-            if(MathF.d_equal(m_fSlope_rad, 0))
-               m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / Fb_X2);
+            if(MathF.d_equal(FSlope_rad, 0))
+               FSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / Fb_X2);
             else
-                Fh_Y2 = Fh_Y1 + ((float)Math.Tan(m_fSlope_rad) * Fb_X2);
+                Fh_Y2 = Fh_Y1 + ((float)Math.Tan(FSlope_rad) * Fb_X2);
 
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
@@ -541,7 +526,7 @@ namespace BaseClasses
                 this.m_fbX2 = refPlate.m_fbX2;
                 this.m_fhY2 = refPlate.m_fhY2;
                 this.m_flZ = refPlate.m_flZ;
-                this.m_fSlope_rad = refPlate.m_fSlope_rad;                
+                this.FSlope_rad = refPlate.FSlope_rad;
                 //this.m_bScrewInPlusZDirection = refPlate.m_bScrewInPlusZDirection;  //toto kopirovat nechceme
                 //this.pTip = refPlate.pTip;
             }
