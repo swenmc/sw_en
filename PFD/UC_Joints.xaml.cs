@@ -1902,6 +1902,15 @@ namespace PFD
                         }
                         else
                         {
+                            //-------------------------------------------------------------------------------------------------------------------------------
+                            // Reference Joint
+                            if (refJoint.m_arrPlates[1] is CConCom_Plate_KDS)
+                            {
+                                // Pokus druhy zrkadlit okolo Z - doladit viditelnost a screw arrangement
+                                ((CPlate_Frame)refJoint.m_arrPlates[1]).MirrorPlate();
+                            }
+                            //-------------------------------------------------------------------------------------------------------------------------------
+
                             int i = 0;
                             //pokusy 557
                             foreach (CPlate plate in joint.m_arrPlates)
@@ -1910,6 +1919,9 @@ namespace PFD
                                 plate.UpdatePlateData(plate.ScrewArrangement);
                                 i++;
                             }
+
+                            //-------------------------------------------------------------------------------------------------------------------------------
+                            // Dokoncit zmenu spojov, otestovat a zmazat
 
                             if (joint.m_arrPlates[0] is CConCom_Plate_KDS)
                             {
@@ -1946,6 +1958,8 @@ namespace PFD
                                     else
                                         System.Diagnostics.Debug.WriteLine("Joint Screw Control Point - negative Z coordinate");
                                 }
+
+                                //-------------------------------------------------------------------------------------------------------------------------------
                             }
                         }
                     }

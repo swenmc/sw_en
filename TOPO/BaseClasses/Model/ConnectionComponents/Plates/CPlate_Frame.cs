@@ -92,6 +92,54 @@ namespace BaseClasses
         {
             SetMinimumScrewToEdgeDistances_Basic(screwArrangement);
         }
+
+        // Mirror plate about XY-plane, screws are orientated in the Z-direction of in LCS of plate
+        public void MirrorPlate()
+        {
+            // 2D mirror
+            // TODO - doriesit ako budeme zrkadlit 2D, aby sme nepokazili 3D zrkadlenie
+                /*
+                for (int i = 0; i < ITotNoPointsin2D; i++)
+                {
+                    PointsOut2D[i].X *= -1;
+                }
+
+                if (ScrewArrangement != null)
+                {
+                    for (int i = 0; i < ScrewArrangement.IHolesNumber; i++)
+                    {
+                        ScrewArrangement.HolesCentersPoints2D[i].X *= -1;
+                        arrConnectorControlPoints3D[i].X *= -1;
+                    }
+                }*/
+
+            // 3D mirror
+
+                for (int i = 0; i < ITotNoPointsin3D; i++)
+                {
+                    arrPoints3D[i].Z *= -1;
+                }
+
+            // 3D Triangle Indices
+            for (int i = 0; i < TriangleIndices.Count; i+=3)
+            {
+                //int index1 = TriangleIndices[i];
+                int index2 = TriangleIndices[i + 1];
+                int index3 = TriangleIndices[i + 2];
+
+                //TriangleIndices[i] = index1;
+                TriangleIndices[i + 1] = index3;
+                TriangleIndices[i + 2] = index2;
+            }
+
+            // Regenerate Screws
+            if (ScrewArrangement != null)
+            {
+                if (ScrewArrangement is CScrewArrangementRect_PlateType_JKL)
+                    ((CScrewArrangementRect_PlateType_JKL)ScrewArrangement).GenerateConnectors_FlatPlate(!m_bScrewInPlusZDirection); // Opacny smer ako mal povodny plech
+            }
+        }
+
         public override void CopyParams(CPlate plate)
         {
             base.CopyParams(plate);
