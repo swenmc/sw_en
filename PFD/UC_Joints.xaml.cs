@@ -1903,8 +1903,9 @@ namespace PFD
                                 //i++;
                                 
                                 
-                                joint.m_arrPlates[i] = refJoint.m_arrPlates[i].GetPlateSpecificCopy();                                
-                                
+                                joint.m_arrPlates[i] = refJoint.m_arrPlates[i].GetPlateSpecificCopy();
+                                joint.m_arrPlates[i].UpdatePlateData(joint.m_arrPlates[i].ScrewArrangement);
+
                             }
 
                             if (joint.m_arrPlates[0] is CConCom_Plate_KDS)
