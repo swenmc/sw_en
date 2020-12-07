@@ -1893,6 +1893,16 @@ namespace PFD
                         }
                         else
                         {
+                            // POKUS
+                            //-------------------------------------------------------------------------------------------------------------------------------
+                            // Reference Joint
+                            if (refJoint.m_arrPlates[1] is CConCom_Plate_KDS)
+                            {
+                                // Pokus druhy zrkadlit okolo Z - doladit viditelnost a screw arrangement
+                                ((CPlate_Frame)refJoint.m_arrPlates[1]).MirrorPlate();
+                            }
+                            //-------------------------------------------------------------------------------------------------------------------------------
+
                             //int i = 0;
                             //pokusy 557
                             for (int i = 0; i < joint.m_arrPlates.Length; i++)
