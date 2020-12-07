@@ -1880,15 +1880,19 @@ namespace PFD
                             {
                                 joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[0]);
                                 joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[1]);
-                                joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
-                                joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
+                                //joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
+                                //joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
+                                joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
+                                joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
                             }
                             else
                             {
                                 joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
                                 joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
-                                joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
-                                joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
+                                //joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
+                                //joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
+                                joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
+                                joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
                             }
                             
 
