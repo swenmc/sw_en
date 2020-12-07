@@ -1701,14 +1701,14 @@ namespace BaseClasses
 
                                                     if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] is CPlate_Frame &&
                                                         ((CPlate_Frame)cmodel.m_arrConnectionJoints[i].m_arrPlates[l]).ScrewInPlusZDirection == false)
-                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint screw is plate -Z-direction");
+                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint screw is plate - negative Z-direction");
                                                     else
-                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint screw is plate +Z-direction");
+                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint screw is plate + positive Z-direction");
 
                                                     if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[0].m_pControlPoint.Z > 0)
-                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint Screw Control Point positive Z coordinate");
+                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint Screw Control Point + positive Z coordinate");
                                                     else
-                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint Screw Control Point negative Z coordinate");
+                                                        System.Diagnostics.Debug.WriteLine("Drawing 3D - joint Screw Control Point - negative Z coordinate");
                                                 }
                                             }
 

@@ -1903,7 +1903,7 @@ namespace PFD
                             foreach (CPlate plate in joint.m_arrPlates)
                             {
                                 plate.CopyParams(refJoint.m_arrPlates[i]);
-                                plate.UpdatePlateData(refJoint.m_arrPlates[i].ScrewArrangement);
+                                plate.UpdatePlateData(plate.ScrewArrangement);
                                 i++;
                             }
 
@@ -1916,14 +1916,14 @@ namespace PFD
 
                                     if (refJoint.m_arrPlates[0] is CPlate_Frame &&
                                         ((CPlate_Frame)refJoint.m_arrPlates[0]).ScrewInPlusZDirection == false)
-                                        System.Diagnostics.Debug.WriteLine("Reference joint screw is plate -Z-direction");
+                                        System.Diagnostics.Debug.WriteLine("Reference joint screw is plate - negative Z-direction");
                                     else
-                                        System.Diagnostics.Debug.WriteLine("Reference joint screw is plate +Z-direction");
+                                        System.Diagnostics.Debug.WriteLine("Reference joint screw is plate + positive Z-direction");
 
                                     if (refJoint.m_arrPlates[0].ScrewArrangement.Screws[0].m_pControlPoint.Z > 0)
-                                        System.Diagnostics.Debug.WriteLine("Reference joint Screw Control Point positive Z coordinate");
+                                        System.Diagnostics.Debug.WriteLine("Reference joint Screw Control Point + positive Z coordinate");
                                     else
-                                        System.Diagnostics.Debug.WriteLine("Reference joint Screw Control Point negative Z coordinate");
+                                        System.Diagnostics.Debug.WriteLine("Reference joint Screw Control Point - negative Z coordinate");
                                 }
 
                                 // BUG 638 - DOCASNE TESTING
@@ -1933,14 +1933,14 @@ namespace PFD
 
                                     if (joint.m_arrPlates[0] is CPlate_Frame &&
                                         ((CPlate_Frame)joint.m_arrPlates[0]).ScrewInPlusZDirection == false)
-                                        System.Diagnostics.Debug.WriteLine("Joint screw is plate -Z-direction");
+                                        System.Diagnostics.Debug.WriteLine("Joint screw is plate - negative Z-direction");
                                     else
-                                        System.Diagnostics.Debug.WriteLine("Joint screw is plate +Z-direction");
+                                        System.Diagnostics.Debug.WriteLine("Joint screw is plate + positive Z-direction");
 
                                     if (joint.m_arrPlates[0].ScrewArrangement.Screws[0].m_pControlPoint.Z > 0)
-                                        System.Diagnostics.Debug.WriteLine("Joint Screw Control Point positive Z coordinate");
+                                        System.Diagnostics.Debug.WriteLine("Joint Screw Control Point + positive Z coordinate");
                                     else
-                                        System.Diagnostics.Debug.WriteLine("Joint Screw Control Point negative Z coordinate");
+                                        System.Diagnostics.Debug.WriteLine("Joint Screw Control Point - negative Z coordinate");
                                 }
                             }
                         }
