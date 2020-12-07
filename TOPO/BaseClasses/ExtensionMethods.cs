@@ -191,7 +191,7 @@ namespace BaseClasses
             
             if (plate is CConCom_Plate_BB_BG)
             {
-                CConCom_Plate_BB_BG p = plate as CConCom_Plate_BB_BG;                
+                CConCom_Plate_BB_BG p = plate as CConCom_Plate_BB_BG;
                 clone = p.Clone();
             }
             else if (plate is CConCom_Plate_B_basic)
@@ -324,7 +324,7 @@ namespace BaseClasses
                 CWasher_W p = plate as CWasher_W;
                 clone = p.Clone();
             }
-            
+
             //Keep original properties
             clone.ID = originalPlateID;
             clone.m_pControlPoint = originalControlPoint;
@@ -334,7 +334,7 @@ namespace BaseClasses
             if (clone is CPlate_Frame)
             {
                 (clone as CPlate_Frame).ScrewInPlusZDirection = originalScrewInPlusZDirection;
-            }            
+            }
 
             return clone;
         }
