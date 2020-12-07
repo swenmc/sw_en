@@ -29,10 +29,10 @@ namespace BaseClasses
             // To Ondrej - mozem tu takto dat vsetky triedy CPlate?
             // Ako to mam robit ked su tu v ramci nejakej triedy aj dalsi potomkovia
 
-            CPlate clone = null;
+            CPlate clone = null;            
             if (plate is CConCom_Plate_BB_BG)
             {
-                CConCom_Plate_BB_BG p = plate as CConCom_Plate_BB_BG;
+                CConCom_Plate_BB_BG p = plate as CConCom_Plate_BB_BG;                
                 clone = p.Clone();
             }
             else if (plate is CConCom_Plate_B_basic)
@@ -165,6 +165,176 @@ namespace BaseClasses
                 CWasher_W p = plate as CWasher_W;
                 clone = p.Clone();
             }
+
+            return clone;
+        }
+
+        //tu dame to co chceme kopirovat ale nie vsetko
+        public static CPlate GetPlateSpecificCopy(this CPlate plate)
+        {
+            // Bug 396
+            // To Ondrej - mozem tu takto dat vsetky triedy CPlate?
+            // Ako to mam robit ked su tu v ramci nejakej triedy aj dalsi potomkovia
+
+            CPlate clone = null;
+            int originalPlateID = plate.ID;
+            Point3D originalControlPoint = plate.m_pControlPoint;
+            float originalRotX = plate.m_fRotationX_deg;
+            float originalRotY = plate.m_fRotationY_deg;
+            float originalRotZ = plate.m_fRotationZ_deg;
+            bool originalScrewInPlusZDirection = false;
+
+            if (plate is CPlate_Frame)
+            {
+                originalScrewInPlusZDirection = (plate as CPlate_Frame).ScrewInPlusZDirection;
+            }
+            
+            if (plate is CConCom_Plate_BB_BG)
+            {
+                CConCom_Plate_BB_BG p = plate as CConCom_Plate_BB_BG;                
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic p = plate as CConCom_Plate_B_basic;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_F_or_L)
+            {
+                CConCom_Plate_F_or_L p = plate as CConCom_Plate_F_or_L;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_G)
+            {
+                CConCom_Plate_G p = plate as CConCom_Plate_G;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_H)
+            {
+                CConCom_Plate_H p = plate as CConCom_Plate_H;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_JA)
+            {
+                CConCom_Plate_JA p = plate as CConCom_Plate_JA;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_JB)
+            {
+                CConCom_Plate_JB p = plate as CConCom_Plate_JB;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_JBS)
+            {
+                CConCom_Plate_JBS p = plate as CConCom_Plate_JBS;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_JCS)
+            {
+                CConCom_Plate_JCS p = plate as CConCom_Plate_JCS;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KA)
+            {
+                CConCom_Plate_KA p = plate as CConCom_Plate_KA;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KB)
+            {
+                CConCom_Plate_KB p = plate as CConCom_Plate_KB;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KBS)
+            {
+                CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC p = plate as CConCom_Plate_KC;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KCS)
+            {
+                CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KD)
+            {
+                CConCom_Plate_KD p = plate as CConCom_Plate_KD;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KDS)
+            {
+                CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KES)
+            {
+                CConCom_Plate_KES p = plate as CConCom_Plate_KES;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KFS)
+            {
+                CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KGS)
+            {
+                CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KHS)
+            {
+                CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_KK)
+            {
+                CConCom_Plate_KK p = plate as CConCom_Plate_KK;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_LL)
+            {
+                CConCom_Plate_LL p = plate as CConCom_Plate_LL;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_M)
+            {
+                CConCom_Plate_M p = plate as CConCom_Plate_M;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_N)
+            {
+                CConCom_Plate_N p = plate as CConCom_Plate_N;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_O)
+            {
+                CConCom_Plate_O p = plate as CConCom_Plate_O;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_Q_T_Y)
+            {
+                CConCom_Plate_Q_T_Y p = plate as CConCom_Plate_Q_T_Y;
+                clone = p.Clone();
+            }
+            else if (plate is CWasher_W)
+            {
+                CWasher_W p = plate as CWasher_W;
+                clone = p.Clone();
+            }
+            
+            //Keep original properties
+            clone.ID = originalPlateID;
+            clone.m_pControlPoint = originalControlPoint;
+            clone.m_fRotationX_deg = originalRotX;
+            clone.m_fRotationY_deg = originalRotY;
+            clone.m_fRotationZ_deg = originalRotZ;
+            if (clone is CPlate_Frame)
+            {
+                (clone as CPlate_Frame).ScrewInPlusZDirection = originalScrewInPlusZDirection;
+            }            
 
             return clone;
         }
