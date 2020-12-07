@@ -2208,5 +2208,12 @@ namespace BaseClasses
             else return false;
         }
 
+
+        public CMember CloneMember()
+        {
+            //return this.Clone();
+            return this.MemberwiseClone() as CMember;
+        }
+
     } // End of Class CMember
 }
