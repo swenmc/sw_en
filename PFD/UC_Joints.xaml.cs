@@ -1879,49 +1879,34 @@ namespace PFD
                             if (jb.IsFront)
                             {
                                 joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[0]);
-                                joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[1]);
-                                //joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
-                                //joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
+                                joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[1]);                                
                                 joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
                                 joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
                             }
                             else
                             {
                                 joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[1]);
-                                joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
-                                //joint.m_arrPlates[0].UpdatePlateData(refJoint.m_arrPlates[1].ScrewArrangement);
-                                //joint.m_arrPlates[1].UpdatePlateData(refJoint.m_arrPlates[0].ScrewArrangement);
+                                joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);                                
                                 joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
                                 joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
                             }
-                            
-
-                            //POZOR LEN TEMP = DOCASNE
-                            //jb.m_arrPlates[0].Ft = (100 + 100 * jointsCount) / 100;
-                            //jb.m_arrPlates[0].UpdatePlateData(jb.m_arrPlates[0].ScrewArrangement);
                         }
                         else
                         {
-                            //-------------------------------------------------------------------------------------------------------------------------------
-                            // Reference Joint
-                            if (refJoint.m_arrPlates[1] is CConCom_Plate_KDS)
-                            {
-                                // Pokus druhy zrkadlit okolo Z - doladit viditelnost a screw arrangement
-                                ((CPlate_Frame)refJoint.m_arrPlates[1]).MirrorPlate();
-                            }
-                            //-------------------------------------------------------------------------------------------------------------------------------
-
-                            int i = 0;
+                            //int i = 0;
                             //pokusy 557
-                            foreach (CPlate plate in joint.m_arrPlates)
+                            for (int i = 0; i < joint.m_arrPlates.Length; i++)
                             {
-                                plate.CopyParams(refJoint.m_arrPlates[i]);
-                                plate.UpdatePlateData(plate.ScrewArrangement);
-                                i++;
-                            }
+                                //tu sme skoncili pokial sa zmeni typ plate, takze idem robit clone
+                                //plate.CopyParams(refJoint.m_arrPlates[i]);
+                                //plate.UpdatePlateData(plate.ScrewArrangement);
+                                //i++;
+                                
+                                
+                                joint.m_arrPlates[i] = refJoint.m_arrPlates[i].GetPlateSpecificCopy();
+                                joint.m_arrPlates[i].UpdatePlateData(joint.m_arrPlates[i].ScrewArrangement);
 
-                            //-------------------------------------------------------------------------------------------------------------------------------
-                            // Dokoncit zmenu spojov, otestovat a zmazat
+                            }
 
                             if (joint.m_arrPlates[0] is CConCom_Plate_KDS)
                             {
@@ -1958,8 +1943,6 @@ namespace PFD
                                     else
                                         System.Diagnostics.Debug.WriteLine("Joint Screw Control Point - negative Z coordinate");
                                 }
-
-                                //-------------------------------------------------------------------------------------------------------------------------------
                             }
                         }
                     }
