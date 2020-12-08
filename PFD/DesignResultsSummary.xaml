@@ -57,16 +57,20 @@
 
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Prefix}" Header="Prefix" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
-                                <DataGridTextColumn Binding="{Binding ComponentName}" Header="Component Name" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                                <DataGridTextColumn Binding="{Binding LoadCombination}" Header="Load Combination" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding ComponentName}" Header="Component Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding LoadCombination}" Header="Load Combination" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
                                 <DataGridTextColumn Binding="{Binding MemberID}" Header="Member ID" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                                <DataGridTextColumn Binding="{Binding DesignRatio}" Header="Design Ratio" Width="Auto">
+                                <DataGridTextColumn Binding="{Binding DesignRatio, StringFormat={}{0:0.000}}" Header="Design Ratio" Width="Auto">
                                     <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Background" Value="{Binding DesignRatio, Converter={StaticResource DesignResultsConverter}}"/>
+                                        <Style TargetType="{x:Type TextBlock}">                                            
                                             <Setter Property="HorizontalAlignment" Value="Right"/>
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Background" Value="{Binding DesignRatio, Converter={StaticResource DesignResultsConverter}}"/>                                            
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
                                 
                             </DataGrid.Columns>
