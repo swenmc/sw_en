@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Diagnostics;
 using BaseClasses;
+using System.Collections.Generic;
 
 namespace PFD
 {
@@ -23,6 +24,7 @@ namespace PFD
         sDesignResults designResults_ULSandSLS;
         sDesignResults designResults_ULS;
         sDesignResults designResults_SLS;
+        List<CComponentInfo> componentList;
 
         public Solver(bool bUseFEMSolverCalculationForSimpleBeam)
         {
@@ -40,7 +42,7 @@ namespace PFD
             //    designSummaryWindow.Show();
             //}
 
-            DesignResultsSummary designSummaryWindow = new DesignResultsSummary(model, designResults_ULSandSLS, designResults_ULS, designResults_SLS);
+            DesignResultsSummary designSummaryWindow = new DesignResultsSummary(model, componentList, designResults_ULSandSLS, designResults_ULS, designResults_SLS);
             designSummaryWindow.Show();
 
             this.Close();
@@ -174,7 +176,7 @@ namespace PFD
         //    });
         //}
 
-        public void SetSumaryFinished(CModel_PFD model_pfd, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS)
+        public void SetSumaryFinished(CModel_PFD model_pfd, List<CComponentInfo> componentInfoList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS)
         {
             Dispatcher.Invoke(() =>
             {
@@ -193,6 +195,7 @@ namespace PFD
                 designResults_ULSandSLS = sDesignResults_ULSandSLS;
                 designResults_ULS = sDesignResults_ULS;
                 designResults_SLS = sDesignResults_SLS;
+                componentList = componentInfoList;
                 //sResultsSummaryText = sResultsSummaryTextAll; // Set output window text
 
                 BtnOK.IsEnabled = true;

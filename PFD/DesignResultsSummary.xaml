@@ -12,6 +12,20 @@
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">250</System:Double>
+        <Style x:Key="RightAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="LeftAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="CenterAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="MainColumn" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <local:DesignResultsConverter x:Key="DesignResultsConverter"/>
     </Window.Resources>    
     <Grid>
         <!--<TextBox Name="txtBoxDesignSummary" HorizontalAlignment="Left" Height="400" TextWrapping="Wrap" VerticalAlignment="Top" Width="670" IsReadOnly="True" Margin="10,10,0,0"/>-->
@@ -30,16 +44,33 @@
                             <ColumnDefinition Width="2*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="80"/>                            
+                            <RowDefinition Height="40"/>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitStateMD" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates_MD}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_MD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_MD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_MemberDesign" ItemsSource="{Binding}" AutoGenerateColumns="False" 
-                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0"/>
+                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_MemberDesign" ItemsSource="{Binding Path=MemberDesignResultsSummary}" AutoGenerateColumns="False" 
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Prefix}" Header="Prefix" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding ComponentName}" Header="Component Name" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding LoadCombination}" Header="Load Combination" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding MemberID}" Header="Member ID" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding DesignRatio}" Header="Design Ratio" Width="Auto">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Background" Value="{Binding DesignRatio, Converter={StaticResource DesignResultsConverter}}"/>
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                
+                            </DataGrid.Columns>
+                        </DataGrid>
 
 
                     </Grid>
@@ -65,7 +96,7 @@
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitStateJD" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates_JD}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_JD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_JD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_JointDesign" ItemsSource="{Binding}" AutoGenerateColumns="False" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0"/>
@@ -93,7 +124,7 @@
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitStateFD" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates_FD}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_FD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_FD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_FootingDesign" ItemsSource="{Binding}" AutoGenerateColumns="False" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0"/>

@@ -57,7 +57,7 @@ namespace PFD.Infrastructure
         public sDesignResults sDesignResults_ULS = new sDesignResults();
         public sDesignResults sDesignResults_SLS = new sDesignResults();
 
-
+        private List<CComponentInfo> componentList;
         public CMemberDesignCalculations(Solver solverWindow, CPFDViewModel vm)
         {
             SolverWindow = solverWindow;
@@ -69,6 +69,8 @@ namespace PFD.Infrastructure
             DeterminateCombinationResultsByFEMSolver = vm._solverOptionsVM.DeterminateCombinationResultsByFEMSolver;
             UseFEMSolverCalculationForSimpleBeam = vm._solverOptionsVM.UseFEMSolverCalculationForSimpleBeam;
             DeterminateMemberLocalDisplacementsForULS = vm._solverOptionsVM.DeterminateMemberLocalDisplacementsForULS;
+
+            componentList = vm.ComponentList.ToList();
 
             m_LeftWallCrosses = vm._crossBracingOptionsVM.GetLeftWallCrosses();
             m_RightWallCrosses = vm._crossBracingOptionsVM.GetRightWallCrosses();
@@ -200,7 +202,7 @@ namespace PFD.Infrastructure
             //   GetTextForResultsMessageBox(sDesignResults_ULSandSLS) +
             //   GetTextForResultsMessageBox(sDesignResults_ULS) +
             //   GetTextForResultsMessageBox(sDesignResults_SLS));
-            SolverWindow.SetSumaryFinished(Model, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS);
+            SolverWindow.SetSumaryFinished(Model, componentList, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS);
         }
 
         public void Calculate_InternalForces()

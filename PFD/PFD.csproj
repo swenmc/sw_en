@@ -141,6 +141,7 @@
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="FocusAttacher.cs" />
+    <Compile Include="Infrastructure\DesignResultsConverter.cs" />
     <Compile Include="LayoutExportOptionsWindow.xaml.cs">
       <DependentUpon>LayoutExportOptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -168,6 +169,7 @@
     </Compile>
     <Compile Include="ViewModels\BayWidthOptionsViewModel.cs" />
     <Compile Include="ViewModels\CJointsVarMemCrscVM.cs" />
+    <Compile Include="ViewModels\DesignSummaryViewModel.cs" />
     <Compile Include="ViewModels\CrossBracingOptionsViewModel.cs" />
     <Compile Include="ViewModels\DocumentationSettingsViewModel.cs" />
     <Compile Include="WindPressureCoefficients.xaml.cs">

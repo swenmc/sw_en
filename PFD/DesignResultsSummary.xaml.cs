@@ -20,23 +20,38 @@ namespace PFD
     /// </summary>
     public partial class DesignResultsSummary : Window
     {
-        CModel_PFD model;
-        sDesignResults designResults_ULSandSLS;
-        sDesignResults designResults_ULS;
-        sDesignResults designResults_SLS;
+        //CModel_PFD model;
+        //sDesignResults designResults_ULSandSLS;
+        //sDesignResults designResults_ULS;
+        //sDesignResults designResults_SLS;
 
-        public DesignResultsSummary(CModel_PFD model_pfd, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS)
+        public DesignResultsSummary(CModel_PFD model_pfd, List<CComponentInfo> componentList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS)
         {
             InitializeComponent();
 
-            model = model_pfd;
-            designResults_ULSandSLS = sDesignResults_ULSandSLS;
-            designResults_ULS = sDesignResults_ULS;
-            designResults_SLS = sDesignResults_SLS;
+            //model = model_pfd;
+            //designResults_ULSandSLS = sDesignResults_ULSandSLS;
+            //designResults_ULS = sDesignResults_ULS;
+            //designResults_SLS = sDesignResults_SLS;
+
+            
+            DesignSummaryViewModel vm = new DesignSummaryViewModel(model_pfd.m_arrLimitStates, componentList, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS);
+            //vm.PropertyChanged += HandleJointDesignPropertyChangedEvent;
+            vm.PropertyChanged += HandleDesignSummary_PropertyChanged;
+            this.DataContext = vm;
+
+            //vm.LimitStateIndex = 0;
 
 
-            MessageBox.Show("MaximumDesignRatio: " + designResults_ULSandSLS.DesignResults[EMemberType_FS_Position.MainColumn].MaximumDesignRatio);
+
+
+            //MessageBox.Show("MaximumDesignRatio: " + designResults_ULSandSLS.DesignResults[EMemberType_FS_Position.MainColumn].MaximumDesignRatio);
             //txtBoxDesignSummary.Text = text;
+        }
+
+        private void HandleDesignSummary_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
     }
 }
