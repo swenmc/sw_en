@@ -60,15 +60,17 @@ namespace BaseClasses
             m_MainMember.Fill_Basic();
 
             Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft, -0.5f * fh_plate + flocaleccentricity_z);
+            Vector3D RotationVector = new Vector3D(90, 0, 90);
 
             m_arrPlates = new CPlate[1];
-            m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, referenceAnchor, screwArrangement); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, (float)RotationVector.X, (float)RotationVector.Y, (float)RotationVector.Z, referenceAnchor, screwArrangement); // Rotation angle in degrees
 
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new Point3D(m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft, -0.5f * fh_plate + flocaleccentricity_z);
-                m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, referenceAnchor, screwArrangement); // Rotation angle in degrees
+                RotationVector = new Vector3D(90, 0, 180 + 90);
+                m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, (float)RotationVector.X, (float)RotationVector.Y, (float)RotationVector.Z, referenceAnchor, screwArrangement); // Rotation angle in degrees
             }
         }
 
@@ -84,12 +86,16 @@ namespace BaseClasses
             float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
 
             m_arrPlates[0].m_pControlPoint = new Point3D(0, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
+            Vector3D RotationVector = new Vector3D(90, 0, 90);
 
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 m_arrPlates[0].m_pControlPoint = new Point3D(m_MainMember.FLength, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
+                RotationVector = new Vector3D(90, 0, 180 + 90);
             }
+
+            m_arrPlates[0].SetPlateRotation(RotationVector);
 
             // Update Member Alignment
             if (m_Node.ID == m_MainMember.NodeStart.ID)
