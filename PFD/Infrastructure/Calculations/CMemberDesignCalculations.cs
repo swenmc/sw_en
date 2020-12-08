@@ -196,10 +196,11 @@ namespace PFD.Infrastructure
 
             SolverWindow.Progress = 100;
             SolverWindow.UpdateProgress();
-            SolverWindow.SetSumaryFinished(
-               GetTextForResultsMessageBox(sDesignResults_ULSandSLS) +
-               GetTextForResultsMessageBox(sDesignResults_ULS) +
-               GetTextForResultsMessageBox(sDesignResults_SLS));
+            //SolverWindow.SetSumaryFinished(
+            //   GetTextForResultsMessageBox(sDesignResults_ULSandSLS) +
+            //   GetTextForResultsMessageBox(sDesignResults_ULS) +
+            //   GetTextForResultsMessageBox(sDesignResults_SLS));
+            SolverWindow.SetSumaryFinished(Model, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS);
         }
 
         public void Calculate_InternalForces()

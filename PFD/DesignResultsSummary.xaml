@@ -3,12 +3,105 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         Title="Design Summary" Height="450" Width="700"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">250</System:Double>
+    </Window.Resources>    
     <Grid>
-        <TextBox Name="txtBoxDesignSummary" HorizontalAlignment="Left" Height="400" TextWrapping="Wrap" VerticalAlignment="Top" Width="670" IsReadOnly="True" Margin="10,10,0,0"/>
+        <!--<TextBox Name="txtBoxDesignSummary" HorizontalAlignment="Left" Height="400" TextWrapping="Wrap" VerticalAlignment="Top" Width="670" IsReadOnly="True" Margin="10,10,0,0"/>-->
+
+        <TabControl Margin="0,0,0,0" Name="MainTabControl">
+            <TabItem Name ="MemberDesignTabItem">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Member Design" Foreground="Black"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid Name="GridMemberDesignResults" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80"/>                            
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitStateMD" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates_MD}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_MD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_MemberDesign" ItemsSource="{Binding}" AutoGenerateColumns="False" 
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0"/>
+
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Name ="JointDesignTabItem">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Joint Design" Foreground="Black"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid Name="GridJointDesignResults" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitStateJD" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates_JD}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_JD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_JointDesign" ItemsSource="{Binding}" AutoGenerateColumns="False" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0"/>
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Name="FootingDesignTabItem">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Footing Design" Foreground="Black"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid Name="GridFootingDesignResults" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitStateFD" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates_FD}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_FD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_FootingDesign" ItemsSource="{Binding}" AutoGenerateColumns="False" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0"/>
+
+                    </Grid>
+                </ScrollViewer>
+
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

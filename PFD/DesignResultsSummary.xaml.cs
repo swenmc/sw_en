@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,23 @@ namespace PFD
     /// </summary>
     public partial class DesignResultsSummary : Window
     {
-        public DesignResultsSummary(string text)
+        CModel_PFD model;
+        sDesignResults designResults_ULSandSLS;
+        sDesignResults designResults_ULS;
+        sDesignResults designResults_SLS;
+
+        public DesignResultsSummary(CModel_PFD model_pfd, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS)
         {
             InitializeComponent();
 
-            txtBoxDesignSummary.Text = text;
+            model = model_pfd;
+            designResults_ULSandSLS = sDesignResults_ULSandSLS;
+            designResults_ULS = sDesignResults_ULS;
+            designResults_SLS = sDesignResults_SLS;
+
+
+            MessageBox.Show("MaximumDesignRatio: " + designResults_ULSandSLS.DesignResults[EMemberType_FS_Position.MainColumn].MaximumDesignRatio);
+            //txtBoxDesignSummary.Text = text;
         }
     }
 }

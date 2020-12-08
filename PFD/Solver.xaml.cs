@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Diagnostics;
+using BaseClasses;
 
 namespace PFD
 {
@@ -18,6 +19,11 @@ namespace PFD
         bool UseFEMSolverCalculationForSimpleBeam;
         string sResultsSummaryText;
 
+        CModel_PFD model;
+        sDesignResults designResults_ULSandSLS;
+        sDesignResults designResults_ULS;
+        sDesignResults designResults_SLS;
+
         public Solver(bool bUseFEMSolverCalculationForSimpleBeam)
         {
             InitializeComponent();
@@ -28,11 +34,14 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(sResultsSummaryText))
-            {
-                DesignResultsSummary designSummaryWindow = new DesignResultsSummary(sResultsSummaryText);
-                designSummaryWindow.Show();
-            }
+            //if (!string.IsNullOrEmpty(sResultsSummaryText))
+            //{
+            //    DesignResultsSummary designSummaryWindow = new DesignResultsSummary(sResultsSummaryText);                
+            //    designSummaryWindow.Show();
+            //}
+
+            DesignResultsSummary designSummaryWindow = new DesignResultsSummary(model, designResults_ULSandSLS, designResults_ULS, designResults_SLS);
+            designSummaryWindow.Show();
 
             this.Close();
         }
@@ -145,7 +154,27 @@ namespace PFD
             });
         }
 
-        public void SetSumaryFinished(string sResultsSummaryTextAll)
+        //public void SetSumaryFinished(string sResultsSummaryTextAll)
+        //{
+        //    Dispatcher.Invoke(() =>
+        //    {
+        //        SetInActiveRowFormat(LabelMemberDesignLoadCombination, LabelMemberDesignLoadCombinationProgress);
+
+        //        LabelSummaryState.Text = "Calculation successful.";
+        //        LabelSummaryState.Foreground = Brushes.Black;
+        //        //LabelSummaryState.FontWeight = FontWeights.Bold;
+
+        //        if (stopWatch.IsRunning)
+        //        {
+        //            stopWatch.Stop();
+        //        }
+
+        //        sResultsSummaryText = sResultsSummaryTextAll; // Set output window text
+        //        BtnOK.IsEnabled = true;
+        //    });
+        //}
+
+        public void SetSumaryFinished(CModel_PFD model_pfd, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS)
         {
             Dispatcher.Invoke(() =>
             {
@@ -160,7 +189,12 @@ namespace PFD
                     stopWatch.Stop();
                 }
 
-                sResultsSummaryText = sResultsSummaryTextAll; // Set output window text
+                model = model_pfd;
+                designResults_ULSandSLS = sDesignResults_ULSandSLS;
+                designResults_ULS = sDesignResults_ULS;
+                designResults_SLS = sDesignResults_SLS;
+                //sResultsSummaryText = sResultsSummaryTextAll; // Set output window text
+
                 BtnOK.IsEnabled = true;
             });
         }

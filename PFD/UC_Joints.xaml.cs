@@ -1915,7 +1915,7 @@ namespace PFD
                                 
                                 
                                 joint.m_arrPlates[i] = refJoint.m_arrPlates[i].GetPlateSpecificCopy();
-                                joint.m_arrPlates[i].UpdatePlateData(joint.m_arrPlates[i].ScrewArrangement);
+                                //joint.m_arrPlates[i].UpdatePlateData(joint.m_arrPlates[i].ScrewArrangement);
 
                             }
 
