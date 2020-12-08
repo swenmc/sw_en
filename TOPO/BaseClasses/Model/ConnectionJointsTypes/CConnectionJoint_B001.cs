@@ -101,6 +101,9 @@ namespace BaseClasses
             Point3D ControlPoint_P1 = new Point3D(fControlPointXCoord, fControlPointYCoord1, m_pUpperLeftPointOfPlate.Y - m_fh_1);
             Point3D ControlPoint_P2 = new Point3D(fControlPointXCoord, fControlPointYCoord2, m_pUpperLeftPointOfPlate.Y - m_fh_1);
 
+            Vector3D RotationVector_P1 = new Vector3D(90, 0, fRotatePlatesInJointAngle);
+            Vector3D RotationVector_P2 = new Vector3D(90, 0, fRotatePlatesInJointAngle);
+
             // Screw arrangement parameters
             CRSC.CCrSc_TW rafterCrsc = null;
 
@@ -110,7 +113,7 @@ namespace BaseClasses
             }
             else
                 throw new ArgumentNullException("Invalid cross-section type.");
-            
+
             float fCrscDepth = (float)rafterCrsc.h;
             float fWebEndArcExternalRadius = (float)rafterCrsc.r_ee; // External edge radius
             float fCrscWebStraightDepth = fCrscDepth - 2 * fWebEndArcExternalRadius;
@@ -123,8 +126,8 @@ namespace BaseClasses
             bool bScrewInPlusZDirection2 = m_Node == m_MainMember.NodeStart ? false : true;
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, bScrewInPlusZDirection1, screwArrangement1); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, bScrewInPlusZDirection2, screwArrangement2);  // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, (float)RotationVector_P1.X, (float)RotationVector_P1.Y, (float)RotationVector_P1.Z, bScrewInPlusZDirection1, screwArrangement1); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, (float)RotationVector_P2.X, (float)RotationVector_P2.Y, (float)RotationVector_P2.Z, bScrewInPlusZDirection2, screwArrangement2);  // Rotation angle in degrees
         }
 
         public static Point ? Intersection(Point start1, Point end1, Point start2, Point end2)
@@ -211,6 +214,12 @@ namespace BaseClasses
                 fControlPointXCoord2 = m_Node.X + (float)m_MainMember.CrScStart.z_max;
                 fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - fGap - m_arrPlates[0].Ft);
                 fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /*0.5f * m_MainMember.CrScStart.b*/ + fGap + m_arrPlates[1].Ft - m_arrPlates[1].Ft);
+
+                // Pokus
+                // BUG 638
+                // Pretocit smer skrutiek ????
+                //((CPlate_Frame)m_arrPlates[0]).ScrewInPlusZDirection = !((CPlate_Frame)m_arrPlates[0]).ScrewInPlusZDirection;
+                //((CPlate_Frame)m_arrPlates[1]).ScrewInPlusZDirection = !((CPlate_Frame)m_arrPlates[1]).ScrewInPlusZDirection;
             }
 
             if (!IsFront)
@@ -220,6 +229,29 @@ namespace BaseClasses
 
             m_arrPlates[0].m_pControlPoint = new Point3D(fControlPointXCoord1, fControlPointYCoord1, m_pUpperLeftPointOfPlate.Y - fPlate1_h_Y1);
             m_arrPlates[1].m_pControlPoint = new Point3D(fControlPointXCoord2, fControlPointYCoord2, m_pUpperLeftPointOfPlate.Y - fPlate2_h_Y1);
+
+            Vector3D RotationVector_P1 = new Vector3D(90, 0, fRotatePlatesInJointAngle);
+            Vector3D RotationVector_P2 = new Vector3D(90, 0, fRotatePlatesInJointAngle);
+
+            m_arrPlates[0].SetPlateRotation(RotationVector_P1);
+            m_arrPlates[1].SetPlateRotation(RotationVector_P2);
+
+            // Pokus
+            // BUG 638
+            // Odzrkadlit plech
+            /*
+            if (m_arrPlates[1] is CConCom_Plate_KB ||
+                m_arrPlates[1] is CConCom_Plate_KBS ||
+                m_arrPlates[1] is CConCom_Plate_KC ||
+                m_arrPlates[1] is CConCom_Plate_KCS ||
+                m_arrPlates[1] is CConCom_Plate_KD ||
+                m_arrPlates[1] is CConCom_Plate_KDS ||
+                m_arrPlates[1] is CConCom_Plate_KES ||
+                m_arrPlates[1] is CConCom_Plate_KFS ||
+                m_arrPlates[1] is CConCom_Plate_KGS ||
+                m_arrPlates[1] is CConCom_Plate_KHS) // Zadný plech - mirror
+                ((CPlate_Frame)m_arrPlates[1]).MirrorPlate();
+            */
         }
 
         private void GetKneePlateGeneralParameters(CPlate plate, out float fb_X1, out float fh_Y1, out float fh_Y2)
