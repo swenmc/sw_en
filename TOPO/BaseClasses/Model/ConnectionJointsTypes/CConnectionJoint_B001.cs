@@ -201,7 +201,7 @@ namespace BaseClasses
             float fControlPointYCoord2;
 
             float fGap = 0.002f; // 2 mm
-            if (m_fRafterVectorDirection > 0)
+            if (m_fRafterVectorDirection > 0) // Left Side
             {
                 fControlPointXCoord1 = m_Node.X - (float)m_MainMember.CrScStart.z_max;
                 fControlPointXCoord2 = m_Node.X - (float)m_MainMember.CrScStart.z_max;
@@ -224,7 +224,7 @@ namespace BaseClasses
                     fControlPointYCoord2 -= m_arrPlates[1].Ft;
                 }
             }
-            else
+            else // Right Side
             {
                 fControlPointXCoord1 = m_Node.X + (float)m_MainMember.CrScStart.z_max;
                 fControlPointXCoord2 = m_Node.X + (float)m_MainMember.CrScStart.z_max;
@@ -299,6 +299,7 @@ namespace BaseClasses
         private void GetKneePlateGeneralParameters(CPlate plate, out float fb_X1, out float fh_Y1, out float fh_Y2)
         {
             // Todo - dalo by sa pridat aj dalsie spolocne parametre plates K
+            // TO Ondrej - Asi by malo zmysel spravit samostatneho predka pre K a J plate a dat premenne ktore su v triedach KXX spolocne do K-predka a v JXX do J-predka
             if (plate is CConCom_Plate_KA)
             {
                 CConCom_Plate_KA plate_KA = (CConCom_Plate_KA)plate;

@@ -1911,6 +1911,7 @@ namespace PFD
                             }*/
 
                             // BUG 638 - Pokus
+                            // Prehodime zadny a predny plech v spoji, tak ze vytvorime kopiu, ponechame control point rotaciu a smer skrutiek
                             if (jb.IsFront)
                             {
                                 joint.m_arrPlates[0] = refJoint.m_arrPlates[0].GetPlateSpecificCopy();
