@@ -1894,6 +1894,7 @@ namespace PFD
                             CConnectionJoint_B001 jb = joint as CConnectionJoint_B001;
                             jb.IsFront = (jointsCount == 0 || jointsCount == 2);
 
+                            /*
                             if (jb.IsFront)
                             {
                                 joint.m_arrPlates[0].CopyParams(refJoint.m_arrPlates[0]);
@@ -1907,21 +1908,31 @@ namespace PFD
                                 joint.m_arrPlates[1].CopyParams(refJoint.m_arrPlates[0]);
                                 joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
                                 joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
+                            }*/
+
+                            // BUG 638 - Pokus
+                            if (jb.IsFront)
+                            {
+                                joint.m_arrPlates[0] = refJoint.m_arrPlates[0].GetPlateSpecificCopy();
+                                joint.m_arrPlates[1] = refJoint.m_arrPlates[1].GetPlateSpecificCopy();
+
+                                joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
+                                joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
+                            }
+                            else
+                            {
+                                joint.m_arrPlates[0] = refJoint.m_arrPlates[1].GetPlateSpecificCopy();
+                                if (jointsCount == 1)
+                                    ((CPlate_Frame)joint.m_arrPlates[0]).MirrorPlate();
+
+                                joint.m_arrPlates[1] = refJoint.m_arrPlates[0].GetPlateSpecificCopy();
+
+                                joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
+                                joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
                             }
                         }
                         else
                         {
-                            // POKUS
-                            //-------------------------------------------------------------------------------------------------------------------------------
-                            // Reference Joint
-                            if (refJoint.m_arrPlates.Count() == 2 && refJoint.m_arrPlates[1] is CConCom_Plate_KDS)
-                            {
-                                // Pokus druhy zrkadlit okolo Z - doladit viditelnost a screw arrangement
-                                ((CPlate_Frame)refJoint.m_arrPlates[1]).MirrorPlate(); // Referencny joint
-                                ((CPlate_Frame)joint.m_arrPlates[1]).MirrorPlate(); // aktualny joint
-                            }
-                            //-------------------------------------------------------------------------------------------------------------------------------
-
                             //int i = 0;
                             //pokusy 557
                             for (int i = 0; i < joint.m_arrPlates.Length; i++)
@@ -1930,48 +1941,9 @@ namespace PFD
                                 //plate.CopyParams(refJoint.m_arrPlates[i]);
                                 //plate.UpdatePlateData(plate.ScrewArrangement);
                                 //i++;
-                                
-                                
+
                                 joint.m_arrPlates[i] = refJoint.m_arrPlates[i].GetPlateSpecificCopy();
                                 //joint.m_arrPlates[i].UpdatePlateData(joint.m_arrPlates[i].ScrewArrangement);
-
-                            }
-
-                            if (joint.m_arrPlates[0] is CConCom_Plate_KDS)
-                            {
-                                // BUG 638 - DOCASNE TESTING
-                                if (refJoint.JointType == EJointType.eKnee_MainRafter_Column && refJoint is CConnectionJoint_B001)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("Reference Joint ID: " + refJoint.ID);
-
-                                    if (refJoint.m_arrPlates[0] is CPlate_Frame &&
-                                        ((CPlate_Frame)refJoint.m_arrPlates[0]).ScrewInPlusZDirection == false)
-                                        System.Diagnostics.Debug.WriteLine("Reference joint screw is plate - negative Z-direction");
-                                    else
-                                        System.Diagnostics.Debug.WriteLine("Reference joint screw is plate + positive Z-direction");
-
-                                    if (refJoint.m_arrPlates[0].ScrewArrangement.Screws[0].m_pControlPoint.Z > 0)
-                                        System.Diagnostics.Debug.WriteLine("Reference joint Screw Control Point + positive Z coordinate");
-                                    else
-                                        System.Diagnostics.Debug.WriteLine("Reference joint Screw Control Point - negative Z coordinate");
-                                }
-
-                                // BUG 638 - DOCASNE TESTING
-                                if (joint.JointType == EJointType.eKnee_MainRafter_Column && joint is CConnectionJoint_B001)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("Joint ID: " + joint.ID);
-
-                                    if (joint.m_arrPlates[0] is CPlate_Frame &&
-                                        ((CPlate_Frame)joint.m_arrPlates[0]).ScrewInPlusZDirection == false)
-                                        System.Diagnostics.Debug.WriteLine("Joint screw is plate - negative Z-direction");
-                                    else
-                                        System.Diagnostics.Debug.WriteLine("Joint screw is plate + positive Z-direction");
-
-                                    if (joint.m_arrPlates[0].ScrewArrangement.Screws[0].m_pControlPoint.Z > 0)
-                                        System.Diagnostics.Debug.WriteLine("Joint Screw Control Point + positive Z coordinate");
-                                    else
-                                        System.Diagnostics.Debug.WriteLine("Joint Screw Control Point - negative Z coordinate");
-                                }
                             }
                         }
                     }
