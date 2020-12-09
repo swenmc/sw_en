@@ -132,12 +132,18 @@ namespace BaseClasses
                 TriangleIndices[i + 2] = index2;
             }
 
+            // BUG 638 - ?????? Pregenerovat screw arrangement v ramci funkcie alebo samostatne
             // Regenerate Screws
+            /*
             if (ScrewArrangement != null)
             {
                 if (ScrewArrangement is CScrewArrangementRect_PlateType_JKL)
+                {
+                    ScrewArrangement.Calc_HolesControlPointsCoord3D_FlatPlate(flZ, 0, Ft, !m_bScrewInPlusZDirection);
                     ((CScrewArrangementRect_PlateType_JKL)ScrewArrangement).GenerateConnectors_FlatPlate(!m_bScrewInPlusZDirection); // Opacny smer ako mal povodny plech
+                }
             }
+            */
         }
 
         public override void CopyParams(CPlate plate)

@@ -207,6 +207,22 @@ namespace BaseClasses
                 fControlPointXCoord2 = m_Node.X - (float)m_MainMember.CrScStart.z_max;
                 fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/- fGap);
                 fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /* + 0.5f * m_MainMember.CrScStart.b*/ + m_arrPlates[1].Ft + fGap);
+
+                // BUG 638 - upravit control point
+                if (/*m_arrPlates[1] is CConCom_Plate_KA ||*/
+                    m_arrPlates[1] is CConCom_Plate_KB ||
+                    m_arrPlates[1] is CConCom_Plate_KBS ||
+                    m_arrPlates[1] is CConCom_Plate_KC ||
+                    m_arrPlates[1] is CConCom_Plate_KCS ||
+                    m_arrPlates[1] is CConCom_Plate_KD ||
+                    m_arrPlates[1] is CConCom_Plate_KDS ||
+                    m_arrPlates[1] is CConCom_Plate_KES ||
+                    m_arrPlates[1] is CConCom_Plate_KFS ||
+                    m_arrPlates[1] is CConCom_Plate_KGS ||
+                    m_arrPlates[1] is CConCom_Plate_KHS)
+                {
+                    fControlPointYCoord2 -= m_arrPlates[1].Ft;
+                }
             }
             else
             {
@@ -215,11 +231,54 @@ namespace BaseClasses
                 fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - fGap - m_arrPlates[0].Ft);
                 fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /*0.5f * m_MainMember.CrScStart.b*/ + fGap + m_arrPlates[1].Ft - m_arrPlates[1].Ft);
 
-                // Pokus
-                // BUG 638
-                // Pretocit smer skrutiek ????
-                //((CPlate_Frame)m_arrPlates[0]).ScrewInPlusZDirection = !((CPlate_Frame)m_arrPlates[0]).ScrewInPlusZDirection;
-                //((CPlate_Frame)m_arrPlates[1]).ScrewInPlusZDirection = !((CPlate_Frame)m_arrPlates[1]).ScrewInPlusZDirection;
+                // BUG 638 - upravit control point
+
+                if (/*m_arrPlates[0] is CConCom_Plate_KA ||*/
+                    m_arrPlates[0] is CConCom_Plate_KB ||
+                    m_arrPlates[0] is CConCom_Plate_KBS ||
+                    m_arrPlates[0] is CConCom_Plate_KC ||
+                    m_arrPlates[0] is CConCom_Plate_KCS ||
+                    m_arrPlates[0] is CConCom_Plate_KD ||
+                    m_arrPlates[0] is CConCom_Plate_KDS ||
+                    m_arrPlates[0] is CConCom_Plate_KES ||
+                    m_arrPlates[0] is CConCom_Plate_KFS ||
+                    m_arrPlates[0] is CConCom_Plate_KGS ||
+                    m_arrPlates[0] is CConCom_Plate_KHS)
+                {
+                    // Pretocit smer skrutiek
+                    ((CPlate_Frame)m_arrPlates[0]).ScrewInPlusZDirection = !((CPlate_Frame)m_arrPlates[0]).ScrewInPlusZDirection;
+                    m_arrPlates[0].ScrewArrangement.UpdateArrangmentData();
+                    m_arrPlates[0].UpdatePlateData(m_arrPlates[0].ScrewArrangement);
+                    fControlPointYCoord1 += m_arrPlates[0].Ft;
+                    ((CPlate_Frame)m_arrPlates[0]).MirrorPlate();
+
+                    /*
+                    // ????? Volat individualne Calc_KneePlateData podla typu plate
+                    if (plate is CConCom_Plate_KA)
+                    screwArrangement.Calc_KneePlateData(m_fbX1, m_fbX2, 0, m_fhY1, Ft, FSlope_rad, ScrewInPlusZDirection);
+                    else if(plate is CConCom_Plate_KB)
+                    screwArrangement.Calc_KneePlateData(m_fbX1, m_fbX2, 0, m_fhY1, Ft, FSlope_rad, ScrewInPlusZDirection);
+                    */
+                }
+
+                if (/*m_arrPlates[1] is CConCom_Plate_KA ||*/
+                    m_arrPlates[1] is CConCom_Plate_KB ||
+                    m_arrPlates[1] is CConCom_Plate_KBS ||
+                    m_arrPlates[1] is CConCom_Plate_KC ||
+                    m_arrPlates[1] is CConCom_Plate_KCS ||
+                    m_arrPlates[1] is CConCom_Plate_KD ||
+                    m_arrPlates[1] is CConCom_Plate_KDS ||
+                    m_arrPlates[1] is CConCom_Plate_KES ||
+                    m_arrPlates[1] is CConCom_Plate_KFS ||
+                    m_arrPlates[1] is CConCom_Plate_KGS ||
+                    m_arrPlates[1] is CConCom_Plate_KHS)
+                {
+                    ((CPlate_Frame)m_arrPlates[1]).ScrewInPlusZDirection = !((CPlate_Frame)m_arrPlates[1]).ScrewInPlusZDirection;
+                    m_arrPlates[1].ScrewArrangement.UpdateArrangmentData();
+                    m_arrPlates[1].UpdatePlateData(m_arrPlates[1].ScrewArrangement);
+                    //fControlPointYCoord2 -= m_arrPlates[1].Ft;
+                    //((CPlate_Frame)m_arrPlates[1]).MirrorPlate();
+                }
             }
 
             if (!IsFront)
@@ -235,23 +294,6 @@ namespace BaseClasses
 
             m_arrPlates[0].SetPlateRotation(RotationVector_P1);
             m_arrPlates[1].SetPlateRotation(RotationVector_P2);
-
-            // Pokus
-            // BUG 638
-            // Odzrkadlit plech
-            /*
-            if (m_arrPlates[1] is CConCom_Plate_KB ||
-                m_arrPlates[1] is CConCom_Plate_KBS ||
-                m_arrPlates[1] is CConCom_Plate_KC ||
-                m_arrPlates[1] is CConCom_Plate_KCS ||
-                m_arrPlates[1] is CConCom_Plate_KD ||
-                m_arrPlates[1] is CConCom_Plate_KDS ||
-                m_arrPlates[1] is CConCom_Plate_KES ||
-                m_arrPlates[1] is CConCom_Plate_KFS ||
-                m_arrPlates[1] is CConCom_Plate_KGS ||
-                m_arrPlates[1] is CConCom_Plate_KHS) // Zadný plech - mirror
-                ((CPlate_Frame)m_arrPlates[1]).MirrorPlate();
-            */
         }
 
         private void GetKneePlateGeneralParameters(CPlate plate, out float fb_X1, out float fh_Y1, out float fh_Y2)

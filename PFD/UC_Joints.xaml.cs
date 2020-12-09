@@ -1151,6 +1151,24 @@ namespace PFD
                     }
             } //end switch
 
+            // BUG 638
+            // POKUS
+            // Ak je plate typu K, spoj je typu B0001 a je to druha plate, treba ju odzrkadlit
+
+            if ((plate is CConCom_Plate_KA ||
+                plate is CConCom_Plate_KB ||
+                plate is CConCom_Plate_KBS ||
+                plate is CConCom_Plate_KC ||
+                plate is CConCom_Plate_KCS ||
+                plate is CConCom_Plate_KD ||
+                plate is CConCom_Plate_KDS ||
+                plate is CConCom_Plate_KES ||
+                plate is CConCom_Plate_KFS ||
+                plate is CConCom_Plate_KGS ||
+                plate is CConCom_Plate_KHS)
+                && joint is CConnectionJoint_B001 && vm.SelectedTabIndex == 1)
+                  ((CPlate_Frame)plate).MirrorPlate(); // Zadný plech - mirror
+
             joint.m_arrPlates[vm.SelectedTabIndex] = plate;
             joint.UpdateJoint(); // Bug 553
 
