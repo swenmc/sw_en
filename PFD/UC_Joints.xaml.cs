@@ -958,20 +958,20 @@ namespace PFD
             CDatabaseComponents dcomponents = new CDatabaseComponents();
 
             Point3D controlpoint = new Point3D(0, 0, 0);
-            float fb_R; // Rafter Width
-            float fb_B; // Wind Post Width
+            //float fb_R; // Rafter Width
+            //float fb_B; // Wind Post Width
             float fb; // in plane XY -X coord
             float fb2; // in plane XY - X coord
             float fh; // in plane XY - Y coord
-            float fh2; // in plane XY - Y coord
+            //float fh2; // in plane XY - Y coord
             float fl; // out of plane - Z coord
             float fl2; // out of plane - Z coord
             float ft;
-            int iNumberOfStiffeners = 0;
-            float fb_fl; // Flange - Z-section
-            float fc_lip1; // LIP - Z-section
-            float fRoofPitch_rad;
-            float fGamma_rad; // Plate M alebo N uhol medzi hranou prierezu a vonkajsou hranou plechu
+            //int iNumberOfStiffeners = 0;
+            //float fb_fl; // Flange - Z-section
+            //float fc_lip1; // LIP - Z-section
+            //float fRoofPitch_rad;
+            //float fGamma_rad; // Plate M alebo N uhol medzi hranou prierezu a vonkajsou hranou plechu
             int iNumberofHoles = 0;
 
             switch (plate.m_ePlateSerieType_FS)
@@ -1916,19 +1916,19 @@ namespace PFD
                                 joint.m_arrPlates[0] = refJoint.m_arrPlates[0].GetPlateSpecificCopy();
                                 joint.m_arrPlates[1] = refJoint.m_arrPlates[1].GetPlateSpecificCopy();
 
-                                joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
-                                joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
+                                //joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
+                                //joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
                             }
                             else
                             {
                                 joint.m_arrPlates[0] = refJoint.m_arrPlates[1].GetPlateSpecificCopy();
-                                if (jointsCount == 1)
-                                    ((CPlate_Frame)joint.m_arrPlates[0]).MirrorPlate();
-
                                 joint.m_arrPlates[1] = refJoint.m_arrPlates[0].GetPlateSpecificCopy();
 
-                                joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
-                                joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
+                                if (jointsCount == 1) // Zadný spoj v X=0 (back - left side)
+                                    ((CPlate_Frame)joint.m_arrPlates[1]).MirrorPlate();
+
+                                //joint.m_arrPlates[0].UpdatePlateData(joint.m_arrPlates[0].ScrewArrangement);
+                                //joint.m_arrPlates[1].UpdatePlateData(joint.m_arrPlates[1].ScrewArrangement);
                             }
                         }
                         else
