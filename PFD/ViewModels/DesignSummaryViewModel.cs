@@ -301,18 +301,24 @@ namespace PFD
         {
             List<JointDesignResultItem> items = new List<JointDesignResultItem>();
 
-            IEnumerable<CJointLoadCombinationRatio_ULS> ta_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TA01);
-            IEnumerable<CJointLoadCombinationRatio_ULS> tb_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TB01);
+            IEnumerable<CJointLoadCombinationRatio_ULS> ta_results_MC = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TA01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
+            IEnumerable<CJointLoadCombinationRatio_ULS> ta_results_EC = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TA01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            IEnumerable<CJointLoadCombinationRatio_ULS> tb_results_WPF = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TB01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
+            IEnumerable<CJointLoadCombinationRatio_ULS> tb_results_WPB = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TB01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
             IEnumerable<CJointLoadCombinationRatio_ULS> tc_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TC01);
             IEnumerable<CJointLoadCombinationRatio_ULS> td_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TD01);
 
-            CJointLoadCombinationRatio_ULS res_ta = FindResultWithMaximumDesignRatio(ta_results);
-            CJointLoadCombinationRatio_ULS res_tb = FindResultWithMaximumDesignRatio(tb_results);
+            CJointLoadCombinationRatio_ULS res_ta_MC = FindResultWithMaximumDesignRatio(ta_results_MC);
+            CJointLoadCombinationRatio_ULS res_ta_EC = FindResultWithMaximumDesignRatio(ta_results_EC);
+            CJointLoadCombinationRatio_ULS res_tb_WPF = FindResultWithMaximumDesignRatio(tb_results_WPF);
+            CJointLoadCombinationRatio_ULS res_tb_WPB = FindResultWithMaximumDesignRatio(tb_results_WPB);
             CJointLoadCombinationRatio_ULS res_tc = FindResultWithMaximumDesignRatio(tc_results);
             CJointLoadCombinationRatio_ULS res_td = FindResultWithMaximumDesignRatio(td_results);
             
-            if (res_ta != null) items.Add(new JointDesignResultItem(res_ta.Member.Name, GetFootingTypeAcordingToMemberType(res_ta.Member.EMemberTypePosition), res_ta.LoadCombination.Name, res_ta.Joint.ID, res_ta.MaximumDesignRatio));
-            if (res_tb != null) items.Add(new JointDesignResultItem(res_tb.Member.Name, GetFootingTypeAcordingToMemberType(res_tb.Member.EMemberTypePosition), res_tb.LoadCombination.Name, res_tb.Joint.ID, res_tb.MaximumDesignRatio));
+            if (res_ta_MC != null) items.Add(new JointDesignResultItem(res_ta_MC.Member.Name, GetFootingTypeAcordingToMemberType(res_ta_MC.Member.EMemberTypePosition), res_ta_MC.LoadCombination.Name, res_ta_MC.Joint.ID, res_ta_MC.MaximumDesignRatio));
+            if (res_ta_EC != null) items.Add(new JointDesignResultItem(res_ta_EC.Member.Name, GetFootingTypeAcordingToMemberType(res_ta_EC.Member.EMemberTypePosition), res_ta_EC.LoadCombination.Name, res_ta_EC.Joint.ID, res_ta_EC.MaximumDesignRatio));
+            if (res_tb_WPF != null) items.Add(new JointDesignResultItem(res_tb_WPF.Member.Name, GetFootingTypeAcordingToMemberType(res_tb_WPF.Member.EMemberTypePosition), res_tb_WPF.LoadCombination.Name, res_tb_WPF.Joint.ID, res_tb_WPF.MaximumDesignRatio));
+            if (res_tb_WPB != null) items.Add(new JointDesignResultItem(res_tb_WPB.Member.Name, GetFootingTypeAcordingToMemberType(res_tb_WPB.Member.EMemberTypePosition), res_tb_WPB.LoadCombination.Name, res_tb_WPB.Joint.ID, res_tb_WPB.MaximumDesignRatio));
             if (res_tc != null) items.Add(new JointDesignResultItem(res_tc.Member.Name, GetFootingTypeAcordingToMemberType(res_tc.Member.EMemberTypePosition), res_tc.LoadCombination.Name, res_tc.Joint.ID, res_tc.MaximumDesignRatio));
             if (res_td != null) items.Add(new JointDesignResultItem(res_td.Member.Name, GetFootingTypeAcordingToMemberType(res_td.Member.EMemberTypePosition), res_td.LoadCombination.Name, res_td.Joint.ID, res_td.MaximumDesignRatio));
             
