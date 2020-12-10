@@ -35,7 +35,7 @@ namespace PFD
             //designResults_SLS = sDesignResults_SLS;
 
             
-            DesignSummaryViewModel vm = new DesignSummaryViewModel(model_pfd.m_arrLimitStates, componentList, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS, jointDesignResults_ULS);
+            DesignSummaryViewModel vm = new DesignSummaryViewModel(model_pfd, componentList, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS, jointDesignResults_ULS);
             //vm.PropertyChanged += HandleJointDesignPropertyChangedEvent;
             vm.PropertyChanged += HandleDesignSummary_PropertyChanged;
             this.DataContext = vm;

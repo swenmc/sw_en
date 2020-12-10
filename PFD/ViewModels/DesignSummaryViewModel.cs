@@ -41,6 +41,8 @@ namespace PFD
         sDesignResults DesignResults_SLS;
         List<CComponentInfo> ComponentList;
         List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
+
+        CModel_PFD Model;
         //-------------------------------------------------------------------------------------------------------------
         public int LimitStateIndex_MD
         {
@@ -181,10 +183,11 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public DesignSummaryViewModel(CLimitState[] limitStates, List<CComponentInfo> componentList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS, List<CJointLoadCombinationRatio_ULS> jointDesignResults_ULS)
+        public DesignSummaryViewModel(CModel_PFD model, List<CComponentInfo> componentList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS, List<CJointLoadCombinationRatio_ULS> jointDesignResults_ULS)
         {
+            Model = model;
             List<CLimitState> listLimitStates = new List<CLimitState>() { new CLimitState("All", ELSType.eLS_ALL) };
-            listLimitStates.AddRange(limitStates);
+            listLimitStates.AddRange(model.m_arrLimitStates);
             m_LimitStates = listLimitStates.ToArray();
             m_LimitStatesJoints = m_LimitStates.Where(ls => ls.eLS_Type != ELSType.eLS_SLS).ToArray();
 
@@ -314,7 +317,9 @@ namespace PFD
             CJointLoadCombinationRatio_ULS res_tb_WPB = FindResultWithMaximumDesignRatio(tb_results_WPB);
             CJointLoadCombinationRatio_ULS res_tc = FindResultWithMaximumDesignRatio(tc_results);
             CJointLoadCombinationRatio_ULS res_td = FindResultWithMaximumDesignRatio(td_results);
-            
+
+            CFoundation f = Model.GetFoundationForJointFromModel(res_ta_MC.Joint);            
+
             if (res_ta_MC != null) items.Add(new JointDesignResultItem(res_ta_MC.Member.Name, GetFootingTypeAcordingToMemberType(res_ta_MC.Member.EMemberTypePosition), res_ta_MC.LoadCombination.Name, res_ta_MC.Joint.ID, res_ta_MC.MaximumDesignRatio));
             if (res_ta_EC != null) items.Add(new JointDesignResultItem(res_ta_EC.Member.Name, GetFootingTypeAcordingToMemberType(res_ta_EC.Member.EMemberTypePosition), res_ta_EC.LoadCombination.Name, res_ta_EC.Joint.ID, res_ta_EC.MaximumDesignRatio));
             if (res_tb_WPF != null) items.Add(new JointDesignResultItem(res_tb_WPF.Member.Name, GetFootingTypeAcordingToMemberType(res_tb_WPF.Member.EMemberTypePosition), res_tb_WPF.LoadCombination.Name, res_tb_WPF.Joint.ID, res_tb_WPF.MaximumDesignRatio));
@@ -323,6 +328,19 @@ namespace PFD
             if (res_td != null) items.Add(new JointDesignResultItem(res_td.Member.Name, GetFootingTypeAcordingToMemberType(res_td.Member.EMemberTypePosition), res_td.LoadCombination.Name, res_td.Joint.ID, res_td.MaximumDesignRatio));
             
             FootingDesignResultsSummary = items;
+
+
+            //toto treba nejako pouzit
+            //CCalculJoint cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, _pfdVM._designOptionsVM.UniformShearDistributionInAnchors, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces);
+
+            //// Find member in the group of members with maximum joint design ratio
+            //if (cJoint.fEta_max_footing > fMaximumDesignRatio)
+            //{
+            //    fMaximumDesignRatio = cJoint.fEta_max_footing;
+            //    // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
+            //    cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, _pfdVM._designOptionsVM.UniformShearDistributionInAnchors, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces, true);
+            //    cGoverningMemberFootingResults = cJoint;
+            //}
         }
 
         private string GetFootingTypeAcordingToMemberType(EMemberType_FS_Position pos)
