@@ -242,7 +242,7 @@ namespace PFD
             foreach (CConnectionDescription c in AllJointTypes)
             {
                 CJointLoadCombinationRatio_ULS res = FindResultWithMaximumDesignRatio(JointDesignResults_ULS.Where(j => (int)j.Joint.JointType == c.ID));
-                if(res != null) items.Add(new JointDesignResultItem(c.Name, c.JoinType, res.LoadCombination.Name, res.Member.ID, res.MaximumDesignRatio));
+                if(res != null) items.Add(new JointDesignResultItem(c.Name, c.JoinType, res.LoadCombination.Name, res.Joint.ID, res.MaximumDesignRatio));
             }
             
             JointDesignResultsSummary = items;
