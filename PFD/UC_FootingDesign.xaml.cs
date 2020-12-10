@@ -97,8 +97,7 @@ namespace PFD
                     CConnectionJointTypes joint = cjStart;
                     CFoundation f = _pfdVM.Model.GetFoundationForJointFromModel(joint);
                     if (f == null) { f = _pfdVM.Model.GetFoundationForJointFromModel(cjEnd); joint = cjEnd; }
-                    if (f == null) continue;
-                    
+                    if (f == null) continue;                    
 
                     CJointLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == joint.m_Node.ID);
                     if (res == null) continue;

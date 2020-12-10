@@ -32,6 +32,7 @@ namespace PFD
 
         private List<MemberDesignResultItem> m_MemberDesignResultsSummary;
         private List<JointDesignResultItem> m_JointDesignResultsSummary;
+        private List<JointDesignResultItem> m_FootingDesignResultsSummary;
 
         public bool IsSetFromCode = false;
 
@@ -84,7 +85,9 @@ namespace PFD
 
             set
             {
-                m_LimitStateIndex_FD = value;                
+                m_LimitStateIndex_FD = value;
+
+                LoadFootingDesignSummaryResults();
 
                 NotifyPropertyChanged("LimitStateIndex_FD");
             }
@@ -145,6 +148,19 @@ namespace PFD
                 NotifyPropertyChanged("JointDesignResultsSummary");
             }
         }
+        public List<JointDesignResultItem> FootingDesignResultsSummary
+        {
+            get
+            {
+                return m_FootingDesignResultsSummary;
+            }
+
+            set
+            {
+                m_FootingDesignResultsSummary = value;
+                NotifyPropertyChanged("FootingDesignResultsSummary");
+            }
+        }
 
         public List<CConnectionDescription> AllJointTypes
         {
@@ -157,6 +173,8 @@ namespace PFD
         }
 
         
+
+
 
 
 
@@ -260,6 +278,59 @@ namespace PFD
             }
             return result;
         }
+
+        private void LoadFootingDesignSummaryResults()
+        {
+            CLimitState limitState = m_LimitStates[m_LimitStateIndex_JD];
+
+            if (limitState.eLS_Type == ELSType.eLS_ALL)
+            {
+                FillFootingDesignSummaryResults();
+            }
+            else if (limitState.eLS_Type == ELSType.eLS_ULS)
+            {
+                FillFootingDesignSummaryResults();
+            }
+            else if (limitState.eLS_Type == ELSType.eLS_SLS)
+            {
+                JointDesignResultsSummary = new List<JointDesignResultItem>();
+            }
+        }
+
+        private void FillFootingDesignSummaryResults()
+        {
+            List<JointDesignResultItem> items = new List<JointDesignResultItem>();
+
+            IEnumerable<CJointLoadCombinationRatio_ULS> ta_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TA01);
+            IEnumerable<CJointLoadCombinationRatio_ULS> tb_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TB01);
+            IEnumerable<CJointLoadCombinationRatio_ULS> tc_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TC01);
+            IEnumerable<CJointLoadCombinationRatio_ULS> td_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TD01);
+
+            CJointLoadCombinationRatio_ULS res_ta = FindResultWithMaximumDesignRatio(ta_results);
+            CJointLoadCombinationRatio_ULS res_tb = FindResultWithMaximumDesignRatio(tb_results);
+            CJointLoadCombinationRatio_ULS res_tc = FindResultWithMaximumDesignRatio(tc_results);
+            CJointLoadCombinationRatio_ULS res_td = FindResultWithMaximumDesignRatio(td_results);
+            
+            if (res_ta != null) items.Add(new JointDesignResultItem(res_ta.Member.Name, GetFootingTypeAcordingToMemberType(res_ta.Member.EMemberTypePosition), res_ta.LoadCombination.Name, res_ta.Joint.ID, res_ta.MaximumDesignRatio));
+            if (res_tb != null) items.Add(new JointDesignResultItem(res_tb.Member.Name, GetFootingTypeAcordingToMemberType(res_tb.Member.EMemberTypePosition), res_tb.LoadCombination.Name, res_tb.Joint.ID, res_tb.MaximumDesignRatio));
+            if (res_tc != null) items.Add(new JointDesignResultItem(res_tc.Member.Name, GetFootingTypeAcordingToMemberType(res_tc.Member.EMemberTypePosition), res_tc.LoadCombination.Name, res_tc.Joint.ID, res_tc.MaximumDesignRatio));
+            if (res_td != null) items.Add(new JointDesignResultItem(res_td.Member.Name, GetFootingTypeAcordingToMemberType(res_td.Member.EMemberTypePosition), res_td.LoadCombination.Name, res_td.Joint.ID, res_td.MaximumDesignRatio));
+            
+            FootingDesignResultsSummary = items;
+        }
+
+        private string GetFootingTypeAcordingToMemberType(EMemberType_FS_Position pos)
+        {
+            switch (pos)
+            {
+                case EMemberType_FS_Position.MainColumn: return "A";
+                case EMemberType_FS_Position.EdgeColumn: return "B";
+                case EMemberType_FS_Position.WindPostFrontSide: return "C";
+                case EMemberType_FS_Position.WindPostBackSide: return "D";                
+            }
+            return "";
+        }
+
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)

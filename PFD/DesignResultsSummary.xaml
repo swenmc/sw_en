@@ -149,10 +149,29 @@
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitStateFD" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_FD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStatesJoints}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex_FD, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_FootingDesign" ItemsSource="{Binding}" AutoGenerateColumns="False" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0"/>
+                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name ="Results_FootingDesign" ItemsSource="{Binding Path=FootingDesignResultsSummary}" AutoGenerateColumns="False" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Margin="5,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding ComponentName}" Header="Component Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding JointType}" Header="Type" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding LoadCombination}" Header="Load Combination" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding JointID}" Header="Joint ID" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding DesignRatio, StringFormat={}{0:0.000}}" Header="Design Ratio" Width="Auto">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Background" Value="{Binding DesignRatio, Converter={StaticResource DesignResultsConverter}}"/>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
                     </Grid>
                 </ScrollViewer>
