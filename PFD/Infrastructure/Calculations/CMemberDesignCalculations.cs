@@ -202,7 +202,7 @@ namespace PFD.Infrastructure
             //   GetTextForResultsMessageBox(sDesignResults_ULSandSLS) +
             //   GetTextForResultsMessageBox(sDesignResults_ULS) +
             //   GetTextForResultsMessageBox(sDesignResults_SLS));
-            SolverWindow.SetSumaryFinished(Model, componentList, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS);
+            SolverWindow.SetSumaryFinished(Model, componentList, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS, JointDesignResults_ULS);
         }
 
         public void Calculate_InternalForces()

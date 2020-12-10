@@ -198,6 +198,7 @@
     <Compile Include="Model\Foundations\CReinforcementBarStraight.cs" />
     <Compile Include="Model\SpecificModelTypes\CBeam_Simple.cs" />
     <Compile Include="Model\WindowProperties.cs" />
+    <Compile Include="Results\JointDesignResultItem.cs" />
     <Compile Include="Results\MemberDesignResultItem.cs" />
     <Compile Include="Results\JointDesignDetails\CJointDesignDetails_BaseJointFooting.cs" />
     <Compile Include="Results\JointDesignDetails\CJointDesignDetails_FrontOrBackColumnToMainRafterJoint.cs" />
