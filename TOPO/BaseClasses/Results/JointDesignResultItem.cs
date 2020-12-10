@@ -11,7 +11,7 @@ namespace BaseClasses
         private string m_ComponentName;
         private string m_JointType;
         private string m_LoadCombination;
-        private int m_MemberID;        
+        private int m_JointID;        
         private float m_DesignRatio;
 
         
@@ -53,16 +53,16 @@ namespace BaseClasses
             }
         }
 
-        public int MemberID
+        public int JointID
         {
             get
             {
-                return m_MemberID;
+                return m_JointID;
             }
 
             set
             {
-                m_MemberID = value;
+                m_JointID = value;
             }
         }
 
@@ -87,7 +87,7 @@ namespace BaseClasses
             m_ComponentName = componentName;
             m_JointType = jointType;
             m_LoadCombination = loadCombination;
-            m_MemberID = memberID;
+            m_JointID = memberID;
             m_DesignRatio = designRatio;
         }
         

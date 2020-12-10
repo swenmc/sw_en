@@ -28,6 +28,7 @@ namespace PFD
         private List<CConnectionDescription> m_AllJointTypes;
 
         private CLimitState[] m_LimitStates;
+        private CLimitState[] m_LimitStatesJoints;
 
         private List<MemberDesignResultItem> m_MemberDesignResultsSummary;
         private List<JointDesignResultItem> m_JointDesignResultsSummary;
@@ -102,7 +103,20 @@ namespace PFD
                 NotifyPropertyChanged("LimitStates");
             }
         }
-        
+        public CLimitState[] LimitStatesJoints
+        {
+            get
+            {
+                return m_LimitStatesJoints;
+            }
+
+            set
+            {
+                m_LimitStatesJoints = value;
+                NotifyPropertyChanged("LimitStatesJoints");
+            }
+        }
+
 
         public List<MemberDesignResultItem> MemberDesignResultsSummary
         {
@@ -144,6 +158,8 @@ namespace PFD
 
         
 
+
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -152,6 +168,7 @@ namespace PFD
             List<CLimitState> listLimitStates = new List<CLimitState>() { new CLimitState("All", ELSType.eLS_ALL) };
             listLimitStates.AddRange(limitStates);
             m_LimitStates = listLimitStates.ToArray();
+            m_LimitStatesJoints = m_LimitStates.Where(ls => ls.eLS_Type != ELSType.eLS_SLS).ToArray();
 
             DesignResults_ULSandSLS = sDesignResults_ULSandSLS;
             DesignResults_ULS = sDesignResults_ULS;

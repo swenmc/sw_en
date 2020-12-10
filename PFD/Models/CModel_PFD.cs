@@ -520,6 +520,12 @@ namespace PFD
                 }
             }
 
+            //generate joints IDs
+            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
+            {
+                m_arrConnectionJoints[i].ID = i + 1;
+            }
+
             // Validation - check that all created joints have assigned Main Member
             // Check all joints before definition of doors and windows members and joints
             for (int i = 0; i < m_arrConnectionJoints.Count; i++)
