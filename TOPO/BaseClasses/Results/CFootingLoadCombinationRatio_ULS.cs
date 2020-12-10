@@ -6,15 +6,14 @@ using System.Windows.Media.Media3D;
 namespace BaseClasses
 {
     [Serializable]
-    public class CFootingLoadCombinationRatio_ULS
+    public class CJointLoadCombinationRatio_ULS
     {
         private CMember MMember;
         private CConnectionJointTypes MJoint;
-        private CFoundation MFooting;
         private CLoadCombination MLoadCombination;
         private float MMaximumDesignRatio;
 
-        //private designInternalForces MDesignInternalForces;
+        private designInternalForces MDesignInternalForces;
 
 
         public CMember Member
@@ -69,44 +68,31 @@ namespace BaseClasses
             }
         }
 
-        //public designInternalForces DesignInternalForces
-        //{
-        //    get
-        //    {
-        //        return MDesignInternalForces;
-        //    }
-
-        //    set
-        //    {
-        //        MDesignInternalForces = value;
-        //    }
-        //}
-
-        public CFoundation Footing
+        public designInternalForces DesignInternalForces
         {
             get
             {
-                return MFooting;
+                return MDesignInternalForces;
             }
 
             set
             {
-                MFooting = value;
+                MDesignInternalForces = value;
             }
         }
 
-        public CFootingLoadCombinationRatio_ULS()
+        public CJointLoadCombinationRatio_ULS()
         {
 
         }
-        public CFootingLoadCombinationRatio_ULS(CMember member, CConnectionJointTypes joint, CFoundation footing, CLoadCombination loadCombination, float maxDesignRatio)
+        public CJointLoadCombinationRatio_ULS(CMember member, CConnectionJointTypes joint, CLoadCombination loadCombination, float maxDesignRatio,
+            designInternalForces designInternalForces)
         {
             Member = member;
             Joint = joint;
-            Footing = footing;
             LoadCombination = loadCombination;
             MaximumDesignRatio = maxDesignRatio;
-            //DesignInternalForces = designInternalForces; //toto neviem,ci nam treba
+            DesignInternalForces = designInternalForces;
         }
     }
 }

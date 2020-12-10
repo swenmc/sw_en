@@ -25,6 +25,7 @@ namespace PFD
         sDesignResults designResults_ULS;
         sDesignResults designResults_SLS;
         List<CJointLoadCombinationRatio_ULS> m_jointDesignResults_ULS;
+        List<CFootingLoadCombinationRatio_ULS> m_footingDesignResults_ULS;
         List<CComponentInfo> componentList;
 
         public Solver(bool bUseFEMSolverCalculationForSimpleBeam)
@@ -43,7 +44,7 @@ namespace PFD
             //    designSummaryWindow.Show();
             //}
 
-            DesignResultsSummary designSummaryWindow = new DesignResultsSummary(model, componentList, designResults_ULSandSLS, designResults_ULS, designResults_SLS, m_jointDesignResults_ULS);
+            DesignResultsSummary designSummaryWindow = new DesignResultsSummary(model, componentList, designResults_ULSandSLS, designResults_ULS, designResults_SLS, m_jointDesignResults_ULS, m_footingDesignResults_ULS);
             designSummaryWindow.Show();
 
             this.Close();
@@ -178,7 +179,7 @@ namespace PFD
         //}
 
         public void SetSumaryFinished(CModel_PFD model_pfd, List<CComponentInfo> componentInfoList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, 
-            sDesignResults sDesignResults_SLS, List<CJointLoadCombinationRatio_ULS> jointDesignResults_ULS)
+            sDesignResults sDesignResults_SLS, List<CJointLoadCombinationRatio_ULS> jointDesignResults_ULS, List<CFootingLoadCombinationRatio_ULS> footingDesignResults_ULS)
         {
             Dispatcher.Invoke(() =>
             {
@@ -198,6 +199,7 @@ namespace PFD
                 designResults_ULS = sDesignResults_ULS;
                 designResults_SLS = sDesignResults_SLS;
                 m_jointDesignResults_ULS = jointDesignResults_ULS;
+                m_footingDesignResults_ULS = footingDesignResults_ULS;                
                 componentList = componentInfoList;
                 //sResultsSummaryText = sResultsSummaryTextAll; // Set output window text
 

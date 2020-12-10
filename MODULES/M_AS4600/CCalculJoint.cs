@@ -45,7 +45,7 @@ namespace M_AS4600
         public float ff_uk_2_SecondaryMember;
 
         public float fEta_max_joint = 0;
-        public float fEta_max_footing = 0;
+        public float fEta_max_footing = -1;
 
         public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bUniformShearDistributionInAnchors, CConnectionJointTypes joint_temp, CModel model, CalculationSettingsFoundation calcSettingsFoundation, designInternalForces sDIF_temp, bool bSaveDetails = false)
         {

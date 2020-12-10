@@ -24,6 +24,7 @@ namespace PFD.Infrastructure
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
+        public List<CFootingLoadCombinationRatio_ULS> FootingDesignResults_ULS;
 
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -61,6 +62,7 @@ namespace PFD.Infrastructure
             MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
             MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
             JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
+            FootingDesignResults_ULS = new List<CFootingLoadCombinationRatio_ULS>();
 
             if (!m.BIsGenerated) return;
             if (!m.BIsSelectedForDesign) return; // Only structural members (not auxiliary members or members with deactivated design)
@@ -113,6 +115,8 @@ namespace PFD.Infrastructure
 
                     // End Joint
                     JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointEnd, lcomb, jointDesignModel.fDesignRatio_End, sjointEndDIF_x));
+
+                    FootingDesignResults_ULS.Add(new CFootingLoadCombinationRatio_ULS(m, jointDesignModel.footingJoint, jointDesignModel.footing, lcomb, jointDesignModel.fDesignRatio_footing));
 
                     // Output (for debugging - member results)
                     bool bDebugging = false; // Testovacie ucely

@@ -25,7 +25,8 @@ namespace PFD
         //sDesignResults designResults_ULS;
         //sDesignResults designResults_SLS;
 
-        public DesignResultsSummary(CModel_PFD model_pfd, List<CComponentInfo> componentList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS, List<CJointLoadCombinationRatio_ULS> jointDesignResults_ULS)
+        public DesignResultsSummary(CModel_PFD model_pfd, List<CComponentInfo> componentList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, 
+            sDesignResults sDesignResults_SLS, List<CJointLoadCombinationRatio_ULS> jointDesignResults_ULS, List<CFootingLoadCombinationRatio_ULS> footingDesignResults_ULS)
         {
             InitializeComponent();
 
@@ -35,7 +36,7 @@ namespace PFD
             //designResults_SLS = sDesignResults_SLS;
 
             
-            DesignSummaryViewModel vm = new DesignSummaryViewModel(model_pfd, componentList, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS, jointDesignResults_ULS);
+            DesignSummaryViewModel vm = new DesignSummaryViewModel(model_pfd, componentList, sDesignResults_ULSandSLS, sDesignResults_ULS, sDesignResults_SLS, jointDesignResults_ULS, footingDesignResults_ULS);
             //vm.PropertyChanged += HandleJointDesignPropertyChangedEvent;
             vm.PropertyChanged += HandleDesignSummary_PropertyChanged;
             this.DataContext = vm;

@@ -13,10 +13,13 @@ namespace M_BASE
     {
         bool bDebugging;
         public float fDesignRatio_Start = 0;
-        public float fDesignRatio_End = 0;
-        //public float fDesignRatio_footing = 0; // Neviem ci to tu potrebujeme ,potrebovali by sme nejako krajsie oddelit vypocet footing od joints
+        public float fDesignRatio_End = 0;        
         public bool BUseCRSCGeometricalAxes;
         CalculationSettingsFoundation FootingCalcSettings;
+
+        public float fDesignRatio_footing = 0; // Neviem ci to tu potrebujeme ,potrebovali by sme nejako krajsie oddelit vypocet footing od joints
+        public CConnectionJointTypes footingJoint;
+        public CFoundation footing;
 
         public CJointDesign(bool bDebugging_temp = false)
         {
@@ -62,6 +65,12 @@ namespace M_BASE
                         // Design joint
                         obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, bUniformShearDistributionInAnchors, jointStart, model, FootingCalcSettings, sjointStartDIF_x);
                         fDesignRatio_Start = obj_CalcDesign.fEta_max_joint;
+                        if (obj_CalcDesign.fEta_max_footing > 0)
+                        {
+                            fDesignRatio_footing = obj_CalcDesign.fEta_max_footing;
+                            footingJoint = obj_CalcDesign.joint;
+                            footing = obj_CalcDesign.footing;
+                        }
                     }
                     else // End Joint Design
                     {
@@ -71,6 +80,12 @@ namespace M_BASE
                         // Design joint
                         obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, bUniformShearDistributionInAnchors, jointEnd, model, FootingCalcSettings, sjointEndDIF_x);
                         fDesignRatio_End = obj_CalcDesign.fEta_max_joint;
+                        if (obj_CalcDesign.fEta_max_footing > 0)
+                        {
+                            fDesignRatio_footing = obj_CalcDesign.fEta_max_footing;
+                            footingJoint = obj_CalcDesign.joint;
+                            footing = obj_CalcDesign.footing;
+                        }
                     }
                 }
             }

@@ -41,6 +41,7 @@ namespace PFD
         sDesignResults DesignResults_SLS;
         List<CComponentInfo> ComponentList;
         List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
+        List<CFootingLoadCombinationRatio_ULS> FootingDesignResults_ULS;
 
         CModel_PFD Model;
         //-------------------------------------------------------------------------------------------------------------
@@ -183,7 +184,8 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public DesignSummaryViewModel(CModel_PFD model, List<CComponentInfo> componentList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, sDesignResults sDesignResults_SLS, List<CJointLoadCombinationRatio_ULS> jointDesignResults_ULS)
+        public DesignSummaryViewModel(CModel_PFD model, List<CComponentInfo> componentList, sDesignResults sDesignResults_ULSandSLS, sDesignResults sDesignResults_ULS, 
+            sDesignResults sDesignResults_SLS, List<CJointLoadCombinationRatio_ULS> jointDesignResults_ULS, List<CFootingLoadCombinationRatio_ULS> footingDesignResults_ULS)
         {
             Model = model;
             List<CLimitState> listLimitStates = new List<CLimitState>() { new CLimitState("All", ELSType.eLS_ALL) };
@@ -195,6 +197,7 @@ namespace PFD
             DesignResults_ULS = sDesignResults_ULS;
             DesignResults_SLS = sDesignResults_SLS;
             JointDesignResults_ULS = jointDesignResults_ULS;
+            FootingDesignResults_ULS = footingDesignResults_ULS;
             ComponentList = componentList;
 
             // Set default
@@ -281,6 +284,17 @@ namespace PFD
             }
             return result;
         }
+        private CFootingLoadCombinationRatio_ULS FindResultWithMaximumDesignRatio(IEnumerable<CFootingLoadCombinationRatio_ULS> results)
+        {
+            CFootingLoadCombinationRatio_ULS result = null;
+            float maxDesignRatio = float.MinValue;
+            foreach (CFootingLoadCombinationRatio_ULS r in results)
+            {
+                if (r.MaximumDesignRatio > maxDesignRatio) { result = r; maxDesignRatio = r.MaximumDesignRatio; }
+
+            }
+            return result;
+        }
 
         private void LoadFootingDesignSummaryResults()
         {
@@ -304,22 +318,20 @@ namespace PFD
         {
             List<JointDesignResultItem> items = new List<JointDesignResultItem>();
 
-            IEnumerable<CJointLoadCombinationRatio_ULS> ta_results_MC = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TA01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
-            IEnumerable<CJointLoadCombinationRatio_ULS> ta_results_EC = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TA01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-            IEnumerable<CJointLoadCombinationRatio_ULS> tb_results_WPF = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TB01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
-            IEnumerable<CJointLoadCombinationRatio_ULS> tb_results_WPB = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TB01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
-            IEnumerable<CJointLoadCombinationRatio_ULS> tc_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TC01);
-            IEnumerable<CJointLoadCombinationRatio_ULS> td_results = JointDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TD01);
+            IEnumerable<CFootingLoadCombinationRatio_ULS> ta_results_MC = FootingDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TA01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
+            IEnumerable<CFootingLoadCombinationRatio_ULS> ta_results_EC = FootingDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TA01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            IEnumerable<CFootingLoadCombinationRatio_ULS> tb_results_WPF = FootingDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TB01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
+            IEnumerable<CFootingLoadCombinationRatio_ULS> tb_results_WPB = FootingDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TB01 && j.Member.EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
+            IEnumerable<CFootingLoadCombinationRatio_ULS> tc_results = FootingDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TC01);
+            IEnumerable<CFootingLoadCombinationRatio_ULS> td_results = FootingDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TD01);
 
-            CJointLoadCombinationRatio_ULS res_ta_MC = FindResultWithMaximumDesignRatio(ta_results_MC);
-            CJointLoadCombinationRatio_ULS res_ta_EC = FindResultWithMaximumDesignRatio(ta_results_EC);
-            CJointLoadCombinationRatio_ULS res_tb_WPF = FindResultWithMaximumDesignRatio(tb_results_WPF);
-            CJointLoadCombinationRatio_ULS res_tb_WPB = FindResultWithMaximumDesignRatio(tb_results_WPB);
-            CJointLoadCombinationRatio_ULS res_tc = FindResultWithMaximumDesignRatio(tc_results);
-            CJointLoadCombinationRatio_ULS res_td = FindResultWithMaximumDesignRatio(td_results);
-
-            CFoundation f = Model.GetFoundationForJointFromModel(res_ta_MC.Joint);            
-
+            CFootingLoadCombinationRatio_ULS res_ta_MC = FindResultWithMaximumDesignRatio(ta_results_MC);
+            CFootingLoadCombinationRatio_ULS res_ta_EC = FindResultWithMaximumDesignRatio(ta_results_EC);
+            CFootingLoadCombinationRatio_ULS res_tb_WPF = FindResultWithMaximumDesignRatio(tb_results_WPF);
+            CFootingLoadCombinationRatio_ULS res_tb_WPB = FindResultWithMaximumDesignRatio(tb_results_WPB);
+            CFootingLoadCombinationRatio_ULS res_tc = FindResultWithMaximumDesignRatio(tc_results);
+            CFootingLoadCombinationRatio_ULS res_td = FindResultWithMaximumDesignRatio(td_results);
+            
             if (res_ta_MC != null) items.Add(new JointDesignResultItem(res_ta_MC.Member.Name, GetFootingTypeAcordingToMemberType(res_ta_MC.Member.EMemberTypePosition), res_ta_MC.LoadCombination.Name, res_ta_MC.Joint.ID, res_ta_MC.MaximumDesignRatio));
             if (res_ta_EC != null) items.Add(new JointDesignResultItem(res_ta_EC.Member.Name, GetFootingTypeAcordingToMemberType(res_ta_EC.Member.EMemberTypePosition), res_ta_EC.LoadCombination.Name, res_ta_EC.Joint.ID, res_ta_EC.MaximumDesignRatio));
             if (res_tb_WPF != null) items.Add(new JointDesignResultItem(res_tb_WPF.Member.Name, GetFootingTypeAcordingToMemberType(res_tb_WPF.Member.EMemberTypePosition), res_tb_WPF.LoadCombination.Name, res_tb_WPF.Joint.ID, res_tb_WPF.MaximumDesignRatio));
@@ -328,19 +340,6 @@ namespace PFD
             if (res_td != null) items.Add(new JointDesignResultItem(res_td.Member.Name, GetFootingTypeAcordingToMemberType(res_td.Member.EMemberTypePosition), res_td.LoadCombination.Name, res_td.Joint.ID, res_td.MaximumDesignRatio));
             
             FootingDesignResultsSummary = items;
-
-
-            //toto treba nejako pouzit
-            //CCalculJoint cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, _pfdVM._designOptionsVM.UniformShearDistributionInAnchors, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces);
-
-            //// Find member in the group of members with maximum joint design ratio
-            //if (cJoint.fEta_max_footing > fMaximumDesignRatio)
-            //{
-            //    fMaximumDesignRatio = cJoint.fEta_max_footing;
-            //    // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-            //    cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, _pfdVM._designOptionsVM.UniformShearDistributionInAnchors, joint, _pfdVM.Model, footingCalcSettings, res.DesignInternalForces, true);
-            //    cGoverningMemberFootingResults = cJoint;
-            //}
         }
 
         private string GetFootingTypeAcordingToMemberType(EMemberType_FS_Position pos)
