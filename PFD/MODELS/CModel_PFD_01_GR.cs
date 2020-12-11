@@ -99,8 +99,14 @@ namespace PFD
             OneColumnGirtNo = 0;
             iGirtNoInOneFrame = 0;
 
-            m_arrMat = new CMat[17];
-            m_arrCrSc = new CCrSc[17];
+            int basicCount = 15;
+            CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
+            CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
+            if (ci_CBW != null) basicCount++;
+            if (ci_CBR != null) basicCount++;
+
+            m_arrMat = new CMat[basicCount];
+            m_arrCrSc = new CCrSc[basicCount];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
@@ -120,13 +126,10 @@ namespace PFD
             m_arrMat[(int)EMemberGroupNames.ePurlinBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlinBracing].Material);
             m_arrMat[(int)EMemberGroupNames.eFrontGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Material);
             m_arrMat[(int)EMemberGroupNames.eBackGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirtBracing].Material);
-
-            CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
             if (ci_CBW != null)
             {
                 m_arrMat[(int)EMemberGroupNames.eCrossBracing_Walls] = MaterialFactory.GetMaterial(ci_CBW.Material);
-            }
-            CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
+            }            
             if (ci_CBR != null)
             {
                 m_arrMat[(int)EMemberGroupNames.eCrossBracing_Roof] = MaterialFactory.GetMaterial(ci_CBR.Material);
@@ -166,6 +169,7 @@ namespace PFD
 
             for (int i = 0; i < m_arrCrSc.Length; i++)
             {
+                if (m_arrCrSc[i] == null) continue;
                 m_arrCrSc[i].ID = i + 1;
             }
 
@@ -258,6 +262,7 @@ namespace PFD
             {
                 for (int i = 0; i < m_arrCrSc.Length; i++)
                 {
+                    if (m_arrCrSc[i] == null) continue;
                     m_arrCrSc[i].m_Mat = m_arrMat[i];
                 }
             }
