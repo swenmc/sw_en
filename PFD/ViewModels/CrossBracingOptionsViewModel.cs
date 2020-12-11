@@ -361,5 +361,18 @@ namespace PFD
             return count;
         }
 
+        public bool HasWallCrosses()
+        {
+            if (GetLeftWallCrosses() > 0) return true;
+            else if (GetRightWallCrosses() > 0) return true;
+            else return false;
+        }
+        public bool HasRoofCrosses()
+        {
+            int count = CrossBracingList.Count(c => c.Roof == true);
+            if (count > 0) return true;
+            else return false;                    
+        }
+
     }
 }

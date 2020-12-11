@@ -1660,5 +1660,43 @@ namespace PFD
             CComponentInfo CBS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
             if (CBS != null) { CBS.IsSetFromCode = true; CBS.ILS_Items = items; SetComponentInfoILS(CBS); CBS.IsSetFromCode = false; }
         }
+
+        public void UpdateComponentList(bool hasWallCrosses, bool hasRoofCrosses)
+        {
+            CComponentInfo ci_Wall = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
+            CComponentInfo ci_Roof = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
+
+            if (!hasWallCrosses)
+            {
+                ComponentList.Remove(ci_Wall);
+            }
+            else
+            {
+                if (ci_Wall == null)
+                {
+                    ci_Wall = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
+                        list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Walls", "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
+                        SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingWall);
+                    ComponentList.Add(ci_Wall);
+                }                    
+            }
+
+            if (!hasRoofCrosses)
+            {
+                ComponentList.Remove(ci_Roof);
+            }
+            else
+            {
+                if (ci_Roof == null)
+                {
+                    ci_Roof = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
+                        list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Roof", "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
+                        SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingRoof);
+                    ComponentList.Add(ci_Roof);
+                }
+            }
+
+        }
+
     }
 }

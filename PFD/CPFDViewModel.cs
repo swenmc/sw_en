@@ -2851,7 +2851,8 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateModel = true;
                 RecreateJoints = true;
-                RecreateQuotation = true;                
+                RecreateQuotation = true;
+                _componentVM.UpdateComponentList(_crossBracingOptionsVM.HasWallCrosses(), _crossBracingOptionsVM.HasRoofCrosses());
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CrossBracingOptionsChanged");
 
