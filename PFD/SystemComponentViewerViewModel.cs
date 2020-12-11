@@ -59,6 +59,7 @@ namespace PFD
         bool bDrawScrews3D;
         bool bDrawPoints3D;
         bool bDrawPoint3DNumbers3D;
+        bool bMirrorPlate3D;
 
         public bool IsSetFromCode = false;
         
@@ -476,6 +477,19 @@ namespace PFD
                 NotifyPropertyChanged("DrawPoint3DNumbers3D");
             }
         }
+        public bool MirrorPlate3D
+        {
+            get
+            {
+                return bMirrorPlate3D;
+            }
+
+            set
+            {
+                bMirrorPlate3D = value;
+                NotifyPropertyChanged("MirrorPlate3D");
+            }
+        }
 
         public List<Point> DrillingRoutePoints
         {
@@ -613,6 +627,7 @@ namespace PFD
             DrawScrews3D = true;
             DrawPoints3D = false;
             DrawPoint3DNumbers3D = false;
+            MirrorPlate3D = false;
 
             IsSetFromCode = false;
         }

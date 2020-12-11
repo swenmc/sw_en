@@ -149,6 +149,18 @@ namespace PFD
                     DisplayComponent(vm);
                 }
 
+                if (e.PropertyName == "MirrorPlate3D")
+                {
+                    DisplayComponent(vm);
+                    //if (plate is CPlate_Frame)
+                    //{
+                    //    (plate as CPlate_Frame).MirrorPlate();
+                    //    //plate.UpdatePlateData(plate.ScrewArrangement);
+                    //}
+                    //DisplayPlate(true);
+                    //DisplayComponent(vm); toto upravi naspat plate
+                }
+
                 if (e.PropertyName == "MirrorX")
                 {
                     vm.DrillingRoutePoints = null;
@@ -685,6 +697,12 @@ namespace PFD
 
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
+                if (plate is CPlate_Frame)
+                {
+                    chbMirrorPlate3D.Visibility = Visibility.Visible;
+                }
+                else chbMirrorPlate3D.Visibility = Visibility.Collapsed;
+
                 tabItemDoc.IsEnabled = true;
                 if (plate != null && plate.ScrewArrangement != null)
                 {
@@ -1176,6 +1194,7 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
             sDisplayOptions.bDisplayNodes = vm.DrawPoints3D;
             sDisplayOptions.bDisplayNodesDescription = vm.DrawPoint3DNumbers3D;
+            sDisplayOptions.bMirrorPlate3D = vm.MirrorPlate3D;
             page3D = new Page3Dmodel(plate, sDisplayOptions);
 
             // Display model in 3D preview frame

@@ -878,6 +878,7 @@ namespace BaseClasses
         public bool bDisplayMemberRealLengthInMM;
         public bool bDisplayMemberRealLengthUnit;
         public bool bDisplayNodesDescription;
+        public bool bMirrorPlate3D;        
 
         public bool bDisplayFoundationsDescription;
         public bool bDisplayFloorSlabDescription;
