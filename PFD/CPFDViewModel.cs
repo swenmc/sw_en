@@ -435,7 +435,7 @@ namespace PFD
                 if (!isChangedFromCode)
                 {
                     IsSetFromCode = true;
-                    WidthOverall = MWidth + 2 * MMainColumnCrsc_z_plus;
+                    WidthOverall = MWidth + 2 * MainColumnCrsc_z_plus;
                     IsSetFromCode = isChangedFromCode;
                 }
 
@@ -511,7 +511,7 @@ namespace PFD
                 if (!isChangedFromCode)
                 {
                     IsSetFromCode = true;
-                    LengthOverall = MLength + Math.Abs(MEdgeColumnCrsc_y_minus) + MEdgeColumnCrsc_y_plus;
+                    LengthOverall = MLength + Math.Abs(EdgeColumnCrsc_y_minus) + EdgeColumnCrsc_y_plus;
                     IsSetFromCode = isChangedFromCode;
                 }
 
@@ -625,7 +625,7 @@ namespace PFD
                 if (!isChangedFromCode)
                 {
                     IsSetFromCode = true;
-                    Length = MLengthOverall - Math.Abs(MEdgeColumnCrsc_y_minus) - MEdgeColumnCrsc_y_plus;
+                    Length = MLengthOverall - Math.Abs(EdgeColumnCrsc_y_minus) - EdgeColumnCrsc_y_plus;
                     IsSetFromCode = isChangedFromCode;
                 }
 

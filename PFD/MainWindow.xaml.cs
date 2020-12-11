@@ -312,6 +312,16 @@ namespace PFD
                 {
                     vm.RecreateJoints = true; //need to recreate joint when Section was changed
                     vm.RecreateModel = true;
+                    vm.RecreateFloorSlab = true;
+
+                    if (vm._generalOptionsVM.OverallDimensions)
+                    {
+                        vm.WidthOverall = vm.WidthOverall; vm.LengthOverall = vm.LengthOverall; //recalculate dimensions
+                    }
+                    else
+                    {
+                        vm.Width = vm.Width; vm.Length = vm.Length; //recalculate dimensions 
+                    }
                 }
                 if (e.PropertyName == "Color")
                 {
