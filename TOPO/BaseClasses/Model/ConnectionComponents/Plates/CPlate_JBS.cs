@@ -54,7 +54,7 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
-            base.UpdatePlateData(screwArrangement);            
+            base.UpdatePlateData(screwArrangement);
         }
         //----------------------------------------------------------------------------
         public override void Calc_Coord2D()

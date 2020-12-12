@@ -56,6 +56,52 @@ namespace BaseClasses
             }
         }
 
+        private float m_fhY2;
+
+        public float Fh_Y2
+        {
+            get
+            {
+                return m_fhY2;
+            }
+
+            set
+            {
+                m_fhY2 = value;
+            }
+        }
+
+        private float m_fbX1_AndLips;
+
+
+        public float Fb_X1_AndLips
+        {
+            get
+            {
+                return m_fbX1_AndLips;
+            }
+
+            set
+            {
+                m_fbX1_AndLips = value;
+            }
+        }
+
+        private float m_fLipBase_dim_x;
+
+        public float LipBase_dim_x
+        {
+            get
+            {
+                return m_fLipBase_dim_x;
+            }
+
+            set
+            {
+                m_fLipBase_dim_x = value;
+            }
+        }
+
         // Private
         private float m_fbX1;
 
@@ -70,22 +116,6 @@ namespace BaseClasses
             set
             {
                 m_fbX1 = value;
-            }
-        }*/
-
-        private float m_fbX1_AndLips;
-
-        /*
-        public float Fb_X1_AndLips
-        {
-            get
-            {
-                return m_fbX1_AndLips;
-            }
-
-            set
-            {
-                m_fbX1_AndLips = value;
             }
         }*/
 
@@ -136,23 +166,6 @@ namespace BaseClasses
                 m_fbX2 = value;
             }
         }*/
-
-        private float m_fhY2;
-
-        public float Fh_Y2
-        {
-            get
-            {
-                return m_fhY2;
-            }
-
-            set
-            {
-                m_fhY2 = value;
-            }
-        }
-
-        private float m_fLipBase_dim_x;
 
         public CConCom_Plate_JCS()
         {
