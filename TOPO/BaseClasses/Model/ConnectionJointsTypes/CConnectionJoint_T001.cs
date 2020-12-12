@@ -21,10 +21,11 @@ namespace BaseClasses
 
         public CConnectionJoint_T001() { }
 
-        public CConnectionJoint_T001(string sPlateType_ForL, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float ft_temp_main_plate, EPlateNumberAndPositionInJoint ePlateNumberAndPosition)
+        public CConnectionJoint_T001(EJointType jointType_temp, string sPlateType_ForL, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float ft_temp_main_plate, EPlateNumberAndPositionInJoint ePlateNumberAndPosition)
         {
             bIsJointDefinedinGCS = false;
 
+            JointType = jointType_temp;
             m_sPlateType_ForL = sPlateType_ForL;
             m_ePlateNumberAndPosition = ePlateNumberAndPosition;
             m_Node = Node_temp;
@@ -138,7 +139,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_T001(m_sPlateType_ForL, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition);
+            return new CConnectionJoint_T001(JointType, m_sPlateType_ForL, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition);
         }
 
         public override void UpdateJoint()

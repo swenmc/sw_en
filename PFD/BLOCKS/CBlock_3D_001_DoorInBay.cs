@@ -454,8 +454,8 @@ namespace PFD
                         currentColumnToConnectEnd = ColumnRight;
                     }
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eGirt_MainColumn, "LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eGirt_DoorTrimmer, "LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
                 }
             }
 
@@ -471,9 +471,9 @@ namespace PFD
                 //m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, null, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
 
                 if (prop.sDoorType == "Personnel Door")
-                    m_arrConnectionJoints.Add(new CConnectionJoint_TD01(current_member.NodeStart, current_member)); // Personnel door frame base joint
+                    m_arrConnectionJoints.Add(new CConnectionJoint_TD01(EJointType.eBase_DoorFrame, current_member.NodeStart, current_member)); // Personnel door frame base joint
                 else
-                    m_arrConnectionJoints.Add(new CConnectionJoint_TC01(current_member.NodeStart, current_member)); // Roller door trimmer base joint
+                    m_arrConnectionJoints.Add(new CConnectionJoint_TC01(EJointType.eBase_DoorTrimmer, current_member.NodeStart, current_member)); // Roller door trimmer base joint
 
                 // Top
                 CMember mainMemberForColumnJoint = GirtToConnectDoorTrimmers;
@@ -488,15 +488,15 @@ namespace PFD
                     mainMemberForColumnJoint = referenceRafter;
                 }
 
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eDoorFrame_EdgePurlin, "LJ", current_member.NodeEnd, mainMemberForColumnJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
             }
 
             // Lintel (header) Joint
             if (iNumberOfLintels > 0)
             {
                 CMember current_member = m_arrMembers[iMembersGirts + iNumberOfColumns];
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eDoorLintel_Trimmer, "LJ", current_member.NodeStart, m_arrMembers[iMembersGirts], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eDoorLintel_Trimmer, "LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
             }
 
             /*

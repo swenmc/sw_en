@@ -16,10 +16,11 @@ namespace BaseClasses
 
         public CConnectionJoint_TB01() { }
 
-        public CConnectionJoint_TB01(CNode Node_temp, CMember Column_temp)
+        public CConnectionJoint_TB01(EJointType jointType_temp, CNode Node_temp, CMember Column_temp)
         {
             bIsJointDefinedinGCS = false;
 
+            JointType = jointType_temp;
             m_Node = Node_temp;
             m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = Column_temp;
@@ -76,7 +77,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_TB01(m_Node, m_MainMember);
+            return new CConnectionJoint_TB01(JointType, m_Node, m_MainMember);
         }
 
         public override void UpdateJoint()

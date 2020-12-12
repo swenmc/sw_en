@@ -23,10 +23,11 @@ namespace BaseClasses
 
         public CConnectionJoint_S001() { }
 
-        public CConnectionJoint_S001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float fRoofPitch_rad, bool bWindPostEndUnderRafter, bool bSwitchConnectedSide_Z)
+        public CConnectionJoint_S001(EJointType jointType_temp, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float fRoofPitch_rad, bool bWindPostEndUnderRafter, bool bSwitchConnectedSide_Z)
         {
             bIsJointDefinedinGCS = false;
 
+            JointType = jointType_temp;
             m_Node = Node_temp;
             m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainMember_temp;
@@ -428,7 +429,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_S001(m_Node, m_MainMember,m_SecondaryMembers[0], m_fRoofPitch_rad, m_bWindPostEndUnderRafter, m_bSwitchConnectedSide_Z);
+            return new CConnectionJoint_S001(JointType, m_Node, m_MainMember,m_SecondaryMembers[0], m_fRoofPitch_rad, m_bWindPostEndUnderRafter, m_bSwitchConnectedSide_Z);
         }
 
         public override void UpdateJoint()

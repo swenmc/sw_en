@@ -21,10 +21,11 @@ namespace BaseClasses
 
         public CConnectionJoint_A001() { }
 
-        public CConnectionJoint_A001(CNode Node_temp, CMember MainRafter_temp, CMember SecondaryRafter_temp, float fSLope_rad_temp, float fb_temp, float ft, float fJointAngleAboutZ_deg)
+        public CConnectionJoint_A001(EJointType jointType_temp, CNode Node_temp, CMember MainRafter_temp, CMember SecondaryRafter_temp, float fSLope_rad_temp, float fb_temp, float ft, float fJointAngleAboutZ_deg)
         {
             bIsJointDefinedinGCS = true;
 
+            JointType = jointType_temp;
             m_Node = Node_temp;
             m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainRafter_temp;
@@ -67,7 +68,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_A001(m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb, m_ft, m_fJointAngleAboutZ_deg);
+            return new CConnectionJoint_A001(JointType, m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb, m_ft, m_fJointAngleAboutZ_deg);
         }
 
         public override void UpdateJoint()

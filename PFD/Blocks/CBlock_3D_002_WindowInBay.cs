@@ -460,8 +460,8 @@ namespace PFD
                         currentColumnToConnectEnd = ColumnRight;
                     }
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eGirt_EdgeColumn, "LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eGirt_DoorTrimmer, "LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
                 }
             }
 
@@ -473,8 +473,8 @@ namespace PFD
 
                 // Bottom - columns is connected to the concrete foundation or girt (use different type of plate ???)
                 CMember mainMemberForColumnJoint_Bottom = GirtToConnectWindowColumns_Bottom;
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, mainMemberForColumnJoint_Bottom, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eWindowFrame_Girt, "LJ", current_member.NodeStart, mainMemberForColumnJoint_Bottom, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+
                 // Top
                 CMember mainMemberForColumnJoint_Top = GirtToConnectWindowColumns_Top;
 
@@ -488,23 +488,23 @@ namespace PFD
                     mainMemberForColumnJoint_Top = referenceRafter;
                 }
 
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint_Top, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eWindowFrame_Girt, "LJ", current_member.NodeEnd, mainMemberForColumnJoint_Top, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
             }
 
             // Window Header Joint
             for (int i = 0; i < iNumberOfHeaders; i++) // Each created header
             {
                 CMember current_member = m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i];
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eWindowFrame_Header_Sill_WindowFrameColumn, "LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eWindowFrame_Header_Sill_WindowFrameColumn, "LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
             }
 
             // Window Sill Joint
             for (int i = 0; i < iNumberOfSills; i++) // Each created sill
             {
                 CMember current_member = m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i];
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eWindowFrame_Header_Sill_WindowFrameColumn, "LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001(EJointType.eWindowFrame_Header_Sill_WindowFrameColumn, "LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
             }
 
             /*

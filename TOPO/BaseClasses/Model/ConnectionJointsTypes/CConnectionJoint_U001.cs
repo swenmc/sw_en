@@ -46,10 +46,11 @@ namespace BaseClasses
 
         public CConnectionJoint_U001() { }
 
-        public CConnectionJoint_U001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, bool bScrewInPlusZDirection)
+        public CConnectionJoint_U001(EJointType jointType_temp, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, bool bScrewInPlusZDirection)
         {
             bIsJointDefinedinGCS = false;
 
+            JointType = jointType_temp;
             m_Node = Node_temp;
             m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainMember_temp;
@@ -123,7 +124,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_U001(m_Node, m_MainMember, m_SecondaryMembers[0], m_bScrewInPlusZDirection);
+            return new CConnectionJoint_U001(JointType, m_Node, m_MainMember, m_SecondaryMembers[0], m_bScrewInPlusZDirection);
         }
 
         public override void UpdateJoint()

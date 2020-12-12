@@ -14,10 +14,11 @@ namespace BaseClasses
 
         public CConnectionJoint_TA01() { }
 
-        public CConnectionJoint_TA01(CNode Node_temp, CMember MainFrameColumn_temp)
+        public CConnectionJoint_TA01(EJointType jointType_temp, CNode Node_temp, CMember MainFrameColumn_temp)
         {
             bIsJointDefinedinGCS = false;
 
+            JointType = jointType_temp;
             m_Node = Node_temp;
             m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainFrameColumn_temp;
@@ -72,7 +73,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_TA01(m_Node, m_MainMember);
+            return new CConnectionJoint_TA01(JointType, m_Node, m_MainMember);
         }
 
         public override void UpdateJoint()

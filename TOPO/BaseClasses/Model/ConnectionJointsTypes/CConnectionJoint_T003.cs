@@ -26,10 +26,11 @@ namespace BaseClasses
 
         public CConnectionJoint_T003() { }
 
-        public CConnectionJoint_T003(string sPlateType_F_left, string sPlateType_F_right, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float ft_temp_main_plate, EPlateNumberAndPositionInJoint ePlateNumberAndPosition, bool bTopOfPlateInCrscVerticalAxisPlusDirection)
+        public CConnectionJoint_T003(EJointType jointType_temp, string sPlateType_F_left, string sPlateType_F_right, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float ft_temp_main_plate, EPlateNumberAndPositionInJoint ePlateNumberAndPosition, bool bTopOfPlateInCrscVerticalAxisPlusDirection)
         {
             bIsJointDefinedinGCS = false;
 
+            JointType = jointType_temp;
             m_sPlateType_F_left = sPlateType_F_left;
             m_sPlateType_F_right = sPlateType_F_right;
             m_ePlateNumberAndPosition = ePlateNumberAndPosition;
@@ -157,7 +158,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_T003(m_sPlateType_F_left, m_sPlateType_F_right, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition, m_bTopOfPlateInCrscVerticalAxisPlusDirection);
+            return new CConnectionJoint_T003(JointType, m_sPlateType_F_left, m_sPlateType_F_right, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition, m_bTopOfPlateInCrscVerticalAxisPlusDirection);
         }
 
         public override void UpdateJoint()
