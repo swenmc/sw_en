@@ -353,7 +353,7 @@ namespace PFD
             // Index of girt 0 - no bracing 1 - every, 2 - every second girt, 3 - every third girt, ...
             // Poziciu fly bracing - kazdy xx girt nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            bool bUseMainColumnFlyBracingPlates = true; // Use fly bracing plates in girt to column joint
+            bool bUseMainColumnFlyBracingPlates = vm._generalOptionsVM.UseMainColumnFlyBracingPlates; // Use fly bracing plates in girt to column joint
 
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iMainColumnFlyBracing_EveryXXGirt = sGeometryInputData.iMainColumnFlyBracingEveryXXGirt;
@@ -366,7 +366,7 @@ namespace PFD
             // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
             // Poziciu fly bracing - kazda xx purlin nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            bool bUseRafterFlyBracingPlates = true; // Use fly bracing plates in purlin to rafter joint
+            bool bUseRafterFlyBracingPlates = vm._generalOptionsVM.UseRafterFlyBracingPlates; // Use fly bracing plates in purlin to rafter joint
 
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iRafterFlyBracing_EveryXXPurlin = sGeometryInputData.iRafterFlyBracingEveryXXPurlin;
@@ -437,7 +437,7 @@ namespace PFD
             //vm._crossBracingOptionsVM.SetRoofPositions(componentListVM.RafterFlyBracingPosition_Items);
 
             if (!bGeneratePurlins || iRafterFlyBracing_EveryXXPurlin == 0 || iRafterFlyBracing_EveryXXPurlin > iPurlinNoInOneFrame) // Index 0 means do not use fly bracing, more than number of purlins per rafter means no fly bracing too
-                bUseRafterFlyBracingPlates = false;
+                bUseRafterFlyBracingPlates = false;  //To Mato - urcite sa to ma prepisovat, aj ked je to v general Options???
 
             iFrontColumnNoInOneFrame = 0;
 

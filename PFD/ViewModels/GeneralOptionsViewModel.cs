@@ -42,6 +42,9 @@ namespace PFD
         private bool m_CenterlinesDimensions;
         private bool m_OverallDimensions;
 
+        private bool m_UseMainColumnFlyBracingPlates;
+        private bool m_UseRafterFlyBracingPlates;
+
         public bool BracingEverySecondRowOfGirts
         {
             get
@@ -238,6 +241,34 @@ namespace PFD
             }
         }
 
+        public bool UseMainColumnFlyBracingPlates
+        {
+            get
+            {
+                return m_UseMainColumnFlyBracingPlates;
+            }
+
+            set
+            {
+                m_UseMainColumnFlyBracingPlates = value;
+                NotifyPropertyChanged("UseMainColumnFlyBracingPlates");
+            }
+        }
+
+        public bool UseRafterFlyBracingPlates
+        {
+            get
+            {
+                return m_UseRafterFlyBracingPlates;
+            }
+
+            set
+            {
+                m_UseRafterFlyBracingPlates = value;
+                NotifyPropertyChanged("UseRafterFlyBracingPlates");
+            }
+        }
+
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -265,6 +296,9 @@ namespace PFD
 
             m_CenterlinesDimensions = false;
             m_OverallDimensions = true;
+
+            m_UseMainColumnFlyBracingPlates = true;
+            m_UseRafterFlyBracingPlates = true;
 
             IsSetFromCode = false;
         }

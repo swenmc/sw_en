@@ -314,7 +314,7 @@ namespace PFD
             // Index of girt 0 - no bracing 1 - every, 2 - every second girt, 3 - every third girt, ...
             // Poziciu fly bracing - kazdy xx girt nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            bool bUseMainColumnFlyBracingPlates = true; // Use fly bracing plates in girt to column joint
+            bool bUseMainColumnFlyBracingPlates = vm._generalOptionsVM.UseMainColumnFlyBracingPlates; // Use fly bracing plates in girt to column joint
 
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iMainColumnFlyBracing_EveryXXGirt = sGeometryInputData.iMainColumnFlyBracingEveryXXGirt;
@@ -330,7 +330,7 @@ namespace PFD
             // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
             // Poziciu fly bracing - kazda xx purlin nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            bool bUseRafterFlyBracingPlates = true; // Use fly bracing plates in purlin to rafter joint
+            bool bUseRafterFlyBracingPlates = vm._generalOptionsVM.UseRafterFlyBracingPlates; // Use fly bracing plates in purlin to rafter joint
 
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iRafterFlyBracing_EveryXXPurlin = sGeometryInputData.iRafterFlyBracingEveryXXPurlin;
@@ -378,7 +378,7 @@ namespace PFD
             componentListVM.SetColumnFlyBracingPosition_Items(iOneColumnGirtNo);  //zakomentovane 20.12.2019 - nechapem naco to tu je
 
             if (!bGenerateGirts || iMainColumnFlyBracing_EveryXXGirt == 0 || iMainColumnFlyBracing_EveryXXGirt > iGirtNoInOneFrame) // Index 0 means do not use fly bracing, more than number of girts per main column means no fly bracing too
-                bUseMainColumnFlyBracingPlates = false;
+                bUseMainColumnFlyBracingPlates = false;   //To Mato - Urcite sa to ma prepisat ked je to v general Options ???s
 
             float fFirstGirtPosition = fBottomGirtPosition;
             float fFirstPurlinPosition = fDist_Purlin;
