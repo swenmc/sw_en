@@ -301,7 +301,7 @@ namespace BaseClasses
             mesh.Positions = GetDefinitionPoints();
 
             // Add Positions of plate edge nodes
-            loadIndices();
+            //loadIndices(); tato metoda prepisuje znovu triangle indices
             mesh.TriangleIndices = TriangleIndices;
 
             model.Geometry = mesh;            // Set Model Geometry
@@ -353,7 +353,7 @@ namespace BaseClasses
             mesh.Positions = GetDefinitionPoints();
 
             // Add Positions of plate edge nodes
-            loadIndices();
+            //loadIndices(); tato funkcia stale prepisuje TriangleIndices
             mesh.TriangleIndices = TriangleIndices;
 
             model.Geometry = mesh;

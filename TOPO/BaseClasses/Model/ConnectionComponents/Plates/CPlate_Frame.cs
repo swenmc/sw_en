@@ -98,31 +98,33 @@ namespace BaseClasses
         {
             // 2D mirror
             // TODO - doriesit ako budeme zrkadlit 2D, aby sme nepokazili 3D zrkadlenie
-                /*
-                for (int i = 0; i < ITotNoPointsin2D; i++)
-                {
-                    PointsOut2D[i].X *= -1;
-                }
+            /*
+            for (int i = 0; i < ITotNoPointsin2D; i++)
+            {
+                PointsOut2D[i].X *= -1;
+            }
 
-                if (ScrewArrangement != null)
+            if (ScrewArrangement != null)
+            {
+                for (int i = 0; i < ScrewArrangement.IHolesNumber; i++)
                 {
-                    for (int i = 0; i < ScrewArrangement.IHolesNumber; i++)
-                    {
-                        ScrewArrangement.HolesCentersPoints2D[i].X *= -1;
-                        arrConnectorControlPoints3D[i].X *= -1;
-                    }
-                }*/
+                    ScrewArrangement.HolesCentersPoints2D[i].X *= -1;
+                    arrConnectorControlPoints3D[i].X *= -1;
+                }
+            }*/
 
             // 3D mirror
 
-                for (int i = 0; i < ITotNoPointsin3D; i++)
-                {
-                    arrPoints3D[i].Z *= -1;
-                }
-
-            // 3D Triangle Indices
-            for (int i = 0; i < TriangleIndices.Count; i+=3)
+            for (int i = 0; i < ITotNoPointsin3D; i++)
             {
+                arrPoints3D[i].Z *= -1;
+            }
+
+            //To Mato - dlho som hladal, ale problem bol nakoniec inde a to v loadIndices metode,ktora sa volala stale a nacitala nanovo TriangleIndices - ale asi len zo srandy tam nebola :-)
+            // 3D Triangle Indices
+            for (int i = 0; i < TriangleIndices.Count; i += 3)
+            {
+                //if (i != 0 && i != 3 && i != TriangleIndices.Count - 4 && i != TriangleIndices.Count - 7) continue;
                 //int index1 = TriangleIndices[i];
                 int index2 = TriangleIndices[i + 1];
                 int index3 = TriangleIndices[i + 2];
@@ -139,6 +141,7 @@ namespace BaseClasses
             {
                 // TO Ondrej - toto som dorobil, skus sa na to pozriet
                 // Pripadne sa to moze aj presunutut ako samostatna funkcia niekam do Plate Helper ????
+                // To Mato - zatial to nechame tu, ak sa to ma pouzit aj niekde inde, tak potom to mozme presuvat
 
                 if (this is CConCom_Plate_JA)
                 {
@@ -197,7 +200,7 @@ namespace BaseClasses
                 }
                 else
                 {
-                   // Plate KK - not to mirror or exception
+                    // Plate KK - not to mirror or exception
                 }
             }
         }
@@ -215,6 +218,6 @@ namespace BaseClasses
                 this.m_fe_min_x = refPlate.m_fe_min_x;
                 this.m_fe_min_y = refPlate.m_fe_min_y;
             }
-       }
+        }
     }
 }
