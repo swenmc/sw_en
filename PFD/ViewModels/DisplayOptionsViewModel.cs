@@ -3145,7 +3145,7 @@ namespace PFD
             ColorsAccordingToSections = false;
 
             ShowNodesDescription = false;
-            ShowMemberDescription = true;
+            ShowMemberDescription = false;
             ShowMemberID = true;
             ShowMemberPrefix = true;
             ShowMemberRealLength = true;
@@ -3175,6 +3175,7 @@ namespace PFD
                 DisplayMembersCenterLines = true; // Zobrazujeme
                 DisplaySolidModel = false;
                 ShowSlabRebates = false;
+                ShowMemberDescription = false;
             }
 
             ShowLoads = false;
