@@ -94,7 +94,7 @@ namespace BaseClasses
         }
 
         // Mirror plate about XY-plane, screws are orientated in the Z-direction of in LCS of plate
-        public void MirrorPlate()
+        public void MirrorPlate(bool changeScrewsZDirection = false)
         {
             // 2D mirror
             // TODO - doriesit ako budeme zrkadlit 2D, aby sme nepokazili 3D zrkadlenie
@@ -143,60 +143,69 @@ namespace BaseClasses
                 // Pripadne sa to moze aj presunutut ako samostatna funkcia niekam do Plate Helper ????
                 // To Mato - zatial to nechame tu, ak sa to ma pouzit aj niekde inde, tak potom to mozme presuvat
 
+                //podla mna toto trebalo nastavit pre mirrorovanu plate
+                //this.m_bScrewInPlusZDirection = !m_bScrewInPlusZDirection;
+                bool inZDirection = !m_bScrewInPlusZDirection;
+
+                if (changeScrewsZDirection)
+                {
+                    this.m_bScrewInPlusZDirection = !m_bScrewInPlusZDirection;
+                }
+
                 if (this is CConCom_Plate_JA)
                 {
                     CConCom_Plate_JA plate = (CConCom_Plate_JA)this;
-                    ScrewArrangement.Calc_ApexPlateData(0, plate.Fb_X, 0, plate.Fh_Y1, Ft, m_fSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_ApexPlateData(0, plate.Fb_X, 0, plate.Fh_Y1, Ft, m_fSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_JB || this is CConCom_Plate_JBS)
                 {
                     CConCom_Plate_JB plate = (CConCom_Plate_JB)this;
-                    ScrewArrangement.Calc_ApexPlateData(0, plate.Fb_X, plate.Fl_Z, plate.Fh_Y1, Ft, m_fSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_ApexPlateData(0, plate.Fb_X, plate.Fl_Z, plate.Fh_Y1, Ft, m_fSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_JCS)
                 {
                     CConCom_Plate_JCS plate = (CConCom_Plate_JCS)this;
-                    ScrewArrangement.Calc_ApexPlateData(plate.LipBase_dim_x, plate.Fb_X1_AndLips, 0, plate.Fh_Y1, Ft, m_fSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_ApexPlateData(plate.LipBase_dim_x, plate.Fb_X1_AndLips, 0, plate.Fh_Y1, Ft, m_fSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_KA)
                 {
                     CConCom_Plate_KA plate = (CConCom_Plate_KA)this;
-                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, 0, plate.Fh_Y1, Ft, FSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, 0, plate.Fh_Y1, Ft, FSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_KB || this is CConCom_Plate_KBS)
                 {
                     CConCom_Plate_KB plate = (CConCom_Plate_KB)this;
-                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, 0, plate.Fh_Y1, Ft, FSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, 0, plate.Fh_Y1, Ft, FSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_KC || this is CConCom_Plate_KCS)
                 {
                     CConCom_Plate_KC plate = (CConCom_Plate_KC)this;
-                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_KD || this is CConCom_Plate_KDS)
                 {
                     CConCom_Plate_KD plate = (CConCom_Plate_KD)this;
-                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_KES)
                 {
                     CConCom_Plate_KES plate = (CConCom_Plate_KES)this;
-                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_KFS)
                 {
                     CConCom_Plate_KFS plate = (CConCom_Plate_KFS)this;
-                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_KGS)
                 {
                     CConCom_Plate_KGS plate = (CConCom_Plate_KGS)this;
-                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, inZDirection);
                 }
                 else if (this is CConCom_Plate_KHS)
                 {
                     CConCom_Plate_KHS plate = (CConCom_Plate_KHS)this;
-                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, !m_bScrewInPlusZDirection);
+                    ScrewArrangement.Calc_KneePlateData(plate.Fb_X1, plate.Fb_X2, plate.Fl_Z, plate.Fh_Y1, Ft, FSlope_rad, inZDirection);
                 }
                 else
                 {

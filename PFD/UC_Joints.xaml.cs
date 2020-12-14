@@ -1182,7 +1182,12 @@ namespace PFD
                 plate is CConCom_Plate_KGS ||
                 plate is CConCom_Plate_KHS)
                 && joint is CConnectionJoint_B001 && vm.SelectedTabIndex == 1)
-                  ((CPlate_Frame)plate).MirrorPlate(); // Zadný plech - mirror
+            {
+                //toto je podla mna zaplata na zaplatu
+                bool changeScrewDirections = ((CPlate_Frame)joint.m_arrPlates[0]).ScrewInPlusZDirection != ((CPlate_Frame)plate).ScrewInPlusZDirection;
+                ((CPlate_Frame)plate).MirrorPlate(changeScrewDirections); // Zadný plech - mirror
+            }
+                 
 
             joint.m_arrPlates[vm.SelectedTabIndex] = plate;
             joint.UpdateJoint(); // Bug 553
