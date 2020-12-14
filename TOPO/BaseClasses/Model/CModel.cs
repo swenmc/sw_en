@@ -333,6 +333,7 @@ namespace BaseClasses
             float w = 0;
             for (int i = 0; i < frameIndex; i++)
             {
+                if (i >= L1_Bays.Count) continue;
                 w += L1_Bays[i];
             }
             return w;
