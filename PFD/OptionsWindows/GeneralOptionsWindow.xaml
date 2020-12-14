@@ -26,9 +26,9 @@
                 <CheckBox Name="chbBracingEverySecondRowOfGirts" IsChecked="{Binding Path=BracingEverySecondRowOfGirts}">Girts</CheckBox>
                 <CheckBox Name="chbBracingEverySecondRowOfPurlins" IsChecked="{Binding Path=BracingEverySecondRowOfPurlins}">Purlins</CheckBox>
 
-                <TextBlock Text="Fly Bracing Plates" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <!--<TextBlock Text="Fly Bracing Plates" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbUseMainColumnFlyBracingPlates" IsChecked="{Binding Path=UseMainColumnFlyBracingPlates}">Use Main Column Fly Bracing Plates</CheckBox>
-                <CheckBox Name="chbbUseRafterFlyBracingPlates" IsChecked="{Binding Path=UseRafterFlyBracingPlates}">Use Rafter Fly Bracing Plates</CheckBox>
+                <CheckBox Name="chbbUseRafterFlyBracingPlates" IsChecked="{Binding Path=UseRafterFlyBracingPlates}">Use Rafter Fly Bracing Plates</CheckBox>-->
 
                 <TextBlock Text="Wind Post Position" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbPlaceWindPostUnderRafter" IsChecked="{Binding Path=WindPostUnderRafter}">Place wind post under rafter</CheckBox>
