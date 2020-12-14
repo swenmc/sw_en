@@ -114,11 +114,11 @@ namespace PFD
             RightColumnGirtNo = 0;
             iGirtNoInOneFrame = 0;
 
-            int basicCount = 15;
+            int basicCount = 17;
             CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
             CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
-            if (ci_CBW != null) basicCount++;
-            if (ci_CBR != null) basicCount++;
+            //if (ci_CBW != null) basicCount++;
+            //if (ci_CBR != null) basicCount++;
             m_arrMat = new CMat[basicCount];
             m_arrCrSc = new CCrSc[basicCount];
 

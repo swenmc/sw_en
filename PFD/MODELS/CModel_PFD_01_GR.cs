@@ -99,11 +99,11 @@ namespace PFD
             OneColumnGirtNo = 0;
             iGirtNoInOneFrame = 0;
 
-            int basicCount = 15;
+            int basicCount = 17;
             CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
             CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
-            if (ci_CBW != null) basicCount++;
-            if (ci_CBR != null) basicCount++;
+            //if (ci_CBW != null) basicCount++;
+            //if (ci_CBR != null) basicCount++;
 
             m_arrMat = new CMat[basicCount];
             m_arrCrSc = new CCrSc[basicCount];
@@ -1305,6 +1305,7 @@ namespace PFD
                     0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b,
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls],
                     m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
+
                     0f,
                     0.5f * MathF.fPI, // Zakladne pootocenie prierezu / roof pitch sa riesi priamo vo funkcii podla strany budovy pre gable roof
                     cb);

@@ -2660,7 +2660,7 @@ namespace PFD
             // Copy block cross-sections into the model
             for (int i = 1; i < block.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
             {
-                CCrSc foundCrsc = m_arrCrSc.FirstOrDefault(c => c.ID == block.m_arrCrSc[i].ID);
+                CCrSc foundCrsc = m_arrCrSc.FirstOrDefault(c => c != null && c.ID == block.m_arrCrSc[i].ID);
                 if (foundCrsc != null) continue;
 
                 arraysizeoriginal = m_arrCrSc.Length;

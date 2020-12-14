@@ -66,7 +66,7 @@ namespace PFD
         ////////////////////////////////////////////////////////////////////////
 
         bool bDebugging = false;
-        bool bRelease = false;
+        bool bRelease = true;
 
         public CPFDViewModel vm;
         public DisplayOptions sDisplayOptions;
