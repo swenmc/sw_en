@@ -680,31 +680,37 @@ namespace PFD
                     case ESerieTypeCrSc_FS.eSerie_Box_10075:
                         {
                             Components = databaseComponents.arr_Serie_Box_FS_Names;
+                            ComponentIndex = 0;
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_Z:
                         {
                             Components = databaseComponents.arr_Serie_Z_FS_Names;
+                            ComponentIndex = 0;
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_C_single:
                         {
                             Components = databaseComponents.arr_Serie_C_FS_Names;
+                            ComponentIndex = 0;
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_C_back_to_back:
                         {
                             Components = databaseComponents.arr_Serie_C_BtoB_FS_Names;
+                            ComponentIndex = 0;
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_C_nested:
                         {
                             Components = databaseComponents.arr_Serie_C_Nested_FS_Names;
+                            ComponentIndex = 0;
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_Box_63020:
                         {
                             Components = databaseComponents.arr_Serie_Box63020_FS_Names;
+                            ComponentIndex = 0;
                             break;
                         }
                     default:
@@ -860,6 +866,7 @@ namespace PFD
                 Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.DictTEKScrewProperties;
                 List<string> arr_Serie_TEK_Names = dict.Keys.ToList();
                 Components = arr_Serie_TEK_Names;
+                ComponentIndex = 0;
             }
         }
 
