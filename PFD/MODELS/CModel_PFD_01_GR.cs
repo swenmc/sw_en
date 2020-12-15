@@ -1292,23 +1292,27 @@ namespace PFD
                 {
                     if (!cb.WallLeft && !cb.WallRight && !cb.Roof) continue; // Ak nie je v bay zaskrtnute generovanie cross bracing tak pokracujeme dalsou bay
 
-                    GenerateCrossBracingMembersInBay(
-                    bGenerateSideWallCrossBracing && (cb.WallLeft || cb.WallRight),
-                    bGenerateRoofCrossBracing && cb.Roof,
-                    bGenerateGirts,
-                    i_temp_numberofMembers,
-                    new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_max + (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].t_min, 0f),
-                    new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max + (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].t_min, 0f),
-                    0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].b,
-                    0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].b,
-                    0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b,
-                    0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b,
-                    m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls],
-                    m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
+                    //GenerateCrossBracingMembersInBay(
+                    //bGenerateSideWallCrossBracing && (cb.WallLeft || cb.WallRight),
+                    //bGenerateRoofCrossBracing && cb.Roof,
+                    //bGenerateGirts,
+                    //i_temp_numberofMembers,
+                    //new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_max + (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].t_min, 0f),
+                    //new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max + (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].t_min, 0f),
+                    //0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].b,
+                    //0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].b,
+                    //0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b,
+                    //0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b,
+                    //m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls],
+                    //m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof],
 
-                    0f,
-                    0.5f * MathF.fPI, // Zakladne pootocenie prierezu / roof pitch sa riesi priamo vo funkcii podla strany budovy pre gable roof
-                    cb);
+                    //0f,
+                    //0.5f * MathF.fPI, // Zakladne pootocenie prierezu / roof pitch sa riesi priamo vo funkcii podla strany budovy pre gable roof
+                    //cb);
+                    GenerateCrossBracingMembersInBay( bGenerateSideWallCrossBracing, bGenerateRoofCrossBracing, bGenerateGirts, i_temp_numberofMembers,                    
+                        0f,
+                        0.5f * MathF.fPI, // Zakladne pootocenie prierezu / roof pitch sa riesi priamo vo funkcii podla strany budovy pre gable roof
+                        cb);
 
                     i_temp_numberofMembers += cb.NumberOfCrossBracingMembers_Bay; // Navysime celkovy pocet o pocet prutov, ktore boli vygenerovane v danej bay
                 }

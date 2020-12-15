@@ -934,20 +934,40 @@ namespace PFD
         public void GenerateCrossBracingMembersInBay(bool bGenerateSideWallCrossBracing,
             bool bGenerateRoofCrossBracing,
             bool bGenerateGirts,
-            int i_numberofMembers,
-            CMemberEccentricity eccentricity_Walls,
-            CMemberEccentricity eccentricity_Roof,
-            float fAlignmentStart_Walls,
-            float fAlignmentEnd_Walls,
-            float fAlignmentStart_Roof,
-            float fAlignmentEnd_Roof,
-            CCrSc section_CB_Walls,
-            CCrSc section_CB_Roof,
+            int i_numberofMembers,            
             float fMemberRotation_Walls_rad,
             float fMemberRotation_Roof_rad, // Rotation of bracing member about its centerline in radians
             CCrossBracingInfo cb
             )
         {
+            bGenerateSideWallCrossBracing = bGenerateSideWallCrossBracing && (cb.WallLeft || cb.WallRight);
+            bGenerateRoofCrossBracing = bGenerateRoofCrossBracing && cb.Roof;
+
+            CCrSc section_CB_Walls = null;
+            CCrSc section_CB_Roof = null;
+            float fAlignmentStart_Walls = 0f;
+            float fAlignmentEnd_Walls = 0f;
+            float fAlignmentStart_Roof = 0f;
+            float fAlignmentEnd_Roof = 0f;
+            CMemberEccentricity eccentricity_Walls = null;
+            CMemberEccentricity eccentricity_Roof = null;
+
+            if (m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls] != null)
+            {
+                section_CB_Walls = m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls];
+                eccentricity_Walls = new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_max + (float)section_CB_Walls.t_min, 0f);
+                fAlignmentStart_Walls = 0.5f * (float)section_CB_Walls.b;
+                fAlignmentEnd_Walls = 0.5f * (float)section_CB_Walls.b;
+            }
+
+            if (m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] != null)
+            {
+                section_CB_Roof = m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof];
+                eccentricity_Roof = new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max + (float)section_CB_Roof.t_min, 0f);
+                fAlignmentStart_Roof = 0.5f * (float)section_CB_Roof.b;
+                fAlignmentEnd_Roof = 0.5f * (float)section_CB_Roof.b;
+            }       
+
             // Walls
             if (bGenerateSideWallCrossBracing)
             {
