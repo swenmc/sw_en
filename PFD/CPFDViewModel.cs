@@ -1803,6 +1803,7 @@ namespace PFD
             set
             {
                 MFootingChanged = value;
+                SetResultsAreNotValid();
                 if (MSynchronizeGUI) NotifyPropertyChanged("FootingChanged");
             }
         }
