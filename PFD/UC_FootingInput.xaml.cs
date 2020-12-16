@@ -159,7 +159,16 @@ namespace PFD
                 e.PropertyName == "Longitud_Reinf_Intermediate_Phi_FBSide" ||
                 e.PropertyName == "Longitud_Reinf_Intermediate_Count_FBSide" ||
 
-                e.PropertyName == "RebateWidth_FBSide"
+                e.PropertyName == "RebateWidth_FBSide" ||
+
+                //pridavane dalsie parametre pre Footing, aby sa vymazali vysledky a aktivovalo tlacidlo Calculate
+                e.PropertyName == "ConcreteGrade" ||
+                e.PropertyName == "AggregateSize" ||
+                e.PropertyName == "ConcreteDensity" ||
+                e.PropertyName == "ReinforcementGrade" ||                
+                e.PropertyName == "SoilReductionFactor_Phi" ||
+                e.PropertyName == "SoilReductionFactorEQ_Phi" ||
+                e.PropertyName == "SoilBearingCapacity" 
                 )
             {
                 UpdateModelProperties();
