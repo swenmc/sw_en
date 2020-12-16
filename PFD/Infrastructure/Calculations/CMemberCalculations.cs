@@ -234,7 +234,11 @@ namespace PFD.Infrastructure
                     // Uvazujeme rovnomerne rozdelenie do jednotlivych krizov, neplati to vsak pre dlhe budovy
                     // Roof cross-bracing - active bays - uvazovat len tie bays ktore maju krize na celej streche a ktore maju aj krize na oboch stranach side wall bracing
                     // Pocet aktivnych roof bays je minimum pre walls vlavo, vpravo a full crosses bays pre roof
-                    int iNumberOfActiveBays = Math.Min(Math.Min(iNumberOfActiveCrosses_left, iNumberOfActiveCrosses_right), roofFullCrossesBays);
+                    //int iNumberOfActiveBays = Math.Min(Math.Min(iNumberOfActiveCrosses_left, iNumberOfActiveCrosses_right), roofFullCrossesBays);
+                    // Aby sme dostali vysledky pre roof cross-bracing aj ked neexistuju prvky cross-bracing wall
+                    // Umoznime design aj pre prvky roof aj ked sa sila neprenasa do wall cross-bracing members.
+                    // Je mozne uvazovat ze sila z roof cross-bracing sa prenesie ako ohybove zatazenie do stlpov (to vsak neuvazujeme :-)
+                    int iNumberOfActiveBays = roofFullCrossesBays;
 
                     // Pomocny vypocet - vietor alebo zemetrasenie
                     if (lc.Type == ELCType.eWind || lc.Type == ELCType.eEarthquake)
