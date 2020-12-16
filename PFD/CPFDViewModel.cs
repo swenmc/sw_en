@@ -247,6 +247,8 @@ namespace PFD
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
         [NonSerialized]
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
+        [NonSerialized]
+        public List<CFootingLoadCombinationRatio_ULS> FootingDesignResults_ULS;
 
         [NonSerialized]
         public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
@@ -3467,6 +3469,7 @@ namespace PFD
             MemberDesignResults_ULS = mdc.MemberDesignResults_ULS;
             MemberDesignResults_SLS = mdc.MemberDesignResults_SLS;
             JointDesignResults_ULS = mdc.JointDesignResults_ULS;
+            FootingDesignResults_ULS = mdc.FootingDesignResults_ULS;
 
             sDesignResults_ULSandSLS = mdc.sDesignResults_ULSandSLS;
             sDesignResults_ULS = mdc.sDesignResults_ULS;
