@@ -14,7 +14,7 @@ namespace BaseClasses
         private CLoadCombination MLoadCombination;
         private float MMaximumDesignRatio;
 
-        //private designInternalForces MDesignInternalForces;
+        private designInternalForces MDesignInternalForces;
 
 
         public CMember Member
@@ -69,18 +69,18 @@ namespace BaseClasses
             }
         }
 
-        //public designInternalForces DesignInternalForces
-        //{
-        //    get
-        //    {
-        //        return MDesignInternalForces;
-        //    }
+        public designInternalForces DesignInternalForces
+        {
+            get
+            {
+                return MDesignInternalForces;
+            }
 
-        //    set
-        //    {
-        //        MDesignInternalForces = value;
-        //    }
-        //}
+            set
+            {
+                MDesignInternalForces = value;
+            }
+        }
 
         public CFoundation Footing
         {
@@ -99,14 +99,14 @@ namespace BaseClasses
         {
 
         }
-        public CFootingLoadCombinationRatio_ULS(CMember member, CConnectionJointTypes joint, CFoundation footing, CLoadCombination loadCombination, float maxDesignRatio)
+        public CFootingLoadCombinationRatio_ULS(CMember member, CConnectionJointTypes joint, CFoundation footing, CLoadCombination loadCombination, float maxDesignRatio, designInternalForces designIF)
         {
             Member = member;
             Joint = joint;
             Footing = footing;
             LoadCombination = loadCombination;
             MaximumDesignRatio = maxDesignRatio;
-            //DesignInternalForces = designInternalForces; //toto neviem,ci nam treba
+            DesignInternalForces = designIF;
         }
     }
 }

@@ -719,7 +719,7 @@ namespace PFD.Infrastructure
                         // End Joint
                         JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointEnd, lcomb, jointDesignModel.fDesignRatio_End, sjointEndDIF_x));
 
-                        FootingDesignResults_ULS.Add(new CFootingLoadCombinationRatio_ULS(m, jointDesignModel.footingJoint, jointDesignModel.footing, lcomb, jointDesignModel.fDesignRatio_footing));
+                        FootingDesignResults_ULS.Add(new CFootingLoadCombinationRatio_ULS(m, jointDesignModel.footingJoint, jointDesignModel.footing, lcomb, jointDesignModel.fDesignRatio_footing, jointDesignModel.footingIF));
 
                         // Output (for debugging - member results)
                         bool bDebugging = false; // Testovacie ucely

@@ -11,6 +11,7 @@ using BaseClasses;
 using System.Collections.ObjectModel;
 using DATABASE.DTO;
 using DATABASE;
+using BaseClasses.Helpers;
 
 namespace PFD
 {
@@ -265,7 +266,7 @@ namespace PFD
 
             foreach (CConnectionDescription c in AllJointTypes)
             {
-                CJointLoadCombinationRatio_ULS res = FindResultWithMaximumDesignRatio(JointDesignResults_ULS.Where(j => (int)j.Joint.JointType == c.ID));
+                CJointLoadCombinationRatio_ULS res = CJointHelper.FindResultWithMaximumDesignRatio(JointDesignResults_ULS.Where(j => (int)j.Joint.JointType == c.ID));
                 if(res != null) items.Add(new JointDesignResultItem(c.Name, c.JoinType, res.LoadCombination.Name, res.Joint.ID, res.MaximumDesignRatio));
             }
             
@@ -273,28 +274,7 @@ namespace PFD
         }
 
 
-        private CJointLoadCombinationRatio_ULS FindResultWithMaximumDesignRatio(IEnumerable<CJointLoadCombinationRatio_ULS> results)
-        {
-            CJointLoadCombinationRatio_ULS result = null;
-            float maxDesignRatio = float.MinValue;
-            foreach (CJointLoadCombinationRatio_ULS r in results)
-            {
-                if (r.MaximumDesignRatio > maxDesignRatio) { result = r; maxDesignRatio = r.MaximumDesignRatio; }
-
-            }
-            return result;
-        }
-        private CFootingLoadCombinationRatio_ULS FindResultWithMaximumDesignRatio(IEnumerable<CFootingLoadCombinationRatio_ULS> results)
-        {
-            CFootingLoadCombinationRatio_ULS result = null;
-            float maxDesignRatio = float.MinValue;
-            foreach (CFootingLoadCombinationRatio_ULS r in results)
-            {
-                if (r.MaximumDesignRatio > maxDesignRatio) { result = r; maxDesignRatio = r.MaximumDesignRatio; }
-
-            }
-            return result;
-        }
+        
 
         private void LoadFootingDesignSummaryResults()
         {
@@ -325,12 +305,12 @@ namespace PFD
             IEnumerable<CFootingLoadCombinationRatio_ULS> tc_results = FootingDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TC01);
             IEnumerable<CFootingLoadCombinationRatio_ULS> td_results = FootingDesignResults_ULS.Where(j => j.Joint is CConnectionJoint_TD01);
 
-            CFootingLoadCombinationRatio_ULS res_ta_MC = FindResultWithMaximumDesignRatio(ta_results_MC);
-            CFootingLoadCombinationRatio_ULS res_ta_EC = FindResultWithMaximumDesignRatio(ta_results_EC);
-            CFootingLoadCombinationRatio_ULS res_tb_WPF = FindResultWithMaximumDesignRatio(tb_results_WPF);
-            CFootingLoadCombinationRatio_ULS res_tb_WPB = FindResultWithMaximumDesignRatio(tb_results_WPB);
-            CFootingLoadCombinationRatio_ULS res_tc = FindResultWithMaximumDesignRatio(tc_results);
-            CFootingLoadCombinationRatio_ULS res_td = FindResultWithMaximumDesignRatio(td_results);
+            CFootingLoadCombinationRatio_ULS res_ta_MC = CJointHelper.FindResultWithMaximumDesignRatio(ta_results_MC);
+            CFootingLoadCombinationRatio_ULS res_ta_EC = CJointHelper.FindResultWithMaximumDesignRatio(ta_results_EC);
+            CFootingLoadCombinationRatio_ULS res_tb_WPF = CJointHelper.FindResultWithMaximumDesignRatio(tb_results_WPF);
+            CFootingLoadCombinationRatio_ULS res_tb_WPB = CJointHelper.FindResultWithMaximumDesignRatio(tb_results_WPB);
+            CFootingLoadCombinationRatio_ULS res_tc = CJointHelper.FindResultWithMaximumDesignRatio(tc_results);
+            CFootingLoadCombinationRatio_ULS res_td = CJointHelper.FindResultWithMaximumDesignRatio(td_results);
             
             if (res_ta_MC != null) items.Add(new JointDesignResultItem(res_ta_MC.Member.Name, GetFootingTypeAcordingToMemberType(res_ta_MC.Member.EMemberTypePosition), res_ta_MC.LoadCombination.Name, res_ta_MC.Joint.ID, res_ta_MC.MaximumDesignRatio));
             if (res_ta_EC != null) items.Add(new JointDesignResultItem(res_ta_EC.Member.Name, GetFootingTypeAcordingToMemberType(res_ta_EC.Member.EMemberTypePosition), res_ta_EC.LoadCombination.Name, res_ta_EC.Joint.ID, res_ta_EC.MaximumDesignRatio));

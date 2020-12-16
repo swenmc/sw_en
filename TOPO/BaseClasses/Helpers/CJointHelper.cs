@@ -281,5 +281,29 @@ namespace BaseClasses.Helpers
 
             return new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fCrscWebMiddlePart, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow, positionOfExtraScrews_y, 0.05f, 0.03f);
         }
+
+
+        public static CJointLoadCombinationRatio_ULS FindResultWithMaximumDesignRatio(IEnumerable<CJointLoadCombinationRatio_ULS> results)
+        {
+            CJointLoadCombinationRatio_ULS result = null;
+            float maxDesignRatio = float.MinValue;
+            foreach (CJointLoadCombinationRatio_ULS r in results)
+            {
+                if (r.MaximumDesignRatio > maxDesignRatio) { result = r; maxDesignRatio = r.MaximumDesignRatio; }
+
+            }
+            return result;
+        }
+        public static CFootingLoadCombinationRatio_ULS FindResultWithMaximumDesignRatio(IEnumerable<CFootingLoadCombinationRatio_ULS> results)
+        {
+            CFootingLoadCombinationRatio_ULS result = null;
+            float maxDesignRatio = float.MinValue;
+            foreach (CFootingLoadCombinationRatio_ULS r in results)
+            {
+                if (r.MaximumDesignRatio > maxDesignRatio) { result = r; maxDesignRatio = r.MaximumDesignRatio; }
+
+            }
+            return result;
+        }
     }
 }

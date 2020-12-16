@@ -20,6 +20,7 @@ namespace M_BASE
         public float fDesignRatio_footing = 0; // Neviem ci to tu potrebujeme ,potrebovali by sme nejako krajsie oddelit vypocet footing od joints
         public CConnectionJointTypes footingJoint;
         public CFoundation footing;
+        public designInternalForces footingIF;
 
         public CJointDesign(bool bDebugging_temp = false)
         {
@@ -36,20 +37,8 @@ namespace M_BASE
             // Design
             sjointStartDIF_x = new designInternalForces();
             sjointEndDIF_x = new designInternalForces();
-
-            ////-------------------------------------------------------------------------------------------------------------
-            //// TODO Ondrej, tu asi musime posielat do vypoctu nastavenia z UC_Footings a nie objekt ako null
-            //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
-            //CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
-            //FootingCalcSettings.ConcreteGrade = "30";
-            //FootingCalcSettings.AggregateSize = 0.02f;
-            //FootingCalcSettings.ConcreteDensity = 2300f;
-            //FootingCalcSettings.ReinforcementGrade = "500E";
-            //FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
-            //FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
-            //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
-            //FootingCalcSettings.FloorSlabThickness = 0.125f;
-            ////-------------------------------------------------------------------------------------------------------------
+                        
+            //-------------------------------------------------------------------------------------------------------------
 
             for (int j = 0; j < iNumberOfDesignSections; j++)
             {
@@ -70,6 +59,7 @@ namespace M_BASE
                             fDesignRatio_footing = obj_CalcDesign.fEta_max_footing;
                             footingJoint = obj_CalcDesign.joint;
                             footing = obj_CalcDesign.footing;
+                            footingIF = sjointStartDIF_x;
                         }
                     }
                     else // End Joint Design
@@ -85,6 +75,7 @@ namespace M_BASE
                             fDesignRatio_footing = obj_CalcDesign.fEta_max_footing;
                             footingJoint = obj_CalcDesign.joint;
                             footing = obj_CalcDesign.footing;
+                            footingIF = sjointEndDIF_x;
                         }
                     }
                 }
