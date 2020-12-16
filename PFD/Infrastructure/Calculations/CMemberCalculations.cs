@@ -421,6 +421,11 @@ namespace PFD.Infrastructure
                     }
                 }
 
+                if (m.ID == 69 && sBIF_x[0].fN == float.PositiveInfinity)
+                {
+                    throw new Exception("Bug 654 - Prut wall cross-bracing pre wall by sa nemal generovat a ked sa uz generuje, tak by mal mat bIFcalculate a bDesign na false.");
+                }
+
                 if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, /*sMomentValuesforCb,*/ sBucklingLengthFactors));
                 //if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
             }
