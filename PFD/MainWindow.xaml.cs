@@ -851,6 +851,7 @@ namespace PFD
         {
             foreach (CCrSc_TW crsc in vm.Model.m_arrCrSc)
             {
+                if (crsc == null) continue;
                 // TODO - zjednotit nazvy prierezov v database a v GUI programu
                 // TODO - zaviest v databaze meno prierezu ktore sa ma zobrazovat a meno pouzite pre identifikaciu (mozno enum)
                 /*
