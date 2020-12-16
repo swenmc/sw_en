@@ -653,6 +653,10 @@ namespace PFD
                 BtnExportToPDF.Visibility = Visibility.Hidden;
                 BtnSavePlate.Visibility = Visibility.Hidden;
                 BtnLoadPlate.Visibility = Visibility.Hidden;
+
+                Grid.SetRow(txtParameters, 4);
+                Grid.SetRow(DataGridDetails, 5);
+                Grid.SetRowSpan(DataGridDetails, 5);
             }
             else if (vm.ComponentTypeIndex == 1) //plate
             {
@@ -733,6 +737,10 @@ namespace PFD
                     LabelAmountLH.Visibility = Visibility.Hidden;
                     TextBoxAmountLH.Visibility = Visibility.Hidden;
                 }
+                                
+                Grid.SetRow(txtParameters, 8);
+                Grid.SetRow(DataGridDetails, 9);
+                Grid.SetRowSpan(DataGridDetails, 1);
             }
             else if (vm.ComponentTypeIndex == 2) //screw
             {
@@ -769,6 +777,10 @@ namespace PFD
                 BtnExportToPDF.Visibility = Visibility.Hidden;
                 BtnSavePlate.Visibility = Visibility.Hidden;
                 BtnLoadPlate.Visibility = Visibility.Hidden;
+
+                Grid.SetRow(txtParameters, 4);
+                Grid.SetRow(DataGridDetails, 5);
+                Grid.SetRowSpan(DataGridDetails, 5);
             }
 
             //uncheck all Transformation Options
