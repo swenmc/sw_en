@@ -476,10 +476,16 @@ namespace PFD
         
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            List<ModelValidationError> errors = ValidationHelper.ValidateModel(vm.Model);
+            List<ModelValidationError> errors = ValidationHelper.ValidateModel(vm.Model);            
             if (errors.Count > 0)
             {
                 MessageBox.Show(ValidationHelper.GetErrorsString(errors));
+                return;
+            }
+
+            if (vm.RecreateModel == true)
+            {
+                MessageBox.Show("Changes were made. It is necessary to recreate model first.");
                 return;
             }
 
@@ -487,7 +493,7 @@ namespace PFD
             // Clear results of previous calculation
             //DeleteCalculationResults();
 
-            // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
+                // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
             SetMaterialValuesFromDatabase();
             SetCrossSectionValuesFromDatabase();
 
