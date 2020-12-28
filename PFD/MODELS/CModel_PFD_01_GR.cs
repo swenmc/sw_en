@@ -632,7 +632,7 @@ namespace PFD
             }
 
             //----------------------------------------------------------------------------------------------------------------------------
-            // Cross-bracing            
+            // Cross-bracing
             bool bGenerateSideWallCrossBracing = false;
             if(ci_CBW != null && ci_CBW.Generate != null) bGenerateSideWallCrossBracing = ci_CBW.Generate.Value;
                         
@@ -694,8 +694,50 @@ namespace PFD
 
             //----------------------------------------------------------------------------------------------------------------------------
 
-            m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame];
-            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total];
+
+            //----------------------------------------------------------------------------------------------------------------------------
+            // Canopies
+
+            bool bGenerateCanopies = true;
+
+            // Canopy Purlins
+            int iCanopyPurlinsInBay_1 = 3; // TODO - vypocitat podla sirky, resp zavat priamo v GUI
+            int iCanopyPurlinsInBay_2 = 2; // TODO - vypocitat podla sirky, resp zavat priamo v GUI
+
+            int iCanopyPurlins_1 = iCanopyPurlinsInBay_1 * 1; // Jedna bay
+            int iCanopyPurlins_2 = iCanopyPurlinsInBay_2 * 2; // Dve bays
+
+            int iCanopyRafterNodes_Total = 0;
+            int iCanopyRafterOverhangs_Total = 0;
+            int iCanopyPurlinNodes_Total = 0;
+            int iCanopyPurlins_Total = 0;
+
+            if (bGenerateCanopies)
+            {
+                // Rafter Nodes
+                int iCanopyRafterNodes_1 = 2;
+                int iCanopyRafterNodes_2 = 3;
+                // Rafter Overhangs
+                int iCanopyRafterOverhangs_1 = 2;
+                int iCanopyRafterOverhangs_2 = 3;
+
+                // Canopy Purlins Nodes
+                int iCanopyPurlinNodes_1 = 2 * iCanopyPurlins_1;
+                int iCanopyPurlinNodes_2 = 2 * iCanopyPurlins_2;
+
+                iCanopyRafterNodes_Total = iCanopyRafterNodes_1 + iCanopyRafterNodes_2;
+                // Rafter Overhangs
+                iCanopyRafterOverhangs_Total = iCanopyRafterOverhangs_1 + iCanopyRafterOverhangs_2;
+                // Canopy Purlins Nodes
+                iCanopyPurlinNodes_Total = iCanopyPurlinNodes_1 + iCanopyPurlinNodes_2;
+                // Canopy Purlins
+                iCanopyPurlins_Total = iCanopyPurlins_1 + iCanopyPurlins_2;
+            }
+
+            //----------------------------------------------------------------------------------------------------------------------------
+
+            m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame + iCanopyRafterNodes_Total + iCanopyPurlinNodes_Total];
+            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total+ iCanopyRafterOverhangs_Total + iCanopyPurlins_Total];
 
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
 
@@ -1267,6 +1309,7 @@ namespace PFD
                 EMemberType_FS_Position.BracingBlockGirtsBackSide, fColumnsRotation, bUseGBEverySecond);
             }
 
+            i_temp_numberofNodes += bGenerateGirtBracingBackSide ? iNumberOfGB_BSNodesInOneFrame : 0;
             i_temp_numberofMembers += bGenerateGirtBracingBackSide ? iNumberOfGB_BSMembersInOneFrame : 0;
 
 
@@ -1319,11 +1362,149 @@ namespace PFD
             }
             //----------------------------------------------------------------------------------------------------------------------------
 
+            // Canopies
+            if(bGenerateCanopies)
+            {
+                // Zoznam indexov ramov na ktorych sa ma vytvorit uzol pre rafter
+                // Samostatne pre lavu a pravu stranu budovy
+                List<int> FrameIndexList_Left = new List<int>() { 0, 1 };
+                List<int> FrameIndexList_Right = new List<int>() { 1, 2, 3 };
 
+                float fCanopyWidth_1 = 6;
+                float fCanopyWidth_2 = 3;
 
+                float fCanopy1_EdgeCoordinate_z = fCanopyWidth_1 * (float)Math.Tan(-fRoofPitch_rad);
+                float fCanopy2_EdgeCoordinate_z = fCanopyWidth_2 * (float)Math.Tan(-fRoofPitch_rad);
 
+                // Rafter Nodes
+                // Canoopy 1
+                m_arrNodes[i_temp_numberofNodes] = new CNode(i_temp_numberofNodes + 0 + 1, 0 - fCanopyWidth_1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[0]), fH1_frame_centerline + fCanopy1_EdgeCoordinate_z, 0);
+                m_arrNodes[i_temp_numberofNodes + 1] = new CNode(i_temp_numberofNodes + 1 + 1, 0 - fCanopyWidth_1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[1]), fH1_frame_centerline + fCanopy1_EdgeCoordinate_z, 0);
 
+                // Canopy 2
+                m_arrNodes[i_temp_numberofNodes + 2] = new CNode(i_temp_numberofNodes + 2 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[0]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
+                m_arrNodes[i_temp_numberofNodes + 3] = new CNode(i_temp_numberofNodes + 3 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[1]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
+                m_arrNodes[i_temp_numberofNodes + 4] = new CNode(i_temp_numberofNodes + 4 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[2]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
 
+                int iFirstCanopy1RafterNodeIndex = i_temp_numberofNodes;
+                int iFirstCanopy2RafterNodeIndex = i_temp_numberofNodes + 2;
+
+                i_temp_numberofNodes += iCanopyRafterNodes_Total;
+
+                // ToDo v cykle cez Canopy purlins
+                float fCanopy1_PurlinSpacing = fCanopyWidth_1 / iCanopyPurlinsInBay_1;
+
+                float fCanopy1_PurlinCoordinate_x1 = 1 * fCanopy1_PurlinSpacing;
+                float fCanopy1_PurlinCoordinate_x2 = 2 * fCanopy1_PurlinSpacing;
+                float fCanopy1_PurlinCoordinate_x3 = fCanopyWidth_1;
+
+                float fCanopy1_PurlinCoordinate_z1 = fCanopy1_PurlinCoordinate_x1 * (float)Math.Tan(-fRoofPitch_rad);
+                float fCanopy1_PurlinCoordinate_z2 = fCanopy1_PurlinCoordinate_x2 * (float)Math.Tan(-fRoofPitch_rad);
+                float fCanopy1_PurlinCoordinate_z3 = fCanopy1_EdgeCoordinate_z;
+
+                float fCanopy2_PurlinSpacing = fCanopyWidth_2 / iCanopyPurlinsInBay_2;
+
+                float fCanopy2_PurlinCoordinate_x1 = 1 * fCanopy2_PurlinSpacing;
+                float fCanopy2_PurlinCoordinate_x2 = fCanopyWidth_2;
+
+                float fCanopy2_PurlinCoordinate_z1 = fCanopy2_PurlinCoordinate_x1 * (float)Math.Tan(-fRoofPitch_rad);
+                float fCanopy2_PurlinCoordinate_z2 = fCanopy2_EdgeCoordinate_z;
+
+                // Purlin Nodes
+                int iFirstCanopy1_PurlinNodeIndex = i_temp_numberofNodes;
+
+                // Canopy 1
+                m_arrNodes[i_temp_numberofNodes] = new CNode(i_temp_numberofNodes + 1, 0 - fCanopy1_PurlinCoordinate_x1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[0]), fH1_frame_centerline + fCanopy1_PurlinCoordinate_z1, 0);
+                m_arrNodes[i_temp_numberofNodes + 1] = new CNode(i_temp_numberofNodes + 1 + 1, 0 - fCanopy1_PurlinCoordinate_x2, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[0]), fH1_frame_centerline + fCanopy1_PurlinCoordinate_z2, 0);
+                m_arrNodes[i_temp_numberofNodes + 2] = new CNode(i_temp_numberofNodes + 2 + 1, 0 - fCanopy1_PurlinCoordinate_x3, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[0]), fH1_frame_centerline + fCanopy1_PurlinCoordinate_z3, 0);
+
+                m_arrNodes[i_temp_numberofNodes + 3] = new CNode(i_temp_numberofNodes + 3 + 1, 0 - fCanopy1_PurlinCoordinate_x1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[1]), fH1_frame_centerline + fCanopy1_PurlinCoordinate_z1, 0);
+                m_arrNodes[i_temp_numberofNodes + 4] = new CNode(i_temp_numberofNodes + 4 + 1, 0 - fCanopy1_PurlinCoordinate_x2, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[1]), fH1_frame_centerline + fCanopy1_PurlinCoordinate_z2, 0);
+                m_arrNodes[i_temp_numberofNodes + 5] = new CNode(i_temp_numberofNodes + 5 + 1, 0 - fCanopy1_PurlinCoordinate_x3, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[1]), fH1_frame_centerline + fCanopy1_PurlinCoordinate_z3, 0);
+
+                // Canopy 2
+                int iFirstCanopy2_PurlinNodeIndex = i_temp_numberofNodes + 2 * iCanopyPurlins_1;
+                m_arrNodes[i_temp_numberofNodes + 2 * iCanopyPurlins_1] = new CNode(i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 1, fW_frame_centerline + fCanopy2_PurlinCoordinate_x1, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[0]), fH1_frame_centerline + fCanopy2_PurlinCoordinate_z1, 0);
+                m_arrNodes[i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 1] = new CNode(i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 1 + 1, fW_frame_centerline + fCanopy2_PurlinCoordinate_x2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[0]), fH1_frame_centerline + fCanopy2_PurlinCoordinate_z2, 0);
+
+                m_arrNodes[i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 2] = new CNode(i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 2 + 1, fW_frame_centerline + fCanopy2_PurlinCoordinate_x1, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[1]), fH1_frame_centerline + fCanopy2_PurlinCoordinate_z1, 0);
+                m_arrNodes[i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 3] = new CNode(i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 3 + 1, fW_frame_centerline + fCanopy2_PurlinCoordinate_x2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[1]), fH1_frame_centerline + fCanopy2_PurlinCoordinate_z2, 0);
+
+                m_arrNodes[i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 4] = new CNode(i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 4 + 1, fW_frame_centerline + fCanopy2_PurlinCoordinate_x1, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[1]), fH1_frame_centerline + fCanopy2_PurlinCoordinate_z1, 0);
+                m_arrNodes[i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 5] = new CNode(i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 5 + 1, fW_frame_centerline + fCanopy2_PurlinCoordinate_x2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[1]), fH1_frame_centerline + fCanopy2_PurlinCoordinate_z2, 0);
+
+                m_arrNodes[i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 6] = new CNode(i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 6 + 1, fW_frame_centerline + fCanopy2_PurlinCoordinate_x1, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[2]), fH1_frame_centerline + fCanopy2_PurlinCoordinate_z1, 0);
+                m_arrNodes[i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 7] = new CNode(i_temp_numberofNodes + 2 * iCanopyPurlins_1 + 7 + 1, fW_frame_centerline + fCanopy2_PurlinCoordinate_x2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[2]), fH1_frame_centerline + fCanopy2_PurlinCoordinate_z2, 0);
+
+                i_temp_numberofNodes += iCanopyPurlinNodes_Total;
+
+                // Rafter Members
+                // Canopy 1
+                float fRafterEdgeAlingment_Left = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max;
+                float fRafterEdgeAlingment_Right = (float)Math.Abs(m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min);
+
+                // Frame Node Indices
+                // 0 - base left, 1 - knee left, 2 - apex, 3 - knee right, 4 - base right // gable roof
+                /*
+                    2
+                   / \
+                  /   \
+              1  /     \  3
+                |       |
+                |       |
+                |       |
+              0           4
+               */
+                // 0 - base left, 1 - knee left, 2 - knee right, 3 - base right // monopitch roof
+                /*
+                   2
+                  /|
+                 / |
+             1  /  | 3
+               |   |
+               |   |
+               |   |
+             0       4
+              */
+
+                int iLeftKneeNodeIndexInFrame = 1; // Left knee - Gable roof
+                m_arrMembers[i_temp_numberofMembers] = new CMember(i_temp_numberofMembers + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[0] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+                m_arrMembers[i_temp_numberofMembers + 1] = new CMember(i_temp_numberofMembers + 1 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex+1], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[1] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+
+                // Canopy 2
+                int iRightKneeNodeIndexInFrame = 3; // Right knee - Gable roof
+                m_arrMembers[i_temp_numberofMembers + 2] = new CMember(i_temp_numberofMembers + 2 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[0] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex],  m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                m_arrMembers[i_temp_numberofMembers + 3] = new CMember(i_temp_numberofMembers + 3 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[1] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex + 1], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                m_arrMembers[i_temp_numberofMembers + 4] = new CMember(i_temp_numberofMembers + 4 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[2] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex + 2], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+
+                i_temp_numberofMembers += iCanopyRafterOverhangs_Total;
+
+                // Purlin Members
+                // Canopy 1
+                m_arrMembers[i_temp_numberofMembers] = new CMember(i_temp_numberofMembers + 0 + 1, m_arrNodes[iFirstCanopy1_PurlinNodeIndex], m_arrNodes[iFirstCanopy1_PurlinNodeIndex + iCanopyPurlins_1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers], iNumberOfTransverseSupports_Purlins);
+
+                m_arrMembers[i_temp_numberofMembers + 1] = new CMember(i_temp_numberofMembers + 1 + 1, m_arrNodes[iFirstCanopy1_PurlinNodeIndex+1], m_arrNodes[iFirstCanopy1_PurlinNodeIndex + iCanopyPurlins_1 + 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + 1], iNumberOfTransverseSupports_Purlins);
+
+                m_arrMembers[i_temp_numberofMembers + 2] = new CMember(i_temp_numberofMembers + 2 + 1, m_arrNodes[iFirstCanopy1_PurlinNodeIndex+2], m_arrNodes[iFirstCanopy1_PurlinNodeIndex + iCanopyPurlins_1 + 2], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + 2], iNumberOfTransverseSupports_Purlins);
+
+                // Canopy 2
+                m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1] = new CMember(i_temp_numberofMembers + iCanopyPurlins_1 + 0 + 1, m_arrNodes[iFirstCanopy2_PurlinNodeIndex], m_arrNodes[iFirstCanopy2_PurlinNodeIndex + iCanopyPurlins_2], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1], iNumberOfTransverseSupports_Purlins);
+
+                m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1 + 1] = new CMember(i_temp_numberofMembers + iCanopyPurlins_1 + 1 + 1, m_arrNodes[iFirstCanopy2_PurlinNodeIndex + 1], m_arrNodes[iFirstCanopy2_PurlinNodeIndex + iCanopyPurlins_2 + 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1 + 1], iNumberOfTransverseSupports_Purlins);
+
+                m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1 + 2] = new CMember(i_temp_numberofMembers + iCanopyPurlins_1 + 2 + 1, m_arrNodes[iFirstCanopy2_PurlinNodeIndex + 2], m_arrNodes[iFirstCanopy2_PurlinNodeIndex + iCanopyPurlins_2 + 2], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1 + 2], iNumberOfTransverseSupports_Purlins);
+
+                m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1 + 3] = new CMember(i_temp_numberofMembers + iCanopyPurlins_1 + 3 + 1, m_arrNodes[iFirstCanopy2_PurlinNodeIndex + 3], m_arrNodes[iFirstCanopy2_PurlinNodeIndex + iCanopyPurlins_2 + 3], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1 + 3], iNumberOfTransverseSupports_Purlins);
+
+                i_temp_numberofMembers += iCanopyPurlins_Total;
+            }
 
             ValidateIDs();
 
