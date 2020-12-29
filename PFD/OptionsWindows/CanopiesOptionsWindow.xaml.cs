@@ -89,6 +89,8 @@ namespace PFD
                 vm.CanopiesList[i - 1].WidthRight = vm.WidthRight;
                 vm.CanopiesList[i - 1].PurlinCountLeft = vm.PurlinCountLeft;
                 vm.CanopiesList[i - 1].PurlinCountRight = vm.PurlinCountRight;
+                vm.CanopiesList[i - 1].IsCrossBracedLeft = vm.IsCrossBracedLeft;
+                vm.CanopiesList[i - 1].IsCrossBracedRight = vm.IsCrossBracedRight;
             }
         }
     }

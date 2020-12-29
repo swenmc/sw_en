@@ -251,6 +251,8 @@ namespace PFD
 
             initBays(baysNum);
 
+            bool debug = true;
+
             ObservableCollection<CCanopiesInfo> items = new ObservableCollection<CCanopiesInfo>();
 
             for (int i = 1; i <= baysNum; i++)
@@ -258,13 +260,15 @@ namespace PFD
                 CCanopiesInfo ci = new CCanopiesInfo(i, false, false, 0,0,0,0, false, false);
 
                 // TODO Ondrej - !!!!! len v debugu !!!!! Nastavit debug na true a if pre debug
+                if (debug)
+                {
+                    // Default - docasne pridavam pre ucely vyvoja a rychlejsieho testovania
+                    if (i == 1) // Left - 1st bay
+                        ci = new CCanopiesInfo(i, true, false, 6, 0, 3, 0, true, false);
 
-                // Default - docasne pridavam pre ucely vyvoja a rychlejsieho testovania
-                if (i == 1) // Left - 1st bay
-                    ci = new CCanopiesInfo(i, true, false, 6, 0, 3, 0, true, false);
-
-                if (i == 2 || i == 3) // Right - 2nd and 3rd bay
-                    ci = new CCanopiesInfo(i, false, true, 0, 3, 0, 2, false, false);
+                    if (i == 2 || i == 3) // Right - 2nd and 3rd bay
+                        ci = new CCanopiesInfo(i, false, true, 0, 3, 0, 2, false, false);
+                }
 
                 items.Add(ci);
             }
@@ -273,7 +277,8 @@ namespace PFD
 
             Left = false;
             Right = false;
-            
+            IsCrossBracedLeft = false;
+            IsCrossBracedRight = false;
 
             IsSetFromCode = false;
         }

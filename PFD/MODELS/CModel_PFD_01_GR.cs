@@ -1454,10 +1454,10 @@ namespace PFD
                         fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Left.Last() - 1].WidthLeft; // Previous Bay Canopy Width
                     else
                     {
-                        CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Left[i - 1]);
-                        CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Left[i]);
-
-                        fCanopyWidth = (float)Math.Max(previousBay.WidthLeft, nextBay.WidthLeft);
+                        CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.FirstOrDefault(obj => obj.BayIndex == FrameIndexList_Left[i - 1]);
+                        CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.FirstOrDefault(obj => obj.BayIndex == FrameIndexList_Left[i]);
+                        
+                        fCanopyWidth = (float)Math.Max((previousBay == null ? 0 : previousBay.WidthRight), (nextBay == null ? 0 : nextBay.WidthRight));
                     }
 
                     // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
@@ -1486,10 +1486,10 @@ namespace PFD
                     }
                     else
                     {
-                        CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Right[i - 1]);
-                        CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Right[i]);
+                        CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.FirstOrDefault(obj => obj.BayIndex == FrameIndexList_Right[i - 1]);
+                        CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.FirstOrDefault(obj => obj.BayIndex == FrameIndexList_Right[i]);
 
-                        fCanopyWidth = (float)Math.Max(previousBay.WidthRight, nextBay.WidthRight);
+                        fCanopyWidth = (float)Math.Max((previousBay == null ? 0 : previousBay.WidthRight), (nextBay == null ? 0 : nextBay.WidthRight));
                     }
 
                     // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay

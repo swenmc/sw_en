@@ -780,6 +780,7 @@ namespace PFD
 
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
                 _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
+                _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1);
 
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");

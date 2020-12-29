@@ -38,42 +38,63 @@
                 <Button Width="80" Height="25" Name="BtnApply" Margin="10 0 0 0" Click="BtnApply_Click">Apply</Button>
 
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,3">
-                <StackPanel Orientation="Vertical" Width="100">
-                    <CheckBox Name="chbLeft" Margin="5,0" IsChecked="{Binding Path=Left}">Left</CheckBox>
-                    <CheckBox Name="chbRight" Margin="5,0" IsChecked="{Binding Path=Right}">Right</CheckBox>                    
-                </StackPanel>
-                <StackPanel Orientation="Vertical" Width="230">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Width Left:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Margin="0 5 5 0" Name="TextBox_WidthLeft" Width="{StaticResource theTextBoxWidthLarge}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />                    
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Row="0" Grid.Column="0" Name="chbLeft" Margin="5" IsChecked="{Binding Path=Left}">Left</CheckBox>
+                <CheckBox Grid.Row="1" Grid.Column="0" Name="chbRight" Margin="5" IsChecked="{Binding Path=Right}">Right</CheckBox>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Width Left:" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <TextBox Grid.Row="0" Grid.Column="2" Margin="0 5 5 0" Name="TextBox_WidthLeft" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" IsEnabled="{Binding Left}"
                          Text="{Binding Path=WidthLeft, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Text="m" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Width Right:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Margin="0 5 5 0" Name="TextBox_WidthRight" Width="{StaticResource theTextBoxWidthLarge}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="m" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
+
+                <TextBlock Grid.Row="1" Grid.Column="1"  Text="Width Right:" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <TextBox Grid.Row="1" Grid.Column="2"  Margin="0 5 5 0" Name="TextBox_WidthRight" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" IsEnabled="{Binding Right}"
                          Text="{Binding Path=WidthRight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Text="m" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
-                    </StackPanel>
-                </StackPanel>
+                <TextBlock Grid.Row="1" Grid.Column="3"  Text="m" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
+
+                <TextBlock Grid.Row="0" Grid.Column="4"  Text="Purlin count left:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <TextBox Grid.Row="0" Grid.Column="5"  Margin="0 5 5 0" Name="TextBox_PurlinCountLeft" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" IsEnabled="{Binding Left}"
+                         Text="{Binding Path=PurlinCountLeft, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="4" Text="Purlin count right:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <TextBox Grid.Row="1" Grid.Column="5" Margin="0 5 5 0" Name="TextBox_PurlinCountRight" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" IsEnabled="{Binding Right}"
+                         Text="{Binding Path=PurlinCountRight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                <CheckBox Grid.Row="0" Grid.Column="6" Name="chbIsCrossBracedLeft" Margin="5" IsChecked="{Binding Path=IsCrossBracedLeft}" IsEnabled="{Binding Left}">IsCrossBracedLeft</CheckBox>
+                <CheckBox Grid.Row="1" Grid.Column="6" Name="chbIsCrossBracedRight" Margin="5" IsChecked="{Binding Path=IsCrossBracedRight}" IsEnabled="{Binding Right}">IsCrossBracedRight</CheckBox>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Margin="0,3">
+                
+                
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Purlin count left:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Margin="0 5 5 0" Name="TextBox_PurlinCountLeft" Width="{StaticResource theTextBoxWidthLarge}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=PurlinCountLeft, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>                        
+                        
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Purlin count right:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Margin="0 5 5 0" Name="TextBox_PurlinCountRight" Width="{StaticResource theTextBoxWidthLarge}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=PurlinCountRight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        
                     </StackPanel>
                 </StackPanel>
-                
+                <StackPanel Orientation="Vertical" Width="100">
+                    
+                </StackPanel>
+
             </StackPanel>
         </StackPanel>
 
@@ -125,6 +146,32 @@
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthRight}" IsReadOnly="False" Header="Width-Right[m]" Width="*"></DataGridTextColumn>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountLeft}" IsReadOnly="False" Header="Purlin Count-Left[-]" Width="*"></DataGridTextColumn>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountRight}" IsReadOnly="False" Header="Purlin Count-Right[-]" Width="*"></DataGridTextColumn>
+
+                <DataGridCheckBoxColumn Binding="{Binding IsCrossBracedLeft, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Is Cross Braced Left" Width="Auto">
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                </DataGridCheckBoxColumn>
+
+                <DataGridCheckBoxColumn Binding="{Binding IsCrossBracedRight, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Is Cross Braced Right" Width="Auto">
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                </DataGridCheckBoxColumn>
 
             </DataGrid.Columns>
         </DataGrid>
