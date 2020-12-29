@@ -135,6 +135,7 @@
     <Compile Include="Model\CAccessories_LengthItemProperties.cs" />
     <Compile Include="Model\CBayInfo.cs" />
     <Compile Include="Model\BayMembersInfo.cs" />
+    <Compile Include="Model\CCanopiesInfo.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CConnectorGroup.cs" />
     <Compile Include="Model\OthersMembersInfo.cs" />
     <Compile Include="Model\FrameMembersInfo.cs" />

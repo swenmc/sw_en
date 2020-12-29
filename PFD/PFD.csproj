@@ -161,6 +161,9 @@
     <Compile Include="OptionsWindows\BaysWidthOptionsWindow.xaml.cs">
       <DependentUpon>BaysWidthOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\CanopiesOptionsWindow.xaml.cs">
+      <DependentUpon>CanopiesOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsWindows\CrossBracingOptionsWindow.xaml.cs">
       <DependentUpon>CrossBracingOptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,7 @@
     </Compile>
     <Compile Include="ViewModels\BayWidthOptionsViewModel.cs" />
     <Compile Include="ViewModels\CJointsVarMemCrscVM.cs" />
+    <Compile Include="ViewModels\CanopiesOptionsViewModel.cs" />
     <Compile Include="ViewModels\DesignSummaryViewModel.cs" />
     <Compile Include="ViewModels\CrossBracingOptionsViewModel.cs" />
     <Compile Include="ViewModels\DocumentationSettingsViewModel.cs" />
@@ -358,6 +362,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="OptionsWindows\BaysWidthOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\CanopiesOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

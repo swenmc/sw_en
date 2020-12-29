@@ -1,0 +1,138 @@
+﻿<Window x:Class="PFD.CanopiesOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Canopies" Height="940" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">50</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">100</System:Double>
+        <CollectionViewSource x:Key="RoofPositions" Source="{Binding RoofPositions}"/>
+    </Window.Resources>
+
+    <Grid Name="GridMain" Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Bay From:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=BayFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+                <TextBlock Text="Bay To:" HorizontalAlignment="Left" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <ComboBox Name ="Combobox_BayTo" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=BayTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
+                <Button Width="80" Height="25" Name="BtnApply" Margin="10 0 0 0" Click="BtnApply_Click">Apply</Button>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,3">
+                <StackPanel Orientation="Vertical" Width="100">
+                    <CheckBox Name="chbLeft" Margin="5,0" IsChecked="{Binding Path=Left}">Left</CheckBox>
+                    <CheckBox Name="chbRight" Margin="5,0" IsChecked="{Binding Path=Right}">Right</CheckBox>                    
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="230">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Width Left:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Margin="0 5 5 0" Name="TextBox_WidthLeft" Width="{StaticResource theTextBoxWidthLarge}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WidthLeft, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Text="m" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Width Right:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Margin="0 5 5 0" Name="TextBox_WidthRight" Width="{StaticResource theTextBoxWidthLarge}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WidthRight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Text="m" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Purlin count left:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Margin="0 5 5 0" Name="TextBox_PurlinCountLeft" Width="{StaticResource theTextBoxWidthLarge}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=PurlinCountLeft, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>                        
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Purlin count right:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Margin="0 5 5 0" Name="TextBox_PurlinCountRight" Width="{StaticResource theTextBoxWidthLarge}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=PurlinCountRight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                    </StackPanel>
+                </StackPanel>
+                
+            </StackPanel>
+        </StackPanel>
+
+        <DataGrid Name ="Datagrid_Canopies" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedCrossBracingIndex}" ItemsSource="{Binding CanopiesList}" 
+                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding BayNumber}" IsReadOnly="True" Header="BayNumber" Width="Auto"></DataGridTextColumn>
+
+                <DataGridCheckBoxColumn Binding="{Binding Left, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Left" Width="Auto">
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                </DataGridCheckBoxColumn>
+
+                <DataGridCheckBoxColumn Binding="{Binding Right, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Right" Width="Auto">
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                </DataGridCheckBoxColumn>
+
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthLeft}" IsReadOnly="False" Header="Width-Left[m]" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthRight}" IsReadOnly="False" Header="Width-Right[m]" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountLeft}" IsReadOnly="False" Header="Purlin Count-Left[-]" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountRight}" IsReadOnly="False" Header="Purlin Count-Right[-]" Width="*"></DataGridTextColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            
+            <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
+        </StackPanel>
+
+    </Grid>
+</Window>

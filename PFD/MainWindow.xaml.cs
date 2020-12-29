@@ -2394,7 +2394,12 @@ namespace PFD
             w.ShowDialog();
         }
 
-
+        
+        private void BtnCanopiesOptions_Click(object sender, RoutedEventArgs e)
+        {
+            CanopiesOptionsWindow w = new CanopiesOptionsWindow(vm);
+            w.ShowDialog();
+        }
 
 
 
@@ -2567,6 +2572,8 @@ namespace PFD
 
             });*/
         }
+
+        
 
 
         //private void SetInitialItemsInComboboxes()

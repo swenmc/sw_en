@@ -137,6 +137,7 @@ namespace PFD
         private bool m_DisplayOptionsChanged;
         private bool m_CrossBracingOptionsChanged;
         private bool m_BaysWidthOptionsChanged;
+        private bool m_CanopiesOptionsChanged;
 
         //private bool m_BracingEverySecondRowOfGirts;
         //private bool m_BracingEverySecondRowOfPurlins;
@@ -2501,6 +2502,7 @@ namespace PFD
         public DesignOptionsViewModel _designOptionsVM;
 
         public CrossBracingOptionsViewModel _crossBracingOptionsVM;
+        public CanopiesOptionsViewModel _canopiesOptionsVM;
         public BayWidthOptionsViewModel _baysWidthOptionsVM;
 
         [NonSerialized]
@@ -2858,6 +2860,27 @@ namespace PFD
                 _componentVM.UpdateComponentList(_crossBracingOptionsVM.HasWallCrosses(), _crossBracingOptionsVM.HasRoofCrosses());
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CrossBracingOptionsChanged");
+
+            }
+        }
+        public bool CanopiesOptionsChanged
+        {
+            get
+            {
+                return m_CanopiesOptionsChanged;
+            }
+
+            set
+            {
+                m_CanopiesOptionsChanged = value;
+
+                SetResultsAreNotValid();
+                RecreateModel = true;
+                RecreateJoints = true;
+                RecreateQuotation = true;
+                //_componentVM.UpdateComponentList(_crossBracingOptionsVM.HasWallCrosses(), _crossBracingOptionsVM.HasRoofCrosses());
+
+                if (MSynchronizeGUI) NotifyPropertyChanged("CanopiesOptionsChanged");
 
             }
         }
