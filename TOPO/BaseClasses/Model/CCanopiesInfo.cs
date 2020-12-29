@@ -22,13 +22,13 @@ namespace BaseClasses
         private int m_BayNumber;
         private int m_BayIndex;
         private bool m_Left;
-        private bool m_Right;                        
+        private bool m_Right;
         private double m_WidthLeft;
         private double m_WidthRight;
         private int m_PurlinCountLeft;
         private int m_PurlinCountRight;
-
-
+        private bool m_IsCrossBracedLeft;
+        private bool m_IsCrossBracedRight;
 
         public bool IsSetFromCode
         {
@@ -43,7 +43,6 @@ namespace BaseClasses
                 //NotifyPropertyChanged("IsSetFromCode");
             }
         }
-
 
         public int BayNumber
         {
@@ -87,6 +86,7 @@ namespace BaseClasses
                 NotifyPropertyChanged("Left");
             }
         }
+
         public bool Right
         {
             get
@@ -100,6 +100,7 @@ namespace BaseClasses
                 NotifyPropertyChanged("Right");
             }
         }
+
         public double WidthLeft
         {
             get
@@ -113,6 +114,7 @@ namespace BaseClasses
                 NotifyPropertyChanged("WidthLeft");
             }
         }
+
         public double WidthRight
         {
             get
@@ -140,6 +142,7 @@ namespace BaseClasses
                 NotifyPropertyChanged("PurlinCountLeft");
             }
         }
+
         public int PurlinCountRight
         {
             get
@@ -154,8 +157,36 @@ namespace BaseClasses
             }
         }
 
+        public bool IsCrossBracedLeft
+        {
+            get
+            {
+                return m_IsCrossBracedLeft;
+            }
 
-        public CCanopiesInfo(int bayNumber, bool left, bool right, double widthLeft, double widthRight, int purlinCountLeft, int purlinCountRight)
+            set
+            {
+                m_IsCrossBracedLeft = value;
+                NotifyPropertyChanged("IsCrossBracedLeft");
+            }
+        }
+
+        public bool IsCrossBracedRight
+        {
+            get
+            {
+                return m_IsCrossBracedRight;
+            }
+
+            set
+            {
+                m_IsCrossBracedRight = value;
+                NotifyPropertyChanged("IsCrossBracedRight");
+            }
+        }
+
+
+        public CCanopiesInfo(int bayNumber, bool left, bool right, double widthLeft, double widthRight, int purlinCountLeft, int purlinCountRight, bool isCrossBracedLeft, bool isCrossBracedRight)
         {
             MIsSetFromCode = false;
 
@@ -167,6 +198,8 @@ namespace BaseClasses
             WidthRight = widthRight;
             PurlinCountLeft = purlinCountLeft;
             PurlinCountRight = purlinCountRight;
+            IsCrossBracedLeft = isCrossBracedLeft;
+            IsCrossBracedRight = isCrossBracedRight;
         }
 
         protected void NotifyPropertyChanged(string propertyName)
@@ -174,8 +207,5 @@ namespace BaseClasses
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
-       
     }
 }

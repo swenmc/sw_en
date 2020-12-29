@@ -14,10 +14,10 @@ namespace PFD
     /// </summary>
     public partial class UC_FootingDesign : UserControl
     {
-        bool UseCRSCGeometricalAxes;        
+        bool UseCRSCGeometricalAxes;
         CPFDFootingDesign vm;
 
-        private CPFDViewModel _pfdVM;        
+        private CPFDViewModel _pfdVM;
         //public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
         public List<CFootingLoadCombinationRatio_ULS> FootingResults_ULS;
 
@@ -102,7 +102,7 @@ namespace PFD
                     }
                     textGoverningMember.Text = "";
                 }
-                                
+
                 CCalculJoint cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, _pfdVM._designOptionsVM.ShearDesignAccording334, _pfdVM._designOptionsVM.UniformShearDistributionInAnchors, 
                     res_FLCR.Joint, _pfdVM.Model, footingCalcSettings, res_FLCR.DesignInternalForces, true);
                 cGoverningMemberFootingResults = cJoint;
