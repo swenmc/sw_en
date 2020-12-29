@@ -108,7 +108,7 @@
                                 <Image Source="Resources/options_bay_widths.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                             <Button Name="btnCanopiesOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Canopies options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnCanopiesOptions_Click">
-                                <Image Source="Resources/options_crossbracing.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                                <Image Source="Resources/options_canopies.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                         </StackPanel>
                         <!-- TODO To Ondrej: Navrhujem prepracovat vsetko na DataGridView, bude to jednoduchsie lebo budeme mat len jeden typ objektu pre vstupy a vystupy a budeme tie tabulky vkladat do protokolu, napr. export do Wordu-->
