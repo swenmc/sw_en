@@ -228,6 +228,16 @@ namespace PFD
             for (int i = 1; i <= baysNum; i++)
             {
                 CCanopiesInfo ci = new CCanopiesInfo(i, false, false, 0,0,0,0);
+
+                // TODO Ondrej - !!!!! len v debugu !!!!! Nastavit debug na true a if pre debug
+
+                // Default - docasne pridavam pre ucely vyvoja a rychlejsieho testovania
+                if (i == 1) // Left - 1st bay
+                    ci = new CCanopiesInfo(i, true, false, 6, 0, 3, 0);
+
+                if (i == 2 || i == 3) // Right - 2nd and 3rd bay
+                    ci = new CCanopiesInfo(i, false, true, 0, 3, 0, 2);
+
                 items.Add(ci);
             }
 

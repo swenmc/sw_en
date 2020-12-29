@@ -129,7 +129,7 @@ namespace PFD
             if (ci_CBW != null)
             {
                 m_arrMat[(int)EMemberGroupNames.eCrossBracing_Walls] = MaterialFactory.GetMaterial(ci_CBW.Material);
-            }            
+            }
             if (ci_CBR != null)
             {
                 m_arrMat[(int)EMemberGroupNames.eCrossBracing_Roof] = MaterialFactory.GetMaterial(ci_CBR.Material);
@@ -160,12 +160,12 @@ namespace PFD
             {
                 m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls] = CrScFactory.GetCrSc(ci_CBW.Section);
                 m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls].CSColor = Colors.Olive;         // 16 Cross Bracing - Walls
-            }            
+            }
             if (ci_CBR != null)
             {
                 m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] = CrScFactory.GetCrSc(ci_CBR.Section);
                 m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].CSColor = Colors.Olive;         // 17 Cross Bracing - Roof
-            }            
+            }
 
             for (int i = 0; i < m_arrCrSc.Length; i++)
             {
@@ -188,7 +188,7 @@ namespace PFD
             m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing].CSColor = Colors.DarkOrange;   // 13 Purlin Bracing
             m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing].CSColor = Colors.LimeGreen; // 14 Girt Bracing - Front Side
             m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing].CSColor = Colors.LightSeaGreen; // 15 Girt Bracing - Back Side
-            
+
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(17);
 
@@ -635,7 +635,7 @@ namespace PFD
             // Cross-bracing
             bool bGenerateSideWallCrossBracing = false;
             if(ci_CBW != null && ci_CBW.Generate != null) bGenerateSideWallCrossBracing = ci_CBW.Generate.Value;
-                        
+
             bool bGenerateRoofCrossBracing = false;
             if (ci_CBR != null && ci_CBR.Generate != null) bGenerateRoofCrossBracing = ci_CBR.Generate.Value;
 
@@ -707,13 +707,42 @@ namespace PFD
             int iCanopyPurlins_1 = iCanopyPurlinsInBay_1 * 1; // Jedna bay
             int iCanopyPurlins_2 = iCanopyPurlinsInBay_2 * 2; // Dve bays
 
+            bool bCanopy1_IsBraced = true;
+            int iCanopy1_BracingCrosses = 1 * 1; // 1 cross v 1 bay
+
             int iCanopyRafterNodes_Total = 0;
             int iCanopyRafterOverhangs_Total = 0;
             int iCanopyPurlinNodes_Total = 0;
             int iCanopyPurlins_Total = 0;
+            int iCanopyCrossBracingMembers_Total = 0;
 
-            if (bGenerateCanopies)
+            if (bGenerateCanopies && vm._canopiesOptionsVM != null && vm._canopiesOptionsVM.CanopiesList != null)
             {
+                // Zoznam indexov ramov, na ktorych sa ma vytvorit uzol pre rafter
+                // Samostatne pre lavu a pravu stranu budovy
+                List<int> FrameIndexList_Left = new List<int>();
+                List<int> FrameIndexList_Right = new List<int>();
+
+                foreach (CCanopiesInfo canopyBay in vm._canopiesOptionsVM.CanopiesList)
+                {
+                    int canopyCountInBay = 0;
+
+                    if (canopyBay.Left)
+                    {
+                        canopyCountInBay += 1;
+
+                        if (!FrameIndexList_Left.Contains(canopyBay.BayIndex)) FrameIndexList_Left.Add(canopyBay.BayIndex);
+                        if (!FrameIndexList_Left.Contains(canopyBay.BayIndex + 1)) FrameIndexList_Left.Add(canopyBay.BayIndex + 1);
+                    }
+
+                    if (canopyBay.Right)
+                    {
+                        canopyCountInBay += 1;
+                        if (!FrameIndexList_Right.Contains(canopyBay.BayIndex)) FrameIndexList_Right.Add(canopyBay.BayIndex);
+                        if (!FrameIndexList_Right.Contains(canopyBay.BayIndex + 1)) FrameIndexList_Right.Add(canopyBay.BayIndex + 1);
+                    }
+                }
+
                 // Rafter Nodes
                 int iCanopyRafterNodes_1 = 2;
                 int iCanopyRafterNodes_2 = 3;
@@ -732,12 +761,17 @@ namespace PFD
                 iCanopyPurlinNodes_Total = iCanopyPurlinNodes_1 + iCanopyPurlinNodes_2;
                 // Canopy Purlins
                 iCanopyPurlins_Total = iCanopyPurlins_1 + iCanopyPurlins_2;
+
+                if(bCanopy1_IsBraced)
+                {
+                    iCanopyCrossBracingMembers_Total += iCanopy1_BracingCrosses * 2; // 2 pruty v kazdom krizi
+                }
             }
 
             //----------------------------------------------------------------------------------------------------------------------------
 
             m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame + iCanopyRafterNodes_Total + iCanopyPurlinNodes_Total];
-            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total+ iCanopyRafterOverhangs_Total + iCanopyPurlins_Total];
+            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total+ iCanopyRafterOverhangs_Total + iCanopyPurlins_Total + iCanopyCrossBracingMembers_Total];
 
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
 
@@ -1363,9 +1397,9 @@ namespace PFD
             //----------------------------------------------------------------------------------------------------------------------------
 
             // Canopies
-            if(bGenerateCanopies)
+            if(bGenerateCanopies && vm._canopiesOptionsVM != null && vm._canopiesOptionsVM.CanopiesList != null)
             {
-                // Zoznam indexov ramov na ktorych sa ma vytvorit uzol pre rafter
+                // Zoznam indexov ramov, na ktorych sa ma vytvorit uzol pre rafter
                 // Samostatne pre lavu a pravu stranu budovy
                 List<int> FrameIndexList_Left = new List<int>() { 0, 1 };
                 List<int> FrameIndexList_Right = new List<int>() { 1, 2, 3 };
@@ -1377,7 +1411,7 @@ namespace PFD
                 float fCanopy2_EdgeCoordinate_z = fCanopyWidth_2 * (float)Math.Tan(-fRoofPitch_rad);
 
                 // Rafter Nodes
-                // Canoopy 1
+                // Canopy 1
                 m_arrNodes[i_temp_numberofNodes] = new CNode(i_temp_numberofNodes + 0 + 1, 0 - fCanopyWidth_1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[0]), fH1_frame_centerline + fCanopy1_EdgeCoordinate_z, 0);
                 m_arrNodes[i_temp_numberofNodes + 1] = new CNode(i_temp_numberofNodes + 1 + 1, 0 - fCanopyWidth_1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[1]), fH1_frame_centerline + fCanopy1_EdgeCoordinate_z, 0);
 
@@ -1504,6 +1538,22 @@ namespace PFD
                 CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iCanopyPurlins_1 + 3], iNumberOfTransverseSupports_Purlins);
 
                 i_temp_numberofMembers += iCanopyPurlins_Total;
+
+                // Canopy - cross-barcing
+
+                // Canopy 1
+                // Zjednodusene - len kriz z rohu do rohu celeho canopy, pocet krizov medzi purlins v ramci canopy nie je nastavitelny
+
+                // TODO - doriesit nastavenie parametrov pruta podla polohy (odsadenie, rotacia, ...)
+                CMemberEccentricity eccentricity_Roof = new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max + (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].t_min, 0f);
+                float fAlignmentStart_Roof = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b;
+                float fAlignmentEnd_Roof = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b;
+                float fMemberRotation_Roof_Left_rad_1 = 0.5f * MathF.fPI;
+
+                m_arrMembers[i_temp_numberofMembers + 0] = new CMember(i_temp_numberofMembers + 0 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[1] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                m_arrMembers[i_temp_numberofMembers + 1] = new CMember(i_temp_numberofMembers + 1 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex + 1], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[0] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+
+                i_temp_numberofMembers += iCanopyCrossBracingMembers_Total;
             }
 
             ValidateIDs();
