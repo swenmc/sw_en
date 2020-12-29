@@ -1410,82 +1410,6 @@ namespace PFD
                 //List<int> FrameIndexList_Left = new List<int>() { 0, 1 };
                 //List<int> FrameIndexList_Right = new List<int>() { 1, 2, 3 };
 
-                for (int i = 0; i < FrameIndexList_Left.Count; i++)
-                {
-                    float fCanopyWidth = 0;
-
-                    // TO Ondrej - mozno sa to da urobit nejako krajsie - potrebujeme najst maximum z predchadzajucej a nasledujucej bay
-                    // Predchadzajuca alebo nasledujuca width vsak nemusi byt definovana, jedna z nich musi byt urcena vzdy
-
-                    if (i == 0) // First frame connected to canopy bay
-                        fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Left[0]].WidthLeft; // Next Bay Canopy Width
-                    else if (i == (FrameIndexList_Left.Last() - 1)) // Last bay with canopy
-                        fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Left.Last() - 1].WidthLeft; // Previous Bay Canopy Width
-                    else
-                    {
-                        CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Left[i - 1]);
-                        CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Left[i]);
-
-                        fCanopyWidth = (float)Math.Max(previousBay.WidthLeft, nextBay.WidthLeft);
-                    }
-
-                    // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
-                    float fCanopy_EdgeCoordinate_z = fCanopyWidth * (float)Math.Tan(-fRoofPitch_rad);
-                    m_arrNodes[i_temp_numberofNodes + i] = new CNode(i_temp_numberofNodes + i + 1, 0 - fCanopyWidth, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[i]), fH1_frame_centerline + fCanopy_EdgeCoordinate_z, 0);
-                }
-
-                for (int i = 0; i < FrameIndexList_Right.Count; i++)
-                {
-                    float fCanopyWidth = 0;
-
-                    // TO Ondrej - mozno sa to da urobit nejako krajsie - potrebujeme najst maximum z predchadzajucej a nasledujucej bay
-                    // Predchadzajuca alebo nasledujuca width vsak nemusi byt definovana, jedna z nich musi byt urcena vzdy
-
-                    if (i == 0) // First frame connected to canopy bay
-                        fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Right[0]].WidthRight; // Next Bay Canopy Width
-                    else if (i == (FrameIndexList_Right.Last() - 1)) // Last bay with canopy
-                    {
-                        fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Right.Last() - 1].WidthRight; // Previous Bay Canopy Width
-                    }
-                    else
-                    {
-                        CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Right[i - 1]);
-                        CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Right[i]);
-
-                        fCanopyWidth = (float)Math.Max(previousBay.WidthRight, nextBay.WidthRight);
-                    }
-
-                    // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
-                    float fCanopy_EdgeCoordinate_z = fCanopyWidth * (float)Math.Tan(-fRoofPitch_rad);
-                    m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i] = new CNode(i_temp_numberofNodes + FrameIndexList_Left.Count + i + 1, fW_frame_centerline + fCanopyWidth, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[i]), fH1_frame_centerline + fCanopy_EdgeCoordinate_z, 0);
-                }
-
-                float fCanopyWidth_1 = 6;
-                float fCanopyWidth_2 = 3;
-
-                float fCanopy1_EdgeCoordinate_z = fCanopyWidth_1 * (float)Math.Tan(-fRoofPitch_rad);
-                float fCanopy2_EdgeCoordinate_z = fCanopyWidth_2 * (float)Math.Tan(-fRoofPitch_rad);
-
-                // Rafter Nodes
-                // Canopy 1
-                //m_arrNodes[i_temp_numberofNodes] = new CNode(i_temp_numberofNodes + 0 + 1, 0 - fCanopyWidth_1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[0]), fH1_frame_centerline + fCanopy1_EdgeCoordinate_z, 0);
-                //m_arrNodes[i_temp_numberofNodes + 1] = new CNode(i_temp_numberofNodes + 1 + 1, 0 - fCanopyWidth_1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[1]), fH1_frame_centerline + fCanopy1_EdgeCoordinate_z, 0);
-
-                // Canopy 2
-                //m_arrNodes[i_temp_numberofNodes + 2] = new CNode(i_temp_numberofNodes + 2 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[0]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
-                //m_arrNodes[i_temp_numberofNodes + 3] = new CNode(i_temp_numberofNodes + 3 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[1]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
-                //m_arrNodes[i_temp_numberofNodes + 4] = new CNode(i_temp_numberofNodes + 4 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[2]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
-
-                int iFirstCanopy1RafterNodeIndex = i_temp_numberofNodes;
-                int iFirstCanopy2RafterNodeIndex = i_temp_numberofNodes + 2;
-
-                i_temp_numberofNodes += iCanopyRafterNodes_Total;
-
-                // Rafter Members
-                // Canopy 1
-                float fRafterEdgeAlingment_Left = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max;
-                float fRafterEdgeAlingment_Right = (float)Math.Abs(m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min);
-
                 // Frame Node Indices
                 // 0 - base left, 1 - knee left, 2 - apex, 3 - knee right, 4 - base right // gable roof
                 /*
@@ -1511,14 +1435,111 @@ namespace PFD
               */
 
                 int iLeftKneeNodeIndexInFrame = 1; // Left knee - Gable roof
-                m_arrMembers[i_temp_numberofMembers] = new CMember(i_temp_numberofMembers + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[0] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
-                m_arrMembers[i_temp_numberofMembers + 1] = new CMember(i_temp_numberofMembers + 1 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex + 1], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[1] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+                int iRightKneeNodeIndexInFrame = 3; // Right knee - Gable roof
+                int iFirstLeftCanopyRafterNodeIndex = 0;
+                int iFirstRightCanopyRafterNodeIndex = 0;
+
+                for (int i = 0; i < FrameIndexList_Left.Count; i++)
+                {
+                    float fRafterEdgeAlingment_Left = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max;
+
+                    float fCanopyWidth = 0;
+
+                    // TO Ondrej - mozno sa to da urobit nejako krajsie - potrebujeme najst maximum z predchadzajucej a nasledujucej bay
+                    // Predchadzajuca alebo nasledujuca width vsak nemusi byt definovana, jedna z nich musi byt urcena vzdy
+
+                    if (i == 0) // First frame connected to canopy bay
+                        fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Left[0]].WidthLeft; // Next Bay Canopy Width
+                    else if (i == FrameIndexList_Left.Last()) // Last bay with canopy
+                        fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Left.Last() - 1].WidthLeft; // Previous Bay Canopy Width
+                    else
+                    {
+                        CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Left[i - 1]);
+                        CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Left[i]);
+
+                        fCanopyWidth = (float)Math.Max(previousBay.WidthLeft, nextBay.WidthLeft);
+                    }
+
+                    // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
+                    float fCanopy_EdgeCoordinate_z = fCanopyWidth * (float)Math.Tan(-fRoofPitch_rad);
+                    m_arrNodes[i_temp_numberofNodes + i] = new CNode(i_temp_numberofNodes + i + 1, 0 - fCanopyWidth, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[i]), fH1_frame_centerline + fCanopy_EdgeCoordinate_z, 0);
+                    iFirstLeftCanopyRafterNodeIndex = i_temp_numberofNodes;
+
+                    // Canopy Rafter Member
+                    m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[i] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+                }
+
+                for (int i = 0; i < FrameIndexList_Right.Count; i++)
+                {
+                    float fRafterEdgeAlingment_Right = (float)Math.Abs(m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min);
+
+                    float fCanopyWidth = 0;
+
+                    // TO Ondrej - mozno sa to da urobit nejako krajsie - potrebujeme najst maximum z predchadzajucej a nasledujucej bay
+                    // Predchadzajuca alebo nasledujuca width vsak nemusi byt definovana, jedna z nich musi byt urcena vzdy
+
+                    if (i == 0) // First frame connected to canopy bay
+                        fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Right[0]].WidthRight; // Next Bay Canopy Width
+                    else if (i == FrameIndexList_Right.Last()) // Last bay with canopy
+                    {
+                        fCanopyWidth = (float)vm._canopiesOptionsVM.CanopiesList[FrameIndexList_Right.Last() - 1].WidthRight; // Previous Bay Canopy Width
+                    }
+                    else
+                    {
+                        CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Right[i - 1]);
+                        CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.Single(obj => obj.BayIndex == FrameIndexList_Right[i]);
+
+                        fCanopyWidth = (float)Math.Max(previousBay.WidthRight, nextBay.WidthRight);
+                    }
+
+                    // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
+                    float fCanopy_EdgeCoordinate_z = fCanopyWidth * (float)Math.Tan(-fRoofPitch_rad);
+                    m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i] = new CNode(i_temp_numberofNodes + FrameIndexList_Left.Count + i + 1, fW_frame_centerline + fCanopyWidth, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[i]), fH1_frame_centerline + fCanopy_EdgeCoordinate_z, 0);
+                    iFirstRightCanopyRafterNodeIndex = i_temp_numberofNodes + FrameIndexList_Left.Count;
+
+                    // Canopy Rafter Member
+                    m_arrMembers[i_temp_numberofMembers + FrameIndexList_Left.Count + i] = new CMember(i_temp_numberofMembers + +FrameIndexList_Left.Count + i + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[i] + iRightKneeNodeIndexInFrame], m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                }
+
+                //float fCanopyWidth_1 = 6;
+                //float fCanopyWidth_2 = 3;
+
+                //float fCanopy1_EdgeCoordinate_z = fCanopyWidth_1 * (float)Math.Tan(-fRoofPitch_rad);
+                //float fCanopy2_EdgeCoordinate_z = fCanopyWidth_2 * (float)Math.Tan(-fRoofPitch_rad);
+
+                // Rafter Nodes
+                // Canopy 1
+                //m_arrNodes[i_temp_numberofNodes] = new CNode(i_temp_numberofNodes + 0 + 1, 0 - fCanopyWidth_1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[0]), fH1_frame_centerline + fCanopy1_EdgeCoordinate_z, 0);
+                //m_arrNodes[i_temp_numberofNodes + 1] = new CNode(i_temp_numberofNodes + 1 + 1, 0 - fCanopyWidth_1, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[1]), fH1_frame_centerline + fCanopy1_EdgeCoordinate_z, 0);
 
                 // Canopy 2
-                int iRightKneeNodeIndexInFrame = 3; // Right knee - Gable roof
-                m_arrMembers[i_temp_numberofMembers + 2] = new CMember(i_temp_numberofMembers + 2 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[0] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
-                m_arrMembers[i_temp_numberofMembers + 3] = new CMember(i_temp_numberofMembers + 3 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[1] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex + 1], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
-                m_arrMembers[i_temp_numberofMembers + 4] = new CMember(i_temp_numberofMembers + 4 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[2] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex + 2], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                //m_arrNodes[i_temp_numberofNodes + 2] = new CNode(i_temp_numberofNodes + 2 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[0]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
+                //m_arrNodes[i_temp_numberofNodes + 3] = new CNode(i_temp_numberofNodes + 3 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[1]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
+                //m_arrNodes[i_temp_numberofNodes + 4] = new CNode(i_temp_numberofNodes + 4 + 1, fW_frame_centerline + fCanopyWidth_2, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[2]), fH1_frame_centerline + fCanopy2_EdgeCoordinate_z, 0);
+
+                // TODO - dopocitat dynamicky podla indexu ramu na zaciatku a na konci bay
+                //int iFirstCanopy1RafterNodeIndex = i_temp_numberofNodes;
+                //int iFirstCanopy2RafterNodeIndex = i_temp_numberofNodes + 2;
+
+                i_temp_numberofNodes += iCanopyRafterNodes_Total;
+
+                // Rafter Members
+                // Canopy 1
+                //float fRafterEdgeAlingment_Left = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max;
+                //float fRafterEdgeAlingment_Right = (float)Math.Abs(m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min);
+
+
+
+
+
+                //m_arrMembers[i_temp_numberofMembers] = new CMember(i_temp_numberofMembers + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[0] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+                //m_arrMembers[i_temp_numberofMembers + 1] = new CMember(i_temp_numberofMembers + 1 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex + 1], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[1] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+
+                // Canopy 2
+
+                //m_arrMembers[i_temp_numberofMembers + 2] = new CMember(i_temp_numberofMembers + 2 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[0] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                //m_arrMembers[i_temp_numberofMembers + 3] = new CMember(i_temp_numberofMembers + 3 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[1] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex + 1], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                //m_arrMembers[i_temp_numberofMembers + 4] = new CMember(i_temp_numberofMembers + 4 + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[2] + iRightKneeNodeIndexInFrame], m_arrNodes[iFirstCanopy2RafterNodeIndex + 2], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
 
                 i_temp_numberofMembers += iCanopyRafterOverhangs_Total;
 
@@ -1647,6 +1668,12 @@ namespace PFD
 
                     int iCanopyCrossBracingMembersInBay = 0;
 
+                    int iFrameIndexStart = canopyBay.BayNumber - 1;
+                    int iFrameIndexEnd = canopyBay.BayNumber;
+
+                    int iLeftCanopyFrameRafterNode_BayStart = iFirstLeftCanopyRafterNodeIndex;
+                    int iLeftCanopyFrameRafterNode_BayEnd = iFirstLeftCanopyRafterNodeIndex + 1;
+
                     if (canopyBay.IsCrossBracedLeft)
                     {
                         // Zjednodusene - len kriz z rohu do rohu celeho canopy, pocet krizov medzi purlins v ramci canopy nie je nastavitelny
@@ -1657,11 +1684,17 @@ namespace PFD
                         float fAlignmentEnd_Roof = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b;
                         float fMemberRotation_Roof_Left_rad_1 = 0.5f * MathF.fPI;
 
-                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 0] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 0 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[1] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
-                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 1] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 1 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex + 1], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[0] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 0] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 0 + 1, m_arrNodes[iLeftCanopyFrameRafterNode_BayStart], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[1] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 1] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 1 + 1, m_arrNodes[iLeftCanopyFrameRafterNode_BayEnd], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[0] + iLeftKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+
+                        iLeftCanopyFrameRafterNode_BayStart++;
+                        iLeftCanopyFrameRafterNode_BayEnd++;
 
                         iCanopyCrossBracingMembersInBay += 2;
                     }
+
+                    int iRightCanopyFrameRafterNode_BayStart = iFirstRightCanopyRafterNodeIndex;
+                    int iRightCanopyFrameRafterNode_BayEnd = iFirstRightCanopyRafterNodeIndex + 1;
 
                     if (canopyBay.IsCrossBracedRight)
                     {
@@ -1673,8 +1706,11 @@ namespace PFD
                         float fAlignmentEnd_Roof = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof].b;
                         float fMemberRotation_Roof_Right_rad_1 = 0.5f * MathF.fPI;
 
-                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 0] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 0 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[1] + iRightKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
-                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 1] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 1 + 1, m_arrNodes[iFirstCanopy1RafterNodeIndex + 1], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[0] + iRightKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 0] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 0 + 1, m_arrNodes[iRightCanopyFrameRafterNode_BayStart], m_arrNodes[iFrameNodesNo * FrameIndexList_Right[1] + iRightKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 1] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 1 + 1, m_arrNodes[iRightCanopyFrameRafterNode_BayEnd], m_arrNodes[iFrameNodesNo * FrameIndexList_Right[0] + iRightKneeNodeIndexInFrame], m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+
+                        iRightCanopyFrameRafterNode_BayStart++;
+                        iRightCanopyFrameRafterNode_BayEnd++;
 
                         iCanopyCrossBracingMembersInBay += 2;
                     }
