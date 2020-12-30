@@ -36,7 +36,7 @@ namespace BaseClasses
             if (m_arrMembers.Length < 2) return;
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            m_arrMat = new CMat[1];
+            m_arrMat = new Dictionary<EMemberGroupNames, CMat>(); // CMat[1];
             m_arrMat[0] = m_arrMembers[0].CrScStart.m_Mat;
 
             // Cross-sections

@@ -105,34 +105,90 @@ namespace PFD
             //if (ci_CBW != null) basicCount++;
             //if (ci_CBR != null) basicCount++;
 
-            m_arrMat = new CMat[basicCount];
+            //m_arrMat = new CMat[basicCount];
             m_arrCrSc = new CCrSc[basicCount];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
             // TODO - napojit na GUI a na databazu
-            m_arrMat[(int)EMemberGroupNames.eMainColumn] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn].Material);
-            m_arrMat[(int)EMemberGroupNames.eRafter] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter].Material);
-            m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn_EF].Material);
-            m_arrMat[(int)EMemberGroupNames.eRafter_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter_EF].Material);
-            m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eEavesPurlin].Material);
-            m_arrMat[(int)EMemberGroupNames.eGirtWall] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eGirtWall].Material);
-            m_arrMat[(int)EMemberGroupNames.ePurlin] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlin].Material);
-            m_arrMat[(int)EMemberGroupNames.eFrontWindPost] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontWindPost].Material);
-            m_arrMat[(int)EMemberGroupNames.eBackWindPost] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackWindPost].Material);
-            m_arrMat[(int)EMemberGroupNames.eFrontGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirt].Material);
-            m_arrMat[(int)EMemberGroupNames.eBackGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirt].Material);
-            m_arrMat[(int)EMemberGroupNames.eGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eGirtBracing].Material);
-            m_arrMat[(int)EMemberGroupNames.ePurlinBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlinBracing].Material);
-            m_arrMat[(int)EMemberGroupNames.eFrontGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Material);
-            m_arrMat[(int)EMemberGroupNames.eBackGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirtBracing].Material);
+            //m_arrMat[(int)EMemberGroupNames.eMainColumn] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn].Material);
+            //m_arrMat[(int)EMemberGroupNames.eRafter] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter].Material);
+            //m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn_EF].Material);
+            //m_arrMat[(int)EMemberGroupNames.eRafter_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter_EF].Material);
+            //m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eEavesPurlin].Material);
+            //m_arrMat[(int)EMemberGroupNames.eGirtWall] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eGirtWall].Material);
+            //m_arrMat[(int)EMemberGroupNames.ePurlin] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlin].Material);
+            //m_arrMat[(int)EMemberGroupNames.eFrontWindPost] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontWindPost].Material);
+            //m_arrMat[(int)EMemberGroupNames.eBackWindPost] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackWindPost].Material);
+            //m_arrMat[(int)EMemberGroupNames.eFrontGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirt].Material);
+            //m_arrMat[(int)EMemberGroupNames.eBackGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirt].Material);
+            //m_arrMat[(int)EMemberGroupNames.eGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eGirtBracing].Material);
+            //m_arrMat[(int)EMemberGroupNames.ePurlinBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlinBracing].Material);
+            //m_arrMat[(int)EMemberGroupNames.eFrontGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Material);
+            //m_arrMat[(int)EMemberGroupNames.eBackGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirtBracing].Material);
+            //if (ci_CBW != null)
+            //{
+            //    m_arrMat[(int)EMemberGroupNames.eCrossBracing_Walls] = MaterialFactory.GetMaterial(ci_CBW.Material);
+            //}
+            //if (ci_CBR != null)
+            //{
+            //    m_arrMat[(int)EMemberGroupNames.eCrossBracing_Roof] = MaterialFactory.GetMaterial(ci_CBR.Material);
+            //}
+
+            CComponentInfo cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eMainColumn, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eRafter, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eMainColumn_EF, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eRafter_EF, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eEavesPurlin, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eGirtWall, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.ePurlin, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eFrontWindPost, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eBackWindPost, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eFrontGirt, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eBackGirt, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eGirtBracing, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.ePurlinBracing, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsFrontSide);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eFrontGirtBracing, MaterialFactory.GetMaterial(cInfo.Material));
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsBackSide);
+            if (cInfo != null) AddMaterial(EMemberGroupNames.eBackGirtBracing, MaterialFactory.GetMaterial(cInfo.Material));
+
             if (ci_CBW != null)
             {
-                m_arrMat[(int)EMemberGroupNames.eCrossBracing_Walls] = MaterialFactory.GetMaterial(ci_CBW.Material);
+                //m_arrMat[(int)EMemberGroupNames.eCrossBracing_Walls] = MaterialFactory.GetMaterial(ci_CBW.Material);
+                AddMaterial(EMemberGroupNames.eCrossBracing_Walls, MaterialFactory.GetMaterial(ci_CBW.Material));
             }
             if (ci_CBR != null)
             {
-                m_arrMat[(int)EMemberGroupNames.eCrossBracing_Roof] = MaterialFactory.GetMaterial(ci_CBR.Material);
+                //m_arrMat[(int)EMemberGroupNames.eCrossBracing_Roof] = MaterialFactory.GetMaterial(ci_CBR.Material);
+                AddMaterial(EMemberGroupNames.eCrossBracing_Roof, MaterialFactory.GetMaterial(ci_CBR.Material));
             }
 
             // Cross-sections
@@ -258,12 +314,12 @@ namespace PFD
                 listOfModelMemberGroups.Add(new CMemberGroup(17, ci_CBR.ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof], 0, 0, 0, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
-            if (m_arrMat.Length >= m_arrCrSc.Length)
+            if (m_arrMat.Count >= m_arrCrSc.Length)
             {
                 for (int i = 0; i < m_arrCrSc.Length; i++)
                 {
                     if (m_arrCrSc[i] == null) continue;
-                    m_arrCrSc[i].m_Mat = m_arrMat[i];
+                    m_arrCrSc[i].m_Mat = m_arrMat[(EMemberGroupNames)i];
                 }
             }
             else

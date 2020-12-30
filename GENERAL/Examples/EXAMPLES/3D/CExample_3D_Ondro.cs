@@ -15,7 +15,7 @@ namespace Examples
 
             m_arrNodes = new CNode[12];
             m_arrMembers = new CMember[21];
-            m_arrMat = new CMat[1];
+            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
             m_arrCrSc = new CCrSc[1];
             m_arrNSupports = new CNSupport[2];
             // Materials

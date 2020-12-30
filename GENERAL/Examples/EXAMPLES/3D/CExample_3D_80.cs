@@ -24,7 +24,7 @@ namespace Examples
             m_arrGOVolumes = new BaseClasses.GraphObj.CVolume[434];
             m_arrGOStrWindows = new List<BaseClasses.GraphObj.CStructure_Window>(16);
 
-            m_arrMat = new CMat[1];
+            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
             //m_arrCrSc = new CRSC.CCrSc[1];
 
             // Materials

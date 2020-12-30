@@ -61,10 +61,18 @@ namespace BaseClasses
         // Physical Model / Structural data
         // Collection of references to objects
 
-        // Materials used/defined in current model
-        public CMat[] m_arrMat;
-        // Cross-sections used/ defined in current model
+        //// Materials used/defined in current model
+        //public CMat[] m_arrMat;
+        //// Cross-sections used/ defined in current model
         public CCrSc[] m_arrCrSc;
+
+        // Materials used/defined in current model
+        //public Dictionary<EMemberType_FS_Position, CMat> m_arrMat; //ja by som to mal radsej na iny enum viazane
+        public Dictionary<EMemberGroupNames, CMat> m_arrMat;
+
+        // Cross-sections used/ defined in current model        
+        //public Dictionary<EMemberType_FS_Position, CCrSc> m_arrCrSc; //ja by som to mal radsej na iny enum viazane
+        //public Dictionary<EMemberGroupNames, CCrSc> m_arrCrSc;
 
         // Topological nodes (not FEM)
         // Note !!!
@@ -159,55 +167,60 @@ namespace BaseClasses
         public CModel()
         {
             m_arrNodes = new CNode[] { new CNode() };
+            //m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
+            m_arrMat = new Dictionary<EMemberGroupNames, CMat>();
         }
         public CModel(string sFileName)
         {
             m_sFileName = sFileName;
+            //m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
+            m_arrMat = new Dictionary<EMemberGroupNames, CMat>();
         }
-        // Alokuje velkost poli zoznamov, malo by to byt dymamicke
-        public CModel(string sFileName, ESLN eSLN, int eNDOF, EGCS eGCS,
-            int iMatNum, int iCrScNum, int iNodeNum,
-            int iMemNum, int iNSupNum, int iNRelNum, int iITSNum, int iNLoadNum,
-            int iMLoadNum, int iLoadCaseNum, int iLoadComNum)
-        {
-            m_eSLN = eSLN;
-            m_eNDOF = eNDOF;
-            m_eGCS = eGCS;
-            m_arrMat = new CMat[iMatNum];
-            m_arrCrSc = new CCrSc[iCrScNum];
-            m_arrNodes = new CNode[iNodeNum];
-            m_arrMembers = new CMember[iMemNum];
-            m_arrNSupports = new CNSupport[iNSupNum];
-            m_arrNReleases = new CNRelease[iNRelNum];
-            m_arrIntermediateTransverseSupports = new CIntermediateTransverseSupport[iITSNum];
-            m_arrNLoads = new CNLoadAll[iNLoadNum];
-            m_arrMLoads = new CMLoad[iMLoadNum];
-            m_arrLoadCases = new CLoadCase[iLoadCaseNum];
-            m_arrLoadCombs = new CLoadCombination[iLoadComNum];
-        }
-        public CModel(string sProjectName, string sConstObjectName, string sFileName)
-        {
-            m_sProjectName = sProjectName;
-            m_sConstObjectName = sConstObjectName;
-            m_sFileName = sFileName;
-        }
+        //komentujem nepouzivane konstruktory
+        //// Alokuje velkost poli zoznamov, malo by to byt dymamicke
+        //public CModel(string sFileName, ESLN eSLN, int eNDOF, EGCS eGCS,
+        //    int iMatNum, int iCrScNum, int iNodeNum,
+        //    int iMemNum, int iNSupNum, int iNRelNum, int iITSNum, int iNLoadNum,
+        //    int iMLoadNum, int iLoadCaseNum, int iLoadComNum)
+        //{
+        //    m_eSLN = eSLN;
+        //    m_eNDOF = eNDOF;
+        //    m_eGCS = eGCS;
+        //    m_arrMat = new CMat[iMatNum];
+        //    m_arrCrSc = new CCrSc[iCrScNum];
+        //    m_arrNodes = new CNode[iNodeNum];
+        //    m_arrMembers = new CMember[iMemNum];
+        //    m_arrNSupports = new CNSupport[iNSupNum];
+        //    m_arrNReleases = new CNRelease[iNRelNum];
+        //    m_arrIntermediateTransverseSupports = new CIntermediateTransverseSupport[iITSNum];
+        //    m_arrNLoads = new CNLoadAll[iNLoadNum];
+        //    m_arrMLoads = new CMLoad[iMLoadNum];
+        //    m_arrLoadCases = new CLoadCase[iLoadCaseNum];
+        //    m_arrLoadCombs = new CLoadCombination[iLoadComNum];
+        //}
+        //public CModel(string sProjectName, string sConstObjectName, string sFileName)
+        //{
+        //    m_sProjectName = sProjectName;
+        //    m_sConstObjectName = sConstObjectName;
+        //    m_sFileName = sFileName;
+        //}
 
-        // Geometrical model
-        public CModel(string sFileName, ESLN eSLN, int eNDOF, EGCS eGCS,
-            int iMatNum, /*int iCrScNum,*/ int iPointNum,
-            /*int iMemNum,*/ int iLineNum, int iAreaNum, int iVolumeNum, int iWindNum)
-        {
-            m_eSLN = eSLN;
-            m_eNDOF = eNDOF;
-            m_eGCS = eGCS;
-            m_arrMat = new CMat[iMatNum];
-            //m_arrCrSc = new CCrSc[iCrScNum];
-            m_arrGOPoints = new Point3D[iPointNum];
-            //m_arrMembers = new CMember[iMemNum];
-            m_arrGOAreas = new CArea[iAreaNum];
-            m_arrGOVolumes = new CVolume[iVolumeNum];
-            m_arrGOStrWindows = new List<CStructure_Window>(iWindNum);
-        }
+        //// Geometrical model
+        //public CModel(string sFileName, ESLN eSLN, int eNDOF, EGCS eGCS,
+        //    int iMatNum, /*int iCrScNum,*/ int iPointNum,
+        //    /*int iMemNum,*/ int iLineNum, int iAreaNum, int iVolumeNum, int iWindNum)
+        //{
+        //    m_eSLN = eSLN;
+        //    m_eNDOF = eNDOF;
+        //    m_eGCS = eGCS;
+        //    m_arrMat = new CMat[iMatNum];
+        //    //m_arrCrSc = new CCrSc[iCrScNum];
+        //    m_arrGOPoints = new Point3D[iPointNum];
+        //    //m_arrMembers = new CMember[iMemNum];
+        //    m_arrGOAreas = new CArea[iAreaNum];
+        //    m_arrGOVolumes = new CVolume[iVolumeNum];
+        //    m_arrGOStrWindows = new List<CStructure_Window>(iWindNum);
+        //}
 
         //Funkcia vytvori Dictionary z rovnakych Members - kriterium je tu (FLength, CrScStart.GetType().Name, CrScEnd.GetType().Name)
         public void GroupModelMembers()
@@ -354,6 +367,18 @@ namespace BaseClasses
         public float GetTributaryWidth(int frameIndex)
         {
             return 0.5f * GetBayWidthPrevious(frameIndex) + 0.5f * GetBayWidthNext(frameIndex);
+        }
+
+        public CMat GetMaterial(EMemberGroupNames memberType)
+        {
+            CMat mat = null;
+            m_arrMat.TryGetValue(memberType, out mat);
+            return mat;
+        }
+        public void AddMaterial(EMemberGroupNames memberType, CMat mat)
+        {
+            if (!m_arrMat.ContainsKey(memberType)) m_arrMat.Add(memberType, mat);
+            else m_arrMat[memberType] = mat;
         }
     }
 }

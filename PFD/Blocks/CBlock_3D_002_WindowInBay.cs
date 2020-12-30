@@ -55,7 +55,7 @@ namespace PFD
 
             float fDistanceBetweenWindowColumns = prop.fWindowsWidth / (prop.iNumberOfWindowColumns - 1);
 
-            m_arrMat = new CMat[1];
+            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
             m_arrCrSc = new CCrSc[2];
 
             // Materials

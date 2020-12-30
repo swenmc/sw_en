@@ -570,11 +570,11 @@ namespace PFD
             CalculateSnowLoad();
 
             // TODO - refaktorovat vypocet dlzkovej hmotnosti prutov - dlzkove hmotnosti sa pouziju aj v Material List a aj pre vypocet Dead Loads
-            float fPurlinMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.ePurlin].A_g * model.m_arrMat[(int)EMemberGroupNames.ePurlin].m_fRho); // [kg] A_g * Rho
-            float fEdgePurlinMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].A_g * model.m_arrMat[(int)EMemberGroupNames.eEavesPurlin].m_fRho); // [kg] A_g * Rho
-            float fGirtMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eGirtWall].A_g * model.m_arrMat[(int)EMemberGroupNames.eGirtWall].m_fRho); // [kg] A_g * Rho
-            float fMainColumnMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].A_g * model.m_arrMat[(int)EMemberGroupNames.eMainColumn].m_fRho); // [kg] A_g * Rho
-            float fMainRafterMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eRafter].A_g * model.m_arrMat[(int)EMemberGroupNames.eRafter].m_fRho); // [kg] A_g * Rho
+            float fPurlinMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.ePurlin].A_g * model.m_arrMat[EMemberGroupNames.ePurlin].m_fRho); // [kg] A_g * Rho
+            float fEdgePurlinMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].A_g * model.m_arrMat[EMemberGroupNames.eEavesPurlin].m_fRho); // [kg] A_g * Rho
+            float fGirtMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eGirtWall].A_g * model.m_arrMat[EMemberGroupNames.eGirtWall].m_fRho); // [kg] A_g * Rho
+            float fMainColumnMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].A_g * model.m_arrMat[EMemberGroupNames.eMainColumn].m_fRho); // [kg] A_g * Rho
+            float fMainRafterMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eRafter].A_g * model.m_arrMat[EMemberGroupNames.eRafter].m_fRho); // [kg] A_g * Rho
 
             float fMainColumnMomentOfInteria_yu = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].I_y); // m^4
             float fMainColumnMomentOfInteria_zv = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].I_z); // m^4
@@ -844,13 +844,20 @@ namespace PFD
         
         public void SetMaterialValuesFromDatabase()
         {
-            foreach (CMat m in vm.Model.m_arrMat)
+            foreach (KeyValuePair<EMemberGroupNames, CMat> kvp in vm.Model.m_arrMat)
             {
-                if (m is CMat_03_00)
+                if (kvp.Value is CMat_03_00)
                 {
-                    CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)m, m.Name);
+                    CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)kvp.Value, kvp.Value.Name);
                 }
             }
+            //foreach (CMat m in vm.Model.m_arrMat)
+            //{
+            //    if (m is CMat_03_00)
+            //    {
+            //        CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)m, m.Name);
+            //    }
+            //}
         }
 
         public void SetCrossSectionValuesFromDatabase()

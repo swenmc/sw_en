@@ -22,7 +22,7 @@ namespace Examples
 
             m_arrNodes = new CNode[752];
             m_arrMembers = new CMember[2136];
-            m_arrMat = new CMat[1];
+            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
             m_arrCrSc = new CCrSc[1];
             m_arrNSupports = new CNSupport[60];
             //m_arrNLoads = new BaseClasses.CNLoad[97];

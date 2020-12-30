@@ -103,7 +103,7 @@ namespace PFD
             int iMLoadNum)
         {
             m_sBlockName = sBlockName;
-            m_arrMat = new CMat[iMatNum];
+            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
             m_arrCrSc = new CCrSc[iCrScNum];
             m_arrNodes = new CNode[iNodeNum];
             m_arrMembers = new CMember[iMemNum];
@@ -113,18 +113,19 @@ namespace PFD
             m_arrMLoads = new CMLoad[iMLoadNum];
         }
 
-        // Geometrical model
-        public CBlock(string sBlockName, 
-            int iMatNum, /*int iCrScNum,*/ int iPointNum,
-            /*int iMemNum,*/ int iLineNum, int iAreaNum, int iVolumeNum, int iWindNum)
-        {
-            m_arrMat = new CMat[iMatNum];
-            //m_arrCrSc = new CCrSc[iCrScNum];
-            m_arrGOPoints = new Point3D[iPointNum];
-            //m_arrMembers = new CMember[iMemNum];
-            m_arrGOAreas = new CArea[iAreaNum];
-            m_arrGOVolumes = new CVolume[iVolumeNum];
-            m_arrGOStrWindows = new List<CStructure_Window>(iWindNum);
-        }
+        //mazem nepouzivane konstruktory
+        //// Geometrical model
+        //public CBlock(string sBlockName, 
+        //    int iMatNum, /*int iCrScNum,*/ int iPointNum,
+        //    /*int iMemNum,*/ int iLineNum, int iAreaNum, int iVolumeNum, int iWindNum)
+        //{
+        //    m_arrMat = new CMat[iMatNum];
+        //    //m_arrCrSc = new CCrSc[iCrScNum];
+        //    m_arrGOPoints = new Point3D[iPointNum];
+        //    //m_arrMembers = new CMember[iMemNum];
+        //    m_arrGOAreas = new CArea[iAreaNum];
+        //    m_arrGOVolumes = new CVolume[iVolumeNum];
+        //    m_arrGOStrWindows = new List<CStructure_Window>(iWindNum);
+        //}
     }
 }
