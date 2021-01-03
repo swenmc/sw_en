@@ -468,7 +468,7 @@ namespace PFD
             double SumTotalPrice = 0;
 
             DataRow row;
-            foreach (CCrSc crsc in model.m_arrCrSc.Where(c=> c != null).GroupBy(m => m.Name_short).Select(g => g.First()))
+            foreach (CCrSc crsc in model.m_arrCrSc.Values.GroupBy(m => m.Name_short).Select(g => g.First()))
             {   
                 List<CMember> membersList = model.GetListOfMembersWithCrscDatabaseID(crsc.DatabaseID);
                 int count = membersList.Where(m => m.BIsGenerated && m.BIsSelectedForMaterialList).Count();

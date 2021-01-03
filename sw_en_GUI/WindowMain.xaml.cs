@@ -234,7 +234,7 @@ namespace sw_en_GUI
                 model.m_arrMembers[i].NodeEnd = model.m_arrNodes[model.m_arrMembers[i].NodeEnd.ID - 1];
 
                 // Set Cross-section
-                model.m_arrMembers[i].CrScStart = model.m_arrCrSc[model.m_arrMembers[i].CrScStart.ID - 1];
+                model.m_arrMembers[i].CrScStart = model.m_arrCrSc[(EMemberGroupNames)model.m_arrMembers[i].CrScStart.ID - 1];
 
                 // Temp - nacitava sa z tabulky alebo z databazy, dopracovat
                 // Parametre pre IPN 300
@@ -355,14 +355,60 @@ namespace sw_en_GUI
             return members.ToArray();
         }
 
-        private CCrSc[] getCrossSections(DataTable dt)
+        //private CCrSc[] getCrossSections(DataTable dt)
+        //{
+        //    List<CCrSc> list_crsc = new List<CCrSc>();
+        //    CCrSc crsc = null;
+
+        //    int CrSc_ID;
+        //    float fI_t, fI_y, fI_z, fA_g, fA_vy, fA_vz;
+
+        //    foreach (DataRow row in dt.Rows)
+        //    {
+        //        try
+        //        {
+        //            //crsc = new CCrSc_3_00(0, 8, 300, 125, 16.2f, 10.8f, 10.8f, 6.5f, 241.6f); // I 300 section
+        //            crsc = new CCrSc_0_05(0.1f, 0.05f);
+
+        //            int.TryParse(row["MaterialID"].ToString(), out CrSc_ID);
+        //            crsc.ID = CrSc_ID;
+
+        //            float.TryParse(row["fI_t"].ToString(), out fI_t);
+        //            crsc.I_t = fI_t;
+
+        //            float.TryParse(row["fI_y"].ToString(), out fI_y);
+        //            crsc.I_y = fI_y;
+
+        //            float.TryParse(row["fI_z"].ToString(), out fI_z);
+        //            crsc.I_z = fI_z;
+
+        //            float.TryParse(row["fA_g"].ToString(), out fA_g);
+        //            crsc.A_g = fA_g;
+
+        //            float.TryParse(row["fA_vy"].ToString(), out fA_vy);
+        //            crsc.A_vy = fA_vy;
+
+        //            float.TryParse(row["fA_vz"].ToString(), out fA_vz);
+        //            crsc.A_vz = fA_vz;
+
+        //            list_crsc.Add(crsc);
+        //        }
+        //        catch (Exception)
+        //        {
+        //            throw;
+        //        }
+        //    }
+        //    return list_crsc.ToArray();
+        //}
+        private Dictionary<EMemberGroupNames, CCrSc> getCrossSections(DataTable dt)
         {
-            List<CCrSc> list_crsc = new List<CCrSc>();
+            Dictionary<EMemberGroupNames, CCrSc> dict_crsc = new Dictionary<EMemberGroupNames, CCrSc>();            
             CCrSc crsc = null;
 
             int CrSc_ID;
             float fI_t, fI_y, fI_z, fA_g, fA_vy, fA_vz;
 
+            int i = 0;
             foreach (DataRow row in dt.Rows)
             {
                 try
@@ -391,14 +437,15 @@ namespace sw_en_GUI
                     float.TryParse(row["fA_vz"].ToString(), out fA_vz);
                     crsc.A_vz = fA_vz;
 
-                    list_crsc.Add(crsc);
+                    dict_crsc.Add((EMemberGroupNames)i, crsc);
+                    i++;
                 }
                 catch (Exception)
                 {
                     throw;
                 }
             }
-            return list_crsc.ToArray();
+            return dict_crsc;
         }
 
         private CNSupport[] getNSupports(DataTable dt)

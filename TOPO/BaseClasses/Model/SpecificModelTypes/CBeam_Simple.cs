@@ -42,7 +42,7 @@ namespace BaseClasses
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             // Cross-section
-            m_arrCrSc = new CCrSc[1];
+            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();// new CCrSc[1];
             m_arrCrSc[0] = m_arrMembers[0].CrScStart;
             m_arrCrSc[0].m_Mat = m_arrMembers[0].CrScStart.m_Mat; // Set CrSc Material
         }

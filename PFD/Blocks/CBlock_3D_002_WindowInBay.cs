@@ -56,7 +56,7 @@ namespace PFD
             float fDistanceBetweenWindowColumns = prop.fWindowsWidth / (prop.iNumberOfWindowColumns - 1);
 
             m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
-            m_arrCrSc = new CCrSc[2];
+            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();// CCrSc[2];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
@@ -67,10 +67,10 @@ namespace PFD
 
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             m_arrCrSc[0] = ReferenceGirt.CrScStart; // Girts
-            m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Window frame
-            m_arrCrSc[1].Name_short = "10075";
-            m_arrCrSc[1].m_Mat = m_arrMat[0];
-            m_arrCrSc[1].ID = (int)EMemberType_FS_Position.WindowFrame;
+            m_arrCrSc[(EMemberGroupNames)1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Window frame
+            m_arrCrSc[(EMemberGroupNames)1].Name_short = "10075";
+            m_arrCrSc[(EMemberGroupNames)1].m_Mat = m_arrMat[0];
+            m_arrCrSc[(EMemberGroupNames)1].ID = (int)EMemberType_FS_Position.WindowFrame;
 
             iNumberOfGirtsUnderWindow = (int)((prop.fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
             float fCoordinateZOfGirtUnderWindow = (iNumberOfGirtsUnderWindow - 1) * fDist_Girt + fBottomGirtPosition;
@@ -248,7 +248,7 @@ namespace PFD
             // TODO - add to block parameters
 
             float fGirtAlignmentStart = bIsReverseGirtSession ? ReferenceGirt.FAlignment_End : ReferenceGirt.FAlignment_Start; // Main column of a frame
-            float fGirtAlignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Window column
+            float fGirtAlignmentEnd = -0.5f * (float)m_arrCrSc[(EMemberGroupNames)1].b - fCutOffOneSide; // Window column
             CMemberEccentricity eccentricityGirtStart = bIsReverseGirtSession ? ReferenceGirt.EccentricityEnd : ReferenceGirt.EccentricityStart;
             CMemberEccentricity eccentricityGirtEnd = bIsReverseGirtSession ? ReferenceGirt.EccentricityStart : ReferenceGirt.EccentricityEnd;
             CMemberEccentricity eccentricityGirtStart_temp;
@@ -341,33 +341,33 @@ namespace PFD
 
             if (bWindowColumnIsConnectedtoRafter)
             {
-                float referenceEdgeRafter_alignment_temp = (float)referenceRafter.CrScStart.z_min / (float)Math.Cos(Math.Abs(fRoofPitch_rad)) + (float)m_arrCrSc[1].y_min * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                float referenceEdgeRafter_alignment_temp = (float)referenceRafter.CrScStart.z_min / (float)Math.Cos(Math.Abs(fRoofPitch_rad)) + (float)m_arrCrSc[(EMemberGroupNames)1].y_min * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
                 fWindowColumnEnd = referenceEdgeRafter_alignment_temp - fCutOffOneSide;
             }
 
-            float fOffsetBetweenGirtAndColumn_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[1].z_max;
+            float fOffsetBetweenGirtAndColumn_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[(EMemberGroupNames)1].z_max;
             float feccentricityWindowColumnStart_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndColumn_LCS_z_axis;
             float feccentricityWindowColumnEnd_LCS_z = eccentricityGirtEnd.MFz_local + fOffsetBetweenGirtAndColumn_LCS_z_axis;
 
-            float fOffsetBetweenGirtAndHeader_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[1].z_max;
+            float fOffsetBetweenGirtAndHeader_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[(EMemberGroupNames)1].z_max;
             float feccentricityWindowHeaderStart_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndHeader_LCS_z_axis;
             float feccentricityWindowHeaderEnd_LCS_z = eccentricityGirtEnd.MFz_local + fOffsetBetweenGirtAndHeader_LCS_z_axis;
 
-            float fOffsetBetweenGirtAndSill_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[1].z_max;
+            float fOffsetBetweenGirtAndSill_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[(EMemberGroupNames)1].z_max;
             float feccentricityWindowSillStart_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndSill_LCS_z_axis;
             float feccentricityWindowSillEnd_LCS_z = eccentricityGirtEnd.MFz_local + fOffsetBetweenGirtAndSill_LCS_z_axis;
 
             if (BuildingSide == "Left" || BuildingSide == "Back") // Align the to bottom edge of cross-section
             {
-                fOffsetBetweenGirtAndColumn_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[1].z_min;
+                fOffsetBetweenGirtAndColumn_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[(EMemberGroupNames)1].z_min;
                 feccentricityWindowColumnStart_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndColumn_LCS_z_axis;
                 feccentricityWindowColumnEnd_LCS_z = eccentricityGirtEnd.MFz_local + fOffsetBetweenGirtAndColumn_LCS_z_axis;
 
-                fOffsetBetweenGirtAndHeader_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[1].z_min;
+                fOffsetBetweenGirtAndHeader_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[(EMemberGroupNames)1].z_min;
                 feccentricityWindowHeaderStart_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndHeader_LCS_z_axis;
                 feccentricityWindowHeaderEnd_LCS_z = eccentricityGirtEnd.MFz_local + fOffsetBetweenGirtAndHeader_LCS_z_axis;
 
-                fOffsetBetweenGirtAndSill_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[1].z_min;
+                fOffsetBetweenGirtAndSill_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[(EMemberGroupNames)1].z_min;
                 feccentricityWindowSillStart_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndSill_LCS_z_axis;
                 feccentricityWindowSillEnd_LCS_z = eccentricityGirtEnd.MFz_local + fOffsetBetweenGirtAndSill_LCS_z_axis;
             }
@@ -395,13 +395,13 @@ namespace PFD
             // Window columns
             for (int i = 0; i < prop.iNumberOfWindowColumns; i++)
             {
-                m_arrMembers[iMembersGirts + i] = new CMember(iMembersGirts + i + 1, m_arrNodes[iNodesForGirts + i * 2], m_arrNodes[iNodesForGirts + i * 2 + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowColumnStart, feccentricityWindowColumnEnd, fWindowColumnStart, fWindowColumnEnd, fWindowColumnRotation, 0);
+                m_arrMembers[iMembersGirts + i] = new CMember(iMembersGirts + i + 1, m_arrNodes[iNodesForGirts + i * 2], m_arrNodes[iNodesForGirts + i * 2 + 1], m_arrCrSc[(EMemberGroupNames)1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowColumnStart, feccentricityWindowColumnEnd, fWindowColumnStart, fWindowColumnEnd, fWindowColumnRotation, 0);
             }
 
             // Window (header)
             // TODO - add to block parameters
-            float fWindowHeaderStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            float fWindowHeaderEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
+            float fWindowHeaderStart = -0.5f * (float)m_arrCrSc[(EMemberGroupNames)1].h - fCutOffOneSide;
+            float fWindowHeaderEnd = -0.5f * (float)m_arrCrSc[(EMemberGroupNames)1].h - fCutOffOneSide;
             float fWindowHeaderRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign of header in front / back side depending on girt LCS (reverse session)
@@ -417,13 +417,13 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfHeaders; i++)
             {
-                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[(EMemberGroupNames)1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
             }
 
             // Window (Sills)
             // TODO - add to block parameters
-            float fWindowSillStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            float fWindowSillEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
+            float fWindowSillStart = -0.5f * (float)m_arrCrSc[(EMemberGroupNames)1].h - fCutOffOneSide;
+            float fWindowSillEnd = -0.5f * (float)m_arrCrSc[(EMemberGroupNames)1].h - fCutOffOneSide;
             float fWindowSillRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign of sill in front / back side depending on girt LCS (reverse session)
@@ -439,7 +439,7 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfSills; i++)
             {
-                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[(EMemberGroupNames)1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
             }
 
             // Connection Joints

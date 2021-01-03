@@ -16,7 +16,7 @@ namespace Examples
             m_arrNodes = new CNode[5];
             m_arrMembers = new CMember[4];
             m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
-            m_arrCrSc = new CCrSc[3];
+            m_arrCrSc = new System.Collections.Generic.Dictionary<EMemberGroupNames, CCrSc>(); // new CCrSc[3];
             m_arrNSupports = new CNSupport[1];
             m_arrMLoads = new CMLoad[1];
             m_arrLoadCases = new CLoadCase[1];
@@ -53,15 +53,15 @@ namespace Examples
             m_arrCrSc[0].I_y = 9.52380952381E-05f; // Unit [m^4]
             m_arrCrSc[0].m_Mat = m_arrMat[0]; // Set CrSc Material
 
-            m_arrCrSc[1] = new CCrSc_0_00();  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            m_arrCrSc[1].A_g = 1.48571428571E-02f; // Unit [m^2]
-            m_arrCrSc[1].I_y = 1.90476190476E-04f; // Unit [m^4]
-            m_arrCrSc[1].m_Mat = m_arrMat[0]; // Set CrSc Material
+            m_arrCrSc[(EMemberGroupNames)1] = new CCrSc_0_00();  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            m_arrCrSc[(EMemberGroupNames)1].A_g = 1.48571428571E-02f; // Unit [m^2]
+            m_arrCrSc[(EMemberGroupNames)1].I_y = 1.90476190476E-04f; // Unit [m^4]
+            m_arrCrSc[(EMemberGroupNames)1].m_Mat = m_arrMat[0]; // Set CrSc Material
 
-            m_arrCrSc[2] = new CCrSc_0_00();  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            m_arrCrSc[2].A_g = 1.35238095238E-02f; // Unit [m^2]
-            m_arrCrSc[2].I_y = 1.42857142857E-07f; // Unit [m^4]
-            m_arrCrSc[2].m_Mat = m_arrMat[0]; // Set CrSc Material
+            m_arrCrSc[(EMemberGroupNames)2] = new CCrSc_0_00();  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            m_arrCrSc[(EMemberGroupNames)2].A_g = 1.35238095238E-02f; // Unit [m^2]
+            m_arrCrSc[(EMemberGroupNames)2].I_y = 1.42857142857E-07f; // Unit [m^4]
+            m_arrCrSc[(EMemberGroupNames)2].m_Mat = m_arrMat[0]; // Set CrSc Material
 
             // Nodes
             // Nodes List - Nodes Array
@@ -119,21 +119,21 @@ namespace Examples
             m_arrMembers[1].ID = 2;
             m_arrMembers[1].NodeStart = m_arrNodes[1];
             m_arrMembers[1].NodeEnd = m_arrNodes[2];
-            m_arrMembers[1].CrScStart = m_arrCrSc[1];
+            m_arrMembers[1].CrScStart = m_arrCrSc[(EMemberGroupNames)1];
 
             // Member 3 - 3-4
             m_arrMembers[2] = new CMember();
             m_arrMembers[2].ID = 3;
             m_arrMembers[2].NodeStart = m_arrNodes[2];
             m_arrMembers[2].NodeEnd = m_arrNodes[3];
-            m_arrMembers[2].CrScStart = m_arrCrSc[1];
+            m_arrMembers[2].CrScStart = m_arrCrSc[(EMemberGroupNames)1];
 
             // Member 4 - 4-5
             m_arrMembers[3] = new CMember();
             m_arrMembers[3].ID = 4;
             m_arrMembers[3].NodeStart = m_arrNodes[3];
             m_arrMembers[3].NodeEnd = m_arrNodes[4];
-            m_arrMembers[3].CrScStart = m_arrCrSc[2];
+            m_arrMembers[3].CrScStart = m_arrCrSc[(EMemberGroupNames)2];
 
             //Sort by ID
             //Array.Sort(m_arrMembers, new BaseClasses.CCompare_MemberID());

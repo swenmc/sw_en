@@ -570,14 +570,14 @@ namespace PFD
             CalculateSnowLoad();
 
             // TODO - refaktorovat vypocet dlzkovej hmotnosti prutov - dlzkove hmotnosti sa pouziju aj v Material List a aj pre vypocet Dead Loads
-            float fPurlinMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.ePurlin].A_g * model.m_arrMat[EMemberGroupNames.ePurlin].m_fRho); // [kg] A_g * Rho
-            float fEdgePurlinMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].A_g * model.m_arrMat[EMemberGroupNames.eEavesPurlin].m_fRho); // [kg] A_g * Rho
-            float fGirtMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eGirtWall].A_g * model.m_arrMat[EMemberGroupNames.eGirtWall].m_fRho); // [kg] A_g * Rho
-            float fMainColumnMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].A_g * model.m_arrMat[EMemberGroupNames.eMainColumn].m_fRho); // [kg] A_g * Rho
-            float fMainRafterMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eRafter].A_g * model.m_arrMat[EMemberGroupNames.eRafter].m_fRho); // [kg] A_g * Rho
+            float fPurlinMassPerMeter = (float)(model.m_arrCrSc[EMemberGroupNames.ePurlin].A_g * model.m_arrMat[EMemberGroupNames.ePurlin].m_fRho); // [kg] A_g * Rho
+            float fEdgePurlinMassPerMeter = (float)(model.m_arrCrSc[EMemberGroupNames.eEavesPurlin].A_g * model.m_arrMat[EMemberGroupNames.eEavesPurlin].m_fRho); // [kg] A_g * Rho
+            float fGirtMassPerMeter = (float)(model.m_arrCrSc[EMemberGroupNames.eGirtWall].A_g * model.m_arrMat[EMemberGroupNames.eGirtWall].m_fRho); // [kg] A_g * Rho
+            float fMainColumnMassPerMeter = (float)(model.m_arrCrSc[EMemberGroupNames.eMainColumn].A_g * model.m_arrMat[EMemberGroupNames.eMainColumn].m_fRho); // [kg] A_g * Rho
+            float fMainRafterMassPerMeter = (float)(model.m_arrCrSc[EMemberGroupNames.eRafter].A_g * model.m_arrMat[EMemberGroupNames.eRafter].m_fRho); // [kg] A_g * Rho
 
-            float fMainColumnMomentOfInteria_yu = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].I_y); // m^4
-            float fMainColumnMomentOfInteria_zv = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].I_z); // m^4
+            float fMainColumnMomentOfInteria_yu = (float)(model.m_arrCrSc[EMemberGroupNames.eMainColumn].I_y); // m^4
+            float fMainColumnMomentOfInteria_zv = (float)(model.m_arrCrSc[EMemberGroupNames.eMainColumn].I_z); // m^4
             float fMainColumnMaterial_E = model.m_arrMat[(int)EMemberGroupNames.eMainColumn].m_fE; // Pa // Material Young's modulus
 
             // TODO - do buducna napojit na parametre v CModel_PFD (dedi od obecneho modelu CExample)
@@ -862,7 +862,7 @@ namespace PFD
 
         public void SetCrossSectionValuesFromDatabase()
         {
-            foreach (CCrSc_TW crsc in vm.Model.m_arrCrSc)
+            foreach (CCrSc_TW crsc in vm.Model.m_arrCrSc.Values)
             {
                 if (crsc == null) continue;
                 // TODO - zjednotit nazvy prierezov v database a v GUI programu
@@ -2461,7 +2461,7 @@ namespace PFD
             // Treba sa na to pozriet podrobnejsie
             // Navrhujem napojit nejaky externy solver
 
-            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.Width, vm.WallHeight, vm.Height_H2, 1000, 0, 1000, 1000, 1000);
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[(EMemberGroupNames)1], vm.Width, vm.WallHeight, vm.Height_H2, 1000, 0, 1000, 1000, 1000);
             FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
 
             // Auxialiary string - result data

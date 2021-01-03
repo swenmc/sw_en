@@ -333,8 +333,8 @@ namespace PFD
 
             float fN_om_column;
             float fLambda_c = GetFrameBucklingFactorLambda_c(frameModel.m_arrMat[0].m_fE, // Modulus of Elasticity
-            (float)frameModel.m_arrCrSc[1].I_y, // Moment of inertia - rafter
-            (float)frameModel.m_arrCrSc[0].I_y,  // Moment of inertia - column
+            (float)frameModel.m_arrCrSc[EMemberGroupNames.eRafter].I_y, // Moment of inertia - rafter
+            (float)frameModel.m_arrCrSc[EMemberGroupNames.eMainColumn].I_y,  // Moment of inertia - column
             73430f, // Axial force - column 1 (+ compression, - tension)
             -7.43f, // Axial force - column 2 (+ compression, - tension)
             12670f, // Axial force - rafter (+ compression, - tension)

@@ -1,5 +1,6 @@
 ﻿using BaseClasses;
 using BaseClasses.Results;
+using CRSC;
 using MATH;
 using System;
 using System.Collections.Generic;
@@ -55,9 +56,10 @@ namespace PFD.ViewModels
             int iLastItemIndex = 0; // Index of last row for previous cross-section
 
             // For each cross-section shape / size add one row
-            for (int i = 0; i < model.m_arrCrSc.Length; i++)
+            foreach(CCrSc crsc in model.m_arrCrSc.Values)
+            //for (int i = 0; i < model.m_arrCrSc.Length; i++)
             {
-                List<CMember> assignedMembersList = model.GetListOfMembersWithCrsc(model.m_arrCrSc[i]);
+                List<CMember> assignedMembersList = model.GetListOfMembersWithCrsc(crsc);
                 if (assignedMembersList.Count > 0) // Cross-section is assigned (to the one or more members)
                 {
                     List<CMember> ListOfMemberGroups = new List<CMember>();
@@ -69,18 +71,18 @@ namespace PFD.ViewModels
                             // Define current member properties
                             //string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0];
                             string sPrefix = assignedMembersList[j].Prefix;
-                            string sCrScName = model.m_arrCrSc[i].Name_short;
+                            string sCrScName = crsc.Name_short;
                             int iQuantity = 1;
-                            string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
+                            string sMaterialName = crsc.m_Mat.Name;
                             float fLength = assignedMembersList[j].FLength_real;
-                            float fMassPerLength = (float)(model.m_arrCrSc[i].A_g * model.m_arrCrSc[i].m_Mat.m_fRho);
+                            float fMassPerLength = (float)(crsc.A_g * crsc.m_Mat.m_fRho);
                             float fMassPerPiece = fLength * fMassPerLength;
                             float fTotalLength = iQuantity * fLength;
                             float fTotalMass = fTotalLength * fMassPerLength;
                             float fTotalPrice;
 
-                            if(model.m_arrCrSc[i].price_PPLM_NZD > 0)
-                                fTotalPrice = fTotalLength * (float)model.m_arrCrSc[i].price_PPLM_NZD;
+                            if(crsc.price_PPLM_NZD > 0)
+                                fTotalPrice = fTotalLength * (float)crsc.price_PPLM_NZD;
                             else
                                 fTotalPrice = fTotalMass * fCFS_PricePerKg_Members_Total;
 

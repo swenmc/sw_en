@@ -64,7 +64,7 @@ namespace BaseClasses
         //// Materials used/defined in current model
         //public CMat[] m_arrMat;
         //// Cross-sections used/ defined in current model
-        public CCrSc[] m_arrCrSc;
+        //public CCrSc[] m_arrCrSc;
 
         // Materials used/defined in current model
         //public Dictionary<EMemberType_FS_Position, CMat> m_arrMat; //ja by som to mal radsej na iny enum viazane
@@ -72,7 +72,7 @@ namespace BaseClasses
 
         // Cross-sections used/ defined in current model        
         //public Dictionary<EMemberType_FS_Position, CCrSc> m_arrCrSc; //ja by som to mal radsej na iny enum viazane
-        //public Dictionary<EMemberGroupNames, CCrSc> m_arrCrSc;
+        public Dictionary<EMemberGroupNames, CCrSc> m_arrCrSc;
 
         // Topological nodes (not FEM)
         // Note !!!
@@ -167,13 +167,13 @@ namespace BaseClasses
         public CModel()
         {
             m_arrNodes = new CNode[] { new CNode() };
-            //m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
+            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
             m_arrMat = new Dictionary<EMemberGroupNames, CMat>();
         }
         public CModel(string sFileName)
         {
             m_sFileName = sFileName;
-            //m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
+            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
             m_arrMat = new Dictionary<EMemberGroupNames, CMat>();
         }
         //komentujem nepouzivane konstruktory
@@ -379,6 +379,17 @@ namespace BaseClasses
         {
             if (!m_arrMat.ContainsKey(memberType)) m_arrMat.Add(memberType, mat);
             else m_arrMat[memberType] = mat;
+        }
+        public CCrSc GetCrSc(EMemberGroupNames memberType)
+        {
+            CCrSc crsc = null;
+            m_arrCrSc.TryGetValue(memberType, out crsc);
+            return crsc;
+        }
+        public void AddCRSC(EMemberGroupNames memberType, CCrSc crsc)
+        {
+            if (!m_arrCrSc.ContainsKey(memberType)) m_arrCrSc.Add(memberType, crsc);
+            else m_arrCrSc[memberType] = crsc;
         }
     }
 }

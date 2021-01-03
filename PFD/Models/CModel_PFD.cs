@@ -952,18 +952,18 @@ namespace PFD
             CMemberEccentricity eccentricity_Walls = null;
             CMemberEccentricity eccentricity_Roof = null;
 
-            if (m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls] != null)
+            if (m_arrCrSc[EMemberGroupNames.eCrossBracing_Walls] != null)
             {
-                section_CB_Walls = m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Walls];
-                eccentricity_Walls = new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].z_max + (float)section_CB_Walls.t_min, 0f);
+                section_CB_Walls = m_arrCrSc[EMemberGroupNames.eCrossBracing_Walls];
+                eccentricity_Walls = new CMemberEccentricity((float)m_arrCrSc[EMemberGroupNames.eMainColumn].z_max + (float)section_CB_Walls.t_min, 0f);
                 fAlignmentStart_Walls = 0.5f * (float)section_CB_Walls.b;
                 fAlignmentEnd_Walls = 0.5f * (float)section_CB_Walls.b;
             }
 
-            if (m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof] != null)
+            if (m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] != null)
             {
-                section_CB_Roof = m_arrCrSc[(int)EMemberGroupNames.eCrossBracing_Roof];
-                eccentricity_Roof = new CMemberEccentricity((float)m_arrCrSc[(int)EMemberGroupNames.eRafter].z_max + (float)section_CB_Roof.t_min, 0f);
+                section_CB_Roof = m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof];
+                eccentricity_Roof = new CMemberEccentricity((float)m_arrCrSc[EMemberGroupNames.eRafter].z_max + (float)section_CB_Roof.t_min, 0f);
                 fAlignmentStart_Roof = 0.5f * (float)section_CB_Roof.b;
                 fAlignmentEnd_Roof = 0.5f * (float)section_CB_Roof.b;
             }       
@@ -1235,7 +1235,7 @@ namespace PFD
                 // TODO 626
                 //To Mato ktore m_arrCrSc[] tam ma ist namiesto toho null?
                 //To Ondrej - zobral by som prvy prut z tej skupiny members, ktore chcem priradit do skupiny a pouzije jeho crsc start
-                // Standardne to hladame takto m_arrCrSc[(int)EMemberGroupNames.eDoorFrame]
+                // Standardne to hladame takto m_arrCrSc[EMemberGroupNames.eDoorFrame]
                 // ale EMemberGroupNames pre tieto 4 typy prutov nemame implementovane, asi to treba pridat do enumu
                 listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eDF, EMemberType_FS_Position.DoorFrame, members.First().CrScStart, 0, 0, 0, 0));
             }
@@ -1675,8 +1675,8 @@ namespace PFD
                 // Main Column - Footings
                 // TODO - Predbezne doporucene hodnoty velkosti zakladov vypocitane z rozmerov budovy
                 // UC - Footings
-                float fMainColumnFooting_aX_MaxByCrscWidth = 20 * MathF.Max((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b, (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].b);
-                float fMainColumnFooting_bY_MaxByCrscDepth = 5 * MathF.Max((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h);
+                float fMainColumnFooting_aX_MaxByCrscWidth = 20 * MathF.Max((float)m_arrCrSc[EMemberGroupNames.eMainColumn].b, (float)m_arrCrSc[EMemberGroupNames.eMainColumn_EF].b);
+                float fMainColumnFooting_bY_MaxByCrscDepth = 5 * MathF.Max((float)m_arrCrSc[EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[EMemberGroupNames.eMainColumn_EF].h);
 
                 float fMainColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
                 float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
@@ -1715,7 +1715,7 @@ namespace PFD
                         );
 
                     float fMainColumnFooting_Eccentricity_x = 0f;
-                    float fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h);
+                    float fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[EMemberGroupNames.eMainColumn].h);
 
                     EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.MainColumn;
                     string sName = "A";
@@ -1727,7 +1727,7 @@ namespace PFD
                         columnTypePosition = EMemberType_FS_Position.EdgeColumn;
                         sName = "B";
                         sDescriptionText = "PAD TYPE B [EC]";
-                        fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h);
+                        fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[EMemberGroupNames.eMainColumn_EF].h);
 
                         // Zistenie hrubky base plate v spoji
                         float fBasePlateThickness = 0.003f;
@@ -1737,7 +1737,7 @@ namespace PFD
                         // Kedze kotevny plech sa je pripojeny z vonkajsej strany stlpa je potrebne pocitat pri excentricite s tymto rozmerom a zmmensit ju
 
                         // Front side edge frame columns
-                        fMainColumnFooting_Eccentricity_x = 0.5f * (fMainColumnFooting_aX - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b - 2 * fBasePlateThickness);
+                        fMainColumnFooting_Eccentricity_x = 0.5f * (fMainColumnFooting_aX - (float)m_arrCrSc[EMemberGroupNames.eMainColumn].b - 2 * fBasePlateThickness);
 
                         // Back side edge frame columns
                         if (i == (iFrameNo - 1))
@@ -1818,15 +1818,15 @@ namespace PFD
                 // Front and Back Wall Columns - Footings
                 if (bGenerateFrontColumns)
                 {
-                    float fFrontColumnFooting_aX_MaxByCrscWidth = 20 * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].b;
-                    float fFrontColumnFooting_bY_MaxByCrscDepth = 5 * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].h;
+                    float fFrontColumnFooting_aX_MaxByCrscWidth = 20 * (float)m_arrCrSc[EMemberGroupNames.eFrontWindPost].b;
+                    float fFrontColumnFooting_bY_MaxByCrscDepth = 5 * (float)m_arrCrSc[EMemberGroupNames.eFrontWindPost].h;
                     float fFrontColumnFootingTributaryArea = MathF.Average(fH1_frame_centerline, fH2_frame_centerline) * fDist_FrontColumns;
                     float fFrontColumnFootingSizeFactor = 0.045f;
                     float fFrontColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.6f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), fFrontColumnFooting_aX_MaxByCrscWidth), 1);
                     float fFrontColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.7f, fFrontColumnFootingTributaryArea * fFrontColumnFootingSizeFactor), fFrontColumnFooting_bY_MaxByCrscDepth), 1);
                     float fFrontColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
-                    float fFrontColumnFooting_Eccentricity_y = 0.5f * (fFrontColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontWindPost].h);
+                    float fFrontColumnFooting_Eccentricity_y = 0.5f * (fFrontColumnFooting_bY - (float)m_arrCrSc[EMemberGroupNames.eFrontWindPost].h);
 
                     CReinforcementBar FrontColumnFootingReference_Top_Bar_x;
                     CReinforcementBar FrontColumnFootingReference_Top_Bar_y;
@@ -1907,15 +1907,15 @@ namespace PFD
 
                 if (bGenerateBackColumns)
                 {
-                    float fBackColumnFooting_aX_MaxByCrscWidth = 20 * (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].b;
-                    float fBackColumnFooting_bY_MaxByCrscDepth = 5 * (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].h;
+                    float fBackColumnFooting_aX_MaxByCrscWidth = 20 * (float)m_arrCrSc[EMemberGroupNames.eBackWindPost].b;
+                    float fBackColumnFooting_bY_MaxByCrscDepth = 5 * (float)m_arrCrSc[EMemberGroupNames.eBackWindPost].h;
                     float fBackColumnFootingTributaryArea = MathF.Average(fH1_frame_centerline, fH2_frame_centerline) * fDist_BackColumns;
                     float fBackColumnFootingSizeFactor = 0.045f;
                     float fBackColumnFooting_aX = (float)Math.Round(MathF.Min(MathF.Max(0.6f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), fBackColumnFooting_aX_MaxByCrscWidth), 1);
                     float fBackColumnFooting_bY = (float)Math.Round(MathF.Min(MathF.Max(0.7f, fBackColumnFootingTributaryArea * fBackColumnFootingSizeFactor), fBackColumnFooting_bY_MaxByCrscDepth), 1);
                     float fBackColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
-                    float fBackColumnFooting_Eccentricity_y = 0.5f * (fBackColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eBackWindPost].h);
+                    float fBackColumnFooting_Eccentricity_y = 0.5f * (fBackColumnFooting_bY - (float)m_arrCrSc[EMemberGroupNames.eBackWindPost].h);
 
                     CReinforcementBar BackColumnFootingReference_Top_Bar_x;
                     CReinforcementBar BackColumnFootingReference_Top_Bar_y;
@@ -2644,6 +2644,216 @@ namespace PFD
             pControlPointBlock = new Point3D(mColumnLeft.NodeStart.X, mColumnLeft.NodeStart.Y, mColumnLeft.NodeStart.Z);
         }
 
+        public void InitializeModelMaterialsAndCRSC(IList<CComponentInfo> componentList)
+        {
+            //int basicCount = 17;
+            CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
+            CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
+            //if (ci_CBW != null) basicCount++;
+            //if (ci_CBR != null) basicCount++;
+
+            //m_arrMat = new CMat[basicCount];
+            //m_arrCrSc = new CCrSc[basicCount];
+
+            // Materials
+            // Materials List - Materials Array - Fill Data of Materials Array
+            // TODO - napojit na GUI a na databazu
+            //m_arrMat[(int)EMemberGroupNames.eMainColumn] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn].Material);
+            //m_arrMat[(int)EMemberGroupNames.eRafter] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter].Material);
+            //m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn_EF].Material);
+            //m_arrMat[(int)EMemberGroupNames.eRafter_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter_EF].Material);
+            //m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eEavesPurlin].Material);
+            //m_arrMat[(int)EMemberGroupNames.eGirtWall] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eGirtWall].Material);
+            //m_arrMat[(int)EMemberGroupNames.ePurlin] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlin].Material);
+            //m_arrMat[(int)EMemberGroupNames.eFrontWindPost] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontWindPost].Material);
+            //m_arrMat[(int)EMemberGroupNames.eBackWindPost] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackWindPost].Material);
+            //m_arrMat[(int)EMemberGroupNames.eFrontGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirt].Material);
+            //m_arrMat[(int)EMemberGroupNames.eBackGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirt].Material);
+            //m_arrMat[(int)EMemberGroupNames.eGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eGirtBracing].Material);
+            //m_arrMat[(int)EMemberGroupNames.ePurlinBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlinBracing].Material);
+            //m_arrMat[(int)EMemberGroupNames.eFrontGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Material);
+            //m_arrMat[(int)EMemberGroupNames.eBackGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirtBracing].Material);
+            //if (ci_CBW != null)
+            //{
+            //    m_arrMat[(int)EMemberGroupNames.eCrossBracing_Walls] = MaterialFactory.GetMaterial(ci_CBW.Material);
+            //}
+            //if (ci_CBR != null)
+            //{
+            //    m_arrMat[(int)EMemberGroupNames.eCrossBracing_Roof] = MaterialFactory.GetMaterial(ci_CBR.Material);
+            //}
+
+            CComponentInfo cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eMainColumn, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eMainColumn, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eMainColumn].CSColor = Colors.Chocolate;       //  1 Main Column
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eRafter, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eRafter, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eRafter].CSColor = Colors.Green;               //  2 Main Rafter
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eMainColumn_EF, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eMainColumn_EF, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eMainColumn_EF].CSColor = Colors.DarkOrchid;   //  3 Main Column - Edge Frame
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eRafter_EF, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eRafter_EF, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eRafter_EF].CSColor = Colors.GreenYellow;      //  4 Main Rafter - Edge Frame
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eEavesPurlin, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eEavesPurlin, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eEavesPurlin].CSColor = Colors.DarkCyan;       //  5 Eaves Purlin
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eGirtWall, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eGirtWall, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eGirtWall].CSColor = Colors.Orange;            //  6 Girt - Wall
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.ePurlin, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.ePurlin, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.ePurlin].CSColor = Colors.SlateBlue;           //  7 Purlin
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eFrontWindPost, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eFrontWindPost, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eFrontWindPost].CSColor = Colors.BlueViolet;   //  8 Front Wind Post
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eBackWindPost, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eBackWindPost, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eBackWindPost].CSColor = Colors.BlueViolet;    //  9 Back Wind Post
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eFrontGirt, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eFrontGirt, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eFrontGirt].CSColor = Colors.Brown;            // 10 Front Girt
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eBackGirt, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eBackGirt, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eBackGirt].CSColor = Colors.YellowGreen;       // 11 Back Girt
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eGirtBracing, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eGirtBracing, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eGirtBracing].CSColor = Colors.Orange;         // 12 Girt Bracing
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.ePurlinBracing, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.ePurlinBracing, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.ePurlinBracing].CSColor = Colors.DarkOrange;   // 13 Purlin Bracing
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsFrontSide);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eFrontGirtBracing, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eFrontGirtBracing, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eFrontGirtBracing].CSColor = Colors.LimeGreen; // 14 Girt Bracing - Front Side
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsBackSide);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberGroupNames.eBackGirtBracing, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberGroupNames.eBackGirtBracing, CrScFactory.GetCrSc(cInfo.Section));
+                m_arrCrSc[EMemberGroupNames.eBackGirtBracing].CSColor = Colors.LightSeaGreen; // 15 Girt Bracing - Back Side
+            }
+
+            if (ci_CBW != null)
+            {
+                AddMaterial(EMemberGroupNames.eCrossBracing_Walls, MaterialFactory.GetMaterial(ci_CBW.Material));
+                AddCRSC(EMemberGroupNames.eCrossBracing_Walls, CrScFactory.GetCrSc(ci_CBW.Section));
+                m_arrCrSc[EMemberGroupNames.eCrossBracing_Walls].CSColor = Colors.Olive;         // 16 Cross Bracing - Walls
+            }
+            if (ci_CBR != null)
+            {
+                AddMaterial(EMemberGroupNames.eCrossBracing_Roof, MaterialFactory.GetMaterial(ci_CBR.Material));
+                AddCRSC(EMemberGroupNames.eCrossBracing_Roof, CrScFactory.GetCrSc(ci_CBR.Section));
+                m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof].CSColor = Colors.Olive;         // 17 Cross Bracing - Roof
+            }
+
+            // Cross-sections
+            // CrSc List - CrSc Array - Fill Data of Cross-sections Array
+
+            // TODO Ondrej - Nastavit objekt prierezu podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
+            // Napojit na GUI
+
+            //m_arrCrSc[EMemberGroupNames.eMainColumn] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eMainColumn].Section);
+            //m_arrCrSc[EMemberGroupNames.eRafter] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eRafter].Section);
+            //m_arrCrSc[EMemberGroupNames.eMainColumn_EF] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eMainColumn_EF].Section);
+            //m_arrCrSc[EMemberGroupNames.eRafter_EF] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eRafter_EF].Section);
+            //m_arrCrSc[EMemberGroupNames.eEavesPurlin] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eEavesPurlin].Section);
+            //m_arrCrSc[EMemberGroupNames.eGirtWall] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eGirtWall].Section);
+            //m_arrCrSc[EMemberGroupNames.ePurlin] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.ePurlin].Section);
+            //m_arrCrSc[EMemberGroupNames.eFrontWindPost] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eFrontWindPost].Section);
+            //m_arrCrSc[EMemberGroupNames.eBackWindPost] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eBackWindPost].Section);
+            //m_arrCrSc[EMemberGroupNames.eFrontGirt] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eFrontGirt].Section);
+            //m_arrCrSc[EMemberGroupNames.eBackGirt] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eBackGirt].Section);
+            //m_arrCrSc[EMemberGroupNames.eGirtBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eGirtBracing].Section);
+            //m_arrCrSc[EMemberGroupNames.ePurlinBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.ePurlinBracing].Section);
+            //m_arrCrSc[EMemberGroupNames.eFrontGirtBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Section);
+            //m_arrCrSc[EMemberGroupNames.eBackGirtBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eBackGirtBracing].Section);
+            //if (ci_CBW != null)
+            //{
+            //    m_arrCrSc[EMemberGroupNames.eCrossBracing_Walls] = CrScFactory.GetCrSc(ci_CBW.Section);
+            //    m_arrCrSc[EMemberGroupNames.eCrossBracing_Walls].CSColor = Colors.Olive;         // 16 Cross Bracing - Walls
+            //}
+            //if (ci_CBR != null)
+            //{
+            //    m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] = CrScFactory.GetCrSc(ci_CBR.Section);
+            //    m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof].CSColor = Colors.Olive;         // 17 Cross Bracing - Roof
+            //}
+
+            for (int i = 0; i < m_arrCrSc.Count; i++)
+            {
+                if (m_arrCrSc[(EMemberGroupNames)i] == null) continue;
+                m_arrCrSc[(EMemberGroupNames)i].ID = i + 1;
+            }
+        }
+
         //Tuto funkciu mam pozriet - Mato chce:
         //rozsirujem tam velkosti poli a take veci CModel_PFD_01_GR - riadok 1751
         //vlastne tie objekty z objektu CBlock pridavam do celkoveho zoznamu, ale napriklad prerez pre girts som ignoroval aby tam nebol 2x
@@ -2678,16 +2888,20 @@ namespace PFD
             // Cross-sections
 
             // Copy block cross-sections into the model
-            for (int i = 1; i < block.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+            for (int i = 1; i < block.m_arrCrSc.Count; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
             {
-                CCrSc foundCrsc = m_arrCrSc.FirstOrDefault(c => c != null && c.ID == block.m_arrCrSc[i].ID);
-                if (foundCrsc != null) continue;
+                if (m_arrCrSc.ContainsKey((EMemberGroupNames)block.m_arrCrSc[(EMemberGroupNames)i].ID)) continue;
 
-                arraysizeoriginal = m_arrCrSc.Length;
-                Array.Resize(ref m_arrCrSc, arraysizeoriginal + 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
-                // Preskocit prvy prvok v poli block crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
-                m_arrCrSc[arraysizeoriginal] = block.m_arrCrSc[i];
-                //m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
+                m_arrCrSc.Add((EMemberGroupNames)block.m_arrCrSc[(EMemberGroupNames)i].ID, block.m_arrCrSc[(EMemberGroupNames)i]);
+
+                //CCrSc foundCrsc = m_arrCrSc.Values.FirstOrDefault(c =>c.ID == block.m_arrCrSc[(EMemberGroupNames)i].ID);
+                //if (foundCrsc != null) continue;
+
+                //arraysizeoriginal = m_arrCrSc.Length;
+                //Array.Resize(ref m_arrCrSc, arraysizeoriginal + 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
+                //// Preskocit prvy prvok v poli block crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+                //m_arrCrSc[arraysizeoriginal] = block.m_arrCrSc[i];
+                ////m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
             }
 
             //task 405 - je to hotove, ale chcelo by to mozno aj zistit ako je to narocne na pamat, lebo su tam vyhladavacky

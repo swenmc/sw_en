@@ -96,22 +96,22 @@ namespace PFD
             m_sBlockName = sBlockName;
         }
 
-        // Alokuje velkost poli zoznamov, malo by to byt dymamicke
-        public CBlock(string sBlockName,
-            int iMatNum, int iCrScNum, int iNodeNum,
-            int iMemNum, int iNSupNum, int iNRelNum, int iNLoadNum,
-            int iMLoadNum)
-        {
-            m_sBlockName = sBlockName;
-            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
-            m_arrCrSc = new CCrSc[iCrScNum];
-            m_arrNodes = new CNode[iNodeNum];
-            m_arrMembers = new CMember[iMemNum];
-            m_arrNSupports = new CNSupport[iNSupNum];
-            m_arrNReleases = new CNRelease[iNRelNum];
-            m_arrNLoads = new CNLoadAll[iNLoadNum];
-            m_arrMLoads = new CMLoad[iMLoadNum];
-        }
+        //// Alokuje velkost poli zoznamov, malo by to byt dymamicke
+        //public CBlock(string sBlockName,
+        //    int iMatNum, int iCrScNum, int iNodeNum,
+        //    int iMemNum, int iNSupNum, int iNRelNum, int iNLoadNum,
+        //    int iMLoadNum)
+        //{
+        //    m_sBlockName = sBlockName;
+        //    m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
+        //    m_arrCrSc = new CCrSc[iCrScNum];
+        //    m_arrNodes = new CNode[iNodeNum];
+        //    m_arrMembers = new CMember[iMemNum];
+        //    m_arrNSupports = new CNSupport[iNSupNum];
+        //    m_arrNReleases = new CNRelease[iNRelNum];
+        //    m_arrNLoads = new CNLoadAll[iNLoadNum];
+        //    m_arrMLoads = new CMLoad[iMLoadNum];
+        //}
 
         //mazem nepouzivane konstruktory
         //// Geometrical model
