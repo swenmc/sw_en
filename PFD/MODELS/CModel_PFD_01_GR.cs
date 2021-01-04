@@ -1561,7 +1561,6 @@ namespace PFD
 
                     if (canopyBay.Left)
                     {
-                        // Start Nodes
                         for (int j = 0; j < canopyBay.PurlinCountLeft; j++)
                         {
                             m_arrMembers[iCanopy_PurlinIndex + j] = new CMember(iCanopy_PurlinIndex + j + 1, m_arrNodes[iCanopy_PurlinNodeIndex + j], m_arrNodes[iCanopy_PurlinNodeIndex + canopyBay.PurlinCountLeft + j], m_arrCrSc[EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
@@ -1571,7 +1570,6 @@ namespace PFD
 
                     if (canopyBay.Right)
                     {
-                        // Start Nodes
                         for (int j = 0; j < canopyBay.PurlinCountRight; j++)
                         {
                             m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + j] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + j + 1, m_arrNodes[iCanopy_PurlinNodeIndex + 2 * canopyBay.PurlinCountLeft + j], m_arrNodes[iCanopy_PurlinNodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j], m_arrCrSc[EMemberGroupNames.ePurlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
@@ -1599,8 +1597,8 @@ namespace PFD
                         float fAlignmentEnd_Roof = 0.5f * (float)m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof].b;
                         float fMemberRotation_Roof_Left_rad_1 = 0.5f * MathF.fPI;
 
-                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 0] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 0 + 1, m_arrNodes[iLeftCanopyFrameRafterNode_BayStart], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[1] + iLeftKneeNodeIndexInFrame], m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
-                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 1] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 1 + 1, m_arrNodes[iLeftCanopyFrameRafterNode_BayEnd], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[0] + iLeftKneeNodeIndexInFrame], m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 0] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 0 + 1, m_arrNodes[iCanopy_PurlinNodeIndex + canopyBay.PurlinCountLeft - 1] /*m_arrNodes[iLeftCanopyFrameRafterNode_BayStart]*/, m_arrNodes[iFrameNodesNo * iFrameIndexEnd /*FrameIndexList_Left[1]*/ + iLeftKneeNodeIndexInFrame], m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
+                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 1] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + 1 + 1, m_arrNodes[iCanopy_PurlinNodeIndex + 2 * canopyBay.PurlinCountLeft - 1] /*m_arrNodes[iLeftCanopyFrameRafterNode_BayEnd]*/, m_arrNodes[iFrameNodesNo * iFrameIndexStart /* FrameIndexList_Left[0]*/ + iLeftKneeNodeIndexInFrame], m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Left_rad_1, 0);
 
                         iLeftCanopyFrameRafterNode_BayStart++;
                         iLeftCanopyFrameRafterNode_BayEnd++;
@@ -1621,8 +1619,8 @@ namespace PFD
                         float fAlignmentEnd_Roof = 0.5f * (float)m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof].b;
                         float fMemberRotation_Roof_Right_rad_1 = 0.5f * MathF.fPI;
 
-                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 0] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 0 + 1, m_arrNodes[iRightCanopyFrameRafterNode_BayStart], m_arrNodes[iFrameNodesNo * FrameIndexList_Right[1] + iRightKneeNodeIndexInFrame], m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
-                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 1] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 1 + 1, m_arrNodes[iRightCanopyFrameRafterNode_BayEnd], m_arrNodes[iFrameNodesNo * FrameIndexList_Right[0] + iRightKneeNodeIndexInFrame], m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 0] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 0 + 1, m_arrNodes[iCanopy_PurlinNodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight - 1]  /*m_arrNodes[iRightCanopyFrameRafterNode_BayStart]*/, m_arrNodes[iFrameNodesNo * iFrameIndexEnd /*FrameIndexList_Right[1]*/ + iRightKneeNodeIndexInFrame], m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
+                        m_arrMembers[iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 1] = new CMember(iCanopy_PurlinIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iCanopyCrossBracingMembersInBay + 1 + 1, m_arrNodes[iCanopy_PurlinNodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight - 1] /*m_arrNodes[iRightCanopyFrameRafterNode_BayEnd]*/, m_arrNodes[iFrameNodesNo * iFrameIndexStart /* FrameIndexList_Right[0]*/ + iRightKneeNodeIndexInFrame], m_arrCrSc[EMemberGroupNames.eCrossBracing_Roof] /*section_CB_Roof*/, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, eccentricity_Roof, eccentricity_Roof, fAlignmentStart_Roof, fAlignmentEnd_Roof, fMemberRotation_Roof_Right_rad_1, 0);
 
                         iRightCanopyFrameRafterNode_BayStart++;
                         iRightCanopyFrameRafterNode_BayEnd++;
@@ -1770,7 +1768,6 @@ namespace PFD
                             dp.SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[(EMemberGroupNames)1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/,
                             GetBayWidth(dp.iBayNumber), fDist_FrontColumns, fDist_BackColumns); // Vlastnosti Rebate pre FB Side
                         }
-                            
                     }
                 }
 

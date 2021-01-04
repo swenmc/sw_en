@@ -267,7 +267,7 @@ namespace PFD
                         ci = new CCanopiesInfo(i, true, false, 6, 0, 3, 0, true, false);
 
                     if (i == 2 || i == 3) // Right - 2nd and 3rd bay
-                        ci = new CCanopiesInfo(i, false, true, 0, 3, 0, 2, false, false);
+                        ci = new CCanopiesInfo(i, false, true, 0, 3, 0, 2, false, true);
                 }
 
                 items.Add(ci);
