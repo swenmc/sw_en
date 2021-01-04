@@ -131,6 +131,7 @@ namespace PFD
             set
             {
                 m_Left = value;
+                
                 NotifyPropertyChanged("Left");
             }
         }
@@ -145,6 +146,7 @@ namespace PFD
             set
             {
                 m_Right = value;
+                
                 NotifyPropertyChanged("Right");
             }
         }
@@ -301,7 +303,8 @@ namespace PFD
         }
 
         
-        
+
+
 
     }
 }

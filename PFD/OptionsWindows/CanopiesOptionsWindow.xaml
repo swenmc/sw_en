@@ -142,20 +142,66 @@
                     </DataGridCheckBoxColumn.EditingElementStyle>
                 </DataGridCheckBoxColumn>
 
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthLeft}" IsReadOnly="False" Header="Width-Left[m]" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthRight}" IsReadOnly="False" Header="Width-Right[m]" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountLeft}" IsReadOnly="False" Header="Purlin Count-Left[-]" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountRight}" IsReadOnly="False" Header="Purlin Count-Right[-]" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthLeft}" IsReadOnly="False" Header="Width-Left[m]" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthRight}" IsReadOnly="False" Header="Width-Right[m]" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountLeft}" IsReadOnly="False" Header="Purlin Count-Left[-]" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountRight}" IsReadOnly="False" Header="Purlin Count-Right[-]" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
 
                 <DataGridCheckBoxColumn Binding="{Binding IsCrossBracedLeft, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Cross-braced-Left" Width="Auto">
                     <DataGridCheckBoxColumn.ElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
                         </Style>
                     </DataGridCheckBoxColumn.ElementStyle>
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
                         </Style>
                     </DataGridCheckBoxColumn.EditingElementStyle>
                 </DataGridCheckBoxColumn>
@@ -164,11 +210,13 @@
                     <DataGridCheckBoxColumn.ElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
                         </Style>
                     </DataGridCheckBoxColumn.ElementStyle>
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
                         </Style>
                     </DataGridCheckBoxColumn.EditingElementStyle>
                 </DataGridCheckBoxColumn>

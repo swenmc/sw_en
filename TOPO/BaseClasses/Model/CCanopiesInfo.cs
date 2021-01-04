@@ -83,6 +83,10 @@ namespace BaseClasses
             set
             {
                 m_Left = value;
+                if (!IsSetFromCode)
+                {
+                    SetLeftDefaults();
+                }
                 NotifyPropertyChanged("Left");
             }
         }
@@ -97,6 +101,10 @@ namespace BaseClasses
             set
             {
                 m_Right = value;
+                if (!IsSetFromCode)
+                {
+                    SetRightDefaults();
+                }
                 NotifyPropertyChanged("Right");
             }
         }
@@ -206,6 +214,39 @@ namespace BaseClasses
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SetLeftDefaults()
+        {
+            if (Left)
+            {
+                //To Mato - tu treba default na ktore sa bude menit
+                WidthLeft = 3;
+                PurlinCountLeft = 2;
+                IsCrossBracedLeft = true;
+            }
+            else
+            {
+                WidthLeft = 0;
+                PurlinCountLeft = 0;
+                IsCrossBracedLeft = false;
+            }
+        }
+        private void SetRightDefaults()
+        {
+            if (Right)
+            {
+                //To Mato - tu treba default na ktore sa bude menit
+                WidthRight = 3;
+                PurlinCountRight = 2;
+                IsCrossBracedRight = true;
+            }
+            else
+            {
+                WidthRight = 0;
+                PurlinCountRight = 0;
+                IsCrossBracedRight = false;
+            }
         }
     }
 }
