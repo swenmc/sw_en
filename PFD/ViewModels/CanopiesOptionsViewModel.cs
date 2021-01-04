@@ -40,6 +40,8 @@ namespace PFD
         private bool m_IsCrossBracedLeft;
         private bool m_IsCrossBracedRight;
 
+        private double m_DefaultWidth;
+
 
         public ObservableCollection<CCanopiesInfo> CanopiesList
         {
@@ -131,7 +133,10 @@ namespace PFD
             set
             {
                 m_Left = value;
-                
+                if (!IsSetFromCode)
+                {
+                    SetLeftDefaults();
+                }
                 NotifyPropertyChanged("Left");
             }
         }
@@ -146,7 +151,10 @@ namespace PFD
             set
             {
                 m_Right = value;
-                
+                if (!IsSetFromCode)
+                {
+                    SetRightDefaults();
+                }
                 NotifyPropertyChanged("Right");
             }
         }
@@ -159,7 +167,8 @@ namespace PFD
 
             set
             {
-                m_WidthLeft = value;
+                if (Left) ValidateWidth(value);
+                m_WidthLeft = value;                
                 NotifyPropertyChanged("WidthLeft");
             }
         }
@@ -172,6 +181,7 @@ namespace PFD
 
             set
             {
+                if (Right) ValidateWidth(value);
                 m_WidthRight = value;
                 NotifyPropertyChanged("WidthRight");
             }
@@ -186,6 +196,7 @@ namespace PFD
 
             set
             {
+                if (Left) ValidatePurlinCount(value);
                 m_PurlinCountLeft = value;
                 NotifyPropertyChanged("PurlinCountLeft");
             }
@@ -199,6 +210,7 @@ namespace PFD
 
             set
             {
+                if (Right) ValidatePurlinCount(value);
                 m_PurlinCountRight = value;
                 NotifyPropertyChanged("PurlinCountRight");
             }
@@ -232,6 +244,21 @@ namespace PFD
             }
         }
 
+        public double DefaultWidth
+        {
+            get
+            {
+                return m_DefaultWidth;
+            }
+
+            set
+            {
+                m_DefaultWidth = value;
+                if (m_DefaultWidth < 1) m_DefaultWidth = 1;
+                if (m_DefaultWidth > 6) m_DefaultWidth = 6;
+            }
+        }
+
         private void canopiesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if(PropertyChanged != null) PropertyChanged(sender, e);
@@ -247,10 +274,12 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CanopiesOptionsViewModel(int baysNum)
+        public CanopiesOptionsViewModel(int baysNum, float width)
         {
             IsSetFromCode = true;
 
+            DefaultWidth = Math.Round(width * 0.2, 1); //20% from width
+            
             initBays(baysNum);
 
             bool debug = true;
@@ -259,17 +288,17 @@ namespace PFD
 
             for (int i = 1; i <= baysNum; i++)
             {
-                CCanopiesInfo ci = new CCanopiesInfo(i, false, false, 0,0,0,0, false, false);
+                CCanopiesInfo ci = new CCanopiesInfo(i, false, false, 0, 0, 0, 0, false, false, DefaultWidth);
 
                 // TODO Ondrej - !!!!! len v debugu !!!!! Nastavit debug na true a if pre debug
                 if (debug)
                 {
                     // Default - docasne pridavam pre ucely vyvoja a rychlejsieho testovania
                     if (i == 1) // Left - 1st bay
-                        ci = new CCanopiesInfo(i, true, false, 6, 0, 3, 0, true, false);
+                        ci = new CCanopiesInfo(i, true, false, 6, 0, 3, 0, true, false, DefaultWidth);
 
                     if (i == 2 || i == 3) // Right - 2nd and 3rd bay
-                        ci = new CCanopiesInfo(i, false, true, 0, 3, 0, 2, false, true);
+                        ci = new CCanopiesInfo(i, false, true, 0, 3, 0, 2, false, true, DefaultWidth);
                 }
 
                 items.Add(ci);
@@ -302,8 +331,47 @@ namespace PFD
             Bays = bays;
         }
 
-        
+        private void SetLeftDefaults()
+        {
+            if (Left)
+            {
+                WidthLeft = DefaultWidth;
+                PurlinCountLeft = 2;
+                IsCrossBracedLeft = true;
+            }
+            else
+            {
+                WidthLeft = 0;
+                PurlinCountLeft = 0;
+                IsCrossBracedLeft = false;
+            }
+        }
+        private void SetRightDefaults()
+        {
+            if (Right)
+            {
+                WidthRight = DefaultWidth;
+                PurlinCountRight = 2;
+                IsCrossBracedRight = true;
+            }
+            else
+            {
+                WidthRight = 0;
+                PurlinCountRight = 0;
+                IsCrossBracedRight = false;
+            }
+        }
 
+        private void ValidateWidth(double value)
+        {
+            if (value <= 0)
+                throw new ArgumentException("Width must be greater than 0 [m].");
+        }
+        private void ValidatePurlinCount(int value)
+        {
+            if (value <= 0)
+                throw new ArgumentException("Purlin count must be greater than 0.");
+        }
 
 
     }

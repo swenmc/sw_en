@@ -30,6 +30,8 @@ namespace BaseClasses
         private bool m_IsCrossBracedLeft;
         private bool m_IsCrossBracedRight;
 
+        private double m_DefaultWidth;
+
         public bool IsSetFromCode
         {
             get
@@ -118,6 +120,7 @@ namespace BaseClasses
 
             set
             {
+                if (Left) ValidateWidth(value);
                 m_WidthLeft = value;
                 NotifyPropertyChanged("WidthLeft");
             }
@@ -132,6 +135,7 @@ namespace BaseClasses
 
             set
             {
+                if (Right) ValidateWidth(value);
                 m_WidthRight = value;
                 NotifyPropertyChanged("WidthRight");
             }
@@ -146,6 +150,7 @@ namespace BaseClasses
 
             set
             {
+                if (Left) ValidatePurlinCount(value);
                 m_PurlinCountLeft = value;
                 NotifyPropertyChanged("PurlinCountLeft");
             }
@@ -160,6 +165,7 @@ namespace BaseClasses
 
             set
             {
+                if (Right) ValidatePurlinCount(value);
                 m_PurlinCountRight = value;
                 NotifyPropertyChanged("PurlinCountRight");
             }
@@ -193,10 +199,26 @@ namespace BaseClasses
             }
         }
 
+        public double DefaultWidth
+        {
+            get
+            {
+                return m_DefaultWidth;
+            }
 
-        public CCanopiesInfo(int bayNumber, bool left, bool right, double widthLeft, double widthRight, int purlinCountLeft, int purlinCountRight, bool isCrossBracedLeft, bool isCrossBracedRight)
+            set
+            {
+                m_DefaultWidth = value;
+                if (m_DefaultWidth < 1) m_DefaultWidth = 1;
+                if (m_DefaultWidth > 6) m_DefaultWidth = 6;
+            }
+        }
+
+        public CCanopiesInfo(int bayNumber, bool left, bool right, double widthLeft, double widthRight, int purlinCountLeft, int purlinCountRight, bool isCrossBracedLeft, bool isCrossBracedRight, double defWidth)
         {
             MIsSetFromCode = false;
+
+            DefaultWidth = defWidth;
 
             m_BayNumber = bayNumber;
             m_BayIndex = bayNumber - 1;
@@ -219,9 +241,8 @@ namespace BaseClasses
         private void SetLeftDefaults()
         {
             if (Left)
-            {
-                //To Mato - tu treba default na ktore sa bude menit
-                WidthLeft = 3;
+            {                
+                WidthLeft = DefaultWidth;
                 PurlinCountLeft = 2;
                 IsCrossBracedLeft = true;
             }
@@ -235,9 +256,8 @@ namespace BaseClasses
         private void SetRightDefaults()
         {
             if (Right)
-            {
-                //To Mato - tu treba default na ktore sa bude menit
-                WidthRight = 3;
+            {                
+                WidthRight = DefaultWidth;
                 PurlinCountRight = 2;
                 IsCrossBracedRight = true;
             }
@@ -247,6 +267,16 @@ namespace BaseClasses
                 PurlinCountRight = 0;
                 IsCrossBracedRight = false;
             }
+        }
+        private void ValidateWidth(double value)
+        {
+            if (value <= 0)
+                throw new ArgumentException("Width must be greater than 0 [m].");
+        }
+        private void ValidatePurlinCount(int value)
+        {
+            if (value <= 0)
+                throw new ArgumentException("Purlin count must be greater than 0.");
         }
     }
 }

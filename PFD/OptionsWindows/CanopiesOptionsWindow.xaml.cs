@@ -28,7 +28,7 @@ namespace PFD
 
             CanopiesOptionsChanged = false;
 
-            if (pfdVM._canopiesOptionsVM == null) pfdVM._canopiesOptionsVM = new CanopiesOptionsViewModel(pfdVM.Frames - 1); // Počet bays = počet frames - 1
+            if (pfdVM._canopiesOptionsVM == null) pfdVM._canopiesOptionsVM = new CanopiesOptionsViewModel(pfdVM.Frames - 1, pfdVM.Width); // Počet bays = počet frames - 1
             
             pfdVM._canopiesOptionsVM.PropertyChanged += HandleCanopiesOptionsPropertyChangedEvent;
             

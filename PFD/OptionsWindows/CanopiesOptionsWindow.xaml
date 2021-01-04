@@ -19,7 +19,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="100" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
@@ -49,8 +49,8 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />                    
-                    <RowDefinition Height="30" />
+                    <RowDefinition Height="35" />                    
+                    <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
                 <CheckBox Grid.Row="0" Grid.Column="0" Name="chbLeft" Margin="5" IsChecked="{Binding Path=Left}">Left</CheckBox>
                 <CheckBox Grid.Row="1" Grid.Column="0" Name="chbRight" Margin="5" IsChecked="{Binding Path=Right}">Right</CheckBox>
@@ -79,28 +79,12 @@
 
                 <CheckBox Grid.Row="0" Grid.Column="6" Name="chbIsCrossBracedLeft" Margin="5" IsChecked="{Binding Path=IsCrossBracedLeft}" IsEnabled="{Binding Left}">Cross-braced-Left</CheckBox>
                 <CheckBox Grid.Row="1" Grid.Column="6" Name="chbIsCrossBracedRight" Margin="5" IsChecked="{Binding Path=IsCrossBracedRight}" IsEnabled="{Binding Right}">Cross-braced-Right</CheckBox>
-            </Grid>
-            <StackPanel Orientation="Horizontal" Margin="0,3">
-                
-                
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Vertical" Width="100">
-                    
-                </StackPanel>
-
-            </StackPanel>
+            </Grid>            
         </StackPanel>
 
-        <DataGrid Name ="Datagrid_Canopies" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <DataGrid Name="Datagrid_Canopies" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedCrossBracingIndex}" ItemsSource="{Binding CanopiesList}" 
-                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False">
+                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False">            
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="ContentTemplate">
@@ -113,6 +97,23 @@
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                 </Style>
             </DataGrid.ColumnHeaderStyle>
+            <DataGrid.RowValidationErrorTemplate>
+                <ControlTemplate>
+                    <Grid Margin="0,-2,0,-2"
+      ToolTip="{Binding RelativeSource={RelativeSource
+      FindAncestor, AncestorType={x:Type DataGridRow}},
+      Path=(Validation.Errors)[0].ErrorContent}">
+                        <Ellipse StrokeThickness="0" Fill="Red" 
+        Width="{TemplateBinding FontSize}" 
+        Height="{TemplateBinding FontSize}" />
+                        <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" 
+        FontWeight="Bold" Foreground="White" 
+        HorizontalAlignment="Center"  />
+                    </Grid>
+                </ControlTemplate>
+            </DataGrid.RowValidationErrorTemplate>
+
+
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding BayNumber}" IsReadOnly="True" Header="BayNumber" Width="Auto"></DataGridTextColumn>
 
@@ -142,7 +143,7 @@
                     </DataGridCheckBoxColumn.EditingElementStyle>
                 </DataGridCheckBoxColumn>
 
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthLeft}" IsReadOnly="False" Header="Width-Left[m]" Width="*">
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthLeft, ValidatesOnExceptions=True}" IsReadOnly="False" Header="Width-Left[m]" Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
@@ -151,22 +152,22 @@
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
                             <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
+                        </Style>                        
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthRight, ValidatesOnExceptions=True}" IsReadOnly="False" Header="Width-Right[m]" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>                            
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding WidthRight}" IsReadOnly="False" Header="Width-Right[m]" Width="*">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                    <DataGridTextColumn.EditingElementStyle>
-                        <Style TargetType="TextBox">
-                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
-                        </Style>
-                    </DataGridTextColumn.EditingElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountLeft}" IsReadOnly="False" Header="Purlin Count-Left[-]" Width="*">
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountLeft, ValidatesOnExceptions=True}" IsReadOnly="False" Header="Purlin Count-Left[-]" Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
@@ -174,11 +175,11 @@
                     </DataGridTextColumn.ElementStyle>
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
-                            <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>
+                            <Setter Property="IsEnabled" Value="{Binding Path=Left}"/>                            
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountRight}" IsReadOnly="False" Header="Purlin Count-Right[-]" Width="*">
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding PurlinCountRight, ValidatesOnExceptions=True}" IsReadOnly="False" Header="Purlin Count-Right[-]" Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
@@ -186,7 +187,7 @@
                     </DataGridTextColumn.ElementStyle>
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
-                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>
+                            <Setter Property="IsEnabled" Value="{Binding Path=Right}"/>                            
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
