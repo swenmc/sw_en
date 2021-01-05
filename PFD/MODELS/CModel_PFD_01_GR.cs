@@ -1377,11 +1377,11 @@ namespace PFD
                     {
                         CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.FirstOrDefault(obj => obj.BayIndex == FrameIndexList_Left[i - 1]);
                         CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.FirstOrDefault(obj => obj.BayIndex == FrameIndexList_Left[i]);
-                        
-                        fCanopyWidth = (float)Math.Max((previousBay == null ? 0 : previousBay.WidthRight), (nextBay == null ? 0 : nextBay.WidthRight));
+
+                        // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
+                        fCanopyWidth = (float)Math.Max((previousBay == null ? 0 : previousBay.WidthLeft), (nextBay == null ? 0 : nextBay.WidthLeft));
                     }
 
-                    // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
                     float fCanopy_EdgeCoordinate_z = fCanopyWidth * (float)Math.Tan(-fRoofPitch_rad);
                     m_arrNodes[i_temp_numberofNodes + i] = new CNode(i_temp_numberofNodes + i + 1, 0 - fCanopyWidth, GetBaysWidthUntilFrameIndex(FrameIndexList_Left[i]), fH1_frame_centerline + fCanopy_EdgeCoordinate_z, 0);
                     iFirstLeftCanopyRafterNodeIndex = i_temp_numberofNodes;
@@ -1410,10 +1410,10 @@ namespace PFD
                         CCanopiesInfo previousBay = vm._canopiesOptionsVM.CanopiesList.FirstOrDefault(obj => obj.BayIndex == FrameIndexList_Right[i - 1]);
                         CCanopiesInfo nextBay = vm._canopiesOptionsVM.CanopiesList.FirstOrDefault(obj => obj.BayIndex == FrameIndexList_Right[i]);
 
+                        // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
                         fCanopyWidth = (float)Math.Max((previousBay == null ? 0 : previousBay.WidthRight), (nextBay == null ? 0 : nextBay.WidthRight));
                     }
 
-                    // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
                     float fCanopy_EdgeCoordinate_z = fCanopyWidth * (float)Math.Tan(-fRoofPitch_rad);
                     m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i] = new CNode(i_temp_numberofNodes + FrameIndexList_Left.Count + i + 1, fW_frame_centerline + fCanopyWidth, GetBaysWidthUntilFrameIndex(FrameIndexList_Right[i]), fH1_frame_centerline + fCanopy_EdgeCoordinate_z, 0);
                     iFirstRightCanopyRafterNodeIndex = i_temp_numberofNodes + FrameIndexList_Left.Count;
