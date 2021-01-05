@@ -16,8 +16,8 @@ namespace Examples
 
             m_arrNodes = new CNode[5];
             m_arrMembers = new CMember[4];
-            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
-            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();// new CCrSc[2];
+            m_arrMat = new Dictionary<EMemberType_FS_Position, CMat>();
+            m_arrCrSc = new Dictionary<EMemberType_FS_Position, CCrSc>();// new CCrSc[2];
             m_arrNSupports = new CNSupport[1];
             m_arrMLoads = new CMLoad[5];
             m_arrLoadCases = new CLoadCase[1];
@@ -33,8 +33,8 @@ namespace Examples
             m_arrCrSc[0] = crscColumn;
             m_arrCrSc[0].m_Mat = m_arrMat[0]; // Set CrSc Material
 
-            m_arrCrSc[(EMemberGroupNames)1] = crscRafter;
-            m_arrCrSc[(EMemberGroupNames)1].m_Mat = m_arrMat[0]; // Set CrSc Material
+            m_arrCrSc[(EMemberType_FS_Position)1] = crscRafter;
+            m_arrCrSc[(EMemberType_FS_Position)1].m_Mat = m_arrMat[0]; // Set CrSc Material
 
             // Nodes
             // Nodes List - Nodes Array
@@ -91,14 +91,14 @@ namespace Examples
             m_arrMembers[1].ID = 2;
             m_arrMembers[1].NodeStart = m_arrNodes[1];
             m_arrMembers[1].NodeEnd = m_arrNodes[2];
-            m_arrMembers[1].CrScStart = m_arrCrSc[(EMemberGroupNames)1];
+            m_arrMembers[1].CrScStart = m_arrCrSc[(EMemberType_FS_Position)1];
 
             // Member 3 - 3-4
             m_arrMembers[2] = new CMember();
             m_arrMembers[2].ID = 3;
             m_arrMembers[2].NodeStart = m_arrNodes[2];
             m_arrMembers[2].NodeEnd = m_arrNodes[3];
-            m_arrMembers[2].CrScStart = m_arrCrSc[(EMemberGroupNames)1];
+            m_arrMembers[2].CrScStart = m_arrCrSc[(EMemberType_FS_Position)1];
 
             // Member 4 - 4-5
             m_arrMembers[3] = new CMember();

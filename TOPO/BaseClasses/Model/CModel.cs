@@ -67,12 +67,12 @@ namespace BaseClasses
         //public CCrSc[] m_arrCrSc;
 
         // Materials used/defined in current model
-        //public Dictionary<EMemberType_FS_Position, CMat> m_arrMat; //ja by som to mal radsej na iny enum viazane
-        public Dictionary<EMemberGroupNames, CMat> m_arrMat;
+        public Dictionary<EMemberType_FS_Position, CMat> m_arrMat; //ja by som to mal radsej na iny enum viazane
+        //public Dictionary<EMemberGroupNames, CMat> m_arrMat;
 
         // Cross-sections used/ defined in current model        
-        //public Dictionary<EMemberType_FS_Position, CCrSc> m_arrCrSc; //ja by som to mal radsej na iny enum viazane
-        public Dictionary<EMemberGroupNames, CCrSc> m_arrCrSc;
+        public Dictionary<EMemberType_FS_Position, CCrSc> m_arrCrSc; //ja by som to mal radsej na iny enum viazane
+        //public Dictionary<EMemberGroupNames, CCrSc> m_arrCrSc;
 
         // Topological nodes (not FEM)
         // Note !!!
@@ -167,14 +167,14 @@ namespace BaseClasses
         public CModel()
         {
             m_arrNodes = new CNode[] { new CNode() };
-            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
-            m_arrMat = new Dictionary<EMemberGroupNames, CMat>();
+            m_arrCrSc = new Dictionary<EMemberType_FS_Position, CCrSc>();
+            m_arrMat = new Dictionary<EMemberType_FS_Position, CMat>();
         }
         public CModel(string sFileName)
         {
             m_sFileName = sFileName;
-            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
-            m_arrMat = new Dictionary<EMemberGroupNames, CMat>();
+            m_arrCrSc = new Dictionary<EMemberType_FS_Position, CCrSc>();
+            m_arrMat = new Dictionary<EMemberType_FS_Position, CMat>();
         }
         //komentujem nepouzivane konstruktory
         //// Alokuje velkost poli zoznamov, malo by to byt dymamicke
@@ -369,24 +369,24 @@ namespace BaseClasses
             return 0.5f * GetBayWidthPrevious(frameIndex) + 0.5f * GetBayWidthNext(frameIndex);
         }
 
-        public CMat GetMaterial(EMemberGroupNames memberType)
+        public CMat GetMaterial(EMemberType_FS_Position memberType)
         {
             CMat mat = null;
             m_arrMat.TryGetValue(memberType, out mat);
             return mat;
         }
-        public void AddMaterial(EMemberGroupNames memberType, CMat mat)
+        public void AddMaterial(EMemberType_FS_Position memberType, CMat mat)
         {
             if (!m_arrMat.ContainsKey(memberType)) m_arrMat.Add(memberType, mat);
             else m_arrMat[memberType] = mat;
         }
-        public CCrSc GetCrSc(EMemberGroupNames memberType)
+        public CCrSc GetCrSc(EMemberType_FS_Position memberType)
         {
             CCrSc crsc = null;
             m_arrCrSc.TryGetValue(memberType, out crsc);
             return crsc;
         }
-        public void AddCRSC(EMemberGroupNames memberType, CCrSc crsc)
+        public void AddCRSC(EMemberType_FS_Position memberType, CCrSc crsc)
         {
             if (!m_arrCrSc.ContainsKey(memberType)) m_arrCrSc.Add(memberType, crsc);
             else m_arrCrSc[memberType] = crsc;

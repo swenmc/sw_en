@@ -22,8 +22,8 @@ namespace Examples
 
             m_arrNodes = new CNode[3662];
             m_arrMembers = new CMember[10696];
-            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
-            m_arrCrSc = new System.Collections.Generic.Dictionary<EMemberGroupNames, CCrSc>();
+            m_arrMat = new System.Collections.Generic.Dictionary<EMemberType_FS_Position, CMat>();
+            m_arrCrSc = new System.Collections.Generic.Dictionary<EMemberType_FS_Position, CCrSc>();
             m_arrNSupports = new CNSupport[186];
             //m_arrNLoads = new BaseClasses.CNLoad[1];
 

@@ -3069,8 +3069,9 @@ namespace PFD
                 if (ComponentList == null) return 0;
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
                 if (ci != null)
-                {                    
-                    MMainColumnCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn].Section).z_max;
+                {
+                    //MMainColumnCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn].Section).z_max;
+                    MMainColumnCrsc_z_plus = (float)CrScFactory.GetCrSc(ci.Section).z_max;
                 }
 
                 return MMainColumnCrsc_z_plus;
@@ -3089,8 +3090,9 @@ namespace PFD
                 if (ComponentList == null) return 0;
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                 if (ci != null)
-                {                    
-                    MEdgeColumnCrsc_y_minus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_min;
+                {
+                    //MEdgeColumnCrsc_y_minus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_min;
+                    MEdgeColumnCrsc_y_minus = (float)CrScFactory.GetCrSc(ci.Section).y_min;
                 }
 
                 return MEdgeColumnCrsc_y_minus;
@@ -3109,8 +3111,9 @@ namespace PFD
                 if (ComponentList == null) return 0;
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                 if (ci != null)
-                {                    
-                    MEdgeColumnCrsc_y_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_max;
+                {
+                    //MEdgeColumnCrsc_y_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eMainColumn_EF].Section).y_max;
+                    MEdgeColumnCrsc_y_plus = (float)CrScFactory.GetCrSc(ci.Section).y_max;
                 }
 
                 return MEdgeColumnCrsc_y_plus;
@@ -3129,8 +3132,9 @@ namespace PFD
                 if (ComponentList == null) return 0;
                 CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
                 if (ci != null)
-                {                    
-                    MMainRafterCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eRafter].Section).z_max;
+                {
+                    //MMainRafterCrsc_z_plus = (float)CrScFactory.GetCrSc(ComponentList[(int)EMemberGroupNames.eRafter].Section).z_max;
+                    MMainRafterCrsc_z_plus = (float)CrScFactory.GetCrSc(ci.Section).z_max;
                 }
 
                 return MMainRafterCrsc_z_plus;

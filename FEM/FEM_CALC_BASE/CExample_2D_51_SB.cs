@@ -26,8 +26,8 @@ namespace FEM_CALC_BASE
 
             m_arrNodes = new CNode[2];
             m_arrMembers = new CMember[1];
-            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
-            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();
+            m_arrMat = new Dictionary<EMemberType_FS_Position, CMat>();
+            m_arrCrSc = new Dictionary<EMemberType_FS_Position, CCrSc>();
             m_arrNSupports = new CNSupport[2];
             m_arrMLoads = new CMLoad[1];
             m_arrLoadCases = new CLoadCase[1];

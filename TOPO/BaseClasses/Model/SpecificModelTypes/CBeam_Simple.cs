@@ -36,13 +36,13 @@ namespace BaseClasses
             if (m_arrMembers.Length < 1) return;
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            m_arrMat = new Dictionary<EMemberGroupNames, CMat>();
-            m_arrMat[(EMemberGroupNames)0] = m_arrMembers[0].CrScStart.m_Mat;
+            m_arrMat = new Dictionary<EMemberType_FS_Position, CMat>();
+            m_arrMat[(EMemberType_FS_Position)0] = m_arrMembers[0].CrScStart.m_Mat;
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             // Cross-section
-            m_arrCrSc = new Dictionary<EMemberGroupNames, CCrSc>();// new CCrSc[1];
+            m_arrCrSc = new Dictionary<EMemberType_FS_Position, CCrSc>();// new CCrSc[1];
             m_arrCrSc[0] = m_arrMembers[0].CrScStart;
             m_arrCrSc[0].m_Mat = m_arrMembers[0].CrScStart.m_Mat; // Set CrSc Material
         }

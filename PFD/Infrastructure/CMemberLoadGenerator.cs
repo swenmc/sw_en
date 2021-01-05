@@ -116,14 +116,14 @@ namespace PFD
             m_arrLoadCases = model.m_arrLoadCases;
             m_arrMembers = model.m_arrMembers;
 
-            GirtCrSc = model.m_arrCrSc[EMemberGroupNames.eGirtWall];
-            PurlinCrSc = model.m_arrCrSc[EMemberGroupNames.ePurlin];
+            GirtCrSc = model.m_arrCrSc[EMemberType_FS_Position.Girt];
+            PurlinCrSc = model.m_arrCrSc[EMemberType_FS_Position.Purlin];
             fDistanceGirts = model.fDist_Girt;
             fDistancePurlins = model.fDist_Purlin;
-            ColumnCrSc = model.m_arrCrSc[EMemberGroupNames.eMainColumn];
-            RafterCrSc = model.m_arrCrSc[EMemberGroupNames.eRafter];
-            ColumnCrSc_EF = model.m_arrCrSc[EMemberGroupNames.eMainColumn_EF];
-            RafterCrSc_EF = model.m_arrCrSc[EMemberGroupNames.eRafter_EF];
+            ColumnCrSc = model.m_arrCrSc[EMemberType_FS_Position.MainColumn];
+            RafterCrSc = model.m_arrCrSc[EMemberType_FS_Position.MainRafter];
+            ColumnCrSc_EF = model.m_arrCrSc[EMemberType_FS_Position.EdgeColumn];
+            RafterCrSc_EF = model.m_arrCrSc[EMemberType_FS_Position.EdgeRafter];
 
             fValueLoadColumnDead = -generalLoad.fDeadLoadTotal_Wall;
             fValueLoadRafterDead = -generalLoad.fDeadLoadTotal_Roof;

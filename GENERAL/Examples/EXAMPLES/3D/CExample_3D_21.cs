@@ -15,8 +15,8 @@ namespace Examples
 
             m_arrNodes = new CNode[62];
             m_arrMembers = new CMember[31];
-            m_arrMat = new System.Collections.Generic.Dictionary<EMemberGroupNames, CMat>();
-            m_arrCrSc = new System.Collections.Generic.Dictionary<EMemberGroupNames, CCrSc>(); // new CCrSc[31];
+            m_arrMat = new System.Collections.Generic.Dictionary<EMemberType_FS_Position, CMat>();
+            m_arrCrSc = new System.Collections.Generic.Dictionary<EMemberType_FS_Position, CCrSc>(); // new CCrSc[31];
             m_arrNSupports = new CNSupport[3];
             //m_arrNLoads = new BaseClasses.CNLoad[3];
 
@@ -92,44 +92,44 @@ namespace Examples
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             m_arrCrSc[00] = new CCrSc_0_00(0.1f, 20); // Solid Half Circle / Semicircle shape
-            m_arrCrSc[(EMemberGroupNames)01] = new CCrSc_0_01(0.1f, 20); // Solid Quater Cirlce - chyba nezobrazuje sa jedna strana
-            m_arrCrSc[(EMemberGroupNames)02] = new CCrSc_0_02(0.1f, 20); // Rolled round bar
-            m_arrCrSc[(EMemberGroupNames)03] = new CCrSc_0_03(0.2f, 0.1f, 21); // Solid Ellipse
-            m_arrCrSc[(EMemberGroupNames)04] = new CCrSc_0_04(0.3f, 0.5f); // Triangular Prism / Equilateral
-            m_arrCrSc[(EMemberGroupNames)05] = new CCrSc_0_05(0.1f, 0.05f); // Solid square section
-            m_arrCrSc[(EMemberGroupNames)06] = new CCrSc_0_06(0.1f); // Solid Penthagon
-            m_arrCrSc[(EMemberGroupNames)07] = new CCrSc_0_07(0.1f); // Solid Hexagon
-            m_arrCrSc[(EMemberGroupNames)08] = new CCrSc_0_08(0.1f); // Solid Octagon
-            m_arrCrSc[(EMemberGroupNames)09] = new CCrSc_0_09(0.1f); // Solid Dodecagon
-            m_arrCrSc[(EMemberGroupNames)10] = new CCrSc_0_20(0.2f, 0.010f, 25); // Semicircle Curve
-            m_arrCrSc[(EMemberGroupNames)11] = new CCrSc_0_22(0.2f, 0.05f, 12); // Circular Hollow Section (Tube, Pipe)
-            m_arrCrSc[(EMemberGroupNames)12] = new CCrSc_0_23(0.2f, 0.1f, 0.020f, 24); // Elliptical Hollow Section
-            m_arrCrSc[(EMemberGroupNames)13] = new CCrSc_0_24(0.2f, 0.05f); // Triangular Prism / Equilateral with Opening
-            m_arrCrSc[(EMemberGroupNames)14] = new CCrSc_0_25(0.2f, 0.15f, 0.01f, 0.008f); // Welded hollow section - doubly symmetrical
-            m_arrCrSc[(EMemberGroupNames)15] = new CCrSc_0_26(0.2f, 0.05f); // Empty (Hollow) Penthagon
-            m_arrCrSc[(EMemberGroupNames)16] = new CCrSc_0_27(0.2f, 0.05f); // Empty (Hollow) Hexagon
-            m_arrCrSc[(EMemberGroupNames)17] = new CCrSc_0_28(0.2f, 0.05f); // Empty (Hollow) Octagon
-            m_arrCrSc[(EMemberGroupNames)18] = new CCrSc_0_50(0.2f, 0.1f, 0.015f, 0.006f); // Doubly symmetric I section
-            m_arrCrSc[(EMemberGroupNames)19] = new CCrSc_0_52(0.2f, 0.1f, 0.015f, 0.006f, -0.05f); // Monosymmetric U/C section
-            m_arrCrSc[(EMemberGroupNames)20] = new CCrSc_0_54(0.2f, 0.1f, 0.015f, 0.010f, 0.050f, 0.010f); // Welded Angle section
-            m_arrCrSc[(EMemberGroupNames)21] = new CCrSc_0_56(0.2f, 0.1f, 0.015f, 0.010f, 0.15f); // Welded monosymmetric T section
-            m_arrCrSc[(EMemberGroupNames)22] = new CCrSc_0_58(0.2f, 0.1f, 0.015f, 0.010f); // Welded centrally symmetric Z section
-            m_arrCrSc[(EMemberGroupNames)23] = new CCrSc_0_60(0.2f, 0.1f, 0.015f); // Doubly symmetric Cruciform
-            m_arrCrSc[(EMemberGroupNames)24] = new CCrSc_0_61(0.2f, 0.010f); // Y-section
+            m_arrCrSc[(EMemberType_FS_Position)01] = new CCrSc_0_01(0.1f, 20); // Solid Quater Cirlce - chyba nezobrazuje sa jedna strana
+            m_arrCrSc[(EMemberType_FS_Position)02] = new CCrSc_0_02(0.1f, 20); // Rolled round bar
+            m_arrCrSc[(EMemberType_FS_Position)03] = new CCrSc_0_03(0.2f, 0.1f, 21); // Solid Ellipse
+            m_arrCrSc[(EMemberType_FS_Position)04] = new CCrSc_0_04(0.3f, 0.5f); // Triangular Prism / Equilateral
+            m_arrCrSc[(EMemberType_FS_Position)05] = new CCrSc_0_05(0.1f, 0.05f); // Solid square section
+            m_arrCrSc[(EMemberType_FS_Position)06] = new CCrSc_0_06(0.1f); // Solid Penthagon
+            m_arrCrSc[(EMemberType_FS_Position)07] = new CCrSc_0_07(0.1f); // Solid Hexagon
+            m_arrCrSc[(EMemberType_FS_Position)08] = new CCrSc_0_08(0.1f); // Solid Octagon
+            m_arrCrSc[(EMemberType_FS_Position)09] = new CCrSc_0_09(0.1f); // Solid Dodecagon
+            m_arrCrSc[(EMemberType_FS_Position)10] = new CCrSc_0_20(0.2f, 0.010f, 25); // Semicircle Curve
+            m_arrCrSc[(EMemberType_FS_Position)11] = new CCrSc_0_22(0.2f, 0.05f, 12); // Circular Hollow Section (Tube, Pipe)
+            m_arrCrSc[(EMemberType_FS_Position)12] = new CCrSc_0_23(0.2f, 0.1f, 0.020f, 24); // Elliptical Hollow Section
+            m_arrCrSc[(EMemberType_FS_Position)13] = new CCrSc_0_24(0.2f, 0.05f); // Triangular Prism / Equilateral with Opening
+            m_arrCrSc[(EMemberType_FS_Position)14] = new CCrSc_0_25(0.2f, 0.15f, 0.01f, 0.008f); // Welded hollow section - doubly symmetrical
+            m_arrCrSc[(EMemberType_FS_Position)15] = new CCrSc_0_26(0.2f, 0.05f); // Empty (Hollow) Penthagon
+            m_arrCrSc[(EMemberType_FS_Position)16] = new CCrSc_0_27(0.2f, 0.05f); // Empty (Hollow) Hexagon
+            m_arrCrSc[(EMemberType_FS_Position)17] = new CCrSc_0_28(0.2f, 0.05f); // Empty (Hollow) Octagon
+            m_arrCrSc[(EMemberType_FS_Position)18] = new CCrSc_0_50(0.2f, 0.1f, 0.015f, 0.006f); // Doubly symmetric I section
+            m_arrCrSc[(EMemberType_FS_Position)19] = new CCrSc_0_52(0.2f, 0.1f, 0.015f, 0.006f, -0.05f); // Monosymmetric U/C section
+            m_arrCrSc[(EMemberType_FS_Position)20] = new CCrSc_0_54(0.2f, 0.1f, 0.015f, 0.010f, 0.050f, 0.010f); // Welded Angle section
+            m_arrCrSc[(EMemberType_FS_Position)21] = new CCrSc_0_56(0.2f, 0.1f, 0.015f, 0.010f, 0.15f); // Welded monosymmetric T section
+            m_arrCrSc[(EMemberType_FS_Position)22] = new CCrSc_0_58(0.2f, 0.1f, 0.015f, 0.010f); // Welded centrally symmetric Z section
+            m_arrCrSc[(EMemberType_FS_Position)23] = new CCrSc_0_60(0.2f, 0.1f, 0.015f); // Doubly symmetric Cruciform
+            m_arrCrSc[(EMemberType_FS_Position)24] = new CCrSc_0_61(0.2f, 0.010f); // Y-section
 
             // Rolled I doubly symmetric profile, Tapered or parallel flanges
-            m_arrCrSc[(EMemberGroupNames)25] = new CCrSc_3_00(0, 8, 0.200f, 0.090f, 0.0113f, 0.0075f, 0.0075f, 0.0045f, 0.1654f);
-            m_arrCrSc[(EMemberGroupNames)26] = new CCrSc_3_00(1, 8, 0.200f, 0.090f, 0.0113f, 0.0075f, 0.0075f, 0.1699f);
-            m_arrCrSc[(EMemberGroupNames)27] = new CCrSc_3_00(2, 8, 0.200f, 0.090f, 0.0113f, 0.0075f, 0.0075f, 0.1699f);
+            m_arrCrSc[(EMemberType_FS_Position)25] = new CCrSc_3_00(0, 8, 0.200f, 0.090f, 0.0113f, 0.0075f, 0.0075f, 0.0045f, 0.1654f);
+            m_arrCrSc[(EMemberType_FS_Position)26] = new CCrSc_3_00(1, 8, 0.200f, 0.090f, 0.0113f, 0.0075f, 0.0075f, 0.1699f);
+            m_arrCrSc[(EMemberType_FS_Position)27] = new CCrSc_3_00(2, 8, 0.200f, 0.090f, 0.0113f, 0.0075f, 0.0075f, 0.1699f);
 
             // load_3_00_TriangelIndices(0, 12,8); // Shape ID, number of auxiliary points , number of segments of arc
             // load_3_00_TriangelIndices(1,8, 8); // Shape ID, number of auxiliary points , number of segments of arc
             // load_3_00_TriangelIndices(2, 4, 8); // Shape ID, number of auxiliary points , number of segments of arc
 
             // Rolled I monosymmetric profile, Tapered or parallel flanges
-            m_arrCrSc[(EMemberGroupNames)28] = new CCrSc_3_01(0, 8, 0.200f, 0.190f, 0.150f, 0.0113f, 0.0075f, 0.0075f, 0.0045f, 0.1654f);
-            m_arrCrSc[(EMemberGroupNames)29] = new CCrSc_3_01(1, 8, 0.200f, 0.150f, 0.100f, 0.0113f, 0.0075f, 0.0075f, 0.1699f);
-            m_arrCrSc[(EMemberGroupNames)30] = new CCrSc_3_01(2, 8, 0.200f, 0.090f, 0.150f, 0.0113f, 0.0075f, 0.0075f, 0.1699f);
+            m_arrCrSc[(EMemberType_FS_Position)28] = new CCrSc_3_01(0, 8, 0.200f, 0.190f, 0.150f, 0.0113f, 0.0075f, 0.0075f, 0.0045f, 0.1654f);
+            m_arrCrSc[(EMemberType_FS_Position)29] = new CCrSc_3_01(1, 8, 0.200f, 0.150f, 0.100f, 0.0113f, 0.0075f, 0.0075f, 0.1699f);
+            m_arrCrSc[(EMemberType_FS_Position)30] = new CCrSc_3_01(2, 8, 0.200f, 0.090f, 0.150f, 0.0113f, 0.0075f, 0.0075f, 0.1699f);
 
             // load_3_00_TriangelIndices(0, 12, 8); // Shape ID, number of auxiliary points , number of segments of arc
             // load_3_00_TriangelIndices(1,8,4); // Shape ID, number of auxiliary points , number of segments of arc
@@ -211,36 +211,36 @@ namespace Examples
             // Members List - Members Array
 
             m_arrMembers[0] = new BaseClasses.CMember(1, m_arrNodes[0], m_arrNodes[1], m_arrCrSc[0], 0);
-            m_arrMembers[1] = new BaseClasses.CMember(2, m_arrNodes[2], m_arrNodes[3], m_arrCrSc[(EMemberGroupNames)1], 0);
-            m_arrMembers[2] = new BaseClasses.CMember(3, m_arrNodes[4], m_arrNodes[5], m_arrCrSc[(EMemberGroupNames)2], 0);
-            m_arrMembers[3] = new BaseClasses.CMember(4, m_arrNodes[6], m_arrNodes[7], m_arrCrSc[(EMemberGroupNames)3], 0);
-            m_arrMembers[4] = new BaseClasses.CMember(5, m_arrNodes[8], m_arrNodes[9], m_arrCrSc[(EMemberGroupNames)4], 0);
-            m_arrMembers[5] = new BaseClasses.CMember(6, m_arrNodes[10], m_arrNodes[11], m_arrCrSc[(EMemberGroupNames)5], 0);
-            m_arrMembers[6] = new BaseClasses.CMember(7, m_arrNodes[12], m_arrNodes[13], m_arrCrSc[(EMemberGroupNames)6], 0);
-            m_arrMembers[7] = new BaseClasses.CMember(8, m_arrNodes[14], m_arrNodes[15], m_arrCrSc[(EMemberGroupNames)7], 0);
-            m_arrMembers[8] = new BaseClasses.CMember(9, m_arrNodes[16], m_arrNodes[17], m_arrCrSc[(EMemberGroupNames)8], 0);
-            m_arrMembers[9] = new BaseClasses.CMember(10, m_arrNodes[18], m_arrNodes[19], m_arrCrSc[(EMemberGroupNames)9], 0);
-            m_arrMembers[10] = new BaseClasses.CMember(11, m_arrNodes[20], m_arrNodes[21], m_arrCrSc[(EMemberGroupNames)10], 0);
-            m_arrMembers[11] = new BaseClasses.CMember(12, m_arrNodes[22], m_arrNodes[23], m_arrCrSc[(EMemberGroupNames)11], 0);
-            m_arrMembers[12] = new BaseClasses.CMember(13, m_arrNodes[24], m_arrNodes[25], m_arrCrSc[(EMemberGroupNames)12], 0);
-            m_arrMembers[13] = new BaseClasses.CMember(14, m_arrNodes[26], m_arrNodes[27], m_arrCrSc[(EMemberGroupNames)13], 0);
-            m_arrMembers[14] = new BaseClasses.CMember(15, m_arrNodes[28], m_arrNodes[29], m_arrCrSc[(EMemberGroupNames)14], 0);
-            m_arrMembers[15] = new BaseClasses.CMember(16, m_arrNodes[30], m_arrNodes[31], m_arrCrSc[(EMemberGroupNames)15], 0);
-            m_arrMembers[16] = new BaseClasses.CMember(17, m_arrNodes[32], m_arrNodes[33], m_arrCrSc[(EMemberGroupNames)16], 0);
-            m_arrMembers[17] = new BaseClasses.CMember(18, m_arrNodes[34], m_arrNodes[35], m_arrCrSc[(EMemberGroupNames)17], 0);
-            m_arrMembers[18] = new BaseClasses.CMember(19, m_arrNodes[36], m_arrNodes[37], m_arrCrSc[(EMemberGroupNames)18], 0);
-            m_arrMembers[19] = new BaseClasses.CMember(20, m_arrNodes[38], m_arrNodes[39], m_arrCrSc[(EMemberGroupNames)19], 0);
-            m_arrMembers[20] = new BaseClasses.CMember(21, m_arrNodes[40], m_arrNodes[41], m_arrCrSc[(EMemberGroupNames)20], 0);
-            m_arrMembers[21] = new BaseClasses.CMember(22, m_arrNodes[42], m_arrNodes[43], m_arrCrSc[(EMemberGroupNames)21], 0);
-            m_arrMembers[22] = new BaseClasses.CMember(23, m_arrNodes[44], m_arrNodes[45], m_arrCrSc[(EMemberGroupNames)22], 0);
-            m_arrMembers[23] = new BaseClasses.CMember(24, m_arrNodes[46], m_arrNodes[47], m_arrCrSc[(EMemberGroupNames)23], 0);
-            m_arrMembers[24] = new BaseClasses.CMember(25, m_arrNodes[48], m_arrNodes[49], m_arrCrSc[(EMemberGroupNames)24], 0);
-            m_arrMembers[25] = new BaseClasses.CMember(26, m_arrNodes[50], m_arrNodes[51], m_arrCrSc[(EMemberGroupNames)25], 0);
-            m_arrMembers[26] = new BaseClasses.CMember(27, m_arrNodes[52], m_arrNodes[53], m_arrCrSc[(EMemberGroupNames)26], 0);
-            m_arrMembers[27] = new BaseClasses.CMember(28, m_arrNodes[54], m_arrNodes[55], m_arrCrSc[(EMemberGroupNames)27], 0);
-            m_arrMembers[28] = new BaseClasses.CMember(29, m_arrNodes[56], m_arrNodes[57], m_arrCrSc[(EMemberGroupNames)28], 0);
-            m_arrMembers[29] = new BaseClasses.CMember(30, m_arrNodes[58], m_arrNodes[59], m_arrCrSc[(EMemberGroupNames)29], 0);
-            m_arrMembers[30] = new BaseClasses.CMember(31, m_arrNodes[60], m_arrNodes[61], m_arrCrSc[(EMemberGroupNames)30], 0);
+            m_arrMembers[1] = new BaseClasses.CMember(2, m_arrNodes[2], m_arrNodes[3], m_arrCrSc[(EMemberType_FS_Position)1], 0);
+            m_arrMembers[2] = new BaseClasses.CMember(3, m_arrNodes[4], m_arrNodes[5], m_arrCrSc[(EMemberType_FS_Position)2], 0);
+            m_arrMembers[3] = new BaseClasses.CMember(4, m_arrNodes[6], m_arrNodes[7], m_arrCrSc[(EMemberType_FS_Position)3], 0);
+            m_arrMembers[4] = new BaseClasses.CMember(5, m_arrNodes[8], m_arrNodes[9], m_arrCrSc[(EMemberType_FS_Position)4], 0);
+            m_arrMembers[5] = new BaseClasses.CMember(6, m_arrNodes[10], m_arrNodes[11], m_arrCrSc[(EMemberType_FS_Position)5], 0);
+            m_arrMembers[6] = new BaseClasses.CMember(7, m_arrNodes[12], m_arrNodes[13], m_arrCrSc[(EMemberType_FS_Position)6], 0);
+            m_arrMembers[7] = new BaseClasses.CMember(8, m_arrNodes[14], m_arrNodes[15], m_arrCrSc[(EMemberType_FS_Position)7], 0);
+            m_arrMembers[8] = new BaseClasses.CMember(9, m_arrNodes[16], m_arrNodes[17], m_arrCrSc[(EMemberType_FS_Position)8], 0);
+            m_arrMembers[9] = new BaseClasses.CMember(10, m_arrNodes[18], m_arrNodes[19], m_arrCrSc[(EMemberType_FS_Position)9], 0);
+            m_arrMembers[10] = new BaseClasses.CMember(11, m_arrNodes[20], m_arrNodes[21], m_arrCrSc[(EMemberType_FS_Position)10], 0);
+            m_arrMembers[11] = new BaseClasses.CMember(12, m_arrNodes[22], m_arrNodes[23], m_arrCrSc[(EMemberType_FS_Position)11], 0);
+            m_arrMembers[12] = new BaseClasses.CMember(13, m_arrNodes[24], m_arrNodes[25], m_arrCrSc[(EMemberType_FS_Position)12], 0);
+            m_arrMembers[13] = new BaseClasses.CMember(14, m_arrNodes[26], m_arrNodes[27], m_arrCrSc[(EMemberType_FS_Position)13], 0);
+            m_arrMembers[14] = new BaseClasses.CMember(15, m_arrNodes[28], m_arrNodes[29], m_arrCrSc[(EMemberType_FS_Position)14], 0);
+            m_arrMembers[15] = new BaseClasses.CMember(16, m_arrNodes[30], m_arrNodes[31], m_arrCrSc[(EMemberType_FS_Position)15], 0);
+            m_arrMembers[16] = new BaseClasses.CMember(17, m_arrNodes[32], m_arrNodes[33], m_arrCrSc[(EMemberType_FS_Position)16], 0);
+            m_arrMembers[17] = new BaseClasses.CMember(18, m_arrNodes[34], m_arrNodes[35], m_arrCrSc[(EMemberType_FS_Position)17], 0);
+            m_arrMembers[18] = new BaseClasses.CMember(19, m_arrNodes[36], m_arrNodes[37], m_arrCrSc[(EMemberType_FS_Position)18], 0);
+            m_arrMembers[19] = new BaseClasses.CMember(20, m_arrNodes[38], m_arrNodes[39], m_arrCrSc[(EMemberType_FS_Position)19], 0);
+            m_arrMembers[20] = new BaseClasses.CMember(21, m_arrNodes[40], m_arrNodes[41], m_arrCrSc[(EMemberType_FS_Position)20], 0);
+            m_arrMembers[21] = new BaseClasses.CMember(22, m_arrNodes[42], m_arrNodes[43], m_arrCrSc[(EMemberType_FS_Position)21], 0);
+            m_arrMembers[22] = new BaseClasses.CMember(23, m_arrNodes[44], m_arrNodes[45], m_arrCrSc[(EMemberType_FS_Position)22], 0);
+            m_arrMembers[23] = new BaseClasses.CMember(24, m_arrNodes[46], m_arrNodes[47], m_arrCrSc[(EMemberType_FS_Position)23], 0);
+            m_arrMembers[24] = new BaseClasses.CMember(25, m_arrNodes[48], m_arrNodes[49], m_arrCrSc[(EMemberType_FS_Position)24], 0);
+            m_arrMembers[25] = new BaseClasses.CMember(26, m_arrNodes[50], m_arrNodes[51], m_arrCrSc[(EMemberType_FS_Position)25], 0);
+            m_arrMembers[26] = new BaseClasses.CMember(27, m_arrNodes[52], m_arrNodes[53], m_arrCrSc[(EMemberType_FS_Position)26], 0);
+            m_arrMembers[27] = new BaseClasses.CMember(28, m_arrNodes[54], m_arrNodes[55], m_arrCrSc[(EMemberType_FS_Position)27], 0);
+            m_arrMembers[28] = new BaseClasses.CMember(29, m_arrNodes[56], m_arrNodes[57], m_arrCrSc[(EMemberType_FS_Position)28], 0);
+            m_arrMembers[29] = new BaseClasses.CMember(30, m_arrNodes[58], m_arrNodes[59], m_arrCrSc[(EMemberType_FS_Position)29], 0);
+            m_arrMembers[30] = new BaseClasses.CMember(31, m_arrNodes[60], m_arrNodes[61], m_arrCrSc[(EMemberType_FS_Position)30], 0);
 
 
             //Sort by ID

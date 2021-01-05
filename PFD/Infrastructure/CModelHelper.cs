@@ -554,6 +554,17 @@ namespace PFD
             }
         }
 
+        public static CComponentInfo GetComponentInfo(ObservableCollection<CComponentInfo> componentList, EMemberType_FS_Position memberType)
+        {
+            return componentList.FirstOrDefault(c => c.MemberTypePosition == memberType);
+        }
+        public static bool IsGenerateSet(ObservableCollection<CComponentInfo> componentList, EMemberType_FS_Position memberType)
+        {
+            CComponentInfo ci = componentList.FirstOrDefault(c => c.MemberTypePosition == memberType);
+            if (ci == null) return false;
+            if (ci.Generate == null) return false;
+            return ci.Generate.Value;
+        }
 
 
 

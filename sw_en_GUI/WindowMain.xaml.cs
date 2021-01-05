@@ -234,7 +234,7 @@ namespace sw_en_GUI
                 model.m_arrMembers[i].NodeEnd = model.m_arrNodes[model.m_arrMembers[i].NodeEnd.ID - 1];
 
                 // Set Cross-section
-                model.m_arrMembers[i].CrScStart = model.m_arrCrSc[(EMemberGroupNames)model.m_arrMembers[i].CrScStart.ID - 1];
+                model.m_arrMembers[i].CrScStart = model.m_arrCrSc[(EMemberType_FS_Position)model.m_arrMembers[i].CrScStart.ID - 1];
 
                 // Temp - nacitava sa z tabulky alebo z databazy, dopracovat
                 // Parametre pre IPN 300
@@ -400,9 +400,9 @@ namespace sw_en_GUI
         //    }
         //    return list_crsc.ToArray();
         //}
-        private Dictionary<EMemberGroupNames, CCrSc> getCrossSections(DataTable dt)
+        private Dictionary<EMemberType_FS_Position, CCrSc> getCrossSections(DataTable dt)
         {
-            Dictionary<EMemberGroupNames, CCrSc> dict_crsc = new Dictionary<EMemberGroupNames, CCrSc>();            
+            Dictionary<EMemberType_FS_Position, CCrSc> dict_crsc = new Dictionary<EMemberType_FS_Position, CCrSc>();            
             CCrSc crsc = null;
 
             int CrSc_ID;
@@ -437,7 +437,7 @@ namespace sw_en_GUI
                     float.TryParse(row["fA_vz"].ToString(), out fA_vz);
                     crsc.A_vz = fA_vz;
 
-                    dict_crsc.Add((EMemberGroupNames)i, crsc);
+                    dict_crsc.Add((EMemberType_FS_Position)i, crsc);
                     i++;
                 }
                 catch (Exception)
