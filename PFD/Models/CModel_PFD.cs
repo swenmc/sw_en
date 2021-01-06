@@ -1953,9 +1953,12 @@ namespace PFD
                         // Find foundation definition nodes
                         if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
                             m_arrMembers[i].EMemberType == EMemberType_FS.eWP &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackWindPost].CrossSection))
+                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackWindPost].CrossSection)) 
                             listOfControlPoints.Add(m_arrMembers[i].NodeStart);
                     }
+                    //To Mato
+                    // preco podmienka tato: m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackWindPost].CrossSection))
+                    //nie je takto ??? m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide
 
                     for (int i = 0; i < listOfControlPoints.Count; i++)
                     {
