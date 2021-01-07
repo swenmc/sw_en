@@ -746,6 +746,8 @@ namespace PFD
             int iCanopyRafterOverhangs_Total = 0;
             int iCanopyPurlinNodes_Total = 0;
             int iCanopyPurlins_Total = 0;
+            int iCanopyPurlinBlockNodes_Total = 0;
+            int iCanopyPurlinBlockMembers_Total = 0;
             int iCanopyCrossBracingMembers_Total = 0;
 
             // Zoznam indexov ramov, na ktorych sa ma vytvorit uzol pre rafter
@@ -790,6 +792,26 @@ namespace PFD
                         int iCanopy_BracingCrosses = 1; // Len jeden cross pre jedno canopy bay
                         iCanopyCrossBracingMembers_Total += iCanopy_BracingCrosses * 2; // 2 pruty v kazdom krizi
                     }
+
+                    // Canopy Bracing Block Nodes and Members
+                    if (bGeneratePurlinBracing)
+                    {
+                        if (canopyBay.Left)
+                        {
+                            int iNumberOfPBNodesInOneCanopy = iNumberOfTransverseSupports_Purlins * (canopyBay.PurlinCountLeft + 1);
+                            int iNumberOfPBMembersInOneCanopy = iNumberOfTransverseSupports_Purlins * canopyBay.PurlinCountLeft;
+                            iCanopyPurlinBlockNodes_Total += iNumberOfPBNodesInOneCanopy;
+                            iCanopyPurlinBlockMembers_Total += iNumberOfPBMembersInOneCanopy;
+                        }
+
+                        if (canopyBay.Right)
+                        {
+                            int iNumberOfPBNodesInOneCanopy = iNumberOfTransverseSupports_Purlins * (canopyBay.PurlinCountRight + 1);
+                            int iNumberOfPBMembersInOneCanopy = iNumberOfTransverseSupports_Purlins * canopyBay.PurlinCountRight;
+                            iCanopyPurlinBlockNodes_Total += iNumberOfPBNodesInOneCanopy;
+                            iCanopyPurlinBlockMembers_Total += iNumberOfPBMembersInOneCanopy;
+                        }
+                    }
                 }
 
                 // Rafter Nodes
@@ -800,8 +822,8 @@ namespace PFD
 
             //----------------------------------------------------------------------------------------------------------------------------
 
-            m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame + iCanopyRafterNodes_Total + iCanopyPurlinNodes_Total];
-            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total + iCanopyRafterOverhangs_Total + iCanopyPurlins_Total + iCanopyCrossBracingMembers_Total];
+            m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame + iCanopyRafterNodes_Total + iCanopyPurlinNodes_Total + iCanopyPurlinBlockNodes_Total];
+            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total + iCanopyRafterOverhangs_Total + iCanopyPurlins_Total + iCanopyPurlinBlockMembers_Total + iCanopyCrossBracingMembers_Total];
 
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
 
@@ -1435,11 +1457,15 @@ namespace PFD
                     fRafterStart,
                     fPurlinStart,
                     fPurlinEnd,
+                    bUsePBEverySecond,
+                    fCutOffOneSide,
                     iCanopyRafterNodes_Total,
                     iCanopyRafterOverhangs_Total,
                     iNumberOfTransverseSupports_Purlins,
                     iCanopyPurlinNodes_Total,
                     iCanopyPurlins_Total,
+                    iCanopyPurlinBlockNodes_Total,
+                    iCanopyPurlinBlockMembers_Total,
                     iCanopyCrossBracingMembers_Total,
                     ref i_temp_numberofNodes,
                     ref i_temp_numberofMembers
