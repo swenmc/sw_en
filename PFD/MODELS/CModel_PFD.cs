@@ -1361,7 +1361,7 @@ namespace PFD
                     for (int j = 0; j < canopyBay.PurlinCountLeft; j++) // Left side
                     {
                         bool bDeactivateMember = false;
-                        if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
+                        if (bUsePBEverySecond && j % 2 == 0) bDeactivateMember = true;
 
                         float fPBStart = (float)m_arrCrSc[EMemberType_FS_Position.Purlin].y_min - fCutOffOneSide;
                         float fPBEnd = -(float)m_arrCrSc[EMemberType_FS_Position.Purlin].y_max - fCutOffOneSide;
@@ -1436,7 +1436,7 @@ namespace PFD
                     for (int j = 0; j < canopyBay.PurlinCountRight; j++) // Right side
                     {
                         bool bDeactivateMember = false;
-                        if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
+                        if (bUsePBEverySecond && j % 2 == 0) bDeactivateMember = true;
 
                         // Opacna orientacia osi LCS y na pravej strane
                         float fPBStart = -(float)m_arrCrSc[EMemberType_FS_Position.Purlin].y_max - fCutOffOneSide;
