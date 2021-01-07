@@ -614,19 +614,9 @@ namespace PFD
             }
 
             //----------------------------------------------------------------------------------------------------------------------------
-
-
-            //----------------------------------------------------------------------------------------------------------------------------
             // Canopies
 
             bool bGenerateCanopies = true;
-
-            // Canopy Purlins
-            int iCanopyPurlinsInBay_1 = 3; // TODO - vypocitat podla sirky, resp zavat priamo v GUI
-            int iCanopyPurlinsInBay_2 = 2; // TODO - vypocitat podla sirky, resp zavat priamo v GUI
-
-            int iCanopyPurlins_1 = iCanopyPurlinsInBay_1 * 1; // Jedna bay
-            int iCanopyPurlins_2 = iCanopyPurlinsInBay_2 * 2; // Dve bays
 
             int iCanopyRafterNodes_Total = 0;
             int iCanopyRafterOverhangs_Total = 0;
@@ -677,17 +667,6 @@ namespace PFD
                         iCanopyCrossBracingMembers_Total += iCanopy_BracingCrosses * 2; // 2 pruty v kazdom krizi
                     }
                 }
-
-                // Rafter Nodes
-                //int iCanopyRafterNodes_1 = 2;
-                //int iCanopyRafterNodes_2 = 3;
-                // Rafter Overhangs
-                //int iCanopyRafterOverhangs_1 = 2;
-                //int iCanopyRafterOverhangs_2 = 3;
-
-                // Canopy Purlins Nodes
-                //int iCanopyPurlinNodes_1 = 2 * iCanopyPurlins_1;
-                //int iCanopyPurlinNodes_2 = 2 * iCanopyPurlins_2;
 
                 // Rafter Nodes
                 iCanopyRafterNodes_Total = FrameIndexList_Left.Count + FrameIndexList_Right.Count;
