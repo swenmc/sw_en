@@ -164,21 +164,21 @@ namespace PFD
             float fHorizontalDisplacementLimit_WindPost_IL = 1f / fHorizontalDisplacementLimitDenominator_WindPost_IL;
             float fHorizontalDisplacementLimit_WindPost_TL = 1f / fHorizontalDisplacementLimitDenominator_WindPost_TL;
 
-            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberGroupNames.eMainColumn].ComponentName, EMemberType_FS.eMC, EMemberType_FS_Position.MainColumn, m_arrCrSc[EMemberType_FS_Position.MainColumn], fHorizontalDisplacementLimitDenominator_Column_PL, fHorizontalDisplacementLimitDenominator_Column_IL, fHorizontalDisplacementLimitDenominator_Column_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberGroupNames.eRafter].ComponentName, EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, m_arrCrSc[EMemberType_FS_Position.MainRafter], fVerticalDisplacementLimitDenominator_Rafter_PL, fVerticalDisplacementLimitDenominator_Rafter_IL, fVerticalDisplacementLimitDenominator_Rafter_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberGroupNames.eMainColumn_EF].ComponentName, EMemberType_FS.eEC, EMemberType_FS_Position.EdgeColumn, m_arrCrSc[EMemberType_FS_Position.EdgeColumn], fHorizontalDisplacementLimitDenominator_Column_PL, fHorizontalDisplacementLimitDenominator_Column_IL, fHorizontalDisplacementLimitDenominator_Column_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberGroupNames.eRafter_EF].ComponentName, EMemberType_FS.eER, EMemberType_FS_Position.EdgeRafter, m_arrCrSc[EMemberType_FS_Position.EdgeRafter], fVerticalDisplacementLimitDenominator_Rafter_PL, fVerticalDisplacementLimitDenominator_Rafter_IL, fVerticalDisplacementLimitDenominator_Rafter_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(5, componentList[(int)EMemberGroupNames.eEavesPurlin].ComponentName, EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, m_arrCrSc[EMemberType_FS_Position.EdgePurlin], fVerticalDisplacementLimitDenominator_Purlin_PL, fVerticalDisplacementLimitDenominator_Purlin_IL, fVerticalDisplacementLimitDenominator_Purlin_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(6, componentList[(int)EMemberGroupNames.eGirtWall].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[EMemberType_FS_Position.Girt], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(7, componentList[(int)EMemberGroupNames.ePurlin].ComponentName, EMemberType_FS.eP, EMemberType_FS_Position.Purlin, m_arrCrSc[EMemberType_FS_Position.Purlin], fVerticalDisplacementLimitDenominator_Purlin_PL, fVerticalDisplacementLimitDenominator_Purlin_IL, fVerticalDisplacementLimitDenominator_Purlin_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(8, componentList[(int)EMemberGroupNames.eFrontWindPost].ComponentName, EMemberType_FS.eWP, EMemberType_FS_Position.WindPostFrontSide, m_arrCrSc[EMemberType_FS_Position.WindPostFrontSide], fHorizontalDisplacementLimitDenominator_WindPost_PL, fHorizontalDisplacementLimitDenominator_WindPost_IL, fHorizontalDisplacementLimitDenominator_WindPost_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(9, componentList[(int)EMemberGroupNames.eBackWindPost].ComponentName, EMemberType_FS.eWP, EMemberType_FS_Position.WindPostBackSide, m_arrCrSc[EMemberType_FS_Position.WindPostBackSide], fHorizontalDisplacementLimitDenominator_WindPost_PL, fHorizontalDisplacementLimitDenominator_WindPost_IL, fHorizontalDisplacementLimitDenominator_WindPost_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(10, componentList[(int)EMemberGroupNames.eFrontGirt].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.GirtFrontSide, m_arrCrSc[EMemberType_FS_Position.GirtFrontSide], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(11, componentList[(int)EMemberGroupNames.eBackGirt].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.GirtBackSide, m_arrCrSc[EMemberType_FS_Position.GirtBackSide], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(12, componentList[(int)EMemberGroupNames.eGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirts], 0, 0, 0, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(13, componentList[(int)EMemberGroupNames.ePurlinBracing].ComponentName, EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlins], 0, 0, 0, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(14, componentList[(int)EMemberGroupNames.eFrontGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirtsFrontSide, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsFrontSide], 0, 0, 0, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(15, componentList[(int)EMemberGroupNames.eBackGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirtsBackSide, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsBackSide], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.MainColumn), EMemberType_FS.eMC, EMemberType_FS_Position.MainColumn, m_arrCrSc[EMemberType_FS_Position.MainColumn], fHorizontalDisplacementLimitDenominator_Column_PL, fHorizontalDisplacementLimitDenominator_Column_IL, fHorizontalDisplacementLimitDenominator_Column_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.MainRafter), EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, m_arrCrSc[EMemberType_FS_Position.MainRafter], fVerticalDisplacementLimitDenominator_Rafter_PL, fVerticalDisplacementLimitDenominator_Rafter_IL, fVerticalDisplacementLimitDenominator_Rafter_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.EdgeColumn), EMemberType_FS.eEC, EMemberType_FS_Position.EdgeColumn, m_arrCrSc[EMemberType_FS_Position.EdgeColumn], fHorizontalDisplacementLimitDenominator_Column_PL, fHorizontalDisplacementLimitDenominator_Column_IL, fHorizontalDisplacementLimitDenominator_Column_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.EdgeRafter), EMemberType_FS.eER, EMemberType_FS_Position.EdgeRafter, m_arrCrSc[EMemberType_FS_Position.EdgeRafter], fVerticalDisplacementLimitDenominator_Rafter_PL, fVerticalDisplacementLimitDenominator_Rafter_IL, fVerticalDisplacementLimitDenominator_Rafter_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.EdgePurlin), EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, m_arrCrSc[EMemberType_FS_Position.EdgePurlin], fVerticalDisplacementLimitDenominator_Purlin_PL, fVerticalDisplacementLimitDenominator_Purlin_IL, fVerticalDisplacementLimitDenominator_Purlin_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.Girt), EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[EMemberType_FS_Position.Girt], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.Purlin), EMemberType_FS.eP, EMemberType_FS_Position.Purlin, m_arrCrSc[EMemberType_FS_Position.Purlin], fVerticalDisplacementLimitDenominator_Purlin_PL, fVerticalDisplacementLimitDenominator_Purlin_IL, fVerticalDisplacementLimitDenominator_Purlin_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.WindPostFrontSide), EMemberType_FS.eWP, EMemberType_FS_Position.WindPostFrontSide, m_arrCrSc[EMemberType_FS_Position.WindPostFrontSide], fHorizontalDisplacementLimitDenominator_WindPost_PL, fHorizontalDisplacementLimitDenominator_WindPost_IL, fHorizontalDisplacementLimitDenominator_WindPost_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.WindPostBackSide), EMemberType_FS.eWP, EMemberType_FS_Position.WindPostBackSide, m_arrCrSc[EMemberType_FS_Position.WindPostBackSide], fHorizontalDisplacementLimitDenominator_WindPost_PL, fHorizontalDisplacementLimitDenominator_WindPost_IL, fHorizontalDisplacementLimitDenominator_WindPost_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(10, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.GirtFrontSide), EMemberType_FS.eG, EMemberType_FS_Position.GirtFrontSide, m_arrCrSc[EMemberType_FS_Position.GirtFrontSide], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(11, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.GirtBackSide), EMemberType_FS.eG, EMemberType_FS_Position.GirtBackSide, m_arrCrSc[EMemberType_FS_Position.GirtBackSide], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(12, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.BracingBlockGirts), EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirts], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(13, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.BracingBlockPurlins), EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlins], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(14, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.BracingBlockGirtsFrontSide),EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirtsFrontSide, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsFrontSide], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(15, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.BracingBlockGirtsBackSide), EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirtsBackSide, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsBackSide], 0, 0, 0, 0));
 
             CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
             CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
@@ -324,7 +324,7 @@ namespace PFD
             fz_UpperLimitForBackGirts = (float)((0.5 * m_arrCrSc[EMemberType_FS_Position.MainRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[EMemberType_FS_Position.GirtBackSide].b);
 
             // Side wall - girts
-            bool bGenerateGirts = componentList[(int)EMemberGroupNames.eGirtWall].Generate.Value;
+            bool bGenerateGirts = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.Girt);
             if (bGenerateGirts)
             {
                 LeftColumnGirtNo = (int)((fH1_frame_centerline - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
@@ -344,7 +344,7 @@ namespace PFD
             iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
 
-            bool bGeneratePurlins = componentList[(int)EMemberGroupNames.ePurlin].Generate.Value;
+            bool bGeneratePurlins = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.Purlin);
             if (bGeneratePurlins)
             {
                 iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
@@ -358,7 +358,7 @@ namespace PFD
 
             iFrontColumnNoInOneFrame = 0;
 
-            bool bGenerateFrontColumns = componentList[(int)EMemberGroupNames.eFrontWindPost].Generate.Value;
+            bool bGenerateFrontColumns = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.WindPostFrontSide);
             if (bGenerateFrontColumns)
             {
                 iOneRafterFrontColumnNo = Math.Max(1, (int)((fW_frame_centerline - 0.95 * fDist_FrontColumns) / fDist_FrontColumns));
@@ -373,7 +373,7 @@ namespace PFD
 
             iBackColumnNoInOneFrame = 0;
 
-            bool bGenerateBackColumns = componentList[(int)EMemberGroupNames.eBackWindPost].Generate.Value;
+            bool bGenerateBackColumns = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.WindPostBackSide);
             if (bGenerateBackColumns)
             {
                 iOneRafterBackColumnNo = Math.Max(1, (int)((fW_frame_centerline - 0.95 * fDist_BackColumns) / fDist_BackColumns));
@@ -392,7 +392,7 @@ namespace PFD
             iFrontGirtsNoInOneFrame = 0;
             iArrNumberOfNodesPerFrontColumnFromLeft = new int[iOneRafterFrontColumnNo];
 
-            bool bGenerateFrontGirts = componentList[(int)EMemberGroupNames.eFrontGirt].Generate.Value;
+            bool bGenerateFrontGirts = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.GirtFrontSide);
 
             if (bGenerateFrontGirts)
             {
@@ -463,7 +463,7 @@ namespace PFD
             iBackGirtsNoInOneFrame = 0;
             iArrNumberOfNodesPerBackColumnFromLeft = new int[iOneRafterBackColumnNo];
 
-            bool bGenerateBackGirts = componentList[(int)EMemberGroupNames.eBackGirt].Generate.Value;
+            bool bGenerateBackGirts = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.GirtBackSide);
 
             if (bGenerateBackGirts)
             {
@@ -529,7 +529,7 @@ namespace PFD
                 bUseBackColumnFlyBracingPlates = false;
 
             // Sidewall girts bracing blocks
-            bool bGenerateGirtBracingSideWalls = componentList[(int)EMemberGroupNames.eGirtBracing].Generate.Value;
+            bool bGenerateGirtBracingSideWalls = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.BracingBlockGirts);
 
             int iNumberOfGBSideWallsNodesInOneBayOneSideLeft = 0;
             int iNumberOfGBSideWallsNodesInOneBayOneSideRight = 0;
@@ -562,7 +562,7 @@ namespace PFD
             }
 
             // Purlin bracing blocks
-            bool bGeneratePurlinBracing = componentList[(int)EMemberGroupNames.ePurlinBracing].Generate.Value;
+            bool bGeneratePurlinBracing = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.BracingBlockPurlins);
 
             int iNumberOfPBNodesInOneBayOneSide = 0;
             int iNumberOfPBNodesInOneBay = 0;
@@ -587,7 +587,7 @@ namespace PFD
             }
 
             // Front side girts bracing blocks
-            bool bGenerateGirtBracingFrontSide = componentList[(int)EMemberGroupNames.eFrontGirtBracing].Generate.Value;
+            bool bGenerateGirtBracingFrontSide = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.BracingBlockGirtsFrontSide);
 
             int[] iArrGB_FS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerFrontColumnFromLeft.Length + 1];
             int[] iArrGB_FS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerFrontColumnFromLeft.Length + 1];
@@ -633,7 +633,7 @@ namespace PFD
             }
 
             // Back side girts bracing blocks
-            bool bGenerateGirtBracingBackSide = componentList[(int)EMemberGroupNames.eBackGirtBracing].Generate.Value;
+            bool bGenerateGirtBracingBackSide = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.BracingBlockGirtsBackSide);
 
             int[] iArrGB_BS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerBackColumnFromLeft.Length + 1];
             int[] iArrGB_BS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerBackColumnFromLeft.Length + 1];

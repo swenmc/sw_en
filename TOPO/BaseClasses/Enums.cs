@@ -507,30 +507,31 @@ namespace BaseClasses
         Dummy_Null = 17
     }
 
-    //to Mato- keby bolo na mne,tak cele toto vyhodim
-    //Mne sa vobec nepaci,ze sa enum pouziva ako index v poli vid:
-    //ComponentList[(int)EMemberGroupNames.eRafter].ComponentName
-    //malo by sa to vyberat ako ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter).ComponentName potom je jedno ako su usporiadane v tom zozname
-    public enum EMemberGroupNames
-    {
-        eMainColumn = 0,    // Internal frame
-        eRafter = 1,        // Internal frame
-        eMainColumn_EF = 2, // Edge frame
-        eRafter_EF = 3,     // Edge frame
-        eEavesPurlin = 4,
-        eGirtWall = 5,
-        ePurlin = 6,
-        eFrontWindPost = 7,
-        eBackWindPost = 8,
-        eFrontGirt = 9,
-        eBackGirt = 10,
-        eGirtBracing = 11,
-        ePurlinBracing = 12,
-        eFrontGirtBracing = 13,
-        eBackGirtBracing = 14,
-        eCrossBracing_Walls = 15,
-        eCrossBracing_Roof = 16
-    }
+    //toto sa uz pouzivat nebude a bude to vymazane
+    ////to Mato- keby bolo na mne,tak cele toto vyhodim
+    ////Mne sa vobec nepaci,ze sa enum pouziva ako index v poli vid:
+    ////ComponentList[(int)EMemberGroupNames.eRafter].ComponentName
+    ////malo by sa to vyberat ako ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter).ComponentName potom je jedno ako su usporiadane v tom zozname
+    //public enum EMemberGroupNames
+    //{
+    //    eMainColumn = 0,    // Internal frame
+    //    eRafter = 1,        // Internal frame
+    //    eMainColumn_EF = 2, // Edge frame
+    //    eRafter_EF = 3,     // Edge frame
+    //    eEavesPurlin = 4,
+    //    eGirtWall = 5,
+    //    ePurlin = 6,
+    //    eFrontWindPost = 7,
+    //    eBackWindPost = 8,
+    //    eFrontGirt = 9,
+    //    eBackGirt = 10,
+    //    eGirtBracing = 11,
+    //    ePurlinBracing = 12,
+    //    eFrontGirtBracing = 13,
+    //    eBackGirtBracing = 14,
+    //    eCrossBracing_Walls = 15,
+    //    eCrossBracing_Roof = 16
+    //}
 
     public enum ECountry
     {

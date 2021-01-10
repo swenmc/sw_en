@@ -2318,8 +2318,7 @@ namespace PFD
                     {
                         // Find foundation definition nodes
                         if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FS.eWP &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eFrontWindPost].CrossSection))
+                            m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.WindPostFrontSide)                            
                             listOfControlPoints.Add(m_arrMembers[i].NodeStart);
                     }
 
@@ -2407,18 +2406,9 @@ namespace PFD
                     {
                         // Find foundation definition nodes
                         if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FS.eWP &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackWindPost].CrossSection)) 
+                            m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
                             listOfControlPoints.Add(m_arrMembers[i].NodeStart);
-                    }
-                    //To Mato
-                    // preco podmienka tato: m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackWindPost].CrossSection))
-                    //nie je takto ??? m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.WindPostBackSide
-
-                    // To Ondrej
-                    // Toto je podla mna historicke dedicstvo z doby ked sme nemali istotu ze EMemberType_FS_Position su priradene vsetkym prutom, resp. z doby ked tento enum este neexistoval
-                    // takze sa pouzil typ EMemberType_FS
-                    // V podstate sa dnes uz daju obe podmienky na line 1955 aj 1956 nahradit tym co si napisal
+                    }                    
 
                     for (int i = 0; i < listOfControlPoints.Count; i++)
                     {
