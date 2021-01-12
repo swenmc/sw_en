@@ -2445,8 +2445,6 @@ namespace BaseClasses
                             wireFramePoints.Add(pNodeStart); // Add Start Node
                             wireFramePoints.Add(pNodeEnd); // Add End Node
                         }
-
-                        
                     }
                 }
 
