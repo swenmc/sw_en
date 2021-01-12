@@ -480,7 +480,15 @@ namespace BaseClasses
         DoorTrimmer = 18,
         DoorLintel = 19,
         CrossBracingWall = 20,
-        CrossBracingRoof = 21
+        CrossBracingRoof = 21,
+
+        OverhangMainRafter = 22,
+        OverhangEdgeRafter = 23,
+        CanopyPurlin = 24,
+        CanopyPurlinBlock = 25,
+        CanopyCrossBracing = 26
+
+
     }
 
     // TODO - Ondrej TOTO je asi zbytocna duplicita
@@ -916,6 +924,7 @@ namespace BaseClasses
 
         public bool bColorsAccordingToMembers;
         public bool bColorsAccordingToSections;
+        public bool bColoredCenterlines;
 
         public int RotateModelX;
         public int RotateModelY;

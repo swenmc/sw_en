@@ -215,7 +215,7 @@ namespace PFD
 
         [NonSerialized]
         private CModel_PFD MModel;
-        
+
         //-------------------------------------------------------------------------------------------------------------        
         private float m_fBayWidth;
         private float m_fHeight_H2; // Apex height for gable roof or right side wall heigth for monopitch roof
@@ -351,7 +351,7 @@ namespace PFD
                 Length = MLengthOverall - Math.Abs(EdgeColumnCrsc_y_minus) - EdgeColumnCrsc_y_plus;
                 WallHeightOverall = dmodel.fh;
                 WallHeight = GetCenterLineHeight_H1();
-                
+
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
                 ColumnDistance = dmodel.fdist_frontcolumn;
@@ -362,9 +362,9 @@ namespace PFD
 
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
-                
+
                 SetResultsAreNotValid();
-                
+
                 //refaktoring 24.11.2020 - toto mi pride,ze je davno nastavene a je to tu dvojmo
                 // ak bude vsekto OK, tak treba zmazat zakomentovane
                 //if (MKitsetTypeIndex == 0)
@@ -598,7 +598,7 @@ namespace PFD
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Width must be between 3 and 100 [m]");
                 MWidthOverall = value;
-                
+
                 bool isChangedFromCode = IsSetFromCode;
                 if (!isChangedFromCode)
                 {
@@ -2897,7 +2897,7 @@ namespace PFD
             {
                 m_BaysWidthOptionsChanged = value;
 
-                if (!IsSetFromCode) IsSetFromCode = true;                                
+                if (!IsSetFromCode) IsSetFromCode = true;
                 Length = _baysWidthOptionsVM.GetTotalWidth();
                 IsSetFromCode = false;
 
@@ -3206,7 +3206,7 @@ namespace PFD
         public CPFDViewModel(int kitsetTypeIndex, int modelIndex, bool bRelease, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties,
             CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
         {
-            MIsRelease = bRelease;            
+            MIsRelease = bRelease;
 
             IsSetFromCode = true;
             DoorBlocksProperties = doorBlocksProperties;
@@ -3459,8 +3459,8 @@ namespace PFD
                 if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
             }
 
-            SolverWindow.SetBeams();            
-            
+            SolverWindow.SetBeams();
+
             if (_solverOptionsVM.DeterminateCombinationResultsByFEMSolver || _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam)
             {
                 // Calculation of simple beam model
@@ -3474,7 +3474,7 @@ namespace PFD
                 int beamsCount = model.GetSimpleBeamsCount();
                 SolverWindow.SetBeamsProgress(beamsCount, beamsCount);
             }
-                        
+
             CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, this);
             memberDesignCalculations.CalculateAll(_solverOptionsVM.MultiCoreCalculation);
             SetDesignMembersLists(memberDesignCalculations);
@@ -3551,6 +3551,10 @@ namespace PFD
             return WindowBlocksProperties.Count > 0;
         }
 
+        public void SetComponentListAccordingToCanopies()
+        {
+            _componentVM.AddCanopy();
+        }
 
 
         private void SetResultsAreNotValid()
@@ -3596,7 +3600,7 @@ namespace PFD
                     SetResultsAreNotValid();
                     SetComponentListAccordingToDoors();
                 }
-                else if(e.PropertyName == "CoatingColor")
+                else if (e.PropertyName == "CoatingColor")
                 {
                     //SetResultsAreNotValid(); //regenerate after change
                 }
@@ -3810,7 +3814,7 @@ namespace PFD
                 throw new Exception("Model shape is not implemented.");
             }
             data.KitSetTypeIndex = MKitsetTypeIndex;
-            data.Width_Overall =  MWidthOverall;
+            data.Width_Overall = MWidthOverall;
             data.Length_Overall = MLengthOverall;
             data.WallHeight_Overall = MWallHeightOverall;
             data.RoofPitch_deg = MRoofPitch_deg;
@@ -4090,6 +4094,7 @@ namespace PFD
             sDisplayOptions.DisplayIn3DRatio = _displayOptionsVM.DisplayIn3DRatio;
             sDisplayOptions.bColorsAccordingToMembers = _displayOptionsVM.ColorsAccordingToMembers;
             sDisplayOptions.bColorsAccordingToSections = _displayOptionsVM.ColorsAccordingToSections;
+            sDisplayOptions.bColoredCenterlines = _displayOptionsVM.ColoredCenterlines;
 
             //sDisplayOptions.wireFrameColor = WireframeColor;
             sDisplayOptions.wireFrameColor = _displayOptionsVM.WireframeColor;
@@ -4248,7 +4253,7 @@ namespace PFD
                     dp.IsSetFromCode = true;
                     dp.CoatingColor = dp.CoatingColors.FirstOrDefault(c => c.ID == doorProperties.CoatingColor.ID);
                     dp.IsSetFromCode = false;
-                } 
+                }
             }
         }
         public void SetAllDoorCoatingColorToSame()
@@ -4290,7 +4295,7 @@ namespace PFD
             }
             IsSetFromCode = false;
         }
-        
+
         public void SetAllDownpipeCoatingColorAccordingTo(CoatingColour colour)
         {
             if (Downpipes == null) return;
@@ -4318,7 +4323,7 @@ namespace PFD
         public void SetAllFlashingsCoatingColorToSame()
         {
             CoatingColour col = null;
-            if (Flashings != null) col = Flashings.FirstOrDefault().CoatingColor;            
+            if (Flashings != null) col = Flashings.FirstOrDefault().CoatingColor;
 
             if (col != null) SetAllFlashingsCoatingColorAccordingTo(col);
         }
@@ -4341,7 +4346,7 @@ namespace PFD
         {
             CoatingColour col = GetActual_FGD_Color();
 
-            if(col != null) SetAll_FGD_CoatingColorAccordingTo(col);
+            if (col != null) SetAll_FGD_CoatingColorAccordingTo(col);
         }
 
         public CoatingColour GetActual_FGD_Color()

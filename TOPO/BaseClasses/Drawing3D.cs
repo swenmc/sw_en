@@ -2433,13 +2433,25 @@ namespace BaseClasses
                         Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
                         Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
 
-                        // Add start and end point line - centerline points of member
-                        wireFramePoints.Add(pNodeStart); // Add Start Node
-                        wireFramePoints.Add(pNodeEnd); // Add End Node
+                        if (sDiplayOptions.bColoredCenterlines)
+                        {
+                            Color color = model.m_arrMembers[i].Color;
+                            if (sDiplayOptions.bColorsAccordingToSections) color = model.m_arrMembers[i].CrScStart.CSColor;
+                            DrawLineToViewport(viewPort, sDiplayOptions, fZoomFactor, color, sDiplayOptions.fmemberCenterlineThickness, pNodeStart, pNodeEnd, ref cylinders);                            
+                        }
+                        else
+                        {
+                            // Add start and end point line - centerline points of member
+                            wireFramePoints.Add(pNodeStart); // Add Start Node
+                            wireFramePoints.Add(pNodeEnd); // Add End Node
+                        }
+
+                        
                     }
                 }
 
-                DrawLinesToViewport(viewPort, sDiplayOptions, fZoomFactor, sDiplayOptions.memberCenterlineColor, sDiplayOptions.fmemberCenterlineThickness, wireFramePoints, ref cylinders);
+                if(!sDiplayOptions.bColoredCenterlines)
+                    DrawLinesToViewport(viewPort, sDiplayOptions, fZoomFactor, sDiplayOptions.memberCenterlineColor, sDiplayOptions.fmemberCenterlineThickness, wireFramePoints, ref cylinders);
             }
         }
 
@@ -2932,6 +2944,31 @@ namespace BaseClasses
             else
             {
                 AddLineToViewPort(points, color, thickness, viewPort);
+            }
+        }
+
+        public static void DrawLineToViewport(Viewport3D viewPort, DisplayOptions sDisplayOptions, float fZoomFactor, Color color, float thickness, Point3D p1, Point3D p2, ref Model3DGroup cylinders)
+        {
+            if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
+            {
+                if (cylinders == null) cylinders = new Model3DGroup();
+
+                float modelMaxLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                //float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
+
+                float fLineThickness_Basic = thickness; // Default value - prebera sa z GUI - same as in GUI - zakladna hrubka ciar, ktoru chceme na vykresoch / obrazkoch
+                float fLineThickness_Factor = 1.10f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                float fLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
+
+                float fThickness_CylinderDiameter_Final = fLineThickness_Basic * fLineThickness_Factor * fLineThickness_ModelSize_Factor * fZoomFactor;
+
+                GeometryModel3D cylinder = Get3DLineReplacement(color, fThickness_CylinderDiameter_Final, p1, p2);
+                cylinders.Children.Add(cylinder);
+                
+            }
+            else
+            {
+                AddLineToViewPort(new List<Point3D>() { p1, p2}, color, thickness, viewPort);
             }
         }
 

@@ -75,6 +75,7 @@ namespace PFD
         private bool m_DisplayCladding;
         private bool m_DisplayDoors;
         private bool m_DisplayWindows;
+        private bool m_ColoredCenterlines;
 
         // Labels and axes
         private bool MShowLoadsLabels;
@@ -3095,9 +3096,23 @@ namespace PFD
             }
         }
 
+        public bool ColoredCenterlines
+        {
+            get
+            {
+                return m_ColoredCenterlines;
+            }
+
+            set
+            {
+                m_ColoredCenterlines = value;
+                NotifyPropertyChanged("ColoredCenterlines");
+            }
+        }
+
         #endregion Properties
 
-        
+
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -3143,6 +3158,7 @@ namespace PFD
             DisplayTransparentModelMember = false;
             ColorsAccordingToMembers = true;
             ColorsAccordingToSections = false;
+            ColoredCenterlines = false;
 
             ShowNodesDescription = false;
             ShowMemberDescription = false;
