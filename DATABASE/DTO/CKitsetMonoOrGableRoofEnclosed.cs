@@ -39,6 +39,12 @@ namespace DATABASE.DTO
         string MCrossBracingWalls;
         string MCrossBracingRoof;
 
+        string MOverhangMainRafter;
+        string MOverhangEdgeRafter;
+        string MCanopyPurlin;
+        string MCanopyPurlinBlock;
+        string MCanopyCrossBracing;
+
         string MColumnFlyBracingEveryXXGirt;
         string MRafterFlyBracingEveryXXPurlin;
         string MColumnFrontSideFlyBracingEveryXXGirt;
@@ -543,6 +549,71 @@ namespace DATABASE.DTO
             set
             {
                 MCrossBracingRoof = value;
+            }
+        }
+
+        public string OverhangMainRafter
+        {
+            get
+            {
+                return MOverhangMainRafter;
+            }
+
+            set
+            {
+                MOverhangMainRafter = value;
+            }
+        }
+
+        public string OverhangEdgeRafter
+        {
+            get
+            {
+                return MOverhangEdgeRafter;
+            }
+
+            set
+            {
+                MOverhangEdgeRafter = value;
+            }
+        }
+
+        public string CanopyPurlin
+        {
+            get
+            {
+                return MCanopyPurlin;
+            }
+
+            set
+            {
+                MCanopyPurlin = value;
+            }
+        }
+
+        public string CanopyPurlinBlock
+        {
+            get
+            {
+                return MCanopyPurlinBlock;
+            }
+
+            set
+            {
+                MCanopyPurlinBlock = value;
+            }
+        }
+
+        public string CanopyCrossBracing
+        {
+            get
+            {
+                return MCanopyCrossBracing;
+            }
+
+            set
+            {
+                MCanopyCrossBracing = value;
             }
         }
 
