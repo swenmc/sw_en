@@ -76,6 +76,14 @@ namespace DATABASE
             model.BracingBlocksGirtsBackSide = reader["bracingBlocksGirtsBackSide"].ToString();
             model.CrossBracingWalls = reader["crossBracingWalls"].ToString();
             model.CrossBracingRoof = reader["crossBracingRoof"].ToString();
+
+            //TODO Doplnit podla DB
+            //model.OverhangMainRafter = reader["crossBracingRoof"].ToString();
+            //model.OverhangEdgeRafter = reader["crossBracingRoof"].ToString();
+            //model.CanopyPurlin = reader["crossBracingRoof"].ToString();
+            //model.CanopyPurlinBlock = reader["crossBracingRoof"].ToString();
+            //model.CanopyCrossBracing = reader["crossBracingRoof"].ToString();
+
             model.DoorFrame = reader["doorFrame"].ToString();
             model.DoorTrimmer = reader["doorTrimmer"].ToString();
             model.DoorLintel = reader["doorLintel"].ToString();

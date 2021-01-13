@@ -161,6 +161,9 @@
     <Compile Include="OptionsWindows\BaysWidthOptionsWindow.xaml.cs">
       <DependentUpon>BaysWidthOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\MembersValidation.xaml.cs">
+      <DependentUpon>MembersValidation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsWindows\CanopiesOptionsWindow.xaml.cs">
       <DependentUpon>CanopiesOptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -362,6 +365,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="OptionsWindows\BaysWidthOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\MembersValidation.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

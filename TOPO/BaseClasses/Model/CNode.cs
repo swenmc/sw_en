@@ -49,7 +49,11 @@ namespace BaseClasses
             Z = fCoord_Z;
             FTime = fTime;
         }
-        
+
+        public override string ToString()
+        {
+            return $"ID: {ID} [{X}; {Y}; {Z}]";
+        }
 
         #region IComparer Members
 

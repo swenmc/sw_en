@@ -434,6 +434,13 @@ namespace PFD
 
             MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracingWall, model.CrossBracingWalls);
             MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracingRoof, model.CrossBracingRoof);
+
+            MembersSectionsDict.Add(EMemberType_FS_Position.OverhangMainRafter, model.OverhangMainRafter);
+            MembersSectionsDict.Add(EMemberType_FS_Position.OverhangEdgeRafter, model.OverhangEdgeRafter);
+            MembersSectionsDict.Add(EMemberType_FS_Position.CanopyPurlin, model.CanopyPurlin);
+            MembersSectionsDict.Add(EMemberType_FS_Position.CanopyPurlinBlock, model.CanopyPurlinBlock);
+            MembersSectionsDict.Add(EMemberType_FS_Position.CanopyCrossBracing, model.CanopyCrossBracing);
+            
         }
     }
 }
