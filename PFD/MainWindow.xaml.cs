@@ -2580,7 +2580,13 @@ namespace PFD
             });*/
         }
 
-        
+        private void BtnMembersValidation_Click(object sender, RoutedEventArgs e)
+        {
+            MembersValidation mv_window = new MembersValidation(vm);
+            mv_window.ShowDialog();
+        }
+
+
 
 
         //private void SetInitialItemsInComboboxes()
