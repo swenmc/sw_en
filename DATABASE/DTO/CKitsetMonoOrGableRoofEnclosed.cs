@@ -10,9 +10,10 @@ namespace DATABASE.DTO
     {
         int MID;
         string MModelName;
-        string MWidth;
-        string MLength;
-        string MWall_height;
+        string MWidth_overall;
+        string MLength_overall;
+        string MWall_height_overall;
+        string MLength_centerline;
         string MDistance_L1;
         string MIFrames;
         string MC_array_code;
@@ -39,6 +40,12 @@ namespace DATABASE.DTO
         string MCrossBracingWalls;
         string MCrossBracingRoof;
 
+        string MMainRafterCanopy;
+        string MEdgeRafterCanopy;
+        string MPurlinCanopy;
+        string MBracingBlockPurlinsCanopy;
+        string MCrossBracingRoofCanopy;
+
         string MColumnFlyBracingEveryXXGirt;
         string MRafterFlyBracingEveryXXPurlin;
         string MColumnFrontSideFlyBracingEveryXXGirt;
@@ -48,6 +55,7 @@ namespace DATABASE.DTO
         string MPurlin_ILS_Number;
         string MGirtFrontSide_ILS_Number;
         string MGirtBackSide_ILS_Number;
+        string MPurlinCanopy_ILS_Number;
 
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------
@@ -78,42 +86,55 @@ namespace DATABASE.DTO
             }
         }
 
-        public string Width
+        public string Width_overall
         {
             get
             {
-                return MWidth;
+                return MWidth_overall;
             }
 
             set
             {
-                MWidth = value;
+                MWidth_overall = value;
             }
         }
 
-        public string Length
+        public string Length_overall
         {
             get
             {
-                return MLength;
+                return MLength_overall;
             }
 
             set
             {
-                MLength = value;
+                MLength_overall = value;
             }
         }
 
-        public string Wall_height
+        public string Wall_height_overall
         {
             get
             {
-                return MWall_height;
+                return MWall_height_overall;
             }
 
             set
             {
-                MWall_height = value;
+                MWall_height_overall = value;
+            }
+        }
+
+        public string Length_centerline
+        {
+            get
+            {
+                return MLength_centerline;
+            }
+
+            set
+            {
+                MLength_centerline = value;
             }
         }
 
@@ -351,6 +372,71 @@ namespace DATABASE.DTO
             }
         }
 
+        public string MainRafterCanopy
+        {
+            get
+            {
+                return MMainRafterCanopy;
+            }
+
+            set
+            {
+                MMainRafterCanopy = value;
+            }
+        }
+
+        public string EdgeRafterCanopy
+        {
+            get
+            {
+                return MEdgeRafterCanopy;
+            }
+
+            set
+            {
+                MEdgeRafterCanopy = value;
+            }
+        }
+
+        public string PurlinCanopy
+        {
+            get
+            {
+                return MPurlinCanopy;
+            }
+
+            set
+            {
+                MPurlinCanopy = value;
+            }
+        }
+
+        public string BracingBlockPurlinsCanopy
+        {
+            get
+            {
+                return MBracingBlockPurlinsCanopy;
+            }
+
+            set
+            {
+                MBracingBlockPurlinsCanopy = value;
+            }
+        }
+
+        public string CrossBracingRoofCanopy
+        {
+            get
+            {
+                return MCrossBracingRoofCanopy;
+            }
+
+            set
+            {
+                MCrossBracingRoofCanopy = value;
+            }
+        }
+
         public string ColumnFlyBracingEveryXXGirt
         {
             get
@@ -543,6 +629,19 @@ namespace DATABASE.DTO
             set
             {
                 MCrossBracingRoof = value;
+            }
+        }
+
+        public string PurlinCanopy_ILS_Number
+        {
+            get
+            {
+                return MPurlinCanopy_ILS_Number;
+            }
+
+            set
+            {
+                MPurlinCanopy_ILS_Number = value;
             }
         }
 

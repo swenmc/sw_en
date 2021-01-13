@@ -52,13 +52,11 @@ namespace DATABASE
             CKitsetMonoOrGableRoofEnclosed model = new CKitsetMonoOrGableRoofEnclosed();
             model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             model.ModelName = reader["modelName"].ToString();
-                        
-            //Toto su total dimensions  
-            model.Width = reader["width"].ToString();
-            model.Length = reader["length"].ToString();
-            model.Wall_height = reader["wall_height"].ToString();
-
-            model.Distance_L1 = reader["distance_L1"].ToString(); // TODO 628 To musim opravit v DB, resp by sa to malo prepocitavat z rozmeru L_tot_centerline a poctu bays
+            model.Width_overall = reader["width_overall"].ToString();
+            model.Length_overall = reader["length_overall"].ToString();
+            model.Wall_height_overall = reader["wall_height_overall"].ToString();
+            model.Length_centerline = reader["length_centerline"].ToString();
+            model.Distance_L1 = reader["distance_L1"].ToString();
             model.IFrames = reader["iFrames"].ToString();
             model.C_array_code = reader["c_array_code"].ToString();
             model.MainColumn = reader["mainColumn"].ToString();
@@ -82,6 +80,11 @@ namespace DATABASE
             model.DoorTrimmer = reader["doorTrimmer"].ToString();
             model.DoorLintel = reader["doorLintel"].ToString();
             model.WindowFrame = reader["windowFrame"].ToString();
+            model.MainRafterCanopy = reader["mainRafterCanopy"].ToString();
+            model.EdgeRafterCanopy = reader["edgeRafterCanopy"].ToString();
+            model.PurlinCanopy = reader["purlinCanopy"].ToString();
+            model.BracingBlockPurlinsCanopy = reader["bracingBlockPurlinsCanopy"].ToString();
+            model.CrossBracingRoofCanopy = reader["crossBracingRoofCanopy"].ToString();
             model.ColumnFlyBracingEveryXXGirt = reader["iColumnFlyBracingEveryXXGirt"].ToString();
             model.RafterFlyBracingEveryXXPurlin = reader["iRafterFlyBracingEveryXXPurlin"].ToString();
             model.ColumnFrontSideFlyBracingEveryXXGirt = reader["iColumnFrontSideFlyBracingEveryXXGirt"].ToString();
@@ -91,6 +94,7 @@ namespace DATABASE
             model.Purlin_ILS_Number = reader["purlin_ILS_Number"].ToString();
             model.GirtFrontSide_ILS_Number = reader["girtFrontSide_ILS_Number"].ToString();
             model.GirtBackSide_ILS_Number = reader["girtBackSide_ILS_Number"].ToString();
+            model.PurlinCanopy_ILS_Number = reader["purlinCanopy_ILS_Number"].ToString();
 
             return model;
         }
