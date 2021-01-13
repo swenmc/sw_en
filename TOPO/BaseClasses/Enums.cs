@@ -482,13 +482,11 @@ namespace BaseClasses
         CrossBracingWall = 20,
         CrossBracingRoof = 21,
 
-        OverhangMainRafter = 22,
-        OverhangEdgeRafter = 23,
-        CanopyPurlin = 24,
-        CanopyPurlinBlock = 25,
-        CanopyCrossBracing = 26
-
-
+        MainRafterCanopy = 22,
+        EdgeRafterCanopy = 23,
+        PurlinCanopy = 24,
+        BracingBlockPurlinsCanopy = 25,
+        CrossBracingRoofCanopy = 26
     }
 
     // TODO - Ondrej TOTO je asi zbytocna duplicita

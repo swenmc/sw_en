@@ -435,12 +435,11 @@ namespace PFD
             MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracingWall, model.CrossBracingWalls);
             MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracingRoof, model.CrossBracingRoof);
 
-            MembersSectionsDict.Add(EMemberType_FS_Position.OverhangMainRafter, model.OverhangMainRafter);
-            MembersSectionsDict.Add(EMemberType_FS_Position.OverhangEdgeRafter, model.OverhangEdgeRafter);
-            MembersSectionsDict.Add(EMemberType_FS_Position.CanopyPurlin, model.CanopyPurlin);
-            MembersSectionsDict.Add(EMemberType_FS_Position.CanopyPurlinBlock, model.CanopyPurlinBlock);
-            MembersSectionsDict.Add(EMemberType_FS_Position.CanopyCrossBracing, model.CanopyCrossBracing);
-            
+            MembersSectionsDict.Add(EMemberType_FS_Position.MainRafterCanopy, model.MainRafterCanopy);
+            MembersSectionsDict.Add(EMemberType_FS_Position.EdgeRafterCanopy, model.EdgeRafterCanopy);
+            MembersSectionsDict.Add(EMemberType_FS_Position.PurlinCanopy, model.PurlinCanopy);
+            MembersSectionsDict.Add(EMemberType_FS_Position.BracingBlockPurlinsCanopy, model.BracingBlockPurlinsCanopy);
+            MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracingRoofCanopy, model.CrossBracingRoofCanopy);
         }
     }
 }

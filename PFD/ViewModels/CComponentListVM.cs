@@ -1409,6 +1409,8 @@ namespace PFD
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsBackSide);
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
+
+            // TODO Ondrej - doplnit ILS pre canopy purlins
         }
 
         private void SetComponentInfoILS(CComponentInfo ci, int index)
@@ -1562,6 +1564,7 @@ namespace PFD
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
         }
+
         public void RemoveWindow()
         {
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindowFrame);
@@ -1570,69 +1573,68 @@ namespace PFD
 
         public void AddCanopy()
         {
-            //to Mato - tak neviem odkial mam tahat ked to v DB nie je
-            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.OverhangMainRafter);
+            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
             if (cInfo == null)
             {
-                CrScProperties prop = CSectionManager.GetSectionProperties("10075");
+                // TO Ondrej - prierezy brat z preddefinovanych hodnot v databaze
+                CrScProperties prop = CSectionManager.GetSectionProperties("63020");
 
                 cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eMR].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.eMR].ComponentName + " - Overhang", "10075", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.OverhangMainRafter);
+                    list_CompPref[(int)EMemberType_FS.eMR].ComponentName + " - Canopy", "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
             }
 
-            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.OverhangEdgeRafter);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
             if (cInfo == null)
             {
-                CrScProperties prop = CSectionManager.GetSectionProperties("10075");
+                CrScProperties prop = CSectionManager.GetSectionProperties("63020");
 
                 cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eER].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.eER].ComponentName + " - Overhang", "10075", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.OverhangEdgeRafter);
+                    list_CompPref[(int)EMemberType_FS.eER].ComponentName + " - Canopy", "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.EdgeRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
             }
 
-            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CanopyPurlin);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
             if (cInfo == null)
             {
-                CrScProperties prop = CSectionManager.GetSectionProperties("10075");
+                CrScProperties prop = CSectionManager.GetSectionProperties("270115");
 
                 cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eP].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.eP].ComponentName + " - Canopy", "10075", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.CanopyPurlin);
+                    list_CompPref[(int)EMemberType_FS.eP].ComponentName + " - Canopy", "270115", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                    SectionsForGirtsOrPurlins, EmptyILS_Items, MColors, EMemberType_FS_Position.PurlinCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
             }
 
-            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CanopyPurlinBlock);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
             if (cInfo == null)
             {
-                CrScProperties prop = CSectionManager.GetSectionProperties("10075");
+                CrScProperties prop = CSectionManager.GetSectionProperties("27095");
 
                 cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.ePB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.ePB].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.ePB].ComponentName + " - Canopy", "10075", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.CanopyPurlinBlock);
+                    list_CompPref[(int)EMemberType_FS.ePB].ComponentName + " - Canopy", "27095", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                    SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
             }
 
-            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CanopyCrossBracing);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
             if (cInfo == null)
             {
-                CrScProperties prop = CSectionManager.GetSectionProperties("10075");
+                CrScProperties prop = CSectionManager.GetSectionProperties("1x100x1");
 
                 cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Canopy", "10075", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.CanopyCrossBracing);
+                    list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Canopy", "1x100x1", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                    SectionsForCrossBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.CrossBracingRoofCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
             }
-
-
         }
+
         public void RemoveCanopy()
         {
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindowFrame);
