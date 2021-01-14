@@ -14,10 +14,16 @@ namespace PFD
     public class CDatabaseModels
     {
         //mena premmennych treba zvolit tak aby bolo mozne im rozumiet b,L,L1,h,FrNo  to nema sancu nikto rozkodovat co znamena
-        private float m_fb; // Building Width (X-axis)
-        private float m_fL; // Building Length (Y-axis)
+        private float m_fWidth_centerline; // Building Width (X-axis)
+        private float m_fLength_centerline; // Building Length (Y-axis)
+        private float m_fWall_height_centerline; // Building Wall Height (Z-axis)
+
+        private float m_fWidth_overall; // Building Width (X-axis)
+        private float m_fLength_overall; // Building Length (Y-axis)
+        private float m_fWall_height_overall; // Building Wall Height (Z-axis)
+
         private float m_fL1; // Bay Length / Distance between frames (Y-axis)
-        private float m_fh; // Building Wall Height (Z-axis)
+
         private int m_iFrNo; // Number of Frames
         private float m_fRoof_Pitch_deg; // Building roof pitch
         private float m_fdist_girt; // Distance between girts (Z-axis)
@@ -40,30 +46,82 @@ namespace PFD
         private Dictionary<EMemberType_FS_Position, string> m_membersSectionsDict;
 
         #region properties
-        
-        public float fb
+
+        public float fWidth_centerline
         {
             get
             {
-                return m_fb;
+                return m_fWidth_centerline;
             }
 
             set
             {
-                m_fb = value;
+                m_fWidth_centerline = value;
             }
         }
 
-        public float fL
+        public float fLength_centerline
         {
             get
             {
-                return m_fL;
+                return m_fLength_centerline;
             }
 
             set
             {
-                m_fL = value;
+                m_fLength_centerline = value;
+            }
+        }
+
+        public float fWall_height_centerline
+        {
+            get
+            {
+                return m_fWall_height_centerline;
+            }
+
+            set
+            {
+                m_fWall_height_centerline = value;
+            }
+        }
+
+        public float fWidth_overall
+        {
+            get
+            {
+                return m_fWidth_overall;
+            }
+
+            set
+            {
+                m_fWidth_overall = value;
+            }
+        }
+
+        public float fLength_overall
+        {
+            get
+            {
+                return m_fLength_overall;
+            }
+
+            set
+            {
+                m_fLength_overall = value;
+            }
+        }
+
+        public float fWall_height_overall
+        {
+            get
+            {
+                return m_fWall_height_overall;
+            }
+
+            set
+            {
+                m_fWall_height_overall = value;
             }
         }
 
@@ -77,19 +135,6 @@ namespace PFD
             set
             {
                 m_fL1 = value;
-            }
-        }
-
-        public float fh
-        {
-            get
-            {
-                return m_fh;
-            }
-
-            set
-            {
-                m_fh = value;
             }
         }
 
@@ -353,61 +398,7 @@ namespace PFD
             CKitsetMonoOrGableRoofEnclosed model = CModelsManager.LoadModelKitsetMonoOrGableRoofEnclosed(iSelectedModelIndex + 1, sDatabaseTableName);
             if (model == null) throw new Exception("Model is null.");
 
-            fb = ConversionsHelper.ParseFloat(model.Width_overall);
-            fL = ConversionsHelper.ParseFloat(model.Length_overall);
-            fh = ConversionsHelper.ParseFloat(model.Wall_height_overall);
-            iFrNo = int.Parse(model.IFrames);
-            fL1 = fL / (iFrNo - 1);
-            fRoof_Pitch_deg = 5;
-            fdist_girt_bottom = 0.3f; // Distance from concrete foundation to the centerline
-
-            float fDefaultDistanceOfGirts = 1.2f; // 2 meters
-            float fDefaultDistanceOfPurlins = 1.2f; // 2 meters
-            float fRoofPitch_radians = fRoof_Pitch_deg * MATH.MathF.fPI / 180f;
-
-            float fRafterLength;
-            float fdist_purlin_end; // Pre Gable Roof 250 mm od apex, pre Monopitch roof = 0;
-
-            if (iSelectedKitsetTypeIndex == 0)
-            {
-                fRafterLength = fb / (float)Math.Cos(fRoofPitch_radians);
-                fdist_purlin_end = fDefaultDistanceOfPurlins; // Posledna vaznica od konca rafteru
-                // Front and back column spacing (default 5 m)
-                fdist_frontcolumn = Math.Min(5, fb / 2); // Minimum - one column in the middle of width
-            }
-            else if (iSelectedKitsetTypeIndex == 1)
-            {
-                fRafterLength = (0.5f * fb) / (float)Math.Cos(fRoofPitch_radians);
-                fdist_purlin_end = 0.25f; // Posledna vaznica od konca rafteru
-                // Front and back column spacing (default 5 m)
-                fdist_frontcolumn = Math.Min(5, fb / 3); // Minimum - two columns per width
-            }
-            else
-            {
-                fRafterLength = 0; // Exception
-                fdist_purlin_end = 0;
-                fdist_frontcolumn = 0;
-            }
-
-            int iDefaultNumberOfGirtsPerColumn = (int)((fh - fdist_girt_bottom) / fDefaultDistanceOfGirts);
-            fdist_girt = (fh - fdist_girt_bottom) / Math.Max(iDefaultNumberOfGirtsPerColumn, 1); // Minimalne 1 girt - bottom
-
-            int iDefaultNumberOfPurlinsPerRafter = (int)((fRafterLength - fdist_purlin_end) / fDefaultDistanceOfPurlins);
-            fdist_purlin = (fRafterLength - fdist_purlin_end) / Math.Max(iDefaultNumberOfPurlinsPerRafter, 1); // Minimalne 1 purlin
-
-            fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
-            fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
-
-            iMainColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnFlyBracingEveryXXGirt); // 0; // Default pre stlpy
-            iRafterFlyBracingEveryXXPurlin = int.Parse(model.RafterFlyBracingEveryXXPurlin);
-            iEdgePurlin_ILS_Number = int.Parse(model.EdgePurlin_ILS_Number);
-            iGirt_ILS_Number = int.Parse(model.Girt_ILS_Number);
-            iPurlin_ILS_Number = int.Parse(model.Purlin_ILS_Number);
-            iFrontColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnFrontSideFlyBracingEveryXXGirt); // 0; // Default pre stlpy
-            iBackColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnBackSideFlyBracingEveryXXGirt); // 0; // Default pre stlpy
-            iGirtFrontSide_ILS_Number = int.Parse(model.GirtFrontSide_ILS_Number);
-            iGirtBackSide_ILS_Number = int.Parse(model.GirtBackSide_ILS_Number);
-
+            // Nastavíme defaultne cross-sections z databazy modelov
             MembersSectionsDict = new Dictionary<EMemberType_FS_Position, string>();
             MembersSectionsDict.Add(EMemberType_FS_Position.MainColumn, model.MainColumn);
             MembersSectionsDict.Add(EMemberType_FS_Position.MainRafter, model.MainRafter);
@@ -438,6 +429,86 @@ namespace PFD
             MembersSectionsDict.Add(EMemberType_FS_Position.PurlinCanopy, model.PurlinCanopy);
             MembersSectionsDict.Add(EMemberType_FS_Position.BracingBlockPurlinsCanopy, model.BracingBlockPurlinsCanopy);
             MembersSectionsDict.Add(EMemberType_FS_Position.CrossBracingRoofCanopy, model.CrossBracingRoofCanopy);
+
+            // Default roof slope
+            fRoof_Pitch_deg = 5;
+            float fRoofPitch_radians = fRoof_Pitch_deg * MATH.MathF.fPI / 180f;
+
+            CrScProperties mainColumnProp = CSectionManager.GetSectionProperties(MembersSectionsDict[EMemberType_FS_Position.MainColumn]);
+            CrScProperties mainRafterProp = CSectionManager.GetSectionProperties(MembersSectionsDict[EMemberType_FS_Position.MainRafter]);
+
+            fWidth_overall = ConversionsHelper.ParseFloat(model.Width_overall);
+            fLength_overall = ConversionsHelper.ParseFloat(model.Length_overall);
+            fWall_height_overall = ConversionsHelper.ParseFloat(model.Wall_height_overall);
+
+            fWidth_centerline = fWidth_overall - (float)mainColumnProp.h;
+            fLength_centerline = ConversionsHelper.ParseFloat(model.Length_centerline);
+            fWall_height_centerline = GetCenterLineHeight_H1(
+                fWall_height_overall,
+                0.5f * (float)mainColumnProp.h,
+                0.5f * (float)mainRafterProp.h,
+                fRoofPitch_radians);
+
+            iFrNo = int.Parse(model.IFrames);
+            fL1 = fLength_centerline / (iFrNo - 1);
+
+            fdist_girt_bottom = 0.3f; // Distance from concrete foundation to the centerline
+
+            float fDefaultDistanceOfGirts = 1.2f; // 2 meters
+            float fDefaultDistanceOfPurlins = 1.2f; // 2 meters
+
+            float fRafterLength;
+            float fdist_purlin_end; // Pre Gable Roof 250 mm od apex, pre Monopitch roof = 0;
+
+            if (iSelectedKitsetTypeIndex == 0)
+            {
+                fRafterLength = fWidth_centerline / (float)Math.Cos(fRoofPitch_radians);
+                fdist_purlin_end = fDefaultDistanceOfPurlins; // Posledna vaznica od konca rafteru
+                // Front and back column spacing (default 5 m)
+                fdist_frontcolumn = Math.Min(5, 0.5f * fWidth_centerline); // Minimum - one column in the middle of width
+            }
+            else if (iSelectedKitsetTypeIndex == 1)
+            {
+                fRafterLength = (0.5f * fWidth_centerline) / (float)Math.Cos(fRoofPitch_radians);
+                fdist_purlin_end = 0.25f; // Posledna vaznica od konca rafteru
+                // Front and back column spacing (default 5 m)
+                fdist_frontcolumn = Math.Min(5, fWidth_centerline / 3); // Minimum - two columns per width
+            }
+            else
+            {
+                fRafterLength = 0; // Exception
+                fdist_purlin_end = 0;
+                fdist_frontcolumn = 0;
+            }
+
+            int iDefaultNumberOfGirtsPerColumn = (int)((fWall_height_centerline - fdist_girt_bottom) / fDefaultDistanceOfGirts);
+            fdist_girt = (fWall_height_centerline - fdist_girt_bottom) / Math.Max(iDefaultNumberOfGirtsPerColumn, 1); // Minimalne 1 girt - bottom
+
+            int iDefaultNumberOfPurlinsPerRafter = (int)((fRafterLength - fdist_purlin_end) / fDefaultDistanceOfPurlins);
+            fdist_purlin = (fRafterLength - fdist_purlin_end) / Math.Max(iDefaultNumberOfPurlinsPerRafter, 1); // Minimalne 1 purlin
+
+            fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
+            fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
+
+            iMainColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnFlyBracingEveryXXGirt); // 0; // Default pre stlpy
+            iRafterFlyBracingEveryXXPurlin = int.Parse(model.RafterFlyBracingEveryXXPurlin);
+            iEdgePurlin_ILS_Number = int.Parse(model.EdgePurlin_ILS_Number);
+            iGirt_ILS_Number = int.Parse(model.Girt_ILS_Number);
+            iPurlin_ILS_Number = int.Parse(model.Purlin_ILS_Number);
+            iFrontColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnFrontSideFlyBracingEveryXXGirt); // 0; // Default pre stlpy
+            iBackColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnBackSideFlyBracingEveryXXGirt); // 0; // Default pre stlpy
+            iGirtFrontSide_ILS_Number = int.Parse(model.GirtFrontSide_ILS_Number);
+            iGirtBackSide_ILS_Number = int.Parse(model.GirtBackSide_ILS_Number);
+        }
+
+        // TODO - refaktorovat s funkciou v CPFDViewModel
+        private float GetCenterLineHeight_H1(float MWallHeightOverall, float MainColumnCrsc_z_plus, float MainRafterCrsc_z_plus, float fRoofPitch_radians)
+        {
+            float fz1 = MainColumnCrsc_z_plus * (float)Math.Tan(fRoofPitch_radians);
+            float fz3 = MainRafterCrsc_z_plus / (float)Math.Cos(fRoofPitch_radians);
+            float fz2 = fz3 - fz1;
+
+            return MWallHeightOverall - fz2;
         }
     }
 }

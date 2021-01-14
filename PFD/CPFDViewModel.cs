@@ -345,11 +345,11 @@ namespace PFD
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
                 RoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
 
-                WidthOverall = dmodel.fb;
+                WidthOverall = dmodel.fWidth_overall;
                 Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
-                LengthOverall = dmodel.fL;
+                LengthOverall = dmodel.fLength_overall;
                 Length = MLengthOverall - Math.Abs(EdgeColumnCrsc_y_minus) - EdgeColumnCrsc_y_plus;
-                WallHeightOverall = dmodel.fh;
+                WallHeightOverall = dmodel.fWall_height_overall;
                 WallHeight = GetCenterLineHeight_H1();
 
                 GirtDistance = dmodel.fdist_girt;
