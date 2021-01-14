@@ -40,5 +40,15 @@ namespace BaseClasses.Helpers
             if (index > 0) strValue = strValue.Substring(0, index);
             return double.Parse(strValue, nfi);
         }
+        public static float ParseFloat(string strValue)
+        {
+            if (string.IsNullOrEmpty(strValue)) return 0f;
+
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            strValue = strValue.Replace(",", ".");            
+            return float.Parse(strValue, nfi);
+        }
     }
 }

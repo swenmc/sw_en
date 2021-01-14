@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using BaseClasses.Helpers;
 using DATABASE;
 using DATABASE.DTO;
 using System;
@@ -333,9 +334,6 @@ namespace PFD
 
         public CDatabaseModels(int iSelectedKitsetTypeIndex, int iSelectedModelIndex)
         {
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-
             string sDatabaseTableName;
 
             /*
@@ -355,9 +353,9 @@ namespace PFD
             CKitsetMonoOrGableRoofEnclosed model = CModelsManager.LoadModelKitsetMonoOrGableRoofEnclosed(iSelectedModelIndex + 1, sDatabaseTableName);
             if (model == null) throw new Exception("Model is null.");
 
-            fb = float.Parse(model.Width_overall, nfi);
-            fL = float.Parse(model.Length_overall, nfi);
-            fh = float.Parse(model.Wall_height_overall, nfi);
+            fb = ConversionsHelper.ParseFloat(model.Width_overall);
+            fL = ConversionsHelper.ParseFloat(model.Length_overall);
+            fh = ConversionsHelper.ParseFloat(model.Wall_height_overall);
             iFrNo = int.Parse(model.IFrames);
             fL1 = fL / (iFrNo - 1);
             fRoof_Pitch_deg = 5;

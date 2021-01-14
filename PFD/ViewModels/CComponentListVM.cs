@@ -1110,7 +1110,7 @@ namespace PFD
 
         
 
-        private List<CComponentPrefixes> list_CompPref;
+        private Dictionary<int, CComponentPrefixes> dict_CompPref;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -1118,78 +1118,111 @@ namespace PFD
         {
             MComponentList = new ObservableCollection<CComponentInfo>();
 
-            list_CompPref = CComponentManager.LoadComponentsPrefixes();
+            dict_CompPref = CComponentManager.LoadComponentsFromDB();
 
             MColors = CComboBoxHelper.ColorList; // Set Color List
 
             CComponentInfo ci = null;
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eMC].ComponentColorName)), 
-                list_CompPref[(int)EMemberType_FS.eMC].ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
+            CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainColumn];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForColumnsOrRafters, ColumnFlyBracingPosition_Items, Colors, EMemberType_FS_Position.MainColumn);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eMR].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafter];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForColumnsOrRafters, RafterFlyBracingPosition_Items, Colors, EMemberType_FS_Position.MainRafter);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eEC].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeColumn];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForColumnsOrRafters, ColumnFlyBracingPosition_Items, Colors, EMemberType_FS_Position.EdgeColumn);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eER].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eER].ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeRafter];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForColumnsOrRafters, RafterFlyBracingPosition_Items, Colors, EMemberType_FS_Position.EdgeRafter);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eEP].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "50020", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgePurlin];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "50020", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.EdgePurlin);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eG].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.Girt];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.Girt);
             ci.GenerateIsEnabled = false; ci.GenerateIsReadonly = true;
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eP].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eP].ComponentName, "270115", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.Purlin];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "270115", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.Purlin);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWP].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eWP].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eWP].ComponentName + " - Front Side", "270115n", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.WindPostFrontSide];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "270115n", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForColumnsOrRafters, ColumnFlyBracingPosition_Items, Colors, EMemberType_FS_Position.WindPostFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWP].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eWP].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eWP].ComponentName + " - Back Side", "270115n", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.WindPostBackSide];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "270115n", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForColumnsOrRafters, ColumnFlyBracingPosition_Items, Colors, EMemberType_FS_Position.WindPostBackSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eG].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "27095", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.GirtFrontSide];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.GirtFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eG].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "Green", "G550‡", "None", true, true, true, true, true, 
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.GirtBackSide];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true, 
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.GirtBackSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eGB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eGB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eGB].ComponentName, "27095", "Green", "G550‡", "None", true, true, false, false, true,
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockGirts];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, false, false, true,
                 SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockGirts);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.ePB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.ePB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.ePB].ComponentName, "27095", "Green", "G550‡", "None", true, true, false, false, true,
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockPurlins];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, false, false, true,
                 SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockPurlins);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eGB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eGB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eGB].ComponentName + " - Front Side", "27095", "Green", "G550‡", "None", true, true, false, false, true,
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockGirtsFrontSide];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, false, false, true,
                 SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockGirtsFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eGB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eGB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eGB].ComponentName + " - Back Side", "27095", "Green", "G550‡", "None", true, true, false, false, true,
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockGirtsBackSide];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, false, false, true,
                 SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockGirtsBackSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Walls", "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingWall];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
                 SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingWall);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Roof", "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
+
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingRoof];
+            ci = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
                 SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingRoof);
             MComponentList.Add(ci);
 
@@ -1503,8 +1536,9 @@ namespace PFD
 
             CrScProperties prop = CSectionManager.GetSectionProperties("10075");
 
-            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eDF].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true, 
+            CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorFrame];
+            cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true, 
                 SectionsForDoorOrWindowFrame, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
@@ -1523,8 +1557,9 @@ namespace PFD
             {
                 CrScProperties prop = CSectionManager.GetSectionProperties("270115btb");
 
-                cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eDT].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", prop.colorName, "G550‡", "None", null, true, false, false, true, 
+                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorTrimmer];
+                cDT = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                    compPref.ComponentName, "270115btb", prop.colorName, "G550‡", "None", null, true, false, false, true, 
                 SectionsForRollerDoorTrimmer, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorTrimmer);
                 cDT.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDT);
@@ -1535,8 +1570,9 @@ namespace PFD
             {
                 CrScProperties prop = CSectionManager.GetSectionProperties("27095");
 
-                cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eDL].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", prop.colorName, "G550‡", "None", null, true, false, false, true, 
+                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorLintel];
+                cDL = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                    compPref.ComponentName, "27095", prop.colorName, "G550‡", "None", null, true, false, false, true, 
                 SectionsForRollerDoorLintel, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorLintel);
                 cDL.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDL);
@@ -1558,8 +1594,9 @@ namespace PFD
 
             CrScProperties prop = CSectionManager.GetSectionProperties("10075");
 
-            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eWF].ComponentColorName)),
-                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true, 
+            CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.WindowFrame];
+            cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                compPref.ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true, 
                 SectionsForDoorOrWindowFrame, EmptyILS_Items, MColors, EMemberType_FS_Position.WindowFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
@@ -1579,8 +1616,9 @@ namespace PFD
                 // TO Ondrej - prierezy brat z preddefinovanych hodnot v databaze
                 CrScProperties prop = CSectionManager.GetSectionProperties("63020");
 
-                cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eMR].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.eMR].ComponentName + " - Canopy", "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafterCanopy];
+                cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                    compPref.ComponentName, "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
                     SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -1591,8 +1629,9 @@ namespace PFD
             {
                 CrScProperties prop = CSectionManager.GetSectionProperties("63020");
 
-                cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eER].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.eER].ComponentName + " - Canopy", "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeRafterCanopy];
+                cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                    compPref.ComponentName, "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
                     SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.EdgeRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -1603,8 +1642,9 @@ namespace PFD
             {
                 CrScProperties prop = CSectionManager.GetSectionProperties("270115");
 
-                cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eP].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.eP].ComponentName + " - Canopy", "270115", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.PurlinCanopy];
+                cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                    compPref.ComponentName, "270115", prop.colorName, "G550‡", "None", null, true, false, false, true,
                     SectionsForGirtsOrPurlins, EmptyILS_Items, MColors, EMemberType_FS_Position.PurlinCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -1615,8 +1655,9 @@ namespace PFD
             {
                 CrScProperties prop = CSectionManager.GetSectionProperties("27095");
 
-                cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.ePB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.ePB].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.ePB].ComponentName + " - Canopy", "27095", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockPurlinsCanopy];
+                cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                    compPref.ComponentName, "27095", prop.colorName, "G550‡", "None", null, true, false, false, true,
                     SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -1627,8 +1668,9 @@ namespace PFD
             {
                 CrScProperties prop = CSectionManager.GetSectionProperties("1x100x1");
 
-                cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                    list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Canopy", "1x100x1", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingRoofCanopy];
+                cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                    compPref.ComponentName, "1x100x1", prop.colorName, "G550‡", "None", null, true, false, false, true,
                     SectionsForCrossBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.CrossBracingRoofCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -1747,8 +1789,9 @@ namespace PFD
             {
                 if (ci_Wall == null)
                 {
-                    ci_Wall = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                        list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Walls", "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
+                    CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingWall];
+                    ci_Wall = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                        compPref.ComponentName, "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
                         SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingWall);
                     ComponentList.Add(ci_Wall);
                 }                    
@@ -1762,8 +1805,9 @@ namespace PFD
             {
                 if (ci_Roof == null)
                 {
-                    ci_Roof = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eCB].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eCB].ComponentColorName)),
-                        list_CompPref[(int)EMemberType_FS.eCB].ComponentName + " - Roof", "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
+                    CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingRoof];
+                    ci_Roof = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                        compPref.ComponentName, "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
                         SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingRoof);
                     ComponentList.Add(ci_Roof);
                 }
