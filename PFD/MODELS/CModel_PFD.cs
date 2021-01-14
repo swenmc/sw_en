@@ -1331,7 +1331,7 @@ namespace PFD
 
                         if (j == 0) // First row of nodes
                         { fCanopy_PurlinCoordinate_x = 0; } // Left edge of roof
-                        else if (j == canopyBay.PurlinCountLeft - 1)
+                        else if (j == canopyBay.PurlinCountLeft)
                             fCanopy_PurlinCoordinate_x = (float)canopyBay.WidthLeft; // Left edge of canopy
                         else
                         {
@@ -1409,7 +1409,7 @@ namespace PFD
 
                         if (j == 0) // First row of nodes
                         { fCanopy_PurlinCoordinate_x = 0; } // Right edge of roof
-                        else if (j == canopyBay.PurlinCountLeft - 1)
+                        else if (j == canopyBay.PurlinCountRight)
                             fCanopy_PurlinCoordinate_x = (float)canopyBay.WidthRight; // Right edge of canopy
                         else
                         {
