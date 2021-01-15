@@ -1349,8 +1349,6 @@ namespace PFD
                     ref i_temp_numberofNodes,
                     ref i_temp_numberofMembers
                     );
-
-                vm.SetComponentListAccordingToCanopies();
             }
 
             ValidateIDs();

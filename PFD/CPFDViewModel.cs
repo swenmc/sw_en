@@ -3214,6 +3214,7 @@ namespace PFD
 
             _componentVM = componentVM;
             SetComponentListAccordingToDoorsAndWindows();
+            SetComponentListAccordingToCanopies();
             _componentVM.PropertyChanged += ComponentVM_PropertyChanged;
             ComponentList = _componentVM.ComponentList;
 
@@ -3553,9 +3554,9 @@ namespace PFD
 
         public void SetComponentListAccordingToCanopies()
         {
-            _componentVM.AddCanopy();
+            if (_canopiesOptionsVM.HasCanopies()) _componentVM.AddCanopy();
+            else _componentVM.RemoveCanopy();
         }
-
 
         private void SetResultsAreNotValid()
         {

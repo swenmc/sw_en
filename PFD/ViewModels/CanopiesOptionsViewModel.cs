@@ -373,6 +373,18 @@ namespace PFD
                 throw new ArgumentException("Purlin count must be greater than 0.");
         }
 
+        public bool HasCanopies()
+        {
+            if (CanopiesList == null) return false;
+
+            foreach (CCanopiesInfo ci in CanopiesList)
+            {
+                if (ci.Left || ci.Right) return true;
+            }
+
+            return false;
+        }
+
 
     }
 }
