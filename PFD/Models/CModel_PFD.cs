@@ -1172,7 +1172,7 @@ namespace PFD
                 iFirstLeftCanopyRafterNodeIndex = i_temp_numberofNodes;
 
                 // Canopy Rafter Member
-                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[i] + iLeftKneeNodeIndexInFrame], m_arrCrSc[EMemberType_FS_Position.MainRafterCanopy], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafterCanopy, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[i] + iLeftKneeNodeIndexInFrame], m_arrCrSc[eRafterType_Position], eRafterType, eRafterType_Position, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
             }
 
             for (int i = 0; i < FrameIndexList_Right.Count; i++)
@@ -1219,7 +1219,7 @@ namespace PFD
                 iFirstRightCanopyRafterNodeIndex = i_temp_numberofNodes + FrameIndexList_Left.Count;
 
                 // Canopy Rafter Member
-                m_arrMembers[i_temp_numberofMembers + FrameIndexList_Left.Count + i] = new CMember(i_temp_numberofMembers + +FrameIndexList_Left.Count + i + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[i] + iRightKneeNodeIndexInFrame], m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i], m_arrCrSc[EMemberType_FS_Position.MainRafter], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                m_arrMembers[i_temp_numberofMembers + FrameIndexList_Left.Count + i] = new CMember(i_temp_numberofMembers + +FrameIndexList_Left.Count + i + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[i] + iRightKneeNodeIndexInFrame], m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i], m_arrCrSc[eRafterType_Position], eRafterType, eRafterType_Position, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
             }
 
             i_temp_numberofNodes += iCanopyRafterNodes_Total;
