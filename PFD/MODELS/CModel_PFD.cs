@@ -1331,7 +1331,7 @@ namespace PFD
 
                         if (j == 0) // First row of nodes
                         { fCanopy_PurlinCoordinate_x = 0; } // Left edge of roof
-                        else if (j == canopyBay.PurlinCountLeft)
+                        else if (j == canopyBay.PurlinCountLeft - 1)
                             fCanopy_PurlinCoordinate_x = (float)canopyBay.WidthLeft; // Left edge of canopy
                         else
                         {
@@ -1409,7 +1409,7 @@ namespace PFD
 
                         if (j == 0) // First row of nodes
                         { fCanopy_PurlinCoordinate_x = 0; } // Right edge of roof
-                        else if (j == canopyBay.PurlinCountRight)
+                        else if (j == canopyBay.PurlinCountLeft - 1)
                             fCanopy_PurlinCoordinate_x = (float)canopyBay.WidthRight; // Right edge of canopy
                         else
                         {
@@ -3099,8 +3099,9 @@ namespace PFD
 
         public void InitializeModelMaterialsAndCRSC(IList<CComponentInfo> componentList)
         {
-            
-            
+            //int basicCount = 17;
+            CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
+            CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
             //if (ci_CBW != null) basicCount++;
             //if (ci_CBR != null) basicCount++;
 
@@ -3254,64 +3255,18 @@ namespace PFD
                 m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsBackSide].CSColor = Colors.LightSeaGreen; // 15 Girt Bracing - Back Side
             }
 
-            CComponentInfo ci_CBW = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
-            
             if (ci_CBW != null)
             {
                 AddMaterial(EMemberType_FS_Position.CrossBracingWall, MaterialFactory.GetMaterial(ci_CBW.Material));
                 AddCRSC(EMemberType_FS_Position.CrossBracingWall, CrScFactory.GetCrSc(ci_CBW.Section));
                 m_arrCrSc[EMemberType_FS_Position.CrossBracingWall].CSColor = Colors.Olive;         // 16 Cross Bracing - Walls
             }
-            CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
             if (ci_CBR != null)
             {
                 AddMaterial(EMemberType_FS_Position.CrossBracingRoof, MaterialFactory.GetMaterial(ci_CBR.Material));
                 AddCRSC(EMemberType_FS_Position.CrossBracingRoof, CrScFactory.GetCrSc(ci_CBR.Section));
                 m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof].CSColor = Colors.Olive;         // 17 Cross Bracing - Roof
             }
-
-
-            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
-            if (cInfo != null)
-            {
-                AddMaterial(EMemberType_FS_Position.MainRafterCanopy, MaterialFactory.GetMaterial(cInfo.Material));
-                AddCRSC(EMemberType_FS_Position.MainRafterCanopy, CrScFactory.GetCrSc(cInfo.Section));
-                m_arrCrSc[EMemberType_FS_Position.MainRafterCanopy].CSColor = Colors.LightSeaGreen; 
-            }
-
-            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
-            if (cInfo != null)
-            {
-                AddMaterial(EMemberType_FS_Position.EdgeRafterCanopy, MaterialFactory.GetMaterial(cInfo.Material));
-                AddCRSC(EMemberType_FS_Position.EdgeRafterCanopy, CrScFactory.GetCrSc(cInfo.Section));
-                m_arrCrSc[EMemberType_FS_Position.EdgeRafterCanopy].CSColor = Colors.LightSeaGreen; 
-            }
-
-            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
-            if (cInfo != null)
-            {
-                AddMaterial(EMemberType_FS_Position.PurlinCanopy, MaterialFactory.GetMaterial(cInfo.Material));
-                AddCRSC(EMemberType_FS_Position.PurlinCanopy, CrScFactory.GetCrSc(cInfo.Section));
-                m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].CSColor = Colors.LightSeaGreen; 
-            }
-
-            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
-            if (cInfo != null)
-            {
-                AddMaterial(EMemberType_FS_Position.BracingBlockPurlinsCanopy, MaterialFactory.GetMaterial(cInfo.Material));
-                AddCRSC(EMemberType_FS_Position.BracingBlockPurlinsCanopy, CrScFactory.GetCrSc(cInfo.Section));
-                m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlinsCanopy].CSColor = Colors.LightSeaGreen; 
-            }
-
-            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
-            if (cInfo != null)
-            {
-                AddMaterial(EMemberType_FS_Position.CrossBracingRoofCanopy, MaterialFactory.GetMaterial(cInfo.Material));
-                AddCRSC(EMemberType_FS_Position.CrossBracingRoofCanopy, CrScFactory.GetCrSc(cInfo.Section));
-                m_arrCrSc[EMemberType_FS_Position.CrossBracingRoofCanopy].CSColor = Colors.LightSeaGreen;
-            }
-
-
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
