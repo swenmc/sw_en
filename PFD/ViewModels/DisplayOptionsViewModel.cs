@@ -3158,7 +3158,7 @@ namespace PFD
             DisplayTransparentModelMember = false;
             ColorsAccordingToMembers = true;
             ColorsAccordingToSections = false;
-            ColoredCenterlines = false;
+            ColoredCenterlines = true;
 
             ShowNodesDescription = false;
             ShowMemberDescription = false;
