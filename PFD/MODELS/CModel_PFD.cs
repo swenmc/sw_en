@@ -1135,6 +1135,8 @@ namespace PFD
                 float fRafterEdgeAlingment_Left = (float)m_arrCrSc[EMemberType_FS_Position.Purlin].y_max;
 
                 float fCanopyWidth = 0;
+                EMemberType_FS eRafterType = EMemberType_FS.eER;
+                EMemberType_FS_Position eRafterType_Position = EMemberType_FS_Position.EdgeRafterCanopy;
 
                 // TO Ondrej - mozno sa to da urobit nejako krajsie - potrebujeme najst maximum z predchadzajucej a nasledujucej bay
                 // Predchadzajuca alebo nasledujuca width vsak nemusi byt definovana, jedna z nich musi byt urcena vzdy
@@ -1150,6 +1152,13 @@ namespace PFD
 
                     // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
                     fCanopyWidth = (float)Math.Max((previousBay == null ? 0 : previousBay.WidthLeft), (nextBay == null ? 0 : nextBay.WidthLeft));
+
+                    if (previousBay != null && previousBay.Left &&
+                        nextBay != null && nextBay.Left)
+                    {
+                        eRafterType = EMemberType_FS.eMR;
+                        eRafterType_Position = EMemberType_FS_Position.MainRafterCanopy;
+                    }
                 }
 
                 float fCanopy_EdgeCoordinate_z;
@@ -1163,7 +1172,7 @@ namespace PFD
                 iFirstLeftCanopyRafterNodeIndex = i_temp_numberofNodes;
 
                 // Canopy Rafter Member
-                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[i] + iLeftKneeNodeIndexInFrame], m_arrCrSc[EMemberType_FS_Position.MainRafterCanopy], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafterCanopy, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[i] + iLeftKneeNodeIndexInFrame], m_arrCrSc[eRafterType_Position], eRafterType, eRafterType_Position, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
             }
 
             for (int i = 0; i < FrameIndexList_Right.Count; i++)
@@ -1171,6 +1180,8 @@ namespace PFD
                 float fRafterEdgeAlingment_Right = (float)Math.Abs(m_arrCrSc[EMemberType_FS_Position.Purlin].y_min);
 
                 float fCanopyWidth = 0;
+                EMemberType_FS eRafterType = EMemberType_FS.eER;
+                EMemberType_FS_Position eRafterType_Position = EMemberType_FS_Position.EdgeRafterCanopy;
 
                 // TO Ondrej - mozno sa to da urobit nejako krajsie - potrebujeme najst maximum z predchadzajucej a nasledujucej bay
                 // Predchadzajuca alebo nasledujuca width vsak nemusi byt definovana, jedna z nich musi byt urcena vzdy
@@ -1188,6 +1199,13 @@ namespace PFD
 
                     // Urcime ako maximum z canopy width na predchadzajucej a nasledujucej bay
                     fCanopyWidth = (float)Math.Max((previousBay == null ? 0 : previousBay.WidthRight), (nextBay == null ? 0 : nextBay.WidthRight));
+
+                    if (previousBay != null && previousBay.Right &&
+                        nextBay != null && nextBay.Right)
+                    {
+                        eRafterType = EMemberType_FS.eMR;
+                        eRafterType_Position = EMemberType_FS_Position.MainRafterCanopy;
+                    }
                 }
 
                 float fCanopy_EdgeCoordinate_z;
@@ -1201,7 +1219,7 @@ namespace PFD
                 iFirstRightCanopyRafterNodeIndex = i_temp_numberofNodes + FrameIndexList_Left.Count;
 
                 // Canopy Rafter Member
-                m_arrMembers[i_temp_numberofMembers + FrameIndexList_Left.Count + i] = new CMember(i_temp_numberofMembers + +FrameIndexList_Left.Count + i + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[i] + iRightKneeNodeIndexInFrame], m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i], m_arrCrSc[EMemberType_FS_Position.MainRafterCanopy], EMemberType_FS.eMR, EMemberType_FS_Position.MainRafterCanopy, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                m_arrMembers[i_temp_numberofMembers + FrameIndexList_Left.Count + i] = new CMember(i_temp_numberofMembers + +FrameIndexList_Left.Count + i + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[i] + iRightKneeNodeIndexInFrame], m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i], m_arrCrSc[eRafterType_Position], eRafterType, eRafterType_Position, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
             }
 
             i_temp_numberofNodes += iCanopyRafterNodes_Total;
