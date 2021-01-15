@@ -50,10 +50,11 @@ namespace BaseClasses
             FTime = fTime;
         }
 
+        /*
         public override string ToString()
         {
-            return $"ID: {ID} [{X}; {Y}; {Z}]";
-        }
+            return $"ID: {ID} [{X.ToString("D3")}; {Y.ToString("D3")}; {Z.ToString("D3")}]";
+        }*/
 
         #region IComparer Members
 
