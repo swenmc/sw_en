@@ -309,5 +309,33 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void SetViewModel(GeneralOptionsViewModel vm)
+        {
+            if (vm == null) return;
+
+            BracingEverySecondRowOfGirts = vm.BracingEverySecondRowOfGirts;
+            BracingEverySecondRowOfPurlins = vm.BracingEverySecondRowOfPurlins;
+
+            WindPostUnderRafter = vm.WindPostUnderRafter;
+
+            UseStraightReinforcementBars = vm.UseStraightReinforcementBars;
+
+            UpdateAutomatically = vm.UpdateAutomatically;
+
+            VariousCrossSections = vm.VariousCrossSections;
+
+            SameColorsDoor = vm.SameColorsDoor;
+            SameColorsFGD = vm.SameColorsFGD;
+            SameColorsFlashings = vm.SameColorsFlashings;
+            SameColorsGutters = vm.SameColorsGutters;
+            SameColorsDownpipes = vm.SameColorsDownpipes;
+
+            CenterlinesDimensions = vm.CenterlinesDimensions;
+            OverallDimensions = vm.OverallDimensions;
+
+            UseMainColumnFlyBracingPlates = vm.UseMainColumnFlyBracingPlates;
+            UseRafterFlyBracingPlates = vm.UseRafterFlyBracingPlates;
+        }
     }
 }

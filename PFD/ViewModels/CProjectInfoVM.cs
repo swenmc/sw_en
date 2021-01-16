@@ -19,6 +19,7 @@ namespace PFD
     public class CProjectInfoVM : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string m_ProjectName;
@@ -213,6 +214,6 @@ namespace PFD
             SalesPerson = pi.SalesPerson;
             SalesPersonPhone = pi.SalesPersonPhone;
             SalesPersonEmail = pi.SalesPersonEmail;
-        }
+        }        
     }
 }

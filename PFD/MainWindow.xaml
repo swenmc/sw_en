@@ -749,16 +749,16 @@
         <ToggleButton Grid.Row="0" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Name="BtnSynchronizeGUI" IsChecked="{Binding Path=SynchronizeGUI}">Synchronize GUI</ToggleButton>
 
 
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <!--Base Grid 2 columns and 4 rows-->
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="10 0 0 10" VerticalAlignment="Bottom">
 
                     <Button Name="View_2D" Content ="View 2D" Height="20" Width="70" Margin="0 0 10 0" Click="View_2D_Click"/>
@@ -780,9 +780,14 @@
 
                 </StackPanel>
             </ScrollViewer>            
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0 20 0 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <Button Name="BtnLoadModel" Content="Load Model" HorizontalAlignment="Right" Margin="0 0 10 0" Width="100" Height="20" Click="BtnLoadModel_Click"/>
-                <Button Name="BtnSaveModel" Content="Save Model" HorizontalAlignment="Right" Margin="0 0 10 0" Width="100" Height="20" Click="BtnSaveModel_Click"/>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0 0 0 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Name="BtnLoadModel" Content="Load Model" HorizontalAlignment="Right" Margin="0 0 10 0" Width="120" Height="20" Click="BtnLoadModel_Click"/>
+                <Button Name="BtnSaveModel" Content="Save Model" HorizontalAlignment="Right" Margin="0 0 10 0" Width="120" Height="20" Click="BtnSaveModel_Click"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0 0 0 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">                
+                <Button Name="BtnSaveDefaultOptions" Content="Save Default Options" HorizontalAlignment="Right" Margin="0 0 10 0" Width="120" Height="20" Click="BtnSaveDefaultOptions_Click"/>
+                <Button Name="BtnLoadOptions" Content="Load Options" HorizontalAlignment="Right" Margin="0 0 10 0" Width="120" Height="20" Click="BtnLoadOptions_Click"/>
+                <Button Name="BtnSaveOptionsToFile" Content="Save Options to File" HorizontalAlignment="Right" Margin="0 0 10 0" Width="120" Height="20" Click="BtnSaveOptionsToFile_Click"/>
             </StackPanel>
         </Grid>
     </Grid>
