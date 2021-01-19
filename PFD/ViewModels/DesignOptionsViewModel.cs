@@ -217,5 +217,25 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void SetViewModel(DesignOptionsViewModel vm)
+        {
+            if (vm == null) return;
+
+            // Displacement / Deflection Limits
+            VerticalDisplacementLimitDenominator_Rafter_PL = vm.VerticalDisplacementLimitDenominator_Rafter_PL;
+            VerticalDisplacementLimitDenominator_Rafter_TL = vm.VerticalDisplacementLimitDenominator_Rafter_TL;
+            HorizontalDisplacementLimitDenominator_Column_TL = vm.HorizontalDisplacementLimitDenominator_Column_TL;
+            HorizontalDisplacementLimitDenominator_Windpost_TL = vm.HorizontalDisplacementLimitDenominator_Windpost_TL;
+            VerticalDisplacementLimitDenominator_Purlin_PL = vm.VerticalDisplacementLimitDenominator_Purlin_PL;
+            VerticalDisplacementLimitDenominator_Purlin_TL = vm.VerticalDisplacementLimitDenominator_Purlin_TL;
+            HorizontalDisplacementLimitDenominator_Girt_TL = vm.HorizontalDisplacementLimitDenominator_Girt_TL;
+
+            ShearDesignAccording334 = vm.ShearDesignAccording334;
+            IgnoreWebStiffeners = vm.IgnoreWebStiffeners;
+            UniformShearDistributionInAnchors = vm.UniformShearDistributionInAnchors;
+        }
+
+
     }
 }

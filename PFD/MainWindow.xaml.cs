@@ -2588,20 +2588,29 @@ namespace PFD
 
         private void BtnSaveDefaultOptions_Click(object sender, RoutedEventArgs e)
         {
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
-            List<object> optionsToSave = new List<object>();
-            optionsToSave.Add(vm._projectInfoVM);
-            optionsToSave.Add(vm._displayOptionsVM);
-            optionsToSave.Add(vm._generalOptionsVM);
-            optionsToSave.Add(vm._solverOptionsVM);
-            optionsToSave.Add(vm._designOptionsVM);
-            
-            using (Stream stream = File.Open("DefaultOptions.cnx", FileMode.Create))
+            try
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(stream, optionsToSave);
-                stream.Close();
+                CPFDViewModel vm = this.DataContext as CPFDViewModel;
+
+                List<object> optionsToSave = new List<object>();
+                optionsToSave.Add(vm._projectInfoVM);
+                optionsToSave.Add(vm._displayOptionsVM);
+                optionsToSave.Add(vm._generalOptionsVM);
+                optionsToSave.Add(vm._solverOptionsVM);
+                optionsToSave.Add(vm._designOptionsVM);
+
+                using (Stream stream = File.Open("DefaultOptions.cnx", FileMode.Create))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(stream, optionsToSave);
+                    stream.Close();
+                }
+
+                MessageBox.Show("Default options succesfully saved.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -2617,70 +2626,92 @@ namespace PFD
                 OpenOptionsFile(ofd.FileName);
             }
         }
+        private void LoadDefaultOptions()
+        {
+            if (File.Exists("DefaultOptions.cnx"))
+            {
+                OpenOptionsFile("DefaultOptions.cnx");
+            }
+            else
+            {
+                MessageBox.Show("The file with default options for the program does not exist.");
+            }            
+        }
+
         private void OpenOptionsFile(string fileName)
         {
-            List<object> optionsList = null;
-
-            using (Stream stream = File.Open(fileName, FileMode.Open))
+            try
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                optionsList = (List<object>)binaryFormatter.Deserialize(stream);
-            }
+                List<object> optionsList = null;
 
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-            if (optionsList != null)
+                using (Stream stream = File.Open(fileName, FileMode.Open))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    optionsList = (List<object>)binaryFormatter.Deserialize(stream);
+                }
+
+                CPFDViewModel vm = this.DataContext as CPFDViewModel;
+                if (optionsList != null)
+                {
+                    CProjectInfoVM piVM = (optionsList[0] as CProjectInfoVM);
+                    if (piVM != null) vm._projectInfoVM.SetViewModel(piVM.GetProjectInfo());
+
+                    DisplayOptionsViewModel doVM = optionsList[1] as DisplayOptionsViewModel;
+                    if (doVM != null) vm._displayOptionsVM.SetViewModel(doVM);
+
+                    GeneralOptionsViewModel geVM = optionsList[2] as GeneralOptionsViewModel;
+                    if (geVM != null) vm._generalOptionsVM.SetViewModel(geVM);
+
+                    SolverOptionsViewModel soVM = optionsList[3] as SolverOptionsViewModel;
+                    if (soVM != null) vm._solverOptionsVM.SetViewModel(soVM);
+
+                    DesignOptionsViewModel deVM = optionsList[4] as DesignOptionsViewModel;
+                    if (deVM != null) vm._designOptionsVM.SetViewModel(deVM);
+                }
+            }
+            catch (Exception ex)
             {
-                CProjectInfoVM piVM = (optionsList[0] as CProjectInfoVM);
-                if (piVM != null) vm._projectInfoVM.SetViewModel(piVM.GetProjectInfo());
-
-                DisplayOptionsViewModel doVM = optionsList[1] as DisplayOptionsViewModel;
-                vm._displayOptionsVM.SetViewModel(doVM);
-
-                GeneralOptionsViewModel geVM = optionsList[2] as GeneralOptionsViewModel;
-                if (geVM != null) vm._generalOptionsVM.SetViewModel(geVM);
-
-                
-                //vm._solverOptionsVM = optionsList[3] as SolverOptionsViewModel;
-                //vm._designOptionsVM = optionsList[4] as DesignOptionsViewModel;
-
-
-
-
-            }
+                MessageBox.Show(ex.Message);
+            }            
         }
 
         private void BtnSaveOptionsToFile_Click(object sender, RoutedEventArgs e)
         {
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
-            List<object> optionsToSave = new List<object>();
-            optionsToSave.Add(vm._projectInfoVM);
-            optionsToSave.Add(vm._displayOptionsVM);
-            optionsToSave.Add(vm._generalOptionsVM);
-            optionsToSave.Add(vm._solverOptionsVM);
-            optionsToSave.Add(vm._designOptionsVM);
-
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Data Files (*.cnx)|*.cnx";
-            sfd.DefaultExt = "cnx";
-            sfd.AddExtension = true;
-            sfd.FileName = "Program_Options";
-
-            if (sfd.ShowDialog() == true)
+            try
             {
-                using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                CPFDViewModel vm = this.DataContext as CPFDViewModel;
+
+                List<object> optionsToSave = new List<object>();
+                optionsToSave.Add(vm._projectInfoVM);
+                optionsToSave.Add(vm._displayOptionsVM);
+                optionsToSave.Add(vm._generalOptionsVM);
+                optionsToSave.Add(vm._solverOptionsVM);
+                optionsToSave.Add(vm._designOptionsVM);
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Data Files (*.cnx)|*.cnx";
+                sfd.DefaultExt = "cnx";
+                sfd.AddExtension = true;
+                sfd.FileName = "Program_Options";
+
+                if (sfd.ShowDialog() == true)
                 {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(stream, optionsToSave);
-                    stream.Close();
+                    using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                    {
+                        BinaryFormatter binaryFormatter = new BinaryFormatter();
+                        binaryFormatter.Serialize(stream, optionsToSave);
+                        stream.Close();
+                    }
+                    MessageBox.Show("Options succesfully saved.");
                 }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
-        private void SaveOptionsToFile(string fileName)
-        {
-            
-        }
+        
 
 
 

@@ -112,5 +112,19 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+        public void SetViewModel(SolverOptionsViewModel vm)
+        {
+            if (vm == null) return;
+            
+            DeterminateCombinationResultsByFEMSolver = vm.DeterminateCombinationResultsByFEMSolver;
+            UseFEMSolverCalculationForSimpleBeam = vm.UseFEMSolverCalculationForSimpleBeam;
+            DeterminateMemberLocalDisplacementsForULS = vm.DeterminateMemberLocalDisplacementsForULS;
+
+            MultiCoreCalculation = vm.MultiCoreCalculation;
+        }
+
+
     }
 }
