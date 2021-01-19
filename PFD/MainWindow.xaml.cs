@@ -2633,11 +2633,13 @@ namespace PFD
                 CProjectInfoVM piVM = (optionsList[0] as CProjectInfoVM);
                 if (piVM != null) vm._projectInfoVM.SetViewModel(piVM.GetProjectInfo());
 
+                DisplayOptionsViewModel doVM = optionsList[1] as DisplayOptionsViewModel;
+                vm._displayOptionsVM.SetViewModel(doVM);
+
                 GeneralOptionsViewModel geVM = optionsList[2] as GeneralOptionsViewModel;
                 if (geVM != null) vm._generalOptionsVM.SetViewModel(geVM);
 
-                //vm._displayOptionsVM = optionsList[1] as DisplayOptionsViewModel;
-                //vm._generalOptionsVM = optionsList[2] as GeneralOptionsViewModel;
+                
                 //vm._solverOptionsVM = optionsList[3] as SolverOptionsViewModel;
                 //vm._designOptionsVM = optionsList[4] as DesignOptionsViewModel;
 

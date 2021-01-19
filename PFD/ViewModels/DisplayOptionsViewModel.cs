@@ -3477,6 +3477,43 @@ namespace PFD
 
             BackgroundColorIndex = newVM.BackgroundColorIndex;
 
+
+            ExportFloorSlabTextSize = newVM.ExportFloorSlabTextSize;
+            ExportGridlinesSize = newVM.ExportGridlinesSize;
+            ExportGridLineLabelSize = newVM.ExportGridLineLabelSize;
+            ExportSectionSymbolsSize = newVM.ExportSectionSymbolsSize;
+            ExportSectionSymbolLabelSize = newVM.ExportSectionSymbolLabelSize;
+            ExportDetailSymbolSize = newVM.ExportDetailSymbolSize;
+            ExportDetailSymbolLabelSize = newVM.ExportDetailSymbolLabelSize;
+            ExportMembersDescriptionSize = newVM.ExportMembersDescriptionSize;
+            ExportNodesDescriptionSize = newVM.ExportNodesDescriptionSize;
+            ExportSawCutTextSize = newVM.ExportSawCutTextSize;
+            ExportControlJointTextSize = newVM.ExportControlJointTextSize;
+            ExportFoundationTextSize = newVM.ExportFoundationTextSize;
+            ExportDimensionsTextSize = newVM.ExportDimensionsTextSize;
+            ExportDimensionsLineRadius = newVM.ExportDimensionsLineRadius;
+            ExportDimensionsScale = newVM.ExportDimensionsScale;
+            ExportDescriptionTextWidthScaleFactor = newVM.ExportDescriptionTextWidthScaleFactor;
+
+            GUIFloorSlabTextSize = newVM.GUIFloorSlabTextSize;
+            GUIGridlinesSize = newVM.GUIGridlinesSize;
+            GUIGridLineLabelSize = newVM.GUIGridLineLabelSize;
+            GUISectionSymbolsSize = newVM.GUISectionSymbolsSize;
+            GUISectionSymbolLabelSize = newVM.GUISectionSymbolLabelSize;
+            GUIDetailSymbolSize = newVM.GUIDetailSymbolSize;
+            GUIDetailSymbolLabelSize = newVM.GUIDetailSymbolLabelSize;
+            GUIMembersDescriptionSize = newVM.GUIMembersDescriptionSize;
+            GUINodesDescriptionSize = newVM.GUINodesDescriptionSize;
+            GUISawCutTextSize = newVM.GUISawCutTextSize;
+            GUIControlJointTextSize = newVM.GUIControlJointTextSize;
+            GUIFoundationTextSize = newVM.GUIFoundationTextSize;
+            GUIDimensionsTextSize = newVM.GUIDimensionsTextSize;
+            GUIDimensionsLineRadius = newVM.GUIDimensionsLineRadius;
+            GUIDimensionsScale = newVM.GUIDimensionsScale;
+            GUIDescriptionTextWidthScaleFactor = newVM.GUIDescriptionTextWidthScaleFactor;
+            
+            UseTextures = newVM.UseTextures;
+
             IsSetFromCode = false;
         }
 
