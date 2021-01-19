@@ -115,6 +115,8 @@ namespace PFD
             this.DataContext = vm;
             vm.PFDMainWindow = this;
 
+            LoadDefaultOptions();
+
             SetUIElementsVisibility();
 
             UpdateAll(true);

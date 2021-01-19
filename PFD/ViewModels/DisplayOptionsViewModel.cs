@@ -3477,7 +3477,6 @@ namespace PFD
 
             BackgroundColorIndex = newVM.BackgroundColorIndex;
 
-
             ExportFloorSlabTextSize = newVM.ExportFloorSlabTextSize;
             ExportGridlinesSize = newVM.ExportGridlinesSize;
             ExportGridLineLabelSize = newVM.ExportGridLineLabelSize;
@@ -3513,6 +3512,7 @@ namespace PFD
             GUIDescriptionTextWidthScaleFactor = newVM.GUIDescriptionTextWidthScaleFactor;
             
             UseTextures = newVM.UseTextures;
+            ColoredCenterlines = newVM.ColoredCenterlines;
 
             IsSetFromCode = false;
         }
