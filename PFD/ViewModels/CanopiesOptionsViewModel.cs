@@ -385,6 +385,31 @@ namespace PFD
             return false;
         }
 
+        public bool HasCanopiesCrossBraced()
+        {
+            if (CanopiesList == null) return false;
+
+            foreach (CCanopiesInfo ci in CanopiesList)
+            {
+                if (ci.IsCrossBracedLeft || ci.IsCrossBracedRight) return true;
+            }
+
+            return false;
+        }
+
+        //todo Mato 659, prosim o kontrolu podmienok
+        public bool HasCanopiesPurlinBracing()
+        {
+            if (CanopiesList == null) return false;
+
+            foreach (CCanopiesInfo ci in CanopiesList)
+            {
+                if (ci.PurlinCountLeft > 1 || ci.PurlinCountRight > 1) return true;
+            }
+
+            return false;
+        }
+
 
     }
 }

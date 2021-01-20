@@ -454,5 +454,12 @@ namespace BaseClasses
             }
             else return false;
         }
+
+        public bool HasILS()
+        {
+            if (string.IsNullOrEmpty(ILS)) return false;
+            else if (ILS.Equals("None")) return false;
+            else return true;
+        }
     }
 }

@@ -1608,7 +1608,7 @@ namespace PFD
             if (cInfo != null) ComponentList.Remove(cInfo);
         }
 
-        public void AddCanopy()
+        public void AddCanopy(bool hasPurlinBracing, bool hasCrossBracing)
         {
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
             if (cInfo == null)
@@ -1651,30 +1651,48 @@ namespace PFD
             }
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
-            if (cInfo == null)
+            CComponentInfo cPurlinInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+
+            //todo Mato 659, prosim o kontrolu podmienok
+            if (hasPurlinBracing && cPurlinInfo.HasILS())
             {
-                CrScProperties prop = CSectionManager.GetSectionProperties("27095");
+                if (cInfo == null)
+                {
+                    CrScProperties prop = CSectionManager.GetSectionProperties("27095");
 
-                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockPurlinsCanopy];
-                cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
-                    compPref.ComponentName, "27095", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
-                cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
-                ComponentList.Add(cInfo);
+                    CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockPurlinsCanopy];
+                    cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                        compPref.ComponentName, "27095", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                        SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+                    cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
+                    ComponentList.Add(cInfo);
+                }
             }
-
+            else
+            {
+                if (cInfo != null) ComponentList.Remove(cInfo); //remove from component list
+            }
+            
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
-            if (cInfo == null)
+            if (hasCrossBracing)
             {
-                CrScProperties prop = CSectionManager.GetSectionProperties("1x100x1");
+                if (cInfo == null)
+                {
+                    CrScProperties prop = CSectionManager.GetSectionProperties("1x100x1");
 
-                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingRoofCanopy];
-                cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
-                    compPref.ComponentName, "1x100x1", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForCrossBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.CrossBracingRoofCanopy);
-                cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
-                ComponentList.Add(cInfo);
+                    CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingRoofCanopy];
+                    cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                        compPref.ComponentName, "1x100x1", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                        SectionsForCrossBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.CrossBracingRoofCanopy);
+                    cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
+                    ComponentList.Add(cInfo);
+                }
             }
+            else
+            {
+                if(cInfo != null) ComponentList.Remove(cInfo); //remove cross bracing canopy member from component list
+            }
+            
         }
 
         public void RemoveCanopy()

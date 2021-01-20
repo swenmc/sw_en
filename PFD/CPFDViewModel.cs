@@ -3556,7 +3556,7 @@ namespace PFD
 
         public void SetComponentListAccordingToCanopies()
         {
-            if (_canopiesOptionsVM.HasCanopies()) _componentVM.AddCanopy();
+            if (_canopiesOptionsVM.HasCanopies()) _componentVM.AddCanopy(_canopiesOptionsVM.HasCanopiesPurlinBracing(),_canopiesOptionsVM.HasCanopiesCrossBraced());
             else _componentVM.RemoveCanopy();
         }
 
