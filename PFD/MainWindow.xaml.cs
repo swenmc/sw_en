@@ -172,6 +172,7 @@ namespace PFD
                 if (e.PropertyName == "FlashingsNames") return;
                 if (e.PropertyName == "Gutters") return;
                 if (e.PropertyName == "Downpipes") return;
+                if (e.PropertyName == "ComponentList") return;
 
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility(); } return; }
 

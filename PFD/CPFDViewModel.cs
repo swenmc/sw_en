@@ -1638,6 +1638,7 @@ namespace PFD
 
                 foreach (CComponentInfo c in MComponentList)
                 {
+                    c.PropertyChanged -= HandleComponentInfoPropertyChangedEvent;
                     c.PropertyChanged += HandleComponentInfoPropertyChangedEvent;
                 }
                 NotifyPropertyChanged("ComponentList");
@@ -2859,6 +2860,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateQuotation = true;
                 _componentVM.UpdateComponentList(_crossBracingOptionsVM.HasWallCrosses(), _crossBracingOptionsVM.HasRoofCrosses());
+                ComponentList = _componentVM.ComponentList;
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CrossBracingOptionsChanged");
 
@@ -3511,6 +3513,7 @@ namespace PFD
         {
             SetComponentListAccordingToDoors();
             SetComponentListAccordingToWindows();
+            ComponentList = _componentVM.ComponentList;
         }
 
         private void SetComponentListAccordingToDoors()
@@ -3556,7 +3559,11 @@ namespace PFD
 
         public void SetComponentListAccordingToCanopies()
         {
-            if (_canopiesOptionsVM.HasCanopies()) _componentVM.AddCanopy(_canopiesOptionsVM.HasCanopiesPurlinBracing(),_canopiesOptionsVM.HasCanopiesCrossBraced());
+            if (_canopiesOptionsVM.HasCanopies())
+            {
+                _componentVM.AddCanopy(_canopiesOptionsVM.HasCanopiesPurlinBracing(), _canopiesOptionsVM.HasCanopiesCrossBraced());
+                ComponentList = _componentVM.ComponentList;
+            }
             else _componentVM.RemoveCanopy();
         }
 

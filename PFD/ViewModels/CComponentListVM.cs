@@ -1541,6 +1541,7 @@ namespace PFD
                 compPref.ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true, 
                 SectionsForDoorOrWindowFrame, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
+            
             ComponentList.Add(cInfo);
 
         }
