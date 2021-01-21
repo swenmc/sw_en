@@ -781,7 +781,7 @@ namespace PFD
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
                 _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
                 _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
-
+                
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
             }
@@ -2879,7 +2879,7 @@ namespace PFD
                 RecreateModel = true;
                 RecreateJoints = true;
                 RecreateQuotation = true;
-                //_componentVM.UpdateComponentList(_crossBracingOptionsVM.HasWallCrosses(), _crossBracingOptionsVM.HasRoofCrosses());
+                SetComponentListAccordingToCanopies();                
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CanopiesOptionsChanged");
 
@@ -3250,8 +3250,8 @@ namespace PFD
             // Set default kitset model type
             KitsetTypeIndex = kitsetTypeIndex;
 
-            _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);  //nastavujeme az po tom co sa nastavi ModelIndex
-            SetComponentListAccordingToCanopies();
+            //_canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);  //nastavujeme az po tom co sa nastavi ModelIndex
+            //SetComponentListAccordingToCanopies();
 
             //temp defaults
             //Width = 30;

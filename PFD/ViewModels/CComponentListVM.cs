@@ -1697,7 +1697,15 @@ namespace PFD
 
         public void RemoveCanopy()
         {
-            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindowFrame);
+            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
+            if (cInfo != null) ComponentList.Remove(cInfo);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
+            if (cInfo != null) ComponentList.Remove(cInfo);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+            if (cInfo != null) ComponentList.Remove(cInfo);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+            if (cInfo != null) ComponentList.Remove(cInfo);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
             if (cInfo != null) ComponentList.Remove(cInfo);
         }
 

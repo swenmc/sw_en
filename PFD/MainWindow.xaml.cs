@@ -924,6 +924,7 @@ namespace PFD
             if (!vm.RecreateFloorSlab) slabs = vm.Model.m_arrSlabs;
             //else if (vm.Model != null) MessageBox.Show("Floor slab will be recreated and changed to default.");
 
+            vm.SetComponentListAccordingToCanopies();
             if (vm.RecreateModel)
             {
                 // Create Model
