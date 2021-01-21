@@ -189,11 +189,13 @@ namespace PFD
 
         private bool ValidateGirts()
         {
-            //To Mato - ja osobne tejto podmienke proste nerozumiem
-            //Ak je zaskrtnute generovanie front girts alebo back girts musia byt zaskrtnute aj girt (teda side wall)
-            CComponentInfo girt = ComponentList.First(c => c.ComponentName == "Girt");
-            CComponentInfo girtFront = ComponentList.First(c => c.ComponentName == "Girt - Front Side");
-            CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
+            // Ak je zaskrtnute generovanie front girts alebo back girts musia byt zaskrtnute aj girt (teda side wall)
+            // Problem je ze uzly generovane pre girts sa pouziju aj pre girts - front / back side, takze keby sme negenerovali girts nebolo by mozne girts - front / back side vytvorit
+            // S tymto bude este problem, lebo oni chcu, aby bolo mozne vypnut side girts a nechat girts - front / back side
+
+            CComponentInfo girt = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            CComponentInfo girtFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            CComponentInfo girtBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
 
             //ak je front aj back false tak vtedy dovolit editovat girt
             if (!girtFront.Generate.Value && !girtBack.Generate.Value) { girt.GenerateIsEnabled = true; girt.GenerateIsReadonly = false; }
@@ -217,26 +219,28 @@ namespace PFD
         private void SetGirtsAndColumns(CComponentInfo cInfo)
         {
             //Ak je zaskrtnute generovanie girts front side musia byt zapnute columns front side, a podobne pre back side girts a back side columns.
-            if (cInfo.ComponentName == "Column - Front Side")
+            // Bug 672
+
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide)
             {
-                CComponentInfo girtFront = ComponentList.First(c => c.ComponentName == "Girt - Front Side");
+                CComponentInfo girtFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
                 if (girtFront.Generate != cInfo.Generate) { girtFront.IsSetFromCode = true; girtFront.Generate = cInfo.Generate; girtFront.IsSetFromCode = false; }
-                }
-            else if (cInfo.ComponentName == "Column - Back Side")
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
             {
-                CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
+                CComponentInfo girtBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
                 if (girtBack.Generate != cInfo.Generate) { girtBack.IsSetFromCode = true; girtBack.Generate = cInfo.Generate; girtBack.IsSetFromCode = false; }
-                }
-            else if (cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
-                CComponentInfo columnFront = ComponentList.First(c => c.ComponentName == "Column - Front Side");
+                CComponentInfo columnFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
                 if (columnFront.Generate != cInfo.Generate) { columnFront.IsSetFromCode = true; columnFront.Generate = cInfo.Generate; columnFront.IsSetFromCode = false; }
-                }
-            else if (cInfo.ComponentName == "Girt - Back Side" && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
-                CComponentInfo columnBack = ComponentList.First(c => c.ComponentName == "Column - Back Side");
+                CComponentInfo columnBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
                 if (columnBack.Generate != cInfo.Generate) { columnBack.IsSetFromCode = true; columnBack.Generate = cInfo.Generate; columnBack.IsSetFromCode = false; }
-                }
+            }
 
             //task 505
             //volba generate by mala byt viazana na bool generate pre purlins resp. girts na jednotlivych stranach budovy, podobne ako su girts viazane na columns.
@@ -250,8 +254,7 @@ namespace PFD
             {
                 CComponentInfo purlin = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
                 if (purlin.Generate != cInfo.Generate) { purlin.IsSetFromCode = true; purlin.Generate = cInfo.Generate; purlin.IsSetFromCode = false; }
-                }
-
+            }
 
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide) 
             {
@@ -273,7 +276,6 @@ namespace PFD
                 CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
                 if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
-
         }
 
         public List<CSectionPropertiesText> ComponentDetailsList

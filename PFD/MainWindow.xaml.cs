@@ -346,7 +346,7 @@ namespace PFD
                     vm.RecreateModel = true;
                 }
 
-                if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
+                if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
                 {
                     MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the front wall?", "Warning", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
@@ -355,12 +355,12 @@ namespace PFD
                     }
                     else
                     {
-                        cInfo.Generate = true; //vsetky ostatne property sa same oznacia (len aby to nemalo dosah inde)                        
+                        cInfo.Generate = true; //vsetky ostatne property sa same oznacia (len aby to nemalo dosah inde)
                         return;
                     }
                 }
 
-                if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Back Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Back"))
+                if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Back"))
                 {
                     MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the back wall?", "Warning", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
