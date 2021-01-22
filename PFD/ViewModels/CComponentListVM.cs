@@ -1611,21 +1611,29 @@ namespace PFD
             if (cInfo != null) ComponentList.Remove(cInfo);
         }
 
-        public void AddCanopy(bool hasPurlinBracing, bool hasCrossBracing)
+        public void AddCanopy(bool hasMainRafter, bool hasPurlinBracing, bool hasCrossBracing)
         {
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
-            if (cInfo == null)
+            if (hasMainRafter)
             {
-                // TO Ondrej - prierezy brat z preddefinovanych hodnot v databaze
-                CrScProperties prop = CSectionManager.GetSectionProperties("63020");
+                if (cInfo == null)
+                {
+                    // TO Ondrej - prierezy brat z preddefinovanych hodnot v databaze
+                    CrScProperties prop = CSectionManager.GetSectionProperties("63020");
 
-                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafterCanopy];
-                cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
-                    compPref.ComponentName, "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
-                cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
-                ComponentList.Add(cInfo);
+                    CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafterCanopy];
+                    cInfo = new CComponentInfo(compPref.ComponentPrefix, MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
+                        compPref.ComponentName, "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                        SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
+                    cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
+                    ComponentList.Add(cInfo);
+                }
             }
+            else
+            {
+                if (cInfo != null) ComponentList.Remove(cInfo); //remove from component list
+            }
+            
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
             if (cInfo == null)

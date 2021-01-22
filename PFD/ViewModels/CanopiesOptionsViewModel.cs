@@ -385,7 +385,7 @@ namespace PFD
             return false;
         }
 
-        public bool HasCanopiesCrossBraced()
+        public bool HasCanopiesCrossBracing()
         {
             if (CanopiesList == null) return false;
 
@@ -409,7 +409,19 @@ namespace PFD
 
             return false;
         }
+        public bool HasCanopiesMainRafter()
+        {
+            if (CanopiesList == null) return false;
+                        
+            for (int i=0; i < CanopiesList.Count - 1; i++)
+            {
+                if (CanopiesList[i].Left && CanopiesList[i + 1].Left) return true;
+                if (CanopiesList[i].Right && CanopiesList[i + 1].Right) return true;                
+            }
 
+            return false;
+        }
+        
 
     }
 }
