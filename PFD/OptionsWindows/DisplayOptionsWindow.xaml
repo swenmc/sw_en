@@ -37,7 +37,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80"/>
                             <RowDefinition Height="50"/>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="80"/>
                             <RowDefinition Height="100"/>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
@@ -55,8 +55,10 @@
                         </StackPanel>
 
                         <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Vertical" Grid.ColumnSpan="2">
-                            <RadioButton Name="radioColorsIn3DMembers" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembers, Mode=TwoWay}">Colors according to Component Types</RadioButton>
-                            <RadioButton Name="radioColorsIn3DSections" GroupName="Mode" IsChecked="{Binding Path=ColorsAccordingToSections, Mode=TwoWay}">Colors according to Sections</RadioButton>
+                            <TextBlock Text="Member Color:" HorizontalAlignment="Left"/>
+                            <RadioButton Name="radioColorsIn3DMembersPrefix" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPrefix, Mode=TwoWay}">according to Prefix</RadioButton>
+                            <RadioButton Name="radioColorsIn3DMembersPosition" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPosition, Mode=TwoWay}">according to Position</RadioButton>
+                            <RadioButton Name="radioColorsIn3DSections" GroupName="Mode" IsChecked="{Binding Path=ColorsAccordingToSections, Mode=TwoWay}">according to Section</RadioButton>
                         </StackPanel>
 
                         <StackPanel Grid.Row="3" Grid.Column="0">

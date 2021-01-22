@@ -34,7 +34,8 @@ namespace PFD
         private bool m_MaterialEmissive;
 
         //Color display options
-        private bool m_ColorsAccordingToMembers;
+        private bool m_ColorsAccordingToMembersPrefix;
+        private bool m_ColorsAccordingToMembersPosition;
         private bool m_ColorsAccordingToSections;
 
         private bool m_DisplayDistinguishedColorMember;
@@ -640,23 +641,54 @@ namespace PFD
             }
         }
 
-        public bool ColorsAccordingToMembers
+        public bool ColorsAccordingToMembersPrefix
         {
             get
             {
-                return m_ColorsAccordingToMembers;
+                return m_ColorsAccordingToMembersPrefix;
             }
 
             set
             {
-                if (value == false && m_ColorsAccordingToSections == false) return;
+                if (value == false && m_ColorsAccordingToSections == false && m_ColorsAccordingToMembersPosition == false) return;
 
-                m_ColorsAccordingToMembers = value;
-
-                NotifyPropertyChanged("ColorsAccordingToMembers");
-
+                m_ColorsAccordingToMembersPrefix = value;
+                NotifyPropertyChanged("ColorsAccordingToMembersPrefix");
             }
         }
+
+        public bool ColorsAccordingToMembersPosition
+        {
+            get
+            {
+                return m_ColorsAccordingToMembersPosition;
+            }
+
+            set
+            {
+                if (value == false && m_ColorsAccordingToSections == false && m_ColorsAccordingToMembersPrefix == false) return;
+
+                m_ColorsAccordingToMembersPosition = value;
+                NotifyPropertyChanged("ColorsAccordingToMembersPosition");
+            }
+        }
+        //public bool ColorsAccordingToMembers
+        //{
+        //    get
+        //    {
+        //        return m_ColorsAccordingToMembers;
+        //    }
+
+        //    set
+        //    {
+        //        if (value == false && m_ColorsAccordingToSections == false) return;
+
+        //        m_ColorsAccordingToMembers = value;
+
+        //        NotifyPropertyChanged("ColorsAccordingToMembers");
+
+        //    }
+        //}
 
         public bool ColorsAccordingToSections
         {
@@ -667,7 +699,7 @@ namespace PFD
 
             set
             {
-                if (value == false && m_ColorsAccordingToMembers == false) return;
+                if (value == false && m_ColorsAccordingToMembersPrefix == false && m_ColorsAccordingToMembersPosition == false) return;
 
                 m_ColorsAccordingToSections = value;
 
@@ -3110,6 +3142,8 @@ namespace PFD
             }
         }
 
+        
+
         #endregion Properties
 
 
@@ -3156,7 +3190,8 @@ namespace PFD
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
-            ColorsAccordingToMembers = true;
+            ColorsAccordingToMembersPrefix = false;
+            ColorsAccordingToMembersPosition = true;
             ColorsAccordingToSections = false;
             ColoredCenterlines = true;
 
@@ -3370,7 +3405,8 @@ namespace PFD
             DisplayWireFrameModel = newVM.DisplayWireFrameModel;
             DisplayDistinguishedColorMember = newVM.DisplayDistinguishedColorMember;
             DisplayTransparentModelMember = newVM.DisplayTransparentModelMember;
-            ColorsAccordingToMembers = newVM.ColorsAccordingToMembers;
+            ColorsAccordingToMembersPrefix = newVM.ColorsAccordingToMembersPrefix;
+            ColorsAccordingToMembersPosition = newVM.ColorsAccordingToMembersPosition;
             ColorsAccordingToSections = newVM.ColorsAccordingToSections;
 
             ShowNodesDescription = newVM.ShowNodesDescription;

@@ -920,6 +920,8 @@ namespace BaseClasses
 
         public float DisplayIn3DRatio;
 
+        public bool bColorsAccordingToMembersPrefix;
+        public bool bColorsAccordingToMembersPosition;
         public bool bColorsAccordingToMembers;
         public bool bColorsAccordingToSections;
         public bool bColoredCenterlines;

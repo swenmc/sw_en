@@ -4102,7 +4102,10 @@ namespace PFD
             sDisplayOptions.bDisplayLoadsLabelsUnits = _displayOptionsVM.ShowLoadsLabelsUnits;
 
             sDisplayOptions.DisplayIn3DRatio = _displayOptionsVM.DisplayIn3DRatio;
-            sDisplayOptions.bColorsAccordingToMembers = _displayOptionsVM.ColorsAccordingToMembers;
+            sDisplayOptions.bColorsAccordingToMembersPrefix = _displayOptionsVM.ColorsAccordingToMembersPrefix;
+            sDisplayOptions.bColorsAccordingToMembersPosition = _displayOptionsVM.ColorsAccordingToMembersPosition;
+            sDisplayOptions.bColorsAccordingToMembers = sDisplayOptions.bColorsAccordingToMembersPrefix || sDisplayOptions.bColorsAccordingToMembersPosition;
+
             sDisplayOptions.bColorsAccordingToSections = _displayOptionsVM.ColorsAccordingToSections;
             sDisplayOptions.bColoredCenterlines = _displayOptionsVM.ColoredCenterlines;
 
