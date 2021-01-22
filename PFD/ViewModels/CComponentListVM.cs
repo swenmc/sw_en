@@ -1546,6 +1546,7 @@ namespace PFD
             
             ComponentList.Add(cInfo);
 
+            OrderComponentList();
         }
         public void RemovePersonelDoor()
         {
@@ -1555,6 +1556,7 @@ namespace PFD
 
         public void AddRollerDoor()
         {
+            bool changed = false;
             CComponentInfo cDT = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorTrimmer);
             if (cDT == null)
             {
@@ -1566,6 +1568,7 @@ namespace PFD
                 SectionsForRollerDoorTrimmer, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorTrimmer);
                 cDT.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDT);
+                changed = true;
             }
 
             CComponentInfo cDL = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.DoorLintel);
@@ -1579,7 +1582,9 @@ namespace PFD
                 SectionsForRollerDoorLintel, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorLintel);
                 cDL.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDL);
+                changed = true;
             }
+            if (changed) OrderComponentList();
         }
         public void RemoveRollerDoor()
         {
@@ -1613,6 +1618,8 @@ namespace PFD
 
         public void AddCanopy(bool hasMainRafter, bool hasPurlinBracing, bool hasCrossBracing)
         {
+            bool changed = false;
+
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
             if (hasMainRafter)
             {
@@ -1627,6 +1634,7 @@ namespace PFD
                         SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
+                    changed = true;
                 }
             }
             else
@@ -1646,6 +1654,7 @@ namespace PFD
                     SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.EdgeRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
+                changed = true;
             }
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
@@ -1659,6 +1668,7 @@ namespace PFD
                     SectionsForGirtsOrPurlins, EmptyILS_Items, MColors, EMemberType_FS_Position.PurlinCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
+                changed = true;
             }
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
@@ -1677,6 +1687,7 @@ namespace PFD
                         SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
+                    changed = true;
                 }
             }
             else
@@ -1697,6 +1708,7 @@ namespace PFD
                         SectionsForCrossBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.CrossBracingRoofCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
+                    changed = true;
                 }
             }
             else
@@ -1704,6 +1716,7 @@ namespace PFD
                 if(cInfo != null) ComponentList.Remove(cInfo); //remove cross bracing canopy member from component list
             }
             
+            if (changed) OrderComponentList();
         }
 
         public void RemoveCanopy()
@@ -1815,6 +1828,7 @@ namespace PFD
 
         public void UpdateComponentList(bool hasWallCrosses, bool hasRoofCrosses)
         {
+            bool changed = false;
             CComponentInfo ci_Wall = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingWall);
             CComponentInfo ci_Roof = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
 
@@ -1831,6 +1845,7 @@ namespace PFD
                         compPref.ComponentName, "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
                         SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingWall);
                     ComponentList.Add(ci_Wall);
+                    changed = true;
                 }                    
             }
 
@@ -1847,9 +1862,16 @@ namespace PFD
                         compPref.ComponentName, "1x100x1", "Olive", "G550‡", "None", true, true, true, true, true,
                         SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingRoof);
                     ComponentList.Add(ci_Roof);
+                    changed = true;
                 }
             }
 
+            if (changed) OrderComponentList();
+        }
+
+        public void OrderComponentList()
+        {
+            ComponentList = new ObservableCollection<CComponentInfo>(ComponentList.OrderBy(c => c.MemberTypePosition));
         }
 
     }
