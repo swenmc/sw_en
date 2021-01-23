@@ -38,6 +38,7 @@ namespace PFD
 
         private List<string> MColumnFlyBracingPosition_Items;
         private List<string> MRafterFlyBracingPosition_Items;
+        private List<string> MCanopyRafterFlyBracingPosition_Items;
         private List<string> MDefaultILS_Items;
         private List<string> MEmptyILS_Items;
 
@@ -153,6 +154,7 @@ namespace PFD
         private void SetSameILS(CComponentInfo cInfo)
         {
             CComponentInfo cInfo2 = null;
+            CComponentInfo cInfo3 = null;
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn)
             {
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
@@ -172,10 +174,25 @@ namespace PFD
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
             {
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                cInfo3 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin)
             {
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+                cInfo3 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+                cInfo3 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
             }
 
             if (cInfo2 != null && cInfo.ILS != cInfo2.ILS)
@@ -183,7 +200,13 @@ namespace PFD
                 cInfo2.IsSetFromCode = true;
                 cInfo2.ILS = cInfo.ILS;
                 cInfo2.IsSetFromCode = false;
-            } 
+            }
+            if (cInfo3 != null && cInfo.ILS != cInfo3.ILS)
+            {
+                cInfo3.IsSetFromCode = true;
+                cInfo3.ILS = cInfo.ILS;
+                cInfo3.IsSetFromCode = false;
+            }
         }
 
 
@@ -540,6 +563,24 @@ namespace PFD
                 NotifyPropertyChanged("RafterFlyBracingPosition_Items");
             }
         }
+        public List<string> CanopyRafterFlyBracingPosition_Items
+        {
+            get
+            {
+                if (MCanopyRafterFlyBracingPosition_Items == null)
+                {
+                    MCanopyRafterFlyBracingPosition_Items = new List<string>() { "None", "Every purlin", "Every 2nd purlin", "Every 3rd purlin", "Every 4th purlin", "Every 5th purlin",
+                        "Every 6th purlin", "Every 7th purlin", "Every 8th purlin", "Every 9th purlin"};
+                }
+                return MCanopyRafterFlyBracingPosition_Items;
+            }
+            set
+            {
+                MCanopyRafterFlyBracingPosition_Items = value;
+                NotifyPropertyChanged("CanopyRafterFlyBracingPosition_Items");
+            }
+        }
+
         public List<string> DefaultILS_Items
         {
             get
@@ -1635,7 +1676,7 @@ namespace PFD
                     CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafterCanopy];
                     cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
                         compPref.ComponentName, "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                        SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
+                        SectionsForColumnsOrRafters, CanopyRafterFlyBracingPosition_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
                     changed = true;
@@ -1646,7 +1687,6 @@ namespace PFD
                 if (cInfo != null) ComponentList.Remove(cInfo); //remove from component list
             }
             
-
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
             if (cInfo == null)
             {
@@ -1655,7 +1695,7 @@ namespace PFD
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeRafterCanopy];
                 cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
                     compPref.ComponentName, "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForColumnsOrRafters, EmptyILS_Items, MColors, EMemberType_FS_Position.EdgeRafterCanopy);
+                    SectionsForColumnsOrRafters, CanopyRafterFlyBracingPosition_Items, MColors, EMemberType_FS_Position.EdgeRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
                 changed = true;
@@ -1828,6 +1868,26 @@ namespace PFD
             ColumnFlyBracingPosition_Items = items;
             CComponentInfo CBS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
             if (CBS != null) { CBS.IsSetFromCode = true; CBS.ILS_Items = items; SetComponentInfoILS(CBS); CBS.IsSetFromCode = false; }
+        }
+
+        public void SetCanopyRafterFlyBracingPosition_Items(int iPurlinsNum)
+        {
+            List<string> items = new List<string>();
+            for (int i = 0; i <= iPurlinsNum; i++)
+            {
+                if (i == 0) items.Add("None");
+                if (i == 1) items.Add("Every purlin");
+                if (i == 2) items.Add("Every 2nd purlin");
+                if (i == 3) items.Add("Every 3rd purlin");
+                if (i >= 4) items.Add($"Every {i}th purlin");
+
+            }
+            CanopyRafterFlyBracingPosition_Items = items;
+
+            CComponentInfo MR = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
+            if (MR != null) { MR.IsSetFromCode = true; MR.ILS_Items = items; SetComponentInfoILS(MR); MR.IsSetFromCode = false; }
+            CComponentInfo ER = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
+            if (ER != null) { ER.IsSetFromCode = true; ER.ILS_Items = items; SetComponentInfoILS(ER); ER.IsSetFromCode = false; }
         }
 
         public void UpdateComponentList(bool hasWallCrosses, bool hasRoofCrosses)

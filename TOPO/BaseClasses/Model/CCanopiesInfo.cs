@@ -277,6 +277,8 @@ namespace BaseClasses
         {
             if (value <= 0)
                 throw new ArgumentException("Purlin count must be greater than 0.");
+            if (value > 15)
+                throw new ArgumentException("Maximum purlin count is 15.");
         }
     }
 }

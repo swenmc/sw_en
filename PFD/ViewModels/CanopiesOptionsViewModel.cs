@@ -421,7 +421,19 @@ namespace PFD
 
             return false;
         }
-        
+        public int GetMaxPurlinCount()
+        {
+            int purlinCount = 0;
+            if (CanopiesList == null) return purlinCount;
+
+            foreach (CCanopiesInfo ci in CanopiesList)
+            {
+                if (ci.Left && ci.PurlinCountLeft > purlinCount) purlinCount = ci.PurlinCountLeft;
+                if (ci.Right && ci.PurlinCountRight > purlinCount) purlinCount = ci.PurlinCountRight;
+            }
+            return purlinCount;
+        }
+
 
     }
 }
