@@ -20,6 +20,7 @@ namespace PFD
     {
         private CPFDViewModel _pfdVM;
         private bool DisplayOptionsChanged = false;
+        private bool MemberOptionsChanged = false;
         private bool RecreateModelRequired = false;
         public DisplayOptionsWindow(CPFDViewModel pfdVM)
         {
@@ -47,6 +48,12 @@ namespace PFD
                     e.PropertyName == "DoorPanelOpacity" || e.PropertyName == "WindowPanelOpacity")
                     RecreateModelRequired = true;
 
+                if (e.PropertyName == "ColorsAccordingToMembersPrefix" || e.PropertyName == "ColorsAccordingToMembersPosition")
+                {
+                    MemberOptionsChanged = true;
+                    
+                }
+
                 DisplayOptionsChanged = true;
             }
         }
@@ -55,6 +62,12 @@ namespace PFD
         {
             if (DisplayOptionsChanged)
             {
+                if (MemberOptionsChanged)
+                {
+                    if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPosition) _pfdVM._componentVM.SetColorsAccordingToPosition();
+                    else if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPrefix) _pfdVM._componentVM.SetColorsAccordingToPrefixes();
+                }
+
                 _pfdVM.RecreateModel = RecreateModelRequired;
                 _pfdVM.SynchronizeGUI = true;                
             }

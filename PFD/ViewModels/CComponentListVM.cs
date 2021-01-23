@@ -1110,8 +1110,8 @@ namespace PFD
             }
         }
 
-        
 
+        bool colorsAccordingToPositions;
         private Dictionary<int, CComponentPrefixes> dict_CompPref;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -1120,9 +1120,12 @@ namespace PFD
         {
             MComponentList = new ObservableCollection<CComponentInfo>();
 
-            dict_CompPref = CComponentManager.LoadComponentsFromDB();
+            colorsAccordingToPositions = true;
+            dict_CompPref = CComponentManager.LoadComponentsFromDB();            
 
             MColors = CComboBoxHelper.ColorList; // Set Color List
+
+            //Pozor vyhladavanie MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)) je extremne pomale!!!
 
             CComponentInfo ci = null;
             CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainColumn];
@@ -1872,6 +1875,47 @@ namespace PFD
         public void OrderComponentList()
         {
             ComponentList = new ObservableCollection<CComponentInfo>(ComponentList.OrderBy(c => c.MemberTypePosition));
+        }
+
+
+        public void SetColorsAccordingToPrefixes()
+        {
+            if (!colorsAccordingToPositions) return;
+
+            Dictionary<int, CComponentPrefixes> dict = CComponentManager.LoadComponentsPrefixes();
+
+            ChangePrefixesDictionary(dict);
+            ChangeComponentListColors();
+
+            colorsAccordingToPositions = false;
+        }
+        public void SetColorsAccordingToPosition()
+        {
+            if (colorsAccordingToPositions) return;
+
+            Dictionary<int, CComponentPrefixes>  dict = CComponentManager.LoadComponentsFromDB();
+
+            ChangePrefixesDictionary(dict);
+            ChangeComponentListColors();
+
+            colorsAccordingToPositions = true;
+        }
+        private void ChangePrefixesDictionary(Dictionary<int, CComponentPrefixes> dict)
+        {
+            foreach (KeyValuePair<int, CComponentPrefixes> kvp in dict)
+            {
+                if (!dict_CompPref.ContainsKey(kvp.Key)) continue;
+                dict_CompPref[kvp.Key].ComponentColorName = kvp.Value.ComponentColorName;
+                dict_CompPref[kvp.Key].ComponentColorCodeRGB = kvp.Value.ComponentColorCodeRGB;
+                dict_CompPref[kvp.Key].ComponentColorCodeHEX = kvp.Value.ComponentColorCodeHEX;
+            }
+        }
+        private void ChangeComponentListColors()
+        {
+            foreach (CComponentInfo c in ComponentList)
+            {
+                c.Color = MColors.Find(x => x.Name.Equals(dict_CompPref[(int)c.MemberTypePosition].ComponentColorName));
+            }
         }
 
     }

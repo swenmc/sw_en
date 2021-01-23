@@ -2490,7 +2490,7 @@ namespace PFD
         }
 
         [NonSerialized]
-        private CComponentListVM _componentVM;
+        public CComponentListVM _componentVM;
         [NonSerialized]
         public CProjectInfoVM _projectInfoVM;
         [NonSerialized]

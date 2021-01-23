@@ -105,6 +105,9 @@ namespace PFD
             ObservableCollection<WindowProperties> WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties(bRelease);
 
             CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
+            if (sDisplayOptions.bColorsAccordingToMembersPosition) compListVM.SetColorsAccordingToPosition();
+            else if (sDisplayOptions.bColorsAccordingToMembersPrefix) compListVM.SetColorsAccordingToPrefixes();
+
             SetLoadInput();
 
             projectInfoVM = new CProjectInfoVM();
