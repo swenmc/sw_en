@@ -99,6 +99,8 @@ namespace DATABASE
             return model;
         }
 
+
+        //toto tu je v CComponentsManager
         private static Dictionary<int, CComponentPrefixes> DictComponentPrefixes;
         private static void LoadModelComponents()
         {

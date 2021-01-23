@@ -51,7 +51,8 @@ namespace PFD
                 if (e.PropertyName == "ColorsAccordingToMembersPrefix" || e.PropertyName == "ColorsAccordingToMembersPosition")
                 {
                     MemberOptionsChanged = true;
-                    
+                    RecreateModelRequired = true;
+
                 }
 
                 DisplayOptionsChanged = true;

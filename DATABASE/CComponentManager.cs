@@ -10,7 +10,7 @@ namespace DATABASE
 {
     public static class CComponentManager
     {
-        
+        //TODO vsimol som si ze, to treba refaktorovat s CModelsManager, tam je podobna funkcia
         public static Dictionary<string, CComponentPrefixes> LoadComponentsPrefixes()
         {
             CComponentPrefixes compPrefix;
@@ -37,8 +37,12 @@ namespace DATABASE
             }
             return items;
         }
+
+        private static Dictionary<int, CComponentPrefixes> m_DictComponentPrefixes;
         public static Dictionary<int, CComponentPrefixes> LoadComponentsFromDB()
         {
+            if (m_DictComponentPrefixes != null) return m_DictComponentPrefixes;
+
             CComponentPrefixes compPrefix;
             Dictionary<int, CComponentPrefixes> items = new Dictionary<int, CComponentPrefixes>();
 
@@ -61,6 +65,7 @@ namespace DATABASE
                     }
                 }
             }
+            m_DictComponentPrefixes = items;
             return items;
         }
     }
