@@ -65,7 +65,7 @@ namespace PFD
                 if (MemberOptionsChanged)
                 {
                     if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPosition) _pfdVM._componentVM.SetColorsAccordingToPosition();
-                    else if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPrefix) _pfdVM._componentVM.SetColorsAccordingToPrefixes();
+                    else if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPrefix) _pfdVM._componentVM.SetColorsAccordingToPrefixes();                    
                 }
 
                 _pfdVM.RecreateModel = RecreateModelRequired;

@@ -2110,13 +2110,13 @@ namespace PFD
                 return CComboBoxHelper.ColorList;
             }
         }
-        public List<CComboColor> ColorListWithTransparent
-        {
-            get
-            {
-                return CComboBoxHelper.ColorListWithTransparent;
-            }
-        }
+        //public List<CComboColor> ColorListWithTransparent
+        //{
+        //    get
+        //    {
+        //        return CComboBoxHelper.ColorListWithTransparent;
+        //    }
+        //}
         public List<ComboItem> LinePatternTypes
         {
             get

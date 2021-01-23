@@ -58,7 +58,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="Component Name" Width="120"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Com. Color" ToolTipService.ToolTip="Select component color" Width="70" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
+                <DataGridComboBoxColumn Header="Com. Colour" ToolTipService.ToolTip="Select component colour" Width="70" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding Colors}"/>
@@ -103,7 +103,7 @@
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Binding="{Binding SectionColor}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                <DataGridTextColumn Binding="{Binding SectionColor}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding SectionColor}"/>
@@ -298,7 +298,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding ColumnSectionColor}" ToolTipService.ToolTip="Select column section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding ColumnSectionColor}" ToolTipService.ToolTip="Select column section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding ColumnSectionColor}"/>
@@ -326,7 +326,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding RafterSectionColor}" ToolTipService.ToolTip="Select rafter section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding RafterSectionColor}" ToolTipService.ToolTip="Select rafter section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding RafterSectionColor}"/>
@@ -485,7 +485,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding SectionColor_EP}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding SectionColor_EP}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding SectionColor_EP}"/>
@@ -510,7 +510,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding SectionColor_G}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding SectionColor_G}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding SectionColor_G}"/>
@@ -536,7 +536,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding SectionColor_P}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding SectionColor_P}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding SectionColor_P}"/>
@@ -562,7 +562,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding SectionColor_GB}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding SectionColor_GB}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding SectionColor_GB}"/>
@@ -588,7 +588,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding SectionColor_PB}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding SectionColor_PB}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding SectionColor_PB}"/>
@@ -614,7 +614,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding SectionColor_CBW}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding SectionColor_CBW}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding SectionColor_CBW}"/>
@@ -639,7 +639,7 @@
                                     </Style>
                                 </DataGridComboBoxColumn.EditingElementStyle>
                             </DataGridComboBoxColumn>
-                            <DataGridTextColumn Binding="{Binding SectionColor_CBR}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                            <DataGridTextColumn Binding="{Binding SectionColor_CBR}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                 <DataGridTextColumn.CellStyle>
                                     <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding SectionColor_CBR}"/>
@@ -703,7 +703,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Binding="{Binding OthersSectionColor}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
+                                <DataGridTextColumn Binding="{Binding OthersSectionColor}" ToolTipService.ToolTip="Select section colour" IsReadOnly="True" Header="Sec. Colour" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="{Binding OthersSectionColor}"/>

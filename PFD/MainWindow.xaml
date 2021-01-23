@@ -244,7 +244,7 @@
                         <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_RoofCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=RoofCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text="Roof Cladding Colour:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="3" Grid.Column="4" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=RoofCladdingColors}" SelectedIndex="{Binding Path=RoofCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
@@ -269,7 +269,7 @@
                         <ComboBox Grid.Row="6" Grid.Column="4" Name ="Combobox_WallCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=WallCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="7" Grid.Column="3" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <TextBlock Grid.Row="7" Grid.Column="3" Text="Wall Cladding Colour:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="7" Grid.Column="4" ItemsSource="{Binding Path=WallCladdingColors}" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>

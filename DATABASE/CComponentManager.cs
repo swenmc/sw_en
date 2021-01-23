@@ -11,10 +11,10 @@ namespace DATABASE
     public static class CComponentManager
     {
         
-        public static Dictionary<int, CComponentPrefixes> LoadComponentsPrefixes()
+        public static Dictionary<string, CComponentPrefixes> LoadComponentsPrefixes()
         {
             CComponentPrefixes compPrefix;
-            Dictionary<int, CComponentPrefixes> items = new Dictionary<int, CComponentPrefixes>();
+            Dictionary<string, CComponentPrefixes> items = new Dictionary<string, CComponentPrefixes>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["ModelsSQLiteDB"].ConnectionString))
             {
@@ -31,7 +31,7 @@ namespace DATABASE
                         compPrefix.ComponentColorCodeRGB = reader["defaultColorRGB"].ToString();
                         compPrefix.ComponentColorCodeHEX = reader["defaultColorHEX"].ToString();
                         compPrefix.ComponentColorName = reader["defaultColorName"].ToString();
-                        items.Add(compPrefix.ID, compPrefix);
+                        items.Add(compPrefix.ComponentPrefix, compPrefix);
                     }
                 }
             }
