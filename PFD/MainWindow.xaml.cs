@@ -2631,6 +2631,7 @@ namespace PFD
             if (ofd.ShowDialog() == true)
             {
                 OpenOptionsFile(ofd.FileName);
+                vm.OptionsLoaded = true;
             }
         }
         private void LoadDefaultOptions()

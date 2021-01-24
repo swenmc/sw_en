@@ -139,6 +139,8 @@ namespace PFD
         private bool m_BaysWidthOptionsChanged;
         private bool m_CanopiesOptionsChanged;
 
+        private bool m_OptionsLoaded;
+
         //private bool m_BracingEverySecondRowOfGirts;
         //private bool m_BracingEverySecondRowOfPurlins;
 
@@ -2960,6 +2962,24 @@ namespace PFD
                 RecreateModel = false;
 
                 NotifyPropertyChanged("DisplayOptionsChanged");
+            }
+        }
+
+        public bool OptionsLoaded
+        {
+            get
+            {
+                return m_OptionsLoaded;
+            }
+
+            set
+            {
+                m_OptionsLoaded = value;
+                                
+                SetResultsAreNotValid();
+                RecreateModel = true;
+
+                NotifyPropertyChanged("OptionsLoaded");
             }
         }
 
