@@ -42,7 +42,7 @@ namespace BaseClasses
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             // Cross-section
-            m_arrCrSc = new Dictionary<EMemberType_FS_Position, CCrSc>(); //new CCrSc[2];            
+            m_arrCrSc = new Dictionary<EMemberType_FS_Position, CCrSc>(); //new CCrSc[2];
             m_arrCrSc[0] = m_arrMembers[0].CrScStart;
             m_arrCrSc[0].m_Mat = m_arrMembers[0].CrScStart.m_Mat; // Set CrSc Material
 
@@ -51,6 +51,8 @@ namespace BaseClasses
 
             //m_arrCrSc[1] = m_arrMembers[1].CrScStart;
             //m_arrCrSc[1].m_Mat = m_arrMembers[1].CrScStart.m_Mat; // Set CrSc Material
+
+            // TODO 680 - pridat materialy a prierezy pre ER a MR canopy
         }
     }
 }

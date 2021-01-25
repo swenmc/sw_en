@@ -34,6 +34,34 @@ namespace PFD
                 if (model is CModel_PFD_01_GR)
                     frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
 
+                // Canopy
+                // TODO 680 - dopracovat načítanie uzlov Canopy
+                // Dostat sa ku canopy vo vm alebo pridat canopy properties do CModel_PFD podobne ako
+                // ObservableCollection<DoorProperties> DoorBlocksProperties;
+
+                // vid zoznamy FrameIndexList_Left a FrameIndexList_Right
+                // Potrebujeme sa dopracovat k ID uzla ktory bol na danom rame vytvoreny pre Rafter - Canopy na lavej alebo pravej strane
+
+                // Da sa to urobit aj tak, ze sa vyberu pruty s danou suradnicou Y pre vybrany frame a urobi sa zjednotenie skupiny ich koncovych uzlov, duplicitne uzly sa odstrania
+
+                /*
+                if (model.canopyList[i].IsLeft)
+                {
+                    if (model is CModel_PFD_01_GR)
+                        frameNodes.Add(model.m_arrNodes[nx1]);
+                    else
+                        frameNodes.Add(model.m_arrNodes[nx2]);
+                }
+
+                if (model.canopyList[i].IsRight)
+                {
+                    if (model is CModel_PFD_01_GR)
+                        frameNodes.Add(model.m_arrNodes[ny1]);
+                    else
+                        frameNodes.Add(model.m_arrNodes[ny2]);
+                }
+                */
+
                 // Add members to the frame
                 foreach (CMember m in model.m_arrMembers)
                 {
@@ -48,6 +76,8 @@ namespace PFD
                         //System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
                     }
                 }
+
+                // TODO 680 - odstranit duplicitne uzly s identickymi suradnicami, nahradit ID v prutoch a pripadne dalsich zoznamoch
 
                 List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForNodesAndMembers(frameNodes, frameMembers, model.m_arrLoadCases);
                 List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
@@ -503,7 +533,6 @@ namespace PFD
                     }
                 }
             }
-
 
             if (debugging) System.Diagnostics.Trace.WriteLine("SetMembersAccordingTo count: " + count);
         }
