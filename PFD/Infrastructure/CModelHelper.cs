@@ -490,7 +490,6 @@ namespace PFD
             {
                 foreach (CComponentInfo cInfo in componentList)
                 {
-
                     // Ak deaktivujeme prut kvoli tomu, ze bol na jeho miesto vlozeny blok, tak tu mu uz nesmieme nastavit ze je znova aktivny
                     // Myslel som ze taky prut bude mat nastavene BIsGenerated na false ale bude v m_arrMembers existovat, aby mi sedeli cisla pri generovani prutov blokov atd
                     //if (m.Prefix == cInfo.Prefix &&
@@ -502,8 +501,22 @@ namespace PFD
                         // Assign component properties from GUI component list to the particular members in the model
                         m.BIsGenerated = cInfo.Generate.GetValueOrDefault(false);
 
+                        // Door and window blocks
                         // cInfo.Generate = null for block components, set true
-                        if (m.Prefix == "WF" || m.Prefix == "DF" || m.Prefix == "DL" || m.Prefix == "DT")
+                        if (m.EMemberTypePosition == EMemberType_FS_Position.WindowFrame ||
+                            m.EMemberTypePosition == EMemberType_FS_Position.DoorFrame ||
+                            m.EMemberTypePosition == EMemberType_FS_Position.DoorLintel ||
+                            m.EMemberTypePosition ==  EMemberType_FS_Position.DoorTrimmer)
+                        {
+                            m.BIsGenerated = true;
+                        }
+
+                        // Canopies
+                        if(m.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy ||
+                           m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy ||
+                           m.EMemberTypePosition == EMemberType_FS_Position.PurlinCanopy ||
+                           m.EMemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy ||
+                           m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy)
                         {
                             m.BIsGenerated = true;
                         }
