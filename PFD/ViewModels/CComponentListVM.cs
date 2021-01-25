@@ -116,8 +116,8 @@ namespace PFD
                 if (e.PropertyName == "GenerateIsEnabled") return;
                 if (e.PropertyName == "ILS_Items") return;
 
-                if (e.PropertyName == "Material") SetComponentDetails();
-                else if (e.PropertyName == "Section") SetComponentDetails();
+                if (e.PropertyName == "Material") { SetComponentDetails(); SetSameMaterial(cInfo); }
+                else if (e.PropertyName == "Section") { SetComponentDetails(); SetSameSection(cInfo); }
 
                 if (e.PropertyName == "Generate")
                 {
@@ -194,6 +194,13 @@ namespace PFD
             {
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
             }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
+            {
+                if(cInfo.ComponentName.EndsWith("Left Side"))
+                    cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Right Side"));
+                else if (cInfo.ComponentName.EndsWith("Right Side"))
+                    cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Left Side"));
+            }
 
             if (cInfo2 != null && cInfo.ILS != cInfo2.ILS)
             {
@@ -209,6 +216,45 @@ namespace PFD
             }
         }
 
+
+        private void SetSameMaterial(CComponentInfo cInfo)
+        {
+            CComponentInfo cInfo2 = null;            
+            
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
+            {
+                if (cInfo.ComponentName.EndsWith("Left Side"))
+                    cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Right Side"));
+                else if (cInfo.ComponentName.EndsWith("Right Side"))
+                    cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Left Side"));
+            }
+            
+            if (cInfo2 != null && cInfo.Material != cInfo2.Material)
+            {
+                cInfo2.IsSetFromCode = true;
+                cInfo2.Material = cInfo.Material;
+                cInfo2.IsSetFromCode = false;
+            }            
+        }
+        private void SetSameSection(CComponentInfo cInfo)
+        {
+            CComponentInfo cInfo2 = null;
+
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
+            {
+                if (cInfo.ComponentName.EndsWith("Left Side"))
+                    cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Right Side"));
+                else if (cInfo.ComponentName.EndsWith("Right Side"))
+                    cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Left Side"));
+            }
+
+            if (cInfo2 != null && cInfo.Section != cInfo2.Section)
+            {
+                cInfo2.IsSetFromCode = true;
+                cInfo2.Section = cInfo.Section;
+                cInfo2.IsSetFromCode = false;
+            }
+        }
 
         private bool ValidateGirts()
         {
@@ -1201,7 +1247,15 @@ namespace PFD
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.Girt];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName + " - Left Side", "27095", "Green", "G550‡", "None", true, true, true, true, true, 
+                SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.Girt);
+            ci.GenerateIsEnabled = false; ci.GenerateIsReadonly = true;
+            MComponentList.Add(ci);
+
+            //temp
+            compPref = dict_CompPref[(int)EMemberType_FS_Position.Girt];
+            ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
+                compPref.ComponentName + " - Right Side", "27095", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.Girt);
             ci.GenerateIsEnabled = false; ci.GenerateIsReadonly = true;
             MComponentList.Add(ci);

@@ -478,6 +478,13 @@ namespace PFD
                             m.BIsGenerated = true;
                         }
 
+                        //task 674
+                        if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
+                        {
+                            if (m.IsLeftGirt() && cInfo.ComponentName.EndsWith("Right Side")) continue; //skip settings
+                            if (m.IsRightGirt() && cInfo.ComponentName.EndsWith("Left Side")) continue; //skip settings
+                        }
+
                         m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
                         m.BIsSelectedForIFCalculation = cInfo.Calculate;
                         m.BIsSelectedForDesign = cInfo.Design;

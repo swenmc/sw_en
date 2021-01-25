@@ -2208,6 +2208,25 @@ namespace BaseClasses
             else return false;
         }
 
+        public bool IsLeftGirt()
+        {
+            if (EMemberTypePosition == EMemberType_FS_Position.Girt)
+            {
+                if (MathF.d_equal(this.NodeStart.X, 0f) && MathF.d_equal(this.NodeEnd.X, 0f)) return true;
+            }
+
+            return false;
+        }
+        public bool IsRightGirt()
+        {
+            if (EMemberTypePosition == EMemberType_FS_Position.Girt)
+            {
+                if (!MathF.d_equal(this.NodeStart.X, 0f) && !MathF.d_equal(this.NodeEnd.X, 0f)) return true;
+            }
+
+            return false;
+        }
+
 
         public CMember CloneMember()
         {
