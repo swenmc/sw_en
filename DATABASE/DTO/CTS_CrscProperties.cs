@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DATABASE.DTO
 {
+    [Serializable]
     public class CTS_CrscProperties
     {
        public int DatabaseID;

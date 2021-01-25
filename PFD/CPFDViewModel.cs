@@ -265,6 +265,8 @@ namespace PFD
         [NonSerialized]
         public List<CBeam_Simple> beamSimpleModels;
 
+        //To Mato bolo by dobre porozmyslat, co sa ma serializovat a co je zbytocne serializovat
+        [NonSerialized]
         public SeisLoadDataInput sSeisInputData;
 
         //-------------------------------------------------------------------------------------------------------------
