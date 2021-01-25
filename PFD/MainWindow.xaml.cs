@@ -2597,27 +2597,31 @@ namespace PFD
         {
             try
             {
-                CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
-                List<object> optionsToSave = new List<object>();
-                optionsToSave.Add(vm._projectInfoVM);
-                optionsToSave.Add(vm._displayOptionsVM);
-                optionsToSave.Add(vm._generalOptionsVM);
-                optionsToSave.Add(vm._solverOptionsVM);
-                optionsToSave.Add(vm._designOptionsVM);
-
-                using (Stream stream = File.Open("DefaultOptions.cnx", FileMode.Create))
-                {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(stream, optionsToSave);
-                    stream.Close();
-                }
+                SaveDefaultOptions();
 
                 MessageBox.Show("Default options succesfully saved.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+        private void SaveDefaultOptions()
+        {
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+
+            List<object> optionsToSave = new List<object>();
+            optionsToSave.Add(vm._projectInfoVM);
+            optionsToSave.Add(vm._displayOptionsVM);
+            optionsToSave.Add(vm._generalOptionsVM);
+            optionsToSave.Add(vm._solverOptionsVM);
+            optionsToSave.Add(vm._designOptionsVM);
+
+            using (Stream stream = File.Open("DefaultOptions.cnx", FileMode.Create))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(stream, optionsToSave);
+                stream.Close();
             }
         }
 
@@ -2642,7 +2646,12 @@ namespace PFD
             }
             else
             {
-                MessageBox.Show("The file with default options for the program does not exist.");
+                //MessageBox.Show("The file with default options for the program does not exist.");
+                try
+                {
+                    SaveDefaultOptions();
+                }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
             }            
         }
 
