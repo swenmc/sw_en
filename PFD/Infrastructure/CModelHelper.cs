@@ -75,9 +75,9 @@ namespace PFD
                         frameMembers.Add(m);
                         //System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
                         if (!frameNodes.Contains(m.NodeStart)) frameNodes.Add(m.NodeStart);
-                        else System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}, NodeStart exists {m.NodeStart.ID}");
+                        //else System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}, NodeStart exists {m.NodeStart.ID}");
                         if (!frameNodes.Contains(m.NodeEnd)) frameNodes.Add(m.NodeEnd);
-                        else System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}, NodeEnd exists {m.NodeStart.ID}");
+                        //else System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}, NodeEnd exists {m.NodeStart.ID}");
                     }
                     
                 }
