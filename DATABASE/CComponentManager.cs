@@ -38,10 +38,10 @@ namespace DATABASE
             return items;
         }
 
-        private static Dictionary<int, CComponentPrefixes> m_DictComponentPrefixes;
+        //private static Dictionary<int, CComponentPrefixes> m_DictComponentPrefixes;
         public static Dictionary<int, CComponentPrefixes> LoadComponentsFromDB()
         {
-            if (m_DictComponentPrefixes != null) return m_DictComponentPrefixes;
+            //if (m_DictComponentPrefixes != null) return m_DictComponentPrefixes; //rusim toto cachovanie kvoli tomu,ze sa prepisu hodnoty a vlastne nevrati potom take ako su povodne
 
             CComponentPrefixes compPrefix;
             Dictionary<int, CComponentPrefixes> items = new Dictionary<int, CComponentPrefixes>();
@@ -65,7 +65,7 @@ namespace DATABASE
                     }
                 }
             }
-            m_DictComponentPrefixes = items;
+            //m_DictComponentPrefixes = items;
             return items;
         }
     }
