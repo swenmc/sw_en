@@ -2636,6 +2636,8 @@ namespace PFD
             {
                 OpenOptionsFile(ofd.FileName);
                 vm.OptionsLoaded = true;
+
+                ChangeToDefaultTabIfNotEnabledTabIsSelected();
             }
         }
         private void LoadDefaultOptions()
@@ -2728,7 +2730,19 @@ namespace PFD
             }
         }
 
-        
+        private void ChangeToDefaultTabIfNotEnabledTabIsSelected()
+        {
+            Internal_Forces.IsEnabled = true;
+            Member_Design.IsEnabled = true;
+            Joint_Design.IsEnabled = true;
+            Footing_Design.IsEnabled = true;
+
+            if (MainTabControl.SelectedIndex == (int)ETabNames.eInternalForces ||
+                MainTabControl.SelectedIndex == (int)ETabNames.eMemberDesign ||
+                MainTabControl.SelectedIndex == (int)ETabNames.eJointDesign ||
+                MainTabControl.SelectedIndex == (int)ETabNames.eFootingDesign)
+                    MainTabControl.SelectedIndex = (int)ETabNames.eGeneral;
+        }
 
 
 
