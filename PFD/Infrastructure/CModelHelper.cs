@@ -87,7 +87,7 @@ namespace PFD
                 List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForNodesAndMembers(frameNodes, frameMembers, model.m_arrLoadCases);
                 List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
                 List<CNSupport> frameSupports = model.GetFrameCNSupports();
-                CFrame frame = new CFrame(frameMembers.ToArray(), frameNodes.ToArray(), frameLoadCases.ToArray(), frameLoadCombinations.ToArray(), frameSupports.ToArray());
+                CFrame frame = new CFrame(model.eKitset, model.fRoofPitch_rad, frameMembers.ToArray(), frameNodes.ToArray(), frameLoadCases.ToArray(), frameLoadCombinations.ToArray(), frameSupports.ToArray());
 
                 frames.Add(frame);
             }

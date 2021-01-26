@@ -10,11 +10,16 @@ namespace BaseClasses
 {
     public class CFrame : CModel
     {
-        public CFrame(CMember[] members, CNode[] nodes, CLoadCase[] loadCases, CLoadCombination[] loadCombinations, CNSupport[] supports)
+        public float fRoofPitch_rad;
+
+        public CFrame(EModelType_FS eKitset_temp, float fRoofPitch_rad_temp, CMember[] members, CNode[] nodes, CLoadCase[] loadCases, CLoadCombination[] loadCombinations, CNSupport[] supports)
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
+
+            eKitset = eKitset_temp;
+            fRoofPitch_rad = fRoofPitch_rad_temp;
 
             // RAM DEFINOVANY V XZ
             m_arrNodes = nodes;

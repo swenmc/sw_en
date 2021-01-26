@@ -322,7 +322,69 @@ namespace PFD
             
             int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, FrameModels);
             if (iFrameIndex == -1) { MessageBox.Show("Could not find frame to display."); return; }  //ak nenaslo vhodny frame
-            CModel frameModel = FrameModels[iFrameIndex];
+            CFrame frameModel = FrameModels[iFrameIndex];
+            int lcombIndex = frameModel.GetLoadCombinationIndex(vm.SelectedLoadCombinationID);
+
+            designBucklingLengthFactors[] sBucklingLengthFactors_column1;
+            designMomentValuesForCb[] sMomentValuesforCb_output_column1;
+            basicInternalForces[] sBIF_x_output_column1;
+
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(
+                    UseCRSCGeometricalAxes,
+                    frameModel.m_arrMembers[0],
+                    frameModel.m_arrLoadCombs[lcombIndex],
+                    ListMemberInternalForcesInLoadCombinations,
+                    iNumberOfDesignSections,
+                    out sBucklingLengthFactors_column1,
+                    out sMomentValuesforCb_output_column1,
+                    out sBIF_x_output_column1);
+
+            designBucklingLengthFactors[] sBucklingLengthFactors_column2;
+            designMomentValuesForCb[] sMomentValuesforCb_output_column2;
+            basicInternalForces[] sBIF_x_output_column2;
+
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(
+                    UseCRSCGeometricalAxes,
+                    frameModel.eKitset == EModelType_FS.eKitsetGableRoofEnclosed ? frameModel.m_arrMembers[3] : frameModel.m_arrMembers[2],
+                    frameModel.m_arrLoadCombs[lcombIndex],
+                    ListMemberInternalForcesInLoadCombinations,
+                    iNumberOfDesignSections,
+                    out sBucklingLengthFactors_column2,
+                    out sMomentValuesforCb_output_column2,
+                    out sBIF_x_output_column2);
+
+            designBucklingLengthFactors[] sBucklingLengthFactors_rafter;
+            designMomentValuesForCb[] sMomentValuesforCb_output_rafter;
+            basicInternalForces[] sBIF_x_output_rafter;
+
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(
+                    UseCRSCGeometricalAxes,
+                    frameModel.m_arrMembers[1],
+                    frameModel.m_arrLoadCombs[lcombIndex],
+                    ListMemberInternalForcesInLoadCombinations,
+                    iNumberOfDesignSections,
+                    out sBucklingLengthFactors_rafter,
+                    out sMomentValuesforCb_output_rafter,
+                    out sBIF_x_output_rafter);
+
+            float fN_min_column1 = -sBIF_x_output_column1.Min(s => s.fN); // + compression, - tension
+            float fN_min_column2 = -sBIF_x_output_column2.Min(s => s.fN); // + compression, - tension
+            float fN_min_rafter = - sBIF_x_output_rafter.Min(s => s.fN); // + compression, - tension
+
+            float fV_max_abs_column1 = Math.Max(Math.Abs(sBIF_x_output_column1.Min(s => s.fV_zz)), Math.Abs(sBIF_x_output_column1.Max(s => s.fV_zz))); 
+            float fV_max_abs_column2 = Math.Max(Math.Abs(sBIF_x_output_column2.Min(s => s.fV_zz)), Math.Abs(sBIF_x_output_column2.Max(s => s.fV_zz)));
+
+            basicDeflections[] sBDeflections_x_output_column1;
+
+            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(
+                    UseCRSCGeometricalAxes,
+                    frameModel.m_arrMembers[0],
+                    frameModel.m_arrLoadCombs[lcombIndex].eLComType == ELSType.eLS_ULS ? frameModel.m_arrLoadCombs[lcombIndex + 40] : frameModel.m_arrLoadCombs[lcombIndex], // TODO - analogicka SLS kombinacia - zaistit ze sa bude pocitat
+                    ListMemberDeflectionsInLoadCombinations,
+                    iNumberOfDesignSections,
+                    out sBDeflections_x_output_column1);
+
+            float fDelta_x_local_max_abs_column1 = Math.Max(Math.Abs(sBDeflections_x_output_column1.Min(s => s.fDelta_zz)), Math.Abs(sBDeflections_x_output_column1.Max(s => s.fDelta_zz)));
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
             // 4.4.2.2.1
@@ -357,13 +419,13 @@ namespace PFD
             fE_column, // Modulus of Elasticity - column
             fI_y_rafter,  // Moment of inertia - rafter
             fI_y_column,  // Moment of inertia - column
-            73430f, // Axial force - column 1 (+ compression, - tension) // TODO - doriesit
-            -7.43f, // Axial force - column 2 (+ compression, - tension) // TODO - doriesit
-            12670f, // Axial force - rafter (+ compression, - tension) // TODO - doriesit
+            fN_min_column1, // Axial force - column 1 (+ compression, - tension) // TODO - doriesit
+            fN_min_column2, // Axial force - column 2 (+ compression, - tension) // TODO - doriesit
+            fN_min_rafter, // Axial force - rafter (+ compression, - tension) // TODO - doriesit
             frameModel.m_arrMembers[0].FLength, // Heigth - column
             frameModel.m_arrMembers[1].FLength, // Length - rafter
             frameModel.m_arrNSupports[0].m_bRestrain[2] == true ? 0 : 1, // 0 - fixed base joint, 1 - pinned base joint // TODO - napojit na podpory
-            5, // Roof Pitch - Gable Roof Model  // TODO - doriesit
+            frameModel.fRoofPitch_rad * MathF.fPI / 180f, // Roof Pitch [deg] - Gable Roof Model  // TODO - doriesit
             out fN_om_column);
 
             float fLambda_m = 1.0f;
@@ -374,18 +436,16 @@ namespace PFD
             if (fLambda_c < fLimitToConsiderMomentAmplification)
                 fLambda_m = GetMomentAmplificationFactorDelta_m(
                 fLambda_c,
-                73430f, // Axial force - column 1 (+ compression, - tension)  // TODO - doriesit
-                -7.43f, // Axial force - column 2 (+ compression, - tension)   // TODO - doriesit
-                58240f, // Shear force - column 1 (absolute value)   // TODO - doriesit
-                24160f, // Shear force - column 2 (absolute value)   // TODO - doriesit
-                0.08054f, // Horizontal deflection (x-direction) [m] node ID 1 - knee point // Horny okraj stlpa
+                fN_min_column1, // Axial force - column 1 (+ compression, - tension)  // TODO - doriesit
+                fN_min_column2, // Axial force - column 2 (+ compression, - tension)   // TODO - doriesit
+                fV_max_abs_column1, // Shear force - column 1 (absolute value)   // TODO - doriesit
+                fV_max_abs_column2, // Shear force - column 2 (absolute value)   // TODO - doriesit
+                fDelta_x_local_max_abs_column1, // Horizontal deflection (x-direction) [m] node ID 1 - knee point // Horny okraj stlpa
                 frameModel.m_arrMembers[0].FLength, // Heigth - column
                 fN_om_column);
 
             // TODO Ondrej - ifinput.LoadCombinationIndex - chcem ziskat index kombinacie z comboboxu a poslat ho do FrameInternalForces_2D, aby som vedel ktore vysledky zobrazit, snad to je to OK, este bude treba overit ci naozaj odpovedaju index z comboboxu a index danej kombinacie vo vysledkoch
             //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
-
-            int lcombIndex = frameModel.GetLoadCombinationIndex(vm.SelectedLoadCombinationID);
             FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(UseCRSCGeometricalAxes, frameModel, lcombIndex, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
