@@ -23,16 +23,16 @@ namespace PFD
                 List<CMember> frameMembers = new List<CMember>();
                 List<CNode> frameNodes = new List<CNode>();
 
-                // Add nodes to the frame
-                int iFrameNodesNo = model.iFrameNodesNo; // Number of nodes in frame
-                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 0]);
-                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 1]);
-                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 2]);
-                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 3]);
+                //// Add nodes to the frame
+                //int iFrameNodesNo = model.iFrameNodesNo; // Number of nodes in frame
+                //frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 0]);
+                //frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 1]);
+                //frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 2]);
+                //frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 3]);
 
-                // Gable roof
-                if (model is CModel_PFD_01_GR)
-                    frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
+                //// Gable roof
+                //if (model is CModel_PFD_01_GR)
+                //    frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
 
                 // Canopy
                 // TODO 680 - dopracovat načítanie uzlov Canopy
@@ -74,7 +74,12 @@ namespace PFD
                     {
                         frameMembers.Add(m);
                         //System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
+                        if (!frameNodes.Contains(m.NodeStart)) frameNodes.Add(m.NodeStart);
+                        else System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}, NodeStart exists {m.NodeStart.ID}");
+                        if (!frameNodes.Contains(m.NodeEnd)) frameNodes.Add(m.NodeEnd);
+                        else System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}, NodeEnd exists {m.NodeStart.ID}");
                     }
+                    
                 }
 
                 // TODO 680 - odstranit duplicitne uzly s identickymi suradnicami, nahradit ID v prutoch a pripadne dalsich zoznamoch
