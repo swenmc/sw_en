@@ -1544,6 +1544,13 @@ namespace PFD
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
 
             // TODO Ondrej - doplnit ILS pre canopy purlins
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy);
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iPurlin_ILS_Number); ci.IsSetFromCode = false; }
+
         }
 
         private void SetComponentInfoILS(CComponentInfo ci, int index)
@@ -1724,12 +1731,14 @@ namespace PFD
             {
                 if (cInfo == null)
                 {
+                    CComponentInfo cMR = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+                    string ils = (cMR != null ? cMR.ILS : "None");
                     // TO Ondrej - prierezy brat z preddefinovanych hodnot v databaze
                     CrScProperties prop = CSectionManager.GetSectionProperties("63020");
 
                     CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafterCanopy];
                     cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                        compPref.ComponentName, "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                        compPref.ComponentName, "63020", prop.colorName, "G550‡", ils, null, true, false, false, true,
                         SectionsForColumnsOrRafters, CanopyRafterFlyBracingPosition_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
@@ -1744,11 +1753,14 @@ namespace PFD
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
             if (cInfo == null)
             {
+                CComponentInfo cMR = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+                string ils = (cMR != null ? cMR.ILS : "None");
+
                 CrScProperties prop = CSectionManager.GetSectionProperties("63020");
 
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeRafterCanopy];
                 cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                    compPref.ComponentName, "63020", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                    compPref.ComponentName, "63020", prop.colorName, "G550‡", ils, null, true, false, false, true,
                     SectionsForColumnsOrRafters, CanopyRafterFlyBracingPosition_Items, MColors, EMemberType_FS_Position.EdgeRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -1763,7 +1775,7 @@ namespace PFD
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.PurlinCanopy];
                 cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
                     compPref.ComponentName, "270115", prop.colorName, "G550‡", "None", null, true, false, false, true,
-                    SectionsForGirtsOrPurlins, EmptyILS_Items, MColors, EMemberType_FS_Position.PurlinCanopy);
+                    SectionsForGirtsOrPurlins, DefaultILS_Items, MColors, EMemberType_FS_Position.PurlinCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
                 changed = true;
