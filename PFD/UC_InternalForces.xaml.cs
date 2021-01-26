@@ -311,7 +311,7 @@ namespace PFD
         {
             CLoadCombination lcomb = Model.m_arrLoadCombs.FirstOrDefault(lc => lc.ID == vm.SelectedLoadCombinationID);
             if (lcomb == null) throw new Exception("Load combination not found.");
-            CMember member = FindMemberWithMaximumDesignRatio(lcomb, vm.ComponentList[vm.ComponentTypeIndex], Model.listOfModelMemberGroups);            
+            CMember member = FindMemberWithMaximumDesignRatio(lcomb, vm.ComponentList[vm.ComponentTypeIndex], Model.listOfModelMemberGroups);
             if (member == null) // nemame vypocitane vysledky, takze najdeme pre oznacenu skupinu prvy member
             {
                 CMemberGroup memberGroup = Model.listOfModelMemberGroups.FirstOrDefault(g => g.Name == vm.ComponentList[vm.ComponentTypeIndex]);
@@ -331,17 +331,39 @@ namespace PFD
             // TODO presunut funkcie niekam medzi vypocet vn sil a posudenie a napojit hodnoty
             // Potrebujeme sa dostat na hodnoty vn. sil v roznych prutoch ramu, vlastnosti tychto prutov, sklon strechy, podpory ramu
 
+            float fE_column;
+            float fE_rafter;
+            float fI_y_column;
+            float fI_y_rafter;
+
+            if (iFrameIndex == 0 || iFrameIndex == (FrameModels.Count - 1)) // Prvy alebo posledny ram - edge column a edge rafter
+            {
+                fE_column = (float)frameModel.m_arrMat[EMemberType_FS_Position.EdgeColumn].m_fE;
+                fE_rafter = (float)frameModel.m_arrMat[EMemberType_FS_Position.EdgeRafter].m_fE;
+                fI_y_column = (float)frameModel.m_arrCrSc[EMemberType_FS_Position.EdgeColumn].I_y;
+                fI_y_rafter = (float)frameModel.m_arrCrSc[EMemberType_FS_Position.EdgeRafter].I_y;
+            }
+            else
+            {
+                fE_column = (float)frameModel.m_arrMat[EMemberType_FS_Position.MainColumn].m_fE;
+                fE_rafter = (float)frameModel.m_arrMat[EMemberType_FS_Position.MainRafter].m_fE;
+                fI_y_column = (float)frameModel.m_arrCrSc[EMemberType_FS_Position.MainColumn].I_y;
+                fI_y_rafter = (float)frameModel.m_arrCrSc[EMemberType_FS_Position.MainRafter].I_y;
+            }
+
             float fN_om_column;
-            float fLambda_c = GetFrameBucklingFactorLambda_c(frameModel.m_arrMat[0].m_fE, // Modulus of Elasticity
-            (float)frameModel.m_arrCrSc[EMemberType_FS_Position.MainRafter].I_y, // Moment of inertia - rafter
-            (float)frameModel.m_arrCrSc[EMemberType_FS_Position.MainColumn].I_y,  // Moment of inertia - column
-            73430f, // Axial force - column 1 (+ compression, - tension)
-            -7.43f, // Axial force - column 2 (+ compression, - tension)
-            12670f, // Axial force - rafter (+ compression, - tension)
+            float fLambda_c = GetFrameBucklingFactorLambda_c(
+            fE_rafter, // Modulus of Elasticity - rafter
+            fE_column, // Modulus of Elasticity - column
+            fI_y_rafter,  // Moment of inertia - rafter
+            fI_y_column,  // Moment of inertia - column
+            73430f, // Axial force - column 1 (+ compression, - tension) // TODO - doriesit
+            -7.43f, // Axial force - column 2 (+ compression, - tension) // TODO - doriesit
+            12670f, // Axial force - rafter (+ compression, - tension) // TODO - doriesit
             frameModel.m_arrMembers[0].FLength, // Heigth - column
             frameModel.m_arrMembers[1].FLength, // Length - rafter
             frameModel.m_arrNSupports[0].m_bRestrain[2] == true ? 0 : 1, // 0 - fixed base joint, 1 - pinned base joint // TODO - napojit na podpory
-            5, // Roof Pitch - Gable Roof Model
+            5, // Roof Pitch - Gable Roof Model  // TODO - doriesit
             out fN_om_column);
 
             float fLambda_m = 1.0f;
@@ -352,10 +374,10 @@ namespace PFD
             if (fLambda_c < fLimitToConsiderMomentAmplification)
                 fLambda_m = GetMomentAmplificationFactorDelta_m(
                 fLambda_c,
-                73430f, // Axial force - column 1 (+ compression, - tension)
-                -7.43f, // Axial force - column 2 (+ compression, - tension)
-                58240f, // Shear force - column 1 (absolute value)
-                24160f, // Shear force - column 2 (absolute value)
+                73430f, // Axial force - column 1 (+ compression, - tension)  // TODO - doriesit
+                -7.43f, // Axial force - column 2 (+ compression, - tension)   // TODO - doriesit
+                58240f, // Shear force - column 1 (absolute value)   // TODO - doriesit
+                24160f, // Shear force - column 2 (absolute value)   // TODO - doriesit
                 0.08054f, // Horizontal deflection (x-direction) [m] node ID 1 - knee point // Horny okraj stlpa
                 frameModel.m_arrMembers[0].FLength, // Heigth - column
                 fN_om_column);
@@ -373,7 +395,9 @@ namespace PFD
         // TO Ondrej - toto potrebujem vlozit niekam medzi vypocet vnutornych sil a vnutorne sily ktore vstupuju do design
         // Jedna sa o to ze pri tej metode vypoctu, ktoru pouziva BFENet je potrebne spocitat sucinitele zvacsenia ohybovych momentov
 
-        public float GetFrameBucklingFactorLambda_c(float fE,
+        public float GetFrameBucklingFactorLambda_c(
+            float fE_pr,
+            float fE_pc,
             float fIy_majoraxis_pr, // Ι of outer rafter in a portal frame, for use in 4.9.2.4
             float fIy_majoraxis_pc, // Ι of outer column in a portal frame, for use in 4.9.2.4
             //float fN_c1_gravity, // Axial forces generated by gravity loading in the beams 4.9.2.3.1
@@ -490,7 +514,7 @@ namespace PFD
             // The slenderness ratio(le / r) of all compression members should not exceed 200
 
             // Calculation of column euler critical force // TODO - moze sa lisit pre jednotlive stlpy - dopracovat
-            fN_om = MathF.fPI * fE * fIy_majoraxis_pc / MathF.Pow2(fK * fh_e); // 4.8.2
+            fN_om = MathF.fPI * fE_pc * fIy_majoraxis_pc / MathF.Pow2(fK * fh_e); // 4.8.2
 
             float fLambda_c;
 
@@ -512,12 +536,12 @@ namespace PFD
             if (iColumnFixingCode == 1)
             {
                 // (a) For pinned - base frames
-                fLambda_c_4924 = 3f * fE * fIy_majoraxis_pr / (fs_r_modified * (fN_c1 * fh_e + 0.3f * fN_r * fs_r_modified));
+                fLambda_c_4924 = 3f * fE_pr * fIy_majoraxis_pr / (fs_r_modified * (fN_c1 * fh_e + 0.3f * fN_r * fs_r_modified));
             }
             else
             {
                 // (b) For fixed-base frames
-                fLambda_c_4924 = (5f * fE * (10f + fPsi_f)) / ((5f * fN_r * MathF.Pow2(fs_r_modified) / fIy_majoraxis_pr) + (2 * fPsi_f * fN_c1 * MathF.Pow2(fh_e) / fIy_majoraxis_pc));
+                fLambda_c_4924 = (5f * fE_pc * (10f + fPsi_f)) / ((5f * fN_r * MathF.Pow2(fs_r_modified) / fIy_majoraxis_pr) + (2 * fPsi_f * fN_c1 * MathF.Pow2(fh_e) / fIy_majoraxis_pc));
             }
 
             fLambda_c = Math.Min(fLambda_c_49233, fLambda_c_4924);
