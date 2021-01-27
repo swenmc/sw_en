@@ -51,8 +51,8 @@ namespace PFD
             CProjectInfo pi = vm.GetProjectInfo();
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Data Files (*.cnx)|*.cnx";
-            sfd.DefaultExt = "cnx";
+            sfd.Filter = "Data Files (*.eiup)|*.eiup";
+            sfd.DefaultExt = "eiup";
             sfd.AddExtension = true;
             sfd.FileName = pi.ProjectName;
             
@@ -70,8 +70,8 @@ namespace PFD
         private void BtnLoadProjectInfo_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Data Files (*.cnx)|*.cnx";
-            ofd.DefaultExt = "cnx";
+            ofd.Filter = "Data Files (*.eiup)|*.eiup";
+            ofd.DefaultExt = "eiup";
             ofd.AddExtension = true;
 
             if (ofd.ShowDialog() == true)

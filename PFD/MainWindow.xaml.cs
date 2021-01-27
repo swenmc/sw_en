@@ -2213,114 +2213,7 @@ namespace PFD
             w.ShowDialog();
         }
 
-        private void BtnLoadModel_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Data Files (*.cnx)|*.cnx";
-            ofd.DefaultExt = "cnx";
-            ofd.AddExtension = true;
-
-            if (ofd.ShowDialog() == true)
-            {
-                OpenModelFile(ofd.FileName);
-            }
-        }
-
-        private void BtnSaveModel_Click(object sender, RoutedEventArgs e)
-        {
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
-            string modelName = Combobox_Models.Items[vm.ModelIndex].ToString();  //vm.Model.m_sConstObjectName
-
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Data Files (*.cnx)|*.cnx";
-            sfd.DefaultExt = "cnx";
-            sfd.AddExtension = true;
-            sfd.FileName = modelName;
-
-            if (sfd.ShowDialog() == true)
-            {
-                using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
-                {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(stream, vm);
-                    stream.Close();
-                }
-            }
-        }
-
-        private void OpenModelFile(string fileName)
-        {
-            CPFDViewModel deserializedPfdVM = null;
-
-            using (Stream stream = File.Open(fileName, FileMode.Open))
-            {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                deserializedPfdVM = (CPFDViewModel)binaryFormatter.Deserialize(stream);
-            }
-            ChangeActualViewModelWithLoadedViewModel(deserializedPfdVM);
-        }
-
-        private void ChangeActualViewModelWithLoadedViewModel(CPFDViewModel newVM)
-        {
-            if (newVM == null) return;
-            vm.IsSetFromCode = true;
-            vm.KitsetTypeIndex = newVM.KitsetTypeIndex;
-            vm.ModelIndex = newVM.ModelIndex;
-            vm.Width = newVM.Width;
-            vm.Length = newVM.Length;
-            vm.WallHeight = newVM.WallHeight;
-            vm.RoofPitch_deg = newVM.RoofPitch_deg;
-            vm.Frames = newVM.Frames;
-            vm.GirtDistance = newVM.GirtDistance;
-            vm.PurlinDistance = newVM.PurlinDistance;
-            vm.ColumnDistance = newVM.ColumnDistance;
-            vm.BottomGirtPosition = newVM.BottomGirtPosition;
-            vm.FrontFrameRakeAngle = newVM.FrontFrameRakeAngle;
-            vm.BackFrameRakeAngle = newVM.BackFrameRakeAngle;
-            vm.RoofCladdingIndex = newVM.RoofCladdingIndex;
-            vm.RoofCladdingID = newVM.RoofCladdingID;
-            vm.RoofCladdingCoatingIndex = newVM.RoofCladdingCoatingIndex;
-            vm.RoofCladdingCoatingID = newVM.RoofCladdingCoatingID;
-            vm.RoofCladdingColorIndex = newVM.RoofCladdingColorIndex;
-            vm.RoofCladdingThicknessIndex = newVM.RoofCladdingThicknessIndex;
-            vm.WallCladdingIndex = newVM.WallCladdingIndex;
-            vm.WallCladdingID = newVM.WallCladdingID;
-            vm.WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
-            vm.WallCladdingCoatingID = newVM.WallCladdingCoatingID;
-            vm.WallCladdingColorIndex = newVM.WallCladdingColorIndex;
-            vm.WallCladdingThicknessIndex = newVM.WallCladdingThicknessIndex;
-            vm.RoofFibreglassThicknessIndex = newVM.RoofFibreglassThicknessIndex;
-            vm.WallFibreglassThicknessIndex = newVM.WallFibreglassThicknessIndex;
-            vm.SupportTypeIndex = newVM.SupportTypeIndex;
-            vm.FibreglassAreaRoof = newVM.FibreglassAreaRoof;
-            vm.FibreglassAreaWall = newVM.FibreglassAreaWall;
-
-            vm.DoorBlocksProperties = newVM.DoorBlocksProperties;
-            vm.WindowBlocksProperties = newVM.WindowBlocksProperties;
-
-            vm.Flashings = newVM.Flashings;
-            vm.Gutters = newVM.Gutters;
-            vm.Downpipes = newVM.Downpipes;
-
-            vm.ComponentList = newVM.ComponentList;
-
-            vm._displayOptionsVM.SetViewModel(newVM._displayOptionsVM);
-            vm._generalOptionsVM = newVM._generalOptionsVM;
-            vm._solverOptionsVM = newVM._solverOptionsVM;
-            vm._designOptionsVM = newVM._designOptionsVM;
-
-            vm.IsSetFromCode = false;
-
-            vm.RecreateModel = true;
-            vm.RecreateJoints = true;
-            vm.RecreateFoundations = true;
-            vm.RecreateFloorSlab = true;
-            vm.RecreateQuotation = true;
-
-            //just to fire some change
-            vm.Width = vm.Width;
-        }
+        
 
         private void ButtonGenerateModel_Click(object sender, RoutedEventArgs e)
         {
@@ -2593,6 +2486,117 @@ namespace PFD
             mv_window.ShowDialog();
         }
 
+
+        private void BtnLoadModel_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Data Files (*.eiuf)|*.eiuf";  //.cnx
+            ofd.DefaultExt = "eiuf";
+            ofd.AddExtension = true;
+
+            if (ofd.ShowDialog() == true)
+            {
+                OpenModelFile(ofd.FileName);
+            }
+        }
+
+        private void BtnSaveModel_Click(object sender, RoutedEventArgs e)
+        {
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+
+            string modelName = Combobox_Models.Items[vm.ModelIndex].ToString();  //vm.Model.m_sConstObjectName
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Data Files (*.eiuf)|*.eiuf";
+            sfd.DefaultExt = "eiuf";
+            sfd.AddExtension = true;
+            sfd.FileName = modelName;
+
+            if (sfd.ShowDialog() == true)
+            {
+                using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(stream, vm);
+                    stream.Close();
+                }
+            }
+        }
+
+        private void OpenModelFile(string fileName)
+        {
+            CPFDViewModel deserializedPfdVM = null;
+
+            using (Stream stream = File.Open(fileName, FileMode.Open))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                deserializedPfdVM = (CPFDViewModel)binaryFormatter.Deserialize(stream);
+            }
+            ChangeActualViewModelWithLoadedViewModel(deserializedPfdVM);
+        }
+
+        private void ChangeActualViewModelWithLoadedViewModel(CPFDViewModel newVM)
+        {
+            if (newVM == null) return;
+            vm.IsSetFromCode = true;
+            vm.KitsetTypeIndex = newVM.KitsetTypeIndex;
+            vm.ModelIndex = newVM.ModelIndex;
+            vm.Width = newVM.Width;
+            vm.Length = newVM.Length;
+            vm.WallHeight = newVM.WallHeight;
+            vm.RoofPitch_deg = newVM.RoofPitch_deg;
+            vm.Frames = newVM.Frames;
+            vm.GirtDistance = newVM.GirtDistance;
+            vm.PurlinDistance = newVM.PurlinDistance;
+            vm.ColumnDistance = newVM.ColumnDistance;
+            vm.BottomGirtPosition = newVM.BottomGirtPosition;
+            vm.FrontFrameRakeAngle = newVM.FrontFrameRakeAngle;
+            vm.BackFrameRakeAngle = newVM.BackFrameRakeAngle;
+            vm.RoofCladdingIndex = newVM.RoofCladdingIndex;
+            vm.RoofCladdingID = newVM.RoofCladdingID;
+            vm.RoofCladdingCoatingIndex = newVM.RoofCladdingCoatingIndex;
+            vm.RoofCladdingCoatingID = newVM.RoofCladdingCoatingID;
+            vm.RoofCladdingColorIndex = newVM.RoofCladdingColorIndex;
+            vm.RoofCladdingThicknessIndex = newVM.RoofCladdingThicknessIndex;
+            vm.WallCladdingIndex = newVM.WallCladdingIndex;
+            vm.WallCladdingID = newVM.WallCladdingID;
+            vm.WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
+            vm.WallCladdingCoatingID = newVM.WallCladdingCoatingID;
+            vm.WallCladdingColorIndex = newVM.WallCladdingColorIndex;
+            vm.WallCladdingThicknessIndex = newVM.WallCladdingThicknessIndex;
+            vm.RoofFibreglassThicknessIndex = newVM.RoofFibreglassThicknessIndex;
+            vm.WallFibreglassThicknessIndex = newVM.WallFibreglassThicknessIndex;
+            vm.SupportTypeIndex = newVM.SupportTypeIndex;
+            vm.FibreglassAreaRoof = newVM.FibreglassAreaRoof;
+            vm.FibreglassAreaWall = newVM.FibreglassAreaWall;
+
+            vm.DoorBlocksProperties = newVM.DoorBlocksProperties;
+            vm.WindowBlocksProperties = newVM.WindowBlocksProperties;
+
+            vm.Flashings = newVM.Flashings;
+            vm.Gutters = newVM.Gutters;
+            vm.Downpipes = newVM.Downpipes;
+
+            vm.ComponentList = newVM.ComponentList;
+
+            vm._displayOptionsVM.SetViewModel(newVM._displayOptionsVM);
+            vm._generalOptionsVM = newVM._generalOptionsVM;
+            vm._solverOptionsVM = newVM._solverOptionsVM;
+            vm._designOptionsVM = newVM._designOptionsVM;
+
+            vm.IsSetFromCode = false;
+
+            vm.RecreateModel = true;
+            vm.RecreateJoints = true;
+            vm.RecreateFoundations = true;
+            vm.RecreateFloorSlab = true;
+            vm.RecreateQuotation = true;
+
+            //just to fire some change
+            vm.Width = vm.Width;
+        }
+
+
         private void BtnSaveDefaultOptions_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -2617,7 +2621,7 @@ namespace PFD
             optionsToSave.Add(vm._solverOptionsVM);
             optionsToSave.Add(vm._designOptionsVM);
 
-            using (Stream stream = File.Open("DefaultOptions.cnx", FileMode.Create))
+            using (Stream stream = File.Open("DefaultOptions.eiuo", FileMode.Create))
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Serialize(stream, optionsToSave);
@@ -2628,8 +2632,8 @@ namespace PFD
         private void BtnLoadOptions_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Data Files (*.cnx)|*.cnx";
-            ofd.DefaultExt = "cnx";
+            ofd.Filter = "Data Files (*.eiuo)|*.eiuo";
+            ofd.DefaultExt = "eiuo";
             ofd.AddExtension = true;
 
             if (ofd.ShowDialog() == true)
@@ -2642,9 +2646,9 @@ namespace PFD
         }
         private void LoadDefaultOptions()
         {
-            if (File.Exists("DefaultOptions.cnx"))
+            if (File.Exists("DefaultOptions.eiuo"))
             {
-                OpenOptionsFile("DefaultOptions.cnx");
+                OpenOptionsFile("DefaultOptions.eiuo");
             }
             else
             {
@@ -2708,8 +2712,8 @@ namespace PFD
                 optionsToSave.Add(vm._designOptionsVM);
 
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Data Files (*.cnx)|*.cnx";
-                sfd.DefaultExt = "cnx";
+                sfd.Filter = "Data Files (*.eiuo)|*.eiuo";
+                sfd.DefaultExt = "eiuo";
                 sfd.AddExtension = true;
                 sfd.FileName = "Program_Options";
 
