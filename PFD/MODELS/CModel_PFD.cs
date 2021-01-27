@@ -1237,6 +1237,23 @@ namespace PFD
 
                 float fCanopy_PurlinSpacing;
 
+                CMemberEccentricity eccentricityPurlin = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[EMemberType_FS_Position.EdgeRafterCanopy].h - 0.5 * m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].h));
+                CMemberEccentricity temp_eccPurlin = new CMemberEccentricity();
+                float fRotationAngle_Purlin;
+
+                bool bOrientationOfLocalZAxisIsUpward = true;
+
+                if (bOrientationOfLocalZAxisIsUpward)
+                {
+                    fRotationAngle_Purlin = -fRoofPitch_rad;
+                    temp_eccPurlin.MFz_local = eccentricityPurlin.MFz_local;
+                }
+                else
+                {
+                    fRotationAngle_Purlin = -(fRoofPitch_rad + (float)Math.PI);
+                    temp_eccPurlin.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
+                }
+
                 if (canopyBay.Left)
                 {
                     fCanopy_PurlinSpacing = (float)canopyBay.WidthLeft / (float)canopyBay.PurlinCountLeft;
@@ -1280,7 +1297,7 @@ namespace PFD
                     // Purlin Members
                     for (int j = 0; j < canopyBay.PurlinCountLeft; j++)
                     {
-                        m_arrMembers[iCanopy_MemberIndex + j] = new CMember(iCanopy_MemberIndex + j + 1, m_arrNodes[iCanopy_NodeIndex + j], m_arrNodes[iCanopy_NodeIndex + canopyBay.PurlinCountLeft + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                        m_arrMembers[iCanopy_MemberIndex + j] = new CMember(iCanopy_MemberIndex + j + 1, m_arrNodes[iCanopy_NodeIndex + j], m_arrNodes[iCanopy_NodeIndex + canopyBay.PurlinCountLeft + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin /*eccentricityPurlin*/, temp_eccPurlin /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin, 0);
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + j], iNumberOfTransverseSupports_Purlins);
                     }
                 }
@@ -1288,6 +1305,17 @@ namespace PFD
                 if (canopyBay.Right)
                 {
                     fCanopy_PurlinSpacing = (float)canopyBay.WidthRight / (float)canopyBay.PurlinCountRight;
+
+                    bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
+
+                    CMemberEccentricity temp_eccPurlin_Right = eccentricityPurlin;
+                    float temp_RotationAngle_Purlin = fRoofPitch_rad;
+
+                    if (!bIsGableRoof) // Monopitch roof
+                    {
+                        temp_eccPurlin_Right = temp_eccPurlin;
+                        temp_RotationAngle_Purlin = fRotationAngle_Purlin;
+                    }
 
                     // Start Nodes
                     for (int j = 0; j < canopyBay.PurlinCountRight; j++)
@@ -1328,7 +1356,7 @@ namespace PFD
                     // Purlin Members
                     for (int j = 0; j < canopyBay.PurlinCountRight; j++)
                     {
-                        m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j] = new CMember(iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j + 1, m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + j], m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, null/*temp*//*eccentricityPurlin*/, null/*temp*/ /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, 0 /*fRotationAngle*/, 0);
+                        m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j] = new CMember(iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j + 1, m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + j], m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin_Right, temp_eccPurlin_Right, fPurlinStart, fPurlinEnd, temp_RotationAngle_Purlin, 0);
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j], iNumberOfTransverseSupports_Purlins);
                     }
                 }

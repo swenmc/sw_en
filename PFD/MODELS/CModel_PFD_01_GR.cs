@@ -1329,13 +1329,16 @@ namespace PFD
             // Canopies
             if (bGenerateCanopies && vm._canopiesOptionsVM != null && vm._canopiesOptionsVM.CanopiesList != null)
             {
+                float fPurlinCanopyStart = -(float)m_arrCrSc[EMemberType_FS_Position.EdgeRafterCanopy].y_max - fCutOffOneSide;
+                float fPurlinCanopyEnd = (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafterCanopy].y_min - fCutOffOneSide;
+
                 GenerateCanopies(
                     vm._canopiesOptionsVM.CanopiesList,
                     FrameIndexList_Left,
                     FrameIndexList_Right,
                     fRafterStart,
-                    fPurlinStart,
-                    fPurlinEnd,
+                    fPurlinCanopyStart,
+                    fPurlinCanopyEnd,
                     bUsePBEverySecond,
                     fCutOffOneSide,
                     iCanopyRafterNodes_Total,
