@@ -105,8 +105,6 @@ namespace PFD
             ObservableCollection<WindowProperties> WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties(bRelease);
 
             CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
-            if (sDisplayOptions.bColorsAccordingToMembersPosition) compListVM.SetColorsAccordingToPosition();
-            else if (sDisplayOptions.bColorsAccordingToMembersPrefix) compListVM.SetColorsAccordingToPrefixes();
 
             SetLoadInput();
 
@@ -119,7 +117,7 @@ namespace PFD
             vm.PFDMainWindow = this;
 
             LoadDefaultOptions();
-
+            
             SetUIElementsVisibility();
 
             UpdateAll(true);
@@ -2680,7 +2678,19 @@ namespace PFD
                     if (piVM != null) vm._projectInfoVM.SetViewModel(piVM.GetProjectInfo());
 
                     DisplayOptionsViewModel doVM = optionsList[1] as DisplayOptionsViewModel;
-                    if (doVM != null) vm._displayOptionsVM.SetViewModel(doVM);
+                    if (doVM != null)
+                    {
+                        bool memberOptionsChanged = (vm._displayOptionsVM.ColorsAccordingToMembersPosition != doVM.ColorsAccordingToMembersPosition ||
+                            vm._displayOptionsVM.ColorsAccordingToMembersPrefix != doVM.ColorsAccordingToMembersPrefix);
+
+                        vm._displayOptionsVM.SetViewModel(doVM);
+
+                        if (memberOptionsChanged)
+                        {
+                            if (vm._displayOptionsVM.ColorsAccordingToMembersPosition) vm._componentVM.SetColorsAccordingToPosition();
+                            else if (vm._displayOptionsVM.ColorsAccordingToMembersPrefix) vm._componentVM.SetColorsAccordingToPrefixes();
+                        }
+                    }
 
                     GeneralOptionsViewModel geVM = optionsList[2] as GeneralOptionsViewModel;
                     if (geVM != null) vm._generalOptionsVM.SetViewModel(geVM);
