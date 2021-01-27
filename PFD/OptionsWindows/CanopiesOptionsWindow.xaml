@@ -84,7 +84,7 @@
 
         <DataGrid Name="Datagrid_Canopies" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedCrossBracingIndex}" ItemsSource="{Binding CanopiesList}" 
-                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False">            
+                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">            
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="ContentTemplate">
