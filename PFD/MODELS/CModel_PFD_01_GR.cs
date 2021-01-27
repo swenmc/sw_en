@@ -717,6 +717,13 @@ namespace PFD
             float fPurlinStart = -(float)m_arrCrSc[EMemberType_FS_Position.MainRafter].y_max - fCutOffOneSide;
             float fPurlinEnd = (float)m_arrCrSc[EMemberType_FS_Position.MainRafter].y_min - fCutOffOneSide;
 
+            float fEavesPurlinStart_FirstBay = -(float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].y_max - fCutOffOneSide;
+            float fEavesPurlinEnd_LastBay = (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].y_min - fCutOffOneSide;
+            float fGirtStart_FirstBay = -(float)m_arrCrSc[EMemberType_FS_Position.EdgeColumn].y_max - fCutOffOneSide;
+            float fGirtEnd_LastBay = (float)m_arrCrSc[EMemberType_FS_Position.EdgeColumn].y_min - fCutOffOneSide;
+            float fPurlinStart_FirstBay = -(float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].y_max - fCutOffOneSide;
+            float fPurlinEnd_LastBay = (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].y_min - fCutOffOneSide;
+
             float fFrontColumnStart = 0.0f;
             float fFrontColumnEnd = (vm._generalOptionsVM.WindPostUnderRafter ? (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_min : (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[EMemberType_FS_Position.WindPostFrontSide].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
             float fBackColumnStart = 0.0f;
@@ -820,12 +827,24 @@ namespace PFD
                 // Eaves Purlins
                 if (i < (iFrameNo - 1))
                 {
+                    float fEavesPurlinStart_temp = fEavesPurlinStart;
+                    float fEavesPurlinEnd_temp = fEavesPurlinEnd;
+
+                    if (i == 0)
+                    {
+                        fEavesPurlinStart_temp = fEavesPurlinStart_FirstBay;
+                    }
+                    else if (i == (iFrameNo - 2))
+                    {
+                        fEavesPurlinEnd_temp = fEavesPurlinEnd_LastBay;
+                    }
+
                     // Left - osa z prierezu smeruje dole
                     CMemberEccentricity eccEavePurlinLeft = new CMemberEccentricity(eccentricityEavePurlin.MFy_local, -eccentricityEavePurlin.MFz_local);
-                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[EMemberType_FS_Position.EdgePurlin], EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, eccEavePurlinLeft, eccEavePurlinLeft, fEavesPurlinStart, fEavesPurlinEnd, (float)Math.PI, 0);
+                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[EMemberType_FS_Position.EdgePurlin], EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, eccEavePurlinLeft, eccEavePurlinLeft, fEavesPurlinStart_temp, fEavesPurlinEnd_temp, (float)Math.PI, 0);
 
                     // Right - osa z prierezu smeruje hore
-                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1 + 1, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[(i + 1) * iFrameNodesNo + 3], m_arrCrSc[EMemberType_FS_Position.EdgePurlin], EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
+                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1 + 1, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[(i + 1) * iFrameNodesNo + 3], m_arrCrSc[EMemberType_FS_Position.EdgePurlin], EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart_temp, fEavesPurlinEnd_temp, 0f, 0);
                     CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo], iNumberOfTransverseSupports_EdgePurlins);
                     CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + iFrameMembersNo + 1], iNumberOfTransverseSupports_EdgePurlins);
                 }
@@ -861,16 +880,28 @@ namespace PFD
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
+                    float fGirtStart_temp = fGirtStart;
+                    float fGirtEnd_temp = fGirtEnd;
+
+                    if (i == 0)
+                    {
+                        fGirtStart_temp = fGirtStart_FirstBay;
+                    }
+                    else if (i == (iFrameNo - 2))
+                    {
+                        fGirtEnd_temp = fGirtEnd_LastBay;
+                    }
+
                     for (int j = 0; j < iOneColumnGirtNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + j], m_arrCrSc[EMemberType_FS_Position.Girt], EMemberType_FS.eG, EMemberType_FS_Position.Girt, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGirtStart, fGirtEnd, fGirtsRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + j], m_arrCrSc[EMemberType_FS_Position.Girt], EMemberType_FS.eG, EMemberType_FS_Position.Girt, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGirtStart_temp, fGirtEnd_temp, fGirtsRotation, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofMembers + i * iGirtNoInOneFrame + j]);
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j], iNumberOfTransverseSupports_Girts);
                     }
 
                     for (int j = 0; j < iOneColumnGirtNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrCrSc[EMemberType_FS_Position.Girt], EMemberType_FS.eG, EMemberType_FS_Position.Girt, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGirtStart, fGirtEnd, fGirtsRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrCrSc[EMemberType_FS_Position.Girt], EMemberType_FS.eG, EMemberType_FS_Position.Girt, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGirtStart_temp, fGirtEnd_temp, fGirtsRotation, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j]);
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], iNumberOfTransverseSupports_Girts);
                     }
@@ -913,6 +944,18 @@ namespace PFD
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
+                    float fPurlinStart_temp = fPurlinStart;
+                    float fPurlinEnd_temp = fPurlinEnd;
+
+                    if (i == 0)
+                    {
+                        fPurlinStart_temp = fPurlinStart_FirstBay;
+                    }
+                    else if (i == (iFrameNo - 2))
+                    {
+                        fPurlinEnd_temp = fPurlinEnd_LastBay;
+                    }
+
                     for (int j = 0; j < iOneRafterPurlinNo; j++)
                     {
                         CMemberEccentricity temp = new CMemberEccentricity();
@@ -931,13 +974,13 @@ namespace PFD
                             temp.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
                         }
 
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[EMemberType_FS_Position.Purlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[EMemberType_FS_Position.Purlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart_temp, fPurlinEnd_temp, fRotationAngle, 0);
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j], iNumberOfTransverseSupports_Purlins);
                     }
 
                     for (int j = 0; j < iOneRafterPurlinNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[EMemberType_FS_Position.Purlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[EMemberType_FS_Position.Purlin], EMemberType_FS.eP, EMemberType_FS_Position.Purlin, eccentricityPurlin, eccentricityPurlin, fPurlinStart_temp, fPurlinEnd_temp, fRoofPitch_rad, 0);
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], iNumberOfTransverseSupports_Purlins);
                     }
                 }

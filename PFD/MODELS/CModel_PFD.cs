@@ -1081,8 +1081,8 @@ namespace PFD
             List<int> FrameIndexList_Left,
             List<int> FrameIndexList_Right,
             float fRafterStart,
-            float fPurlinStart,
-            float fPurlinEnd,
+            float fPurlinStart, // ! TODO - pre okraj canopy by sa malo brat z EdgeCanopyRafter, zistit ci je dany bod canopy purlin na okraji edge rafter canopy alebo je medzilahly main rafter canopy
+            float fPurlinEnd,  // ! TODO - pre okraj canopy by sa malo brat z EdgeCanopyRafter
             bool bUsePBEverySecond,
             float fCutOffOneSide,
             int iCanopyRafterNodes_Total,
