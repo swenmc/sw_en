@@ -1467,6 +1467,7 @@ namespace PFD
                     iCanopyPurlinBlockNodes_Total,
                     iCanopyPurlinBlockMembers_Total,
                     iCanopyCrossBracingMembers_Total,
+                    0.5f * MathF.fPI, // Zakladne pootocenie prierezu / roof pitch sa riesi priamo vo funkcii podla strany budovy pre gable roof
                     ref i_temp_numberofNodes,
                     ref i_temp_numberofMembers
                     );
