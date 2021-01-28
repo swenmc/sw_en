@@ -588,11 +588,18 @@ namespace PFD
 
         }
 
+
+        //v tychto metodach robime to iste co robime v metode CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
         public static void ChangeMembersIsSelectedForMaterialList(CComponentInfo cInfo, CModel model)
         {
             List<CMember> members = model.m_arrMembers.Where(m => m.EMemberTypePosition == cInfo.MemberTypePosition).ToList();
             foreach (CMember m in members)
             {
+                if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
+                {
+                    if (m.IsLeftGirt() && cInfo.ComponentName.EndsWith("Right Side")) continue; //skip settings
+                    if (m.IsRightGirt() && cInfo.ComponentName.EndsWith("Left Side")) continue; //skip settings
+                }
                 m.BIsSelectedForMaterialList = cInfo.MaterialList;
             }
         }
@@ -602,6 +609,12 @@ namespace PFD
             {
                 foreach (CMember m in vm.Model.m_arrMembers)
                 {
+                    if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
+                    {
+                        if (m.IsLeftGirt() && cInfo.ComponentName.EndsWith("Right Side")) continue; //skip settings
+                        if (m.IsRightGirt() && cInfo.ComponentName.EndsWith("Left Side")) continue; //skip settings
+                    }
+
                     if (m.EMemberTypePosition == cInfo.MemberTypePosition)
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
                 }
