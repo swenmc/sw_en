@@ -1238,20 +1238,22 @@ namespace PFD
                 float fCanopy_PurlinSpacing;
 
                 CMemberEccentricity eccentricityPurlin = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[EMemberType_FS_Position.EdgeRafterCanopy].h - 0.5 * m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].h));
-                CMemberEccentricity temp_eccPurlin = new CMemberEccentricity();
-                float fRotationAngle_Purlin;
+
+                CMemberEccentricity temp_eccPurlin_Left = new CMemberEccentricity();
+                float fRotationAngle_Purlin_Left;
+                CMemberEccentricity temp_eccPurlin_Right = eccentricityPurlin;
 
                 bool bOrientationOfLocalZAxisIsUpward = true;
 
                 if (bOrientationOfLocalZAxisIsUpward)
                 {
-                    fRotationAngle_Purlin = -fRoofPitch_rad;
-                    temp_eccPurlin.MFz_local = eccentricityPurlin.MFz_local;
+                    fRotationAngle_Purlin_Left = -fRoofPitch_rad;
+                    temp_eccPurlin_Left.MFz_local = eccentricityPurlin.MFz_local;
                 }
                 else
                 {
-                    fRotationAngle_Purlin = -(fRoofPitch_rad + (float)Math.PI);
-                    temp_eccPurlin.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
+                    fRotationAngle_Purlin_Left = -(fRoofPitch_rad + (float)Math.PI);
+                    temp_eccPurlin_Left.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
                 }
 
                 if (canopyBay.Left)
@@ -1297,7 +1299,7 @@ namespace PFD
                     // Purlin Members
                     for (int j = 0; j < canopyBay.PurlinCountLeft; j++)
                     {
-                        m_arrMembers[iCanopy_MemberIndex + j] = new CMember(iCanopy_MemberIndex + j + 1, m_arrNodes[iCanopy_NodeIndex + j], m_arrNodes[iCanopy_NodeIndex + canopyBay.PurlinCountLeft + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin /*eccentricityPurlin*/, temp_eccPurlin /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin, 0);
+                        m_arrMembers[iCanopy_MemberIndex + j] = new CMember(iCanopy_MemberIndex + j + 1, m_arrNodes[iCanopy_NodeIndex + j], m_arrNodes[iCanopy_NodeIndex + canopyBay.PurlinCountLeft + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin_Left /*eccentricityPurlin*/, temp_eccPurlin_Left /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin_Left, 0);
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + j], iNumberOfTransverseSupports_Purlins);
                     }
                 }
@@ -1308,13 +1310,12 @@ namespace PFD
 
                     bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
 
-                    CMemberEccentricity temp_eccPurlin_Right = eccentricityPurlin;
-                    float temp_RotationAngle_Purlin = fRoofPitch_rad;
+                    float fRotationAngle_Purlin_Right = fRoofPitch_rad;
 
                     if (!bIsGableRoof) // Monopitch roof
                     {
-                        temp_eccPurlin_Right = temp_eccPurlin;
-                        temp_RotationAngle_Purlin = fRotationAngle_Purlin;
+                        temp_eccPurlin_Right = temp_eccPurlin_Left;
+                        fRotationAngle_Purlin_Right = fRotationAngle_Purlin_Left;
                     }
 
                     // Start Nodes
@@ -1356,7 +1357,7 @@ namespace PFD
                     // Purlin Members
                     for (int j = 0; j < canopyBay.PurlinCountRight; j++)
                     {
-                        m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j] = new CMember(iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j + 1, m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + j], m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin_Right, temp_eccPurlin_Right, fPurlinStart, fPurlinEnd, temp_RotationAngle_Purlin, 0);
+                        m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j] = new CMember(iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j + 1, m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + j], m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin_Right, temp_eccPurlin_Right, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin_Right, 0);
                         CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j], iNumberOfTransverseSupports_Purlins);
                     }
                 }
@@ -1413,20 +1414,21 @@ namespace PFD
                         bool bDeactivateMember = false;
                         if (bUsePBEverySecond && j % 2 == 0) bDeactivateMember = true;
 
-                        float fPBStart = (float)m_arrCrSc[EMemberType_FS_Position.Purlin].y_min - fCutOffOneSide;
-                        float fPBEnd = -(float)m_arrCrSc[EMemberType_FS_Position.Purlin].y_max - fCutOffOneSide;
+                        float fPBStart = -(float)m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].y_max - fCutOffOneSide;
+                        float fPBEnd = (float)m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].y_min - fCutOffOneSide;
 
                         float fPBStart_Current = fPBStart;
 
                         if (j == 0) // First
                         {
-                            // TODO - refaktorovat s monopitch
-                            float b = (float)m_arrCrSc[EMemberType_FS_Position.Purlin].z_max * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
+                            // Rovnake ako right side
+                            float b = (float)m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].z_max * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
                             float c = (float)m_arrCrSc[EMemberType_FS_Position.MainColumn].z_max / (float)Math.Cos(Math.Abs(fRoofPitch_rad));
                             float d = (float)m_arrCrSc[EMemberType_FS_Position.EdgePurlin].b * (float)Math.Cos(Math.Abs(fRoofPitch_rad));
-                            float e = (float)m_arrCrSc[EMemberType_FS_Position.MainRafter].z_max - (float)m_arrCrSc[EMemberType_FS_Position.Purlin].z_max;
+                            float e = (float)m_arrCrSc[EMemberType_FS_Position.MainRafter].z_max - (float)m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].z_max;
                             float f = e * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
-                            fPBStart_Current = c - b - d - f - fCutOffOneSide;
+                            float g = (float)m_arrCrSc[EMemberType_FS_Position.EdgePurlin].h * (float)Math.Sin(Math.Abs(fRoofPitch_rad));
+                            fPBStart_Current = - g - c + b + f - fCutOffOneSide;
                         }
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
@@ -1434,7 +1436,7 @@ namespace PFD
                             int memberIndex = iCanopy_MemberIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_Purlins + k;
                             int startNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_Purlins + k;
                             int endNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
-                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlinsCanopy], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlinsCanopy, null /*eccentricityPurlin*/, null /*eccentricityPurlin*/, fPBStart_Current, fPBEnd, 0, 0);
+                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlinsCanopy], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlinsCanopy, temp_eccPurlin_Left, temp_eccPurlin_Left, fPBStart_Current, fPBEnd, MathF.fPI, 0);
 
                             if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
@@ -1489,20 +1491,21 @@ namespace PFD
                         if (bUsePBEverySecond && j % 2 == 0) bDeactivateMember = true;
 
                         // Opacna orientacia osi LCS y na pravej strane
-                        float fPBStart = -(float)m_arrCrSc[EMemberType_FS_Position.Purlin].y_max - fCutOffOneSide;
-                        float fPBEnd = (float)m_arrCrSc[EMemberType_FS_Position.Purlin].y_min - fCutOffOneSide;
+                        float fPBStart = (float)m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].y_min - fCutOffOneSide;
+                        float fPBEnd = -(float)m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].y_max - fCutOffOneSide;
 
                         float fPBStart_Current = fPBStart;
 
                         if (j == 0) // First
                         {
-                            // TODO - refaktorovat s monopitch
+                            // Rovnake ako left side
                             float b = (float)m_arrCrSc[EMemberType_FS_Position.Purlin].z_max * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
                             float c = (float)m_arrCrSc[EMemberType_FS_Position.MainColumn].z_max / (float)Math.Cos(Math.Abs(fRoofPitch_rad));
                             float d = (float)m_arrCrSc[EMemberType_FS_Position.EdgePurlin].b * (float)Math.Cos(Math.Abs(fRoofPitch_rad));
                             float e = (float)m_arrCrSc[EMemberType_FS_Position.MainRafter].z_max - (float)m_arrCrSc[EMemberType_FS_Position.Purlin].z_max;
                             float f = e * (float)Math.Tan(Math.Abs(fRoofPitch_rad));
-                            fPBStart_Current = c - b - d - f - fCutOffOneSide;
+                            float g = (float)m_arrCrSc[EMemberType_FS_Position.EdgePurlin].h * (float)Math.Sin(Math.Abs(fRoofPitch_rad));
+                            fPBStart_Current = -g - c + b + f - fCutOffOneSide;
                         }
 
                         for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
@@ -1510,7 +1513,7 @@ namespace PFD
                             int memberIndex = iCanopy_MemberIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iNumberOfPBMembersInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_Purlins + k;
                             int startNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_Purlins + k;
                             int endNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
-                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlinsCanopy], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlinsCanopy, null /*eccentricityPurlin*/, null /*eccentricityPurlin*/, fPBStart_Current, fPBEnd, MathF.fPI, 0);
+                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlinsCanopy], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlinsCanopy, temp_eccPurlin_Right /*eccentricityPurlin*/, temp_eccPurlin_Right /*eccentricityPurlin*/, fPBStart_Current, fPBEnd, 0, 0);
 
                             if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
