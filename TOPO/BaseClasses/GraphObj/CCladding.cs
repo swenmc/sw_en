@@ -14,6 +14,7 @@ namespace BaseClasses.GraphObj
         EModelType_FS eModelType;
         BuildingGeometryDataInput sBuildingGeomInputData;
         System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo> canopyCollection;
+        System.Collections.ObjectModel.ObservableCollection<CBayInfo> bayWidthCollection;
 
         double claddingHeight_Wall = 0.030; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
         double claddingHeight_Roof = 0.075; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
@@ -42,7 +43,10 @@ namespace BaseClasses.GraphObj
         }
 
         // Constructor 2
-        public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData, System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo> canopies, CRSC.CCrSc_TW columnSection,
+        public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData,
+            System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo> canopies,
+            System.Collections.ObjectModel.ObservableCollection<CBayInfo> bayWidths,
+            CRSC.CCrSc_TW columnSection,
             string colorName_Wall, string colorName_Roof, string claddingShape_Wall, string claddingCoatingType_Wall, string claddingShape_Roof, string claddingCoatingType_Roof,
             Color colorWall, Color colorRoof,
             bool bIsDisplayed, int fTime, double wallCladdingHeight, double roofCladdingHeight, double wallCladdingWidthRib, double roofCladdingWidthRib)
@@ -51,6 +55,7 @@ namespace BaseClasses.GraphObj
             eModelType = modelType_FS;
             sBuildingGeomInputData = sGeometryInputData;
             canopyCollection = canopies;
+            bayWidthCollection = bayWidths;
             column_crsc_z_plus = columnSection.z_max;
             column_crsc_y_minus = columnSection.y_min;
             column_crsc_y_plus = columnSection.y_max;
@@ -215,10 +220,9 @@ namespace BaseClasses.GraphObj
                 // TODO - napojit suradnice zaciatku a konca bay v smere GCS Y
                 // To Ondrej - potrebujem tu nejako elegantne dosta+t a pracovat bay start a bay end coordinate v smere Y
                 //Docasny kod
-                float fBayWidth = sBuildingGeomInputData.fL_centerline / 3f;
+
                 int iBayIndex = 0;
                 //----------------------------------------------------------------------------------
-
                 foreach (CCanopiesInfo canopy in canopyCollection)
                 {
                     int iAreaIndex = 5;
@@ -226,6 +230,7 @@ namespace BaseClasses.GraphObj
                     float fOverhangOffset_x = 0.15f; // TODO - zadavat v GUI ako cladding property pre roof
                     float fOverhangOffset_y = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
 
+                    float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
                     float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y;
                     float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y;
 
@@ -339,7 +344,6 @@ namespace BaseClasses.GraphObj
                 // TODO - napojit suradnice zaciatku a konca bay v smere GCS Y
                 // To Ondrej - potrebujem tu nejako elegantne dosta+t a pracovat bay start a bay end coordinate v smere Y
                 //Docasny kod
-                float fBayWidth = sBuildingGeomInputData.fL_centerline / 3f;
                 int iBayIndex = 0;
                 //----------------------------------------------------------------------------------
 
@@ -350,6 +354,7 @@ namespace BaseClasses.GraphObj
                     float fOverhangOffset_x = 0.15f; // TODO - zadavat v GUI ako cladding property pre roof
                     float fOverhangOffset_y = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
 
+                    float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
                     float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y;
                     float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y;
 

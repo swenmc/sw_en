@@ -1793,7 +1793,11 @@ namespace PFD
             #endregion
 
             #region Cladding
-            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset, sGeometryInputData, _pfdVM._canopiesOptionsVM.CanopiesList, (CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn],
+            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset,
+               sGeometryInputData,
+               _pfdVM._canopiesOptionsVM.CanopiesList,
+               _pfdVM._baysWidthOptionsVM.BayWidthList,
+               (CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn],
                _pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).Name,
                _pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).Name,
                _pfdVM.WallCladding, _pfdVM.WallCladdingCoating,

@@ -80,18 +80,21 @@ namespace PFD
             }
 
             float fWallArea_Left = 0; float fWallArea_Right = 0;
-            if (vm.ComponentList[(int)EMemberType_FS_Position.Girt].Generate == true)
-            {
+
+            // TO Ondrej - prosim skontroluj mi tieto podmienky, ci sa to da napisat inak
+            if (vm.ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Left Side").Generate == true)
                 fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left.ToArray());
 
+            if (vm.ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Right Side").Generate == true)
+            {
                 if (_pfdVM.Model is CModel_PFD_01_MR)
                     fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
                 else if (_pfdVM.Model is CModel_PFD_01_GR)
-                    fWallArea_Right = fWallArea_Left;
+                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
                 else
-                    fWallArea_Right = float.MinValue; //  Excepion - not implemented
-
+                    fWallArea_Right = float.MinValue; //  Exception - not implemented
             }
+
             float fWallArea_Front = 0;
             if (vm.ComponentList[(int)EMemberType_FS_Position.GirtFrontSide].Generate == true)
                 fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
@@ -181,6 +184,21 @@ namespace PFD
             if (vm.ComponentList[(int)EMemberType_FS_Position.Purlin].Generate == true)
                 fRoofArea = iNumberOfRoofSides * fRoofSideLength * _pfdVM.LengthOverall;
 
+            // Canopies
+            float fCanopyRoofArea = 0;
+
+            if (vm._canopiesOptionsVM != null && vm._canopiesOptionsVM.CanopiesList != null)
+            {
+                foreach (CCanopiesInfo canopy in vm._canopiesOptionsVM.CanopiesList)
+                {
+                    if (canopy.Left)
+                        fCanopyRoofArea += ((float)canopy.WidthLeft / (float)Math.Cos(Math.Abs(vm.RoofPitch_radians))) * vm._baysWidthOptionsVM.BayWidthList[canopy.BayIndex].Width; 
+
+                    if(canopy.Right)
+                        fCanopyRoofArea += ((float)canopy.WidthRight / (float)Math.Cos(Math.Abs(vm.RoofPitch_radians))) * vm._baysWidthOptionsVM.BayWidthList[canopy.BayIndex].Width;
+                }
+            }
+
             float fFibreGlassArea_Roof = vm.FibreglassAreaRoof / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = vm.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
@@ -191,7 +209,7 @@ namespace PFD
                     fWallArea_Total,
                     fTotalAreaOfOpennings,
                     fFibreGlassArea_Walls,
-                    fRoofArea,
+                    fRoofArea + fCanopyRoofArea, // TODO - rozdelit riadky pre roof a canopies
                     fFibreGlassArea_Roof
                    );
             }

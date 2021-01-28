@@ -129,19 +129,19 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public BayWidthOptionsViewModel(int baysNum, float bayWidth)
         {
-            IsSetFromCode = true;            
+            IsSetFromCode = true;
             
             initBays(baysNum);
 
             ObservableCollection<CBayInfo> items = new ObservableCollection<CBayInfo>();
 
             for (int i = 1; i <= baysNum; i++)
-            {                
+            {
                 items.Add(new CBayInfo(i, bayWidth));
             }
             BayWidthList = items;
 
-            Width = bayWidth;            
+            Width = bayWidth; 
 
             IsSetFromCode = false;
         }
@@ -162,7 +162,6 @@ namespace PFD
             }
             Bays = bays;
         }
-
 
         public float GetTotalWidth()
         {
