@@ -539,7 +539,8 @@ namespace PFD
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
 
                         // Set Member Color
-                        m.Color = cInfo.Color.Color.Value;  //(Color)ColorConverter.ConvertFromString(cInfo.Color.Name);
+                        //m.Color = cInfo.Color.Color.Value;  //(Color)ColorConverter.ConvertFromString(cInfo.Color.Name);
+                        m.Color = (Color)ColorConverter.ConvertFromString(cInfo.Color.Name);
                         if (m.CrScStart != null) m.CrScStart.CSColor = (Color)ColorConverter.ConvertFromString(cInfo.SectionColor);
                         if (debugging) System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", "+ m.EMemberTypePosition + ", " + m.BIsGenerated + ", " + m.BIsDisplayed + ", " + cInfo.Color.Name);
                         break;

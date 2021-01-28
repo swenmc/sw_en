@@ -20,10 +20,11 @@ namespace PFD
     public class CComponentListVM : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         ObservableCollection<CComponentInfo> MComponentList;
-        
+
         private int MSelectedComponentIndex;
 
         private List<string> MSections;
@@ -196,7 +197,7 @@ namespace PFD
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
             {
-                if(cInfo.ComponentName.EndsWith("Left Side"))
+                if (cInfo.ComponentName.EndsWith("Left Side"))
                     cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Right Side"));
                 else if (cInfo.ComponentName.EndsWith("Right Side"))
                     cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Left Side"));
@@ -219,8 +220,8 @@ namespace PFD
 
         private void SetSameMaterial(CComponentInfo cInfo)
         {
-            CComponentInfo cInfo2 = null;            
-            
+            CComponentInfo cInfo2 = null;
+
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
             {
                 if (cInfo.ComponentName.EndsWith("Left Side"))
@@ -228,13 +229,13 @@ namespace PFD
                 else if (cInfo.ComponentName.EndsWith("Right Side"))
                     cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt && c.ComponentName.EndsWith("Left Side"));
             }
-            
+
             if (cInfo2 != null && cInfo.Material != cInfo2.Material)
             {
                 cInfo2.IsSetFromCode = true;
                 cInfo2.Material = cInfo.Material;
                 cInfo2.IsSetFromCode = false;
-            }            
+            }
         }
         private void SetSameSection(CComponentInfo cInfo)
         {
@@ -318,18 +319,18 @@ namespace PFD
             {
                 CComponentInfo purlinBlock = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
                 if (purlinBlock.Generate != cInfo.Generate) { purlinBlock.IsSetFromCode = true; purlinBlock.Generate = cInfo.Generate; purlinBlock.IsSetFromCode = false; }
-                }
+            }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj purlins
             {
                 CComponentInfo purlin = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
                 if (purlin.Generate != cInfo.Generate) { purlin.IsSetFromCode = true; purlin.Generate = cInfo.Generate; purlin.IsSetFromCode = false; }
             }
 
-            if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide) 
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
             {
                 CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsFrontSide);
                 if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
-                }
+            }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide)
             {
                 CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsBackSide);
@@ -565,7 +566,7 @@ namespace PFD
         {
             get
             {
-                 return MColors;
+                return MColors;
             }
 
             set
@@ -1197,8 +1198,20 @@ namespace PFD
             }
         }
 
+        bool m_colorsAccordingToPositions;
+        public bool ColorsAccordingToPositions
+        {
+            get
+            {
+                return m_colorsAccordingToPositions;
+            }
 
-        bool colorsAccordingToPositions;
+            set
+            {
+                m_colorsAccordingToPositions = value;
+            }
+        }
+
         private Dictionary<int, CComponentPrefixes> dict_CompPref;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -1207,8 +1220,8 @@ namespace PFD
         {
             MComponentList = new ObservableCollection<CComponentInfo>();
 
-            colorsAccordingToPositions = true;
-            dict_CompPref = CComponentManager.LoadComponentsFromDB();            
+            ColorsAccordingToPositions = true;
+            dict_CompPref = CComponentManager.LoadComponentsFromDB();
 
             MColors = CComboBoxHelper.ColorList; // Set Color List
 
@@ -1217,37 +1230,37 @@ namespace PFD
             CComponentInfo ci = null;
             CComponentPrefixes compPref = dict_CompPref[(int)EMemberType_FS_Position.MainColumn];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForColumnsOrRafters, ColumnFlyBracingPosition_Items, Colors, EMemberType_FS_Position.MainColumn);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafter];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForColumnsOrRafters, RafterFlyBracingPosition_Items, Colors, EMemberType_FS_Position.MainRafter);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeColumn];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForColumnsOrRafters, ColumnFlyBracingPosition_Items, Colors, EMemberType_FS_Position.EdgeColumn);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeRafter];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "63020", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForColumnsOrRafters, RafterFlyBracingPosition_Items, Colors, EMemberType_FS_Position.EdgeRafter);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgePurlin];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "50020", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "50020", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.EdgePurlin);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.Girt];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName + " - Left Side", "27095", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName + " - Left Side", "27095", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.Girt);
             ci.GenerateIsEnabled = false; ci.GenerateIsReadonly = true;
             MComponentList.Add(ci);
@@ -1262,31 +1275,31 @@ namespace PFD
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.Purlin];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "270115", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "270115", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.Purlin);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.WindPostFrontSide];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "270115n", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "270115n", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForColumnsOrRafters, ColumnFlyBracingPosition_Items, Colors, EMemberType_FS_Position.WindPostFrontSide);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.WindPostBackSide];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "270115n", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "270115n", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForColumnsOrRafters, ColumnFlyBracingPosition_Items, Colors, EMemberType_FS_Position.WindPostBackSide);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.GirtFrontSide];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.GirtFrontSide);
             MComponentList.Add(ci);
 
             compPref = dict_CompPref[(int)EMemberType_FS_Position.GirtBackSide];
             ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true, 
+                compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true,
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.GirtBackSide);
             MComponentList.Add(ci);
 
@@ -1376,7 +1389,7 @@ namespace PFD
             string MR_material = RafterMaterial;
             string ER_section = RafterSection;
             string ER_material = RafterMaterial;
-            
+
             CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
             if (ci != null)
             {
@@ -1410,7 +1423,7 @@ namespace PFD
                 {
                     FrameMembersInfo fmi = new FrameMembersInfo(id, MC_section, MR_section, MC_material, MR_material, CComboBoxHelper.ColorList, SectionsForColumnsOrRafters);
                     framesInfos.Add(fmi);
-                }                
+                }
             }
             FramesComponentList = new ObservableCollection<FrameMembersInfo>(framesInfos);
         }
@@ -1457,7 +1470,7 @@ namespace PFD
             List<BayMembersInfo> baysInfos = new List<BayMembersInfo>();
             foreach (int id in BaysIDs)
             {
-                BayMembersInfo bmi = new BayMembersInfo(id, Section_EP, Section_G, Section_P, Section_GB, Section_PB, Section_CBW, Section_CBR, 
+                BayMembersInfo bmi = new BayMembersInfo(id, Section_EP, Section_G, Section_P, Section_GB, Section_PB, Section_CBW, Section_CBR,
                     Material_EP, Material_G, Material_P, Material_GB, Material_PB, Material_CBW, Material_CBR, CComboBoxHelper.ColorList, SectionsForGirtsOrPurlins, SectionsForGirtsOrPurlinsBracing, SectionsForCrossBracing);
                 baysInfos.Add(bmi);
             }
@@ -1565,7 +1578,7 @@ namespace PFD
             if (ci == null) return;
 
             int index = ci.ILS_Items.IndexOf(ci.ILS); // in case that it not longer exists in ILS_Items - it will set it to first
-            SetComponentInfoILS(ci, index);  
+            SetComponentInfoILS(ci, index);
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -1587,7 +1600,9 @@ namespace PFD
             SetComponentDetails(cInfo.Section, cInfo.Material);
         }
         private void SetComponentDetailsForFrame()
-        {            
+        {
+            if (FramesComponentList == null) return;
+            if (FramesComponentList.Count == 0) return;
             if (m_SelectedFrameIndex == -1) return;
             FrameMembersInfo info = FramesComponentList[m_SelectedFrameIndex];
             if (info == null) return;
@@ -1597,6 +1612,8 @@ namespace PFD
         }
         private void SetComponentDetailsForBay()
         {
+            if (BaysComponentList == null) return;
+            if (BaysComponentList.Count == 0) return;
             if (m_SelectedBayIndex == -1) return;
             BayMembersInfo info = BaysComponentList[m_SelectedBayIndex];
             if (info == null) return;
@@ -1606,10 +1623,12 @@ namespace PFD
         }
         private void SetComponentDetailsForOthers()
         {
+            if (OthersComponentList == null) return;
+            if (OthersComponentList.Count == 0) return;
             if (m_SelectedOthersIndex == -1) return;
             OthersMembersInfo info = OthersComponentList[m_SelectedOthersIndex];
             if (info == null) return;
-                        
+
             SetComponentDetails(info.OthersSection, info.OthersMaterial);
         }
 
@@ -1645,7 +1664,7 @@ namespace PFD
 
             CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorFrame];
             cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true, 
+                compPref.ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true,
                 SectionsForDoorOrWindowFrame, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
 
@@ -1669,8 +1688,8 @@ namespace PFD
 
                 //MColors.Find(x => x.Name.Equals(compPref.ComponentColorName)),
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorTrimmer];
-                cDT = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName], 
-                    compPref.ComponentName, "270115btb", prop.colorName, "G550‡", "None", null, true, false, false, true, 
+                cDT = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
+                    compPref.ComponentName, "270115btb", prop.colorName, "G550‡", "None", null, true, false, false, true,
                 SectionsForRollerDoorTrimmer, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorTrimmer);
                 cDT.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDT);
@@ -1684,7 +1703,7 @@ namespace PFD
 
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.DoorLintel];
                 cDL = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                    compPref.ComponentName, "27095", prop.colorName, "G550‡", "None", null, true, false, false, true, 
+                    compPref.ComponentName, "27095", prop.colorName, "G550‡", "None", null, true, false, false, true,
                 SectionsForRollerDoorLintel, EmptyILS_Items, Colors, EMemberType_FS_Position.DoorLintel);
                 cDL.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDL);
@@ -1710,7 +1729,7 @@ namespace PFD
 
             CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.WindowFrame];
             cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                compPref.ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true, 
+                compPref.ComponentName, "10075", prop.colorName, "G550‡", "None", null, true, false, false, true,
                 SectionsForDoorOrWindowFrame, EmptyILS_Items, MColors, EMemberType_FS_Position.WindowFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
@@ -1749,7 +1768,7 @@ namespace PFD
             {
                 if (cInfo != null) ComponentList.Remove(cInfo); //remove from component list
             }
-            
+
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
             if (cInfo == null)
             {
@@ -1804,7 +1823,7 @@ namespace PFD
             {
                 if (cInfo != null) ComponentList.Remove(cInfo); //remove from component list
             }
-            
+
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
             if (hasCrossBracing)
             {
@@ -1823,9 +1842,9 @@ namespace PFD
             }
             else
             {
-                if(cInfo != null) ComponentList.Remove(cInfo); //remove cross bracing canopy member from component list
+                if (cInfo != null) ComponentList.Remove(cInfo); //remove cross bracing canopy member from component list
             }
-            
+
             if (changed) OrderComponentList();
         }
 
@@ -1869,7 +1888,7 @@ namespace PFD
             List<string> items = new List<string>();
             for (int i = 0; i <= iPurlinsNum; i++)
             {
-                if(i == 0) items.Add("None");
+                if (i == 0) items.Add("None");
                 if (i == 1) items.Add("Every purlin");
                 if (i == 2) items.Add("Every 2nd purlin");
                 if (i == 3) items.Add("Every 3rd purlin");
@@ -1883,7 +1902,7 @@ namespace PFD
             CComponentInfo ER = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
             if (ER != null) { ER.IsSetFromCode = true; ER.ILS_Items = items; SetComponentInfoILS(ER); ER.IsSetFromCode = false; }
         }
-        
+
         public void SetColumnFlyBracingPosition_Items(int iGirtsNum)
         {
             List<string> items = new List<string>();
@@ -1976,7 +1995,7 @@ namespace PFD
                         SectionsForCrossBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.CrossBracingWall);
                     ComponentList.Add(ci_Wall);
                     changed = true;
-                }                    
+                }
             }
 
             if (!hasRoofCrosses)
@@ -2007,24 +2026,24 @@ namespace PFD
 
         public void SetColorsAccordingToPrefixes()
         {
-            if (!colorsAccordingToPositions) return;
+            if (!ColorsAccordingToPositions) return;
 
             Dictionary<string, CComponentPrefixes> dict = CComponentManager.LoadComponentsPrefixes();
 
             ChangeColorsAccordingToPrefixes(dict);
             ChangeComponentListColors();
 
-            colorsAccordingToPositions = false;
+            ColorsAccordingToPositions = false;
         }
         public void SetColorsAccordingToPosition()
         {
-            if (colorsAccordingToPositions) return;
+            if (ColorsAccordingToPositions) return;
 
             dict_CompPref = CComponentManager.LoadComponentsFromDB();
-                        
+
             ChangeComponentListColors();
 
-            colorsAccordingToPositions = true;
+            ColorsAccordingToPositions = true;
         }
         private void ChangeColorsAccordingToPrefixes(Dictionary<string, CComponentPrefixes> dictPrefixes)
         {
@@ -2037,7 +2056,7 @@ namespace PFD
                 kvp.Value.ComponentColorCodeHEX = dictPrefixes[kvp.Value.ComponentPrefix].ComponentColorCodeHEX;
             }
         }
-        
+
         private void ChangeComponentListColors()
         {
             foreach (CComponentInfo c in ComponentList)
@@ -2047,6 +2066,64 @@ namespace PFD
                 c.IsSetFromCode = false;
             }
         }
+
+
+        public void SetViewModel(CComponentListVM vm)
+        {
+            if (vm == null) return;
+
+            ComponentList = vm.ComponentList;
+
+            SelectedComponentIndex = vm.SelectedComponentIndex;
+
+            ColumnFlyBracingPosition_Items = vm.ColumnFlyBracingPosition_Items;
+            RafterFlyBracingPosition_Items = vm.RafterFlyBracingPosition_Items;
+            CanopyRafterFlyBracingPosition_Items = vm.CanopyRafterFlyBracingPosition_Items;
+            //DefaultILS_Items = vm.DefaultILS_Items;
+            //EmptyILS_Items = vm.EmptyILS_Items;
+            //Materials = vm.Materials;
+            ComponentDetailsList = vm.ComponentDetailsList;
+            MaterialDetailsList = vm.MaterialDetailsList;
+
+            //#############################################
+            FramesIDs = vm.FramesIDs;
+            FrameFrom = vm.FrameFrom;
+            FrameTo = vm.FrameTo;
+            BaysIDs = vm.BaysIDs;
+            BayFrom = vm.BayFrom;
+            BayTo = vm.BayTo;
+
+            ColumnSection = vm.ColumnSection;
+            RafterSection = vm.RafterSection;
+            ColumnMaterial = vm.ColumnMaterial;
+            RafterMaterial = vm.RafterMaterial;
+
+            Section_EP = vm.Section_EP;
+            Section_G = vm.Section_G;
+            Section_P = vm.Section_P;
+            Section_GB = vm.Section_GB;
+            Section_PB = vm.Section_PB;
+            Section_CBW = vm.Section_CBW;
+            Section_CBR = vm.Section_CBR;
+            Material_EP = vm.Material_EP;
+            Material_G = vm.Material_G;
+            Material_P = vm.Material_P;
+            Material_GB = vm.Material_GB;
+            Material_PB = vm.Material_PB;
+            Material_CBW = vm.Material_CBW;
+            Material_CBR = vm.Material_CBR;
+
+            SelectedFrameIndex = vm.SelectedFrameIndex;
+            SelectedBayIndex = vm.SelectedBayIndex;
+            SelectedOthersIndex = vm.SelectedOthersIndex;
+
+            FramesComponentList = vm.FramesComponentList;
+            BaysComponentList = vm.BaysComponentList;
+            OthersComponentList = vm.OthersComponentList;
+
+            ColorsAccordingToPositions = vm.ColorsAccordingToPositions;
+        }
+
 
     }
 }

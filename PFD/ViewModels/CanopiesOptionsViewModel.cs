@@ -434,6 +434,27 @@ namespace PFD
             return purlinCount;
         }
 
+        public void SetViewModel(CanopiesOptionsViewModel vm)
+        {
+            if (vm == null) return;
+            
+            CanopiesList = vm.CanopiesList;
+            SelectedCanopiesIndex = vm.SelectedCanopiesIndex;
+
+            Bays = vm.Bays;
+            BayFrom = vm.BayFrom;
+            BayTo = vm.BayTo;
+            Left = vm.Left;
+            Right = vm.Right;
+            WidthLeft = vm.WidthLeft;
+            WidthRight = vm.WidthRight;
+            PurlinCountLeft = vm.PurlinCountLeft;
+            PurlinCountRight = vm.PurlinCountRight;
+            IsCrossBracedLeft = vm.IsCrossBracedLeft;
+            IsCrossBracedRight = vm.IsCrossBracedRight;
+
+            DefaultWidth = vm.DefaultWidth;
+        }
 
     }
 }

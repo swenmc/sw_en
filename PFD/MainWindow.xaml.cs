@@ -2502,7 +2502,7 @@ namespace PFD
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
 
-            string modelName = Combobox_Models.Items[vm.ModelIndex].ToString();  //vm.Model.m_sConstObjectName
+            string modelName = GetModelName();
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Data Files (*.eiuf)|*.eiuf";
@@ -2519,6 +2519,12 @@ namespace PFD
                     stream.Close();
                 }
             }
+        }
+        private string GetModelName()
+        {
+            string modelName = "Custom";
+            if(vm.ModelIndex < vm.ModelTypes.Count) modelName = vm.ModelTypes[vm.ModelIndex].ToString();
+            return modelName;
         }
 
         private void OpenModelFile(string fileName)
@@ -2538,10 +2544,14 @@ namespace PFD
             if (newVM == null) return;
             vm.IsSetFromCode = true;
             vm.KitsetTypeIndex = newVM.KitsetTypeIndex;
+            if (vm.ModelTypes.Count <= newVM.ModelIndex) vm.ModelTypes.Add("Custom");
             vm.ModelIndex = newVM.ModelIndex;
             vm.Width = newVM.Width;
             vm.Length = newVM.Length;
             vm.WallHeight = newVM.WallHeight;
+            vm.WidthOverall = newVM.WidthOverall;
+            vm.LengthOverall = newVM.LengthOverall;
+            vm.WallHeightOverall = newVM.WallHeightOverall;
             vm.RoofPitch_deg = newVM.RoofPitch_deg;
             vm.Frames = newVM.Frames;
             vm.GirtDistance = newVM.GirtDistance;
@@ -2575,23 +2585,26 @@ namespace PFD
             vm.Gutters = newVM.Gutters;
             vm.Downpipes = newVM.Downpipes;
 
+            vm._displayOptionsVM.SetViewModel(newVM._displayOptionsVM);
+            vm._generalOptionsVM.SetViewModel(newVM._generalOptionsVM);
+            vm._solverOptionsVM.SetViewModel(newVM._solverOptionsVM);
+            vm._designOptionsVM.SetViewModel(newVM._designOptionsVM);
+            vm._componentVM.SetViewModel(newVM._componentVM);
             vm.ComponentList = newVM.ComponentList;
 
-            vm._displayOptionsVM.SetViewModel(newVM._displayOptionsVM);
-            vm._generalOptionsVM = newVM._generalOptionsVM;
-            vm._solverOptionsVM = newVM._solverOptionsVM;
-            vm._designOptionsVM = newVM._designOptionsVM;
-
-            vm.IsSetFromCode = false;
-
+            vm._crossBracingOptionsVM.SetViewModel(newVM._crossBracingOptionsVM);
+            vm._canopiesOptionsVM.SetViewModel(newVM._canopiesOptionsVM);
+            vm._baysWidthOptionsVM.SetViewModel(newVM._baysWidthOptionsVM);
+            
             vm.RecreateModel = true;
             vm.RecreateJoints = true;
             vm.RecreateFoundations = true;
             vm.RecreateFloorSlab = true;
             vm.RecreateQuotation = true;
 
+            vm.IsSetFromCode = false;
             //just to fire some change
-            vm.Width = vm.Width;
+            vm.OptionsLoaded = true;
         }
 
 

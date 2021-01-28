@@ -374,5 +374,25 @@ namespace PFD
             else return false;                    
         }
 
+
+        public void SetViewModel(CrossBracingOptionsViewModel vm)
+        {
+            if (vm == null) return;
+
+            RoofPositions = vm.RoofPositions;
+            CrossBracingList = vm.CrossBracingList;
+            SelectedCrossBracingIndex = vm.SelectedCrossBracingIndex;
+
+            Bays = vm.Bays;
+            BayFrom = vm.BayFrom;
+            BayTo = vm.BayTo;
+            WallLeft = vm.WallLeft;
+            WallRight = vm.WallRight;
+            Roof = vm.Roof;
+            RoofPosition = vm.RoofPosition;
+            FirstCrossOnRafter = vm.FirstCrossOnRafter;
+            LastCrossOnRafter = vm.LastCrossOnRafter;
+        }
+
     }
 }

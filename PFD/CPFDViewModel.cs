@@ -610,7 +610,7 @@ namespace PFD
                     Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
                     IsSetFromCode = isChangedFromCode;
                 }
-
+                if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("WidthOverall");
             }
         }
@@ -642,7 +642,7 @@ namespace PFD
                     BayWidth = MLength / (MFrames - 1);
                 }
                 if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
-
+                if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("LengthOverall");
             }
         }
@@ -667,7 +667,7 @@ namespace PFD
                     WallHeight = GetCenterLineHeight_H1();
                     IsSetFromCode = isChangedFromCode;
                 }
-
+                if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("WallHeightOverall");
             }
         }
@@ -2492,8 +2492,7 @@ namespace PFD
                 w.SetValidationValues(MWallHeight, model.GetBayWidth(w.iBayNumber), model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
-
-        [NonSerialized]
+                
         public CComponentListVM _componentVM;
         [NonSerialized]
         public CProjectInfoVM _projectInfoVM;

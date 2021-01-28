@@ -211,6 +211,18 @@ namespace PFD
             return values;
         }
 
+        public void SetViewModel(BayWidthOptionsViewModel vm)
+        {
+            if (vm == null) return;
+
+            BayWidthList = vm.BayWidthList;
+
+            Bays = vm.Bays;
+            BayFrom = vm.BayFrom;
+            BayTo = vm.BayTo;            
+            Width = vm.Width;            
+        }
+
 
     }
 }
