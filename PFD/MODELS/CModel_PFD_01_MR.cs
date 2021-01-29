@@ -750,9 +750,12 @@ namespace PFD
             // Canopies
 
             bool bGenerateCanopies = true;
-
+            // Canopy - Purlins
+            bool bGeneratePurlinsCanopy = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.PurlinCanopy);
+            // Canopy - Cross-bracing
+            bool bGenerateCrossBracingCanopy = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.CrossBracingRoofCanopy);
             // Purlin bracing blocks - Canopy
-            bool bGeneratePurlinBracingCanopy = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+            bool bGeneratePurlinBracingBlocksCanopy = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
 
             int iCanopyRafterNodes_Total = 0;
             int iCanopyRafterOverhangs_Total = 0;
@@ -788,25 +791,33 @@ namespace PFD
                         if (!FrameIndexList_Right.Contains(canopyBay.BayIndex + 1)) FrameIndexList_Right.Add(canopyBay.BayIndex + 1);
                     }
 
-                    // Canopy Purlins Nodes
-                    iCanopyPurlinNodes_Total += 2 * (canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight);
-                    // Canopy Purlins
-                    iCanopyPurlins_Total += (canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight);
-
-                    if (canopyBay.IsCrossBracedLeft)
+                    // Canopy Purlins - Nodes and Members
+                    if (bGeneratePurlinsCanopy)
                     {
-                        int iCanopy_BracingCrosses = 1; // Len jeden cross pre jedno canopy bay
-                        iCanopyCrossBracingMembers_Total += iCanopy_BracingCrosses * 2; // 2 pruty v kazdom krizi
+                        // Canopy Purlins Nodes
+                        iCanopyPurlinNodes_Total += 2 * (canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight);
+                        // Canopy Purlins
+                        iCanopyPurlins_Total += (canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight);
                     }
 
-                    if (canopyBay.IsCrossBracedRight)
+                    // Canopy Cross-bracing Members
+                    if (bGenerateCrossBracingCanopy)
                     {
-                        int iCanopy_BracingCrosses = 1; // Len jeden cross pre jedno canopy bay
-                        iCanopyCrossBracingMembers_Total += iCanopy_BracingCrosses * 2; // 2 pruty v kazdom krizi
+                        if (canopyBay.IsCrossBracedLeft)
+                        {
+                            int iCanopy_BracingCrosses = 1; // Len jeden cross pre jedno canopy bay
+                            iCanopyCrossBracingMembers_Total += iCanopy_BracingCrosses * 2; // 2 pruty v kazdom krizi
+                        }
+
+                        if (canopyBay.IsCrossBracedRight)
+                        {
+                            int iCanopy_BracingCrosses = 1; // Len jeden cross pre jedno canopy bay
+                            iCanopyCrossBracingMembers_Total += iCanopy_BracingCrosses * 2; // 2 pruty v kazdom krizi
+                        }
                     }
 
                     // Canopy Bracing Block Nodes and Members
-                    if (bGeneratePurlinBracing)
+                    if (bGeneratePurlinBracingBlocksCanopy)
                     {
                         if (canopyBay.Left)
                         {
@@ -1513,6 +1524,9 @@ namespace PFD
                     vm._canopiesOptionsVM.CanopiesList,
                     FrameIndexList_Left,
                     FrameIndexList_Right,
+                    bGeneratePurlinsCanopy,
+                    bGeneratePurlinBracingBlocksCanopy,
+                    bGenerateCrossBracingCanopy,
                     fRafterStart,
                     fPurlinCanopyStart,
                     fPurlinCanopyEnd,
