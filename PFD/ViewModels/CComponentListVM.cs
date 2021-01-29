@@ -158,7 +158,8 @@ namespace PFD
                 ci.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide ||
                 ci.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
                 ci.MemberTypePosition == EMemberType_FS_Position.Purlin ||
-                ci.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
+                ci.MemberTypePosition == EMemberType_FS_Position.EdgePurlin ||
+                ci.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy)
                 return true;
             else return false;
         }
