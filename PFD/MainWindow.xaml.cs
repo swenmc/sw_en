@@ -382,10 +382,21 @@ namespace PFD
                 if (e.PropertyName == "MaterialList")
                 {
                     //To Mato - ak nastavim member IsSelectedForMaterialList - musim nastavovat tu premennu aj pre ine objekty viazane na member, alebo netreba?
+
+                    // TODO 692
+
+                    // To Ondrej - Malo by sa diať niečo podobné ako keď máme deactivate member - tam sa odnastavia pre joints, plates, screws vsetky booly
+
+                    // Ak zmenime pre IsSelectedForMaterialList pre member mali by sme zmeniť v prvkoch joints ktoré prisluchaju tomu prutu (plates, screws, washers, anchors, nuts ...)
+                    // Pri vsetkych tychto elementoch bool MaterialList
+
+                    // to iste by sa malo diať pri zmene bDisplay a bDesign.
+                    // Takže ak nie je zobrazený prút tak sa nezobrazia ani jeho spoje
+                    // Keď nie je prútu nastavené bDesign, nebude bDesign nastavený ani jeho spojom
+
                     CModelHelper.ChangeMembersIsSelectedForMaterialList(cInfo, vm.Model);
                     vm.RecreateQuotation = true;
                 }
-
             }
 
             SetUIElementsVisibility();
