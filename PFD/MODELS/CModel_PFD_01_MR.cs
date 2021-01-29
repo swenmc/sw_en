@@ -689,6 +689,7 @@ namespace PFD
 
             //----------------------------------------------------------------------------------------------------------------------------
             //Cross-bracing
+            bool bGenerateCrossBracing = vm._crossBracingOptionsVM.HasCrosses();
             bool bGenerateSideWallCrossBracing = false;
             if (ci_CBW != null && ci_CBW.Generate != null) bGenerateSideWallCrossBracing = ci_CBW.Generate.Value;
 
@@ -748,8 +749,7 @@ namespace PFD
 
             //----------------------------------------------------------------------------------------------------------------------------
             // Canopies
-
-            bool bGenerateCanopies = true;
+            bool bGenerateCanopies = vm._canopiesOptionsVM.HasCanopies();
             // Canopy - Purlins
             bool bGeneratePurlinsCanopy = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.PurlinCanopy);
             // Canopy - Cross-bracing

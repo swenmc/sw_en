@@ -375,6 +375,18 @@ namespace PFD
         }
 
 
+        public bool HasCrosses()
+        {
+            if (CrossBracingList == null) return false;
+
+            foreach (CCrossBracingInfo cb in CrossBracingList)
+            {
+                if (cb.WallLeft || cb.WallRight || cb.Roof) return true;
+            }
+
+            return false;
+        }
+
         public void SetViewModel(CrossBracingOptionsViewModel vm)
         {
             if (vm == null) return;
