@@ -687,7 +687,6 @@ namespace PFD
                 //iNumberOfGB_BSMembersInOneFrame -= iArrGB_BS_NumberOfMembersPerBay[iOneRafterBackColumnNo];
             }
 
-            //----------------------------------------------------------------------------------------------------------------------------
             //Cross-bracing
             bool bGenerateCrossBracing = vm._crossBracingOptionsVM.HasCrosses();
             bool bGenerateSideWallCrossBracing = false;
@@ -696,58 +695,59 @@ namespace PFD
             bool bGenerateRoofCrossBracing = false;
             if (ci_CBR != null && ci_CBR.Generate != null) bGenerateRoofCrossBracing = ci_CBR.Generate.Value;
 
-
             // Bug 596
             vm._crossBracingOptionsVM.ResetCounters();
 
-            if (bGenerateSideWallCrossBracing)
+            if (bGenerateCrossBracing && vm._crossBracingOptionsVM != null && vm._crossBracingOptionsVM.CrossBracingList != null)
             {
-                foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
+                if (bGenerateSideWallCrossBracing)
                 {
-                    if (cb.WallLeft)
+                    foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                     {
-                        cb.NumberOfCrossBracingMembers_WallLeftSide = 2;
-                        cb.NumberOfCrossBracingMembers_Walls += cb.NumberOfCrossBracingMembers_WallLeftSide;
-                    }
+                        if (cb.WallLeft)
+                        {
+                            cb.NumberOfCrossBracingMembers_WallLeftSide = 2;
+                            cb.NumberOfCrossBracingMembers_Walls += cb.NumberOfCrossBracingMembers_WallLeftSide;
+                        }
 
-                    if (cb.WallRight)
+                        if (cb.WallRight)
+                        {
+                            cb.NumberOfCrossBracingMembers_WallRightSide = 2;
+                            cb.NumberOfCrossBracingMembers_Walls += cb.NumberOfCrossBracingMembers_WallRightSide;
+                        }
+
+                        cb.NumberOfCrossBracingMembers_Bay += cb.NumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing v Bay
+                        iNumberOfCrossBracingMembers_Walls_Total += cb.NumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing pre valls v celom modeli
+                    }
+                }
+
+                if (bGenerateRoofCrossBracing)
+                {
+                    foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                     {
-                        cb.NumberOfCrossBracingMembers_WallRightSide = 2;
-                        cb.NumberOfCrossBracingMembers_Walls += cb.NumberOfCrossBracingMembers_WallRightSide;
-                    }
+                        if (cb.Roof)
+                        {
+                            // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
+                            //if (cb.EveryXXPurlin < 1) throw new ArgumentOutOfRangeException("Invalid index of purlin for cross-bracing. Index is " + cb.iEveryXXPurlin);
+                            if (cb.EveryXXPurlin == 0) throw new ArgumentOutOfRangeException("Invalid count of purlins. Could not be NONE.");
 
-                    cb.NumberOfCrossBracingMembers_Bay += cb.NumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing v Bay
-                    iNumberOfCrossBracingMembers_Walls_Total += cb.NumberOfCrossBracingMembers_Walls; // Celkovy pocet prutov cross bracing pre valls v celom modeli
+                            cb.NumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;
+                            cb.NumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
+
+                            if ((cb.FirstCrossOnRafter && !cb.LastCrossOnRafter) || (!cb.FirstCrossOnRafter && cb.LastCrossOnRafter))
+                                cb.NumberOfCrossesPerRafter = 1;
+                            else if (cb.FirstCrossOnRafter && cb.LastCrossOnRafter)
+                                cb.NumberOfCrossesPerRafter = 2;
+
+                            // 2 pruty * 1 strana (monopitch roof !!!!) * pocet krizov na jeden rafter v danej bay
+                            cb.NumberOfCrossBracingMembers_BayRoof = /*2 **/ 2 * cb.NumberOfCrossesPerRafter; // Rozdiel oproti GB
+                            cb.NumberOfCrossBracingMembers_Bay += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing v Bay
+                            iNumberOfCrossBracingMembers_Roof_Total += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing pre roof v celom modeli // Rozne podla vstupu v GUI a ine pre  roof a monopitch
+                        }
+                    }
                 }
             }
 
-            if (bGenerateRoofCrossBracing)
-            {
-                foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
-                {
-                    if (cb.Roof)
-                    {
-                        // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
-                        //if (cb.EveryXXPurlin < 1) throw new ArgumentOutOfRangeException("Invalid index of purlin for cross-bracing. Index is " + cb.iEveryXXPurlin);
-                        if (cb.EveryXXPurlin == 0) throw new ArgumentOutOfRangeException("Invalid count of purlins. Could not be NONE.");
-
-                        cb.NumberOfCrossesPerRafter_Maximum = iOneRafterPurlinNo + 1;
-                        cb.NumberOfCrossesPerRafter = cb.NumberOfCrossesPerRafter_Maximum / cb.EveryXXPurlin; // TODO - spocitat podla poctu purlins a nastavenia iRoofCrossBracingEveryXXPurlin
-
-                        if ((cb.FirstCrossOnRafter && !cb.LastCrossOnRafter) || (!cb.FirstCrossOnRafter && cb.LastCrossOnRafter))
-                            cb.NumberOfCrossesPerRafter = 1;
-                        else if (cb.FirstCrossOnRafter && cb.LastCrossOnRafter)
-                            cb.NumberOfCrossesPerRafter = 2;
-
-                        // 2 pruty * 1 strana (monopitch roof !!!!) * pocet krizov na jeden rafter v danej bay
-                        cb.NumberOfCrossBracingMembers_BayRoof = /*2 **/ 2 * cb.NumberOfCrossesPerRafter; // Rozdiel oproti GB
-                        cb.NumberOfCrossBracingMembers_Bay += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing v Bay
-                        iNumberOfCrossBracingMembers_Roof_Total += cb.NumberOfCrossBracingMembers_BayRoof; // Celkovy pocet prutov cross bracing pre roof v celom modeli // Rozne podla vstupu v GUI a ine pre  roof a monopitch
-                    }
-                }
-            }
-
-            //----------------------------------------------------------------------------------------------------------------------------
             // Canopies
             bool bGenerateCanopies = vm._canopiesOptionsVM.HasCanopies();
             // Canopy - Purlins
@@ -842,8 +842,6 @@ namespace PFD
                 // Rafter Overhangs
                 iCanopyRafterOverhangs_Total = FrameIndexList_Left.Count + FrameIndexList_Right.Count;
             }
-
-            //----------------------------------------------------------------------------------------------------------------------------
 
             m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame + iCanopyRafterNodes_Total + iCanopyPurlinNodes_Total + iCanopyPurlinBlockNodes_Total];
             m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total + iCanopyRafterOverhangs_Total + iCanopyPurlins_Total + iCanopyPurlinBlockMembers_Total + iCanopyCrossBracingMembers_Total];
@@ -1474,37 +1472,16 @@ namespace PFD
                 EMemberType_FS_Position.BracingBlockGirtsBackSide, fColumnsRotation, bUseGBEverySecond);
             }
 
-
-
-            //----------------------------------------------------------------------------------------------------------------------------
-            // TO Ondrej - IN WORK Cross-bracing
-
             // Cross-bracing
 
-            if (bGenerateSideWallCrossBracing || bGenerateRoofCrossBracing)
+            if (bGenerateCrossBracing && (bGenerateSideWallCrossBracing || bGenerateRoofCrossBracing))
             {
                 // Cyklus pre kazdu bay , cross bracing properties pre bay zadanu v GUI
                 foreach (CCrossBracingInfo cb in vm._crossBracingOptionsVM.CrossBracingList)
                 {
                     if (!cb.WallLeft && !cb.WallRight && !cb.Roof) continue; // Ak nie je v bay zaskrtnute generovanie cross bracing tak pokracujeme dalsou bay
 
-                    //GenerateCrossBracingMembersInBay(
-                    //bGenerateSideWallCrossBracing && (cb.WallLeft || cb.WallRight),
-                    //bGenerateRoofCrossBracing && cb.Roof,
-                    //bGenerateGirts,
-                    //i_temp_numberofMembers,
-                    //new CMemberEccentricity((float)m_arrCrSc[EMemberType_FS_Position.MainColumn].z_max + (float)m_arrCrSc[EMemberType_FS_Position.CrossBracingWall].t_min, 0f),
-                    //new CMemberEccentricity((float)m_arrCrSc[EMemberType_FS_Position.MainRafter].z_max + (float)m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof].t_min, 0f),
-                    //0.5f * (float)m_arrCrSc[EMemberType_FS_Position.CrossBracingWall].b,
-                    //0.5f * (float)m_arrCrSc[EMemberType_FS_Position.CrossBracingWall].b,
-                    //0.5f * (float)m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof].b,
-                    //0.5f * (float)m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof].b,
-                    //m_arrCrSc[EMemberType_FS_Position.CrossBracingWall],
-                    //m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof],
-                    //0f,
-                    //0.5f * MathF.fPI,
-                    //cb);
-                    GenerateCrossBracingMembersInBay( bGenerateSideWallCrossBracing, bGenerateRoofCrossBracing, bGenerateGirts, i_temp_numberofMembers,                    
+                    GenerateCrossBracingMembersInBay( bGenerateSideWallCrossBracing, bGenerateRoofCrossBracing, bGenerateGirts, i_temp_numberofMembers,
                         0f,
                         0.5f * MathF.fPI,
                         cb);
@@ -1512,7 +1489,6 @@ namespace PFD
                     i_temp_numberofMembers += cb.NumberOfCrossBracingMembers_Bay; // Navysime celkovy pocet o pocet prutov, ktore boli vygenerovane v danej bay
                 }
             }
-            //----------------------------------------------------------------------------------------------------------------------------
 
             // Canopies
             if (bGenerateCanopies && vm._canopiesOptionsVM != null && vm._canopiesOptionsVM.CanopiesList != null)
