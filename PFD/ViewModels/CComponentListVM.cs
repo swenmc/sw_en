@@ -1935,10 +1935,10 @@ namespace PFD
             }
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
-            CComponentInfo cPurlinInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            CComponentInfo cPurlinCanopyInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
 
             //todo Mato 659, prosim o kontrolu podmienok
-            if (hasPurlinBracing && cPurlinInfo.HasILS())
+            if (hasPurlinBracing && cPurlinCanopyInfo.HasILS())
             {
                 if (cInfo == null)
                 {
