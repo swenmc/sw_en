@@ -1715,17 +1715,6 @@ namespace PFD
                 }
             }
 
-            //------------------------------------------------------------
-            // Vid TODO 234 - docasne priradenie vlastnosti materialu
-            // Pre objekty dveri je potrebne pridat prierezy do Component List - Tab Members a nacitat ich parametre, potom sa moze nacitanie z databazy zmazat
-            // Po zapracovani TODO 234 mozno tento kod zmazat
-            foreach (CMember member in m_arrMembers)
-            {
-                if (member.CrScStart.m_Mat is CMat_03_00)
-                    DATABASE.CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)member.CrScStart.m_Mat, member.CrScStart.m_Mat.Name);
-            }
-            //------------------------------------------------------------
-
             CountPlates_ValidationPurpose(false);
 
             // End of blocks
