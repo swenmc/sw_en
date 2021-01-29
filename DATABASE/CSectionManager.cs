@@ -36,6 +36,8 @@ namespace DATABASE
 
         public static CrScProperties GetSectionProperties(string sectionName_short)
         {
+            if (string.IsNullOrEmpty(sectionName_short)) return null;
+
             if(dict_sectionProps == null) LoadSectionProperties();            
 
             CrScProperties crsc = null;
