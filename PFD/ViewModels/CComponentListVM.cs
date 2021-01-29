@@ -1573,6 +1573,8 @@ namespace PFD
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iPurlinCanopy_ILS_Number); ci.IsSetFromCode = false; }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
         }
 
         private void SetComponentInfoILS(CComponentInfo ci, int index)
@@ -1862,7 +1864,7 @@ namespace PFD
 
                     CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafterCanopy];
                     cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                        compPref.ComponentName, "63020", prop.colorName, "G550‡", ils, null, true, false, false, true,
+                        compPref.ComponentName, "270115n", prop.colorName, "G550‡", ils, null, true, false, false, true,
                         SectionsForColumnsOrRafters, CanopyRafterFlyBracingPosition_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
@@ -1884,7 +1886,7 @@ namespace PFD
 
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeRafterCanopy];
                 cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                    compPref.ComponentName, "63020", prop.colorName, "G550‡", ils, null, true, false, false, true,
+                    compPref.ComponentName, "270115n", prop.colorName, "G550‡", ils, null, true, false, false, true,
                     SectionsForColumnsOrRafters, CanopyRafterFlyBracingPosition_Items, MColors, EMemberType_FS_Position.EdgeRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
