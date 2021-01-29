@@ -328,7 +328,8 @@ namespace PFD
 
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin)
             {
-                CComponentInfo purlinBlock = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+                CComponentInfo purlinBlock = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+                if (purlinBlock == null) return;
                 if (purlinBlock.Generate != cInfo.Generate) { purlinBlock.IsSetFromCode = true; purlinBlock.Generate = cInfo.Generate; purlinBlock.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj purlins
@@ -339,12 +340,14 @@ namespace PFD
 
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
             {
-                CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsFrontSide);
+                CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsFrontSide);
+                if (ci == null) return;
                 if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide)
             {
-                CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsBackSide);
+                CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsBackSide);
+                if (ci == null) return;
                 if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsFrontSide && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj girt front
@@ -356,6 +359,29 @@ namespace PFD
             {
                 CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
                 if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
+            }
+            
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy)
+            {
+                CComponentInfo purlinBlockCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+                if (purlinBlockCanopy != null) 
+                    if (purlinBlockCanopy.Generate != cInfo.Generate) { purlinBlockCanopy.IsSetFromCode = true; purlinBlockCanopy.Generate = cInfo.Generate; purlinBlockCanopy.IsSetFromCode = false; }
+
+                CComponentInfo crossCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
+                if (crossCanopy != null)
+                    if (crossCanopy.Generate != cInfo.Generate) { crossCanopy.IsSetFromCode = true; crossCanopy.Generate = cInfo.Generate; crossCanopy.IsSetFromCode = false; }
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy && cInfo.Generate.Value) //iba ked zapnem blocks canopy tak sa musi zapnut aj purlins canopy
+            {
+                CComponentInfo purlinCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+                if (purlinCanopy == null) return;
+                if (purlinCanopy.Generate != cInfo.Generate) { purlinCanopy.IsSetFromCode = true; purlinCanopy.Generate = cInfo.Generate; purlinCanopy.IsSetFromCode = false; }
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy && cInfo.Generate.Value) //iba ked zapnem cross bracing canopy tak sa musi zapnut aj purlins canopy
+            {
+                CComponentInfo purlinCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+                if (purlinCanopy == null) return;
+                if (purlinCanopy.Generate != cInfo.Generate) { purlinCanopy.IsSetFromCode = true; purlinCanopy.Generate = cInfo.Generate; purlinCanopy.IsSetFromCode = false; }
             }
         }
 
@@ -1862,9 +1888,9 @@ namespace PFD
                     // TO Ondrej - prierezy brat z preddefinovanych hodnot v databaze
                     CrScProperties prop = CSectionManager.GetSectionProperties("63020");
 
-                    CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafterCanopy];
+                    CComponentPrefixes compPref = dict_CompPref[(int)EMemberType_FS_Position.MainRafterCanopy];
                     cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                        compPref.ComponentName, "270115n", prop.colorName, "G550‡", ils, null, true, false, false, true,
+                        compPref.ComponentName, "270115n", prop.colorName, "G550‡", ils, true, true, true, true, true,
                         SectionsForColumnsOrRafters, CanopyRafterFlyBracingPosition_Items, MColors, EMemberType_FS_Position.MainRafterCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
@@ -1886,7 +1912,7 @@ namespace PFD
 
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgeRafterCanopy];
                 cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                    compPref.ComponentName, "270115n", prop.colorName, "G550‡", ils, null, true, false, false, true,
+                    compPref.ComponentName, "270115n", prop.colorName, "G550‡", ils, true, true, true, true, true,
                     SectionsForColumnsOrRafters, CanopyRafterFlyBracingPosition_Items, MColors, EMemberType_FS_Position.EdgeRafterCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -1900,7 +1926,7 @@ namespace PFD
 
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.PurlinCanopy];
                 cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                    compPref.ComponentName, "270115", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                    compPref.ComponentName, "270115", prop.colorName, "G550‡", "None", true, true, true, true, true,
                     SectionsForGirtsOrPurlins, DefaultILS_Items, MColors, EMemberType_FS_Position.PurlinCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -1919,7 +1945,7 @@ namespace PFD
 
                     CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockPurlinsCanopy];
                     cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                        compPref.ComponentName, "27095", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                        compPref.ComponentName, "27095", prop.colorName, "G550‡", "None", true, true, true, true, true,
                         SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
@@ -1940,7 +1966,7 @@ namespace PFD
 
                     CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingRoofCanopy];
                     cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                        compPref.ComponentName, "1x100x1", prop.colorName, "G550‡", "None", null, true, false, false, true,
+                        compPref.ComponentName, "1x100x1", prop.colorName, "G550‡", "None", true, true, true, true, true,
                         SectionsForCrossBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.CrossBracingRoofCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
