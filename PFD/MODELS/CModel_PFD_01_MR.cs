@@ -322,6 +322,7 @@ namespace PFD
             int iNumberOfTransverseSupports_Girts = sGeometryInputData.iGirt_ILS_Number;
             int iNumberOfTransverseSupports_FrontGirts = sGeometryInputData.iGirtFrontSide_ILS_Number;
             int iNumberOfTransverseSupports_BackGirts = sGeometryInputData.iGirtBackSide_ILS_Number;
+            int iNumberOfTransverseSupports_PurlinsCanopy = sGeometryInputData.iPurlinCanopy_ILS_Number;
 
             // Limit pre poziciu horneho nosnika, mala by to byt polovica suctu vysky edge (eave) purlin h a sirky nosnika b (neberie sa h pretoze nosnik je otoceny o 90 stupnov)
             fUpperGirtLimit = (float)(m_arrCrSc[EMemberType_FS_Position.EdgePurlin].h + m_arrCrSc[EMemberType_FS_Position.Girt].b);
@@ -750,6 +751,9 @@ namespace PFD
 
             bool bGenerateCanopies = true;
 
+            // Purlin bracing blocks - Canopy
+            bool bGeneratePurlinBracingCanopy = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+
             int iCanopyRafterNodes_Total = 0;
             int iCanopyRafterOverhangs_Total = 0;
             int iCanopyPurlinNodes_Total = 0;
@@ -806,16 +810,16 @@ namespace PFD
                     {
                         if (canopyBay.Left)
                         {
-                            int iNumberOfPBNodesInOneCanopy = iNumberOfTransverseSupports_Purlins * (canopyBay.PurlinCountLeft + 1);
-                            int iNumberOfPBMembersInOneCanopy = iNumberOfTransverseSupports_Purlins * canopyBay.PurlinCountLeft;
+                            int iNumberOfPBNodesInOneCanopy = iNumberOfTransverseSupports_PurlinsCanopy * (canopyBay.PurlinCountLeft + 1);
+                            int iNumberOfPBMembersInOneCanopy = iNumberOfTransverseSupports_PurlinsCanopy * canopyBay.PurlinCountLeft;
                             iCanopyPurlinBlockNodes_Total += iNumberOfPBNodesInOneCanopy;
                             iCanopyPurlinBlockMembers_Total += iNumberOfPBMembersInOneCanopy;
                         }
 
                         if (canopyBay.Right)
                         {
-                            int iNumberOfPBNodesInOneCanopy = iNumberOfTransverseSupports_Purlins * (canopyBay.PurlinCountRight + 1);
-                            int iNumberOfPBMembersInOneCanopy = iNumberOfTransverseSupports_Purlins * canopyBay.PurlinCountRight;
+                            int iNumberOfPBNodesInOneCanopy = iNumberOfTransverseSupports_PurlinsCanopy * (canopyBay.PurlinCountRight + 1);
+                            int iNumberOfPBMembersInOneCanopy = iNumberOfTransverseSupports_PurlinsCanopy * canopyBay.PurlinCountRight;
                             iCanopyPurlinBlockNodes_Total += iNumberOfPBNodesInOneCanopy;
                             iCanopyPurlinBlockMembers_Total += iNumberOfPBMembersInOneCanopy;
                         }
@@ -1516,7 +1520,7 @@ namespace PFD
                     fCutOffOneSide,
                     iCanopyRafterNodes_Total,
                     iCanopyRafterOverhangs_Total,
-                    iNumberOfTransverseSupports_Purlins,
+                    iNumberOfTransverseSupports_PurlinsCanopy,
                     iCanopyPurlinNodes_Total,
                     iCanopyPurlins_Total,
                     iCanopyPurlinBlockNodes_Total,

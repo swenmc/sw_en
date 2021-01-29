@@ -1087,7 +1087,7 @@ namespace PFD
             float fCutOffOneSide,
             int iCanopyRafterNodes_Total,
             int iCanopyRafterOverhangs_Total,
-            int iNumberOfTransverseSupports_Purlins,
+            int iNumberOfTransverseSupports_PurlinsCanopy,
             int iCanopyPurlinNodes_Total,
             int iCanopyPurlins_Total,
             int iCanopyPurlinBlockNodes_Total,
@@ -1300,7 +1300,7 @@ namespace PFD
                     for (int j = 0; j < canopyBay.PurlinCountLeft; j++)
                     {
                         m_arrMembers[iCanopy_MemberIndex + j] = new CMember(iCanopy_MemberIndex + j + 1, m_arrNodes[iCanopy_NodeIndex + j], m_arrNodes[iCanopy_NodeIndex + canopyBay.PurlinCountLeft + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin_Left /*eccentricityPurlin*/, temp_eccPurlin_Left /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin_Left, 0);
-                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + j], iNumberOfTransverseSupports_Purlins);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + j], iNumberOfTransverseSupports_PurlinsCanopy);
                     }
                 }
 
@@ -1358,13 +1358,13 @@ namespace PFD
                     for (int j = 0; j < canopyBay.PurlinCountRight; j++)
                     {
                         m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j] = new CMember(iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j + 1, m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + j], m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin_Right, temp_eccPurlin_Right, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin_Right, 0);
-                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j], iNumberOfTransverseSupports_Purlins);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j], iNumberOfTransverseSupports_PurlinsCanopy);
                     }
                 }
 
                 // Purlin Blocks
 
-                float fIntermediateSupportSpacingPurlins = L1_Bays[i] / (iNumberOfTransverseSupports_Purlins + 1); // number of LTB segments = number of support + 1
+                float fIntermediateSupportSpacingPurlins = L1_Bays[i] / (iNumberOfTransverseSupports_PurlinsCanopy + 1); // number of LTB segments = number of support + 1
 
                 int iNumberOfPBNodesInOneCanopyBayLeftSide = 0;
                 int iNumberOfPBMembersInOneCanopyBayLeftSide = 0;
@@ -1399,13 +1399,13 @@ namespace PFD
                         if (j == 0) // First row of nodes
                             fCanopy_PurlinCoordinate_z = fH1_frame_centerline;
 
-                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        for (int k = 0; k < iNumberOfTransverseSupports_PurlinsCanopy; k++)
                         {
-                            m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_Purlins + k + 1, 0 - fCanopy_PurlinCoordinate_x, GetBaysWidthUntilFrameIndex(i) + (k + 1) * fIntermediateSupportSpacingPurlins, fCanopy_PurlinCoordinate_z, 0);
+                            m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_PurlinsCanopy + k] = new CNode(iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_PurlinsCanopy + k + 1, 0 - fCanopy_PurlinCoordinate_x, GetBaysWidthUntilFrameIndex(i) + (k + 1) * fIntermediateSupportSpacingPurlins, fCanopy_PurlinCoordinate_z, 0);
                         }
                     }
 
-                    iNumberOfPBNodesInOneCanopyBayLeftSide = (canopyBay.PurlinCountLeft + 1) * iNumberOfTransverseSupports_Purlins;
+                    iNumberOfPBNodesInOneCanopyBayLeftSide = (canopyBay.PurlinCountLeft + 1) * iNumberOfTransverseSupports_PurlinsCanopy;
 
                     // Purlin Block Members
 
@@ -1431,18 +1431,18 @@ namespace PFD
                             fPBStart_Current = - g - c + b + f - fCutOffOneSide;
                         }
 
-                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        for (int k = 0; k < iNumberOfTransverseSupports_PurlinsCanopy; k++)
                         {
-                            int memberIndex = iCanopy_MemberIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_Purlins + k;
-                            int startNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_Purlins + k;
-                            int endNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
+                            int memberIndex = iCanopy_MemberIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_PurlinsCanopy + k;
+                            int startNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + j * iNumberOfTransverseSupports_PurlinsCanopy + k;
+                            int endNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + (j + 1) * iNumberOfTransverseSupports_PurlinsCanopy + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlinsCanopy], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlinsCanopy, temp_eccPurlin_Left, temp_eccPurlin_Left, fPBStart_Current, fPBEnd, MathF.fPI, 0);
 
                             if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
                     }
 
-                    iNumberOfPBMembersInOneCanopyBayLeftSide = canopyBay.PurlinCountLeft * iNumberOfTransverseSupports_Purlins;
+                    iNumberOfPBMembersInOneCanopyBayLeftSide = canopyBay.PurlinCountLeft * iNumberOfTransverseSupports_PurlinsCanopy;
                 }
 
                 int iNumberOfPBNodesInOneCanopyBayRightSide = 0;
@@ -1475,13 +1475,13 @@ namespace PFD
                         else
                             fCanopy_PurlinCoordinate_z = fH1_frame_centerline + fCanopy_PurlinCoordinate_x * (float)Math.Tan(-fRoofPitch_rad);
 
-                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        for (int k = 0; k < iNumberOfTransverseSupports_PurlinsCanopy; k++)
                         {
-                            m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_Purlins + k] = new CNode(iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_Purlins + k + 1, fW_frame_centerline + fCanopy_PurlinCoordinate_x, GetBaysWidthUntilFrameIndex(i) + (k + 1) * fIntermediateSupportSpacingPurlins, fCanopy_PurlinCoordinate_z, 0);
+                            m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_PurlinsCanopy + k] = new CNode(iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_PurlinsCanopy + k + 1, fW_frame_centerline + fCanopy_PurlinCoordinate_x, GetBaysWidthUntilFrameIndex(i) + (k + 1) * fIntermediateSupportSpacingPurlins, fCanopy_PurlinCoordinate_z, 0);
                         }
                     }
 
-                    iNumberOfPBNodesInOneCanopyBayRightSide = (canopyBay.PurlinCountRight + 1) * iNumberOfTransverseSupports_Purlins;
+                    iNumberOfPBNodesInOneCanopyBayRightSide = (canopyBay.PurlinCountRight + 1) * iNumberOfTransverseSupports_PurlinsCanopy;
 
                     // Purlin Block Members
 
@@ -1508,18 +1508,18 @@ namespace PFD
                             fPBStart_Current = -g - c + b + f - fCutOffOneSide;
                         }
 
-                        for (int k = 0; k < iNumberOfTransverseSupports_Purlins; k++)
+                        for (int k = 0; k < iNumberOfTransverseSupports_PurlinsCanopy; k++)
                         {
-                            int memberIndex = iCanopy_MemberIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iNumberOfPBMembersInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_Purlins + k;
-                            int startNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_Purlins + k;
-                            int endNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
+                            int memberIndex = iCanopy_MemberIndex + canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + iNumberOfPBMembersInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_PurlinsCanopy + k;
+                            int startNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + j * iNumberOfTransverseSupports_PurlinsCanopy + k;
+                            int endNodeIndex = iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + 2 * canopyBay.PurlinCountRight + iNumberOfPBNodesInOneCanopyBayLeftSide + (j + 1) * iNumberOfTransverseSupports_PurlinsCanopy + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlinsCanopy], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlinsCanopy, temp_eccPurlin_Right /*eccentricityPurlin*/, temp_eccPurlin_Right /*eccentricityPurlin*/, fPBStart_Current, fPBEnd, 0, 0);
 
                             if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
                     }
 
-                    iNumberOfPBMembersInOneCanopyBayRightSide = canopyBay.PurlinCountRight * iNumberOfTransverseSupports_Purlins;
+                    iNumberOfPBMembersInOneCanopyBayRightSide = canopyBay.PurlinCountRight * iNumberOfTransverseSupports_PurlinsCanopy;
                 }
 
                 // Canopy - cross-bracing

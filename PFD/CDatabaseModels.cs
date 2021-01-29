@@ -42,6 +42,7 @@ namespace PFD
         private int m_iBackColumnFlyBracingEveryXXGirt;
         private int m_iGirtFrontSide_ILS_Number;
         private int m_iGirtBackSide_ILS_Number;
+        private int m_iPurlinCanopy_ILS_Number;
 
         private Dictionary<EMemberType_FS_Position, string> m_membersSectionsDict;
 
@@ -359,6 +360,19 @@ namespace PFD
             }
         }
 
+        public int iPurlinCanopy_ILS_Number
+        {
+            get
+            {
+                return m_iPurlinCanopy_ILS_Number;
+            }
+
+            set
+            {
+                m_iPurlinCanopy_ILS_Number = value;
+            }
+        }
+
         public Dictionary<EMemberType_FS_Position, string> MembersSectionsDict
         {
             get
@@ -499,6 +513,7 @@ namespace PFD
             iBackColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnBackSideFlyBracingEveryXXGirt); // 0; // Default pre stlpy
             iGirtFrontSide_ILS_Number = int.Parse(model.GirtFrontSide_ILS_Number);
             iGirtBackSide_ILS_Number = int.Parse(model.GirtBackSide_ILS_Number);
+            iPurlinCanopy_ILS_Number = int.Parse(model.PurlinCanopy_ILS_Number);
         }
 
         // TODO - refaktorovat s funkciou v CPFDViewModel
