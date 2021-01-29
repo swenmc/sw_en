@@ -398,16 +398,15 @@ namespace PFD
         }
 
         //todo Mato 659, prosim o kontrolu podmienok
-        public bool HasCanopiesPurlinBracing()
+        public bool HasCanopiesPurlin()
         {
             if (CanopiesList == null) return false;
 
             foreach (CCanopiesInfo ci in CanopiesList)
             {
-                // To Ondrej - toto sa mi velmi nepozdáva, pýtame sa či existuje viac než jedna purlin na ktorých by mohlo byt napojené
-                // PurlinBlockCanopy, alebo chceme vedieť koľko tých PurlinBlockCanopy bude
-                // to totiž závisí na hodnote ILS, ktorá je nastavená pre PurlinCanopy
-                if (ci.PurlinCountLeft > 1 || ci.PurlinCountRight > 1) return true;
+                // Zistime ci je pocet generovanych purlins vacsi ako 0
+                // Do istej miery je to zbytocna podmienka a bool, lebo vzdy musi existovat aspon jedna purlin ak chceme generovat bracing block pre purlin canopy
+                if (ci.PurlinCountLeft > 0 || ci.PurlinCountRight > 0) return true;
             }
 
             return false;

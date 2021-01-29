@@ -3582,7 +3582,7 @@ namespace PFD
         {
             if (_canopiesOptionsVM.HasCanopies())
             {
-                _componentVM.AddCanopy(_canopiesOptionsVM.HasCanopiesMainRafter(), _canopiesOptionsVM.HasCanopiesPurlinBracing(), _canopiesOptionsVM.HasCanopiesCrossBracing());
+                _componentVM.AddCanopy(_canopiesOptionsVM.HasCanopiesMainRafter(), _canopiesOptionsVM.HasCanopiesPurlin(), _canopiesOptionsVM.HasCanopiesCrossBracing());
                 _componentVM.SetCanopyRafterFlyBracingPosition_Items(_canopiesOptionsVM.GetMaxPurlinCount());
                 ComponentList = _componentVM.ComponentList;
             }

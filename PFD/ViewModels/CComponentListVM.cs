@@ -1896,7 +1896,7 @@ namespace PFD
             if(cInfo != null) ComponentList.Remove(cInfo);
         }
 
-        public void AddCanopy(bool hasMainRafter, bool hasPurlinBracing, bool hasCrossBracing)
+        public void AddCanopy(bool hasMainRafter, bool hasPurlin, bool hasCrossBracing)
         {
             bool changed = false;
 
@@ -1959,7 +1959,7 @@ namespace PFD
             CComponentInfo cPurlinCanopyInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
 
             //todo Mato 659, prosim o kontrolu podmienok
-            if (hasPurlinBracing && cPurlinCanopyInfo.HasILS())
+            if (hasPurlin && cPurlinCanopyInfo.HasILS())
             {
                 if (cInfo == null)
                 {
