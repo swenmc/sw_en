@@ -1810,6 +1810,13 @@ namespace PFD
             }
             else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockGirtsBackSide);
 
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+            if (cInfo != null && cInfo.ILS != "None")
+            {
+                changed = changed || AddBracingBlocksPurlinsCanopy();
+            }
+            else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+
             if (changed) OrderComponentList();
         }
 
@@ -1864,6 +1871,20 @@ namespace PFD
                 CComponentInfo ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
                     compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, false, false, true,
                     SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockPurlins);
+                MComponentList.Add(ci);
+                return true;
+            }
+            return false;
+        }
+        public bool AddBracingBlocksPurlinsCanopy()
+        {
+            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+            if (cInfo == null)
+            {
+                CComponentPrefixes compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockPurlinsCanopy];
+                CComponentInfo ci = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
+                    compPref.ComponentName, "27095", "Green", "G550‡", "None", true, true, false, false, true,
+                    SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, Colors, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
                 MComponentList.Add(ci);
                 return true;
             }
