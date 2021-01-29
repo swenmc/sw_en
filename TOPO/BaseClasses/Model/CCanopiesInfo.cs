@@ -253,10 +253,11 @@ namespace BaseClasses
                 IsCrossBracedLeft = false;
             }
         }
+
         private void SetRightDefaults()
         {
             if (Right)
-            {                
+            {
                 WidthRight = DefaultWidth;
                 PurlinCountRight = 2;
                 IsCrossBracedRight = true;
@@ -268,17 +269,17 @@ namespace BaseClasses
                 IsCrossBracedRight = false;
             }
         }
+
         private void ValidateWidth(double value)
         {
-            if (value <= 0)
-                throw new ArgumentException("Width must be greater than 0 [m].");
+            if (value <= 0 || value > 10)
+                throw new ArgumentException("Width must be between 0 and 10 [m]");
         }
+
         private void ValidatePurlinCount(int value)
         {
-            if (value <= 0)
-                throw new ArgumentException("Purlin count must be greater than 0.");
-            if (value > 15)
-                throw new ArgumentException("Maximum purlin count is 15.");
+            if (value <= 0 || value > 15)
+                throw new ArgumentException("Purlin count must be between 0 and 15.");
         }
     }
 }
