@@ -122,7 +122,7 @@ namespace PFD
                 if (e.PropertyName == "Generate")
                 {
                     if (!ValidateGirts()) { cInfo.IsSetFromCode = true; cInfo.Generate = !cInfo.Generate; ValidateGirts(); cInfo.IsSetFromCode = false; return; }
-                    SetGirtsAndColumns(cInfo);
+                    ChangeGenerateAccordingToRelations(cInfo);
                 }
 
                 if (e.PropertyName == "ILS")
@@ -275,18 +275,39 @@ namespace PFD
             // Problem je ze uzly generovane pre girts sa pouziju aj pre girts - front / back side, takze keby sme negenerovali girts nebolo by mozne girts - front / back side vytvorit
             // S tymto bude este problem, lebo oni chcu, aby bolo mozne vypnut side girts a nechat girts - front / back side
 
-            CComponentInfo girt = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            CComponentInfo girtL = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            CComponentInfo girtR = ComponentList.Last(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+
             CComponentInfo girtFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
             CComponentInfo girtBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
 
             //ak je front aj back false tak vtedy dovolit editovat girt
-            if (!girtFront.Generate.Value && !girtBack.Generate.Value) { girt.GenerateIsEnabled = true; girt.GenerateIsReadonly = false; }
-            else { girt.GenerateIsEnabled = false; girt.GenerateIsReadonly = true; }
+            if (!girtFront.Generate.Value && !girtBack.Generate.Value) { girtL.GenerateIsEnabled = true; girtL.GenerateIsReadonly = false; girtR.GenerateIsEnabled = true; girtR.GenerateIsReadonly = false; }
+            else { girtL.GenerateIsEnabled = false; girtL.GenerateIsReadonly = true; girtR.GenerateIsEnabled = false; girtR.GenerateIsReadonly = true; }
 
-            if (girt.GenerateIsEnabled && !girt.Generate.Value) { girtFront.GenerateIsEnabled = false; girtFront.GenerateIsReadonly = true; girtBack.GenerateIsEnabled = false; girtBack.GenerateIsReadonly = true; }
-            else { girtFront.GenerateIsEnabled = true; girtFront.GenerateIsReadonly = false; girtBack.GenerateIsEnabled = true; girtBack.GenerateIsReadonly = false; }
+            if (girtL.GenerateIsEnabled && !girtL.Generate.Value)
+            {
+                girtFront.GenerateIsEnabled = false; girtFront.GenerateIsReadonly = true;
+                girtBack.GenerateIsEnabled = false; girtBack.GenerateIsReadonly = true;
+            }
+            else
+            {
+                girtFront.GenerateIsEnabled = true; girtFront.GenerateIsReadonly = false;
+                girtBack.GenerateIsEnabled = true; girtBack.GenerateIsReadonly = false;
+            }
 
-            if (girt.Generate.Value)
+            if (girtR.GenerateIsEnabled && !girtR.Generate.Value)
+            {
+                girtFront.GenerateIsEnabled = false; girtFront.GenerateIsReadonly = true;
+                girtBack.GenerateIsEnabled = false; girtBack.GenerateIsReadonly = true;
+            }
+            else
+            {
+                girtFront.GenerateIsEnabled = true; girtFront.GenerateIsReadonly = false;
+                girtBack.GenerateIsEnabled = true; girtBack.GenerateIsReadonly = false;
+            }
+
+            if (girtL.Generate.Value)
             {
                 return true;
             }
@@ -298,7 +319,8 @@ namespace PFD
             return true;
         }
 
-        private void SetGirtsAndColumns(CComponentInfo cInfo)
+        //To Mato - treba nam dat lepsi nazov metode
+        private void ChangeGenerateAccordingToRelations(CComponentInfo cInfo)
         {
             //Ak je zaskrtnute generovanie girts front side musia byt zapnute columns front side, a podobne pre back side girts a back side columns.
             // Bug 672
@@ -322,6 +344,21 @@ namespace PFD
             {
                 CComponentInfo columnBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
                 if (columnBack.Generate != cInfo.Generate) { columnBack.IsSetFromCode = true; columnBack.Generate = cInfo.Generate; columnBack.IsSetFromCode = false; }
+            }
+
+            //tu davam zavislost ze stale rovnake Generate pre Girt-Left a Girt-Right
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt)
+            {
+                if (cInfo.ComponentName.EndsWith("Left Side"))
+                {
+                    CComponentInfo girtRight = ComponentList.Last(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+                    if (girtRight.Generate != cInfo.Generate) { girtRight.IsSetFromCode = true; girtRight.Generate = cInfo.Generate; girtRight.IsSetFromCode = false; }
+                }
+                else
+                {
+                    CComponentInfo girtLeft = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+                    if (girtLeft.Generate != cInfo.Generate) { girtLeft.IsSetFromCode = true; girtLeft.Generate = cInfo.Generate; girtLeft.IsSetFromCode = false; }
+                }
             }
 
             //task 505
