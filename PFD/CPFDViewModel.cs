@@ -343,7 +343,8 @@ namespace PFD
                 if (!isChangedFromCode) IsSetFromCode = true;
 
                 //najprv sa nastavi component list view model podla DB
-                _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
+                _componentVM.MembersSectionsDict = dmodel.MembersSectionsDict;
+                _componentVM.SetModelComponentListProperties(); //set default components sections
                 _componentVM.SetILSProperties(dmodel);
 
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
