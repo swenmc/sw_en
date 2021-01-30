@@ -89,7 +89,7 @@
                             <Button  Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="Project Details" Margin="5 0 0 0" Width="20" Height="20" Click="btnProjectInfo_Click">
                                 <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
-                            <Button Grid.Row="0" Grid.Column="3" Name="btnGeneralOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="General Options" Margin="5 0 0 0" Width="20" Height="20" Click="btnGeneralOptions_Click">
+                            <Button Grid.Row="0" Grid.Column="3" Name="btnGeneralOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Model Options" Margin="5 0 0 0" Width="20" Height="20" Click="btnGeneralOptions_Click">
                                 <Image Source="Resources/options.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                             <Button Grid.Row="0" Grid.Column="3" Name="btnDisplayOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Display Options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnDisplayOptions_Click">
