@@ -1181,6 +1181,8 @@ namespace BaseClasses
         public int iBackWindPostFlyBracingEveryXXGirt;
         public int iGirtFrontSide_ILS_Number;
         public int iGirtBackSide_ILS_Number;
+
+        public int iRafterCanopyFlyBracingEveryXXPurlin;
         public int iPurlinCanopy_ILS_Number;
     }
 

@@ -264,10 +264,17 @@ namespace PFD
             bool bUseRafterFlyBracingPlates = vm._generalOptionsVM.UseRafterFlyBracingPlates; // Use fly bracing plates in purlin to rafter joint
 
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
+            {
                 iRafterFlyBracing_EveryXXPurlin = sGeometryInputData.iRafterFlyBracingEveryXXPurlin;
+
+                // Canopy
+                iRafterCanopyFlyBracing_EveryXXPurlin = sGeometryInputData.iRafterCanopyFlyBracingEveryXXPurlin;
+            }
             else
             {
                 iRafterFlyBracing_EveryXXPurlin = Math.Max(0, (int)(L1_Bays[0] / fDist_Purlin));
+                // Canopy
+                iRafterCanopyFlyBracing_EveryXXPurlin = iRafterFlyBracing_EveryXXPurlin;
             }
 
             // Front and Back Wind Post
@@ -1375,6 +1382,7 @@ namespace PFD
                     fRafterStart,
                     fPurlinCanopyStart,
                     fPurlinCanopyEnd,
+                    bUseRafterFlyBracingPlates,
                     bUsePBEverySecond,
                     fCutOffOneSide,
                     iCanopyRafterNodes_Total,
@@ -1404,7 +1412,8 @@ namespace PFD
             #region Joints
             if (joints == null)
                 CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
-                             bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, bGenerateSideWallCrossBracing, bGenerateRoofCrossBracing, vm._generalOptionsVM.WindPostUnderRafter, iOneColumnGirtNo);
+                             bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, bGenerateSideWallCrossBracing, bGenerateRoofCrossBracing,
+                             bGenerateCanopies, bGeneratePurlinsCanopy, bGeneratePurlinBracingBlocksCanopy, bGenerateCrossBracingCanopy, vm._generalOptionsVM.WindPostUnderRafter, iOneColumnGirtNo);
             else
                 m_arrConnectionJoints = joints;
             #endregion

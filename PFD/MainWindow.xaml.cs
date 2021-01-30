@@ -1137,6 +1137,9 @@ namespace PFD
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (ci != null) sGeometryInputData.iGirtBackSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
 
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
+            if (ci != null) sGeometryInputData.iRafterCanopyFlyBracingEveryXXPurlin = ci.ILS_Items.IndexOf(ci.ILS);
+
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
             if (ci != null) sGeometryInputData.iPurlinCanopy_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
         }

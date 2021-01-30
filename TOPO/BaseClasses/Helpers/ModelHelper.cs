@@ -137,20 +137,20 @@ namespace BaseClasses.Helpers
         public static CMember[] GetMiddleFrameMembers(CModel model, bool bAddGirtsAndPurlins = true)
         {
             int iDirectionCode = 1; // iDirectionCode 0- direction X, 1-direction Y, 2 - direction Z
-                        
-            if (!bAddGirtsAndPurlins)                
+
+            if (!bAddGirtsAndPurlins)
                 return GetMembersInDistance(model, model.L1_Bays[0], iDirectionCode); //bay number 1
-            else                
+            else
                 return GetMembersInDistanceInterval(model, 0, model.L1_Bays[0], iDirectionCode, false, true, true); //bay number 1
         }
 
         public static CNode[] GetMiddleFrameNodes(CModel model, bool bAddGirtsAndPurlins = true)
         {
             int iDirectionCode = 1; // iDirectionCode 0- direction X, 1-direction Y, 2 - direction Z
-                        
-            if (!bAddGirtsAndPurlins)                
+
+            if (!bAddGirtsAndPurlins)
                 return GetNodesInDistance(model, model.L1_Bays[0], iDirectionCode); //bay number 1 
-            else                
+            else
                 return GetNodesInDistanceInterval(model, 0, model.L1_Bays[0], iDirectionCode, false, true); //bay number 1
         }
 
@@ -180,7 +180,7 @@ namespace BaseClasses.Helpers
                 {
                     if (m.EMemberType == t)
                         members.Add(m);
-                }                
+                }
             }
             return members.ToArray();
         }
