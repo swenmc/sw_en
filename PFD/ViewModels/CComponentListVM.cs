@@ -327,22 +327,26 @@ namespace PFD
 
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide)
             {
-                CComponentInfo girtFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+                CComponentInfo girtFront = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+                if (girtFront == null) return;
                 if (girtFront.Generate != cInfo.Generate) { girtFront.IsSetFromCode = true; girtFront.Generate = cInfo.Generate; girtFront.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
             {
-                CComponentInfo girtBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+                CComponentInfo girtBack = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+                if (girtBack == null) return;
                 if (girtBack.Generate != cInfo.Generate) { girtBack.IsSetFromCode = true; girtBack.Generate = cInfo.Generate; girtBack.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
-                CComponentInfo columnFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
+                CComponentInfo columnFront = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
+                if (columnFront == null) return;
                 if (columnFront.Generate != cInfo.Generate) { columnFront.IsSetFromCode = true; columnFront.Generate = cInfo.Generate; columnFront.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
-                CComponentInfo columnBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
+                CComponentInfo columnBack = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
+                if (columnBack == null) return;
                 if (columnBack.Generate != cInfo.Generate) { columnBack.IsSetFromCode = true; columnBack.Generate = cInfo.Generate; columnBack.IsSetFromCode = false; }
             }
 
@@ -372,7 +376,8 @@ namespace PFD
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj purlins
             {
-                CComponentInfo purlin = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                CComponentInfo purlin = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                if (purlin == null) return;
                 if (purlin.Generate != cInfo.Generate) { purlin.IsSetFromCode = true; purlin.Generate = cInfo.Generate; purlin.IsSetFromCode = false; }
             }
 
@@ -390,12 +395,14 @@ namespace PFD
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsFrontSide && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj girt front
             {
-                CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+                CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+                if (ci == null) return;
                 if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirtsBackSide && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj girt back
             {
-                CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+                CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+                if (ci == null) return;
                 if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
             
