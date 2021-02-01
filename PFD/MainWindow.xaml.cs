@@ -337,6 +337,11 @@ namespace PFD
                 {
                     vm.RecreateModel = true;
                 }
+                if (e.PropertyName == "Design")
+                {
+                    //TO Mato - co sa ma stat ak sa zmeni Design v tabulke component list?
+                    //vm.RecreateModel = true;
+                }
                 if (e.PropertyName == "Calculate")
                 {
                     vm.ModelCalculatedResultsValid = false;
@@ -396,7 +401,12 @@ namespace PFD
                     // Takže ak nie je zobrazený prút tak sa nezobrazia ani jeho spoje
                     // Keď nie je prútu nastavené bDesign, nebude bDesign nastavený ani jeho spojom
 
+                    //To Mato - pozor je tu rozdiel v tom, ci je znovu generovany model, lebo tuna konkretne sa model nepregeneruje, len sa meni bool
+                    //ak zmenis Display, tak sa pregeneruje model,cize ide vsetko nanovo
+                    //hore som ti pisal,ze co sa ma udial ak zmenis Design
+
                     CModelHelper.ChangeMembersIsSelectedForMaterialList(cInfo, vm.Model);
+                    CModelHelper.ChangeJointsIsSelectedForMaterialList(cInfo, vm.Model); //doplnil som...ale podla mna je to dvojmo
                     vm.RecreateQuotation = true;
                 }
             }
