@@ -1618,13 +1618,13 @@ namespace PFD
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
 
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iPurlin_ILS_Number); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iEdgePurlin_ILS_Number); ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iGirt_ILS_Number); ci.IsSetFromCode = false; }
-            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
-            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iPurlin_ILS_Number); ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iGirt_ILS_Number); ci.IsSetFromCode = false; }            
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iFrontColumnFlyBracingEveryXXGirt); ci.IsSetFromCode = false; }
@@ -1841,35 +1841,35 @@ namespace PFD
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
             if (cInfo != null && cInfo.ILS != "None")
             {
-                changed = changed || AddBracingBlocksGirts();
+                changed = AddBracingBlocksGirts() || changed; 
             }
             else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockGirts);
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
             if (cInfo != null && cInfo.ILS != "None")
             {
-                changed = changed || AddBracingBlocksPurlins();
+                changed = AddBracingBlocksPurlins() || changed; //musi sa to takto napisat, lebo inak sa to druhe nemusi vykonat
             }
             else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockPurlins);
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
             if (cInfo != null && cInfo.ILS != "None")
             {
-                changed = changed || AddBracingBlocksGirtsFrontSide();
+                changed = AddBracingBlocksGirtsFrontSide() || changed;
             }
             else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockGirtsFrontSide);
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (cInfo != null && cInfo.ILS != "None")
             {
-                changed = changed || AddBracingBlocksGirtsBackSide();
+                changed = AddBracingBlocksGirtsBackSide() || changed;
             }
             else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockGirtsBackSide);
 
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
             if (cInfo != null && cInfo.ILS != "None")
             {
-                changed = changed || AddBracingBlocksPurlinsCanopy();
+                changed = AddBracingBlocksPurlinsCanopy() || changed;
             }
             else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockPurlinsCanopy);
 

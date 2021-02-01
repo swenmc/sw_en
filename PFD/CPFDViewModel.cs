@@ -346,6 +346,7 @@ namespace PFD
                 _componentVM.MembersSectionsDict = dmodel.MembersSectionsDict;
                 _componentVM.SetModelComponentListProperties(); //set default components sections
                 _componentVM.SetILSProperties(dmodel);
+                _componentVM.UpdateBracingBlocks();
 
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
                 RoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
