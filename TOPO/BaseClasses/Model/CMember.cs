@@ -649,7 +649,9 @@ namespace BaseClasses
                 var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/zinc04.jpg", UriKind.RelativeOrAbsolute)) };
                 RenderOptions.SetCachingHint(image, CachingHint.Cache);
                 RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
-                var material = new DiffuseMaterial(new VisualBrush(image));
+                VisualBrush visualBrush = new VisualBrush(image);
+                visualBrush.Opacity = brush.Opacity;
+                var material = new DiffuseMaterial(visualBrush);
                 materialGroup.Children.Add(material);
                 model.BackMaterial = material;
 

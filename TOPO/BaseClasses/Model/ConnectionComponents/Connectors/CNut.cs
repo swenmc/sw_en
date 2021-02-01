@@ -343,7 +343,7 @@ namespace BaseClasses
 
             return model;
         }
-        public override GeometryModel3D CreateGeomModel3DWithTexture()
+        public override GeometryModel3D CreateGeomModel3DWithTexture(float opacity)
         {
             GeometryModel3D model = new GeometryModel3D();
 
@@ -368,7 +368,9 @@ namespace BaseClasses
             var image = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Textures/wallTexture.jpg", UriKind.RelativeOrAbsolute)) };
             RenderOptions.SetCachingHint(image, CachingHint.Cache);
             RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
-            var material = new DiffuseMaterial(new VisualBrush(image));
+            VisualBrush visualBrush = new VisualBrush(image);
+            visualBrush.Opacity = opacity;
+            var material = new DiffuseMaterial(visualBrush);
             model.BackMaterial = material;
 
             model.Material = material;  // Set Model Material

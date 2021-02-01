@@ -270,7 +270,7 @@ namespace BaseClasses
             return geometryModel;
         }
 
-        public override GeometryModel3D CreateGeomModel3DWithTexture()
+        public override GeometryModel3D CreateGeomModel3DWithTexture(float opacity)
         {
             throw new Exception("Not implemented");
         }
