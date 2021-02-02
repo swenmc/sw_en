@@ -39,7 +39,7 @@ namespace PFD
         private bool m_ColorsAccordingToSections;
 
         private bool m_DisplayDistinguishedColorMember;
-        private bool m_DisplayTransparentModelMember;
+        //private bool m_DisplayTransparentModelMember;
 
         private bool MShowGlobalAxis;
         private bool MShowLocalMembersAxis;
@@ -626,20 +626,20 @@ namespace PFD
             }
         }
 
-        public bool DisplayTransparentModelMember
-        {
-            get
-            {
-                return m_DisplayTransparentModelMember;
-            }
+        //public bool DisplayTransparentModelMember
+        //{
+        //    get
+        //    {
+        //        return m_DisplayTransparentModelMember;
+        //    }
 
-            set
-            {
-                m_DisplayTransparentModelMember = value;
+        //    set
+        //    {
+        //        m_DisplayTransparentModelMember = value;
 
-                NotifyPropertyChanged("DisplayTransparentModelMember");
-            }
-        }
+        //        NotifyPropertyChanged("DisplayTransparentModelMember");
+        //    }
+        //}
 
         public bool ColorsAccordingToMembersPrefix
         {
@@ -3189,7 +3189,7 @@ namespace PFD
             DisplaySolidModel = true;
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
-            DisplayTransparentModelMember = false;
+            //DisplayTransparentModelMember = false;
             ColorsAccordingToMembersPrefix = false;
             ColorsAccordingToMembersPosition = true;
             ColorsAccordingToSections = false;
@@ -3404,7 +3404,7 @@ namespace PFD
             DisplaySolidModel = newVM.DisplaySolidModel;
             DisplayWireFrameModel = newVM.DisplayWireFrameModel;
             DisplayDistinguishedColorMember = newVM.DisplayDistinguishedColorMember;
-            DisplayTransparentModelMember = newVM.DisplayTransparentModelMember;
+            //DisplayTransparentModelMember = newVM.DisplayTransparentModelMember;
             ColorsAccordingToMembersPrefix = newVM.ColorsAccordingToMembersPrefix;
             ColorsAccordingToMembersPosition = newVM.ColorsAccordingToMembersPosition;
             ColorsAccordingToSections = newVM.ColorsAccordingToSections;

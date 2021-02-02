@@ -4120,7 +4120,7 @@ namespace PFD
             sDisplayOptions.bDisplayWireFrameModel = _displayOptionsVM.DisplayWireFrameModel;
 
             sDisplayOptions.bDistinguishedColor = _displayOptionsVM.DisplayDistinguishedColorMember;
-            sDisplayOptions.bTransparentMemberModel = _displayOptionsVM.DisplayTransparentModelMember;
+            //sDisplayOptions.bTransparentMemberModel = _displayOptionsVM.DisplayTransparentModelMember;
 
             sDisplayOptions.bDisplayGlobalAxis = _displayOptionsVM.ShowGlobalAxis;
             sDisplayOptions.bDisplayLocalMembersAxis = _displayOptionsVM.ShowLocalMembersAxis;

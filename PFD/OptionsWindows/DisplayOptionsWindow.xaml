@@ -63,7 +63,7 @@
 
                         <StackPanel Grid.Row="3" Grid.Column="0">
                             <CheckBox Name="chbDisplayDistinguishedColorMember" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Colour Members</CheckBox>
-                            <CheckBox Name="chbDisplayTransparentModelMember" IsChecked="{Binding Path=DisplayTransparentModelMember}">Transparent Members</CheckBox>
+                            <!--<CheckBox Name="chbDisplayTransparentModelMember" IsChecked="{Binding Path=DisplayTransparentModelMember}">Transparent Members</CheckBox>-->
                             <CheckBox Name="chbColoredCenterlines" IsChecked="{Binding Path=ColoredCenterlines}">Colored Centerlines</CheckBox>
 
                             <CheckBox Name="chbDisplayGlobalAxis" IsChecked="{Binding Path=ShowGlobalAxis}">Display Global Axis</CheckBox>

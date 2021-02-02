@@ -878,7 +878,7 @@ namespace BaseClasses
         public bool bDisplayWireFrameModel;
 
         public bool bDistinguishedColor;       // Distinquished color of front and back area of member (slower), if false -> one color of whole member (faster)
-        public bool bTransparentMemberModel;   // Set material opacity less than 1.0
+        //public bool bTransparentMemberModel;   // Set material opacity less than 1.0 - toto uz nema vyznam, lebo mame opacity
 
         public bool bDisplayGlobalAxis;
         public bool bDisplayLocalMembersAxis;
