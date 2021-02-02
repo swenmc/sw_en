@@ -86,8 +86,7 @@ namespace BaseClasses
 
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
-                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
                 //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -139,7 +138,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersCenterLines)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                     Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -150,7 +149,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -308,8 +307,7 @@ namespace BaseClasses
                 Model3DGroup gr = new Model3DGroup();
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
-                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
                 //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -335,7 +333,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersCenterLines)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                     Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -346,7 +344,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -465,8 +463,7 @@ namespace BaseClasses
                 Model3DGroup gr = new Model3DGroup();
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
-                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -490,7 +487,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersCenterLines)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                     Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -501,7 +498,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, sDisplayOptions);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
@@ -1499,32 +1496,103 @@ namespace BaseClasses
 
         #region Create Model3D methods
 
+        //zachovavam povodnu
+        //// Create Members Model3D
+        //public static Model3DGroup CreateMembersModel3D(CModel model,
+        //    bool bFastRendering = true,
+        //    bool bTranspartentModel = false,
+        //    bool bUseDiffuseMaterial = true,
+        //    bool bUseEmissiveMaterial = true,
+        //    bool bColorsAccordingToMembers = true,
+        //    bool bColorsAccordingToSections = false,
+        //    bool bUseTextures = false,
+        //    SolidColorBrush front = null,
+        //    SolidColorBrush shell = null,
+        //    SolidColorBrush back = null,
+        //    float fOpacity = 0.3f,
+        //    EGCS egcs = EGCS.eGCSLeftHanded)
+        //{
+        //    if (front == null) front = new SolidColorBrush(Colors.Red); // Material color - Front Side
+        //    if (back == null) back = new SolidColorBrush(Colors.Red); // Material color - Back Side
+        //    if (shell == null) shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
+
+        //    if (bTranspartentModel)
+        //    {
+        //        front.Opacity = back.Opacity = 0.6;
+        //        shell.Opacity = fOpacity;
+        //    }
+        //    else front.Opacity = shell.Opacity = back.Opacity = fOpacity;
+
+        //    Model3DGroup model3D = null;
+        //    if (model.m_arrMembers != null) // Some members exist
+        //    {
+        //        // Model Group of Members
+        //        // Prepare member model
+        //        for (int i = 0; i < model.m_arrMembers.Length; i++) // !!! Import z xls - BUG pocet prvkov sa nacitava z xls aj z prazdnych riadkov pokial su nejako formatovane / nie default
+        //        {
+        //            if (model.m_arrMembers[i] != null &&
+        //                model.m_arrMembers[i].NodeStart != null &&
+        //                model.m_arrMembers[i].NodeEnd != null &&
+        //                model.m_arrMembers[i].CrScStart != null &&
+        //                model.m_arrMembers[i].BIsGenerated &&
+        //                model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to display
+        //            {
+        //                if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
+        //                {
+        //                    //Set Colors
+        //                    if (bColorsAccordingToMembers && model.m_arrMembers[i].Color != null) shell = new SolidColorBrush(model.m_arrMembers[i].Color);
+        //                    else if (bColorsAccordingToSections && model.m_arrMembers[i].CrScStart.CSColor != null) shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
+
+        //                    if (bFastRendering ||
+        //                            (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null ||
+        //                             model.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
+        //                             model.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)) // Check if are particular surfaces defined
+        //                    {
+        //                        // Create Member model - one geometry model
+        //                        if (model3D == null) model3D = new Model3DGroup();
+
+        //                        GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial, bUseTextures);
+        //                        model3D.Children.Add(geom3D); // Use shell color for whole member
+        //                    }
+        //                    else
+        //                    {
+        //                        // Create Member model - consist of 3 geometry models (member is one model group)
+        //                        if (model3D == null) model3D = new Model3DGroup();
+        //                        Model3DGroup mgr = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial);
+        //                        model3D.Children.Add(mgr);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    // Display axis line, member is not valid to display in 3D
+        //                }
+
+        //                // TO Ondrej - Ak zobrazujeme wireframe, mali by sme updatovat jeho body
+        //            }
+        //        }
+        //    }
+        //    return model3D;
+        //}
+
         // Create Members Model3D
-        public static Model3DGroup CreateMembersModel3D(CModel model,
-            bool bFastRendering = true,
-            bool bTranspartentModel = false,
-            bool bUseDiffuseMaterial = true,
-            bool bUseEmissiveMaterial = true,
-            bool bColorsAccordingToMembers = true,
-            bool bColorsAccordingToSections = false,
-            bool bUseTextures = false,
-            SolidColorBrush front = null,
-            SolidColorBrush shell = null,
-            SolidColorBrush back = null,
-            float fOpacity = 0.3f,
-            EGCS egcs = EGCS.eGCSLeftHanded)
+        public static Model3DGroup CreateMembersModel3D(CModel model, DisplayOptions opts)
         {
-            if (front == null) front = new SolidColorBrush(Colors.Red); // Material color - Front Side
-            if (back == null) back = new SolidColorBrush(Colors.Red); // Material color - Back Side
-            if (shell == null) shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
+            bool bFastRendering = !opts.bDistinguishedColor;
+            EGCS egcs = EGCS.eGCSLeftHanded;
 
-            if (bTranspartentModel)
+            SolidColorBrush front = null;
+            SolidColorBrush back = null;
+            SolidColorBrush shell = null;
+
+            if (!bFastRendering)
             {
-                front.Opacity = back.Opacity = 0.6;
-                shell.Opacity = fOpacity;
+                front = new SolidColorBrush(Colors.Red); // Material color - Front Side
+                back = new SolidColorBrush(Colors.Red); // Material color - Back Side
+                shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
+                                
+                front.Opacity = shell.Opacity = back.Opacity = opts.fMemberSolidModelOpacity;
             }
-            else front.Opacity = shell.Opacity = back.Opacity = fOpacity;
-
+            
             Model3DGroup model3D = null;
             if (model.m_arrMembers != null) // Some members exist
             {
@@ -1542,8 +1610,10 @@ namespace BaseClasses
                         if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
                         {
                             //Set Colors
-                            if (bColorsAccordingToMembers && model.m_arrMembers[i].Color != null) shell = new SolidColorBrush(model.m_arrMembers[i].Color);
-                            else if (bColorsAccordingToSections && model.m_arrMembers[i].CrScStart.CSColor != null) shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
+                            if (opts.bColorsAccordingToMembers && model.m_arrMembers[i].Color != null) shell = new SolidColorBrush(model.m_arrMembers[i].Color);
+                            else if (opts.bColorsAccordingToSections && model.m_arrMembers[i].CrScStart.CSColor != null) shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
+
+                            shell.Opacity = opts.fMemberSolidModelOpacity;
 
                             if (bFastRendering ||
                                     (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null ||
@@ -1553,14 +1623,14 @@ namespace BaseClasses
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
 
-                                GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial, bUseTextures);
+                                GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, opts.bUseDiffuseMaterial, opts.bUseEmissiveMaterial, opts.bUseTextures);
                                 model3D.Children.Add(geom3D); // Use shell color for whole member
                             }
                             else
                             {
                                 // Create Member model - consist of 3 geometry models (member is one model group)
                                 if (model3D == null) model3D = new Model3DGroup();
-                                Model3DGroup mgr = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial);
+                                Model3DGroup mgr = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, opts.bUseDiffuseMaterial, opts.bUseEmissiveMaterial);
                                 model3D.Children.Add(mgr);
                             }
                         }
@@ -1578,13 +1648,21 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Connection joints model 3d group
-        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions, SolidColorBrush brushWelds = null)
+        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, DisplayOptions opts, SolidColorBrush brushWelds = null)
         {
-            SolidColorBrush brushPlates = new SolidColorBrush(sDisplayOptions.PlateColor);
-            SolidColorBrush brushScrews = new SolidColorBrush(sDisplayOptions.ScrewColor);
-            SolidColorBrush brushAnchors = new SolidColorBrush(sDisplayOptions.AnchorColor);
-            SolidColorBrush brushWashers = new SolidColorBrush(sDisplayOptions.WasherColor);
-            SolidColorBrush brushNuts = new SolidColorBrush(sDisplayOptions.NutColor);
+            SolidColorBrush brushPlates = new SolidColorBrush(opts.PlateColor);
+            brushPlates.Opacity = opts.fPlateSolidModelOpacity;
+            SolidColorBrush brushScrews = new SolidColorBrush(opts.ScrewColor);
+            brushScrews.Opacity = opts.fScrewSolidModelOpacity;
+            SolidColorBrush brushAnchors = new SolidColorBrush(opts.AnchorColor);
+            brushAnchors.Opacity = opts.fAnchorSolidModelOpacity;
+            SolidColorBrush brushWashers = new SolidColorBrush(opts.WasherColor);
+            //To Mato  - aku to ma mat opacity?
+            //brushWashers.Opacity = opts.fW
+            SolidColorBrush brushNuts = new SolidColorBrush(opts.NutColor);
+            //To Mato  - aku to ma mat opacity?
+            //brushNuts.Opacity = opts.fAnchorSolidModelOpacity;
+
             if (brushWelds == null) brushWelds = new SolidColorBrush(Colors.Orange); // TODO - zapracovat do options ak budu implementovane zvary
 
             Model3DGroup JointsModel3DGroup = null;
@@ -1614,18 +1692,18 @@ namespace BaseClasses
                                 cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
                                 {
                                     GeometryModel3D plateGeom = null;
-                                    if (sDisplayOptions.bUseTextures) plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3DWithTexture();
+                                    if (opts.bUseTextures) plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3DWithTexture(opts.fPlateSolidModelOpacity);
                                     else plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
                                     cmodel.m_arrConnectionJoints[i].m_arrPlates[l].Visual_Plate = plateGeom;
 
-                                    if (sDisplayOptions.bDisplayPlates)
+                                    if (opts.bDisplayPlates)
                                     {
                                         // Add plates
                                         JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
                                     }
 
                                     //temp refaktoring 5.2.2020 - bug 522
-                                    if (sDisplayOptions.bDisplayConnectors)
+                                    if (opts.bDisplayConnectors)
                                     {
                                         // Add plate anchors - only base plates
                                         if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] is CConCom_Plate_B_basic)
@@ -1675,7 +1753,7 @@ namespace BaseClasses
                                                     plateConnectorsModelGroup.Children.Add(anchorModelObjectsModelGroup); // Skupinu objektov na anchor pridame do skupiny anchors (connectors)
                                                 }
                                                 plateConnectorsModelGroup.Transform = plateGeom.Transform;
-                                                if (sDisplayOptions.bDisplayConnectors)
+                                                if (opts.bDisplayConnectors)
                                                 {
                                                     JointModelGroup.Children.Add(plateConnectorsModelGroup);
                                                 }
@@ -1685,7 +1763,7 @@ namespace BaseClasses
                                     } //end display connectors
 
                                     //temp refaktoring 5.2.2020 - bug 522
-                                    if (sDisplayOptions.bDisplayConnectors)
+                                    if (opts.bDisplayConnectors)
                                     {
                                         // Add plate screws
                                         if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement != null &&
@@ -1700,7 +1778,7 @@ namespace BaseClasses
                                                 plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
                                             }
                                             plateConnectorsModelGroup.Transform = plateGeom.Transform;
-                                            if (sDisplayOptions.bDisplayConnectors)
+                                            if (opts.bDisplayConnectors)
                                             {
                                                 JointModelGroup.Children.Add(plateConnectorsModelGroup);
                                             }
@@ -1713,7 +1791,7 @@ namespace BaseClasses
                         // Connectors
                         bool bUseAdditionalConnectors = true; // Spojovacie prvky, ktore nie su viazane na plechy (plates), napr. spoj pomocou screws priamo medzi nosnikmi bez plechu (plate) (teda spoj U001 - tiahla - bracing pripojene priamo k prutom main frame)
 
-                        if (bUseAdditionalConnectors && sDisplayOptions.bDisplayConnectors && cmodel.m_arrConnectionJoints[i].ConnectorGroups != null)
+                        if (bUseAdditionalConnectors && opts.bDisplayConnectors && cmodel.m_arrConnectionJoints[i].ConnectorGroups != null)
                         {
                             foreach (CConnectorGroup connectorGR in cmodel.m_arrConnectionJoints[i].ConnectorGroups)
                             {
@@ -5268,8 +5346,7 @@ namespace BaseClasses
 
         public static void UpdateWireFramePoints(CModel jointModel, DisplayOptions sDisplayOptions)
         {
-            Model3DGroup membersModel = Drawing3D.CreateMembersModel3D(jointModel, true, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                    sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, sDisplayOptions.bUseTextures);
+            Model3DGroup membersModel = Drawing3D.CreateMembersModel3D(jointModel, sDisplayOptions);
 
             // Tu sa snazim nastavit prutom Wireframe indices podla aktualnej geometrie
             for (int i = 0; i < jointModel.m_arrMembers.Length; i++)

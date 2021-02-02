@@ -604,6 +604,15 @@ namespace PFD
                 m.BIsSelectedForMaterialList = cInfo.MaterialList;
             }
         }
+        public static void ChangeJointsIsSelectedForMaterialList(CComponentInfo cInfo, CModel model)
+        {
+            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
+            {
+                joint.SetJointIsSelectedForMaterialListAccordingToMember();
+            }
+        }
+
+
         public static void ChangeMembersIsSelectedForMaterialList(CPFDViewModel vm)
         {
             foreach (CComponentInfo cInfo in vm.ComponentList)

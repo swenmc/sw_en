@@ -343,8 +343,10 @@ namespace PFD
                 if (!isChangedFromCode) IsSetFromCode = true;
 
                 //najprv sa nastavi component list view model podla DB
-                _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
+                _componentVM.MembersSectionsDict = dmodel.MembersSectionsDict;
+                _componentVM.SetModelComponentListProperties(); //set default components sections
                 _componentVM.SetILSProperties(dmodel);
+                _componentVM.UpdateBracingBlocks();
 
                 RoofPitch_deg = dmodel.fRoof_Pitch_deg;
                 RoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
@@ -3327,6 +3329,16 @@ namespace PFD
             if (PropertyChanged != null) PropertyChanged(sender, e);
         }
 
+
+        //toto je cele divne
+        //podla mna mame 2 eventy na to iste
+        //private void ComponentVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        // a potom tento handler - HandleComponentInfoPropertyChangedEvent(object sender, PropertyChangedEventArgs e) ktory to len vyhadzuje vyssie do CPFDViewModel
+        //Tu je potrebny dost brutal refaktoring
+        // 1. odstranit ComponentList z CPFDViewModelu
+        // pouzivat cisto iba vm._componentVM.ComponentList
+        //potom budu eventy ciste a spravovane iba v UpdateAllMetode, obavam sa ale,ze nejaky vyznam to malo pokial nechceme prekreslovat model...
+
         private void ComponentVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "SelectedComponentIndex") return;
@@ -3340,6 +3352,10 @@ namespace PFD
                 SetResultsAreNotValid();
                 return;
             }
+            //if (e.PropertyName == "ILS")  //zatial netreba
+            //{
+            //    if (PropertyChanged != null) PropertyChanged(sender, e);
+            //}
 
             if (e.PropertyName == "AllMaterialListChanged")
             {

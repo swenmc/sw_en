@@ -299,13 +299,15 @@ namespace PFD
                 if (e.PropertyName == "ILS")
                 {
                     if (cInfo.ILS == null) return;
+
+                    //To Mato - ak nieco nefunguje pri zmene ILS, tak tu treba hladat problem (tu bol aj bug 685)
                     //Pri zmene poctu ILS pre purlin alebo girt je potrebne pregenerovat model (pruty aj spoje) a pripadne vygenerovat pruty bracing blocks nanovo ak sa zmenil ich pocet. 
                     if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin || cInfo.MemberTypePosition == EMemberType_FS_Position.Girt ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin || cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy)
                     {
                         vm.RecreateJoints = true;
                         vm.RecreateModel = true;
@@ -334,6 +336,11 @@ namespace PFD
                 if (e.PropertyName == "Display")
                 {
                     vm.RecreateModel = true;
+                }
+                if (e.PropertyName == "Design")
+                {
+                    //TO Mato - co sa ma stat ak sa zmeni Design v tabulke component list?
+                    //vm.RecreateModel = true;
                 }
                 if (e.PropertyName == "Calculate")
                 {
@@ -394,7 +401,12 @@ namespace PFD
                     // Takže ak nie je zobrazený prút tak sa nezobrazia ani jeho spoje
                     // Keď nie je prútu nastavené bDesign, nebude bDesign nastavený ani jeho spojom
 
+                    //To Mato - pozor je tu rozdiel v tom, ci je znovu generovany model, lebo tuna konkretne sa model nepregeneruje, len sa meni bool
+                    //ak zmenis Display, tak sa pregeneruje model,cize ide vsetko nanovo
+                    //hore som ti pisal,ze co sa ma udial ak zmenis Design
+
                     CModelHelper.ChangeMembersIsSelectedForMaterialList(cInfo, vm.Model);
+                    CModelHelper.ChangeJointsIsSelectedForMaterialList(cInfo, vm.Model); //doplnil som...ale podla mna je to dvojmo
                     vm.RecreateQuotation = true;
                 }
             }
