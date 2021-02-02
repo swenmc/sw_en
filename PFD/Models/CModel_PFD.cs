@@ -60,6 +60,7 @@ namespace PFD
         protected int iOneRafterBackColumnNo = 0;
         protected int iOneRafterFrontColumnNo = 0;
         protected int iRafterFlyBracing_EveryXXPurlin;
+        protected int iRafterCanopyFlyBracing_EveryXXPurlin;
 
         protected CMemberEccentricity eccentricityColumnFront_Z;
         protected CMemberEccentricity eccentricityColumnBack_Z;
@@ -99,7 +100,9 @@ namespace PFD
         protected void CreateJoints(bool bGenerateGirts, bool bUseMainColumnFlyBracingPlates, bool bGeneratePurlins, bool bUseRafterFlyBracingPlates,
         bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts,
         bool bGenerateGirtBracingSideWalls, bool bGeneratePurlinBracing, bool bGenerateGirtBracingFrontSide, bool bGenerateGirtBracingBackSide,
-        bool bGenerateSideWallCrossBracing, bool bGenerateRoofCrossBracing, bool bWindPostUnderRafter, int iOneColumnGirtNo)
+        bool bGenerateSideWallCrossBracing, bool bGenerateRoofCrossBracing,
+        bool bGenerateCanopies, bool bGeneratePurlinsCanopy, bool bGeneratePurlinBracingBlocksCanopy, bool bGenerateCrossBracingCanopy,
+        bool bWindPostUnderRafter, int iOneColumnGirtNo)
         {
             bool bIsGableRoof = eKitset == EModelType_FS.eKitsetGableRoofEnclosed;
             EJointType jointType;
@@ -473,6 +476,8 @@ namespace PFD
 
                     //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
                     // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
+                    // To Ondrej - A co s myslis ze je lepsia cesta, mam poodstranovat tieto booly a generovat vsetky spoje aj ked ma member BIsGenerated = false
+                    // alebo to robit takto ako doteraz
                     if (current_member.BIsGenerated)
                     {
                         EJointType jointTypeStart;
@@ -512,6 +517,8 @@ namespace PFD
 
                     //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
                     // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
+                    // To Ondrej - A co s myslis ze je lepsia cesta, mam poodstranovat tieto booly a generovat vsetky spoje aj ked ma member BIsGenerated = false
+                    // alebo to robit takto ako doteraz
                     if (current_member.BIsGenerated)
                     {
                         EJointType jointTypeStart;
@@ -551,6 +558,8 @@ namespace PFD
 
                     //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
                     // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
+                    // To Ondrej - A co s myslis ze je lepsia cesta, mam poodstranovat tieto booly a generovat vsetky spoje aj ked ma member BIsGenerated = false
+                    // alebo to robit takto ako doteraz
                     if (current_member.BIsGenerated)
                     {
                         // Joint at member start
@@ -575,6 +584,8 @@ namespace PFD
 
                     //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
                     // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
+                    // To Ondrej - A co s myslis ze je lepsia cesta, mam poodstranovat tieto booly a generovat vsetky spoje aj ked ma member BIsGenerated = false
+                    // alebo to robit takto ako doteraz
                     if (current_member.BIsGenerated)
                     {
                         // Joint at member start
@@ -590,74 +601,316 @@ namespace PFD
                 }
             }
 
-            // Pripoje cross bracing
-            for (int i = 0; i < iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total; i++)
+            // Cross-bracing Joints
+            if (bGenerateSideWallCrossBracing || bGenerateRoofCrossBracing)
             {
-                CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + i];
-
-                // Cross Bracing - Side Walls
-                if (bGenerateSideWallCrossBracing && current_member.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
+                for (int i = 0; i < iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total; i++)
                 {
-                    // Joint at member start
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
-                            && (m.IntermediateNodes.Contains(current_member.NodeStart) || m.NodeStart.Equals(current_member.NodeStart) || m.NodeEnd.Equals(current_member.NodeStart)));
+                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + i];
 
-                    // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
-                            && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
-
-                    EJointType jointTypeStart;
-                    EJointType jointTypeEnd;
-
-                    if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
-                        jointTypeStart = EJointType.eCrossBracing_EdgeColumn;
-                    else
-                        jointTypeStart = EJointType.eCrossBracing_MainColumn;
-
-                    if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
-                        jointTypeEnd = EJointType.eCrossBracing_EdgeColumn;
-                    else
-                        jointTypeEnd = EJointType.eCrossBracing_MainColumn;
-
-
-                    if (MathF.d_equal(current_member.NodeStart.X, 0)) // Left side
+                    // Cross Bracing - Side Walls
+                    if (bGenerateSideWallCrossBracing && current_member.EMemberTypePosition == EMemberType_FS_Position.CrossBracingWall)
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
+                        // Joint at member start
+                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                                && (m.IntermediateNodes.Contains(current_member.NodeStart) || m.NodeStart.Equals(current_member.NodeStart) || m.NodeEnd.Equals(current_member.NodeStart)));
+
+                        // Joint at member end
+                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainColumn || m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                                && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
+
+                        EJointType jointTypeStart;
+                        EJointType jointTypeEnd;
+
+                        if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                            jointTypeStart = EJointType.eCrossBracing_EdgeColumn;
+                        else
+                            jointTypeStart = EJointType.eCrossBracing_MainColumn;
+
+                        if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                            jointTypeEnd = EJointType.eCrossBracing_EdgeColumn;
+                        else
+                            jointTypeEnd = EJointType.eCrossBracing_MainColumn;
+
+
+                        if (MathF.d_equal(current_member.NodeStart.X, 0)) // Left side
+                        {
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, true));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
+                        }
+                        else // Right side
+                        {
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, false));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, false));
+                        }
                     }
-                    else // Right side
+
+                    // Cross Bracing - Roof
+                    if (bGenerateRoofCrossBracing && current_member.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, false));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, false));
+                        // Joint at member start
+                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+                                && (m.IntermediateNodes.Contains(current_member.NodeStart) || m.NodeStart.Equals(current_member.NodeStart) || m.NodeEnd.Equals(current_member.NodeStart)));
+
+                        // Joint at member end
+                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+                                && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
+
+                        EJointType jointTypeStart;
+                        EJointType jointTypeEnd;
+
+                        if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+                            jointTypeStart = EJointType.eCrossBracing_EdgeRafter;
+                        else
+                            jointTypeStart = EJointType.eCrossBracing_MainRafter;
+
+                        if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+                            jointTypeEnd = EJointType.eCrossBracing_EdgeRafter;
+                        else
+                            jointTypeEnd = EJointType.eCrossBracing_MainRafter;
+
+                        if (bIsGableRoof)
+                        {
+                            if (current_member.NodeStart.X < 0.5 * fW_frame_centerline) // Left side
+                            {
+                                m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, true));
+                                m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
+                            }
+                            else // Right side
+                            {
+                                m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, false));
+                                m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, false));
+                            }
+                        }
+                        else // Monopitch
+                        {
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, true));
+                            m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
+                        }
+                    }
+                }
+            }
+
+            if (/*bGenerateCanopies*/ false) // IN WORK
+            {
+                // Rafters - Canopy
+
+                // TODO - pripoj na MR a MC resp ER a EC
+
+                // Purlins - Canopy
+                if (bGeneratePurlinsCanopy)
+                {
+                    // Selektujeme z model pruty typu Purlin_Canopy
+                    //List<CMember> membersPurlinCanopy = listOfModelMemberGroups[(int)EMemberType_FS_Position.PurlinCanopy].ListOfMembers;
+                    List<CMember> membersPurlinCanopy = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.PurlinCanopy).ToList();
+
+                    // TODO - Roztriedit purlins do bays, identifikovat x-tú a krajnú
+
+                    List<List<CMember>> membersPurlinCanopySorted = new List<List<CMember>>();
+                    int listIndex = 0; // Current index of item in the main list
+
+                    for (int i = 0; i < membersPurlinCanopy.Count; i++)
+                    {
+                        // Pridame prvy prut do prveho zoznamu
+                        if (i == 0)
+                        {
+                            membersPurlinCanopySorted.Add(new List<CMember>()); // Pridame prvy dielci list
+                            membersPurlinCanopySorted[listIndex].Add(membersPurlinCanopy[i]); // Pridame prvy member - purlin
+                        }
+                        else
+                        {
+                            // Skontrolujeme, ci maju pruty rovnaku Y-suradnicu zaciatku, ak ano tak su v rovnakej bay
+                            // Skontrolujeme, ci maju pruty rovnake znamienko X-suradnice zaciatku, podla toho vieme ci su vlavo alebo vpravo
+                            if (MathF.d_equal(membersPurlinCanopy[i].NodeStart.Y, membersPurlinCanopySorted[listIndex].First().NodeStart.Y) &&
+                               (membersPurlinCanopy[i].NodeStart.X < 0 && membersPurlinCanopySorted[listIndex].First().NodeStart.X < 0))
+                                membersPurlinCanopySorted[listIndex].Add(membersPurlinCanopy[i]);
+                            else if (MathF.d_equal(membersPurlinCanopy[i].NodeStart.Y, membersPurlinCanopySorted[listIndex].First().NodeStart.Y) &&
+                               (membersPurlinCanopy[i].NodeStart.X > 0 && membersPurlinCanopySorted[listIndex].First().NodeStart.X > 0))
+                                membersPurlinCanopySorted[listIndex].Add(membersPurlinCanopy[i]);
+                            else // Prut nepatri do zoznamu - vytvorime novy
+                            {
+                                membersPurlinCanopySorted.Add(new List<CMember>());
+                                listIndex++;
+                                membersPurlinCanopySorted[listIndex].Add(membersPurlinCanopy[i]);
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < membersPurlinCanopySorted.Count; i++)
+                    {
+                        for (int j = 0; j < membersPurlinCanopySorted[i].Count; j++)
+                        {
+                            CMember current_member = membersPurlinCanopySorted[i][j];
+                            CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
+                            CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
+
+                            //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
+                            // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
+                            // To Ondrej - A co s myslis ze je lepsia cesta, mam poodstranovat tieto booly a generovat vsetky spoje aj ked ma member BIsGenerated = false
+                            // alebo to robit takto ako doteraz
+                            if (current_member.BIsGenerated)
+                            {
+                                if(j == membersPurlinCanopySorted[i].Count-1) // Last edge purlin - only one plate
+                                {
+                                    EJointType jointTypeStart;
+                                    EJointType jointTypeEnd;
+
+                                    int f = 0; // Frame index // TODO - dopracovat
+
+                                    if (f < iPurlinNoInOneFrame) // First Bay
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_EdgeRafter;
+                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
+                                    }
+                                    else if (f >= ((iFrameNo - 2) * iPurlinNoInOneFrame)) // Last Bay
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_MainRafter;
+                                        jointTypeEnd = EJointType.ePurlin_EdgeRafter;
+                                    }
+                                    else // Intermediate Bays
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_MainRafter;
+                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
+                                    }
+
+                                    EPlateNumberAndPositionInJoint platePosition = EPlateNumberAndPositionInJoint.eOneLeftPlate;
+
+                                    if(current_member.NodeStart.X > 0) // Right Side
+                                        platePosition = EPlateNumberAndPositionInJoint.eOneRightPlate;
+
+                                    if (mainMemberForStartJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T003(jointTypeStart, "FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, platePosition, true));
+                                    if (mainMemberForEndJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T003(jointTypeEnd, "FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, platePosition, true));
+                                }
+                                else if (bUseRafterFlyBracingPlates && iRafterCanopyFlyBracing_EveryXXPurlin > 0 && (j + 1) % iRafterCanopyFlyBracing_EveryXXPurlin == 0)
+                                {
+                                    EJointType jointTypeStart;
+                                    EJointType jointTypeEnd;
+
+                                    int f = 0; // Frame index // TODO - dopracovat
+
+                                    if (f < iPurlinNoInOneFrame) // First Bay
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_EdgeRafter;
+                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
+                                    }
+                                    else if (f >= ((iFrameNo - 2) * iPurlinNoInOneFrame)) // Last Bay
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_MainRafter;
+                                        jointTypeEnd = EJointType.ePurlin_EdgeRafter;
+                                    }
+                                    else // Intermediate Bays
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_MainRafter;
+                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
+                                    }
+
+                                    if (mainMemberForStartJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T003(jointTypeStart, "FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                                    if (mainMemberForEndJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T003(jointTypeEnd, "FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                                }
+                                else
+                                {
+                                    EJointType jointTypeStart;
+                                    EJointType jointTypeEnd;
+
+                                    int f = 0; // Frame index // TODO - dopracovat
+
+                                    if (f < iPurlinNoInOneFrame) // First Bay
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_EdgeRafter;
+                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
+                                    }
+                                    else if (f >= ((iFrameNo - 2) * iPurlinNoInOneFrame)) // Last Bay
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_MainRafter;
+                                        jointTypeEnd = EJointType.ePurlin_EdgeRafter;
+                                    }
+                                    else // Intermediate Bays
+                                    {
+                                        jointTypeStart = EJointType.ePurlin_MainRafter;
+                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
+                                    }
+
+                                    if (mainMemberForStartJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T001(jointTypeStart, "LH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates));
+                                    if (mainMemberForEndJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T001(jointTypeEnd, "LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates));
+                                }
+                            }
+                        }
                     }
                 }
 
-                // Cross Bracing - Roof
-                if (bGenerateRoofCrossBracing && current_member.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof)
+                // Purlin Bracing Blocks - Canopy - Joints
+                if (bGeneratePurlinBracingBlocksCanopy)
                 {
-                    // Joint at member start
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
-                            && (m.IntermediateNodes.Contains(current_member.NodeStart) || m.NodeStart.Equals(current_member.NodeStart) || m.NodeEnd.Equals(current_member.NodeStart)));
+                    List<CMember> membersPurlinBracingBlocksCanopy = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy).ToList();
 
-                    // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafter || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
-                            && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
-
-                    EJointType jointTypeStart;
-                    EJointType jointTypeEnd;
-
-                    if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
-                        jointTypeStart = EJointType.eCrossBracing_EdgeRafter;
-                    else
-                        jointTypeStart = EJointType.eCrossBracing_MainRafter;
-
-                    if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
-                        jointTypeEnd = EJointType.eCrossBracing_EdgeRafter;
-                    else
-                        jointTypeEnd = EJointType.eCrossBracing_MainRafter;
-
-                    if (bIsGableRoof)
+                    for (int i = 0; i < membersPurlinBracingBlocksCanopy.Count; i++)
                     {
+                        CMember current_member = membersPurlinBracingBlocksCanopy[i];
+
+                        //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
+                        // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
+                        // To Ondrej - A co s myslis ze je lepsia cesta, mam poodstranovat tieto booly a generovat vsetky spoje aj ked ma member BIsGenerated = false
+                        // alebo to robit takto ako doteraz
+                        if (current_member.BIsGenerated)
+                        {
+                            EJointType jointTypeStart;
+                            EJointType jointTypeEnd;
+
+                            // Joint at member start
+                            CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
+
+                            if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
+                                jointTypeStart = EJointType.ePurlinBracing_EdgePurlin;
+                            else
+                                jointTypeStart = EJointType.ePurlinBracing_Purlin;
+
+                            if (mainMemberForStartJoint != null)
+                                m_arrConnectionJoints.Add(new CConnectionJoint_T001(jointTypeStart, "LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+
+                            // Joint at member end
+                            CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
+
+                            if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
+                                jointTypeEnd = EJointType.ePurlinBracing_EdgePurlin;
+                            else
+                                jointTypeEnd = EJointType.ePurlinBracing_Purlin;
+
+                            if (mainMemberForEndJoint != null)
+                                m_arrConnectionJoints.Add(new CConnectionJoint_T001(jointTypeEnd, "LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
+                        }
+                    }
+                }
+
+                // Cross-bracing - Canopy - Joints
+                if (bGenerateCrossBracingCanopy)
+                {
+                    List<CMember> membersCrossBracingCanopy = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy).ToList();
+
+                    for (int i = 0; i < membersCrossBracingCanopy.Count; i++)
+                    {
+                        CMember current_member = membersCrossBracingCanopy[i];
+
+                        // Joint at member start
+                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
+                                && (m.IntermediateNodes.Contains(current_member.NodeStart) || m.NodeStart.Equals(current_member.NodeStart) || m.NodeEnd.Equals(current_member.NodeStart)));
+
+                        // Joint at member end
+                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
+                                && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
+
+                        EJointType jointTypeStart;
+                        EJointType jointTypeEnd;
+
+                        if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
+                            jointTypeStart = EJointType.eCrossBracing_EdgeRafter;
+                        else
+                            jointTypeStart = EJointType.eCrossBracing_MainRafter;
+
+                        if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
+                            jointTypeEnd = EJointType.eCrossBracing_EdgeRafter;
+                        else
+                            jointTypeEnd = EJointType.eCrossBracing_MainRafter;
+
                         if (current_member.NodeStart.X < 0.5 * fW_frame_centerline) // Left side
                         {
                             m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, true));
@@ -669,15 +922,10 @@ namespace PFD
                             m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, false));
                         }
                     }
-                    else // Monopitch
-                    {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeStart, current_member.NodeStart, mainMemberForStartJoint, current_member, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_U001(jointTypeEnd, current_member.NodeEnd, mainMemberForEndJoint, current_member, true));
-                    }
                 }
             }
 
-            //generate joints IDs
+            // Generate joints IDs
             for (int i = 0; i < m_arrConnectionJoints.Count; i++)
             {
                 m_arrConnectionJoints[i].ID = i + 1;
@@ -1086,6 +1334,7 @@ namespace PFD
             float fRafterStart,
             float fPurlinStart, // ! TODO - pre okraj canopy by sa malo brat z EdgeCanopyRafter, zistit ci je dany bod canopy purlin na okraji edge rafter canopy alebo je medzilahly main rafter canopy
             float fPurlinEnd,  // ! TODO - pre okraj canopy by sa malo brat z EdgeCanopyRafter
+            bool bUseRafterFlyBracingPlates,
             bool bUsePBEverySecond,
             float fCutOffOneSide,
             int iCanopyRafterNodes_Total,
@@ -1179,6 +1428,7 @@ namespace PFD
 
                 // Canopy Rafter Member
                 m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[iFrameNodesNo * FrameIndexList_Left[i] + iLeftKneeNodeIndexInFrame], m_arrCrSc[eRafterType_Position], eRafterType, eRafterType_Position, null, null, fRafterEdgeAlingment_Left, -fRafterStart, 0, 0);
+                CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseRafterFlyBracingPlates, iRafterCanopyFlyBracing_EveryXXPurlin, fDist_Purlin, fDist_Purlin, ref m_arrMembers[i_temp_numberofMembers + i]);
             }
 
             for (int i = 0; i < FrameIndexList_Right.Count; i++)
@@ -1226,6 +1476,7 @@ namespace PFD
 
                 // Canopy Rafter Member
                 m_arrMembers[i_temp_numberofMembers + FrameIndexList_Left.Count + i] = new CMember(i_temp_numberofMembers + +FrameIndexList_Left.Count + i + 1, m_arrNodes[iFrameNodesNo * FrameIndexList_Right[i] + iRightKneeNodeIndexInFrame], m_arrNodes[i_temp_numberofNodes + FrameIndexList_Left.Count + i], m_arrCrSc[eRafterType_Position], eRafterType, eRafterType_Position, null, null, -fRafterStart, fRafterEdgeAlingment_Right, 0, 0);
+                CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseRafterFlyBracingPlates, iRafterCanopyFlyBracing_EveryXXPurlin, fDist_Purlin, fDist_Purlin, ref m_arrMembers[i_temp_numberofMembers + FrameIndexList_Left.Count + i]);
             }
 
             i_temp_numberofNodes += iCanopyRafterNodes_Total;
