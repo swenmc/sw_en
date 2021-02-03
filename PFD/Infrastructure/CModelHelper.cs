@@ -650,7 +650,41 @@ namespace PFD
         }
 
 
+        public static List<CMember> GetMembersForNode(this CModel_PFD model, CNode node, bool IncludeMembersFromSamePositionNodes)
+        {            
+            IEnumerable<CMember> foundMembers = model.GetMembersForNode(node);
+            List<CMember> members = foundMembers.ToList();
 
+            List<CNode> sameNodes = model.GetNodesWithSamePosition(node);
+            foreach (CNode n in sameNodes)
+            {
+                IEnumerable<CMember> newFoundMembers = model.GetMembersForNode(n);
+                foreach (CMember m in newFoundMembers)
+                {
+                    if (members.Contains(m)) continue;
+                    else members.Add(m);
+                }
+            }
+
+            return members;
+        }
+
+        public static IEnumerable<CMember> GetMembersForNode(this CModel_PFD model, CNode node)
+        {            
+            return model.m_arrMembers.Where(m => (m.NodeStart != null && m.NodeStart.Equals(node)) || (m.NodeEnd != null && m.NodeEnd.Equals(node)));
+        }
+
+        public static List<CNode> GetNodesWithSamePosition(this CModel_PFD model, CNode node)
+        {
+            List<CNode> nodes = new List<CNode>();
+            foreach (CNode n in model.m_arrNodes)
+            {
+                if (n.ID == node.ID) continue; //it is the node in parameter = do not include
+
+                if (MathF.d_equal(n.X, node.X) && MathF.d_equal(n.Y, node.Y) && MathF.d_equal(n.Z, node.Z)) nodes.Add(n);
+            }
+            return nodes;
+        }
 
     }
 }
