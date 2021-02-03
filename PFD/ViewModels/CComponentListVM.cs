@@ -330,12 +330,20 @@ namespace PFD
                 CComponentInfo girtFront = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
                 if (girtFront == null) return;
                 if (girtFront.Generate != cInfo.Generate) { girtFront.IsSetFromCode = true; girtFront.Generate = cInfo.Generate; girtFront.IsSetFromCode = false; }
+                if (girtFront.Generate == true)
+                {                    
+                    SetGenerateForLeftAndRightGirts();
+                }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide)
             {
                 CComponentInfo girtBack = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
                 if (girtBack == null) return;
                 if (girtBack.Generate != cInfo.Generate) { girtBack.IsSetFromCode = true; girtBack.Generate = cInfo.Generate; girtBack.IsSetFromCode = false; }
+                if (girtBack.Generate == true)
+                {
+                    SetGenerateForLeftAndRightGirts();
+                }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
@@ -427,6 +435,15 @@ namespace PFD
                 CComponentInfo purlinCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
                 if (purlinCanopy == null) return;
                 if (purlinCanopy.Generate != cInfo.Generate) { purlinCanopy.IsSetFromCode = true; purlinCanopy.Generate = cInfo.Generate; purlinCanopy.IsSetFromCode = false; }
+            }
+        }
+
+        private void SetGenerateForLeftAndRightGirts()
+        {
+            IEnumerable<CComponentInfo> girtLeftAndRight = ComponentList.Where(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            foreach (CComponentInfo ci in girtLeftAndRight)
+            {
+                if (ci.Generate != true) ci.IsSetFromCode = true; ci.Generate = true; ci.IsSetFromCode = false;
             }
         }
 
