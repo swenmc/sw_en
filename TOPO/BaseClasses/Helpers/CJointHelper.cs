@@ -137,8 +137,6 @@ namespace BaseClasses.Helpers
                 // Canopy
                 case EJointType.eKnee_MainRafterCanopy_Column:
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
-                case EJointType.eKnee_MainRafterCanopy_EdgeColumn:
-                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.eKnee_EdgeRafterCanopy_Column:
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.eKnee_EdgeRafterCanopy_EdgeColumn:

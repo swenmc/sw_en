@@ -179,7 +179,7 @@ namespace PFD
                 foreach (CConnectionJointTypes joint in items)
                 {
                     count++;
-                    if (joint.m_SecondaryMembers != null) System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition} {joint.m_SecondaryMembers.Count()} {joint.m_SecondaryMembers[0].EMemberTypePosition}");
+                    if (joint.m_SecondaryMembers != null) System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition} {joint.m_SecondaryMembers.Count()} {joint.m_SecondaryMembers[0].EMemberTypePosition} {(joint.m_SecondaryMembers.Length == 2 ? joint.m_SecondaryMembers[1].EMemberTypePosition : EMemberType_FS_Position.Unknown) }");
                     else System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition}");
                 }
             }
@@ -210,17 +210,26 @@ namespace PFD
                     }
                     else // Spoje kde spajame dva a viac members (jeden je main, ostatne su secondary)
                     {
-                        if ((int)joint.m_MainMember.EMemberTypePosition == con.MainMemberPrefix_FS_position_ID && (int)joint.m_MainMember.EMemberType == con.MainMemberPrefix_FS_ID &&
-                            joint.m_SecondaryMembers != null &&
+                        if (joint.m_SecondaryMembers.Length == 1 && // Jeden secondary member
+                            (int)joint.m_MainMember.EMemberTypePosition == con.MainMemberPrefix_FS_position_ID &&
+                            (int)joint.m_MainMember.EMemberType == con.MainMemberPrefix_FS_ID &&
                             (int)joint.m_SecondaryMembers[0].EMemberTypePosition == con.SecondaryMemberPrefix_FS_position_ID &&
                             (int)joint.m_SecondaryMembers[0].EMemberType == con.SecondaryMemberPrefix_FS_ID)
+                            resItems.Add(joint);
+                        else if (joint.m_SecondaryMembers.Length == 2 && // Dva secondary members - kontrolujem len druhy typ
+                            (int)joint.m_MainMember.EMemberTypePosition == con.MainMemberPrefix_FS_position_ID &&
+                            (int)joint.m_MainMember.EMemberType == con.MainMemberPrefix_FS_ID &&
+                            //(int)joint.m_SecondaryMembers[0].EMemberTypePosition == con.SecondaryMemberPrefix_FS_position_ID &&
+                            //(int)joint.m_SecondaryMembers[0].EMemberType == con.SecondaryMemberPrefix_FS_ID &&
+                            (int)joint.m_SecondaryMembers[1].EMemberTypePosition == con.SecondaryMember2Prefix_FS_position_ID &&
+                            (int)joint.m_SecondaryMembers[1].EMemberType == con.SecondaryMember2Prefix_FS_ID)
                             resItems.Add(joint);
                     }
                 }
                 else // Priradzujeme cez tento velky switch - ma asi 440 riadkov :)
                 {
                     // Povodny sposob
-                    // TODO Ondrej - tento switch by sme si mohli niekam "odlozit" alebo ho pouzivat pre dvojitu kontrolu s databazov,
+                    // TODO Ondrej - tento switch by sme si mohli niekam "odlozit" alebo ho pouzivat pre dvojitu kontrolu s databazou,
                     // aby sme si boli isti ze sme spoj priradili spravne
 
                     // Nechcem ho mazat, lebo nas stal vela usilia
@@ -704,6 +713,7 @@ namespace PFD
                                 )
                                 resItems.Add(joint);
                             break;
+                        // TODO - doplnit canopies
                         default:
                             throw new Exception("Type of joint can't be determined"); // Vynimka spoj sme nepriradili do ziadneho znameho typu - nemalo by to nastat
                     } //end switch

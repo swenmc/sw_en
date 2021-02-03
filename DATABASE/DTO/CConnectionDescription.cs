@@ -15,12 +15,19 @@ namespace DATABASE.DTO
 
         private string m_MainMemberPrefix_FS;
         private string m_SecondaryMemberPrefix_FS;
+        private string m_SecondaryMember2Prefix_FS;
+
         private string m_MainMemberPrefix_FS_position;
         private string m_SecondaryMemberPrefix_FS_position;
+        private string m_SecondaryMember2Prefix_FS_position;
+
         private int m_MainMemberPrefix_FS_ID;
         private int m_SecondaryMemberPrefix_FS_ID;
+        private int m_SecondaryMember2Prefix_FS_ID;
+
         private int m_MainMemberPrefix_FS_position_ID;
         private int m_SecondaryMemberPrefix_FS_position_ID;
+        private int m_SecondaryMember2Prefix_FS_position_ID;
 
         private string m_Note;
 
@@ -89,6 +96,19 @@ namespace DATABASE.DTO
             }
         }
 
+        public string SecondaryMember2Prefix_FS
+        {
+            get
+            {
+                return m_SecondaryMember2Prefix_FS;
+            }
+
+            set
+            {
+                m_SecondaryMember2Prefix_FS = value;
+            }
+        }
+
         public string MainMemberPrefix_FS_position
         {
             get
@@ -112,6 +132,19 @@ namespace DATABASE.DTO
             set
             {
                 m_SecondaryMemberPrefix_FS_position = value;
+            }
+        }
+
+        public string SecondaryMember2Prefix_FS_position
+        {
+            get
+            {
+                return m_SecondaryMember2Prefix_FS_position;
+            }
+
+            set
+            {
+                m_SecondaryMember2Prefix_FS_position = value;
             }
         }
 
@@ -141,6 +174,19 @@ namespace DATABASE.DTO
             }
         }
 
+        public int SecondaryMember2Prefix_FS_ID
+        {
+            get
+            {
+                return m_SecondaryMember2Prefix_FS_ID;
+            }
+
+            set
+            {
+                m_SecondaryMember2Prefix_FS_ID = value;
+            }
+        }
+
         public int MainMemberPrefix_FS_position_ID
         {
             get
@@ -164,6 +210,19 @@ namespace DATABASE.DTO
             set
             {
                 m_SecondaryMemberPrefix_FS_position_ID = value;
+            }
+        }
+
+        public int SecondaryMember2Prefix_FS_position_ID
+        {
+            get
+            {
+                return m_SecondaryMember2Prefix_FS_position_ID;
+            }
+
+            set
+            {
+                m_SecondaryMember2Prefix_FS_position_ID = value;
             }
         }
 
