@@ -134,9 +134,34 @@ namespace BaseClasses.Helpers
                     opt.RotateModelX = 45; opt.RotateModelY = 45; opt.RotateModelZ = 45; break;
                 case EJointType.eCrossBracing_EdgeRafter:
                     opt.RotateModelX = -45; opt.RotateModelY = 45; opt.RotateModelZ = -45; break;
+                // Canopy
+                case EJointType.eKnee_MainRafterCanopy_Column:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eKnee_MainRafterCanopy_EdgeColumn:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eKnee_EdgeRafterCanopy_Column:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.eKnee_EdgeRafterCanopy_EdgeColumn:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlin_MainRafterCanopy:
+                    opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlin_EdgeRafterCanopy:
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlin_MainRafterCanopy_FlyBracing:
+                    opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlin_EdgeRafterCanopy_FlyBracing:
+                    opt.RotateModelX = -100; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlinBracingCanopy_PurlinCanopy: // TODO - je potrebné dostat sem nastavenie every second row  purlin bracing a zmenit otocenie 
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlinBracingCanopy_EdgePurlin:
+                    opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                case EJointType.eCrossBracing_MainRafterCanopy:
+                    opt.RotateModelX = 45; opt.RotateModelY = 45; opt.RotateModelZ = 45; break;
+                case EJointType.eCrossBracing_EdgeRafterCanopy:
+                    opt.RotateModelX = -45; opt.RotateModelY = 45; opt.RotateModelZ = -45; break;
+
                 default:
                     System.Diagnostics.Trace.WriteLine("ERROR!!! Joint type: " + joint.JointType + " not recognized." + joint.GetType().ToString()); break;
-                
             }
         }
 

@@ -152,7 +152,10 @@ namespace PFD
                         // One joint is joint with maximum design ratio, the other joint is corresponding joint for selected member and load combination
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        //To Mato - toto mi musis vsvetlit preco sa to tu prepocitava znovu akurat jeden bool na konci je zmeneny
+                        // To Mato - toto mi musis vsvetlit preco sa to tu prepocitava znovu akurat jeden bool na konci je zmeneny
+                        // To Ondrej - ak je ten bool false tak sa ulozi pre joint vysledne design ratio
+                        // Ak je ten bool true, tak sa ulozia pre joint vsetky medzivysledky vypoctu, napriklad 50 float, potrebujeme ich kvoli zobrazeniu v detailoch
+                        // Z hladiska pamate je zbytocne ukladat tieto medzivysledky pri vsetkych joints, pre vsetky kombinacie
                         cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, ShearDesignAccording334, UniformShearDistributionInAnchors, cjStart, _pfdVM.Model, FootingCalcSettings, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
 
