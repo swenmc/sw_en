@@ -227,8 +227,8 @@ namespace BaseClasses.GraphObj
                 {
                     int iAreaIndex = 5;
 
-                    float fOverhangOffset_x = 0.15f; // TODO - zadavat v GUI ako cladding property pre roof
-                    float fOverhangOffset_y = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
+                    float fOverhangOffset_x = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
+                    float fOverhangOffset_y = 0.00f; // TODO - zadavat v GUI ako cladding property pre roof
 
                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
                     float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y;
