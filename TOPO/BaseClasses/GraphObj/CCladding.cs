@@ -241,6 +241,11 @@ namespace BaseClasses.GraphObj
 
                     iBayIndex++; // Docasne // Todo 691 - zmazat
 
+                    float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y - (float)column_crsc_y_minus_temp + (float)claddingHeight_Wall;
+                    int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
+                    double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
+                    double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
+
                     if (canopy.Left)
                     {
                         // 2 ______ 1
@@ -264,10 +269,19 @@ namespace BaseClasses.GraphObj
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
+                            double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+
                             // Uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
                             brushRoof1 = brushRoof.Clone();
-                            brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            r.Location = new System.Windows.Point(-wpWidthOffset, 0);
+
+                            brushRoof1.Viewport = r;
+                            //System.Windows.Point point = brushRoof1.Viewport.Location;
+                            //brushRoof1.Viewport.Location 
+                            //point.X = point.X + wpWidthOffset;
+                            //brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
@@ -292,10 +306,19 @@ namespace BaseClasses.GraphObj
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
+                            double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+
                             // Uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
                             brushRoof1 = brushRoof.Clone();
-                            brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            r.Location = new System.Windows.Point(-wpWidthOffset, 0);
+
+                            brushRoof1.Viewport = r;
+                            //System.Windows.Point point = brushRoof1.Viewport.Location;
+                            //brushRoof1.Viewport.Location 
+                            //point.X = point.X + wpWidthOffset;
+                            //brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
