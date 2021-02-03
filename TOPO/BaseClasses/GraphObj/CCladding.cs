@@ -384,6 +384,10 @@ namespace BaseClasses.GraphObj
 
                     iBayIndex++; // Docasne // Todo 691 - zmazat
 
+                    int iNumberOfWholeRibs = (int)(fBayStartCoordinate_Y / claddingWidthRibModular_Roof);
+                    double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
+                    double dPartialRib = fBayStartCoordinate_Y - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
+
                     if (canopy.Left)
                     {
                         float fCanopyCladdingWidth = (float)canopy.WidthLeft + fOverhangOffset_x;
@@ -401,10 +405,13 @@ namespace BaseClasses.GraphObj
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
+                            double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+
                             // Uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
                             brushRoof1 = brushRoof.Clone();
                             brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
@@ -429,10 +436,13 @@ namespace BaseClasses.GraphObj
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
+                            double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y);
+
                             // Uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
                             brushRoof1 = brushRoof.Clone();
                             brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0));
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
