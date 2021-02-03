@@ -262,7 +262,6 @@ namespace BaseClasses.GraphObj
                         Point3D pfront_right = new Point3D(pfront3_heightleft.X, fBayStartCoordinate_Y, height_1_final);
                         Point3D pback_right = new Point3D(pback3_heightleft.X, fBayEndCoordinate_Y, height_1_final);
 
-                        // Todo 691
                         if (options.bUseTextures)
                         {
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
@@ -271,18 +270,11 @@ namespace BaseClasses.GraphObj
 
                             double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
 
-                            // Uplne novy objekt brush
-                            ImageBrush brushRoof1 = new ImageBrush();
-                            brushRoof1 = brushRoof.Clone();
+                            ImageBrush brushRoofCanopy = brushRoof.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-
-                            brushRoof1.Viewport = r;
-                            //System.Windows.Point point = brushRoof1.Viewport.Location;
-                            //brushRoof1.Viewport.Location 
-                            //point.X = point.X + wpWidthOffset;
-                            //brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
-                            material_Roof = new DiffuseMaterial(brushRoof1);
+                            brushRoofCanopy.Viewport = r;                            
+                            material_Roof = new DiffuseMaterial(brushRoofCanopy);
                         }
 
                         model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
@@ -299,7 +291,6 @@ namespace BaseClasses.GraphObj
                         Point3D pfront_right = new Point3D(sBuildingGeomInputData.fW_centerline + fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
                         Point3D pback_right = new Point3D(sBuildingGeomInputData.fW_centerline + fCanopyCladdingWidth, fBayEndCoordinate_Y, fCanopy_EdgeCoordinate_z);
 
-                        // Todo 691
                         if (options.bUseTextures)
                         {
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
@@ -308,18 +299,11 @@ namespace BaseClasses.GraphObj
 
                             double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
 
-                            // Uplne novy objekt brush
-                            ImageBrush brushRoof1 = new ImageBrush();
-                            brushRoof1 = brushRoof.Clone();
+                            ImageBrush brushRoofCanopy = brushRoof.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-
-                            brushRoof1.Viewport = r;
-                            //System.Windows.Point point = brushRoof1.Viewport.Location;
-                            //brushRoof1.Viewport.Location 
-                            //point.X = point.X + wpWidthOffset;
-                            //brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
-                            material_Roof = new DiffuseMaterial(brushRoof1);
+                            brushRoofCanopy.Viewport = r;                            
+                            material_Roof = new DiffuseMaterial(brushRoofCanopy);
                         }
 
                         model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
@@ -422,7 +406,6 @@ namespace BaseClasses.GraphObj
                         Point3D pfront_right = new Point3D(pfront3_heightleft.X, fBayStartCoordinate_Y, height_1_final);
                         Point3D pback_right = new Point3D(pback3_heightleft.X, fBayEndCoordinate_Y, height_1_final);
 
-                        // Todo 691
                         if (options.bUseTextures)
                         {
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
@@ -431,18 +414,11 @@ namespace BaseClasses.GraphObj
 
                             double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
 
-                            // Uplne novy objekt brush
-                            ImageBrush brushRoof1 = new ImageBrush();
-                            brushRoof1 = brushRoof.Clone();
+                            ImageBrush brushRoofCanopy = brushRoof.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-
-                            brushRoof1.Viewport = r;
-                            //System.Windows.Point point = brushRoof1.Viewport.Location;
-                            //brushRoof1.Viewport.Location 
-                            //point.X = point.X + wpWidthOffset;
-                            //brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
-                            material_Roof = new DiffuseMaterial(brushRoof1);
+                            brushRoofCanopy.Viewport = r;                            
+                            material_Roof = new DiffuseMaterial(brushRoofCanopy);
                         }
 
                         model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
@@ -458,8 +434,7 @@ namespace BaseClasses.GraphObj
                         Point3D pback_left = new Point3D(pback2_heightright.X, fBayEndCoordinate_Y, height_1_final);
                         Point3D pfront_right = new Point3D(sBuildingGeomInputData.fW_centerline + fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
                         Point3D pback_right = new Point3D(sBuildingGeomInputData.fW_centerline + fCanopyCladdingWidth, fBayEndCoordinate_Y, fCanopy_EdgeCoordinate_z);
-
-                        // Todo 691
+                                                
                         if (options.bUseTextures)
                         {
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
@@ -468,18 +443,11 @@ namespace BaseClasses.GraphObj
 
                             double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y);
                             
-                            // Uplne novy objekt brush
-                            ImageBrush brushRoof1 = new ImageBrush();
-                            brushRoof1 = brushRoof.Clone();
+                            ImageBrush brushRoofCanopy = brushRoof.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-
-                            brushRoof1.Viewport = r;
-                            //System.Windows.Point point = brushRoof1.Viewport.Location;
-                            //brushRoof1.Viewport.Location 
-                            //point.X = point.X + wpWidthOffset;
-                            //brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
-                            material_Roof = new DiffuseMaterial(brushRoof1);
+                            brushRoofCanopy.Viewport = r;                            
+                            material_Roof = new DiffuseMaterial(brushRoofCanopy);
                         }
 
                         model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
