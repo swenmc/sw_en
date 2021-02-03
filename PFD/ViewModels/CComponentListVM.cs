@@ -2351,7 +2351,5 @@ namespace PFD
 
             ColorsAccordingToPositions = vm.ColorsAccordingToPositions;
         }
-
-
     }
 }
