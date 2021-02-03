@@ -149,35 +149,53 @@ namespace PFD
             // Knee Joints 1
             for (int i = 0; i < iFrameNo; i++)
             {
+                List<CMember> membersForNode = this.GetMembersForNode(m_arrNodes[i * iFrameNodesNo + 1], true);
+
                 if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
                 {
-                    List<CMember> membersForNode = this.GetMembersForNode(m_arrNodes[i * iFrameNodesNo + 1], true);
                     List<CMember> rafters = membersForNode.Where(x => x.EMemberType == EMemberType_FS.eER).ToList();
+
                     if (rafters.Count <= 1)
-                       m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EgdeRafter_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                       m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EgdeRafter_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], null, fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    else
+                       m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EdgeRafterCanopy_EdgeColumn, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], rafters.FirstOrDefault(x => x.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy), fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
                 }
                 else //if(i< (iFrameNo - 1) // Intermediate frame
                 {
-                    //if()
+                    List<CMember> rafters = membersForNode.Where(x => (x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER)).ToList();
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_MainRafter_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    if (rafters.Count <= 1)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_MainRafter_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], null, fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    else if(rafters[1].EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EdgeRafterCanopy_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], rafters.FirstOrDefault(x => x.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy), fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    else //if (rafters[1].EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_MainRafterCanopy_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], rafters.FirstOrDefault(x => x.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy), fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
                 }
             }
 
             // Knee Joints 2
             for (int i = 0; i < iFrameNo; i++)
             {
+                List<CMember> membersForNode = this.GetMembersForNode(m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], true);
+
                 if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
                 {
-                    //if()
-
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EgdeRafter_Column, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    List<CMember> rafters = membersForNode.Where(x => x.EMemberType == EMemberType_FS.eER).ToList();
+                    if (rafters.Count <= 1)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EgdeRafter_Column, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], null, bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    else
+                        m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EdgeRafterCanopy_EdgeColumn, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], rafters.FirstOrDefault(x => x.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy), bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
                 }
                 else //if(i< (iFrameNo - 1) // Intermediate frame
                 {
-                    //if()
+                    List<CMember> rafters = membersForNode.Where(x => (x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER)).ToList();
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_MainRafter_Column, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    if (rafters.Count <= 1)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_MainRafter_Column, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], null, bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    else if (rafters[1].EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EdgeRafterCanopy_Column, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], rafters.FirstOrDefault(x => x.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy), bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    else //if (rafters[1].EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_MainRafterCanopy_Column, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], rafters.FirstOrDefault(x => x.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy), bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
                 }
             }
 

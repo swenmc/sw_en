@@ -29,7 +29,7 @@ namespace BaseClasses
 
         public CConnectionJoint_B001() { }
 
-        public CConnectionJoint_B001(EJointType jointType_temp, CNode Node_temp, CMember MainFrameColumn_temp, CMember MainFrameRafter_temp, float fSLope_rad_temp, float fb_2_temp, float fh_1_temp, float ft, float ft_rafter, float fJointAngleAboutZ_deg)
+        public CConnectionJoint_B001(EJointType jointType_temp, CNode Node_temp, CMember MainFrameColumn_temp, CMember MainFrameRafter_temp, CMember MainFrameRafterCanopy_temp, float fSLope_rad_temp, float fb_2_temp, float fh_1_temp, float ft, float ft_rafter, float fJointAngleAboutZ_deg)
         {
             bIsJointDefinedinGCS = true;
 
@@ -37,8 +37,18 @@ namespace BaseClasses
             m_Node = Node_temp;
             m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainFrameColumn_temp;
-            m_SecondaryMembers = new CMember[1];
-            m_SecondaryMembers[0] = MainFrameRafter_temp;
+
+            if (jointType_temp == EJointType.eKnee_EgdeRafter_Column || jointType_temp == EJointType.eKnee_MainRafter_Column)
+            {
+                m_SecondaryMembers = new CMember[1];
+                m_SecondaryMembers[0] = MainFrameRafter_temp;
+            }
+            else
+            {
+                m_SecondaryMembers = new CMember[2];
+                m_SecondaryMembers[0] = MainFrameRafter_temp;
+                m_SecondaryMembers[1] = MainFrameRafterCanopy_temp;
+            }
 
             m_fb_2 = fb_2_temp;
             m_fh_1 = fh_1_temp;
@@ -155,7 +165,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_B001(JointType, m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb_2, m_fh_1, m_ft, m_ft_rafter, m_fJointAngleAboutZ_deg);
+            return new CConnectionJoint_B001(JointType, m_Node, m_MainMember, m_SecondaryMembers[0], m_SecondaryMembers.Length == 2 ? m_SecondaryMembers[1] : null, m_fSlope_rad, m_fb_2, m_fh_1, m_ft, m_ft_rafter, m_fJointAngleAboutZ_deg);
         }
 
         public override void UpdateJoint()
