@@ -411,8 +411,14 @@ namespace BaseClasses.GraphObj
                             // Uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
                             brushRoof1 = brushRoof.Clone();
-                            brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
+                            System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            r.Location = new System.Windows.Point(-wpWidthOffset, 0);
+
+                            brushRoof1.Viewport = r;
+                            //System.Windows.Point point = brushRoof1.Viewport.Location;
+                            //brushRoof1.Viewport.Location 
+                            //point.X = point.X + wpWidthOffset;
+                            //brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
@@ -438,12 +444,18 @@ namespace BaseClasses.GraphObj
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
                             double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y);
-
+                            
                             // Uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
                             brushRoof1 = brushRoof.Clone();
-                            brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0));
+                            System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            r.Location = new System.Windows.Point(-wpWidthOffset, 0);
+
+                            brushRoof1.Viewport = r;
+                            //System.Windows.Point point = brushRoof1.Viewport.Location;
+                            //brushRoof1.Viewport.Location 
+                            //point.X = point.X + wpWidthOffset;
+                            //brushRoof1.Viewport.Offset(new System.Windows.Vector(-wpWidthOffset, 0)); // To Ondrej - tu sa to snazim nastavit
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
