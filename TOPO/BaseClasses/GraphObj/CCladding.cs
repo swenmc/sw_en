@@ -384,9 +384,10 @@ namespace BaseClasses.GraphObj
 
                     iBayIndex++; // Docasne // Todo 691 - zmazat
 
-                    int iNumberOfWholeRibs = (int)(fBayStartCoordinate_Y / claddingWidthRibModular_Roof);
+                    float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y - (float)column_crsc_y_minus_temp + (float)claddingHeight_Wall;
+                    int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
                     double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
-                    double dPartialRib = fBayStartCoordinate_Y - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
+                    double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
 
                     if (canopy.Left)
                     {

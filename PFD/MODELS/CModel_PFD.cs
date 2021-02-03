@@ -151,19 +151,10 @@ namespace PFD
             {
                 if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
                 {
-                    // TODO 697 - Ondrej
-                    // Potrebujeme pripravit univerzalnu funkciu, ktora dokaze zistit ci existuje na vybranom uzle (parameter funkcie)
-                    // napr. m_arrNodes[i * iFrameNodesNo + 1]
-                    // pripojenych viac members (member start alebo end node)
-                    // Funkcia by mala byt univerzalna do tej miery ze bude mat ako dalsi parameter bool, ktory interne este skontroluje aj to,
-                    // ci existuje aj nejaky duplicitny uzol s takmer totoznymi suradnicami napr.  <= 0.00001 m
-                    // a ak taky uzol alebo uzly existuju vrati List vsetkych members ktoré su k pozadovanému uzlu pripojene
-
-                    //To Mato - takto by sa to malo pouzit
                     List<CMember> membersForNode = this.GetMembersForNode(m_arrNodes[i * iFrameNodesNo + 1], true);
-                    //if ()
-
-                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EgdeRafter_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                    List<CMember> rafters = membersForNode.Where(x => x.EMemberType == EMemberType_FS.eER).ToList();
+                    if (rafters.Count <= 1)
+                       m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EgdeRafter_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
                 }
                 else //if(i< (iFrameNo - 1) // Intermediate frame
                 {
