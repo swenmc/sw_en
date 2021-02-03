@@ -70,7 +70,7 @@ namespace BaseClasses
         public Dictionary<EMemberType_FS_Position, CMat> m_arrMat; //ja by som to mal radsej na iny enum viazane
         //public Dictionary<EMemberGroupNames, CMat> m_arrMat;
 
-        // Cross-sections used/ defined in current model        
+        // Cross-sections used/ defined in current model
         public Dictionary<EMemberType_FS_Position, CCrSc> m_arrCrSc; //ja by som to mal radsej na iny enum viazane
         //public Dictionary<EMemberGroupNames, CCrSc> m_arrCrSc;
 

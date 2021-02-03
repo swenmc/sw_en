@@ -83,6 +83,7 @@ namespace DATABASE
             model.MainRafterCanopy = reader["mainRafterCanopy"].ToString();
             model.EdgeRafterCanopy = reader["edgeRafterCanopy"].ToString();
             model.PurlinCanopy = reader["purlinCanopy"].ToString();
+            model.EdgePurlinCanopy = reader["purlinCanopy"].ToString(); // V defaulte rovnake ako purlincanopy
             model.BracingBlockPurlinsCanopy = reader["bracingBlockPurlinsCanopy"].ToString();
             model.CrossBracingRoofCanopy = reader["crossBracingRoofCanopy"].ToString();
             model.ColumnFlyBracingEveryXXGirt = reader["iColumnFlyBracingEveryXXGirt"].ToString();

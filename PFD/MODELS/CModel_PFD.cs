@@ -736,7 +736,7 @@ namespace PFD
                 {
                     // Selektujeme z model pruty typu Purlin_Canopy
                     //List<CMember> membersPurlinCanopy = listOfModelMemberGroups[(int)EMemberType_FS_Position.PurlinCanopy].ListOfMembers;
-                    List<CMember> membersPurlinCanopy = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.PurlinCanopy).ToList();
+                    List<CMember> membersPurlinCanopy = m_arrMembers.Where(m => (m.EMemberTypePosition == EMemberType_FS_Position.PurlinCanopy || m.EMemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)).ToList();
 
                     // TODO - Roztriedit purlins do bays, identifikovat x-tú a krajnú
 
@@ -790,14 +790,14 @@ namespace PFD
                                     EJointType jointTypeEnd;
 
                                     if(mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
-                                        jointTypeStart = EJointType.ePurlin_MainRafterCanopy_FlyBracing;
+                                        jointTypeStart = EJointType.ePurlin_MainRafterCanopyEdge_FlyBracing;
                                     else
-                                        jointTypeStart = EJointType.ePurlin_EdgeRafterCanopy_FlyBracing;
+                                        jointTypeStart = EJointType.ePurlin_EdgeRafterCanopyEdge_FlyBracing;
 
                                     if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
-                                        jointTypeEnd = EJointType.ePurlin_MainRafterCanopy_FlyBracing;
+                                        jointTypeEnd = EJointType.ePurlin_MainRafterCanopyEdge_FlyBracing;
                                     else
-                                        jointTypeEnd = EJointType.ePurlin_EdgeRafterCanopy_FlyBracing;
+                                        jointTypeEnd = EJointType.ePurlin_EdgeRafterCanopyEdge_FlyBracing;
 
                                     EPlateNumberAndPositionInJoint platePosition = EPlateNumberAndPositionInJoint.eOneLeftPlate;
 
@@ -871,6 +871,8 @@ namespace PFD
 
                             if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                                 jointTypeStart = EJointType.ePurlinBracingCanopy_EdgePurlin;
+                            else if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
+                                jointTypeStart = EJointType.ePurlinBracingCanopy_EdgePurlinCanopy;
                             else
                                 jointTypeStart = EJointType.ePurlinBracingCanopy_PurlinCanopy;
 
@@ -882,6 +884,8 @@ namespace PFD
 
                             if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                                 jointTypeEnd = EJointType.ePurlinBracingCanopy_EdgePurlin;
+                            else if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
+                                jointTypeEnd = EJointType.ePurlinBracingCanopy_EdgePurlinCanopy;
                             else
                                 jointTypeEnd = EJointType.ePurlinBracingCanopy_PurlinCanopy;
 
@@ -1566,7 +1570,12 @@ namespace PFD
                         // Purlin Members
                         for (int j = 0; j < canopyBay.PurlinCountLeft; j++)
                         {
-                            m_arrMembers[iCanopy_MemberIndex + j] = new CMember(iCanopy_MemberIndex + j + 1, m_arrNodes[iCanopy_NodeIndex + j], m_arrNodes[iCanopy_NodeIndex + canopyBay.PurlinCountLeft + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin_Left /*eccentricityPurlin*/, temp_eccPurlin_Left /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin_Left, 0);
+                            EMemberType_FS_Position ePurlinCanopyFSTypePosition = EMemberType_FS_Position.PurlinCanopy;
+
+                            if(j == canopyBay.PurlinCountLeft - 1) // Last prulin
+                                ePurlinCanopyFSTypePosition = EMemberType_FS_Position.EdgePurlinCanopy;
+
+                            m_arrMembers[iCanopy_MemberIndex + j] = new CMember(iCanopy_MemberIndex + j + 1, m_arrNodes[iCanopy_NodeIndex + j], m_arrNodes[iCanopy_NodeIndex + canopyBay.PurlinCountLeft + j], m_arrCrSc[ePurlinCanopyFSTypePosition], EMemberType_FS.eP, ePurlinCanopyFSTypePosition, temp_eccPurlin_Left /*eccentricityPurlin*/, temp_eccPurlin_Left /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin_Left, 0);
                             CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + j], bGeneratePurlinBracingBlocksCanopy ? iNumberOfTransverseSupports_PurlinsCanopy : 0);
                         }
                     }
@@ -1624,7 +1633,12 @@ namespace PFD
                         // Purlin Members
                         for (int j = 0; j < canopyBay.PurlinCountRight; j++)
                         {
-                            m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j] = new CMember(iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j + 1, m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + j], m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j], m_arrCrSc[EMemberType_FS_Position.PurlinCanopy], EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, temp_eccPurlin_Right, temp_eccPurlin_Right, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin_Right, 0);
+                            EMemberType_FS_Position ePurlinCanopyFSTypePosition = EMemberType_FS_Position.PurlinCanopy;
+
+                            if (j == canopyBay.PurlinCountRight - 1) // Last purlin
+                                ePurlinCanopyFSTypePosition = EMemberType_FS_Position.EdgePurlinCanopy;
+
+                            m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j] = new CMember(iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j + 1, m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + j], m_arrNodes[iCanopy_NodeIndex + 2 * canopyBay.PurlinCountLeft + canopyBay.PurlinCountRight + j], m_arrCrSc[ePurlinCanopyFSTypePosition], EMemberType_FS.eP, ePurlinCanopyFSTypePosition, temp_eccPurlin_Right, temp_eccPurlin_Right, fPurlinStart, fPurlinEnd, fRotationAngle_Purlin_Right, 0);
                             CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[iCanopy_MemberIndex + canopyBay.PurlinCountLeft + j], bGeneratePurlinBracingBlocksCanopy ? iNumberOfTransverseSupports_PurlinsCanopy : 0);
                         }
                     }
@@ -2093,6 +2107,13 @@ namespace PFD
             {
                 string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy).ComponentName;
                 listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eP, EMemberType_FS_Position.PurlinCanopy, members.First().CrScStart, 0, 0, 0, 0));
+            }
+
+            members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
+            if (members.Count() > 0)
+            {
+                string compName = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy).ComponentName;
+                listOfModelMemberGroups.Add(new CMemberGroup(listOfModelMemberGroups.Count + 1, compName, EMemberType_FS.eP, EMemberType_FS_Position.EdgePurlinCanopy, members.First().CrScStart, 0, 0, 0, 0));
             }
 
             members = m_arrMembers.Where(m => m.EMemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
@@ -3491,7 +3512,7 @@ namespace PFD
         }
 
         public void InitializeModelMaterialsAndCRSC(IList<CComponentInfo> componentList)
-        {            
+        {
             //if (ci_CBW != null) basicCount++;
             //if (ci_CBR != null) basicCount++;
 
@@ -3665,7 +3686,7 @@ namespace PFD
             if (cInfo != null)
             {
                 AddMaterial(EMemberType_FS_Position.MainRafterCanopy, MaterialFactory.GetMaterial(cInfo.Material));
-                AddCRSC(EMemberType_FS_Position.MainRafterCanopy, CrScFactory.GetCrSc(cInfo.Section));                
+                AddCRSC(EMemberType_FS_Position.MainRafterCanopy, CrScFactory.GetCrSc(cInfo.Section));
                 //m_arrCrSc[EMemberType_FS_Position.MainRafterCanopy].CSColor = Colors.Orange;
             }
 
@@ -3683,6 +3704,14 @@ namespace PFD
                 AddMaterial(EMemberType_FS_Position.PurlinCanopy, MaterialFactory.GetMaterial(cInfo.Material));
                 AddCRSC(EMemberType_FS_Position.PurlinCanopy, CrScFactory.GetCrSc(cInfo.Section));
                 //m_arrCrSc[EMemberType_FS_Position.PurlinCanopy].CSColor = Colors.LimeGreen;
+            }
+
+            cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
+            if (cInfo != null)
+            {
+                AddMaterial(EMemberType_FS_Position.EdgePurlinCanopy, MaterialFactory.GetMaterial(cInfo.Material));
+                AddCRSC(EMemberType_FS_Position.EdgePurlinCanopy, CrScFactory.GetCrSc(cInfo.Section));
+                //m_arrCrSc[EMemberType_FS_Position.EdgePurlinCanopy].CSColor = Colors.LimeGreen;
             }
 
             cInfo = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);

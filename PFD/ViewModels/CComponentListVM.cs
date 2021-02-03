@@ -159,7 +159,8 @@ namespace PFD
                 ci.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
                 ci.MemberTypePosition == EMemberType_FS_Position.Purlin ||
                 ci.MemberTypePosition == EMemberType_FS_Position.EdgePurlin ||
-                ci.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy)
+                ci.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy ||
+                ci.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
                 return true;
             else return false;
         }
@@ -168,6 +169,8 @@ namespace PFD
         {
             CComponentInfo cInfo2 = null;
             CComponentInfo cInfo3 = null;
+            CComponentInfo cInfo4 = null;
+
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn)
             {
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
@@ -188,16 +191,25 @@ namespace PFD
             {
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
                 cInfo3 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+                cInfo4 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin)
             {
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
                 cInfo3 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+                cInfo4 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy)
             {
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
                 cInfo3 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                cInfo4 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+                cInfo3 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                cInfo4 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
             {
@@ -226,6 +238,12 @@ namespace PFD
                 cInfo3.IsSetFromCode = true;
                 cInfo3.ILS = cInfo.ILS;
                 cInfo3.IsSetFromCode = false;
+            }
+            if (cInfo4 != null && cInfo.ILS != cInfo4.ILS)
+            {
+                cInfo4.IsSetFromCode = true;
+                cInfo4.ILS = cInfo.ILS;
+                cInfo4.IsSetFromCode = false;
             }
         }
 
@@ -413,11 +431,21 @@ namespace PFD
                 if (ci == null) return;
                 if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
-            
+
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy)
             {
                 CComponentInfo purlinBlockCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
                 if (purlinBlockCanopy != null) 
+                    if (purlinBlockCanopy.Generate != cInfo.Generate) { purlinBlockCanopy.IsSetFromCode = true; purlinBlockCanopy.Generate = cInfo.Generate; purlinBlockCanopy.IsSetFromCode = false; }
+
+                CComponentInfo crossCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
+                if (crossCanopy != null)
+                    if (crossCanopy.Generate != cInfo.Generate) { crossCanopy.IsSetFromCode = true; crossCanopy.Generate = cInfo.Generate; crossCanopy.IsSetFromCode = false; }
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
+            {
+                CComponentInfo purlinBlockCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+                if (purlinBlockCanopy != null)
                     if (purlinBlockCanopy.Generate != cInfo.Generate) { purlinBlockCanopy.IsSetFromCode = true; purlinBlockCanopy.Generate = cInfo.Generate; purlinBlockCanopy.IsSetFromCode = false; }
 
                 CComponentInfo crossCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
@@ -1676,6 +1704,8 @@ namespace PFD
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iPurlinCanopy_ILS_Number); ci.IsSetFromCode = false; }
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
+            if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, dmodel.iPurlinCanopy_ILS_Number); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
             if (ci != null) { ci.IsSetFromCode = true; SetComponentInfoILS(ci, 0); ci.IsSetFromCode = false; }
         }
@@ -1897,6 +1927,13 @@ namespace PFD
             }
             else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockPurlinsCanopy);
 
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
+            if (cInfo != null && cInfo.ILS != "None")
+            {
+                changed = AddBracingBlocksPurlinsCanopy(cInfo) || changed;
+            }
+            else RemoveComponentFromList(EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+
             if (changed) OrderComponentList();
         }
 
@@ -2043,6 +2080,21 @@ namespace PFD
                 changed = true;
             }
 
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
+            if (cInfo == null)
+            {
+                string section = MembersSectionsDict[EMemberType_FS_Position.EdgePurlinCanopy];
+                CrScProperties prop = CSectionManager.GetSectionProperties(section);
+
+                CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.EdgePurlinCanopy];
+                cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
+                    compPref.ComponentName, section, prop.colorName, "G550‡", "None", true, true, true, true, true,
+                    SectionsForGirtsOrPurlins, DefaultILS_Items, MColors, EMemberType_FS_Position.EdgePurlinCanopy);
+                cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
+                ComponentList.Add(cInfo);
+                changed = true;
+            }
+
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
             CComponentInfo cPurlinCanopyInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
 
@@ -2100,6 +2152,8 @@ namespace PFD
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy);
             if (cInfo != null) ComponentList.Remove(cInfo);
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+            if (cInfo != null) ComponentList.Remove(cInfo);
+            cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy);
             if (cInfo != null) ComponentList.Remove(cInfo);
             cInfo = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
             if (cInfo != null) ComponentList.Remove(cInfo);

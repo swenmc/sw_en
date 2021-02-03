@@ -43,6 +43,7 @@ namespace DATABASE.DTO
         string MMainRafterCanopy;
         string MEdgeRafterCanopy;
         string MPurlinCanopy;
+        string MEdgePurlinCanopy;
         string MBracingBlockPurlinsCanopy;
         string MCrossBracingRoofCanopy;
 
@@ -408,6 +409,19 @@ namespace DATABASE.DTO
             set
             {
                 MPurlinCanopy = value;
+            }
+        }
+
+        public string EdgePurlinCanopy
+        {
+            get
+            {
+                return MEdgePurlinCanopy;
+            }
+
+            set
+            {
+                MEdgePurlinCanopy = value;
             }
         }
 

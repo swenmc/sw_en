@@ -486,7 +486,8 @@ namespace BaseClasses
         EdgeRafterCanopy = 23,
         PurlinCanopy = 24,
         BracingBlockPurlinsCanopy = 25,
-        CrossBracingRoofCanopy = 26
+        CrossBracingRoofCanopy = 26,
+        EdgePurlinCanopy = 27
     }
 
     // TODO - Ondrej TOTO je asi zbytocna duplicita
@@ -743,10 +744,13 @@ namespace BaseClasses
         ePurlin_EdgeRafterCanopy = 67,
         ePurlin_MainRafterCanopy_FlyBracing = 68,
         ePurlin_EdgeRafterCanopy_FlyBracing = 69,
-        ePurlinBracingCanopy_PurlinCanopy = 70,
-        ePurlinBracingCanopy_EdgePurlin = 71,
-        eCrossBracing_MainRafterCanopy = 72,
-        eCrossBracing_EdgeRafterCanopy = 73
+        ePurlin_MainRafterCanopyEdge_FlyBracing = 70,
+        ePurlin_EdgeRafterCanopyEdge_FlyBracing = 71,
+        ePurlinBracingCanopy_PurlinCanopy = 72,
+        ePurlinBracingCanopy_EdgePurlin = 73,
+        ePurlinBracingCanopy_EdgePurlinCanopy = 74,
+        eCrossBracing_MainRafterCanopy = 75,
+        eCrossBracing_EdgeRafterCanopy = 76
     }
 
     public enum EModelViews

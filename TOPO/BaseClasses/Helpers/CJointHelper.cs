@@ -149,9 +149,15 @@ namespace BaseClasses.Helpers
                     opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
                 case EJointType.ePurlin_EdgeRafterCanopy_FlyBracing:
                     opt.RotateModelX = -100; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlin_MainRafterCanopyEdge_FlyBracing:
+                    opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlin_EdgeRafterCanopyEdge_FlyBracing:
+                    opt.RotateModelX = -100; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.ePurlinBracingCanopy_PurlinCanopy: // TODO - je potrebné dostat sem nastavenie every second row  purlin bracing a zmenit otocenie 
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.ePurlinBracingCanopy_EdgePurlin:
+                    opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                case EJointType.ePurlinBracingCanopy_EdgePurlinCanopy:
                     opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
                 case EJointType.eCrossBracing_MainRafterCanopy:
                     opt.RotateModelX = 45; opt.RotateModelY = 45; opt.RotateModelZ = 45; break;
