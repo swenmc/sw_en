@@ -733,7 +733,21 @@ namespace BaseClasses
         eCrossBracing_EdgeColumn = 60,
 
         eCrossBracing_MainRafter = 61,
-        eCrossBracing_EdgeRafter = 62
+        eCrossBracing_EdgeRafter = 62,
+
+        // Canopy
+        eKnee_MainRafterCanopy_Column = 63,
+        eKnee_MainRafterCanopy_EdgeColumn = 64,
+        eKnee_EdgeRafterCanopy_Column = 65,
+        eKnee_EdgeRafterCanopy_EdgeColumn = 66,
+        ePurlin_MainRafterCanopy = 67,
+        ePurlin_EdgeRafterCanopy = 68,
+        ePurlin_MainRafterCanopy_FlyBracing = 69,
+        ePurlin_EdgeRafterCanopy_FlyBracing = 70,
+        ePurlinBracingCanopy_PurlinCanopy = 71,
+        ePurlinBracingCanopy_EdgePurlin = 72,
+        eCrossBracing_MainRafterCanopy = 73,
+        eCrossBracing_EdgeRafterCanopy = 74
     }
 
     public enum EModelViews

@@ -143,22 +143,49 @@ namespace PFD
 
             float ft_knee_joint_plate = 0.003f; // m
 
+            EJointType currentKneeJointType;
+            string currentKneePlate;
+
             // Knee Joints 1
             for (int i = 0; i < iFrameNo; i++)
             {
                 if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
+                {
+                    // TODO 697 - Ondrej
+                    // Potrebujeme pripravit univerzalnu funkciu, ktora dokaze zistit ci existuje na vybranom uzle (parameter funkcie)
+                    // napr. m_arrNodes[i * iFrameNodesNo + 1]
+                    // pripojenych viac members (member start alebo end node)
+                    // Funkcia by mala byt univerzalna do tej miery ze bude mat ako dalsi parameter bool, ktory interne este skontroluje aj to,
+                    // ci existuje aj nejaky duplicitny uzol s takmer totoznymi suradnicami napr.  <= 0.00001 m
+                    // a ak taky uzol alebo uzly existuju vrati List vsetkych members ktoré su k pozadovanému uzlu pripojene
+
+                    //if ()
+
                     m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EgdeRafter_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                }
                 else //if(i< (iFrameNo - 1) // Intermediate frame
+                {
+                    //if()
+
                     m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_MainRafter_Column, m_arrNodes[i * iFrameNodesNo + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1], fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + 1].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                }
             }
 
             // Knee Joints 2
             for (int i = 0; i < iFrameNo; i++)
             {
                 if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
+                {
+                    //if()
+
                     m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_EgdeRafter_Column, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                }
                 else //if(i< (iFrameNo - 1) // Intermediate frame
+                {
+                    //if()
+
                     m_arrConnectionJoints.Add(new CConnectionJoint_B001(EJointType.eKnee_MainRafter_Column, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)], bIsGableRoof ? fRoofPitch_rad : -fRoofPitch_rad, 1.1f * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1)].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * iFrameMembersNo + (iFrameMembersNo - 1 - 1)].CrScStart.h, ft_knee_joint_plate, ft_rafter_joint_plate, i == 0 ? fFrontFrameRakeAngle_deg : fBackFrameRakeAngle_deg));
+                }
             }
 
             // Eaves Purlin Joints
@@ -244,18 +271,18 @@ namespace PFD
 
                         if (i < iGirtNoInOneFrame) // First Bay
                         {
-                            jointTypeStart = EJointType.eGirt_EdgeColumn;
-                            jointTypeEnd = EJointType.eGirt_MainColumn;
+                            jointTypeStart = EJointType.eGirt_EdgeColumn_FlyBracing;
+                            jointTypeEnd = EJointType.eGirt_MainColumn_FlyBracing;
                         }
                         else if (i >= ((iFrameNo - 2) * iGirtNoInOneFrame)) // Last Bay
                         {
-                            jointTypeStart = EJointType.eGirt_MainColumn;
-                            jointTypeEnd = EJointType.eGirt_EdgeColumn;
+                            jointTypeStart = EJointType.eGirt_MainColumn_FlyBracing;
+                            jointTypeEnd = EJointType.eGirt_EdgeColumn_FlyBracing;
                         }
                         else // Intermediate Bays
                         {
-                            jointTypeStart = EJointType.eGirt_MainColumn;
-                            jointTypeEnd = EJointType.eGirt_MainColumn;
+                            jointTypeStart = EJointType.eGirt_MainColumn_FlyBracing;
+                            jointTypeEnd = EJointType.eGirt_MainColumn_FlyBracing;
                         }
 
                         if (mainMemberForStartJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T003(jointTypeStart, "FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bTopOfPlateInCrscVerticalAxisPlusDirection));
@@ -316,18 +343,18 @@ namespace PFD
 
                         if (i < iPurlinNoInOneFrame) // First Bay
                         {
-                            jointTypeStart = EJointType.ePurlin_EdgeRafter;
-                            jointTypeEnd = EJointType.ePurlin_MainRafter;
+                            jointTypeStart = EJointType.ePurlin_EdgeRafter_FlyBracing;
+                            jointTypeEnd = EJointType.ePurlin_MainRafter_FlyBracing;
                         }
                         else if (i >= ((iFrameNo - 2) * iPurlinNoInOneFrame)) // Last Bay
                         {
-                            jointTypeStart = EJointType.ePurlin_MainRafter;
-                            jointTypeEnd = EJointType.ePurlin_EdgeRafter;
+                            jointTypeStart = EJointType.ePurlin_MainRafter_FlyBracing;
+                            jointTypeEnd = EJointType.ePurlin_EdgeRafter_FlyBracing;
                         }
                         else // Intermediate Bays
                         {
-                            jointTypeStart = EJointType.ePurlin_MainRafter;
-                            jointTypeEnd = EJointType.ePurlin_MainRafter;
+                            jointTypeStart = EJointType.ePurlin_MainRafter_FlyBracing;
+                            jointTypeEnd = EJointType.ePurlin_MainRafter_FlyBracing;
                         }
 
                         if (mainMemberForStartJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T003(jointTypeStart, "FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
@@ -691,12 +718,8 @@ namespace PFD
                 }
             }
 
-            if (/*bGenerateCanopies*/ false) // IN WORK
+            if (bGenerateCanopies)
             {
-                // Rafters - Canopy
-
-                // TODO - pripoj na MR a MC resp ER a EC
-
                 // Purlins - Canopy
                 if (bGeneratePurlinsCanopy)
                 {
@@ -755,23 +778,15 @@ namespace PFD
                                     EJointType jointTypeStart;
                                     EJointType jointTypeEnd;
 
-                                    int f = 0; // Frame index // TODO - dopracovat
+                                    if(mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+                                        jointTypeStart = EJointType.ePurlin_MainRafterCanopy_FlyBracing;
+                                    else
+                                        jointTypeStart = EJointType.ePurlin_EdgeRafterCanopy_FlyBracing;
 
-                                    if (f < iPurlinNoInOneFrame) // First Bay
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_EdgeRafter;
-                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
-                                    }
-                                    else if (f >= ((iFrameNo - 2) * iPurlinNoInOneFrame)) // Last Bay
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_MainRafter;
-                                        jointTypeEnd = EJointType.ePurlin_EdgeRafter;
-                                    }
-                                    else // Intermediate Bays
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_MainRafter;
-                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
-                                    }
+                                    if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+                                        jointTypeEnd = EJointType.ePurlin_MainRafterCanopy_FlyBracing;
+                                    else
+                                        jointTypeEnd = EJointType.ePurlin_EdgeRafterCanopy_FlyBracing;
 
                                     EPlateNumberAndPositionInJoint platePosition = EPlateNumberAndPositionInJoint.eOneLeftPlate;
 
@@ -786,23 +801,15 @@ namespace PFD
                                     EJointType jointTypeStart;
                                     EJointType jointTypeEnd;
 
-                                    int f = 0; // Frame index // TODO - dopracovat
+                                    if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+                                        jointTypeStart = EJointType.ePurlin_MainRafterCanopy_FlyBracing;
+                                    else
+                                        jointTypeStart = EJointType.ePurlin_EdgeRafterCanopy_FlyBracing;
 
-                                    if (f < iPurlinNoInOneFrame) // First Bay
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_EdgeRafter;
-                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
-                                    }
-                                    else if (f >= ((iFrameNo - 2) * iPurlinNoInOneFrame)) // Last Bay
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_MainRafter;
-                                        jointTypeEnd = EJointType.ePurlin_EdgeRafter;
-                                    }
-                                    else // Intermediate Bays
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_MainRafter;
-                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
-                                    }
+                                    if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+                                        jointTypeEnd = EJointType.ePurlin_MainRafterCanopy_FlyBracing;
+                                    else
+                                        jointTypeEnd = EJointType.ePurlin_EdgeRafterCanopy_FlyBracing;
 
                                     if (mainMemberForStartJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T003(jointTypeStart, "FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
                                     if (mainMemberForEndJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T003(jointTypeEnd, "FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
@@ -812,23 +819,15 @@ namespace PFD
                                     EJointType jointTypeStart;
                                     EJointType jointTypeEnd;
 
-                                    int f = 0; // Frame index // TODO - dopracovat
+                                    if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+                                        jointTypeStart = EJointType.ePurlin_MainRafterCanopy;
+                                    else
+                                        jointTypeStart = EJointType.ePurlin_EdgeRafterCanopy;
 
-                                    if (f < iPurlinNoInOneFrame) // First Bay
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_EdgeRafter;
-                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
-                                    }
-                                    else if (f >= ((iFrameNo - 2) * iPurlinNoInOneFrame)) // Last Bay
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_MainRafter;
-                                        jointTypeEnd = EJointType.ePurlin_EdgeRafter;
-                                    }
-                                    else // Intermediate Bays
-                                    {
-                                        jointTypeStart = EJointType.ePurlin_MainRafter;
-                                        jointTypeEnd = EJointType.ePurlin_MainRafter;
-                                    }
+                                    if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy)
+                                        jointTypeEnd = EJointType.ePurlin_MainRafterCanopy;
+                                    else
+                                        jointTypeEnd = EJointType.ePurlin_EdgeRafterCanopy;
 
                                     if (mainMemberForStartJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T001(jointTypeStart, "LH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates));
                                     if (mainMemberForEndJoint != null) m_arrConnectionJoints.Add(new CConnectionJoint_T001(jointTypeEnd, "LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates));
@@ -860,9 +859,9 @@ namespace PFD
                             CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
 
                             if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
-                                jointTypeStart = EJointType.ePurlinBracing_EdgePurlin;
+                                jointTypeStart = EJointType.ePurlinBracingCanopy_EdgePurlin;
                             else
-                                jointTypeStart = EJointType.ePurlinBracing_Purlin;
+                                jointTypeStart = EJointType.ePurlinBracingCanopy_PurlinCanopy;
 
                             if (mainMemberForStartJoint != null)
                                 m_arrConnectionJoints.Add(new CConnectionJoint_T001(jointTypeStart, "LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
@@ -871,9 +870,9 @@ namespace PFD
                             CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
 
                             if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
-                                jointTypeEnd = EJointType.ePurlinBracing_EdgePurlin;
+                                jointTypeEnd = EJointType.ePurlinBracingCanopy_EdgePurlin;
                             else
-                                jointTypeEnd = EJointType.ePurlinBracing_Purlin;
+                                jointTypeEnd = EJointType.ePurlinBracingCanopy_PurlinCanopy;
 
                             if (mainMemberForEndJoint != null)
                                 m_arrConnectionJoints.Add(new CConnectionJoint_T001(jointTypeEnd, "LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates));
@@ -902,14 +901,14 @@ namespace PFD
                         EJointType jointTypeEnd;
 
                         if (mainMemberForStartJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
-                            jointTypeStart = EJointType.eCrossBracing_EdgeRafter;
+                            jointTypeStart = EJointType.eCrossBracing_EdgeRafterCanopy;
                         else
-                            jointTypeStart = EJointType.eCrossBracing_MainRafter;
+                            jointTypeStart = EJointType.eCrossBracing_MainRafterCanopy;
 
                         if (mainMemberForEndJoint.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
-                            jointTypeEnd = EJointType.eCrossBracing_EdgeRafter;
+                            jointTypeEnd = EJointType.eCrossBracing_EdgeRafterCanopy;
                         else
-                            jointTypeEnd = EJointType.eCrossBracing_MainRafter;
+                            jointTypeEnd = EJointType.eCrossBracing_MainRafterCanopy;
 
                         if (current_member.NodeStart.X < 0.5 * fW_frame_centerline) // Left side
                         {
