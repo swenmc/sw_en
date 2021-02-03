@@ -99,11 +99,11 @@ namespace BaseClasses.GraphObj
 
             // Cladding Edges
 
-            Point3D pfront0_baseleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp, bottomEdge_z);
-            Point3D pfront1_baseright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp, bottomEdge_z);
+            Point3D pfront0_baseleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, bottomEdge_z);
+            Point3D pfront1_baseright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, bottomEdge_z);
 
-            Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, bottomEdge_z);
-            Point3D pback1_baseright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, bottomEdge_z);
+            Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, bottomEdge_z);
+            Point3D pback1_baseright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, bottomEdge_z);
 
             Brush solidBrushFront = new SolidColorBrush(m_ColorWall);
             Brush solidBrushSide = new SolidColorBrush(m_ColorWall);
@@ -169,11 +169,11 @@ namespace BaseClasses.GraphObj
             {
                 // Monopitch Roof
 
-                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp, height_2_final);
-                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp, height_1_final);
+                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_2_final);
+                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
 
-                Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_2_final);
-                Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final);
+                Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_2_final);
+                Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_1_final);
 
                 if (options.bUseTextures) // Pouzijeme len ak vykreslujeme textury, inak sa pouzije material vytvoreny z SolidColorBrush podla vybranej farby cladding v GUI
                 {
@@ -228,16 +228,27 @@ namespace BaseClasses.GraphObj
                     int iAreaIndex = 5;
 
                     float fOverhangOffset_x = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
-                    float fOverhangOffset_y = 0.00f; // TODO - zadavat v GUI ako cladding property pre roof
+                    float fOverhangOffset_y = 0; // TODO - zadavat v GUI ako cladding property pre roof
 
                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y;
-                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y;
+                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
+                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;
+
+                    if(canopy.BayIndex == 0) // First bay
+                       fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)claddingHeight_Wall;
+                    else if(canopy.BayIndex == canopyCollection.Count - 1) // Last bay
+                        fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)claddingHeight_Wall;
 
                     iBayIndex++; // Docasne // Todo 691 - zmazat
 
                     if (canopy.Left)
                     {
+                        // 2 ______ 1
+                        //  |      |
+                        //  |      |
+                        //  |______|
+                        // 3        0
+
                         float fCanopyCladdingWidth = (float)canopy.WidthLeft + fOverhangOffset_x;
                         float fCanopy_EdgeCoordinate_z = (float)height_1_final + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
@@ -260,7 +271,7 @@ namespace BaseClasses.GraphObj
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
-                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof));
+                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
                         iAreaIndex++;
                     }
 
@@ -288,7 +299,7 @@ namespace BaseClasses.GraphObj
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
-                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof));
+                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
                         iAreaIndex++;
                     }
                 }
@@ -297,13 +308,13 @@ namespace BaseClasses.GraphObj
             {
                 // Gable Roof
 
-                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp, height_1_final);
-                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp, height_1_final);
-                Point3D pfront4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, column_crsc_y_minus_temp, height_2_final);
+                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
+                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
+                Point3D pfront4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, column_crsc_y_minus_temp - claddingHeight_Wall, height_2_final);
 
-                Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final);
-                Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final);
-                Point3D pback4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_2_final);
+                Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_1_final);
+                Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_1_final);
+                Point3D pback4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_2_final);
 
                 if (options.bUseTextures)
                 {
@@ -360,11 +371,16 @@ namespace BaseClasses.GraphObj
                     int iAreaIndex = 6;
 
                     float fOverhangOffset_x = 0.15f; // TODO - zadavat v GUI ako cladding property pre roof
-                    float fOverhangOffset_y = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
+                    float fOverhangOffset_y = 0; // TODO - zadavat v GUI ako cladding property pre roof
 
                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y;
-                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y;
+                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
+                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;
+
+                    if (canopy.BayIndex == 0) // First bay
+                        fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)claddingHeight_Wall;
+                    else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
+                        fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)claddingHeight_Wall;
 
                     iBayIndex++; // Docasne // Todo 691 - zmazat
 
@@ -392,7 +408,7 @@ namespace BaseClasses.GraphObj
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
-                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof));
+                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
                         iAreaIndex++;
                     }
 
@@ -420,7 +436,7 @@ namespace BaseClasses.GraphObj
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
-                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof));
+                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
                         iAreaIndex++;
                     }
                 }
