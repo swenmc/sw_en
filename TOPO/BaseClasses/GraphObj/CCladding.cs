@@ -247,14 +247,13 @@ namespace BaseClasses.GraphObj
                         Point3D pback_right = new Point3D(pback3_heightleft.X, fBayEndCoordinate_Y, height_1_final);
 
                         // Todo 691
-                        DiffuseMaterial material_Roof1 = new DiffuseMaterial(solidBrushRoof);
                         if (options.bUseTextures)
                         {
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
-                            // Pokus - uplne novy objekt brush a material
+                            // Pokus - uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
                             string uriString_Roof1 = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Roof + "/" + m_claddingShape_Roof + "_" + m_ColorNameRoof + ".jpg";
                             brushRoof1.ImageSource = new BitmapImage(new Uri(uriString_Roof1, UriKind.RelativeOrAbsolute));
@@ -262,13 +261,11 @@ namespace BaseClasses.GraphObj
                             brushRoof1.ViewportUnits = BrushMappingMode.Absolute;
                             brushRoof1.Stretch = Stretch.Fill;
                             brushRoof1.Opacity = options.fRoofCladdingOpacity;
-
                             brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            
-                            material_Roof1 = new DiffuseMaterial(brushRoof1);
+                            material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
-                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof1));
+                        model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof));
                         iAreaIndex++;
                     }
 
@@ -288,8 +285,16 @@ namespace BaseClasses.GraphObj
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
-                            brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_Roof = new DiffuseMaterial(brushRoof);
+                            // Pokus - uplne novy objekt brush
+                            ImageBrush brushRoof1 = new ImageBrush();
+                            string uriString_Roof1 = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Roof + "/" + m_claddingShape_Roof + "_" + m_ColorNameRoof + ".jpg";
+                            brushRoof1.ImageSource = new BitmapImage(new Uri(uriString_Roof1, UriKind.RelativeOrAbsolute));
+                            brushRoof1.TileMode = TileMode.Tile;
+                            brushRoof1.ViewportUnits = BrushMappingMode.Absolute;
+                            brushRoof1.Stretch = Stretch.Fill;
+                            brushRoof1.Opacity = options.fRoofCladdingOpacity;
+                            brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
                         model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof));
