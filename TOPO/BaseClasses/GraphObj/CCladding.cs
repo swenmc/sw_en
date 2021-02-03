@@ -253,14 +253,9 @@ namespace BaseClasses.GraphObj
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
-                            // Pokus - uplne novy objekt brush
+                            // Uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
-                            string uriString_Roof1 = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Roof + "/" + m_claddingShape_Roof + "_" + m_ColorNameRoof + ".jpg";
-                            brushRoof1.ImageSource = new BitmapImage(new Uri(uriString_Roof1, UriKind.RelativeOrAbsolute));
-                            brushRoof1.TileMode = TileMode.Tile;
-                            brushRoof1.ViewportUnits = BrushMappingMode.Absolute;
-                            brushRoof1.Stretch = Stretch.Fill;
-                            brushRoof1.Opacity = options.fRoofCladdingOpacity;
+                            brushRoof1 = brushRoof.Clone();
                             brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
@@ -285,14 +280,10 @@ namespace BaseClasses.GraphObj
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
-                            // Pokus - uplne novy objekt brush
+
+                            // Uplne novy objekt brush
                             ImageBrush brushRoof1 = new ImageBrush();
-                            string uriString_Roof1 = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Roof + "/" + m_claddingShape_Roof + "_" + m_ColorNameRoof + ".jpg";
-                            brushRoof1.ImageSource = new BitmapImage(new Uri(uriString_Roof1, UriKind.RelativeOrAbsolute));
-                            brushRoof1.TileMode = TileMode.Tile;
-                            brushRoof1.ViewportUnits = BrushMappingMode.Absolute;
-                            brushRoof1.Stretch = Stretch.Fill;
-                            brushRoof1.Opacity = options.fRoofCladdingOpacity;
+                            brushRoof1 = brushRoof.Clone();
                             brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             material_Roof = new DiffuseMaterial(brushRoof1);
                         }
@@ -390,14 +381,15 @@ namespace BaseClasses.GraphObj
                         // Todo 691
                         if (options.bUseTextures)
                         {
-                            //double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
-                            //wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
-                            //wpHeight = claddingWidthRibModular_Roof / poinstsDist;
-                            //brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            //material_Roof = new DiffuseMaterial(brushRoof);
-                                                        
-                            brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight / 3);
-                            material_Roof = new DiffuseMaterial(brushRoof);
+                            double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
+                            wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
+                            wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+
+                            // Uplne novy objekt brush
+                            ImageBrush brushRoof1 = new ImageBrush();
+                            brushRoof1 = brushRoof.Clone();
+                            brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
                         model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof));
@@ -420,8 +412,12 @@ namespace BaseClasses.GraphObj
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
                             wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
-                            brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_Roof = new DiffuseMaterial(brushRoof);
+
+                            // Uplne novy objekt brush
+                            ImageBrush brushRoof1 = new ImageBrush();
+                            brushRoof1 = brushRoof.Clone();
+                            brushRoof1.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_Roof = new DiffuseMaterial(brushRoof1);
                         }
 
                         model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pback_left, pfront_left, pfront_right, pback_right }, 0).CreateArea(options.bUseTextures, material_Roof));
