@@ -55,11 +55,12 @@ namespace BaseClasses
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(_model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                float fTempMin_X = 0;
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(_model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z, out fTempMin_X);
                 if (centerModel)
                 {
                     centerModelTransGr = new Transform3DGroup();
-                    centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
+                    centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f + Math.Abs(fTempMin_X), -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
 
                     //model rotation for the VIEW
                     centerModelTransGr.Children.Add(GetModelRotationAccordingToView(sDisplayOptions));
@@ -197,7 +198,7 @@ namespace BaseClasses
                     ((Model3D)gr).Transform = centerModelTransGr;
                     double maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
-                    Point3D cameraPosition = new Point3D(0, 0, maxLen * 1.9);  //to bola 2 - Task 493 - To Mato mozno aj toto by sme mohli dat niekde do GUI ako nastavenie, resp. v DisplayOptions by to mohlo asi byt
+                    Point3D cameraPosition = new Point3D(0, 0, maxLen * 2);  //to bola 2 - Task 493 - To Mato mozno aj toto by sme mohli dat niekde do GUI ako nastavenie, resp. v DisplayOptions by to mohlo asi byt
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
 
@@ -1235,6 +1236,18 @@ namespace BaseClasses
         public static Point3D GetModelCentreWithoutCrsc(CModel model, DisplayOptions sDisplayOptions, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
         {
             float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
+
+            CalculateModelLimitsWithoutCrsc(model, sDisplayOptions, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
+            fModel_Length_X = fTempMax_X - fTempMin_X;
+            fModel_Length_Y = fTempMax_Y - fTempMin_Y;
+            fModel_Length_Z = fTempMax_Z - fTempMin_Z;
+
+            return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
+        }
+        public static Point3D GetModelCentreWithoutCrsc(CModel model, DisplayOptions sDisplayOptions, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z, out float fTempMin_X)
+        {
+            float fTempMax_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
 
             CalculateModelLimitsWithoutCrsc(model, sDisplayOptions, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
