@@ -158,7 +158,7 @@ namespace BaseClasses.Helpers
                 case EJointType.ePurlinBracingCanopy_EdgePurlin:
                     opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
                 case EJointType.ePurlinBracingCanopy_EdgePurlinCanopy:
-                    opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.eCrossBracing_MainRafterCanopy:
                     opt.RotateModelX = 45; opt.RotateModelY = 45; opt.RotateModelZ = 45; break;
                 case EJointType.eCrossBracing_EdgeRafterCanopy:
