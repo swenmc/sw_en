@@ -302,18 +302,21 @@ namespace PFD
 
                     //To Mato - ak nieco nefunguje pri zmene ILS, tak tu treba hladat problem (tu bol aj bug 685)
                     //Pri zmene poctu ILS pre purlin alebo girt je potrebne pregenerovat model (pruty aj spoje) a pripadne vygenerovat pruty bracing blocks nanovo ak sa zmenil ich pocet. 
-                    if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin || cInfo.MemberTypePosition == EMemberType_FS_Position.Girt ||
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide ||
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin || cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy || 
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
-                    {
-                        vm.RecreateJoints = true;
-                        vm.RecreateModel = true;
-                    }
-                    else return;
+                    //if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin || cInfo.MemberTypePosition == EMemberType_FS_Position.Girt ||
+                    //    cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
+                    //    cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide ||
+                    //    cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
+                    //    cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
+                    //    cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin || cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy || 
+                    //    cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
+                    //{
+                    //    vm.RecreateJoints = true;
+                    //    vm.RecreateModel = true;
+                    //}
+                    //else return;
+
+                    vm.RecreateJoints = true;
+                    vm.RecreateModel = true;
                 }
                 if (e.PropertyName == "Section")
                 {
