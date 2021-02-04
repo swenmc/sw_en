@@ -1237,6 +1237,7 @@ namespace PFD
             set
             {
                 m_FramesComponentList = value;
+                if (FramesComponentList == null) return;
                 foreach (FrameMembersInfo fmi in FramesComponentList)
                 {
                     fmi.PropertyChanged += ComponentListItem_PropertyChanged;
@@ -1254,6 +1255,7 @@ namespace PFD
             set
             {
                 m_BaysComponentList = value;
+                if (BaysComponentList == null) return;
                 foreach (BayMembersInfo bmi in BaysComponentList)
                 {
                     bmi.PropertyChanged += ComponentListItem_PropertyChanged;
@@ -1272,6 +1274,7 @@ namespace PFD
             set
             {
                 m_OthersComponentList = value;
+                if (OthersComponentList == null) return;
                 foreach (OthersMembersInfo omi in OthersComponentList)
                 {
                     omi.PropertyChanged += ComponentListItem_PropertyChanged;
