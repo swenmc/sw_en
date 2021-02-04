@@ -4043,8 +4043,8 @@ namespace PFD
                 CConnectionJointTypes cjEnd = null;
                 Model.GetModelMemberStartEndConnectionJoints(governingMember, out cjStart, out cjEnd);
 
-                CJointLoadCombinationRatio_ULS resStart = JointDesignResults_ULS.FirstOrDefault(i => i.Member.ID == governingMember.ID && i.LoadCombination.ID == governingLoadComb.ID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
-                CJointLoadCombinationRatio_ULS resEnd = JointDesignResults_ULS.FirstOrDefault(i => i.Member.ID == governingMember.ID && i.LoadCombination.ID == governingLoadComb.ID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
+                CJointLoadCombinationRatio_ULS resStart = JointDesignResults_ULS.FirstOrDefault(i => i.Member.ID == governingMember.ID && i.LoadCombination.ID == governingLoadComb.ID && i.Joint != null && cjStart != null && i.Joint.m_Node.ID == cjStart.m_Node.ID);
+                CJointLoadCombinationRatio_ULS resEnd = JointDesignResults_ULS.FirstOrDefault(i => i.Member.ID == governingMember.ID && i.LoadCombination.ID == governingLoadComb.ID && i.Joint != null && cjEnd != null && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
                 if (resStart == null) continue;
                 if (resEnd == null) continue;
 

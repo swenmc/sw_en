@@ -912,6 +912,8 @@ namespace PFD
                     {
                         CMember current_member = membersCrossBracingCanopy[i];
 
+                        // Pôvodný kod - fungoval by ak by neboli uzly duplicitne
+                        /*
                         // Joint at member start
                         CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
                                 && (m.IntermediateNodes.Contains(current_member.NodeStart) || m.NodeStart.Equals(current_member.NodeStart) || m.NodeEnd.Equals(current_member.NodeStart)));
@@ -919,6 +921,15 @@ namespace PFD
                         // Joint at member end
                         CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => (m.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy || m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)
                                 && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
+                        */
+
+                        // TOOD Ondrej - mali by sme mat aj option zahrnut member intermediate nodes
+                        List<CMember> membersForCrossBracingCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true);
+                        List<CMember> membersForCrossBracingCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true);
+
+                        // Vyberieme zo zoznamov prvy prut, ktory je typu rafter
+                        CMember mainMemberForStartJoint = membersForCrossBracingCanopyStarNode.FirstOrDefault(x => x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER);
+                        CMember mainMemberForEndJoint = membersForCrossBracingCanopyEndNode.FirstOrDefault(x => x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER);
 
                         EJointType jointTypeStart;
                         EJointType jointTypeEnd;

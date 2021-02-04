@@ -292,7 +292,6 @@ namespace BaseClasses
                 }
                 if (jStart != null && jEnd != null) return;
             }
-            
 
             foreach (CConnectionJointTypes cj in m_arrConnectionJoints)
             {
@@ -306,6 +305,16 @@ namespace BaseClasses
                 }
                 if (jStart != null && jEnd != null) return;
             }
+
+            // Canopy - rafters
+            // Vynimka - koncovy uzol pre rafter - canopy nemusi byt pripojeny k ziadnemu inemu prvku
+            if ((jStart == null && m.NodeStart.X < 0 && // left side - rafter start node can be unsupported
+                (m.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy ||
+                 m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)) ||
+                 (jEnd == null && m.NodeEnd.X > fW_frame_centerline && // right side - rafter end node can be unsupported
+                (m.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy ||
+                 m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy)))
+                return;
 
             // Validation - start or end joint wasn't found.
             if (jStart == null || jEnd == null)

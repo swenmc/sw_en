@@ -97,9 +97,11 @@ namespace PFD
             else
             {
                 GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);                
-                textGoverningMember.Text = "";                
-            } 
-                
+                textGoverningMember.Text = "";
+            }
+
+            if (GroupOfMembersWithSelectedType == null) // Docasne pre componenty bez vysledkov
+                return;
 
             // Prepiseme defaultne hodnoty limitov hodnotami z GUI - design options
             // TODO - ak budu v design options vsetky potrebne limity, mozu sa defaulty odstranit
@@ -196,7 +198,7 @@ namespace PFD
                 CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, designOptionsVM.ShearDesignAccording334, designOptionsVM.IgnoreWebStiffeners, DesignResults_ULS, DesignResults_SLS, loadCombID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             }
         }
-        
+
         // Calculate governing member design ratio
         public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bIgnoreWebStiffeners, List<CMemberLoadCombinationRatio_ULS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
         {

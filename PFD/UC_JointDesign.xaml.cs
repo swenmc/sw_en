@@ -108,19 +108,26 @@ namespace PFD
 
                 if (loadCombinationID == -1) //envelope
                 {
-                    loadCombinationID = _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
-                    textGoverningLoadComb.Text = BaseHelper.GetGoverningLoadCombText(_pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
+                    if (GroupOfMembersWithSelectedType != null && _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination != null) // Docasne ak sa rozhodujuca kombinacia nenasla
+                    {
+                        loadCombinationID = _pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination.ID;
+                        textGoverningLoadComb.Text = BaseHelper.GetGoverningLoadCombText(_pfdVM.sDesignResults_ULS.DesignResults[GroupOfMembersWithSelectedType.MemberType_FS_Position].GoverningLoadCombination);
+                    }
+                    else { textGoverningLoadComb.Text = ""; }
                 }
                 else { textGoverningLoadComb.Text = ""; }
+
+                if (GroupOfMembersWithSelectedType == null) // Docasne - komponenty bez vysledkov
+                    return;
 
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
                     CConnectionJointTypes cjStart = null;
                     CConnectionJointTypes cjEnd = null;
                     _pfdVM.Model.GetModelMemberStartEndConnectionJoints(m, out cjStart, out cjEnd);
-                    
-                    CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
-                    CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
+
+                    CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint != null && cjStart != null && i.Joint.m_Node.ID == cjStart.m_Node.ID);
+                    CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint != null && cjEnd != null && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
                     if (resStart == null) continue;
                     if (resEnd == null) continue;
                     ////-------------------------------------------------------------------------------------------------------------

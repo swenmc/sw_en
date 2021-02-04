@@ -47,6 +47,12 @@ namespace BaseClasses
 
             m_DesignResults.Add(EMemberType_FS_Position.CrossBracingWall, new DesignResultItem());
             m_DesignResults.Add(EMemberType_FS_Position.CrossBracingRoof, new DesignResultItem());
+
+            m_DesignResults.Add(EMemberType_FS_Position.MainRafterCanopy, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.EdgeRafterCanopy, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.PurlinCanopy, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.EdgePurlinCanopy, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.CrossBracingRoofCanopy, new DesignResultItem());
         }
     }
 }

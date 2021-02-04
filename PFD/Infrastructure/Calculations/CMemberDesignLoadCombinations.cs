@@ -105,9 +105,9 @@ namespace PFD.Infrastructure
                     jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, MShearDesignAccording334, MUniformShearDistributionInAnchors, Model, m, FootingCalcSettings, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
 
                     // Validation - Main member of joint must be defined
-                    if (jointStart.m_MainMember == null)
+                    if (jointStart != null && jointStart.m_MainMember == null)
                         throw new ArgumentNullException("Error" + "Joint No: " + jointStart.ID + " Main member is not defined.");
-                    if (jointEnd.m_MainMember == null)
+                    if (jointEnd != null && jointEnd.m_MainMember == null)
                         throw new ArgumentNullException("Error" + "Joint No: " + jointEnd.ID + " Main member is not defined.");
 
                     // Start Joint
@@ -126,13 +126,13 @@ namespace PFD.Infrastructure
                                           "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString() + "\n");
 
                     // Output (for debugging - member connection / joint results)
-                    if (bDebugging)
+                    if (bDebugging && jointStart != null)
                         System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                           "Joint ID: " + jointStart.ID + "\t | " +
                                           "Load Combination ID: " + lcomb.ID + "\t | " +
                                           "Design Ratio: " + Math.Round(jointDesignModel.fDesignRatio_Start, 3).ToString() + "\n");
 
-                    if (bDebugging)
+                    if (bDebugging && jointEnd != null)
                         System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                           "Joint ID: " + jointEnd.ID + "\t | " +
                                           "Load Combination ID: " + lcomb.ID + "\t | " +

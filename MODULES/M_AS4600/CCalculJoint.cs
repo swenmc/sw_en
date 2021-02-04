@@ -51,7 +51,8 @@ namespace M_AS4600
         {
             if (joint_temp == null)
             {
-                throw new ArgumentNullException("Joint object is not defined");
+                //throw new ArgumentNullException("Joint object is not defined");
+                return;
             }
 
             bIsDebugging = bIsDebugging_temp;
@@ -607,7 +608,8 @@ namespace M_AS4600
             // Shear
             designDetails.fV_asterix_b_SecondaryMember = 0;
 
-            if (sDIF_temp.fV_xu_xx != 0 || sDIF_temp.fV_yv_yy != 0 || sDIF_temp.fN != 0)
+            // Smykova sila v smere y-y v interakcii s osovou silou
+            if (!MathF.d_equal(sDIF_temp.fV_yv_yy, 0) || !MathF.d_equal(sDIF_temp.fN, 0))
                 designDetails.fV_asterix_b_SecondaryMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yv_yy / designDetails.iNumberOfScrewsInConnectionOfSecondaryMember) + MathF.Pow2(sDIF_temp.fN / designDetails.iNumberOfScrewsInConnectionOfSecondaryMember));
 
             designDetails.fVb_SecondaryMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscsecMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_SecondaryMember);
