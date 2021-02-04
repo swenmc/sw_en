@@ -786,6 +786,14 @@ namespace PFD
                             {
                                 if(j == membersPurlinCanopySorted[i].Count-1) // Last edge purlin - only one plate
                                 {
+                                    // Posledna vaznica moze mat duplicitne definicne uzly, preto treba nastavit spravne mainMember
+                                    List<CMember> membersForEdgePurlinCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true);
+                                    List<CMember> membersForEdgePurlinCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true);
+
+                                    // Vyberieme zo zoznamov prvy prut, ktory je typu rafter
+                                    mainMemberForStartJoint = membersForEdgePurlinCanopyStarNode.FirstOrDefault(x => x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER);
+                                    mainMemberForEndJoint = membersForEdgePurlinCanopyEndNode.FirstOrDefault(x => x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER);
+
                                     EJointType jointTypeStart;
                                     EJointType jointTypeEnd;
 
