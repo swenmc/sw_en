@@ -307,7 +307,8 @@ namespace PFD
                         cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin || cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy)
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin || cInfo.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy || 
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
                     {
                         vm.RecreateJoints = true;
                         vm.RecreateModel = true;
