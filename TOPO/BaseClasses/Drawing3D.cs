@@ -5158,7 +5158,7 @@ namespace BaseClasses
                     float fY;
                     float fZ;
 
-                    if (jointClone.m_Node.ID == m.NodeStart.ID)
+                    if (jointClone.m_Node.ID == m.NodeStart.ID || IsNodesLocationIdentical(jointClone.m_Node, m.NodeStart)) // Uzly maju identicke ID alebo identicku polohu (z dovodu duplicitnych uzlov)
                     {
                         nodeOtherEnd = m.NodeEnd;
                         m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
@@ -5180,7 +5180,7 @@ namespace BaseClasses
                         nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
                         nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
                     }
-                    else if (jointClone.m_Node.ID == m.NodeEnd.ID)
+                    else if (jointClone.m_Node.ID == m.NodeEnd.ID || IsNodesLocationIdentical(jointClone.m_Node, m.NodeEnd)) // Uzly maju identicke ID alebo identicku polohu (z dovodu duplicitnych uzlov)
                     {
                         nodeOtherEnd = m.NodeStart;
                         m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
@@ -5903,6 +5903,14 @@ namespace BaseClasses
                 return MathF.d_equal(n.Z, fCoordinateValue);
             else
                 return false; // Exception
+        }
+
+        public static bool IsNodesLocationIdentical(CNode n1, CNode n2)
+        {
+            if (MathF.d_equal(n1.X, n2.X) && MathF.d_equal(n1.Y, n2.Y) && MathF.d_equal(n1.Z, n2.Z))
+                return true;
+            else
+                return false;
         }
         #endregion
     }

@@ -681,10 +681,9 @@ namespace PFD
             {
                 if (n.ID == node.ID) continue; //it is the node in parameter = do not include
 
-                if (MathF.d_equal(n.X, node.X) && MathF.d_equal(n.Y, node.Y) && MathF.d_equal(n.Z, node.Z)) nodes.Add(n);
+                if (Drawing3D.IsNodesLocationIdentical(n, node)) nodes.Add(n);
             }
             return nodes;
         }
-
     }
 }
