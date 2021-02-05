@@ -282,7 +282,7 @@ namespace PFD
             
             initBays(baysNum);
 
-            bool debug = false;
+            bool debug = true;
 
             ObservableCollection<CCanopiesInfo> items = new ObservableCollection<CCanopiesInfo>();
 
