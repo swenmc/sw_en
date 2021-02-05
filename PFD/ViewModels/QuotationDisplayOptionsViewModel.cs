@@ -12,6 +12,7 @@ namespace PFD
     public class QuotationDisplayOptionsViewModel : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         private bool m_DisplayMembers;
@@ -203,5 +204,23 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void SetViewModel(QuotationDisplayOptionsViewModel vm)
+        {
+            if (vm == null) return;
+
+            DisplayMembers = vm.DisplayMembers;
+            DisplayPlates = vm.DisplayPlates;
+            DisplayConnectors = vm.DisplayConnectors;
+            DisplayBoltNuts = vm.DisplayBoltNuts;
+            DisplayCladding = vm.DisplayCladding;
+            DisplayFibreglass = vm.DisplayFibreglass;
+            DisplayRoofNetting = vm.DisplayRoofNetting;
+            DisplayDoorsAndWindows = vm.DisplayDoorsAndWindows;
+            DisplayGutters = vm.DisplayGutters;
+            DisplayDownpipe = vm.DisplayDownpipe;
+            DisplayFlashing = vm.DisplayFlashing;
+        }
+
     }
 }

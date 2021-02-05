@@ -94,7 +94,7 @@ namespace PFD
             else
             {
                 InitializeComponent();
-            }            
+            }
             // Set items in comboboxes and default values
             //SetInitialItemsInComboboxes();
 
@@ -117,7 +117,7 @@ namespace PFD
             vm.PFDMainWindow = this;
 
             LoadDefaultOptions();
-            
+
             SetUIElementsVisibility();
 
             UpdateAll(true);
@@ -148,7 +148,7 @@ namespace PFD
                 DateTime licenseDate = new DateTime(y, m, d);
                 if (DateTime.Now > licenseDate) return false;
                 else return true;
-            } 
+            }
             else return false;
         }
 
@@ -192,13 +192,13 @@ namespace PFD
             {
                 //todo flashings
                 if (e.PropertyName == "CoatingColor")
-                {                    
+                {
                     vm.RecreateModel = true; vm.RecreateQuotation = true;
                     CAccessories_LengthItemProperties prop = sender as CAccessories_LengthItemProperties;
                     if (prop.DatabaseTable == "Flashings")
                     {
                         if (vm._generalOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
-                        else if (vm._generalOptionsVM.SameColorsFlashings) vm.SetAllFlashingsCoatingColorAccordingTo(prop.CoatingColor); 
+                        else if (vm._generalOptionsVM.SameColorsFlashings) vm.SetAllFlashingsCoatingColorAccordingTo(prop.CoatingColor);
                     }
                     else if (prop.DatabaseTable == "Gutters")
                     {
@@ -224,7 +224,7 @@ namespace PFD
                     if (vm._generalOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
                     else if (vm._generalOptionsVM.SameColorsDownpipes) vm.SetAllDownpipeCoatingColorAccordingTo(prop.CoatingColor);
                 }
-                
+
                 //only reset quotation do not regenerate model
                 vm.RecreateQuotation = true;
                 //Quotation.Content = null;
@@ -260,7 +260,7 @@ namespace PFD
                 if (e.PropertyName == "Series") return;
                 if (e.PropertyName == "Serie") return;
                 if (e.PropertyName == "SerieEnabled") return;
-                
+
                 DoorProperties doorProperties = sender as DoorProperties;
                 if (doorProperties.IsSetFromCode) return;
 
@@ -268,7 +268,7 @@ namespace PFD
                 {
                     //recreate model after color changed
                     vm.RecreateModel = true;
-                    if(vm._generalOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorAccordingTo(doorProperties);
+                    if (vm._generalOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorAccordingTo(doorProperties);
                 }
                 else
                 {
@@ -504,10 +504,10 @@ namespace PFD
             }
             return false;
         }
-        
+
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            List<ModelValidationError> errors = ValidationHelper.ValidateModel(vm.Model);            
+            List<ModelValidationError> errors = ValidationHelper.ValidateModel(vm.Model);
             if (errors.Count > 0)
             {
                 MessageBox.Show(ValidationHelper.GetErrorsString(errors));
@@ -524,7 +524,7 @@ namespace PFD
             // Clear results of previous calculation
             //DeleteCalculationResults();
 
-                // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
+            // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
             SetMaterialValuesFromDatabase();
             SetCrossSectionValuesFromDatabase();
 
@@ -872,7 +872,7 @@ namespace PFD
             double fP = 1; // Unit Force
             return (float)(2 * MathF.fPI * Math.Sqrt((fMass_Total * GlobalConstants.G_ACCELERATION * MathF.Pow2(fDelta_x)) / (GlobalConstants.G_ACCELERATION * fP * fDelta_x))); // Eq. 4.1(1)
         }
-        
+
         public void SetMaterialValuesFromDatabase()
         {
             foreach (KeyValuePair<EMemberType_FS_Position, CMat> kvp in vm.Model.m_arrMat)
@@ -961,21 +961,21 @@ namespace PFD
                 // TODO - nove parametre pre nastavenie hodnot zatazenia
 
                 if (vm.KitsetTypeIndex == 0)
-                        vm.Model = new CModel_PFD_01_MR(
-                        sGeometryInputData,
-                        compList,
-                        joints,
-                        foundations,
-                        slabs,
-                        vm);
+                    vm.Model = new CModel_PFD_01_MR(
+                    sGeometryInputData,
+                    compList,
+                    joints,
+                    foundations,
+                    slabs,
+                    vm);
                 else if (vm.KitsetTypeIndex == 1)
-                        vm.Model = new CModel_PFD_01_GR(
-                        sGeometryInputData,
-                        compList,
-                        joints,
-                        foundations,
-                        slabs,
-                        vm);
+                    vm.Model = new CModel_PFD_01_GR(
+                    sGeometryInputData,
+                    compList,
+                    joints,
+                    foundations,
+                    slabs,
+                    vm);
                 else
                 {
                     vm.Model = null;
@@ -988,14 +988,14 @@ namespace PFD
                 System.Diagnostics.Trace.WriteLine("UpdateUC_Joints: " + (DateTime.Now - start).TotalMilliseconds);
                 UpdateUC_Footings();
                 System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);
-                
+
                 //toto sa ma udiat iba ak sa menila nejaka property z modelu, rozmer a podobne
                 if (vm.RecreateJoints)
                 {
                     vm.SetDefaultFlashings();
                     vm.SetDefaultDownpipes();
                 }
-                
+
             }
 
 
@@ -1023,7 +1023,7 @@ namespace PFD
                 vm.GenerateLoadsOnFrameMembers,
                 generateSurfaceLoads);
             }
-            
+
             System.Diagnostics.Trace.WriteLine("CalculateLoadValuesAndGenerateLoads: " + (DateTime.Now - start).TotalMilliseconds);
 
             if (vm.SynchronizeGUI || programStart)
@@ -1088,7 +1088,7 @@ namespace PFD
                     vm.JointsVM.JointTypeIndex = vm.JointsVM.JointTypeIndex; //redraw same selected joint
                 }
             }
-            
+
         }
 
         private void UpdateUC_Footings()
@@ -1582,7 +1582,7 @@ namespace PFD
             PurlinDesigner win = new PurlinDesigner();
             win.Show();
         }
-        
+
         private void Datagrid_DoorsAndGates_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
             Frame1.UpdateLayout();  // Nutne kvôli pridaniu riadku a update v GUI
@@ -1592,7 +1592,7 @@ namespace PFD
         {
             Frame1.UpdateLayout(); // Nutne kvôli pridaniu riadku a update v GUI
         }
-        
+
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
             LayoutExportOptionsWindow exportOptions = new LayoutExportOptionsWindow(vm);
@@ -1607,7 +1607,7 @@ namespace PFD
         }
 
         private static BackgroundWorker _worker = new BackgroundWorker();
-                
+
         private void PDF_WaitWindow_ContentRendered(object sender, EventArgs e)
         {
             //CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
@@ -1666,7 +1666,7 @@ namespace PFD
         //        CModelData modelData = vm.GetModelData();
         //        CMainReportExport.Export3DModel(modelData, trackport);
         //    });
-            
+
         //}
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
@@ -1844,7 +1844,7 @@ namespace PFD
         {
             e.Handled = true;
         }
-        
+
 
         private void BtnDoorGenerator_Click(object sender, RoutedEventArgs e)
         {
@@ -2155,7 +2155,7 @@ namespace PFD
             }
             return null;
         }
-        
+
         private void btnAddGutter_Click(object sender, RoutedEventArgs e)
         {
             float fGuttersTotalLength = 2 * vm.LengthOverall; // na dvoch okrajoch strechy
@@ -2251,7 +2251,7 @@ namespace PFD
             w.ShowDialog();
         }
 
-        
+
 
         private void ButtonGenerateModel_Click(object sender, RoutedEventArgs e)
         {
@@ -2339,7 +2339,7 @@ namespace PFD
             w.ShowDialog();
         }
 
-        
+
         private void BtnCanopiesOptions_Click(object sender, RoutedEventArgs e)
         {
             CanopiesOptionsWindow w = new CanopiesOptionsWindow(vm);
@@ -2563,7 +2563,7 @@ namespace PFD
         private string GetModelName()
         {
             string modelName = "Custom";
-            if(vm.ModelIndex < vm.ModelTypes.Count) modelName = vm.ModelTypes[vm.ModelIndex].ToString();
+            if (vm.ModelIndex < vm.ModelTypes.Count) modelName = vm.ModelTypes[vm.ModelIndex].ToString();
             return modelName;
         }
 
@@ -2635,7 +2635,7 @@ namespace PFD
             vm._crossBracingOptionsVM.SetViewModel(newVM._crossBracingOptionsVM);
             vm._canopiesOptionsVM.SetViewModel(newVM._canopiesOptionsVM);
             vm._baysWidthOptionsVM.SetViewModel(newVM._baysWidthOptionsVM);
-            
+
             vm.RecreateModel = true;
             vm.RecreateJoints = true;
             vm.RecreateFoundations = true;
@@ -2663,15 +2663,8 @@ namespace PFD
         }
         private void SaveDefaultOptions()
         {
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
-            List<object> optionsToSave = new List<object>();
-            optionsToSave.Add(vm._projectInfoVM);
-            optionsToSave.Add(vm._displayOptionsVM);
-            optionsToSave.Add(vm._generalOptionsVM);
-            optionsToSave.Add(vm._solverOptionsVM);
-            optionsToSave.Add(vm._designOptionsVM);
-
+            List<object> optionsToSave = GetOptionsToSave();
+            
             using (Stream stream = File.Open("DefaultOptions.eiuo", FileMode.Create))
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -2709,7 +2702,7 @@ namespace PFD
                     SaveDefaultOptions();
                 }
                 catch (Exception ex) { MessageBox.Show(ex.Message); }
-            }            
+            }
         }
 
         private void OpenOptionsFile(string fileName)
@@ -2753,26 +2746,46 @@ namespace PFD
 
                     DesignOptionsViewModel deVM = optionsList[4] as DesignOptionsViewModel;
                     if (deVM != null) vm._designOptionsVM.SetViewModel(deVM);
+
+                    if (optionsList.Count > 5)
+                    {
+                        QuotationDisplayOptionsViewModel qdoVM = optionsList[5] as QuotationDisplayOptionsViewModel;
+                        if (qdoVM != null) vm._quotationDisplayOptionsVM.SetViewModel(qdoVM);
+                    }
+
+                    if (optionsList.Count > 6)
+                    {
+                        QuotationDisplayOptionsViewModel qeoVM = optionsList[6] as QuotationDisplayOptionsViewModel;
+                        if (vm._quotationExportOptionsVM == null) vm._quotationExportOptionsVM = new QuotationDisplayOptionsViewModel();
+                        if (qeoVM != null) vm._quotationExportOptionsVM.SetViewModel(qeoVM);
+                    }
+
+                    if (optionsList.Count > 7)
+                    {
+                        DocumentationSettingsViewModel dsVM = optionsList[7] as DocumentationSettingsViewModel;
+                        if (vm._documentationExportOptionsVM == null) vm._documentationExportOptionsVM = new DocumentationSettingsViewModel();
+                        if (dsVM != null) vm._documentationExportOptionsVM.SetViewModel(dsVM);
+                    }
+
+                    if (optionsList.Count > 8)
+                    {
+                        LayoutsExportOptionsViewModel leoVM = optionsList[8] as LayoutsExportOptionsViewModel;
+                        if (vm._layoutsExportOptionsVM == null) vm._layoutsExportOptionsVM = new LayoutsExportOptionsViewModel();
+                        if (leoVM != null) vm._layoutsExportOptionsVM.SetViewModel(leoVM);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }            
+            }
         }
 
         private void BtnSaveOptionsToFile_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
-                List<object> optionsToSave = new List<object>();
-                optionsToSave.Add(vm._projectInfoVM);
-                optionsToSave.Add(vm._displayOptionsVM);
-                optionsToSave.Add(vm._generalOptionsVM);
-                optionsToSave.Add(vm._solverOptionsVM);
-                optionsToSave.Add(vm._designOptionsVM);
+                List<object> optionsToSave = GetOptionsToSave();
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "Data Files (*.eiuo)|*.eiuo";
@@ -2791,10 +2804,29 @@ namespace PFD
                     MessageBox.Show("Options succesfully saved.");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private List<object> GetOptionsToSave()
+        {
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+
+            List<object> optionsToSave = new List<object>();
+            optionsToSave.Add(vm._projectInfoVM);
+            optionsToSave.Add(vm._displayOptionsVM);
+            optionsToSave.Add(vm._generalOptionsVM);
+            optionsToSave.Add(vm._solverOptionsVM);
+            optionsToSave.Add(vm._designOptionsVM);
+
+            optionsToSave.Add(vm._quotationDisplayOptionsVM);
+            optionsToSave.Add(vm._quotationExportOptionsVM);
+            optionsToSave.Add(vm._documentationExportOptionsVM);
+            optionsToSave.Add(vm._layoutsExportOptionsVM);
+
+            return optionsToSave;
         }
 
         private void ChangeToDefaultTabIfNotEnabledTabIsSelected()
@@ -2808,7 +2840,7 @@ namespace PFD
                 MainTabControl.SelectedIndex == (int)ETabNames.eMemberDesign ||
                 MainTabControl.SelectedIndex == (int)ETabNames.eJointDesign ||
                 MainTabControl.SelectedIndex == (int)ETabNames.eFootingDesign)
-                    MainTabControl.SelectedIndex = (int)ETabNames.eGeneral;
+                MainTabControl.SelectedIndex = (int)ETabNames.eGeneral;
         }
 
 

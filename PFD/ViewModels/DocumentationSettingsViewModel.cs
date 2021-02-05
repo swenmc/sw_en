@@ -12,6 +12,7 @@ namespace PFD
     public class DocumentationSettingsViewModel : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
         
         private bool m_ExportMembersXLS;
@@ -138,5 +139,20 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void SetViewModel(DocumentationSettingsViewModel vm)
+        {
+            if (vm == null) return;
+
+            ExportMembersXLS = vm.ExportMembersXLS;
+            ExportPlatesPDF = vm.ExportPlatesPDF;
+            ExportCNCSetup = vm.ExportCNCSetup;
+            ExportCNCDrilling = vm.ExportCNCDrilling;
+            Export2D_DXF = vm.Export2D_DXF;
+            Export3D_DXF = vm.Export3D_DXF;
+            ExportSCV = vm.ExportSCV;
+        }
+
+
     }
 }

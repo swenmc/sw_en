@@ -12,6 +12,7 @@ namespace BaseClasses
     public class LayoutsExportOptionsViewModel : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
+        [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
         private bool m_ExportModel3D;
@@ -291,11 +292,11 @@ namespace BaseClasses
                 return new List<ComboItem>() { new ComboItem((int)EImagesQuality.Low, "Low"),
                     new ComboItem((int)EImagesQuality.Normal, "Normal"),
                     new ComboItem((int)EImagesQuality.Hight, "Hight"),
-                    new ComboItem((int)EImagesQuality.Best, "Best")                    
+                    new ComboItem((int)EImagesQuality.Best, "Best")
                 };
             }
         }
-        
+
 
         public int ExportPageSize
         {
@@ -400,5 +401,34 @@ namespace BaseClasses
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void SetViewModel(LayoutsExportOptionsViewModel vm)
+        {
+            if (vm == null) return;
+
+            ExportModel3D = vm.ExportModel3D;
+            ExportModelViews = vm.ExportModelViews;
+            ExportModelViewsFront = vm.ExportModelViewsFront;
+            ExportModelViewsBack = vm.ExportModelViewsBack;
+            ExportModelViewsLeft = vm.ExportModelViewsLeft;
+            ExportModelViewsRight = vm.ExportModelViewsRight;
+            ExportModelViewsRoof = vm.ExportModelViewsRoof;
+            ExportModelViewsMiddleFrame = vm.ExportModelViewsMiddleFrame;
+            ExportModelViewsColumns = vm.ExportModelViewsColumns;
+            ExportModelViewsFoundations = vm.ExportModelViewsFoundations;
+            ExportModelViewsFloor = vm.ExportModelViewsFloor;
+
+            ExportJointTypes = vm.ExportJointTypes;
+            ExportFootingTypes = vm.ExportFootingTypes;
+            ExportFloorDetails = vm.ExportFloorDetails;
+            ExportStandardDetails = vm.ExportStandardDetails;
+            ExportPageSize = vm.ExportPageSize;
+            ExportPageOrientation = vm.ExportPageOrientation;
+            ExportPageSizeViews = vm.ExportPageSizeViews;
+            ExportPageOrientationViews = vm.ExportPageOrientationViews;
+            ExportImagesQuality = vm.ExportImagesQuality;
+        }
+
+
     }
 }
