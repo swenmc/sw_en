@@ -29,10 +29,10 @@ namespace BaseClasses
             // To Ondrej - mozem tu takto dat vsetky triedy CPlate?
             // Ako to mam robit ked su tu v ramci nejakej triedy aj dalsi potomkovia
 
-            CPlate clone = null;            
+            CPlate clone = null;
             if (plate is CConCom_Plate_BB_BG)
             {
-                CConCom_Plate_BB_BG p = plate as CConCom_Plate_BB_BG;                
+                CConCom_Plate_BB_BG p = plate as CConCom_Plate_BB_BG;
                 clone = p.Clone();
             }
             else if (plate is CConCom_Plate_B_basic)
@@ -40,7 +40,7 @@ namespace BaseClasses
                 CConCom_Plate_B_basic p = plate as CConCom_Plate_B_basic;
                 clone = p.Clone();
             }
-            else if(plate is CConCom_Plate_F_or_L)
+            else if (plate is CConCom_Plate_F_or_L)
             {
                 CConCom_Plate_F_or_L p = plate as CConCom_Plate_F_or_L;
                 clone = p.Clone();
@@ -188,7 +188,7 @@ namespace BaseClasses
             {
                 originalScrewInPlusZDirection = (plate as CPlate_Frame).ScrewInPlusZDirection;
             }
-            
+
             if (plate is CConCom_Plate_BB_BG)
             {
                 CConCom_Plate_BB_BG p = plate as CConCom_Plate_BB_BG;
@@ -413,8 +413,8 @@ namespace BaseClasses
             //temp 23.1.2020 snazim sa ostranit OutOfMemoryException
             joint.Visual_ConnectionJoint = null;
 
-            if(joint.m_arrPlates !=null) // Nie vsetky spoje obsahuju plate, napr. U001
-               foreach (CPlate plate in joint.m_arrPlates) plate.Visual_Plate = null;
+            if (joint.m_arrPlates != null) // Nie vsetky spoje obsahuju plate, napr. U001
+                foreach (CPlate plate in joint.m_arrPlates) plate.Visual_Plate = null;
             //end temp
 
 
@@ -616,6 +616,8 @@ namespace BaseClasses
             // TODO - toto by bolo lepsie mat v databaze
 
             /*
+            
+            Unknown = 0,
             MainColumn = 1,
             MainRafter = 2,
             EdgeColumn = 3,
@@ -635,8 +637,15 @@ namespace BaseClasses
             WindowFrame = 17,
             DoorTrimmer = 18,
             DoorLintel = 19,
-            CrossBracing_Wall = 20,
-            CrossBracing_Roof = 21
+            CrossBracingWall = 20,
+            CrossBracingRoof = 21,
+
+            MainRafterCanopy = 22,
+            EdgeRafterCanopy = 23,
+            PurlinCanopy = 24,
+            BracingBlockPurlinsCanopy = 25,
+            CrossBracingRoofCanopy = 26,
+            EdgePurlinCanopy = 27
             */
 
             switch (pos)
@@ -662,6 +671,12 @@ namespace BaseClasses
                 case EMemberType_FS_Position.DoorLintel: return "Door Lintel";
                 case EMemberType_FS_Position.CrossBracingWall: return "Cross Bracing Walls";
                 case EMemberType_FS_Position.CrossBracingRoof: return "Cross Bracing Roof";
+                case EMemberType_FS_Position.MainRafterCanopy: return "Main Rafter Canopy";
+                case EMemberType_FS_Position.EdgeRafterCanopy: return "Edge Rafter Canopy";
+                case EMemberType_FS_Position.PurlinCanopy: return "Purlin Canopy";
+                case EMemberType_FS_Position.BracingBlockPurlinsCanopy: return "Bracing Block Purlins Canopy";
+                case EMemberType_FS_Position.CrossBracingRoofCanopy: return "Cross Bracing Roof Canopy";
+                case EMemberType_FS_Position.EdgePurlinCanopy: return "Edge Purlin Canopy";
             }
             return "Unknown EMemberType_FS_Position";
         }
