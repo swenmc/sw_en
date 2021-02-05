@@ -2843,6 +2843,17 @@ namespace PFD
                 MainTabControl.SelectedIndex = (int)ETabNames.eGeneral;
         }
 
+        private void BtnAbout_Click(object sender, RoutedEventArgs e)
+        {
+            AboutWindow w = new AboutWindow();
+            w.Show();
+        }
+
+        private void BtnJointsValidation_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
 
         //private void SetInitialItemsInComboboxes()
