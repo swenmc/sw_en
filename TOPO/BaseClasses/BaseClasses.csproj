@@ -112,6 +112,7 @@
     <Compile Include="GraphObj\Areas\CAreaCircle.cs" />
     <Compile Include="GraphObj\Areas\CAreaRectangular.cs" />
     <Compile Include="GraphObj\CCladding.cs" />
+    <Compile Include="GraphObj\CCladdingSheet.cs" />
     <Compile Include="GraphObj\CDimensionLinear3D.cs" />
     <Compile Include="GraphObj\CDetailSymbol.cs" />
     <Compile Include="GraphObj\CGridLine.cs" />

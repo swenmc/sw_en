@@ -319,7 +319,7 @@ namespace PFD
                         {"Thistle", new CComboColor("Thistle", Colors.Thistle)},
                         {"Tomato", new CComboColor("Tomato", Colors.Tomato)},
                         {"Transparent", new CComboColor("Transparent", Colors.Transparent)},
-                        {"Turquoise", new CComboColor("Turquoise", Colors.Turquoise)},                        
+                        {"Turquoise", new CComboColor("Turquoise", Colors.Turquoise)},
                         {"Wheat", new CComboColor("Wheat", Colors.Wheat)},// DB
                         {"White", new CComboColor("White", Colors.White)},
                         {"WhiteSmoke", new CComboColor("WhiteSmoke", Colors.WhiteSmoke)},
@@ -330,7 +330,6 @@ namespace PFD
                 return m_ColorDict;
             }
         }
-
 
         private static List<CComboColor> m_ColorListWithTransparent = null;
         public static List<CComboColor> ColorListWithTransparent

@@ -66,15 +66,16 @@ namespace BaseClasses.Helpers
             foreach (CMember m in model.m_arrMembers)
             {
                 // Coordinates are higher than (eave) wall height
-                if (((m.NodeStart.Z >= model.fH1_frame_centerline || MathF.d_equal(m.NodeStart.Z, model.fH1_frame_centerline)) &&
-                    ((m.NodeEnd.Z >= model.fH1_frame_centerline) || MathF.d_equal(m.NodeEnd.Z, model.fH1_frame_centerline))) &&
+                if (/*((m.NodeStart.Z >= model.fH1_frame_centerline || MathF.d_equal(m.NodeStart.Z, model.fH1_frame_centerline)) &&
+                    ((m.NodeEnd.Z >= model.fH1_frame_centerline) || MathF.d_equal(m.NodeEnd.Z, model.fH1_frame_centerline))) &&*/
                     (
                     m.EMemberType == EMemberType_FS.eER || // Edge rafter
                     m.EMemberType == EMemberType_FS.eMR || // Main rafter
                     m.EMemberType == EMemberType_FS.eEP || // Eave purlin
                     m.EMemberType == EMemberType_FS.eP ||  // Purlin
-                    m.EMemberType == EMemberType_FS.ePB ||    // Purlin Block
-                    m.EMemberType == EMemberType_FS.eCB
+                    m.EMemberType == EMemberType_FS.ePB || // Purlin Block
+                    m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoof ||
+                    m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy
                     )
                     )
                     members.Add(m);
@@ -86,6 +87,8 @@ namespace BaseClasses.Helpers
         {
             List<CNode> nodes = new List<CNode>();
 
+            // TODO - prepracovat ak su pridane canopies alebo je model monopitch tak neplati ze vyberame uzly s Z vyssie ako fH1_frame_centerline
+            // Prebrat zoznam nodes z koncovych uzlov vyssie naplneneho zoznamu prutov members
             foreach (CNode n in model.m_arrNodes)
             {
                 if (n.Z >= model.fH1_frame_centerline || MathF.d_equal(n.Z, model.fH1_frame_centerline)) nodes.Add(n);

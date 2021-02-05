@@ -273,7 +273,7 @@ namespace BaseClasses.GraphObj
                             ImageBrush brushRoofCanopy = brushRoof.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-                            brushRoofCanopy.Viewport = r;                            
+                            brushRoofCanopy.Viewport = r;
                             material_Roof = new DiffuseMaterial(brushRoofCanopy);
                         }
 
@@ -302,7 +302,7 @@ namespace BaseClasses.GraphObj
                             ImageBrush brushRoofCanopy = brushRoof.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-                            brushRoofCanopy.Viewport = r;                            
+                            brushRoofCanopy.Viewport = r;
                             material_Roof = new DiffuseMaterial(brushRoofCanopy);
                         }
 
@@ -417,7 +417,7 @@ namespace BaseClasses.GraphObj
                             ImageBrush brushRoofCanopy = brushRoof.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-                            brushRoofCanopy.Viewport = r;                            
+                            brushRoofCanopy.Viewport = r;
                             material_Roof = new DiffuseMaterial(brushRoofCanopy);
                         }
 
@@ -434,7 +434,7 @@ namespace BaseClasses.GraphObj
                         Point3D pback_left = new Point3D(pback2_heightright.X, fBayEndCoordinate_Y, height_1_final);
                         Point3D pfront_right = new Point3D(sBuildingGeomInputData.fW_centerline + fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
                         Point3D pback_right = new Point3D(sBuildingGeomInputData.fW_centerline + fCanopyCladdingWidth, fBayEndCoordinate_Y, fCanopy_EdgeCoordinate_z);
-                                                
+
                         if (options.bUseTextures)
                         {
                             double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
@@ -446,7 +446,7 @@ namespace BaseClasses.GraphObj
                             ImageBrush brushRoofCanopy = brushRoof.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-                            brushRoofCanopy.Viewport = r;                            
+                            brushRoofCanopy.Viewport = r;
                             material_Roof = new DiffuseMaterial(brushRoofCanopy);
                         }
 
@@ -460,7 +460,372 @@ namespace BaseClasses.GraphObj
                 throw new Exception("Not implemented kitset type.");
             }
 
+
+
+
+
+
+
+            //------------------------------------------------------------------------------------------------------
+            //------------------------------------------------------------------------------------------------------
+            //------------------------------------------------------------------------------------------------------
+
+            // IN WORK
+            // Particular Cladding Sheet Model
+
+            model_gr = new Model3DGroup(); // Vypraznime model group
+
+            // Prva uroven, stany budovy alebo strechy, left, right, front, back, roof left roof right
+            // Druha uroven jednotlive sheet nachadzajuce sa v jednej rovine
+            List<List<CCladdingSheet>> listOfCladdingSheets = new List<List<CCladdingSheet>>();
+
+            float claddingWidthModular_Wall = 0.6f; // TODO - napojit na DB
+
+            bool bDistinguishedSheetColor = true;
+
+            // Left Wall
+            // Total Wall Width
+            double width = pback0_baseleft.Y - pfront0_baseleft.Y;
+            double height_left_basic = height_1_final;
+            float rotationAboutZ = -90f;
+
+            int iNumberOfWholeSheets = (int)(width / claddingWidthModular_Wall);
+            double dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Wall;
+            double dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            int iNumberOfSheets = iNumberOfWholeSheets + 1;
+
+            List<CCladdingSheet> listOfCladdingSheetsLeftWall = new List<CCladdingSheet>();
+
+            int iSheetIndex = 0;
+
+            // Generujeme sheets pre jednu stranu, resp. jednu rovinu
+            for (int i = 0; i < iNumberOfSheets; i++)
+            {
+                if (bDistinguishedSheetColor)
+                    m_ColorWall = ColorList[i];
+
+                listOfCladdingSheetsLeftWall.Add(new CCladdingSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
+                new Point3D(pback0_baseleft.X, pback0_baseleft.Y - i * claddingWidthModular_Wall, pback0_baseleft.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 *( i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
+                m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
+                iSheetIndex++;
+
+                // Pridame sheet do model group
+                GeometryModel3D sheetModel = listOfCladdingSheetsLeftWall[i].GetCladdingSheetModel(options);
+                sheetModel.Transform = listOfCladdingSheetsLeftWall[i].GetTransformGroup(0, 0, rotationAboutZ);
+                model_gr.Children.Add(sheetModel);
+            }
+
+            // Front Wall
+            // Total Wall Width
+            width = pfront1_baseright.X - pfront0_baseleft.X;
+            height_left_basic = height_1_final;
+            rotationAboutZ = 0f;
+
+            iNumberOfWholeSheets = (int)(width / claddingWidthModular_Wall);
+            dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Wall;
+            dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            iNumberOfSheets = iNumberOfWholeSheets + 1;
+
+            List<CCladdingSheet> listOfCladdingSheetsFrontWall = new List<CCladdingSheet>();
+
+            // Generujeme sheets pre jednu stranu, resp. jednu rovinu
+            for (int i = 0; i < iNumberOfSheets; i++)
+            {
+                if (bDistinguishedSheetColor)
+                    m_ColorWall = ColorList[i];
+
+                double height_left = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, i * claddingWidthModular_Wall);
+                double height_right = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, (i + 1) * claddingWidthModular_Wall);
+                double height_toptip = 0.5 * (height_left + height_right);
+                double tipCoordinate_x = 0.5 * claddingWidthModular_Wall;
+
+                if (i == iNumberOfSheets - 1)
+                {
+                    height_right = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, (float)width);
+                    height_toptip = 0.5 * (height_left + height_right);
+                    tipCoordinate_x = 0.5 * dPartialSheet_End;
+                }
+
+                int iNumberOfEdges = 4;
+
+                if(eModelType == EModelType_FS.eKitsetGableRoofEnclosed &&
+                   i * claddingWidthModular_Wall < 0.5 * width &&
+                   (i+1) * claddingWidthModular_Wall > 0.5 * width)
+                {
+                    iNumberOfEdges = 5;
+                    height_toptip = height_2_final;
+                    tipCoordinate_x = 0.5 * width - i * claddingWidthModular_Wall;
+                }
+
+                listOfCladdingSheetsFrontWall.Add(new CCladdingSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Wall, 0,
+                new Point3D(pfront0_baseleft.X + i * claddingWidthModular_Wall, pfront0_baseleft.Y, pfront0_baseleft.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
+                m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
+                iSheetIndex++;
+
+                // Pridame sheet do model group
+                GeometryModel3D sheetModel = listOfCladdingSheetsFrontWall[i].GetCladdingSheetModel(options);
+                sheetModel.Transform = listOfCladdingSheetsFrontWall[i].GetTransformGroup(0, 0, rotationAboutZ);
+                model_gr.Children.Add(sheetModel);
+            }
+
+            // Right Wall
+            // Total Wall Width
+            width = pback1_baseright.Y - pfront1_baseright.Y;
+            height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? height_1_final : height_2_final;
+            rotationAboutZ = 90f;
+
+            iNumberOfWholeSheets = (int)(width / claddingWidthModular_Wall);
+            dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Wall;
+            dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            iNumberOfSheets = iNumberOfWholeSheets + 1;
+
+            List<CCladdingSheet> listOfCladdingSheetsRightWall = new List<CCladdingSheet>();
+
+            iSheetIndex = 0;
+
+            // Generujeme sheets pre jednu stranu, resp. jednu rovinu
+            for (int i = 0; i < iNumberOfSheets; i++)
+            {
+                if (bDistinguishedSheetColor)
+                    m_ColorWall = ColorList[i];
+
+                listOfCladdingSheetsRightWall.Add(new CCladdingSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
+                new Point3D(pfront1_baseright.X, pfront1_baseright.Y + i * claddingWidthModular_Wall, pfront1_baseright.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
+                m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
+                iSheetIndex++;
+
+                // Pridame sheet do model group
+                GeometryModel3D sheetModel = listOfCladdingSheetsRightWall[i].GetCladdingSheetModel(options);
+                sheetModel.Transform = listOfCladdingSheetsRightWall[i].GetTransformGroup(0, 0, rotationAboutZ);
+                model_gr.Children.Add(sheetModel);
+            }
+
+            // Back Wall
+            // Total Wall Width
+            width = pback1_baseright.X - pback0_baseleft.X;
+            height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? height_1_final : height_2_final;
+            rotationAboutZ = 180f;
+
+            iNumberOfWholeSheets = (int)(width / claddingWidthModular_Wall);
+            dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Wall;
+            dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            iNumberOfSheets = iNumberOfWholeSheets + 1;
+
+            List<CCladdingSheet> listOfCladdingSheetsBackWall = new List<CCladdingSheet>();
+
+            // Generujeme sheets pre jednu stranu, resp. jednu rovinu
+            for (int i = 0; i < iNumberOfSheets; i++)
+            {
+                if (bDistinguishedSheetColor)
+                    m_ColorWall = ColorList[i];
+
+                double height_left = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, i * claddingWidthModular_Wall);
+                double height_right = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, (i + 1) * claddingWidthModular_Wall);
+                double height_toptip = 0.5 * (height_left + height_right);
+                double tipCoordinate_x = 0.5 * claddingWidthModular_Wall;
+
+                if (i == iNumberOfSheets - 1)
+                {
+                    height_right = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, (float)width);
+                    height_toptip = 0.5 * (height_left + height_right);
+                    tipCoordinate_x = 0.5 * dPartialSheet_End;
+                }
+
+                int iNumberOfEdges = 4;
+
+                if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed &&
+                   i * claddingWidthModular_Wall < 0.5 * width &&
+                   (i + 1) * claddingWidthModular_Wall > 0.5 * width)
+                {
+                    iNumberOfEdges = 5;
+                    height_toptip = height_2_final;
+                    tipCoordinate_x = 0.5 * width - i * claddingWidthModular_Wall;
+                }
+
+                listOfCladdingSheetsBackWall.Add(new CCladdingSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Wall, 0,
+                new Point3D(pback1_baseright.X - i * claddingWidthModular_Wall, pback1_baseright.Y, pback1_baseright.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
+                m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
+                iSheetIndex++;
+
+                // Pridame sheet do model group
+                GeometryModel3D sheetModel = listOfCladdingSheetsBackWall[i].GetCladdingSheetModel(options);
+                sheetModel.Transform = listOfCladdingSheetsBackWall[i].GetTransformGroup(0, 0, rotationAboutZ);
+                model_gr.Children.Add(sheetModel);
+            }
+
+
+
+
             return model_gr;
         }
+
+        public double GetVerticalCoordinate(string sBuildingSide, EModelType_FS eKitset, double width, double leftHeight, float fx)
+        {
+            if (sBuildingSide == "Left" || sBuildingSide == "Right")
+                return leftHeight;
+            else //if(sBuildingSide == "Front" || sBuildingSide == "Back")
+            {
+
+                if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                {
+                    if (sBuildingSide == "Back")
+                        return leftHeight + fx * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
+                    else
+                        return leftHeight + fx * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
+                }
+                else if (fx < 0.5f * width)
+                    return leftHeight + fx * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
+                else
+                    return leftHeight + (width - fx) * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
+            }
+        }
+
+        // To Ondrej - toto som prevzal z CComboboxHelper.cs v projekte PFD. Tu na to nevidiet lebo BaseClasses su includovane v PFD.
+        // Asi by sa mala vyvorit pomocna trieda pre farby v BaseClasses alebo este lepsie - zaviest kompletnu databazu farieb System.Windows.Media.Colors
+        // a z nej vyberat
+
+        public static List<Color> ColorList = new List<Color>() {
+                Colors.AliceBlue,
+                Colors.AntiqueWhite,
+                Colors.Aqua,
+                Colors.Aquamarine,
+                Colors.Azure,
+                Colors.Beige,
+                Colors.Bisque,
+                Colors.Black,
+                Colors.BlanchedAlmond,
+                Colors.Blue,
+                Colors.BlueViolet,
+                Colors.Brown,
+                Colors.BurlyWood,
+                Colors.CadetBlue,
+                Colors.Chartreuse, 
+                Colors.Chocolate,
+                Colors.Coral,
+                Colors.CornflowerBlue,
+                Colors.Cornsilk,
+                Colors.Crimson, 
+                Colors.Cyan,
+                Colors.DarkBlue,
+                Colors.DarkCyan,
+                Colors.DarkGoldenrod,
+                Colors.DarkGray,
+                Colors.DarkGreen,
+                Colors.DarkKhaki,
+                Colors.DarkMagenta,
+                Colors.DarkOliveGreen,
+                Colors.DarkOrange,
+                Colors.DarkOrchid,
+                Colors.DarkRed,
+                Colors.DarkSalmon,
+                Colors.DarkSeaGreen,
+                Colors.DarkSlateBlue,
+                Colors.DarkSlateGray,
+                Colors.DarkTurquoise,
+                Colors.DarkViolet,
+                Colors.DeepPink,
+                Colors.DeepSkyBlue,
+                Colors.DimGray,
+                Colors.DodgerBlue,
+                Colors.Firebrick,
+                Colors.FloralWhite,
+                Colors.ForestGreen,
+                Colors.Fuchsia,
+                Colors.Gainsboro,
+                Colors.GhostWhite,
+                Colors.Gold,
+                Colors.Goldenrod,
+                Colors.Gray,
+                Colors.Green,
+                Colors.GreenYellow,
+                Colors.Honeydew,
+                Colors.HotPink,
+                Colors.IndianRed,
+                Colors.Indigo,
+                Colors.Ivory,
+                Colors.Khaki,
+                Colors.Lavender,
+                Colors.LavenderBlush,
+                Colors.LawnGreen,
+                Colors.LemonChiffon,
+                Colors.LightBlue,
+                Colors.LightCoral,
+                Colors.LightCyan,
+                Colors.LightGoldenrodYellow,
+                Colors.LightGray,
+                Colors.LightGreen,
+                Colors.LightPink,
+                Colors.LightSalmon,
+                Colors.LightSeaGreen,
+                Colors.LightSkyBlue,
+                Colors.LightSlateGray,
+                Colors.LightSteelBlue,
+                Colors.LightYellow,
+                Colors.Lime, 
+                Colors.LimeGreen,
+                Colors.Linen,
+                Colors.Magenta,
+                Colors.Maroon, 
+                Colors.MediumAquamarine,
+                Colors.MediumBlue,
+                Colors.MediumOrchid,
+                Colors.MediumPurple,
+                Colors.MediumSeaGreen,
+                Colors.MediumSlateBlue,
+                Colors.MediumSpringGreen,
+                Colors.MediumTurquoise,
+                Colors.MediumVioletRed,
+                Colors.MidnightBlue,
+                Colors.MintCream,
+                Colors.MistyRose,
+                Colors.Moccasin,
+                Colors.NavajoWhite,
+                Colors.Navy,
+                Colors.OldLace,
+                Colors.Olive,
+                Colors.OliveDrab,
+                Colors.Orange,
+                Colors.OrangeRed,
+                Colors.Orchid,
+                Colors.PaleGoldenrod,
+                Colors.PaleGreen,
+                Colors.PaleTurquoise,
+                Colors.PaleVioletRed,
+                Colors.PapayaWhip,
+                Colors.PeachPuff,
+                Colors.Peru,
+                Colors.Pink,
+                Colors.Plum,
+                Colors.PowderBlue,
+                Colors.Purple,
+                Colors.Red, 
+                Colors.RosyBrown,
+                Colors.RoyalBlue,
+                Colors.SaddleBrown,
+                Colors.Salmon,
+                Colors.SandyBrown,
+                Colors.SeaGreen,
+                Colors.SeaShell,
+                Colors.Sienna,
+                Colors.Silver,
+                Colors.SkyBlue,
+                Colors.SlateBlue,
+                Colors.SlateGray,
+                Colors.Snow,
+                Colors.SpringGreen,
+                Colors.SteelBlue,
+                Colors.Tan,
+                Colors.Teal,
+                Colors.Thistle,
+                Colors.Tomato,
+                Colors.Transparent,
+                Colors.Turquoise,
+                Colors.Olive,
+                Colors.Wheat,
+                Colors.White,
+                Colors.WhiteSmoke,
+                Colors.Yellow,
+                Colors.YellowGreen
+        };
     }
 }
