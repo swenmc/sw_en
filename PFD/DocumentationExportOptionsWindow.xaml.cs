@@ -28,13 +28,15 @@ namespace PFD
 
             if (pfdVM._documentationExportOptionsVM == null) pfdVM._documentationExportOptionsVM = new DocumentationSettingsViewModel();
 
-            if (!pfdVM._documentationExportOptionsVM.ExportMembersXLS) chckExportMembersXLS.Visibility = Visibility.Collapsed;
-            if (!pfdVM._documentationExportOptionsVM.ExportPlatesPDF) chckExportPlatesPDF.Visibility = Visibility.Collapsed;
-            if (!pfdVM._documentationExportOptionsVM.ExportCNCSetup) chckExportCNCSetup.Visibility = Visibility.Collapsed;
-            if (!pfdVM._documentationExportOptionsVM.ExportCNCDrilling) chckExportCNCDrilling.Visibility = Visibility.Collapsed;
-            if (!pfdVM._documentationExportOptionsVM.Export2D_DXF) chckExport2D_DXF.Visibility = Visibility.Collapsed;
-            if (!pfdVM._documentationExportOptionsVM.Export3D_DXF) chckExport3D_DXF.Visibility = Visibility.Collapsed;
-            if (!pfdVM._documentationExportOptionsVM.ExportSCV) chckExportSCV.Visibility = Visibility.Collapsed;
+
+            //To Mato - toto mi nedava zmysel, lebo ked zaskrtnem false tak na 2.krat to zmizne
+            //if (!pfdVM._documentationExportOptionsVM.ExportMembersXLS) chckExportMembersXLS.Visibility = Visibility.Collapsed;
+            //if (!pfdVM._documentationExportOptionsVM.ExportPlatesPDF) chckExportPlatesPDF.Visibility = Visibility.Collapsed;
+            //if (!pfdVM._documentationExportOptionsVM.ExportCNCSetup) chckExportCNCSetup.Visibility = Visibility.Collapsed;
+            //if (!pfdVM._documentationExportOptionsVM.ExportCNCDrilling) chckExportCNCDrilling.Visibility = Visibility.Collapsed;
+            //if (!pfdVM._documentationExportOptionsVM.Export2D_DXF) chckExport2D_DXF.Visibility = Visibility.Collapsed;
+            //if (!pfdVM._documentationExportOptionsVM.Export3D_DXF) chckExport3D_DXF.Visibility = Visibility.Collapsed;
+            //if (!pfdVM._documentationExportOptionsVM.ExportSCV) chckExportSCV.Visibility = Visibility.Collapsed;
             
             pfdVM._documentationExportOptionsVM.PropertyChanged += HandleExportOptionsPropertyChangedEvent;            
             this.DataContext = pfdVM._documentationExportOptionsVM;

@@ -179,6 +179,9 @@
     <Compile Include="ViewModels\DesignSummaryViewModel.cs" />
     <Compile Include="ViewModels\CrossBracingOptionsViewModel.cs" />
     <Compile Include="ViewModels\DocumentationSettingsViewModel.cs" />
+    <Compile Include="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindPressureCoefficients.xaml.cs">
       <DependentUpon>WindPressureCoefficients.xaml</DependentUpon>
     </Compile>
@@ -381,6 +384,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UC_JointsVarMemCrsc.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AboutWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
