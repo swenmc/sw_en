@@ -483,7 +483,7 @@ namespace BaseClasses.GraphObj
             List<List<CCladdingOrFibreGlassSheet>> listOfCladdingSheets = new List<List<CCladdingOrFibreGlassSheet>>();
 
             float claddingWidthModular_Wall = 0.6f; // TODO - napojit na DB
-            float rotationAboutZ = -90f;
+            float rotationAboutZ;
             bool bDistinguishedSheetColor = true;
 
             // Left Wall
@@ -506,7 +506,7 @@ namespace BaseClasses.GraphObj
                 if (bDistinguishedSheetColor)
                     m_ColorWall = ColorList[i];
 
-                listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, -i * claddingWidthModular_Wall, 0,
+                listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
                 new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
                 m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                 iSheetIndex++;
@@ -626,7 +626,7 @@ namespace BaseClasses.GraphObj
                     tipCoordinate_x = 0.5 * width - i * claddingWidthModular_Wall;
                 }
 
-                listOfCladdingSheetsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges, -i * claddingWidthModular_Wall, 0,
+                listOfCladdingSheetsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Wall, 0,
                 new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
                 m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                 iSheetIndex++;
@@ -774,36 +774,32 @@ namespace BaseClasses.GraphObj
             for (int i = 0; i < listOfCladdingSheetsLeftWall.Count; i++)
             {
                 // Pridame sheet do model group
-                rotationAboutZ = -90f;
                 GeometryModel3D sheetModel = listOfCladdingSheetsLeftWall[i].GetCladdingSheetModel(options);
-                sheetModel.Transform = listOfCladdingSheetsLeftWall[i].GetTransformGroup(0, 0, rotationAboutZ);
+                sheetModel.Transform = listOfCladdingSheetsLeftWall[i].GetTransformGroup(0, 0, -90);
                 model_gr.Children.Add(sheetModel);
             }
 
             for (int i = 0; i < listOfCladdingSheetsFrontWall.Count; i++)
             {
                 // Pridame sheet do model group
-                rotationAboutZ = 0f;
                 GeometryModel3D sheetModel = listOfCladdingSheetsFrontWall[i].GetCladdingSheetModel(options);
-                sheetModel.Transform = listOfCladdingSheetsFrontWall[i].GetTransformGroup(0, 0, rotationAboutZ);
+                sheetModel.Transform = listOfCladdingSheetsFrontWall[i].GetTransformGroup(0, 0, 0);
                 model_gr.Children.Add(sheetModel);
             }
 
             for (int i = 0; i < listOfCladdingSheetsRightWall.Count; i++)
             {
                 // Pridame sheet do model group
-                rotationAboutZ = 90f;
                 GeometryModel3D sheetModel = listOfCladdingSheetsRightWall[i].GetCladdingSheetModel(options);
-                sheetModel.Transform = listOfCladdingSheetsRightWall[i].GetTransformGroup(0, 0, rotationAboutZ);
+                sheetModel.Transform = listOfCladdingSheetsRightWall[i].GetTransformGroup(0, 0, 90);
                 model_gr.Children.Add(sheetModel);
             }
 
             for (int i = 0; i < listOfCladdingSheetsBackWall.Count; i++)
             {
                 // Pridame sheet do model group
-                rotationAboutZ = 180f;
                 GeometryModel3D sheetModel = listOfCladdingSheetsBackWall[i].GetCladdingSheetModel(options);
-                sheetModel.Transform = listOfCladdingSheetsBackWall[i].GetTransformGroup(0, 0, rotationAboutZ);
+                sheetModel.Transform = listOfCladdingSheetsBackWall[i].GetTransformGroup(0, 0, 180);
                 model_gr.Children.Add(sheetModel);
             }
 
@@ -813,9 +809,8 @@ namespace BaseClasses.GraphObj
             {
                 // Pridame sheet do model group
                 rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
-                rotationAboutZ = 90f;
                 GeometryModel3D sheetModel = listOfCladdingSheetsRoofRight[i].GetCladdingSheetModel(options);
-                sheetModel.Transform = listOfCladdingSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, rotationAboutZ);
+                sheetModel.Transform = listOfCladdingSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, 90);
                 model_gr.Children.Add(sheetModel);
             }
 
@@ -826,23 +821,21 @@ namespace BaseClasses.GraphObj
 
                 // Pridame sheet do model group
                 rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
-                rotationAboutZ = 90f;
                 GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofRight[i].GetCladdingSheetModel(options);
-                sheetModel.Transform = listOfFibreGlassSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, rotationAboutZ);
+                sheetModel.Transform = listOfFibreGlassSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, 90);
                 model_gr.Children.Add(sheetModel);
             }
 
             if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 rotationAboutX = -90f - sBuildingGeomInputData.fRoofPitch_deg;
-                rotationAboutZ = 90f;
 
                 // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                 for (int i = 0; i < listOfCladdingSheetsRoofLeft.Count; i++)
                 {
                     // Pridame sheet do model group
                     GeometryModel3D sheetModel = listOfCladdingSheetsRoofLeft[i].GetCladdingSheetModel(options);
-                    sheetModel.Transform = listOfCladdingSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, rotationAboutZ);
+                    sheetModel.Transform = listOfCladdingSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, 90);
                     model_gr.Children.Add(sheetModel);
                 }
             }
