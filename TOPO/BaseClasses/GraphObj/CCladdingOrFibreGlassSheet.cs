@@ -9,11 +9,11 @@ using System.Windows.Media.Media3D;
 namespace BaseClasses.GraphObj
 {
     [Serializable]
-    public class CCladdingSheet : CEntity3D
+    public class CCladdingOrFibreGlassSheet : CEntity3D
     {
         private Point3D m_ControlPoint;
 
-        double claddingWidthRibModular = 0.190; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
+        double m_dCladdingWidthRibModular; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
 
         string m_claddingShape;
         string m_claddingCoatingType;
@@ -22,10 +22,10 @@ namespace BaseClasses.GraphObj
         float m_fOpacity;
 
         int m_iNumberOfEdges;
-        float m_fWidthModular; // TODO // m // z databazy cladding MDBTrapezoidalSheeting
+        float m_fWidthModular; // m // z databazy cladding MDBTrapezoidalSheeting
         double m_dLengthTotal;
         double m_dLengthTopRight;
-        double m_tipCoordinate_x;
+        double m_dTipCoordinate_x;
         double m_dLengthTopTip;
         double m_dLengthTopLeft;
 
@@ -45,16 +45,211 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public CCladdingSheet()
+        public double CladdingWidthRibModular
+        {
+            get
+            {
+                return m_dCladdingWidthRibModular;
+            }
+
+            set
+            {
+                m_dCladdingWidthRibModular = value;
+            }
+        }
+
+        public string CladdingShape
+        {
+            get
+            {
+                return m_claddingShape;
+            }
+
+            set
+            {
+                m_claddingShape = value;
+            }
+        }
+
+        public string CladdingCoatingType
+        {
+            get
+            {
+                return m_claddingCoatingType;
+            }
+
+            set
+            {
+                m_claddingCoatingType = value;
+            }
+        }
+
+        public string ColorName
+        {
+            get
+            {
+                return m_ColorName;
+            }
+
+            set
+            {
+                m_ColorName = value;
+            }
+        }
+
+        public Color Color
+        {
+            get
+            {
+                return m_Color;
+            }
+
+            set
+            {
+                m_Color = value;
+            }
+        }
+
+        public float Opacity
+        {
+            get
+            {
+                return m_fOpacity;
+            }
+
+            set
+            {
+                m_fOpacity = value;
+            }
+        }
+
+        public int NumberOfEdges
+        {
+            get
+            {
+                return m_iNumberOfEdges;
+            }
+
+            set
+            {
+                m_iNumberOfEdges = value;
+            }
+        }
+
+        public float CoordinateInPlane_x
+        {
+            get
+            {
+                return m_fCoordinateInPlane_x;
+            }
+
+            set
+            {
+                m_fCoordinateInPlane_x = value;
+            }
+        }
+
+        public float CoordinateInPlane_y
+        {
+            get
+            {
+                return m_fCoordinateInPlane_y;
+            }
+
+            set
+            {
+                m_fCoordinateInPlane_y = value;
+            }
+        }
+
+        public float WidthModular
+        {
+            get
+            {
+                return m_fWidthModular;
+            }
+
+            set
+            {
+                m_fWidthModular = value;
+            }
+        }
+
+        public double LengthTotal
+        {
+            get
+            {
+                return m_dLengthTotal;
+            }
+
+            set
+            {
+                m_dLengthTotal = value;
+            }
+        }
+
+        public double LengthTopRight
+        {
+            get
+            {
+                return m_dLengthTopRight;
+            }
+
+            set
+            {
+                m_dLengthTopRight = value;
+            }
+        }
+
+        public double TipCoordinate_x
+        {
+            get
+            {
+                return m_dTipCoordinate_x;
+            }
+
+            set
+            {
+                m_dTipCoordinate_x = value;
+            }
+        }
+
+        public double LengthTopTip
+        {
+            get
+            {
+                return m_dLengthTopTip;
+            }
+
+            set
+            {
+                m_dLengthTopTip = value;
+            }
+        }
+
+        public double LengthTopLeft
+        {
+            get
+            {
+                return m_dLengthTopLeft;
+            }
+
+            set
+            {
+                m_dLengthTopLeft = value;
+            }
+        }
+
+        public CCladdingOrFibreGlassSheet()
         {
 
         }
 
-        public CCladdingSheet(int iCladdingSheet_ID, int numberOfCorners,
+        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, int numberOfCorners,
         float coordinateInPlane_x, float coordinateInPlane_y, Point3D controlPoint_GCS,
         float widthModular, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
-        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, int fTime)
+        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime)
         {
             ID = iCladdingSheet_ID;
             m_iNumberOfEdges = numberOfCorners;
@@ -64,14 +259,14 @@ namespace BaseClasses.GraphObj
             m_fWidthModular = widthModular;
             m_dLengthTopLeft = lengthTopLeft;
             m_dLengthTopRight = lengthTopRight;
-            m_tipCoordinate_x = tipCoordinate_x;
+            m_dTipCoordinate_x = tipCoordinate_x;
             m_dLengthTopTip = lengthTopTip;
             m_ColorName = colorName;
             m_claddingShape = claddingShape;
             m_claddingCoatingType = claddingCoatingType;
             m_Color = color;
             m_fOpacity = opacity;
-            claddingWidthRibModular = claddingWidthRib;
+            m_dCladdingWidthRibModular = claddingWidthRib;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
@@ -110,8 +305,24 @@ namespace BaseClasses.GraphObj
             Point3D pfront0_baseleft = new Point3D(0,0,0);
             Point3D pfront1_baseright = new Point3D(m_fWidthModular, 0,0);
             Point3D pfront2_topright = new Point3D(m_fWidthModular,0, m_dLengthTopRight);
-            Point3D pfront3_toptip = new Point3D(m_tipCoordinate_x, 0, m_dLengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
+            Point3D pfront3_toptip = new Point3D(m_dTipCoordinate_x, 0, m_dLengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
             Point3D pfront4_topleft = new Point3D(0, 0, m_dLengthTopLeft);
+
+            // Local in-plane offset
+            pfront0_baseleft.X += m_fCoordinateInPlane_x;
+            pfront0_baseleft.Z += m_fCoordinateInPlane_y;
+
+            pfront1_baseright.X += m_fCoordinateInPlane_x;
+            pfront1_baseright.Z += m_fCoordinateInPlane_y;
+
+            pfront2_topright.X += m_fCoordinateInPlane_x;
+            pfront2_topright.Z += m_fCoordinateInPlane_y;
+
+            pfront3_toptip.X += m_fCoordinateInPlane_x;
+            pfront3_toptip.Z += m_fCoordinateInPlane_y;
+
+            pfront4_topleft.X += m_fCoordinateInPlane_x;
+            pfront4_topleft.Z += m_fCoordinateInPlane_y;
 
             Brush solidBrush = new SolidColorBrush(m_Color);
             solidBrush.Opacity = m_fOpacity;
