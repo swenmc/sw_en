@@ -165,12 +165,16 @@ namespace BaseClasses.GraphObj
                 brushRoof.Opacity = options.fRoofCladdingOpacity;
             }
 
+            Point3D pfront2_heightright = new Point3D();
+            Point3D pfront3_heightleft = new Point3D();
+            Point3D pfront4_top = new Point3D();
+
             if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 // Monopitch Roof
 
-                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_2_final);
-                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
+                pfront2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_2_final);
+                pfront3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
 
                 Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_2_final);
                 Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_1_final);
@@ -315,9 +319,9 @@ namespace BaseClasses.GraphObj
             {
                 // Gable Roof
 
-                Point3D pfront2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
-                Point3D pfront3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
-                Point3D pfront4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, column_crsc_y_minus_temp - claddingHeight_Wall, height_2_final);
+                pfront2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
+                pfront3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, column_crsc_y_minus_temp - claddingHeight_Wall, height_1_final);
+                pfront4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, column_crsc_y_minus_temp - claddingHeight_Wall, height_2_final);
 
                 Point3D pback2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_1_final);
                 Point3D pback3_heightleft = new Point3D(-column_crsc_z_plus_temp - claddingHeight_Wall, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + claddingHeight_Wall, height_1_final);
@@ -653,8 +657,88 @@ namespace BaseClasses.GraphObj
                 model_gr.Children.Add(sheetModel);
             }
 
+            // Roof - Right Side
+            // Total Width
+            width = pback1_baseright.Y - pfront1_baseright.Y;
 
+            float length_left_basic;
+            float claddingWidthModular_Roof = 0.7f;
 
+            if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
+                length_left_basic = Drawing3D.GetPoint3DDistanceFloat(pfront2_heightright, pfront4_top);
+            else
+                length_left_basic = Drawing3D.GetPoint3DDistanceFloat(pfront3_heightleft, pfront2_heightright);
+
+            float rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
+            rotationAboutZ = 90f;
+
+            iNumberOfWholeSheets = (int)(width / claddingWidthModular_Roof);
+            dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Roof;
+            dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            iNumberOfSheets = iNumberOfWholeSheets + 1;
+
+            List<CCladdingSheet> listOfCladdingSheetsRoofRight = new List<CCladdingSheet>();
+
+            // Generujeme sheets pre jednu stranu, resp. jednu rovinu
+            for (int i = 0; i < iNumberOfSheets; i++)
+            {
+                if (bDistinguishedSheetColor)
+                    m_ColorRoof = ColorList[i];
+
+                double length = length_left_basic;
+
+                int iNumberOfEdges = 4;
+
+                listOfCladdingSheetsRoofRight.Add(new CCladdingSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Roof, 0,
+                new Point3D(pfront2_heightright.X, pfront2_heightright.Y + i * claddingWidthModular_Roof, pfront2_heightright.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Roof, length, length, 0, 0,
+                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
+                iSheetIndex++;
+
+                // Pridame sheet do model group
+                GeometryModel3D sheetModel = listOfCladdingSheetsRoofRight[i].GetCladdingSheetModel(options);
+                sheetModel.Transform = listOfCladdingSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, rotationAboutZ);
+                model_gr.Children.Add(sheetModel);
+            }
+
+            if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
+            {
+                // Roof - Left Side
+                // Total Width
+                width = pback0_baseleft.Y - pfront0_baseleft.Y;
+
+                length_left_basic = Drawing3D.GetPoint3DDistanceFloat(pfront3_heightleft, pfront4_top);
+
+                rotationAboutX = -90f - sBuildingGeomInputData.fRoofPitch_deg;
+                rotationAboutZ = 90f;
+
+                iNumberOfWholeSheets = (int)(width / claddingWidthModular_Roof);
+                dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Roof;
+                dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+                iNumberOfSheets = iNumberOfWholeSheets + 1;
+
+                List<CCladdingSheet> listOfCladdingSheetsRoofLeft = new List<CCladdingSheet>();
+
+                // Generujeme sheets pre jednu stranu, resp. jednu rovinu
+                for (int i = 0; i < iNumberOfSheets; i++)
+                {
+                    if (bDistinguishedSheetColor)
+                        m_ColorRoof = ColorList[i];
+
+                    double length = length_left_basic;
+
+                    int iNumberOfEdges = 4;
+
+                    listOfCladdingSheetsRoofLeft.Add(new CCladdingSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Roof, 0,
+                    new Point3D(pfront4_top.X, pfront4_top.Y + i * claddingWidthModular_Roof, pfront4_top.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Roof, length, length, 0, 0,
+                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
+                    iSheetIndex++;
+
+                    // Pridame sheet do model group
+                    GeometryModel3D sheetModel = listOfCladdingSheetsRoofLeft[i].GetCladdingSheetModel(options);
+                    sheetModel.Transform = listOfCladdingSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, rotationAboutZ);
+                    model_gr.Children.Add(sheetModel);
+                }
+            }
 
             return model_gr;
         }

@@ -99,7 +99,7 @@ namespace BaseClasses.GraphObj
             //  |___\ x
             //      /
 
-            if (numberOfCorners == 4)
+            if (m_iNumberOfEdges == 4)
                 m_dLengthTotal = Math.Max(m_dLengthTopLeft, m_dLengthTopRight);
             else
                 m_dLengthTotal = Math.Max(Math.Max(m_dLengthTopLeft, m_dLengthTopRight), m_dLengthTopTip);
@@ -117,7 +117,10 @@ namespace BaseClasses.GraphObj
             solidBrush.Opacity = m_fOpacity;
             DiffuseMaterial material = new DiffuseMaterial(solidBrush);
 
-            return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
+            if (m_iNumberOfEdges == 4)
+                return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
+            else
+                return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
         }
 
         public Transform3DGroup GetTransformGroup(float fRot_X_deg, float fRot_Y_deg, float fRot_Z_deg)
