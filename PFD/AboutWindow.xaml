@@ -7,19 +7,29 @@
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="About application" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Height="800" Width="400">
+        Title="About application" WindowStartupLocation="CenterScreen" 
+        Icon="Resources/info.png" WindowStyle="SingleBorderWindow" Height="600" Width="400">
     <!--<Grid Background="Black">-->
     <Grid>
         <Grid.ColumnDefinitions>            
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>            
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
-        
-        
-        <Image Grid.Column="0" Grid.Row="0" Name="aboutImage" Source ="/Resources/PDFfilelogo.png" Width="400" Height="400"/>
-        <TextBlock Grid.Column="0" Grid.Row="1">Version: 2.0.1</TextBlock>
+
+        <Image Grid.Column="0" Grid.Row="0" Name="aboutImage" Source ="/Resources/fs-screen.jpg" Width="400"/>
+        <TextBlock FontWeight="Bold" Grid.Column="0" Grid.Row="1" FontStyle="Normal" Foreground="CadetBlue" FontSize="32">Engenius Professional</TextBlock>
+        <TextBlock FontWeight="Bold" Grid.Column="0" Grid.Row="2" FontStyle="Oblique" FontSize="20">Version: 2.0.1</TextBlock>
+
+        <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Vertical" Width="auto">
+            <TextBlock FontWeight="Bold" FontStyle="Normal"> Warning:</TextBlock>
+            <TextBlock TextWrapping="Wrap" FontStyle="Normal" HorizontalAlignment="Stretch">This computer program is protected by copyright law and international treaties. Unauthorized reproduction or distribution of this program, or any portion of it, may result inseverecivil and criminal penalties, and will be prosecuted to the maximum extent possible under the law.</TextBlock>
+        </StackPanel>
+        <TextBlock Grid.Column="0" Grid.Row="4" FontWeight="Bold" FontStyle="Normal" FontSize="11" Foreground="Black">Copyright © 2021 "Mato co tu dame?" </TextBlock>
     </Grid>
 </Window>
