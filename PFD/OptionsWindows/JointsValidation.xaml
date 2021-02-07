@@ -1,4 +1,4 @@
-﻿<Window x:Class="PFD.MembersValidation"
+﻿<Window x:Class="PFD.JointsValidation"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -25,9 +25,8 @@
         </Grid.RowDefinitions>
         
 
-        <DataGrid Name="Datagrid_Members" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="True" AutoGenerateColumns="True"
-                  CanUserSortColumns="True">
+        <DataGrid Name="Datagrid_Joints" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  IsReadOnly="True" AutoGenerateColumns="True" CanUserSortColumns="True">
         </DataGrid>
 
         

@@ -2518,11 +2518,7 @@ namespace PFD
             });*/
         }
 
-        private void BtnMembersValidation_Click(object sender, RoutedEventArgs e)
-        {
-            MembersValidation mv_window = new MembersValidation(vm);
-            mv_window.ShowDialog();
-        }
+        
 
 
         private void BtnLoadModel_Click(object sender, RoutedEventArgs e)
@@ -2846,12 +2842,19 @@ namespace PFD
         private void BtnAbout_Click(object sender, RoutedEventArgs e)
         {
             AboutWindow w = new AboutWindow();
-            w.Show();
+            w.ShowDialog();
+        }
+
+        private void BtnMembersValidation_Click(object sender, RoutedEventArgs e)
+        {
+            MembersValidation mv_window = new MembersValidation(vm);
+            mv_window.ShowDialog();
         }
 
         private void BtnJointsValidation_Click(object sender, RoutedEventArgs e)
         {
-
+            JointsValidation jv_window = new JointsValidation(vm);
+            jv_window.ShowDialog();
         }
 
 
