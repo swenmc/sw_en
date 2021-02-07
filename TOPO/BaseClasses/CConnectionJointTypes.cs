@@ -462,5 +462,58 @@ namespace BaseClasses
         public virtual void UpdateJoint()
         {
         }
+
+
+        public List<int> GetSecondaryMembersIDs()
+        {
+            List<int> ids = new List<int>();
+            if (m_SecondaryMembers == null) return ids;
+
+            foreach (CMember m in m_SecondaryMembers) ids.Add(m.ID);
+
+            return ids;
+        }
+        public List<string> GetPlateNames()
+        {
+            List<string> names = new List<string>();
+            if (m_arrPlates == null) return names;
+
+            foreach (CPlate plate in m_arrPlates) names.Add(plate.Name);
+
+            return names;
+        }
+
+        public int GetScrewsInPlates()
+        {
+            int sum = 0;
+            if (m_arrPlates == null) return sum;
+
+            foreach (CPlate plate in m_arrPlates)
+            {
+                if (plate == null) continue;
+                if (plate.ScrewArrangement == null) continue;
+                if (plate.ScrewArrangement.Screws == null) continue;
+
+                sum += plate.ScrewArrangement.Screws.Length;
+            } 
+
+            return sum;
+        }
+
+        public int GetTotalNumberOfScrews()
+        {
+            int sum = GetScrewsInPlates();
+
+            if (ConnectorGroups == null) return sum;
+
+            foreach (CConnectorGroup gr in ConnectorGroups)
+            {
+                if (gr == null) continue;
+                if (gr.Connectors == null) continue;
+                sum += gr.Connectors.Count;                
+            }
+
+            return sum;
+        }
     }
 }
