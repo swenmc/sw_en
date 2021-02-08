@@ -19,7 +19,7 @@
             <RowDefinition Height="60" />
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
+            <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
         <Image Grid.Column="0" Grid.Row="0" Name="aboutImage" Source ="/Resources/fs-screen.jpg" Width="400"/>
@@ -30,6 +30,16 @@
             <TextBlock FontWeight="Bold" FontStyle="Normal"> Warning:</TextBlock>
             <TextBlock TextWrapping="Wrap" FontStyle="Normal" HorizontalAlignment="Stretch">This computer program is protected by copyright law and international treaties. Unauthorized reproduction or distribution of this program, or any portion of it, may result inseverecivil and criminal penalties, and will be prosecuted to the maximum extent possible under the law.</TextBlock>
         </StackPanel>
-        <TextBlock Grid.Column="0" Grid.Row="4" FontWeight="Bold" FontStyle="Normal" FontSize="11" Foreground="Black">Copyright © 2021 "Mato co tu dame?" </TextBlock>
+        <StackPanel Grid.Column="0" Grid.Row="4" Orientation="Vertical" VerticalAlignment="Bottom" Width="auto" Background="Black">
+            <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="White">Copyright © 2021 | </TextBlock>
+                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="Yellow">Promotion Terms &amp; Conditions</TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0 10 0 5">
+                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="White">Developed by </TextBlock>
+                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="Yellow">Pažin &amp; Čudejko</TextBlock>
+            </StackPanel>
+        </StackPanel>
+        
     </Grid>
 </Window>
