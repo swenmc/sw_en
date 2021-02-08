@@ -1654,6 +1654,8 @@ namespace PFD
                 sGeometryInputData,
                 _pfdVM._canopiesOptionsVM.CanopiesList,
                 _pfdVM._baysWidthOptionsVM.BayWidthList,
+                vm.DoorBlocksProperties,
+                vm.WindowBlocksProperties,
                 (CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn],
                 _pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).Name,
                 _pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).Name,

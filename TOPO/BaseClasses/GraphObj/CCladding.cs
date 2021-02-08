@@ -16,6 +16,8 @@ namespace BaseClasses.GraphObj
         BuildingGeometryDataInput sBuildingGeomInputData;
         System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo> canopyCollection;
         System.Collections.ObjectModel.ObservableCollection<CBayInfo> bayWidthCollection;
+        System.Collections.ObjectModel.ObservableCollection<DoorProperties> doorPropCollection;
+        System.Collections.ObjectModel.ObservableCollection<WindowProperties> windowPropCollection;
 
         double claddingHeight_Wall = 0.030; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
         double claddingHeight_Roof = 0.075; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
@@ -47,6 +49,8 @@ namespace BaseClasses.GraphObj
         public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData,
             System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo> canopies,
             System.Collections.ObjectModel.ObservableCollection<CBayInfo> bayWidths,
+            System.Collections.ObjectModel.ObservableCollection<DoorProperties> doorProp,
+            System.Collections.ObjectModel.ObservableCollection<WindowProperties> windowProp,
             CRSC.CCrSc_TW columnSection,
             string colorName_Wall, string colorName_Roof, string claddingShape_Wall, string claddingCoatingType_Wall, string claddingShape_Roof, string claddingCoatingType_Roof,
             Color colorWall, Color colorRoof,
@@ -57,6 +61,8 @@ namespace BaseClasses.GraphObj
             sBuildingGeomInputData = sGeometryInputData;
             canopyCollection = canopies;
             bayWidthCollection = bayWidths;
+            doorPropCollection = doorProp;
+            windowPropCollection = windowProp;
             column_crsc_z_plus = columnSection.z_max;
             column_crsc_y_minus = columnSection.y_min;
             column_crsc_y_plus = columnSection.y_max;
@@ -480,9 +486,11 @@ namespace BaseClasses.GraphObj
 
             // Prva uroven, stany budovy alebo strechy, left, right, front, back, roof left roof right
             // Druha uroven jednotlive sheet nachadzajuce sa v jednej rovine
-            List<List<CCladdingOrFibreGlassSheet>> listOfCladdingSheets = new List<List<CCladdingOrFibreGlassSheet>>();
+            //List<List<CCladdingOrFibreGlassSheet>> listOfCladdingSheets = new List<List<CCladdingOrFibreGlassSheet>>();
 
-            float claddingWidthModular_Wall = 0.6f; // TODO - napojit na DB
+            float claddingWidthModular_Wall = 0.6f; // TODO - napojit na DB podla nastavenia GUI
+            float fFibreGlassOpacity = 0.3f; // TODO - napojit na GUI
+            float fOpeningOpacity = 0.02f; 
             float rotationAboutZ;
             bool bDistinguishedSheetColor = true;
 
@@ -511,6 +519,100 @@ namespace BaseClasses.GraphObj
                 m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                 iSheetIndex++;
             }
+
+            // Vytvorime zoznam otvorov na left wall
+            List<CCladdingOrFibreGlassSheet> listOfOpeningsLeftWall = new List<CCladdingOrFibreGlassSheet>();
+            foreach (DoorProperties door in doorPropCollection)
+            {
+                // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
+                // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                float fdoorPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
+                float fdoorPosition_x = fdoorPosition_x_Input_GUI;
+
+                if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    fdoorPosition_x = (float)width - fdoorPosition_x_Input_GUI - door.fDoorsWidth;
+
+                if (door.sBuildingSide == "Left")
+                {
+                    listOfOpeningsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fdoorPosition_x, 0,
+                    new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
+                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iSheetIndex++;
+                }
+            }
+
+            foreach (WindowProperties window in windowPropCollection)
+            {
+                // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
+                // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                float fwindowPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
+                float fwindowPosition_x = fwindowPosition_x_Input_GUI;
+
+                if(window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    fwindowPosition_x = (float)width - fwindowPosition_x_Input_GUI - window.fWindowsWidth;
+
+                if (window.sBuildingSide == "Left")
+                {
+                    listOfOpeningsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fwindowPosition_x, window.fWindowCoordinateZinBay,
+                    new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
+                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iSheetIndex++;
+                }
+            }
+
+            // Modifikujeme sheets
+            // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
+            // a vytvorime novu sadu plechov ktora zmazany plech nahradi
+
+            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsLeftWallNew = null;
+
+            SplitSheets(listOfCladdingSheetsLeftWall, listOfOpeningsLeftWall,
+                ref iSheetIndex, out listOfCladdingSheetsLeftWallNew);
+
+            listOfCladdingSheetsLeftWall = listOfCladdingSheetsLeftWallNew; // Nastavime novy zoznam
+
+            //--------------------------------------------------------------------------------------------------------------------------------
+            // Front Wall
+            // Docasne - napojit vytvorenie FG Sheets na GUI
+            // Fibreglass - docasne - malo byt zadavane v datagride v Tabe Cladding
+
+            // FG Sheet 1
+            float fPosition_x = 2 * claddingWidthModular_Wall; // TODO Input - docasne
+            float fPosition_y = 0.5f; // TODO Input - docasne - pozicia od spodnej hrany laveho okraja steny
+            float fFBSheetLength = 1.0f; // TODO Input - docasne - dlzka fibreglass sheet
+            List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallFront = new List<CCladdingOrFibreGlassSheet>();
+            listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fPosition_x, fPosition_y,
+                new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), claddingWidthModular_Wall, fFBSheetLength, fFBSheetLength, 0, 0,
+                m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fFibreGlassOpacity, claddingWidthRibModular_Wall, true, 0));
+            iSheetIndex++;
+
+            // FG Sheet 2
+            fPosition_x = 4 * claddingWidthModular_Wall; // TODO Input - docasne
+            fPosition_y = 0.5f; // TODO Input - docasne - pozicia od spodnej hrany laveho okraja steny
+            fFBSheetLength = 1.0f; // TODO Input - docasne - dlzka fibreglass sheet
+            listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fPosition_x, fPosition_y,
+                new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), claddingWidthModular_Wall, fFBSheetLength, fFBSheetLength, 0, 0,
+                m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fFibreGlassOpacity, claddingWidthRibModular_Wall, true, 0));
+            iSheetIndex++;
+
+            // FG Sheet 3
+            fPosition_x = 6 * claddingWidthModular_Wall; // TODO Input - docasne
+            fPosition_y = 0.0f; // TODO Input - docasne - pozicia od spodnej hrany laveho okraja steny
+            fFBSheetLength = 2.0f; // TODO Input - docasne - dlzka fibreglass sheet
+            listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fPosition_x, fPosition_y,
+                new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), claddingWidthModular_Wall, fFBSheetLength, fFBSheetLength, 0, 0,
+                m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fFibreGlassOpacity, claddingWidthRibModular_Wall, true, 0));
+            iSheetIndex++;
+
+            // FG Sheet 4
+            fPosition_x = 6 * claddingWidthModular_Wall; // TODO Input - docasne
+            fPosition_y = 2.8f; // TODO Input - docasne - pozicia od spodnej hrany laveho okraja steny
+            fFBSheetLength = 0.8f; // TODO Input - docasne - dlzka fibreglass sheet
+            listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fPosition_x, fPosition_y,
+                new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), claddingWidthModular_Wall, fFBSheetLength, fFBSheetLength, 0, 0,
+                m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fFibreGlassOpacity, claddingWidthRibModular_Wall, true, 0));
+            iSheetIndex++;
+            //--------------------------------------------------------------------------------------------------------------------------------
 
             // Front Wall
             // Total Wall Width
@@ -559,6 +661,17 @@ namespace BaseClasses.GraphObj
                 iSheetIndex++;
             }
 
+            // Modifikujeme sheets
+            // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
+            // a vytvorime novu sadu plechov ktora zmazany plech nahradi
+
+            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsFrontWallNew = null;
+
+            SplitSheets(listOfCladdingSheetsFrontWall, listOfFibreGlassSheetsWallFront,
+                ref iSheetIndex, out listOfCladdingSheetsFrontWallNew);
+
+            listOfCladdingSheetsFrontWall = listOfCladdingSheetsFrontWallNew; // Nastavime novy zoznam
+
             // Right Wall
             // Total Wall Width
             width = pback1_baseright.Y - pfront1_baseright.Y;
@@ -584,6 +697,57 @@ namespace BaseClasses.GraphObj
                 m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                 iSheetIndex++;
             }
+
+            // Vytvorime zoznam otvorov na right wall
+            List<CCladdingOrFibreGlassSheet> listOfOpeningsRightWall = new List<CCladdingOrFibreGlassSheet>();
+            foreach (DoorProperties door in doorPropCollection)
+            {
+                // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
+                // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                float fdoorPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
+                float fdoorPosition_x = fdoorPosition_x_Input_GUI;
+
+                if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    fdoorPosition_x = (float)width - fdoorPosition_x_Input_GUI - door.fDoorsWidth;
+
+                if (door.sBuildingSide == "Right")
+                {
+                    listOfOpeningsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fdoorPosition_x, 0,
+                        new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
+                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iSheetIndex++;
+                }
+            }
+
+            foreach (WindowProperties window in windowPropCollection)
+            {
+                // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
+                // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                float fwindowPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
+                float fwindowPosition_x = fwindowPosition_x_Input_GUI;
+
+                if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    fwindowPosition_x = (float)width - fwindowPosition_x_Input_GUI - window.fWindowsWidth;
+
+                if (window.sBuildingSide == "Right")
+                {
+                    listOfOpeningsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fwindowPosition_x, window.fWindowCoordinateZinBay,
+                    new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
+                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iSheetIndex++;
+                }
+            }
+
+            // Modifikujeme sheets
+            // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
+            // a vytvorime novu sadu plechov ktora zmazany plech nahradi
+
+            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRightWallNew = null;
+
+            SplitSheets(listOfCladdingSheetsRightWall, listOfOpeningsRightWall,
+                ref iSheetIndex, out listOfCladdingSheetsRightWallNew);
+
+            listOfCladdingSheetsRightWall = listOfCladdingSheetsRightWallNew; // Nastavime novy zoznam
 
             // Back Wall
             // Total Wall Width
@@ -633,15 +797,16 @@ namespace BaseClasses.GraphObj
             }
 
             float claddingWidthModular_Roof = 0.7f;
-            float fFibreGlassOpacity = 0.3f;
 
+            //--------------------------------------------------------------------------------------------------------------------------------
+            // Docasne - napojit vytvorenie FG Sheets na GUI
             // Fibreglass - docasne - malo byt zadavane v datagride v Tabe Cladding
             int iNumberOfEdges_FG_Roof = 4;
 
             // FG Sheet 1
-            float fPosition_x = 2 * claddingWidthModular_Roof; // TODO Input - docasne
-            float fPosition_y = 0.5f; // TODO Input - docasne - pozicia od spodnej hrany praveho okraja strechy
-            float fFBSheetLength = 1.0f; // TODO Input - docasne - dlzka fibreglass sheet
+            fPosition_x = 2 * claddingWidthModular_Roof; // TODO Input - docasne
+            fPosition_y = 0.5f; // TODO Input - docasne - pozicia od spodnej hrany praveho okraja strechy
+            fFBSheetLength = 1.0f; // TODO Input - docasne - dlzka fibreglass sheet
             List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();
             listOfFibreGlassSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_Roof, fPosition_x, fPosition_y,
                 new Point3D(pfront2_heightright.X, pfront2_heightright.Y, pfront2_heightright.Z), claddingWidthModular_Roof, fFBSheetLength, fFBSheetLength, 0, 0,
@@ -687,6 +852,7 @@ namespace BaseClasses.GraphObj
                 new Point3D(pfront2_heightright.X, pfront2_heightright.Y, pfront2_heightright.Z), claddingWidthModular_Roof, fFBSheetLength, fFBSheetLength, 0, 0,
                 m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, fFibreGlassOpacity, claddingWidthRibModular_Roof, true, 0));
             iSheetIndex++;
+            //--------------------------------------------------------------------------------------------------------------------------------
 
             // Roof - Right Side
             // Total Width
@@ -890,6 +1056,14 @@ namespace BaseClasses.GraphObj
                 {
                     listOfSheetsNew.Add(originalsheet);
                     iSheetIndex++;
+                }
+                else if (objectInColision_In_Local_x.Count == 1 &&
+                         objectInColision_In_Local_x[0].CoordinateInPlane_y <= originalsheet.CoordinateInPlane_y &&
+                         objectInColision_In_Local_x[0].LengthTotal >= originalsheet.LengthTotal) // Otvor je dlhsi ako cely povodny sheet, odstranime len originalsheet a nic nepridavame
+                {
+                    // TODO - este by sa mohlo stat ze openings je sice viac nadefinovanych priamo vedla seba, ale tvoria jeden velky otvor
+                    // Asi je to nezmyselne zadanie, ale malo by to byt osetrene
+                    // Do not add sheet to the list - whole original sheet is substituted by opening
                 }
                 else
                 {
