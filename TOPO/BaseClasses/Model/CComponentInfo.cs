@@ -387,8 +387,7 @@ namespace BaseClasses
             MComponentName = componentName;
             MSection = section;
             MSectionColor = sectionColor;
-            MMaterial = material;
-            MILS = ils;
+            MMaterial = material;            
             MGenerate = generate;
             MDisplay = display;
             MCalculate = calculate;
@@ -396,6 +395,7 @@ namespace BaseClasses
             MMaterialList = materialList;
             MSections = sections;
             MILS_Items = ilsItems;
+            MILS = ils;
             MColors = colors;
             MMemberTypePosition = memberType;
 
