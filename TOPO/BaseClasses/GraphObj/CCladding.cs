@@ -19,6 +19,9 @@ namespace BaseClasses.GraphObj
         System.Collections.ObjectModel.ObservableCollection<DoorProperties> doorPropCollection;
         System.Collections.ObjectModel.ObservableCollection<WindowProperties> windowPropCollection;
 
+        float m_fFrontColumnDistance; // Vzdialenost front columns
+        float m_fBackColumnDistance; // Vzdialenost back columns
+
         double claddingHeight_Wall = 0.030; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
         double claddingHeight_Roof = 0.075; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
 
@@ -52,6 +55,7 @@ namespace BaseClasses.GraphObj
             System.Collections.ObjectModel.ObservableCollection<DoorProperties> doorProp,
             System.Collections.ObjectModel.ObservableCollection<WindowProperties> windowProp,
             CRSC.CCrSc_TW columnSection,
+            float fFrontColumnDistance, float fBackColumnDistance,
             string colorName_Wall, string colorName_Roof, string claddingShape_Wall, string claddingCoatingType_Wall, string claddingShape_Roof, string claddingCoatingType_Roof,
             Color colorWall, Color colorRoof,
             bool bIsDisplayed, int fTime, double wallCladdingHeight, double roofCladdingHeight, double wallCladdingWidthRib, double roofCladdingWidthRib)
@@ -66,6 +70,8 @@ namespace BaseClasses.GraphObj
             column_crsc_z_plus = columnSection.z_max;
             column_crsc_y_minus = columnSection.y_min;
             column_crsc_y_plus = columnSection.y_max;
+            m_fFrontColumnDistance = fFrontColumnDistance;
+            m_fBackColumnDistance = fBackColumnDistance;
             m_ColorNameWall = colorName_Wall;
             m_ColorNameRoof = colorName_Roof;
             m_claddingShape_Wall = claddingShape_Wall;
@@ -521,6 +527,7 @@ namespace BaseClasses.GraphObj
             }
 
             // Vytvorime zoznam otvorov na left wall
+            // Moze sa refaktorovat, ale pozor na controlPoint_GCS, je iny pre kazdu stranu
             List<CCladdingOrFibreGlassSheet> listOfOpeningsLeftWall = new List<CCladdingOrFibreGlassSheet>();
             foreach (DoorProperties door in doorPropCollection)
             {
@@ -563,6 +570,10 @@ namespace BaseClasses.GraphObj
             // Modifikujeme sheets
             // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
             // a vytvorime novu sadu plechov ktora zmazany plech nahradi
+
+            // TO Ondrej - vyrábam uplne nový zoznam a don pridavam povodny sheet alebo ho delim a vytvaram nove
+            // Mozno by sa to dalo urobit uz na prvykrat aby som nerobil zoznam s sheets bez otvorov a potom s otvormi
+            // Uvazujem ci by sa nedal vytvorit originalSheet len "naoko" vo vnutri SplitSheets a tym padom by cele naplnenie povodneho zoznamu odpadlo
 
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsLeftWallNew = null;
 
@@ -661,13 +672,63 @@ namespace BaseClasses.GraphObj
                 iSheetIndex++;
             }
 
+            // Vytvorime zoznam otvorov na front wall
+            // Moze sa refaktorovat, ale pozor na controlPoint_GCS, je iny pre kazdu stranu
+            List<CCladdingOrFibreGlassSheet> listOfOpeningsFrontWall = new List<CCladdingOrFibreGlassSheet>();
+            foreach (DoorProperties door in doorPropCollection)
+            {
+                // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
+                // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                float fdoorPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * m_fFrontColumnDistance);
+                float fdoorPosition_x = fdoorPosition_x_Input_GUI;
+
+                if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    fdoorPosition_x = (float)width - fdoorPosition_x_Input_GUI - door.fDoorsWidth;
+
+                if (door.sBuildingSide == "Front")
+                {
+                    listOfOpeningsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fdoorPosition_x, 0,
+                        new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
+                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iSheetIndex++;
+                }
+            }
+
+            foreach (WindowProperties window in windowPropCollection)
+            {
+                // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
+                // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                float fwindowPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * m_fFrontColumnDistance);
+                float fwindowPosition_x = fwindowPosition_x_Input_GUI;
+
+                if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    fwindowPosition_x = (float)width - fwindowPosition_x_Input_GUI - window.fWindowsWidth;
+
+                if (window.sBuildingSide == "Front")
+                {
+                    listOfOpeningsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fwindowPosition_x, window.fWindowCoordinateZinBay,
+                    new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
+                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iSheetIndex++;
+                }
+            }
+
             // Modifikujeme sheets
             // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
             // a vytvorime novu sadu plechov ktora zmazany plech nahradi
 
+            // TO Ondrej - vyrábam uplne nový zoznam a don pridavam povodny sheet alebo ho delim a vytvaram nove
+            // Mozno by sa to dalo urobit uz na prvykrat aby som nerobil zoznam s sheets bez otvorov a potom s otvormi
+            // Uvazujem ci by sa nedal vytvorit originalSheet len "naoko" vo vnutri SplitSheets a tym padom by cele naplnenie povodneho zoznamu odpadlo
+
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsFrontWallNew = null;
 
-            SplitSheets(listOfCladdingSheetsFrontWall, listOfFibreGlassSheetsWallFront,
+            // Kedze mame otvory pre fibreglass sheets a otvory pre doors/windows v dvoch samostatnych zoznamoch, zlucime ich do jedneho
+            // Pouzivame pre vsetky otvory jeden typ objektu
+            // TODO - v podstate by sme mohli pouzivat len jeden zoznam a vsetko doň priamo vkladať, ale kedže chceme pre fibreglass robiť material list zatiaľ to nechame oddelene.
+            List<CCladdingOrFibreGlassSheet> listOfOpeningsFrontWall_All = listOfFibreGlassSheetsWallFront.Concat(listOfOpeningsFrontWall).ToList();
+
+            SplitSheets(listOfCladdingSheetsFrontWall, listOfOpeningsFrontWall_All,
                 ref iSheetIndex, out listOfCladdingSheetsFrontWallNew);
 
             listOfCladdingSheetsFrontWall = listOfCladdingSheetsFrontWallNew; // Nastavime novy zoznam
@@ -699,6 +760,7 @@ namespace BaseClasses.GraphObj
             }
 
             // Vytvorime zoznam otvorov na right wall
+            // Moze sa refaktorovat, ale pozor na controlPoint_GCS, je iny pre kazdu stranu
             List<CCladdingOrFibreGlassSheet> listOfOpeningsRightWall = new List<CCladdingOrFibreGlassSheet>();
             foreach (DoorProperties door in doorPropCollection)
             {
@@ -741,6 +803,10 @@ namespace BaseClasses.GraphObj
             // Modifikujeme sheets
             // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
             // a vytvorime novu sadu plechov ktora zmazany plech nahradi
+
+            // TO Ondrej - vyrábam uplne nový zoznam a don pridavam povodny sheet alebo ho delim a vytvaram nove
+            // Mozno by sa to dalo urobit uz na prvykrat aby som nerobil zoznam s sheets bez otvorov a potom s otvormi
+            // Uvazujem ci by sa nedal vytvorit originalSheet len "naoko" vo vnutri SplitSheets a tym padom by cele naplnenie povodneho zoznamu odpadlo
 
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRightWallNew = null;
 
@@ -796,6 +862,64 @@ namespace BaseClasses.GraphObj
                 iSheetIndex++;
             }
 
+            // Vytvorime zoznam otvorov na back wall
+            // Moze sa refaktorovat, ale pozor na controlPoint_GCS, je iny pre kazdu stranu
+            List<CCladdingOrFibreGlassSheet> listOfOpeningsBackWall = new List<CCladdingOrFibreGlassSheet>();
+            foreach (DoorProperties door in doorPropCollection)
+            {
+                // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
+                // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                float fdoorPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * m_fBackColumnDistance);
+                float fdoorPosition_x = fdoorPosition_x_Input_GUI;
+
+                if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    fdoorPosition_x = (float)width - fdoorPosition_x_Input_GUI - door.fDoorsWidth;
+
+                if (door.sBuildingSide == "Back")
+                {
+                    listOfOpeningsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fdoorPosition_x, 0,
+                        new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
+                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iSheetIndex++;
+                }
+            }
+
+            foreach (WindowProperties window in windowPropCollection)
+            {
+                // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
+                // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                float fwindowPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * m_fBackColumnDistance);
+                float fwindowPosition_x = fwindowPosition_x_Input_GUI;
+
+                if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    fwindowPosition_x = (float)width - fwindowPosition_x_Input_GUI - window.fWindowsWidth;
+
+                if (window.sBuildingSide == "Back")
+                {
+                    listOfOpeningsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fwindowPosition_x, window.fWindowCoordinateZinBay,
+                    new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
+                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iSheetIndex++;
+                }
+            }
+
+            // Modifikujeme sheets
+            // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
+            // a vytvorime novu sadu plechov ktora zmazany plech nahradi
+
+            // TO Ondrej - vyrábam uplne nový zoznam a don pridavam povodny sheet alebo ho delim a vytvaram nove
+            // Mozno by sa to dalo urobit uz na prvykrat aby som nerobil zoznam s sheets bez otvorov a potom s otvormi
+            // Uvazujem ci by sa nedal vytvorit originalSheet len "naoko" vo vnutri SplitSheets a tym padom by cele naplnenie povodneho zoznamu odpadlo
+
+            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsBackWallNew = null;
+
+            SplitSheets(listOfCladdingSheetsBackWall, listOfOpeningsBackWall,
+                ref iSheetIndex, out listOfCladdingSheetsBackWallNew);
+
+            listOfCladdingSheetsBackWall = listOfCladdingSheetsBackWallNew; // Nastavime novy zoznam
+
+
+            // Roof
             float claddingWidthModular_Roof = 0.7f;
 
             //--------------------------------------------------------------------------------------------------------------------------------
@@ -891,6 +1015,10 @@ namespace BaseClasses.GraphObj
             // Modifikujeme sheets
             // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
             // a vytvorime novu sadu plechov ktora zmazany plech nahradi
+
+            // TO Ondrej - vyrábam uplne nový zoznam a don pridavam povodny sheet alebo ho delim a vytvaram nove
+            // Mozno by sa to dalo urobit uz na prvykrat aby som nerobil zoznam s sheets bez otvorov a potom s otvormi
+            // Uvazujem ci by sa nedal vytvorit originalSheet len "naoko" vo vnutri SplitSheets a tym padom by cele naplnenie povodneho zoznamu odpadlo
 
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofRightNew = null;
 

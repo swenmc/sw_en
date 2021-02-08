@@ -1657,6 +1657,7 @@ namespace PFD
                 vm.DoorBlocksProperties,
                 vm.WindowBlocksProperties,
                 (CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn],
+                fDist_FrontColumns, fDist_BackColumns,
                 _pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).Name,
                 _pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).Name,
                 _pfdVM.WallCladding, _pfdVM.WallCladdingCoating,
