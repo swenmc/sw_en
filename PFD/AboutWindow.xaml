@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
-        xmlns:local="clr-namespace:PFD"
+        xmlns:local="clr-namespace:PFD"        
         mc:Ignorable="d"
         Title="About application" WindowStartupLocation="CenterScreen" 
         Icon="Resources/info.png" WindowStyle="SingleBorderWindow" Height="600" Width="400">
@@ -32,11 +32,11 @@
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="4" Orientation="Vertical" VerticalAlignment="Bottom" Width="auto" Background="Black">
             <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="White">Copyright © 2021 | </TextBlock>
-                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="Yellow">Promotion Terms &amp; Conditions</TextBlock>
+                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="White">Copyright © 2021 | &#160;</TextBlock>
+                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="Yellow">&nbsp; Promotion Terms &amp; Conditions</TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0 10 0 5">
-                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="White">Developed by </TextBlock>
+                <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="White">Developed by &#160;</TextBlock>
                 <TextBlock FontWeight="Bold" FontStyle="Normal" FontSize="12" Foreground="Yellow">Pažin &amp; Čudejko</TextBlock>
             </StackPanel>
         </StackPanel>
