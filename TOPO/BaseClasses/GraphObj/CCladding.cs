@@ -976,6 +976,26 @@ namespace BaseClasses.GraphObj
                 new Point3D(pfront2_heightright.X, pfront2_heightright.Y, pfront2_heightright.Z), claddingWidthModular_Roof, fFBSheetLength, fFBSheetLength, 0, 0,
                 m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, fFibreGlassOpacity, claddingWidthRibModular_Roof, true, 0));
             iSheetIndex++;
+
+            // FG Sheet 6
+            fPosition_x = 10 * claddingWidthModular_Roof; // TODO Input - docasne
+            fPosition_y = 0.4f; // TODO Input - docasne - pozicia od spodnej hrany praveho okraja strechy
+            fFBSheetLength = 3.0f; // TODO Input - docasne - dlzka fibreglass sheet
+
+            listOfFibreGlassSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_Roof, fPosition_x, fPosition_y,
+                new Point3D(pfront2_heightright.X, pfront2_heightright.Y, pfront2_heightright.Z), claddingWidthModular_Roof, fFBSheetLength, fFBSheetLength, 0, 0,
+                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, fFibreGlassOpacity, claddingWidthRibModular_Roof, true, 0));
+            iSheetIndex++;
+
+            // FG Sheet 7
+            fPosition_x = 11 * claddingWidthModular_Roof; // TODO Input - docasne
+            fPosition_y = 0.4f; // TODO Input - docasne - pozicia od spodnej hrany praveho okraja strechy
+            fFBSheetLength = 3.0f; // TODO Input - docasne - dlzka fibreglass sheet
+
+            listOfFibreGlassSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_Roof, fPosition_x, fPosition_y,
+                new Point3D(pfront2_heightright.X, pfront2_heightright.Y, pfront2_heightright.Z), claddingWidthModular_Roof, fFBSheetLength, fFBSheetLength, 0, 0,
+                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, fFibreGlassOpacity, claddingWidthRibModular_Roof, true, 0));
+            iSheetIndex++;
             //--------------------------------------------------------------------------------------------------------------------------------
 
             // Roof - Right Side
@@ -1032,10 +1052,51 @@ namespace BaseClasses.GraphObj
             if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 // Roof - Left Side
+                length_left_basic = Drawing3D.GetPoint3DDistanceFloat(pfront3_heightleft, pfront4_top);
+
+                // FG Sheet 1
+                fPosition_x = 2 * claddingWidthModular_Roof; // TODO Input - docasne
+                fPosition_y = 0.5f; // TODO Input - docasne - pozicia od spodnej hrany praveho okraja strechy
+                fFBSheetLength = 2.0f; // TODO Input - docasne - dlzka fibreglass sheet
+
+                // Pre Left side prevratime suradnice v LCS y, aby boli vstupy na oboch stranach brane od spodnej hrany H1
+                fPosition_y = length_left_basic - fPosition_y - fFBSheetLength;
+
+                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofLeft = new List<CCladdingOrFibreGlassSheet>();
+                listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_Roof, fPosition_x, fPosition_y,
+                    new Point3D(pfront4_top.X, pfront4_top.Y, pfront4_top.Z), claddingWidthModular_Roof, fFBSheetLength, fFBSheetLength, 0, 0,
+                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, fFibreGlassOpacity, claddingWidthRibModular_Roof, true, 0));
+                iSheetIndex++;
+
+                // FG Sheet 2
+                fPosition_x = 4 * claddingWidthModular_Roof; // TODO Input - docasne
+                fPosition_y = 0.5f; // TODO Input - docasne - pozicia od spodnej hrany praveho okraja strechy
+                fFBSheetLength = 2.0f; // TODO Input - docasne - dlzka fibreglass sheet
+
+                // Pre Left side prevratime suradnice v LCS y, aby boli vstupy na oboch stranach brane od spodnej hrany H1
+                fPosition_y = length_left_basic - fPosition_y - fFBSheetLength;
+
+                listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_Roof, fPosition_x, fPosition_y,
+                    new Point3D(pfront4_top.X, pfront4_top.Y, pfront4_top.Z), claddingWidthModular_Roof, fFBSheetLength, fFBSheetLength, 0, 0,
+                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, fFibreGlassOpacity, claddingWidthRibModular_Roof, true, 0));
+                iSheetIndex++;
+
+                // FG Sheet 3
+                fPosition_x = 8 * claddingWidthModular_Roof; // TODO Input - docasne
+                fPosition_y = 0.8f; // TODO Input - docasne - pozicia od spodnej hrany praveho okraja strechy
+                fFBSheetLength = 1.6f; // TODO Input - docasne - dlzka fibreglass sheet
+
+                // Pre Left side prevratime suradnice v LCS y, aby boli vstupy na oboch stranach brane od spodnej hrany H1
+                fPosition_y = length_left_basic - fPosition_y - fFBSheetLength;
+
+                listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_Roof, fPosition_x, fPosition_y,
+                    new Point3D(pfront4_top.X, pfront4_top.Y, pfront4_top.Z), claddingWidthModular_Roof, fFBSheetLength, fFBSheetLength, 0, 0,
+                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, fFibreGlassOpacity, claddingWidthRibModular_Roof, true, 0));
+                iSheetIndex++;
+
+                // Roof - Left Side
                 // Total Width
                 width = pback0_baseleft.Y - pfront0_baseleft.Y;
-
-                length_left_basic = Drawing3D.GetPoint3DDistanceFloat(pfront3_heightleft, pfront4_top);
 
                 iNumberOfWholeSheets = (int)(width / claddingWidthModular_Roof);
                 dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Roof;
@@ -1059,6 +1120,21 @@ namespace BaseClasses.GraphObj
                     m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
                     iSheetIndex++;
                 }
+
+                // Modifikujeme sheets
+                // Odstranime plechy cladding, ktore su v kolizii s otvormi (FibreGlass, Doors, Windows)
+                // a vytvorime novu sadu plechov ktora zmazany plech nahradi
+
+                // TO Ondrej - vyrábam uplne nový zoznam a don pridavam povodny sheet alebo ho delim a vytvaram nove
+                // Mozno by sa to dalo urobit uz na prvykrat aby som nerobil zoznam s sheets bez otvorov a potom s otvormi
+                // Uvazujem ci by sa nedal vytvorit originalSheet len "naoko" vo vnutri SplitSheets a tym padom by cele naplnenie povodneho zoznamu odpadlo
+
+                List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofLeftNew = null;
+
+                SplitSheets(listOfCladdingSheetsRoofLeft, listOfFibreGlassSheetsRoofLeft,
+                    ref iSheetIndex, out listOfCladdingSheetsRoofLeftNew);
+
+                listOfCladdingSheetsRoofLeft = listOfCladdingSheetsRoofLeftNew; // Nastavime novy zoznam
             }
 
             // Vytvorime geometry model
