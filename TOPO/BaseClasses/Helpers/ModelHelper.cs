@@ -96,14 +96,23 @@ namespace BaseClasses.Helpers
             return nodes;
         }
 
-        public static List<CNode> GetNodesFromMembers(CMember[] members)
+        public static List<CNode> GetNodesFromMembers(CMember[] members, bool removeDuplicit = true)
         {
             List<CNode> nodes = new List<CNode>();
 
             foreach (CMember m in members)
             {
-                if (m.NodeStart != null) nodes.Add(m.NodeStart);
-                if (m.NodeEnd != null) nodes.Add(m.NodeEnd);
+                if (m.NodeStart != null)
+                {
+                    if (removeDuplicit) { if (!nodes.Contains(m.NodeStart)) nodes.Add(m.NodeStart); }
+                    else nodes.Add(m.NodeStart);
+                }
+
+                if (m.NodeEnd != null)
+                {
+                    if (removeDuplicit) { if (!nodes.Contains(m.NodeEnd)) nodes.Add(m.NodeEnd); }
+                    else nodes.Add(m.NodeEnd);                    
+                }
             }
             return nodes;
         }

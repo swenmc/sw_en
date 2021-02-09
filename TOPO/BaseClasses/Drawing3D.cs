@@ -198,7 +198,7 @@ namespace BaseClasses
                     ((Model3D)gr).Transform = centerModelTransGr;
                     double maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
-                    Point3D cameraPosition = new Point3D(0, 0, maxLen * 2);  //to bola 2 - Task 493 - To Mato mozno aj toto by sme mohli dat niekde do GUI ako nastavenie, resp. v DisplayOptions by to mohlo asi byt
+                    Point3D cameraPosition = new Point3D(0, 0, maxLen * 2.1);  //to bola 2 - Task 493 - To Mato mozno aj toto by sme mohli dat niekde do GUI ako nastavenie, resp. v DisplayOptions by to mohlo asi byt
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
 
