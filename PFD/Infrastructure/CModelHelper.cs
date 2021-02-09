@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using BaseClasses.Helpers;
 using MATH;
 using System;
 using System.Collections.Generic;
@@ -681,9 +682,28 @@ namespace PFD
             {
                 if (n.ID == node.ID) continue; //it is the node in parameter = do not include
 
-                if (Drawing3D.IsNodesLocationIdentical(n, node)) nodes.Add(n);
+                if (ModelHelper.IsNodesLocationIdentical(n, node)) nodes.Add(n);
             }
             return nodes;
         }
+
+        public static CNode GetNodeWithSamePositionButLowerID(CNode node, CNode[] nodes, bool deactivateDuplicitNodes = true)
+        {
+            CNode resNode = node;
+            foreach (CNode n in nodes)
+            {
+                if (n == null) continue;
+                if (n.ID == node.ID) continue; //it is the node in parameter = do not include
+
+                if (ModelHelper.IsNodesLocationIdentical(n, node) && n.ID < node.ID)
+                {
+                    if (deactivateDuplicitNodes) node.BIsGenerated = false;
+                    resNode = n;
+                }                
+            }
+            return resNode;
+        }
+
+        
     }
 }

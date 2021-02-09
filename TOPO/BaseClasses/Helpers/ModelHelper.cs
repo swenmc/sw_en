@@ -499,5 +499,13 @@ namespace BaseClasses.Helpers
             float maxSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             return maxSize;
         }
+
+        public static bool IsNodesLocationIdentical(CNode n1, CNode n2)
+        {
+            if (MathF.d_equal(n1.X, n2.X) && MathF.d_equal(n1.Y, n2.Y) && MathF.d_equal(n1.Z, n2.Z))
+                return true;
+            else
+                return false;
+        }
     }
 }
