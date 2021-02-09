@@ -2335,7 +2335,7 @@ namespace BaseClasses
             {
                 for (int i = 0; i < model.m_arrNodes.Length; i++)
                 {
-                    if (model.m_arrNodes[i] != null) // Node object is valid (not empty)
+                    if (model.m_arrNodes[i] != null && model.m_arrNodes[i].BIsGenerated) // Node object is valid (not empty)
                     {
                         Point3D p = new Point3D(model.m_arrNodes[i].X, model.m_arrNodes[i].Y, model.m_arrNodes[i].Z);
 
@@ -3556,10 +3556,9 @@ namespace BaseClasses
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
 
-
                 for (int i = 0; i < model.m_arrNodes.Length; i++)
                 {
-                    if (model.m_arrNodes[i] != null) // Node object is valid (not empty)
+                    if (model.m_arrNodes[i] != null && model.m_arrNodes[i].BIsGenerated) // Node object is valid (not empty)
                     {
                         Point3D p = new Point3D(model.m_arrNodes[i].X, model.m_arrNodes[i].Y, model.m_arrNodes[i].Z);
                         string sTextToDisplay = model.m_arrNodes[i].ID.ToString();
