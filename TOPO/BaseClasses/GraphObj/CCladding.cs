@@ -497,8 +497,24 @@ namespace BaseClasses.GraphObj
             float claddingWidthModular_Wall = 0.6f; // TODO - napojit na DB podla nastavenia GUI
             float fFibreGlassOpacity = 0.3f; // TODO - napojit na GUI
             float fOpeningOpacity = 0.02f; 
-            float rotationAboutZ;
-            bool bDistinguishedSheetColor = true;
+            bool bDistinguishedSheetColor = true; // TODO - Option v GUI - Display Options
+
+            // TODO - color list ma 141 poloziek, ale na jednej strane moze byt az 500 sheets, preto nakopirujem polozky viac krat
+            // TO Ondrej - asi sa to da nejako krajsie programovo urobit aby sa pri vycerpani listu zacalo znova od zaciatku
+            // TODO Ondrej - chcel by som ten list upravit tak ze vybrieme napriklad 20 peknych farieb a tie sa budu striedat, aby tam nebola cierna alebo 3 odtiene bielej za sebou
+            // Povodny list so vsetkymi farbami mi nezmaz
+
+            List<Color> colorsTemp_1410_items = new List<Color>();
+            for (int k = 0; k < 10; k++)
+            {
+                for (int l = 0; l < ColorList.Count; l++)
+                {
+                    colorsTemp_1410_items.Add(ColorList[l]);
+                }
+            }
+
+            // Nahradime povodne farby 141 rozsirenym zoznamom 1410
+            ColorList = colorsTemp_1410_items;
 
             // Left Wall
             // Total Wall Width
@@ -1325,7 +1341,7 @@ namespace BaseClasses.GraphObj
         // Asi by sa mala vyvorit pomocna trieda pre farby v BaseClasses alebo este lepsie - zaviest kompletnu databazu farieb System.Windows.Media.Colors
         // a z nej vyberat
 
-        public static List<Color> ColorList = new List<Color>() {
+        public List<Color> ColorList = new List<Color>() {
                 Colors.AliceBlue,
                 Colors.AntiqueWhite,
                 Colors.Aqua,
