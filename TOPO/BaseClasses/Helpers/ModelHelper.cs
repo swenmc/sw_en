@@ -96,6 +96,18 @@ namespace BaseClasses.Helpers
             return nodes;
         }
 
+        public static List<CNode> GetNodesFromMembers(CMember[] members)
+        {
+            List<CNode> nodes = new List<CNode>();
+
+            foreach (CMember m in members)
+            {
+                if (m.NodeStart != null) nodes.Add(m.NodeStart);
+                if (m.NodeEnd != null) nodes.Add(m.NodeEnd);
+            }
+            return nodes;
+        }
+
         // Columns
         public static CMember[] GetColumnsViewMembers(CModel model)
         {

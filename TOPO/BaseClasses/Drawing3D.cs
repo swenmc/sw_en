@@ -5425,7 +5425,8 @@ namespace BaseClasses
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
             {
                 _model.m_arrMembers = ModelHelper.GetRoofViewMembers(model).ToArray();
-                _model.m_arrNodes = ModelHelper.GetRoofViewNodes(model).ToArray();
+                //_model.m_arrNodes = ModelHelper.GetRoofViewNodes(model).ToArray();
+                _model.m_arrNodes = ModelHelper.GetNodesFromMembers(_model.m_arrMembers).ToArray();
                 _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
