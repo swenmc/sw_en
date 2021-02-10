@@ -381,11 +381,13 @@ namespace EXPIMP
             opts.ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
             opts.IsExport = true;
 
+            opts.SameScaleForViews = true;
+
             List<EViewModelMemberFilters> list_views = GetViewsFromExportOptions(exportOpts);
             
             int legendImgWidth = 100;
             int legendTextWidth = 70;
-            float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
+            //float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);  //toto nic nerobi, tak som zakomentoval
 
             DateTime start = DateTime.Now;
             System.Diagnostics.Trace.WriteLine("DrawModelViews Beginning: " + (DateTime.Now - start).TotalMilliseconds);

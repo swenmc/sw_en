@@ -56,13 +56,15 @@ namespace BaseClasses
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
                 float fTempMin_X = 0;
+                float maxLen = 0;
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(_model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z, out fTempMin_X);
+                maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
                 if (IngnoreCanopiesInView(sDisplayOptions))
                 {
                     _model = GetModelWithoutCanopies(_model);
+                    pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(_model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z, out fTempMin_X);
                 }
-
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(_model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z, out fTempMin_X);
 
                 if (centerModel)
                 {
@@ -74,7 +76,7 @@ namespace BaseClasses
                 }
 
                 //predchadzajuce bolo pouzite kvoli zacentrovaniu modelu, toto je kvoli zoomovanym prvkom podla velkosti modelu podla toho aky je view
-                //pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, (centerModel ? centerModelTransGr : null));
@@ -203,7 +205,9 @@ namespace BaseClasses
                 {
                     //translate transform to model center
                     ((Model3D)gr).Transform = centerModelTransGr;
-                    double maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+
+                    sDisplayOptions.SameScaleForViews = true;  //tu som dal option co si chcel Mato - same Scale
+                    if (!sDisplayOptions.SameScaleForViews) maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
                     Point3D cameraPosition = new Point3D(0, 0, maxLen * 2.1);  //to bola 2 - Task 493 - To Mato mozno aj toto by sme mohli dat niekde do GUI ako nastavenie, resp. v DisplayOptions by to mohlo asi byt
                     _trackport.PerspectiveCamera.Position = cameraPosition;
@@ -211,7 +215,7 @@ namespace BaseClasses
 
                     if (sDisplayOptions.bUseOrtographicCamera)
                     {
-                        SetOrtographicCameraWidth(ref sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                        SetOrtographicCameraWidth(ref sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z, maxLen);
                         OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, sDisplayOptions.OrtographicCameraWidth);
                         ort_camera.FarPlaneDistance = double.PositiveInfinity;
                         ort_camera.NearPlaneDistance = double.NegativeInfinity;
@@ -887,7 +891,7 @@ namespace BaseClasses
 
             // Create section symbols
             List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
-                        
+
             //vsetko sa nastavuje podla max rozmeru modelu a ten upravime podla velkosti strany v PDF
             float fSymbolLineLength_basic = GetSizeIn3D(MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z), sDisplayOptions.GUISectionSymbolsSize, sDisplayOptions.ExportSectionSymbolsSize, sDisplayOptions);
 
@@ -944,9 +948,9 @@ namespace BaseClasses
                     if (diff_perimetersWithoutRebates.Count == 1)
                     {
                         int firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");
-                        
+
                         float fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
-                        
+
                         pointLeft = new Point3D(0, fAbsolutePosition, 0);
                         pointRight = new Point3D(0, fAbsolutePosition, 0);
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
@@ -955,7 +959,7 @@ namespace BaseClasses
                         listOfSectionSymbols.Add(secSymbolRight);
 
                         firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
-                        
+
                         fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
                         pointLeft = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
                         pointRight = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
@@ -986,8 +990,8 @@ namespace BaseClasses
                     {
                         if (perimeter.BuildingSide == "Left" || perimeter.BuildingSide == "Right")
                         {
-                            int firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");                            
-                            
+                            int firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");
+
                             float fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
                             pointLeft = new Point3D(0, fAbsolutePosition, 0);
                             pointRight = new Point3D(0, fAbsolutePosition, 0);
@@ -997,7 +1001,7 @@ namespace BaseClasses
                             listOfSectionSymbols.Add(secSymbolRight);
 
                             firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
-                            
+
                             fAbsolutePosition = model.GetBaysWidthUntilFrameIndex(firstFreeBay) - (1 - fRelativePositionPerimeterSymbol) * model.GetBayWidth(firstFreeBay);
                             pointLeft = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
                             pointRight = new Point3D(model.fW_frame_centerline, fAbsolutePosition, 0);
@@ -1609,10 +1613,10 @@ namespace BaseClasses
                 front = new SolidColorBrush(Colors.Red); // Material color - Front Side
                 back = new SolidColorBrush(Colors.Red); // Material color - Back Side
                 shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
-                                
+
                 front.Opacity = shell.Opacity = back.Opacity = opts.fMemberSolidModelOpacity;
             }
-            
+
             Model3DGroup model3D = null;
             if (model.m_arrMembers != null) // Some members exist
             {
@@ -2535,7 +2539,7 @@ namespace BaseClasses
                         {
                             Color color = model.m_arrMembers[i].Color;
                             if (sDiplayOptions.bColorsAccordingToSections) color = model.m_arrMembers[i].CrScStart.CSColor;
-                            DrawLineToViewport(viewPort, sDiplayOptions, fZoomFactor, color, sDiplayOptions.fmemberCenterlineThickness, pNodeStart, pNodeEnd, ref cylinders);                            
+                            DrawLineToViewport(viewPort, sDiplayOptions, fZoomFactor, color, sDiplayOptions.fmemberCenterlineThickness, pNodeStart, pNodeEnd, ref cylinders);
                         }
                         else
                         {
@@ -2546,7 +2550,7 @@ namespace BaseClasses
                     }
                 }
 
-                if(!sDiplayOptions.bColoredCenterlines)
+                if (!sDiplayOptions.bColoredCenterlines)
                     DrawLinesToViewport(viewPort, sDiplayOptions, fZoomFactor, sDiplayOptions.memberCenterlineColor, sDiplayOptions.fmemberCenterlineThickness, wireFramePoints, ref cylinders);
             }
         }
@@ -2770,7 +2774,7 @@ namespace BaseClasses
                                     // Rotate from LCS to GCS
                                     // TODO
                                     jointPoints.AddRange(wireFrame.Points);
-                                }                                
+                                }
                             }
                         }
 
@@ -3060,11 +3064,11 @@ namespace BaseClasses
 
                 GeometryModel3D cylinder = Get3DLineReplacement(color, fThickness_CylinderDiameter_Final, p1, p2);
                 cylinders.Children.Add(cylinder);
-                
+
             }
             else
             {
-                AddLineToViewPort(new List<Point3D>() { p1, p2}, color, thickness, viewPort);
+                AddLineToViewPort(new List<Point3D>() { p1, p2 }, color, thickness, viewPort);
             }
         }
 
@@ -3210,7 +3214,7 @@ namespace BaseClasses
         public static void CreateMembersDescriptionModel3D_POKUS_MC(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             double descriptionTextWidthScaleFactor = displayOptions.GUIDescriptionTextWidthScaleFactor;
-            if(displayOptions.IsExport) descriptionTextWidthScaleFactor = displayOptions.ExportDescriptionTextWidthScaleFactor;
+            if (displayOptions.IsExport) descriptionTextWidthScaleFactor = displayOptions.ExportDescriptionTextWidthScaleFactor;
 
             // Members
             if (model.m_arrMembers != null)
@@ -3609,7 +3613,7 @@ namespace BaseClasses
                 //float fTextBlockVerticalSize = displayOptions.fNodeDescriptionTextFontSize / 100f;
                 //float fTextBlockVerticalSizeFactor = 0.8f;
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
-                                
+
                 float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                 float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions.ExportNodesDescriptionSize, displayOptions);
 
@@ -3622,7 +3626,7 @@ namespace BaseClasses
                     if (model.arrPoints3D[i] != null) // Node object is valid (not empty)
                     {
                         Point3D p = new Point3D(model.arrPoints3D[i].X, model.arrPoints3D[i].Y, model.arrPoints3D[i].Z);
-                        string sTextToDisplay = (i+1).ToString();
+                        string sTextToDisplay = (i + 1).ToString();
 
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
@@ -3645,7 +3649,7 @@ namespace BaseClasses
                         // Create text
                         textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, fTextBlockVerticalSizeFactor, 0), 0.5);
                         textlabel.Transform = new TranslateTransform3D(-model_LX / 2.0f, -model_LY / 2.0f, -model_LZ / 2.0f);
-                        
+
                         viewPort.Children.Add(textlabel);
                     }
                 }
@@ -3753,7 +3757,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fGridLineLabelTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
-            
+
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIGridLineLabelSize, displayOptions.ExportGridLineLabelSize, displayOptions);
 
@@ -3828,7 +3832,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fSectionSymbolLabelTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
-            
+
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISectionSymbolLabelSize, displayOptions.ExportSectionSymbolLabelSize, displayOptions);
 
@@ -3990,7 +3994,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fControlJointTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            
+
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIControlJointTextSize, displayOptions.ExportControlJointTextSize, displayOptions);
 
@@ -3998,7 +4002,7 @@ namespace BaseClasses
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
-            
+
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Normal;
@@ -4058,7 +4062,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fFoundationTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            
+
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFoundationTextSize, displayOptions.ExportFoundationTextSize, displayOptions);
 
@@ -4078,7 +4082,7 @@ namespace BaseClasses
             Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
 
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up, 0.5);            
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up, 0.5);
             Transform3DGroup tr = new Transform3DGroup();
 
             if (foundation.GetFoundationTransformGroup_Complete() == null)
@@ -4099,7 +4103,7 @@ namespace BaseClasses
             {
                 textlabel.Transform = centerModelTransGr;
             }
-            viewPort.Children.Add(textlabel);            
+            viewPort.Children.Add(textlabel);
         }
 
         public static void CreateFoundationsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
@@ -4272,57 +4276,65 @@ namespace BaseClasses
             return transGr;
         }
 
-        private static void SetOrtographicCameraWidth(ref DisplayOptions sDisplayOptions, float fModel_Length_X, float fModel_Length_Y, float fModel_Length_Z)
+        //omg a toto je co? Naco to je, co to robi. :-)
+        private static void SetOrtographicCameraWidth(ref DisplayOptions sDisplayOptions, float fModel_Length_X, float fModel_Length_Y, float fModel_Length_Z, float maxLen)
         {
-            if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
+            if (sDisplayOptions.SameScaleForViews)
             {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                }
+                if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_LEFT)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                }
+                if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_RIGHT)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                }
+                else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_LEFT)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                }
+                else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.2;
+                }
+                else if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.2;
+                }
+                /*else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                }*/
+                else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.2;
+                }
+                else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.2;
+                }
+                else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+                {
+                    sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
+                    sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                }
             }
-            if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_LEFT)
+            else
             {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                sDisplayOptions.OrtographicCameraWidth *= 1.5;
-            }
-            if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_RIGHT)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                sDisplayOptions.OrtographicCameraWidth *= 1.5;
-            }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_LEFT)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                sDisplayOptions.OrtographicCameraWidth *= 1.5;
-            }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                sDisplayOptions.OrtographicCameraWidth *= 1.2;
-            }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
-                sDisplayOptions.OrtographicCameraWidth *= 1.2;
-            }
-            /*else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
-                sDisplayOptions.OrtographicCameraWidth *= 1.5;
-            }*/
-            else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
-                sDisplayOptions.OrtographicCameraWidth *= 1.2;
-            }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
-                sDisplayOptions.OrtographicCameraWidth *= 1.2;
-            }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
-                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+                sDisplayOptions.OrtographicCameraWidth = maxLen;
             }
         }
         //  Lights
@@ -5130,8 +5142,8 @@ namespace BaseClasses
                 }
                 else // Ak nie su v spoji plates, nastavime defaultne dlzky podla maximalneho rozmeru prierezov prutov vynasobene x 2
                 {
-                    if(jointClone.m_MainMember != null)
-                       fMainMemberLength = 2 * (float)MathF.Max(jointClone.m_MainMember.CrScStart.b, jointClone.m_MainMember.CrScStart.h);
+                    if (jointClone.m_MainMember != null)
+                        fMainMemberLength = 2 * (float)MathF.Max(jointClone.m_MainMember.CrScStart.b, jointClone.m_MainMember.CrScStart.h);
 
                     if (jointClone.m_SecondaryMembers != null && jointClone.m_SecondaryMembers.Length > 0) // Nie vsetky spoje obsahuju secondary members
                     {
@@ -5140,7 +5152,7 @@ namespace BaseClasses
                             float tempLength = 2 * (float)MathF.Max(jointClone.m_SecondaryMembers[i].CrScStart.b, jointClone.m_SecondaryMembers[i].CrScStart.h);
 
                             if (tempLength > fSecondaryMemberLength)
-                               fSecondaryMemberLength = tempLength;
+                                fSecondaryMemberLength = tempLength;
                         }
                     }
                 }
@@ -5388,7 +5400,7 @@ namespace BaseClasses
 
         public static CModel GetModelAccordingToView(CModel model, DisplayOptions sDisplayOptions)
         {
-            CModel _model = new CModel();            
+            CModel _model = new CModel();
             _model.L1_Bays = model.L1_Bays;
             _model.fL_tot_centerline = model.fL_tot_centerline;
             _model.fW_frame_centerline = model.fW_frame_centerline;
@@ -5754,7 +5766,7 @@ namespace BaseClasses
             else
             {
                 value = maxModelLength * sizeFactorGUI;
-                
+
             }
             return value;
         }
@@ -5958,7 +5970,7 @@ namespace BaseClasses
                 return false; // Exception
         }
 
-        
+
         #endregion
     }
 }

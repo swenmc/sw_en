@@ -1075,6 +1075,8 @@ namespace BaseClasses
         public float GUIDimensionsLineRadius;
         public float GUIDimensionsScale;
         public float GUIDescriptionTextWidthScaleFactor;
+
+        public bool SameScaleForViews;
     }
 
     public struct DisplayOptionsFootingPad2D
