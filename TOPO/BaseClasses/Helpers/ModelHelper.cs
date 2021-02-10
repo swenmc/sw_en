@@ -136,6 +136,28 @@ namespace BaseClasses.Helpers
             return members.ToArray();
         }
 
+        //WithoutCanopies
+        public static CMember[] GetMembersIgnoreCanopies(CModel model)
+        {
+            List<CMember> members = new List<CMember>();
+
+            foreach (CMember m in model.m_arrMembers)
+            {
+                if (m.EMemberTypePosition == EMemberType_FS_Position.MainRafterCanopy ||
+                    m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafterCanopy ||
+                    m.EMemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy ||
+                    m.EMemberTypePosition == EMemberType_FS_Position.PurlinCanopy ||
+                    m.EMemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy ||
+                    m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy) continue;
+                
+                members.Add(m);
+            }
+            return members.ToArray();
+        }
+
+
+
+
         public static CNode[] GetColumnsViewNodes(CModel model)
         {
             List<CNode> nodes = new List<CNode>();

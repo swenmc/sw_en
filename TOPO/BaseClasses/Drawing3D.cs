@@ -56,7 +56,14 @@ namespace BaseClasses
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
                 float fTempMin_X = 0;
+
+                if (IngnoreCanopiesInView(sDisplayOptions))
+                {
+                    _model = GetModelWithoutCanopies(_model);
+                }
+
                 Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(_model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z, out fTempMin_X);
+
                 if (centerModel)
                 {
                     centerModelTransGr = new Transform3DGroup();
@@ -67,7 +74,7 @@ namespace BaseClasses
                 }
 
                 //predchadzajuce bolo pouzite kvoli zacentrovaniu modelu, toto je kvoli zoomovanym prvkom podla velkosti modelu podla toho aky je view
-                pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                //pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, (centerModel ? centerModelTransGr : null));
@@ -5476,6 +5483,39 @@ namespace BaseClasses
             }
 
             return _model;
+        }
+
+        public static CModel GetModelWithoutCanopies(CModel model)
+        {
+            CModel _model = new CModel();
+            _model.L1_Bays = model.L1_Bays;
+            _model.fL_tot_centerline = model.fL_tot_centerline;
+            _model.fW_frame_centerline = model.fW_frame_centerline;
+            _model.fH1_frame_centerline = model.fH1_frame_centerline;
+            _model.fH2_frame_centerline = model.fH2_frame_centerline;
+            _model.fDist_Girt = model.fDist_Girt;
+            _model.fDist_Purlin = model.fDist_Purlin;
+            _model.fDist_FrontColumns = model.fDist_FrontColumns;
+            _model.fDist_BackColumns = model.fDist_BackColumns;
+            _model.fBottomGirtPosition = model.fBottomGirtPosition;
+            _model.iOneRafterPurlinNo = model.iOneRafterPurlinNo;
+
+            _model.m_arrMembers = ModelHelper.GetMembersIgnoreCanopies(model);
+            _model.m_arrNodes = ModelHelper.GetNodesFromMembers(_model.m_arrMembers).ToArray();
+            _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
+
+            return _model;
+        }
+
+        public static bool IngnoreCanopiesInView(DisplayOptions sDisplayOptions)
+        {
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS ||
+                sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS ||
+                sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            {
+                return true;
+            }
+            else return false;
         }
 
         public static Vector3D GetDetailsSymbolVectorAccordingToView(DisplayOptions sDisplayOptions)
