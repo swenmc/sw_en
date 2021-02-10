@@ -250,7 +250,7 @@ namespace PFD
             // Moze byt automaticke alebo uzivatelsky nastavitelne
             //bWindPostEndUnderRafter = m_arrCrSc[EMemberType_FS_Position.EdgeRafter].h > 0.49f ? true : false; // TODO - nastavovat podla velkosti edge frame rafter // true - stlp konci na spodnej hrane rafter, false - stlp konci na hornej hrane rafter
 
-            if (vm._generalOptionsVM.WindPostUnderRafter)
+            if (vm._modelOptionsVM.WindPostUnderRafter)
             {
                 eccentricityColumnFront_Z = new CMemberEccentricity(0, -(float)(m_arrCrSc[EMemberType_FS_Position.EdgeRafter].y_min + m_arrCrSc[EMemberType_FS_Position.WindPostFrontSide].z_max));
                 eccentricityColumnBack_Z = new CMemberEccentricity(0, -(float)(m_arrCrSc[EMemberType_FS_Position.EdgeRafter].y_max + m_arrCrSc[EMemberType_FS_Position.WindPostBackSide].z_min));
@@ -278,7 +278,7 @@ namespace PFD
             // Index of girt 0 - no bracing 1 - every, 2 - every second girt, 3 - every third girt, ...
             // Poziciu fly bracing - kazdy xx girt nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            bool bUseMainColumnFlyBracingPlates = vm._generalOptionsVM.UseMainColumnFlyBracingPlates; // Use fly bracing plates in girt to column joint
+            bool bUseMainColumnFlyBracingPlates = vm._modelOptionsVM.UseMainColumnFlyBracingPlates; // Use fly bracing plates in girt to column joint
 
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
                 iMainColumnFlyBracing_EveryXXGirt = sGeometryInputData.iMainColumnFlyBracingEveryXXGirt;
@@ -291,7 +291,7 @@ namespace PFD
             // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
             // Poziciu fly bracing - kazda xx purlin nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            bool bUseRafterFlyBracingPlates = vm._generalOptionsVM.UseRafterFlyBracingPlates; // Use fly bracing plates in purlin to rafter joint
+            bool bUseRafterFlyBracingPlates = vm._modelOptionsVM.UseRafterFlyBracingPlates; // Use fly bracing plates in purlin to rafter joint
 
             if (bUseDefaultOrUserDefinedValueForFlyBracing)
             {
@@ -560,7 +560,7 @@ namespace PFD
             // TODO 408 - Zapracovat toto nastavenie do GUI - prebrat s Ondrejom a dopracovat funkcionalitu tak ze sa budu generovat len bracing blocks na stenach 
             // alebo pre purlins v kazdom druhom rade (medzera medzi girts alebo purlins)
 
-            bool bUseGBEverySecondGUI = vm._generalOptionsVM.BracingEverySecondRowOfGirts;
+            bool bUseGBEverySecondGUI = vm._modelOptionsVM.BracingEverySecondRowOfGirts;
             bool bUseGBEverySecond = bUseGBEverySecondGUI && (Math.Min(LeftColumnGirtNo, RightColumnGirtNo) % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
 
             if (bGenerateGirtBracingSideWalls)
@@ -587,7 +587,7 @@ namespace PFD
             int iNumberOfPBMembersInOneBayOneSide = 0;
             int iNumberOfPBMembersInOneBay = 0;
 
-            bool bUsePBEverySecondGUI = vm._generalOptionsVM.BracingEverySecondRowOfPurlins;
+            bool bUsePBEverySecondGUI = vm._modelOptionsVM.BracingEverySecondRowOfPurlins;
             bool bUsePBEverySecond = bUsePBEverySecondGUI && (iOneRafterPurlinNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na stranu strechy je neparny
 
             int iLastPurlin = 1; // Monopitch roof - poslendna vaznica a eave purlin 
@@ -877,9 +877,9 @@ namespace PFD
 
 
             float fFrontColumnStart = 0.0f;
-            float fFrontColumnEnd = (vm._generalOptionsVM.WindPostUnderRafter ? (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_min : (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[EMemberType_FS_Position.WindPostFrontSide].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
+            float fFrontColumnEnd = (vm._modelOptionsVM.WindPostUnderRafter ? (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_min : (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[EMemberType_FS_Position.WindPostFrontSide].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
             float fBackColumnStart = 0.0f;
-            float fBackColumnEnd = (vm._generalOptionsVM.WindPostUnderRafter ? (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_min : (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[EMemberType_FS_Position.WindPostBackSide].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
+            float fBackColumnEnd = (vm._modelOptionsVM.WindPostUnderRafter ? (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_min : (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[EMemberType_FS_Position.WindPostBackSide].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
 
             float fFrontGirtStart = (float)m_arrCrSc[EMemberType_FS_Position.WindPostFrontSide].y_min - fCutOffOneSide;    // Just in case that cross-section of column is symmetric about z-z
             float fFrontGirtEnd = (float)m_arrCrSc[EMemberType_FS_Position.WindPostFrontSide].y_min - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
@@ -1538,7 +1538,7 @@ namespace PFD
             if (joints == null)
                 CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
                              bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, bGenerateSideWallCrossBracing, bGenerateRoofCrossBracing,
-                             bGenerateCanopies, bGeneratePurlinsCanopy, bGeneratePurlinBracingBlocksCanopy, bGenerateCrossBracingCanopy, vm._generalOptionsVM.WindPostUnderRafter, LeftColumnGirtNo);
+                             bGenerateCanopies, bGeneratePurlinsCanopy, bGeneratePurlinBracingBlocksCanopy, bGenerateCrossBracingCanopy, vm._modelOptionsVM.WindPostUnderRafter, LeftColumnGirtNo);
             else
                 m_arrConnectionJoints = joints;
             #endregion
@@ -1776,7 +1776,7 @@ namespace PFD
 
             if (foundations == null)
             {
-                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, vm._generalOptionsVM.UseStraightReinforcementBars);
+                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, vm._modelOptionsVM.UseStraightReinforcementBars);
             }
             else
                 m_arrFoundations = foundations;
@@ -1786,7 +1786,7 @@ namespace PFD
 
             if (slabs == null)
             {
-                CreateFloorSlab(bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts, bGenerateBackGirts, vm._generalOptionsVM.WindPostUnderRafter);
+                CreateFloorSlab(bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts, bGenerateBackGirts, vm._modelOptionsVM.WindPostUnderRafter);
             }
             else
                 m_arrSlabs = slabs;

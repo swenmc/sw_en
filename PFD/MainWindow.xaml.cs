@@ -197,13 +197,13 @@ namespace PFD
                     CAccessories_LengthItemProperties prop = sender as CAccessories_LengthItemProperties;
                     if (prop.DatabaseTable == "Flashings")
                     {
-                        if (vm._generalOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
-                        else if (vm._generalOptionsVM.SameColorsFlashings) vm.SetAllFlashingsCoatingColorAccordingTo(prop.CoatingColor);
+                        if (vm._modelOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                        else if (vm._modelOptionsVM.SameColorsFlashings) vm.SetAllFlashingsCoatingColorAccordingTo(prop.CoatingColor);
                     }
                     else if (prop.DatabaseTable == "Gutters")
                     {
-                        if (vm._generalOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
-                        else if (vm._generalOptionsVM.SameColorsGutters) vm.SetAllGuttersCoatingColorAccordingTo(prop.CoatingColor);
+                        if (vm._modelOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                        else if (vm._modelOptionsVM.SameColorsGutters) vm.SetAllGuttersCoatingColorAccordingTo(prop.CoatingColor);
                     }
                 }
                 else
@@ -221,8 +221,8 @@ namespace PFD
                     vm.RecreateModel = true;
 
                     CAccessories_DownpipeProperties prop = sender as CAccessories_DownpipeProperties;
-                    if (vm._generalOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
-                    else if (vm._generalOptionsVM.SameColorsDownpipes) vm.SetAllDownpipeCoatingColorAccordingTo(prop.CoatingColor);
+                    if (vm._modelOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                    else if (vm._modelOptionsVM.SameColorsDownpipes) vm.SetAllDownpipeCoatingColorAccordingTo(prop.CoatingColor);
                 }
 
                 //only reset quotation do not regenerate model
@@ -268,7 +268,7 @@ namespace PFD
                 {
                     //recreate model after color changed
                     vm.RecreateModel = true;
-                    if (vm._generalOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorAccordingTo(doorProperties);
+                    if (vm._modelOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorAccordingTo(doorProperties);
                 }
                 else
                 {
@@ -324,7 +324,7 @@ namespace PFD
                     vm.RecreateModel = true;
                     vm.RecreateFloorSlab = true;
 
-                    if (vm._generalOptionsVM.OverallDimensions)
+                    if (vm._modelOptionsVM.OverallDimensions)
                     {
                         vm.WidthOverall = vm.WidthOverall; vm.LengthOverall = vm.LengthOverall; //recalculate dimensions
                     }
@@ -417,7 +417,7 @@ namespace PFD
 
             SetUIElementsVisibility();
 
-            if (vm._generalOptionsVM.UpdateAutomatically)
+            if (vm._modelOptionsVM.UpdateAutomatically)
             {
                 UpdateModelAndGUI();
             }
@@ -1056,7 +1056,7 @@ namespace PFD
 
         private void UpdateUC_Joints()
         {
-            if (vm._generalOptionsVM.VariousCrossSections)
+            if (vm._modelOptionsVM.VariousCrossSections)
             {
                 if (Joint_Input.Content == null || Joint_Input.Content is UC_Joints)
                 {
@@ -1217,10 +1217,10 @@ namespace PFD
             }
 
             // Nechcem tlacitka, resp. celkovo widgety skryvat a zobrazovat, skor len menit enabled a read-only mode
-            if (vm._generalOptionsVM.UpdateAutomatically) ButtonGenerateModel.IsEnabled = false; // ButtonGenerateModel.Visibility = Visibility.Hidden;
+            if (vm._modelOptionsVM.UpdateAutomatically) ButtonGenerateModel.IsEnabled = false; // ButtonGenerateModel.Visibility = Visibility.Hidden;
             else ButtonGenerateModel.IsEnabled = true; //ButtonGenerateModel.Visibility = Visibility.Visible;
 
-            if (vm._generalOptionsVM.VariousCrossSections)
+            if (vm._modelOptionsVM.VariousCrossSections)
             {
                 uc_ComponentList.FramesBaysTabControl.Visibility = Visibility.Visible;
                 uc_ComponentList.VariousCrossSectionRD.Height = new GridLength(5.0, GridUnitType.Star);
@@ -1237,7 +1237,7 @@ namespace PFD
                 uc_ComponentList.Datagrid_Components.Columns[5].Visibility = Visibility.Visible;
             }
 
-            if (vm._generalOptionsVM.OverallDimensions)
+            if (vm._modelOptionsVM.OverallDimensions)
             {
                 LabelWidthOverall.Visibility = Visibility.Visible;
                 TextBox_WidthOverall.Visibility = Visibility.Visible;
@@ -1901,7 +1901,7 @@ namespace PFD
                 }
 
                 vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
-                if (vm._generalOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorToSame();
+                if (vm._modelOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorToSame();
             }
             else if (doorGeneratorViewModel.DeleteDoors)
             {
@@ -2116,7 +2116,7 @@ namespace PFD
 
             int colorIndex = 2;
 
-            if (vm._generalOptionsVM.SameColorsFGD)
+            if (vm._modelOptionsVM.SameColorsFGD)
             {
                 CoatingColour colour = vm.GetActual_FGD_Color();
                 if (colour != null)
@@ -2125,7 +2125,7 @@ namespace PFD
                     colorIndex = p.CoatingColors.IndexOf(colour);
                 }
             }
-            else if (vm._generalOptionsVM.SameColorsFlashings)
+            else if (vm._modelOptionsVM.SameColorsFlashings)
             {
                 CAccessories_LengthItemProperties prop = vm.Flashings.FirstOrDefault();
                 if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
@@ -2161,7 +2161,7 @@ namespace PFD
             float fGuttersTotalLength = 2 * vm.LengthOverall; // na dvoch okrajoch strechy
 
             int colorIndex = 2;
-            if (vm._generalOptionsVM.SameColorsFGD)
+            if (vm._modelOptionsVM.SameColorsFGD)
             {
                 CoatingColour colour = vm.GetActual_FGD_Color();
                 if (colour != null)
@@ -2170,7 +2170,7 @@ namespace PFD
                     colorIndex = p.CoatingColors.IndexOf(colour);
                 }
             }
-            else if (vm._generalOptionsVM.SameColorsGutters)
+            else if (vm._modelOptionsVM.SameColorsGutters)
             {
                 CAccessories_LengthItemProperties prop = vm.Gutters.FirstOrDefault();
                 if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
@@ -2205,7 +2205,7 @@ namespace PFD
             }
 
             int colorIndex = 2;
-            if (vm._generalOptionsVM.SameColorsFGD)
+            if (vm._modelOptionsVM.SameColorsFGD)
             {
                 CoatingColour colour = vm.GetActual_FGD_Color();
                 if (colour != null)
@@ -2214,7 +2214,7 @@ namespace PFD
                     colorIndex = p.CoatingColors.IndexOf(colour);
                 }
             }
-            else if (vm._generalOptionsVM.SameColorsDownpipes)
+            else if (vm._modelOptionsVM.SameColorsDownpipes)
             {
                 CAccessories_DownpipeProperties prop = vm.Downpipes.FirstOrDefault();
                 if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
@@ -2235,7 +2235,7 @@ namespace PFD
 
         private void btnGeneralOptions_Click(object sender, RoutedEventArgs e)
         {
-            GeneralOptionsWindow w = new GeneralOptionsWindow(vm);
+            ModelOptionsWindow w = new ModelOptionsWindow(vm);
             w.ShowDialog();
         }
 
@@ -2622,7 +2622,7 @@ namespace PFD
             vm.Downpipes = newVM.Downpipes;
 
             vm._displayOptionsVM.SetViewModel(newVM._displayOptionsVM);
-            vm._generalOptionsVM.SetViewModel(newVM._generalOptionsVM);
+            vm._modelOptionsVM.SetViewModel(newVM._modelOptionsVM);
             vm._solverOptionsVM.SetViewModel(newVM._solverOptionsVM);
             vm._designOptionsVM.SetViewModel(newVM._designOptionsVM);
             vm._componentVM.SetViewModel(newVM._componentVM);
@@ -2734,8 +2734,8 @@ namespace PFD
                         }
                     }
 
-                    GeneralOptionsViewModel geVM = optionsList[2] as GeneralOptionsViewModel;
-                    if (geVM != null) vm._generalOptionsVM.SetViewModel(geVM);
+                    ModelOptionsViewModel mdlVM = optionsList[2] as ModelOptionsViewModel;
+                    if (mdlVM != null) vm._modelOptionsVM.SetViewModel(mdlVM);
 
                     SolverOptionsViewModel soVM = optionsList[3] as SolverOptionsViewModel;
                     if (soVM != null) vm._solverOptionsVM.SetViewModel(soVM);
@@ -2813,7 +2813,7 @@ namespace PFD
             List<object> optionsToSave = new List<object>();
             optionsToSave.Add(vm._projectInfoVM);
             optionsToSave.Add(vm._displayOptionsVM);
-            optionsToSave.Add(vm._generalOptionsVM);
+            optionsToSave.Add(vm._modelOptionsVM);
             optionsToSave.Add(vm._solverOptionsVM);
             optionsToSave.Add(vm._designOptionsVM);
 

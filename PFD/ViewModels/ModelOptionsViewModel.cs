@@ -15,7 +15,7 @@ using System.Windows.Media.Media3D;
 namespace PFD
 {
     [Serializable]
-    public class GeneralOptionsViewModel : INotifyPropertyChanged
+    public class ModelOptionsViewModel : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
         [field: NonSerializedAttribute()]
@@ -32,6 +32,14 @@ namespace PFD
         private bool m_UseStraightReinforcementBars;
         private bool m_UpdateAutomatically;
         private bool m_VariousCrossSections;
+
+        private bool m_VariousBayWidths;
+        private bool m_EnableAccesories;
+        private bool m_EnableJoints;
+        private bool m_EnableFootings;
+        private bool m_EnableCrossBracing;
+        private bool m_EnableCanopies;
+        private bool m_EnableCladding;
 
         private bool m_SameColorsDoor;
         private bool m_SameColorsFlashings;
@@ -269,11 +277,109 @@ namespace PFD
             }
         }
 
+        public bool VariousBayWidths
+        {
+            get
+            {
+                return m_VariousBayWidths;
+            }
+
+            set
+            {
+                m_VariousBayWidths = value;
+                NotifyPropertyChanged("VariousBayWidths");
+            }
+        }
+
+        public bool EnableAccesories
+        {
+            get
+            {
+                return m_EnableAccesories;
+            }
+
+            set
+            {
+                m_EnableAccesories = value;
+                NotifyPropertyChanged("EnableAccesories");
+            }
+        }
+
+        public bool EnableJoints
+        {
+            get
+            {
+                return m_EnableJoints;
+            }
+
+            set
+            {
+                m_EnableJoints = value;
+                NotifyPropertyChanged("EnableJoints");
+            }
+        }
+
+        public bool EnableFootings
+        {
+            get
+            {
+                return m_EnableFootings;
+            }
+
+            set
+            {
+                m_EnableFootings = value;
+                NotifyPropertyChanged("EnableFootings");
+            }
+        }
+
+        public bool EnableCrossBracing
+        {
+            get
+            {
+                return m_EnableCrossBracing;
+            }
+
+            set
+            {
+                m_EnableCrossBracing = value;
+                NotifyPropertyChanged("EnableCrossBracing");
+            }
+        }
+
+        public bool EnableCanopies
+        {
+            get
+            {
+                return m_EnableCanopies;
+            }
+
+            set
+            {
+                m_EnableCanopies = value;
+                NotifyPropertyChanged("EnableCanopies");
+            }
+        }
+
+        public bool EnableCladding
+        {
+            get
+            {
+                return m_EnableCladding;
+            }
+
+            set
+            {
+                m_EnableCladding = value;
+                NotifyPropertyChanged("EnableCladding");
+            }
+        }
+
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public GeneralOptionsViewModel()
+        public ModelOptionsViewModel()
         {
             IsSetFromCode = true;
 
@@ -287,6 +393,14 @@ namespace PFD
             m_UpdateAutomatically = false;
 
             m_VariousCrossSections = false;
+
+            m_VariousBayWidths = false;
+            m_EnableAccesories = false;
+            m_EnableJoints = false;
+            m_EnableFootings = false;
+            m_EnableCrossBracing = false;
+            m_EnableCanopies = false;
+            m_EnableCladding = false;
 
             m_SameColorsDoor = false;
             m_SameColorsFGD = false;
@@ -310,7 +424,7 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SetViewModel(GeneralOptionsViewModel vm)
+        public void SetViewModel(ModelOptionsViewModel vm)
         {
             if (vm == null) return;
 

@@ -1,4 +1,4 @@
-﻿<Window x:Class="PFD.GeneralOptionsWindow"
+﻿<Window x:Class="PFD.ModelOptionsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -41,6 +41,17 @@
 
                 <TextBlock Text="Cross-sections" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbVariousCrossSections" IsChecked="{Binding Path=VariousCrossSections}" >Enable various cross-sections in bays</CheckBox>
+
+                <TextBlock Text="Bays" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <CheckBox Name="chbVariousBayWidths" IsChecked="{Binding Path=VariousBayWidths}" >Enable various bay widths</CheckBox>
+
+                <TextBlock Text="Components" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <CheckBox Name="chbEnableAccesories" IsChecked="{Binding Path=EnableAccesories}">Accesories</CheckBox>
+                <CheckBox Name="chbEnableJoints" IsChecked="{Binding Path=EnableJoints}">Joints</CheckBox>
+                <CheckBox Name="chbEnableFootings" IsChecked="{Binding Path=EnableFootings}">Footings</CheckBox>
+                <CheckBox Name="chbEnableCrossBracing" IsChecked="{Binding Path=EnableCrossBracing}">Cross-bracing</CheckBox>
+                <CheckBox Name="chbEnableCanopies" IsChecked="{Binding Path=EnableCanopies}">Canopies</CheckBox>
+                <CheckBox Name="chbEnableCladding" IsChecked="{Binding Path=EnableCladding}">Cladding</CheckBox>
 
                 <TextBlock Text="Colors - Use same colors for all" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbSameColorsDoor" IsChecked="{Binding Path=SameColorsDoor}">Doors</CheckBox>

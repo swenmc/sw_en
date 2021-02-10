@@ -131,7 +131,7 @@ namespace PFD
         private int iFrontColumnNoInOneFrame;
         private bool m_TransformScreenLines3DToCylinders3D;
 
-        private bool m_GeneralOptionsChanged;
+        private bool m_ModelOptionsChanged;
         private bool m_SolverOptionsChanged;
         private bool m_DesignOptionsChanged;
         private bool m_DisplayOptionsChanged;
@@ -2504,7 +2504,7 @@ namespace PFD
         private CFootingInputVM _footingVM;
 
         public DisplayOptionsViewModel _displayOptionsVM;
-        public GeneralOptionsViewModel _generalOptionsVM;
+        public ModelOptionsViewModel _modelOptionsVM;
         public SolverOptionsViewModel _solverOptionsVM;
         public DesignOptionsViewModel _designOptionsVM;
 
@@ -2830,21 +2830,21 @@ namespace PFD
             }
         }
 
-        public bool GeneralOptionsChanged
+        public bool ModelOptionsChanged
         {
             get
             {
-                return m_GeneralOptionsChanged;
+                return m_ModelOptionsChanged;
             }
 
             set
             {
-                m_GeneralOptionsChanged = value;
+                m_ModelOptionsChanged = value;
 
                 SetResultsAreNotValid();
                 RecreateModel = true;
 
-                if (MSynchronizeGUI) NotifyPropertyChanged("GeneralOptionsChanged");
+                if (MSynchronizeGUI) NotifyPropertyChanged("ModelOptionsChanged");
 
             }
         }
@@ -3248,7 +3248,7 @@ namespace PFD
             _projectInfoVM = projectInfoVM;
 
             _displayOptionsVM = new DisplayOptionsViewModel(bRelease);
-            _generalOptionsVM = new GeneralOptionsViewModel();
+            _modelOptionsVM = new ModelOptionsViewModel();
             _solverOptionsVM = new SolverOptionsViewModel();
             _designOptionsVM = new DesignOptionsViewModel();
 

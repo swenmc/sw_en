@@ -16,25 +16,25 @@ using MATH;
 
 namespace PFD
 {
-    public partial class GeneralOptionsWindow : Window
+    public partial class ModelOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
         private bool GeneralOptionsChanged = false;        
-        public GeneralOptionsWindow(CPFDViewModel pfdVM)
+        public ModelOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
 
-            pfdVM._generalOptionsVM.PropertyChanged += _generalOptionsVM_PropertyChanged;
+            pfdVM._modelOptionsVM.PropertyChanged += _modelOptionsVM_PropertyChanged;
             
-            this.DataContext = pfdVM._generalOptionsVM;
+            this.DataContext = pfdVM._modelOptionsVM;
         }
 
-        private void _generalOptionsVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void _modelOptionsVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            if (sender is GeneralOptionsViewModel)
+            if (sender is ModelOptionsViewModel)
             {
                 if (e.PropertyName == "UseStraightReinforcementBars") _pfdVM.RecreateFoundations = true;
                 if (e.PropertyName == "BracingEverySecondRowOfGirts") _pfdVM.RecreateJoints = true;
@@ -50,16 +50,16 @@ namespace PFD
         {
             if (GeneralOptionsChanged)
             {
-                if (_pfdVM._generalOptionsVM.SameColorsDoor) _pfdVM.SetAllDoorCoatingColorToSame();
-                if (_pfdVM._generalOptionsVM.SameColorsFGD) _pfdVM.SetAll_FGD_CoatingColorToSame();
+                if (_pfdVM._modelOptionsVM.SameColorsDoor) _pfdVM.SetAllDoorCoatingColorToSame();
+                if (_pfdVM._modelOptionsVM.SameColorsFGD) _pfdVM.SetAll_FGD_CoatingColorToSame();
                 else
                 {
-                    if (_pfdVM._generalOptionsVM.SameColorsFlashings) _pfdVM.SetAllFlashingsCoatingColorToSame();
-                    if (_pfdVM._generalOptionsVM.SameColorsGutters) _pfdVM.SetAllGuttersCoatingColorToSame();
-                    if (_pfdVM._generalOptionsVM.SameColorsDownpipes) _pfdVM.SetAllDownpipesCoatingColorToSame();
+                    if (_pfdVM._modelOptionsVM.SameColorsFlashings) _pfdVM.SetAllFlashingsCoatingColorToSame();
+                    if (_pfdVM._modelOptionsVM.SameColorsGutters) _pfdVM.SetAllGuttersCoatingColorToSame();
+                    if (_pfdVM._modelOptionsVM.SameColorsDownpipes) _pfdVM.SetAllDownpipesCoatingColorToSame();
                 }
                 
-                _pfdVM.GeneralOptionsChanged = true;
+                _pfdVM.ModelOptionsChanged = true;
             }
             this.Close();
         }
