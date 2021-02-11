@@ -46,9 +46,9 @@
                 <CheckBox Name="chbVariousBayWidths" IsChecked="{Binding Path=VariousBayWidths}" >Enable various bay widths</CheckBox>
 
                 <TextBlock Text="Components" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                <CheckBox Name="chbEnableAccesories" IsChecked="{Binding Path=EnableAccesories}">Accesories</CheckBox>
-                <CheckBox Name="chbEnableJoints" IsChecked="{Binding Path=EnableJoints}">Joints</CheckBox>
-                <CheckBox Name="chbEnableFootings" IsChecked="{Binding Path=EnableFootings}">Footings</CheckBox>
+                <CheckBox Name="chbEnableAccesories" IsChecked="{Binding Path=EnableAccesories}" IsEnabled="False">Accesories</CheckBox>
+                <CheckBox Name="chbEnableJoints" IsChecked="{Binding Path=EnableJoints}" IsEnabled="False">Joints</CheckBox>
+                <CheckBox Name="chbEnableFootings" IsChecked="{Binding Path=EnableFootings}" IsEnabled="False">Footings</CheckBox>
                 <CheckBox Name="chbEnableCrossBracing" IsChecked="{Binding Path=EnableCrossBracing}">Cross-bracing</CheckBox>
                 <CheckBox Name="chbEnableCanopies" IsChecked="{Binding Path=EnableCanopies}">Canopies</CheckBox>
                 <CheckBox Name="chbEnableCladding" IsChecked="{Binding Path=EnableCladding}">Cladding</CheckBox>

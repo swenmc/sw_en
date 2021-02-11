@@ -395,12 +395,12 @@ namespace PFD
             m_VariousCrossSections = false;
 
             m_VariousBayWidths = false;
-            m_EnableAccesories = false;
-            m_EnableJoints = false;
-            m_EnableFootings = false;
-            m_EnableCrossBracing = false;
+            m_EnableAccesories = true;
+            m_EnableJoints = true;
+            m_EnableFootings = true;
+            m_EnableCrossBracing = true;
             m_EnableCanopies = false;
-            m_EnableCladding = false;
+            m_EnableCladding = true;
 
             m_SameColorsDoor = false;
             m_SameColorsFGD = false;
