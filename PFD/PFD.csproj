@@ -158,6 +158,15 @@
     <Compile Include="DocumentationExportOptionsWindow.xaml.cs">
       <DependentUpon>DocumentationExportOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\UC_CanopiesOptions.xaml.cs">
+      <DependentUpon>UC_CanopiesOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsWindows\UC_CrossBracingOptions.xaml.cs">
+      <DependentUpon>UC_CrossBracingOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsWindows\UC_BaysWidthOptions.xaml.cs">
+      <DependentUpon>UC_BaysWidthOptions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsWindows\BaysWidthOptionsWindow.xaml.cs">
       <DependentUpon>BaysWidthOptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -367,6 +376,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DocumentationExportOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\UC_CanopiesOptions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\UC_CrossBracingOptions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\UC_BaysWidthOptions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

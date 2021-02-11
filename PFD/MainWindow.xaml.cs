@@ -43,22 +43,26 @@ namespace PFD
         {
             eGeneral = 0,
             eMember_Input = 1,
-            eDoorsAndWindows = 2,
-            eJoint_Input = 3,
-            eFooting_Input = 4,
-            eLoads = 5,
 
-            eLoadCases = 6,
-            eLoadCombinations = 7,
+            eBayWidths = 2,
+            eAccesories = 3,
+            eJoint_Input = 4,
+            eFooting_Input = 5,
+            eCrossBracing = 6,
+            eCanopies = 7,
+            eCladding = 8,
 
-            eInternalForces = 8,
-            eMemberDesign = 9,
-            eJointDesign = 10,
-            eFootingDesign = 11,
+            eLoads = 9,
+            eLoadCases = 10,
+            eLoadCombinations = 11,
 
-            ePartList = 12,
-            eQuoation = 13
+            eInternalForces = 12,
+            eMemberDesign = 13,
+            eJointDesign = 14,
+            eFootingDesign = 15,
 
+            ePartList = 16,
+            eQuoation = 17
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -1278,30 +1282,21 @@ namespace PFD
                 TextBox_Wall_Height.Visibility = Visibility.Visible;
             }
 
-            if (vm._modelOptionsVM.VariousBayWidths)
-            {
-                btnBayWidthsOptions.IsEnabled = true;
-            }
-            else
-            {
-                btnBayWidthsOptions.IsEnabled = false;
-            }
-
+            if (vm._modelOptionsVM.VariousBayWidths) TabBayWidths.Visibility = Visibility.Visible;
+            else TabBayWidths.Visibility = Visibility.Collapsed;
             if (vm._modelOptionsVM.EnableAccesories) DoorsAndWindows.Visibility = Visibility.Visible;            
             else DoorsAndWindows.Visibility = Visibility.Collapsed;
-
             if (vm._modelOptionsVM.EnableJoints) Joint_Input.Visibility = Visibility.Visible;
             else Joint_Input.Visibility = Visibility.Collapsed;
-
             if (vm._modelOptionsVM.EnableFootings) Footing_Input.Visibility = Visibility.Visible;
             else Footing_Input.Visibility = Visibility.Collapsed;
 
-            //if (vm._modelOptionsVM.EnableCanopies) Footing_Input.Visibility = Visibility.Visible;
-            //else Footing_Input.Visibility = Visibility.Collapsed;
-            //if (vm._modelOptionsVM.EnableCrossBracing) Footing_Input.Visibility = Visibility.Visible;
-            //else Footing_Input.Visibility = Visibility.Collapsed;
-            //if (vm._modelOptionsVM.EnableCladding) Footing_Input.Visibility = Visibility.Visible;
-            //else Footing_Input.Visibility = Visibility.Collapsed;
+            if (vm._modelOptionsVM.EnableCrossBracing) TabCrossBracing.Visibility = Visibility.Visible;
+            else TabCrossBracing.Visibility = Visibility.Collapsed;
+            if (vm._modelOptionsVM.EnableCanopies) TabCanopies.Visibility = Visibility.Visible;
+            else TabCanopies.Visibility = Visibility.Collapsed;            
+            if (vm._modelOptionsVM.EnableCladding) TabCladding.Visibility = Visibility.Visible;
+            else TabCladding.Visibility = Visibility.Collapsed;
 
             SetUIElementsVisibilityAccordingPermissions();
         }
@@ -1401,7 +1396,12 @@ namespace PFD
                 CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
                 compListVM.InitControlsAccordingToFrames(vm.Frames);
             }
-            else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eBayWidths)
+            {
+                if (TabBayWidths.Content == null) TabBayWidths.Content = new UC_BaysWidthOptions(vm);
+                (TabBayWidths.Content as UC_BaysWidthOptions).BaysWidthOptionsChanged = false;
+            }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eAccesories)
             {
                 if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
                 else RedrawDoorOrWindowPreview();
@@ -1416,6 +1416,21 @@ namespace PFD
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFooting_Input)
             {
                 if (Footing_Input.Content == null) Footing_Input.Content = new UC_FootingInput(vm);
+            }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eCrossBracing)
+            {
+                if (TabCrossBracing.Content == null) TabCrossBracing.Content = new UC_CrossBracingOptions(vm);
+                (TabCrossBracing.Content as UC_CrossBracingOptions).CrossBracingOptionsChanged = false;
+            }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eCanopies)
+            {
+                if (TabCanopies.Content == null) TabCanopies.Content = new UC_CanopiesOptions(vm);
+                (TabCanopies.Content as UC_CanopiesOptions).CanopiesOptionsChanged = false;
+            }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eCladding)
+            {
+                //if (TabCladding.Content == null) TabCladding.Content = new CladdingOptionsWindow(vm);
+                //(TabBayWidths.Content as UC_BaysWidthOptions).BaysWidthOptionsChanged = false;
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoads)
             {
@@ -2266,7 +2281,7 @@ namespace PFD
             w.ShowDialog();
         }
 
-        private void btnGeneralOptions_Click(object sender, RoutedEventArgs e)
+        private void btnModelOptions_Click(object sender, RoutedEventArgs e)
         {
             ModelOptionsWindow w = new ModelOptionsWindow(vm);
             w.ShowDialog();
