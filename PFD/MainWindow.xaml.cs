@@ -1179,18 +1179,26 @@ namespace PFD
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
             if (vm.ModelCalculatedResultsValid)
             {
-                Internal_Forces.IsEnabled = true;
-                Member_Design.IsEnabled = true;
-                Joint_Design.IsEnabled = true;
-                Footing_Design.IsEnabled = true;
+                Internal_Forces.Visibility = Visibility.Visible;
+                Member_Design.Visibility = Visibility.Visible;
+                Joint_Design.Visibility = Visibility.Visible;
+                Footing_Design.Visibility = Visibility.Visible;
+                //Internal_Forces.IsEnabled = true;
+                //Member_Design.IsEnabled = true;
+                //Joint_Design.IsEnabled = true;
+                //Footing_Design.IsEnabled = true;
                 ButtonCalculateForces.IsEnabled = false;
             }
             else
             {
-                Internal_Forces.IsEnabled = false;
-                Member_Design.IsEnabled = false;
-                Joint_Design.IsEnabled = false;
-                Footing_Design.IsEnabled = false;
+                Internal_Forces.Visibility = Visibility.Collapsed;
+                Member_Design.Visibility = Visibility.Collapsed;
+                Joint_Design.Visibility = Visibility.Collapsed;
+                Footing_Design.Visibility = Visibility.Collapsed;
+                //Internal_Forces.IsEnabled = false;
+                //Member_Design.IsEnabled = false;
+                //Joint_Design.IsEnabled = false;
+                //Footing_Design.IsEnabled = false;
                 ButtonCalculateForces.IsEnabled = true;
             }
 
@@ -1269,6 +1277,31 @@ namespace PFD
                 LabelWallHeight.Visibility = Visibility.Visible;
                 TextBox_Wall_Height.Visibility = Visibility.Visible;
             }
+
+            if (vm._modelOptionsVM.VariousBayWidths)
+            {
+                btnBayWidthsOptions.IsEnabled = true;
+            }
+            else
+            {
+                btnBayWidthsOptions.IsEnabled = false;
+            }
+
+            if (vm._modelOptionsVM.EnableAccesories) DoorsAndWindows.Visibility = Visibility.Visible;            
+            else DoorsAndWindows.Visibility = Visibility.Collapsed;
+
+            if (vm._modelOptionsVM.EnableJoints) Joint_Input.Visibility = Visibility.Visible;
+            else Joint_Input.Visibility = Visibility.Collapsed;
+
+            if (vm._modelOptionsVM.EnableFootings) Footing_Input.Visibility = Visibility.Visible;
+            else Footing_Input.Visibility = Visibility.Collapsed;
+
+            //if (vm._modelOptionsVM.EnableCanopies) Footing_Input.Visibility = Visibility.Visible;
+            //else Footing_Input.Visibility = Visibility.Collapsed;
+            //if (vm._modelOptionsVM.EnableCrossBracing) Footing_Input.Visibility = Visibility.Visible;
+            //else Footing_Input.Visibility = Visibility.Collapsed;
+            //if (vm._modelOptionsVM.EnableCladding) Footing_Input.Visibility = Visibility.Visible;
+            //else Footing_Input.Visibility = Visibility.Collapsed;
 
             SetUIElementsVisibilityAccordingPermissions();
         }

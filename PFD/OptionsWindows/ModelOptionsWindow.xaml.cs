@@ -19,7 +19,7 @@ namespace PFD
     public partial class ModelOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-        private bool GeneralOptionsChanged = false;        
+        private bool ModelOptionsChanged = false;        
         public ModelOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
@@ -41,14 +41,14 @@ namespace PFD
                 if (e.PropertyName == "BracingEverySecondRowOfPurlins") _pfdVM.RecreateJoints = true;
                 if (e.PropertyName == "WindPostUnderRafter") { _pfdVM.RecreateJoints = true; _pfdVM.RecreateFoundations = true; }
 
-                GeneralOptionsChanged = true;
+                ModelOptionsChanged = true;
             }
         }
         
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (GeneralOptionsChanged)
+            if (ModelOptionsChanged)
             {
                 if (_pfdVM._modelOptionsVM.SameColorsDoor) _pfdVM.SetAllDoorCoatingColorToSame();
                 if (_pfdVM._modelOptionsVM.SameColorsFGD) _pfdVM.SetAll_FGD_CoatingColorToSame();

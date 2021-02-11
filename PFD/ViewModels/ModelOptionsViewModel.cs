@@ -439,6 +439,14 @@ namespace PFD
 
             VariousCrossSections = vm.VariousCrossSections;
 
+            VariousBayWidths = vm.VariousBayWidths;
+            EnableAccesories = vm.EnableAccesories;
+            EnableJoints = vm.EnableJoints;
+            EnableFootings = vm.EnableFootings;
+            EnableCrossBracing = vm.EnableCrossBracing;
+            EnableCanopies = vm.EnableCanopies;
+            EnableCladding = vm.EnableCladding;
+
             SameColorsDoor = vm.SameColorsDoor;
             SameColorsFGD = vm.SameColorsFGD;
             SameColorsFlashings = vm.SameColorsFlashings;
