@@ -89,7 +89,7 @@
                             <Button  Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="Project Details" Margin="5 0 0 0" Width="20" Height="20" Click="btnProjectInfo_Click">
                                 <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
-                            <Button Grid.Row="0" Grid.Column="3" Name="btnGeneralOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Model Options" Margin="5 0 0 0" Width="20" Height="20" Click="btnGeneralOptions_Click">
+                            <Button Grid.Row="0" Grid.Column="3" Name="btnModelOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Model Options" Margin="5 0 0 0" Width="20" Height="20" Click="btnModelOptions_Click">
                                 <Image Source="Resources/options.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                             <Button Grid.Row="0" Grid.Column="3" Name="btnDisplayOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Display Options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnDisplayOptions_Click">
@@ -101,7 +101,7 @@
                             <Button Grid.Row="0" Grid.Column="3" Name="btnDesignOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Design Options" Margin="5 0 0 0" Width="20" Height="20" Click="btnDesignOptions_Click">
                                 <Image Source="Resources/options_design.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
-                            <Button Name="btnCrossBracingOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Cross bracing options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnCrossBracingOptions_Click">
+                            <!--<Button Name="btnCrossBracingOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Cross bracing options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnCrossBracingOptions_Click">
                                 <Image Source="Resources/options_crossbracing.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                             <Button Name="btnBayWidthsOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Bay widths options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnBayWidthsOptions_Click">
@@ -109,7 +109,7 @@
                             </Button>
                             <Button Name="btnCanopiesOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Canopies options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnCanopiesOptions_Click">
                                 <Image Source="Resources/options_canopies.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                            </Button>
+                            </Button>-->
 
                             <!-- Developer Mode -->
                             <Button Name="btnJointsValidation" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Joints properties" Margin="300 0 0 0" Width="20" Height="20" Click="BtnJointsValidation_Click">
@@ -340,6 +340,13 @@
                 <!--<ScrollViewer Name="scrollViewUC_ComponentList" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
                 <local:UC_ComponentList x:Name="uc_ComponentList"></local:UC_ComponentList>
                 <!--</ScrollViewer>-->
+            </TabItem>
+            <TabItem Name ="TabBayWidths">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="BayWidths" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="DoorsAndWindows">
                 <TabItem.Header>
@@ -682,6 +689,28 @@
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
+            <TabItem Name ="TabCrossBracing">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="CrossBracing" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem Name ="TabCanopies">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Canopies" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem Name ="TabCladding">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Cladding" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>            
+            
             <TabItem Name ="Loads">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
