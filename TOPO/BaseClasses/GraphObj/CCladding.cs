@@ -98,11 +98,16 @@ namespace BaseClasses.GraphObj
 
             // Vytvorime model v GCS [0,0,0] je uvazovana v bode m_ControlPoint
 
-            bool bConsiderRoofCladdingFor_FB_Wall = false; // TODO - napojit na GUI
-            double bottomEdge_z = -0.5; // Offset pod spodnu uroven podlahy // TODO - napojit na GUI, default 50 mm
+            // Consider roof cladding height for front and back wall
+            bool bConsiderRoofCladdingFor_FB_WallHeight = false; // TODO - napojit na GUI
 
-            double roofEdgeOverhang_X = 0; // Presah okraja strechy // TODO - napojit na GUI, default 150 mm
-            double roofEdgeOverhang_Y = 0; // Presah okraja strechy // TODO - napojit na GUI, default 0 mm
+            double bottomEdge_z = -0.5; // Offset pod spodnu uroven podlahy // TODO - napojit na GUI, default -50 mm, limit <-500mm, 0>
+
+            double roofEdgeOverhang_X = 0.300; // Presah okraja strechy // TODO - napojit na GUI, default 150 mm, limit <0, 600mm>
+            double roofEdgeOverhang_Y = 0.500; // Presah okraja strechy // TODO - napojit na GUI, default 0 mm limit <0, 300mm>
+
+            if (bConsiderRoofCladdingFor_FB_WallHeight && roofEdgeOverhang_Y > 0)
+                throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
 
             double additionalOffset = 0.010;  // 10 mm
 
@@ -111,8 +116,8 @@ namespace BaseClasses.GraphObj
             double column_crsc_y_plus_temp = column_crsc_y_plus + additionalOffset;
             double column_crsc_z_plus_temp = column_crsc_z_plus + additionalOffset;
 
-            double height_1_final = -bottomEdge_z + sBuildingGeomInputData.fH_1_centerline + column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
-            double height_2_final = -bottomEdge_z + sBuildingGeomInputData.fH_2_centerline + column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
+            double height_1_final = sBuildingGeomInputData.fH_1_centerline + column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
+            double height_2_final = sBuildingGeomInputData.fH_2_centerline + column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
 
             double height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
             double height_2_final_edge_LR_Wall = height_2_final;
@@ -126,13 +131,11 @@ namespace BaseClasses.GraphObj
                 height_2_final_edge_Roof = height_2_final + (column_crsc_z_plus_temp + roofEdgeOverhang_X) * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
             }
 
-            // Consider roof cladding height for front and back wall
-
             // Nastavime rovnaku vysku hornej hrany
             double height_1_final_edge_FB_Wall = height_1_final_edge_LR_Wall;
             double height_2_final_edge_FB_Wall = height_2_final_edge_LR_Wall;
 
-            if (bConsiderRoofCladdingFor_FB_Wall)
+            if (bConsiderRoofCladdingFor_FB_WallHeight)
             {
                 height_1_final_edge_FB_Wall = height_1_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
                 height_2_final_edge_FB_Wall = height_2_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
@@ -599,7 +602,7 @@ namespace BaseClasses.GraphObj
             // Left Wall
             // Total Wall Width
             double width = pback0_baseleft.Y - pfront0_baseleft.Y;
-            double height_left_basic = height_1_final_edge_LR_Wall;
+            double height_left_basic = -bottomEdge_z + height_1_final_edge_LR_Wall;
 
             int iNumberOfWholeSheets = (int)(width / claddingWidthModular_Wall);
             double dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Wall;
@@ -724,7 +727,7 @@ namespace BaseClasses.GraphObj
             // Front Wall
             // Total Wall Width
             width = pfront1_baseright.X - pfront0_baseleft.X;
-            height_left_basic = height_1_final_edge_FB_Wall;
+            height_left_basic = -bottomEdge_z + height_1_final_edge_FB_Wall;
 
             iNumberOfWholeSheets = (int)(width / claddingWidthModular_Wall);
             dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Wall;
@@ -758,7 +761,7 @@ namespace BaseClasses.GraphObj
                    (i + 1) * claddingWidthModular_Wall > 0.5 * width)
                 {
                     iNumberOfEdges = 5;
-                    height_toptip = height_2_final_edge_FB_Wall;
+                    height_toptip = -bottomEdge_z + height_2_final_edge_FB_Wall;
                     tipCoordinate_x = 0.5 * width - i * claddingWidthModular_Wall;
                 }
 
@@ -832,7 +835,7 @@ namespace BaseClasses.GraphObj
             // Right Wall
             // Total Wall Width
             width = pback1_baseright.Y - pfront1_baseright.Y;
-            height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? height_1_final_edge_LR_Wall : height_2_final_edge_LR_Wall;
+            height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? -bottomEdge_z + height_1_final_edge_LR_Wall : -bottomEdge_z + height_2_final_edge_LR_Wall;
 
             iNumberOfWholeSheets = (int)(width / claddingWidthModular_Wall);
             dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Wall;
@@ -914,7 +917,7 @@ namespace BaseClasses.GraphObj
             // Back Wall
             // Total Wall Width
             width = pback1_baseright.X - pback0_baseleft.X;
-            height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? height_1_final_edge_FB_Wall : height_2_final_edge_FB_Wall;
+            height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? -bottomEdge_z + height_1_final_edge_FB_Wall : -bottomEdge_z + height_2_final_edge_FB_Wall;
 
             iNumberOfWholeSheets = (int)(width / claddingWidthModular_Wall);
             dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Wall;
@@ -948,7 +951,7 @@ namespace BaseClasses.GraphObj
                    (i + 1) * claddingWidthModular_Wall > 0.5 * width)
                 {
                     iNumberOfEdges = 5;
-                    height_toptip = height_2_final_edge_FB_Wall;
+                    height_toptip = -bottomEdge_z + height_2_final_edge_FB_Wall;
                     tipCoordinate_x = 0.5 * width - i * claddingWidthModular_Wall;
                 }
 
