@@ -799,11 +799,12 @@ namespace PFD
             //To Mato: pri zmene Frames sa znovu robia cross bracings atd, to znamena,ze tu nastavim nanovo _modelOptions.EnableCrossbracing???
             if (IsSetFromCode) //zmeneny je Model
             {
+                //ak je zmeneny model, nesnazime sa o update ale priamo nanovo
                 _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
                 _modelOptionsVM.EnableCrossBracing = true;  //default zapnute
 
-                //toto by sme nemuseli zapinat pokial je canopies aj tak prazdne
-                _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
+                //ak je zmeneny model, nesnazime sa o update ale priamo nanovo
+                _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);                
                 _modelOptionsVM.EnableCanopies = false; //default vypnute
 
                 _modelOptionsVM.VariousBayWidths = false; //default vypnute
@@ -812,11 +813,13 @@ namespace PFD
             {
                 if (_modelOptionsVM.EnableCrossBracing == true) //iba ak je zapnute
                 {
-                    _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
+                    if (_crossBracingOptionsVM == null) _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
+                    else _crossBracingOptionsVM.Update(Frames - 1, OneRafterPurlinNo);
                 }
                 if (_modelOptionsVM.EnableCanopies == true) //iba ak je zapnute
                 {
-                    _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
+                    if (_canopiesOptionsVM == null) _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
+                    else _canopiesOptionsVM.Update(Frames - 1, Width);
                 }
             }
                         

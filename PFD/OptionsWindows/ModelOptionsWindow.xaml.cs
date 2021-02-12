@@ -48,6 +48,10 @@ namespace PFD
                     {
                         _pfdVM._crossBracingOptionsVM.ClearCrossBracing();
                     }
+                    else
+                    {
+                        _pfdVM._crossBracingOptionsVM = new CrossBracingOptionsViewModel(_pfdVM.Frames - 1, _pfdVM.OneRafterPurlinNo);
+                    }
                 }
                 if (e.PropertyName == "EnableCanopies")
                 {
@@ -55,6 +59,10 @@ namespace PFD
                     if (_pfdVM._modelOptionsVM.EnableCanopies == false)
                     {
                         _pfdVM._canopiesOptionsVM.ClearCanopies();
+                    }
+                    else
+                    {
+                        _pfdVM._canopiesOptionsVM  = new CanopiesOptionsViewModel(_pfdVM.Frames - 1, _pfdVM.Width);
                     }
                 }
                 if (e.PropertyName == "EnableCladding")
