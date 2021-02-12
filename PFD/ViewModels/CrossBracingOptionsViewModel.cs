@@ -39,7 +39,8 @@ namespace PFD
         private bool m_FirstCrossOnRafter;
         private bool m_LastCrossOnRafter;
 
-        //private int baysNum, int iOneRafterPurlinNo
+        private int m_BaysNum;
+        private int m_OneRafterPurlinNo;
 
 
         public List<string> RoofPositions
@@ -253,6 +254,9 @@ namespace PFD
         public CrossBracingOptionsViewModel(int baysNum, int iOneRafterPurlinNo)
         {
             IsSetFromCode = true;
+            m_BaysNum = baysNum;
+            m_OneRafterPurlinNo = iOneRafterPurlinNo;
+
             RoofPositions = GetRoofPositions(iOneRafterPurlinNo);
 
             initBays(baysNum);
@@ -289,40 +293,32 @@ namespace PFD
 
         public void Update(int baysNum, int iOneRafterPurlinNo)
         {
+            if (baysNum == m_BaysNum && iOneRafterPurlinNo == m_OneRafterPurlinNo) return; //no change
+
             IsSetFromCode = true;
-            RoofPositions = GetRoofPositions(iOneRafterPurlinNo);
 
-            initBays(baysNum);
-
-            ObservableCollection<CCrossBracingInfo> items = new ObservableCollection<CCrossBracingInfo>();
-
-            for (int i = 1; i <= baysNum; i++)
+            if (iOneRafterPurlinNo != m_OneRafterPurlinNo) RoofPositions = GetRoofPositions(iOneRafterPurlinNo);
+            if (baysNum != m_BaysNum)
             {
-                CCrossBracingInfo cbi = null;
-                if (i == 1 || i == baysNum)
+                initBays(baysNum);
+
+                ObservableCollection<CCrossBracingInfo> items = new ObservableCollection<CCrossBracingInfo>();
+
+                for (int i = 1; i <= baysNum; i++)
                 {
-                    cbi = new CCrossBracingInfo(i, true, true, true, RoofPositions[2], 2, false, false, RoofPositions);
-                }
-                else
-                {
-                    cbi = new CCrossBracingInfo(i, false, false, false, RoofPositions[0], 0, false, false, RoofPositions);
+                    CCrossBracingInfo cbi = CrossBracingList.ElementAtOrDefault(i - 1);
+                    if(cbi == null) cbi = new CCrossBracingInfo(i, false, false, false, RoofPositions[0], 0, false, false, RoofPositions);
+
+                    items.Add(cbi);
                 }
 
-                items.Add(cbi);
+                CrossBracingList = items;
             }
-
-            CrossBracingList = items;
-
-            WallLeft = false;
-            WallRight = false;
-            Roof = false;
-            RoofPosition = "None";
-
-            FirstCrossOnRafter = false;
-            LastCrossOnRafter = false;
-
+            
             IsSetFromCode = false;
 
+            m_BaysNum = baysNum;
+            m_OneRafterPurlinNo = iOneRafterPurlinNo;
         }
 
         //-------------------------------------------------------------------------------------------------------------

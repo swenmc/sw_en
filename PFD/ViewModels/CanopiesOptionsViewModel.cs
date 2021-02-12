@@ -41,7 +41,7 @@ namespace PFD
         private bool m_IsCrossBracedRight;
 
         private double m_DefaultWidth;
-
+        private int m_BaysNum;
 
         public ObservableCollection<CCanopiesInfo> CanopiesList
         {
@@ -277,6 +277,7 @@ namespace PFD
         public CanopiesOptionsViewModel(int baysNum, float width)
         {
             IsSetFromCode = true;
+            m_BaysNum = baysNum;
 
             DefaultWidth = Math.Round(width * 0.2, 1); //20% from width
             
@@ -312,6 +313,30 @@ namespace PFD
             IsCrossBracedRight = false;
 
             IsSetFromCode = false;
+        }
+
+        public void Update(int baysNum, float width)
+        {
+            if (baysNum == m_BaysNum) return; //no change
+
+            IsSetFromCode = true;
+
+            DefaultWidth = Math.Round(width * 0.2, 1); //20% from width
+
+            initBays(baysNum);
+
+            ObservableCollection<CCanopiesInfo> items = new ObservableCollection<CCanopiesInfo>();
+            for (int i = 1; i <= baysNum; i++)
+            {
+                CCanopiesInfo ci = CanopiesList.ElementAtOrDefault(i - 1);
+                if(ci == null) ci = new CCanopiesInfo(i, false, false, 0, 0, 0, 0, false, false, DefaultWidth);
+
+                items.Add(ci);
+            }
+            CanopiesList = items;
+            IsSetFromCode = false;
+
+            m_BaysNum = baysNum;
         }
 
         //-------------------------------------------------------------------------------------------------------------
