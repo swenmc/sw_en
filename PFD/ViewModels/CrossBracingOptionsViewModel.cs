@@ -39,6 +39,9 @@ namespace PFD
         private bool m_FirstCrossOnRafter;
         private bool m_LastCrossOnRafter;
 
+        //private int baysNum, int iOneRafterPurlinNo
+
+
         public List<string> RoofPositions
         {
             get
@@ -284,6 +287,44 @@ namespace PFD
             IsSetFromCode = false;
         }
 
+        public void Update(int baysNum, int iOneRafterPurlinNo)
+        {
+            IsSetFromCode = true;
+            RoofPositions = GetRoofPositions(iOneRafterPurlinNo);
+
+            initBays(baysNum);
+
+            ObservableCollection<CCrossBracingInfo> items = new ObservableCollection<CCrossBracingInfo>();
+
+            for (int i = 1; i <= baysNum; i++)
+            {
+                CCrossBracingInfo cbi = null;
+                if (i == 1 || i == baysNum)
+                {
+                    cbi = new CCrossBracingInfo(i, true, true, true, RoofPositions[2], 2, false, false, RoofPositions);
+                }
+                else
+                {
+                    cbi = new CCrossBracingInfo(i, false, false, false, RoofPositions[0], 0, false, false, RoofPositions);
+                }
+
+                items.Add(cbi);
+            }
+
+            CrossBracingList = items;
+
+            WallLeft = false;
+            WallRight = false;
+            Roof = false;
+            RoofPosition = "None";
+
+            FirstCrossOnRafter = false;
+            LastCrossOnRafter = false;
+
+            IsSetFromCode = false;
+
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {
@@ -385,6 +426,23 @@ namespace PFD
             }
 
             return false;
+        }
+
+        public void ClearCrossBracing()
+        {
+            foreach (CCrossBracingInfo cb in CrossBracingList)
+            {
+                cb.IsSetFromCode = true;
+
+                cb.WallLeft = false;
+                cb.WallRight = false;
+                cb.Roof = false;
+                cb.RoofPosition = "None";                
+                cb.FirstCrossOnRafter = false;
+                cb.LastCrossOnRafter = false;
+
+                cb.IsSetFromCode = false;
+            }
         }
 
         public void SetViewModel(CrossBracingOptionsViewModel vm)

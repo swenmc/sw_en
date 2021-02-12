@@ -784,13 +784,43 @@ namespace PFD
                 float fFirstPurlinPosition = MPurlinDistance;
                 OneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / MPurlinDistance) + 1;
 
-                _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
-                _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
-                _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
-                
+                //Update CrossBracings, Canopies and BayWidths view models
+                UpdateViewModelsOnFramesChange();
+
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
                 NotifyPropertyChanged("Frames");
             }
+        }
+
+
+        private void UpdateViewModelsOnFramesChange()
+        {
+            //709
+            //To Mato: pri zmene Frames sa znovu robia cross bracings atd, to znamena,ze tu nastavim nanovo _modelOptions.EnableCrossbracing???
+            if (IsSetFromCode) //zmeneny je Model
+            {
+                _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
+                _modelOptionsVM.EnableCrossBracing = true;  //default zapnute
+
+                //toto by sme nemuseli zapinat pokial je canopies aj tak prazdne
+                _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
+                _modelOptionsVM.EnableCanopies = false; //default vypnute
+
+                _modelOptionsVM.VariousBayWidths = false; //default vypnute
+            }
+            else
+            {
+                if (_modelOptionsVM.EnableCrossBracing == true) //iba ak je zapnute
+                {
+                    _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
+                }
+                if (_modelOptionsVM.EnableCanopies == true) //iba ak je zapnute
+                {
+                    _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
+                }
+            }
+                        
+            _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
         }
 
         //-------------------------------------------------------------------------------------------------------------

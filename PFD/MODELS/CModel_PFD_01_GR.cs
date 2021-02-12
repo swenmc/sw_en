@@ -571,7 +571,7 @@ namespace PFD
             }
 
             // Cross-bracing
-            bool bGenerateCrossBracing = vm._modelOptionsVM.EnableCrossBracing; //vm._crossBracingOptionsVM.HasCrosses();
+            bool bGenerateCrossBracing = vm._crossBracingOptionsVM.HasCrosses(); //vm._modelOptionsVM.EnableCrossBracing;
             bool bGenerateSideWallCrossBracing = false;
             if(ci_CBW != null && ci_CBW.Generate != null) bGenerateSideWallCrossBracing = ci_CBW.Generate.Value;
 
@@ -635,7 +635,7 @@ namespace PFD
             }
 
             // Canopies
-            bool bGenerateCanopies = vm._modelOptionsVM.EnableCanopies;  //vm._canopiesOptionsVM.HasCanopies();
+            bool bGenerateCanopies = vm._canopiesOptionsVM.HasCanopies(); //vm._modelOptionsVM.EnableCanopies;
             // Canopy - Purlins
             bool bGeneratePurlinsCanopy = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.PurlinCanopy);
             // Canopy - Cross-bracing

@@ -436,6 +436,26 @@ namespace PFD
             return purlinCount;
         }
 
+        public void ClearCanopies()
+        {
+            foreach (CCanopiesInfo ci in CanopiesList)
+            {
+                ci.IsSetFromCode = true;
+                ci.Left = false;
+                ci.WidthLeft = 0;
+                ci.PurlinCountLeft = 0;
+                ci.IsCrossBracedLeft = false;
+
+                ci.Right = false;
+                ci.WidthRight = 0;
+                ci.PurlinCountRight = 0;
+                ci.IsCrossBracedRight = false;
+                
+                ci.IsSetFromCode = false;
+            }
+        }
+
+
         public void SetViewModel(CanopiesOptionsViewModel vm)
         {
             if (vm == null) return;

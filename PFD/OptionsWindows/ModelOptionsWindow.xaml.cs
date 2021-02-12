@@ -41,6 +41,27 @@ namespace PFD
                 if (e.PropertyName == "BracingEverySecondRowOfPurlins") _pfdVM.RecreateJoints = true;
                 if (e.PropertyName == "WindPostUnderRafter") { _pfdVM.RecreateJoints = true; _pfdVM.RecreateFoundations = true; }
 
+                if (e.PropertyName == "EnableCrossBracing")
+                {
+                    //clear cross bracing
+                    if (_pfdVM._modelOptionsVM.EnableCrossBracing == false)
+                    {
+                        _pfdVM._crossBracingOptionsVM.ClearCrossBracing();
+                    }
+                }
+                if (e.PropertyName == "EnableCanopies")
+                {
+                    //clear canopies
+                    if (_pfdVM._modelOptionsVM.EnableCanopies == false)
+                    {
+                        _pfdVM._canopiesOptionsVM.ClearCanopies();
+                    }
+                }
+                if (e.PropertyName == "EnableCladding")
+                {
+                    //reset cladding
+                }
+                
                 ModelOptionsChanged = true;
             }
         }
