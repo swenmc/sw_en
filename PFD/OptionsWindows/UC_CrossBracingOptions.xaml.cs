@@ -87,6 +87,8 @@ namespace PFD
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             if (CrossBracingOptionsChanged) _pfdVM.CrossBracingOptionsChanged = true;
+
+            CrossBracingOptionsChanged = false;
         }
     }
 }

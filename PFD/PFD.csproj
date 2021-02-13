@@ -158,6 +158,9 @@
     <Compile Include="DocumentationExportOptionsWindow.xaml.cs">
       <DependentUpon>DocumentationExportOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\UC_CladdingOptions.xaml.cs">
+      <DependentUpon>UC_CladdingOptions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsWindows\UC_CanopiesOptions.xaml.cs">
       <DependentUpon>UC_CanopiesOptions.xaml</DependentUpon>
     </Compile>
@@ -190,6 +193,7 @@
     <Compile Include="ViewModels\CanopiesOptionsViewModel.cs" />
     <Compile Include="ViewModels\DesignSummaryViewModel.cs" />
     <Compile Include="ViewModels\CrossBracingOptionsViewModel.cs" />
+    <Compile Include="ViewModels\CladdingOptionsViewModel.cs" />
     <Compile Include="ViewModels\DocumentationSettingsViewModel.cs" />
     <Compile Include="AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
@@ -376,6 +380,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DocumentationExportOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\UC_CladdingOptions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

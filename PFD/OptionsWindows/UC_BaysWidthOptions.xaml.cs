@@ -79,6 +79,8 @@ namespace PFD
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             if (BaysWidthOptionsChanged) _pfdVM.BaysWidthOptionsChanged = true;
+
+            BaysWidthOptionsChanged = false;
         }
     }
 }

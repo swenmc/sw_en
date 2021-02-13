@@ -69,6 +69,7 @@ namespace PFD
         private float MBottomGirtPosition;
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
+
         private int MRoofCladdingIndex;
         private int MRoofCladdingID;
         private int MRoofCladdingCoatingIndex;
@@ -138,6 +139,7 @@ namespace PFD
         private bool m_CrossBracingOptionsChanged;
         private bool m_BaysWidthOptionsChanged;
         private bool m_CanopiesOptionsChanged;
+        private bool m_CladdingOptionsChanged;
 
         private bool m_OptionsLoaded;
 
@@ -2540,6 +2542,7 @@ namespace PFD
         public ModelOptionsViewModel _modelOptionsVM;
         public SolverOptionsViewModel _solverOptionsVM;
         public DesignOptionsViewModel _designOptionsVM;
+        public CladdingOptionsViewModel _claddingOptionsVM;
 
         public CrossBracingOptionsViewModel _crossBracingOptionsVM;
         public CanopiesOptionsViewModel _canopiesOptionsVM;
@@ -2923,6 +2926,23 @@ namespace PFD
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CanopiesOptionsChanged");
 
+            }
+        }
+
+        public bool CladdingOptionsChanged
+        {
+            get
+            {
+                return m_CladdingOptionsChanged;
+            }
+
+            set
+            {
+                m_CladdingOptionsChanged = value;
+
+                RecreateModel = true;
+
+                if (MSynchronizeGUI) NotifyPropertyChanged("CladdingOptionsChanged");
             }
         }
 

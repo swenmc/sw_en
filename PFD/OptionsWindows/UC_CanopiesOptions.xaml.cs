@@ -96,6 +96,8 @@ namespace PFD
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             if (CanopiesOptionsChanged) _pfdVM.CanopiesOptionsChanged = true;
+
+            CanopiesOptionsChanged = false;
         }
     }
 }
