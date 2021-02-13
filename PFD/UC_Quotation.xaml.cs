@@ -199,8 +199,8 @@ namespace PFD
                 }
             }
 
-            float fFibreGlassArea_Roof = vm.FibreglassAreaRoof / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
-            float fFibreGlassArea_Walls = vm.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
+            float fFibreGlassArea_Roof = vm._claddingOptionsVM.FibreglassAreaRoof / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
+            float fFibreGlassArea_Walls = vm._claddingOptionsVM.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
             if (vm._quotationDisplayOptionsVM.DisplayCladding)
             {
@@ -728,13 +728,13 @@ namespace PFD
 
             //-----------------------------------------------------------------------------            
             // TODO 438
-            CTS_CrscProperties prop_RoofCladding = vm.RoofCladdingProps;
-            CTS_CrscProperties prop_WallCladding = vm.WallCladdingProps;
+            CTS_CrscProperties prop_RoofCladding = vm._claddingOptionsVM.RoofCladdingProps;
+            CTS_CrscProperties prop_WallCladding = vm._claddingOptionsVM.WallCladdingProps;
             CTS_CoilProperties prop_RoofCladdingCoil;
             CTS_CoilProperties prop_WallCladdingCoil;
             CoatingColour prop_RoofCladdingColor;
             CoatingColour prop_WallCladdingColor;
-            vm.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            vm._claddingOptionsVM.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
             
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
@@ -784,9 +784,9 @@ namespace PFD
                 float totalMass = fRoofArea_Total_Netto * fUnitMass;
                 try
                 {
-                    row[QuotationHelper.colProp_Cladding.ColumnName] = vm.RoofCladding;
+                    row[QuotationHelper.colProp_Cladding.ColumnName] = vm._claddingOptionsVM.RoofCladding;
                     row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (prop_RoofCladding.thicknessCore_m * 1000).ToString("F2"); // mm
-                    row[QuotationHelper.colProp_Coating.ColumnName] = vm.RoofCladdingCoating;
+                    row[QuotationHelper.colProp_Coating.ColumnName] = vm._claddingOptionsVM.RoofCladdingCoating;
                     row[QuotationHelper.colProp_Color.ColumnName] = prop_RoofCladdingColor.CodeHEX;
                     row[QuotationHelper.colProp_ColorName.ColumnName] = prop_RoofCladdingColor.Name;
                     row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = fRoofArea_Total_Netto.ToString("F2");
@@ -814,9 +814,9 @@ namespace PFD
                 float totalMass = fWallArea_Total_Netto * fUnitMass;
                 try
                 {
-                    row[QuotationHelper.colProp_Cladding.ColumnName] = vm.WallCladding;
+                    row[QuotationHelper.colProp_Cladding.ColumnName] = vm._claddingOptionsVM.WallCladding;
                     row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (prop_WallCladding.thicknessCore_m * 1000).ToString("F2"); // mm
-                    row[QuotationHelper.colProp_Coating.ColumnName] = vm.WallCladdingCoating;
+                    row[QuotationHelper.colProp_Coating.ColumnName] = vm._claddingOptionsVM.WallCladdingCoating;
                     row[QuotationHelper.colProp_Color.ColumnName] = prop_WallCladdingColor.CodeHEX;
                     row[QuotationHelper.colProp_ColorName.ColumnName] = prop_WallCladdingColor.Name;
 
@@ -1030,14 +1030,14 @@ namespace PFD
             float fFibreGlassArea_Roof,
             float fFibreGlassArea_Walls)
         {
-            string roofFibreglassThickness = vm.RoofFibreglassThicknessTypes.ElementAtOrDefault(vm.RoofFibreglassThicknessIndex);
-            string wallFibreglassThickness = vm.WallFibreglassThicknessTypes.ElementAtOrDefault(vm.WallFibreglassThicknessIndex);
+            string roofFibreglassThickness = vm._claddingOptionsVM.RoofFibreglassThicknessTypes.ElementAtOrDefault(vm._claddingOptionsVM.RoofFibreglassThicknessIndex);
+            string wallFibreglassThickness = vm._claddingOptionsVM.WallFibreglassThicknessTypes.ElementAtOrDefault(vm._claddingOptionsVM.WallFibreglassThicknessIndex);
 
             CFibreglassProperties prop_RoofFibreglass = new CFibreglassProperties();
-            prop_RoofFibreglass = CFibreglassManager.GetFibreglassProperties($"{vm.RoofCladding}-{roofFibreglassThickness}");
+            prop_RoofFibreglass = CFibreglassManager.GetFibreglassProperties($"{vm._claddingOptionsVM.RoofCladding}-{roofFibreglassThickness}");
 
             CFibreglassProperties prop_WallFibreglass = new CFibreglassProperties();
-            prop_WallFibreglass = CFibreglassManager.GetFibreglassProperties($"{vm.WallCladding}-{wallFibreglassThickness}");
+            prop_WallFibreglass = CFibreglassManager.GetFibreglassProperties($"{vm._claddingOptionsVM.WallCladding}-{wallFibreglassThickness}");
 
             float fRoofFibreGlassPrice_PSM_NZD = (float)prop_RoofFibreglass.price_PPSM_NZD; // Cena roof fibreglass za 1 m^2
             float fWallFibreGlassPrice_PSM_NZD = (float)prop_WallFibreglass.price_PPSM_NZD; // Cena wall fibreglass za 1 m^2
@@ -1085,7 +1085,7 @@ namespace PFD
                 float totalMass = fFibreGlassArea_Roof * fUnitMass;
                 try
                 {
-                    row[QuotationHelper.colProp_Fibreglass.ColumnName] = vm.RoofCladding;
+                    row[QuotationHelper.colProp_Fibreglass.ColumnName] = vm._claddingOptionsVM.RoofCladding;
                     row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (prop_RoofFibreglass.thickness_m * 1000).ToString("F2"); // mm
                     row[QuotationHelper.colProp_Width_m.ColumnName] = prop_RoofFibreglass.widthModular_m.ToString("F2");
                     row[QuotationHelper.colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
@@ -1117,7 +1117,7 @@ namespace PFD
                 float totalMass = fFibreGlassArea_Walls * fUnitMass;
                 try
                 {
-                    row[QuotationHelper.colProp_Fibreglass.ColumnName] = vm.WallCladding;
+                    row[QuotationHelper.colProp_Fibreglass.ColumnName] = vm._claddingOptionsVM.WallCladding;
                     row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (prop_WallFibreglass.thickness_m * 1000).ToString("F2"); // mm
                     row[QuotationHelper.colProp_Width_m.ColumnName] = prop_WallFibreglass.widthModular_m.ToString("F2");
                     row[QuotationHelper.colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");

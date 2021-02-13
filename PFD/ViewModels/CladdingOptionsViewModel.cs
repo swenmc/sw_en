@@ -619,6 +619,49 @@ namespace PFD
             }
         }
 
+        public CTS_CrscProperties RoofCladdingProps
+        {
+            get
+            {
+                if (m_RoofCladdingProps == null)
+                {
+                    m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+                }
+                else if (m_RoofCladdingProps.name != RoofCladding || m_RoofCladdingProps.thickness_for_name != RoofCladdingThickness)
+                {
+                    m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+                }
+                return m_RoofCladdingProps;
+            }
+
+            set
+            {
+                m_RoofCladdingProps = value;
+            }
+        }
+
+        public CTS_CrscProperties WallCladdingProps
+        {
+            get
+            {
+                if (m_WallCladdingProps == null)
+                {
+                    m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+                }
+                else if (m_WallCladdingProps.name != WallCladding || m_WallCladdingProps.thickness_for_name != WallCladdingThickness)
+                {
+                    m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+                }
+                return m_WallCladdingProps;
+            }
+
+            set
+            {
+                m_WallCladdingProps = value;
+            }
+        }
+
+
         #endregion Properties
 
 
@@ -626,15 +669,32 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CladdingOptionsViewModel(bool bRelease = false)
+        public CladdingOptionsViewModel()
         {
             IsSetFromCode = true;
 
-            //FoundationColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkGray);
-
-            
+            RoofCladdingIndex = 1;
+            RoofCladdingCoatingIndex = 1;
+            RoofCladdingColorIndex = 8;
+            WallCladdingIndex = 0;
+            WallCladdingCoatingIndex = 1;
+            WallCladdingColorIndex = 8;
+            FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+            FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
 
             IsSetFromCode = false;
+        }
+
+        public void SetDefaultValuesOnModelIndexChange()
+        {
+            RoofCladdingIndex = 1;
+            RoofCladdingCoatingIndex = 1;
+            RoofCladdingColorIndex = 8;
+            WallCladdingIndex = 0;
+            WallCladdingCoatingIndex = 1;
+            WallCladdingColorIndex = 8;
+            FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+            FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -644,7 +704,7 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SetViewModel(DisplayOptionsViewModel newVM)
+        public void SetViewModel(CladdingOptionsViewModel newVM)
         {
             IsSetFromCode = true;
             
@@ -652,7 +712,23 @@ namespace PFD
             IsSetFromCode = false;
         }
 
-        
+        public void GetCTS_CoilProperties(out CTS_CoilProperties prop_RoofCladdingCoil, out CTS_CoilProperties prop_WallCladdingCoil,
+                out CoatingColour prop_RoofCladdingColor, out CoatingColour prop_WallCladdingColor)
+        {
+            List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
+
+            CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
+            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(RoofCladdingCoating);
+
+            CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
+            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(WallCladdingCoating);
+
+            prop_RoofCladdingColor = RoofCladdingColors.ElementAtOrDefault(RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
+            prop_WallCladdingColor = WallCladdingColors.ElementAtOrDefault(WallCladdingColorIndex);
+
+            prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color
+            prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
+        }
 
     }
 }

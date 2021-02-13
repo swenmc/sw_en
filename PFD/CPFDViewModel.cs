@@ -70,48 +70,48 @@ namespace PFD
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
 
-        private int MRoofCladdingIndex;
-        private int MRoofCladdingID;
-        private int MRoofCladdingCoatingIndex;
-        private int MRoofCladdingCoatingID;
-        private List<CoatingColour> MRoofCladdingColors;
-        private int MRoofCladdingColorIndex;
-        private int MRoofCladdingThicknessIndex;
-        private int MWallCladdingIndex;
-        private int MWallCladdingID;
-        private int MWallCladdingCoatingIndex;
-        private int MWallCladdingCoatingID;
-        private List<CoatingColour> MWallCladdingColors;
-        private int MWallCladdingColorIndex;
-        private int MWallCladdingThicknessIndex;
+        //private int MRoofCladdingIndex;
+        //private int MRoofCladdingID;
+        //private int MRoofCladdingCoatingIndex;
+        //private int MRoofCladdingCoatingID;
+        //private List<CoatingColour> MRoofCladdingColors;
+        //private int MRoofCladdingColorIndex;
+        //private int MRoofCladdingThicknessIndex;
+        //private int MWallCladdingIndex;
+        //private int MWallCladdingID;
+        //private int MWallCladdingCoatingIndex;
+        //private int MWallCladdingCoatingID;
+        //private List<CoatingColour> MWallCladdingColors;
+        //private int MWallCladdingColorIndex;
+        //private int MWallCladdingThicknessIndex;
 
         private int MOneRafterPurlinNo;
 
-        private int MRoofFibreglassThicknessIndex;
-        private int MWallFibreglassThicknessIndex;
+        //private int MRoofFibreglassThicknessIndex;
+        //private int MWallFibreglassThicknessIndex;
 
         private int MSupportTypeIndex;
 
-        private float MFibreglassAreaRoof;
-        private float MFibreglassAreaWall;
+        //private float MFibreglassAreaRoof;
+        //private float MFibreglassAreaWall;
 
-        private List<string> m_Claddings;
-        private List<string> m_Coatings;
-        private string m_RoofCladding;
-        private string m_WallCladding;
-        private string m_RoofCladdingCoating;
-        private string m_WallCladdingCoating;
+        //private List<string> m_Claddings;
+        //private List<string> m_Coatings;
+        //private string m_RoofCladding;
+        //private string m_WallCladding;
+        //private string m_RoofCladdingCoating;
+        //private string m_WallCladdingCoating;
 
-        private CTS_CrscProperties m_RoofCladdingProps;
-        private CTS_CrscProperties m_WallCladdingProps;
+        //private CTS_CrscProperties m_RoofCladdingProps;
+        //private CTS_CrscProperties m_WallCladdingProps;
 
-        private List<string> m_RoofCladdingsThicknessTypes;
-        private List<string> m_WallCladdingsThicknessTypes;
-        private string m_RoofCladdingThickness;
-        private string m_WallCladdingThickness;
+        //private List<string> m_RoofCladdingsThicknessTypes;
+        //private List<string> m_WallCladdingsThicknessTypes;
+        //private string m_RoofCladdingThickness;
+        //private string m_WallCladdingThickness;
 
-        private List<string> m_RoofFibreglassThicknessTypes;
-        private List<string> m_WallFibreglassThicknessTypes;
+        //private List<string> m_RoofFibreglassThicknessTypes;
+        //private List<string> m_WallFibreglassThicknessTypes;
 
         private List<string> m_SupportTypes;
         private List<string> m_ModelTypes;
@@ -401,19 +401,18 @@ namespace PFD
                 //}
                 //MColumnDistance = MWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
 
+                //task 710, hmm co s tymto? treba potom _claddingOptionsVM nejako updatovat pri zmene Modelu?
+                //RoofCladdingIndex = 1;
+                //RoofCladdingCoatingIndex = 1;
+                //RoofCladdingColorIndex = 8;
+                //WallCladdingIndex = 0;
+                //WallCladdingCoatingIndex = 1;
+                //WallCladdingColorIndex = 8;
+                //FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+                //FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+                _claddingOptionsVM.SetDefaultValuesOnModelIndexChange();
 
-                RoofCladdingIndex = 1;
-                RoofCladdingCoatingIndex = 1;
-
-                RoofCladdingColorIndex = 8;
-                WallCladdingIndex = 0;
-
-                WallCladdingCoatingIndex = 1;
-                WallCladdingColorIndex = 8;
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
-
-                FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
-                FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
 
                 RecreateJoints = true;
                 RecreateFoundations = true;
@@ -1005,244 +1004,244 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int RoofCladdingIndex
-        {
-            get
-            {
-                return MRoofCladdingIndex;
-            }
+        //public int RoofCladdingIndex
+        //{
+        //    get
+        //    {
+        //        return MRoofCladdingIndex;
+        //    }
 
-            set
-            {
-                NumberFormatInfo nfi = new NumberFormatInfo();
-                nfi.NumberDecimalSeparator = ".";
+        //    set
+        //    {
+        //        NumberFormatInfo nfi = new NumberFormatInfo();
+        //        nfi.NumberDecimalSeparator = ".";
 
-                MRoofCladdingIndex = value;
+        //        MRoofCladdingIndex = value;
 
-                bool isChangedFromCode = IsSetFromCode;
+        //        bool isChangedFromCode = IsSetFromCode;
 
-                if (!isChangedFromCode) IsSetFromCode = true;
-                MRoofCladdingID = MRoofCladdingIndex;
-                RoofCladding = Claddings.ElementAtOrDefault(MRoofCladdingIndex);
-                RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
-                RoofCladdingThicknessIndex = 0;
-                RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
+        //        if (!isChangedFromCode) IsSetFromCode = true;
+        //        MRoofCladdingID = MRoofCladdingIndex;
+        //        RoofCladding = Claddings.ElementAtOrDefault(MRoofCladdingIndex);
+        //        RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+        //        RoofCladdingThicknessIndex = 0;
+        //        RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
 
-                RoofFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", RoofCladding, "name");
-                RoofFibreglassThicknessIndex = 0;
+        //        RoofFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", RoofCladding, "name");
+        //        RoofFibreglassThicknessIndex = 0;
 
-                SetResultsAreNotValid();
-                if (!isChangedFromCode) IsSetFromCode = false;
+        //        SetResultsAreNotValid();
+        //        if (!isChangedFromCode) IsSetFromCode = false;
 
-                RecreateQuotation = false;//musi byt zmena nasilu
-                RecreateModel = true;
-                NotifyPropertyChanged("RoofCladdingIndex");
-            }
-        }
+        //        RecreateQuotation = false;//musi byt zmena nasilu
+        //        RecreateModel = true;
+        //        NotifyPropertyChanged("RoofCladdingIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int RoofCladdingCoatingIndex
-        {
-            get
-            {
-                return MRoofCladdingCoatingIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int RoofCladdingCoatingIndex
+        //{
+        //    get
+        //    {
+        //        return MRoofCladdingCoatingIndex;
+        //    }
 
-            set
-            {
-                NumberFormatInfo nfi = new NumberFormatInfo();
-                nfi.NumberDecimalSeparator = ".";
+        //    set
+        //    {
+        //        NumberFormatInfo nfi = new NumberFormatInfo();
+        //        nfi.NumberDecimalSeparator = ".";
 
-                MRoofCladdingCoatingIndex = value;
+        //        MRoofCladdingCoatingIndex = value;
 
-                bool isChangedFromCode = IsSetFromCode;
+        //        bool isChangedFromCode = IsSetFromCode;
 
-                if (!isChangedFromCode) IsSetFromCode = true;
-                RoofCladdingCoatingID = MRoofCladdingCoatingIndex + 1;
-                RoofCladdingCoating = Coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
-                RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingID);
-                RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
-                RoofCladdingColorIndex = 0;
-                RoofCladdingThicknessIndex = 0;
-                RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
+        //        if (!isChangedFromCode) IsSetFromCode = true;
+        //        RoofCladdingCoatingID = MRoofCladdingCoatingIndex + 1;
+        //        RoofCladdingCoating = Coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
+        //        RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingID);
+        //        RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+        //        RoofCladdingColorIndex = 0;
+        //        RoofCladdingThicknessIndex = 0;
+        //        RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
 
-                if (!isChangedFromCode) IsSetFromCode = false;
-                RecreateQuotation = false;//musi byt zmena nasilu
-                RecreateQuotation = true;
-                NotifyPropertyChanged("RoofCladdingCoatingIndex");
-            }
-        }
+        //        if (!isChangedFromCode) IsSetFromCode = false;
+        //        RecreateQuotation = false;//musi byt zmena nasilu
+        //        RecreateQuotation = true;
+        //        NotifyPropertyChanged("RoofCladdingCoatingIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int RoofCladdingColorIndex
-        {
-            get
-            {
-                return MRoofCladdingColorIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int RoofCladdingColorIndex
+        //{
+        //    get
+        //    {
+        //        return MRoofCladdingColorIndex;
+        //    }
 
-            set
-            {
-                MRoofCladdingColorIndex = value;
-                RecreateQuotation = true;
-                NotifyPropertyChanged("RoofCladdingColorIndex");
-            }
-        }
+        //    set
+        //    {
+        //        MRoofCladdingColorIndex = value;
+        //        RecreateQuotation = true;
+        //        NotifyPropertyChanged("RoofCladdingColorIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int RoofCladdingThicknessIndex
-        {
-            get
-            {
-                return MRoofCladdingThicknessIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int RoofCladdingThicknessIndex
+        //{
+        //    get
+        //    {
+        //        return MRoofCladdingThicknessIndex;
+        //    }
 
-            set
-            {
-                MRoofCladdingThicknessIndex = value;
+        //    set
+        //    {
+        //        MRoofCladdingThicknessIndex = value;
 
-                RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(MRoofCladdingThicknessIndex);
-                //SetResultsAreNotValid();
-                RecreateQuotation = true;
-                NotifyPropertyChanged("RoofCladdingThicknessIndex");
-            }
-        }
+        //        RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(MRoofCladdingThicknessIndex);
+        //        //SetResultsAreNotValid();
+        //        RecreateQuotation = true;
+        //        NotifyPropertyChanged("RoofCladdingThicknessIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int WallCladdingIndex
-        {
-            get
-            {
-                return MWallCladdingIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int WallCladdingIndex
+        //{
+        //    get
+        //    {
+        //        return MWallCladdingIndex;
+        //    }
 
-            set
-            {
-                NumberFormatInfo nfi = new NumberFormatInfo();
-                nfi.NumberDecimalSeparator = ".";
+        //    set
+        //    {
+        //        NumberFormatInfo nfi = new NumberFormatInfo();
+        //        nfi.NumberDecimalSeparator = ".";
 
-                MWallCladdingIndex = value;
+        //        MWallCladdingIndex = value;
 
-                bool isChangedFromCode = IsSetFromCode;
+        //        bool isChangedFromCode = IsSetFromCode;
 
-                if (!isChangedFromCode) IsSetFromCode = true;
-                WallCladdingID = MWallCladdingIndex;
-                WallCladding = Claddings.ElementAtOrDefault(MWallCladdingIndex);
-                WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
-                WallCladdingThicknessIndex = 0;
-                WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
+        //        if (!isChangedFromCode) IsSetFromCode = true;
+        //        WallCladdingID = MWallCladdingIndex;
+        //        WallCladding = Claddings.ElementAtOrDefault(MWallCladdingIndex);
+        //        WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+        //        WallCladdingThicknessIndex = 0;
+        //        WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
 
-                WallFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", WallCladding, "name");
-                WallFibreglassThicknessIndex = 0;
+        //        WallFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", WallCladding, "name");
+        //        WallFibreglassThicknessIndex = 0;
 
-                if (!isChangedFromCode) IsSetFromCode = false;
-                RecreateQuotation = false;//musi byt zmena nasilu
-                RecreateModel = true;
-                NotifyPropertyChanged("WallCladdingIndex");
-            }
-        }
+        //        if (!isChangedFromCode) IsSetFromCode = false;
+        //        RecreateQuotation = false;//musi byt zmena nasilu
+        //        RecreateModel = true;
+        //        NotifyPropertyChanged("WallCladdingIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int WallCladdingCoatingIndex
-        {
-            get
-            {
-                return MWallCladdingCoatingIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int WallCladdingCoatingIndex
+        //{
+        //    get
+        //    {
+        //        return MWallCladdingCoatingIndex;
+        //    }
 
-            set
-            {
-                NumberFormatInfo nfi = new NumberFormatInfo();
-                nfi.NumberDecimalSeparator = ".";
+        //    set
+        //    {
+        //        NumberFormatInfo nfi = new NumberFormatInfo();
+        //        nfi.NumberDecimalSeparator = ".";
 
-                MWallCladdingCoatingIndex = value;
+        //        MWallCladdingCoatingIndex = value;
 
-                bool isChangedFromCode = IsSetFromCode;
-                if (!isChangedFromCode) IsSetFromCode = true;
-                WallCladdingCoatingID = MWallCladdingCoatingIndex + 1;
-                WallCladdingCoating = Coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
-                WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingID);
-                WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
-                WallCladdingThicknessIndex = 0;
-                WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
-                WallCladdingColorIndex = 0;
+        //        bool isChangedFromCode = IsSetFromCode;
+        //        if (!isChangedFromCode) IsSetFromCode = true;
+        //        WallCladdingCoatingID = MWallCladdingCoatingIndex + 1;
+        //        WallCladdingCoating = Coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
+        //        WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingID);
+        //        WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+        //        WallCladdingThicknessIndex = 0;
+        //        WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
+        //        WallCladdingColorIndex = 0;
 
-                if (!isChangedFromCode) IsSetFromCode = false;
-                RecreateQuotation = false;//musi byt zmena nasilu
-                RecreateQuotation = true;
-                NotifyPropertyChanged("WallCladdingCoatingIndex");
-            }
-        }
+        //        if (!isChangedFromCode) IsSetFromCode = false;
+        //        RecreateQuotation = false;//musi byt zmena nasilu
+        //        RecreateQuotation = true;
+        //        NotifyPropertyChanged("WallCladdingCoatingIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int WallCladdingColorIndex
-        {
-            get
-            {
-                return MWallCladdingColorIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int WallCladdingColorIndex
+        //{
+        //    get
+        //    {
+        //        return MWallCladdingColorIndex;
+        //    }
 
-            set
-            {
-                MWallCladdingColorIndex = value;
-                RecreateQuotation = true;
-                NotifyPropertyChanged("WallCladdingColorIndex");
-            }
-        }
+        //    set
+        //    {
+        //        MWallCladdingColorIndex = value;
+        //        RecreateQuotation = true;
+        //        NotifyPropertyChanged("WallCladdingColorIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int WallCladdingThicknessIndex
-        {
-            get
-            {
-                return MWallCladdingThicknessIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int WallCladdingThicknessIndex
+        //{
+        //    get
+        //    {
+        //        return MWallCladdingThicknessIndex;
+        //    }
 
-            set
-            {
-                MWallCladdingThicknessIndex = value;
+        //    set
+        //    {
+        //        MWallCladdingThicknessIndex = value;
 
 
-                WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(MWallCladdingThicknessIndex);
-                //SetResultsAreNotValid();
-                RecreateQuotation = true;
-                NotifyPropertyChanged("WallCladdingThicknessIndex");
-            }
-        }
+        //        WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(MWallCladdingThicknessIndex);
+        //        //SetResultsAreNotValid();
+        //        RecreateQuotation = true;
+        //        NotifyPropertyChanged("WallCladdingThicknessIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int RoofFibreglassThicknessIndex
-        {
-            get
-            {
-                return MRoofFibreglassThicknessIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int RoofFibreglassThicknessIndex
+        //{
+        //    get
+        //    {
+        //        return MRoofFibreglassThicknessIndex;
+        //    }
 
-            set
-            {
-                MRoofFibreglassThicknessIndex = value;
-                //SetResultsAreNotValid();
-                RecreateQuotation = true;
-                NotifyPropertyChanged("RoofFibreglassThicknessIndex");
-            }
-        }
+        //    set
+        //    {
+        //        MRoofFibreglassThicknessIndex = value;
+        //        //SetResultsAreNotValid();
+        //        RecreateQuotation = true;
+        //        NotifyPropertyChanged("RoofFibreglassThicknessIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int WallFibreglassThicknessIndex
-        {
-            get
-            {
-                return MWallFibreglassThicknessIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int WallFibreglassThicknessIndex
+        //{
+        //    get
+        //    {
+        //        return MWallFibreglassThicknessIndex;
+        //    }
 
-            set
-            {
-                MWallFibreglassThicknessIndex = value;
-                //SetResultsAreNotValid();
-                RecreateQuotation = true;
-                NotifyPropertyChanged("WallFibreglassThicknessIndex");
-            }
-        }
+        //    set
+        //    {
+        //        MWallFibreglassThicknessIndex = value;
+        //        //SetResultsAreNotValid();
+        //        RecreateQuotation = true;
+        //        NotifyPropertyChanged("WallFibreglassThicknessIndex");
+        //    }
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public int SupportTypeIndex
@@ -1262,44 +1261,44 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float FibreglassAreaRoof
-        {
-            get
-            {
-                return MFibreglassAreaRoof;
-            }
+        //public float FibreglassAreaRoof
+        //{
+        //    get
+        //    {
+        //        return MFibreglassAreaRoof;
+        //    }
 
-            set
-            {
-                if (value < 0.0 || value > 99.0) // Limit is 99% of area
-                    throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
-                MFibreglassAreaRoof = value;
-                //SetResultsAreNotValid();
-                //RecreateJoints = true;
-                RecreateModel = true;
-                NotifyPropertyChanged("FibreglassAreaRoof");
-            }
-        }
+        //    set
+        //    {
+        //        if (value < 0.0 || value > 99.0) // Limit is 99% of area
+        //            throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
+        //        MFibreglassAreaRoof = value;
+        //        //SetResultsAreNotValid();
+        //        //RecreateJoints = true;
+        //        RecreateModel = true;
+        //        NotifyPropertyChanged("FibreglassAreaRoof");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public float FibreglassAreaWall
-        {
-            get
-            {
-                return MFibreglassAreaWall;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public float FibreglassAreaWall
+        //{
+        //    get
+        //    {
+        //        return MFibreglassAreaWall;
+        //    }
 
-            set
-            {
-                if (value < 0.0 || value > 99.0) // Limit is 99% of area
-                    throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
-                MFibreglassAreaWall = value;
-                //SetResultsAreNotValid();
-                //RecreateJoints = true;
-                RecreateModel = true;
-                NotifyPropertyChanged("FibreglassAreaWall");
-            }
-        }
+        //    set
+        //    {
+        //        if (value < 0.0 || value > 99.0) // Limit is 99% of area
+        //            throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
+        //        MFibreglassAreaWall = value;
+        //        //SetResultsAreNotValid();
+        //        //RecreateJoints = true;
+        //        RecreateModel = true;
+        //        NotifyPropertyChanged("FibreglassAreaWall");
+        //    }
+        //}
 
         //premiestnene do DisplayOptions Window
         //-------------------------------------------------------------------------------------------------------------
@@ -1954,277 +1953,277 @@ namespace PFD
             }
         }
 
-        public List<CoatingColour> RoofCladdingColors
-        {
-            get
-            {
-                if (MRoofCladdingColors == null) MRoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
+        //public List<CoatingColour> RoofCladdingColors
+        //{
+        //    get
+        //    {
+        //        if (MRoofCladdingColors == null) MRoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
 
-                return MRoofCladdingColors;
-            }
+        //        return MRoofCladdingColors;
+        //    }
 
-            set
-            {
-                MRoofCladdingColors = value;
-                NotifyPropertyChanged("RoofCladdingColors");
-            }
-        }
+        //    set
+        //    {
+        //        MRoofCladdingColors = value;
+        //        NotifyPropertyChanged("RoofCladdingColors");
+        //    }
+        //}
 
-        public List<CoatingColour> WallCladdingColors
-        {
-            get
-            {
-                if (MWallCladdingColors == null) MWallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
-                return MWallCladdingColors;
-            }
+        //public List<CoatingColour> WallCladdingColors
+        //{
+        //    get
+        //    {
+        //        if (MWallCladdingColors == null) MWallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
+        //        return MWallCladdingColors;
+        //    }
 
-            set
-            {
-                MWallCladdingColors = value;
-                NotifyPropertyChanged("WallCladdingColors");
-            }
-        }
+        //    set
+        //    {
+        //        MWallCladdingColors = value;
+        //        NotifyPropertyChanged("WallCladdingColors");
+        //    }
+        //}
 
-        public int RoofCladdingID
-        {
-            get
-            {
-                return MRoofCladdingID;
-            }
+        //public int RoofCladdingID
+        //{
+        //    get
+        //    {
+        //        return MRoofCladdingID;
+        //    }
 
-            set
-            {
-                MRoofCladdingID = value;
-            }
-        }
+        //    set
+        //    {
+        //        MRoofCladdingID = value;
+        //    }
+        //}
 
-        public int RoofCladdingCoatingID
-        {
-            get
-            {
-                return MRoofCladdingCoatingID;
-            }
+        //public int RoofCladdingCoatingID
+        //{
+        //    get
+        //    {
+        //        return MRoofCladdingCoatingID;
+        //    }
 
-            set
-            {
-                MRoofCladdingCoatingID = value;
-            }
-        }
+        //    set
+        //    {
+        //        MRoofCladdingCoatingID = value;
+        //    }
+        //}
 
-        public int WallCladdingID
-        {
-            get
-            {
-                return MWallCladdingID;
-            }
+        //public int WallCladdingID
+        //{
+        //    get
+        //    {
+        //        return MWallCladdingID;
+        //    }
 
-            set
-            {
-                MWallCladdingID = value;
-            }
-        }
+        //    set
+        //    {
+        //        MWallCladdingID = value;
+        //    }
+        //}
 
-        public int WallCladdingCoatingID
-        {
-            get
-            {
-                return MWallCladdingCoatingID;
-            }
+        //public int WallCladdingCoatingID
+        //{
+        //    get
+        //    {
+        //        return MWallCladdingCoatingID;
+        //    }
 
-            set
-            {
-                MWallCladdingCoatingID = value;
-            }
-        }
+        //    set
+        //    {
+        //        MWallCladdingCoatingID = value;
+        //    }
+        //}
 
-        public List<string> Claddings
-        {
-            get
-            {
-                if (m_Claddings == null) m_Claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
-                return m_Claddings;
-            }
+        //public List<string> Claddings
+        //{
+        //    get
+        //    {
+        //        if (m_Claddings == null) m_Claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
+        //        return m_Claddings;
+        //    }
 
-            set
-            {
-                m_Claddings = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_Claddings = value;
+        //    }
+        //}
 
-        public List<string> Coatings
-        {
-            get
-            {
-                if (m_Coatings == null) m_Coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
-                return m_Coatings;
-            }
+        //public List<string> Coatings
+        //{
+        //    get
+        //    {
+        //        if (m_Coatings == null) m_Coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
+        //        return m_Coatings;
+        //    }
 
-            set
-            {
-                m_Coatings = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_Coatings = value;
+        //    }
+        //}
 
-        public string RoofCladding
-        {
-            get
-            {
-                return m_RoofCladding;
-            }
+        //public string RoofCladding
+        //{
+        //    get
+        //    {
+        //        return m_RoofCladding;
+        //    }
 
-            set
-            {
-                m_RoofCladding = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_RoofCladding = value;
+        //    }
+        //}
 
-        public string WallCladding
-        {
-            get
-            {
-                return m_WallCladding;
-            }
+        //public string WallCladding
+        //{
+        //    get
+        //    {
+        //        return m_WallCladding;
+        //    }
 
-            set
-            {
-                m_WallCladding = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_WallCladding = value;
+        //    }
+        //}
 
-        public string RoofCladdingCoating
-        {
-            get
-            {
-                return m_RoofCladdingCoating;
-            }
+        //public string RoofCladdingCoating
+        //{
+        //    get
+        //    {
+        //        return m_RoofCladdingCoating;
+        //    }
 
-            set
-            {
-                m_RoofCladdingCoating = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_RoofCladdingCoating = value;
+        //    }
+        //}
 
-        public string WallCladdingCoating
-        {
-            get
-            {
-                return m_WallCladdingCoating;
-            }
+        //public string WallCladdingCoating
+        //{
+        //    get
+        //    {
+        //        return m_WallCladdingCoating;
+        //    }
 
-            set
-            {
-                m_WallCladdingCoating = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_WallCladdingCoating = value;
+        //    }
+        //}
 
-        public List<string> RoofCladdingsThicknessTypes
-        {
-            get
-            {
-                if (m_RoofCladdingsThicknessTypes == null)
-                {
-                    NumberFormatInfo nfi = new NumberFormatInfo();
-                    nfi.NumberDecimalSeparator = ".";
-                    m_RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
-                }
-                return m_RoofCladdingsThicknessTypes;
-            }
+        //public List<string> RoofCladdingsThicknessTypes
+        //{
+        //    get
+        //    {
+        //        if (m_RoofCladdingsThicknessTypes == null)
+        //        {
+        //            NumberFormatInfo nfi = new NumberFormatInfo();
+        //            nfi.NumberDecimalSeparator = ".";
+        //            m_RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+        //        }
+        //        return m_RoofCladdingsThicknessTypes;
+        //    }
 
-            set
-            {
-                m_RoofCladdingsThicknessTypes = value;
-                NotifyPropertyChanged("RoofCladdingsThicknessTypes");
-            }
-        }
+        //    set
+        //    {
+        //        m_RoofCladdingsThicknessTypes = value;
+        //        NotifyPropertyChanged("RoofCladdingsThicknessTypes");
+        //    }
+        //}
 
-        public List<string> WallCladdingsThicknessTypes
-        {
-            get
-            {
-                if (m_WallCladdingsThicknessTypes == null)
-                {
-                    NumberFormatInfo nfi = new NumberFormatInfo();
-                    nfi.NumberDecimalSeparator = ".";
-                    m_WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
-                }
-                return m_WallCladdingsThicknessTypes;
-            }
+        //public List<string> WallCladdingsThicknessTypes
+        //{
+        //    get
+        //    {
+        //        if (m_WallCladdingsThicknessTypes == null)
+        //        {
+        //            NumberFormatInfo nfi = new NumberFormatInfo();
+        //            nfi.NumberDecimalSeparator = ".";
+        //            m_WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+        //        }
+        //        return m_WallCladdingsThicknessTypes;
+        //    }
 
-            set
-            {
-                m_WallCladdingsThicknessTypes = value;
-                NotifyPropertyChanged("WallCladdingsThicknessTypes");
-            }
-        }
+        //    set
+        //    {
+        //        m_WallCladdingsThicknessTypes = value;
+        //        NotifyPropertyChanged("WallCladdingsThicknessTypes");
+        //    }
+        //}
 
-        private List<CTS_ThicknessProperties> m_ThicknessPropertiesList;
-        public List<CTS_ThicknessProperties> ThicknessPropertiesList
-        {
-            get
-            {
-                if (m_ThicknessPropertiesList == null) m_ThicknessPropertiesList = CTrapezoidalSheetingManager.LoadThicknessPropertiesList();
-                return m_ThicknessPropertiesList;
-            }
+        //private List<CTS_ThicknessProperties> m_ThicknessPropertiesList;
+        //public List<CTS_ThicknessProperties> ThicknessPropertiesList
+        //{
+        //    get
+        //    {
+        //        if (m_ThicknessPropertiesList == null) m_ThicknessPropertiesList = CTrapezoidalSheetingManager.LoadThicknessPropertiesList();
+        //        return m_ThicknessPropertiesList;
+        //    }
 
-            set
-            {
-                m_ThicknessPropertiesList = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_ThicknessPropertiesList = value;
+        //    }
+        //}
 
-        public string RoofCladdingThickness
-        {
-            get
-            {
-                return m_RoofCladdingThickness;
-            }
+        //public string RoofCladdingThickness
+        //{
+        //    get
+        //    {
+        //        return m_RoofCladdingThickness;
+        //    }
 
-            set
-            {
-                m_RoofCladdingThickness = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_RoofCladdingThickness = value;
+        //    }
+        //}
 
-        public string WallCladdingThickness
-        {
-            get
-            {
-                return m_WallCladdingThickness;
-            }
+        //public string WallCladdingThickness
+        //{
+        //    get
+        //    {
+        //        return m_WallCladdingThickness;
+        //    }
 
-            set
-            {
-                m_WallCladdingThickness = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_WallCladdingThickness = value;
+        //    }
+        //}
 
-        public List<string> RoofFibreglassThicknessTypes
-        {
-            get
-            {
-                return m_RoofFibreglassThicknessTypes;
-            }
+        //public List<string> RoofFibreglassThicknessTypes
+        //{
+        //    get
+        //    {
+        //        return m_RoofFibreglassThicknessTypes;
+        //    }
 
-            set
-            {
-                m_RoofFibreglassThicknessTypes = value;
-                NotifyPropertyChanged("RoofFibreglassThicknessTypes");
-            }
-        }
+        //    set
+        //    {
+        //        m_RoofFibreglassThicknessTypes = value;
+        //        NotifyPropertyChanged("RoofFibreglassThicknessTypes");
+        //    }
+        //}
 
-        public List<string> WallFibreglassThicknessTypes
-        {
-            get
-            {
-                return m_WallFibreglassThicknessTypes;
-            }
+        //public List<string> WallFibreglassThicknessTypes
+        //{
+        //    get
+        //    {
+        //        return m_WallFibreglassThicknessTypes;
+        //    }
 
-            set
-            {
-                m_WallFibreglassThicknessTypes = value;
-                NotifyPropertyChanged("WallFibreglassThicknessTypes");
-            }
-        }
+        //    set
+        //    {
+        //        m_WallFibreglassThicknessTypes = value;
+        //        NotifyPropertyChanged("WallFibreglassThicknessTypes");
+        //    }
+        //}
 
         private ObservableCollection<int> frontBays;
         private ObservableCollection<int> backBays;
@@ -3098,47 +3097,47 @@ namespace PFD
             }
         }
 
-        public CTS_CrscProperties RoofCladdingProps
-        {
-            get
-            {
-                if (m_RoofCladdingProps == null)
-                {
-                    m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
-                }
-                else if (m_RoofCladdingProps.name != RoofCladding || m_RoofCladdingProps.thickness_for_name != RoofCladdingThickness)
-                {
-                    m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
-                }
-                return m_RoofCladdingProps;
-            }
+        //public CTS_CrscProperties RoofCladdingProps
+        //{
+        //    get
+        //    {
+        //        if (m_RoofCladdingProps == null)
+        //        {
+        //            m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+        //        }
+        //        else if (m_RoofCladdingProps.name != RoofCladding || m_RoofCladdingProps.thickness_for_name != RoofCladdingThickness)
+        //        {
+        //            m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+        //        }
+        //        return m_RoofCladdingProps;
+        //    }
 
-            set
-            {
-                m_RoofCladdingProps = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_RoofCladdingProps = value;
+        //    }
+        //}
 
-        public CTS_CrscProperties WallCladdingProps
-        {
-            get
-            {
-                if (m_WallCladdingProps == null)
-                {
-                    m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
-                }
-                else if (m_WallCladdingProps.name != WallCladding || m_WallCladdingProps.thickness_for_name != WallCladdingThickness)
-                {
-                    m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
-                }
-                return m_WallCladdingProps;
-            }
+        //public CTS_CrscProperties WallCladdingProps
+        //{
+        //    get
+        //    {
+        //        if (m_WallCladdingProps == null)
+        //        {
+        //            m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+        //        }
+        //        else if (m_WallCladdingProps.name != WallCladding || m_WallCladdingProps.thickness_for_name != WallCladdingThickness)
+        //        {
+        //            m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+        //        }
+        //        return m_WallCladdingProps;
+        //    }
 
-            set
-            {
-                m_WallCladdingProps = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_WallCladdingProps = value;
+        //    }
+        //}
 
         public float MainColumnCrsc_z_plus
         {
@@ -3304,6 +3303,7 @@ namespace PFD
             _modelOptionsVM = new ModelOptionsViewModel();
             _solverOptionsVM = new SolverOptionsViewModel();
             _designOptionsVM = new DesignOptionsViewModel();
+            _claddingOptionsVM = new CladdingOptionsViewModel();
 
             RecreateModel = true;
             ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
@@ -3806,21 +3806,21 @@ namespace PFD
             data.BottomGirtPosition = MBottomGirtPosition;
             data.FrontFrameRakeAngle = MFrontFrameRakeAngle;
             data.BackFrameRakeAngle = MBackFrameRakeAngle;
-            data.RoofCladdingIndex = MRoofCladdingIndex;
-            data.RoofCladdingCoatingIndex = MRoofCladdingCoatingIndex;
-            data.RoofCladdingColorIndex = MRoofCladdingColorIndex;
-            data.RoofCladdingThicknessIndex = MRoofCladdingThicknessIndex;
-            data.WallCladdingIndex = MWallCladdingIndex;
-            data.WallCladdingCoatingIndex = MWallCladdingCoatingIndex;
-            data.WallCladdingColorIndex = MWallCladdingColorIndex;
-            data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
+            data.RoofCladdingIndex = _claddingOptionsVM.RoofCladdingIndex;
+            data.RoofCladdingCoatingIndex = _claddingOptionsVM.RoofCladdingCoatingIndex;
+            data.RoofCladdingColorIndex = _claddingOptionsVM.RoofCladdingColorIndex;
+            data.RoofCladdingThicknessIndex = _claddingOptionsVM.RoofCladdingThicknessIndex;
+            data.WallCladdingIndex = _claddingOptionsVM.WallCladdingIndex;
+            data.WallCladdingCoatingIndex = _claddingOptionsVM.WallCladdingCoatingIndex;
+            data.WallCladdingColorIndex = _claddingOptionsVM.WallCladdingColorIndex;
+            data.WallCladdingThicknessIndex = _claddingOptionsVM.WallCladdingThicknessIndex;
 
-            data.RoofFibreglassThicknessIndex = MRoofFibreglassThicknessIndex;
-            data.WallFibreglassThicknessIndex = MWallFibreglassThicknessIndex;
+            data.RoofFibreglassThicknessIndex = _claddingOptionsVM.RoofFibreglassThicknessIndex;
+            data.WallFibreglassThicknessIndex = _claddingOptionsVM.WallFibreglassThicknessIndex;
 
             data.SupportTypeIndex = MSupportTypeIndex;
-            data.FibreglassAreaRoof = MFibreglassAreaRoof;
-            data.FibreglassAreaWall = MFibreglassAreaWall;
+            data.FibreglassAreaRoof = _claddingOptionsVM.FibreglassAreaRoof;
+            data.FibreglassAreaWall = _claddingOptionsVM.FibreglassAreaWall;
             data.LoadCaseIndex = MLoadCaseIndex;
             data.IFrontColumnNoInOneFrame = IFrontColumnNoInOneFrame;
             data.UseCRSCGeometricalAxes = UseCRSCGeometricalAxes;
@@ -3928,14 +3928,14 @@ namespace PFD
             data.BayWidth = BayWidth;
             data.ApexHeight_H2_Overall = Height_H2_Overall;
 
-            data.RoofCladding = RoofCladding;
-            data.WallCladding = WallCladding;
-            data.RoofCladdingThickness_mm = RoofCladdingThickness;
-            data.WallCladdingThickness_mm = WallCladdingThickness;
-            data.RoofCladdingCoating = RoofCladdingCoating;
-            data.WallCladdingCoating = WallCladdingCoating;
-            data.RoofFibreglassThickness_mm = RoofFibreglassThicknessTypes.ElementAtOrDefault(MRoofFibreglassThicknessIndex);
-            data.WallFibreglassThickness_mm = WallFibreglassThicknessTypes.ElementAtOrDefault(MWallFibreglassThicknessIndex);
+            data.RoofCladding = _claddingOptionsVM.RoofCladding;
+            data.WallCladding = _claddingOptionsVM.WallCladding;
+            data.RoofCladdingThickness_mm = _claddingOptionsVM.RoofCladdingThickness;
+            data.WallCladdingThickness_mm = _claddingOptionsVM.WallCladdingThickness;
+            data.RoofCladdingCoating = _claddingOptionsVM.RoofCladdingCoating;
+            data.WallCladdingCoating = _claddingOptionsVM.WallCladdingCoating;
+            data.RoofFibreglassThickness_mm = _claddingOptionsVM.RoofFibreglassThicknessTypes.ElementAtOrDefault(_claddingOptionsVM.RoofFibreglassThicknessIndex);
+            data.WallFibreglassThickness_mm = _claddingOptionsVM.WallFibreglassThicknessTypes.ElementAtOrDefault(_claddingOptionsVM.WallFibreglassThicknessIndex);
 
             data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
             data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
@@ -4327,23 +4327,23 @@ namespace PFD
             return sDisplayOptions;
         }
 
-        public void GetCTS_CoilProperties(out CTS_CoilProperties prop_RoofCladdingCoil, out CTS_CoilProperties prop_WallCladdingCoil,
-                out CoatingColour prop_RoofCladdingColor, out CoatingColour prop_WallCladdingColor)
-        {
-            List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
+        //public void GetCTS_CoilProperties(out CTS_CoilProperties prop_RoofCladdingCoil, out CTS_CoilProperties prop_WallCladdingCoil,
+        //        out CoatingColour prop_RoofCladdingColor, out CoatingColour prop_WallCladdingColor)
+        //{
+        //    List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
-            CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
-            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(RoofCladdingCoating);
+        //    CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
+        //    prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(RoofCladdingCoating);
 
-            CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
-            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(WallCladdingCoating);
+        //    CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
+        //    prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(WallCladdingCoating);
 
-            prop_RoofCladdingColor = RoofCladdingColors.ElementAtOrDefault(RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-            prop_WallCladdingColor = WallCladdingColors.ElementAtOrDefault(WallCladdingColorIndex);
+        //    prop_RoofCladdingColor = RoofCladdingColors.ElementAtOrDefault(RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
+        //    prop_WallCladdingColor = WallCladdingColors.ElementAtOrDefault(WallCladdingColorIndex);
 
-            prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color
-            prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
-        }
+        //    prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color
+        //    prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
+        //}
 
         public void SetAllDoorCoatingColorAccordingTo(DoorProperties doorProperties)
         {

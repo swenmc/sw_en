@@ -21,7 +21,7 @@ namespace PFD
         private CPFDViewModel _pfdVM;
         private bool CladdingOptionsChanged = false;
         
-        private bool RecreateModelRequired = false;
+        //private bool RecreateModelRequired = false;
         public UC_CladdingOptions(CPFDViewModel pfdVM)
         {
             InitializeComponent();
@@ -39,7 +39,7 @@ namespace PFD
         private void HandleCladdingOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            if (sender is DisplayOptionsViewModel)
+            if (sender is CladdingOptionsViewModel)
             {
                 CladdingOptionsChanged = true;
             }

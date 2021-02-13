@@ -583,13 +583,13 @@ namespace PFD
             // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
 
             //-----------------------------------------------------------------------------            
-            CTS_CrscProperties prop_RoofCladding = vm.RoofCladdingProps;
-            CTS_CrscProperties prop_WallCladding = vm.WallCladdingProps;
+            CTS_CrscProperties prop_RoofCladding = vm._claddingOptionsVM.RoofCladdingProps;
+            CTS_CrscProperties prop_WallCladding = vm._claddingOptionsVM.WallCladdingProps;
             CTS_CoilProperties prop_RoofCladdingCoil;
             CTS_CoilProperties prop_WallCladdingCoil;
             CoatingColour prop_RoofCladdingColor;
             CoatingColour prop_WallCladdingColor;
-            vm.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            vm._claddingOptionsVM.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
 
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
@@ -1399,7 +1399,7 @@ namespace PFD
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eBayWidths)
             {
                 if (TabBayWidths.Content == null) TabBayWidths.Content = new UC_BaysWidthOptions(vm);
-                (TabBayWidths.Content as UC_BaysWidthOptions).BaysWidthOptionsChanged = false;
+                //(TabBayWidths.Content as UC_BaysWidthOptions).BaysWidthOptionsChanged = false;
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eAccesories)
             {
@@ -1420,17 +1420,16 @@ namespace PFD
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eCrossBracing)
             {
                 if (TabCrossBracing.Content == null) TabCrossBracing.Content = new UC_CrossBracingOptions(vm);
-                (TabCrossBracing.Content as UC_CrossBracingOptions).CrossBracingOptionsChanged = false;
+                //(TabCrossBracing.Content as UC_CrossBracingOptions).CrossBracingOptionsChanged = false;
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eCanopies)
             {
                 if (TabCanopies.Content == null) TabCanopies.Content = new UC_CanopiesOptions(vm);
-                (TabCanopies.Content as UC_CanopiesOptions).CanopiesOptionsChanged = false;
+                //(TabCanopies.Content as UC_CanopiesOptions).CanopiesOptionsChanged = false;
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eCladding)
             {
-                //if (TabCladding.Content == null) TabCladding.Content = new CladdingOptionsWindow(vm);
-                //(TabBayWidths.Content as UC_BaysWidthOptions).BaysWidthOptionsChanged = false;
+                if (TabCladding.Content == null) TabCladding.Content = new UC_CladdingOptions(vm);                
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoads)
             {
@@ -2644,23 +2643,23 @@ namespace PFD
             vm.BottomGirtPosition = newVM.BottomGirtPosition;
             vm.FrontFrameRakeAngle = newVM.FrontFrameRakeAngle;
             vm.BackFrameRakeAngle = newVM.BackFrameRakeAngle;
-            vm.RoofCladdingIndex = newVM.RoofCladdingIndex;
-            vm.RoofCladdingID = newVM.RoofCladdingID;
-            vm.RoofCladdingCoatingIndex = newVM.RoofCladdingCoatingIndex;
-            vm.RoofCladdingCoatingID = newVM.RoofCladdingCoatingID;
-            vm.RoofCladdingColorIndex = newVM.RoofCladdingColorIndex;
-            vm.RoofCladdingThicknessIndex = newVM.RoofCladdingThicknessIndex;
-            vm.WallCladdingIndex = newVM.WallCladdingIndex;
-            vm.WallCladdingID = newVM.WallCladdingID;
-            vm.WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
-            vm.WallCladdingCoatingID = newVM.WallCladdingCoatingID;
-            vm.WallCladdingColorIndex = newVM.WallCladdingColorIndex;
-            vm.WallCladdingThicknessIndex = newVM.WallCladdingThicknessIndex;
-            vm.RoofFibreglassThicknessIndex = newVM.RoofFibreglassThicknessIndex;
-            vm.WallFibreglassThicknessIndex = newVM.WallFibreglassThicknessIndex;
+            //vm.RoofCladdingIndex = newVM.RoofCladdingIndex;
+            //vm.RoofCladdingID = newVM.RoofCladdingID;
+            //vm.RoofCladdingCoatingIndex = newVM.RoofCladdingCoatingIndex;
+            //vm.RoofCladdingCoatingID = newVM.RoofCladdingCoatingID;
+            //vm.RoofCladdingColorIndex = newVM.RoofCladdingColorIndex;
+            //vm.RoofCladdingThicknessIndex = newVM.RoofCladdingThicknessIndex;
+            //vm.WallCladdingIndex = newVM.WallCladdingIndex;
+            //vm.WallCladdingID = newVM.WallCladdingID;
+            //vm.WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
+            //vm.WallCladdingCoatingID = newVM.WallCladdingCoatingID;
+            //vm.WallCladdingColorIndex = newVM.WallCladdingColorIndex;
+            //vm.WallCladdingThicknessIndex = newVM.WallCladdingThicknessIndex;
+            //vm.RoofFibreglassThicknessIndex = newVM.RoofFibreglassThicknessIndex;
+            //vm.WallFibreglassThicknessIndex = newVM.WallFibreglassThicknessIndex;
             vm.SupportTypeIndex = newVM.SupportTypeIndex;
-            vm.FibreglassAreaRoof = newVM.FibreglassAreaRoof;
-            vm.FibreglassAreaWall = newVM.FibreglassAreaWall;
+            //vm.FibreglassAreaRoof = newVM.FibreglassAreaRoof;
+            //vm.FibreglassAreaWall = newVM.FibreglassAreaWall;
 
             vm.DoorBlocksProperties = newVM.DoorBlocksProperties;
             vm.WindowBlocksProperties = newVM.WindowBlocksProperties;
@@ -2679,6 +2678,7 @@ namespace PFD
             vm._crossBracingOptionsVM.SetViewModel(newVM._crossBracingOptionsVM);
             vm._canopiesOptionsVM.SetViewModel(newVM._canopiesOptionsVM);
             vm._baysWidthOptionsVM.SetViewModel(newVM._baysWidthOptionsVM);
+            vm._claddingOptionsVM.SetViewModel(newVM._claddingOptionsVM);
 
             vm.RecreateModel = true;
             vm.RecreateJoints = true;

@@ -1650,6 +1650,9 @@ namespace PFD
             #endregion
 
             #region Cladding
+
+            //13.2.2021
+            //tak tento kod sa mi nepozdava, treba to refaktorovat
             m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset,
                 sGeometryInputData,
                 _pfdVM._canopiesOptionsVM.CanopiesList,
@@ -1658,19 +1661,18 @@ namespace PFD
                 vm.WindowBlocksProperties,
                 (CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn],
                 fDist_FrontColumns, fDist_BackColumns,
-                _pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).Name,
-                _pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).Name,
-                _pfdVM.WallCladding, _pfdVM.WallCladdingCoating,
-                _pfdVM.RoofCladding, _pfdVM.RoofCladdingCoating,
-                (Color)ColorConverter.ConvertFromString(_pfdVM.WallCladdingColors.ElementAtOrDefault(_pfdVM.WallCladdingColorIndex).CodeHEX),
-                (Color)ColorConverter.ConvertFromString(_pfdVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM.RoofCladdingColorIndex).CodeHEX), true, 0,
-                _pfdVM.WallCladdingProps.height_m, _pfdVM.RoofCladdingProps.height_m, _pfdVM.WallCladdingProps.widthRib_m, _pfdVM.RoofCladdingProps.widthRib_m) };
+                _pfdVM._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(_pfdVM._claddingOptionsVM.WallCladdingColorIndex).Name,
+                _pfdVM._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM._claddingOptionsVM.RoofCladdingColorIndex).Name,
+                _pfdVM._claddingOptionsVM.WallCladding, _pfdVM._claddingOptionsVM.WallCladdingCoating,
+                _pfdVM._claddingOptionsVM.RoofCladding, _pfdVM._claddingOptionsVM.RoofCladdingCoating,
+                (Color)ColorConverter.ConvertFromString(_pfdVM._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(_pfdVM._claddingOptionsVM.WallCladdingColorIndex).CodeHEX),
+                (Color)ColorConverter.ConvertFromString(_pfdVM._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM._claddingOptionsVM.RoofCladdingColorIndex).CodeHEX), true, 0,
+                _pfdVM._claddingOptionsVM.WallCladdingProps.height_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.height_m, _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthRib_m) };
             #endregion
 
-            double claddingThickness_Wall = _pfdVM.WallCladdingProps.height_m;  // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
+            double claddingThickness_Wall = _pfdVM._claddingOptionsVM.WallCladdingProps.height_m;  // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
             //double claddingThickness_Roof = _pfdVM.RoofCladdingProps.height_m;  // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
-
-
+            
             double column_crsc_z_plus = ((CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn]).z_max;
             double column_crsc_y_minus = ((CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn]).y_min;
             double column_crsc_y_plus = ((CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn]).y_max;

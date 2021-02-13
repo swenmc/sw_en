@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d" Unloaded="UserControl_Unloaded">
     <UserControl.Resources>
-        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidth">120</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
         <Style x:Key="RightAligned" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -24,7 +24,7 @@
         <Grid Name="GridCladdingOptions" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -128,7 +128,7 @@
             <TextBlock Grid.Row="14" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
             <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True"
                          Text="{Binding Path=FibreglassAreaRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
@@ -136,7 +136,7 @@
             <TextBlock Grid.Row="15" Grid.Column="0" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
             <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True"
                          Text="{Binding Path=FibreglassAreaWall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
