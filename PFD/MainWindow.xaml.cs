@@ -1284,7 +1284,7 @@ namespace PFD
 
             if (vm._modelOptionsVM.VariousBayWidths) TabBayWidths.Visibility = Visibility.Visible;
             else TabBayWidths.Visibility = Visibility.Collapsed;
-            if (vm._modelOptionsVM.EnableAccessories) DoorsAndWindows.Visibility = Visibility.Visible;            
+            if (vm._modelOptionsVM.EnableAccessories) DoorsAndWindows.Visibility = Visibility.Visible;
             else DoorsAndWindows.Visibility = Visibility.Collapsed;
             if (vm._modelOptionsVM.EnableJoints) Joint_Input.Visibility = Visibility.Visible;
             else Joint_Input.Visibility = Visibility.Collapsed;
