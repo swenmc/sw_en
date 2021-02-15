@@ -1795,7 +1795,8 @@ namespace PFD
             #region Cladding
             //TODO
             //nutny refaktoring
-            m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset,
+            if (_pfdVM._modelOptionsVM.EnableCladding && _pfdVM._claddingOptionsVM != null)
+                m_arrGOCladding = new List<BaseClasses.GraphObj.CCladding>(1) { new BaseClasses.GraphObj.CCladding(0, eKitset,
                sGeometryInputData,
                _pfdVM._canopiesOptionsVM.CanopiesList,
                _pfdVM._baysWidthOptionsVM.BayWidthList,
