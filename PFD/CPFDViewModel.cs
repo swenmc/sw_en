@@ -805,7 +805,7 @@ namespace PFD
                 _modelOptionsVM.EnableCrossBracing = true;  //default zapnute
 
                 //ak je zmeneny model, nesnazime sa o update ale priamo nanovo
-                _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);                
+                _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
                 _modelOptionsVM.EnableCanopies = false; //default vypnute
 
                 _modelOptionsVM.VariousBayWidths = false; //default vypnute

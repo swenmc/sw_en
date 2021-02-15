@@ -345,7 +345,7 @@
             <TabItem Name ="TabBayWidths">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="BayWidths" Foreground="Blue"/>
+                        <TextBlock Text="Bay Widths" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
@@ -693,7 +693,7 @@
             <TabItem Name ="TabCrossBracing">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="CrossBracing" Foreground="Blue"/>
+                        <TextBlock Text="Cross Bracing" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
