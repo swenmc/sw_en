@@ -1234,7 +1234,7 @@ namespace PFD
             CMemberEccentricity eccentricity_Walls = null;
             CMemberEccentricity eccentricity_Roof = null;
 
-            if (m_arrCrSc[EMemberType_FS_Position.CrossBracingWall] != null)
+            if (bGenerateSideWallCrossBracing && m_arrCrSc[EMemberType_FS_Position.CrossBracingWall] != null)
             {
                 section_CB_Walls = m_arrCrSc[EMemberType_FS_Position.CrossBracingWall];
                 eccentricity_Walls = new CMemberEccentricity((float)m_arrCrSc[EMemberType_FS_Position.MainColumn].z_max + (float)section_CB_Walls.t_min, 0f);
@@ -1242,13 +1242,13 @@ namespace PFD
                 fAlignmentEnd_Walls = 0.5f * (float)section_CB_Walls.b;
             }
 
-            if (m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof] != null)
+            if (bGenerateRoofCrossBracing && m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof] != null)
             {
                 section_CB_Roof = m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof];
                 eccentricity_Roof = new CMemberEccentricity((float)m_arrCrSc[EMemberType_FS_Position.MainRafter].z_max + (float)section_CB_Roof.t_min, 0f);
                 fAlignmentStart_Roof = 0.5f * (float)section_CB_Roof.b;
                 fAlignmentEnd_Roof = 0.5f * (float)section_CB_Roof.b;
-            }       
+            }
 
             // Walls
             if (bGenerateSideWallCrossBracing)
