@@ -45,7 +45,7 @@ namespace PFD
             eMember_Input = 1,
 
             eBayWidths = 2,
-            eAccesories = 3,
+            eAccessories = 3,
             eJoint_Input = 4,
             eFooting_Input = 5,
             eCrossBracing = 6,
@@ -179,7 +179,7 @@ namespace PFD
                 if (e.PropertyName == "Downpipes") return;
                 if (e.PropertyName == "ComponentList") return;
 
-                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility(); } return; }
+                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccessoriesButtonsVisibility(); } return; }
 
                 if (e.PropertyName == "RoofCladdingColorIndex" || e.PropertyName == "WallCladdingColorIndex"
                     || e.PropertyName == "RoofCladdingCoatingIndex" || e.PropertyName == "WallCladdingCoatingIndex")
@@ -1284,7 +1284,7 @@ namespace PFD
 
             if (vm._modelOptionsVM.VariousBayWidths) TabBayWidths.Visibility = Visibility.Visible;
             else TabBayWidths.Visibility = Visibility.Collapsed;
-            if (vm._modelOptionsVM.EnableAccesories) DoorsAndWindows.Visibility = Visibility.Visible;            
+            if (vm._modelOptionsVM.EnableAccessories) DoorsAndWindows.Visibility = Visibility.Visible;            
             else DoorsAndWindows.Visibility = Visibility.Collapsed;
             if (vm._modelOptionsVM.EnableJoints) Joint_Input.Visibility = Visibility.Visible;
             else Joint_Input.Visibility = Visibility.Collapsed;
@@ -1321,7 +1321,7 @@ namespace PFD
             if (!CPermissions.UserHasPermission(EUserPermission.ExportReport)) { ExportWord.Visibility = Visibility.Collapsed; ExportPDF.Visibility = Visibility.Collapsed; }
         }
 
-        private void SetAccesoriesButtonsVisibility()
+        private void SetAccessoriesButtonsVisibility()
         {
             //if (vm.Flashings.Count >= 9) btnAddFlashing.Visibility = Visibility.Hidden;
             //else btnAddFlashing.Visibility = Visibility.Visible;
@@ -1401,7 +1401,7 @@ namespace PFD
                 if (TabBayWidths.Content == null) TabBayWidths.Content = new UC_BaysWidthOptions(vm);
                 //(TabBayWidths.Content as UC_BaysWidthOptions).BaysWidthOptionsChanged = false;
             }
-            else if (MainTabControl.SelectedIndex == (int)ETabNames.eAccesories)
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eAccessories)
             {
                 if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
                 else RedrawDoorOrWindowPreview();

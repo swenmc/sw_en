@@ -34,7 +34,7 @@ namespace PFD
         private bool m_VariousCrossSections;
 
         private bool m_VariousBayWidths;
-        private bool m_EnableAccesories;
+        private bool m_EnableAccessories;
         private bool m_EnableJoints;
         private bool m_EnableFootings;
         private bool m_EnableCrossBracing;
@@ -291,17 +291,17 @@ namespace PFD
             }
         }
 
-        public bool EnableAccesories
+        public bool EnableAccessories
         {
             get
             {
-                return m_EnableAccesories;
+                return m_EnableAccessories;
             }
 
             set
             {
-                m_EnableAccesories = value;
-                NotifyPropertyChanged("EnableAccesories");
+                m_EnableAccessories = value;
+                NotifyPropertyChanged("EnableAccessories");
             }
         }
 
@@ -395,7 +395,7 @@ namespace PFD
             m_VariousCrossSections = false;
 
             m_VariousBayWidths = false;
-            m_EnableAccesories = true;
+            m_EnableAccessories = true;
             m_EnableJoints = true;
             m_EnableFootings = true;
             m_EnableCrossBracing = true;
@@ -440,7 +440,7 @@ namespace PFD
             VariousCrossSections = vm.VariousCrossSections;
 
             VariousBayWidths = vm.VariousBayWidths;
-            EnableAccesories = vm.EnableAccesories;
+            EnableAccessories = vm.EnableAccessories;
             EnableJoints = vm.EnableJoints;
             EnableFootings = vm.EnableFootings;
             EnableCrossBracing = vm.EnableCrossBracing;
