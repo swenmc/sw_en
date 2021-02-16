@@ -135,12 +135,12 @@ namespace BaseClasses.GraphObj
             // Vytvorime model v GCS [0,0,0] je uvazovana v bode m_ControlPoint
 
             // Consider roof cladding height for front and back wall
-            bool bConsiderRoofCladdingFor_FB_WallHeight = true; // TODO - napojit na GUI // Default true
+            bool bConsiderRoofCladdingFor_FB_WallHeight = true; // TODO 719 - napojit na GUI // Default true
 
-            double bottomEdge_z = -0.05; // Offset pod spodnu uroven podlahy // TODO - napojit na GUI, default -50 mm, limit <-500mm, 0>
+            double bottomEdge_z = -0.05; // Offset pod spodnu uroven podlahy // TODO 719 - napojit na GUI, default -50 mm, limit <-500mm, 0>
 
-            double roofEdgeOverhang_X = 0.150; // Presah okraja strechy // TODO - napojit na GUI, default 150 mm, limit <0, 600mm>
-            double roofEdgeOverhang_Y = 0.000; // Presah okraja strechy // TODO - napojit na GUI, default 0 mm limit <0, 300mm>
+            double roofEdgeOverhang_X = 0.150; // Presah okraja strechy // TODO 719 - napojit na GUI, default 150 mm, limit <0, 600mm>
+            double roofEdgeOverhang_Y = 0.000; // Presah okraja strechy // TODO 719 - napojit na GUI, default 0 mm limit <0, 300mm>
 
             if (bConsiderRoofCladdingFor_FB_WallHeight && roofEdgeOverhang_Y > 0)
                 throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
@@ -608,14 +608,14 @@ namespace BaseClasses.GraphObj
 
 
 
-            bool bParticularCladdingSheets = true; // TODO - Option - Model Options
+            bool bIndividualCladdingSheets = true; // TODO 719 - Option - Model Options
             // Ak to bude false, zostane vacsina veci ako doposial
             // Zobrazime len jednoliatu plochu s farbou alebo texturou, nad nou mozeme zobrazit fibreglass sheet (to treba dorobit aby sa dalo zavolat samostatne)
             // Bude to podobne ako door a window, takze sa nebudu kreslit realne otvory len sa nad plochu strechy dokresli fibreglass sheet
             // Nebudeme generovat cladding sheet material list ani cladding sheet layout pattern
             // Len spocitame plochu otvorov a odratame ju z celkovej plochy cladding a to bude v Quotation
 
-            if (bParticularCladdingSheets)
+            if (bIndividualCladdingSheets)
             {
                 //------------------------------------------------------------------------------------------------------
                 //------------------------------------------------------------------------------------------------------
