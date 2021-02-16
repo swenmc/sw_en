@@ -27,8 +27,8 @@ namespace BaseClasses.GraphObj
 
         double claddingWidthRibModular_Wall = 0.190; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
         double claddingWidthRibModular_Roof = 0.300; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
-        float claddingWidthModular_Wall = 0.6f; // TODO - Input z databazy
-        float claddingWidthModular_Roof = 0.7f; // TODO - Input z databazy
+        float claddingWidthModular_Wall = 0.6f; // TODO 719 - Input z databazy
+        float claddingWidthModular_Roof = 0.7f; // TODO 719 - Input z databazy
 
         double column_crsc_z_plus;
         double column_crsc_y_minus;
@@ -60,9 +60,9 @@ namespace BaseClasses.GraphObj
         double claddingWidthRibModular_Wall_FG;
         float claddingWidthModular_Wall_FG;
 
-        float fFibreGlassOpacity = 0.9f; // TODO - napojit na GUI
+        float fFibreGlassOpacity = 0.9f; // TODO 719 - napojit na GUI
         float fOpeningOpacity = 0.02f;
-        bool bDistinguishedSheetColor = true; // TODO - Option v GUI - Display Options
+        bool bDistinguishedSheetColor = true; // TODO 719 - Option v GUI - Display Options
 
         public CCladding()
         {
@@ -110,18 +110,18 @@ namespace BaseClasses.GraphObj
             claddingWidthRibModular_Wall = wallCladdingWidthRib;
             claddingWidthRibModular_Roof = roofCladdingWidthRib;
 
-            // TODO - Implementovat a napojit z GUI
-            m_ColorNameRoof_FG = "LightCyan"; // TODO GUI INPUT
+            // TODO 719 - Implementovat a napojit z GUI
+            m_ColorNameRoof_FG = "LightCyan"; // TODO 719 GUI INPUT
             m_claddingShape_Roof_FG = m_claddingShape_Roof;
             m_claddingCoatingType_Roof_FG = "";
-            m_ColorRoof_FG = Colors.LightCyan; // TODO GUI INPUT
+            m_ColorRoof_FG = Colors.LightCyan; // TODO 719 GUI INPUT
             claddingWidthRibModular_Roof_FG = roofCladdingWidthRib;
             claddingWidthModular_Roof_FG = claddingWidthModular_Roof;
 
-            m_ColorNameWall_FG = "LightBlue"; // TODO GUI INPUT
+            m_ColorNameWall_FG = "LightBlue"; // TODO 719 GUI INPUT
             m_claddingShape_Wall_FG = m_claddingShape_Wall;
             m_claddingCoatingType_Wall_FG = "";
-            m_ColorWall_FG = Colors.LightBlue; // TODO GUI INPUT
+            m_ColorWall_FG = Colors.LightBlue; // TODO 719 GUI INPUT
             claddingWidthRibModular_Wall_FG = wallCladdingWidthRib;
             claddingWidthModular_Wall_FG = claddingWidthModular_Wall;
         }
@@ -1272,7 +1272,7 @@ namespace BaseClasses.GraphObj
                         //----------------------------------------------------------------------------------
                         foreach (CCanopiesInfo canopy in canopyCollection)
                         {
-                            float fOverhangOffset_x = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
+                            float fOverhangOffset_x = 0.05f; // // TODO 719 - zadavat v GUI ako cladding property pre roof
                             float fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
 
                             float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
@@ -1454,7 +1454,7 @@ namespace BaseClasses.GraphObj
                                 //----------------------------------------------------------------------------------
                                 foreach (CCanopiesInfo canopy in canopyCollection)
                                 {
-                                    float fOverhangOffset_x = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
+                                    float fOverhangOffset_x = 0.05f; // TODO 719 - zadavat v GUI ako cladding property pre roof
                                     float fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
 
                                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
