@@ -72,6 +72,12 @@ namespace PFD
         private List<string> m_RoofFibreglassThicknessTypes;
         private List<string> m_WallFibreglassThicknessTypes;
 
+        private float m_RoofEdgeOverHang_FB_Y;
+        private float m_RoofEdgeOverHang_LR_X;
+        private float m_CanopyRoofEdgeOverHang_LR_X;
+        private float m_WallBottomOffset_Z;
+
+        private bool m_ConsiderRoofCladdingFor_FB_WallHeight;
 
         #endregion private fields
 
@@ -797,6 +803,84 @@ namespace PFD
                 NotifyPropertyChanged("WallFibreglassOverlap");
             }
         }
+
+        public float RoofEdgeOverHang_FB_Y
+        {
+            get
+            {
+                return m_RoofEdgeOverHang_FB_Y;
+            }
+
+            set
+            {
+                if (value < 0.00 || value > 0.30)
+                    throw new ArgumentException("Overhang length must be between 0 and 300 [mm]");
+                m_RoofEdgeOverHang_FB_Y = value;
+                NotifyPropertyChanged("RoofEdgeOverHang_FB_Y");
+            }
+        }
+
+        public float RoofEdgeOverHang_LR_X
+        {
+            get
+            {
+                return m_RoofEdgeOverHang_LR_X;
+            }
+
+            set
+            {
+                if (value < 0.00 || value > 0.50)
+                    throw new ArgumentException("Overhang length must be between 0 and 500 [mm]");
+                m_RoofEdgeOverHang_LR_X = value;
+                NotifyPropertyChanged("RoofEdgeOverHang_LR_X");
+            }
+        }
+
+        public float CanopyRoofEdgeOverHang_LR_X
+        {
+            get
+            {
+                return m_CanopyRoofEdgeOverHang_LR_X;
+            }
+
+            set
+            {
+                if (value < 0.00 || value > 0.50)
+                    throw new ArgumentException("Overhang length must be between 0 and 500 [mm]");
+                m_CanopyRoofEdgeOverHang_LR_X = value;
+                NotifyPropertyChanged("CanopyRoofEdgeOverHang_LR_X");
+            }
+        }
+
+        public float WallBottomOffset_Z
+        {
+            get
+            {
+                return m_WallBottomOffset_Z;
+            }
+
+            set
+            {
+                if (value < -0.50 || value > 0.00)
+                    throw new ArgumentException("Bottom offset under floor level must be between -500 and 0 [mm]");
+                m_WallBottomOffset_Z = value;
+                NotifyPropertyChanged("WallBottomOffset_Z");
+            }
+        }
+
+        public bool ConsiderRoofCladdingFor_FB_WallHeight
+        {
+            get
+            {
+                return m_ConsiderRoofCladdingFor_FB_WallHeight;
+            }
+
+            set
+            {
+                m_ConsiderRoofCladdingFor_FB_WallHeight = value;
+                NotifyPropertyChanged("ConsiderRoofCladdingFor_FB_WallHeight");
+            }
+        }
         #endregion Properties
 
         //-------------------------------------------------------------------------------------------------------------
@@ -825,6 +909,12 @@ namespace PFD
             RoofFibreglassOverlap = 0.15f;
             WallFibreglassOverlap = 0.15f;
 
+            RoofEdgeOverHang_FB_Y = 0.0f;
+            RoofEdgeOverHang_LR_X = 0.15f;
+            CanopyRoofEdgeOverHang_LR_X = 0.15f;
+            WallBottomOffset_Z = -0.05f;
+            ConsiderRoofCladdingFor_FB_WallHeight = true;
+
             IsSetFromCode = false;
         }
 
@@ -848,6 +938,12 @@ namespace PFD
             WallCladdingOverlap = 0.15f;
             RoofFibreglassOverlap = 0.15f;
             WallFibreglassOverlap = 0.15f;
+
+            RoofEdgeOverHang_FB_Y = 0.0f;
+            RoofEdgeOverHang_LR_X = 0.15f;
+            CanopyRoofEdgeOverHang_LR_X = 0.15f;
+            WallBottomOffset_Z = -0.05f;
+            ConsiderRoofCladdingFor_FB_WallHeight = true;
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -881,6 +977,13 @@ namespace PFD
             WallCladdingOverlap = newVM.WallCladdingOverlap;
             RoofFibreglassOverlap = newVM.RoofFibreglassOverlap;
             WallFibreglassOverlap = newVM.WallFibreglassOverlap;
+
+            RoofEdgeOverHang_FB_Y = newVM.RoofEdgeOverHang_FB_Y;
+            RoofEdgeOverHang_LR_X = newVM.RoofEdgeOverHang_LR_X;
+            CanopyRoofEdgeOverHang_LR_X = newVM.CanopyRoofEdgeOverHang_LR_X;
+            WallBottomOffset_Z = newVM.WallBottomOffset_Z;
+
+            ConsiderRoofCladdingFor_FB_WallHeight = newVM.ConsiderRoofCladdingFor_FB_WallHeight;
 
             IsSetFromCode = false;
         }

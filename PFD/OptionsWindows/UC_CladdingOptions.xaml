@@ -45,6 +45,15 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -179,7 +188,7 @@
                          Text="{Binding Path=WallFibreglassOverlap, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
-            
+
             <TextBlock Grid.Row="11" Grid.Column="3" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
             <TextBox Grid.Row="11" Grid.Column="4" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -188,9 +197,42 @@
             <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="6" FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="13" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Grid.Row="13" Grid.Column="1" Name ="TextBox_RoofEdgeOverHang_FB_Y" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=RoofEdgeOverHang_FB_Y, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="13" Grid.Column="2" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-            <DataGrid Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="6" Name ="Datagrid_Fibreglass" SelectionMode="Single" ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBlock Grid.Row="14" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_RoofEdgeOverHang_LR_X" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=RoofEdgeOverHang_LR_X, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="15" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_CanopyRoofEdgeOverHang_LR_X" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=CanopyRoofEdgeOverHang_LR_X, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="16" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_WallBottomOffset_Z" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WallBottomOffset_Z, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="16" Grid.Column="2" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <CheckBox Grid.Row="17" Grid.Column="0" Name ="chbConsiderRoofCladdingFor_FB_WallHeight" HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         IsChecked="{Binding Path=ConsiderRoofCladdingFor_FB_WallHeight}" Grid.ColumnSpan="2" Width="265">Consider roof cladding for front/back wall height
+            </CheckBox>
+
+            <TextBlock Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="6" FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" />
+
+            <DataGrid Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="6" Name ="Datagrid_Fibreglass" SelectionMode="Single" ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" MinHeight="20" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top"  
                                   CanUserSortColumns="False" >
                 <DataGrid.Columns>
