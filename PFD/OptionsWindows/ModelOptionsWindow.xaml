@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Model Options" Height="500" Width="400">
+        Title="Model Options" Height="535" Width="400">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -30,22 +30,20 @@
                 <CheckBox Name="chbUseMainColumnFlyBracingPlates" IsChecked="{Binding Path=UseMainColumnFlyBracingPlates}">Use Main Column Fly Bracing Plates</CheckBox>
                 <CheckBox Name="chbbUseRafterFlyBracingPlates" IsChecked="{Binding Path=UseRafterFlyBracingPlates}">Use Rafter Fly Bracing Plates</CheckBox>-->
 
-                <TextBlock Text="Wind Post Position" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock Text="Wind Post Position" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0 5 0 0"/>
                 <CheckBox Name="chbPlaceWindPostUnderRafter" IsChecked="{Binding Path=WindPostUnderRafter}">Place wind post under rafter</CheckBox>
 
-                <TextBlock Text="Reinforcement Bar Shape" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock Text="Reinforcement Bar Shape" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"  Margin="0 5 0 0"/>
                 <CheckBox Name="chbUseStraightReinforcementBars" IsChecked="{Binding Path=UseStraightReinforcementBars}" >Use straight reinforcement bars</CheckBox>
 
-                <TextBlock Text="Update" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                <CheckBox Name="chbUpdateAutomatically" IsChecked="{Binding Path=UpdateAutomatically}" >Update model automatically</CheckBox>
 
-                <TextBlock Text="Cross-sections" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock Text="Cross-sections" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"  Margin="0 5 0 0"/>
                 <CheckBox Name="chbVariousCrossSections" IsChecked="{Binding Path=VariousCrossSections}" >Enable various cross-sections in bays</CheckBox>
 
-                <TextBlock Text="Bays" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock Text="Bays" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"  Margin="0 5 0 0"/>
                 <CheckBox Name="chbVariousBayWidths" IsChecked="{Binding Path=VariousBayWidths}" >Enable various bay widths</CheckBox>
 
-                <TextBlock Text="Components" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock Text="Components" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"  Margin="0 5 0 0"/>
                 <CheckBox Name="chbEnableAccessories" IsChecked="{Binding Path=EnableAccessories}" IsEnabled="False">Accessories</CheckBox>
                 <CheckBox Name="chbEnableJoints" IsChecked="{Binding Path=EnableJoints}" IsEnabled="False">Joints</CheckBox>
                 <CheckBox Name="chbEnableFootings" IsChecked="{Binding Path=EnableFootings}" IsEnabled="False">Footings</CheckBox>
@@ -53,19 +51,21 @@
                 <CheckBox Name="chbEnableCanopies" IsChecked="{Binding Path=EnableCanopies}">Canopies</CheckBox>
                 <CheckBox Name="chbEnableCladding" IsChecked="{Binding Path=EnableCladding}">Cladding</CheckBox>
 
-                <TextBlock Text="Colors - Use same colors for all" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock Text="Colors - Use same colors for all" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0 5 0 0"/>
                 <CheckBox Name="chbSameColorsDoor" IsChecked="{Binding Path=SameColorsDoor}">Doors</CheckBox>
                 <CheckBox Name="chbSameColorsFlashings" IsChecked="{Binding Path=SameColorsFlashings}">Flashings</CheckBox>
                 <CheckBox Name="chbSameColorsGutters" IsChecked="{Binding Path=SameColorsGutters}" IsEnabled="False">Gutters</CheckBox>
                 <CheckBox Name="chbSameColorsDownpipes" IsChecked="{Binding Path=SameColorsDownpipes}" IsEnabled="False">Downpipes</CheckBox>
                 <CheckBox Name="chbSameColorsFGD" IsChecked="{Binding Path=SameColorsFGD}">Flashings gutters and downpipes </CheckBox>
 
-                <TextBlock Text="Model Dimensions" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock Text="Model Dimensions" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"  Margin="0 5 0 0"/>
                 <StackPanel Orientation="Horizontal">
                     <RadioButton Name="radioCenterlineDimensions" GroupName="Dimensions"  IsChecked="{Binding Path=CenterlinesDimensions, Mode=TwoWay}">Centerline dimensions</RadioButton>
                     <RadioButton Name="radioOverAllDimensions" Margin="15 0 0 0" GroupName="Dimensions" IsChecked="{Binding Path=OverallDimensions, Mode=TwoWay}">Overall dimensions</RadioButton>
                 </StackPanel>
 
+                <TextBlock Text="Update" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0 20 0 0"/>
+                <CheckBox Name="chbUpdateAutomatically" IsChecked="{Binding Path=UpdateAutomatically}" >Update model automatically</CheckBox>
                 
 
             </StackPanel>
