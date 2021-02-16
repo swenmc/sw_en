@@ -3346,9 +3346,7 @@ namespace PFD
             MRecreateJoints = true;
             MSynchronizeGUI = true;
 
-            QuotationDisplayOptions _quotationDisplayOptions = new QuotationDisplayOptions();
-            //_quotationExportOptions = new QuotationExportOptions(_quotationDisplayOptions);
-            _quotationDisplayOptionsVM = new QuotationDisplayOptionsViewModel(_quotationDisplayOptions);
+            _quotationDisplayOptionsVM = new QuotationDisplayOptionsViewModel(true);
 
             IsSetFromCode = false;
 

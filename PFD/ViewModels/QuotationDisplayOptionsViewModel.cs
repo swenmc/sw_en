@@ -183,19 +183,19 @@ namespace PFD
 
         public QuotationDisplayOptionsViewModel() { }
 
-        public QuotationDisplayOptionsViewModel(QuotationDisplayOptions opts)
+        public QuotationDisplayOptionsViewModel(bool checkAll)
         {
-            DisplayMembers = opts.DisplayMembers;
-            DisplayPlates = opts.DisplayPlates;
-            DisplayConnectors = opts.DisplayConnectors;
-            DisplayBoltNuts = opts.DisplayBoltNuts;
-            DisplayCladding = opts.DisplayCladding;
-            DisplayFibreglass = opts.DisplayFibreglass;
-            DisplayRoofNetting = opts.DisplayRoofNetting;
-            DisplayDoorsAndWindows = opts.DisplayDoorsAndWindows;
-            DisplayGutters = opts.DisplayGutters;
-            DisplayDownpipe = opts.DisplayDownpipe;
-            DisplayFlashing = opts.DisplayFlashing;
+            DisplayMembers = checkAll;
+            DisplayPlates = checkAll;
+            DisplayConnectors = checkAll;
+            DisplayBoltNuts = checkAll;
+            DisplayCladding = checkAll;
+            DisplayFibreglass = checkAll;
+            DisplayRoofNetting = checkAll;
+            DisplayDoorsAndWindows = checkAll;
+            DisplayGutters = checkAll;
+            DisplayDownpipe = checkAll;
+            DisplayFlashing = checkAll;
         }
 
 

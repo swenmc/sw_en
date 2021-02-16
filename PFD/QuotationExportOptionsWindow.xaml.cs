@@ -26,21 +26,21 @@ namespace PFD
 
             _pfdVM = pfdVM;
 
-            pfdVM._quotationExportOptionsVM = pfdVM._quotationDisplayOptionsVM.Clone();
+            //pfdVM._quotationExportOptionsVM = pfdVM._quotationDisplayOptionsVM.Clone();
 
-            if (!pfdVM._quotationExportOptionsVM.DisplayMembers) chckDisplayMembers.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayPlates) chckDisplayPlates.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayConnectors) chcDisplayConnectors.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayBoltNuts) chckDisplayBoltNuts.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayCladding) chckDisplayCladding.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayFibreglass) chckDisplayFibreglass.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayRoofNetting) chckDisplayRoofNetting.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayDoorsAndWindows) chckDisplayDoorsAndWindows.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayGutters) chckDisplayGutters.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayDownpipe) chckDisplayDownpipe.Visibility = Visibility.Collapsed;
-            if (!pfdVM._quotationExportOptionsVM.DisplayFlashing) chckDisplayFlashing.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayMembers) chckDisplayMembers.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayPlates) chckDisplayPlates.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayConnectors) chcDisplayConnectors.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayBoltNuts) chckDisplayBoltNuts.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayCladding) chckDisplayCladding.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayFibreglass) chckDisplayFibreglass.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayRoofNetting) chckDisplayRoofNetting.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayDoorsAndWindows) chckDisplayDoorsAndWindows.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayGutters) chckDisplayGutters.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayDownpipe) chckDisplayDownpipe.Visibility = Visibility.Collapsed;
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayFlashing) chckDisplayFlashing.Visibility = Visibility.Collapsed;
             
-            pfdVM._quotationExportOptionsVM = pfdVM._quotationDisplayOptionsVM.Clone();
+            //pfdVM._quotationExportOptionsVM = pfdVM._quotationDisplayOptionsVM.Clone();
 
             pfdVM._quotationExportOptionsVM.PropertyChanged += HandleExportOptionsPropertyChangedEvent;            
             this.DataContext = pfdVM._quotationExportOptionsVM;

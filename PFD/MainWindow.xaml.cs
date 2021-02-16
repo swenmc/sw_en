@@ -2800,7 +2800,7 @@ namespace PFD
                     if (optionsList.Count > 6)
                     {
                         QuotationDisplayOptionsViewModel qeoVM = optionsList[6] as QuotationDisplayOptionsViewModel;
-                        if (vm._quotationExportOptionsVM == null) vm._quotationExportOptionsVM = new QuotationDisplayOptionsViewModel();
+                        if (vm._quotationExportOptionsVM == null) vm._quotationExportOptionsVM = vm._quotationDisplayOptionsVM.Clone();
                         if (qeoVM != null) vm._quotationExportOptionsVM.SetViewModel(qeoVM);
                     }
 

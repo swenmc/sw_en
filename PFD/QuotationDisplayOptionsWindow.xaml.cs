@@ -44,7 +44,12 @@ namespace PFD
         
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (DisplayOptionsChanged) _pfdVM.RecreateQuotation = true;
+            if (DisplayOptionsChanged)
+            {
+                _pfdVM.RecreateQuotation = true;
+                _pfdVM._quotationExportOptionsVM = _pfdVM._quotationDisplayOptionsVM.Clone();
+            }
+            
             this.Close();
         }
     }
