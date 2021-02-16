@@ -21,10 +21,13 @@
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Name="GridCladdingOptions" Margin="5">
+        <Grid Name="GridCladdingOptions" Margin="5"> 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="125"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="125"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -36,10 +39,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>                  
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
@@ -71,30 +71,37 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Maximum Sheet Length:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_MaxSheetLengthRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=MaxSheetLengthRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
-            
-            <TextBlock Grid.Row="5" Grid.Column="0" Text="Thickness:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
-            <ComboBox Grid.Row="5" Grid.Column="1" Name ="Combobox_RoofCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Thickness:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
+            <ComboBox Grid.Row="4" Grid.Column="1" Name ="Combobox_RoofCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding RoofCladdingsThicknessTypes}" SelectedIndex="{Binding Path=RoofCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
 
-            <TextBlock Grid.Row="6" Grid.Column="0" FontWeight="Bold" Text="Wall Cladding:" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Maximum Sheet Length:" TextWrapping="Wrap" HorizontalAlignment="Left" />
+            <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_MaxSheetLengthRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=MaxSheetLengthRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
+            <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_RoofCladdingOverlap" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=RoofCladdingOverlap, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="3" FontWeight="Bold" Text="Wall Cladding:" HorizontalAlignment="Left" />
                         
-            <TextBlock Grid.Row="7" Grid.Column="0" Text="Profile:" HorizontalAlignment="Left"  />
-            <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="Profile:" HorizontalAlignment="Left"  />
+            <ComboBox Grid.Row="1" Grid.Column="4" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Claddings}" SelectedIndex="{Binding Path=WallCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="8" Grid.Column="0" Text="Coating:" HorizontalAlignment="Left"  />
-            <ComboBox Grid.Row="8" Grid.Column="1" Name ="Combobox_WallCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="2" Grid.Column="3" Text="Coating:" HorizontalAlignment="Left"  />
+            <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_WallCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=WallCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="9" Grid.Column="0" Text="Colour:" HorizontalAlignment="Left"  />
-            <ComboBox Grid.Row="9" Grid.Column="1" ItemsSource="{Binding Path=WallCladdingColors}" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="3" Grid.Column="3" Text="Colour:" HorizontalAlignment="Left"  />
+            <ComboBox Grid.Row="3" Grid.Column="4" ItemsSource="{Binding Path=WallCladdingColors}" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -106,44 +113,84 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="10" Grid.Column="0" Text="Maximum Sheet Length:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
-            <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_MaxSheetLengthWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="4" Grid.Column="3" Text="Thickness:" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
+            <ComboBox Grid.Row="4" Grid.Column="4" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                      VerticalAlignment="Top" ItemsSource="{Binding WallCladdingsThicknessTypes}" 
+                      SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            
+            <TextBlock Grid.Row="5" Grid.Column="3" Text="Maximum Sheet Length:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
+            <TextBox Grid.Row="5" Grid.Column="4" Name ="TextBox_MaxSheetLengthWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=MaxSheetLengthWall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="5" Grid.Column="5" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="3" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Grid.Row="6" Grid.Column="4" Name ="TextBox_WallCladdingOverlap" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WallCladdingOverlap, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="6" Grid.Column="5" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="Roof Fibreglass:" FontWeight="Bold" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
+
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Thickness:" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
+            <ComboBox Grid.Row="8" Grid.Column="1" Name ="Combobox_RoofFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" ItemsSource="{Binding RoofFibreglassThicknessTypes}" SelectedIndex="{Binding Path=RoofFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Maximum Sheet Length:" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
+            <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_MaxSheetLengthRoofFibreglass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=MaxSheetLengthRoofFibreglass, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="10" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
+            <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_RoofFibreglassOverlap" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=RoofFibreglassOverlap, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="11" Grid.Column="0" Text="Thickness:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
-            <ComboBox Grid.Row="11" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" ItemsSource="{Binding WallCladdingsThicknessTypes}" SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            
-            <TextBlock Grid.Row="12" Grid.Column="0" Text="Roof Fibreglass Thickness:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
-            <ComboBox Grid.Row="12" Grid.Column="1" Name ="Combobox_RoofFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" ItemsSource="{Binding RoofFibreglassThicknessTypes}" SelectedIndex="{Binding Path=RoofFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-
-            <TextBlock Grid.Row="13" Grid.Column="0" Text="Wall Fibreglass Thickness:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
-            <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_WallFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" ItemsSource="{Binding WallFibreglassThicknessTypes}" SelectedIndex="{Binding Path=WallFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-
-            <TextBlock Grid.Row="14" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="11" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
-            <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True"
                          Text="{Binding Path=FibreglassAreaRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="15" Grid.Column="0" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="7" Grid.Column="3" Text="Wall Fibreglass:" FontWeight="Bold" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+
+            <TextBlock Grid.Row="8" Grid.Column="3" Text="Thickness:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <ComboBox Grid.Row="8" Grid.Column="4" Name ="Combobox_WallFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" ItemsSource="{Binding WallFibreglassThicknessTypes}" SelectedIndex="{Binding Path=WallFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="9" Grid.Column="3" Text="Maximum Sheet Length:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Grid.Row="9" Grid.Column="4" Name ="TextBox_MaxSheetLengthWallFibreglass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=MaxSheetLengthRoofFibreglass, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="10" Grid.Column="3" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_WallFibreglassOverlap" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WallFibreglassOverlap, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>            
+            
+            <TextBlock Grid.Row="11" Grid.Column="3" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
-            <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="11" Grid.Column="4" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True"
                          Text="{Binding Path=FibreglassAreaWall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="16" Grid.Column="0" FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="6" FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" />
 
-            <DataGrid Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="3" Name ="Datagrid_Fibreglass" SelectionMode="Single" ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+            <DataGrid Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="6" Name ="Datagrid_Fibreglass" SelectionMode="Single" ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" MinHeight="20" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top"  
                                   CanUserSortColumns="False" >
                 <DataGrid.Columns>

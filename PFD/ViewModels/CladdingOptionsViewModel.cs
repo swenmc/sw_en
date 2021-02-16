@@ -32,6 +32,9 @@ namespace PFD
         private List<CoatingColour> m_RoofCladdingColors;
         private int m_RoofCladdingColorIndex;
         private int m_RoofCladdingThicknessIndex;
+        private float m_MaxSheetLengthRoof;
+        private float m_RoofCladdingOverlap;
+
         private int m_WallCladdingIndex;
         private int m_WallCladdingID;
         private int m_WallCladdingCoatingIndex;
@@ -39,9 +42,15 @@ namespace PFD
         private List<CoatingColour> m_WallCladdingColors;
         private int m_WallCladdingColorIndex;
         private int m_WallCladdingThicknessIndex;
+        private float m_MaxSheetLengthWall;
+        private float m_WallCladdingOverlap;
 
         private int m_RoofFibreglassThicknessIndex;
         private int m_WallFibreglassThicknessIndex;
+        private float m_MaxSheetLengthRoofFibreglass;
+        private float m_MaxSheetLengthWallFibreglass;
+        private float m_RoofFibreglassOverlap;
+        private float m_WallFibreglassOverlap;
         private float m_FibreglassAreaRoof;
         private float m_FibreglassAreaWall;
 
@@ -661,6 +670,118 @@ namespace PFD
             }
         }
 
+        public float MaxSheetLengthRoof
+        {
+            get
+            {
+                return m_MaxSheetLengthRoof;
+            }
+
+            set
+            {
+                m_MaxSheetLengthRoof = value;
+                NotifyPropertyChanged("MaxSheetLengthRoof");
+            }
+        }
+
+        public float RoofCladdingOverlap
+        {
+            get
+            {
+                return m_RoofCladdingOverlap;
+            }
+
+            set
+            {
+                m_RoofCladdingOverlap = value;
+                NotifyPropertyChanged("RoofCladdingOverlap");
+            }
+        }
+
+        public float MaxSheetLengthWall
+        {
+            get
+            {
+                return m_MaxSheetLengthWall;
+            }
+
+            set
+            {
+                m_MaxSheetLengthWall = value;
+                NotifyPropertyChanged("MaxSheetLengthWall");
+            }
+        }
+
+        public float WallCladdingOverlap
+        {
+            get
+            {
+                return m_WallCladdingOverlap;
+            }
+
+            set
+            {
+                m_WallCladdingOverlap = value;
+                NotifyPropertyChanged("WallCladdingOverlap");
+            }
+        }
+
+        public float MaxSheetLengthRoofFibreglass
+        {
+            get
+            {
+                return m_MaxSheetLengthRoofFibreglass;
+            }
+
+            set
+            {
+                m_MaxSheetLengthRoofFibreglass = value;
+                NotifyPropertyChanged("MaxSheetLengthRoofFibreglass");
+            }
+        }
+
+        public float MaxSheetLengthWallFibreglass
+        {
+            get
+            {
+                return m_MaxSheetLengthWallFibreglass;
+            }
+
+            set
+            {
+                m_MaxSheetLengthWallFibreglass = value;
+                NotifyPropertyChanged("MaxSheetLengthWallFibreglass");
+            }
+        }
+
+        public float RoofFibreglassOverlap
+        {
+            get
+            {
+                return m_RoofFibreglassOverlap;
+            }
+
+            set
+            {
+                m_RoofFibreglassOverlap = value;
+                NotifyPropertyChanged("RoofFibreglassOverlap");
+            }
+        }
+
+        public float WallFibreglassOverlap
+        {
+            get
+            {
+                return m_WallFibreglassOverlap;
+            }
+
+            set
+            {
+                m_WallFibreglassOverlap = value;
+                NotifyPropertyChanged("WallFibreglassOverlap");
+            }
+        }
+
 
         #endregion Properties
 
@@ -681,6 +802,16 @@ namespace PFD
             WallCladdingColorIndex = 8;
             FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
             FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+            
+            MaxSheetLengthRoof = 6;
+            MaxSheetLengthWall = 6;
+            MaxSheetLengthRoofFibreglass = 6;
+            MaxSheetLengthWallFibreglass = 6;
+
+            RoofCladdingOverlap = 0.15f;
+            WallCladdingOverlap = 0.15f;
+            RoofFibreglassOverlap = 0.15f;
+            WallFibreglassOverlap = 0.15f;
 
             IsSetFromCode = false;
         }
@@ -695,6 +826,16 @@ namespace PFD
             WallCladdingColorIndex = 8;
             FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
             FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+
+            MaxSheetLengthRoof = 6;
+            MaxSheetLengthWall = 6;
+            MaxSheetLengthRoofFibreglass = 6;
+            MaxSheetLengthWallFibreglass = 6;
+
+            RoofCladdingOverlap = 0.15f;
+            WallCladdingOverlap = 0.15f;
+            RoofFibreglassOverlap = 0.15f;
+            WallFibreglassOverlap = 0.15f;
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -707,7 +848,27 @@ namespace PFD
         public void SetViewModel(CladdingOptionsViewModel newVM)
         {
             IsSetFromCode = true;
-            
+
+            //otazka je, ci tu nebudu chybat aj nejake zoznamy hodnot
+
+            RoofCladdingIndex = newVM.RoofCladdingIndex;
+            RoofCladdingCoatingIndex = newVM.RoofCladdingCoatingIndex;
+            RoofCladdingColorIndex = newVM.RoofCladdingColorIndex;
+            WallCladdingIndex = newVM.WallCladdingIndex;
+            WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
+            WallCladdingColorIndex = newVM.WallCladdingColorIndex;
+            FibreglassAreaRoof = newVM.FibreglassAreaRoof;
+            FibreglassAreaWall = newVM.FibreglassAreaWall;
+
+            MaxSheetLengthRoof = newVM.MaxSheetLengthRoof;
+            MaxSheetLengthWall = newVM.MaxSheetLengthWall;
+            MaxSheetLengthRoofFibreglass = newVM.MaxSheetLengthRoofFibreglass;
+            MaxSheetLengthWallFibreglass = newVM.MaxSheetLengthWallFibreglass;
+
+            RoofCladdingOverlap = newVM.RoofCladdingOverlap;
+            WallCladdingOverlap = newVM.WallCladdingOverlap;
+            RoofFibreglassOverlap = newVM.RoofFibreglassOverlap;
+            WallFibreglassOverlap = newVM.WallFibreglassOverlap;
 
             IsSetFromCode = false;
         }
