@@ -2940,6 +2940,9 @@ namespace PFD
                 m_CladdingOptionsChanged = value;
 
                 RecreateModel = true;
+                RecreateQuotation = true;
+                //to mato a co vysledky? treba vymazat ak sa zmenil Cladding options?
+                //SetResultsAreNotValid();
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CladdingOptionsChanged");
             }

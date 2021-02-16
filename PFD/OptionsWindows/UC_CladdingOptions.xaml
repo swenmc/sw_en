@@ -227,7 +227,7 @@
 
             <CheckBox Grid.Row="17" Grid.Column="0" Name ="chbConsiderRoofCladdingFor_FB_WallHeight" HorizontalAlignment="Left"
                          VerticalAlignment="Top"
-                         IsChecked="{Binding Path=ConsiderRoofCladdingFor_FB_WallHeight}" Grid.ColumnSpan="2" Width="265">Consider roof cladding for front/back wall height
+                         IsChecked="{Binding Path=ConsiderRoofCladdingFor_FB_WallHeight}" Grid.ColumnSpan="6">Consider roof cladding for front/back wall height
             </CheckBox>
 
             <TextBlock Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="6" FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" />
