@@ -21,7 +21,7 @@
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Name="GridCladdingOptions" Margin="5"> 
+        <Grid Name="GridCladdingOptions" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="140"/>
                 <ColumnDefinition Width="125"/>
@@ -39,12 +39,12 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>                  
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>                
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -169,7 +169,7 @@
             <TextBlock Grid.Row="9" Grid.Column="3" Text="Maximum Sheet Length:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
             <TextBox Grid.Row="9" Grid.Column="4" Name ="TextBox_MaxSheetLengthWallFibreglass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=MaxSheetLengthRoofFibreglass, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=MaxSheetLengthWallFibreglass, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
@@ -178,7 +178,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=WallFibreglassOverlap, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>            
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
             
             <TextBlock Grid.Row="11" Grid.Column="3" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" VerticalAlignment="Top"  />

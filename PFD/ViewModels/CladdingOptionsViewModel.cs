@@ -331,7 +331,7 @@ namespace PFD
             {
                 if (value < 0.0 || value > 99.0) // Limit is 99% of area
                     throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
-                m_FibreglassAreaRoof = value;                
+                m_FibreglassAreaRoof = value;
                 //RecreateModel = true;
                 NotifyPropertyChanged("FibreglassAreaRoof");
             }
@@ -349,7 +349,7 @@ namespace PFD
             {
                 if (value < 0.0 || value > 99.0) // Limit is 99% of area
                     throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
-                m_FibreglassAreaWall = value;                
+                m_FibreglassAreaWall = value;
                 //RecreateModel = true;
                 NotifyPropertyChanged("FibreglassAreaWall");
             }
@@ -679,6 +679,8 @@ namespace PFD
 
             set
             {
+                if (value < 1.0 || value > 20.0)
+                    throw new ArgumentException("Maximum sheet length must be between 1 and 20 [m]");
                 m_MaxSheetLengthRoof = value;
                 NotifyPropertyChanged("MaxSheetLengthRoof");
             }
@@ -693,6 +695,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.05 || value > 0.50)
+                    throw new ArgumentException("Overlap length must be between 50 and 500 [mm]");
                 m_RoofCladdingOverlap = value;
                 NotifyPropertyChanged("RoofCladdingOverlap");
             }
@@ -707,6 +711,8 @@ namespace PFD
 
             set
             {
+                if (value < 1.0 || value > 20.0)
+                    throw new ArgumentException("Maximum sheet length must be between 1 and 20 [m]");
                 m_MaxSheetLengthWall = value;
                 NotifyPropertyChanged("MaxSheetLengthWall");
             }
@@ -721,6 +727,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.05 || value > 0.50)
+                    throw new ArgumentException("Overlap length must be between 50 and 500 [mm]");
                 m_WallCladdingOverlap = value;
                 NotifyPropertyChanged("WallCladdingOverlap");
             }
@@ -735,6 +743,8 @@ namespace PFD
 
             set
             {
+                if (value < 1.0 || value > 10.0)
+                    throw new ArgumentException("Maximum sheet length must be between 1 and 10 [m]");
                 m_MaxSheetLengthRoofFibreglass = value;
                 NotifyPropertyChanged("MaxSheetLengthRoofFibreglass");
             }
@@ -749,6 +759,8 @@ namespace PFD
 
             set
             {
+                if (value < 1.0 || value > 10.0)
+                    throw new ArgumentException("Maximum sheet length must be between 1 and 10 [m]");
                 m_MaxSheetLengthWallFibreglass = value;
                 NotifyPropertyChanged("MaxSheetLengthWallFibreglass");
             }
@@ -763,6 +775,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.05 || value > 0.50)
+                    throw new ArgumentException("Overlap length must be between 50 and 500 [mm]");
                 m_RoofFibreglassOverlap = value;
                 NotifyPropertyChanged("RoofFibreglassOverlap");
             }
@@ -777,15 +791,13 @@ namespace PFD
 
             set
             {
+                if (value < 0.05 || value > 0.50)
+                    throw new ArgumentException("Overlap length must be between 50 and 500 [mm]");
                 m_WallFibreglassOverlap = value;
                 NotifyPropertyChanged("WallFibreglassOverlap");
             }
         }
-
-
         #endregion Properties
-
-
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -805,8 +817,8 @@ namespace PFD
             
             MaxSheetLengthRoof = 6;
             MaxSheetLengthWall = 6;
-            MaxSheetLengthRoofFibreglass = 6;
-            MaxSheetLengthWallFibreglass = 6;
+            MaxSheetLengthRoofFibreglass = 3;
+            MaxSheetLengthWallFibreglass = 3;
 
             RoofCladdingOverlap = 0.15f;
             WallCladdingOverlap = 0.15f;
@@ -829,8 +841,8 @@ namespace PFD
 
             MaxSheetLengthRoof = 6;
             MaxSheetLengthWall = 6;
-            MaxSheetLengthRoofFibreglass = 6;
-            MaxSheetLengthWallFibreglass = 6;
+            MaxSheetLengthRoofFibreglass = 3;
+            MaxSheetLengthWallFibreglass = 3;
 
             RoofCladdingOverlap = 0.15f;
             WallCladdingOverlap = 0.15f;
@@ -890,6 +902,5 @@ namespace PFD
             prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color
             prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
         }
-
     }
 }
