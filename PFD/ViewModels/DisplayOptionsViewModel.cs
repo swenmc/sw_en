@@ -74,9 +74,11 @@ namespace PFD
         private bool m_DisplayFloorSlabWireFrame;
 
         private bool m_DisplayCladding;
+        private bool m_DisplayFibreglass;
         private bool m_DisplayDoors;
         private bool m_DisplayWindows;
         private bool m_ColoredCenterlines;
+        private bool m_CladdingSheetColoursByID;
 
         // Labels and axes
         private bool MShowLoadsLabels;
@@ -101,6 +103,9 @@ namespace PFD
         private bool MShowSectionSymbols;
         private bool MShowDetailSymbols;
         private bool MShowSlabRebates;
+
+        private bool m_DisplayCladdingSheetID;
+        private bool m_DisplayFibreglassID;
 
         [NonSerialized]
         private Color m_WireframeColor;
@@ -2569,6 +2574,19 @@ namespace PFD
                 NotifyPropertyChanged("DisplayCladding");
             }
         }
+        public bool DisplayFibreglass
+        {
+            get
+            {
+                return m_DisplayFibreglass;
+            }
+
+            set
+            {
+                m_DisplayFibreglass = value;
+                NotifyPropertyChanged("DisplayFibreglass");
+            }
+        }
 
         public bool DisplayDoors
         {
@@ -3142,7 +3160,51 @@ namespace PFD
             }
         }
 
-        
+        public bool DisplayCladdingSheetID
+        {
+            get
+            {
+                return m_DisplayCladdingSheetID;
+            }
+
+            set
+            {
+                m_DisplayCladdingSheetID = value;
+                NotifyPropertyChanged("DisplayCladdingSheetID");
+            }
+        }
+
+        public bool DisplayFibreglassID
+        {
+            get
+            {
+                return m_DisplayFibreglassID;
+            }
+
+            set
+            {
+                m_DisplayFibreglassID = value;
+                NotifyPropertyChanged("DisplayFibreglassID");
+            }
+        }
+
+        public bool CladdingSheetColoursByID
+        {
+            get
+            {
+                return m_CladdingSheetColoursByID;
+            }
+
+            set
+            {
+                m_CladdingSheetColoursByID = value;
+                NotifyPropertyChanged("CladdingSheetColoursByID");
+            }
+        }
+
+
+
+
 
         #endregion Properties
 
@@ -3181,6 +3243,7 @@ namespace PFD
             DisplayReinforcementBarsWireFrame = false;
 
             DisplayCladding = false;
+            DisplayFibreglass = false;
             DisplayDoors = false;
             DisplayWindows = false;
 
@@ -3194,6 +3257,7 @@ namespace PFD
             ColorsAccordingToMembersPosition = true;
             ColorsAccordingToSections = false;
             ColoredCenterlines = true;
+            CladdingSheetColoursByID = false;
 
             ShowNodesDescription = false;
             ShowMemberDescription = false;
@@ -3211,6 +3275,8 @@ namespace PFD
             ShowSectionSymbols = false;
             ShowDetailSymbols = false;
             ShowSlabRebates = true;
+            DisplayCladdingSheetID = false;
+            DisplayFibreglassID = false;
 
             UseTextures = false;
 
@@ -3397,6 +3463,7 @@ namespace PFD
             DisplayFoundationsWireFrame = newVM.DisplayFoundationsWireFrame;
             DisplayReinforcementBarsWireFrame = newVM.DisplayReinforcementBarsWireFrame;
             DisplayCladding = newVM.DisplayCladding;
+            DisplayFibreglass = newVM.DisplayFibreglass;
             DisplayDoors = newVM.DisplayDoors;
             DisplayWindows = newVM.DisplayWindows;
             DisplayNodalSupports = newVM.DisplayNodalSupports;
@@ -3425,6 +3492,8 @@ namespace PFD
             ShowSectionSymbols = newVM.ShowSectionSymbols;
             ShowDetailSymbols = newVM.ShowDetailSymbols;
             ShowSlabRebates = newVM.ShowSlabRebates;
+            DisplayCladdingSheetID = newVM.DisplayCladdingSheetID;
+            DisplayFibreglassID = newVM.DisplayFibreglassID;
 
             ShowLoads = newVM.ShowLoads;
             ShowLoadsOnMembers = newVM.ShowLoadsOnMembers;
@@ -3549,6 +3618,7 @@ namespace PFD
             
             UseTextures = newVM.UseTextures;
             ColoredCenterlines = newVM.ColoredCenterlines;
+            CladdingSheetColoursByID = newVM.CladdingSheetColoursByID;
 
             IsSetFromCode = false;
         }

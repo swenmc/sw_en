@@ -54,18 +54,7 @@
                             <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" IsChecked="{Binding Path=MaterialEmissive}">Emissive Material</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Vertical" Grid.ColumnSpan="2">
-                            <TextBlock Text="Member Colour:" HorizontalAlignment="Left"/>
-                            <RadioButton Name="radioColorsIn3DMembersPrefix" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPrefix, Mode=TwoWay}">according to Prefix</RadioButton>
-                            <RadioButton Name="radioColorsIn3DMembersPosition" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPosition, Mode=TwoWay}">according to Position</RadioButton>
-                            <RadioButton Name="radioColorsIn3DSections" GroupName="Mode" IsChecked="{Binding Path=ColorsAccordingToSections, Mode=TwoWay}">according to Section</RadioButton>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="3" Grid.Column="0">
-                            <CheckBox Name="chbDisplayDistinguishedColorMember" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Colour Members</CheckBox>
-                            <!--<CheckBox Name="chbDisplayTransparentModelMember" IsChecked="{Binding Path=DisplayTransparentModelMember}">Transparent Members</CheckBox>-->
-                            <CheckBox Name="chbColoredCenterlines" IsChecked="{Binding Path=ColoredCenterlines}">Colored Centerlines</CheckBox>
-
+                        <StackPanel Grid.Row="2" Grid.Column="0">                            
                             <CheckBox Name="chbDisplayGlobalAxis" IsChecked="{Binding Path=ShowGlobalAxis}">Display Global Axis</CheckBox>
                             <CheckBox Name="chbDisplayLocalMemberAxis" IsChecked="{Binding Path=ShowLocalMembersAxis}" IsEnabled="{Binding Path=IsEnabledLocalMembersAxis}" >Display Local Member Axis</CheckBox>
                             <CheckBox Name="chbDisplaySurfaceLoadsAxis" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" IsEnabled="{Binding Path=IsEnabledSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
@@ -88,9 +77,9 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="180"/>
-                            <RowDefinition Height="250"/>
-                            <RowDefinition Height="150"/>
-                            <RowDefinition Height="050"/>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="290"/>
+                            <RowDefinition Height="170"/>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
@@ -110,6 +99,13 @@
                         </StackPanel>
 
                         <StackPanel Grid.Row="1" Grid.Column="0">
+                            <CheckBox Name="chbDisplayCladding" IsChecked="{Binding Path=DisplayCladding}">Display Cladding</CheckBox>
+                            <CheckBox Name="chbDisplayFibreGlass" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglass}">Display Fibreglass</CheckBox>
+                            <CheckBox Name="chbDisplayDoors" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayDoors}">Display Doors</CheckBox>
+                            <CheckBox Name="chbDisplayWindows" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayWindows}">Display Windows</CheckBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0">
                             <CheckBox Name="chbDisplayMemberDescription" IsChecked="{Binding Path=ShowMemberDescription}">Display Member Description</CheckBox>
                             <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >Display Member ID</CheckBox>
                             <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
@@ -126,9 +122,11 @@
                             <CheckBox Name="chbDisplaySectionSymbols" IsChecked="{Binding Path=ShowSectionSymbols}">Display Section Symbols</CheckBox>
                             <CheckBox Name="chbDisplayDetailSymbols" IsChecked="{Binding Path=ShowDetailSymbols}">Display Detail Symbols</CheckBox>
                             <CheckBox Name="chbDisplaySlabRebates" IsChecked="{Binding Path=ShowSlabRebates}">Display Slab Rebates</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingSheetID" IsChecked="{Binding Path=DisplayCladdingSheetID}">Display Cladding Sheet ID</CheckBox>
+                            <CheckBox Name="chbDisplayFibreglassID" IsChecked="{Binding Path=DisplayFibreglassID}">Display Fibreglass ID</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="2" Grid.Column="0">
+                        <StackPanel Grid.Row="3" Grid.Column="0">
                             <CheckBox Name="chbDisplayMembersCenterLines" IsChecked="{Binding Path=DisplayMembersCenterLines}">Display Members Centerlines</CheckBox>
                             <CheckBox Name="chbDisplaySolidModel"  IsChecked="{Binding Path=DisplaySolidModel}">Display Solid Model</CheckBox>
                             <CheckBox Name="chbDisplayWireFrameModel" IsChecked="{Binding Path=DisplayWireFrameModel}">Display Wireframe Model</CheckBox>
@@ -143,11 +141,7 @@
                             <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="3" Grid.Column="0">
-                            <CheckBox Name="chbDisplayCladding" IsChecked="{Binding Path=DisplayCladding}">Display Cladding</CheckBox>
-                            <CheckBox Name="chbDisplayDoors" IsChecked="{Binding Path=DisplayDoors}">Display Doors</CheckBox>
-                            <CheckBox Name="chbDisplayWindows" IsChecked="{Binding Path=DisplayWindows}">Display Windows</CheckBox>
-                        </StackPanel>
+                        
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -687,8 +681,21 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
+                        <StackPanel Grid.Row="21" Grid.Column="2" Grid.RowSpan="2" Orientation="Vertical" Grid.ColumnSpan="2">
+                            <TextBlock Text="Member Colour:" HorizontalAlignment="Left"/>
+                            <RadioButton Name="radioColorsIn3DMembersPrefix" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPrefix, Mode=TwoWay}">according to Prefix</RadioButton>
+                            <RadioButton Name="radioColorsIn3DMembersPosition" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPosition, Mode=TwoWay}">according to Position</RadioButton>
+                            <RadioButton Name="radioColorsIn3DSections" GroupName="Mode" IsChecked="{Binding Path=ColorsAccordingToSections, Mode=TwoWay}">according to Section</RadioButton>
+                        </StackPanel>
 
-                        <CheckBox Grid.Row="21" Grid.Column="2" Name="chbUseTextures" IsChecked="{Binding Path=UseTextures}">Use Textures</CheckBox>
+                        <StackPanel Grid.Row="24" Grid.Column="2" Grid.RowSpan="2">
+                            <CheckBox Name="chbDisplayDistinguishedColorMember" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Colour Members</CheckBox>                            
+                            <CheckBox Name="chbColoredCenterlines" IsChecked="{Binding Path=ColoredCenterlines}">Colored Centerlines</CheckBox>
+                            <CheckBox Name="chbCladdingSheetColoursByID" IsChecked="{Binding Path=CladdingSheetColoursByID}">Cladding Sheet Colours By ID</CheckBox>
+                            
+                        </StackPanel>
+                        
+                        <CheckBox Grid.Row="26" Grid.Column="2" VerticalAlignment="Bottom" Name="chbUseTextures" IsChecked="{Binding Path=UseTextures}">Use Textures</CheckBox>
 
                     </Grid>
                 </ScrollViewer>
