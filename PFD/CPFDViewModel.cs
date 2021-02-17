@@ -4145,6 +4145,10 @@ namespace PFD
             sDisplayOptions.bDisplayFoundationsWireFrame = _displayOptionsVM.DisplayFoundationsWireFrame;
             sDisplayOptions.bDisplayReinforcementBarsWireFrame = _displayOptionsVM.DisplayReinforcementBarsWireFrame;
             sDisplayOptions.bDisplayFloorSlabWireFrame = _displayOptionsVM.DisplayFloorSlabWireFrame;
+            sDisplayOptions.bDisplayCladdingWireFrame = _displayOptionsVM.DisplayCladdingWireFrame;
+            sDisplayOptions.bDisplayFibreglassWireFrame = _displayOptionsVM.DisplayFibreglassWireFrame;
+            sDisplayOptions.bDisplayDoorsWireFrame = _displayOptionsVM.DisplayDoorsWireFrame;
+            sDisplayOptions.bDisplayWindowsWireFrame = _displayOptionsVM.DisplayWindowsWireFrame;
 
             sDisplayOptions.bDisplayCladding = _displayOptionsVM.DisplayCladding;
             sDisplayOptions.bDisplayDoors = _displayOptionsVM.DisplayDoors;

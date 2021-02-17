@@ -885,6 +885,10 @@ namespace BaseClasses
         public bool bDisplayReinforcementBarsWireFrame;
         public bool bDisplayFloorSlabWireFrame;
         public bool bDisplaySlabRebateWireFrame;
+        public bool bDisplayCladdingWireFrame;
+        public bool bDisplayFibreglassWireFrame;
+        public bool bDisplayDoorsWireFrame;
+        public bool bDisplayWindowsWireFrame;        
 
         public bool bDisplayCladding;
         public bool bDisplayDoors;

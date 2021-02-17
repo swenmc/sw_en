@@ -72,6 +72,10 @@ namespace PFD
         private bool m_DisplayFoundationsWireFrame;
         private bool m_DisplayReinforcementBarsWireFrame;
         private bool m_DisplayFloorSlabWireFrame;
+        private bool m_DisplayCladdingWireFrame;
+        private bool m_DisplayFibreglassWireFrame;
+        private bool m_DisplayDoorsWireFrame;
+        private bool m_DisplayWindowsWireFrame;
 
         private bool m_DisplayCladding;
         private bool m_DisplayFibreglass;
@@ -2561,6 +2565,63 @@ namespace PFD
             }
         }
 
+        public bool DisplayCladdingWireFrame
+        {
+            get
+            {
+                return m_DisplayCladdingWireFrame;
+            }
+
+            set
+            {
+                m_DisplayCladdingWireFrame = value;
+                NotifyPropertyChanged("DisplayCladddingWireFrame");
+            }
+        }
+
+        public bool DisplayFibreglassWireFrame
+        {
+            get
+            {
+                return m_DisplayFibreglassWireFrame;
+            }
+
+            set
+            {
+                m_DisplayFibreglassWireFrame = value;
+                NotifyPropertyChanged("DisplayFibreglassWireFrame");
+            }
+        }
+
+        public bool DisplayDoorsWireFrame
+        {
+            get
+            {
+                return m_DisplayDoorsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayDoorsWireFrame = value;
+                NotifyPropertyChanged("DisplayDoorsWireFrame");
+            }
+        }
+
+        public bool DisplayWindowsWireFrame
+        {
+            get
+            {
+                return m_DisplayWindowsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayWindowsWireFrame = value;
+                NotifyPropertyChanged("DisplayWindowsWireFrame");
+            }
+        }
+
+
         public bool DisplayCladding
         {
             get
@@ -3202,6 +3263,8 @@ namespace PFD
             }
         }
 
+        
+
 
 
 
@@ -3241,6 +3304,11 @@ namespace PFD
             DisplayNodesWireFrame = false;
             DisplayFoundationsWireFrame = false;
             DisplayReinforcementBarsWireFrame = false;
+            DisplayFloorSlabWireFrame = false;
+            DisplayCladdingWireFrame = false;
+            DisplayFibreglassWireFrame = false;
+            DisplayDoorsWireFrame = false;
+            DisplayWindowsWireFrame = false;
 
             DisplayCladding = false;
             DisplayFibreglass = false;
@@ -3462,6 +3530,12 @@ namespace PFD
             DisplayNodesWireFrame = newVM.DisplayNodesWireFrame;
             DisplayFoundationsWireFrame = newVM.DisplayFoundationsWireFrame;
             DisplayReinforcementBarsWireFrame = newVM.DisplayReinforcementBarsWireFrame;
+            DisplayFloorSlabWireFrame = newVM.DisplayFloorSlabWireFrame;
+            DisplayCladdingWireFrame = newVM.DisplayCladdingWireFrame;
+            DisplayFibreglassWireFrame = newVM.DisplayFibreglassWireFrame;
+            DisplayDoorsWireFrame = newVM.DisplayDoorsWireFrame;
+            DisplayWindowsWireFrame = newVM.DisplayWindowsWireFrame;
+
             DisplayCladding = newVM.DisplayCladding;
             DisplayFibreglass = newVM.DisplayFibreglass;
             DisplayDoors = newVM.DisplayDoors;

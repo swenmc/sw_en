@@ -79,7 +79,7 @@
                             <RowDefinition Height="180"/>
                             <RowDefinition Height="75"/>
                             <RowDefinition Height="290"/>
-                            <RowDefinition Height="170"/>
+                            <RowDefinition Height="250"/>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
@@ -139,6 +139,11 @@
                             <CheckBox Name="chbDisplayFoundationsWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFoundationsWireFrame}">Foundations</CheckBox>
                             <CheckBox Name="chbDisplayReinforcementBarsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayReinforcementBarsWireFrame}">Reinforcement Bars</CheckBox>
                             <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab</CheckBox>
+
+                            <CheckBox Name="chbDisplayCladdingWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingWireFrame}">Cladding</CheckBox>
+                            <CheckBox Name="chbDisplayFibreglassWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayFibreglassWireFrame}">Fibreglass</CheckBox>
+                            <CheckBox Name="chbDisplayDoorsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayDoorsWireFrame}">Doors</CheckBox>
+                            <CheckBox Name="chbDisplayWindowsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayDisplayWindowsWireFrame}">Windows</CheckBox>
                         </StackPanel>
 
                         
