@@ -53,5 +53,10 @@ namespace PFD
             }
             CladdingOptionsChanged = false;
         }
+
+        private void BtnFiberglassGenerator_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -231,7 +231,14 @@
                          IsChecked="{Binding Path=ConsiderRoofCladdingFor_FB_WallHeight}" Grid.ColumnSpan="6">Consider roof cladding for front/back wall height
             </CheckBox>
 
-            <TextBlock Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="6" FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" />
+            <StackPanel Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="3" Width="300">
+                <TextBlock FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" />
+                <Button Name="btnFiberglassGenerator" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="Add Fibreglass" Margin="0 0 0 0" Width="20" Height="20" Click="BtnFiberglassGenerator_Click">
+                    <Image Source="PFD/Resources/doors.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                </Button>
+
+            </StackPanel>
+            
 
             <DataGrid Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="6" Name ="Datagrid_Fibreglass" SelectionMode="Single" ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" MinHeight="20" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top"  

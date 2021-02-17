@@ -1,0 +1,100 @@
+﻿<Window x:Class="PFD.FibreglassGeneratorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Fibreglass Generator" Height="320" Width="500">
+    <Window.Resources>
+        <System:Double x:Key="theComboBoxWidth">110</System:Double>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Name="GridFibreglassGenerator" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Fibreglass Properties:" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left"/>
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Side" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="X[m]" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="Y[m]" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="Length[m]" HorizontalAlignment="Left"/>
+            
+
+            <ComboBox Grid.Row="2" Grid.Column="0" Name ="Combobox_Side" HorizontalAlignment="Left" Width="{StaticResource theComboBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=DoorsTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=DoorType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
+            <TextBox Grid.Row="2" Grid.Column="1" Name="DoorsHeight" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=DoorsHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBox Grid.Row="2" Grid.Column="2" Name="DoorsWidth" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=DoorsWidth, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBox Grid.Row="2" Grid.Column="3" Name="DoorCoordinateXinBlock" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=DoorCoordinateXinBlock, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_Serie" HorizontalAlignment="Left" Width="{StaticResource theComboBoxWidth}"
+                  VerticalAlignment="Top" IsEnabled="{Binding Path=SerieEnabled}" ItemsSource="{Binding Path=Series, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=Serie, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+            
+            <ComboBox Grid.Row="2" Grid.Column="5" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=CoatingColors}" SelectedValue="{Binding Path=CoatingColor, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding CodeHEX}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="LEFT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Name="leftBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="leftBaysAll" Checked="LeftBaysAll_Checked" Unchecked="LeftBaysAll_Unchecked">All left bays</CheckBox>
+                
+            </StackPanel>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="RIGHT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Name="rightBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="rightBaysAll" Checked="RightBaysAll_Checked" Unchecked="RightBaysAll_Unchecked">All right bays</CheckBox>
+            </StackPanel>
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="FRONT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4" Name="frontBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="frontBaysAll" Checked="FrontBaysAll_Checked" Unchecked="FrontBaysAll_Unchecked">All front bays</CheckBox>
+            </StackPanel>
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="BACK" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="4" Name="backBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="backBaysAll" Checked="BackBaysAll_Checked" Unchecked="BackBaysAll_Unchecked">All back bays</CheckBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="6" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+                <Button Width="80" Height="25" Name="BtnDelete" Margin="0 0 20 0" Click="BtnDelete_Click">Delete</Button>
+                <Button Width="80" Height="25" Name="BtnAdd" Margin="0 0 0 0" Click="BtnAdd_Click">Add</Button>                
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>

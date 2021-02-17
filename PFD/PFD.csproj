@@ -140,6 +140,9 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="FibreglassGeneratorWindow.xaml.cs">
+      <DependentUpon>FibreglassGeneratorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FocusAttacher.cs" />
     <Compile Include="Infrastructure\DesignResultsConverter.cs" />
     <Compile Include="LayoutExportOptionsWindow.xaml.cs">
@@ -198,6 +201,7 @@
     <Compile Include="AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FibreglassGeneratorViewModel.cs" />
     <Compile Include="WindPressureCoefficients.xaml.cs">
       <DependentUpon>WindPressureCoefficients.xaml</DependentUpon>
     </Compile>
@@ -374,6 +378,10 @@
     <Page Include="DesignResultsSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FibreglassGeneratorWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="LayoutExportOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
