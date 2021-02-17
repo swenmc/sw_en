@@ -162,6 +162,7 @@ namespace BaseClasses.GraphObj
 
             // Vytvorime model v GCS [0,0,0] je uvazovana v bode m_ControlPoint
 
+            // TODO 719 - Presunut validaciu uz do GUI
             if (considerRoofCladdingFor_FB_WallHeight && roofEdgeOverhang_Y > 0)
                 throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
 

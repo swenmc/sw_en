@@ -197,28 +197,29 @@
             <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="13" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="12" Grid.Column="0" Text="Overhangs" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof - front/back side:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
             <TextBox Grid.Row="13" Grid.Column="1" Name ="TextBox_RoofEdgeOverHang_FB_Y" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=RoofEdgeOverHang_FB_Y, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="13" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="14" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof - left/right side:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
             <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_RoofEdgeOverHang_LR_X" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=RoofEdgeOverHang_LR_X, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="15" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="15" Grid.Column="0" Text="Canopy - left/right side:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
             <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_CanopyRoofEdgeOverHang_LR_X" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=CanopyRoofEdgeOverHang_LR_X, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="16" Grid.Column="0" Text="Overlap:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="16" Grid.Column="0" Text="Bottom offset:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
             <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_WallBottomOffset_Z" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=WallBottomOffset_Z, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
