@@ -1519,15 +1519,18 @@ namespace BaseClasses.GraphObj
                     model_gr.Children.Add(sheetModel);
                 }
 
-                if (listOfFibreGlassSheetsWallLeft != null)
+                if (options.bDisplayFibreglass)
                 {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsWallLeft.Count; i++)
+                    if (listOfFibreGlassSheetsWallLeft != null)
                     {
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsWallLeft[i].GetCladdingSheetModel(options);
-                        sheetModel.Transform = listOfFibreGlassSheetsWallLeft[i].GetTransformGroup(0, 0, -90);
-                        model_gr.Children.Add(sheetModel);
+                        // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
+                        for (int i = 0; i < listOfFibreGlassSheetsWallLeft.Count; i++)
+                        {
+                            // Pridame sheet do model group
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallLeft[i].GetCladdingSheetModel(options);
+                            sheetModel.Transform = listOfFibreGlassSheetsWallLeft[i].GetTransformGroup(0, 0, -90);
+                            model_gr.Children.Add(sheetModel);
+                        }
                     }
                 }
 
@@ -1539,15 +1542,18 @@ namespace BaseClasses.GraphObj
                     model_gr.Children.Add(sheetModel);
                 }
 
-                if (listOfFibreGlassSheetsWallFront != null)
+                if (options.bDisplayFibreglass)
                 {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsWallFront.Count; i++)
+                    if (listOfFibreGlassSheetsWallFront != null)
                     {
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsWallFront[i].GetCladdingSheetModel(options);
-                        sheetModel.Transform = listOfFibreGlassSheetsWallFront[i].GetTransformGroup(0, 0, 0);
-                        model_gr.Children.Add(sheetModel);
+                        // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
+                        for (int i = 0; i < listOfFibreGlassSheetsWallFront.Count; i++)
+                        {
+                            // Pridame sheet do model group
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallFront[i].GetCladdingSheetModel(options);
+                            sheetModel.Transform = listOfFibreGlassSheetsWallFront[i].GetTransformGroup(0, 0, 0);
+                            model_gr.Children.Add(sheetModel);
+                        }
                     }
                 }
 
@@ -1559,15 +1565,18 @@ namespace BaseClasses.GraphObj
                     model_gr.Children.Add(sheetModel);
                 }
 
-                if (listOfFibreGlassSheetsWallRight != null)
+                if (options.bDisplayFibreglass)
                 {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsWallRight.Count; i++)
+                    if (listOfFibreGlassSheetsWallRight != null)
                     {
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsWallRight[i].GetCladdingSheetModel(options);
-                        sheetModel.Transform = listOfFibreGlassSheetsWallRight[i].GetTransformGroup(0, 0, 90);
-                        model_gr.Children.Add(sheetModel);
+                        // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
+                        for (int i = 0; i < listOfFibreGlassSheetsWallRight.Count; i++)
+                        {
+                            // Pridame sheet do model group
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallRight[i].GetCladdingSheetModel(options);
+                            sheetModel.Transform = listOfFibreGlassSheetsWallRight[i].GetTransformGroup(0, 0, 90);
+                            model_gr.Children.Add(sheetModel);
+                        }
                     }
                 }
 
@@ -1579,15 +1588,18 @@ namespace BaseClasses.GraphObj
                     model_gr.Children.Add(sheetModel);
                 }
 
-                if (listOfFibreGlassSheetsWallBack != null)
+                if (options.bDisplayFibreglass)
                 {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsWallBack.Count; i++)
+                    if (listOfFibreGlassSheetsWallBack != null)
                     {
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsWallBack[i].GetCladdingSheetModel(options);
-                        sheetModel.Transform = listOfFibreGlassSheetsWallBack[i].GetTransformGroup(0, 0, 180);
-                        model_gr.Children.Add(sheetModel);
+                        // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
+                        for (int i = 0; i < listOfFibreGlassSheetsWallBack.Count; i++)
+                        {
+                            // Pridame sheet do model group
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallBack[i].GetCladdingSheetModel(options);
+                            sheetModel.Transform = listOfFibreGlassSheetsWallBack[i].GetTransformGroup(0, 0, 180);
+                            model_gr.Children.Add(sheetModel);
+                        }
                     }
                 }
 
@@ -1602,14 +1614,17 @@ namespace BaseClasses.GraphObj
                     model_gr.Children.Add(sheetModel);
                 }
 
-                // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                for (int i = 0; i < listOfFibreGlassSheetsRoofRight.Count; i++)
+                if (options.bDisplayFibreglass)
                 {
-                    // Pridame sheet do model group
-                    rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
-                    GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofRight[i].GetCladdingSheetModel(options);
-                    sheetModel.Transform = listOfFibreGlassSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, 90);
-                    model_gr.Children.Add(sheetModel);
+                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
+                    for (int i = 0; i < listOfFibreGlassSheetsRoofRight.Count; i++)
+                    {
+                        // Pridame sheet do model group
+                        rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
+                        GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofRight[i].GetCladdingSheetModel(options);
+                        sheetModel.Transform = listOfFibreGlassSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, 90);
+                        model_gr.Children.Add(sheetModel);
+                    }
                 }
 
                 if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
@@ -1625,13 +1640,16 @@ namespace BaseClasses.GraphObj
                         model_gr.Children.Add(sheetModel);
                     }
 
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsRoofLeft.Count; i++)
+                    if (options.bDisplayFibreglass)
                     {
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofLeft[i].GetCladdingSheetModel(options);
-                        sheetModel.Transform = listOfFibreGlassSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, 90);
-                        model_gr.Children.Add(sheetModel);
+                        // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
+                        for (int i = 0; i < listOfFibreGlassSheetsRoofLeft.Count; i++)
+                        {
+                            // Pridame sheet do model group
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofLeft[i].GetCladdingSheetModel(options);
+                            sheetModel.Transform = listOfFibreGlassSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, 90);
+                            model_gr.Children.Add(sheetModel);
+                        }
                     }
                 }
             }
