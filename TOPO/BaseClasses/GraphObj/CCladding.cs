@@ -45,6 +45,17 @@ namespace BaseClasses.GraphObj
         Color m_ColorWall;
         Color m_ColorRoof;
 
+        // Consider roof cladding height for front and back wall
+        bool considerRoofCladdingFor_FB_WallHeight; // TODO 719 - napojit na GUI // Default true
+
+        double bottomEdge_z;// = -0.05; // Offset pod spodnu uroven podlahy // TODO 719 - napojit na GUI, default -50 mm, limit <-500mm, 0>
+
+        double roofEdgeOverhang_X; // = 0.150; // Presah okraja strechy // TODO 719 - napojit na GUI, default 150 mm, limit <0, 600mm>
+        double roofEdgeOverhang_Y; // = 0.000; // Presah okraja strechy // TODO 719 - napojit na GUI, default 0 mm limit <0, 300mm>
+
+        float fOverhangOffset_x;
+        float fOverhangOffset_y;
+
         // Fibre glass properties - TODO - Input from GUI
         string m_ColorNameRoof_FG;
         string m_claddingShape_Roof_FG;
@@ -79,7 +90,16 @@ namespace BaseClasses.GraphObj
             float fFrontColumnDistance, float fBackColumnDistance,
             string colorName_Wall, string colorName_Roof, string claddingShape_Wall, string claddingCoatingType_Wall, string claddingShape_Roof, string claddingCoatingType_Roof,
             Color colorWall, Color colorRoof,
-            bool bIsDisplayed, int fTime, double wallCladdingHeight, double roofCladdingHeight, double wallCladdingWidthRib, double roofCladdingWidthRib)
+            bool bIsDisplayed, int fTime,
+            double wallCladdingHeight,
+            double roofCladdingHeight,
+            double wallCladdingWidthRib,
+            double roofCladdingWidthRib,
+            float fRoofEdgeOverHang_FB_Y,
+            float fRoofEdgeOverHang_LR_X,
+            float fCanopyRoofEdgeOverHang_LR_X,
+            float fWallBottomOffset_Z,
+            bool bConsiderRoofCladdingFor_FB_WallHeight)
         {
             ID = iCladding_ID;
             eModelType = modelType_FS;
@@ -110,6 +130,14 @@ namespace BaseClasses.GraphObj
             claddingWidthRibModular_Wall = wallCladdingWidthRib;
             claddingWidthRibModular_Roof = roofCladdingWidthRib;
 
+            roofEdgeOverhang_Y = fRoofEdgeOverHang_FB_Y;
+            roofEdgeOverhang_X = fRoofEdgeOverHang_LR_X;
+            fOverhangOffset_x = fCanopyRoofEdgeOverHang_LR_X;
+            bottomEdge_z = fWallBottomOffset_Z;
+            considerRoofCladdingFor_FB_WallHeight = bConsiderRoofCladdingFor_FB_WallHeight;
+
+            fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
+
             // TODO 719 - Implementovat a napojit z GUI
             m_ColorNameRoof_FG = "LightCyan"; // TODO 719 GUI INPUT
             m_claddingShape_Roof_FG = m_claddingShape_Roof;
@@ -134,15 +162,7 @@ namespace BaseClasses.GraphObj
 
             // Vytvorime model v GCS [0,0,0] je uvazovana v bode m_ControlPoint
 
-            // Consider roof cladding height for front and back wall
-            bool bConsiderRoofCladdingFor_FB_WallHeight = true; // TODO 719 - napojit na GUI // Default true
-
-            double bottomEdge_z = -0.05; // Offset pod spodnu uroven podlahy // TODO 719 - napojit na GUI, default -50 mm, limit <-500mm, 0>
-
-            double roofEdgeOverhang_X = 0.150; // Presah okraja strechy // TODO 719 - napojit na GUI, default 150 mm, limit <0, 600mm>
-            double roofEdgeOverhang_Y = 0.000; // Presah okraja strechy // TODO 719 - napojit na GUI, default 0 mm limit <0, 300mm>
-
-            if (bConsiderRoofCladdingFor_FB_WallHeight && roofEdgeOverhang_Y > 0)
+            if (considerRoofCladdingFor_FB_WallHeight && roofEdgeOverhang_Y > 0)
                 throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
 
             double additionalOffset = 0.010;  // 10 mm Aby nekolidovali plochy cladding s members
@@ -172,7 +192,7 @@ namespace BaseClasses.GraphObj
             double height_1_final_edge_FB_Wall = height_1_final_edge_LR_Wall;
             double height_2_final_edge_FB_Wall = height_2_final_edge_LR_Wall;
 
-            if (bConsiderRoofCladdingFor_FB_WallHeight)
+            if (considerRoofCladdingFor_FB_WallHeight)
             {
                 height_1_final_edge_FB_Wall = height_1_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
                 height_2_final_edge_FB_Wall = height_2_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
@@ -347,9 +367,6 @@ namespace BaseClasses.GraphObj
                 {
                     int iAreaIndex = 5;
 
-                    float fOverhangOffset_x = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
-                    float fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
-
                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
                     float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
                     float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;
@@ -516,9 +533,6 @@ namespace BaseClasses.GraphObj
                 foreach (CCanopiesInfo canopy in canopyCollection)
                 {
                     int iAreaIndex = 6;
-
-                    float fOverhangOffset_x = 0.05f; // TODO - zadavat v GUI ako cladding property pre roof
-                    float fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
 
                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
                     float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
@@ -1272,9 +1286,6 @@ namespace BaseClasses.GraphObj
                         //----------------------------------------------------------------------------------
                         foreach (CCanopiesInfo canopy in canopyCollection)
                         {
-                            float fOverhangOffset_x = 0.05f; // // TODO 719 - zadavat v GUI ako cladding property pre roof
-                            float fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
-
                             float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
                             float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
                             float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;
@@ -1454,9 +1465,6 @@ namespace BaseClasses.GraphObj
                                 //----------------------------------------------------------------------------------
                                 foreach (CCanopiesInfo canopy in canopyCollection)
                                 {
-                                    float fOverhangOffset_x = 0.05f; // TODO 719 - zadavat v GUI ako cladding property pre roof
-                                    float fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
-
                                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
                                     float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
                                     float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;

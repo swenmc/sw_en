@@ -1668,7 +1668,15 @@ namespace PFD
                 _pfdVM._claddingOptionsVM.RoofCladding, _pfdVM._claddingOptionsVM.RoofCladdingCoating,
                 (Color)ColorConverter.ConvertFromString(_pfdVM._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(_pfdVM._claddingOptionsVM.WallCladdingColorIndex).CodeHEX),
                 (Color)ColorConverter.ConvertFromString(_pfdVM._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(_pfdVM._claddingOptionsVM.RoofCladdingColorIndex).CodeHEX), true, 0,
-                _pfdVM._claddingOptionsVM.WallCladdingProps.height_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.height_m, _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthRib_m) };
+                _pfdVM._claddingOptionsVM.WallCladdingProps.height_m,
+                _pfdVM._claddingOptionsVM.RoofCladdingProps.height_m,
+                _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m,
+                _pfdVM._claddingOptionsVM.RoofCladdingProps.widthRib_m,
+                _pfdVM._claddingOptionsVM.RoofEdgeOverHang_FB_Y,
+                _pfdVM._claddingOptionsVM.RoofEdgeOverHang_LR_X,
+                _pfdVM._claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,
+                _pfdVM._claddingOptionsVM.WallBottomOffset_Z,
+                _pfdVM._claddingOptionsVM.ConsiderRoofCladdingFor_FB_WallHeight) };
             #endregion
 
             double claddingThickness_Wall = _pfdVM._claddingOptionsVM.WallCladdingProps.height_m;  // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
