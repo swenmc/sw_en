@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Fibreglass Generator" Height="320" Width="500">
+        Title="Fibreglass Generator" Height="320" Width="550">
     <Window.Resources>
         <System:Double x:Key="theComboBoxWidth">110</System:Double>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
@@ -34,7 +34,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Fibreglass Properties:" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Fibreglass Properties:" Grid.ColumnSpan="3" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left"/>
             
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Side" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="1" Grid.Column="1" Text="X[m]" HorizontalAlignment="Left"/>
@@ -45,33 +45,19 @@
             <ComboBox Grid.Row="2" Grid.Column="0" Name ="Combobox_Side" HorizontalAlignment="Left" Width="{StaticResource theComboBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=DoorsTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=DoorType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+            
+            <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_X" HorizontalAlignment="Left" Width="{StaticResource theComboBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=DoorsTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=DoorType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-            <TextBox Grid.Row="2" Grid.Column="1" Name="DoorsHeight" HorizontalAlignment="Left" 
+            <TextBox Grid.Row="2" Grid.Column="2" Name="TxtY" HorizontalAlignment="Left" 
                      Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=DoorsHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBox Grid.Row="2" Grid.Column="2" Name="DoorsWidth" HorizontalAlignment="Left" 
+            <TextBox Grid.Row="2" Grid.Column="3" Name="TxtLength" HorizontalAlignment="Left" 
                      Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=DoorsWidth, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBox Grid.Row="2" Grid.Column="3" Name="DoorCoordinateXinBlock" HorizontalAlignment="Left" 
-                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=DoorCoordinateXinBlock, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-
-            <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_Serie" HorizontalAlignment="Left" Width="{StaticResource theComboBoxWidth}"
-                  VerticalAlignment="Top" IsEnabled="{Binding Path=SerieEnabled}" ItemsSource="{Binding Path=Series, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                  SelectedValue="{Binding Path=Serie, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
             
-            <ComboBox Grid.Row="2" Grid.Column="5" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" ItemsSource="{Binding Path=CoatingColors}" SelectedValue="{Binding Path=CoatingColor, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Rectangle Fill="{Binding CodeHEX}" Width="92" Height="12" Margin="0,1,5,1" />
-                            <TextBlock Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
             
             <TextBlock Grid.Row="4" Grid.Column="0" Text="LEFT" FontWeight="Bold" HorizontalAlignment="Left"/>
             <StackPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Name="leftBays" Orientation="Horizontal">
