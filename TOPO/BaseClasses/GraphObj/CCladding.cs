@@ -73,7 +73,6 @@ namespace BaseClasses.GraphObj
 
         float fFibreGlassOpacity = 0.9f; // TODO 719 - napojit na GUI
         float fOpeningOpacity = 0.02f;
-        bool bDistinguishedSheetColor = true; // TODO 719 - Option v GUI - Display Options
 
         public CCladding()
         {
@@ -699,7 +698,7 @@ namespace BaseClasses.GraphObj
                 // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
-                    if (bDistinguishedSheetColor)
+                    if (options.bCladdingSheetColoursByID)
                         m_ColorWall = ColorList[i];
 
                     listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
@@ -827,7 +826,7 @@ namespace BaseClasses.GraphObj
                 // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
-                    if (bDistinguishedSheetColor)
+                    if (options.bCladdingSheetColoursByID)
                         m_ColorWall = ColorList[i];
 
                     double height_left = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, i * claddingWidthModular_Wall);
@@ -953,7 +952,7 @@ namespace BaseClasses.GraphObj
                 // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
-                    if (bDistinguishedSheetColor)
+                    if (options.bCladdingSheetColoursByID)
                         m_ColorWall = ColorList[i];
 
                     listOfCladdingSheetsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
@@ -1054,7 +1053,7 @@ namespace BaseClasses.GraphObj
                 // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
-                    if (bDistinguishedSheetColor)
+                    if (options.bCladdingSheetColoursByID)
                         m_ColorWall = ColorList[i];
 
                     double height_left = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, i * claddingWidthModular_Wall);
@@ -1245,7 +1244,7 @@ namespace BaseClasses.GraphObj
                 // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
-                    if (bDistinguishedSheetColor)
+                    if (options.bCladdingSheetColoursByID)
                         m_ColorRoof = ColorList[i];
 
                     double length = length_left_basic;
@@ -1421,7 +1420,7 @@ namespace BaseClasses.GraphObj
                     // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                     for (int i = 0; i < iNumberOfSheets; i++)
                     {
-                        if (bDistinguishedSheetColor)
+                        if (options.bCladdingSheetColoursByID)
                             m_ColorRoof = ColorList[i];
 
                         double length = length_left_basic;

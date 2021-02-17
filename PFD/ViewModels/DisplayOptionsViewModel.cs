@@ -82,7 +82,6 @@ namespace PFD
         private bool m_DisplayDoors;
         private bool m_DisplayWindows;
         private bool m_ColoredCenterlines;
-        private bool m_CladdingSheetColoursByID;
 
         // Labels and axes
         private bool MShowLoadsLabels;
@@ -284,7 +283,7 @@ namespace PFD
         private float m_GUIDimensionsScale;
         private float m_GUIDescriptionTextWidthScaleFactor;
 
-
+        private bool m_CladdingSheetColoursByID;
         private bool m_UseTextures;
 
         #region Loads
@@ -3221,6 +3220,20 @@ namespace PFD
             }
         }
 
+        public bool CladdingSheetColoursByID
+        {
+            get
+            {
+                return m_CladdingSheetColoursByID;
+            }
+
+            set
+            {
+                m_CladdingSheetColoursByID = value;
+                NotifyPropertyChanged("CladdingSheetColoursByID");
+            }
+        }
+
         public bool DisplayCladdingSheetID
         {
             get
@@ -3248,26 +3261,6 @@ namespace PFD
                 NotifyPropertyChanged("DisplayFibreglassID");
             }
         }
-
-        public bool CladdingSheetColoursByID
-        {
-            get
-            {
-                return m_CladdingSheetColoursByID;
-            }
-
-            set
-            {
-                m_CladdingSheetColoursByID = value;
-                NotifyPropertyChanged("CladdingSheetColoursByID");
-            }
-        }
-
-        
-
-
-
-
 
         #endregion Properties
 
@@ -3346,6 +3339,7 @@ namespace PFD
             DisplayCladdingSheetID = false;
             DisplayFibreglassID = false;
 
+            CladdingSheetColoursByID = false;
             UseTextures = false;
 
             if(bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
@@ -3452,7 +3446,7 @@ namespace PFD
             RoofCladdingOpacity = 0.95f;
             DoorPanelOpacity = 0.95f;  //to Mato, nepride mi to spravne nastavit na 0.98f ked tick je 0.05 = si to odporuje, upravujem na 0.95f
             WindowPanelOpacity = 0.95f; //to Mato, nepride mi to spravne nastavit na 0.98f ked tick je 0.05 = si to odporuje, upravujem na 0.95f
-            
+
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             // Text 7.0 mm
@@ -3689,7 +3683,7 @@ namespace PFD
             GUIDimensionsLineRadius = newVM.GUIDimensionsLineRadius;
             GUIDimensionsScale = newVM.GUIDimensionsScale;
             GUIDescriptionTextWidthScaleFactor = newVM.GUIDescriptionTextWidthScaleFactor;
-            
+
             UseTextures = newVM.UseTextures;
             ColoredCenterlines = newVM.ColoredCenterlines;
             CladdingSheetColoursByID = newVM.CladdingSheetColoursByID;
@@ -3700,7 +3694,7 @@ namespace PFD
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
-            //tak by malo byt zobrazenie os Local Member Axis disabled.            
+            //tak by malo byt zobrazenie os Local Member Axis disabled.
             if (m_DisplayMembers)
             {
                 if (m_DisplayMembersCenterLines || m_DisplaySolidModel || m_DisplayWireFrameModel) IsEnabledLocalMembersAxis = true;

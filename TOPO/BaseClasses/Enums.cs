@@ -888,7 +888,7 @@ namespace BaseClasses
         public bool bDisplayCladdingWireFrame;
         public bool bDisplayFibreglassWireFrame;
         public bool bDisplayDoorsWireFrame;
-        public bool bDisplayWindowsWireFrame;        
+        public bool bDisplayWindowsWireFrame;
 
         public bool bDisplayCladding;
         public bool bDisplayDoors;
@@ -913,7 +913,7 @@ namespace BaseClasses
         public bool bDisplayMemberRealLengthInMM;
         public bool bDisplayMemberRealLengthUnit;
         public bool bDisplayNodesDescription;
-        public bool bMirrorPlate3D;        
+        public bool bMirrorPlate3D;
 
         public bool bDisplayFoundationsDescription;
         public bool bDisplayFloorSlabDescription;
@@ -1018,6 +1018,7 @@ namespace BaseClasses
         public System.Windows.Media.Color WasherColor;
         public System.Windows.Media.Color NutColor;
 
+        public bool bCladdingSheetColoursByID;
         public bool bUseTextures;
 
         public float fMemberSolidModelOpacity;
@@ -1035,7 +1036,7 @@ namespace BaseClasses
         public float fDoorPanelOpacity;
         public float fWindowPanelOpacity;
 
-        public bool bCreateHorizontalGridlines; 
+        public bool bCreateHorizontalGridlines;
         public bool bCreateVerticalGridlinesFront;
         public bool bCreateVerticalGridlinesBack;
         public bool bCreateVerticalGridlinesLeft;
