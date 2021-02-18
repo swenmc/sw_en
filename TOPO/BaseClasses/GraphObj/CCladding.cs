@@ -27,8 +27,8 @@ namespace BaseClasses.GraphObj
 
         double claddingWidthRibModular_Wall = 0.190; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
         double claddingWidthRibModular_Roof = 0.300; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
-        float claddingWidthModular_Wall = 0.6f; // TODO 719 - Input z databazy
-        float claddingWidthModular_Roof = 0.7f; // TODO 719 - Input z databazy
+        float claddingWidthModular_Wall = 0.76f; // TODO 719 - Input z databazy
+        float claddingWidthModular_Roof = 0.60f; // TODO 719 - Input z databazy
 
         double column_crsc_z_plus;
         double column_crsc_y_minus;
@@ -71,7 +71,7 @@ namespace BaseClasses.GraphObj
         double claddingWidthRibModular_Wall_FG;
         float claddingWidthModular_Wall_FG;
 
-        float fFibreGlassOpacity = 0.9f; // TODO 719 - napojit na GUI
+        float fFibreGlassOpacity = 0.5f; // TODO 719 - napojit na GUI
         float fOpeningOpacity = 0.02f;
 
         public CCladding()
@@ -94,6 +94,8 @@ namespace BaseClasses.GraphObj
             double roofCladdingHeight,
             double wallCladdingWidthRib,
             double roofCladdingWidthRib,
+            float wallCladdingWidthModular,
+            float roofCladdingWidthModular,
             float fRoofEdgeOverHang_FB_Y,
             float fRoofEdgeOverHang_LR_X,
             float fCanopyRoofEdgeOverHang_LR_X,
@@ -128,6 +130,8 @@ namespace BaseClasses.GraphObj
             claddingHeight_Roof = roofCladdingHeight;
             claddingWidthRibModular_Wall = wallCladdingWidthRib;
             claddingWidthRibModular_Roof = roofCladdingWidthRib;
+            claddingWidthModular_Wall = wallCladdingWidthModular;
+            claddingWidthModular_Roof = roofCladdingWidthModular;
 
             roofEdgeOverhang_Y = fRoofEdgeOverHang_FB_Y;
             roofEdgeOverhang_X = fRoofEdgeOverHang_LR_X;

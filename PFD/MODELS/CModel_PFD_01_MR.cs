@@ -1814,6 +1814,8 @@ namespace PFD
                _pfdVM._claddingOptionsVM.RoofCladdingProps.height_m,
                _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m,
                _pfdVM._claddingOptionsVM.RoofCladdingProps.widthRib_m,
+               (float)_pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m,
+               (float)_pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m,
                _pfdVM._claddingOptionsVM.RoofEdgeOverHang_FB_Y,
                _pfdVM._claddingOptionsVM.RoofEdgeOverHang_LR_X,
                _pfdVM._claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,
