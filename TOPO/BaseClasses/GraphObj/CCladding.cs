@@ -1558,7 +1558,7 @@ namespace BaseClasses.GraphObj
                     if (options.bUseTextures)
                     {
                         double poinstsDist = listOfCladdingSheetsLeftWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall;
+                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall; // Bug 723
                         wpHeight = claddingWidthRibModular_Wall / poinstsDist;
                         brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                         material_SideWall = new DiffuseMaterial(brushSide);
@@ -1580,7 +1580,7 @@ namespace BaseClasses.GraphObj
                             if (options.bUseTextures)
                             {
                                 double poinstsDist = listOfFibreGlassSheetsWallLeft[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG;
+                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG; // Bug 723
                                 wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
                                 brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                                 material_Wall_FG = new DiffuseMaterial(brushWall_FG);
@@ -1599,7 +1599,7 @@ namespace BaseClasses.GraphObj
                     if (options.bUseTextures)
                     {
                         double poinstsDist = listOfCladdingSheetsFrontWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall;
+                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall; // Bug 723
                         wpHeight = claddingWidthRibModular_Wall / poinstsDist;
                         brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                         material_FrontBackWall = new DiffuseMaterial(brushFront);
@@ -1621,7 +1621,7 @@ namespace BaseClasses.GraphObj
                             if (options.bUseTextures)
                             {
                                 double poinstsDist = listOfFibreGlassSheetsWallFront[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG;
+                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG; // Bug 723
                                 wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
                                 brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                                 material_Wall_FG = new DiffuseMaterial(brushWall_FG);
@@ -1640,7 +1640,7 @@ namespace BaseClasses.GraphObj
                     if (options.bUseTextures)
                     {
                         double poinstsDist = listOfCladdingSheetsRightWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall;
+                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall; // Bug 723
                         wpHeight = claddingWidthRibModular_Wall / poinstsDist;
                         brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                         material_SideWall = new DiffuseMaterial(brushSide);
@@ -1662,7 +1662,7 @@ namespace BaseClasses.GraphObj
                             if (options.bUseTextures)
                             {
                                 double poinstsDist = listOfFibreGlassSheetsWallRight[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG;
+                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG; // Bug 723
                                 wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
                                 brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                                 material_Wall_FG = new DiffuseMaterial(brushWall_FG);
@@ -1681,7 +1681,7 @@ namespace BaseClasses.GraphObj
                     if (options.bUseTextures)
                     {
                         double poinstsDist = listOfCladdingSheetsBackWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall;
+                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall; // Bug 723
                         wpHeight = claddingWidthRibModular_Wall / poinstsDist;
                         brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                         material_FrontBackWall = new DiffuseMaterial(brushFront);
@@ -1703,7 +1703,7 @@ namespace BaseClasses.GraphObj
                             if (options.bUseTextures)
                             {
                                 double poinstsDist = listOfFibreGlassSheetsWallBack[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG;
+                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG; // Bug 723
                                 wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
                                 brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                                 material_Wall_FG = new DiffuseMaterial(brushWall_FG);
@@ -1724,7 +1724,7 @@ namespace BaseClasses.GraphObj
                     if (options.bUseTextures)
                     {
                         double poinstsDist = listOfCladdingSheetsRoofRight[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Roof;
+                        wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Roof; // Bug 723
                         wpHeight = claddingWidthRibModular_Roof / poinstsDist;
                         brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                         material_Roof = new DiffuseMaterial(brushRoof);
@@ -1745,7 +1745,7 @@ namespace BaseClasses.GraphObj
                         if (options.bUseTextures)
                         {
                             double poinstsDist = listOfFibreGlassSheetsRoofRight[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Roof_FG / claddingWidthModular_Roof_FG;
+                            wpWidth = claddingWidthRibModular_Roof_FG / claddingWidthModular_Roof_FG; // Bug 723
                             wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
                             brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
@@ -1769,7 +1769,7 @@ namespace BaseClasses.GraphObj
                         if (options.bUseTextures)
                         {
                             double poinstsDist = listOfCladdingSheetsRoofLeft[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Roof;
+                            wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Roof; // Bug 723
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
                             brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             material_Roof = new DiffuseMaterial(brushRoof);
@@ -1789,7 +1789,7 @@ namespace BaseClasses.GraphObj
                             if (options.bUseTextures)
                             {
                                 double poinstsDist = listOfFibreGlassSheetsRoofLeft[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Roof_FG / claddingWidthModular_Roof_FG;
+                                wpWidth = claddingWidthRibModular_Roof_FG / claddingWidthModular_Roof_FG; // Bug 723
                                 wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
                                 brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                                 material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
