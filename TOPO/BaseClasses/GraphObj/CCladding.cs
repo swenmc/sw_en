@@ -687,6 +687,12 @@ namespace BaseClasses.GraphObj
                 // TODO Ondrej - chcel by som ten list upravit tak ze vybrieme napriklad 20 peknych farieb a tie sa budu striedat, aby tam nebola cierna alebo 3 odtiene bielej za sebou
                 // Povodny list so vsetkymi farbami mi nezmaz
 
+                // To Ondrej - mam tu chybu ze ten zoznam nie je staticky ale ak sa zavola funkcia niekolkokrat po sebe tak sa tam doplnaju farby
+                // az to nakoniec spadne na out of memory
+                // Prosim Ta nejako usporiadaj, aby sme mali zoznam zhruba 20 farieb, ktore sa zopakuju, tak aby sme mali v zozname dost poloziek
+                // pre 300 m budovu, takze aspon 500 farieb
+                // alebo potom implementovat algoritmus pre zoznam s 20 farbami, ze ked sa narazi na farbu cislo 20 tak sa zacne znova od farby c. 1
+
                 List<Color> colorsTemp_1410_items = new List<Color>();
                 for (int k = 0; k < 10; k++)
                 {
@@ -1718,7 +1724,7 @@ namespace BaseClasses.GraphObj
                     if (options.bUseTextures)
                     {
                         double poinstsDist = listOfCladdingSheetsRoofRight[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Wall;
+                        wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Roof;
                         wpHeight = claddingWidthRibModular_Roof / poinstsDist;
                         brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                         material_Roof = new DiffuseMaterial(brushRoof);
@@ -1763,7 +1769,7 @@ namespace BaseClasses.GraphObj
                         if (options.bUseTextures)
                         {
                             double poinstsDist = listOfCladdingSheetsRoofLeft[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Wall;
+                            wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Roof;
                             wpHeight = claddingWidthRibModular_Roof / poinstsDist;
                             brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             material_Roof = new DiffuseMaterial(brushRoof);

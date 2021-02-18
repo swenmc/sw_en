@@ -65,10 +65,18 @@ namespace BaseClasses.GraphObj
                 }
                 else if(m_EdgePointList.Count == 5)
                 {
+                    // Top Tip relative x-position
+                    // Body su v rovine XZ
+                    double xTopTip_PointNo4 = Math.Abs((m_EdgePointList[3].X - m_EdgePointList[0].X) / (m_EdgePointList[1].X - m_EdgePointList[0].X));
+
+                    // Body su v rovine YZ
+                    if(MATH.MathF.d_equal(m_EdgePointList[0].X, m_EdgePointList[1].X))
+                        xTopTip_PointNo4 = Math.Abs((m_EdgePointList[3].Y - m_EdgePointList[0].Y) / (m_EdgePointList[1].Y - m_EdgePointList[0].Y));
+
                     mesh.TextureCoordinates.Add(new Point(0, 1));
                     mesh.TextureCoordinates.Add(new Point(1, 1));
                     mesh.TextureCoordinates.Add(new Point(1, 1 - (m_EdgePointList[2].Z / m_EdgePointList[3].Z)));
-                    mesh.TextureCoordinates.Add(new Point(0.5, 0));
+                    mesh.TextureCoordinates.Add(new Point(xTopTip_PointNo4, 0));
                     mesh.TextureCoordinates.Add(new Point(0, 1 - (m_EdgePointList[2].Z / m_EdgePointList[3].Z)));
                 }
                 else

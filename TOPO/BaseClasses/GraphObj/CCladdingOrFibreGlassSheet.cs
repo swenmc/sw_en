@@ -324,10 +324,14 @@ namespace BaseClasses.GraphObj
             pfront4_topleft.X += m_fCoordinateInPlane_x;
             pfront4_topleft.Z += m_fCoordinateInPlane_y;
 
-            // Vstupuje ako parameter
-            //Brush solidBrush = new SolidColorBrush(m_Color);
-            //solidBrush.Opacity = m_fOpacity;
-            //DiffuseMaterial material = new DiffuseMaterial(solidBrush);
+            if (options.bCladdingSheetColoursByID && !options.bUseTextures) // Ak je zapnuta textura, tak je nadradena solid brush farbam
+            {
+                // TODO Ondrej - pouzije sa farba priradena objektu
+                // Chcelo by to nejako vylepsit, aby sme tu farbu a material nastavovali len raz a nemuselo sa to tu prepisovat
+                Brush solidBrush = new SolidColorBrush(m_Color);
+                solidBrush.Opacity = m_fOpacity;
+                material = new DiffuseMaterial(solidBrush);
+            }
 
             if (m_iNumberOfEdges == 4)
                 return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
