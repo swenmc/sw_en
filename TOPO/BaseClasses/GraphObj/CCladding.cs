@@ -1545,8 +1545,17 @@ namespace BaseClasses.GraphObj
 
                 for (int i = 0; i < listOfCladdingSheetsLeftWall.Count; i++)
                 {
+                    if (options.bUseTextures)
+                    {
+                        double poinstsDist = listOfCladdingSheetsLeftWall[i].LengthTotal;
+                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall;
+                        wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                        brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                        material_SideWall = new DiffuseMaterial(brushSide);
+                    }
+
                     // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfCladdingSheetsLeftWall[i].GetCladdingSheetModel(options);
+                    GeometryModel3D sheetModel = listOfCladdingSheetsLeftWall[i].GetCladdingSheetModel(options, material_SideWall);
                     sheetModel.Transform = listOfCladdingSheetsLeftWall[i].GetTransformGroup(0, 0, -90);
                     model_gr.Children.Add(sheetModel);
                 }
@@ -1577,8 +1586,17 @@ namespace BaseClasses.GraphObj
 
                 for (int i = 0; i < listOfCladdingSheetsFrontWall.Count; i++)
                 {
+                    if (options.bUseTextures)
+                    {
+                        double poinstsDist = listOfCladdingSheetsFrontWall[i].LengthTotal;
+                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall;
+                        wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                        brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                        material_FrontBackWall = new DiffuseMaterial(brushFront);
+                    }
+
                     // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfCladdingSheetsFrontWall[i].GetCladdingSheetModel(options);
+                    GeometryModel3D sheetModel = listOfCladdingSheetsFrontWall[i].GetCladdingSheetModel(options, material_FrontBackWall);
                     sheetModel.Transform = listOfCladdingSheetsFrontWall[i].GetTransformGroup(0, 0, 0);
                     model_gr.Children.Add(sheetModel);
                 }
@@ -1609,8 +1627,17 @@ namespace BaseClasses.GraphObj
 
                 for (int i = 0; i < listOfCladdingSheetsRightWall.Count; i++)
                 {
+                    if (options.bUseTextures)
+                    {
+                        double poinstsDist = listOfCladdingSheetsRightWall[i].LengthTotal;
+                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall;
+                        wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                        brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                        material_SideWall = new DiffuseMaterial(brushSide);
+                    }
+
                     // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfCladdingSheetsRightWall[i].GetCladdingSheetModel(options);
+                    GeometryModel3D sheetModel = listOfCladdingSheetsRightWall[i].GetCladdingSheetModel(options, material_SideWall);
                     sheetModel.Transform = listOfCladdingSheetsRightWall[i].GetTransformGroup(0, 0, 90);
                     model_gr.Children.Add(sheetModel);
                 }
@@ -1641,8 +1668,17 @@ namespace BaseClasses.GraphObj
 
                 for (int i = 0; i < listOfCladdingSheetsBackWall.Count; i++)
                 {
+                    if (options.bUseTextures)
+                    {
+                        double poinstsDist = listOfCladdingSheetsBackWall[i].LengthTotal;
+                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall;
+                        wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                        brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                        material_FrontBackWall = new DiffuseMaterial(brushFront);
+                    }
+
                     // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfCladdingSheetsBackWall[i].GetCladdingSheetModel(options);
+                    GeometryModel3D sheetModel = listOfCladdingSheetsBackWall[i].GetCladdingSheetModel(options, material_FrontBackWall);
                     sheetModel.Transform = listOfCladdingSheetsBackWall[i].GetTransformGroup(0, 0, 180);
                     model_gr.Children.Add(sheetModel);
                 }
@@ -1675,9 +1711,18 @@ namespace BaseClasses.GraphObj
 
                 for (int i = 0; i < listOfCladdingSheetsRoofRight.Count; i++)
                 {
+                    if (options.bUseTextures)
+                    {
+                        double poinstsDist = listOfCladdingSheetsRoofRight[i].LengthTotal;
+                        wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Wall;
+                        wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                        brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                        material_Roof = new DiffuseMaterial(brushRoof);
+                    }
+
                     // Pridame sheet do model group
                     rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
-                    GeometryModel3D sheetModel = listOfCladdingSheetsRoofRight[i].GetCladdingSheetModel(options);
+                    GeometryModel3D sheetModel = listOfCladdingSheetsRoofRight[i].GetCladdingSheetModel(options, material_Roof);
                     sheetModel.Transform = listOfCladdingSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, 90);
                     model_gr.Children.Add(sheetModel);
                 }
@@ -1711,8 +1756,17 @@ namespace BaseClasses.GraphObj
                     // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                     for (int i = 0; i < listOfCladdingSheetsRoofLeft.Count; i++)
                     {
+                        if (options.bUseTextures)
+                        {
+                            double poinstsDist = listOfCladdingSheetsRoofLeft[i].LengthTotal;
+                            wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Wall;
+                            wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                            brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_Roof = new DiffuseMaterial(brushRoof);
+                        }
+
                         // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfCladdingSheetsRoofLeft[i].GetCladdingSheetModel(options);
+                        GeometryModel3D sheetModel = listOfCladdingSheetsRoofLeft[i].GetCladdingSheetModel(options, material_Roof);
                         sheetModel.Transform = listOfCladdingSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, 90);
                         model_gr.Children.Add(sheetModel);
                     }
