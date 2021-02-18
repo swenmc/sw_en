@@ -27,7 +27,15 @@ namespace PFD
         private float m_Length;
         
         private List<string> m_Sides;
-        private List<string> m_XValues;
+        private List<float> m_XValues;
+        private List<string> m_XValuesWall;
+        private List<string> m_XValuesRoof;
+
+        private EModelType_FS m_ModelType;
+        private float m_ModelTotalLengthFront;
+        private float m_ModelTotalLengthLeft;
+        private float m_CladdingWidthModular_Wall;
+        private float m_CladdingWidthModular_Roof;
 
         public bool IsSetFromCode = false;
 
@@ -43,6 +51,7 @@ namespace PFD
             set
             {
                 m_Side = value;
+                InitXValues();
                 NotifyPropertyChanged("Side");
             }
         }
@@ -103,7 +112,101 @@ namespace PFD
             }
         }
 
-        public List<string> XValues
+        //public List<string> XValuesWall
+        //{
+        //    get
+        //    {
+        //        return m_XValuesWall;
+        //    }
+
+        //    set
+        //    {
+        //        m_XValuesWall = value;
+        //        NotifyPropertyChanged("XValuesWall");
+        //    }
+        //}
+
+        //public List<string> XValuesRoof
+        //{
+        //    get
+        //    {
+        //        return m_XValuesRoof;
+        //    }
+
+        //    set
+        //    {
+        //        m_XValuesRoof = value;
+        //        NotifyPropertyChanged("XValuesRoof");
+        //    }
+        //}
+        
+        public EModelType_FS ModelType
+        {
+            get
+            {
+                return m_ModelType;
+            }
+
+            set
+            {
+                m_ModelType = value;
+                InitSides();                
+            }
+        }
+
+        public float CladdingWidthModular_Wall
+        {
+            get
+            {
+                return m_CladdingWidthModular_Wall;
+            }
+
+            set
+            {
+                m_CladdingWidthModular_Wall = value;
+            }
+        }
+
+        public float CladdingWidthModular_Roof
+        {
+            get
+            {
+                return m_CladdingWidthModular_Roof;
+            }
+
+            set
+            {
+                m_CladdingWidthModular_Roof = value;
+            }
+        }
+
+        public float ModelTotalLengthFront
+        {
+            get
+            {
+                return m_ModelTotalLengthFront;
+            }
+
+            set
+            {
+                m_ModelTotalLengthFront = value;
+            }
+        }
+
+        public float ModelTotalLengthLeft
+        {
+            get
+            {
+                return m_ModelTotalLengthLeft;
+            }
+
+            set
+            {
+                m_ModelTotalLengthLeft = value;
+            }
+        }
+
+        public List<float> XValues
         {
             get
             {
@@ -113,24 +216,26 @@ namespace PFD
             set
             {
                 m_XValues = value;
-                NotifyPropertyChanged("XValues");
             }
         }
 
+
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public FibreglassGeneratorViewModel()
+        public FibreglassGeneratorViewModel(EModelType_FS modelType, float lengthFront, float lengthLeft, float widthModularWall, float widthModularRoof)
         {
             IsSetFromCode = true;
 
-            //AddDoors = false;
-            //DeleteDoors = false;
-            //DoorType = "Roller Door";
-            //DoorsHeight = 2.1f;
-            //DoorsWidth = 0.6f;
-            //DoorCoordinateXinBlock = 0.5f;
-            //CoatingColor = CoatingColors.First();
+            ModelType = modelType;
+
+            ModelTotalLengthFront = lengthFront;
+            ModelTotalLengthLeft = lengthLeft;
+            CladdingWidthModular_Wall = widthModularWall;
+            CladdingWidthModular_Wall = widthModularRoof;
+
+            InitXValues();
 
             IsSetFromCode = false;
         }
@@ -140,6 +245,73 @@ namespace PFD
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void InitSides()
+        {
+            List<string> sides = new List<string>();
+            if (ModelType == EModelType_FS.eKitsetGableRoofEnclosed)
+            {
+                sides = new List<string>() { "Left", "Right", "Front", "Back", "Roof-Left Side", "Roof-Right Side" };
+            }
+            else if (ModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
+            {
+                sides = new List<string>() { "Left", "Right", "Front", "Back", "Roof" };
+            }
+            else
+            {
+
+            }
+
+            Sides = sides;
+
+            if (Sides.Count != 0) Side = Sides.First();
+        }
+
+        private void InitXValues()
+        {
+            List<float> x_values = new List<float>();
+            float x = 0f;
+            int i = 0;
+            int maxCount = 100; //aby sme nespravili virus pri zlej inicializacii
+            if (Side == "Left" || Side == "Right")
+            {
+                while (x <= ModelTotalLengthLeft)
+                {
+                    x_values.Add(x);
+                    x += CladdingWidthModular_Wall;
+                    i++;
+                    if (i > maxCount) return;
+                }
+            }
+            else if (Side == "Front" || Side == "Back")
+            {
+                while (x <= ModelTotalLengthFront)
+                {
+                    x_values.Add(x);
+                    x += CladdingWidthModular_Wall;
+                    i++;
+                    if (i > maxCount) return;
+                }
+            }
+            else if (Side == "Roof" || Side == "Roof-Left Side" || Side == "Roof-Right Side")
+            {
+                while (x <= ModelTotalLengthLeft)
+                {
+                    x_values.Add(x);
+                    x += CladdingWidthModular_Roof;
+                    i++;
+                    if (i > maxCount) return;
+                }
+            }
+            else
+            {
+                throw new Exception("Side not recognized: " + Side);
+            }
+
+            XValues = x_values;
+
+            if (XValues.Count != 0) X = XValues.First();
         }
     }
 }
