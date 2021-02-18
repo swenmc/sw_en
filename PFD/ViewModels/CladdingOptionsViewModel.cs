@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace PFD
 {
@@ -78,6 +79,10 @@ namespace PFD
         private float m_WallBottomOffset_Z;
 
         private bool m_ConsiderRoofCladdingFor_FB_WallHeight;
+
+        private ObservableCollection<FibreglassProperties> m_FibreglassProperties;
+
+        
 
         #endregion private fields
 
@@ -881,6 +886,74 @@ namespace PFD
                 NotifyPropertyChanged("ConsiderRoofCladdingFor_FB_WallHeight");
             }
         }
+
+
+        public ObservableCollection<FibreglassProperties> FibreglassProperties
+        {
+            get
+            {
+                if (m_FibreglassProperties == null) m_FibreglassProperties = new ObservableCollection<FibreglassProperties>();
+                return m_FibreglassProperties;
+            }
+
+            set
+            {
+                m_FibreglassProperties = value;
+                if (m_FibreglassProperties == null) return;
+                m_FibreglassProperties.CollectionChanged += FibreglassProperties_CollectionChanged;
+                foreach (FibreglassProperties f in m_FibreglassProperties)
+                {
+                    f.PropertyChanged -= HandleFibreglassPropertiesPropertyChangedEvent;
+                    f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
+                }
+                
+                NotifyPropertyChanged("FibreglassProperties");
+            }
+        }
+
+        //TO Mato - co budeme nastavovat, co sa ma udiat ked pridame, zmazeme riadok a podobne?Alebo budeme reagovat az ked sa opusti tab?
+        private void FibreglassProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                FibreglassProperties f = m_FibreglassProperties.LastOrDefault();
+                if (f != null)
+                {
+                    f.SetDefaults(EModelType_FS.eKitsetGableRoofEnclosed); //TODO zatial napevno
+                    f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
+                    NotifyPropertyChanged("FibreglassProperties_Add");                    
+                }
+            }
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                //To Mato - treba nam tu nieco nastavovat? alebo dame len nejaku property changed, aby sme vedeli,ze bola nejaka zmena?
+                //RecreateModel = true;
+                //RecreateJoints = true;
+                //RecreateFloorSlab = true;
+                //SetResultsAreNotValid();
+                NotifyPropertyChanged("FibreglassProperties_CollectionChanged");
+            }            
+        }
+
+        private void HandleFibreglassPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            try
+            {
+                if (IsSetFromCode) return;
+
+                if (e.PropertyName == "Side")
+                {                    
+                    
+                }
+                
+                this.PropertyChanged(sender, e);
+            }
+            catch (Exception ex)
+            {
+                //tu by sa mohli detekovat nejake kolizie
+            }
+        }
+
         #endregion Properties
 
         //-------------------------------------------------------------------------------------------------------------
@@ -914,6 +987,11 @@ namespace PFD
             CanopyRoofEdgeOverHang_LR_X = 0.15f;
             WallBottomOffset_Z = -0.05f;
             ConsiderRoofCladdingFor_FB_WallHeight = true;
+
+            FibreglassProperties = new ObservableCollection<FibreglassProperties>();
+            FibreglassProperties f = new FibreglassProperties();
+            f.SetDefaults(EModelType_FS.eKitsetGableRoofEnclosed); //zatial napevno
+            FibreglassProperties.Add(f);
 
             IsSetFromCode = false;
         }

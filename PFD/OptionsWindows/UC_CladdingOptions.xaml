@@ -50,10 +50,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>                
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -238,48 +235,33 @@
                 </Button>
 
             </StackPanel>
-            
 
-            <DataGrid Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="6" Name ="Datagrid_Fibreglass" SelectionMode="Single" 
+            <DataGrid Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="6" MinHeight="100" Width="300" Name ="Datagrid_Fibreglass" SelectionMode="Single" 
                       ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
-                      HorizontalAlignment="Left" MinHeight="20" IsReadOnly="false" CanUserAddRows="True" AutoGenerateColumns="False" 
+                      HorizontalAlignment="Left" IsReadOnly="false" CanUserAddRows="True" AutoGenerateColumns="False" 
                       VerticalAlignment="Top" CanUserSortColumns="False" >
                 <DataGrid.Columns>
-                    <DataGridComboBoxColumn Width="2*" Header="Side" ToolTipService.ToolTip="Select side of building"
+                    <DataGridComboBoxColumn Width="*" Header="Side" ToolTipService.ToolTip="Select side"
                                     SelectedItemBinding="{Binding Path=Side, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding Path=Sides}" />
-                    <DataGridComboBoxColumn Header="x[m]" ToolTipService.ToolTip="" Width="1.5*" SelectedValueBinding="{Binding LengthX, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridComboBoxColumn Header="X [m]" ToolTipService.ToolTip="x" Width="*" SelectedValueBinding="{Binding X, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>
                             <Style TargetType="ComboBox">
-                                <Setter Property="ItemsSource" Value="{Binding LengthsX}"/>
+                                <Setter Property="ItemsSource" Value="{Binding XValues}"/>
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                         <DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox">
-                                <Setter Property="ItemsSource" Value="{Binding LengthsX}"/>
+                                <Setter Property="ItemsSource" Value="{Binding XValues}"/>
                                 <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
                     </DataGridComboBoxColumn>
-                    <DataGridComboBoxColumn Header="y[m]" ToolTipService.ToolTip="" Width="1.5*" SelectedValueBinding="{Binding LengthY, UpdateSourceTrigger=PropertyChanged}">
-                        <DataGridComboBoxColumn.ElementStyle>
-                            <Style TargetType="ComboBox">
-                                <Setter Property="ItemsSource" Value="{Binding LengthsY}"/>
-                                <Setter Property="HorizontalAlignment" Value="Right"/>
-                            </Style>
-                        </DataGridComboBoxColumn.ElementStyle>
-                        <DataGridComboBoxColumn.EditingElementStyle>
-                            <Style TargetType="ComboBox">
-                                <Setter Property="ItemsSource" Value="{Binding LengthsY}"/>
-                                <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
-                            </Style>
-                        </DataGridComboBoxColumn.EditingElementStyle>
-                    </DataGridComboBoxColumn>
-                                        
-                    <DataGridTextColumn Header="Length [m]" ToolTipService.ToolTip="Enter length" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding FibreglassLength, ValidatesOnExceptions=True, StringFormat={}{0:0.0}}"/>
+                    <DataGridTextColumn Header="Y [m]" ToolTipService.ToolTip="Enter y" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Y, ValidatesOnExceptions=True, StringFormat={}{0:0.0}}"/>
+                    <DataGridTextColumn Header="Length [m]" ToolTipService.ToolTip="Enter length" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Length, ValidatesOnExceptions=True, StringFormat={}{0:0.0}}"/>
                     
-                    <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding FibreglassColor, UpdateSourceTrigger=PropertyChanged}">
+                    <!--<DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding FibreglassColor, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="ItemsSource" Value="{Binding FibreglassColors}"/>
@@ -310,7 +292,7 @@
                                 </Setter>
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
-                    </DataGridComboBoxColumn>
+                    </DataGridComboBoxColumn>-->
 
                 </DataGrid.Columns>
             </DataGrid>
