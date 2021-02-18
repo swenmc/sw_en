@@ -300,7 +300,7 @@ namespace BaseClasses.GraphObj
                 m_dLengthTotal = Math.Max(Math.Max(m_dLengthTopLeft, m_dLengthTopRight), m_dLengthTopTip);
         }
 
-        public GeometryModel3D GetCladdingSheetModel(DisplayOptions options)
+        public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial mat = null)
         {
             Point3D pfront0_baseleft = new Point3D(0,0,0);
             Point3D pfront1_baseright = new Point3D(m_fWidthModular, 0,0);
@@ -327,6 +327,9 @@ namespace BaseClasses.GraphObj
             Brush solidBrush = new SolidColorBrush(m_Color);
             solidBrush.Opacity = m_fOpacity;
             DiffuseMaterial material = new DiffuseMaterial(solidBrush);
+
+            if (mat != null)
+                material = mat; // TODO - Upravit, aby sme pri texture nevytvarali dva materialy
 
             if (m_iNumberOfEdges == 4)
                 return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);

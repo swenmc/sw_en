@@ -138,17 +138,17 @@ namespace BaseClasses.GraphObj
             fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
 
             // TODO 719 - Implementovat a napojit z GUI
-            m_ColorNameRoof_FG = "LightCyan"; // TODO 719 GUI INPUT
+            m_ColorNameRoof_FG = "White"; // TODO 719 GUI INPUT
             m_claddingShape_Roof_FG = m_claddingShape_Roof;
             m_claddingCoatingType_Roof_FG = "";
-            m_ColorRoof_FG = Colors.LightCyan; // TODO 719 GUI INPUT
+            m_ColorRoof_FG = Colors.White; // TODO 719 GUI INPUT
             claddingWidthRibModular_Roof_FG = roofCladdingWidthRib;
             claddingWidthModular_Roof_FG = claddingWidthModular_Roof;
 
-            m_ColorNameWall_FG = "LightBlue"; // TODO 719 GUI INPUT
+            m_ColorNameWall_FG = "White"; // TODO 719 GUI INPUT
             m_claddingShape_Wall_FG = m_claddingShape_Wall;
             m_claddingCoatingType_Wall_FG = "";
-            m_ColorWall_FG = Colors.LightBlue; // TODO 719 GUI INPUT
+            m_ColorWall_FG = Colors.White; // TODO 719 GUI INPUT
             claddingWidthRibModular_Wall_FG = wallCladdingWidthRib;
             claddingWidthModular_Wall_FG = claddingWidthModular_Wall;
         }
@@ -213,17 +213,30 @@ namespace BaseClasses.GraphObj
             Brush solidBrushSide = new SolidColorBrush(m_ColorWall);
             Brush solidBrushRoof = new SolidColorBrush(m_ColorRoof);
 
+            Brush solidBrushWall_FG = new SolidColorBrush(m_ColorWall_FG);
+            Brush solidBrushRoof_FG = new SolidColorBrush(m_ColorRoof_FG);
+
             solidBrushFront.Opacity = options.fFrontCladdingOpacity;
             solidBrushSide.Opacity = options.fLeftCladdingOpacity;
             solidBrushRoof.Opacity = options.fRoofCladdingOpacity;
+
+            solidBrushWall_FG.Opacity = fFibreGlassOpacity;
+            solidBrushRoof_FG.Opacity = fFibreGlassOpacity;
 
             DiffuseMaterial material_SideWall = new DiffuseMaterial(solidBrushSide); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
             DiffuseMaterial material_FrontBackWall = new DiffuseMaterial(solidBrushFront); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
             DiffuseMaterial material_Roof = new DiffuseMaterial(solidBrushRoof); // TODO Ondrej - nastavitelna farba pre zobrazenie v GUI a pre Export
 
+            DiffuseMaterial material_Wall_FG = new DiffuseMaterial(solidBrushWall_FG);
+            DiffuseMaterial material_Roof_FG = new DiffuseMaterial(solidBrushRoof_FG);
+
             ImageBrush brushFront = null;
             ImageBrush brushSide = null;
             ImageBrush brushRoof = null;
+
+            ImageBrush brushWall_FG = null;
+            ImageBrush brushRoof_FG = null;
+
             double wpWidth = 0;
             double wpHeight = 0;
 
@@ -267,6 +280,25 @@ namespace BaseClasses.GraphObj
                 brushRoof.ViewportUnits = BrushMappingMode.Absolute;
                 brushRoof.Stretch = Stretch.Fill;
                 brushRoof.Opacity = options.fRoofCladdingOpacity;
+
+                // Fibreglass
+                string uriString_FG_Wall = "pack://application:,,,/Resources/Textures/Fibreglass/" + m_claddingShape_Wall + "/" + m_claddingShape_Wall + "_" + m_ColorNameWall_FG + ".jpg";
+
+                brushWall_FG = new ImageBrush();
+                brushWall_FG.ImageSource = new BitmapImage(new Uri(uriString_FG_Wall, UriKind.RelativeOrAbsolute));
+                brushWall_FG.TileMode = TileMode.Tile;
+                brushWall_FG.ViewportUnits = BrushMappingMode.Absolute;
+                brushWall_FG.Stretch = Stretch.Fill;
+                brushWall_FG.Opacity = fFibreGlassOpacity;
+
+                string uriString_FG_Roof = "pack://application:,,,/Resources/Textures/Fibreglass/" + m_claddingShape_Roof + "/" + m_claddingShape_Roof + "_" + m_ColorNameRoof_FG + ".jpg";
+
+                brushRoof_FG = new ImageBrush();
+                brushRoof_FG.ImageSource = new BitmapImage(new Uri(uriString_FG_Roof, UriKind.RelativeOrAbsolute));
+                brushRoof_FG.TileMode = TileMode.Tile;
+                brushRoof_FG.ViewportUnits = BrushMappingMode.Absolute;
+                brushRoof_FG.Stretch = Stretch.Fill;
+                brushRoof_FG.Opacity = fFibreGlassOpacity;
             }
 
             // Wall Points
@@ -1526,8 +1558,17 @@ namespace BaseClasses.GraphObj
                         // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
                         for (int i = 0; i < listOfFibreGlassSheetsWallLeft.Count; i++)
                         {
+                            if (options.bUseTextures)
+                            {
+                                double poinstsDist = listOfFibreGlassSheetsWallLeft[i].LengthTotal;
+                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG;
+                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
+                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                            }
+
                             // Pridame sheet do model group
-                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallLeft[i].GetCladdingSheetModel(options);
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallLeft[i].GetCladdingSheetModel(options, material_Wall_FG);
                             sheetModel.Transform = listOfFibreGlassSheetsWallLeft[i].GetTransformGroup(0, 0, -90);
                             model_gr.Children.Add(sheetModel);
                         }
@@ -1549,8 +1590,17 @@ namespace BaseClasses.GraphObj
                         // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
                         for (int i = 0; i < listOfFibreGlassSheetsWallFront.Count; i++)
                         {
+                            if (options.bUseTextures)
+                            {
+                                double poinstsDist = listOfFibreGlassSheetsWallFront[i].LengthTotal;
+                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG;
+                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
+                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                            }
+
                             // Pridame sheet do model group
-                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallFront[i].GetCladdingSheetModel(options);
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallFront[i].GetCladdingSheetModel(options, material_Wall_FG);
                             sheetModel.Transform = listOfFibreGlassSheetsWallFront[i].GetTransformGroup(0, 0, 0);
                             model_gr.Children.Add(sheetModel);
                         }
@@ -1572,8 +1622,17 @@ namespace BaseClasses.GraphObj
                         // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
                         for (int i = 0; i < listOfFibreGlassSheetsWallRight.Count; i++)
                         {
+                            if (options.bUseTextures)
+                            {
+                                double poinstsDist = listOfFibreGlassSheetsWallRight[i].LengthTotal;
+                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG;
+                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
+                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                            }
+
                             // Pridame sheet do model group
-                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallRight[i].GetCladdingSheetModel(options);
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallRight[i].GetCladdingSheetModel(options, material_Wall_FG);
                             sheetModel.Transform = listOfFibreGlassSheetsWallRight[i].GetTransformGroup(0, 0, 90);
                             model_gr.Children.Add(sheetModel);
                         }
@@ -1595,8 +1654,17 @@ namespace BaseClasses.GraphObj
                         // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
                         for (int i = 0; i < listOfFibreGlassSheetsWallBack.Count; i++)
                         {
+                            if (options.bUseTextures)
+                            {
+                                double poinstsDist = listOfFibreGlassSheetsWallBack[i].LengthTotal;
+                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG;
+                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
+                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                            }
+
                             // Pridame sheet do model group
-                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallBack[i].GetCladdingSheetModel(options);
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsWallBack[i].GetCladdingSheetModel(options, material_Wall_FG);
                             sheetModel.Transform = listOfFibreGlassSheetsWallBack[i].GetTransformGroup(0, 0, 180);
                             model_gr.Children.Add(sheetModel);
                         }
@@ -1619,9 +1687,18 @@ namespace BaseClasses.GraphObj
                     // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
                     for (int i = 0; i < listOfFibreGlassSheetsRoofRight.Count; i++)
                     {
+                        if (options.bUseTextures)
+                        {
+                            double poinstsDist = listOfFibreGlassSheetsRoofRight[i].LengthTotal;
+                            wpWidth = claddingWidthRibModular_Roof_FG / claddingWidthModular_Roof_FG;
+                            wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
+                            brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
+                        }
+
                         // Pridame sheet do model group
                         rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofRight[i].GetCladdingSheetModel(options);
+                        GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofRight[i].GetCladdingSheetModel(options, material_Roof_FG);
                         sheetModel.Transform = listOfFibreGlassSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, 90);
                         model_gr.Children.Add(sheetModel);
                     }
@@ -1645,8 +1722,17 @@ namespace BaseClasses.GraphObj
                         // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
                         for (int i = 0; i < listOfFibreGlassSheetsRoofLeft.Count; i++)
                         {
+                            if (options.bUseTextures)
+                            {
+                                double poinstsDist = listOfFibreGlassSheetsRoofLeft[i].LengthTotal;
+                                wpWidth = claddingWidthRibModular_Roof_FG / claddingWidthModular_Roof_FG;
+                                wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
+                                brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
+                            }
+
                             // Pridame sheet do model group
-                            GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofLeft[i].GetCladdingSheetModel(options);
+                            GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofLeft[i].GetCladdingSheetModel(options, material_Roof_FG);
                             sheetModel.Transform = listOfFibreGlassSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, 90);
                             model_gr.Children.Add(sheetModel);
                         }
