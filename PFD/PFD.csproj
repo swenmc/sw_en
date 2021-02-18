@@ -989,6 +989,15 @@
   <ItemGroup>
     <Resource Include="Resources\fibreglasssheets.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Textures\Fibreglass\Purlindek\Purlindek_White.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Textures\Fibreglass\Smartdek\Smartdek_White.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Textures\Fibreglass\Speedclad\Speedclad_White.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
