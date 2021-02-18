@@ -234,7 +234,7 @@
             <StackPanel Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="3" Width="300" Orientation="Horizontal">
                 <TextBlock FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" Width="270" />
                 <Button Name="btnFiberglassGenerator" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="Add Fibreglass" Margin="0 0 0 0" Width="25" Height="25" Click="BtnFiberglassGenerator_Click">
-                    <Image Source="PFD/Resources/doors.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                    <Image Source="Resources/fibreglasssheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                 </Button>
 
             </StackPanel>
