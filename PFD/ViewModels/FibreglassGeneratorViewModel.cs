@@ -28,8 +28,8 @@ namespace PFD
         
         private List<string> m_Sides;
         private List<float> m_XValues;
-        private List<string> m_XValuesWall;
-        private List<string> m_XValuesRoof;
+        private string m_Periodicity;
+        private List<string> m_PeriodicityValues;
 
         private EModelType_FS m_ModelType;
         private float m_ModelTotalLengthFront;
@@ -219,6 +219,32 @@ namespace PFD
             }
         }
 
+        public string Periodicity
+        {
+            get
+            {
+                return m_Periodicity;
+            }
+
+            set
+            {
+                m_Periodicity = value;
+            }
+        }
+
+        public List<string> PeriodicityValues
+        {
+            get
+            {
+                return m_PeriodicityValues;
+            }
+
+            set
+            {
+                m_PeriodicityValues = value;
+            }
+        }
+
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -312,6 +338,25 @@ namespace PFD
             XValues = x_values;
 
             if (XValues.Count != 0) X = XValues.First();
+
+            InitPeriodicity();
+        }
+
+        private void InitPeriodicity()
+        {
+            List<string> values = new List<string>();
+            if (XValues.Count > 0) values.Add("Every Sheet");
+            if (XValues.Count > 1) values.Add("Every Second");
+            if (XValues.Count > 2) values.Add("Every Third");
+
+            for (int i = 3; i < XValues.Count && i < 20; i++)
+            {
+                values.Add($"Every {i + 1}th");
+            }
+
+            PeriodicityValues = values;
+
+            if (PeriodicityValues.Count != 0) Periodicity = PeriodicityValues.First();
         }
     }
 }
