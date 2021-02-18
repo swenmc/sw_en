@@ -56,7 +56,8 @@ namespace PFD
 
         private void BtnFiberglassGenerator_Click(object sender, RoutedEventArgs e)
         {
-
+            FibreglassGeneratorWindow w = new FibreglassGeneratorWindow(_pfdVM);
+            w.ShowDialog();
         }
     }
 }

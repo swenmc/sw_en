@@ -250,7 +250,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public FibreglassGeneratorViewModel(EModelType_FS modelType, float lengthFront, float lengthLeft, float widthModularWall, float widthModularRoof)
+        public FibreglassGeneratorViewModel(EModelType_FS modelType, float lengthFront, float lengthLeft, double widthModularWall, double widthModularRoof)
         {
             IsSetFromCode = true;
 
@@ -258,8 +258,11 @@ namespace PFD
 
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
-            CladdingWidthModular_Wall = widthModularWall;
-            CladdingWidthModular_Wall = widthModularRoof;
+            CladdingWidthModular_Wall = (float)widthModularWall;
+            CladdingWidthModular_Wall = (float)widthModularRoof;
+
+            Y = 0.6f;
+            Length = 1.8f;
 
             InitXValues();
 
