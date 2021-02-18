@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Fibreglass Generator" Height="220" Width="550">
+        Title="Fibreglass Generator" Height="220" Width="550" Icon="Resources/fibreglasssheets.png">
     <Window.Resources>
         <System:Double x:Key="theComboBoxWidth">110</System:Double>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>

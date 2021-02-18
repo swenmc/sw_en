@@ -234,15 +234,16 @@
             <StackPanel Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="3" Width="300" Orientation="Horizontal">
                 <TextBlock FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" Width="270" />
                 <Button Name="btnFiberglassGenerator" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="Add Fibreglass" Margin="0 0 0 0" Width="25" Height="25" Click="BtnFiberglassGenerator_Click">
-                    <Image Source="Resources/fibreglasssheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                    <Image Source="..\Resources\fibreglasssheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                 </Button>
 
             </StackPanel>
             
 
-            <DataGrid Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="6" Name ="Datagrid_Fibreglass" SelectionMode="Single" ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
-                                  HorizontalAlignment="Left" MinHeight="20" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top"  
-                                  CanUserSortColumns="False" >
+            <DataGrid Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="6" Name ="Datagrid_Fibreglass" SelectionMode="Single" 
+                      ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+                      HorizontalAlignment="Left" MinHeight="20" IsReadOnly="false" CanUserAddRows="True" AutoGenerateColumns="False" 
+                      VerticalAlignment="Top" CanUserSortColumns="False" >
                 <DataGrid.Columns>
                     <DataGridComboBoxColumn Width="2*" Header="Side" ToolTipService.ToolTip="Select side of building"
                                     SelectedItemBinding="{Binding Path=Side, UpdateSourceTrigger=PropertyChanged}"
