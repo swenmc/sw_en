@@ -919,7 +919,7 @@ namespace PFD
                 FibreglassProperties f = m_FibreglassProperties.LastOrDefault();
                 if (f != null)
                 {
-                    f.SetDefaults(EModelType_FS.eKitsetGableRoofEnclosed); //TODO zatial napevno
+                    f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.Width, _pfdVM.Length, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
                     f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("FibreglassProperties_Add");                    
                 }
@@ -956,6 +956,8 @@ namespace PFD
 
         #endregion Properties
 
+        CPFDViewModel _pfdVM;
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -989,15 +991,14 @@ namespace PFD
             ConsiderRoofCladdingFor_FB_WallHeight = true;
 
             FibreglassProperties = new ObservableCollection<FibreglassProperties>();
-            FibreglassProperties f = new FibreglassProperties();
-            f.SetDefaults(EModelType_FS.eKitsetGableRoofEnclosed); //zatial napevno
-            FibreglassProperties.Add(f);
-
+            
             IsSetFromCode = false;
         }
-
-        public void SetDefaultValuesOnModelIndexChange()
+        
+        public void SetDefaultValuesOnModelIndexChange(CPFDViewModel pfdVM)
         {
+            _pfdVM = pfdVM;
+
             RoofCladdingIndex = 1;
             RoofCladdingCoatingIndex = 1;
             RoofCladdingColorIndex = 8;
@@ -1022,6 +1023,11 @@ namespace PFD
             CanopyRoofEdgeOverHang_LR_X = 0.15f;
             WallBottomOffset_Z = -0.05f;
             ConsiderRoofCladdingFor_FB_WallHeight = true;
+
+            FibreglassProperties = new ObservableCollection<FibreglassProperties>();
+            FibreglassProperties f = new FibreglassProperties();
+            f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.Width, _pfdVM.Length, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+            FibreglassProperties.Add(f);
         }
 
         //-------------------------------------------------------------------------------------------------------------

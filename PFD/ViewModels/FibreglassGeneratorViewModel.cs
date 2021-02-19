@@ -112,34 +112,6 @@ namespace PFD
             }
         }
 
-        //public List<string> XValuesWall
-        //{
-        //    get
-        //    {
-        //        return m_XValuesWall;
-        //    }
-
-        //    set
-        //    {
-        //        m_XValuesWall = value;
-        //        NotifyPropertyChanged("XValuesWall");
-        //    }
-        //}
-
-        //public List<string> XValuesRoof
-        //{
-        //    get
-        //    {
-        //        return m_XValuesRoof;
-        //    }
-
-        //    set
-        //    {
-        //        m_XValuesRoof = value;
-        //        NotifyPropertyChanged("XValuesRoof");
-        //    }
-        //}
-        
         public EModelType_FS ModelType
         {
             get

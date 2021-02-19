@@ -410,7 +410,7 @@ namespace PFD
                 //WallCladdingColorIndex = 8;
                 //FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
                 //FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
-                _claddingOptionsVM.SetDefaultValuesOnModelIndexChange();
+                _claddingOptionsVM.SetDefaultValuesOnModelIndexChange(this);
 
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
 
@@ -3293,7 +3293,7 @@ namespace PFD
             WindowBlocksProperties = windowBlocksProperties;
 
             _componentVM = componentVM;
-            SetComponentListAccordingToDoorsAndWindows();            
+            SetComponentListAccordingToDoorsAndWindows();
             _componentVM.PropertyChanged += ComponentVM_PropertyChanged;
             ComponentList = _componentVM.ComponentList;
 
@@ -3330,6 +3330,7 @@ namespace PFD
 
             // Set default kitset model type
             KitsetTypeIndex = kitsetTypeIndex;
+
 
             //_canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);  //nastavujeme az po tom co sa nastavi ModelIndex
             //SetComponentListAccordingToCanopies();

@@ -245,15 +245,18 @@
                                     SelectedItemBinding="{Binding Path=Side, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding Path=Sides}" />
                     <DataGridComboBoxColumn Header="X [m]" ToolTipService.ToolTip="x" Width="*" SelectedValueBinding="{Binding X, UpdateSourceTrigger=PropertyChanged}">
-                        <DataGridComboBoxColumn.ElementStyle>
+                        <DataGridComboBoxColumn.ElementStyle>                            
+                            <!--Ako na zaokruhlovanie? ved tam su desatinne cisla-->
                             <Style TargetType="ComboBox">
                                 <Setter Property="ItemsSource" Value="{Binding XValues}"/>
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="ItemStringFormat" Value="{}{0:0.0}"/>
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                         <DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="ItemsSource" Value="{Binding XValues}"/>
+                                <Setter Property="ItemStringFormat" Value="{}{0:0.0}"/>
                                 <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
