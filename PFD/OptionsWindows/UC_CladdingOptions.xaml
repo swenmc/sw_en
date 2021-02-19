@@ -228,22 +228,34 @@
                          IsChecked="{Binding Path=ConsiderRoofCladdingFor_FB_WallHeight}" Grid.ColumnSpan="6">Consider roof cladding for front/back wall height
             </CheckBox>
 
-            <StackPanel Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="3" Width="300" Orientation="Horizontal">
-                <TextBlock FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" Width="270" />
+            <StackPanel Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="4" Width="400" Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" Text="Fibreglass:" HorizontalAlignment="Left" Width="350" />
                 <Button Name="btnFiberglassGenerator" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="Add Fibreglass" Margin="0 0 0 0" Width="25" Height="25" Click="BtnFiberglassGenerator_Click">
                     <Image Source="..\Resources\fibreglasssheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                 </Button>
 
             </StackPanel>
 
-            <DataGrid Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="6" MinHeight="100" Width="300" Name ="Datagrid_Fibreglass" SelectionMode="Single" 
-                      ItemsSource="{Binding FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+            <DataGrid Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="6" MinHeight="100" Width="400" Name ="Datagrid_Fibreglass" SelectionMode="Single" 
+                      ItemsSource="{Binding Path=FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
                       HorizontalAlignment="Left" IsReadOnly="false" CanUserAddRows="True" AutoGenerateColumns="False" 
                       VerticalAlignment="Top" CanUserSortColumns="False" >
-                <DataGrid.Columns>
-                    <DataGridComboBoxColumn Width="*" Header="Side" ToolTipService.ToolTip="Select side"
-                                    SelectedItemBinding="{Binding Path=Side, UpdateSourceTrigger=PropertyChanged}"
-                                    ItemsSource="{Binding Path=Sides}" />
+                <DataGrid.Columns>                    
+                    <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side" Width="1.5*" SelectedValueBinding="{Binding Side, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGridComboBoxColumn.ElementStyle>                            
+                            <Style TargetType="ComboBox">
+                                <Setter Property="ItemsSource" Value="{Binding Sides}"/>
+                                <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
+                            </Style>
+                        </DataGridComboBoxColumn.ElementStyle>
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="ItemsSource" Value="{Binding Sides}"/>
+                                <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->                                
+                            </Style>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                    </DataGridComboBoxColumn>
+
                     <DataGridComboBoxColumn Header="X [m]" ToolTipService.ToolTip="x" Width="*" SelectedValueBinding="{Binding X, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>                            
                             <!--Ako na zaokruhlovanie? ved tam su desatinne cisla-->
@@ -256,8 +268,8 @@
                         <DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="ItemsSource" Value="{Binding XValues}"/>
-                                <Setter Property="ItemStringFormat" Value="{}{0:0.0}"/>
-                                <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="ItemStringFormat" Value="{}{0:0.0}"/>                                
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
                     </DataGridComboBoxColumn>
