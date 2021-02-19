@@ -815,6 +815,9 @@ namespace BaseClasses.GraphObj
                 // Docasne - napojit vytvorenie FG Sheets na GUI
                 // Fibreglass - docasne - malo byt zadavane v datagride v Tabe Cladding
 
+                //TODO dostat tu nejako claddingOptionsViewModel
+                //foreach(FibreglassProperties fp in _vm)
+
                 // FG Sheet 1
                 fPosition_x = 2 * claddingWidthModular_Wall_FG; // TODO Input - docasne
                 fPosition_y = 0.5f; // TODO Input - docasne - pozicia od spodnej hrany laveho okraja steny
