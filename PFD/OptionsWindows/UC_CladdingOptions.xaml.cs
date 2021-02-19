@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,6 +59,36 @@ namespace PFD
         {
             FibreglassGeneratorWindow w = new FibreglassGeneratorWindow(_pfdVM);
             w.ShowDialog();
+
+            FibreglassGeneratorViewModel generatorViewModel = w.DataContext as FibreglassGeneratorViewModel;
+            if (generatorViewModel == null) return;
+            if (generatorViewModel.AddFibreglass)
+            {
+                List<FibreglassProperties> fibreglassProps = w.GetFibreglassProperties();                
+                if (fibreglassProps.Count == 0) return;
+
+                foreach (FibreglassProperties fp in _pfdVM._claddingOptionsVM.FibreglassProperties)
+                {                    
+                    bool existsSameItem = fibreglassProps.Exists(f => MathF.d_equal(f.X, fp.X) && MathF.d_equal(f.Y, fp.Y) && MathF.d_equal(f.Length, fp.Length) && f.Side == fp.Side);
+                    if (!existsSameItem) fibreglassProps.Add(fp);
+                }
+
+                _pfdVM._claddingOptionsVM.FibreglassProperties = new ObservableCollection<FibreglassProperties>(fibreglassProps);
+            }
+            else if (generatorViewModel.DeleteFibreglass)
+            {
+                List<FibreglassProperties> fibreglassToDelete = w.GetFibreglassToDelete();
+                if (fibreglassToDelete.Count == 0) return;
+
+                List<FibreglassProperties> fibreglassProperties = new List<FibreglassProperties>();
+
+                foreach (FibreglassProperties fp in _pfdVM._claddingOptionsVM.FibreglassProperties)
+                {
+                    bool isTheItemToDelete = fibreglassToDelete.Exists(f => MathF.d_equal(f.X, fp.X) && MathF.d_equal(f.Y, fp.Y) && MathF.d_equal(f.Length, fp.Length) && f.Side == fp.Side);
+                    if (!isTheItemToDelete) fibreglassToDelete.Add(fp);
+                }
+                _pfdVM._claddingOptionsVM.FibreglassProperties = new ObservableCollection<FibreglassProperties>(fibreglassProperties);
+            }
         }
     }
 }

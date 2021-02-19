@@ -37,6 +37,10 @@ namespace PFD
         private float m_CladdingWidthModular_Wall;
         private float m_CladdingWidthModular_Roof;
 
+
+        private bool m_AddFibreglass;
+        private bool m_DeleteFibreglass;
+
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -217,6 +221,32 @@ namespace PFD
             }
         }
 
+        public bool AddFibreglass
+        {
+            get
+            {
+                return m_AddFibreglass;
+            }
+
+            set
+            {
+                m_AddFibreglass = value;
+            }
+        }
+
+        public bool DeleteFibreglass
+        {
+            get
+            {
+                return m_DeleteFibreglass;
+            }
+
+            set
+            {
+                m_DeleteFibreglass = value;
+            }
+        }
+
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -225,6 +255,9 @@ namespace PFD
         public FibreglassGeneratorViewModel(EModelType_FS modelType, float lengthFront, float lengthLeft, double widthModularWall, double widthModularRoof)
         {
             IsSetFromCode = true;
+
+            AddFibreglass = false;
+            DeleteFibreglass = false;
 
             ModelType = modelType;
 
@@ -333,5 +366,24 @@ namespace PFD
 
             if (PeriodicityValues.Count != 0) Periodicity = PeriodicityValues.First();
         }
+
+        public FibreglassProperties GetFibreglass()
+        {
+            FibreglassProperties f = new FibreglassProperties();
+            f.ModelType = ModelType;
+            f.ModelTotalLengthLeft = ModelTotalLengthLeft;
+            f.ModelTotalLengthFront = ModelTotalLengthFront;
+            f.CladdingWidthModular_Wall = CladdingWidthModular_Wall;
+            f.CladdingWidthModular_Roof = CladdingWidthModular_Roof;
+
+            f.Sides = Sides;
+            f.Side = Side;
+            f.XValues = XValues;
+            f.Y = Y;
+            f.Length = Length;
+
+            return f;
+        }
+
     }
 }

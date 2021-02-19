@@ -27,8 +27,7 @@ namespace PFD
             InitializeComponent();
 
             _pfdVM = pfdVM;
-
-            
+                        
             vm = new FibreglassGeneratorViewModel((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.Width, _pfdVM.Length, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
             vm.PropertyChanged += HandleFibreglassPropertyChanged;
             this.DataContext = vm;
@@ -38,21 +37,51 @@ namespace PFD
         {
             if (sender == null) return;
         }
-
-
         
+        public List<FibreglassProperties> GetFibreglassProperties()
+        {
+            if (vm.AddFibreglass == false) return new List<FibreglassProperties>();
 
-        
+            return GetFibreglassPropertiesBasedOnPeriodicity();
+        }
+
+        public List<FibreglassProperties> GetFibreglassToDelete()
+        {   
+            if (vm.DeleteFibreglass == false) return new List<FibreglassProperties>();
+
+            return GetFibreglassPropertiesBasedOnPeriodicity();
+        }
+
+        private List<FibreglassProperties> GetFibreglassPropertiesBasedOnPeriodicity()
+        {
+            List<FibreglassProperties> items = new List<FibreglassProperties>();
+            
+            int index = vm.PeriodicityValues.IndexOf(vm.Periodicity);
+            if (index < 0) return items;
+
+            for (int i = 0; i < vm.XValues.Count; i += (index + 1))
+            {
+                FibreglassProperties f = vm.GetFibreglass();
+                f.X = vm.XValues[i];
+                items.Add(f);
+            }
+
+            return items;
+        }
+
+
+
+
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            //vm.AddDoors = true;
+            vm.AddFibreglass = true;
             this.Close();
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-            //vm.DeleteDoors = true;
+            vm.DeleteFibreglass = true;
             this.Close();
         }
     }
