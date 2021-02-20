@@ -709,23 +709,6 @@ namespace BaseClasses.GraphObj
                 ColorList = colorsTemp_1410_items;
 
                 // Left Wall
-
-                int iSheet_FG_Index = 0;
-
-                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallLeft = new List<CCladdingOrFibreGlassSheet>();
-
-                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
-                {
-                    if (fgsp.Side == "Left")
-                    {
-                        listOfFibreGlassSheetsWallLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, 4 /*iNumberOfEdges*/, fgsp.X, fgsp.Y,
-                            new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z), claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, fFibreGlassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
-                        iSheet_FG_Index++;
-                    }
-                }
-
-                // Left Wall
                 // Total Wall Width
                 double width = pback0_baseleft.Y - pfront0_baseleft.Y;
                 double height_left_basic = -bottomEdge_z + height_1_final_edge_LR_Wall;
@@ -749,6 +732,21 @@ namespace BaseClasses.GraphObj
                     new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
                     m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                     iSheetIndex++;
+                }
+
+                int iSheet_FG_Index = 0;
+
+                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallLeft = new List<CCladdingOrFibreGlassSheet>();
+
+                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
+                {
+                    if (fgsp.Side == "Left")
+                    {
+                        listOfFibreGlassSheetsWallLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, 4 /*iNumberOfEdges*/, fgsp.X, fgsp.Y,
+                            new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z), fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, fFibreGlassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
+                        iSheet_FG_Index++;
+                    }
                 }
 
                 // Vytvorime zoznam otvorov na left wall
@@ -813,21 +811,6 @@ namespace BaseClasses.GraphObj
                 listOfCladdingSheetsLeftWall = listOfCladdingSheetsLeftWallNew; // Nastavime novy zoznam
 
                 // Front Wall
-
-                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallFront = new List<CCladdingOrFibreGlassSheet>();
-
-                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
-                {
-                    if (fgsp.Side == "Front")
-                    {
-                        listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, 4 /*iNumberOfEdges*/, fgsp.X, fgsp.Y,
-                            new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, fFibreGlassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
-                        iSheet_FG_Index++;
-                    }
-                }
-
-                // Front Wall
                 // Total Wall Width
                 width = pfront1_baseright.X - pfront0_baseleft.X;
                 height_left_basic = -bottomEdge_z + height_1_final_edge_FB_Wall;
@@ -872,6 +855,19 @@ namespace BaseClasses.GraphObj
                     new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
                     m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                     iSheetIndex++;
+                }
+
+                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallFront = new List<CCladdingOrFibreGlassSheet>();
+
+                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
+                {
+                    if (fgsp.Side == "Front")
+                    {
+                        listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, 4 /*iNumberOfEdges*/, fgsp.X, fgsp.Y,
+                            new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, fFibreGlassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
+                        iSheet_FG_Index++;
+                    }
                 }
 
                 // Vytvorime zoznam otvorov na front wall
@@ -936,21 +932,6 @@ namespace BaseClasses.GraphObj
                 listOfCladdingSheetsFrontWall = listOfCladdingSheetsFrontWallNew; // Nastavime novy zoznam
 
                 // Right Wall
-
-                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallRight = new List<CCladdingOrFibreGlassSheet>();
-
-                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
-                {
-                    if (fgsp.Side == "Right")
-                    {
-                        listOfFibreGlassSheetsWallRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, 4 /*iNumberOfEdges*/, fgsp.X, fgsp.Y,
-                    new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
-                    m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, fFibreGlassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
-                        iSheet_FG_Index++;
-                    }
-                }
-
-                // Right Wall
                 // Total Wall Width
                 width = pback1_baseright.Y - pfront1_baseright.Y;
                 height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? -bottomEdge_z + height_1_final_edge_LR_Wall : -bottomEdge_z + height_2_final_edge_LR_Wall;
@@ -974,6 +955,19 @@ namespace BaseClasses.GraphObj
                     new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
                     m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                     iSheetIndex++;
+                }
+
+                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallRight = new List<CCladdingOrFibreGlassSheet>();
+
+                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
+                {
+                    if (fgsp.Side == "Right")
+                    {
+                        listOfFibreGlassSheetsWallRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, 4 /*iNumberOfEdges*/, fgsp.X, fgsp.Y,
+                    new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                    m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, fFibreGlassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
+                        iSheet_FG_Index++;
+                    }
                 }
 
                 // Vytvorime zoznam otvorov na right wall
@@ -1038,21 +1032,6 @@ namespace BaseClasses.GraphObj
                 listOfCladdingSheetsRightWall = listOfCladdingSheetsRightWallNew; // Nastavime novy zoznam
 
                 // Back Wall
-
-                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallBack = new List<CCladdingOrFibreGlassSheet>();
-
-                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
-                {
-                    if (fgsp.Side == "Back")
-                    {
-                        listOfFibreGlassSheetsWallBack.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, 4 /*iNumberOfEdges*/, fgsp.X, fgsp.Y,
-                             new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
-                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, fFibreGlassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
-                        iSheet_FG_Index++;
-                    }
-                }
-
-                // Back Wall
                 // Total Wall Width
                 width = pback1_baseright.X - pback0_baseleft.X;
                 height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? -bottomEdge_z + height_1_final_edge_FB_Wall : -bottomEdge_z + height_2_final_edge_FB_Wall;
@@ -1097,6 +1076,19 @@ namespace BaseClasses.GraphObj
                     new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
                     m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                     iSheetIndex++;
+                }
+
+                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallBack = new List<CCladdingOrFibreGlassSheet>();
+
+                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
+                {
+                    if (fgsp.Side == "Back")
+                    {
+                        listOfFibreGlassSheetsWallBack.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, 4 /*iNumberOfEdges*/, fgsp.X, fgsp.Y,
+                             new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, fFibreGlassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
+                        iSheet_FG_Index++;
+                    }
                 }
 
                 // Vytvorime zoznam otvorov na back wall
@@ -1160,22 +1152,6 @@ namespace BaseClasses.GraphObj
 
                 listOfCladdingSheetsBackWall = listOfCladdingSheetsBackWallNew; // Nastavime novy zoznam
 
-                // Roof
-                int iNumberOfEdges_FG_Roof = 4;
-
-                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();
-
-                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
-                {
-                    if (fgsp.Side == "Roof" || fgsp.Side == "Roof-Right Side")
-                    {
-                        listOfFibreGlassSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_Roof, fgsp.X, fgsp.Y,
-                             new Point3D(pRoof_front2_heightright.X, pRoof_front2_heightright.Y, pRoof_front2_heightright.Z), claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
-                             m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, fFibreGlassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
-                        iSheet_FG_Index++;
-                    }
-                }
-
                 // Roof - Right Side
                 // Total Width
                 width = pRoof_back2_heightright.Y - pRoof_front2_heightright.Y;
@@ -1208,6 +1184,21 @@ namespace BaseClasses.GraphObj
                     new Point3D(pRoof_front2_heightright.X, pRoof_front2_heightright.Y, pRoof_front2_heightright.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Roof, length, length, 0, 0,
                     m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
                     iSheetIndex++;
+                }
+
+                int iNumberOfEdges_FG_Roof = 4;
+
+                List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();
+
+                foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
+                {
+                    if (fgsp.Side == "Roof" || fgsp.Side == "Roof-Right Side")
+                    {
+                        listOfFibreGlassSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_Roof, fgsp.X, fgsp.Y,
+                             new Point3D(pRoof_front2_heightright.X, pRoof_front2_heightright.Y, pRoof_front2_heightright.Z), fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                             m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, fFibreGlassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
+                        iSheet_FG_Index++;
+                    }
                 }
 
                 // Modifikujeme sheets
@@ -1318,24 +1309,6 @@ namespace BaseClasses.GraphObj
                 if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
                 {
                     // Roof - Left Side
-
-                    foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
-                    {
-                        if (fgsp.Side == "Roof-Left Side")
-                        {
-                            length_left_basic = Drawing3D.GetPoint3DDistanceDouble(pRoof_front3_heightleft, pRoof_front4_top);
-
-                            // Pre Left side prevratime suradnice v LCS y, aby boli vstupy na oboch stranach brane od spodnej hrany H1
-                            double Position_y = length_left_basic - fgsp.Y - fgsp.Length;
-
-                            listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_Roof, fgsp.X, Position_y,
-                                new Point3D(pRoof_front4_top.X, pRoof_front4_top.Y, pRoof_front4_top.Z), claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
-                                m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, fFibreGlassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
-                            iSheet_FG_Index++;
-                        }
-                    }
-
-                    // Roof - Left Side
                     // Total Width
                     width = pRoof_back3_heightleft.Y - pRoof_front3_heightleft.Y;
 
@@ -1360,6 +1333,22 @@ namespace BaseClasses.GraphObj
                         new Point3D(pRoof_front4_top.X, pRoof_front4_top.Y, pRoof_front4_top.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Roof, length, length, 0, 0,
                         m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
                         iSheetIndex++;
+                    }
+
+                    foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
+                    {
+                        if (fgsp.Side == "Roof-Left Side")
+                        {
+                            length_left_basic = Drawing3D.GetPoint3DDistanceDouble(pRoof_front3_heightleft, pRoof_front4_top);
+
+                            // Pre Left side prevratime suradnice v LCS y, aby boli vstupy na oboch stranach brane od spodnej hrany H1
+                            double Position_y = length_left_basic - fgsp.Y - fgsp.Length;
+
+                            listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_Roof, fgsp.X, Position_y,
+                                new Point3D(pRoof_front4_top.X, pRoof_front4_top.Y, pRoof_front4_top.Z), fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                                m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, fFibreGlassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
+                            iSheet_FG_Index++;
+                        }
                     }
 
                     // Modifikujeme sheets
@@ -1734,7 +1723,8 @@ namespace BaseClasses.GraphObj
                 // Myslim ze mame niekde uz funkcie ktore vedia skontrolovat ci sa dve plochy prekryvaju
 
                 // Zoznam objektov ktore su v kolizii
-                List<CCladdingOrFibreGlassSheet> objectInColision_In_Local_x = listOfOpenings.Where(o => (o.CoordinateInPlane_x <= originalsheet.CoordinateInPlane_x && (o.CoordinateInPlane_x + o.WidthModular) >= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular))).ToList();
+                double dLimit = 0.020; // 20 mm // Ak otvor zacina 20 mm za okrajom plechu a 10 mm pred koncom plechu, tak uvazujeme ze cely plech je otvorom rozdeleny 
+                List<CCladdingOrFibreGlassSheet> objectInColision_In_Local_x = listOfOpenings.Where(o => (o.CoordinateInPlane_x <= originalsheet.CoordinateInPlane_x + dLimit && (o.CoordinateInPlane_x + o.WidthModular) >= (originalsheet.CoordinateInPlane_x - dLimit + originalsheet.WidthModular))).ToList();
 
                 // Ak neexistuju objekty v kolizii s originalsheet mozeme opustit funkciu
                 if (objectInColision_In_Local_x == null || objectInColision_In_Local_x.Count == 0)
