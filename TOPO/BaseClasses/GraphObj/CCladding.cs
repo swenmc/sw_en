@@ -28,8 +28,8 @@ namespace BaseClasses.GraphObj
 
         double claddingWidthRibModular_Wall = 0.190; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
         double claddingWidthRibModular_Roof = 0.300; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
-        float claddingWidthModular_Wall = 0.76f; // TODO 719 - Input z databazy
-        float claddingWidthModular_Roof = 0.60f; // TODO 719 - Input z databazy
+        double claddingWidthModular_Wall = 0.760; // TODO 719 - Input z databazy
+        double claddingWidthModular_Roof = 0.600; // TODO 719 - Input z databazy
 
         double column_crsc_z_plus;
         double column_crsc_y_minus;
@@ -54,8 +54,8 @@ namespace BaseClasses.GraphObj
         double roofEdgeOverhang_X; // = 0.150; // Presah okraja strechy // TODO 719 - napojit na GUI, default 150 mm, limit <0, 600mm>
         double roofEdgeOverhang_Y; // = 0.000; // Presah okraja strechy // TODO 719 - napojit na GUI, default 0 mm limit <0, 300mm>
 
-        float fOverhangOffset_x;
-        float fOverhangOffset_y;
+        double OverhangOffset_x;
+        double OverhangOffset_y;
 
         // Fibre glass properties - TODO - Input from GUI
         string m_ColorNameRoof_FG;
@@ -63,14 +63,14 @@ namespace BaseClasses.GraphObj
         string m_claddingCoatingType_Roof_FG;
         Color m_ColorRoof_FG;
         double claddingWidthRibModular_Roof_FG;
-        float claddingWidthModular_Roof_FG;
+        double claddingWidthModular_Roof_FG;
 
         string m_ColorNameWall_FG;
         string m_claddingShape_Wall_FG;
         string m_claddingCoatingType_Wall_FG;
         Color m_ColorWall_FG;
         double claddingWidthRibModular_Wall_FG;
-        float claddingWidthModular_Wall_FG;
+        double claddingWidthModular_Wall_FG;
 
         float fFibreGlassOpacity = 0.5f; // TODO 719 - napojit na GUI
         float fOpeningOpacity = 0.02f;
@@ -138,11 +138,11 @@ namespace BaseClasses.GraphObj
 
             roofEdgeOverhang_Y = fRoofEdgeOverHang_FB_Y;
             roofEdgeOverhang_X = fRoofEdgeOverHang_LR_X;
-            fOverhangOffset_x = fCanopyRoofEdgeOverHang_LR_X;
+            OverhangOffset_x = fCanopyRoofEdgeOverHang_LR_X;
             bottomEdge_z = fWallBottomOffset_Z;
             considerRoofCladdingFor_FB_WallHeight = bConsiderRoofCladdingFor_FB_WallHeight;
 
-            fOverhangOffset_y = (float)roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
+            OverhangOffset_y = roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
 
             // TODO 719 - Implementovat a napojit z GUI
             m_ColorNameRoof_FG = "White"; // TODO 719 GUI INPUT
@@ -407,8 +407,8 @@ namespace BaseClasses.GraphObj
                     int iAreaIndex = 5;
 
                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
-                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;
+                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - (float)OverhangOffset_y + (float)column_crsc_y_minus;
+                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)OverhangOffset_y + (float)column_crsc_y_plus;
 
                     if (canopy.BayIndex == 0) // First bay
                         fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
@@ -433,7 +433,7 @@ namespace BaseClasses.GraphObj
                         //  |______|
                         // 3        0
 
-                        float fCanopyCladdingWidth = (float)canopy.WidthLeft + fOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                        float fCanopyCladdingWidth = (float)canopy.WidthLeft + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                         float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
                         Point3D pfront_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
@@ -462,7 +462,7 @@ namespace BaseClasses.GraphObj
 
                     if (canopy.Right)
                     {
-                        float fCanopyCladdingWidth = (float)canopy.WidthRight + fOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                        float fCanopyCladdingWidth = (float)canopy.WidthRight + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                         float fCanopy_EdgeCoordinate_z = (float)height_2_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
                         Point3D pfront_left = new Point3D(pRoof_front2_heightright.X, fBayStartCoordinate_Y, height_2_final_edge_Roof);
@@ -574,8 +574,8 @@ namespace BaseClasses.GraphObj
                     int iAreaIndex = 6;
 
                     float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
-                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;
+                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - (float)OverhangOffset_y + (float)column_crsc_y_minus;
+                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)OverhangOffset_y + (float)column_crsc_y_plus;
 
                     if (canopy.BayIndex == 0) // First bay
                         fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
@@ -594,7 +594,7 @@ namespace BaseClasses.GraphObj
 
                     if (canopy.Left)
                     {
-                        float fCanopyCladdingWidth = (float)canopy.WidthLeft + fOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                        float fCanopyCladdingWidth = (float)canopy.WidthLeft + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                         float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
                         Point3D pfront_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
@@ -623,7 +623,7 @@ namespace BaseClasses.GraphObj
 
                     if (canopy.Right)
                     {
-                        float fCanopyCladdingWidth = (float)canopy.WidthRight + fOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                        float fCanopyCladdingWidth = (float)canopy.WidthRight + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                         float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
                         Point3D pfront_left = new Point3D(pRoof_front2_heightright.X, fBayStartCoordinate_Y, height_1_final_edge_Roof);
@@ -746,7 +746,7 @@ namespace BaseClasses.GraphObj
                         m_ColorWall = ColorList[i];
 
                     listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
-                    new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
+                    new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
                     m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                     iSheetIndex++;
                 }
@@ -758,15 +758,15 @@ namespace BaseClasses.GraphObj
                 {
                     // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
                     // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    float fdoorPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
-                    float fdoorPosition_x = fdoorPosition_x_Input_GUI;
+                    double doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + claddingHeight_Wall + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
+                    double doorPosition_x = doorPosition_x_Input_GUI;
 
                     if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        fdoorPosition_x = (float)width - fdoorPosition_x_Input_GUI - door.fDoorsWidth;
+                        doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
 
                     if (door.sBuildingSide == "Left")
                     {
-                        listOfOpeningsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fdoorPosition_x, 0,
+                        listOfOpeningsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, doorPosition_x, 0,
                         new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
                         iSheetIndex++;
@@ -777,15 +777,15 @@ namespace BaseClasses.GraphObj
                 {
                     // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
                     // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    float fwindowPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (float)claddingHeight_Wall + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
-                    float fwindowPosition_x = fwindowPosition_x_Input_GUI;
+                    double windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + claddingHeight_Wall + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
+                    double windowPosition_x = windowPosition_x_Input_GUI;
 
                     if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        fwindowPosition_x = (float)width - fwindowPosition_x_Input_GUI - window.fWindowsWidth;
+                        windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
 
                     if (window.sBuildingSide == "Left")
                     {
-                        listOfOpeningsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fwindowPosition_x, window.fWindowCoordinateZinBay,
+                        listOfOpeningsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, windowPosition_x, window.fWindowCoordinateZinBay,
                         new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
                         iSheetIndex++;
@@ -852,7 +852,7 @@ namespace BaseClasses.GraphObj
 
                     if (i == iNumberOfSheets - 1)
                     {
-                        height_right = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, (float)width);
+                        height_right = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, width);
                         height_toptip = 0.5 * (height_left + height_right);
                         tipCoordinate_x = 0.5 * dPartialSheet_End;
                     }
@@ -869,7 +869,7 @@ namespace BaseClasses.GraphObj
                     }
 
                     listOfCladdingSheetsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Wall, 0,
-                    new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
+                    new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
                     m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                     iSheetIndex++;
                 }
@@ -881,15 +881,15 @@ namespace BaseClasses.GraphObj
                 {
                     // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
                     // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    float fdoorPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * m_fFrontColumnDistance);
-                    float fdoorPosition_x = fdoorPosition_x_Input_GUI;
+                    double doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * m_fFrontColumnDistance);
+                    double doorPosition_x = doorPosition_x_Input_GUI;
 
                     if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        fdoorPosition_x = (float)width - fdoorPosition_x_Input_GUI - door.fDoorsWidth;
+                        doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
 
                     if (door.sBuildingSide == "Front")
                     {
-                        listOfOpeningsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fdoorPosition_x, 0,
+                        listOfOpeningsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, doorPosition_x, 0,
                             new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
                             m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
                         iSheetIndex++;
@@ -900,15 +900,15 @@ namespace BaseClasses.GraphObj
                 {
                     // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
                     // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    float fwindowPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * m_fFrontColumnDistance);
-                    float fwindowPosition_x = fwindowPosition_x_Input_GUI;
+                    double windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * m_fFrontColumnDistance);
+                    double windowPosition_x = windowPosition_x_Input_GUI;
 
                     if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        fwindowPosition_x = (float)width - fwindowPosition_x_Input_GUI - window.fWindowsWidth;
+                        windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
 
                     if (window.sBuildingSide == "Front")
                     {
-                        listOfOpeningsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fwindowPosition_x, window.fWindowCoordinateZinBay,
+                        listOfOpeningsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, windowPosition_x, window.fWindowCoordinateZinBay,
                         new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z), window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
                         iSheetIndex++;
@@ -971,7 +971,7 @@ namespace BaseClasses.GraphObj
                         m_ColorWall = ColorList[i];
 
                     listOfCladdingSheetsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
-                    new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
+                    new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
                     m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                     iSheetIndex++;
                 }
@@ -983,15 +983,15 @@ namespace BaseClasses.GraphObj
                 {
                     // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
                     // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    float fdoorPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
-                    float fdoorPosition_x = fdoorPosition_x_Input_GUI;
+                    double doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
+                    double doorPosition_x = doorPosition_x_Input_GUI;
 
                     if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        fdoorPosition_x = (float)width - fdoorPosition_x_Input_GUI - door.fDoorsWidth;
+                        doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
 
                     if (door.sBuildingSide == "Right")
                     {
-                        listOfOpeningsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fdoorPosition_x, 0,
+                        listOfOpeningsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, doorPosition_x, 0,
                             new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
                             m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
                         iSheetIndex++;
@@ -1002,15 +1002,15 @@ namespace BaseClasses.GraphObj
                 {
                     // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
                     // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    float fwindowPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
-                    float fwindowPosition_x = fwindowPosition_x_Input_GUI;
+                    double windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
+                    double windowPosition_x = windowPosition_x_Input_GUI;
 
                     if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        fwindowPosition_x = (float)width - fwindowPosition_x_Input_GUI - window.fWindowsWidth;
+                        windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
 
                     if (window.sBuildingSide == "Right")
                     {
-                        listOfOpeningsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fwindowPosition_x, window.fWindowCoordinateZinBay,
+                        listOfOpeningsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, windowPosition_x, window.fWindowCoordinateZinBay,
                         new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
                         iSheetIndex++;
@@ -1077,7 +1077,7 @@ namespace BaseClasses.GraphObj
 
                     if (i == iNumberOfSheets - 1)
                     {
-                        height_right = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, (float)width);
+                        height_right = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, width);
                         height_toptip = 0.5 * (height_left + height_right);
                         tipCoordinate_x = 0.5 * dPartialSheet_End;
                     }
@@ -1094,7 +1094,7 @@ namespace BaseClasses.GraphObj
                     }
 
                     listOfCladdingSheetsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Wall, 0,
-                    new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
+                    new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left, height_right, tipCoordinate_x, height_toptip,
                     m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, true, 0));
                     iSheetIndex++;
                 }
@@ -1106,15 +1106,15 @@ namespace BaseClasses.GraphObj
                 {
                     // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
                     // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    float fdoorPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * m_fBackColumnDistance);
-                    float fdoorPosition_x = fdoorPosition_x_Input_GUI;
+                    double doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * m_fBackColumnDistance);
+                    double doorPosition_x = doorPosition_x_Input_GUI;
 
                     if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        fdoorPosition_x = (float)width - fdoorPosition_x_Input_GUI - door.fDoorsWidth;
+                        doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
 
                     if (door.sBuildingSide == "Back")
                     {
-                        listOfOpeningsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fdoorPosition_x, 0,
+                        listOfOpeningsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, doorPosition_x, 0,
                             new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
                             m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
                         iSheetIndex++;
@@ -1125,15 +1125,15 @@ namespace BaseClasses.GraphObj
                 {
                     // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
                     // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    float fwindowPosition_x_Input_GUI = -(float)column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * m_fBackColumnDistance);
-                    float fwindowPosition_x = fwindowPosition_x_Input_GUI;
+                    double windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * m_fBackColumnDistance);
+                    double windowPosition_x = windowPosition_x_Input_GUI;
 
                     if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        fwindowPosition_x = (float)width - fwindowPosition_x_Input_GUI - window.fWindowsWidth;
+                        windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
 
                     if (window.sBuildingSide == "Back")
                     {
-                        listOfOpeningsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, fwindowPosition_x, window.fWindowCoordinateZinBay,
+                        listOfOpeningsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4 /*iNumberOfEdges*/, windowPosition_x, window.fWindowCoordinateZinBay,
                         new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z), window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
                         iSheetIndex++;
@@ -1180,12 +1180,12 @@ namespace BaseClasses.GraphObj
                 // Total Width
                 width = pRoof_back2_heightright.Y - pRoof_front2_heightright.Y;
 
-                float length_left_basic;
+                double length_left_basic;
 
                 if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
-                    length_left_basic = Drawing3D.GetPoint3DDistanceFloat(pRoof_front2_heightright, pRoof_front4_top);
+                    length_left_basic = Drawing3D.GetPoint3DDistanceDouble(pRoof_front2_heightright, pRoof_front4_top);
                 else
-                    length_left_basic = Drawing3D.GetPoint3DDistanceFloat(pRoof_front3_heightleft, pRoof_front2_heightright);
+                    length_left_basic = Drawing3D.GetPoint3DDistanceDouble(pRoof_front3_heightleft, pRoof_front2_heightright);
 
                 iNumberOfWholeSheets = (int)(width / claddingWidthModular_Roof);
                 dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular_Roof;
@@ -1205,7 +1205,7 @@ namespace BaseClasses.GraphObj
                     int iNumberOfEdges = 4;
 
                     listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Roof, 0,
-                    new Point3D(pRoof_front2_heightright.X, pRoof_front2_heightright.Y, pRoof_front2_heightright.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Roof, length, length, 0, 0,
+                    new Point3D(pRoof_front2_heightright.X, pRoof_front2_heightright.Y, pRoof_front2_heightright.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Roof, length, length, 0, 0,
                     m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
                     iSheetIndex++;
                 }
@@ -1239,14 +1239,14 @@ namespace BaseClasses.GraphObj
                         //----------------------------------------------------------------------------------
                         foreach (CCanopiesInfo canopy in canopyCollection)
                         {
-                            float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                            float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
-                            float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;
+                            double BayWidth = bayWidthCollection[canopy.BayIndex].Width;
+                            double BayStartCoordinate_Y = (iBayIndex * BayWidth) - OverhangOffset_y + column_crsc_y_minus;
+                            double BayEndCoordinate_Y = ((iBayIndex + 1) * BayWidth) + OverhangOffset_y + column_crsc_y_plus;
 
                             if (canopy.BayIndex == 0) // First bay
-                                fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
+                                BayStartCoordinate_Y = (iBayIndex * BayWidth) + column_crsc_y_minus_temp - roofEdgeOverhang_Y;
                             else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
-                                fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
+                                BayEndCoordinate_Y = ((iBayIndex + 1) * BayWidth) + column_crsc_y_plus_temp + roofEdgeOverhang_Y;
 
                             iBayIndex++; // Docasne // Todo 691 - zmazat
 
@@ -1259,18 +1259,18 @@ namespace BaseClasses.GraphObj
                                 // Zistime ci je canopy v kolizii s plechom
                                 // Ak ano upravime koncove lokalne suradnice plechu y na suradnice canopy a nastavime nove dlzky plechu
                                 if (canopy.Right && (
-                                   (fBayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
-                                   fBayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
-                                   (fBayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                   fBayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
-                                   (fBayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                   fBayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular))))
+                                   (BayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
+                                   BayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
+                                   (BayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
+                                   BayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
+                                   (BayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
+                                   BayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular))))
                                 {
-                                    float fCanopyCladdingWidth_Right = (float)canopy.WidthRight + fOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                                    double CanopyCladdingWidth_Right = canopy.WidthRight + OverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
 
-                                    originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth_Right;
-                                    originalsheet.LengthTopLeft += fCanopyCladdingWidth_Right;
-                                    originalsheet.LengthTopRight += fCanopyCladdingWidth_Right;
+                                    originalsheet.CoordinateInPlane_y -= CanopyCladdingWidth_Right;
+                                    originalsheet.LengthTopLeft += CanopyCladdingWidth_Right;
+                                    originalsheet.LengthTopRight += CanopyCladdingWidth_Right;
                                     //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                     originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
 
@@ -1288,18 +1288,18 @@ namespace BaseClasses.GraphObj
                                     // Zistime ci je canopy v kolizii s plechom
                                     // Ak ano upravime koncove lokalne suradnice plechu y na suradnice canopy a nastavime nove dlzky plechu
                                     if (canopy.Left && (
-                                       (fBayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
-                                       fBayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
-                                       (fBayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                       fBayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
-                                       (fBayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                       fBayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular))))
+                                       (BayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
+                                       BayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
+                                       (BayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
+                                       BayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
+                                       (BayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
+                                       BayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular))))
                                     {
-                                        float fCanopyCladdingWidth_Left = (float)canopy.WidthLeft + fOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                                        double CanopyCladdingWidth_Left = canopy.WidthLeft + OverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
 
                                         //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth; // Ostava povodne
-                                        originalsheet.LengthTopLeft += fCanopyCladdingWidth_Left;
-                                        originalsheet.LengthTopRight += fCanopyCladdingWidth_Left;
+                                        originalsheet.LengthTopLeft += CanopyCladdingWidth_Left;
+                                        originalsheet.LengthTopRight += CanopyCladdingWidth_Left;
                                         //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
 
@@ -1323,12 +1323,12 @@ namespace BaseClasses.GraphObj
                     {
                         if (fgsp.Side == "Roof-Left Side")
                         {
-                            length_left_basic = Drawing3D.GetPoint3DDistanceFloat(pRoof_front3_heightleft, pRoof_front4_top);
+                            length_left_basic = Drawing3D.GetPoint3DDistanceDouble(pRoof_front3_heightleft, pRoof_front4_top);
 
                             // Pre Left side prevratime suradnice v LCS y, aby boli vstupy na oboch stranach brane od spodnej hrany H1
-                            float fPosition_y = length_left_basic - fgsp.Y - fgsp.Length;
+                            double Position_y = length_left_basic - fgsp.Y - fgsp.Length;
 
-                            listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_Roof, fgsp.X, fPosition_y,
+                            listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_Roof, fgsp.X, Position_y,
                                 new Point3D(pRoof_front4_top.X, pRoof_front4_top.Y, pRoof_front4_top.Z), claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
                                 m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, fFibreGlassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
                             iSheet_FG_Index++;
@@ -1357,7 +1357,7 @@ namespace BaseClasses.GraphObj
                         int iNumberOfEdges = 4;
 
                         listOfCladdingSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular_Roof, 0,
-                        new Point3D(pRoof_front4_top.X, pRoof_front4_top.Y, pRoof_front4_top.Z), i == iNumberOfSheets - 1 ? (float)dPartialSheet_End : claddingWidthModular_Roof, length, length, 0, 0,
+                        new Point3D(pRoof_front4_top.X, pRoof_front4_top.Y, pRoof_front4_top.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Roof, length, length, 0, 0,
                         m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
                         iSheetIndex++;
                     }
@@ -1394,14 +1394,14 @@ namespace BaseClasses.GraphObj
                                 //----------------------------------------------------------------------------------
                                 foreach (CCanopiesInfo canopy in canopyCollection)
                                 {
-                                    float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                                    float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - fOverhangOffset_y + (float)column_crsc_y_minus;
-                                    float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + fOverhangOffset_y + (float)column_crsc_y_plus;
+                                    double BayWidth = bayWidthCollection[canopy.BayIndex].Width;
+                                    double BayStartCoordinate_Y = (iBayIndex * BayWidth) - OverhangOffset_y + column_crsc_y_minus;
+                                    double BayEndCoordinate_Y = ((iBayIndex + 1) * BayWidth) + OverhangOffset_y + column_crsc_y_plus;
 
                                     if (canopy.BayIndex == 0) // First bay
-                                        fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
+                                        BayStartCoordinate_Y = (iBayIndex * BayWidth) + column_crsc_y_minus_temp - roofEdgeOverhang_Y;
                                     else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
-                                        fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
+                                        BayEndCoordinate_Y = ((iBayIndex + 1) * BayWidth) + column_crsc_y_plus_temp + roofEdgeOverhang_Y;
 
                                     iBayIndex++; // Docasne // Todo 691 - zmazat
 
@@ -1411,18 +1411,18 @@ namespace BaseClasses.GraphObj
                                     // Zistime ci je canopy v kolizii s plechom
                                     // Ak ano upravime koncove lokalne suradnice plechu y na suradnice canopy a nastavime nove dlzky plechu
                                     if (canopy.Left && (
-                                        (fBayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
-                                        fBayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
-                                        (fBayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                        fBayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
-                                        (fBayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                        fBayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular))))
+                                        (BayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
+                                        BayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
+                                        (BayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
+                                        BayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular)) ||
+                                        (BayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
+                                        BayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.WidthModular))))
                                     {
-                                        float fCanopyCladdingWidth_Left = (float)canopy.WidthLeft + fOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                                        double CanopyCladdingWidth_Left = canopy.WidthLeft + OverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
 
                                         //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth_Left;
-                                        originalsheet.LengthTopLeft += fCanopyCladdingWidth_Left;
-                                        originalsheet.LengthTopRight += fCanopyCladdingWidth_Left;
+                                        originalsheet.LengthTopLeft += CanopyCladdingWidth_Left;
+                                        originalsheet.LengthTopRight += CanopyCladdingWidth_Left;
                                         //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
 
@@ -1604,7 +1604,7 @@ namespace BaseClasses.GraphObj
                     }
                 }
 
-                float rotationAboutX;
+                double rotationAboutX;
 
                 for (int i = 0; i < listOfCladdingSheetsRoofRight.Count; i++)
                 {
@@ -1694,7 +1694,7 @@ namespace BaseClasses.GraphObj
             return model_gr;
         }
 
-        public double GetVerticalCoordinate(string sBuildingSide, EModelType_FS eKitset, double width, double leftHeight, float fx)
+        public double GetVerticalCoordinate(string sBuildingSide, EModelType_FS eKitset, double width, double leftHeight, double x)
         {
             if (sBuildingSide == "Left" || sBuildingSide == "Right")
                 return leftHeight;
@@ -1704,14 +1704,14 @@ namespace BaseClasses.GraphObj
                 if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
                 {
                     if (sBuildingSide == "Back")
-                        return leftHeight + fx * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
+                        return leftHeight + x * Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
                     else
-                        return leftHeight + fx * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
+                        return leftHeight + x * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
                 }
-                else if (fx < 0.5f * width)
-                    return leftHeight + fx * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
+                else if (x < 0.5f * width)
+                    return leftHeight + x * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
                 else
-                    return leftHeight + (width - fx) * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
+                    return leftHeight + (width - x) * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
             }
         }
 
@@ -1766,12 +1766,12 @@ namespace BaseClasses.GraphObj
                         {
                             listOfSheetsNew.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, originalsheet.NumberOfEdges,
                             originalsheet.CoordinateInPlane_x,
-                            objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + (float)objectInColision_In_Local_x[j - 1].LengthTotal,
+                            objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + objectInColision_In_Local_x[j - 1].LengthTotal,
                             originalsheet.ControlPoint, originalsheet.WidthModular,
-                            originalsheet.LengthTopLeft - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - (float)objectInColision_In_Local_x[j - 1].LengthTotal,
-                            originalsheet.LengthTopRight - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - (float)objectInColision_In_Local_x[j - 1].LengthTotal,
+                            originalsheet.LengthTopLeft - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
+                            originalsheet.LengthTopRight - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
                             originalsheet.TipCoordinate_x,
-                            originalsheet.LengthTopTip - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - (float)objectInColision_In_Local_x[j - 1].LengthTotal,
+                            originalsheet.LengthTopTip - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
                             originalsheet.ColorName, originalsheet.CladdingShape, originalsheet.CladdingCoatingType,
                             originalsheet.Color, originalsheet.Opacity, originalsheet.CladdingWidthRibModular, originalsheet.BIsDisplayed, originalsheet.FTime));
                             iSheetIndex++;
@@ -1779,10 +1779,10 @@ namespace BaseClasses.GraphObj
                         }
                         else
                         {
-                            float coordinate_y = 0; // Zacat od okraja  !!! - je potrebne zmenit pre doors a zacat nad dverami
+                            double coordinate_y = 0; // Zacat od okraja  !!! - je potrebne zmenit pre doors a zacat nad dverami
 
                             if (j > 0)
-                                coordinate_y = objectInColision_In_Local_x[j-1].CoordinateInPlane_y + (float)objectInColision_In_Local_x[j-1].LengthTotal;
+                                coordinate_y = objectInColision_In_Local_x[j-1].CoordinateInPlane_y + objectInColision_In_Local_x[j-1].LengthTotal;
 
                             int iNumberOfEdges = 4;
                             listOfSheetsNew.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges,

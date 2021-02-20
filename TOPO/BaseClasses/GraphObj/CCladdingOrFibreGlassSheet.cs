@@ -22,15 +22,15 @@ namespace BaseClasses.GraphObj
         float m_fOpacity;
 
         int m_iNumberOfEdges;
-        float m_fWidthModular; // m // z databazy cladding MDBTrapezoidalSheeting
+        double m_WidthModular; // m // z databazy cladding MDBTrapezoidalSheeting
         double m_dLengthTotal;
         double m_dLengthTopRight;
         double m_dTipCoordinate_x;
         double m_dLengthTopTip;
         double m_dLengthTopLeft;
 
-        float m_fCoordinateInPlane_x;
-        float m_fCoordinateInPlane_y;
+        double m_CoordinateInPlane_x;
+        double m_CoordinateInPlane_y;
 
         public Point3D ControlPoint
         {
@@ -136,42 +136,42 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public float CoordinateInPlane_x
+        public double CoordinateInPlane_x
         {
             get
             {
-                return m_fCoordinateInPlane_x;
+                return m_CoordinateInPlane_x;
             }
 
             set
             {
-                m_fCoordinateInPlane_x = value;
+                m_CoordinateInPlane_x = value;
             }
         }
 
-        public float CoordinateInPlane_y
+        public double CoordinateInPlane_y
         {
             get
             {
-                return m_fCoordinateInPlane_y;
+                return m_CoordinateInPlane_y;
             }
 
             set
             {
-                m_fCoordinateInPlane_y = value;
+                m_CoordinateInPlane_y = value;
             }
         }
 
-        public float WidthModular
+        public double WidthModular
         {
             get
             {
-                return m_fWidthModular;
+                return m_WidthModular;
             }
 
             set
             {
-                m_fWidthModular = value;
+                m_WidthModular = value;
             }
         }
 
@@ -246,17 +246,17 @@ namespace BaseClasses.GraphObj
         }
 
         public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, int numberOfCorners,
-        float coordinateInPlane_x, float coordinateInPlane_y, Point3D controlPoint_GCS,
-        float widthModular, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
+        double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
+        double widthModular, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
         Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime)
         {
             ID = iCladdingSheet_ID;
             m_iNumberOfEdges = numberOfCorners;
-            m_fCoordinateInPlane_x = coordinateInPlane_x;
-            m_fCoordinateInPlane_y = coordinateInPlane_y;
+            m_CoordinateInPlane_x = coordinateInPlane_x;
+            m_CoordinateInPlane_y = coordinateInPlane_y;
             m_ControlPoint = controlPoint_GCS;
-            m_fWidthModular = widthModular;
+            m_WidthModular = widthModular;
             m_dLengthTopLeft = lengthTopLeft;
             m_dLengthTopRight = lengthTopRight;
             m_dTipCoordinate_x = tipCoordinate_x;
@@ -303,26 +303,26 @@ namespace BaseClasses.GraphObj
         public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material)
         {
             Point3D pfront0_baseleft = new Point3D(0,0,0);
-            Point3D pfront1_baseright = new Point3D(m_fWidthModular, 0,0);
-            Point3D pfront2_topright = new Point3D(m_fWidthModular,0, m_dLengthTopRight);
+            Point3D pfront1_baseright = new Point3D(m_WidthModular, 0,0);
+            Point3D pfront2_topright = new Point3D(m_WidthModular,0, m_dLengthTopRight);
             Point3D pfront3_toptip = new Point3D(m_dTipCoordinate_x, 0, m_dLengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
             Point3D pfront4_topleft = new Point3D(0, 0, m_dLengthTopLeft);
 
             // Local in-plane offset
-            pfront0_baseleft.X += m_fCoordinateInPlane_x;
-            pfront0_baseleft.Z += m_fCoordinateInPlane_y;
+            pfront0_baseleft.X += m_CoordinateInPlane_x;
+            pfront0_baseleft.Z += m_CoordinateInPlane_y;
 
-            pfront1_baseright.X += m_fCoordinateInPlane_x;
-            pfront1_baseright.Z += m_fCoordinateInPlane_y;
+            pfront1_baseright.X += m_CoordinateInPlane_x;
+            pfront1_baseright.Z += m_CoordinateInPlane_y;
 
-            pfront2_topright.X += m_fCoordinateInPlane_x;
-            pfront2_topright.Z += m_fCoordinateInPlane_y;
+            pfront2_topright.X += m_CoordinateInPlane_x;
+            pfront2_topright.Z += m_CoordinateInPlane_y;
 
-            pfront3_toptip.X += m_fCoordinateInPlane_x;
-            pfront3_toptip.Z += m_fCoordinateInPlane_y;
+            pfront3_toptip.X += m_CoordinateInPlane_x;
+            pfront3_toptip.Z += m_CoordinateInPlane_y;
 
-            pfront4_topleft.X += m_fCoordinateInPlane_x;
-            pfront4_topleft.Z += m_fCoordinateInPlane_y;
+            pfront4_topleft.X += m_CoordinateInPlane_x;
+            pfront4_topleft.Z += m_CoordinateInPlane_y;
 
             if (options.bCladdingSheetColoursByID && !options.bUseTextures) // Ak je zapnuta textura, tak je nadradena solid brush farbam
             {
@@ -339,7 +339,7 @@ namespace BaseClasses.GraphObj
                 return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
         }
 
-        public Transform3DGroup GetTransformGroup(float fRot_X_deg, float fRot_Y_deg, float fRot_Z_deg)
+        public Transform3DGroup GetTransformGroup(double dRot_X_deg, double dRot_Y_deg, double dRot_Z_deg)
         {
             // Transformacie
             RotateTransform3D rotateX = new RotateTransform3D();
@@ -349,19 +349,19 @@ namespace BaseClasses.GraphObj
             // About X
             AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
             axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
-            axisAngleRotation3dX.Angle = fRot_X_deg;
+            axisAngleRotation3dX.Angle = dRot_X_deg;
             rotateX.Rotation = axisAngleRotation3dX;
 
             // About Y
             AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
             axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
-            axisAngleRotation3dY.Angle = fRot_Y_deg;
+            axisAngleRotation3dY.Angle = dRot_Y_deg;
             rotateY.Rotation = axisAngleRotation3dY;
 
             // About Z
             AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
             axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
-            axisAngleRotation3dZ.Angle = fRot_Z_deg;
+            axisAngleRotation3dZ.Angle = dRot_Z_deg;
             rotateZ.Rotation = axisAngleRotation3dZ;
 
             TranslateTransform3D translateOrigin = new TranslateTransform3D(m_ControlPoint.X, m_ControlPoint.Y, m_ControlPoint.Z);
