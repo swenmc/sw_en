@@ -1723,7 +1723,7 @@ namespace BaseClasses.GraphObj
                 // Myslim ze mame niekde uz funkcie ktore vedia skontrolovat ci sa dve plochy prekryvaju
 
                 // Zoznam objektov ktore su v kolizii
-                double dLimit = 0.020; // 20 mm // Ak otvor zacina 20 mm za okrajom plechu a 10 mm pred koncom plechu, tak uvazujeme ze cely plech je otvorom rozdeleny 
+                double dLimit = 0.020; // 20 mm // Ak otvor zacina 20 mm za okrajom plechu a 20 mm pred koncom plechu, tak uvazujeme ze cely plech je otvorom rozdeleny 
                 List<CCladdingOrFibreGlassSheet> objectInColision_In_Local_x = listOfOpenings.Where(o => (o.CoordinateInPlane_x <= originalsheet.CoordinateInPlane_x + dLimit && (o.CoordinateInPlane_x + o.WidthModular) >= (originalsheet.CoordinateInPlane_x - dLimit + originalsheet.WidthModular))).ToList();
 
                 // Ak neexistuju objekty v kolizii s originalsheet mozeme opustit funkciu
