@@ -31,11 +31,11 @@ namespace PFD
 
             BaysWidthOptionsChanged = false;
 
-            if (pfdVM._baysWidthOptionsVM == null) pfdVM._baysWidthOptionsVM = new BayWidthOptionsViewModel(pfdVM.Frames - 1, pfdVM.BayWidth);
+            if (_pfdVM._baysWidthOptionsVM == null) _pfdVM._baysWidthOptionsVM = new BayWidthOptionsViewModel(_pfdVM.Frames - 1, _pfdVM.BayWidth);
 
-            pfdVM._baysWidthOptionsVM.PropertyChanged += HandleBayWidthsOptionsPropertyChangedEvent;
+            _pfdVM._baysWidthOptionsVM.PropertyChanged += HandleBayWidthsOptionsPropertyChangedEvent;
             
-            this.DataContext = pfdVM._baysWidthOptionsVM;
+            this.DataContext = _pfdVM._baysWidthOptionsVM;
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
@@ -78,9 +78,19 @@ namespace PFD
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (BaysWidthOptionsChanged) _pfdVM.BaysWidthOptionsChanged = true;
+            if (BaysWidthOptionsChanged)
+            {
+                _pfdVM.BaysWidthOptionsChanged = true;
+                
+            }
 
             BaysWidthOptionsChanged = false;
+        }
+
+        //toto som zapinal, lebo inak sa neupdatuje tabulka s bay widths 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = _pfdVM._baysWidthOptionsVM;
         }
     }
 }

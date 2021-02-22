@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
-        mc:Ignorable="d" Unloaded="UserControl_Unloaded">
+        mc:Ignorable="d" Unloaded="UserControl_Unloaded" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">50</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">100</System:Double>

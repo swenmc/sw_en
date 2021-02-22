@@ -807,7 +807,7 @@ namespace PFD
                 //ak je zmeneny model, nesnazime sa o update ale priamo nanovo
                 _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
                 _modelOptionsVM.EnableCanopies = false; //default vypnute
-
+                                
                 _modelOptionsVM.VariousBayWidths = false; //default vypnute
             }
             else
@@ -822,10 +822,10 @@ namespace PFD
                     if (_canopiesOptionsVM == null) _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
                     else _canopiesOptionsVM.Update(Frames - 1, Width);
                 }
+                
             }
-                        
+
             _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
-            //_baysWidthOptionsVM.BayWidthList = _baysWidthOptionsVM.BayWidthList;
         }
 
         //-------------------------------------------------------------------------------------------------------------
