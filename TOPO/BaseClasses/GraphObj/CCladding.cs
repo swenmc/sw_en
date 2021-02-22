@@ -160,6 +160,7 @@ namespace BaseClasses.GraphObj
             claddingWidthModular_Wall_FG = claddingWidthModular_Wall;
         }
 
+
         public Model3DGroup GetCladdingModel(DisplayOptions options)
         {
             m_pControlPoint = new Point3D(0, 0, 0);
