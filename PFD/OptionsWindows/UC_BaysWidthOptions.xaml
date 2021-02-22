@@ -40,7 +40,7 @@
         </StackPanel>
 
         <DataGrid Name ="Datagrid_CrossBracing" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" 
-                  IsReadOnly="False" AutoGenerateColumns="False" ItemsSource="{Binding BayWidthList}" 
+                  IsReadOnly="False" AutoGenerateColumns="False" ItemsSource="{Binding BayWidthList, Mode=TwoWay}" 
                   MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">

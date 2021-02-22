@@ -825,6 +825,7 @@ namespace PFD
             }
                         
             _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
+            //_baysWidthOptionsVM.BayWidthList = _baysWidthOptionsVM.BayWidthList;
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -2961,13 +2962,14 @@ namespace PFD
 
                 if (!IsSetFromCode) IsSetFromCode = true;
                 Length = _baysWidthOptionsVM.GetTotalWidth();
+                LengthOverall = MLength + Math.Abs(EdgeColumnCrsc_y_minus) + EdgeColumnCrsc_y_plus;
+                BayWidth = MLength / (MFrames - 1);
                 IsSetFromCode = false;
 
                 SetResultsAreNotValid();
                 RecreateModel = true;
 
-                if (MSynchronizeGUI) NotifyPropertyChanged("BaysWidthOptionsChanged");
-
+                NotifyPropertyChanged("BaysWidthOptionsChanged");
             }
         }
 

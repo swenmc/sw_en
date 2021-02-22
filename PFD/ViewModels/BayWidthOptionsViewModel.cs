@@ -133,13 +133,7 @@ namespace PFD
             
             initBays(baysNum);
 
-            ObservableCollection<CBayInfo> items = new ObservableCollection<CBayInfo>();
-
-            for (int i = 1; i <= baysNum; i++)
-            {
-                items.Add(new CBayInfo(i, bayWidth));
-            }
-            BayWidthList = items;
+            initBaysWidths(baysNum, bayWidth);
 
             Width = bayWidth; 
 
@@ -161,6 +155,16 @@ namespace PFD
                 bays.Add(i);
             }
             Bays = bays;
+        }
+
+        private void initBaysWidths(int baysNum, float bayWidth)
+        {
+            List<CBayInfo> items = new List<CBayInfo>();
+            for (int i = 1; i <= baysNum; i++)
+            {
+                items.Add(new CBayInfo(i, bayWidth));
+            }
+            BayWidthList = new ObservableCollection<CBayInfo>(items);
         }
 
         public float GetTotalWidth()
@@ -223,6 +227,9 @@ namespace PFD
             Width = vm.Width;            
         }
 
-
+        public void ResetBaysWidths(int baysNum, float bayWidth)
+        {
+            initBaysWidths(baysNum, bayWidth);
+        }
     }
 }
