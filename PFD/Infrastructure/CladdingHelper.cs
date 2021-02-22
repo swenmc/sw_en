@@ -1,5 +1,6 @@
 ﻿using BaseClasses;
 using BaseClasses.GraphObj;
+using CRSC;
 using DATABASE;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace PFD.Infrastructure
 {
     public static class CladdingHelper
     {
-        public static CCladding GetCladding(int claddingIndex, CPFDViewModel vm, BuildingGeometryDataInput sGeometryInputData)
+        public static CCladding GetCladding(int claddingIndex, CPFDViewModel vm, BuildingGeometryDataInput sGeometryInputData, CCrSc_TW columnSection)
         {
             CCladding cladding = new CCladding(claddingIndex, (EModelType_FS)vm.KitsetTypeIndex, 
                 sGeometryInputData,
@@ -22,7 +23,7 @@ namespace PFD.Infrastructure
                 vm._claddingOptionsVM.FibreglassProperties,
                 vm.DoorBlocksProperties,
                 vm.WindowBlocksProperties,
-                (CRSC.CCrSc_TW)vm.Model.m_arrCrSc[EMemberType_FS_Position.EdgeColumn],
+                columnSection, //(CRSC.CCrSc_TW)vm.Model.m_arrCrSc[EMemberType_FS_Position.EdgeColumn] //takto som to chcel mat, ale Model je null
                 vm.ColumnDistance, vm.ColumnDistance,
                 vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex).Name,
                 vm._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.RoofCladdingColorIndex).Name,
