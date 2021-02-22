@@ -686,28 +686,6 @@ namespace BaseClasses.GraphObj
                 // Druha uroven jednotlive sheet nachadzajuce sa v jednej rovine
                 //List<List<CCladdingOrFibreGlassSheet>> listOfCladdingSheets = new List<List<CCladdingOrFibreGlassSheet>>();
 
-                // TODO - color list ma 141 poloziek, ale na jednej strane moze byt az 500 sheets, preto nakopirujem polozky viac krat
-                // TO Ondrej - asi sa to da nejako krajsie programovo urobit aby sa pri vycerpani listu zacalo znova od zaciatku
-                // TODO Ondrej - chcel by som ten list upravit tak ze vybrieme napriklad 20 peknych farieb a tie sa budu striedat, aby tam nebola cierna alebo 3 odtiene bielej za sebou
-                // Povodny list so vsetkymi farbami mi nezmaz
-
-                // To Ondrej - mam tu chybu ze ten zoznam nie je staticky ale ak sa zavola funkcia niekolkokrat po sebe tak sa tam doplnaju farby
-                // az to nakoniec spadne na out of memory
-                // Prosim Ta nejako usporiadaj, aby sme mali zoznam zhruba 20 farieb, ktore sa zopakuju, tak aby sme mali v zozname dost poloziek
-                // pre 300 m budovu, takze aspon 500 farieb
-                // alebo potom implementovat algoritmus pre zoznam s 20 farbami, ze ked sa narazi na farbu cislo 20 tak sa zacne znova od farby c. 1
-
-                List<Color> colorsTemp_1410_items = new List<Color>();
-                for (int k = 0; k < 10; k++)
-                {
-                    for (int l = 0; l < ColorList.Count; l++)
-                    {
-                        colorsTemp_1410_items.Add(ColorList[l]);
-                    }
-                }
-
-                // Nahradime povodne farby 141 rozsirenym zoznamom 1410
-                ColorList = colorsTemp_1410_items;
 
                 // Left Wall
                 // Total Wall Width
@@ -727,7 +705,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorWall = ColorList[i];
+                        m_ColorWall = ColorsHelper.GetColorWithIndex(i);
 
                     listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
                     new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
@@ -827,7 +805,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorWall = ColorList[i];
+                        m_ColorWall = ColorsHelper.GetColorWithIndex(i);
 
                     double height_left = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, i * claddingWidthModular_Wall);
                     double height_right = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, (i + 1) * claddingWidthModular_Wall);
@@ -950,7 +928,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorWall = ColorList[i];
+                        m_ColorWall = ColorsHelper.GetColorWithIndex(i);
 
                     listOfCladdingSheetsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
                     new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
@@ -1048,7 +1026,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorWall = ColorList[i];
+                        m_ColorWall = ColorsHelper.GetColorWithIndex(i);
 
                     double height_left = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, i * claddingWidthModular_Wall);
                     double height_right = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, (i + 1) * claddingWidthModular_Wall);
@@ -1175,7 +1153,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorRoof = ColorList[i];
+                        m_ColorRoof = ColorsHelper.GetColorWithIndex(i);
 
                     double length = length_left_basic;
 
@@ -1324,7 +1302,7 @@ namespace BaseClasses.GraphObj
                     for (int i = 0; i < iNumberOfSheets; i++)
                     {
                         if (options.bCladdingSheetColoursByID)
-                            m_ColorRoof = ColorList[i];
+                            m_ColorRoof = ColorsHelper.GetColorWithIndex(i);
 
                         double length = length_left_basic;
 
@@ -1793,152 +1771,6 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        // To Ondrej - toto som prevzal z CComboboxHelper.cs v projekte PFD. Tu na to nevidiet lebo BaseClasses su includovane v PFD.
-        // Asi by sa mala vyvorit pomocna trieda pre farby v BaseClasses alebo este lepsie - zaviest kompletnu databazu farieb System.Windows.Media.Colors
-        // a z nej vyberat
-
-        public List<Color> ColorList = new List<Color>() {
-                Colors.AliceBlue,
-                Colors.AntiqueWhite,
-                Colors.Aqua,
-                Colors.Aquamarine,
-                Colors.Azure,
-                Colors.Beige,
-                Colors.Bisque,
-                Colors.Black,
-                Colors.BlanchedAlmond,
-                Colors.Blue,
-                Colors.BlueViolet,
-                Colors.Brown,
-                Colors.BurlyWood,
-                Colors.CadetBlue,
-                Colors.Chartreuse,
-                Colors.Chocolate,
-                Colors.Coral,
-                Colors.CornflowerBlue,
-                Colors.Cornsilk,
-                Colors.Crimson,
-                Colors.Cyan,
-                Colors.DarkBlue,
-                Colors.DarkCyan,
-                Colors.DarkGoldenrod,
-                Colors.DarkGray,
-                Colors.DarkGreen,
-                Colors.DarkKhaki,
-                Colors.DarkMagenta,
-                Colors.DarkOliveGreen,
-                Colors.DarkOrange,
-                Colors.DarkOrchid,
-                Colors.DarkRed,
-                Colors.DarkSalmon,
-                Colors.DarkSeaGreen,
-                Colors.DarkSlateBlue,
-                Colors.DarkSlateGray,
-                Colors.DarkTurquoise,
-                Colors.DarkViolet,
-                Colors.DeepPink,
-                Colors.DeepSkyBlue,
-                Colors.DimGray,
-                Colors.DodgerBlue,
-                Colors.Firebrick,
-                Colors.FloralWhite,
-                Colors.ForestGreen,
-                Colors.Fuchsia,
-                Colors.Gainsboro,
-                Colors.GhostWhite,
-                Colors.Gold,
-                Colors.Goldenrod,
-                Colors.Gray,
-                Colors.Green,
-                Colors.GreenYellow,
-                Colors.Honeydew,
-                Colors.HotPink,
-                Colors.IndianRed,
-                Colors.Indigo,
-                Colors.Ivory,
-                Colors.Khaki,
-                Colors.Lavender,
-                Colors.LavenderBlush,
-                Colors.LawnGreen,
-                Colors.LemonChiffon,
-                Colors.LightBlue,
-                Colors.LightCoral,
-                Colors.LightCyan,
-                Colors.LightGoldenrodYellow,
-                Colors.LightGray,
-                Colors.LightGreen,
-                Colors.LightPink,
-                Colors.LightSalmon,
-                Colors.LightSeaGreen,
-                Colors.LightSkyBlue,
-                Colors.LightSlateGray,
-                Colors.LightSteelBlue,
-                Colors.LightYellow,
-                Colors.Lime,
-                Colors.LimeGreen,
-                Colors.Linen,
-                Colors.Magenta,
-                Colors.Maroon,
-                Colors.MediumAquamarine,
-                Colors.MediumBlue,
-                Colors.MediumOrchid,
-                Colors.MediumPurple,
-                Colors.MediumSeaGreen,
-                Colors.MediumSlateBlue,
-                Colors.MediumSpringGreen,
-                Colors.MediumTurquoise,
-                Colors.MediumVioletRed,
-                Colors.MidnightBlue,
-                Colors.MintCream,
-                Colors.MistyRose,
-                Colors.Moccasin,
-                Colors.NavajoWhite,
-                Colors.Navy,
-                Colors.OldLace,
-                Colors.Olive,
-                Colors.OliveDrab,
-                Colors.Orange,
-                Colors.OrangeRed,
-                Colors.Orchid,
-                Colors.PaleGoldenrod,
-                Colors.PaleGreen,
-                Colors.PaleTurquoise,
-                Colors.PaleVioletRed,
-                Colors.PapayaWhip,
-                Colors.PeachPuff,
-                Colors.Peru,
-                Colors.Pink,
-                Colors.Plum,
-                Colors.PowderBlue,
-                Colors.Purple,
-                Colors.Red,
-                Colors.RosyBrown,
-                Colors.RoyalBlue,
-                Colors.SaddleBrown,
-                Colors.Salmon,
-                Colors.SandyBrown,
-                Colors.SeaGreen,
-                Colors.SeaShell,
-                Colors.Sienna,
-                Colors.Silver,
-                Colors.SkyBlue,
-                Colors.SlateBlue,
-                Colors.SlateGray,
-                Colors.Snow,
-                Colors.SpringGreen,
-                Colors.SteelBlue,
-                Colors.Tan,
-                Colors.Teal,
-                Colors.Thistle,
-                Colors.Tomato,
-                Colors.Transparent,
-                Colors.Turquoise,
-                Colors.Olive,
-                Colors.Wheat,
-                Colors.White,
-                Colors.WhiteSmoke,
-                Colors.Yellow,
-                Colors.YellowGreen
-        };
+        
     }
 }
