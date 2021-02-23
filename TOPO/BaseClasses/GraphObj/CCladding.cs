@@ -659,19 +659,13 @@ namespace BaseClasses.GraphObj
                 throw new Exception("Not implemented kitset type.");
             }
 
-
-
-
-
-
-            bool bIndividualCladdingSheets = true; // TODO 719 - Option - Model Options
             // Ak to bude false, zostane vacsina veci ako doposial
             // Zobrazime len jednoliatu plochu s farbou alebo texturou, nad nou mozeme zobrazit fibreglass sheet (to treba dorobit aby sa dalo zavolat samostatne)
             // Bude to podobne ako door a window, takze sa nebudu kreslit realne otvory len sa nad plochu strechy dokresli fibreglass sheet
             // Nebudeme generovat cladding sheet material list ani cladding sheet layout pattern
             // Len spocitame plochu otvorov a odratame ju z celkovej plochy cladding a to bude v Quotation
 
-            if (bIndividualCladdingSheets)
+            if (options.bDisplayIndividualCladdingSheets)
             {
                 //------------------------------------------------------------------------------------------------------
                 //------------------------------------------------------------------------------------------------------

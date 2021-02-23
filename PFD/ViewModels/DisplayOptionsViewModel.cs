@@ -3336,6 +3336,7 @@ namespace PFD
             DisplayWindowsWireFrame = false;
 
             DisplayCladding = false;
+            DisplayIndividualCladdingSheets = false;
             DisplayFibreglass = false;
             DisplayDoors = false;
             DisplayWindows = false;
@@ -3476,9 +3477,9 @@ namespace PFD
             FrontCladdingOpacity = 0.95f;
             LeftCladdingOpacity = 0.95f;
             RoofCladdingOpacity = 0.95f;
-            DoorPanelOpacity = 0.95f;  //to Mato, nepride mi to spravne nastavit na 0.98f ked tick je 0.05 = si to odporuje, upravujem na 0.95f
-            WindowPanelOpacity = 0.95f; //to Mato, nepride mi to spravne nastavit na 0.98f ked tick je 0.05 = si to odporuje, upravujem na 0.95f
-            FibreglassOpacity = 0.7f;
+            DoorPanelOpacity = 0.95f;
+            WindowPanelOpacity = 0.95f;
+            FibreglassOpacity = 0.70f;
 
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 

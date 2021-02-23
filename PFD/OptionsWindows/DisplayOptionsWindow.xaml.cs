@@ -44,14 +44,13 @@ namespace PFD
             {
                 if (e.PropertyName == "DisplayCladding" || e.PropertyName == "DisplayDoors" || e.PropertyName == "DisplayWindows" ||
                     e.PropertyName == "FrontCladdingOpacity" || e.PropertyName == "LeftCladdingOpacity" || e.PropertyName == "RoofCladdingOpacity" ||
-                    e.PropertyName == "DoorPanelOpacity" || e.PropertyName == "WindowPanelOpacity")
+                    e.PropertyName == "DoorPanelOpacity" || e.PropertyName == "WindowPanelOpacity" || e.PropertyName == "FibreglassOpacity")
                     RecreateModelRequired = true;
 
                 if (e.PropertyName == "ColorsAccordingToMembersPrefix" || e.PropertyName == "ColorsAccordingToMembersPosition")
                 {
                     MemberOptionsChanged = true;
                     RecreateModelRequired = true;
-
                 }
 
                 DisplayOptionsChanged = true;
@@ -69,7 +68,7 @@ namespace PFD
                 }
 
                 _pfdVM.RecreateModel = RecreateModelRequired;
-                _pfdVM.SynchronizeGUI = true;                
+                _pfdVM.SynchronizeGUI = true;
             }
             this.Close();
         }
