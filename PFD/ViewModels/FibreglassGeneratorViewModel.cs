@@ -37,6 +37,21 @@ namespace PFD
         private float m_CladdingWidthModular_Wall;
         private float m_CladdingWidthModular_Roof;
 
+        private float m_Y2;
+        private float m_Y3;
+        private float m_Y4;
+        private float m_Y5;
+        private float m_Length2;
+        private float m_Length3;
+        private float m_Length4;
+        private float m_Length5;
+
+        private bool m_GenerateRaster;
+        private int m_RowsCount;
+        private List<int> m_RowsCountValues;
+        private bool m_EqualSpacing;
+        private float m_Spacing;
+        private bool m_EnableVariableLengths;
 
         private bool m_AddFibreglass;
         private bool m_DeleteFibreglass;
@@ -247,6 +262,203 @@ namespace PFD
             }
         }
 
+        public float Y2
+        {
+            get
+            {
+                return m_Y2;
+            }
+
+            set
+            {
+                m_Y2 = value;
+                NotifyPropertyChanged("Y2");
+            }
+        }
+
+        public float Y3
+        {
+            get
+            {
+                return m_Y3;
+            }
+
+            set
+            {
+                m_Y3 = value;
+                NotifyPropertyChanged("Y3");
+            }
+        }
+
+        public float Y4
+        {
+            get
+            {
+                return m_Y4;
+            }
+
+            set
+            {
+                m_Y4 = value;
+                NotifyPropertyChanged("Y4");
+            }
+        }
+
+        public float Y5
+        {
+            get
+            {
+                return m_Y5;
+            }
+
+            set
+            {
+                m_Y5 = value;
+                NotifyPropertyChanged("Y5");
+            }
+        }
+
+        public float Length2
+        {
+            get
+            {
+                return m_Length2;
+            }
+
+            set
+            {
+                m_Length2 = value;
+                NotifyPropertyChanged("Length2");
+            }
+        }
+
+        public float Length3
+        {
+            get
+            {
+                return m_Length3;
+            }
+
+            set
+            {
+                m_Length3 = value;
+                NotifyPropertyChanged("Length3");
+            }
+        }
+
+        public float Length4
+        {
+            get
+            {
+                return m_Length4;
+            }
+
+            set
+            {
+                m_Length4 = value;
+                NotifyPropertyChanged("Length4");
+            }
+        }
+
+        public float Length5
+        {
+            get
+            {
+                return m_Length5;
+            }
+
+            set
+            {
+                m_Length5 = value;
+                NotifyPropertyChanged("Length5");
+            }
+        }
+
+        public bool GenerateRaster
+        {
+            get
+            {
+                return m_GenerateRaster;
+            }
+
+            set
+            {
+                m_GenerateRaster = value;
+                NotifyPropertyChanged("GenerateRaster");
+            }
+        }
+
+        public int RowsCount
+        {
+            get
+            {
+                return m_RowsCount;
+            }
+
+            set
+            {
+                m_RowsCount = value;
+                NotifyPropertyChanged("RowsCount");
+            }
+        }
+
+        public List<int> RowsCountValues
+        {
+            get
+            {
+                if (m_RowsCountValues == null) m_RowsCountValues = new List<int>() { 2, 3, 4, 5 };
+                return m_RowsCountValues;
+            }
+
+            set
+            {
+                m_RowsCountValues = value;
+                NotifyPropertyChanged("RowsCountValues");
+            }
+        }
+
+        public bool EqualSpacing
+        {
+            get
+            {
+                return m_EqualSpacing;
+            }
+
+            set
+            {
+                m_EqualSpacing = value;
+                NotifyPropertyChanged("EqualSpacing");
+            }
+        }
+
+        public float Spacing
+        {
+            get
+            {
+                return m_Spacing;
+            }
+
+            set
+            {
+                m_Spacing = value;
+                NotifyPropertyChanged("Spacing");
+            }
+        }
+
+        public bool EnableVariableLengths
+        {
+            get
+            {
+                return m_EnableVariableLengths;
+            }
+
+            set
+            {
+                m_EnableVariableLengths = value;
+                NotifyPropertyChanged("EnableVariableLengths");
+            }
+        }
+
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -267,7 +479,21 @@ namespace PFD
             CladdingWidthModular_Wall = (float)widthModularRoof;
 
             Y = 0.6f;
+            Y2 = 1.6f;
+            Y3 = 2.6f;
+            Y4 = 3.6f;
+            Y5 = 4.6f;
             Length = 1.8f;
+            Length2 = 1.8f;
+            Length3 = 1.8f;
+            Length4 = 1.8f;
+            Length5 = 1.8f;
+
+            GenerateRaster = false;
+            RowsCount = 4;
+            EqualSpacing = true;
+            Spacing = 1.2f;
+            EnableVariableLengths = false;
 
             InitXValues();
 
