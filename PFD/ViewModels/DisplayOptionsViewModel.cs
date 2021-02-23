@@ -78,6 +78,7 @@ namespace PFD
         private bool m_DisplayWindowsWireFrame;
 
         private bool m_DisplayCladding;
+        private bool m_DisplayIndividualCladdingSheets;
         private bool m_DisplayFibreglass;
         private bool m_DisplayDoors;
         private bool m_DisplayWindows;
@@ -248,6 +249,7 @@ namespace PFD
         private float m_RoofCladdingOpacity;
         private float m_DoorPanelOpacity;
         private float m_WindowPanelOpacity;
+        private float m_FibreglassOpacity;
 
         private float m_ExportFloorSlabTextSize;
         private float m_ExportGridlinesSize;
@@ -2634,6 +2636,19 @@ namespace PFD
                 NotifyPropertyChanged("DisplayCladding");
             }
         }
+        public bool DisplayIndividualCladdingSheets
+        {
+            get
+            {
+                return m_DisplayIndividualCladdingSheets;
+            }
+
+            set
+            {
+                m_DisplayIndividualCladdingSheets = value;
+                NotifyPropertyChanged("DisplayIndividualCladdingSheets");
+            }
+        }
         public bool DisplayFibreglass
         {
             get
@@ -3179,7 +3194,20 @@ namespace PFD
                 NotifyPropertyChanged("WindowPanelOpacity");
             }
         }
+        public float FibreglassOpacity
+        {
+            get
+            {
+                return m_FibreglassOpacity;
+            }
 
+            set
+            {
+                m_FibreglassOpacity = value;
+                NotifyPropertyChanged("FibreglassOpacity");
+            }
+        }
+        
         public float ExportDescriptionTextWidthScaleFactor
         {
             get
@@ -3261,6 +3289,10 @@ namespace PFD
                 NotifyPropertyChanged("DisplayFibreglassID");
             }
         }
+
+        
+
+
 
         #endregion Properties
 
@@ -3446,6 +3478,7 @@ namespace PFD
             RoofCladdingOpacity = 0.95f;
             DoorPanelOpacity = 0.95f;  //to Mato, nepride mi to spravne nastavit na 0.98f ked tick je 0.05 = si to odporuje, upravujem na 0.95f
             WindowPanelOpacity = 0.95f; //to Mato, nepride mi to spravne nastavit na 0.98f ked tick je 0.05 = si to odporuje, upravujem na 0.95f
+            FibreglassOpacity = 0.7f;
 
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
@@ -3531,6 +3564,7 @@ namespace PFD
             DisplayWindowsWireFrame = newVM.DisplayWindowsWireFrame;
 
             DisplayCladding = newVM.DisplayCladding;
+            DisplayIndividualCladdingSheets = newVM.DisplayIndividualCladdingSheets;
             DisplayFibreglass = newVM.DisplayFibreglass;
             DisplayDoors = newVM.DisplayDoors;
             DisplayWindows = newVM.DisplayWindows;
@@ -3647,6 +3681,7 @@ namespace PFD
             RoofCladdingOpacity = newVM.RoofCladdingOpacity;
             DoorPanelOpacity = newVM.DoorPanelOpacity;
             WindowPanelOpacity = newVM.WindowPanelOpacity;
+            FibreglassOpacity = newVM.FibreglassOpacity;
 
             BackgroundColorIndex = newVM.BackgroundColorIndex;
 

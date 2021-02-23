@@ -77,7 +77,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="180"/>
-                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="90"/>
                             <RowDefinition Height="290"/>
                             <RowDefinition Height="250"/>
                             <RowDefinition Height="*" />
@@ -100,9 +100,10 @@
 
                         <StackPanel Grid.Row="1" Grid.Column="0">
                             <CheckBox Name="chbDisplayCladding" IsChecked="{Binding Path=DisplayCladding}">Display Cladding</CheckBox>
-                            <CheckBox Name="chbDisplayFibreGlass" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglass}">Display Fibreglass</CheckBox>
+                            <CheckBox Name="chbDisplayIndividualCladdingSheets" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayIndividualCladdingSheets}">Individual Sheets</CheckBox>
                             <CheckBox Name="chbDisplayDoors" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayDoors}">Display Doors</CheckBox>
                             <CheckBox Name="chbDisplayWindows" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayWindows}">Display Windows</CheckBox>
+                            <CheckBox Name="chbDisplayFibreGlass" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglass}">Display Fibreglass</CheckBox>
                         </StackPanel>
 
                         <StackPanel Grid.Row="2" Grid.Column="0">
@@ -602,8 +603,11 @@
                         <TextBlock Grid.Row="12" Grid.Column="2" Text="Window Panel Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <Slider Grid.Row="12" Grid.Column="3" x:Name="sldWindowPanelOpacity" Margin="0 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.05" Maximum="1" Value="{Binding Path=WindowPanelOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
 
-                        <TextBlock Grid.Row="14" Grid.Column="2" Text="Background Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="14" Grid.Column="3" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="13" Grid.Column="2" Text="Fibreglass Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <Slider Grid.Row="13" Grid.Column="3" x:Name="sldFibreglassOpacity" Margin="0 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.05" Maximum="1" Value="{Binding Path=FibreglassOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
+
+                        <TextBlock Grid.Row="15" Grid.Column="2" Text="Background Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="15" Grid.Column="3" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -616,8 +620,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="15" Grid.Column="2" Text="Plate Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="15" Grid.Column="3" Name ="Combobox_PlateColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="16" Grid.Column="2" Text="Plate Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="16" Grid.Column="3" Name ="Combobox_PlateColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=PlateColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -630,8 +634,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="16" Grid.Column="2" Text="Screw Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="16" Grid.Column="3" Name ="Combobox_ScrewColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="17" Grid.Column="2" Text="Screw Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="17" Grid.Column="3" Name ="Combobox_ScrewColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=ScrewColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -644,8 +648,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="17" Grid.Column="2" Text="Anchor Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="17" Grid.Column="3" Name ="Combobox_AnchorColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="18" Grid.Column="2" Text="Anchor Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="18" Grid.Column="3" Name ="Combobox_AnchorColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=AnchorColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -658,8 +662,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="18" Grid.Column="2" Text="Washer Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="18" Grid.Column="3" Name ="Combobox_WasherColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="19" Grid.Column="2" Text="Washer Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="19" Grid.Column="3" Name ="Combobox_WasherColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=WasherColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -672,8 +676,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="19" Grid.Column="2" Text="Nut Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="19" Grid.Column="3" Name ="Combobox_NutColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="20" Grid.Column="2" Text="Nut Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="20" Grid.Column="3" Name ="Combobox_NutColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=NutColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -686,21 +690,21 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <StackPanel Grid.Row="21" Grid.Column="2" Grid.RowSpan="2" Orientation="Vertical" Grid.ColumnSpan="2">
+                        <StackPanel Grid.Row="22" Grid.Column="2" Grid.RowSpan="2" Orientation="Vertical" Grid.ColumnSpan="2">
                             <TextBlock Text="Member Colour:" HorizontalAlignment="Left"/>
                             <RadioButton Name="radioColorsIn3DMembersPrefix" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPrefix, Mode=TwoWay}">according to Prefix</RadioButton>
                             <RadioButton Name="radioColorsIn3DMembersPosition" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPosition, Mode=TwoWay}">according to Position</RadioButton>
                             <RadioButton Name="radioColorsIn3DSections" GroupName="Mode" IsChecked="{Binding Path=ColorsAccordingToSections, Mode=TwoWay}">according to Section</RadioButton>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="24" Grid.Column="2" Grid.RowSpan="2">
+                        <StackPanel Grid.Row="25" Grid.Column="2" Grid.RowSpan="2">
                             <CheckBox Name="chbDisplayDistinguishedColorMember" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Colour Members</CheckBox>                            
                             <CheckBox Name="chbColoredCenterlines" IsChecked="{Binding Path=ColoredCenterlines}">Colored Centerlines</CheckBox>
                             <CheckBox Name="chbCladdingSheetColoursByID" IsChecked="{Binding Path=CladdingSheetColoursByID}">Cladding Sheet Colours By ID</CheckBox>
                             
                         </StackPanel>
                         
-                        <CheckBox Grid.Row="26" Grid.Column="2" VerticalAlignment="Bottom" Name="chbUseTextures" IsChecked="{Binding Path=UseTextures}">Use Textures</CheckBox>
+                        <CheckBox Grid.Row="27" Grid.Column="2" VerticalAlignment="Bottom" Name="chbUseTextures" IsChecked="{Binding Path=UseTextures}">Use Textures</CheckBox>
 
                     </Grid>
                 </ScrollViewer>

@@ -1036,6 +1036,7 @@ namespace BaseClasses
         public float fRoofCladdingOpacity;
         public float fDoorPanelOpacity;
         public float fWindowPanelOpacity;
+        public float fFibreglassOpacity;
 
         public bool bCreateHorizontalGridlines;
         public bool bCreateVerticalGridlinesFront;

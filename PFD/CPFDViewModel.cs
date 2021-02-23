@@ -4293,6 +4293,7 @@ namespace PFD
             sDisplayOptions.fRoofCladdingOpacity = _displayOptionsVM.RoofCladdingOpacity;
             sDisplayOptions.fDoorPanelOpacity = _displayOptionsVM.DoorPanelOpacity;
             sDisplayOptions.fWindowPanelOpacity = _displayOptionsVM.WindowPanelOpacity;
+            sDisplayOptions.fFibreglassOpacity = _displayOptionsVM.FibreglassOpacity;
 
             sDisplayOptions.backgroundColor = _displayOptionsVM.BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;
