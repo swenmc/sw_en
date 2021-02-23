@@ -23,13 +23,12 @@ namespace BaseClasses.GraphObj
         float m_fFrontColumnDistance; // Vzdialenost front columns
         float m_fBackColumnDistance; // Vzdialenost back columns
 
-        double claddingHeight_Wall = 0.030; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
-        double claddingHeight_Roof = 0.075; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
-
-        double claddingWidthRibModular_Wall = 0.190; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
-        double claddingWidthRibModular_Roof = 0.300; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
-        double claddingWidthModular_Wall = 0.760; // TODO 719 - Input z databazy
-        double claddingWidthModular_Roof = 0.600; // TODO 719 - Input z databazy
+        double claddingHeight_Wall; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m v tabulkach tableSections_m alebo trapezoidalSheeting_m
+        double claddingHeight_Roof; // z databazy cladding MDBTrapezoidalSheeting - vlastnost height_m
+        double claddingWidthRibModular_Wall;
+        double claddingWidthRibModular_Roof;
+        double claddingWidthModular_Wall;
+        double claddingWidthModular_Roof;
 
         double column_crsc_z_plus;
         double column_crsc_y_minus;
@@ -47,17 +46,17 @@ namespace BaseClasses.GraphObj
         Color m_ColorRoof;
 
         // Consider roof cladding height for front and back wall
-        bool considerRoofCladdingFor_FB_WallHeight; // TODO 719 - napojit na GUI // Default true
+        bool considerRoofCladdingFor_FB_WallHeight;
 
-        double bottomEdge_z;// = -0.05; // Offset pod spodnu uroven podlahy // TODO 719 - napojit na GUI, default -50 mm, limit <-500mm, 0>
+        double bottomEdge_z;// = -0.05; // Offset pod spodnu uroven podlahy, default -50 mm, limit <-500mm, 0>
 
-        double roofEdgeOverhang_X; // = 0.150; // Presah okraja strechy // TODO 719 - napojit na GUI, default 150 mm, limit <0, 600mm>
-        double roofEdgeOverhang_Y; // = 0.000; // Presah okraja strechy // TODO 719 - napojit na GUI, default 0 mm limit <0, 300mm>
+        double roofEdgeOverhang_X; // = 0.150; // Presah okraja strechy, default 150 mm, limit <0, 500mm>
+        double roofEdgeOverhang_Y; // = 0.000; // Presah okraja strechy, default 0 mm limit <0, 300mm>
 
         double OverhangOffset_x;
         double OverhangOffset_y;
 
-        // Fibre glass properties - TODO - Input from GUI
+        // Fibre glass properties
         string m_ColorNameRoof_FG;
         string m_claddingShape_Roof_FG;
         string m_claddingCoatingType_Roof_FG;
@@ -160,7 +159,6 @@ namespace BaseClasses.GraphObj
             claddingWidthModular_Wall_FG = claddingWidthModular_Wall;
         }
 
-
         public Model3DGroup GetCladdingModel(DisplayOptions options)
         {
             m_pControlPoint = new Point3D(0, 0, 0);
@@ -169,7 +167,7 @@ namespace BaseClasses.GraphObj
 
             // Vytvorime model v GCS [0,0,0] je uvazovana v bode m_ControlPoint
 
-            // TODO 719 - Presunut validaciu uz do GUI
+            // TODO 732 - Presunut validaciu pri zmene tychto dvoch hodnot uz do GUI
             if (considerRoofCladdingFor_FB_WallHeight && roofEdgeOverhang_Y > 0)
                 throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
 
