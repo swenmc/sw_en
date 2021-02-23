@@ -47,13 +47,16 @@ namespace PFD
         private float m_WallCladdingOverlap;
 
         private int m_RoofFibreglassThicknessIndex;
+        private int m_ColorRoof_FG_Index;
         private int m_WallFibreglassThicknessIndex;
+        private int m_ColorWall_FG_Index;
         private float m_MaxSheetLengthRoofFibreglass;
         private float m_MaxSheetLengthWallFibreglass;
         private float m_RoofFibreglassOverlap;
         private float m_WallFibreglassOverlap;
         private float m_FibreglassAreaRoof;
         private float m_FibreglassAreaWall;
+        private List<CoatingColour> m_FibreglassColors;
 
         private List<string> m_Claddings;
         private List<string> m_Coatings;
@@ -911,6 +914,48 @@ namespace PFD
             }
         }
 
+        public int ColorRoof_FG_Index
+        {
+            get
+            {
+                return m_ColorRoof_FG_Index;
+            }
+
+            set
+            {
+                m_ColorRoof_FG_Index = value;
+                NotifyPropertyChanged("ColorRoof_FG_Index");
+            }
+        }
+
+        public int ColorWall_FG_Index
+        {
+            get
+            {
+                return m_ColorWall_FG_Index;
+            }
+
+            set
+            {
+                m_ColorWall_FG_Index = value;
+                NotifyPropertyChanged("ColorWall_FG_Index");
+            }
+        }
+
+        public List<CoatingColour> FibreglassColors
+        {
+            get
+            {
+                return m_FibreglassColors;
+            }
+
+            set
+            {
+                m_FibreglassColors = value;
+                NotifyPropertyChanged("FibreglassColors");
+            }
+        }
+
         //TO Mato - co budeme nastavovat, co sa ma udiat ked pridame, zmazeme riadok a podobne?Alebo budeme reagovat az ked sa opusti tab?
         private void FibreglassProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -973,7 +1018,11 @@ namespace PFD
             WallCladdingColorIndex = 8;
             FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
             FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
-            
+
+            LoadFibreglassColors();
+            ColorRoof_FG_Index = 0;
+            ColorWall_FG_Index = 1;
+
             MaxSheetLengthRoof = 6;
             MaxSheetLengthWall = 6;
             MaxSheetLengthRoofFibreglass = 3;
@@ -1088,6 +1137,14 @@ namespace PFD
 
             prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color
             prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
+        }
+
+        private void LoadFibreglassColors()
+        {
+            //to Mato - vyrob v DB zoznam farieb ake potrebujes a napoj si to tu
+            //FibreglassColors = CCoatingColorManager.LoadFibreglassColours();
+
+            FibreglassColors = WallCladdingColors;
         }
     }
 }
