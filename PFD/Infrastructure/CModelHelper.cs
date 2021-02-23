@@ -652,7 +652,15 @@ namespace PFD
 
 
         public static List<CMember> GetMembersForNode(this CModel_PFD model, CNode node, bool IncludeMembersFromSamePositionNodes)
-        {            
+        {
+            // Bug 715
+
+            // TODO Ondrej - este asi budeme potrebovat toto rozsirit o jeden bool, ktory bude zohladnovat aj CNode, ktore su medzilahle na prute
+            // To znamena, ze lezia na linii pruta, ale nie su na jeho zaciatku ani konci
+            // Tieto uzly by mali byt v zozname model.m_arrMembers[i].IntermediateNodes
+            // Akurat neviem, ci je tento zoznam vzdy uplne spravne naplneny pre vsetky pruty
+            // Je totiz mozne ze medzilahle uzly vzniknu az potom co sa tento prut vytvori a uz sa mu do zoznamu nepriradia.
+
             IEnumerable<CMember> foundMembers = model.GetMembersForNode(node);
             List<CMember> members = foundMembers.ToList();
 
@@ -671,7 +679,7 @@ namespace PFD
         }
 
         public static IEnumerable<CMember> GetMembersForNode(this CModel_PFD model, CNode node)
-        {            
+        {
             return model.m_arrMembers.Where(m => (m.NodeStart != null && m.NodeStart.Equals(node)) || (m.NodeEnd != null && m.NodeEnd.Equals(node)));
         }
 
