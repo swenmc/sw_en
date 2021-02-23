@@ -1407,10 +1407,11 @@ namespace BaseClasses.GraphObj
                     if (options.bUseTextures)
                     {
                         double poinstsDist = listOfCladdingSheetsLeftWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall; // Bug 723
+                        ImageBrush brushSide2 = brushSide.Clone();
+                        wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsLeftWall[i].WidthModular; // claddingWidthModular_Wall; // Bug 723
                         wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                        brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                        material_SideWall = new DiffuseMaterial(brushSide);
+                        brushSide2.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                        material_SideWall = new DiffuseMaterial(brushSide2);
                     }
 
                     // Pridame sheet do model group
@@ -1448,10 +1449,11 @@ namespace BaseClasses.GraphObj
                     if (options.bUseTextures)
                     {
                         double poinstsDist = listOfCladdingSheetsFrontWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall; // Bug 723
+                        wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsFrontWall[i].WidthModular;
                         wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                        ImageBrush brushSide2 = brushFront.Clone();
                         brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                        material_FrontBackWall = new DiffuseMaterial(brushFront);
+                        material_FrontBackWall = new DiffuseMaterial(brushSide2);
                     }
 
                     // Pridame sheet do model group
