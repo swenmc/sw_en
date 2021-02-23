@@ -966,7 +966,7 @@ namespace PFD
                 {
                     f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.Width, _pfdVM.Length, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
                     f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
-                    NotifyPropertyChanged("FibreglassProperties_Add");                    
+                    NotifyPropertyChanged("FibreglassProperties_Add");
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
@@ -977,7 +977,7 @@ namespace PFD
                 //RecreateFloorSlab = true;
                 //SetResultsAreNotValid();
                 NotifyPropertyChanged("FibreglassProperties_CollectionChanged");
-            }            
+            }
         }
 
         private void HandleFibreglassPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -987,10 +987,10 @@ namespace PFD
                 if (IsSetFromCode) return;
 
                 if (e.PropertyName == "Side")
-                {                    
-                    
+                {
+
                 }
-                
+
                 this.PropertyChanged(sender, e);
             }
             catch (Exception ex)
@@ -1043,7 +1043,7 @@ namespace PFD
             
             IsSetFromCode = false;
         }
-        
+
         public void SetDefaultValuesOnModelIndexChange(CPFDViewModel pfdVM)
         {
             _pfdVM = pfdVM;
@@ -1141,10 +1141,7 @@ namespace PFD
 
         private void LoadFibreglassColors()
         {
-            //to Mato - vyrob v DB zoznam farieb ake potrebujes a napoj si to tu
-            //FibreglassColors = CCoatingColorManager.LoadFibreglassColours();
-
-            FibreglassColors = WallCladdingColors;
+            FibreglassColors = CCoatingColorManager.LoadColours("FibreglassSQLiteDB");
         }
     }
 }
