@@ -417,7 +417,7 @@ namespace BaseClasses.GraphObj
                         fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
 
                     //TODO - tu treba oddelit fBayStartCoordinate_Y a fBayEndCoordinate_Y pre lavu a pravu stranu
-                    // Zistit ci je na lavej ,resp pravej strane canopy napojena na inu canopy vedla nej a ak ano tak je potrebne nastavit tieto hodnoty tak, aby sa canopies neprekryvali
+                    // BUG 735 Zistit ci je na lavej ,resp pravej strane canopy napojena na inu canopy vedla nej a ak ano tak je potrebne nastavit tieto hodnoty tak, aby sa canopies neprekryvali
 
                     iBayIndex++; // Docasne // Todo 691 - zmazat
 
@@ -583,8 +583,8 @@ namespace BaseClasses.GraphObj
                     else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
                         fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
 
-                    //TODO - tu treba oddelit fBayStartCoordinate_Y a fBayEndCoordinate_Y pre lavu a pravu stranu
-                    // Zistit ci je na lavej ,resp pravej strane canopy napojena na inu canopy vedla nej a ak ano tak je potrebne nastavit tieto hodnoty tak, aby sa canopies neprekryvali
+                    // TODO - tu treba oddelit fBayStartCoordinate_Y a fBayEndCoordinate_Y pre lavu a pravu stranu
+                    // BUG 735 - Zistit ci je na lavej ,resp pravej strane canopy napojena na inu canopy vedla nej a ak ano tak je potrebne nastavit tieto hodnoty tak, aby sa canopies neprekryvali
 
                     iBayIndex++; // Docasne // Todo 691 - zmazat
 
