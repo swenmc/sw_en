@@ -1406,12 +1406,21 @@ namespace BaseClasses.GraphObj
                 {
                     if (options.bUseTextures)
                     {
-                        double poinstsDist = listOfCladdingSheetsLeftWall[i].LengthTotal;
-                        ImageBrush brushSide2 = brushSide.Clone();
-                        wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsLeftWall[i].WidthModular; // claddingWidthModular_Wall; // Bug 723
-                        wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                        brushSide2.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                        material_SideWall = new DiffuseMaterial(brushSide2);
+                        if (i == 0)
+                        {
+                            double poinstsDist = listOfCladdingSheetsLeftWall[i].LengthTotal;                            
+                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsLeftWall[i].WidthModular;
+                            wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                            brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_SideWall = new DiffuseMaterial(brushSide);
+                        }
+                        else if (i == listOfCladdingSheetsLeftWall.Count - 1)
+                        {
+                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsLeftWall[i].WidthModular;
+                            ImageBrush brushSide_Last = brushSide.Clone();
+                            brushSide_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_SideWall = new DiffuseMaterial(brushSide_Last);
+                        }
                     }
 
                     // Pridame sheet do model group
@@ -1429,11 +1438,21 @@ namespace BaseClasses.GraphObj
                         {
                             if (options.bUseTextures)
                             {
-                                double poinstsDist = listOfFibreGlassSheetsWallLeft[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG; // Bug 723
-                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
-                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                                if (i == 0)
+                                {
+                                    double poinstsDist = listOfFibreGlassSheetsWallLeft[i].LengthTotal;
+                                    wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallLeft[i].WidthModular;
+                                    wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
+                                    brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                                }
+                                else if (i == listOfFibreGlassSheetsWallLeft.Count - 1)
+                                {
+                                    wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallLeft[i].WidthModular;
+                                    ImageBrush brushWall_FG_Last = brushWall_FG.Clone();
+                                    brushWall_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Wall_FG = new DiffuseMaterial(brushWall_FG_Last);
+                                }
                             }
 
                             // Pridame sheet do model group
@@ -1448,12 +1467,21 @@ namespace BaseClasses.GraphObj
                 {
                     if (options.bUseTextures)
                     {
-                        double poinstsDist = listOfCladdingSheetsFrontWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsFrontWall[i].WidthModular;
-                        wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                        ImageBrush brushSide2 = brushFront.Clone();
-                        brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                        material_FrontBackWall = new DiffuseMaterial(brushSide2);
+                        if (i == 0)
+                        {
+                            double poinstsDist = listOfCladdingSheetsFrontWall[i].LengthTotal;
+                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsFrontWall[i].WidthModular;
+                            wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                            brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_FrontBackWall = new DiffuseMaterial(brushFront);
+                        }
+                        else if (i == listOfCladdingSheetsFrontWall.Count - 1)
+                        {
+                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsFrontWall[i].WidthModular;                            
+                            ImageBrush brushFrontLast = brushFront.Clone();
+                            brushFrontLast.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_FrontBackWall = new DiffuseMaterial(brushFrontLast);
+                        }                        
                     }
 
                     // Pridame sheet do model group
@@ -1471,11 +1499,21 @@ namespace BaseClasses.GraphObj
                         {
                             if (options.bUseTextures)
                             {
-                                double poinstsDist = listOfFibreGlassSheetsWallFront[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG; // Bug 723
-                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
-                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                                if (i == 0)
+                                {
+                                    double poinstsDist = listOfFibreGlassSheetsWallFront[i].LengthTotal;
+                                    wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallFront[i].WidthModular;
+                                    wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
+                                    brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                                }
+                                else if (i == listOfFibreGlassSheetsWallFront.Count - 1)
+                                {
+                                    wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallFront[i].WidthModular;
+                                    ImageBrush brushWall_FG_Last = brushWall_FG.Clone();
+                                    brushWall_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Wall_FG = new DiffuseMaterial(brushWall_FG_Last);
+                                }
                             }
 
                             // Pridame sheet do model group
@@ -1489,12 +1527,22 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < listOfCladdingSheetsRightWall.Count; i++)
                 {
                     if (options.bUseTextures)
-                    {
-                        double poinstsDist = listOfCladdingSheetsRightWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall; // Bug 723
-                        wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                        brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                        material_SideWall = new DiffuseMaterial(brushSide);
+                    {                        
+                        if (i == 0)
+                        {
+                            double poinstsDist = listOfCladdingSheetsRightWall[i].LengthTotal;
+                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsRightWall[i].WidthModular;
+                            wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                            brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_SideWall = new DiffuseMaterial(brushSide);
+                        }
+                        else if (i == listOfCladdingSheetsRightWall.Count - 1)
+                        {
+                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsRightWall[i].WidthModular;
+                            ImageBrush brushSide_Last = brushSide.Clone();
+                            brushSide_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_SideWall = new DiffuseMaterial(brushSide_Last);
+                        }
                     }
 
                     // Pridame sheet do model group
@@ -1512,11 +1560,21 @@ namespace BaseClasses.GraphObj
                         {
                             if (options.bUseTextures)
                             {
-                                double poinstsDist = listOfFibreGlassSheetsWallRight[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG; // Bug 723
-                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
-                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                                if (i == 0)
+                                {
+                                    double poinstsDist = listOfFibreGlassSheetsWallRight[i].LengthTotal;
+                                    wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallRight[i].WidthModular;
+                                    wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
+                                    brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                                }
+                                else if (i == listOfFibreGlassSheetsWallRight.Count - 1)
+                                {
+                                    wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallRight[i].WidthModular;
+                                    ImageBrush brushWall_FG_Last = brushWall_FG.Clone();
+                                    brushWall_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Wall_FG = new DiffuseMaterial(brushWall_FG_Last);
+                                }
                             }
 
                             // Pridame sheet do model group
@@ -1531,11 +1589,22 @@ namespace BaseClasses.GraphObj
                 {
                     if (options.bUseTextures)
                     {
-                        double poinstsDist = listOfCladdingSheetsBackWall[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Wall / claddingWidthModular_Wall; // Bug 723
-                        wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                        brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                        material_FrontBackWall = new DiffuseMaterial(brushFront);
+                        if (i == 0)
+                        {
+                            double poinstsDist = listOfCladdingSheetsBackWall[i].LengthTotal;
+                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsBackWall[i].WidthModular;
+                            wpHeight = claddingWidthRibModular_Wall / poinstsDist;
+                            brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_FrontBackWall = new DiffuseMaterial(brushFront);
+                        }
+                        else if (i == listOfCladdingSheetsBackWall.Count - 1)
+                        {
+                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsBackWall[i].WidthModular;
+                            ImageBrush brushFront_Last = brushFront.Clone();
+                            brushFront_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_FrontBackWall = new DiffuseMaterial(brushFront_Last);
+                        }
+
                     }
 
                     // Pridame sheet do model group
@@ -1553,11 +1622,21 @@ namespace BaseClasses.GraphObj
                         {
                             if (options.bUseTextures)
                             {
-                                double poinstsDist = listOfFibreGlassSheetsWallBack[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / claddingWidthModular_Wall_FG; // Bug 723
-                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
-                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
+                                if (i == 0)
+                                {
+                                    double poinstsDist = listOfFibreGlassSheetsWallBack[i].LengthTotal;
+                                    wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallBack[i].WidthModular;
+                                    wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
+                                    brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Wall_FG = new DiffuseMaterial(brushWall_FG);                                    
+                                }
+                                else if (i == listOfFibreGlassSheetsWallBack.Count - 1)
+                                {
+                                    wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallBack[i].WidthModular;
+                                    ImageBrush brushWall_FG_Last = brushWall_FG.Clone();
+                                    brushWall_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Wall_FG = new DiffuseMaterial(brushWall_FG_Last);
+                                }
                             }
 
                             // Pridame sheet do model group
@@ -1574,11 +1653,21 @@ namespace BaseClasses.GraphObj
                 {
                     if (options.bUseTextures)
                     {
-                        double poinstsDist = listOfCladdingSheetsRoofRight[i].LengthTotal;
-                        wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Roof; // Bug 723
-                        wpHeight = claddingWidthRibModular_Roof / poinstsDist;
-                        brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                        material_Roof = new DiffuseMaterial(brushRoof);
+                        if (i == 0)
+                        {
+                            double poinstsDist = listOfCladdingSheetsRoofRight[i].LengthTotal;
+                            wpWidth = claddingWidthRibModular_Roof / listOfCladdingSheetsRoofRight[i].WidthModular;
+                            wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                            brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_Roof = new DiffuseMaterial(brushRoof);
+                        }
+                        else if (i == listOfCladdingSheetsRoofRight.Count - 1)
+                        {
+                            wpWidth = claddingWidthRibModular_Roof / listOfCladdingSheetsRoofRight[i].WidthModular;
+                            ImageBrush brushRoof_Last = brushRoof.Clone();
+                            brushRoof_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material_Roof = new DiffuseMaterial(brushRoof_Last);
+                        }
                     }
 
                     // Pridame sheet do model group
@@ -1595,11 +1684,21 @@ namespace BaseClasses.GraphObj
                     {
                         if (options.bUseTextures)
                         {
-                            double poinstsDist = listOfFibreGlassSheetsRoofRight[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Roof_FG / claddingWidthModular_Roof_FG; // Bug 723
-                            wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
-                            brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
+                            if (i == 0)
+                            {
+                                double poinstsDist = listOfFibreGlassSheetsRoofRight[i].LengthTotal;
+                                wpWidth = claddingWidthRibModular_Roof_FG / listOfFibreGlassSheetsRoofRight[i].WidthModular;
+                                wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
+                                brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
+                            }
+                            else if (i == listOfFibreGlassSheetsRoofRight.Count - 1)
+                            {
+                                wpWidth = claddingWidthRibModular_Roof_FG / listOfFibreGlassSheetsRoofRight[i].WidthModular;
+                                ImageBrush brushRoof_FG_Last = brushRoof_FG.Clone();
+                                brushRoof_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Roof_FG = new DiffuseMaterial(brushRoof_FG_Last);
+                            }
                         }
 
                         // Pridame sheet do model group
@@ -1619,11 +1718,21 @@ namespace BaseClasses.GraphObj
                     {
                         if (options.bUseTextures)
                         {
-                            double poinstsDist = listOfCladdingSheetsRoofLeft[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Roof / claddingWidthModular_Roof; // Bug 723
-                            wpHeight = claddingWidthRibModular_Roof / poinstsDist;
-                            brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_Roof = new DiffuseMaterial(brushRoof);
+                            if (i == 0)
+                            {
+                                double poinstsDist = listOfCladdingSheetsRoofLeft[i].LengthTotal;
+                                wpWidth = claddingWidthRibModular_Roof / listOfCladdingSheetsRoofLeft[i].WidthModular;
+                                wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                                brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Roof = new DiffuseMaterial(brushRoof);
+                            }
+                            else if (i == listOfCladdingSheetsRoofLeft.Count - 1)
+                            {
+                                wpWidth = claddingWidthRibModular_Roof / listOfCladdingSheetsRoofLeft[i].WidthModular;
+                                ImageBrush brushRoof_Last = brushRoof.Clone();
+                                brushRoof_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material_Roof = new DiffuseMaterial(brushRoof_Last);
+                            }
                         }
 
                         // Pridame sheet do model group
@@ -1639,11 +1748,21 @@ namespace BaseClasses.GraphObj
                         {
                             if (options.bUseTextures)
                             {
-                                double poinstsDist = listOfFibreGlassSheetsRoofLeft[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Roof_FG / claddingWidthModular_Roof_FG; // Bug 723
-                                wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
-                                brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
+                                if (i == 0)
+                                {
+                                    double poinstsDist = listOfFibreGlassSheetsRoofLeft[i].LengthTotal;
+                                    wpWidth = claddingWidthRibModular_Roof_FG / listOfFibreGlassSheetsRoofLeft[i].WidthModular;
+                                    wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
+                                    brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
+                                }
+                                else if (i == listOfFibreGlassSheetsRoofLeft.Count - 1)
+                                {
+                                    wpWidth = claddingWidthRibModular_Roof_FG / listOfFibreGlassSheetsRoofLeft[i].WidthModular;
+                                    ImageBrush brushRoof_FG_Last = brushRoof_FG.Clone();
+                                    brushRoof_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                    material_Roof_FG = new DiffuseMaterial(brushRoof_FG_Last);
+                                }
                             }
 
                             // Pridame sheet do model group
