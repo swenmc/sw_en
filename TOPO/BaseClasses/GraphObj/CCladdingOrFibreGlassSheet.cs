@@ -22,7 +22,7 @@ namespace BaseClasses.GraphObj
         float m_fOpacity;
 
         int m_iNumberOfEdges;
-        double m_WidthModular; // m // z databazy cladding MDBTrapezoidalSheeting
+        double m_Width; // Bezne uvazujeme width modular podla DB, ale pre koncove plechy moze byt sirka mensia
         double m_dLengthTotal;
         double m_dLengthTopRight;
         double m_dTipCoordinate_x;
@@ -162,16 +162,16 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public double WidthModular
+        public double Width
         {
             get
             {
-                return m_WidthModular;
+                return m_Width;
             }
 
             set
             {
-                m_WidthModular = value;
+                m_Width = value;
             }
         }
 
@@ -247,7 +247,7 @@ namespace BaseClasses.GraphObj
 
         public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, int numberOfCorners,
         double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
-        double widthModular, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
+        double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
         Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime)
         {
@@ -256,7 +256,7 @@ namespace BaseClasses.GraphObj
             m_CoordinateInPlane_x = coordinateInPlane_x;
             m_CoordinateInPlane_y = coordinateInPlane_y;
             m_ControlPoint = controlPoint_GCS;
-            m_WidthModular = widthModular;
+            m_Width = width;
             m_dLengthTopLeft = lengthTopLeft;
             m_dLengthTopRight = lengthTopRight;
             m_dTipCoordinate_x = tipCoordinate_x;
@@ -303,8 +303,8 @@ namespace BaseClasses.GraphObj
         public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material)
         {
             Point3D pfront0_baseleft = new Point3D(0,0,0);
-            Point3D pfront1_baseright = new Point3D(m_WidthModular, 0,0);
-            Point3D pfront2_topright = new Point3D(m_WidthModular,0, m_dLengthTopRight);
+            Point3D pfront1_baseright = new Point3D(m_Width, 0,0);
+            Point3D pfront2_topright = new Point3D(m_Width,0, m_dLengthTopRight);
             Point3D pfront3_toptip = new Point3D(m_dTipCoordinate_x, 0, m_dLengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
             Point3D pfront4_topleft = new Point3D(0, 0, m_dLengthTopLeft);
 
