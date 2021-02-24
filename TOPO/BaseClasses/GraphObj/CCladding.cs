@@ -710,6 +710,7 @@ namespace BaseClasses.GraphObj
 
                 int iSheetIndex = 0;
                 int iSheet_FG_Index = 0;
+                int iOpeningIndex = 0;
                 int iNumberOfEdges_FG_D_W = 4; // Number of edges - fibreglass shet, door, window opening
                 bool bUseTop20Colors = true; // Pouzit vsetky farby v zozname (141) alebo striedat len vybrane (20)
 
@@ -737,51 +738,9 @@ namespace BaseClasses.GraphObj
                     }
                 }
 
-                // Vytvorime zoznam otvorov na left wall
-                // Moze sa refaktorovat, ale pozor na controlPoint_GCS, je iny pre kazdu stranu
-                List<CCladdingOrFibreGlassSheet> listOfOpeningsLeftWall = new List<CCladdingOrFibreGlassSheet>();
-                foreach (DoorProperties door in doorPropCollection)
-                {
-                    // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + claddingHeight_Wall + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
-                    double doorPosition_x = doorPosition_x_Input_GUI;
-
-                    if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
-
-                    if (door.sBuildingSide == "Left")
-                    {
-                        listOfOpeningsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
-                        pControlPoint_LeftWall, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
-                        iSheetIndex++;
-                    }
-                }
-
-                foreach (WindowProperties window in windowPropCollection)
-                {
-                    // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + claddingHeight_Wall + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
-                    double windowPosition_x = windowPosition_x_Input_GUI;
-
-                    if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
-
-                    if (window.sBuildingSide == "Left")
-                    {
-                        listOfOpeningsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, window.fWindowCoordinateZinBay,
-                        pControlPoint_LeftWall, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
-                        iSheetIndex++;
-                    }
-                }
-
-                // Kedze mame otvory pre fibreglass sheets a otvory pre doors/windows v dvoch samostatnych zoznamoch, zlucime ich do jedneho
-                // Pouzivame pre vsetky otvory jeden typ objektu
-                // TODO - v podstate by sme mohli pouzivat len jeden zoznam a vsetko doň priamo vkladať, ale kedže chceme pre fibreglass robiť material list zatiaľ to nechame oddelene.
-                List<CCladdingOrFibreGlassSheet> listOfOpeningsLeftWall_All = listOfFibreGlassSheetsWallLeft.Concat(listOfOpeningsLeftWall).ToList();
+                List<CCladdingOrFibreGlassSheet> listOfOpeningsLeftWall_All = null;
+                GenerateCladdingOpenings(listOfFibreGlassSheetsWallLeft, "Left", pControlPoint_LeftWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                ref iOpeningIndex, out listOfOpeningsLeftWall_All);
 
                 List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsLeftWall = null;
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", pControlPoint_LeftWall, m_ColorNameWall,
@@ -813,51 +772,9 @@ namespace BaseClasses.GraphObj
                     }
                 }
 
-                // Vytvorime zoznam otvorov na front wall
-                // Moze sa refaktorovat, ale pozor na controlPoint_GCS, je iny pre kazdu stranu
-                List<CCladdingOrFibreGlassSheet> listOfOpeningsFrontWall = new List<CCladdingOrFibreGlassSheet>();
-                foreach (DoorProperties door in doorPropCollection)
-                {
-                    // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * m_fFrontColumnDistance);
-                    double doorPosition_x = doorPosition_x_Input_GUI;
-
-                    if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
-
-                    if (door.sBuildingSide == "Front")
-                    {
-                        listOfOpeningsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
-                            pControlPoint_FrontWall, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
-                            m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
-                        iSheetIndex++;
-                    }
-                }
-
-                foreach (WindowProperties window in windowPropCollection)
-                {
-                    // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * m_fFrontColumnDistance);
-                    double windowPosition_x = windowPosition_x_Input_GUI;
-
-                    if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
-
-                    if (window.sBuildingSide == "Front")
-                    {
-                        listOfOpeningsFrontWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, window.fWindowCoordinateZinBay,
-                        pControlPoint_FrontWall, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
-                        iSheetIndex++;
-                    }
-                }
-
-                // Kedze mame otvory pre fibreglass sheets a otvory pre doors/windows v dvoch samostatnych zoznamoch, zlucime ich do jedneho
-                // Pouzivame pre vsetky otvory jeden typ objektu
-                // TODO - v podstate by sme mohli pouzivat len jeden zoznam a vsetko doň priamo vkladať, ale kedže chceme pre fibreglass robiť material list zatiaľ to nechame oddelene.
-                List<CCladdingOrFibreGlassSheet> listOfOpeningsFrontWall_All = listOfFibreGlassSheetsWallFront.Concat(listOfOpeningsFrontWall).ToList();
+                List<CCladdingOrFibreGlassSheet> listOfOpeningsFrontWall_All = null;
+                GenerateCladdingOpenings(listOfFibreGlassSheetsWallFront, "Front", pControlPoint_FrontWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                ref iOpeningIndex, out listOfOpeningsFrontWall_All);
 
                 List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsFrontWall = null;
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", pControlPoint_FrontWall, m_ColorNameWall,
@@ -889,51 +806,9 @@ namespace BaseClasses.GraphObj
                     }
                 }
 
-                // Vytvorime zoznam otvorov na right wall
-                // Moze sa refaktorovat, ale pozor na controlPoint_GCS, je iny pre kazdu stranu
-                List<CCladdingOrFibreGlassSheet> listOfOpeningsRightWall = new List<CCladdingOrFibreGlassSheet>();
-                foreach (DoorProperties door in doorPropCollection)
-                {
-                    // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
-                    double doorPosition_x = doorPosition_x_Input_GUI;
-
-                    if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
-
-                    if (door.sBuildingSide == "Right")
-                    {
-                        listOfOpeningsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
-                            pControlPoint_RightWall, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
-                            m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
-                        iSheetIndex++;
-                    }
-                }
-
-                foreach (WindowProperties window in windowPropCollection)
-                {
-                    // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
-                    double windowPosition_x = windowPosition_x_Input_GUI;
-
-                    if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
-
-                    if (window.sBuildingSide == "Right")
-                    {
-                        listOfOpeningsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, window.fWindowCoordinateZinBay,
-                        pControlPoint_RightWall, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
-                        iSheetIndex++;
-                    }
-                }
-
-                // Kedze mame otvory pre fibreglass sheets a otvory pre doors/windows v dvoch samostatnych zoznamoch, zlucime ich do jedneho
-                // Pouzivame pre vsetky otvory jeden typ objektu
-                // TODO - v podstate by sme mohli pouzivat len jeden zoznam a vsetko doň priamo vkladať, ale kedže chceme pre fibreglass robiť material list zatiaľ to nechame oddelene.
-                List<CCladdingOrFibreGlassSheet> listOfOpeningsRightWall_All = listOfFibreGlassSheetsWallRight.Concat(listOfOpeningsRightWall).ToList();
+                List<CCladdingOrFibreGlassSheet> listOfOpeningsRightWall_All = null;
+                GenerateCladdingOpenings(listOfFibreGlassSheetsWallRight, "Right", pControlPoint_RightWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                ref iOpeningIndex, out listOfOpeningsRightWall_All);
 
                 List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRightWall = null;
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", pControlPoint_RightWall, m_ColorNameWall,
@@ -965,51 +840,9 @@ namespace BaseClasses.GraphObj
                     }
                 }
 
-                // Vytvorime zoznam otvorov na back wall
-                // Moze sa refaktorovat, ale pozor na controlPoint_GCS, je iny pre kazdu stranu
-                List<CCladdingOrFibreGlassSheet> listOfOpeningsBackWall = new List<CCladdingOrFibreGlassSheet>();
-                foreach (DoorProperties door in doorPropCollection)
-                {
-                    // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * m_fBackColumnDistance);
-                    double doorPosition_x = doorPosition_x_Input_GUI;
-
-                    if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
-
-                    if (door.sBuildingSide == "Back")
-                    {
-                        listOfOpeningsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
-                            pControlPoint_BackWall, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
-                            m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
-                        iSheetIndex++;
-                    }
-                }
-
-                foreach (WindowProperties window in windowPropCollection)
-                {
-                    // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * m_fBackColumnDistance);
-                    double windowPosition_x = windowPosition_x_Input_GUI;
-
-                    if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                        windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
-
-                    if (window.sBuildingSide == "Back")
-                    {
-                        listOfOpeningsBackWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, window.fWindowCoordinateZinBay,
-                        pControlPoint_BackWall, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
-                        iSheetIndex++;
-                    }
-                }
-
-                // Kedze mame otvory pre fibreglass sheets a otvory pre doors/windows v dvoch samostatnych zoznamoch, zlucime ich do jedneho
-                // Pouzivame pre vsetky otvory jeden typ objektu
-                // TODO - v podstate by sme mohli pouzivat len jeden zoznam a vsetko doň priamo vkladať, ale kedže chceme pre fibreglass robiť material list zatiaľ to nechame oddelene.
-                List<CCladdingOrFibreGlassSheet> listOfOpeningsBackWall_All = listOfFibreGlassSheetsWallBack.Concat(listOfOpeningsBackWall).ToList();
+                List<CCladdingOrFibreGlassSheet> listOfOpeningsBackWall_All = null;
+                GenerateCladdingOpenings(listOfFibreGlassSheetsWallBack, "Back", pControlPoint_BackWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                ref iOpeningIndex, out listOfOpeningsBackWall_All);
 
                 List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsBackWall = null;
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", pControlPoint_BackWall, m_ColorNameWall,
@@ -1659,7 +1492,7 @@ namespace BaseClasses.GraphObj
             List<CCladdingOrFibreGlassSheet> listOfOpenings,
             ref int iSheetIndex, out List<CCladdingOrFibreGlassSheet> listOfSheets)
         {
-            listOfSheets = new List<CCladdingOrFibreGlassSheet>(); // Nove pole kombinovane z povodnych aj novych nadelenych sheets
+            listOfSheets = new List<CCladdingOrFibreGlassSheet>(); // Pole kombinovane z povodnych aj nadelenych sheets
 
             for (int i = 0; i < iNumberOfOriginalSheetsOnSide; i++)
             {
@@ -1779,6 +1612,74 @@ namespace BaseClasses.GraphObj
                     }
                 }
             }
+        }
+
+        public void GenerateCladdingOpenings(List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheets,
+            string side,
+            Point3D pControlPoint,
+            double width,
+            int iNumberOfEdges_FG_D_W, // Number of opening edges
+            double column_crsc_y_minus_temp,
+            double column_crsc_z_plus_temp,
+            ref int iOpeningIndex,
+            out List<CCladdingOrFibreGlassSheet> listOfOpenings_All)
+        {
+            List<CCladdingOrFibreGlassSheet> listOfOpenings = new List<CCladdingOrFibreGlassSheet>(); // Zoznam otvorom v cladding pre doors a windows objects
+
+            foreach (DoorProperties door in doorPropCollection)
+            {
+                if (door.sBuildingSide == side)
+                {
+                    // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
+                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+
+                    double doorPosition_x_Input_GUI;
+
+                if(side == "Left" || side == "Right")
+                    doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
+                else
+                    doorPosition_x_Input_GUI = column_crsc_z_plus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * (door.sBuildingSide == "Front" ? m_fFrontColumnDistance : m_fBackColumnDistance));
+
+                double doorPosition_x = doorPosition_x_Input_GUI;
+
+                if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
+
+                    listOfOpenings.Add(new CCladdingOrFibreGlassSheet(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
+                    pControlPoint, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
+                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iOpeningIndex++;
+                }
+            }
+
+            foreach (WindowProperties window in windowPropCollection)
+            {
+                if (window.sBuildingSide == side)
+                {
+                    // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
+                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                    double windowPosition_x_Input_GUI;
+
+                if (side == "Left" || side == "Right")
+                    windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
+                else
+                    windowPosition_x_Input_GUI = column_crsc_z_plus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * (window.sBuildingSide == "Front" ? m_fFrontColumnDistance : m_fBackColumnDistance));
+
+                double windowPosition_x = windowPosition_x_Input_GUI;
+
+                if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
+                    windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
+
+                    listOfOpenings.Add(new CCladdingOrFibreGlassSheet(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, -bottomEdge_z + window.fWindowCoordinateZinBay,
+                    pControlPoint, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
+                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    iOpeningIndex++;
+                }
+            }
+
+            // Kedze mame otvory pre fibreglass sheets a otvory pre doors/windows v dvoch samostatnych zoznamoch, zlucime ich do jedneho
+            // Pouzivame pre vsetky otvory jeden typ objektu
+            listOfOpenings_All = listOfFibreGlassSheets.Concat(listOfOpenings).ToList();
         }
     }
 }
