@@ -680,6 +680,8 @@ namespace BaseClasses.GraphObj
                 // Druha uroven jednotlive sheet nachadzajuce sa v jednej rovine
                 //List<List<CCladdingOrFibreGlassSheet>> listOfCladdingSheets = new List<List<CCladdingOrFibreGlassSheet>>();
 
+                int iSheetIndex = 0;
+                bool bUseTop20Colors = true; // Pouzit vsetky farby v zozname (141) alebo striedat len vybrane (20)
 
                 // Left Wall
                 // Total Wall Width
@@ -693,13 +695,11 @@ namespace BaseClasses.GraphObj
 
                 List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsLeftWall = new List<CCladdingOrFibreGlassSheet>();
 
-                int iSheetIndex = 0;
-
                 // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorWall = ColorsHelper.GetColorWithIndex(i);
+                        m_ColorWall = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
 
                     listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
                     new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
@@ -799,7 +799,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorWall = ColorsHelper.GetColorWithIndex(i);
+                        m_ColorWall = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
 
                     double height_left = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, i * claddingWidthModular_Wall);
                     double height_right = GetVerticalCoordinate("Front", eModelType, width, height_left_basic, (i + 1) * claddingWidthModular_Wall);
@@ -922,7 +922,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorWall = ColorsHelper.GetColorWithIndex(i);
+                        m_ColorWall = ColorsHelper.GetColorWithIndex(i, true);
 
                     listOfCladdingSheetsRightWall.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, 4, i * claddingWidthModular_Wall, 0,
                     new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z), i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall, height_left_basic, height_left_basic, 0.5 * (i == iNumberOfSheets - 1 ? dPartialSheet_End : claddingWidthModular_Wall), height_left_basic,
@@ -1020,7 +1020,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorWall = ColorsHelper.GetColorWithIndex(i);
+                        m_ColorWall = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
 
                     double height_left = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, i * claddingWidthModular_Wall);
                     double height_right = GetVerticalCoordinate("Back", eModelType, width, height_left_basic, (i + 1) * claddingWidthModular_Wall);
@@ -1147,7 +1147,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < iNumberOfSheets; i++)
                 {
                     if (options.bCladdingSheetColoursByID)
-                        m_ColorRoof = ColorsHelper.GetColorWithIndex(i);
+                        m_ColorRoof = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
 
                     double length = length_left_basic;
 
@@ -1296,7 +1296,7 @@ namespace BaseClasses.GraphObj
                     for (int i = 0; i < iNumberOfSheets; i++)
                     {
                         if (options.bCladdingSheetColoursByID)
-                            m_ColorRoof = ColorsHelper.GetColorWithIndex(i);
+                            m_ColorRoof = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
 
                         double length = length_left_basic;
 
