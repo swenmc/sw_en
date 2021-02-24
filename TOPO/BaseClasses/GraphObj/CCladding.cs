@@ -378,10 +378,10 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Front Wall
-                if (bGenerateFrontSideCladding)
+                if (bGenerateFrontSideCladding && !options.bDisplayIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
                 // Back Wall
-                if (bGenerateBackSideCladding)
+                if (bGenerateBackSideCladding && !options.bDisplayIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back2_heightright }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
 
                 if (options.bUseTextures)
@@ -393,10 +393,10 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Left Wall
-                if (bGenerateLeftSideCladding)
+                if (bGenerateLeftSideCladding && !options.bDisplayIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0).CreateArea(options.bUseTextures, material_SideWall));
                 // Right Wall
-                if (bGenerateRightSideCladding)
+                if (bGenerateRightSideCladding && !options.bDisplayIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0).CreateArea(options.bUseTextures, material_SideWall));
 
                 if (options.bUseTextures)
@@ -409,7 +409,7 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Roof
-                if (bGenerateRoofCladding)
+                if (bGenerateRoofCladding && !options.bDisplayIndividualCladdingSheets)
                 {
                     model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_Roof));
 
@@ -550,10 +550,10 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Front Wall
-                if (bGenerateFrontSideCladding)
+                if (bGenerateFrontSideCladding && !options.bDisplayIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front4_top, pFBWall_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
                 // Back Wall
-                if (bGenerateBackSideCladding)
+                if (bGenerateBackSideCladding && !options.bDisplayIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back4_top, pFBWall_back2_heightright }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
 
                 if (options.bUseTextures)
@@ -565,10 +565,10 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Left Wall
-                if (bGenerateLeftSideCladding)
+                if (bGenerateLeftSideCladding && !options.bDisplayIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0).CreateArea(options.bUseTextures, material_SideWall));
                 // Right Wall
-                if (bGenerateRightSideCladding)
+                if (bGenerateRightSideCladding && !options.bDisplayIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0).CreateArea(options.bUseTextures, material_SideWall));
 
                 if (options.bUseTextures)
@@ -580,7 +580,7 @@ namespace BaseClasses.GraphObj
                     material_Roof = new DiffuseMaterial(brushRoof);
                 }
 
-                if (bGenerateRoofCladding)
+                if (bGenerateRoofCladding && !options.bDisplayIndividualCladdingSheets)
                 {
                     // Roof - Left Side
                     model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pRoof_front4_top, pRoof_back4_top, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_Roof));
@@ -685,22 +685,19 @@ namespace BaseClasses.GraphObj
                 throw new Exception("Not implemented kitset type.");
             }
 
-            // Ak to bude false, zostane vacsina veci ako doposial
-            // Zobrazime len jednoliatu plochu s farbou alebo texturou, nad nou mozeme zobrazit fibreglass sheet (to treba dorobit aby sa dalo zavolat samostatne)
+            // Ak je bDisplayIndividualCladdingSheets = false
+            // Zobrazime len jednoliatu plochu s farbou alebo texturou, nad nou mozeme zobrazit fibreglass sheet s offsetom aby sa nevnarali do cladding
             // Bude to podobne ako door a window, takze sa nebudu kreslit realne otvory len sa nad plochu strechy dokresli fibreglass sheet
-            // Nebudeme generovat cladding sheet material list ani cladding sheet layout pattern
+            // V takom pripade nebudeme generovat cladding sheet material list ani cladding sheet layout pattern
             // Len spocitame plochu otvorov a odratame ju z celkovej plochy cladding a to bude v Quotation
 
-
-            //------------------------------------------------------------------------------------------------------
-            //------------------------------------------------------------------------------------------------------
-            //------------------------------------------------------------------------------------------------------
-
-            // Gewnerujeme jednotlive plechy, tie rozdelime podla toho ako koliduju s otvormi
+            // Ak je bDisplayIndividualCladdingSheets = true
+            // Generujeme jednotlive plechy, tie rozdelime podla toho ako koliduju s otvormi
             // V mieste otvorov pre fibreglass, door, windows sa nebudú generovat cladding sheets, ktore su otvorom rozdelene po celej sirke
             // Cladding sheets, ktore sa s otvorom prekryvaju len ciastocne vykreslime v 3D cele
+            // Tuto zostavu cladding sheets, fibreglass sheets, doors, windows vieme pekne vykreslit do layouts ako 2D pohlady na jednotlive steny
+            // Do vykazu materialov mozeme potom uviest jednotlive dlzky cladding sheets
 
-            // IN WORK
             // Particular Cladding Sheet Model
 
             // Prva uroven, stany budovy alebo strechy, left, right, front, back, roof left roof right
