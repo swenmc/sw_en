@@ -80,7 +80,8 @@ namespace BaseClasses.GraphObj
         bool bGenerateBackSideCladding = true;
         bool bGenerateRoofCladding = true;
 
-        // Dopracovat do display GUI
+        // TODO 738
+        // Dopracovat do display GUI a napojit na tieto hodnoty
         bool bDisplayLeftSideCladding = true;
         bool bDisplayFrontSideCladding = true;
         bool bDisplayRightSideCladding = true;
