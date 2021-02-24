@@ -119,6 +119,15 @@ namespace PFD
                 if (value < 0.0 || value > 6.00)
                     throw new ArgumentException("Sheet length must be between 0 and 6 [m]");
                 m_Length = value;
+
+                if (!m_EnableVariableLengths) // Nastavit dlzky
+                {
+                    Length2 = m_Length;
+                    Length3 = m_Length;
+                    Length4 = m_Length;
+                    Length5 = m_Length;
+                }
+
                 NotifyPropertyChanged("Length");
             }
         }
@@ -511,7 +520,7 @@ namespace PFD
             CladdingWidthModular_Wall = (float)widthModularWall;
             CladdingWidthModular_Wall = (float)widthModularRoof;
 
-            Spacing = 1.2f;
+            Spacing = 2.0f; // Malo by byt vacsie ako default Length
 
             Y = 0.6f;
             Y2 = m_Y + Spacing;
