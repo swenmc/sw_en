@@ -300,13 +300,13 @@ namespace BaseClasses.GraphObj
                 m_dLengthTotal = Math.Max(Math.Max(m_dLengthTopLeft, m_dLengthTopRight), m_dLengthTopTip);
         }
 
-        public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material)
+        public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material, double outOffPlaneOffset_y = 0)
         {
-            Point3D pfront0_baseleft = new Point3D(0,0,0);
-            Point3D pfront1_baseright = new Point3D(m_Width, 0,0);
-            Point3D pfront2_topright = new Point3D(m_Width,0, m_dLengthTopRight);
-            Point3D pfront3_toptip = new Point3D(m_dTipCoordinate_x, 0, m_dLengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
-            Point3D pfront4_topleft = new Point3D(0, 0, m_dLengthTopLeft);
+            Point3D pfront0_baseleft = new Point3D(0, outOffPlaneOffset_y, 0);
+            Point3D pfront1_baseright = new Point3D(m_Width, outOffPlaneOffset_y, 0);
+            Point3D pfront2_topright = new Point3D(m_Width, outOffPlaneOffset_y, m_dLengthTopRight);
+            Point3D pfront3_toptip = new Point3D(m_dTipCoordinate_x, outOffPlaneOffset_y, m_dLengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
+            Point3D pfront4_topleft = new Point3D(0, outOffPlaneOffset_y, m_dLengthTopLeft);
 
             // Local in-plane offset
             pfront0_baseleft.X += m_CoordinateInPlane_x;
