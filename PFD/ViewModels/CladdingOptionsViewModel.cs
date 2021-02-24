@@ -1021,7 +1021,7 @@ namespace PFD
 
             LoadFibreglassColors();
             ColorRoof_FG_Index = 0;
-            ColorWall_FG_Index = 1;
+            ColorWall_FG_Index = 0;
 
             MaxSheetLengthRoof = 6;
             MaxSheetLengthWall = 6;

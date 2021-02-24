@@ -61,22 +61,33 @@ namespace PFD
                     TxtSpacing.Visibility = Visibility.Collapsed;
                 }
 
+                // Fibreglass sheet y-positions
                 TxtY2.Visibility = Visibility.Visible;
                 TxtY3.Visibility = Visibility.Visible;
                 TxtY4.Visibility = Visibility.Visible;
                 TxtY5.Visibility = Visibility.Visible;
+
+                // Ak je zapnute equal spacing, tak hodnoty maju byt diabled / resp. read-only
+                TxtY2.IsEnabled = !vm.EqualSpacing;
+                TxtY3.IsEnabled = !vm.EqualSpacing;
+                TxtY4.IsEnabled = !vm.EqualSpacing;
+                TxtY5.IsEnabled = !vm.EqualSpacing;
+
+                // Fibreglass sheet lengths
                 TxtLength2.Visibility = Visibility.Visible;
                 TxtLength3.Visibility = Visibility.Visible;
                 TxtLength4.Visibility = Visibility.Visible;
                 TxtLength5.Visibility = Visibility.Visible;
+
+                // Ak je zapnute enable variable lengths, tak hodnoty maju byt editovatelne
+                TxtLength2.IsEnabled = vm.EnableVariableLengths;
+                TxtLength3.IsEnabled = vm.EnableVariableLengths;
+                TxtLength4.IsEnabled = vm.EnableVariableLengths;
+                TxtLength5.IsEnabled = vm.EnableVariableLengths;
+
                 if (vm.RowsCount < 3) { TxtY3.Visibility = Visibility.Collapsed; TxtLength3.Visibility = Visibility.Collapsed; }
                 if (vm.RowsCount < 4) { TxtY4.Visibility = Visibility.Collapsed; TxtLength4.Visibility = Visibility.Collapsed; }
                 if (vm.RowsCount < 5) { TxtY5.Visibility = Visibility.Collapsed; TxtLength5.Visibility = Visibility.Collapsed; }
-
-                TxtY2.IsEnabled = vm.EnableVariableLengths;
-                TxtY3.IsEnabled = vm.EnableVariableLengths;
-                TxtY4.IsEnabled = vm.EnableVariableLengths;
-                TxtY5.IsEnabled = vm.EnableVariableLengths;
             }
             else
             {
@@ -120,17 +131,54 @@ namespace PFD
 
             for (int i = 0; i < vm.XValues.Count; i += (index + 1))
             {
-                FibreglassProperties f = vm.GetFibreglass();
-                f.X = vm.XValues[i];
-                items.Add(f);
+                // TODO Ondrej - pozri sa prosim ci to nema byt nejako inak, 
+                for (int j = 0; j < vm.RowsCount; j++) // Pre kazdu zadany rad na suradnici Y nastavime hodnotu
+                {
+                    FibreglassProperties fg = vm.GetFibreglass();
+                    fg.X = vm.XValues[i];
+
+                    if (j == 0)
+                    {
+                        // nemusime nastavovat, nastavi sa v GetFibreglass
+                        //fg.Y = vm.Y;
+                        //fg.Length = vm.Length;
+
+                        items.Add(fg);
+                    }
+                    else if (vm.GenerateRaster) // TODO je novy kod
+                    {
+                        if (j == 1)
+                        {
+                            fg.Y = /*.EqualSpacing ? (vm.Y + vm.Spacing) :*/ vm.Y2;
+                            /*if(vm.EnableVariableLengths)*/
+                            fg.Length = vm.Length2;
+                        }
+                        else if (j == 2)
+                        {
+                            fg.Y = /*vm.EqualSpacing ? (vm.Y2 + vm.Spacing) :*/ vm.Y3;
+                            /*if (vm.EnableVariableLengths)*/
+                            fg.Length = vm.Length3;
+                        }
+                        else if (j == 3)
+                        {
+                            fg.Y = /*vm.EqualSpacing ? (vm.Y3 + vm.Spacing) :*/ vm.Y4;
+                            /*if (vm.EnableVariableLengths)*/
+                            fg.Length = vm.Length4;
+                        }
+                        else if (j == 4)
+                        {
+                            fg.Y = /*vm.EqualSpacing ? (vm.Y4 + vm.Spacing) :*/ vm.Y5;
+                            /*if (vm.EnableVariableLengths)*/
+                            fg.Length = vm.Length5;
+                        }
+
+                        items.Add(fg);
+                    }
+                }
             }
 
             return items;
         }
-
-
-
-
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {

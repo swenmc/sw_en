@@ -40,8 +40,8 @@
             
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Side" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="1" Grid.Column="1" Text="Periodicity" HorizontalAlignment="Left"/>
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="Y[m]" HorizontalAlignment="Left"/>
-            <TextBlock Grid.Row="1" Grid.Column="3" Text="Length[m]" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="y-Position [m]" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="Length [m]" HorizontalAlignment="Left"/>
             
             <ComboBox Grid.Row="2" Grid.Column="0" Name ="Combobox_Side" HorizontalAlignment="Left" Width="{StaticResource theComboBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Sides, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
@@ -65,7 +65,7 @@
                      Text="{Binding Path=Y4, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBox Grid.Row="6" Grid.Column="2" Name="TxtY5" HorizontalAlignment="Left" 
                      Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
-                     Text="{Binding Path=Y4, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                     Text="{Binding Path=Y5, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
             <TextBox Grid.Row="2" Grid.Column="3" Name="TxtLength" HorizontalAlignment="Left" 
                      Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
@@ -81,7 +81,7 @@
                      Text="{Binding Path=Length4, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBox Grid.Row="6" Grid.Column="3" Name="TxtLength5" HorizontalAlignment="Left" 
                      Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
-                     Text="{Binding Path=Length4, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                     Text="{Binding Path=Length5, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
             <CheckBox Grid.Row="3" Grid.Column="0" Name ="chbGenerateRaster" HorizontalAlignment="Left" VerticalAlignment="Top" 
                       IsChecked="{Binding Path=GenerateRaster}" >Generate Raster
@@ -110,7 +110,7 @@
 
             <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="6" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnDelete" Margin="0 0 20 0" Click="BtnDelete_Click">Delete</Button>
-                <Button Width="80" Height="25" Name="BtnAdd" Margin="0 0 0 0" Click="BtnAdd_Click">Add</Button>                
+                <Button Width="80" Height="25" Name="BtnAdd" Margin="0 0 0 0" Click="BtnAdd_Click">Add</Button>
             </StackPanel>
         </Grid>
     </ScrollViewer>

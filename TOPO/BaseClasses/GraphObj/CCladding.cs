@@ -1086,7 +1086,7 @@ namespace BaseClasses.GraphObj
 
             // TODO - osetrit pripady ked moze byt list null
 
-            double outOffPlaneOffset_FG = 0.010; // Pokial kreslime cladding ako jednoliatu plochu na celu stenu alebo strechu, nastavime offset, aby sa fibreglasa nevnarali do cladding
+            double outOffPlaneOffset_FG = -0.010; // Pokial kreslime cladding ako jednoliatu plochu na celu stenu alebo strechu, nastavime offset, aby sa fibreglasa nevnarali do cladding
             if (options.bDisplayIndividualCladdingSheets)
             {
                 outOffPlaneOffset_FG = 0; // Ak kreslime individualne sheets pre cladding nepotrebujeme offset

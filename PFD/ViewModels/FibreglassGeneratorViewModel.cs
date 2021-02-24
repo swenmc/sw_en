@@ -84,6 +84,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.0 || value > 300.00)
+                    throw new ArgumentException("Sheet position must be between 0 and 300 [m]");
                 m_X = value;
                 NotifyPropertyChanged("X");
             }
@@ -98,6 +100,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.00 || value > 50.00)
+                    throw new ArgumentException("Sheet position must be between 0.0 and 50 [m]");
                 m_Y = value;
                 NotifyPropertyChanged("Y");
             }
@@ -112,6 +116,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.0 || value > 6.00)
+                    throw new ArgumentException("Sheet length must be between 0 and 6 [m]");
                 m_Length = value;
                 NotifyPropertyChanged("Length");
             }
@@ -141,7 +147,7 @@ namespace PFD
             set
             {
                 m_ModelType = value;
-                InitSides();                
+                InitSides(); 
             }
         }
 
@@ -271,6 +277,8 @@ namespace PFD
 
             set
             {
+                if (!m_EqualSpacing && value < (m_Y + m_Length) || value > 50.00)
+                    throw new ArgumentException("Sheet position must be between " + (m_Y + m_Length).ToString("F3") + " and 50 [m]");
                 m_Y2 = value;
                 NotifyPropertyChanged("Y2");
             }
@@ -285,6 +293,8 @@ namespace PFD
 
             set
             {
+                if (!m_EqualSpacing && value < (m_Y2 + m_Length2) || value > 50.00)
+                    throw new ArgumentException("Sheet position must be between " + (m_Y2 + m_Length2).ToString("F3") + " and 50 [m]");
                 m_Y3 = value;
                 NotifyPropertyChanged("Y3");
             }
@@ -299,6 +309,8 @@ namespace PFD
 
             set
             {
+                if (!m_EqualSpacing && value < (m_Y3 + m_Length3) || value > 50.00)
+                    throw new ArgumentException("Sheet position must be between " + (m_Y3 + m_Length3).ToString("F3") + " and 50 [m]");
                 m_Y4 = value;
                 NotifyPropertyChanged("Y4");
             }
@@ -313,6 +325,8 @@ namespace PFD
 
             set
             {
+                if (!m_EqualSpacing && value < (m_Y4 + m_Length4) || value > 50.00)
+                    throw new ArgumentException("Sheet position must be between " + (m_Y4 + m_Length4).ToString("F3") + " and 50 [m]");
                 m_Y5 = value;
                 NotifyPropertyChanged("Y5");
             }
@@ -327,6 +341,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.50 || value > 6.00)
+                    throw new ArgumentException("Sheet length must be between 0.5 and 6 [m]");
                 m_Length2 = value;
                 NotifyPropertyChanged("Length2");
             }
@@ -341,6 +357,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.50 || value > 6.00)
+                    throw new ArgumentException("Sheet length must be between 0.5 and 6 [m]");
                 m_Length3 = value;
                 NotifyPropertyChanged("Length3");
             }
@@ -355,6 +373,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.50 || value > 6.00)
+                    throw new ArgumentException("Sheet length must be between 0.5 and 6 [m]");
                 m_Length4 = value;
                 NotifyPropertyChanged("Length4");
             }
@@ -369,6 +389,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.50 || value > 6.00)
+                    throw new ArgumentException("Sheet length must be between 0.5 and 6 [m]");
                 m_Length5 = value;
                 NotifyPropertyChanged("Length5");
             }
@@ -440,7 +462,18 @@ namespace PFD
 
             set
             {
+                if (value < 0.0 || value > 40.00)
+                    throw new ArgumentException("Spacing of sheet positions must be between 0 and 40 [m]");
                 m_Spacing = value;
+
+                if (m_EqualSpacing) // Prepocitat suradnice
+                {
+                    Y2 = m_Y + m_Spacing;
+                    Y3 = m_Y2 + m_Spacing;
+                    Y4 = m_Y3 + m_Spacing;
+                    Y5 = m_Y4 + m_Spacing;
+                }
+
                 NotifyPropertyChanged("Spacing");
             }
         }
@@ -478,11 +511,13 @@ namespace PFD
             CladdingWidthModular_Wall = (float)widthModularWall;
             CladdingWidthModular_Wall = (float)widthModularRoof;
 
+            Spacing = 1.2f;
+
             Y = 0.6f;
-            Y2 = 1.6f;
-            Y3 = 2.6f;
-            Y4 = 3.6f;
-            Y5 = 4.6f;
+            Y2 = m_Y + Spacing;
+            Y3 = m_Y2 + Spacing;
+            Y4 = m_Y3 + Spacing;
+            Y5 = m_Y4 + Spacing;
             Length = 1.8f;
             Length2 = 1.8f;
             Length3 = 1.8f;
@@ -490,9 +525,8 @@ namespace PFD
             Length5 = 1.8f;
 
             GenerateRaster = false;
-            RowsCount = 4;
+            RowsCount = 3;
             EqualSpacing = true;
-            Spacing = 1.2f;
             EnableVariableLengths = false;
 
             InitXValues();
