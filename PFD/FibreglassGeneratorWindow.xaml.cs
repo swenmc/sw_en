@@ -129,52 +129,45 @@ namespace PFD
             int index = vm.PeriodicityValues.IndexOf(vm.Periodicity);
             if (index < 0) return items;
 
-            for (int i = 0; i < vm.XValues.Count; i += (index + 1))
+            for (int i = index; i < vm.XValues.Count; i += (index + 1))
             {
-                // TODO Ondrej - pozri sa prosim ci to nema byt nejako inak, 
-                for (int j = 0; j < vm.RowsCount; j++) // Pre kazdu zadany rad na suradnici Y nastavime hodnotu
+                if (!vm.GenerateRaster)
                 {
                     FibreglassProperties fg = vm.GetFibreglass();
                     fg.X = vm.XValues[i];
-
-                    if (j == 0)
+                    items.Add(fg);
+                }
+                else
+                {
+                    for (int j = 0; j < vm.RowsCount; j++) // Pre kazdu zadany rad na suradnici Y nastavime hodnotu
                     {
-                        // nemusime nastavovat, nastavi sa v GetFibreglass
-                        //fg.Y = vm.Y;
-                        //fg.Length = vm.Length;
-
-                        items.Add(fg);
-                    }
-                    else if (vm.GenerateRaster) // TODO je novy kod
-                    {
+                        FibreglassProperties fg = vm.GetFibreglass();
+                        fg.X = vm.XValues[i];
+                                                
                         if (j == 1)
                         {
-                            fg.Y = /*.EqualSpacing ? (vm.Y + vm.Spacing) :*/ vm.Y2;
-                            /*if(vm.EnableVariableLengths)*/
+                            fg.Y = /*.EqualSpacing ? (vm.Y + vm.Spacing) :*/ vm.Y2;                            
                             fg.Length = vm.Length2;
                         }
                         else if (j == 2)
                         {
-                            fg.Y = /*vm.EqualSpacing ? (vm.Y2 + vm.Spacing) :*/ vm.Y3;
-                            /*if (vm.EnableVariableLengths)*/
+                            fg.Y = /*vm.EqualSpacing ? (vm.Y2 + vm.Spacing) :*/ vm.Y3;                            
                             fg.Length = vm.Length3;
                         }
                         else if (j == 3)
                         {
-                            fg.Y = /*vm.EqualSpacing ? (vm.Y3 + vm.Spacing) :*/ vm.Y4;
-                            /*if (vm.EnableVariableLengths)*/
+                            fg.Y = /*vm.EqualSpacing ? (vm.Y3 + vm.Spacing) :*/ vm.Y4;                            
                             fg.Length = vm.Length4;
                         }
                         else if (j == 4)
                         {
-                            fg.Y = /*vm.EqualSpacing ? (vm.Y4 + vm.Spacing) :*/ vm.Y5;
-                            /*if (vm.EnableVariableLengths)*/
+                            fg.Y = /*vm.EqualSpacing ? (vm.Y4 + vm.Spacing) :*/ vm.Y5;                            
                             fg.Length = vm.Length5;
                         }
 
                         items.Add(fg);
-                    }
-                }
+                    } //end rows count
+                } //end else generate raster
             }
 
             return items;

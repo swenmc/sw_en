@@ -83,8 +83,10 @@ namespace PFD
 
                 foreach (FibreglassProperties fp in _pfdVM._claddingOptionsVM.FibreglassProperties)
                 {
-                    bool isTheItemToDelete = fibreglassToDelete.Exists(f => MathF.d_equal(f.X, fp.X) && MathF.d_equal(f.Y, fp.Y) && MathF.d_equal(f.Length, fp.Length) && f.Side == fp.Side);
-                    if (!isTheItemToDelete) fibreglassToDelete.Add(fp);
+                    //bool isTheItemToDelete = fibreglassToDelete.Exists(f => MathF.d_equal(f.X, fp.X) && MathF.d_equal(f.Y, fp.Y) && MathF.d_equal(f.Length, fp.Length) && f.Side == fp.Side);
+                    //upravujem na vymazanie z rovnakej Side
+                    bool isTheItemToDelete = fibreglassToDelete.Exists(f => f.Side == fp.Side);
+                    if (!isTheItemToDelete) fibreglassProperties.Add(fp);
                 }
                 _pfdVM._claddingOptionsVM.FibreglassProperties = new ObservableCollection<FibreglassProperties>(fibreglassProperties);
             }
