@@ -163,7 +163,7 @@
                 <TextBox Name="TextBox_FibreglassRoofSurfaceMass" HorizontalAlignment="Left" Width="90"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=FibreglassRoofSurfaceMass, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock HorizontalAlignment="Left" Margin="10 0 0 0" TextWrapping="Wrap" Text="[g/m^2]" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="10 0 0 0" TextWrapping="Wrap" Text="[g/m²]" VerticalAlignment="Top"/>
             </StackPanel>
             
 
@@ -217,7 +217,7 @@
                 <TextBox Name="TextBox_FibreglassWallSurfaceMass" HorizontalAlignment="Left" Width="90"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=FibreglassWallSurfaceMass, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock HorizontalAlignment="Left" Margin="10 0 0 0" TextWrapping="Wrap" Text="[g/m^2]" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="10 0 0 0" TextWrapping="Wrap" Text="[g/m²]" VerticalAlignment="Top"/>
             </StackPanel>
             
             <TextBlock Grid.Row="11" Grid.Column="3" Text="Type:" HorizontalAlignment="Left" TextWrapping="Wrap"/>

@@ -21,7 +21,7 @@ namespace PFD
     {
         private CPFDViewModel _pfdVM;
         private bool CladdingOptionsChanged = false;
-        
+
         //private bool RecreateModelRequired = false;
         public UC_CladdingOptions(CPFDViewModel pfdVM)
         {
@@ -32,11 +32,10 @@ namespace PFD
             CladdingOptionsChanged = false;
             
             pfdVM._claddingOptionsVM.PropertyChanged += HandleCladdingOptionsPropertyChangedEvent;
-            
+
             this.DataContext = pfdVM._claddingOptionsVM;
         }
 
-        
         private void HandleCladdingOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
@@ -50,7 +49,7 @@ namespace PFD
         {
             if (CladdingOptionsChanged)
             {
-                _pfdVM.CladdingOptionsChanged = true;                
+                _pfdVM.CladdingOptionsChanged = true;
             }
             CladdingOptionsChanged = false;
         }
@@ -64,11 +63,11 @@ namespace PFD
             if (generatorViewModel == null) return;
             if (generatorViewModel.AddFibreglass)
             {
-                List<FibreglassProperties> fibreglassProps = w.GetFibreglassProperties();                
+                List<FibreglassProperties> fibreglassProps = w.GetFibreglassProperties();
                 if (fibreglassProps.Count == 0) return;
 
                 foreach (FibreglassProperties fp in _pfdVM._claddingOptionsVM.FibreglassProperties)
-                {                    
+                {
                     bool existsSameItem = fibreglassProps.Exists(f => MathF.d_equal(f.X, fp.X) && MathF.d_equal(f.Y, fp.Y) && MathF.d_equal(f.Length, fp.Length) && f.Side == fp.Side);
                     if (!existsSameItem) fibreglassProps.Add(fp);
                 }
