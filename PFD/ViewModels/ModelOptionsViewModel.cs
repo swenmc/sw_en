@@ -40,6 +40,7 @@ namespace PFD
         private bool m_EnableCrossBracing;
         private bool m_EnableCanopies;
         private bool m_EnableCladding;
+        private bool m_DisplayIndividualCladdingSheets;
 
         private bool m_SameColorsDoor;
         private bool m_SameColorsFlashings;
@@ -374,6 +375,19 @@ namespace PFD
                 NotifyPropertyChanged("EnableCladding");
             }
         }
+        public bool DisplayIndividualCladdingSheets
+        {
+            get
+            {
+                return m_DisplayIndividualCladdingSheets;
+            }
+
+            set
+            {
+                m_DisplayIndividualCladdingSheets = value;
+                NotifyPropertyChanged("DisplayIndividualCladdingSheets");
+            }
+        }
 
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
@@ -401,6 +415,7 @@ namespace PFD
             m_EnableCrossBracing = true;
             m_EnableCanopies = false;
             m_EnableCladding = true;
+            m_DisplayIndividualCladdingSheets = true;
 
             m_SameColorsDoor = false;
             m_SameColorsFGD = false;

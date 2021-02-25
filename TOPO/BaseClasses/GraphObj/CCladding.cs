@@ -80,14 +80,6 @@ namespace BaseClasses.GraphObj
         bool bGenerateBackSideCladding = true;
         bool bGenerateRoofCladding = true;
 
-        // TODO 738
-        // Dopracovat do display GUI a napojit na tieto hodnoty
-        bool bDisplayLeftSideCladding = true;
-        bool bDisplayFrontSideCladding = true;
-        bool bDisplayRightSideCladding = true;
-        bool bDisplayBackSideCladding = true;
-        bool bDisplayRoofCladding = true;
-
         public CCladding()
         {
 
@@ -1093,7 +1085,7 @@ namespace BaseClasses.GraphObj
                 model_gr = new Model3DGroup(); // Vyprazdnime model group s povodnym cladding
             }
 
-            if (bGenerateLeftSideCladding && bDisplayLeftSideCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && options.bDisplayIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsLeftWall.Count; i++)
                 {
@@ -1157,7 +1149,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            if (bGenerateFrontSideCladding && bDisplayFrontSideCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && options.bDisplayIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsFrontWall.Count; i++)
                 {
@@ -1221,7 +1213,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            if (bGenerateRightSideCladding && bDisplayRightSideCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && options.bDisplayIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsRightWall.Count; i++)
                 {
@@ -1285,7 +1277,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            if (bGenerateBackSideCladding && bDisplayBackSideCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && options.bDisplayIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsBackWall.Count; i++)
                 {
@@ -1352,7 +1344,7 @@ namespace BaseClasses.GraphObj
 
             double rotationAboutX;
 
-            if (bGenerateRoofCladding && bDisplayRoofCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateRoofCladding && options.bDisplayCladdingRoof && options.bDisplayIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsRoofRight.Count; i++)
                 {
@@ -1419,7 +1411,7 @@ namespace BaseClasses.GraphObj
             {
                 rotationAboutX = -90f - sBuildingGeomInputData.fRoofPitch_deg;
 
-                if (bGenerateRoofCladding && bDisplayRoofCladding && options.bDisplayIndividualCladdingSheets)
+                if (bGenerateRoofCladding && options.bDisplayCladdingRoof && options.bDisplayIndividualCladdingSheets)
                 {
                     // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                     for (int i = 0; i < listOfCladdingSheetsRoofLeft.Count; i++)

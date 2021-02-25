@@ -77,7 +77,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="180"/>
-                            <RowDefinition Height="90"/>
+                            <RowDefinition Height="150"/>
                             <RowDefinition Height="290"/>
                             <RowDefinition Height="250"/>
                             <RowDefinition Height="*" />
@@ -100,7 +100,11 @@
 
                         <StackPanel Grid.Row="1" Grid.Column="0">
                             <CheckBox Name="chbDisplayCladding" IsChecked="{Binding Path=DisplayCladding}">Display Cladding</CheckBox>
-                            <CheckBox Name="chbDisplayIndividualCladdingSheets" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayIndividualCladdingSheets}">Individual Sheets</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingLeftWall" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingLeftWall}">Display Left Wall</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingRightWall" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingRightWall}">Display Right Wall</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingFrontWall" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingFrontWall}">Display Front Wall</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingBackWall" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingBackWall}">Display Back Wall</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingRoof" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingRoof}">Display Roof</CheckBox>
                             <CheckBox Name="chbDisplayDoors" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayDoors}">Display Doors</CheckBox>
                             <CheckBox Name="chbDisplayWindows" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayWindows}">Display Windows</CheckBox>
                             <CheckBox Name="chbDisplayFibreGlass" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglass}">Display Fibreglass</CheckBox>

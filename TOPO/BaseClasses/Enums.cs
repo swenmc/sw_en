@@ -892,6 +892,11 @@ namespace BaseClasses
 
         public bool bDisplayCladding;
         public bool bDisplayIndividualCladdingSheets;
+        public bool bDisplayCladdingLeftWall;
+        public bool bDisplayCladdingRightWall;
+        public bool bDisplayCladdingFrontWall;
+        public bool bDisplayCladdingBackWall;
+        public bool bDisplayCladdingRoof;
         public bool bDisplayFibreglass;
         public bool bDisplayDoors;
         public bool bDisplayWindows;

@@ -78,10 +78,15 @@ namespace PFD
         private bool m_DisplayWindowsWireFrame;
 
         private bool m_DisplayCladding;
-        private bool m_DisplayIndividualCladdingSheets;
+        private bool m_DisplayCladdingLeftWall;
+        private bool m_DisplayCladdingRightWall;
+        private bool m_DisplayCladdingFrontWall;
+        private bool m_DisplayCladdingBackWall;
+        private bool m_DisplayCladdingRoof;
         private bool m_DisplayFibreglass;
         private bool m_DisplayDoors;
         private bool m_DisplayWindows;
+
         private bool m_ColoredCenterlines;
 
         // Labels and axes
@@ -2636,17 +2641,74 @@ namespace PFD
                 NotifyPropertyChanged("DisplayCladding");
             }
         }
-        public bool DisplayIndividualCladdingSheets
+
+        public bool DisplayCladdingLeftWall
         {
             get
             {
-                return m_DisplayIndividualCladdingSheets;
+                return m_DisplayCladdingLeftWall;
             }
 
             set
             {
-                m_DisplayIndividualCladdingSheets = value;
-                NotifyPropertyChanged("DisplayIndividualCladdingSheets");
+                m_DisplayCladdingLeftWall = value;
+                NotifyPropertyChanged("DisplayCladdingLeftWall");
+            }
+        }
+
+        public bool DisplayCladdingRightWall
+        {
+            get
+            {
+                return m_DisplayCladdingRightWall;
+            }
+
+            set
+            {
+                m_DisplayCladdingRightWall = value;
+                NotifyPropertyChanged("DisplayCladdingRightWall");
+            }
+        }
+
+        public bool DisplayCladdingFrontWall
+        {
+            get
+            {
+                return m_DisplayCladdingFrontWall;
+            }
+
+            set
+            {
+                m_DisplayCladdingFrontWall = value;
+                NotifyPropertyChanged("DisplayCladdingFrontWall");
+            }
+        }
+
+        public bool DisplayCladdingBackWall
+        {
+            get
+            {
+                return m_DisplayCladdingBackWall;
+            }
+
+            set
+            {
+                m_DisplayCladdingBackWall = value;
+                NotifyPropertyChanged("DisplayCladdingBackWall");
+            }
+        }
+
+        public bool DisplayCladdingRoof
+        {
+            get
+            {
+                return m_DisplayCladdingRoof;
+            }
+
+            set
+            {
+                m_DisplayCladdingRoof = value;
+                NotifyPropertyChanged("DisplayCladdingRoof");
             }
         }
         public bool DisplayFibreglass
@@ -3294,6 +3356,8 @@ namespace PFD
 
 
 
+
+
         #endregion Properties
 
 
@@ -3336,7 +3400,12 @@ namespace PFD
             DisplayWindowsWireFrame = false;
 
             DisplayCladding = false;
-            DisplayIndividualCladdingSheets = false;
+            DisplayCladdingLeftWall = false;
+            DisplayCladdingRightWall = false;
+            DisplayCladdingFrontWall = false;
+            DisplayCladdingBackWall = false;
+            DisplayCladdingRoof = false;
+            //DisplayIndividualCladdingSheets = false;
             DisplayFibreglass = false;
             DisplayDoors = false;
             DisplayWindows = false;
@@ -3565,7 +3634,13 @@ namespace PFD
             DisplayWindowsWireFrame = newVM.DisplayWindowsWireFrame;
 
             DisplayCladding = newVM.DisplayCladding;
-            DisplayIndividualCladdingSheets = newVM.DisplayIndividualCladdingSheets;
+            DisplayCladdingLeftWall = newVM.DisplayCladdingLeftWall;
+            DisplayCladdingRightWall = newVM.DisplayCladdingRightWall;
+            DisplayCladdingFrontWall = newVM.DisplayCladdingFrontWall;
+            DisplayCladdingBackWall = newVM.DisplayCladdingBackWall;
+            DisplayCladdingRoof = newVM.DisplayCladdingRoof;
+            //DisplayIndividualCladdingSheets = newVM.DisplayIndividualCladdingSheets;
+
             DisplayFibreglass = newVM.DisplayFibreglass;
             DisplayDoors = newVM.DisplayDoors;
             DisplayWindows = newVM.DisplayWindows;
