@@ -461,6 +461,7 @@ namespace PFD
             EnableCrossBracing = vm.EnableCrossBracing;
             EnableCanopies = vm.EnableCanopies;
             EnableCladding = vm.EnableCladding;
+            DisplayIndividualCladdingSheets = vm.DisplayIndividualCladdingSheets;
 
             SameColorsDoor = vm.SameColorsDoor;
             SameColorsFGD = vm.SameColorsFGD;
