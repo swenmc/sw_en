@@ -73,6 +73,8 @@ namespace BaseClasses.GraphObj
 
         float fOpeningOpacity = 0.02f;
 
+        bool bIndividualCladdingSheets;
+
         // TODO 734 - napojit na Tab Members podla typu prutov a ich hodnoty bGenerate
         bool bGenerateLeftSideCladding = true;
         bool bGenerateFrontSideCladding = true;
@@ -87,6 +89,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 2
         public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData,
+            bool bIndividualSheets,
             System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo> canopies,
             System.Collections.ObjectModel.ObservableCollection<CBayInfo> bayWidths,
             System.Collections.ObjectModel.ObservableCollection<FibreglassProperties> fibreglassProp,
@@ -114,6 +117,7 @@ namespace BaseClasses.GraphObj
             ID = iCladding_ID;
             eModelType = modelType_FS;
             sBuildingGeomInputData = sGeometryInputData;
+            bIndividualCladdingSheets = bIndividualSheets;
             canopyCollection = canopies;
             bayWidthCollection = bayWidths;
             fibreglassSheetCollection = fibreglassProp;
@@ -371,10 +375,10 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Front Wall
-                if (bGenerateFrontSideCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && !bIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
                 // Back Wall
-                if (bGenerateBackSideCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && !bIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back2_heightright }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
 
                 if (options.bUseTextures)
@@ -386,10 +390,10 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Left Wall
-                if (bGenerateLeftSideCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && !bIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0).CreateArea(options.bUseTextures, material_SideWall));
                 // Right Wall
-                if (bGenerateRightSideCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && !bIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0).CreateArea(options.bUseTextures, material_SideWall));
 
                 if (options.bUseTextures)
@@ -402,7 +406,7 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Roof
-                if (bGenerateRoofCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateRoofCladding && options.bDisplayCladdingRoof && !bIndividualCladdingSheets)
                 {
                     model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_Roof));
 
@@ -543,10 +547,10 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Front Wall
-                if (bGenerateFrontSideCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && !bIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front4_top, pFBWall_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
                 // Back Wall
-                if (bGenerateBackSideCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && !bIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back4_top, pFBWall_back2_heightright }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
 
                 if (options.bUseTextures)
@@ -558,10 +562,10 @@ namespace BaseClasses.GraphObj
                 }
 
                 // Left Wall
-                if (bGenerateLeftSideCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && !bIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0).CreateArea(options.bUseTextures, material_SideWall));
                 // Right Wall
-                if (bGenerateRightSideCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && !bIndividualCladdingSheets)
                     model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0).CreateArea(options.bUseTextures, material_SideWall));
 
                 if (options.bUseTextures)
@@ -573,7 +577,7 @@ namespace BaseClasses.GraphObj
                     material_Roof = new DiffuseMaterial(brushRoof);
                 }
 
-                if (bGenerateRoofCladding && !options.bDisplayIndividualCladdingSheets)
+                if (bGenerateRoofCladding && options.bDisplayCladdingRoof && !bIndividualCladdingSheets)
                 {
                     // Roof - Left Side
                     model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pRoof_front4_top, pRoof_back4_top, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_Roof));
@@ -732,7 +736,7 @@ namespace BaseClasses.GraphObj
             ref iOpeningIndex, out listOfOpeningsLeftWall_All);
 
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsLeftWall = null;
-            if (bGenerateLeftSideCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateLeftSideCladding && bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", pControlPoint_LeftWall, m_ColorNameWall,
                 m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, width,
@@ -769,7 +773,7 @@ namespace BaseClasses.GraphObj
             ref iOpeningIndex, out listOfOpeningsFrontWall_All);
 
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsFrontWall = null;
-            if (bGenerateFrontSideCladding &&  options.bDisplayIndividualCladdingSheets)
+            if (bGenerateFrontSideCladding &&  bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", pControlPoint_FrontWall, m_ColorNameWall,
                 m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, width,
@@ -806,7 +810,7 @@ namespace BaseClasses.GraphObj
             ref iOpeningIndex, out listOfOpeningsRightWall_All);
 
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRightWall = null;
-            if (bGenerateRightSideCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateRightSideCladding && bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", pControlPoint_RightWall, m_ColorNameWall,
                 m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, width,
@@ -843,7 +847,7 @@ namespace BaseClasses.GraphObj
             ref iOpeningIndex, out listOfOpeningsBackWall_All);
 
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsBackWall = null;
-            if (bGenerateBackSideCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateBackSideCladding && bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", pControlPoint_BackWall, m_ColorNameWall,
                 m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, width,
@@ -883,7 +887,7 @@ namespace BaseClasses.GraphObj
 
             List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofRight = null;
 
-            if (bGenerateRoofCladding && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateRoofCladding && bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-right", pControlPoint_RoofRight, m_ColorNameRoof,
                 m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, width,
@@ -1009,7 +1013,7 @@ namespace BaseClasses.GraphObj
                 }
 
                 listOfCladdingSheetsRoofLeft = null;
-                if (bGenerateRoofCladding && options.bDisplayIndividualCladdingSheets)
+                if (bGenerateRoofCladding && bIndividualCladdingSheets)
                 {
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof -left", pControlPoint_RoofLeft, m_ColorNameRoof,
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, width,
@@ -1079,13 +1083,13 @@ namespace BaseClasses.GraphObj
             // TODO - osetrit pripady ked moze byt list null
 
             double outOffPlaneOffset_FG = -0.010; // Pokial kreslime cladding ako jednoliatu plochu na celu stenu alebo strechu, nastavime offset, aby sa fibreglasa nevnarali do cladding
-            if (options.bDisplayIndividualCladdingSheets)
+            if (bIndividualCladdingSheets)
             {
                 outOffPlaneOffset_FG = 0; // Ak kreslime individualne sheets pre cladding nepotrebujeme offset
                 model_gr = new Model3DGroup(); // Vyprazdnime model group s povodnym cladding
             }
 
-            if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && bIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsLeftWall.Count; i++)
                 {
@@ -1149,7 +1153,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && bIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsFrontWall.Count; i++)
                 {
@@ -1213,7 +1217,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && bIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsRightWall.Count; i++)
                 {
@@ -1277,7 +1281,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && bIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsBackWall.Count; i++)
                 {
@@ -1344,7 +1348,7 @@ namespace BaseClasses.GraphObj
 
             double rotationAboutX;
 
-            if (bGenerateRoofCladding && options.bDisplayCladdingRoof && options.bDisplayIndividualCladdingSheets)
+            if (bGenerateRoofCladding && options.bDisplayCladdingRoof && bIndividualCladdingSheets)
             {
                 for (int i = 0; i < listOfCladdingSheetsRoofRight.Count; i++)
                 {
@@ -1411,7 +1415,7 @@ namespace BaseClasses.GraphObj
             {
                 rotationAboutX = -90f - sBuildingGeomInputData.fRoofPitch_deg;
 
-                if (bGenerateRoofCladding && options.bDisplayCladdingRoof && options.bDisplayIndividualCladdingSheets)
+                if (bGenerateRoofCladding && options.bDisplayCladdingRoof && bIndividualCladdingSheets)
                 {
                     // Generujeme sheets pre jednu stranu, resp. jednu rovinu
                     for (int i = 0; i < listOfCladdingSheetsRoofLeft.Count; i++)

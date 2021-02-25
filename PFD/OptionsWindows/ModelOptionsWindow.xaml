@@ -50,7 +50,7 @@
                 <CheckBox Name="chbEnableCrossBracing" IsChecked="{Binding Path=EnableCrossBracing}">Cross-bracing</CheckBox>
                 <CheckBox Name="chbEnableCanopies" IsChecked="{Binding Path=EnableCanopies}">Canopies</CheckBox>
                 <CheckBox Name="chbEnableCladding" IsChecked="{Binding Path=EnableCladding}">Cladding</CheckBox>
-                <CheckBox Name="chbDisplayIndividualCladdingSheets" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayIndividualCladdingSheets}">Individual Sheets</CheckBox>
+                <CheckBox Name="chbIndividualCladdingSheets" Margin="25 0 0 0" IsChecked="{Binding Path=IndividualCladdingSheets}">Individual Sheets</CheckBox>
 
                 <TextBlock Text="Colors - Use same colors for all" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0 5 0 0"/>
                 <CheckBox Name="chbSameColorsDoor" IsChecked="{Binding Path=SameColorsDoor}">Doors</CheckBox>

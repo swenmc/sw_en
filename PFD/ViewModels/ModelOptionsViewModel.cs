@@ -40,7 +40,7 @@ namespace PFD
         private bool m_EnableCrossBracing;
         private bool m_EnableCanopies;
         private bool m_EnableCladding;
-        private bool m_DisplayIndividualCladdingSheets;
+        private bool m_IndividualCladdingSheets;
 
         private bool m_SameColorsDoor;
         private bool m_SameColorsFlashings;
@@ -211,12 +211,11 @@ namespace PFD
                 IsSetFromCode = true;
                 SameColorsFlashings = m_SameColorsFGD;
                 SameColorsGutters = m_SameColorsFGD;
-                SameColorsDownpipes = m_SameColorsFGD;                
+                SameColorsDownpipes = m_SameColorsFGD;
                 IsSetFromCode = false;
                 NotifyPropertyChanged("SameColorsFGD");
             }
         }
-
 
         public bool CenterlinesDimensions
         {
@@ -375,17 +374,17 @@ namespace PFD
                 NotifyPropertyChanged("EnableCladding");
             }
         }
-        public bool DisplayIndividualCladdingSheets
+        public bool IndividualCladdingSheets
         {
             get
             {
-                return m_DisplayIndividualCladdingSheets;
+                return m_IndividualCladdingSheets;
             }
 
             set
             {
-                m_DisplayIndividualCladdingSheets = value;
-                NotifyPropertyChanged("DisplayIndividualCladdingSheets");
+                m_IndividualCladdingSheets = value;
+                NotifyPropertyChanged("IndividualCladdingSheets");
             }
         }
 
@@ -415,7 +414,7 @@ namespace PFD
             m_EnableCrossBracing = true;
             m_EnableCanopies = false;
             m_EnableCladding = true;
-            m_DisplayIndividualCladdingSheets = true;
+            m_IndividualCladdingSheets = true;
 
             m_SameColorsDoor = false;
             m_SameColorsFGD = false;
@@ -461,7 +460,7 @@ namespace PFD
             EnableCrossBracing = vm.EnableCrossBracing;
             EnableCanopies = vm.EnableCanopies;
             EnableCladding = vm.EnableCladding;
-            DisplayIndividualCladdingSheets = vm.DisplayIndividualCladdingSheets;
+            IndividualCladdingSheets = vm.IndividualCladdingSheets;
 
             SameColorsDoor = vm.SameColorsDoor;
             SameColorsFGD = vm.SameColorsFGD;

@@ -891,7 +891,7 @@ namespace BaseClasses
         public bool bDisplayWindowsWireFrame;
 
         public bool bDisplayCladding;
-        public bool bDisplayIndividualCladdingSheets;
+        //public bool bDisplayIndividualCladdingSheets;
         public bool bDisplayCladdingLeftWall;
         public bool bDisplayCladdingRightWall;
         public bool bDisplayCladdingFrontWall;
