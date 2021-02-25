@@ -923,7 +923,6 @@ namespace PFD
                                 && (m.IntermediateNodes.Contains(current_member.NodeEnd) || m.NodeStart.Equals(current_member.NodeEnd) || m.NodeEnd.Equals(current_member.NodeEnd)));
                         */
 
-                        // TOOD Ondrej - mali by sme mat aj option zahrnut member intermediate nodes
                         List<CMember> membersForCrossBracingCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true, true);
                         List<CMember> membersForCrossBracingCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true, true);
 
