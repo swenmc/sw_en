@@ -924,8 +924,8 @@ namespace PFD
                         */
 
                         // TOOD Ondrej - mali by sme mat aj option zahrnut member intermediate nodes
-                        List<CMember> membersForCrossBracingCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true, false);
-                        List<CMember> membersForCrossBracingCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true, false);
+                        List<CMember> membersForCrossBracingCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true, true);
+                        List<CMember> membersForCrossBracingCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true, true);
 
                         // Vyberieme zo zoznamov prvy prut, ktory je typu rafter
                         CMember mainMemberForStartJoint = membersForCrossBracingCanopyStarNode.FirstOrDefault(x => x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER);
