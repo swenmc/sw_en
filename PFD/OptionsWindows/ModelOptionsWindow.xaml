@@ -19,9 +19,10 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>                
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Grid.Column="1">
+            <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
                 <TextBlock Text="Lateral Bracing - Use only every second row" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbBracingEverySecondRowOfGirts" IsChecked="{Binding Path=BracingEverySecondRowOfGirts}">Girts</CheckBox>
                 <CheckBox Name="chbBracingEverySecondRowOfPurlins" IsChecked="{Binding Path=BracingEverySecondRowOfPurlins}">Purlins</CheckBox>

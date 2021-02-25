@@ -50,6 +50,15 @@ namespace PFD
         private int m_ColorRoof_FG_Index;
         private int m_WallFibreglassThicknessIndex;
         private int m_ColorWall_FG_Index;
+        private float m_FibreglassRoofSurfaceMass;
+        private List<string> m_RoofFibreglassTypes;
+        private string m_RoofFibreglassType;
+        private int m_RoofFibreglassTypeIndex;
+        private float m_FibreglassWallSurfaceMass;
+        private List<string> m_WallFibreglassTypes;
+        private string m_WallFibreglassType;
+        private int m_WallFibreglassTypeIndex;
+
         private float m_MaxSheetLengthRoofFibreglass;
         private float m_MaxSheetLengthWallFibreglass;
         private float m_RoofFibreglassOverlap;
@@ -75,6 +84,9 @@ namespace PFD
 
         private List<string> m_RoofFibreglassThicknessTypes;
         private List<string> m_WallFibreglassThicknessTypes;
+
+        private List<string> m_RoofFibreglassSheetMassTypes;
+        private List<string> m_WallFibreglassSheetMassTypes;
 
         private float m_RoofEdgeOverHang_FB_Y;
         private float m_RoofEdgeOverHang_LR_X;
@@ -119,6 +131,7 @@ namespace PFD
                 RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
 
                 RoofFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", RoofCladding, "name");
+                RoofFibreglassSheetMassTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", RoofCladding, "flatsheet_mass_g_m2");
                 RoofFibreglassThicknessIndex = 0;
 
                 //SetResultsAreNotValid();
@@ -223,6 +236,7 @@ namespace PFD
                 WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
 
                 WallFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", WallCladding, "name");
+                WallFibreglassSheetMassTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", WallCladding, "flatsheet_mass_g_m2");                
                 WallFibreglassThicknessIndex = 0;
 
                 if (!isChangedFromCode) IsSetFromCode = false;
@@ -311,7 +325,10 @@ namespace PFD
             set
             {
                 m_RoofFibreglassThicknessIndex = value;
-                
+
+                if (m_RoofFibreglassThicknessIndex == -1) return;
+                InitRoofFibreglassTypes();
+                FibreglassRoofSurfaceMass = int.Parse(RoofFibreglassSheetMassTypes.ElementAtOrDefault(RoofFibreglassThicknessIndex));
                 //RecreateQuotation = true;
                 NotifyPropertyChanged("RoofFibreglassThicknessIndex");
             }
@@ -328,7 +345,10 @@ namespace PFD
             set
             {
                 m_WallFibreglassThicknessIndex = value;
-                
+
+                if (m_WallFibreglassThicknessIndex == -1) return;
+                InitWallFibreglassTypes();
+                FibreglassWallSurfaceMass = int.Parse(WallFibreglassSheetMassTypes.ElementAtOrDefault(WallFibreglassThicknessIndex));
                 //RecreateQuotation = true;
                 NotifyPropertyChanged("WallFibreglassThicknessIndex");
             }
@@ -956,6 +976,145 @@ namespace PFD
             }
         }
 
+        public float FibreglassRoofSurfaceMass
+        {
+            get
+            {
+                return m_FibreglassRoofSurfaceMass;
+            }
+
+            set
+            {
+                m_FibreglassRoofSurfaceMass = value;
+                NotifyPropertyChanged("FibreglassRoofSurfaceMass");
+            }
+        }
+
+        public List<string> RoofFibreglassTypes
+        {
+            get
+            {
+                return m_RoofFibreglassTypes;
+            }
+
+            set
+            {
+                m_RoofFibreglassTypes = value;                
+                NotifyPropertyChanged("RoofFibreglassTypes");
+            }
+        }
+
+        public string RoofFibreglassType
+        {
+            get
+            {
+                return m_RoofFibreglassType;
+            }
+
+            set
+            {
+                m_RoofFibreglassType = value;
+                NotifyPropertyChanged("RoofFibreglassType");
+            }
+        }
+
+        public float FibreglassWallSurfaceMass
+        {
+            get
+            {
+                return m_FibreglassWallSurfaceMass;
+            }
+
+            set
+            {
+                m_FibreglassWallSurfaceMass = value;
+                NotifyPropertyChanged("FibreglassWallSurfaceMass");
+            }
+        }
+
+        public List<string> WallFibreglassTypes
+        {
+            get
+            {
+                return m_WallFibreglassTypes;
+            }
+
+            set
+            {
+                m_WallFibreglassTypes = value;                
+                NotifyPropertyChanged("WallFibreglassTypes");
+            }
+        }
+
+        public string WallFibreglassType
+        {
+            get
+            {
+                return m_WallFibreglassType;
+            }
+
+            set
+            {
+                m_WallFibreglassType = value;                
+            }
+        }
+
+        public int RoofFibreglassTypeIndex
+        {
+            get
+            {
+                return m_RoofFibreglassTypeIndex;
+            }
+
+            set
+            {
+                m_RoofFibreglassTypeIndex = value;
+                RoofFibreglassType = RoofFibreglassTypes.ElementAtOrDefault(m_RoofFibreglassTypeIndex);
+                NotifyPropertyChanged("RoofFibreglassTypeIndex");
+            }
+        }
+
+        public int WallFibreglassTypeIndex
+        {
+            get
+            {
+                return m_WallFibreglassTypeIndex;
+            }
+
+            set
+            {
+                m_WallFibreglassTypeIndex = value;
+                WallFibreglassType = WallFibreglassTypes.ElementAtOrDefault(m_WallFibreglassTypeIndex);
+                NotifyPropertyChanged("WallFibreglassTypeIndex");
+            }
+        }
+
+        public List<string> RoofFibreglassSheetMassTypes
+        {
+            get
+            {
+                return m_RoofFibreglassSheetMassTypes;
+            }
+
+            set
+            {
+                m_RoofFibreglassSheetMassTypes = value;
+            }
+        }
+
+        public List<string> WallFibreglassSheetMassTypes
+        {
+            get
+            {
+                return m_WallFibreglassSheetMassTypes;
+            }
+
+            set
+            {
+                m_WallFibreglassSheetMassTypes = value;
+            }
+        }
+
         //TO Mato - co budeme nastavovat, co sa ma udiat ked pridame, zmazeme riadok a podobne?Alebo budeme reagovat az ked sa opusti tab?
         private void FibreglassProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -1142,6 +1301,31 @@ namespace PFD
         private void LoadFibreglassColors()
         {
             FibreglassColors = CCoatingColorManager.LoadColours("FibreglassSQLiteDB");
+        }
+
+        private void InitRoofFibreglassTypes()
+        {
+            if (RoofFibreglassThicknessIndex == 2) //2.5mm
+            {
+                RoofFibreglassTypes = new List<string>() { "Trafficable", "Fire rated" };
+            }
+            else
+            {
+                RoofFibreglassTypes = new List<string>() { "General" };
+            }
+            RoofFibreglassTypeIndex = 0;
+        }
+        private void InitWallFibreglassTypes()
+        {
+            if (WallFibreglassThicknessIndex == 2) //2.5mm
+            {
+                WallFibreglassTypes = new List<string>() { "Trafficable", "Fire rated" };
+            }
+            else
+            {
+                WallFibreglassTypes = new List<string>() { "General" };
+            }
+            WallFibreglassTypeIndex = 0;
         }
     }
 }
