@@ -149,7 +149,7 @@ namespace PFD
             // Knee Joints 1
             for (int i = 0; i < iFrameNo; i++)
             {
-                List<CMember> membersForNode = this.GetMembersForNode(m_arrNodes[i * iFrameNodesNo + 1], true);
+                List<CMember> membersForNode = this.GetMembersForNode(m_arrNodes[i * iFrameNodesNo + 1], true, false);
 
                 if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
                 {
@@ -176,7 +176,7 @@ namespace PFD
             // Knee Joints 2
             for (int i = 0; i < iFrameNo; i++)
             {
-                List<CMember> membersForNode = this.GetMembersForNode(m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], true);
+                List<CMember> membersForNode = this.GetMembersForNode(m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1 - 1)], true, false);
 
                 if (i == 0 || i == (iFrameNo - 1)) // Front or Last Frame
                 {
@@ -787,8 +787,8 @@ namespace PFD
                                 if(j == membersPurlinCanopySorted[i].Count-1) // Last edge purlin - only one plate
                                 {
                                     // Posledna vaznica moze mat duplicitne definicne uzly, preto treba nastavit spravne mainMember
-                                    List<CMember> membersForEdgePurlinCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true);
-                                    List<CMember> membersForEdgePurlinCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true);
+                                    List<CMember> membersForEdgePurlinCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true, true);
+                                    List<CMember> membersForEdgePurlinCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true, true);
 
                                     // Vyberieme zo zoznamov prvy prut, ktory je typu rafter
                                     mainMemberForStartJoint = membersForEdgePurlinCanopyStarNode.FirstOrDefault(x => x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER);
@@ -924,8 +924,8 @@ namespace PFD
                         */
 
                         // TOOD Ondrej - mali by sme mat aj option zahrnut member intermediate nodes
-                        List<CMember> membersForCrossBracingCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true);
-                        List<CMember> membersForCrossBracingCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true);
+                        List<CMember> membersForCrossBracingCanopyStarNode = this.GetMembersForNode(current_member.NodeStart, true, false);
+                        List<CMember> membersForCrossBracingCanopyEndNode = this.GetMembersForNode(current_member.NodeEnd, true, false);
 
                         // Vyberieme zo zoznamov prvy prut, ktory je typu rafter
                         CMember mainMemberForStartJoint = membersForCrossBracingCanopyStarNode.FirstOrDefault(x => x.EMemberType == EMemberType_FS.eMR || x.EMemberType == EMemberType_FS.eER);

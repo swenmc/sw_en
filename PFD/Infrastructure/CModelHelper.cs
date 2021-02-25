@@ -651,7 +651,7 @@ namespace PFD
         }
 
 
-        public static List<CMember> GetMembersForNode(this CModel_PFD model, CNode node, bool IncludeMembersFromSamePositionNodes)
+        public static List<CMember> GetMembersForNode(this CModel_PFD model, CNode node, bool IncludeMembersFromSamePositionNodes, bool IncludeIntermediateNodesMembers)
         {
             // Bug 715
 
@@ -664,14 +664,30 @@ namespace PFD
             IEnumerable<CMember> foundMembers = model.GetMembersForNode(node);
             List<CMember> members = foundMembers.ToList();
 
-            List<CNode> sameNodes = model.GetNodesWithSamePosition(node);
-            foreach (CNode n in sameNodes)
+            if (IncludeMembersFromSamePositionNodes)
             {
-                IEnumerable<CMember> newFoundMembers = model.GetMembersForNode(n);
-                foreach (CMember m in newFoundMembers)
+                List<CNode> sameNodes = model.GetNodesWithSamePosition(node);
+                foreach (CNode n in sameNodes)
                 {
-                    if (members.Contains(m)) continue;
-                    else members.Add(m);
+                    IEnumerable<CMember> newFoundMembers = model.GetMembersForNode(n);
+                    foreach (CMember m in newFoundMembers)
+                    {
+                        if (members.Contains(m)) continue;
+                        else members.Add(m);
+                    }
+                }
+            }
+
+            //najde aj members ktore maju v intermediate nodes tento dany Node
+            if (IncludeIntermediateNodesMembers)
+            {
+                foreach (CMember m in model.m_arrMembers)
+                {
+                    if (m.IntermediateNodes.Contains(node))
+                    {
+                        if (members.Contains(m)) continue;
+                        else members.Add(m);
+                    }
                 }
             }
 
