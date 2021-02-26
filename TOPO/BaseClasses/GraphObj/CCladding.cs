@@ -1279,7 +1279,7 @@ namespace BaseClasses.GraphObj
                 }
                 else
                 {
-                    // Predpokladame ze samotne objekty v listOfOpenings sa neprekyvaju
+                    // Predpokladame ze samotne objekty v listOfOpenings sa neprekryvaju
                     // 3. Zoradime objekty podla lokalnej suradnice y
                     objectInColision_In_Local_x.OrderBy(o => o.CoordinateInPlane_y);
 
