@@ -1093,392 +1093,48 @@ namespace BaseClasses.GraphObj
             }
 
             if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && bIndividualCladdingSheets)
-            {
-                for (int i = 0; i < listOfCladdingSheetsLeftWall.Count; i++)
-                {
-                    if (options.bUseTextures)
-                    {
-                        if (i == 0)
-                        {
-                            double poinstsDist = listOfCladdingSheetsLeftWall[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsLeftWall[i].Width;
-                            wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                            brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_SideWall = new DiffuseMaterial(brushSide);
-                        }
-                        else if (i == listOfCladdingSheetsLeftWall.Count - 1)
-                        {
-                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsLeftWall[i].Width;
-                            ImageBrush brushSide_Last = brushSide.Clone();
-                            brushSide_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_SideWall = new DiffuseMaterial(brushSide_Last);
-                        }
-                    }
-
-                    // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfCladdingSheetsLeftWall[i].GetCladdingSheetModel(options, material_SideWall);
-                    sheetModel.Transform = listOfCladdingSheetsLeftWall[i].GetTransformGroup(0, 0, -90);
-                    model_gr.Children.Add(sheetModel);
-                }
-            }
-
+               AddSheet3DModelsToModelGroup(listOfCladdingSheetsLeftWall, options, brushSide, material_SideWall, claddingWidthRibModular_Wall,0,0,-90, ref model_gr);
+ 
             if (options.bDisplayFibreglass)
-            {
-                if (listOfFibreGlassSheetsWallLeft != null)
-                {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsWallLeft.Count; i++)
-                    {
-                        if (options.bUseTextures)
-                        {
-                            if (i == 0)
-                            {
-                                double poinstsDist = listOfFibreGlassSheetsWallLeft[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallLeft[i].Width;
-                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
-                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
-                            }
-                            else if (i == listOfFibreGlassSheetsWallLeft.Count - 1)
-                            {
-                                wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallLeft[i].Width;
-                                ImageBrush brushWall_FG_Last = brushWall_FG.Clone();
-                                brushWall_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG_Last);
-                            }
-                        }
-
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsWallLeft[i].GetCladdingSheetModel(options, material_Wall_FG, outOffPlaneOffset_FG);
-                        sheetModel.Transform = listOfFibreGlassSheetsWallLeft[i].GetTransformGroup(0, 0, -90);
-                        model_gr.Children.Add(sheetModel);
-                    }
-                }
-            }
+               AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallLeft, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, -90, ref model_gr, outOffPlaneOffset_FG);
 
             if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && bIndividualCladdingSheets)
-            {
-                for (int i = 0; i < listOfCladdingSheetsFrontWall.Count; i++)
-                {
-                    if (options.bUseTextures)
-                    {
-                        if (i == 0)
-                        {
-                            double poinstsDist = listOfCladdingSheetsFrontWall[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsFrontWall[i].Width;
-                            wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                            brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_FrontBackWall = new DiffuseMaterial(brushFront);
-                        }
-                        else if (i == listOfCladdingSheetsFrontWall.Count - 1)
-                        {
-                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsFrontWall[i].Width;
-                            ImageBrush brushFrontLast = brushFront.Clone();
-                            brushFrontLast.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_FrontBackWall = new DiffuseMaterial(brushFrontLast);
-                        }
-                    }
-
-                    // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfCladdingSheetsFrontWall[i].GetCladdingSheetModel(options, material_FrontBackWall);
-                    sheetModel.Transform = listOfCladdingSheetsFrontWall[i].GetTransformGroup(0, 0, 0);
-                    model_gr.Children.Add(sheetModel);
-                }
-            }
+               AddSheet3DModelsToModelGroup(listOfCladdingSheetsFrontWall, options, brushFront, material_FrontBackWall, claddingWidthRibModular_Wall, 0, 0, 0, ref model_gr);
 
             if (options.bDisplayFibreglass)
-            {
-                if (listOfFibreGlassSheetsWallFront != null)
-                {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsWallFront.Count; i++)
-                    {
-                        if (options.bUseTextures)
-                        {
-                            if (i == 0)
-                            {
-                                double poinstsDist = listOfFibreGlassSheetsWallFront[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallFront[i].Width;
-                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
-                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
-                            }
-                            else if (i == listOfFibreGlassSheetsWallFront.Count - 1)
-                            {
-                                wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallFront[i].Width;
-                                ImageBrush brushWall_FG_Last = brushWall_FG.Clone();
-                                brushWall_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG_Last);
-                            }
-                        }
-
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsWallFront[i].GetCladdingSheetModel(options, material_Wall_FG, outOffPlaneOffset_FG);
-                        sheetModel.Transform = listOfFibreGlassSheetsWallFront[i].GetTransformGroup(0, 0, 0);
-                        model_gr.Children.Add(sheetModel);
-                    }
-                }
-            }
+               AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallFront, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 0, ref model_gr, outOffPlaneOffset_FG);
 
             if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && bIndividualCladdingSheets)
-            {
-                for (int i = 0; i < listOfCladdingSheetsRightWall.Count; i++)
-                {
-                    if (options.bUseTextures)
-                    {
-                        if (i == 0)
-                        {
-                            double poinstsDist = listOfCladdingSheetsRightWall[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsRightWall[i].Width;
-                            wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                            brushSide.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_SideWall = new DiffuseMaterial(brushSide);
-                        }
-                        else if (i == listOfCladdingSheetsRightWall.Count - 1)
-                        {
-                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsRightWall[i].Width;
-                            ImageBrush brushSide_Last = brushSide.Clone();
-                            brushSide_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_SideWall = new DiffuseMaterial(brushSide_Last);
-                        }
-                    }
-
-                    // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfCladdingSheetsRightWall[i].GetCladdingSheetModel(options, material_SideWall);
-                    sheetModel.Transform = listOfCladdingSheetsRightWall[i].GetTransformGroup(0, 0, 90);
-                    model_gr.Children.Add(sheetModel);
-                }
-            }
+                AddSheet3DModelsToModelGroup(listOfCladdingSheetsRightWall, options, brushSide, material_SideWall, claddingWidthRibModular_Wall, 0, 0, 90, ref model_gr);
 
             if (options.bDisplayFibreglass)
-            {
-                if (listOfFibreGlassSheetsWallRight != null)
-                {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsWallRight.Count; i++)
-                    {
-                        if (options.bUseTextures)
-                        {
-                            if (i == 0)
-                            {
-                                double poinstsDist = listOfFibreGlassSheetsWallRight[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallRight[i].Width;
-                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
-                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
-                            }
-                            else if (i == listOfFibreGlassSheetsWallRight.Count - 1)
-                            {
-                                wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallRight[i].Width;
-                                ImageBrush brushWall_FG_Last = brushWall_FG.Clone();
-                                brushWall_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG_Last);
-                            }
-                        }
-
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsWallRight[i].GetCladdingSheetModel(options, material_Wall_FG, outOffPlaneOffset_FG);
-                        sheetModel.Transform = listOfFibreGlassSheetsWallRight[i].GetTransformGroup(0, 0, 90);
-                        model_gr.Children.Add(sheetModel);
-                    }
-                }
-            }
+                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallRight, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 90, ref model_gr, outOffPlaneOffset_FG);
 
             if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && bIndividualCladdingSheets)
-            {
-                for (int i = 0; i < listOfCladdingSheetsBackWall.Count; i++)
-                {
-                    if (options.bUseTextures)
-                    {
-                        if (i == 0)
-                        {
-                            double poinstsDist = listOfCladdingSheetsBackWall[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsBackWall[i].Width;
-                            wpHeight = claddingWidthRibModular_Wall / poinstsDist;
-                            brushFront.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_FrontBackWall = new DiffuseMaterial(brushFront);
-                        }
-                        else if (i == listOfCladdingSheetsBackWall.Count - 1)
-                        {
-                            wpWidth = claddingWidthRibModular_Wall / listOfCladdingSheetsBackWall[i].Width;
-                            ImageBrush brushFront_Last = brushFront.Clone();
-                            brushFront_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_FrontBackWall = new DiffuseMaterial(brushFront_Last);
-                        }
-
-                    }
-
-                    // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfCladdingSheetsBackWall[i].GetCladdingSheetModel(options, material_FrontBackWall);
-                    sheetModel.Transform = listOfCladdingSheetsBackWall[i].GetTransformGroup(0, 0, 180);
-                    model_gr.Children.Add(sheetModel);
-                }
-            }
+                AddSheet3DModelsToModelGroup(listOfCladdingSheetsBackWall, options, brushFront, material_FrontBackWall, claddingWidthRibModular_Wall, 0, 0, 180, ref model_gr);
 
             if (options.bDisplayFibreglass)
-            {
-                if (listOfFibreGlassSheetsWallBack != null)
-                {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsWallBack.Count; i++)
-                    {
-                        if (options.bUseTextures)
-                        {
-                            if (i == 0)
-                            {
-                                double poinstsDist = listOfFibreGlassSheetsWallBack[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallBack[i].Width;
-                                wpHeight = claddingWidthRibModular_Wall_FG / poinstsDist;
-                                brushWall_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG);
-                            }
-                            else if (i == listOfFibreGlassSheetsWallBack.Count - 1)
-                            {
-                                wpWidth = claddingWidthRibModular_Wall_FG / listOfFibreGlassSheetsWallBack[i].Width;
-                                ImageBrush brushWall_FG_Last = brushWall_FG.Clone();
-                                brushWall_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Wall_FG = new DiffuseMaterial(brushWall_FG_Last);
-                            }
-                        }
-
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsWallBack[i].GetCladdingSheetModel(options, material_Wall_FG, outOffPlaneOffset_FG);
-                        sheetModel.Transform = listOfFibreGlassSheetsWallBack[i].GetTransformGroup(0, 0, 180);
-                        model_gr.Children.Add(sheetModel);
-                    }
-                }
-            }
-
-            double rotationAboutX;
+                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallBack, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 180, ref model_gr, outOffPlaneOffset_FG);
+ 
+            // Set rotation about GCS X-axis - Roof - Right Side (Gable Roof) and Monopitch Roof
+            double rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg); ;
 
             if (bGenerateRoofCladding && options.bDisplayCladdingRoof && bIndividualCladdingSheets)
-            {
-                for (int i = 0; i < listOfCladdingSheetsRoofRight.Count; i++)
-                {
-                    if (options.bUseTextures)
-                    {
-                        if (i == 0)
-                        {
-                            double poinstsDist = listOfCladdingSheetsRoofRight[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Roof / listOfCladdingSheetsRoofRight[i].Width;
-                            wpHeight = claddingWidthRibModular_Roof / poinstsDist;
-                            brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_Roof = new DiffuseMaterial(brushRoof);
-                        }
-                        else if (i == listOfCladdingSheetsRoofRight.Count - 1)
-                        {
-                            wpWidth = claddingWidthRibModular_Roof / listOfCladdingSheetsRoofRight[i].Width;
-                            ImageBrush brushRoof_Last = brushRoof.Clone();
-                            brushRoof_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_Roof = new DiffuseMaterial(brushRoof_Last);
-                        }
-                    }
-
-                    // Pridame sheet do model group
-                    rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
-                    GeometryModel3D sheetModel = listOfCladdingSheetsRoofRight[i].GetCladdingSheetModel(options, material_Roof);
-                    sheetModel.Transform = listOfCladdingSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, 90);
-                    model_gr.Children.Add(sheetModel);
-                }
-            }
+                AddSheet3DModelsToModelGroup(listOfCladdingSheetsRoofRight, options, brushRoof, material_Roof, claddingWidthRibModular_Roof, rotationAboutX, 0, 90, ref model_gr);
 
             if (options.bDisplayFibreglass)
-            {
-                // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                for (int i = 0; i < listOfFibreGlassSheetsRoofRight.Count; i++)
-                {
-                    if (options.bUseTextures)
-                    {
-                        if (i == 0)
-                        {
-                            double poinstsDist = listOfFibreGlassSheetsRoofRight[i].LengthTotal;
-                            wpWidth = claddingWidthRibModular_Roof_FG / listOfFibreGlassSheetsRoofRight[i].Width;
-                            wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
-                            brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
-                        }
-                        else if (i == listOfFibreGlassSheetsRoofRight.Count - 1)
-                        {
-                            wpWidth = claddingWidthRibModular_Roof_FG / listOfFibreGlassSheetsRoofRight[i].Width;
-                            ImageBrush brushRoof_FG_Last = brushRoof_FG.Clone();
-                            brushRoof_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material_Roof_FG = new DiffuseMaterial(brushRoof_FG_Last);
-                        }
-                    }
-
-                    // Pridame sheet do model group
-                    rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
-                    GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofRight[i].GetCladdingSheetModel(options, material_Roof_FG, outOffPlaneOffset_FG);
-                    sheetModel.Transform = listOfFibreGlassSheetsRoofRight[i].GetTransformGroup(rotationAboutX, 0, 90);
-                    model_gr.Children.Add(sheetModel);
-                }
-            }
+                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsRoofRight, options, brushRoof_FG, material_Roof_FG, claddingWidthRibModular_Roof_FG, rotationAboutX, 0, 90, ref model_gr, outOffPlaneOffset_FG);
 
             if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
             {
+                // Set rotation about GCS X-axis - Roof - Left Side (Gable Roof)
                 rotationAboutX = -90f - sBuildingGeomInputData.fRoofPitch_deg;
 
                 if (bGenerateRoofCladding && options.bDisplayCladdingRoof && bIndividualCladdingSheets)
-                {
-                    // Generujeme sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfCladdingSheetsRoofLeft.Count; i++)
-                    {
-                        if (options.bUseTextures)
-                        {
-                            if (i == 0)
-                            {
-                                double poinstsDist = listOfCladdingSheetsRoofLeft[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Roof / listOfCladdingSheetsRoofLeft[i].Width;
-                                wpHeight = claddingWidthRibModular_Roof / poinstsDist;
-                                brushRoof.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Roof = new DiffuseMaterial(brushRoof);
-                            }
-                            else if (i == listOfCladdingSheetsRoofLeft.Count - 1)
-                            {
-                                wpWidth = claddingWidthRibModular_Roof / listOfCladdingSheetsRoofLeft[i].Width;
-                                ImageBrush brushRoof_Last = brushRoof.Clone();
-                                brushRoof_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Roof = new DiffuseMaterial(brushRoof_Last);
-                            }
-                        }
-
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfCladdingSheetsRoofLeft[i].GetCladdingSheetModel(options, material_Roof);
-                        sheetModel.Transform = listOfCladdingSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, 90);
-                        model_gr.Children.Add(sheetModel);
-                    }
-                }
+                    AddSheet3DModelsToModelGroup(listOfCladdingSheetsRoofLeft, options, brushRoof, material_Roof, claddingWidthRibModular_Roof, rotationAboutX, 0, 90, ref model_gr);
 
                 if (options.bDisplayFibreglass)
-                {
-                    // Generujeme FG sheets pre jednu stranu, resp. jednu rovinu
-                    for (int i = 0; i < listOfFibreGlassSheetsRoofLeft.Count; i++)
-                    {
-                        if (options.bUseTextures)
-                        {
-                            if (i == 0)
-                            {
-                                double poinstsDist = listOfFibreGlassSheetsRoofLeft[i].LengthTotal;
-                                wpWidth = claddingWidthRibModular_Roof_FG / listOfFibreGlassSheetsRoofLeft[i].Width;
-                                wpHeight = claddingWidthRibModular_Roof_FG / poinstsDist;
-                                brushRoof_FG.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Roof_FG = new DiffuseMaterial(brushRoof_FG);
-                            }
-                            else if (i == listOfFibreGlassSheetsRoofLeft.Count - 1)
-                            {
-                                wpWidth = claddingWidthRibModular_Roof_FG / listOfFibreGlassSheetsRoofLeft[i].Width;
-                                ImageBrush brushRoof_FG_Last = brushRoof_FG.Clone();
-                                brushRoof_FG_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                material_Roof_FG = new DiffuseMaterial(brushRoof_FG_Last);
-                            }
-                        }
-
-                        // Pridame sheet do model group
-                        GeometryModel3D sheetModel = listOfFibreGlassSheetsRoofLeft[i].GetCladdingSheetModel(options, material_Roof_FG, outOffPlaneOffset_FG);
-                        sheetModel.Transform = listOfFibreGlassSheetsRoofLeft[i].GetTransformGroup(rotationAboutX, 0, 90);
-                        model_gr.Children.Add(sheetModel);
-                    }
-                }
+                    AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsRoofLeft, options, brushRoof_FG, material_Roof_FG, claddingWidthRibModular_Roof_FG, rotationAboutX, 0, 90, ref model_gr, outOffPlaneOffset_FG);
             }
             return model_gr;
         }
@@ -1713,6 +1369,43 @@ namespace BaseClasses.GraphObj
             // Kedze mame otvory pre fibreglass sheets a otvory pre doors/windows v dvoch samostatnych zoznamoch, zlucime ich do jedneho
             // Pouzivame pre vsetky otvory jeden typ objektu
             listOfOpenings_All = listOfFibreGlassSheets.Concat(listOfOpenings).ToList();
+        }
+
+        public void AddSheet3DModelsToModelGroup(List<CCladdingOrFibreGlassSheet> listOfsheets, DisplayOptions options,
+            ImageBrush brush, DiffuseMaterial material, double widthRibModular,
+            double rotationX, double rotationY, double rotationZ, ref Model3DGroup modelGroup, double outOffPlaneOffset = 0)
+        {
+            if (listOfsheets != null || listOfsheets.Count > 0)
+            {
+                double wpWidth = 0, wpHeight = 0;
+
+                for (int i = 0; i < listOfsheets.Count; i++)
+                {
+                    if (options.bUseTextures)
+                    {
+                        if (i == 0)
+                        {
+                            double poinstsDist = listOfsheets[i].LengthTotal;
+                            wpWidth = widthRibModular / listOfsheets[i].Width;
+                            wpHeight = widthRibModular / poinstsDist;
+                            brush.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material = new DiffuseMaterial(brush);
+                        }
+                        else if (i == listOfsheets.Count - 1)
+                        {
+                            wpWidth = widthRibModular / listOfsheets[i].Width;
+                            ImageBrush brush_Last = brush.Clone();
+                            brush_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            material = new DiffuseMaterial(brush_Last);
+                        }
+                    }
+
+                    // Pridame sheet do model group
+                    GeometryModel3D sheetModel = listOfsheets[i].GetCladdingSheetModel(options, material, outOffPlaneOffset);
+                    sheetModel.Transform = listOfsheets[i].GetTransformGroup(rotationX, rotationY, rotationZ);
+                    modelGroup.Children.Add(sheetModel);
+                }
+            }
         }
     }
 }
