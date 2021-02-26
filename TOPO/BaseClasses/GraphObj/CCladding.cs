@@ -723,7 +723,7 @@ namespace BaseClasses.GraphObj
                 if (fgsp.Side == "Left")
                 {
                     listOfFibreGlassSheetsWallLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
-                        pControlPoint_LeftWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                        pControlPoint_LeftWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                         m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                     iSheet_FG_Index++;
                 }
@@ -760,7 +760,7 @@ namespace BaseClasses.GraphObj
                 if (fgsp.Side == "Front")
                 {
                     listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
-                        pControlPoint_FrontWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                        pControlPoint_FrontWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                         m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                     iSheet_FG_Index++;
                 }
@@ -797,7 +797,7 @@ namespace BaseClasses.GraphObj
                 if (fgsp.Side == "Right")
                 {
                     listOfFibreGlassSheetsWallRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
-                pControlPoint_RightWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                pControlPoint_RightWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                 m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                     iSheet_FG_Index++;
                 }
@@ -834,7 +834,7 @@ namespace BaseClasses.GraphObj
                 if (fgsp.Side == "Back")
                 {
                     listOfFibreGlassSheetsWallBack.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
-                         pControlPoint_BackWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
+                         pControlPoint_BackWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                          m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                     iSheet_FG_Index++;
                 }
@@ -1084,9 +1084,7 @@ namespace BaseClasses.GraphObj
             if (bIndividualCladdingSheets)
             {
                 // Ak kreslime individualne sheets pre cladding nepotrebujeme offset
-                // Napriek tomu docasne nastavujem maly offset, pretoze ak sa z dôvodu nejakej chyby nerozdelia cladding sheets tak to koliduje s fibreglass
-                // Bug 726 a Bug 728 - po dorieseni sa moze nastavit na 0.000
-                outOffPlaneOffset_FG = -0.001;
+                outOffPlaneOffset_FG = 0.000;
                 model_gr = new Model3DGroup(); // Vyprazdnime model group s povodnym cladding
             }
 
@@ -1340,8 +1338,13 @@ namespace BaseClasses.GraphObj
             ref int iOpeningIndex,
             out List<COpening> listOfOpenings_All)
         {
-            listOfOpenings_All = new List<COpening>(); // Zoznam otvorom v cladding
+            listOfOpenings_All = new List<COpening>(); // Zoznam otvorov v cladding
 
+            // Skonvertujeme zoznam fibreglass na otvory (ak nie je prazdny) a nastavime / pridame ho do zoznamu otvorov v cladding
+            if (listOfFibreGlassSheets != null && listOfFibreGlassSheets.Count > 0)
+                listOfOpenings_All = SheetListToOpeningListConverter(listOfFibreGlassSheets);
+
+            // Do zoznamu pridame otvory pre doors
             foreach (DoorProperties door in doorPropCollection)
             {
                 if (door.sBuildingSide == side)
@@ -1367,6 +1370,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
+            // Do zoznamu pridame otvory pre windows
             foreach (WindowProperties window in windowPropCollection)
             {
                 if (window.sBuildingSide == side)
@@ -1390,10 +1394,6 @@ namespace BaseClasses.GraphObj
                     iOpeningIndex++;
                 }
             }
-
-            // Skonvertujeme zoznam fibreglass na otvory (ak nie je prazdny) a pridame ho do zoznamu otvorov v cladding
-            if(listOfFibreGlassSheets != null && listOfFibreGlassSheets.Count > 0)
-            listOfOpenings_All.Concat(SheetListToOpeningListConverter(listOfFibreGlassSheets)).ToList();
         }
 
         // TO Ondrej - je nejaka krasia cesta ako prevadzat medzi sebou objekty potomkov spolocneho predka, ak chceme pouzit len parametre predka??

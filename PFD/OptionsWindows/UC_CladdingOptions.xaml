@@ -292,9 +292,9 @@
                       ItemsSource="{Binding Path=FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
                       HorizontalAlignment="Left" IsReadOnly="false" CanUserAddRows="True" AutoGenerateColumns="False" 
                       VerticalAlignment="Top" CanUserSortColumns="False" >
-                <DataGrid.Columns>                    
+                <DataGrid.Columns>
                     <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side" Width="1.5*" SelectedValueBinding="{Binding Side, UpdateSourceTrigger=PropertyChanged}">
-                        <DataGridComboBoxColumn.ElementStyle>                            
+                        <DataGridComboBoxColumn.ElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="ItemsSource" Value="{Binding Sides}"/>
                                 <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
@@ -303,30 +303,31 @@
                         <DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="ItemsSource" Value="{Binding Sides}"/>
-                                <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->                                
+                                <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
                     </DataGridComboBoxColumn>
 
                     <DataGridComboBoxColumn Header="X [m]" ToolTipService.ToolTip="x" Width="*" SelectedValueBinding="{Binding X, UpdateSourceTrigger=PropertyChanged}">
-                        <DataGridComboBoxColumn.ElementStyle>                            
+                        <DataGridComboBoxColumn.ElementStyle>
                             <!--Ako na zaokruhlovanie? ved tam su desatinne cisla-->
+                            <!--Mali by sme vzdy zobrazit 2, mozno aj 3 desatinne miesta-->
                             <Style TargetType="ComboBox">
                                 <Setter Property="ItemsSource" Value="{Binding XValues}"/>
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
-                                <Setter Property="ItemStringFormat" Value="{}{0:0.0}"/>
+                                <Setter Property="ItemStringFormat" Value="{}{0:0.00}"/>
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                         <DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="ItemsSource" Value="{Binding XValues}"/>
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
-                                <Setter Property="ItemStringFormat" Value="{}{0:0.0}"/>                                
+                                <Setter Property="ItemStringFormat" Value="{}{0:0.00}"/>
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
                     </DataGridComboBoxColumn>
-                    <DataGridTextColumn Header="Y [m]" ToolTipService.ToolTip="Enter y" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Y, ValidatesOnExceptions=True, StringFormat={}{0:0.0}}"/>
-                    <DataGridTextColumn Header="Length [m]" ToolTipService.ToolTip="Enter length" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Length, ValidatesOnExceptions=True, StringFormat={}{0:0.0}}"/>
+                    <DataGridTextColumn Header="Y [m]" ToolTipService.ToolTip="Enter y" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Y, ValidatesOnExceptions=True, StringFormat={}{0:0.00}}"/>
+                    <DataGridTextColumn Header="Length [m]" ToolTipService.ToolTip="Enter length" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Length, ValidatesOnExceptions=True, StringFormat={}{0:0.00}}"/>
                     
                     <!--<DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding FibreglassColor, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>
@@ -363,12 +364,6 @@
 
                 </DataGrid.Columns>
             </DataGrid>
-
-
-
         </Grid>
     </ScrollViewer>
-
-
-
 </UserControl>

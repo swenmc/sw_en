@@ -518,7 +518,7 @@ namespace PFD
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
             CladdingWidthModular_Wall = (float)widthModularWall;
-            CladdingWidthModular_Wall = (float)widthModularRoof;
+            CladdingWidthModular_Roof = (float)widthModularRoof;
 
             Spacing = 2.0f; // Malo by byt vacsie ako default Length
 

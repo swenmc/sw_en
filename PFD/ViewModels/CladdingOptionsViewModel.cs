@@ -999,7 +999,7 @@ namespace PFD
 
             set
             {
-                m_RoofFibreglassTypes = value;                
+                m_RoofFibreglassTypes = value;
                 NotifyPropertyChanged("RoofFibreglassTypes");
             }
         }
