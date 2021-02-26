@@ -112,11 +112,13 @@
     <Compile Include="GraphObj\Areas\CAreaCircle.cs" />
     <Compile Include="GraphObj\Areas\CAreaRectangular.cs" />
     <Compile Include="GraphObj\CCladding.cs" />
-    <Compile Include="GraphObj\CCladdingOrFibreGlassSheet.cs" />
+    <Compile Include="GraphObj\Surfaces\CCladdingOrFibreGlassSheet.cs" />
     <Compile Include="GraphObj\CDimensionLinear3D.cs" />
     <Compile Include="GraphObj\CDetailSymbol.cs" />
     <Compile Include="GraphObj\CGridLine.cs" />
     <Compile Include="GraphObj\CSectionSymbol.cs" />
+    <Compile Include="GraphObj\Surfaces\COpening.cs" />
+    <Compile Include="GraphObj\Surfaces\CSurfaceComponent.cs" />
     <Compile Include="GraphObj\Objects_3D\CStructure_Door.cs" />
     <Compile Include="GraphObj\Objects_3D\CHollowCylinder.cs" />
     <Compile Include="GraphObj\Objects_3D\CSolidCircleBar_U.cs" />

@@ -1,18 +1,13 @@
-﻿using BaseClasses.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses.GraphObj
 {
     [Serializable]
-    public class CCladdingOrFibreGlassSheet : CEntity3D
+    public class CCladdingOrFibreGlassSheet : CSurfaceComponent
     {
-        private Point3D m_ControlPoint;
-
         double m_dCladdingWidthRibModular; // m // z databazy cladding MDBTrapezoidalSheeting widthRib_m
 
         string m_claddingShape;
@@ -20,30 +15,6 @@ namespace BaseClasses.GraphObj
         string m_ColorName;
         Color m_Color;
         float m_fOpacity;
-
-        int m_iNumberOfEdges;
-        double m_Width; // Bezne uvazujeme width modular podla DB, ale pre koncove plechy moze byt sirka mensia
-        double m_dLengthTotal;
-        double m_dLengthTopRight;
-        double m_dTipCoordinate_x;
-        double m_dLengthTopTip;
-        double m_dLengthTopLeft;
-
-        double m_CoordinateInPlane_x;
-        double m_CoordinateInPlane_y;
-
-        public Point3D ControlPoint
-        {
-            get
-            {
-                return m_ControlPoint;
-            }
-
-            set
-            {
-                m_ControlPoint = value;
-            }
-        }
 
         public double CladdingWidthRibModular
         {
@@ -123,123 +94,6 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public int NumberOfEdges
-        {
-            get
-            {
-                return m_iNumberOfEdges;
-            }
-
-            set
-            {
-                m_iNumberOfEdges = value;
-            }
-        }
-
-        public double CoordinateInPlane_x
-        {
-            get
-            {
-                return m_CoordinateInPlane_x;
-            }
-
-            set
-            {
-                m_CoordinateInPlane_x = value;
-            }
-        }
-
-        public double CoordinateInPlane_y
-        {
-            get
-            {
-                return m_CoordinateInPlane_y;
-            }
-
-            set
-            {
-                m_CoordinateInPlane_y = value;
-            }
-        }
-
-        public double Width
-        {
-            get
-            {
-                return m_Width;
-            }
-
-            set
-            {
-                m_Width = value;
-            }
-        }
-
-        public double LengthTotal
-        {
-            get
-            {
-                return m_dLengthTotal;
-            }
-
-            set
-            {
-                m_dLengthTotal = value;
-            }
-        }
-
-        public double LengthTopRight
-        {
-            get
-            {
-                return m_dLengthTopRight;
-            }
-
-            set
-            {
-                m_dLengthTopRight = value;
-            }
-        }
-
-        public double TipCoordinate_x
-        {
-            get
-            {
-                return m_dTipCoordinate_x;
-            }
-
-            set
-            {
-                m_dTipCoordinate_x = value;
-            }
-        }
-
-        public double LengthTopTip
-        {
-            get
-            {
-                return m_dLengthTopTip;
-            }
-
-            set
-            {
-                m_dLengthTopTip = value;
-            }
-        }
-
-        public double LengthTopLeft
-        {
-            get
-            {
-                return m_dLengthTopLeft;
-            }
-
-            set
-            {
-                m_dLengthTopLeft = value;
-            }
-        }
-
         public CCladdingOrFibreGlassSheet()
         {
 
@@ -252,15 +106,15 @@ namespace BaseClasses.GraphObj
         Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime)
         {
             ID = iCladdingSheet_ID;
-            m_iNumberOfEdges = numberOfCorners;
-            m_CoordinateInPlane_x = coordinateInPlane_x;
-            m_CoordinateInPlane_y = coordinateInPlane_y;
-            m_ControlPoint = controlPoint_GCS;
-            m_Width = width;
-            m_dLengthTopLeft = lengthTopLeft;
-            m_dLengthTopRight = lengthTopRight;
-            m_dTipCoordinate_x = tipCoordinate_x;
-            m_dLengthTopTip = lengthTopTip;
+            NumberOfEdges = numberOfCorners;
+            CoordinateInPlane_x = coordinateInPlane_x;
+            CoordinateInPlane_y = coordinateInPlane_y;
+            ControlPoint = controlPoint_GCS;
+            Width = width;
+            LengthTopLeft = lengthTopLeft;
+            LengthTopRight = lengthTopRight;
+            TipCoordinate_x = tipCoordinate_x;
+            LengthTopTip = lengthTopTip;
             m_ColorName = colorName;
             m_claddingShape = claddingShape;
             m_claddingCoatingType = claddingCoatingType;
@@ -294,35 +148,42 @@ namespace BaseClasses.GraphObj
             //  |___\ x
             //      /
 
-            if (m_iNumberOfEdges == 4)
-                m_dLengthTotal = Math.Max(m_dLengthTopLeft, m_dLengthTopRight);
+            if (NumberOfEdges == 4)
+                LengthTotal = Math.Max(LengthTopLeft, LengthTopRight);
             else
-                m_dLengthTotal = Math.Max(Math.Max(m_dLengthTopLeft, m_dLengthTopRight), m_dLengthTopTip);
+                LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
+        }
+
+        // TO Ondrej - vieme nejako krajsie pracovat s potomkami jednej triedy, aby sme ich mohli vzajomne pretypovat
+        public COpening ConvertToOpening()
+        {
+            return new COpening(ID, NumberOfEdges, CoordinateInPlane_x, CoordinateInPlane_y, ControlPoint,
+                Width, LengthTopLeft, LengthTopRight, TipCoordinate_x, LengthTopTip, BIsDisplayed, FTime);
         }
 
         public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material, double outOffPlaneOffset_y = 0)
         {
             Point3D pfront0_baseleft = new Point3D(0, outOffPlaneOffset_y, 0);
-            Point3D pfront1_baseright = new Point3D(m_Width, outOffPlaneOffset_y, 0);
-            Point3D pfront2_topright = new Point3D(m_Width, outOffPlaneOffset_y, m_dLengthTopRight);
-            Point3D pfront3_toptip = new Point3D(m_dTipCoordinate_x, outOffPlaneOffset_y, m_dLengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
-            Point3D pfront4_topleft = new Point3D(0, outOffPlaneOffset_y, m_dLengthTopLeft);
+            Point3D pfront1_baseright = new Point3D(Width, outOffPlaneOffset_y, 0);
+            Point3D pfront2_topright = new Point3D(Width, outOffPlaneOffset_y, LengthTopRight);
+            Point3D pfront3_toptip = new Point3D(TipCoordinate_x, outOffPlaneOffset_y, LengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
+            Point3D pfront4_topleft = new Point3D(0, outOffPlaneOffset_y, LengthTopLeft);
 
             // Local in-plane offset
-            pfront0_baseleft.X += m_CoordinateInPlane_x;
-            pfront0_baseleft.Z += m_CoordinateInPlane_y;
+            pfront0_baseleft.X += CoordinateInPlane_x;
+            pfront0_baseleft.Z += CoordinateInPlane_y;
 
-            pfront1_baseright.X += m_CoordinateInPlane_x;
-            pfront1_baseright.Z += m_CoordinateInPlane_y;
+            pfront1_baseright.X += CoordinateInPlane_x;
+            pfront1_baseright.Z += CoordinateInPlane_y;
 
-            pfront2_topright.X += m_CoordinateInPlane_x;
-            pfront2_topright.Z += m_CoordinateInPlane_y;
+            pfront2_topright.X += CoordinateInPlane_x;
+            pfront2_topright.Z += CoordinateInPlane_y;
 
-            pfront3_toptip.X += m_CoordinateInPlane_x;
-            pfront3_toptip.Z += m_CoordinateInPlane_y;
+            pfront3_toptip.X += CoordinateInPlane_x;
+            pfront3_toptip.Z += CoordinateInPlane_y;
 
-            pfront4_topleft.X += m_CoordinateInPlane_x;
-            pfront4_topleft.Z += m_CoordinateInPlane_y;
+            pfront4_topleft.X += CoordinateInPlane_x;
+            pfront4_topleft.Z += CoordinateInPlane_y;
 
             if (options.bCladdingSheetColoursByID && !options.bUseTextures) // Ak je zapnuta textura, tak je nadradena solid brush farbam
             {
@@ -333,7 +194,7 @@ namespace BaseClasses.GraphObj
                 material = new DiffuseMaterial(solidBrush);
             }
 
-            if (m_iNumberOfEdges == 4)
+            if (NumberOfEdges == 4)
                 return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
             else
                 return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
@@ -364,7 +225,7 @@ namespace BaseClasses.GraphObj
             axisAngleRotation3dZ.Angle = dRot_Z_deg;
             rotateZ.Rotation = axisAngleRotation3dZ;
 
-            TranslateTransform3D translateOrigin = new TranslateTransform3D(m_ControlPoint.X, m_ControlPoint.Y, m_ControlPoint.Z);
+            TranslateTransform3D translateOrigin = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             Transform3DGroup TransformGr = new Transform3DGroup();
             TransformGr.Children.Add(rotateX);

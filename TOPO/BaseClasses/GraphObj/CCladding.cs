@@ -71,8 +71,6 @@ namespace BaseClasses.GraphObj
         double claddingWidthRibModular_Wall_FG;
         double claddingWidthModular_Wall_FG;
 
-        float fOpeningOpacity = 0.02f;
-
         bool bIndividualCladdingSheets;
 
         // TODO 734 - napojit na Tab Members podla typu prutov a ich hodnoty bGenerate
@@ -731,7 +729,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            List<CCladdingOrFibreGlassSheet> listOfOpeningsLeftWall_All = null;
+            List<COpening> listOfOpeningsLeftWall_All = null;
             GenerateCladdingOpenings(listOfFibreGlassSheetsWallLeft, "Left", pControlPoint_LeftWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
             ref iOpeningIndex, out listOfOpeningsLeftWall_All);
 
@@ -768,7 +766,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            List<CCladdingOrFibreGlassSheet> listOfOpeningsFrontWall_All = null;
+            List<COpening> listOfOpeningsFrontWall_All = null;
             GenerateCladdingOpenings(listOfFibreGlassSheetsWallFront, "Front", pControlPoint_FrontWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
             ref iOpeningIndex, out listOfOpeningsFrontWall_All);
 
@@ -805,7 +803,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            List<CCladdingOrFibreGlassSheet> listOfOpeningsRightWall_All = null;
+            List<COpening> listOfOpeningsRightWall_All = null;
             GenerateCladdingOpenings(listOfFibreGlassSheetsWallRight, "Right", pControlPoint_RightWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
             ref iOpeningIndex, out listOfOpeningsRightWall_All);
 
@@ -842,7 +840,7 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            List<CCladdingOrFibreGlassSheet> listOfOpeningsBackWall_All = null;
+            List<COpening> listOfOpeningsBackWall_All = null;
             GenerateCladdingOpenings(listOfFibreGlassSheetsWallBack, "Back", pControlPoint_BackWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
             ref iOpeningIndex, out listOfOpeningsBackWall_All);
 
@@ -892,7 +890,7 @@ namespace BaseClasses.GraphObj
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-right", pControlPoint_RoofRight, m_ColorNameRoof,
                 m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, width,
                 claddingWidthRibModular_Roof, claddingWidthModular_Roof, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
-                listOfFibreGlassSheetsRoofRight, ref iSheetIndex, out listOfCladdingSheetsRoofRight);
+                SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofRight), ref iSheetIndex, out listOfCladdingSheetsRoofRight);
 
                 // TODO - upravit plechy pre canopies
                 if (canopyCollection != null)
@@ -1018,7 +1016,7 @@ namespace BaseClasses.GraphObj
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof -left", pControlPoint_RoofLeft, m_ColorNameRoof,
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, width,
                     claddingWidthRibModular_Roof, claddingWidthModular_Roof, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
-                    listOfFibreGlassSheetsRoofLeft, ref iSheetIndex, out listOfCladdingSheetsRoofLeft);
+                    SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofLeft), ref iSheetIndex, out listOfCladdingSheetsRoofLeft);
 
                     // TODO - upravit plechy pre canopies
                     if (canopyCollection != null)
@@ -1088,7 +1086,7 @@ namespace BaseClasses.GraphObj
                 // Ak kreslime individualne sheets pre cladding nepotrebujeme offset
                 // Napriek tomu docasne nastavujem maly offset, pretoze ak sa z dôvodu nejakej chyby nerozdelia cladding sheets tak to koliduje s fibreglass
                 // Bug 726 a Bug 728 - po dorieseni sa moze nastavit na 0.000
-                outOffPlaneOffset_FG = -0.005;
+                outOffPlaneOffset_FG = -0.001;
                 model_gr = new Model3DGroup(); // Vyprazdnime model group s povodnym cladding
             }
 
@@ -1178,7 +1176,7 @@ namespace BaseClasses.GraphObj
             double dLastSheetWidth,
             double height_left_basic,
             double height_middle_basic_aux, // height_2_final_edge_FB_Wall
-            List<CCladdingOrFibreGlassSheet> listOfOpenings,
+            List<COpening> listOfOpenings,
             ref int iSheetIndex, out List<CCladdingOrFibreGlassSheet> listOfSheets)
         {
             listOfSheets = new List<CCladdingOrFibreGlassSheet>(); // Pole kombinovane z povodnych aj nadelenych sheets
@@ -1258,7 +1256,11 @@ namespace BaseClasses.GraphObj
 
                 // Zoznam objektov ktore su v kolizii
                 double dLimit = 0.020; // 20 mm // Ak otvor zacina 20 mm za okrajom plechu a 20 mm pred koncom plechu, tak uvazujeme ze cely plech je otvorom rozdeleny 
-                List<CCladdingOrFibreGlassSheet> objectInColision_In_Local_x = listOfOpenings.Where(o => (o.CoordinateInPlane_x <= originalsheetCoordinateInPlane_x + dLimit && (o.CoordinateInPlane_x + o.Width) >= (originalsheetCoordinateInPlane_x - dLimit + originalsheetWidth))).ToList();
+
+                List<COpening> objectInColision_In_Local_x = null;
+
+                if(listOfOpenings != null && listOfOpenings.Count > 0) // Nejake opening su zadefinovane, takze ma zmysel hladat kolizie
+                   objectInColision_In_Local_x = listOfOpenings.Where(o => (o.CoordinateInPlane_x <= originalsheetCoordinateInPlane_x + dLimit && (o.CoordinateInPlane_x + o.Width) >= (originalsheetCoordinateInPlane_x - dLimit + originalsheetWidth))).ToList();
 
                 // Ak neexistuju objekty v kolizii s originalsheet mozeme opustit funkciu
                 if (objectInColision_In_Local_x == null || objectInColision_In_Local_x.Count == 0)
@@ -1336,9 +1338,9 @@ namespace BaseClasses.GraphObj
             double column_crsc_y_minus_temp,
             double column_crsc_z_plus_temp,
             ref int iOpeningIndex,
-            out List<CCladdingOrFibreGlassSheet> listOfOpenings_All)
+            out List<COpening> listOfOpenings_All)
         {
-            List<CCladdingOrFibreGlassSheet> listOfOpenings = new List<CCladdingOrFibreGlassSheet>(); // Zoznam otvorom v cladding pre doors a windows objects
+            listOfOpenings_All = new List<COpening>(); // Zoznam otvorom v cladding
 
             foreach (DoorProperties door in doorPropCollection)
             {
@@ -1359,9 +1361,8 @@ namespace BaseClasses.GraphObj
                 if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
                     doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
 
-                    listOfOpenings.Add(new CCladdingOrFibreGlassSheet(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
-                    pControlPoint, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0,
-                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    listOfOpenings_All.Add(new COpening(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
+                    pControlPoint, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0, true, 0));
                     iOpeningIndex++;
                 }
             }
@@ -1384,17 +1385,32 @@ namespace BaseClasses.GraphObj
                 if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
                     windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
 
-                    listOfOpenings.Add(new CCladdingOrFibreGlassSheet(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, -bottomEdge_z + window.fWindowCoordinateZinBay,
-                    pControlPoint, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0,
-                    m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, fOpeningOpacity, claddingWidthRibModular_Wall, true, 0));
+                    listOfOpenings_All.Add(new COpening(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, -bottomEdge_z + window.fWindowCoordinateZinBay,
+                    pControlPoint, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0, true, 0));
                     iOpeningIndex++;
                 }
             }
 
-            // Kedze mame otvory pre fibreglass sheets a otvory pre doors/windows v dvoch samostatnych zoznamoch, zlucime ich do jedneho
-            // Pouzivame pre vsetky otvory jeden typ objektu
-            listOfOpenings_All = listOfFibreGlassSheets.Concat(listOfOpenings).ToList();
+            // Skonvertujeme zoznam fibreglass na otvory (ak nie je prazdny) a pridame ho do zoznamu otvorov v cladding
+            if(listOfFibreGlassSheets != null && listOfFibreGlassSheets.Count > 0)
+            listOfOpenings_All.Concat(SheetListToOpeningListConverter(listOfFibreGlassSheets)).ToList();
         }
+
+        // TO Ondrej - je nejaka krasia cesta ako prevadzat medzi sebou objekty potomkov spolocneho predka, ak chceme pouzit len parametre predka??
+       public List<COpening> SheetListToOpeningListConverter (List<CCladdingOrFibreGlassSheet> input)
+       {
+            List<COpening> output = null;
+
+            if (input != null && input.Count > 0)
+            {
+                output = new List<COpening>();
+
+                foreach (CCladdingOrFibreGlassSheet sheet in input)
+                  output.Add(sheet.ConvertToOpening());
+            }
+
+            return output;
+       }
 
         public void AddSheet3DModelsToModelGroup(List<CCladdingOrFibreGlassSheet> listOfsheets,
             DisplayOptions options,
