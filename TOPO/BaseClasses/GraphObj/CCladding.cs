@@ -1190,6 +1190,7 @@ namespace BaseClasses.GraphObj
 
                 // Zakladne hodnoty pre obdlznik
                 int iNumberOfEdges = 4;
+                // TODO - overit ci sa ma v height pocitat s bottomEdge_z
                 double height_left = height_left_basic;
                 double height_right = height_left_basic;
                 double height_toptip = height_left_basic;
@@ -1197,6 +1198,7 @@ namespace BaseClasses.GraphObj
 
                 if (side == "Front" || side == "Back")
                 {
+                    // TODO - overit ci sa ma v height pocitat s bottomEdge_z
                     height_left = GetVerticalCoordinate(side, eModelType, width, height_left_basic, i * claddingWidthModular);
                     height_right = GetVerticalCoordinate(side, eModelType, width, height_left_basic, (i + 1) * claddingWidthModular);
                     height_toptip = 0.5 * (height_left + height_right);
@@ -1204,6 +1206,7 @@ namespace BaseClasses.GraphObj
 
                     if (i == iNumberOfOriginalSheetsOnSide - 1)
                     {
+                        // TODO - overit ci sa ma v height pocitat s bottomEdge_z
                         height_right = GetVerticalCoordinate(side, eModelType, width, height_left_basic, width);
                         height_toptip = 0.5 * (height_left + height_right);
                         tipCoordinate_x = 0.5 * dLastSheetWidth;
@@ -1214,38 +1217,61 @@ namespace BaseClasses.GraphObj
                        (i + 1) * claddingWidthModular > 0.5 * width)
                     {
                         iNumberOfEdges = 5;
+                        // TODO - overit ci sa ma v height pocitat s bottomEdge_z
                         height_toptip = -bottomEdge_z + height_middle_basic_aux; // Stred budovy gable roof - roof ridge
                         tipCoordinate_x = 0.5 * width - i * claddingWidthModular;
                     }
                 }
 
-                // TODO - nepotrebujeme tu vyrabat kazdy objekt sheet aj tie ktore sa maju delit, len urcit parametre ORIGINAL a doplnit ich do dalsieho kodu
-                CCladdingOrFibreGlassSheet originalsheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges, i * claddingWidthModular, 0,
-                pControlPoint, i == iNumberOfOriginalSheetsOnSide - 1 ? dLastSheetWidth : claddingWidthModular, height_left, height_right, tipCoordinate_x, height_toptip,
-                colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0);
-                iSheetIndex++;
+                // Nastavime parametre originalneho sheet, v pripade ze sheet sa nedeli pouziju sa tieto parametre priamo pre vygenerovanie objektu
+                // V pripade ze sheet sa deli, su tieto parametre pouzite pre generovanie objektov nadelenych plechov
+
+                double originalsheetLengthTotal = Math.Max(Math.Max(height_left, height_right), height_toptip);
+
+                int originalsheetNumberOfEdges = iNumberOfEdges;
+                double originalsheetCoordinateInPlane_x = i * claddingWidthModular;
+                double originalsheetCoordinateInPlane_y = 0;
+                Point3D originalsheetControlPoint = pControlPoint;
+                double originalsheetWidth = i == iNumberOfOriginalSheetsOnSide - 1 ? dLastSheetWidth : claddingWidthModular;
+                double originalsheetLengthTopLeft = height_left;
+                double originalsheetLengthTopRight = height_right;
+                double originalsheetTipCoordinate_x = tipCoordinate_x;
+                double originalsheetLengthTopTip = height_toptip;
+
+                // Tieto parametre nepotrebujeme prevadzat lebo sa pre original sheet a nadele sheets nemenia, takze sa mozu pouzit priamo parametre funkcie
+                //string originalsheetColorName = colorName;
+                //string originalsheetCladdingShape = claddingShape;
+                //string originalsheetCladdingCoatingType = claddingCoatingType;
+                //Color originalsheetColor = color;
+                //float originalsheetOpacity = fOpacity;
+                //double originalsheetCladdingWidthRibModular = claddingWidthModular;
+                //bool originalsheetIsDisplayed = true;
+                //float originalsheetTime = 0;
 
                 // listOfOpenings // TODO - zapracovat aj doors a windows, vyrobit vseobecneho predka pre fibreglassSheet, door, window, ktory bude reprezentovat otvor v cladding
 
                 // 1. Zistime ci lezi originalsheet v rovine s nejakym objektom listOfOpenings
-                // Bod 1 mozeme preskocit ak vieme na ktorej strane resp v ktorej stresnej rovine sa nachadzame
+                // Bod 1 mozeme preskocit ak vieme na ktorej strane resp v ktorej stresnej rovine sa nachadzame, bod 1 teda ignorujeme, lebo do funkcie vstupuju uz roztriedene objekty podla stran
 
                 // 2. Zistime ci je plocha originalsheet v kolizii s nejakym objektom listOfOpenings
                 // Myslim ze mame niekde uz funkcie ktore vedia skontrolovat ci sa dve plochy prekryvaju
 
                 // Zoznam objektov ktore su v kolizii
                 double dLimit = 0.020; // 20 mm // Ak otvor zacina 20 mm za okrajom plechu a 20 mm pred koncom plechu, tak uvazujeme ze cely plech je otvorom rozdeleny 
-                List<CCladdingOrFibreGlassSheet> objectInColision_In_Local_x = listOfOpenings.Where(o => (o.CoordinateInPlane_x <= originalsheet.CoordinateInPlane_x + dLimit && (o.CoordinateInPlane_x + o.Width) >= (originalsheet.CoordinateInPlane_x - dLimit + originalsheet.Width))).ToList();
+                List<CCladdingOrFibreGlassSheet> objectInColision_In_Local_x = listOfOpenings.Where(o => (o.CoordinateInPlane_x <= originalsheetCoordinateInPlane_x + dLimit && (o.CoordinateInPlane_x + o.Width) >= (originalsheetCoordinateInPlane_x - dLimit + originalsheetWidth))).ToList();
 
                 // Ak neexistuju objekty v kolizii s originalsheet mozeme opustit funkciu
                 if (objectInColision_In_Local_x == null || objectInColision_In_Local_x.Count == 0)
                 {
-                    listOfSheets.Add(originalsheet); // TODO - tu by sa mal vytvorit objekt sheet
+                    // Nie je potrebne delit sheet - pridame teda "oroginalsheet"
+                    listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, originalsheetNumberOfEdges, originalsheetCoordinateInPlane_x, originalsheetCoordinateInPlane_y,
+                    originalsheetControlPoint, originalsheetWidth, originalsheetLengthTopLeft, originalsheetLengthTopRight, originalsheetTipCoordinate_x, originalsheetLengthTopTip,
+                    colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0));
                     iSheetIndex++;
                 }
                 else if (objectInColision_In_Local_x.Count == 1 &&
-                         objectInColision_In_Local_x[0].CoordinateInPlane_y <= originalsheet.CoordinateInPlane_y &&
-                         objectInColision_In_Local_x[0].LengthTotal >= originalsheet.LengthTotal) // Otvor je dlhsi ako cely povodny sheet, odstranime len originalsheet a nic nepridavame
+                         objectInColision_In_Local_x[0].CoordinateInPlane_y <= originalsheetCoordinateInPlane_y &&
+                         objectInColision_In_Local_x[0].LengthTotal >= originalsheetLengthTotal) // Otvor je dlhsi ako cely povodny sheet, odstranime len originalsheet a nic nepridavame
                 {
                     // TODO - este by sa mohlo stat ze openings je sice viac nadefinovanych priamo vedla seba, ale tvoria jeden velky otvor
                     // Asi je to nezmyselne zadanie, ale malo by to byt osetrene
@@ -1255,7 +1281,7 @@ namespace BaseClasses.GraphObj
                 {
                     // Predpokladame ze samotne objekty v listOfOpenings sa neprekyvaju
                     // 3. Zoradime objekty podla lokalnej suradnice y
-                    objectInColision_In_Local_x.OrderBy(o => originalsheet.CoordinateInPlane_y);
+                    objectInColision_In_Local_x.OrderBy(o => originalsheetCoordinateInPlane_y);
 
                     // 4. Podla poctu objektov v objectInColision_In_Local_x a ich suradnic vieme na kolko casti budeme originalsheet delit
                     int iNumberOfNewSheets = objectInColision_In_Local_x.Count + 1; // TODO skontrolovat podla suradnic ci objekt zacina na alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
@@ -1265,18 +1291,17 @@ namespace BaseClasses.GraphObj
                     {
                         if (j == iNumberOfNewSheets - 1) // Last segment of original sheet
                         {
-                            listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, originalsheet.NumberOfEdges,
-                            originalsheet.CoordinateInPlane_x,
+                            listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, originalsheetNumberOfEdges,
+                            originalsheetCoordinateInPlane_x,
                             objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + objectInColision_In_Local_x[j - 1].LengthTotal,
-                            originalsheet.ControlPoint, originalsheet.Width,
-                            originalsheet.LengthTopLeft - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
-                            originalsheet.LengthTopRight - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
-                            originalsheet.TipCoordinate_x,
-                            originalsheet.LengthTopTip - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
-                            originalsheet.ColorName, originalsheet.CladdingShape, originalsheet.CladdingCoatingType,
-                            originalsheet.Color, originalsheet.Opacity, originalsheet.CladdingWidthRibModular, originalsheet.BIsDisplayed, originalsheet.FTime));
+                            originalsheetControlPoint, originalsheetWidth,
+                            originalsheetLengthTopLeft - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
+                            originalsheetLengthTopRight - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
+                            originalsheetTipCoordinate_x,
+                            originalsheetLengthTopTip - objectInColision_In_Local_x[j - 1].CoordinateInPlane_y - objectInColision_In_Local_x[j - 1].LengthTotal,
+                            colorName, claddingShape, claddingCoatingType,
+                            color, fOpacity, claddingWidthRibModular, true, 0));
                             iSheetIndex++;
-
                         }
                         else
                         {
@@ -1287,15 +1312,15 @@ namespace BaseClasses.GraphObj
 
                             iNumberOfEdges = 4;
                             listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, iNumberOfEdges,
-                            originalsheet.CoordinateInPlane_x,
+                            originalsheetCoordinateInPlane_x,
                             coordinate_y,
-                            originalsheet.ControlPoint, originalsheet.Width,
+                            originalsheetControlPoint, originalsheetWidth,
                             objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinate_y,
                             objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinate_y,
                             0,
                             0,
-                            originalsheet.ColorName, originalsheet.CladdingShape, originalsheet.CladdingCoatingType,
-                            originalsheet.Color, originalsheet.Opacity, originalsheet.CladdingWidthRibModular, originalsheet.BIsDisplayed, originalsheet.FTime));
+                            colorName, claddingShape, claddingCoatingType,
+                            color, fOpacity, claddingWidthRibModular, true, 0));
                             iSheetIndex++;
                         }
                     }
@@ -1371,9 +1396,16 @@ namespace BaseClasses.GraphObj
             listOfOpenings_All = listOfFibreGlassSheets.Concat(listOfOpenings).ToList();
         }
 
-        public void AddSheet3DModelsToModelGroup(List<CCladdingOrFibreGlassSheet> listOfsheets, DisplayOptions options,
-            ImageBrush brush, DiffuseMaterial material, double widthRibModular,
-            double rotationX, double rotationY, double rotationZ, ref Model3DGroup modelGroup, double outOffPlaneOffset = 0)
+        public void AddSheet3DModelsToModelGroup(List<CCladdingOrFibreGlassSheet> listOfsheets,
+            DisplayOptions options,
+            ImageBrush brush,
+            DiffuseMaterial material,
+            double widthRibModular,
+            double rotationX,
+            double rotationY,
+            double rotationZ,
+            ref Model3DGroup modelGroup,
+            double outOffPlaneOffset = 0)
         {
             if (listOfsheets != null || listOfsheets.Count > 0)
             {
