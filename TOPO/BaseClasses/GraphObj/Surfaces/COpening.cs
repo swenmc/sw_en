@@ -8,6 +8,9 @@ namespace BaseClasses.GraphObj
     [Serializable]
     public class COpening : CSurfaceComponent
     {
+        // TO Ondrej - zaviedol som objekt COpening, ale kedze ma rovnake parametre ako CSurfaceComponent, tak asi nie je velmi ucelne ho teraz
+        // pouzivat, skor su momentalne zbytocne problemy s pretypovanim a je to zbytocne spomalenie
+
         public COpening()
         {
 
@@ -36,7 +39,5 @@ namespace BaseClasses.GraphObj
             else
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
         }
-
-
     }
 }
