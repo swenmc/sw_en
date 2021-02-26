@@ -1263,7 +1263,7 @@ namespace BaseClasses.GraphObj
                 // Ak neexistuju objekty v kolizii s originalsheet mozeme opustit funkciu
                 if (objectInColision_In_Local_x == null || objectInColision_In_Local_x.Count == 0)
                 {
-                    // Nie je potrebne delit sheet - pridame teda "oroginalsheet"
+                    // Nie je potrebne delit sheet - pridame teda "originalsheet"
                     listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, originalsheetNumberOfEdges, originalsheetCoordinateInPlane_x, originalsheetCoordinateInPlane_y,
                     originalsheetControlPoint, originalsheetWidth, originalsheetLengthTopLeft, originalsheetLengthTopRight, originalsheetTipCoordinate_x, originalsheetLengthTopTip,
                     colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0));
@@ -1281,7 +1281,7 @@ namespace BaseClasses.GraphObj
                 {
                     // Predpokladame ze samotne objekty v listOfOpenings sa neprekyvaju
                     // 3. Zoradime objekty podla lokalnej suradnice y
-                    objectInColision_In_Local_x.OrderBy(o => originalsheetCoordinateInPlane_y);
+                    objectInColision_In_Local_x.OrderBy(o => o.CoordinateInPlane_y);
 
                     // 4. Podla poctu objektov v objectInColision_In_Local_x a ich suradnic vieme na kolko casti budeme originalsheet delit
                     int iNumberOfNewSheets = objectInColision_In_Local_x.Count + 1; // TODO skontrolovat podla suradnic ci objekt zacina na alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
