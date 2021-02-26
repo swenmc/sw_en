@@ -1085,7 +1085,10 @@ namespace BaseClasses.GraphObj
             double outOffPlaneOffset_FG = -0.010; // Pokial kreslime cladding ako jednoliatu plochu na celu stenu alebo strechu, nastavime offset, aby sa fibreglasa nevnarali do cladding
             if (bIndividualCladdingSheets)
             {
-                outOffPlaneOffset_FG = 0; // Ak kreslime individualne sheets pre cladding nepotrebujeme offset
+                // Ak kreslime individualne sheets pre cladding nepotrebujeme offset
+                // Napriek tomu docasne nastavujem maly offset, pretoze ak sa z dôvodu nejakej chyby nerozdelia cladding sheets tak to koliduje s fibreglass
+                // Bug 726 a Bug 728 - po dorieseni sa moze nastavit na 0.000
+                outOffPlaneOffset_FG = -0.005;
                 model_gr = new Model3DGroup(); // Vyprazdnime model group s povodnym cladding
             }
 
