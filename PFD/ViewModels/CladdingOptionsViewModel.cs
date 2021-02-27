@@ -480,6 +480,7 @@ namespace PFD
             set
             {
                 m_RoofCladding = value;
+                UpdateFibreglassPropertiesRoof();
             }
         }
 
@@ -493,6 +494,7 @@ namespace PFD
             set
             {
                 m_WallCladding = value;
+                UpdateFibreglassPropertiesWall();
             }
         }
 
@@ -1123,7 +1125,7 @@ namespace PFD
                 FibreglassProperties f = m_FibreglassProperties.LastOrDefault();
                 if (f != null)
                 {
-                    f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.Width, _pfdVM.Length, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+                    f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
                     f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("FibreglassProperties_Add");
                 }
@@ -1234,7 +1236,7 @@ namespace PFD
 
             FibreglassProperties = new ObservableCollection<FibreglassProperties>();
             FibreglassProperties f = new FibreglassProperties();
-            f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.Width, _pfdVM.Length, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+            f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
             FibreglassProperties.Add(f);
         }
 
@@ -1245,6 +1247,31 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private void UpdateFibreglassPropertiesWall()
+        {
+            foreach (FibreglassProperties f in this.FibreglassProperties)
+            {
+                if (MathF.d_equal(f.CladdingWidthModular_Wall, WallCladdingProps.widthModular_m)) continue; //do not change if nothing changes
+                f.CladdingWidthModular_Wall = (float)WallCladdingProps.widthModular_m;
+            }
+        }
+        private void UpdateFibreglassPropertiesRoof()
+        {
+            foreach (FibreglassProperties f in this.FibreglassProperties)
+            {
+                if (MathF.d_equal(f.CladdingWidthModular_Roof, RoofCladdingProps.widthModular_m)) continue; //do not change if nothing changes
+                f.CladdingWidthModular_Roof = (float)RoofCladdingProps.widthModular_m;
+            }
+        }
+
+        public void UpdateFibreglassPropertiesMaxX()
+        {
+            foreach (FibreglassProperties f in this.FibreglassProperties)
+            {
+                if (!MathF.d_equal(f.ModelTotalLengthFront, _pfdVM.WidthOverall)) f.ModelTotalLengthFront = _pfdVM.WidthOverall;
+                if (!MathF.d_equal(f.ModelTotalLengthLeft, _pfdVM.LengthOverall)) f.ModelTotalLengthLeft = _pfdVM.LengthOverall;
+            }
+        }
         public void SetViewModel(CladdingOptionsViewModel newVM)
         {
             IsSetFromCode = true;

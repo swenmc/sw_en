@@ -447,6 +447,7 @@ namespace PFD
                     IsSetFromCode = true;
                     WidthOverall = MWidth + 2 * MainColumnCrsc_z_plus;
                     IsSetFromCode = isChangedFromCode;
+                    _claddingOptionsVM.UpdateFibreglassPropertiesMaxX();
                 }
 
                 if (MModelIndex != 0)
@@ -523,6 +524,7 @@ namespace PFD
                     IsSetFromCode = true;
                     LengthOverall = MLength + Math.Abs(EdgeColumnCrsc_y_minus) + EdgeColumnCrsc_y_plus;
                     IsSetFromCode = isChangedFromCode;
+                    _claddingOptionsVM.UpdateFibreglassPropertiesMaxX();
                 }
 
                 if (MModelIndex != 0)
@@ -612,6 +614,7 @@ namespace PFD
                     IsSetFromCode = true;
                     Width = MWidthOverall - 2 * MainColumnCrsc_z_plus;
                     IsSetFromCode = isChangedFromCode;
+                    _claddingOptionsVM.UpdateFibreglassPropertiesMaxX();
                 }
                 if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("WidthOverall");
@@ -637,6 +640,7 @@ namespace PFD
                     IsSetFromCode = true;
                     Length = MLengthOverall - Math.Abs(EdgeColumnCrsc_y_minus) - EdgeColumnCrsc_y_plus;
                     IsSetFromCode = isChangedFromCode;
+                    _claddingOptionsVM.UpdateFibreglassPropertiesMaxX();
                 }
 
                 if (MModelIndex != 0)

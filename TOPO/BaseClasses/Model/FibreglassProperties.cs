@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using DATABASE;
 using DATABASE.DTO;
+using MATH;
 
 namespace BaseClasses
 {
@@ -47,6 +48,7 @@ namespace BaseClasses
             set
             {
                 m_Side = value;
+                InitXValuesAndSetX();
                 NotifyPropertyChanged("Side");
             }
         }
@@ -111,6 +113,7 @@ namespace BaseClasses
         {
             get
             {
+                if (m_XValues == null) m_XValues = new List<float>();
                 return m_XValues;
             }
 
@@ -145,6 +148,7 @@ namespace BaseClasses
             set
             {
                 m_ModelTotalLengthFront = value;
+                if (!IsSetFromCode) InitXValuesAndSetX();
             }
         }
 
@@ -158,6 +162,7 @@ namespace BaseClasses
             set
             {
                 m_ModelTotalLengthLeft = value;
+                if (!IsSetFromCode) InitXValuesAndSetX();
             }
         }
 
@@ -171,6 +176,7 @@ namespace BaseClasses
             set
             {
                 m_CladdingWidthModular_Wall = value;
+                if (!IsSetFromCode) InitXValuesAndSetX();
             }
         }
 
@@ -184,6 +190,7 @@ namespace BaseClasses
             set
             {
                 m_CladdingWidthModular_Roof = value;
+                if (!IsSetFromCode) InitXValuesAndSetX();
             }
         }
 
@@ -202,7 +209,7 @@ namespace BaseClasses
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
             CladdingWidthModular_Wall = (float)widthModularWall;
-            CladdingWidthModular_Wall = (float)widthModularRoof;
+            CladdingWidthModular_Roof = (float)widthModularRoof;
 
             InitXValues();
 
@@ -221,14 +228,15 @@ namespace BaseClasses
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
         public void SetDefaults(EModelType_FS modelType, float lengthFront, float lengthLeft, double widthModularWall, double widthModularRoof)
         {
+            IsSetFromCode = true;
+
             ModelType = modelType;
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
             CladdingWidthModular_Wall = (float)widthModularWall;
-            CladdingWidthModular_Wall = (float)widthModularRoof;
+            CladdingWidthModular_Roof = (float)widthModularRoof;
 
             InitXValues();
 
@@ -236,6 +244,8 @@ namespace BaseClasses
             this.X = 0f;
             this.Y = 0.6f;
             this.Length = 1.8f;
+
+            IsSetFromCode = false;
         }
 
         private void InitSides()
@@ -302,8 +312,16 @@ namespace BaseClasses
 
             XValues = x_values;
 
-            if (XValues.Count != 0) X = XValues.First();
+            //if (XValues.Count != 0) X = XValues.First();
         }
+
+        private void InitXValuesAndSetX()
+        {
+            InitXValues();
+            if (XValues.Count > 0 && !XValues.Contains(X)) X = XValues.First();            
+        }
+
+
 
     }
 }
