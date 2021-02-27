@@ -43,6 +43,10 @@ namespace PFD
             {
                 CladdingOptionsChanged = true;
             }
+            if (sender is FibreglassProperties)
+            {
+                CladdingOptionsChanged = true;
+            }
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
