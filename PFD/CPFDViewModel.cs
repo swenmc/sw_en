@@ -4572,14 +4572,15 @@ namespace PFD
             //To Mato
             //tu je otazka,ci takto,ze ked nie je este model, tak proste nepocitame...
             // alebo by sa to dalo cez KitsetTypeIndex napr. if (KitsetTypeIndex == EModelType_FS.eKitsetMonoRoofEnclosed)
-            if (Model == null) return;
+            //if (Model == null) return;
+            //prerobil som cez KitsetTypeIndex
 
-            if (Model is CModel_PFD_01_MR)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) //if (Model is CModel_PFD_01_MR)
             {
                 WallDefinitionPoints_Right = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, Height_H2_Overall), new Point(0, Height_H2_Overall) };
                 WallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_H2_Overall), new Point(0, WallHeightOverall) };
             }
-            else if (Model is CModel_PFD_01_GR)
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) // Model is CModel_PFD_01_GR
             {
                 WallDefinitionPoints_Right = WallDefinitionPoints_Left;
                 WallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, WallHeightOverall), new Point(0.5 * WidthOverall, Height_H2_Overall), new Point(0, WallHeightOverall) };
@@ -4602,9 +4603,9 @@ namespace PFD
 
             if (ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Right Side").Generate == true)
             {
-                if (Model is CModel_PFD_01_MR)
+                if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) //if (Model is CModel_PFD_01_MR)
                     fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
-                else if (Model is CModel_PFD_01_GR)
+                else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) //if (Model is CModel_PFD_01_GR)
                     fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
                 else
                     fWallArea_Right = float.MinValue; //  Exception - not implemented
@@ -4629,12 +4630,12 @@ namespace PFD
         {
             int iNumberOfRoofSides = 0; // Number of roof planes (2 - gable, 1 - monopitch)
 
-            if (Model is CModel_PFD_01_MR)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)  //if (Model is CModel_PFD_01_MR)
             {
                 RoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(WidthOverall)); // Dlzka hrany strechy
                 iNumberOfRoofSides = 1;
             }
-            else if (Model is CModel_PFD_01_GR)
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)  //if (Model is CModel_PFD_01_GR)
             {
                 RoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(0.5f * WidthOverall)); // Dlzka hrany strechy
                 iNumberOfRoofSides = 2;
