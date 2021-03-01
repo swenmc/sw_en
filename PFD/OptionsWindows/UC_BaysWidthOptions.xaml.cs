@@ -90,6 +90,8 @@ namespace PFD
         //toto som zapinal, lebo inak sa neupdatuje tabulka s bay widths 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            _pfdVM._baysWidthOptionsVM.PropertyChanged -= HandleBayWidthsOptionsPropertyChangedEvent; //reregister events
+            _pfdVM._baysWidthOptionsVM.PropertyChanged += HandleBayWidthsOptionsPropertyChangedEvent;
             this.DataContext = _pfdVM._baysWidthOptionsVM;
         }
     }
