@@ -111,7 +111,7 @@ namespace BaseClasses.Helpers
                 if (m.NodeEnd != null)
                 {
                     if (removeDuplicit) { if (!nodes.Contains(m.NodeEnd)) nodes.Add(m.NodeEnd); }
-                    else nodes.Add(m.NodeEnd);                    
+                    else nodes.Add(m.NodeEnd);
                 }
             }
             return nodes;
@@ -149,7 +149,7 @@ namespace BaseClasses.Helpers
                     m.EMemberTypePosition == EMemberType_FS_Position.PurlinCanopy ||
                     m.EMemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy ||
                     m.EMemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy) continue;
-                
+
                 members.Add(m);
             }
             return members.ToArray();
@@ -416,9 +416,9 @@ namespace BaseClasses.Helpers
             List<CMember> membersList = new List<CMember>(members); // Konvertujeme z pola na list, aby sme mohli v zozname vyhladavat
 
             // Najdi vsetky spoje na prutoch modelu
-            foreach(CConnectionJointTypes j in model.m_arrConnectionJoints)
+            foreach (CConnectionJointTypes j in model.m_arrConnectionJoints)
             {
-                foreach(CMember m in membersList)
+                foreach (CMember m in membersList)
                 {
                     if (j.m_Node.ID == m.NodeStart.ID || j.m_Node.ID == m.NodeEnd.ID)
                     {
@@ -445,7 +445,7 @@ namespace BaseClasses.Helpers
         {
             // Funckia vrati suradnicu uzla pre specificky smer GCS ktory chceme uvazovat
 
-            if(iDirectionCode == (int)EGCSDirection.X) // Direction X
+            if (iDirectionCode == (int)EGCSDirection.X) // Direction X
                 return n.X;
             if (iDirectionCode == (int)EGCSDirection.Y) // Direction Y
                 return n.Y;
@@ -549,6 +549,23 @@ namespace BaseClasses.Helpers
                 return true;
             else
                 return false;
+        }
+
+
+
+        public static bool IsNeighboringLeftCanopy(CCanopiesInfo canopiesInfo)
+        {
+            if (canopiesInfo == null) return false;
+
+            if (canopiesInfo.Left == true) return true;
+            else return false;
+        }
+        public static bool IsNeighboringRightCanopy(CCanopiesInfo canopiesInfo)
+        {
+            if (canopiesInfo == null) return false;
+
+            if (canopiesInfo.Right == true) return true;
+            else return false;
         }
     }
 }

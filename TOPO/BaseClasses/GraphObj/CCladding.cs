@@ -423,23 +423,21 @@ namespace BaseClasses.GraphObj
                         int iAreaIndex = 5;
 
                         float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                        float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - (float)OverhangOffset_y + (float)column_crsc_y_minus;
-                        float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)OverhangOffset_y + (float)column_crsc_y_plus;
+                        //float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - (float)OverhangOffset_y + (float)column_crsc_y_minus;
+                        //float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)OverhangOffset_y + (float)column_crsc_y_plus;
 
-                        if (canopy.BayIndex == 0) // First bay
-                            fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
-                        else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
-                            fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
+                        //if (canopy.BayIndex == 0) // First bay
+                        //    fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
+                        //else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
+                        //    fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
 
                         //TODO - tu treba oddelit fBayStartCoordinate_Y a fBayEndCoordinate_Y pre lavu a pravu stranu
                         // BUG 735 Zistit ci je na lavej ,resp pravej strane canopy napojena na inu canopy vedla nej a ak ano tak je potrebne nastavit tieto hodnoty tak, aby sa canopies neprekryvali
 
-                        iBayIndex++; // Docasne // Todo 691 - zmazat
-
-                        float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y - (float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y;
-                        int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
-                        double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
-                        double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
+                        //float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y - (float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y;
+                        //int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
+                        //double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
+                        //double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
 
                         if (canopy.Left)
                         {
@@ -449,13 +447,29 @@ namespace BaseClasses.GraphObj
                             //  |______|
                             // 3        0
 
+                            bool hasNextCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
+                            bool hasPreviousCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
+
+                            float fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_plus;
+
+                            if (canopy.BayIndex == 0) // First bay
+                                fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
+                            else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
+                                fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
+
+                            float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y_Left - (float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y; //Mato - toto neviem co je
+                            int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
+                            double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
+                            double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
+                            
                             float fCanopyCladdingWidth = (float)canopy.WidthLeft + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                             float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
-                            Point3D pfront_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
-                            Point3D pback_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayEndCoordinate_Y, fCanopy_EdgeCoordinate_z);
-                            Point3D pfront_right = new Point3D(pRoof_front3_heightleft.X, fBayStartCoordinate_Y, height_1_final_edge_Roof);
-                            Point3D pback_right = new Point3D(pRoof_back3_heightleft.X, fBayEndCoordinate_Y, height_1_final_edge_Roof);
+                            Point3D pfront_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayStartCoordinate_Y_Left, fCanopy_EdgeCoordinate_z);
+                            Point3D pback_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayEndCoordinate_Y_Left, fCanopy_EdgeCoordinate_z);
+                            Point3D pfront_right = new Point3D(pRoof_front3_heightleft.X, fBayStartCoordinate_Y_Left, height_1_final_edge_Roof);
+                            Point3D pback_right = new Point3D(pRoof_back3_heightleft.X, fBayEndCoordinate_Y_Left, height_1_final_edge_Roof);
 
                             if (options.bUseTextures)
                             {
@@ -478,13 +492,29 @@ namespace BaseClasses.GraphObj
 
                         if (canopy.Right)
                         {
+                            bool hasNextCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
+                            bool hasPreviousCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
+
+                            float fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_plus;
+
+                            if (canopy.BayIndex == 0) // First bay
+                                fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
+                            else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
+                                fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
+
+                            float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y_Right - (float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y; //Mato - toto neviem co je
+                            int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
+                            double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
+                            double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
+
                             float fCanopyCladdingWidth = (float)canopy.WidthRight + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                             float fCanopy_EdgeCoordinate_z = (float)height_2_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
-                            Point3D pfront_left = new Point3D(pRoof_front2_heightright.X, fBayStartCoordinate_Y, height_2_final_edge_Roof);
-                            Point3D pback_left = new Point3D(pRoof_back2_heightright.X, fBayEndCoordinate_Y, height_2_final_edge_Roof);
-                            Point3D pfront_right = new Point3D(sBuildingGeomInputData.fW_centerline + (float)column_crsc_z_plus_temp + (float)roofEdgeOverhang_X + fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
-                            Point3D pback_right = new Point3D(sBuildingGeomInputData.fW_centerline + (float)column_crsc_z_plus_temp + (float)roofEdgeOverhang_X + fCanopyCladdingWidth, fBayEndCoordinate_Y, fCanopy_EdgeCoordinate_z);
+                            Point3D pfront_left = new Point3D(pRoof_front2_heightright.X, fBayStartCoordinate_Y_Right, height_2_final_edge_Roof);
+                            Point3D pback_left = new Point3D(pRoof_back2_heightright.X, fBayEndCoordinate_Y_Right, height_2_final_edge_Roof);
+                            Point3D pfront_right = new Point3D(sBuildingGeomInputData.fW_centerline + (float)column_crsc_z_plus_temp + (float)roofEdgeOverhang_X + fCanopyCladdingWidth, fBayStartCoordinate_Y_Right, fCanopy_EdgeCoordinate_z);
+                            Point3D pback_right = new Point3D(sBuildingGeomInputData.fW_centerline + (float)column_crsc_z_plus_temp + (float)roofEdgeOverhang_X + fCanopyCladdingWidth, fBayEndCoordinate_Y_Right, fCanopy_EdgeCoordinate_z);
 
                             if (options.bUseTextures)
                             {
@@ -504,6 +534,7 @@ namespace BaseClasses.GraphObj
                             model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
                             iAreaIndex++;
                         }
+                        iBayIndex++; // Docasne // Todo 691 - zmazat
                     }
                 }
             }
@@ -597,33 +628,36 @@ namespace BaseClasses.GraphObj
                         int iAreaIndex = 6;
 
                         float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                        float fBayStartCoordinate_Y = (iBayIndex * fBayWidth) - (float)OverhangOffset_y + (float)column_crsc_y_minus;
-                        float fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)OverhangOffset_y + (float)column_crsc_y_plus;
-
-                        if (canopy.BayIndex == 0) // First bay
-                            fBayStartCoordinate_Y = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
-                        else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
-                            fBayEndCoordinate_Y = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
-
-                        // TODO - tu treba oddelit fBayStartCoordinate_Y a fBayEndCoordinate_Y pre lavu a pravu stranu
-                        // BUG 735 - Zistit ci je na lavej ,resp pravej strane canopy napojena na inu canopy vedla nej a ak ano tak je potrebne nastavit tieto hodnoty tak, aby sa canopies neprekryvali
-
-                        iBayIndex++; // Docasne // Todo 691 - zmazat
-
-                        float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y - (float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y;
-                        int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
-                        double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
-                        double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
 
                         if (canopy.Left)
                         {
+                            // TODO - tu treba oddelit fBayStartCoordinate_Y a fBayEndCoordinate_Y pre lavu a pravu stranu
+                            // BUG 735 - Zistit ci je na lavej ,resp pravej strane canopy napojena na inu canopy vedla nej a 
+                            //ak ano tak je potrebne nastavit tieto hodnoty tak, aby sa canopies neprekryvali
+
+                            bool hasNextCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
+                            bool hasPreviousCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
+
+                            float fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_plus;
+
+                            if (canopy.BayIndex == 0) // First bay
+                                fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
+                            else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
+                                fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
+
+                            float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y_Left - (float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y; //Mato - toto neviem co je
+                            int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
+                            double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
+                            double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
+
                             float fCanopyCladdingWidth = (float)canopy.WidthLeft + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                             float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
-                            Point3D pfront_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
-                            Point3D pback_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayEndCoordinate_Y, fCanopy_EdgeCoordinate_z);
-                            Point3D pfront_right = new Point3D(pRoof_front3_heightleft.X, fBayStartCoordinate_Y, height_1_final_edge_Roof);
-                            Point3D pback_right = new Point3D(pRoof_back3_heightleft.X, fBayEndCoordinate_Y, height_1_final_edge_Roof);
+                            Point3D pfront_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayStartCoordinate_Y_Left, fCanopy_EdgeCoordinate_z);
+                            Point3D pback_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayEndCoordinate_Y_Left, fCanopy_EdgeCoordinate_z);
+                            Point3D pfront_right = new Point3D(pRoof_front3_heightleft.X, fBayStartCoordinate_Y_Left, height_1_final_edge_Roof);
+                            Point3D pback_right = new Point3D(pRoof_back3_heightleft.X, fBayEndCoordinate_Y_Left, height_1_final_edge_Roof);
 
                             if (options.bUseTextures)
                             {
@@ -646,13 +680,29 @@ namespace BaseClasses.GraphObj
 
                         if (canopy.Right)
                         {
+                            bool hasNextCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
+                            bool hasPreviousCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
+
+                            float fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_plus;
+
+                            if (canopy.BayIndex == 0) // First bay
+                                fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
+                            else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
+                                fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
+
+                            float fBayStartCoordinateFromRoofEdge = fBayStartCoordinate_Y_Right - (float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y; //Mato - toto neviem co je
+                            int iNumberOfWholeRibs = (int)(fBayStartCoordinateFromRoofEdge / claddingWidthRibModular_Roof);
+                            double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
+                            double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
+
                             float fCanopyCladdingWidth = (float)canopy.WidthRight + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                             float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
-                            Point3D pfront_left = new Point3D(pRoof_front2_heightright.X, fBayStartCoordinate_Y, height_1_final_edge_Roof);
-                            Point3D pback_left = new Point3D(pRoof_back2_heightright.X, fBayEndCoordinate_Y, height_1_final_edge_Roof);
-                            Point3D pfront_right = new Point3D(sBuildingGeomInputData.fW_centerline + (float)column_crsc_z_plus_temp + (float)roofEdgeOverhang_X + fCanopyCladdingWidth, fBayStartCoordinate_Y, fCanopy_EdgeCoordinate_z);
-                            Point3D pback_right = new Point3D(sBuildingGeomInputData.fW_centerline + (float)column_crsc_z_plus_temp + (float)roofEdgeOverhang_X + fCanopyCladdingWidth, fBayEndCoordinate_Y, fCanopy_EdgeCoordinate_z);
+                            Point3D pfront_left = new Point3D(pRoof_front2_heightright.X, fBayStartCoordinate_Y_Right, height_1_final_edge_Roof);
+                            Point3D pback_left = new Point3D(pRoof_back2_heightright.X, fBayEndCoordinate_Y_Right, height_1_final_edge_Roof);
+                            Point3D pfront_right = new Point3D(sBuildingGeomInputData.fW_centerline + (float)column_crsc_z_plus_temp + (float)roofEdgeOverhang_X + fCanopyCladdingWidth, fBayStartCoordinate_Y_Right, fCanopy_EdgeCoordinate_z);
+                            Point3D pback_right = new Point3D(sBuildingGeomInputData.fW_centerline + (float)column_crsc_z_plus_temp + (float)roofEdgeOverhang_X + fCanopyCladdingWidth, fBayEndCoordinate_Y_Right, fCanopy_EdgeCoordinate_z);
 
                             if (options.bUseTextures)
                             {
@@ -670,8 +720,9 @@ namespace BaseClasses.GraphObj
                             }
 
                             model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
-                            iAreaIndex++;
+                            iAreaIndex++;                            
                         }
+                        iBayIndex++; // Docasne // Todo 691 - zmazat
                     }
                 }
             }
