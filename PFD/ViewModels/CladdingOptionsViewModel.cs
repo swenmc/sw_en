@@ -354,6 +354,7 @@ namespace PFD
             }
         }
 
+        //percentage of fibreglass of total area roof
         public float FibreglassAreaRoof
         {
             get
@@ -371,6 +372,7 @@ namespace PFD
             }
         }
 
+        //percentage of fibreglass of total area wall
         //-------------------------------------------------------------------------------------------------------------
         public float FibreglassAreaWall
         {
@@ -931,7 +933,7 @@ namespace PFD
                     f.PropertyChanged -= HandleFibreglassPropertiesPropertyChangedEvent;
                     f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
                 }
-                
+                SetFibreglassAreasPercentages();
                 NotifyPropertyChanged("FibreglassProperties");
             }
         }
@@ -1139,6 +1141,7 @@ namespace PFD
                 //SetResultsAreNotValid();
                 NotifyPropertyChanged("FibreglassProperties_CollectionChanged");
             }
+            SetFibreglassAreasPercentages();
         }
 
         private void HandleFibreglassPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -1151,6 +1154,8 @@ namespace PFD
                 {
 
                 }
+
+                SetFibreglassAreasPercentages();
 
                 this.PropertyChanged(sender, e);
             }
@@ -1354,5 +1359,47 @@ namespace PFD
             }
             WallFibreglassTypeIndex = 0;
         }
+
+        
+        private float GetTotalFibreglassAreaRoof()
+        {
+            float area = 0;
+            foreach (FibreglassProperties fp in FibreglassProperties)
+            {
+                //rozmyslam,ci vsetky tieto veci nie su pomale a vsade by sme ich mali nahradit enumom, alebo indexom
+                if (fp.Side == "Roof" || fp.Side == "Roof-Left Side" || fp.Side == "Roof-Right Side")
+                {
+                    area += fp.CladdingWidthModular_Roof * fp.Length;
+                }
+            }
+            return area;
+        }
+        private float GetTotalFibreglassAreaWall()
+        {
+            float area = 0;
+            foreach (FibreglassProperties fp in FibreglassProperties)
+            {
+                //rozmyslam,ci vsetky tieto veci nie su pomale a vsade by sme ich mali nahradit enumom, alebo indexom
+                if (fp.Side == "Roof" || fp.Side == "Roof-Left Side" || fp.Side == "Roof-Right Side")
+                {
+                    continue;
+                }
+                area += fp.CladdingWidthModular_Wall * fp.Length;
+            }
+            return area;
+        }
+
+        private void SetFibreglassAreasPercentages()
+        {
+            if (IsSetFromCode) return;
+
+            //mozno by bolo lepsie takto...ked to treba, tak vtedy sa to prepocita
+            if (MathF.d_equal(_pfdVM.TotalRoofArea, 0)) _pfdVM.CountWallAndRoofAreas();
+            if (MathF.d_equal(_pfdVM.TotalWallArea, 0)) _pfdVM.CountWallAndRoofAreas();
+
+            FibreglassAreaRoof = GetTotalFibreglassAreaRoof() / 100 * _pfdVM.TotalRoofArea;
+            FibreglassAreaWall = GetTotalFibreglassAreaWall() / 100 * _pfdVM.TotalWallArea;
+        }
+
     }
 }

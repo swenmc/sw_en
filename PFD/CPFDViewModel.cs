@@ -13,7 +13,8 @@ using MATH;
 using M_BASE;
 using M_EC1.AS_NZS;
 using BriefFiniteElementNet.CodeProjectExamples;
-using BriefFiniteElementNet;
+//using BriefFiniteElementNet;
+using System.Windows;
 using PFD.Infrastructure;
 using System.Collections.ObjectModel;
 using DATABASE.DTO;
@@ -69,6 +70,12 @@ namespace PFD
         private float MBottomGirtPosition;
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
+
+        private float m_TotalRoofArea;
+        private float m_TotalWallArea;
+        private float m_BuildingArea_Gross;
+        private float m_BuildingVolume_Gross;
+        private float m_RoofSideLength;
 
         //private int MRoofCladdingIndex;
         //private int MRoofCladdingID;
@@ -411,6 +418,7 @@ namespace PFD
                 //FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
                 //FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
                 _claddingOptionsVM.SetDefaultValuesOnModelIndexChange(this);
+                CountWallAndRoofAreas();
 
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
 
@@ -493,6 +501,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("Width");
             }
         }
@@ -540,6 +549,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("Length");
             }
         }
@@ -591,6 +601,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -617,6 +628,7 @@ namespace PFD
                     _claddingOptionsVM.UpdateFibreglassPropertiesMaxX();
                 }
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("WidthOverall");
             }
         }
@@ -650,6 +662,7 @@ namespace PFD
                 }
                 if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("LengthOverall");
             }
         }
@@ -675,6 +688,7 @@ namespace PFD
                     IsSetFromCode = isChangedFromCode;
                 }
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("WallHeightOverall");
             }
         }
@@ -3284,6 +3298,71 @@ namespace PFD
             }
         }
 
+        public float TotalRoofArea
+        {
+            get
+            {
+                return m_TotalRoofArea;
+            }
+
+            set
+            {
+                m_TotalRoofArea = value;
+            }
+        }
+
+        public float TotalWallArea
+        {
+            get
+            {
+                return m_TotalWallArea;
+            }
+
+            set
+            {
+                m_TotalWallArea = value;
+            }
+        }
+
+        public float BuildingArea_Gross
+        {
+            get
+            {
+                return m_BuildingArea_Gross;
+            }
+
+            set
+            {
+                m_BuildingArea_Gross = value;
+            }
+        }
+
+        public float BuildingVolume_Gross
+        {
+            get
+            {
+                return m_BuildingVolume_Gross;
+            }
+
+            set
+            {
+                m_BuildingVolume_Gross = value;
+            }
+        }
+
+        public float RoofSideLength
+        {
+            get
+            {
+                return m_RoofSideLength;
+            }
+
+            set
+            {
+                m_RoofSideLength = value;
+            }
+        }
+
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -4481,6 +4560,102 @@ namespace PFD
             else if (Downpipes != null) col = Downpipes.FirstOrDefault().CoatingColor;
 
             return col;
+        }
+
+        private void CountWallAreas()
+        {
+            List<Point> WallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, WallHeightOverall), new Point(0, WallHeightOverall) };
+
+            List<Point> WallDefinitionPoints_Right;
+            List<Point> WallDefinitionPoints_Front;
+
+            //To Mato
+            //tu je otazka,ci takto,ze ked nie je este model, tak proste nepocitame...
+            // alebo by sa to dalo cez KitsetTypeIndex napr. if (KitsetTypeIndex == EModelType_FS.eKitsetMonoRoofEnclosed)
+            if (Model == null) return;
+
+            if (Model is CModel_PFD_01_MR)
+            {
+                WallDefinitionPoints_Right = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, Height_H2_Overall), new Point(0, Height_H2_Overall) };
+                WallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_H2_Overall), new Point(0, WallHeightOverall) };
+            }
+            else if (Model is CModel_PFD_01_GR)
+            {
+                WallDefinitionPoints_Right = WallDefinitionPoints_Left;
+                WallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, WallHeightOverall), new Point(0.5 * WidthOverall, Height_H2_Overall), new Point(0, WallHeightOverall) };
+            }
+            else
+            {
+                WallDefinitionPoints_Right = null; // Exception - not implemented
+                WallDefinitionPoints_Front = null; // Exception - not implemented
+            }
+
+            float fWallArea_Left = 0; float fWallArea_Right = 0;
+
+            // TO Ondrej - prosim skontroluj mi tieto podmienky, ci sa to da napisat inak
+            // da sa to hocijako, ale kedze nemame rozdielne position, tak asi takto, resp. sa da vybrat len na zaklade spolocneho enumu ak su len 2 a potom vybrat first a last
+            //vm.ComponentList.FirstOrDefault(x=> x.MemberTypePosition == EMemberType_FS_Position.Girt) //left
+            //vm.ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt) //right
+            //ja ale osobne nevidim dovod preco sa pocita rozloha iba ked su Generate zapnute na true ???
+            if (ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Left Side").Generate == true)
+                fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left.ToArray());
+
+            if (ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Right Side").Generate == true)
+            {
+                if (Model is CModel_PFD_01_MR)
+                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
+                else if (Model is CModel_PFD_01_GR)
+                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
+                else
+                    fWallArea_Right = float.MinValue; //  Exception - not implemented
+            }
+
+            float fWallArea_Front = 0;
+            if (ComponentList[(int)EMemberType_FS_Position.GirtFrontSide].Generate == true)
+                fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
+
+            float fWallArea_Back = 0;
+            if (ComponentList[(int)EMemberType_FS_Position.GirtBackSide].Generate == true)
+                fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
+
+            BuildingArea_Gross = WidthOverall * LengthOverall;
+            BuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray()) * LengthOverall;
+
+            TotalWallArea = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
+        }
+
+
+        private void CountRoofAreas()
+        {
+            int iNumberOfRoofSides = 0; // Number of roof planes (2 - gable, 1 - monopitch)
+
+            if (Model is CModel_PFD_01_MR)
+            {
+                RoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(WidthOverall)); // Dlzka hrany strechy
+                iNumberOfRoofSides = 1;
+            }
+            else if (Model is CModel_PFD_01_GR)
+            {
+                RoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(0.5f * WidthOverall)); // Dlzka hrany strechy
+                iNumberOfRoofSides = 2;
+            }
+            else
+            {
+                // Exception - not implemented
+                RoofSideLength = 0;
+                iNumberOfRoofSides = 0;
+            }
+
+            if (ComponentList[(int)EMemberType_FS_Position.Purlin].Generate == true)
+                TotalRoofArea = iNumberOfRoofSides * RoofSideLength * LengthOverall;
+        }
+
+        //to Mato - treba sa zamysliet, kde vsade to treba volat
+        //toto zacina byt naozaj obtiazne, aby sme presne urcili, kde vsade sa maju prepocitavat hocijake prepocty, treba reagovat vzdy na spravnych miestach
+        public void CountWallAndRoofAreas()
+        {
+            CountWallAreas();
+            CountRoofAreas();
         }
     }
 }
