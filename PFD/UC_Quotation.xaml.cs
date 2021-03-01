@@ -82,6 +82,10 @@ namespace PFD
             float fWallArea_Left = 0; float fWallArea_Right = 0;
 
             // TO Ondrej - prosim skontroluj mi tieto podmienky, ci sa to da napisat inak
+            // da sa to hocijako, ale kedze nemame rozdielne position, tak asi takto, resp. sa da vybrat len na zaklade spolocneho enumu ak su len 2 a potom vybrat first a last
+            //vm.ComponentList.FirstOrDefault(x=> x.MemberTypePosition == EMemberType_FS_Position.Girt) //left
+            //vm.ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt) //right
+            //ja ale osobne nevidim dovod preco sa pocita rozloha iba ked su Generate zapnute na true ???
             if (vm.ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Left Side").Generate == true)
                 fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left.ToArray());
 
@@ -180,7 +184,7 @@ namespace PFD
                 fRoofSideLength = 0;
                 iNumberOfRoofSides = 0;
             }
-
+            
             if (vm.ComponentList[(int)EMemberType_FS_Position.Purlin].Generate == true)
                 fRoofArea = iNumberOfRoofSides * fRoofSideLength * _pfdVM.LengthOverall;
 
