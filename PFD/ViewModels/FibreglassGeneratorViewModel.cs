@@ -235,6 +235,7 @@ namespace PFD
             set
             {
                 m_Periodicity = value;
+                NotifyPropertyChanged("Periodicity");
             }
         }
 
@@ -248,6 +249,7 @@ namespace PFD
             set
             {
                 m_PeriodicityValues = value;
+                NotifyPropertyChanged("PeriodicityValues");
             }
         }
 
@@ -633,7 +635,10 @@ namespace PFD
 
             PeriodicityValues = values;
 
-            if (PeriodicityValues.Count != 0) Periodicity = PeriodicityValues.First();
+            if (PeriodicityValues.Count != 0)
+            {
+                if(!PeriodicityValues.Contains(Periodicity)) Periodicity = PeriodicityValues.First();
+            }            
         }
 
         public FibreglassProperties GetFibreglass()
