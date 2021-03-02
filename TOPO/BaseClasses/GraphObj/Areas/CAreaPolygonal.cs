@@ -38,7 +38,7 @@ namespace BaseClasses.GraphObj
             FTime = fTime;
         }
 
-        public GeometryModel3D CreateArea(bool useTextures, DiffuseMaterial material)
+        public GeometryModel3D CreateArea(bool useTextures, DiffuseMaterial material, bool setBackMaterial = true)
         {
             if (m_EdgePointList == null) return null;
 
@@ -85,7 +85,9 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            return new GeometryModel3D(mesh, material);
+            GeometryModel3D model3D = new GeometryModel3D(mesh, material);
+            if(setBackMaterial) model3D.BackMaterial = material;
+            return model3D;
         }
     }
 }
