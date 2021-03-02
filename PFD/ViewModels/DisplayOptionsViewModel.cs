@@ -113,8 +113,16 @@ namespace PFD
         private bool MShowDetailSymbols;
         private bool MShowSlabRebates;
 
+
+        private bool m_DisplayCladdingDescription;
         private bool m_DisplayCladdingSheetID;
+        private bool m_DisplayCladdingWidthHeight;
+        private bool m_DisplayCladdingArea;        
+
+        private bool m_DisplayFibreglassDescription;
         private bool m_DisplayFibreglassID;
+        private bool m_DisplayFibreglassWidthHeight;
+        private bool m_DisplayFibreglassArea;
 
         [NonSerialized]
         private Color m_WireframeColor;
@@ -3324,6 +3332,19 @@ namespace PFD
             }
         }
 
+        public bool DisplayCladdingDescription
+        {
+            get
+            {
+                return m_DisplayCladdingDescription;
+            }
+
+            set
+            {
+                m_DisplayCladdingDescription = value;
+                NotifyPropertyChanged("DisplayCladdingDescription");
+            }
+        }
         public bool DisplayCladdingSheetID
         {
             get
@@ -3338,6 +3359,47 @@ namespace PFD
             }
         }
 
+        public bool DisplayCladdingWidthHeight
+        {
+            get
+            {
+                return m_DisplayCladdingWidthHeight;
+            }
+
+            set
+            {
+                m_DisplayCladdingWidthHeight = value;
+                NotifyPropertyChanged("DisplayCladdingWidthHeight");
+            }
+        }
+
+        public bool DisplayCladdingArea
+        {
+            get
+            {
+                return m_DisplayCladdingArea;
+            }
+
+            set
+            {
+                m_DisplayCladdingArea = value;
+                NotifyPropertyChanged("DisplayCladdingArea");
+            }
+        }
+
+        public bool DisplayFibreglassDescription
+        {
+            get
+            {
+                return m_DisplayFibreglassDescription;
+            }
+
+            set
+            {
+                m_DisplayFibreglassDescription = value;
+                NotifyPropertyChanged("DisplayFibreglassDescription");
+            }
+        }
         public bool DisplayFibreglassID
         {
             get
@@ -3352,10 +3414,33 @@ namespace PFD
             }
         }
 
-        
+        public bool DisplayFibreglassWidthHeight
+        {
+            get
+            {
+                return m_DisplayFibreglassWidthHeight;
+            }
 
+            set
+            {
+                m_DisplayFibreglassWidthHeight = value;
+                NotifyPropertyChanged("DisplayFibreglassWidthHeight");
+            }
+        }
 
+        public bool DisplayFibreglassArea
+        {
+            get
+            {
+                return m_DisplayFibreglassArea;
+            }
 
+            set
+            {
+                m_DisplayFibreglassArea = value;
+                NotifyPropertyChanged("DisplayFibreglassArea");
+            }
+        }
 
 
         #endregion Properties
@@ -3438,8 +3523,16 @@ namespace PFD
             ShowSectionSymbols = false;
             ShowDetailSymbols = false;
             ShowSlabRebates = true;
+
+
+            DisplayCladdingDescription = false;
             DisplayCladdingSheetID = false;
+            DisplayCladdingWidthHeight = false;
+            DisplayCladdingArea = false;
+            DisplayFibreglassDescription = false;
             DisplayFibreglassID = false;
+            DisplayFibreglassWidthHeight = false;
+            DisplayFibreglassArea = false;
 
             CladdingSheetColoursByID = false;
             UseTextures = false;
@@ -3670,8 +3763,16 @@ namespace PFD
             ShowSectionSymbols = newVM.ShowSectionSymbols;
             ShowDetailSymbols = newVM.ShowDetailSymbols;
             ShowSlabRebates = newVM.ShowSlabRebates;
+
+            DisplayCladdingDescription = newVM.DisplayCladdingDescription;
             DisplayCladdingSheetID = newVM.DisplayCladdingSheetID;
+            DisplayCladdingWidthHeight = newVM.DisplayCladdingWidthHeight;
+            DisplayCladdingArea = newVM.DisplayCladdingArea;
+
+            DisplayFibreglassDescription = newVM.DisplayFibreglassDescription;
             DisplayFibreglassID = newVM.DisplayFibreglassID;
+            DisplayFibreglassWidthHeight = newVM.DisplayFibreglassWidthHeight;
+            DisplayFibreglassArea = newVM.DisplayFibreglassArea;
 
             ShowLoads = newVM.ShowLoads;
             ShowLoadsOnMembers = newVM.ShowLoadsOnMembers;
