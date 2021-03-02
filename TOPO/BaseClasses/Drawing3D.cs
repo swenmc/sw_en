@@ -198,11 +198,11 @@ namespace BaseClasses
                 // Cladding
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame)
                 {
-                    //Model3DGroup lines;  // linie ako 3D valcove plochy
-                    //if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
-                    //Drawing3D.DrawModelSlabsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
-                    //if (lines != null)
-                    //    gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                    Model3DGroup lines;  // linie ako 3D valcove plochy
+                    if (othersModel3DGroup == null) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawModelOtherObjectsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
+                    if (lines != null)
+                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
                 
 
@@ -2231,9 +2231,6 @@ namespace BaseClasses
                         Model3DGroup doorModel3D = cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door(sDisplayOptions.bUseTextures);
                         model3D_group.Children.Add(doorModel3D); // Add solid to model group
 
-                        //TO Mato - tak to je nonsen z tohoto tahat wireframe OMG
-                        //((GeometryModel3D)((Model3DGroup)((Model3DGroup)((Model3DGroup)doorModel3D.Children[0]).Children[0]).Children[0]).Children[0]).Geometry
-
                         //else
                         //{
                         //    //Exception - not implemented
@@ -2986,6 +2983,58 @@ namespace BaseClasses
                     AddLineToViewPort(wireFramePoints, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, viewPort);
                 }*/
             }
+        }
+
+        public static void DrawModelOtherObjectsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
+        {
+            cylinders = null;
+            List<Point3D> wireFramePoints = new List<Point3D>();
+
+            if (model.m_arrGOCladding != null && sDisplayOptions.bDisplayCladding) // Some cladding exists
+            {
+                // Model Groups of Cladding
+                for (int i = 0; i < model.m_arrGOCladding.Count; i++)
+                {
+                    if (model.m_arrGOCladding[i] != null &&
+                        model.m_arrGOCladding[i].m_pControlPoint != null &&
+                        model.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
+                    {
+                        //wireFramePoints.AddRange(model.m_arrGOCladding[i].WireFramePoints);                        
+                    }
+                }
+            }
+
+            if (model.m_arrGOStrDoors != null && sDisplayOptions.bDisplayCladdingWireFrame && sDisplayOptions.bDisplayDoorsWireFrame) // Some doors exist
+            {
+                // Model Groups of Doors
+                for (int i = 0; i < model.m_arrGOStrDoors.Count; i++)
+                {
+                    if (model.m_arrGOStrDoors[i] != null &&
+                        model.m_arrGOStrDoors[i].m_pControlPoint != null &&
+                        model.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        wireFramePoints.AddRange(model.m_arrGOStrDoors[i].WireFramePoints);
+                    }
+                }
+            }
+
+            if (model.m_arrGOStrWindows != null && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) // Some windows exist
+            {
+                // Model Groups of Windows
+                for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
+                {
+                    if (model.m_arrGOStrWindows[i] != null &&
+                        model.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                        model.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        //wireFramePoints.AddRange(model.m_arrGOStrWindows[i].WireFramePoints);
+                    }
+                }
+            }
+
+            if (wireFramePoints.Count > 0)
+                DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
+
         }
 
         private static void AddLineToViewPort(List<Point3D> points, Color color, double thickness, Viewport3D viewPort)
