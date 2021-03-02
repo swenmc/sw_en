@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
@@ -35,6 +36,21 @@ namespace BaseClasses.GraphObj
         public int m_iSegmentNum;
         public float m_fGThickness;
         public float m_fRotationZDegrees;
+
+        private List<Point3D> m_WireFramePoints;
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
+                return m_WireFramePoints;
+            }
+
+            set
+            {
+                m_WireFramePoints = value;
+            }
+        }
 
         public bool IsRollerDoor
         {
@@ -125,6 +141,19 @@ namespace BaseClasses.GraphObj
             gr.Children.Add(mFrame_03_V.CreateM_3D_G_Volume_8Edges(pArray[2], fT_Y, fT_Y, fH_Z - 1 * fT_Y, DiffMatF, DiffMatF)); // Vertical
             gr.Children.Add(mDoorPanel.CreateM_3D_G_Volume_8Edges(pArray[3], fL_X - 2 * fT_Y, fDoorPanelThickness, fH_Z - 1 * fT_Y, DiffMatD, DiffMatD)); // Door Panel No 1
 
+            //to Mato - tu je nutne nastavit wireframePoints            
+            //tu je nutne niekde ziskat Wireframe a aj ho nastavit
+            WireFramePoints.AddRange(mFrame_01_HU.WireFramePoints);
+            WireFramePoints.AddRange(mFrame_02_V.WireFramePoints);
+            WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
+            WireFramePoints.AddRange(mDoorPanel.WireFramePoints);
+
+            //ak sa nepouziva,tak treba zmazat z pamate
+            mFrame_01_HU = null;
+            mFrame_02_V = null;
+            mFrame_03_V = null;
+            mDoorPanel = null;
+
             return gr;
         }
 
@@ -181,15 +210,22 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
+        //upravene vramci refaktoringu 2.3.2021 naco sa vytvara dalsia struktura Model3DGroup
+        //public Model3DGroup CreateM_3D_G_Door(bool useTextures)
+        //{
+        //    Model3DGroup m3Dg = new Model3DGroup();
+
+        //    Point3D pControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+
+        //    m3Dg.Children.Add(CreateM_3D_G_Door(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees, useTextures));
+
+        //    return m3Dg;
+        //}
         public Model3DGroup CreateM_3D_G_Door(bool useTextures)
         {
-            Model3DGroup m3Dg = new Model3DGroup();
-
             Point3D pControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
 
-            m3Dg.Children.Add(CreateM_3D_G_Door(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees, useTextures));
-
-            return m3Dg;
+            return CreateM_3D_G_Door(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees, useTextures);
         }
     }
 }

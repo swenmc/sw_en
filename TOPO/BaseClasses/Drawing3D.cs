@@ -195,6 +195,17 @@ namespace BaseClasses
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
+                // Cladding
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame)
+                {
+                    //Model3DGroup lines;  // linie ako 3D valcove plochy
+                    //if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
+                    //Drawing3D.DrawModelSlabsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
+                    //if (lines != null)
+                    //    gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+                
+
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2217,7 +2228,12 @@ namespace BaseClasses
                         cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
-                        model3D_group.Children.Add(cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door(sDisplayOptions.bUseTextures)); // Add solid to model group
+                        Model3DGroup doorModel3D = cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door(sDisplayOptions.bUseTextures);
+                        model3D_group.Children.Add(doorModel3D); // Add solid to model group
+
+                        //TO Mato - tak to je nonsen z tohoto tahat wireframe OMG
+                        //((GeometryModel3D)((Model3DGroup)((Model3DGroup)((Model3DGroup)doorModel3D.Children[0]).Children[0]).Children[0]).Children[0]).Geometry
+
                         //else
                         //{
                         //    //Exception - not implemented

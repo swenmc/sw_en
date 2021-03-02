@@ -32,6 +32,22 @@ namespace BaseClasses.GraphObj
         public float m_fDim4;
 
         public float m_fVolume;
+
+        private List<Point3D> m_WireFramePoints;
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
+                return m_WireFramePoints;
+            }
+
+            set
+            {
+                m_WireFramePoints = value;
+            }
+        }
+
         // Constructor 1
         public CVolume()
         {
@@ -961,6 +977,10 @@ namespace BaseClasses.GraphObj
             models.Children.Add(CreateRectangle(p1, p2, p6, p5, mat2));
             models.Children.Add(CreateRectangle(p2, p3, p7, p6, mat2));
             models.Children.Add(CreateRectangle(p3, p0, p4, p7, mat2));
+
+            //To Mato - tu niekde by sme mohli vytvarat aj wireframe
+            //pripadne aj napojene na nejaky bool ci to treba
+            WireFramePoints = new List<Point3D>() { p0, p1, p1, p2, p2, p3, p3, p0, p4, p5, p5, p6, p6, p7, p7, p4, p0, p4, p1, p5, p2, p6, p3, p7 };            
 
             return models;
         }
