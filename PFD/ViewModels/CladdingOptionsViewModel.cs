@@ -1397,8 +1397,8 @@ namespace PFD
             if (MathF.d_equal(_pfdVM.TotalRoofArea, 0)) _pfdVM.CountWallAndRoofAreas();
             if (MathF.d_equal(_pfdVM.TotalWallArea, 0)) _pfdVM.CountWallAndRoofAreas();
 
-            FibreglassAreaRoof = GetTotalFibreglassAreaRoof() / 100 * _pfdVM.TotalRoofArea;
-            FibreglassAreaWall = GetTotalFibreglassAreaWall() / 100 * _pfdVM.TotalWallArea;
+            FibreglassAreaRoof = GetTotalFibreglassAreaRoof() / _pfdVM.TotalRoofArea * 100;
+            FibreglassAreaWall = GetTotalFibreglassAreaWall() / _pfdVM.TotalWallArea * 100;
         }
 
     }
