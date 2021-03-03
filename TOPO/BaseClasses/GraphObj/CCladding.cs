@@ -1332,7 +1332,8 @@ namespace BaseClasses.GraphObj
                 {
                     // Predpokladame ze samotne objekty v listOfOpenings sa neprekryvaju
                     // 3. Zoradime objekty podla lokalnej suradnice y
-                    objectInColision_In_Local_x.OrderBy(o => o.CoordinateInPlane_y);
+                    // Bug 745 - To Ondrej // Moze to vyzerat takto ze prava strana sa zoradi a potom sa to priradi do toho isteho zoznamu???
+                    objectInColision_In_Local_x = objectInColision_In_Local_x.OrderBy(o => o.CoordinateInPlane_y).ToList();
 
                     // 4. Podla poctu objektov v objectInColision_In_Local_x a ich suradnic vieme na kolko casti budeme originalsheet delit
                     int iNumberOfNewSheets = objectInColision_In_Local_x.Count + 1; // TODO skontrolovat podla suradnic ci objekt zacina na alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
