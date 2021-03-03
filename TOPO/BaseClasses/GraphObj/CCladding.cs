@@ -1038,8 +1038,8 @@ namespace BaseClasses.GraphObj
                                     }
                                 }
                             }
+                            iBayIndex++; // Docasne // Todo 691 - zmazat
                         }
-                        iBayIndex++; // Docasne // Todo 691 - zmazat
                     }
                 }
             }
