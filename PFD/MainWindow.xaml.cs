@@ -328,6 +328,11 @@ namespace PFD
                     vm.RecreateModel = true;
                     vm.RecreateFloorSlab = true;
 
+
+                    //To Mato - tu je kod co sposobuje Bug 737
+                    //musi sa tu asi prepocitavat nieco pokial sa zmeni section na zaklade toho co je nastavene v model OPtions ci Overal ci Center Dimensions
+                    //ty by si mohol povedat co konkretne sa ma prepocitat, lebo podla kodu nizsie vidis, ze sa to nastavi akoby nanovo to zadal pouzivatel
+                    //sposobuje to potom prepocet BayWidths, asi ale iba pre option vm._modelOptionsVM.OverallDimensions true
                     if (vm._modelOptionsVM.OverallDimensions)
                     {
                         vm.WidthOverall = vm.WidthOverall; vm.LengthOverall = vm.LengthOverall; //recalculate dimensions
