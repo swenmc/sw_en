@@ -720,7 +720,7 @@ namespace BaseClasses.GraphObj
                             }
 
                             model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
-                            iAreaIndex++;                            
+                            iAreaIndex++;
                         }
                         iBayIndex++; // Docasne // Todo 691 - zmazat
                     }
@@ -1039,6 +1039,7 @@ namespace BaseClasses.GraphObj
                                 }
                             }
                         }
+                        iBayIndex++; // Docasne // Todo 691 - zmazat
                     }
                 }
             }
@@ -1136,6 +1137,7 @@ namespace BaseClasses.GraphObj
                                         break;
                                     }
                                 }
+                                iBayIndex++; // Docasne // Todo 691 - zmazat
                             }
                         }
                     }
