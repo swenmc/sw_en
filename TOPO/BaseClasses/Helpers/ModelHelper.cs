@@ -567,5 +567,17 @@ namespace BaseClasses.Helpers
             if (canopiesInfo.Right == true) return true;
             else return false;
         }
+
+        public static float GetBaysWidthUntil(int bayIndex, IList<CBayInfo> bayWidths)
+        {
+            float w = 0;
+            for (int i = 0; i < bayIndex; i++)
+            {
+                if (i >= bayWidths.Count) continue;
+                w += bayWidths[i].Width;
+            }
+            return w;
+        }
+
     }
 }
