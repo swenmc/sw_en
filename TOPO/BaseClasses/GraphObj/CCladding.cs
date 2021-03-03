@@ -53,8 +53,8 @@ namespace BaseClasses.GraphObj
         double roofEdgeOverhang_X; // = 0.150; // Presah okraja strechy, default 150 mm, limit <0, 500mm>
         double roofEdgeOverhang_Y; // = 0.000; // Presah okraja strechy, default 0 mm limit <0, 300mm>
 
-        double OverhangOffset_x;
-        double OverhangOffset_y;
+        double canopyOverhangOffset_x;
+        double canopyOverhangOffset_y;
 
         // Fibre glass properties
         string m_ColorNameRoof_FG;
@@ -147,11 +147,11 @@ namespace BaseClasses.GraphObj
 
             roofEdgeOverhang_Y = fRoofEdgeOverHang_FB_Y;
             roofEdgeOverhang_X = fRoofEdgeOverHang_LR_X;
-            OverhangOffset_x = fCanopyRoofEdgeOverHang_LR_X;
+            canopyOverhangOffset_x = fCanopyRoofEdgeOverHang_LR_X;
             bottomEdge_z = fWallBottomOffset_Z;
             considerRoofCladdingFor_FB_WallHeight = bConsiderRoofCladdingFor_FB_WallHeight;
 
-            OverhangOffset_y = roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
+            canopyOverhangOffset_y = roofEdgeOverhang_Y; // TODO - zadavat v GUI ako cladding property pre roof, toto bude pre roof a canopy rovnake
 
             m_ColorNameRoof_FG = colorRoof_FG_Name;
             m_claddingShape_Roof_FG = m_claddingShape_Roof;
@@ -450,8 +450,8 @@ namespace BaseClasses.GraphObj
                             bool hasNextCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
                             bool hasPreviousCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
 
-                            float fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_minus;
-                            float fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_plus;
+                            float fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus;
 
                             if (canopy.BayIndex == 0) // First bay
                                 fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
@@ -463,7 +463,7 @@ namespace BaseClasses.GraphObj
                             double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
                             double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
                             
-                            float fCanopyCladdingWidth = (float)canopy.WidthLeft + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                            float fCanopyCladdingWidth = (float)canopy.WidthLeft + (float)canopyOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                             float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
                             Point3D pfront_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayStartCoordinate_Y_Left, fCanopy_EdgeCoordinate_z);
@@ -495,8 +495,8 @@ namespace BaseClasses.GraphObj
                             bool hasNextCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
                             bool hasPreviousCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
 
-                            float fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_minus;
-                            float fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_plus;
+                            float fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus;
 
                             if (canopy.BayIndex == 0) // First bay
                                 fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
@@ -508,7 +508,7 @@ namespace BaseClasses.GraphObj
                             double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
                             double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
 
-                            float fCanopyCladdingWidth = (float)canopy.WidthRight + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                            float fCanopyCladdingWidth = (float)canopy.WidthRight + (float)canopyOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                             float fCanopy_EdgeCoordinate_z = (float)height_2_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
                             Point3D pfront_left = new Point3D(pRoof_front2_heightright.X, fBayStartCoordinate_Y_Right, height_2_final_edge_Roof);
@@ -638,8 +638,8 @@ namespace BaseClasses.GraphObj
                             bool hasNextCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
                             bool hasPreviousCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
 
-                            float fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_minus;
-                            float fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_plus;
+                            float fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus;
 
                             if (canopy.BayIndex == 0) // First bay
                                 fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
@@ -651,7 +651,7 @@ namespace BaseClasses.GraphObj
                             double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
                             double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
 
-                            float fCanopyCladdingWidth = (float)canopy.WidthLeft + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                            float fCanopyCladdingWidth = (float)canopy.WidthLeft + (float)canopyOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                             float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
                             Point3D pfront_left = new Point3D(-(float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X - fCanopyCladdingWidth, fBayStartCoordinate_Y_Left, fCanopy_EdgeCoordinate_z);
@@ -683,8 +683,8 @@ namespace BaseClasses.GraphObj
                             bool hasNextCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
                             bool hasPreviousCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
 
-                            float fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_minus;
-                            float fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)OverhangOffset_y) + (float)column_crsc_y_plus;
+                            float fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus;
 
                             if (canopy.BayIndex == 0) // First bay
                                 fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
@@ -696,7 +696,7 @@ namespace BaseClasses.GraphObj
                             double dWidthOfWholeRibs = iNumberOfWholeRibs * claddingWidthRibModular_Roof;
                             double dPartialRib = fBayStartCoordinateFromRoofEdge - dWidthOfWholeRibs; // To Ondrej - Posun rebier v metroch
 
-                            float fCanopyCladdingWidth = (float)canopy.WidthRight + (float)OverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
+                            float fCanopyCladdingWidth = (float)canopy.WidthRight + (float)canopyOverhangOffset_x - (float)column_crsc_z_plus_temp - (float)roofEdgeOverhang_X;
                             float fCanopy_EdgeCoordinate_z = (float)height_1_final_edge_Roof + fCanopyCladdingWidth * (float)Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
 
                             Point3D pfront_left = new Point3D(pRoof_front2_heightright.X, fBayStartCoordinate_Y_Right, height_1_final_edge_Roof);
@@ -957,16 +957,18 @@ namespace BaseClasses.GraphObj
                         //----------------------------------------------------------------------------------
                         foreach (CCanopiesInfo canopy in canopyCollection)
                         {
-                            double BayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                            double BayStartCoordinate_Y = (iBayIndex * BayWidth) - OverhangOffset_y + column_crsc_y_minus;
-                            double BayEndCoordinate_Y = ((iBayIndex + 1) * BayWidth) + OverhangOffset_y + column_crsc_y_plus;
+                            float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
+
+                            bool hasNextCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
+                            bool hasPreviousCanopy = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
+
+                            float fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_minus;
+                            float fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus;
 
                             if (canopy.BayIndex == 0) // First bay
-                                BayStartCoordinate_Y = (iBayIndex * BayWidth) + column_crsc_y_minus_temp - roofEdgeOverhang_Y;
+                                fBayStartCoordinate_Y_Right = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
                             else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
-                                BayEndCoordinate_Y = ((iBayIndex + 1) * BayWidth) + column_crsc_y_plus_temp + roofEdgeOverhang_Y;
-
-                            iBayIndex++; // Docasne // Todo 691 - zmazat
+                                fBayEndCoordinate_Y_Right = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
 
                             // Musime menit len tie sheets ktore maju zaciatok na hrane strechy
                             if (MATH.MathF.d_equal(originalsheet.CoordinateInPlane_y, 0, 0.002))
@@ -977,14 +979,14 @@ namespace BaseClasses.GraphObj
                                 // Zistime ci je canopy v kolizii s plechom
                                 // Ak ano upravime koncove lokalne suradnice plechu y na suradnice canopy a nastavime nove dlzky plechu
                                 if (canopy.Right && (
-                                   (BayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
-                                   BayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
-                                   (BayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                   BayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
-                                   (BayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                   BayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
+                                   (fBayStartCoordinate_Y_Right <= originalsheet.CoordinateInPlane_x &&
+                                   fBayEndCoordinate_Y_Right >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
+                                   (fBayStartCoordinate_Y_Right >= originalsheet.CoordinateInPlane_x &&
+                                   fBayStartCoordinate_Y_Right <= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
+                                   (fBayEndCoordinate_Y_Right >= originalsheet.CoordinateInPlane_x &&
+                                   fBayEndCoordinate_Y_Right <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
                                 {
-                                    double CanopyCladdingWidth_Right = canopy.WidthRight + OverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
+                                    double CanopyCladdingWidth_Right = canopy.WidthRight + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
 
                                     originalsheet.CoordinateInPlane_y -= CanopyCladdingWidth_Right;
                                     originalsheet.LengthTopLeft += CanopyCladdingWidth_Right;
@@ -1000,20 +1002,31 @@ namespace BaseClasses.GraphObj
                             // Pre monopitch upravujeme aj lavu stranu plechu
                             if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
                             {
+                                bool hasNextCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
+                                bool hasPreviousCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
+
+                                float fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_minus;
+                                float fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus;
+
+                                if (canopy.BayIndex == 0) // First bay
+                                    fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
+                                else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
+                                    fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
+
                                 // Musime menit len tie sheets ktore maju koniec na hrane strechy
                                 if (MATH.MathF.d_equal(originalsheet.CoordinateInPlane_y + originalsheet.LengthTotal, length_left_basic, 0.002))
                                 {
                                     // Zistime ci je canopy v kolizii s plechom
                                     // Ak ano upravime koncove lokalne suradnice plechu y na suradnice canopy a nastavime nove dlzky plechu
                                     if (canopy.Left && (
-                                       (BayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
-                                       BayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
-                                       (BayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                       BayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
-                                       (BayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                       BayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
+                                       (fBayStartCoordinate_Y_Left <= originalsheet.CoordinateInPlane_x &&
+                                       fBayEndCoordinate_Y_Left >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
+                                       (fBayStartCoordinate_Y_Left >= originalsheet.CoordinateInPlane_x &&
+                                       fBayStartCoordinate_Y_Left <= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
+                                       (fBayEndCoordinate_Y_Left >= originalsheet.CoordinateInPlane_x &&
+                                       fBayEndCoordinate_Y_Left <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
                                     {
-                                        double CanopyCladdingWidth_Left = canopy.WidthLeft + OverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
+                                        double CanopyCladdingWidth_Left = canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
 
                                         //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth; // Ostava povodne
                                         originalsheet.LengthTopLeft += CanopyCladdingWidth_Left;
@@ -1086,16 +1099,18 @@ namespace BaseClasses.GraphObj
                                 //----------------------------------------------------------------------------------
                                 foreach (CCanopiesInfo canopy in canopyCollection)
                                 {
-                                    double BayWidth = bayWidthCollection[canopy.BayIndex].Width;
-                                    double BayStartCoordinate_Y = (iBayIndex * BayWidth) - OverhangOffset_y + column_crsc_y_minus;
-                                    double BayEndCoordinate_Y = ((iBayIndex + 1) * BayWidth) + OverhangOffset_y + column_crsc_y_plus;
+                                    float fBayWidth = bayWidthCollection[canopy.BayIndex].Width;
+
+                                    bool hasNextCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex + 1));
+                                    bool hasPreviousCanopy = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(iBayIndex - 1));
+
+                                    float fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) - (hasPreviousCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_minus;
+                                    float fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (hasNextCanopy ? 0f : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus;
 
                                     if (canopy.BayIndex == 0) // First bay
-                                        BayStartCoordinate_Y = (iBayIndex * BayWidth) + column_crsc_y_minus_temp - roofEdgeOverhang_Y;
+                                        fBayStartCoordinate_Y_Left = (iBayIndex * fBayWidth) + (float)column_crsc_y_minus_temp - (float)roofEdgeOverhang_Y;
                                     else if (canopy.BayIndex == canopyCollection.Count - 1) // Last bay
-                                        BayEndCoordinate_Y = ((iBayIndex + 1) * BayWidth) + column_crsc_y_plus_temp + roofEdgeOverhang_Y;
-
-                                    iBayIndex++; // Docasne // Todo 691 - zmazat
+                                        fBayEndCoordinate_Y_Left = ((iBayIndex + 1) * fBayWidth) + (float)column_crsc_y_plus_temp + (float)roofEdgeOverhang_Y;
 
                                     // Zistime ci je plocha originalsheet v kolizii s nejakym canopy - right
                                     // Myslim ze mame niekde uz funkcie ktore vedia skontrolovat ci sa dve plochy prekryvaju
@@ -1103,14 +1118,14 @@ namespace BaseClasses.GraphObj
                                     // Zistime ci je canopy v kolizii s plechom
                                     // Ak ano upravime koncove lokalne suradnice plechu y na suradnice canopy a nastavime nove dlzky plechu
                                     if (canopy.Left && (
-                                        (BayStartCoordinate_Y <= originalsheet.CoordinateInPlane_x &&
-                                        BayEndCoordinate_Y >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
-                                        (BayStartCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                        BayStartCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
-                                        (BayEndCoordinate_Y >= originalsheet.CoordinateInPlane_x &&
-                                        BayEndCoordinate_Y <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
+                                        (fBayStartCoordinate_Y_Left <= originalsheet.CoordinateInPlane_x &&
+                                        fBayEndCoordinate_Y_Left >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
+                                        (fBayStartCoordinate_Y_Left >= originalsheet.CoordinateInPlane_x &&
+                                        fBayStartCoordinate_Y_Left <= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
+                                        (fBayEndCoordinate_Y_Left >= originalsheet.CoordinateInPlane_x &&
+                                        fBayEndCoordinate_Y_Left <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
                                     {
-                                        double CanopyCladdingWidth_Left = canopy.WidthLeft + OverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
+                                        double CanopyCladdingWidth_Left = canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
 
                                         //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth_Left;
                                         originalsheet.LengthTopLeft += CanopyCladdingWidth_Left;
