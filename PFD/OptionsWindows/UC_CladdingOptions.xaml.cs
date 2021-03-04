@@ -95,5 +95,8 @@ namespace PFD
                 _pfdVM._claddingOptionsVM.FibreglassProperties = new ObservableCollection<FibreglassProperties>(fibreglassProperties);
             }
         }
+
+
+
     }
 }

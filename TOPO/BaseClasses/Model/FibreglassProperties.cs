@@ -317,8 +317,13 @@ namespace BaseClasses
 
         private void InitXValuesAndSetX()
         {
+            int index = XValues.IndexOf(X);
             InitXValues();
-            if (XValues.Count > 0 && !XValues.Contains(X)) X = XValues.First();            
+            //if (XValues.Count > 0 && !XValues.Contains(X)) X = XValues.First();
+            if (XValues.Count == 0) return;
+
+            if (index < XValues.Count && index != -1) X = XValues.ElementAt(index);
+            else X = XValues.First();
         }
 
 
