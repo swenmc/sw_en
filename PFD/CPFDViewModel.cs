@@ -2986,7 +2986,7 @@ namespace PFD
 
                 SetResultsAreNotValid();
                 RecreateModel = true;
-
+                if (!IsSetFromCode) SetCustomModel();
                 NotifyPropertyChanged("BaysWidthOptionsChanged");
             }
         }
