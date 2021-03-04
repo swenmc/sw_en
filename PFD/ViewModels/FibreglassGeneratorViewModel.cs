@@ -103,6 +103,14 @@ namespace PFD
                 if (value < 0.00 || value > 50.00)
                     throw new ArgumentException("Sheet position must be between 0.0 and 50 [m]");
                 m_Y = value;
+                                
+                if (EqualSpacing) // Prepocitat suradnice
+                {
+                    Y2 = m_Y + Spacing;
+                    Y3 = m_Y2 + Spacing;
+                    Y4 = m_Y3 + Spacing;
+                    Y5 = m_Y4 + Spacing;
+                }
                 NotifyPropertyChanged("Y");
             }
         }
@@ -460,6 +468,15 @@ namespace PFD
             set
             {
                 m_EqualSpacing = value;
+
+                if (m_EqualSpacing) // Prepocitat suradnice
+                {
+                    Y2 = m_Y + m_Spacing;
+                    Y3 = m_Y2 + m_Spacing;
+                    Y4 = m_Y3 + m_Spacing;
+                    Y5 = m_Y4 + m_Spacing;
+                }
+
                 NotifyPropertyChanged("EqualSpacing");
             }
         }
@@ -499,6 +516,14 @@ namespace PFD
             set
             {
                 m_EnableVariableLengths = value;
+
+                if (!m_EnableVariableLengths) //changed to false
+                {   
+                    Length2 = Length;
+                    Length3 = Length;
+                    Length4 = Length;
+                    Length5 = Length;                    
+                }
                 NotifyPropertyChanged("EnableVariableLengths");
             }
         }
