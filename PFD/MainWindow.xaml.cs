@@ -335,10 +335,29 @@ namespace PFD
                     //sposobuje to potom prepocet BayWidths, asi ale iba pre option vm._modelOptionsVM.OverallDimensions true
                     if (vm._modelOptionsVM.OverallDimensions)
                     {
+                        //Bug 737
+                        //tu by to chcelo
+                        //Width Overal sa nezmeni, tak to nechame ako to je
+                        //Length Overal sa nezmeni, tak to nechame ako to je
+                        //Prestavime Width
+                        //Prestavime Length
+                        //if (!IsSetFromCode) SetCustomModel(); nastavime custom model
+                        //if (!IsSetFromCode) CountWallAndRoofAreas(); toto asi prepocitat nemusime??? lebo sa celkovy rozmer nezmenil (ale zase ani to neuskodi prepocitat)
+                        //BayWidthsBy bolo dobre zachovat lebo ak sa zmeni Length, tak sa to proste resetne
+
                         vm.WidthOverall = vm.WidthOverall; vm.LengthOverall = vm.LengthOverall; //recalculate dimensions
                     }
                     else
                     {
+                        //Bug 737
+                        //tuna by to zase chcelo
+                        //Width sa nezmeni, tak to nechame ako to je
+                        //Length sa nezmeni, tak to nechame ako to je
+                        //Prestavime Width Overal 
+                        //Prestavime Length Overal 
+                        //if (!IsSetFromCode) SetCustomModel(); nastavime custom model
+                        //if (!IsSetFromCode) CountWallAndRoofAreas(); prepocitame area
+                        //BayWidthsBy bolo dobre zachovat??? lebo to su rozmery pre centerlinesDimensions, tak sa vlastne tam asi nic nezmenilo??? 
                         vm.Width = vm.Width; vm.Length = vm.Length; //recalculate dimensions 
                     }
                 }
