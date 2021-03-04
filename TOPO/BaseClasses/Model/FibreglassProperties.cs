@@ -324,6 +324,16 @@ namespace BaseClasses
             else X = XValues.First();
         }
 
+        public bool IsInCollisionWith(FibreglassProperties f)
+        {
+            if (Side != f.Side) return false;
+            if (X != f.X) return false;
+            if (Y < f.Y && Y + Length > f.Y) return true;
+            if (f.Y < Y && f.Y + f.Length > Y) return true;
+
+            return false;
+        }
+
 
         public override bool Equals(object obj)
         {

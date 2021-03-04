@@ -112,8 +112,14 @@ namespace PFD
         {
             if (vm.AddFibreglass == false) return new List<FibreglassProperties>();
 
-            return GetFibreglassPropertiesBasedOnPeriodicity();
+            return GetNoCollisionsItems(GetFibreglassPropertiesBasedOnPeriodicity());
         }
+        //public List<FibreglassProperties> GetFibreglassProperties()
+        //{
+        //    if (vm.AddFibreglass == false) return new List<FibreglassProperties>();
+
+        //    return GetFibreglassPropertiesBasedOnPeriodicity();
+        //}
 
         public List<FibreglassProperties> GetFibreglassToDelete()
         {
@@ -171,6 +177,27 @@ namespace PFD
             }
 
             return items;
+        }
+
+        private List<FibreglassProperties> GetNoCollisionsItems(List<FibreglassProperties> items)
+        {
+            List<FibreglassProperties> itemsWithNoCollisions = new List<FibreglassProperties>();
+
+            foreach (FibreglassProperties f in items)
+            {
+                if (!HasCollisions(f, itemsWithNoCollisions)) itemsWithNoCollisions.Add(f);
+            }
+
+            return itemsWithNoCollisions;
+        }
+        private bool HasCollisions(FibreglassProperties f, List<FibreglassProperties> items)
+        {
+            foreach (FibreglassProperties fp in items)
+            {
+                if (f.IsInCollisionWith(fp)) return true;
+            }
+
+            return false;
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
