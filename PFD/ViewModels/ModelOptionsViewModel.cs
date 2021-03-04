@@ -51,6 +51,9 @@ namespace PFD
         private bool m_CenterlinesDimensions;
         private bool m_OverallDimensions;
 
+        private bool m_ColisionDeleteOriginal;
+        private bool m_ColisionInsertNewOne;
+
         private bool m_UseMainColumnFlyBracingPlates;
         private bool m_UseRafterFlyBracingPlates;
 
@@ -249,6 +252,39 @@ namespace PFD
             }
         }
 
+        public bool ColisionDeleteOriginal
+        {
+            get
+            {
+                return m_ColisionDeleteOriginal;
+            }
+
+            set
+            {
+                if (value == false && m_ColisionInsertNewOne == false) return;
+
+                m_ColisionDeleteOriginal = value;
+                NotifyPropertyChanged("ColisionDeleteOriginal");
+            }
+        }
+
+        public bool ColisionInsertNewOne
+        {
+            get
+            {
+                return m_ColisionInsertNewOne;
+            }
+
+            set
+            {
+                if (value == false && m_ColisionDeleteOriginal == false) return;
+
+                m_ColisionInsertNewOne = value;
+                NotifyPropertyChanged("ColisionInsertNewOne");
+            }
+        }
+
+
         public bool UseMainColumnFlyBracingPlates
         {
             get
@@ -388,6 +424,8 @@ namespace PFD
             }
         }
 
+        
+
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -424,6 +462,9 @@ namespace PFD
 
             m_CenterlinesDimensions = false;
             m_OverallDimensions = true;
+
+            m_ColisionDeleteOriginal = false;
+            m_ColisionInsertNewOne = true;
 
             m_UseMainColumnFlyBracingPlates = true;
             m_UseRafterFlyBracingPlates = true;
@@ -470,6 +511,9 @@ namespace PFD
 
             CenterlinesDimensions = vm.CenterlinesDimensions;
             OverallDimensions = vm.OverallDimensions;
+
+            ColisionDeleteOriginal = vm.ColisionDeleteOriginal;
+            ColisionInsertNewOne = vm.ColisionInsertNewOne;
 
             UseMainColumnFlyBracingPlates = vm.UseMainColumnFlyBracingPlates;
             UseRafterFlyBracingPlates = vm.UseRafterFlyBracingPlates;
