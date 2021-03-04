@@ -17,8 +17,8 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Name="GridFibreglassGenerator" Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="175"/>
+                <ColumnDefinition Width="1.2*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 
@@ -95,7 +95,7 @@
                   VerticalAlignment="Top" ItemsSource="{Binding Path=RowsCountValues, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=RowsCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-            <CheckBox Grid.Row="5" Grid.Column="0" Name ="chbEqualSpacing" HorizontalAlignment="Left" VerticalAlignment="Top" 
+            <CheckBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Name ="chbEqualSpacing" HorizontalAlignment="Left" VerticalAlignment="Top" 
                       IsChecked="{Binding Path=EqualSpacing}" >Equal spacing in y-Direction
             </CheckBox>
 
@@ -104,7 +104,7 @@
                      Width="{StaticResource smallComboBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
                      Text="{Binding Path=Spacing, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <CheckBox Grid.Row="7" Grid.Column="0" Name ="chbEnableVariableLengths" HorizontalAlignment="Left" VerticalAlignment="Top" 
+            <CheckBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Name ="chbEnableVariableLengths" HorizontalAlignment="Left" VerticalAlignment="Top" 
                       IsChecked="{Binding Path=EnableVariableLengths}" >Enable variable lengths
             </CheckBox>
 
