@@ -51,8 +51,8 @@ namespace PFD
         private bool m_CenterlinesDimensions;
         private bool m_OverallDimensions;
 
-        private bool m_ColisionDeleteOriginal;
-        private bool m_ColisionInsertNewOne;
+        private bool m_CollisionDeleteOriginal;
+        private bool m_CollisionInsertNewOne;
 
         private bool m_UseMainColumnFlyBracingPlates;
         private bool m_UseRafterFlyBracingPlates;
@@ -252,35 +252,35 @@ namespace PFD
             }
         }
 
-        public bool ColisionDeleteOriginal
+        public bool CollisionDeleteOriginal
         {
             get
             {
-                return m_ColisionDeleteOriginal;
+                return m_CollisionDeleteOriginal;
             }
 
             set
             {
-                if (value == false && m_ColisionInsertNewOne == false) return;
+                if (value == false && m_CollisionInsertNewOne == false) return;
 
-                m_ColisionDeleteOriginal = value;
-                NotifyPropertyChanged("ColisionDeleteOriginal");
+                m_CollisionDeleteOriginal = value;
+                NotifyPropertyChanged("CollisionDeleteOriginal");
             }
         }
 
-        public bool ColisionInsertNewOne
+        public bool CollisionInsertNewOne
         {
             get
             {
-                return m_ColisionInsertNewOne;
+                return m_CollisionInsertNewOne;
             }
 
             set
             {
-                if (value == false && m_ColisionDeleteOriginal == false) return;
+                if (value == false && m_CollisionDeleteOriginal == false) return;
 
-                m_ColisionInsertNewOne = value;
-                NotifyPropertyChanged("ColisionInsertNewOne");
+                m_CollisionInsertNewOne = value;
+                NotifyPropertyChanged("CollisionInsertNewOne");
             }
         }
 
@@ -463,8 +463,8 @@ namespace PFD
             m_CenterlinesDimensions = false;
             m_OverallDimensions = true;
 
-            m_ColisionDeleteOriginal = false;
-            m_ColisionInsertNewOne = true;
+            m_CollisionDeleteOriginal = false;
+            m_CollisionInsertNewOne = true;
 
             m_UseMainColumnFlyBracingPlates = true;
             m_UseRafterFlyBracingPlates = true;
@@ -512,8 +512,8 @@ namespace PFD
             CenterlinesDimensions = vm.CenterlinesDimensions;
             OverallDimensions = vm.OverallDimensions;
 
-            ColisionDeleteOriginal = vm.ColisionDeleteOriginal;
-            ColisionInsertNewOne = vm.ColisionInsertNewOne;
+            CollisionDeleteOriginal = vm.CollisionDeleteOriginal;
+            CollisionInsertNewOne = vm.CollisionInsertNewOne;
 
             UseMainColumnFlyBracingPlates = vm.UseMainColumnFlyBracingPlates;
             UseRafterFlyBracingPlates = vm.UseRafterFlyBracingPlates;
