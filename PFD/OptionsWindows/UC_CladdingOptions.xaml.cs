@@ -72,7 +72,7 @@ namespace PFD
 
                 foreach (FibreglassProperties fp in _pfdVM._claddingOptionsVM.FibreglassProperties)
                 {
-                    bool existsSameItem = fibreglassProps.Exists(f => MathF.d_equal(f.X, fp.X) && MathF.d_equal(f.Y, fp.Y) && MathF.d_equal(f.Length, fp.Length) && f.Side == fp.Side);
+                    bool existsSameItem = fibreglassProps.Exists(f => f.Equals(fp));
                     if (!existsSameItem) fibreglassProps.Add(fp);
                 }
 

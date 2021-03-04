@@ -496,7 +496,7 @@ namespace PFD
             set
             {
                 m_WallCladding = value;
-                UpdateFibreglassPropertiesWall();
+                UpdateFibreglassPropertiesWall();                
             }
         }
 
@@ -1254,19 +1254,25 @@ namespace PFD
 
         private void UpdateFibreglassPropertiesWall()
         {
+            bool changed = false;
             foreach (FibreglassProperties f in this.FibreglassProperties)
             {
                 if (MathF.d_equal(f.CladdingWidthModular_Wall, WallCladdingProps.widthModular_m)) continue; //do not change if nothing changes
+                changed = true;
                 f.CladdingWidthModular_Wall = (float)WallCladdingProps.widthModular_m;
             }
+            if (changed) ValidateFibreglassPropertiesRemoveDuplicities();
         }
         private void UpdateFibreglassPropertiesRoof()
         {
+            bool changed = false;
             foreach (FibreglassProperties f in this.FibreglassProperties)
             {
                 if (MathF.d_equal(f.CladdingWidthModular_Roof, RoofCladdingProps.widthModular_m)) continue; //do not change if nothing changes
+                changed = true;
                 f.CladdingWidthModular_Roof = (float)RoofCladdingProps.widthModular_m;
             }
+            if (changed) ValidateFibreglassPropertiesRemoveDuplicities();
         }
 
         public void UpdateFibreglassPropertiesMaxX()
@@ -1277,6 +1283,33 @@ namespace PFD
                 if (!MathF.d_equal(f.ModelTotalLengthLeft, _pfdVM.LengthOverall)) f.ModelTotalLengthLeft = _pfdVM.LengthOverall;
             }
         }
+
+        public void ValidateFibreglassPropertiesRemoveDuplicities()
+        {
+            List<FibreglassProperties> newListWithoutDuplicities = new List<FibreglassProperties>();
+            foreach (FibreglassProperties f in FibreglassProperties)
+            {
+                if (!newListWithoutDuplicities.Contains(f)) newListWithoutDuplicities.Add(f);
+            }
+
+            if (newListWithoutDuplicities.Count < FibreglassProperties.Count) // ak je prvkov naozaj menej, tak sa nastavi nova kolekcia, inak netreba robit nic
+            {
+                FibreglassProperties = new ObservableCollection<FibreglassProperties>(newListWithoutDuplicities);
+            }
+        }
+
+        //public void FindAndRemoveDuplicities(int startFromIndex, FibreglassProperties f)
+        //{
+        //    if (f == null) return;
+        //    List<int> indexesToDelete = new List<int>();
+        //    for (int i = FibreglassProperties.Count - 1; i >= startFromIndex; i--)
+        //    {
+        //        if (f.Equals(FibreglassProperties[i])) indexesToDelete.Add(i);
+        //    }
+
+        //    foreach (int index in indexesToDelete) FibreglassProperties.RemoveAt(index);
+        //}
+
         public void SetViewModel(CladdingOptionsViewModel newVM)
         {
             IsSetFromCode = true;

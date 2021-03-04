@@ -311,15 +311,13 @@ namespace BaseClasses
             }
 
             XValues = x_values;
-
-            //if (XValues.Count != 0) X = XValues.First();
         }
 
         private void InitXValuesAndSetX()
         {
             int index = XValues.IndexOf(X);
             InitXValues();
-            //if (XValues.Count > 0 && !XValues.Contains(X)) X = XValues.First();
+            //if (XValues.Count > 0 && !XValues.Contains(X)) X = XValues.First(); 
             if (XValues.Count == 0) return;
 
             if (index < XValues.Count && index != -1) X = XValues.ElementAt(index);
@@ -327,6 +325,19 @@ namespace BaseClasses
         }
 
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is FibreglassProperties)) return false;
+
+            FibreglassProperties fp = obj as FibreglassProperties;
+
+            if (!MathF.d_equal(X, fp.X)) return false;
+            if (!MathF.d_equal(Y, fp.Y)) return false;
+            if (!MathF.d_equal(Length, fp.Length)) return false;
+            if (Side != fp.Side) return false;
+
+            return true; //all params same => objects equal
+        }
 
     }
 }
