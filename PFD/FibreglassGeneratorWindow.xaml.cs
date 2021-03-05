@@ -108,7 +108,7 @@ namespace PFD
             }
         }
 
-        public List<FibreglassProperties> GetFibreglassProperties()
+        public List<FibreglassProperties> GetFibreglassPropertiesWithNoCollisions()
         {
             if (vm.AddFibreglass == false) return new List<FibreglassProperties>();
 
