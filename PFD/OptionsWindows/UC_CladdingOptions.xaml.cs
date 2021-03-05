@@ -109,7 +109,7 @@ namespace PFD
             foreach (FibreglassProperties new_f in newItems)
             {
                 bool existsSameItem = mergedLists.Exists(f => f.Equals(new_f));
-                if (existsSameItem) continue; //To Mato - otazka je,ci aj toto je kolizia?
+                if (existsSameItem) { collisionDetected = true; continue; } 
 
                 if (!mergedLists.Exists(f => f.IsInCollisionWith(new_f))) mergedLists.Add(new_f); //no collision - ADD
                 else collisionDetected = true;
@@ -126,6 +126,9 @@ namespace PFD
 
             foreach (FibreglassProperties original_f in sourceItems)
             {
+                bool existsSameItem = mergedLists.Exists(f => f.Equals(original_f));
+                if (existsSameItem) { collisionDetected = true; continue; }
+
                 if (!mergedLists.Exists(f => f.IsInCollisionWith(original_f))) mergedLists.Add(original_f); //no collision - ADD
                 else collisionDetected = true;
             }
