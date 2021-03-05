@@ -190,6 +190,21 @@ namespace PFD
 
             return itemsWithNoCollisions;
         }
+        private bool WillGeneratedItemsHaveCollisions()
+        {
+            List<FibreglassProperties> items = GetFibreglassPropertiesBasedOnPeriodicity();
+            List<FibreglassProperties> itemsWithNoCollisions = new List<FibreglassProperties>();
+            bool collisionDetected = false;
+            foreach (FibreglassProperties f in items)
+            {
+                if (!HasCollisions(f, itemsWithNoCollisions)) itemsWithNoCollisions.Add(f);
+                else { collisionDetected = true; break; }
+            }
+
+            items = null;
+            itemsWithNoCollisions = null;
+            return collisionDetected;
+        }
         private bool HasCollisions(FibreglassProperties f, List<FibreglassProperties> items)
         {
             foreach (FibreglassProperties fp in items)
@@ -202,6 +217,16 @@ namespace PFD
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            bool collisionDetected = WillGeneratedItemsHaveCollisions();
+            if (collisionDetected)
+            {
+                MessageBoxResult res = MessageBox.Show("Collisions ware detected. Do you want to solve them automatically?", "Attention", MessageBoxButton.YesNo);
+                if (res == MessageBoxResult.No)
+                {
+                    return; //do not close generator window, user must change values
+                }
+            }
+            
             vm.AddFibreglass = true;
             this.Close();
         }
