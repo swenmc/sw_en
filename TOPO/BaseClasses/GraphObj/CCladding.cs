@@ -1463,9 +1463,9 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public double GetMaximumAvailable_FG_SheetTopCoordinate (string side,
+        public double GetMaximumAvailable_FG_SheetTopCoordinate (string side, // Strana budovy
             EModelType_FS eModelType,
-            double width,
+            double width, // Sirka steny budovy, pre ktoru generujeme sheets
             double height_middle_basic_aux, // Stred budovy gable roof - roof ridge
             double height_left_basic, // Vyska steny vlavo
             double claddingWidthModular,
@@ -1474,8 +1474,8 @@ namespace BaseClasses.GraphObj
             // Predpokladame ze FB su obdlzniky a na hornom okraji sa nebudu zrezavat sikmo pre front a back wall ale vzdy nad nimi bude este aj plech
 
             int iNumberOfWholeSheets = (int)(width / claddingWidthModular);
-            double dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular;
-            double dLastSheetWidth = width - dWidthOfWholeSheets; // Last Sheet
+            //double dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular;
+            //double dLastSheetWidth = width - dWidthOfWholeSheets; // Last Sheet
             int iNumberOfOriginalSheetsOnSide = iNumberOfWholeSheets + 1; // Celkovy pocet povodnych sheets
 
             // Zakladne hodnoty pre obdlznik
@@ -1484,7 +1484,7 @@ namespace BaseClasses.GraphObj
             double height_left = height_left_basic;
             double height_right = height_left_basic;
             double height_toptip = height_left_basic;
-            double tipCoordinate_x = 0.5 * (sheetIndex == iNumberOfOriginalSheetsOnSide - 1 ? dLastSheetWidth : claddingWidthModular);
+            //double tipCoordinate_x = 0.5 * (sheetIndex == iNumberOfOriginalSheetsOnSide - 1 ? dLastSheetWidth : claddingWidthModular);
 
             if (side == "Front" || side == "Back")
             {
