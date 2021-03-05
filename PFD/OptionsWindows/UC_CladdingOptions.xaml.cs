@@ -67,16 +67,19 @@ namespace PFD
             if (generatorViewModel == null) return;
             if (generatorViewModel.AddFibreglass)
             {
-                List<FibreglassProperties> fibreglassProps = w.GetFibreglassProperties();
-                if (fibreglassProps.Count == 0) return;
+                List<FibreglassProperties> mergedLists = new List<FibreglassProperties>();
+                List<FibreglassProperties> itemsToAdd = w.GetFibreglassPropertiesWithNoCollisions();
+                bool collisionDetected = false;
+                if (_pfdVM._modelOptionsVM.CollisionInsertNewOne) mergedLists = MergeLists_InsertOnlyItemsWhereAvailable(itemsToAdd, _pfdVM._claddingOptionsVM.FibreglassProperties.ToList(), out collisionDetected);
+                else mergedLists = MergeLists_DeleteOriginal(itemsToAdd, _pfdVM._claddingOptionsVM.FibreglassProperties.ToList(), out collisionDetected);
 
-                foreach (FibreglassProperties fp in _pfdVM._claddingOptionsVM.FibreglassProperties)
+                if (collisionDetected)
                 {
-                    bool existsSameItem = fibreglassProps.Exists(f => f.Equals(fp));
-                    if (!existsSameItem) fibreglassProps.Add(fp);
+                    MessageBoxResult res = MessageBox.Show("Collisions were detected. Do you want to solve them automatically?", "Attention", MessageBoxButton.YesNo);
+                    if (res == MessageBoxResult.No) return; //do not add, do not do anything, do not add new generated items
                 }
 
-                _pfdVM._claddingOptionsVM.FibreglassProperties = new ObservableCollection<FibreglassProperties>(fibreglassProps);
+                _pfdVM._claddingOptionsVM.FibreglassProperties = new ObservableCollection<FibreglassProperties>(mergedLists);
             }
             else if (generatorViewModel.DeleteFibreglass)
             {
@@ -96,6 +99,39 @@ namespace PFD
             }
         }
 
+
+        private List<FibreglassProperties> MergeLists_InsertOnlyItemsWhereAvailable(IList<FibreglassProperties> newItems, IList<FibreglassProperties> sourceItems, out bool collisionDetected)
+        {
+            collisionDetected = false;
+
+            List<FibreglassProperties> mergedLists = new List<FibreglassProperties>(sourceItems);            
+
+            foreach (FibreglassProperties new_f in newItems)
+            {
+                bool existsSameItem = mergedLists.Exists(f => f.Equals(new_f));
+                if (existsSameItem) continue; //To Mato - otazka je,ci aj toto je kolizia?
+
+                if (!mergedLists.Exists(f => f.IsInCollisionWith(new_f))) mergedLists.Add(new_f); //no collision - ADD
+                else collisionDetected = true;
+            }
+
+            return mergedLists;
+        }
+
+        private List<FibreglassProperties> MergeLists_DeleteOriginal(IList<FibreglassProperties> newItems, IList<FibreglassProperties> sourceItems, out bool collisionDetected)
+        {
+            collisionDetected = false;
+
+            List<FibreglassProperties> mergedLists = new List<FibreglassProperties>(newItems);
+
+            foreach (FibreglassProperties original_f in sourceItems)
+            {
+                if (!mergedLists.Exists(f => f.IsInCollisionWith(original_f))) mergedLists.Add(original_f); //no collision - ADD
+                else collisionDetected = true;
+            }
+
+            return mergedLists;
+        }
 
 
     }
