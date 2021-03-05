@@ -1283,7 +1283,15 @@ namespace BaseClasses.GraphObj
                     objectInColision_In_Local_x = objectInColision_In_Local_x.OrderBy(o => o.CoordinateInPlane_y).ToList();
 
                     // 4. Podla poctu objektov v objectInColision_In_Local_x a ich suradnic vieme na kolko casti budeme originalsheet delit
-                    int iNumberOfNewSheets = objectInColision_In_Local_x.Count + 1; // TODO skontrolovat podla suradnic ci objekt zacina na alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
+                    int iNumberOfNewSheets = objectInColision_In_Local_x.Count + 1;
+
+                    // Skontrolovat podla suradnic ci objekt zacina alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
+                    foreach(COpening o in objectInColision_In_Local_x)
+                    {
+                        if (o.CoordinateInPlane_y >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal) ||
+                            ((o.CoordinateInPlane_y + o.LengthTotal) >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal)))
+                            iNumberOfNewSheets--;
+                    }
 
                     // 5. Pridame nove sheets do zoznamu
                     for (int j = 0; j < iNumberOfNewSheets; j++)
