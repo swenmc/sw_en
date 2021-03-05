@@ -25,6 +25,11 @@ namespace BaseClasses
         private float m_Y;
         private float m_Length;
 
+        private string m_Side_old;
+        private float m_X_old;
+        private float m_Y_old;
+        private float m_Length_old;
+
         private List<string> m_Sides;
         private List<float> m_XValues;
 
@@ -47,6 +52,7 @@ namespace BaseClasses
 
             set
             {
+                Side_old = m_Side;
                 m_Side = value;
                 InitXValuesAndSetX();
                 NotifyPropertyChanged("Side");
@@ -62,6 +68,7 @@ namespace BaseClasses
 
             set
             {
+                X_old = m_X;
                 m_X = value;
                 NotifyPropertyChanged("X");
             }
@@ -76,6 +83,7 @@ namespace BaseClasses
 
             set
             {
+                Y_old = m_Y;
                 m_Y = value;
                 NotifyPropertyChanged("Y");
             }
@@ -90,6 +98,7 @@ namespace BaseClasses
 
             set
             {
+                Length_old = m_Length;
                 m_Length = value;
                 NotifyPropertyChanged("Length");
             }
@@ -191,6 +200,58 @@ namespace BaseClasses
             {
                 m_CladdingWidthModular_Roof = value;
                 if (!IsSetFromCode) InitXValuesAndSetX();
+            }
+        }
+
+        public string Side_old
+        {
+            get
+            {
+                return m_Side_old;
+            }
+
+            set
+            {
+                m_Side_old = value;
+            }
+        }
+
+        public float X_old
+        {
+            get
+            {
+                return m_X_old;
+            }
+
+            set
+            {
+                m_X_old = value;
+            }
+        }
+
+        public float Y_old
+        {
+            get
+            {
+                return m_Y_old;
+            }
+
+            set
+            {
+                m_Y_old = value;
+            }
+        }
+
+        public float Length_old
+        {
+            get
+            {
+                return m_Length_old;
+            }
+
+            set
+            {
+                m_Length_old = value;
             }
         }
 
@@ -327,11 +388,37 @@ namespace BaseClasses
         public bool IsInCollisionWith(FibreglassProperties f)
         {
             if (Side != f.Side) return false;
-            if (X != f.X) return false;
-            if (Y < f.Y && Y + Length > f.Y) return true;
-            if (f.Y < Y && f.Y + f.Length > Y) return true;
+            if (!MathF.d_equal(X, f.X)) return false;
+            if (Y < f.Y && !MathF.d_equal(Y + Length, f.Y) && Y + Length > f.Y) return true;    //musime kontrolovat na dequal, lebo podla PC je 2.6 > 2.6
+            if (f.Y < Y && !MathF.d_equal(f.Y + f.Length, Y) && f.Y + f.Length > Y) return true;
 
             return false;
+        }
+
+        public void Undo()
+        {
+            IsSetFromCode = true;
+            Side = Side_old;
+            X = X_old;
+            Y = Y_old;
+            Length = Length_old;
+            IsSetFromCode = false;
+        }
+        public void UndoSide()
+        {
+            Side = Side_old;
+        }
+        public void UndoX()
+        {
+            X = X_old;
+        }
+        public void UndoY()
+        {
+            Y = Y_old;
+        }
+        public void UndoLength()
+        {
+            Length = Length_old;
         }
 
 

@@ -1363,6 +1363,21 @@ namespace PFD
             prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
         }
 
+        public bool CollisionsExists()
+        {
+            bool collisionDetected = false;
+            List<FibreglassProperties> noColisionItems = new List<FibreglassProperties>();
+            foreach (FibreglassProperties f in FibreglassProperties)
+            {
+                if (noColisionItems.Exists(fp => fp.Equals(f))) { collisionDetected = true; break; }
+
+                if (!noColisionItems.Exists(fp => fp.IsInCollisionWith(f))) noColisionItems.Add(f);
+                else { collisionDetected = true; break; }
+            }
+            noColisionItems = null;
+            return collisionDetected;
+        }
+
         private void LoadFibreglassColors()
         {
             FibreglassColors = CCoatingColorManager.LoadColours("FibreglassSQLiteDB");
