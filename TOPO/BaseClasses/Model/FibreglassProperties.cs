@@ -392,6 +392,9 @@ namespace BaseClasses
             if (Y < f.Y && !MathF.d_equal(Y + Length, f.Y) && Y + Length > f.Y) return true;    //musime kontrolovat na dequal, lebo podla PC je 2.6 > 2.6
             if (f.Y < Y && !MathF.d_equal(f.Y + f.Length, Y) && f.Y + f.Length > Y) return true;
 
+            //equal =  collision
+            if (Side == f.Side && MathF.d_equal(X, f.X) && MathF.d_equal(Y, f.Y) && MathF.d_equal(Length, f.Length)) return true;
+
             return false;
         }
 

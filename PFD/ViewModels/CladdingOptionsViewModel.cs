@@ -1128,7 +1128,8 @@ namespace PFD
                 if (f != null)
                 {
                     f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
-                    f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
+                    ChangeToBeUnique(f);
+                    f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;                    
                     NotifyPropertyChanged("FibreglassProperties_Add");
                 }
             }
@@ -1142,6 +1143,31 @@ namespace PFD
                 NotifyPropertyChanged("FibreglassProperties_CollectionChanged");
             }
             SetFibreglassAreasPercentages();
+        }
+
+        private void ChangeToBeUnique(FibreglassProperties f)
+        {
+            if (m_FibreglassProperties.Count < 1) return;
+            List<FibreglassProperties> list = new List<FibreglassProperties>(m_FibreglassProperties.Take(m_FibreglassProperties.Count - 1));
+
+            if (!list.Exists(fp => fp.IsInCollisionWith(f))) return;
+
+            for (int i = 1; i < f.XValues.Count; i++)
+            {
+                f.X = f.XValues[i];
+                if (!list.Exists(fp => fp.IsInCollisionWith(f))) return;
+            }
+                        
+            for (int s = 1; s < f.Sides.Count; s++)
+            {
+                f.Side = f.Sides[s];
+                if (!list.Exists(fp => fp.IsInCollisionWith(f))) return;
+                for (int i = 0; i < f.XValues.Count; i++)
+                {
+                    f.X = f.XValues[i];
+                    if (!list.Exists(fp => fp.IsInCollisionWith(f))) return;
+                }
+            }            
         }
 
         private void HandleFibreglassPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
