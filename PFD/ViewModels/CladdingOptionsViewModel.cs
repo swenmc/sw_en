@@ -1127,7 +1127,7 @@ namespace PFD
                 FibreglassProperties f = m_FibreglassProperties.LastOrDefault();
                 if (f != null)
                 {
-                    f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+                    f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM.RoofPitch_deg, _pfdVM.WallHeightOverall, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
                     ChangeToBeUnique(f);
                     f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;                    
                     NotifyPropertyChanged("FibreglassProperties_Add");
@@ -1267,7 +1267,7 @@ namespace PFD
 
             FibreglassProperties = new ObservableCollection<FibreglassProperties>();
             FibreglassProperties f = new FibreglassProperties();
-            f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+            f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM.RoofPitch_deg, _pfdVM.WallHeightOverall, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
             FibreglassProperties.Add(f);
         }
 

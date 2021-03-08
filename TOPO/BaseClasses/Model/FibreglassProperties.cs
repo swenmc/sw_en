@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using BaseClasses.Helpers;
 using DATABASE;
 using DATABASE.DTO;
 using MATH;
@@ -38,6 +39,10 @@ namespace BaseClasses
         private float m_ModelTotalLengthLeft;
         private float m_CladdingWidthModular_Wall;
         private float m_CladdingWidthModular_Roof;
+
+        private float m_RoofPitch_deg;
+        private float m_WallHeightOverall;
+        private double m_MaxHeight;
 
         public bool IsSetFromCode = false;
 
@@ -255,18 +260,61 @@ namespace BaseClasses
             }
         }
 
+        public float RoofPitch_deg
+        {
+            get
+            {
+                return m_RoofPitch_deg;
+            }
+
+            set
+            {
+                m_RoofPitch_deg = value;
+            }
+        }
+        public float WallHeightOverall
+        {
+            get
+            {
+                return m_WallHeightOverall;
+            }
+
+            set
+            {
+                m_WallHeightOverall = value;
+            }
+        }
+
+        public double MaxHeight
+        {
+            get
+            {
+                return m_MaxHeight;
+            }
+
+            set
+            {
+                m_MaxHeight = value;
+            }
+        }
+
+        
+
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public FibreglassProperties() { }
 
-        public FibreglassProperties(EModelType_FS modelType, float lengthFront, float lengthLeft, double widthModularWall, double widthModularRoof, string side, float x, float y, float length)
+        public FibreglassProperties(EModelType_FS modelType, float lengthFront, float lengthLeft, double widthModularWall, double widthModularRoof, float roofPitch_deg, float wallHeightOverall,
+            string side, float x, float y, float length)
         {
             IsSetFromCode = true;
 
             ModelType = modelType;
 
+            RoofPitch_deg = roofPitch_deg;
+            WallHeightOverall = wallHeightOverall;
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
             CladdingWidthModular_Wall = (float)widthModularWall;
@@ -282,6 +330,31 @@ namespace BaseClasses
             IsSetFromCode = false;
         }
 
+        private bool ValidateMaxHeight()
+        {
+            if (Side == "Left" || Side == "Right")
+            {
+                MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft, WallHeightOverall, X, RoofPitch_deg);
+            }
+            else if (Side == "Front" || Side == "Back")
+            {
+                //748 To Mato
+                //tu bude potrebne ostatne pridat a vypocitat maxHeight ktoru chceme validovat
+                //MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft, WallHeightOverall, X, RoofPitch_deg);
+            }
+            else //roof
+            {
+                //748 To Mato
+                //tu bude potrebne ostatne pridat a vypocitat maxHeight ktoru chceme validovat
+                //MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft, WallHeightOverall, X, RoofPitch_deg);
+                //roofEdgeOverhang_Y
+            }
+
+
+            if (Y + Length > MaxHeight) return false;
+            else return true;
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {
@@ -289,11 +362,14 @@ namespace BaseClasses
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SetDefaults(EModelType_FS modelType, float lengthFront, float lengthLeft, double widthModularWall, double widthModularRoof)
+        public void SetDefaults(EModelType_FS modelType, float lengthFront, float lengthLeft, float roofPitch_deg, float wallHeightOverall, double widthModularWall, double widthModularRoof)
         {
             IsSetFromCode = true;
 
             ModelType = modelType;
+
+            RoofPitch_deg = roofPitch_deg;
+            WallHeightOverall = wallHeightOverall;
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
             CladdingWidthModular_Wall = (float)widthModularWall;

@@ -1,6 +1,7 @@
 ﻿
 using BaseClasses.GraphObj;
 using MATH;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -577,6 +578,28 @@ namespace BaseClasses.Helpers
                 w += bayWidths[i].Width;
             }
             return w;
+        }
+
+
+        public static double GetVerticalCoordinate(string sBuildingSide, EModelType_FS eKitset, double width, double leftHeight, double x, float fRoofPitch_deg)
+        {
+            if (sBuildingSide == "Left" || sBuildingSide == "Right")
+                return leftHeight;
+            else //if(sBuildingSide == "Front" || sBuildingSide == "Back")
+            {
+
+                if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
+                {
+                    if (sBuildingSide == "Back")
+                        return leftHeight + x * Math.Tan(-fRoofPitch_deg * Math.PI / 180);
+                    else
+                        return leftHeight + x * Math.Tan(fRoofPitch_deg * Math.PI / 180);
+                }
+                else if (x < 0.5f * width)
+                    return leftHeight + x * Math.Tan(fRoofPitch_deg * Math.PI / 180);
+                else
+                    return leftHeight + (width - x) * Math.Tan(fRoofPitch_deg * Math.PI / 180);
+            }
         }
 
     }
