@@ -73,7 +73,6 @@ namespace BaseClasses.GraphObj
 
         bool bIndividualCladdingSheets;
 
-        // TODO 734 - napojit na Tab Members podla typu prutov a ich hodnoty bGenerate
         bool bGenerateLeftSideCladding = true;
         bool bGenerateFrontSideCladding = true;
         bool bGenerateRightSideCladding = true;
@@ -88,6 +87,7 @@ namespace BaseClasses.GraphObj
         // Constructor 2
         public CCladding(int iCladding_ID, EModelType_FS modelType_FS, BuildingGeometryDataInput sGeometryInputData,
             bool bIndividualSheets,
+            IList<CComponentInfo> componentList,
             System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo> canopies,
             System.Collections.ObjectModel.ObservableCollection<CBayInfo> bayWidths,
             System.Collections.ObjectModel.ObservableCollection<FibreglassProperties> fibreglassProp,
@@ -132,6 +132,8 @@ namespace BaseClasses.GraphObj
             m_claddingCoatingType_Wall = claddingCoatingType_Wall;
             m_claddingShape_Roof = claddingShape_Roof;
             m_claddingCoatingType_Roof = claddingCoatingType_Roof;
+
+            SetCladdingGenerateProperties(componentList);
 
             m_ColorWall = colorWall;
             m_ColorRoof = colorRoof;
@@ -1510,6 +1512,42 @@ namespace BaseClasses.GraphObj
             }
 
             return Math.Min(Math.Min(height_left, height_right), height_toptip);
+        }
+
+
+        public void SetCladdingGenerateProperties(IList<CComponentInfo> componentList)
+        {            
+            CComponentInfo girtL = componentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (girtL != null && girtL.Generate.HasValue)
+            {
+                bGenerateLeftSideCladding = girtL.Generate.Value;
+            }
+
+            CComponentInfo girtR = componentList.Last(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (girtR != null && girtR.Generate.HasValue)
+            {
+                bGenerateRightSideCladding = girtR.Generate.Value;
+            }
+
+            CComponentInfo girtFront = componentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (girtFront != null && girtFront.Generate.HasValue)
+            {
+                bGenerateFrontSideCladding = girtFront.Generate.Value;
+            }
+
+            CComponentInfo girtBack = componentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (girtBack != null && girtBack.Generate.HasValue)
+            {
+                bGenerateBackSideCladding = girtBack.Generate.Value;
+            }
+
+            CComponentInfo purlin = componentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (purlin != null && purlin.Generate.HasValue)
+            {
+                bGenerateRoofCladding = purlin.Generate.Value;
+            }
+
+
         }
     }
 }
