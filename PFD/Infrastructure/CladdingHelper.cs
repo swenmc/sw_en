@@ -19,6 +19,7 @@ namespace PFD.Infrastructure
             CCladding cladding = new CCladding(claddingIndex, (EModelType_FS)vm.KitsetTypeIndex, 
                 sGeometryInputData,
                 vm._modelOptionsVM.IndividualCladdingSheets,
+                vm._componentVM.ComponentList,
                 vm._canopiesOptionsVM.CanopiesList,
                 vm._baysWidthOptionsVM.BayWidthList,
                 vm._claddingOptionsVM.FibreglassProperties,

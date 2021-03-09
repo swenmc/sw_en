@@ -397,8 +397,22 @@ namespace PFD
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin)
             {
                 CComponentInfo purlinBlock = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
-                if (purlinBlock == null) return;
-                if (purlinBlock.Generate != cInfo.Generate) { purlinBlock.IsSetFromCode = true; purlinBlock.Generate = cInfo.Generate; purlinBlock.IsSetFromCode = false; }
+                if (purlinBlock != null) 
+                    if (purlinBlock.Generate != cInfo.Generate) { purlinBlock.IsSetFromCode = true; purlinBlock.Generate = cInfo.Generate; purlinBlock.IsSetFromCode = false; }
+
+                CComponentInfo purlinCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.PurlinCanopy);
+                if (purlinCanopy != null)
+                    if (purlinCanopy.Generate != cInfo.Generate) { purlinCanopy.IsSetFromCode = true; purlinCanopy.Generate = cInfo.Generate; purlinCanopy.IsSetFromCode = false; }
+
+                //a ked sa vypne Canopy, tak aj tieto nizsie treba ovladat
+                CComponentInfo purlinBlockCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlinsCanopy);
+                if (purlinBlockCanopy != null)
+                    if (purlinBlockCanopy.Generate != cInfo.Generate) { purlinBlockCanopy.IsSetFromCode = true; purlinBlockCanopy.Generate = cInfo.Generate; purlinBlockCanopy.IsSetFromCode = false; }
+
+                CComponentInfo crossCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
+                if (crossCanopy != null)
+                    if (crossCanopy.Generate != cInfo.Generate) { crossCanopy.IsSetFromCode = true; crossCanopy.Generate = cInfo.Generate; crossCanopy.IsSetFromCode = false; }
+
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj purlins
             {
@@ -441,6 +455,15 @@ namespace PFD
                 CComponentInfo crossCanopy = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoofCanopy);
                 if (crossCanopy != null)
                     if (crossCanopy.Generate != cInfo.Generate) { crossCanopy.IsSetFromCode = true; crossCanopy.Generate = cInfo.Generate; crossCanopy.IsSetFromCode = false; }
+
+                CComponentInfo purlin = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                if (purlin != null)
+                    if (purlin.Generate != cInfo.Generate) { purlin.IsSetFromCode = true; purlin.Generate = cInfo.Generate; purlin.IsSetFromCode = false; }
+                //a ked sa vypne Purlin tak aj toto nizsie musime
+                CComponentInfo purlinBlock = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+                if (purlinBlock != null)
+                    if (purlinBlock.Generate != cInfo.Generate) { purlinBlock.IsSetFromCode = true; purlinBlock.Generate = cInfo.Generate; purlinBlock.IsSetFromCode = false; }
+
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlinCanopy)
             {
