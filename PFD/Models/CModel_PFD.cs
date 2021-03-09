@@ -1189,7 +1189,7 @@ namespace PFD
 
                     if (i == 0) // First session depends on number of girts at main frame column
                     {
-                        for (int j = 0; j < iArrNumberOfGirtsPerColumn[0]; j++)
+                        for (int j = 0; j < iArrNumberOfGirtsPerColumn[0]; j++) 
                         {
                             m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + iArrNumberOfGirtsPerColumn[0] + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + j], section, EMemberType_FS.eG, eMemberType_FS_Position, eGirtEccentricity_temp, eGirtEccentricity_temp, fGirtStart_MC, fGirtEnd, -fMemberRotation, 0);
                             CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j], iNumberOfTransverseSupports);
