@@ -897,6 +897,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3BCB648B3D8D4B87952432170620BE30"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3BF89BC4209D44FC9D3752F4EABB0426"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -7970,6 +7976,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3BCB648B3D8D4B87952432170620BE30"
+            {
+            "SourcePath" = "8:D:\\Private\\PFD\\DefaultOptions.eiuo"
+            "TargetName" = "8:DefaultOptions.eiuo"
+            "Tag" = "8:"
+            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3BF89BC4209D44FC9D3752F4EABB0426"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Smartdek\\Smartdek_Azure.jpg"
@@ -8784,7 +8810,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7557.41984, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7705.27630, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5131E559A61AF5BF33E8E890703090C0"
@@ -15363,7 +15389,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7557.41984, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7705.27630, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_DC854C5FE59B4089A0231BCB2772AF4D"
@@ -17518,20 +17544,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:PFD"
+        "ProductName" = "8:Engenius"
         "ProductCode" = "8:{A98930C3-95AB-467E-9D7C-90F503124FF8}"
-        "PackageCode" = "8:{93994EDF-8B1B-4A64-9CEE-4DC35C28CA5D}"
-        "UpgradeCode" = "8:{8329D0AE-E3F0-4603-8E97-50D645DCD1A1}"
+        "PackageCode" = "8:{3071262C-5240-43FE-AD3A-F5F2E048208D}"
+        "UpgradeCode" = "8:{C9617EF6-CFB1-4C07-96DE-D70E95FFEC52}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:1.0.2"
         "Manufacturer" = "8:OPMC"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:PFD Setup"
+        "Title" = "8:Engenius Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:OPMC"
         "Keywords" = "8:"
@@ -17642,7 +17668,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_83C37C8B48E44D0CAA11288DDFB147D7"
             {
-            "Name" = "8:PFD"
+            "Name" = "8:Engenius"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
