@@ -44,6 +44,7 @@ namespace BaseClasses
         private float m_WallHeightOverall;
         private float m_Height_H2_Overall;
         private double m_MaxHeight;
+        private float m_RoofEdgeOverhang_X;
         private float m_RoofEdgeOverhang_Y;
 
         public bool IsSetFromCode = false;
@@ -93,7 +94,7 @@ namespace BaseClasses
                 Y_old = m_Y;
                 m_Y = value;
 
-                //if (!ValidateMaxHeight()) m_Y = Y_old;                
+                //if (!ValidateMaxHeight()) m_Y = Y_old;
                 NotifyPropertyChanged("Y");
             }
         }
@@ -289,6 +290,19 @@ namespace BaseClasses
             }
         }
 
+        public float RoofEdgeOverhang_X
+        {
+            get
+            {
+                return m_RoofEdgeOverhang_X;
+            }
+
+            set
+            {
+                m_RoofEdgeOverhang_X = value;
+            }
+        }
+
         public float RoofEdgeOverhang_Y
         {
             get
@@ -335,7 +349,7 @@ namespace BaseClasses
         public FibreglassProperties() { }
 
         public FibreglassProperties(EModelType_FS modelType, float lengthFront, float lengthLeft, 
-            float roofPitch_deg, float wallHeightOverall, float height_H2_Overall, float roofEdgeOverhang_Y, 
+            float roofPitch_deg, float wallHeightOverall, float height_H2_Overall, float roofEdgeOverhang_X, float roofEdgeOverhang_Y,
             double widthModularWall, double widthModularRoof,
             string side, float x, float y, float length)
         {
@@ -346,6 +360,7 @@ namespace BaseClasses
             RoofPitch_deg = roofPitch_deg;
             WallHeightOverall = wallHeightOverall;
             Height_H2_Overall = height_H2_Overall;
+            RoofEdgeOverhang_X = roofEdgeOverhang_X;
             RoofEdgeOverhang_Y = roofEdgeOverhang_Y;
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
@@ -364,37 +379,28 @@ namespace BaseClasses
 
         public bool ValidateMaxHeight()
         {
-            if (Side == "Left" || Side == "Right")
+            // TODO 748 - Martin - dopracovat
+            if (Side == "Left")
+                MaxHeight = WallHeightOverall;
+            else if(Side == "Right")
             {
-                //748 toto by asi malo byt OK
-                MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft, WallHeightOverall, X, RoofPitch_deg);
+                if (ModelType == EModelType_FS.eKitsetGableRoofEnclosed)
+                    MaxHeight = WallHeightOverall;
+                else //if (ModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
+                    MaxHeight = Height_H2_Overall;
             }
             else if (Side == "Front" || Side == "Back")
             {
-                //748 To Mato                
-                if(ModelType == EModelType_FS.eKitsetGableRoofEnclosed)
-                    MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthFront, WallHeightOverall, X, RoofPitch_deg);
-                else if (ModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
-                    MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthFront, WallHeightOverall, X, RoofPitch_deg);
+                MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthFront, WallHeightOverall, X, RoofPitch_deg);
             }
             else if (Side == "Roof") //roof MONO
             {
-                //748 To Mato
-                // tu je asi potrebne odlisit ci je roof alebo roof-left alebo roof-right
-
-                //tu bude potrebne ostatne pridat a vypocitat maxHeight ktoru chceme validovat
-                MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft + 2 * RoofEdgeOverhang_Y, WallHeightOverall, X, RoofPitch_deg);
-                
+                MaxHeight = (ModelTotalLengthFront + 2 * RoofEdgeOverhang_X) / Math.Cos(RoofPitch_deg * Math.PI / 180);
             }
             else if (Side == "Roof-Left Side" || Side == "Roof-Right Side") //roof Gable
             {
-                //748 To Mato                
-                // tu je asi potrebne odlisit ci je roof alebo roof-left alebo roof-right
-                //tu bude potrebne ostatne pridat a vypocitat maxHeight ktoru chceme validovat                
-                
-                MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft + 2 * RoofEdgeOverhang_Y, WallHeightOverall, X, RoofPitch_deg);
+                MaxHeight = (0.5 * ModelTotalLengthFront + RoofEdgeOverhang_X) / Math.Cos(RoofPitch_deg * Math.PI / 180);
             }
-
 
             if (Y + Length > MaxHeight) return false;
             else return true;

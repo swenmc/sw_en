@@ -580,14 +580,10 @@ namespace BaseClasses.Helpers
             return w;
         }
 
-
         public static double GetVerticalCoordinate(string sBuildingSide, EModelType_FS eKitset, double width, double leftHeight, double x, float fRoofPitch_deg)
         {
-            if (sBuildingSide == "Left" || sBuildingSide == "Right")
-                return leftHeight;
-            else //if(sBuildingSide == "Front" || sBuildingSide == "Back")
+            if(sBuildingSide == "Front" || sBuildingSide == "Back")
             {
-
                 if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
                 {
                     if (sBuildingSide == "Back")
@@ -600,6 +596,8 @@ namespace BaseClasses.Helpers
                 else
                     return leftHeight + (width - x) * Math.Tan(fRoofPitch_deg * Math.PI / 180);
             }
+            else // (sBuildingSide == "Left" || sBuildingSide == "Right") // a Roof
+               return leftHeight;
         }
 
     }
