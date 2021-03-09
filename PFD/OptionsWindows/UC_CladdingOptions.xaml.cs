@@ -48,17 +48,29 @@ namespace PFD
                 //check for collisions
                 //ak sa pri zmene najde kolizia, tak sa snazime aktualne editovany objekt vratit na povodne hodnoty
                 //To Mato - tu uz nebudeme uvazovat tie model options nie???
+
+                FibreglassProperties f = sender as FibreglassProperties;
+
                 if (_pfdVM._claddingOptionsVM.CollisionsExists())
                 {
                     MessageBox.Show("Collision detected.");
-                    FibreglassProperties f = sender as FibreglassProperties;
 
-                    if(e.PropertyName == "X") f.UndoX();
+                    if (e.PropertyName == "X") f.UndoX();
                     else if (e.PropertyName == "Y") f.UndoY();
                     else if (e.PropertyName == "Side") f.UndoSide();
                     else if (e.PropertyName == "Length") f.UndoLength();
-                }  
-
+                }
+                //748 - toto treba zapnut ak bude validacia v poriadku
+                //else if(!f.ValidateMaxHeight()) //ak sa nezmesti
+                //{
+                //    MessageBox.Show("Fibreglass is outside of building dimensions.");
+                //    if (e.PropertyName == "X") f.UndoX();
+                //    else if (e.PropertyName == "Y") f.UndoY();
+                //    else if (e.PropertyName == "Side") f.UndoSide();
+                //    else if (e.PropertyName == "Length") f.UndoLength();
+                //}
+                
+                
                 CladdingOptionsChanged = true;
             }
         }

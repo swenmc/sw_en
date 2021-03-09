@@ -42,7 +42,9 @@ namespace BaseClasses
 
         private float m_RoofPitch_deg;
         private float m_WallHeightOverall;
+        private float m_Height_H2_Overall;
         private double m_MaxHeight;
+        private float m_RoofEdgeOverhang_Y;
 
         public bool IsSetFromCode = false;
 
@@ -90,6 +92,8 @@ namespace BaseClasses
             {
                 Y_old = m_Y;
                 m_Y = value;
+
+                //if (!ValidateMaxHeight()) m_Y = Y_old;                
                 NotifyPropertyChanged("Y");
             }
         }
@@ -285,6 +289,19 @@ namespace BaseClasses
             }
         }
 
+        public float RoofEdgeOverhang_Y
+        {
+            get
+            {
+                return m_RoofEdgeOverhang_Y;
+            }
+
+            set
+            {
+                m_RoofEdgeOverhang_Y = value;
+            }
+        }
+
         public double MaxHeight
         {
             get
@@ -298,7 +315,18 @@ namespace BaseClasses
             }
         }
 
-        
+        public float Height_H2_Overall
+        {
+            get
+            {
+                return m_Height_H2_Overall;
+            }
+
+            set
+            {
+                m_Height_H2_Overall = value;
+            }
+        }
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -306,7 +334,9 @@ namespace BaseClasses
         //-------------------------------------------------------------------------------------------------------------
         public FibreglassProperties() { }
 
-        public FibreglassProperties(EModelType_FS modelType, float lengthFront, float lengthLeft, double widthModularWall, double widthModularRoof, float roofPitch_deg, float wallHeightOverall,
+        public FibreglassProperties(EModelType_FS modelType, float lengthFront, float lengthLeft, 
+            float roofPitch_deg, float wallHeightOverall, float height_H2_Overall, float roofEdgeOverhang_Y, 
+            double widthModularWall, double widthModularRoof,
             string side, float x, float y, float length)
         {
             IsSetFromCode = true;
@@ -315,6 +345,8 @@ namespace BaseClasses
 
             RoofPitch_deg = roofPitch_deg;
             WallHeightOverall = wallHeightOverall;
+            Height_H2_Overall = height_H2_Overall;
+            RoofEdgeOverhang_Y = roofEdgeOverhang_Y;
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
             CladdingWidthModular_Wall = (float)widthModularWall;
@@ -330,24 +362,37 @@ namespace BaseClasses
             IsSetFromCode = false;
         }
 
-        private bool ValidateMaxHeight()
+        public bool ValidateMaxHeight()
         {
             if (Side == "Left" || Side == "Right")
             {
+                //748 toto by asi malo byt OK
                 MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft, WallHeightOverall, X, RoofPitch_deg);
             }
             else if (Side == "Front" || Side == "Back")
             {
-                //748 To Mato
-                //tu bude potrebne ostatne pridat a vypocitat maxHeight ktoru chceme validovat
-                //MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft, WallHeightOverall, X, RoofPitch_deg);
+                //748 To Mato                
+                if(ModelType == EModelType_FS.eKitsetGableRoofEnclosed)
+                    MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthFront, WallHeightOverall, X, RoofPitch_deg);
+                else if (ModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
+                    MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthFront, WallHeightOverall, X, RoofPitch_deg);
             }
-            else //roof
+            else if (Side == "Roof") //roof MONO
             {
                 //748 To Mato
+                // tu je asi potrebne odlisit ci je roof alebo roof-left alebo roof-right
+
                 //tu bude potrebne ostatne pridat a vypocitat maxHeight ktoru chceme validovat
-                //MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft, WallHeightOverall, X, RoofPitch_deg);
-                //roofEdgeOverhang_Y
+                MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft + 2 * RoofEdgeOverhang_Y, WallHeightOverall, X, RoofPitch_deg);
+                
+            }
+            else if (Side == "Roof-Left Side" || Side == "Roof-Right Side") //roof Gable
+            {
+                //748 To Mato                
+                // tu je asi potrebne odlisit ci je roof alebo roof-left alebo roof-right
+                //tu bude potrebne ostatne pridat a vypocitat maxHeight ktoru chceme validovat                
+                
+                MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthLeft + 2 * RoofEdgeOverhang_Y, WallHeightOverall, X, RoofPitch_deg);
             }
 
 
@@ -362,7 +407,8 @@ namespace BaseClasses
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SetDefaults(EModelType_FS modelType, float lengthFront, float lengthLeft, float roofPitch_deg, float wallHeightOverall, double widthModularWall, double widthModularRoof)
+        public void SetDefaults(EModelType_FS modelType, float lengthFront, float lengthLeft, float roofPitch_deg, float wallHeightOverall, float height_H2_Overall, 
+            float roofEdgeOverhang_Y, double widthModularWall, double widthModularRoof)
         {
             IsSetFromCode = true;
 
@@ -370,6 +416,8 @@ namespace BaseClasses
 
             RoofPitch_deg = roofPitch_deg;
             WallHeightOverall = wallHeightOverall;
+            Height_H2_Overall = height_H2_Overall;
+            RoofEdgeOverhang_Y = roofEdgeOverhang_Y;
             ModelTotalLengthFront = lengthFront;
             ModelTotalLengthLeft = lengthLeft;
             CladdingWidthModular_Wall = (float)widthModularWall;
