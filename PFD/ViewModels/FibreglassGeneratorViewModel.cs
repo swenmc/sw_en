@@ -522,7 +522,7 @@ namespace PFD
                     Length2 = Length;
                     Length3 = Length;
                     Length4 = Length;
-                    Length5 = Length;                    
+                    Length5 = Length;
                 }
                 NotifyPropertyChanged("EnableVariableLengths");
             }

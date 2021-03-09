@@ -61,16 +61,15 @@ namespace PFD
                     else if (e.PropertyName == "Length") f.UndoLength();
                 }
                 //748 - toto treba zapnut ak bude validacia v poriadku
-                //else if(!f.ValidateMaxHeight()) //ak sa nezmesti
-                //{
-                //    MessageBox.Show("Fibreglass is outside of building dimensions.");
-                //    if (e.PropertyName == "X") f.UndoX();
-                //    else if (e.PropertyName == "Y") f.UndoY();
-                //    else if (e.PropertyName == "Side") f.UndoSide();
-                //    else if (e.PropertyName == "Length") f.UndoLength();
-                //}
-                
-                
+                else if(!f.ValidateMaxHeight()) //ak sa nezmesti
+                {
+                    MessageBox.Show("Fibreglass is outside of building dimensions.");
+                    if (e.PropertyName == "X") f.UndoX();
+                    else if (e.PropertyName == "Y") f.UndoY();
+                    else if (e.PropertyName == "Side") f.UndoSide();
+                    else if (e.PropertyName == "Length") f.UndoLength();
+                }
+
                 CladdingOptionsChanged = true;
             }
         }

@@ -1140,10 +1140,10 @@ namespace PFD
                     //To Mato - skontrolovat parametre
                     //Podla mna pre strechu staci tento parameter _pfdVM.RoofSideLength a ten kontrolovat
                     f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM.RoofPitch_deg, 
-                        _pfdVM.WallHeightOverall, _pfdVM.Height_H2_Overall, RoofEdgeOverHang_FB_Y,
+                        _pfdVM.WallHeightOverall, _pfdVM.Height_H2_Overall, RoofEdgeOverHang_LR_X, RoofEdgeOverHang_FB_Y,
                         _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
                     ChangeToBeUnique(f);
-                    f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;                    
+                    f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("FibreglassProperties_Add");
                 }
             }
@@ -1283,7 +1283,7 @@ namespace PFD
             FibreglassProperties f = new FibreglassProperties();
             //to Mato 748 - skontrolovat parametre
             f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM.RoofPitch_deg, 
-                _pfdVM.WallHeightOverall, _pfdVM.Height_H2_Overall, RoofEdgeOverHang_FB_Y,
+                _pfdVM.WallHeightOverall, _pfdVM.Height_H2_Overall, RoofEdgeOverHang_LR_X, RoofEdgeOverHang_FB_Y,
                 _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
             FibreglassProperties.Add(f);
         }
