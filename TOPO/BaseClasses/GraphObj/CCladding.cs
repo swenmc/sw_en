@@ -176,10 +176,6 @@ namespace BaseClasses.GraphObj
 
             // Vytvorime model v GCS [0,0,0] je uvazovana v bode m_ControlPoint
 
-            // TODO 732 - Presunut validaciu pri zmene tychto dvoch hodnot uz do GUI
-            if (considerRoofCladdingFor_FB_WallHeight && roofEdgeOverhang_Y > 0)
-                throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
-
             double additionalOffset = 0.005;  // 5 mm Aby nekolidovali plochy cladding s members
             double additionalOffsetRoof = 0.010; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
