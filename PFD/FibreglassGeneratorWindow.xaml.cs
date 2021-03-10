@@ -28,7 +28,11 @@ namespace PFD
 
             _pfdVM = pfdVM;
 
-            vm = new FibreglassGeneratorViewModel((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+            vm = new FibreglassGeneratorViewModel((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall,
+                _pfdVM.RoofPitch_deg, _pfdVM.Height_1_final_edge_LR_Wall, _pfdVM.Height_2_final_edge_LR_Wall,
+                _pfdVM.Height_1_final_edge_FB_Wall, _pfdVM.Height_2_final_edge_FB_Wall, _pfdVM._claddingOptionsVM.WallBottomOffset_Z, _pfdVM.AdditionalOffsetWall,
+                _pfdVM._claddingOptionsVM.RoofEdgeOverHang_LR_X, _pfdVM._claddingOptionsVM.RoofEdgeOverHang_FB_Y,
+                _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
             vm.PropertyChanged += HandleFibreglassPropertyChanged;
             this.DataContext = vm;
 
@@ -130,6 +134,7 @@ namespace PFD
 
         private List<FibreglassProperties> GetFibreglassPropertiesBasedOnPeriodicity()
         {
+            bool isValidMaxHeight = true;
             List<FibreglassProperties> items = new List<FibreglassProperties>();
 
             int index = vm.PeriodicityValues.IndexOf(vm.Periodicity);
@@ -141,7 +146,8 @@ namespace PFD
                 {
                     FibreglassProperties fg = vm.GetFibreglass();
                     fg.X = vm.XValues[i];
-                    items.Add(fg);
+                    if (fg.ValidateMaxHeight()) items.Add(fg);
+                    else isValidMaxHeight = false;
                 }
                 else
                 {
@@ -171,11 +177,12 @@ namespace PFD
                             fg.Length = vm.Length5;
                         }
 
-                        items.Add(fg);
+                        if (fg.ValidateMaxHeight()) items.Add(fg);
+                        else isValidMaxHeight = false;
                     } //end rows count
                 } //end else generate raster
             }
-
+            if(!isValidMaxHeight) MessageBox.Show("Fibreglass is outside of building dimensions.");
             return items;
         }
 

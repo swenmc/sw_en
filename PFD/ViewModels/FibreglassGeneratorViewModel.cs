@@ -37,6 +37,18 @@ namespace PFD
         private float m_CladdingWidthModular_Wall;
         private float m_CladdingWidthModular_Roof;
 
+        private float m_RoofPitch_deg;
+        private double m_Height_1_final_edge_LR_Wall;
+        private double m_Height_2_final_edge_LR_Wall;
+        private double m_Height_1_final_edge_FB_Wall;
+        private double m_Height_2_final_edge_FB_Wall;
+
+        private double m_BottomEdge_z;
+        private double m_AdditionalOffsetWall;
+        private double m_MaxHeight;
+        private float m_RoofEdgeOverhang_X;
+        private float m_RoofEdgeOverhang_Y;
+
         private float m_Y2;
         private float m_Y3;
         private float m_Y4;
@@ -528,12 +540,148 @@ namespace PFD
             }
         }
 
+        public float RoofPitch_deg
+        {
+            get
+            {
+                return m_RoofPitch_deg;
+            }
+
+            set
+            {
+                m_RoofPitch_deg = value;
+            }
+        }
+
+        public double Height_1_final_edge_LR_Wall
+        {
+            get
+            {
+                return m_Height_1_final_edge_LR_Wall;
+            }
+
+            set
+            {
+                m_Height_1_final_edge_LR_Wall = value;
+            }
+        }
+
+        public double Height_2_final_edge_LR_Wall
+        {
+            get
+            {
+                return m_Height_2_final_edge_LR_Wall;
+            }
+
+            set
+            {
+                m_Height_2_final_edge_LR_Wall = value;
+            }
+        }
+
+        public double Height_1_final_edge_FB_Wall
+        {
+            get
+            {
+                return m_Height_1_final_edge_FB_Wall;
+            }
+
+            set
+            {
+                m_Height_1_final_edge_FB_Wall = value;
+            }
+        }
+
+        public double Height_2_final_edge_FB_Wall
+        {
+            get
+            {
+                return m_Height_2_final_edge_FB_Wall;
+            }
+
+            set
+            {
+                m_Height_2_final_edge_FB_Wall = value;
+            }
+        }
+
+        public double BottomEdge_z
+        {
+            get
+            {
+                return m_BottomEdge_z;
+            }
+
+            set
+            {
+                m_BottomEdge_z = value;
+            }
+        }
+
+        public double AdditionalOffsetWall
+        {
+            get
+            {
+                return m_AdditionalOffsetWall;
+            }
+
+            set
+            {
+                m_AdditionalOffsetWall = value;
+            }
+        }
+
+        public double MaxHeight
+        {
+            get
+            {
+                return m_MaxHeight;
+            }
+
+            set
+            {
+                m_MaxHeight = value;
+            }
+        }
+
+        public float RoofEdgeOverhang_X
+        {
+            get
+            {
+                return m_RoofEdgeOverhang_X;
+            }
+
+            set
+            {
+                m_RoofEdgeOverhang_X = value;
+            }
+        }
+
+        public float RoofEdgeOverhang_Y
+        {
+            get
+            {
+                return m_RoofEdgeOverhang_Y;
+            }
+
+            set
+            {
+                m_RoofEdgeOverhang_Y = value;
+            }
+        }
 
 
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public FibreglassGeneratorViewModel(EModelType_FS modelType, float lengthFront, float lengthLeft, double widthModularWall, double widthModularRoof)
+        public FibreglassGeneratorViewModel(EModelType_FS modelType, float lengthFront, float lengthLeft, 
+            float roofPitch_deg,
+            double height_1_LR_wall, double height_2_LR_wall,
+            double height_1_FB_wall, double height_2_FB_wall,
+            double bottomEdgeOffset, double additionalOffset_wall,
+            float roofEdgeOverhang_X, float roofEdgeOverhang_Y, 
+            double widthModularWall, double widthModularRoof)
         {
             IsSetFromCode = true;
 
@@ -546,6 +694,17 @@ namespace PFD
             ModelTotalLengthLeft = lengthLeft;
             CladdingWidthModular_Wall = (float)widthModularWall;
             CladdingWidthModular_Roof = (float)widthModularRoof;
+
+            RoofPitch_deg = roofPitch_deg;
+            Height_1_final_edge_LR_Wall = height_1_LR_wall;
+            Height_2_final_edge_LR_Wall = height_2_LR_wall;
+            Height_1_final_edge_FB_Wall = height_1_FB_wall;
+            Height_2_final_edge_FB_Wall = height_2_FB_wall;
+
+            BottomEdge_z = bottomEdgeOffset;
+            AdditionalOffsetWall = additionalOffset_wall;
+            RoofEdgeOverhang_X = roofEdgeOverhang_X;
+            RoofEdgeOverhang_Y = roofEdgeOverhang_Y;
 
             Spacing = 2.0f; // Malo by byt vacsie ako default Length
 
@@ -675,6 +834,16 @@ namespace PFD
             f.CladdingWidthModular_Wall = CladdingWidthModular_Wall;
             f.CladdingWidthModular_Roof = CladdingWidthModular_Roof;
 
+            f.RoofPitch_deg = RoofPitch_deg;
+            f.Height_1_final_edge_LR_Wall = Height_1_final_edge_LR_Wall;
+            f.Height_2_final_edge_LR_Wall = Height_2_final_edge_LR_Wall;
+            f.Height_1_final_edge_FB_Wall = Height_1_final_edge_FB_Wall;
+            f.Height_2_final_edge_FB_Wall = Height_2_final_edge_FB_Wall;
+            f.BottomEdge_z = BottomEdge_z;
+            f.AdditionalOffsetWall = AdditionalOffsetWall;
+            f.RoofEdgeOverhang_X = RoofEdgeOverhang_X;
+            f.RoofEdgeOverhang_Y = RoofEdgeOverhang_Y;
+            
             f.Sides = Sides;
             f.Side = Side;
             f.XValues = XValues;
