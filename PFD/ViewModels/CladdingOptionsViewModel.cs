@@ -1143,7 +1143,7 @@ namespace PFD
                     double height_2_final_edge_FB_Wall;
                     double additionalOffsetWall;
 
-                    CalculateWallHeights(
+                    CalculateWallHeightsForCladding(
                     out height_1_final_edge_LR_Wall,
                     out height_2_final_edge_LR_Wall,
                     out height_1_final_edge_FB_Wall,
@@ -1267,7 +1267,7 @@ namespace PFD
             IsSetFromCode = false;
         }
 
-        public void CalculateWallHeights(
+        public void CalculateWallHeightsForCladding(
             out double height_1_final_edge_LR_Wall,
             out double height_2_final_edge_LR_Wall,
             out double height_1_final_edge_FB_Wall,
@@ -1369,7 +1369,7 @@ namespace PFD
             double height_2_final_edge_FB_Wall;
             double additionalOffsetWall;
 
-            CalculateWallHeights(
+            CalculateWallHeightsForCladding(
             out height_1_final_edge_LR_Wall,
             out height_2_final_edge_LR_Wall,
             out height_1_final_edge_FB_Wall,

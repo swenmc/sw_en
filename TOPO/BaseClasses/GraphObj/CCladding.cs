@@ -186,33 +186,37 @@ namespace BaseClasses.GraphObj
             double column_crsc_y_plus_temp = column_crsc_y_plus + additionalOffset;
             double column_crsc_z_plus_temp = column_crsc_z_plus + additionalOffset;
 
+            //----------------------------------------
+            // To Ondrej - toto by sme mali nahradit funkciou
+            // CalculateWallHeightsForCladding
             double height_1_final = sBuildingGeomInputData.fH_1_centerline + column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
             double height_2_final = sBuildingGeomInputData.fH_2_centerline + column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
-
+            
             double height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
             double height_2_final_edge_LR_Wall = height_2_final;
-
+            
             double height_1_final_edge_Roof = height_1_final + additionalOffsetRoof - (column_crsc_z_plus_temp + roofEdgeOverhang_X) * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
             double height_2_final_edge_Roof = height_2_final + additionalOffsetRoof;
-
+            
             if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 height_2_final_edge_LR_Wall = height_2_final + column_crsc_z_plus_temp * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
                 height_2_final_edge_Roof = height_2_final + additionalOffsetRoof + (column_crsc_z_plus_temp + roofEdgeOverhang_X) * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
             }
-
+            
             // Nastavime rovnaku vysku hornej hrany
             double height_1_final_edge_FB_Wall = height_1_final_edge_LR_Wall;
             double height_2_final_edge_FB_Wall = height_2_final_edge_LR_Wall;
-
+            
             if (considerRoofCladdingFor_FB_WallHeight)
             {
                 height_1_final_edge_FB_Wall = height_1_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
                 height_2_final_edge_FB_Wall = height_2_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
-
+            
                 if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
                     height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + claddingHeight_Roof) * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
             }
+            //----------------------------------------
 
             // Wall Cladding Edges
 

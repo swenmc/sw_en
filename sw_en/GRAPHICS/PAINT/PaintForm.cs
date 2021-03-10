@@ -108,7 +108,6 @@ namespace CENEX
             {
                 this.Refresh();
             }
-
         }
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
