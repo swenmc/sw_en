@@ -462,7 +462,8 @@ namespace BaseClasses
             }
             else if (Side == "Front" || Side == "Back")
             {
-                MaxHeight = ModelHelper.GetMaximumAvailable_FG_SheetTopCoordinate(Side, ModelType, RoofPitch_deg, ModelTotalLengthFront + 2 * AdditionalOffsetWall, height_2_final_edge_FB_Wall_temp, height_1_final_edge_FB_Wall_temp, CladdingWidthModular_Wall, (int)(X / CladdingWidthModular_Wall) -1);
+                double height_left_basic = ModelType == EModelType_FS.eKitsetGableRoofEnclosed ? height_1_final_edge_FB_Wall_temp : height_2_final_edge_FB_Wall_temp;
+                MaxHeight = ModelHelper.GetMaximumAvailable_FG_SheetTopCoordinate(Side, ModelType, RoofPitch_deg, ModelTotalLengthFront + 2 * AdditionalOffsetWall, height_2_final_edge_FB_Wall_temp, height_left_basic, CladdingWidthModular_Wall, (int)(X / CladdingWidthModular_Wall));
             }
             else if (Side == "Roof") //roof MONO
             {

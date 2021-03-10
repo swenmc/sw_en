@@ -611,6 +611,9 @@ namespace BaseClasses.Helpers
             double claddingWidthModular,
             int sheetIndex) // index pre sheet ktoreho vysku zistujeme
         {
+            if (sheetIndex < 0)
+                throw new Exception("Invalid sheet index!");
+
             // Predpokladame ze FB su obdlzniky a na hornom okraji sa nebudu zrezavat sikmo pre front a back wall ale vzdy nad nimi bude este aj plech
 
             int iNumberOfWholeSheets = (int)(width / claddingWidthModular);
