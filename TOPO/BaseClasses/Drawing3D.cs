@@ -3013,13 +3013,12 @@ namespace BaseClasses
                         model.m_arrGOStrDoors[i].m_pControlPoint != null &&
                         model.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
-                        //model.m_arrGOStrDoors[i].
                         wireFramePoints.AddRange(model.m_arrGOStrDoors[i].WireFramePoints);
                     }
                 }
             }
 
-            if (model.m_arrGOStrWindows != null && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) // Some windows exist
+            if (model.m_arrGOStrWindows != null && sDisplayOptions.bDisplayCladdingWireFrame && sDisplayOptions.bDisplayWindowsWireFrame) // Some windows exist
             {
                 // Model Groups of Windows
                 for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
@@ -3028,7 +3027,7 @@ namespace BaseClasses
                         model.m_arrGOStrWindows[i].m_pControlPoint != null &&
                         model.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
-                        //wireFramePoints.AddRange(model.m_arrGOStrWindows[i].WireFramePoints);
+                        wireFramePoints.AddRange(model.m_arrGOStrWindows[i].WireFramePoints);
                     }
                 }
             }

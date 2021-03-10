@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -33,6 +34,21 @@ namespace BaseClasses.GraphObj
         public int m_iSegmentNum;
         public float m_fGThickness;
         public float m_fRotationZDegrees;
+
+        private List<Point3D> m_WireFramePoints;
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
+                return m_WireFramePoints;
+            }
+
+            set
+            {
+                m_WireFramePoints = value;
+            }
+        }
 
         // Constructor 1
         public CStructure_Window()
@@ -156,6 +172,20 @@ namespace BaseClasses.GraphObj
             gr.Children.Add(mFrame_04_V.CreateM_3D_G_Volume_8Edges(pArray[3], fT_Y, fT_Y, fH_Z - 2 * fT_Y, DiffMatF, DiffMatF)); // Vertical
             gr.Children.Add(mGlassTable.CreateM_3D_G_Volume_8Edges(pArray[4], fL_X - 2 * fT_Y, fGlassThickness, fH_Z - 2 * fT_Y, DiffMatG, DiffMatG)); // Glass No 1
 
+            //to Mato - tu je nutne nastavit wireframePoints                        
+            WireFramePoints.AddRange(mFrame_01_HB.WireFramePoints);
+            WireFramePoints.AddRange(mFrame_02_HU.WireFramePoints);
+            WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
+            WireFramePoints.AddRange(mFrame_04_V.WireFramePoints);
+            WireFramePoints.AddRange(mGlassTable.WireFramePoints);
+
+            //ak sa nepouziva,tak treba zmazat z pamate
+            mFrame_01_HB = null;
+            mFrame_02_HU = null;
+            mFrame_03_V = null;
+            mFrame_04_V = null;
+            mGlassTable = null;
+
             return gr;
         }
 
@@ -163,6 +193,7 @@ namespace BaseClasses.GraphObj
         {
             Model3DGroup gr = new Model3DGroup();
 
+            WireFramePoints = new List<Point3D>();
             // Create Window in LCS
             for (int i = 0; i < iSegmentNum; i++) // Add segments
             {
@@ -181,6 +212,13 @@ namespace BaseClasses.GraphObj
             transform3DGroup.Children.Add(translateTransform3D);
             // Set transformation to group
             gr.Transform = transform3DGroup;
+
+            //WireFramePoints transform
+            for (int i = 0; i < WireFramePoints.Count; i++)
+            {
+                WireFramePoints[i] = transform3DGroup.Transform(WireFramePoints[i]);
+            }
+
 
             return gr;
         }
