@@ -663,7 +663,7 @@ namespace PFD
             if (PeriodicityValues.Count != 0)
             {
                 if(!PeriodicityValues.Contains(Periodicity)) Periodicity = PeriodicityValues.First();
-            }            
+            }
         }
 
         public FibreglassProperties GetFibreglass()
@@ -683,6 +683,5 @@ namespace PFD
 
             return f;
         }
-
     }
 }

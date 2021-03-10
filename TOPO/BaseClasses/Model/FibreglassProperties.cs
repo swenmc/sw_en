@@ -41,8 +41,13 @@ namespace BaseClasses
         private float m_CladdingWidthModular_Roof;
 
         private float m_RoofPitch_deg;
-        private float m_WallHeightOverall;
-        private float m_Height_H2_Overall;
+        private double m_Height_1_final_edge_LR_Wall;
+        private double m_Height_2_final_edge_LR_Wall;
+        private double m_Height_1_final_edge_FB_Wall;
+        private double m_Height_2_final_edge_FB_Wall;
+
+        private double m_BottomEdge_z;
+        private double m_AdditionalOffsetWall;
         private double m_MaxHeight;
         private float m_RoofEdgeOverhang_X;
         private float m_RoofEdgeOverhang_Y;
@@ -277,18 +282,6 @@ namespace BaseClasses
                 m_RoofPitch_deg = value;
             }
         }
-        public float WallHeightOverall
-        {
-            get
-            {
-                return m_WallHeightOverall;
-            }
-
-            set
-            {
-                m_WallHeightOverall = value;
-            }
-        }
 
         public float RoofEdgeOverhang_X
         {
@@ -329,19 +322,83 @@ namespace BaseClasses
             }
         }
 
-        public float Height_H2_Overall
+        public double Height_1_final_edge_LR_Wall
         {
             get
             {
-                return m_Height_H2_Overall;
+                return m_Height_1_final_edge_LR_Wall;
             }
 
             set
             {
-                m_Height_H2_Overall = value;
+                m_Height_1_final_edge_LR_Wall = value;
             }
         }
 
+        public double Height_2_final_edge_LR_Wall
+        {
+            get
+            {
+                return m_Height_2_final_edge_LR_Wall;
+            }
+
+            set
+            {
+                m_Height_2_final_edge_LR_Wall = value;
+            }
+        }
+
+        public double Height_1_final_edge_FB_Wall
+        {
+            get
+            {
+                return m_Height_1_final_edge_FB_Wall;
+            }
+
+            set
+            {
+                m_Height_1_final_edge_FB_Wall = value;
+            }
+        }
+
+        public double Height_2_final_edge_FB_Wall
+        {
+            get
+            {
+                return m_Height_2_final_edge_FB_Wall;
+            }
+
+            set
+            {
+                m_Height_2_final_edge_FB_Wall = value;
+            }
+        }
+
+        public double BottomEdge_z
+        {
+            get
+            {
+                return m_BottomEdge_z;
+            }
+
+            set
+            {
+                m_BottomEdge_z = value;
+            }
+        }
+
+        public double AdditionalOffsetWall
+        {
+            get
+            {
+                return m_AdditionalOffsetWall;
+            }
+
+            set
+            {
+                m_AdditionalOffsetWall = value;
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -349,7 +406,10 @@ namespace BaseClasses
         public FibreglassProperties() { }
 
         public FibreglassProperties(EModelType_FS modelType, float lengthFront, float lengthLeft, 
-            float roofPitch_deg, float wallHeightOverall, float height_H2_Overall, float roofEdgeOverhang_X, float roofEdgeOverhang_Y,
+            float roofPitch_deg, float height_1_LR_wall, float height_2_LR_wall,
+            float height_1_FB_wall, float height_2_FB_wall,
+            float bottomEdgeOffset, float additionalOffset_wall,
+            float roofEdgeOverhang_X, float roofEdgeOverhang_Y,
             double widthModularWall, double widthModularRoof,
             string side, float x, float y, float length)
         {
@@ -358,8 +418,14 @@ namespace BaseClasses
             ModelType = modelType;
 
             RoofPitch_deg = roofPitch_deg;
-            WallHeightOverall = wallHeightOverall;
-            Height_H2_Overall = height_H2_Overall;
+            Height_1_final_edge_LR_Wall = height_1_LR_wall;
+            Height_2_final_edge_LR_Wall = height_2_LR_wall;
+            Height_1_final_edge_FB_Wall = height_1_FB_wall;
+            Height_2_final_edge_FB_Wall = height_2_FB_wall;
+
+            BottomEdge_z = bottomEdgeOffset;
+            AdditionalOffsetWall = additionalOffset_wall;
+
             RoofEdgeOverhang_X = roofEdgeOverhang_X;
             RoofEdgeOverhang_Y = roofEdgeOverhang_Y;
             ModelTotalLengthFront = lengthFront;
@@ -379,62 +445,10 @@ namespace BaseClasses
 
         public bool ValidateMaxHeight()
         {
-            bool considerRoofCladdingFor_FB_WallHeight = true; // TODO - napojit
-            double claddingHeight_Roof = 0.075f; // TODO - napojit
-
-            double column_crsc_y_minus = -0.035; // TODO - napojit
-            double column_crsc_y_plus = 0.035; // TODO - napojit
-            double column_crsc_z_plus = 0.145; // TODO - napojit
-
-            double H_1_centerline = 3.46713185; // TODO - napojit
-            double H_2_centerline = 3.80440068; // TODO - napojit
-
-            double bottomEdge_z = -0.05; // TODO - napojit
-
-            double additionalOffset = 0.005;  // 5 mm Aby nekolidovali plochy cladding s members
-            //double additionalOffsetRoof = 0.010; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
-
-            // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
-            double column_crsc_y_minus_temp = column_crsc_y_minus - additionalOffset;
-            double column_crsc_y_plus_temp = column_crsc_y_plus + additionalOffset;
-            double column_crsc_z_plus_temp = column_crsc_z_plus + additionalOffset;
-
-            double height_1_final = H_1_centerline + column_crsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
-            double height_2_final = H_2_centerline + column_crsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
-
-            //double height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            //double height_2_final_edge_LR_Wall = height_2_final;
-
-            // Je mozne prepojit na vstupy
-            double height_1_final_edge_LR_Wall = WallHeightOverall;
-            double height_2_final_edge_LR_Wall = Height_H2_Overall;
-
-            //double height_1_final_edge_Roof = height_1_final + additionalOffsetRoof - (column_crsc_z_plus_temp + RoofEdgeOverhang_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            //double height_2_final_edge_Roof = height_2_final + additionalOffsetRoof;
-
-            if (ModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
-            {
-                height_2_final_edge_LR_Wall = height_2_final + column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
-                //height_2_final_edge_Roof = height_2_final + additionalOffsetRoof + (column_crsc_z_plus_temp + RoofEdgeOverhang_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            }
-
-            // Nastavime rovnaku vysku hornej hrany
-            double height_1_final_edge_FB_Wall = height_1_final_edge_LR_Wall;
-            double height_2_final_edge_FB_Wall = height_2_final_edge_LR_Wall;
-
-            if (considerRoofCladdingFor_FB_WallHeight)
-            {
-                height_1_final_edge_FB_Wall = height_1_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(RoofPitch_deg * Math.PI / 180);
-                height_2_final_edge_FB_Wall = height_2_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(RoofPitch_deg * Math.PI / 180);
-
-                if (ModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
-                    height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + claddingHeight_Roof) * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            }
-
-            double height_1_final_edge_LR_Wall_temp = height_1_final_edge_LR_Wall - bottomEdge_z;
-            double height_2_final_edge_LR_Wall_temp = height_2_final_edge_LR_Wall - bottomEdge_z;
-            double height_1_final_edge_FB_Wall_temp = height_1_final_edge_FB_Wall - bottomEdge_z;
-            double height_2_final_edge_FB_Wall_temp = height_2_final_edge_FB_Wall - bottomEdge_z;
+            double height_1_final_edge_LR_Wall_temp = Height_1_final_edge_LR_Wall - BottomEdge_z;
+            double height_2_final_edge_LR_Wall_temp = Height_2_final_edge_LR_Wall - BottomEdge_z;
+            double height_1_final_edge_FB_Wall_temp = Height_1_final_edge_FB_Wall - BottomEdge_z;
+            double height_2_final_edge_FB_Wall_temp = Height_2_final_edge_FB_Wall - BottomEdge_z;
 
             // TODO 748 - Martin - dopracovat
             if (Side == "Left")
@@ -442,21 +456,21 @@ namespace BaseClasses
             else if(Side == "Right")
             {
                 if (ModelType == EModelType_FS.eKitsetGableRoofEnclosed)
-                    MaxHeight = height_1_final_edge_LR_Wall_temp; // WallHeightOverall
+                    MaxHeight = height_1_final_edge_LR_Wall_temp;
                 else //if (ModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
-                    MaxHeight = height_2_final_edge_LR_Wall_temp; //Height_H2_Overall;
+                    MaxHeight = height_2_final_edge_LR_Wall_temp;
             }
             else if (Side == "Front" || Side == "Back")
             {
-                MaxHeight = ModelHelper.GetVerticalCoordinate(Side, ModelType, ModelTotalLengthFront + 2 * additionalOffset, height_1_final_edge_FB_Wall_temp /*WallHeightOverall*/, X, RoofPitch_deg);
+                MaxHeight = ModelHelper.GetMaximumAvailable_FG_SheetTopCoordinate(Side, ModelType, RoofPitch_deg, ModelTotalLengthFront + 2 * AdditionalOffsetWall, height_2_final_edge_FB_Wall_temp, height_1_final_edge_FB_Wall_temp, CladdingWidthModular_Wall, (int)(X / CladdingWidthModular_Wall) -1);
             }
             else if (Side == "Roof") //roof MONO
             {
-                MaxHeight = (ModelTotalLengthFront + 2 * additionalOffset + 2 * RoofEdgeOverhang_X) / Math.Cos(RoofPitch_deg * Math.PI / 180);
+                MaxHeight = (ModelTotalLengthFront + 2 * AdditionalOffsetWall + 2 * RoofEdgeOverhang_X) / Math.Cos(RoofPitch_deg * Math.PI / 180);
             }
             else if (Side == "Roof-Left Side" || Side == "Roof-Right Side") //roof Gable
             {
-                MaxHeight = (0.5 * ModelTotalLengthFront + additionalOffset + RoofEdgeOverhang_X) / Math.Cos(RoofPitch_deg * Math.PI / 180);
+                MaxHeight = (0.5 * ModelTotalLengthFront + AdditionalOffsetWall + RoofEdgeOverhang_X) / Math.Cos(RoofPitch_deg * Math.PI / 180);
             }
 
             if (Y + Length > MaxHeight) return false;
@@ -470,7 +484,10 @@ namespace BaseClasses
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SetDefaults(EModelType_FS modelType, float lengthFront, float lengthLeft, float roofPitch_deg, float wallHeightOverall, float height_H2_Overall,
+        public void SetDefaults(EModelType_FS modelType, float lengthFront, float lengthLeft, float roofPitch_deg,
+            double height_1_LR_wall, double height_2_LR_wall,
+            double height_1_FB_wall, double height_2_FB_wall,
+            double bottomEdgeOffset, double additionalOffset_wall,
             float roofEdgeOverhang_X, float roofEdgeOverhang_Y, double widthModularWall, double widthModularRoof)
         {
             IsSetFromCode = true;
@@ -478,8 +495,13 @@ namespace BaseClasses
             ModelType = modelType;
 
             RoofPitch_deg = roofPitch_deg;
-            WallHeightOverall = wallHeightOverall;
-            Height_H2_Overall = height_H2_Overall;
+            Height_1_final_edge_LR_Wall = height_1_LR_wall;
+            Height_2_final_edge_LR_Wall = height_2_LR_wall;
+            Height_1_final_edge_FB_Wall = height_1_FB_wall;
+            Height_2_final_edge_FB_Wall = height_2_FB_wall;
+
+            BottomEdge_z = bottomEdgeOffset;
+            AdditionalOffsetWall = additionalOffset_wall;
             RoofEdgeOverhang_X = roofEdgeOverhang_X;
             RoofEdgeOverhang_Y = roofEdgeOverhang_Y;
             ModelTotalLengthFront = lengthFront;

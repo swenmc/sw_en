@@ -1131,27 +1131,6 @@ namespace BaseClasses.GraphObj
             return model_gr;
         }
 
-        public double GetVerticalCoordinate(string sBuildingSide, EModelType_FS eKitset, double width, double leftHeight, double x)
-        {
-            if (sBuildingSide == "Left" || sBuildingSide == "Right")
-                return leftHeight;
-            else //if(sBuildingSide == "Front" || sBuildingSide == "Back")
-            {
-
-                if (eKitset == EModelType_FS.eKitsetMonoRoofEnclosed)
-                {
-                    if (sBuildingSide == "Back")
-                        return leftHeight + x * Math.Tan(-sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
-                    else
-                        return leftHeight + x * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
-                }
-                else if (x < 0.5f * width)
-                    return leftHeight + x * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
-                else
-                    return leftHeight + (width - x) * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
-            }
-        }
-
         public void GenerateCladdingSheets(bool bCladdingSheetColoursByID,
             bool bUseTop20Colors,
             string side,
@@ -1191,15 +1170,15 @@ namespace BaseClasses.GraphObj
                 if (side == "Front" || side == "Back")
                 {
                     // TODO - overit ci sa ma v height pocitat s bottomEdge_z
-                    height_left = GetVerticalCoordinate(side, eModelType, width, height_left_basic, i * claddingWidthModular);
-                    height_right = GetVerticalCoordinate(side, eModelType, width, height_left_basic, (i + 1) * claddingWidthModular);
+                    height_left = ModelHelper.GetVerticalCoordinate(side, eModelType, width, height_left_basic, i * claddingWidthModular, sBuildingGeomInputData.fRoofPitch_deg);
+                    height_right = ModelHelper.GetVerticalCoordinate(side, eModelType, width, height_left_basic, (i + 1) * claddingWidthModular, sBuildingGeomInputData.fRoofPitch_deg);
                     height_toptip = 0.5 * (height_left + height_right);
                     tipCoordinate_x = 0.5 * claddingWidthModular;
 
                     if (i == iNumberOfOriginalSheetsOnSide - 1)
                     {
                         // TODO - overit ci sa ma v height pocitat s bottomEdge_z
-                        height_right = GetVerticalCoordinate(side, eModelType, width, height_left_basic, width);
+                        height_right = ModelHelper.GetVerticalCoordinate(side, eModelType, width, height_left_basic, width, sBuildingGeomInputData.fRoofPitch_deg);
                         height_toptip = 0.5 * (height_left + height_right);
                         tipCoordinate_x = 0.5 * dLastSheetWidth;
                     }
@@ -1461,62 +1440,8 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public double GetMaximumAvailable_FG_SheetTopCoordinate (string side, // Strana budovy
-            EModelType_FS eModelType,
-            double width, // Sirka steny budovy, pre ktoru generujeme sheets
-            double height_middle_basic_aux, // Stred budovy gable roof - roof ridge
-            double height_left_basic, // Vyska steny vlavo
-            double claddingWidthModular,
-            int sheetIndex) // index pre sheet ktoreho vysku zistujeme
-        {
-            // Predpokladame ze FB su obdlzniky a na hornom okraji sa nebudu zrezavat sikmo pre front a back wall ale vzdy nad nimi bude este aj plech
-
-            int iNumberOfWholeSheets = (int)(width / claddingWidthModular);
-            //double dWidthOfWholeSheets = iNumberOfWholeSheets * claddingWidthModular;
-            //double dLastSheetWidth = width - dWidthOfWholeSheets; // Last Sheet
-            int iNumberOfOriginalSheetsOnSide = iNumberOfWholeSheets + 1; // Celkovy pocet povodnych sheets
-
-            // Zakladne hodnoty pre obdlznik
-            //int iNumberOfEdges = 4;
-            // TODO - overit ci sa ma v height pocitat s bottomEdge_z
-            double height_left = height_left_basic;
-            double height_right = height_left_basic;
-            double height_toptip = height_left_basic;
-            //double tipCoordinate_x = 0.5 * (sheetIndex == iNumberOfOriginalSheetsOnSide - 1 ? dLastSheetWidth : claddingWidthModular);
-
-            if (side == "Front" || side == "Back")
-            {
-                // TODO - overit ci sa ma v height pocitat s bottomEdge_z
-                height_left = GetVerticalCoordinate(side, eModelType, width, height_left_basic, sheetIndex * claddingWidthModular);
-                height_right = GetVerticalCoordinate(side, eModelType, width, height_left_basic, (sheetIndex + 1) * claddingWidthModular);
-                height_toptip = 0.5 * (height_left + height_right);
-                //tipCoordinate_x = 0.5 * claddingWidthModular;
-
-                if (sheetIndex == iNumberOfOriginalSheetsOnSide - 1)
-                {
-                    // TODO - overit ci sa ma v height pocitat s bottomEdge_z
-                    height_right = GetVerticalCoordinate(side, eModelType, width, height_left_basic, width);
-                    height_toptip = 0.5 * (height_left + height_right);
-                    //tipCoordinate_x = 0.5 * dLastSheetWidth;
-                }
-
-                if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed &&
-                   sheetIndex * claddingWidthModular < 0.5 * width &&
-                   (sheetIndex + 1) * claddingWidthModular > 0.5 * width)
-                {
-                    //iNumberOfEdges = 5;
-                    // TODO - overit ci sa ma v height pocitat s bottomEdge_z
-                    height_toptip = -bottomEdge_z + height_middle_basic_aux; // Stred budovy gable roof - roof ridge
-                    //tipCoordinate_x = 0.5 * width - sheetIndex * claddingWidthModular;
-                }
-            }
-
-            return Math.Min(Math.Min(height_left, height_right), height_toptip);
-        }
-
-
         public void SetCladdingGenerateProperties(IList<CComponentInfo> componentList)
-        {            
+        {
             CComponentInfo girtL = componentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
             if (girtL != null && girtL.Generate.HasValue)
             {
