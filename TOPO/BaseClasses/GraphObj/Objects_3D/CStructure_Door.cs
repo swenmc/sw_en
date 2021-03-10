@@ -142,7 +142,7 @@ namespace BaseClasses.GraphObj
             gr.Children.Add(mDoorPanel.CreateM_3D_G_Volume_8Edges(pArray[3], fL_X - 2 * fT_Y, fDoorPanelThickness, fH_Z - 1 * fT_Y, DiffMatD, DiffMatD)); // Door Panel No 1
 
             //to Mato - tu je nutne nastavit wireframePoints            
-            //tu je nutne niekde ziskat Wireframe a aj ho nastavit
+            //tu je nutne niekde ziskat Wireframe a aj ho nastavit            
             WireFramePoints.AddRange(mFrame_01_HU.WireFramePoints);
             WireFramePoints.AddRange(mFrame_02_V.WireFramePoints);
             WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
@@ -189,6 +189,7 @@ namespace BaseClasses.GraphObj
                 m_Material_2 = new DiffuseMaterial(panelSolidBrush);
             }
 
+            WireFramePoints = new List<Point3D>();
             // Create Door in LCS
             for (int i = 0; i < iSegmentNum; i++) // Add segments
             {
@@ -207,6 +208,12 @@ namespace BaseClasses.GraphObj
             // Set transformation to group
             gr.Transform = transform3DGroup;
 
+            //WireFramePoints transform
+            for (int i = 0; i < WireFramePoints.Count; i++)
+            {
+                WireFramePoints[i] = transform3DGroup.Transform(WireFramePoints[i]);
+            }
+            
             return gr;
         }
 

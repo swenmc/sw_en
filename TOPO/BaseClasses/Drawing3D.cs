@@ -195,7 +195,7 @@ namespace BaseClasses
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
-                // Cladding
+                // Cladding Wireframe
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
@@ -3013,6 +3013,7 @@ namespace BaseClasses
                         model.m_arrGOStrDoors[i].m_pControlPoint != null &&
                         model.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
+                        //model.m_arrGOStrDoors[i].
                         wireFramePoints.AddRange(model.m_arrGOStrDoors[i].WireFramePoints);
                     }
                 }
