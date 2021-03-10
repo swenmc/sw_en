@@ -24,6 +24,7 @@ using BaseClasses.Helpers;
 using System.Windows.Media;
 using DATABASE;
 using System.Globalization;
+using CRSC;
 
 namespace PFD
 {
@@ -76,6 +77,12 @@ namespace PFD
         private float m_BuildingArea_Gross;
         private float m_BuildingVolume_Gross;
         private float m_RoofSideLength;
+
+        private double m_Height_1_final_edge_LR_Wall;
+        private double m_Height_2_final_edge_LR_Wall;
+        private double m_Height_1_final_edge_FB_Wall;
+        private double m_Height_2_final_edge_FB_Wall;
+        private double m_AdditionalOffsetWall;
 
         //private int MRoofCladdingIndex;
         //private int MRoofCladdingID;
@@ -417,7 +424,10 @@ namespace PFD
                 //WallCladdingColorIndex = 8;
                 //FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
                 //FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+
+                CalculateWallHeightsForCladding();
                 _claddingOptionsVM.SetDefaultValuesOnModelIndexChange(this);
+                
                 CountWallAndRoofAreas();
 
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
@@ -501,7 +511,8 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
-                if (!IsSetFromCode) CountWallAndRoofAreas();
+                if (!IsSetFromCode) CalculateWallHeightsForCladding();
+                if (!IsSetFromCode) CountWallAndRoofAreas();                
                 NotifyPropertyChanged("Width");
             }
         }
@@ -549,6 +560,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CalculateWallHeightsForCladding();
                 if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("Length");
             }
@@ -601,6 +613,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CalculateWallHeightsForCladding();
                 if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("WallHeight");
             }
@@ -627,7 +640,9 @@ namespace PFD
                     IsSetFromCode = isChangedFromCode;
                     _claddingOptionsVM.UpdateFibreglassPropertiesMaxX();
                 }
+
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CalculateWallHeightsForCladding();
                 if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("WidthOverall");
             }
@@ -662,6 +677,7 @@ namespace PFD
                 }
                 if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CalculateWallHeightsForCladding();
                 if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("LengthOverall");
             }
@@ -688,6 +704,7 @@ namespace PFD
                     IsSetFromCode = isChangedFromCode;
                 }
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CalculateWallHeightsForCladding();
                 if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("WallHeightOverall");
             }
@@ -752,6 +769,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 if (!IsSetFromCode) SetCustomModel();
+                if (!IsSetFromCode) CalculateWallHeightsForCladding();
                 NotifyPropertyChanged("RoofPitch_deg");
             }
         }
@@ -807,6 +825,7 @@ namespace PFD
                 UpdateViewModelsOnFramesChange();
 
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
+                if (!IsSetFromCode) CalculateWallHeightsForCladding();
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -3363,6 +3382,71 @@ namespace PFD
             }
         }
 
+        public double Height_1_final_edge_LR_Wall
+        {
+            get
+            {
+                return m_Height_1_final_edge_LR_Wall;
+            }
+
+            set
+            {
+                m_Height_1_final_edge_LR_Wall = value;
+            }
+        }
+
+        public double Height_2_final_edge_LR_Wall
+        {
+            get
+            {
+                return m_Height_2_final_edge_LR_Wall;
+            }
+
+            set
+            {
+                m_Height_2_final_edge_LR_Wall = value;
+            }
+        }
+
+        public double Height_1_final_edge_FB_Wall
+        {
+            get
+            {
+                return m_Height_1_final_edge_FB_Wall;
+            }
+
+            set
+            {
+                m_Height_1_final_edge_FB_Wall = value;
+            }
+        }
+
+        public double Height_2_final_edge_FB_Wall
+        {
+            get
+            {
+                return m_Height_2_final_edge_FB_Wall;
+            }
+
+            set
+            {
+                m_Height_2_final_edge_FB_Wall = value;
+            }
+        }
+
+        public double AdditionalOffsetWall
+        {
+            get
+            {
+                return m_AdditionalOffsetWall;
+            }
+
+            set
+            {
+                m_AdditionalOffsetWall = value;
+            }
+        }
+
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -4657,6 +4741,65 @@ namespace PFD
         {
             CountWallAreas();
             CountRoofAreas();
+        }
+
+
+        public void CalculateWallHeightsForCladding()
+        {
+            if (_claddingOptionsVM == null) return;
+            double claddingHeight_Roof = 0;
+
+            if (_claddingOptionsVM.RoofCladdingProps != null)
+                claddingHeight_Roof = _claddingOptionsVM.RoofCladdingProps.height_m;
+            else
+            {
+                CTS_CrscProperties prop = CTrapezoidalSheetingManager.LoadCrossSectionProperties_meters(_claddingOptionsVM.RoofCladding);
+                claddingHeight_Roof = prop.height_m;
+            }
+
+            //bottomEdge_z = WallBottomOffset_Z;
+
+            CCrSc_TW edgeColumn = CrScFactory.GetCrSc(ComponentList[(int)EMemberType_FS_Position.EdgeColumn].Section);
+
+            double column_crsc_y_minus = edgeColumn.y_min;
+            double column_crsc_y_plus = edgeColumn.y_max;
+            double column_crsc_z_plus = edgeColumn.z_max;
+
+            AdditionalOffsetWall = 0.005;  // 5 mm Aby nekolidovali plochy cladding s members
+            double additionalOffsetRoof = 0.010; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
+
+            // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
+            double column_crsc_y_minus_temp = column_crsc_y_minus - AdditionalOffsetWall;
+            double column_crsc_y_plus_temp = column_crsc_y_plus + AdditionalOffsetWall;
+            double column_crsc_z_plus_temp = column_crsc_z_plus + AdditionalOffsetWall;
+
+            double height_1_final = WallHeight + column_crsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
+            double height_2_final = Height_H2 + column_crsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
+
+            Height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            Height_2_final_edge_LR_Wall = height_2_final;
+
+            double height_1_final_edge_Roof = height_1_final + additionalOffsetRoof - (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            double height_2_final_edge_Roof = height_2_final + additionalOffsetRoof;
+
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            {
+                Height_2_final_edge_LR_Wall = height_2_final + column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
+                height_2_final_edge_Roof = height_2_final + additionalOffsetRoof + (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            }
+
+            // Nastavime rovnaku vysku hornej hrany
+            Height_1_final_edge_FB_Wall = Height_1_final_edge_LR_Wall;
+            Height_2_final_edge_FB_Wall = Height_2_final_edge_LR_Wall;
+
+            if (_claddingOptionsVM.ConsiderRoofCladdingFor_FB_WallHeight)
+            {
+                Height_1_final_edge_FB_Wall = Height_1_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(RoofPitch_deg * Math.PI / 180);
+                Height_2_final_edge_FB_Wall = Height_2_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(RoofPitch_deg * Math.PI / 180);
+
+                if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+                    Height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + claddingHeight_Roof) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            }
         }
     }
 }
