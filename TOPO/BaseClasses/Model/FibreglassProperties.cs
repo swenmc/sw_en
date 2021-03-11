@@ -98,8 +98,6 @@ namespace BaseClasses
             {
                 Y_old = m_Y;
                 m_Y = value;
-
-                if (!ValidateMaxHeight()) m_Y = Y_old;
                 NotifyPropertyChanged("Y");
             }
         }

@@ -116,7 +116,7 @@ namespace PFD
         {
             if (vm.AddFibreglass == false) return new List<FibreglassProperties>();
 
-            return GetNoCollisionsItems(GetFibreglassPropertiesBasedOnPeriodicity());
+            return GetNoCollisionsItems(GetFibreglassPropertiesBasedOnPeriodicity(true));
         }
         //public List<FibreglassProperties> GetFibreglassProperties()
         //{
@@ -129,10 +129,10 @@ namespace PFD
         {
             if (vm.DeleteFibreglass == false) return new List<FibreglassProperties>();
 
-            return GetFibreglassPropertiesBasedOnPeriodicity();
+            return GetFibreglassPropertiesBasedOnPeriodicity(false);
         }
 
-        private List<FibreglassProperties> GetFibreglassPropertiesBasedOnPeriodicity()
+        private List<FibreglassProperties> GetFibreglassPropertiesBasedOnPeriodicity(bool validateMaxHeight)
         {
             bool isValidMaxHeight = true;
             List<FibreglassProperties> items = new List<FibreglassProperties>();
@@ -182,7 +182,7 @@ namespace PFD
                     } //end rows count
                 } //end else generate raster
             }
-            if(!isValidMaxHeight) MessageBox.Show("Fibreglass is outside of building dimensions.");
+            if(validateMaxHeight && !isValidMaxHeight) MessageBox.Show("Fibreglass is outside of building dimensions.");
             return items;
         }
 
@@ -199,7 +199,7 @@ namespace PFD
         }
         private bool WillGeneratedItemsHaveCollisions()
         {
-            List<FibreglassProperties> items = GetFibreglassPropertiesBasedOnPeriodicity();
+            List<FibreglassProperties> items = GetFibreglassPropertiesBasedOnPeriodicity(false);
             List<FibreglassProperties> itemsWithNoCollisions = new List<FibreglassProperties>();
             bool collisionDetected = false;
             foreach (FibreglassProperties f in items)
