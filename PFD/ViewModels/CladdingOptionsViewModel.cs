@@ -1362,17 +1362,17 @@ namespace PFD
             ConsiderRoofCladdingFor_FB_WallHeight = true;
 
             FibreglassProperties = new ObservableCollection<FibreglassProperties>();
-            FibreglassProperties f = new FibreglassProperties();
 
-            //to Mato 748 - skontrolovat parametre
-            //temp for testing first object
-            f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM.RoofPitch_deg,
-              _pfdVM.Height_1_final_edge_LR_Wall, _pfdVM.Height_2_final_edge_LR_Wall,
-              _pfdVM.Height_1_final_edge_FB_Wall, _pfdVM.Height_2_final_edge_FB_Wall,
-              WallBottomOffset_Z, _pfdVM.AdditionalOffsetWall,
-              RoofEdgeOverHang_LR_X, RoofEdgeOverHang_FB_Y,
-              _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
-            FibreglassProperties.Add(f);
+            ////to Mato 748 - skontrolovat parametre
+            ////temp for testing first object
+            //FibreglassProperties f = new FibreglassProperties();
+            //f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM.RoofPitch_deg,
+            //  _pfdVM.Height_1_final_edge_LR_Wall, _pfdVM.Height_2_final_edge_LR_Wall,
+            //  _pfdVM.Height_1_final_edge_FB_Wall, _pfdVM.Height_2_final_edge_FB_Wall,
+            //  WallBottomOffset_Z, _pfdVM.AdditionalOffsetWall,
+            //  RoofEdgeOverHang_LR_X, RoofEdgeOverHang_FB_Y,
+            //  _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+            //FibreglassProperties.Add(f);
         }
 
         //-------------------------------------------------------------------------------------------------------------

@@ -66,9 +66,9 @@ namespace BaseClasses
             set
             {
                 Side_old = m_Side;
-                m_Side = value;
-                InitXValuesAndSetX();
+                m_Side = value;                
                 NotifyPropertyChanged("Side");
+                InitXValuesAndSetX();
             }
         }
 
