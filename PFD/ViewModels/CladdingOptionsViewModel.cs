@@ -852,6 +852,7 @@ namespace PFD
                 if (m_ConsiderRoofCladdingFor_FB_WallHeight && m_RoofEdgeOverHang_FB_Y > 0)
                     throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
 
+                UpdateFibreglassProperties();
                 NotifyPropertyChanged("RoofEdgeOverHang_FB_Y");
             }
         }
@@ -868,6 +869,7 @@ namespace PFD
                 if (value < 0.00 || value > 0.50)
                     throw new ArgumentException("Overhang length must be between 0 and 500 [mm]");
                 m_RoofEdgeOverHang_LR_X = value;
+                UpdateFibreglassProperties();
                 NotifyPropertyChanged("RoofEdgeOverHang_LR_X");
             }
         }
@@ -900,6 +902,7 @@ namespace PFD
                 if (value < -0.50 || value > 0.00)
                     throw new ArgumentException("Bottom offset under floor level must be between -500 and 0 [mm]");
                 m_WallBottomOffset_Z = value;
+                UpdateFibreglassProperties();
                 NotifyPropertyChanged("WallBottomOffset_Z");
             }
         }
@@ -1380,6 +1383,17 @@ namespace PFD
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //omg tu treba zase check,ci nebudu zrazu nejake mimo budovu a ak ano,tak musi sa vratit naspat WallBottomOffset_Z
+        private void UpdateFibreglassProperties()
+        {            
+            foreach (FibreglassProperties f in this.FibreglassProperties)
+            {
+                if (!MathF.d_equal(f.BottomEdge_z, WallBottomOffset_Z)) f.BottomEdge_z = WallBottomOffset_Z;
+                if (!MathF.d_equal(f.RoofEdgeOverhang_Y, RoofEdgeOverHang_FB_Y)) f.BottomEdge_z = RoofEdgeOverHang_FB_Y;
+                if (!MathF.d_equal(f.RoofEdgeOverhang_X, WallBottomOffset_Z)) f.RoofEdgeOverhang_X = RoofEdgeOverHang_LR_X;
+            }            
         }
 
         private void UpdateFibreglassPropertiesWall()
