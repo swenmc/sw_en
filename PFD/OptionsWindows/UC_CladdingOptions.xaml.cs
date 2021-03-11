@@ -78,9 +78,11 @@ namespace PFD
             }
         }
 
+        
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (ErrorDetected) { e.Handled = true; return; } //neumoznime opustit tab ak je error
+            //nefungovalo akoby neumoznit opustit tab, tak sa naspat selectne Cladding tab ak je chyba (753)
+            if (ErrorDetected) { e.Handled = true; _pfdVM.PFDMainWindow.SelectCladdingTab(); return; } //neumoznime opustit tab ak je error
 
             if (CladdingOptionsChanged)
             {

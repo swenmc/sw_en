@@ -1642,6 +1642,14 @@ namespace PFD
             });
         }
 
+        public void SelectCladdingTab()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                MainTabControl.SelectedIndex = (int)ETabNames.eCladding;                
+            });
+        }
+
         private void WindPressureButton_Click(object sender, RoutedEventArgs e)
         {
             WindPressureCalculator win = new WindPressureCalculator();
