@@ -21,6 +21,7 @@ namespace PFD
     {
         private CPFDViewModel _pfdVM;
         private bool CladdingOptionsChanged = false;
+        private bool ErrorDetected = false;
 
         //private bool RecreateModelRequired = false;
         public UC_CladdingOptions(CPFDViewModel pfdVM)
@@ -53,7 +54,8 @@ namespace PFD
 
                 if (_pfdVM._claddingOptionsVM.CollisionsExists())
                 {
-                    MessageBox.Show("Collision detected.");
+                    ErrorDetected = true;
+                    MessageBox.Show(_pfdVM.PFDMainWindow, "Collision detected.");
 
                     if (e.PropertyName == "X") f.UndoX();
                     else if (e.PropertyName == "Y") f.UndoY();
@@ -63,19 +65,23 @@ namespace PFD
                 //748 - toto treba zapnut ak bude validacia v poriadku
                 else if(!f.ValidateMaxHeight()) //ak sa nezmesti
                 {
+                    ErrorDetected = true;
                     MessageBox.Show("Fibreglass is outside of building dimensions.");
+
                     if (e.PropertyName == "X") f.UndoX();
                     else if (e.PropertyName == "Y") f.UndoY();
                     else if (e.PropertyName == "Side") f.UndoSide();
                     else if (e.PropertyName == "Length") f.UndoLength();
                 }
-
+                ErrorDetected = false;
                 CladdingOptionsChanged = true;
             }
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
+            if (ErrorDetected) { e.Handled = true; return; } //neumoznime opustit tab ak je error
+
             if (CladdingOptionsChanged)
             {
                 _pfdVM.CladdingOptionsChanged = true;
