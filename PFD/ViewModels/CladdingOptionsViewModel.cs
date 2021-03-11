@@ -1385,14 +1385,17 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        //755
         //omg tu treba zase check,ci nebudu zrazu nejake mimo budovu a ak ano,tak musi sa vratit naspat WallBottomOffset_Z
         private void UpdateFibreglassProperties()
         {            
             foreach (FibreglassProperties f in this.FibreglassProperties)
             {
                 if (!MathF.d_equal(f.BottomEdge_z, WallBottomOffset_Z)) f.BottomEdge_z = WallBottomOffset_Z;
-                if (!MathF.d_equal(f.RoofEdgeOverhang_Y, RoofEdgeOverHang_FB_Y)) f.BottomEdge_z = RoofEdgeOverHang_FB_Y;
-                if (!MathF.d_equal(f.RoofEdgeOverhang_X, WallBottomOffset_Z)) f.RoofEdgeOverhang_X = RoofEdgeOverHang_LR_X;
+                
+                //To Mato 755 - zamysli sa, ci treba tieto kontrolovat,updatovat atd
+                if (!MathF.d_equal(f.RoofEdgeOverhang_X, RoofEdgeOverHang_LR_X)) f.RoofEdgeOverhang_X = RoofEdgeOverHang_LR_X;
+                if (!MathF.d_equal(f.RoofEdgeOverhang_Y, RoofEdgeOverHang_FB_Y)) f.RoofEdgeOverhang_Y = RoofEdgeOverHang_FB_Y;
             }            
         }
 
