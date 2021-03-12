@@ -43,7 +43,7 @@ namespace PFD
 
                 if (e.PropertyName == "VariousBayWidths")
                 {
-                    //clear cross bracing
+                    //clear bay widths
                     if (_pfdVM._modelOptionsVM.VariousBayWidths == false)
                     {
                         _pfdVM._baysWidthOptionsVM.ResetBaysWidths(_pfdVM.Frames - 1, _pfdVM.BayWidth);
@@ -75,7 +75,7 @@ namespace PFD
                     }
                     else
                     {
-                        _pfdVM._canopiesOptionsVM  = new CanopiesOptionsViewModel(_pfdVM.Frames - 1, _pfdVM.Width);
+                        _pfdVM._canopiesOptionsVM.Update(_pfdVM.Frames - 1, _pfdVM.Width);
                     }
                 }
                 if (e.PropertyName == "EnableCladding")
