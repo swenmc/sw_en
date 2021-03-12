@@ -2102,7 +2102,7 @@ namespace PFD
 
                 CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.PurlinCanopy];
                 cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                    compPref.ComponentName, section, prop.colorName, "G550‡", ils, true, true, true, true, true,
+                    compPref.ComponentName, section, prop.colorName, "G550‡", ils, cP.Generate, true, true, true, true,
                     SectionsForGirtsOrPurlins, DefaultILS_Items, MColors, EMemberType_FS_Position.PurlinCanopy);
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cInfo);
@@ -2139,7 +2139,7 @@ namespace PFD
 
                     CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.BracingBlockPurlinsCanopy];
                     cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                        compPref.ComponentName, section, prop.colorName, "G550‡", "None", true, true, true, true, true,
+                        compPref.ComponentName, section, prop.colorName, "G550‡", "None", cPurlinCanopyInfo.Generate, true, true, true, true,
                         SectionsForGirtsOrPurlinsBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.BracingBlockPurlinsCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
@@ -2161,7 +2161,7 @@ namespace PFD
 
                     CComponentPrefixes compPref = compPref = dict_CompPref[(int)EMemberType_FS_Position.CrossBracingRoofCanopy];
                     cInfo = new CComponentInfo(compPref.ComponentPrefix, CComboBoxHelper.ColorDict[compPref.ComponentColorName],
-                        compPref.ComponentName, section, prop.colorName, "G550‡", "None", true, true, true, true, true,
+                        compPref.ComponentName, section, prop.colorName, "G550‡", "None", (cPurlinCanopyInfo != null ? cPurlinCanopyInfo.Generate: true), true, true, true, true,
                         SectionsForCrossBracing, EmptyILS_Items, MColors, EMemberType_FS_Position.CrossBracingRoofCanopy);
                     cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
                     ComponentList.Add(cInfo);
