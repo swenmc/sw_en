@@ -902,6 +902,11 @@ namespace BaseClasses.GraphObj
                 {
                     for (int i = 0; i < listOfCladdingSheetsRoofRight.Count; i++)
                     {
+                        if(i == 8)
+                        {
+
+                        }
+
                         CCladdingOrFibreGlassSheet originalsheet = listOfCladdingSheetsRoofRight[i];
 
                         foreach (CCanopiesInfo canopy in canopyCollection)

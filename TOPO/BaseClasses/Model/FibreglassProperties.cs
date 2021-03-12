@@ -451,7 +451,7 @@ namespace BaseClasses
             // TODO 748 - Martin - dopracovat
             if (Side == "Left")
                 MaxHeight = height_1_final_edge_LR_Wall_temp; // WallHeightOverall
-            else if(Side == "Right")
+            else if (Side == "Right")
             {
                 if (ModelType == EModelType_FS.eKitsetGableRoofEnclosed)
                     MaxHeight = height_1_final_edge_LR_Wall_temp;
@@ -460,7 +460,7 @@ namespace BaseClasses
             }
             else if (Side == "Front" || Side == "Back")
             {
-                double height_left_basic = ModelType == EModelType_FS.eKitsetGableRoofEnclosed ? height_1_final_edge_FB_Wall_temp : height_2_final_edge_FB_Wall_temp;
+                double height_left_basic = (ModelType == EModelType_FS.eKitsetGableRoofEnclosed || Side == "Front") ? height_1_final_edge_FB_Wall_temp : height_2_final_edge_FB_Wall_temp;
                 MaxHeight = ModelHelper.GetMaximumAvailable_FG_SheetTopCoordinate(Side, ModelType, RoofPitch_deg, ModelTotalLengthFront + 2 * AdditionalOffsetWall, height_2_final_edge_FB_Wall_temp, height_left_basic, CladdingWidthModular_Wall, (int)(X / CladdingWidthModular_Wall));
             }
             else if (Side == "Roof") //roof MONO
