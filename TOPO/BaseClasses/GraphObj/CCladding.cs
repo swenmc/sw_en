@@ -903,7 +903,8 @@ namespace BaseClasses.GraphObj
                     for (int i = 0; i < listOfCladdingSheetsRoofRight.Count; i++)
                     {
                         CCladdingOrFibreGlassSheet originalsheet = listOfCladdingSheetsRoofRight[i];
-
+                        int cIndex = 0;
+                        int breakIndex = canopyCollection.Count;
                         foreach (CCanopiesInfo canopy in canopyCollection)
                         {
                             bool hasNextCanopyRight = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1));
@@ -940,7 +941,7 @@ namespace BaseClasses.GraphObj
                                     originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
 
                                     if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed || (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && !canopy.Left))
-                                        break;
+                                        breakIndex = cIndex + 1;
                                 }
                             }
 
@@ -977,11 +978,14 @@ namespace BaseClasses.GraphObj
                                         //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
 
-                                        break;
+                                        breakIndex = cIndex + 1;
                                     }
                                 }
                             }
+                            if (cIndex == breakIndex) break;
+                            cIndex++;
                         }
+
                     }
                 }
             }
