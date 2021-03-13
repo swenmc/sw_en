@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace PFD
 {
@@ -90,9 +91,12 @@ namespace PFD
         private List<string> m_WallFibreglassSheetMassTypes;
 
         private float m_RoofEdgeOverHang_FB_Y;
+        private float m_RoofEdgeOverHang_FB_Y_old;
         private float m_RoofEdgeOverHang_LR_X;
+        private float m_RoofEdgeOverHang_LR_X_old;
         private float m_CanopyRoofEdgeOverHang_LR_X;
         private float m_WallBottomOffset_Z;
+        private float m_WallBottomOffset_Z_old;
 
         private bool m_ConsiderRoofCladdingFor_FB_WallHeight;
 
@@ -846,6 +850,7 @@ namespace PFD
             {
                 if (value < 0.00 || value > 0.30)
                     throw new ArgumentException("Overhang length must be between 0 and 300 [mm]");
+                m_RoofEdgeOverHang_FB_Y_old = m_RoofEdgeOverHang_FB_Y;
                 m_RoofEdgeOverHang_FB_Y = value;
 
                 //task 732
@@ -856,7 +861,18 @@ namespace PFD
                 NotifyPropertyChanged("RoofEdgeOverHang_FB_Y");
             }
         }
+        public float RoofEdgeOverHang_FB_Y_old
+        {
+            get
+            {
+                return m_RoofEdgeOverHang_FB_Y_old;
+            }
 
+            set
+            {
+                m_RoofEdgeOverHang_FB_Y_old = value;
+            }
+        }
         public float RoofEdgeOverHang_LR_X
         {
             get
@@ -868,9 +884,22 @@ namespace PFD
             {
                 if (value < 0.00 || value > 0.50)
                     throw new ArgumentException("Overhang length must be between 0 and 500 [mm]");
+                m_RoofEdgeOverHang_LR_X_old = m_RoofEdgeOverHang_LR_X;
                 m_RoofEdgeOverHang_LR_X = value;
                 UpdateFibreglassProperties();
                 NotifyPropertyChanged("RoofEdgeOverHang_LR_X");
+            }
+        }
+        public float RoofEdgeOverHang_LR_X_old
+        {
+            get
+            {
+                return m_RoofEdgeOverHang_LR_X_old;
+            }
+
+            set
+            {
+                m_RoofEdgeOverHang_LR_X_old = value;
             }
         }
 
@@ -901,9 +930,22 @@ namespace PFD
             {
                 if (value < -0.50 || value > 0.00)
                     throw new ArgumentException("Bottom offset under floor level must be between -500 and 0 [mm]");
+                m_WallBottomOffset_Z_old = m_WallBottomOffset_Z;
                 m_WallBottomOffset_Z = value;
                 UpdateFibreglassProperties();
                 NotifyPropertyChanged("WallBottomOffset_Z");
+            }
+        }
+        public float WallBottomOffset_Z_old
+        {
+            get
+            {
+                return m_WallBottomOffset_Z_old;
+            }
+
+            set
+            {
+                m_WallBottomOffset_Z_old = value;
             }
         }
 
@@ -1130,6 +1172,10 @@ namespace PFD
                 m_WallFibreglassSheetMassTypes = value;
             }
         }
+
+        
+
+
 
         //TO Mato - co budeme nastavovat, co sa ma udiat ked pridame, zmazeme riadok a podobne?Alebo budeme reagovat az ked sa opusti tab?
         private void FibreglassProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -1385,17 +1431,45 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        //755
-        //omg tu treba zase check,ci nebudu zrazu nejake mimo budovu a ak ano,tak musi sa vratit naspat WallBottomOffset_Z
+
+        //To Mato 755 - zamysli sa, ci treba kontrolovat,updatovat atd aj RoofEdgeOverHang_LR_X, RoofEdgeOverHang_FB_Y
         private void UpdateFibreglassProperties()
         {            
             foreach (FibreglassProperties f in this.FibreglassProperties)
             {
-                if (!MathF.d_equal(f.BottomEdge_z, WallBottomOffset_Z)) f.BottomEdge_z = WallBottomOffset_Z;
-                
-                //To Mato 755 - zamysli sa, ci treba tieto kontrolovat,updatovat atd
-                if (!MathF.d_equal(f.RoofEdgeOverhang_X, RoofEdgeOverHang_LR_X)) f.RoofEdgeOverhang_X = RoofEdgeOverHang_LR_X;
-                if (!MathF.d_equal(f.RoofEdgeOverhang_Y, RoofEdgeOverHang_FB_Y)) f.RoofEdgeOverhang_Y = RoofEdgeOverHang_FB_Y;
+                //tuto property ze treba vracat mam otestovane, tie dalsie 2 dole si uz isty nie som,ci je nutne takto osetrit
+                if (!MathF.d_equal(f.BottomEdge_z, WallBottomOffset_Z))
+                {
+                    f.BottomEdge_z = WallBottomOffset_Z;
+                    if (!f.ValidateMaxHeight())
+                    {
+                        MessageBox.Show("Fibreglass is outside of building dimensions.");
+                        WallBottomOffset_Z = WallBottomOffset_Z_old;
+                        UpdateFibreglassProperties();
+                    } 
+                }
+
+                if (!MathF.d_equal(f.RoofEdgeOverhang_X, RoofEdgeOverHang_LR_X))
+                {
+                    f.RoofEdgeOverhang_X = RoofEdgeOverHang_LR_X;
+                    if (!f.ValidateMaxHeight())
+                    {
+                        MessageBox.Show("Fibreglass is outside of building dimensions.");
+                        RoofEdgeOverHang_LR_X = RoofEdgeOverHang_LR_X_old;
+                        UpdateFibreglassProperties();
+                    }
+                }
+
+                if (!MathF.d_equal(f.RoofEdgeOverhang_Y, RoofEdgeOverHang_FB_Y))
+                {
+                    f.RoofEdgeOverhang_Y = RoofEdgeOverHang_FB_Y;
+                    if (!f.ValidateMaxHeight())
+                    {
+                        MessageBox.Show("Fibreglass is outside of building dimensions.");
+                        RoofEdgeOverHang_FB_Y = RoofEdgeOverHang_FB_Y_old;
+                        UpdateFibreglassProperties();
+                    }
+                }
             }            
         }
 
