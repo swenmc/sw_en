@@ -855,7 +855,11 @@ namespace PFD
 
                 //task 732
                 if (m_ConsiderRoofCladdingFor_FB_WallHeight && m_RoofEdgeOverHang_FB_Y > 0)
-                    throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
+                {
+                    MessageBox.Show("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
+                    m_RoofEdgeOverHang_FB_Y = m_RoofEdgeOverHang_FB_Y_old;
+                    //throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
+                }                    
 
                 UpdateFibreglassProperties();
                 NotifyPropertyChanged("RoofEdgeOverHang_FB_Y");
@@ -959,10 +963,14 @@ namespace PFD
             set
             {
                 m_ConsiderRoofCladdingFor_FB_WallHeight = value;
-                
+
                 //task 732
                 if (m_ConsiderRoofCladdingFor_FB_WallHeight && m_RoofEdgeOverHang_FB_Y > 0)
-                    throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
+                {
+                    MessageBox.Show("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
+                    m_ConsiderRoofCladdingFor_FB_WallHeight = !m_ConsiderRoofCladdingFor_FB_WallHeight;
+                    //throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
+                }   
 
                 NotifyPropertyChanged("ConsiderRoofCladdingFor_FB_WallHeight");
             }
