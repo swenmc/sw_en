@@ -79,6 +79,22 @@ namespace BaseClasses.GraphObj
         bool bGenerateBackSideCladding = true;
         bool bGenerateRoofCladding = true;
 
+
+        private List<Point3D> m_WireFramePoints;
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
+                return m_WireFramePoints;
+            }
+
+            set
+            {
+                m_WireFramePoints = value;
+            }
+        }
+
         public CCladding()
         {
 
@@ -175,6 +191,7 @@ namespace BaseClasses.GraphObj
             m_pControlPoint = new Point3D(0, 0, 0);
 
             Model3DGroup model_gr = new Model3DGroup();
+            WireFramePoints = new List<Point3D>();
 
             // Vytvorime model v GCS [0,0,0] je uvazovana v bode m_ControlPoint
 
@@ -379,10 +396,20 @@ namespace BaseClasses.GraphObj
 
                 // Front Wall
                 if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && !bIndividualCladdingSheets)
-                    model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
+                {
+                    CAreaPolygonal area = new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front3_heightleft }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_FrontBackWall));
+                    WireFramePoints.AddRange(area.GetWireFrame());
+                }
+
                 // Back Wall
                 if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && !bIndividualCladdingSheets)
-                    model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back2_heightright }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
+                {
+                    CAreaPolygonal area = new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back2_heightright }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_FrontBackWall));
+                    WireFramePoints.AddRange(area.GetWireFrame());
+                }
+                    
 
                 if (options.bUseTextures)
                 {
@@ -394,10 +421,19 @@ namespace BaseClasses.GraphObj
 
                 // Left Wall
                 if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && !bIndividualCladdingSheets)
-                    model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0).CreateArea(options.bUseTextures, material_SideWall));
+                {
+                    CAreaPolygonal area = new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
+                    WireFramePoints.AddRange(area.GetWireFrame());
+                }
+
                 // Right Wall
                 if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && !bIndividualCladdingSheets)
-                    model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0).CreateArea(options.bUseTextures, material_SideWall));
+                {
+                    CAreaPolygonal area = new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
+                    WireFramePoints.AddRange(area.GetWireFrame());
+                }                    
 
                 if (options.bUseTextures)
                 {
@@ -411,7 +447,9 @@ namespace BaseClasses.GraphObj
                 // Roof
                 if (bGenerateRoofCladding && options.bDisplayCladdingRoof && !bIndividualCladdingSheets)
                 {
-                    model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_Roof));
+                    CAreaPolygonal area = new CAreaPolygonal(4, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_Roof));
+                    WireFramePoints.AddRange(area.GetWireFrame());
 
                     // Canopies
                     foreach (CCanopiesInfo canopy in canopyCollection)
@@ -463,7 +501,9 @@ namespace BaseClasses.GraphObj
                                 material_Roof = new DiffuseMaterial(brushRoofCanopy);
                             }
 
-                            model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
+                            CAreaPolygonal areaCL = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
+                            model_gr.Children.Add(areaCL.CreateArea(options.bUseTextures, material_Roof));
+                            WireFramePoints.AddRange(areaCL.GetWireFrame());
                             iAreaIndex++;
                         }
 
@@ -506,7 +546,9 @@ namespace BaseClasses.GraphObj
                                 material_Roof = new DiffuseMaterial(brushRoofCanopy);
                             }
 
-                            model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
+                            CAreaPolygonal areaCR = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
+                            model_gr.Children.Add(areaCR.CreateArea(options.bUseTextures, material_Roof));
+                            WireFramePoints.AddRange(areaCR.GetWireFrame());
                             iAreaIndex++;
                         }
                     }
@@ -551,10 +593,20 @@ namespace BaseClasses.GraphObj
 
                 // Front Wall
                 if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && !bIndividualCladdingSheets)
-                    model_gr.Children.Add(new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front4_top, pFBWall_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
+                {
+                    CAreaPolygonal area = new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front4_top, pFBWall_front3_heightleft }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_FrontBackWall));
+                    WireFramePoints.AddRange(area.GetWireFrame());
+                }
+
                 // Back Wall
                 if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && !bIndividualCladdingSheets)
-                    model_gr.Children.Add(new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back4_top, pFBWall_back2_heightright }, 0).CreateArea(options.bUseTextures, material_FrontBackWall));
+                {
+                    CAreaPolygonal area = new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back4_top, pFBWall_back2_heightright }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_FrontBackWall));
+                    WireFramePoints.AddRange(area.GetWireFrame());
+                }
+                    
 
                 if (options.bUseTextures)
                 {
@@ -566,10 +618,20 @@ namespace BaseClasses.GraphObj
 
                 // Left Wall
                 if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && !bIndividualCladdingSheets)
-                    model_gr.Children.Add(new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0).CreateArea(options.bUseTextures, material_SideWall));
+                {
+                    CAreaPolygonal area = new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
+                    WireFramePoints.AddRange(area.GetWireFrame());
+                }
+                    
                 // Right Wall
                 if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && !bIndividualCladdingSheets)
-                    model_gr.Children.Add(new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0).CreateArea(options.bUseTextures, material_SideWall));
+                {
+                    CAreaPolygonal area = new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0);
+                    model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
+                    WireFramePoints.AddRange(area.GetWireFrame());
+                }
+                    
 
                 if (options.bUseTextures)
                 {
@@ -583,9 +645,13 @@ namespace BaseClasses.GraphObj
                 if (bGenerateRoofCladding && options.bDisplayCladdingRoof && !bIndividualCladdingSheets)
                 {
                     // Roof - Left Side
-                    model_gr.Children.Add(new CAreaPolygonal(4, new List<Point3D>() { pRoof_front4_top, pRoof_back4_top, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0).CreateArea(options.bUseTextures, material_Roof));
+                    CAreaPolygonal areaL = new CAreaPolygonal(4, new List<Point3D>() { pRoof_front4_top, pRoof_back4_top, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0);
+                    model_gr.Children.Add(areaL.CreateArea(options.bUseTextures, material_Roof));
+                    WireFramePoints.AddRange(areaL.GetWireFrame());
                     // Roof - Right Side
-                    model_gr.Children.Add(new CAreaPolygonal(5, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back4_top, pRoof_front4_top }, 0).CreateArea(options.bUseTextures, material_Roof));
+                    CAreaPolygonal areaR = new CAreaPolygonal(5, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back4_top, pRoof_front4_top }, 0);
+                    model_gr.Children.Add(areaR.CreateArea(options.bUseTextures, material_Roof));
+                    WireFramePoints.AddRange(areaR.GetWireFrame());
 
                     // Canopies
                     foreach (CCanopiesInfo canopy in canopyCollection)
@@ -631,7 +697,10 @@ namespace BaseClasses.GraphObj
                                 material_Roof = new DiffuseMaterial(brushRoofCanopy);
                             }
 
-                            model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
+                            CAreaPolygonal areaCL = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
+                            model_gr.Children.Add(areaCL.CreateArea(options.bUseTextures, material_Roof));
+                            WireFramePoints.AddRange(areaCL.GetWireFrame());
+
                             iAreaIndex++;
                         }
 
@@ -673,8 +742,9 @@ namespace BaseClasses.GraphObj
                                 brushRoofCanopy.Viewport = r;
                                 material_Roof = new DiffuseMaterial(brushRoofCanopy);
                             }
-
-                            model_gr.Children.Add(new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0).CreateArea(options.bUseTextures, material_Roof));
+                            CAreaPolygonal areaCR = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
+                            model_gr.Children.Add(areaCR.CreateArea(options.bUseTextures, material_Roof));
+                            WireFramePoints.AddRange(areaCR.GetWireFrame());
                             iAreaIndex++;
                         }
                     }
@@ -1089,7 +1159,9 @@ namespace BaseClasses.GraphObj
             {
                 // Ak kreslime individualne sheets pre cladding nepotrebujeme offset
                 outOffPlaneOffset_FG = 0.000;
-                model_gr = new Model3DGroup(); // Vyprazdnime model group s povodnym cladding
+                //To Mato - toto je nutne? To sa neda oddelit do 2 roznych metod? Ak to spravne chapem,tak 1.(to hore) sa vytvara stale aj ked to netreba
+                model_gr = new Model3DGroup(); // Vyprazdnime model group s povodnym cladding 
+                WireFramePoints = new List<Point3D>(); //toto asi musim spravit,lebo inak by to bolo dvojmo aj pre cene aj pre osobitne sheets
             }
 
             if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && bIndividualCladdingSheets)
