@@ -113,6 +113,18 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFloorSlab) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
                 if (slabsModel3DGroup != null) gr.Children.Add(slabsModel3DGroup);
 
+                Model3DGroup doorsModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayDoors) doorsModel3DGroup = Drawing3D.CreateDoorsModel3DGroup(model, sDisplayOptions);
+                if (doorsModel3DGroup != null) gr.Children.Add(doorsModel3DGroup);
+
+                Model3DGroup windowsModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) windowsModel3DGroup = Drawing3D.CreateWindowsModel3DGroup(model, sDisplayOptions);
+                if (windowsModel3DGroup != null) gr.Children.Add(windowsModel3DGroup);
+
+                Model3DGroup claddingModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayCladding) claddingModel3DGroup = Drawing3D.CreateCladdingModel3DGroup(model, sDisplayOptions);
+                if (claddingModel3DGroup != null) gr.Children.Add(claddingModel3DGroup);
+
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
@@ -195,15 +207,45 @@ namespace BaseClasses
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
+                // Doors Wireframe
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame && sDisplayOptions.bDisplayDoorsWireFrame)
+                {
+                    Model3DGroup lines;  // linie ako 3D valcove plochy
+                    if (doorsModel3DGroup == null) doorsModel3DGroup = Drawing3D.CreateDoorsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawDoorsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
+                    if (lines != null)
+                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+
+                // Windows Wireframe
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame && sDisplayOptions.bDisplayWindowsWireFrame)
+                {
+                    Model3DGroup lines;  // linie ako 3D valcove plochy
+                    if (windowsModel3DGroup == null) windowsModel3DGroup = Drawing3D.CreateWindowsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawWindowsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
+                    if (lines != null)
+                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+
                 // Cladding Wireframe
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
-                    if (othersModel3DGroup == null) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelOtherObjectsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
+                    if (claddingModel3DGroup == null) claddingModel3DGroup = Drawing3D.CreateCladdingModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawCladdingWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
+
+                // Other Objects Wireframe
+                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame)
+                //{
+                //    Model3DGroup lines;  // linie ako 3D valcove plochy
+                //    if (othersModel3DGroup == null) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
+                //    Drawing3D.DrawModelOtherObjectsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
+                //    if (lines != null)
+                //        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                //}
                 
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2150,6 +2192,85 @@ namespace BaseClasses
             return model3D_group;
         }
 
+        public static Model3DGroup CreateDoorsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
+        {
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            if (cmodel.m_arrGOStrDoors != null && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayDoors) // Some doors exist
+            {
+                // Model Groups of Doors
+                for (int i = 0; i < cmodel.m_arrGOStrDoors.Count; i++)
+                {
+                    if (cmodel.m_arrGOStrDoors[i] != null &&
+                        cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
+                        Model3DGroup doorModel3D = cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door(sDisplayOptions.bUseTextures);
+                        model3D_group.Children.Add(doorModel3D); // Add solid to model group
+
+                        //else
+                        //{
+                        //    //Exception - not implemented
+                        //}
+                    }
+                }
+            }
+
+            return model3D_group;
+        }
+
+        public static Model3DGroup CreateWindowsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
+        {
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            if (cmodel.m_arrGOStrWindows != null && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) // Some windows exist
+            {
+                // Model Groups of Windows
+                for (int i = 0; i < cmodel.m_arrGOStrWindows.Count; i++)
+                {
+                    if (cmodel.m_arrGOStrWindows[i] != null &&
+                        cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
+                            model3D_group.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
+                        else
+                        {
+                            //Exception - not implemented
+                        }
+                    }
+                }
+            }
+
+            return model3D_group;
+        }
+        public static Model3DGroup CreateCladdingModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
+        {
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            if (cmodel.m_arrGOCladding != null && sDisplayOptions.bDisplayCladding) // Some cladding exists
+            {
+                // Model Groups of Cladding
+                for (int i = 0; i < cmodel.m_arrGOCladding.Count; i++)
+                {
+                    if (cmodel.m_arrGOCladding[i] != null &&
+                        cmodel.m_arrGOCladding[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
+                    {
+                        if (true/*cmodel.m_arrCladding[i].EShapeType == EWindowShapeType.eClassic*/) // moznost rozlisovat rozne geometricke tvary alebo podtypy
+                            model3D_group.Children.Add(cmodel.m_arrGOCladding[i].GetCladdingModel(sDisplayOptions)); // Add to model group
+                        else
+                        {
+                            //Exception - not implemented
+                        }
+                    }
+                }
+            }
+
+            return model3D_group;
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         // Create Other model objects model 3d group
         public static Model3DGroup CreateModelOtherObjectsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
@@ -2199,64 +2320,65 @@ namespace BaseClasses
                 }
             }
 
-            if (cmodel.m_arrGOCladding != null && sDisplayOptions.bDisplayCladding) // Some cladding exists
-            {
-                // Model Groups of Cladding
-                for (int i = 0; i < cmodel.m_arrGOCladding.Count; i++)
-                {
-                    if (cmodel.m_arrGOCladding[i] != null &&
-                        cmodel.m_arrGOCladding[i].m_pControlPoint != null &&
-                        cmodel.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
-                    {
-                        if (true/*cmodel.m_arrCladding[i].EShapeType == EWindowShapeType.eClassic*/) // moznost rozlisovat rozne geometricke tvary alebo podtypy
-                            model3D_group.Children.Add(cmodel.m_arrGOCladding[i].GetCladdingModel(sDisplayOptions)); // Add to model group
-                        else
-                        {
-                            //Exception - not implemented
-                        }
-                    }
-                }
-            }
+            //presunute do osobitnej metody
+            //if (cmodel.m_arrGOCladding != null && sDisplayOptions.bDisplayCladding) // Some cladding exists
+            //{
+            //    // Model Groups of Cladding
+            //    for (int i = 0; i < cmodel.m_arrGOCladding.Count; i++)
+            //    {
+            //        if (cmodel.m_arrGOCladding[i] != null &&
+            //            cmodel.m_arrGOCladding[i].m_pControlPoint != null &&
+            //            cmodel.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
+            //        {
+            //            if (true/*cmodel.m_arrCladding[i].EShapeType == EWindowShapeType.eClassic*/) // moznost rozlisovat rozne geometricke tvary alebo podtypy
+            //                model3D_group.Children.Add(cmodel.m_arrGOCladding[i].GetCladdingModel(sDisplayOptions)); // Add to model group
+            //            else
+            //            {
+            //                //Exception - not implemented
+            //            }
+            //        }
+            //    }
+            //}
+            //presunute do osobitnej metody
+            //if (cmodel.m_arrGOStrDoors != null && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayDoors) // Some doors exist
+            //{
+            //    // Model Groups of Doors
+            //    for (int i = 0; i < cmodel.m_arrGOStrDoors.Count; i++)
+            //    {
+            //        if (cmodel.m_arrGOStrDoors[i] != null &&
+            //            cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&
+            //            cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+            //        {
+            //            //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
+            //            Model3DGroup doorModel3D = cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door(sDisplayOptions.bUseTextures);
+            //            model3D_group.Children.Add(doorModel3D); // Add solid to model group
 
-            if (cmodel.m_arrGOStrDoors != null && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayDoors) // Some doors exist
-            {
-                // Model Groups of Doors
-                for (int i = 0; i < cmodel.m_arrGOStrDoors.Count; i++)
-                {
-                    if (cmodel.m_arrGOStrDoors[i] != null &&
-                        cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&
-                        cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
-                    {
-                        //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
-                        Model3DGroup doorModel3D = cmodel.m_arrGOStrDoors[i].CreateM_3D_G_Door(sDisplayOptions.bUseTextures);
-                        model3D_group.Children.Add(doorModel3D); // Add solid to model group
-
-                        //else
-                        //{
-                        //    //Exception - not implemented
-                        //}
-                    }
-                }
-            }
-
-            if (cmodel.m_arrGOStrWindows != null && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) // Some windows exist
-            {
-                // Model Groups of Windows
-                for (int i = 0; i < cmodel.m_arrGOStrWindows.Count; i++)
-                {
-                    if (cmodel.m_arrGOStrWindows[i] != null &&
-                        cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
-                        cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
-                    {
-                        if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
-                            model3D_group.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
-                        else
-                        {
-                            //Exception - not implemented
-                        }
-                    }
-                }
-            }
+            //            //else
+            //            //{
+            //            //    //Exception - not implemented
+            //            //}
+            //        }
+            //    }
+            //}
+            //presunute do osobitnej metody
+            //if (cmodel.m_arrGOStrWindows != null && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) // Some windows exist
+            //{
+            //    // Model Groups of Windows
+            //    for (int i = 0; i < cmodel.m_arrGOStrWindows.Count; i++)
+            //    {
+            //        if (cmodel.m_arrGOStrWindows[i] != null &&
+            //            cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
+            //            cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+            //        {
+            //            if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
+            //                model3D_group.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
+            //            else
+            //            {
+            //                //Exception - not implemented
+            //            }
+            //        }
+            //    }
+            //}
 
             // Structural Model
 
@@ -2983,6 +3105,78 @@ namespace BaseClasses
                     AddLineToViewPort(wireFramePoints, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, viewPort);
                 }*/
             }
+        }
+
+
+        public static void DrawDoorsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
+        {
+            cylinders = null;
+            List<Point3D> wireFramePoints = new List<Point3D>();
+
+            if (model.m_arrGOStrDoors != null && sDisplayOptions.bDisplayCladdingWireFrame && sDisplayOptions.bDisplayDoorsWireFrame) // Some doors exist
+            {
+                // Model Groups of Doors
+                for (int i = 0; i < model.m_arrGOStrDoors.Count; i++)
+                {
+                    if (model.m_arrGOStrDoors[i] != null &&
+                        model.m_arrGOStrDoors[i].m_pControlPoint != null &&
+                        model.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        wireFramePoints.AddRange(model.m_arrGOStrDoors[i].WireFramePoints);
+                    }
+                }
+            }
+
+            if (wireFramePoints.Count > 0)
+                DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
+        }
+
+        public static void DrawWindowsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
+        {
+            cylinders = null;
+            List<Point3D> wireFramePoints = new List<Point3D>();
+
+            if (model.m_arrGOStrWindows != null && sDisplayOptions.bDisplayCladdingWireFrame && sDisplayOptions.bDisplayWindowsWireFrame) // Some windows exist
+            {
+                // Model Groups of Windows
+                for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
+                {
+                    if (model.m_arrGOStrWindows[i] != null &&
+                        model.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                        model.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        wireFramePoints.AddRange(model.m_arrGOStrWindows[i].WireFramePoints);
+                    }
+                }
+            }
+
+            if (wireFramePoints.Count > 0)
+                DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
+
+        }
+
+        public static void DrawCladdingWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
+        {
+            cylinders = null;
+            List<Point3D> wireFramePoints = new List<Point3D>();
+
+            if (model.m_arrGOCladding != null && sDisplayOptions.bDisplayCladdingWireFrame) // Some cladding exists
+            {
+                // Model Groups of Cladding
+                for (int i = 0; i < model.m_arrGOCladding.Count; i++)
+                {
+                    if (model.m_arrGOCladding[i] != null &&
+                        model.m_arrGOCladding[i].m_pControlPoint != null &&
+                        model.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
+                    {
+                        wireFramePoints.AddRange(model.m_arrGOCladding[i].WireFramePoints);
+                    }
+                }
+            }
+
+            if (wireFramePoints.Count > 0)
+                DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
+
         }
 
         public static void DrawModelOtherObjectsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
