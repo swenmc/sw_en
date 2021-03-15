@@ -2990,7 +2990,7 @@ namespace BaseClasses
             cylinders = null;
             List<Point3D> wireFramePoints = new List<Point3D>();
 
-            if (model.m_arrGOCladding != null && sDisplayOptions.bDisplayCladding) // Some cladding exists
+            if (model.m_arrGOCladding != null && sDisplayOptions.bDisplayCladdingWireFrame) // Some cladding exists
             {
                 // Model Groups of Cladding
                 for (int i = 0; i < model.m_arrGOCladding.Count; i++)
@@ -2999,7 +2999,7 @@ namespace BaseClasses
                         model.m_arrGOCladding[i].m_pControlPoint != null &&
                         model.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
                     {
-                        //wireFramePoints.AddRange(model.m_arrGOCladding[i].WireFramePoints);                        
+                        wireFramePoints.AddRange(model.m_arrGOCladding[i].WireFramePoints);
                     }
                 }
             }

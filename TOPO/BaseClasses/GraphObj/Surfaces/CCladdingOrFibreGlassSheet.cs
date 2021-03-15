@@ -16,6 +16,21 @@ namespace BaseClasses.GraphObj
         Color m_Color;
         float m_fOpacity;
 
+        private List<Point3D> m_WireFramePoints;
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
+                return m_WireFramePoints;
+            }
+
+            set
+            {
+                m_WireFramePoints = value;
+            }
+        }
+
         public double CladdingWidthRibModular
         {
             get
@@ -195,9 +210,17 @@ namespace BaseClasses.GraphObj
             }
 
             if (NumberOfEdges == 4)
-                return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
+            {
+                CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0);
+                WireFramePoints.AddRange(area.GetWireFrame());
+                return area.CreateArea(options.bUseTextures, material);
+            }
             else
-                return new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0).CreateArea(options.bUseTextures, material);
+            {
+                CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0);
+                WireFramePoints.AddRange(area.GetWireFrame());
+                return area.CreateArea(options.bUseTextures, material);
+            }   
         }
 
         public Transform3DGroup GetTransformGroup(double dRot_X_deg, double dRot_Y_deg, double dRot_Z_deg)

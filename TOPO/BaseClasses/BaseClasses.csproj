@@ -125,6 +125,7 @@
     <Compile Include="GraphObj\Objects_3D\CSphere.cs" />
     <Compile Include="Helpers\ColorsHelper.cs" />
     <Compile Include="Helpers\DimensionsDrawingHelper.cs" />
+    <Compile Include="Helpers\Drawing3DHelper.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\DisplayOptionsHelper.cs" />
     <Compile Include="Helpers\PropertyChangedExtendedEventArgs.cs" />

@@ -1513,8 +1513,11 @@ namespace BaseClasses.GraphObj
                     }
 
                     // Pridame sheet do model group
+                    //TODO - treba sa zamysliet ako riesit ak wireframe nechceme, nemusi sa stale vyrabat, ak Wireframe nepotrebujeme zobrazit [mozno len pridat jeden bool parameter createWireframe]
                     GeometryModel3D sheetModel = listOfsheets[i].GetCladdingSheetModel(options, material, outOffPlaneOffset);
                     sheetModel.Transform = listOfsheets[i].GetTransformGroup(rotationX, rotationY, rotationZ);
+                    Drawing3DHelper.TransformPoints(listOfsheets[i].WireFramePoints, sheetModel.Transform);
+                    WireFramePoints.AddRange(listOfsheets[i].WireFramePoints);
                     modelGroup.Children.Add(sheetModel);
                 }
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaseClasses.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -209,10 +210,11 @@ namespace BaseClasses.GraphObj
             gr.Transform = transform3DGroup;
 
             //WireFramePoints transform
-            for (int i = 0; i < WireFramePoints.Count; i++)
-            {
-                WireFramePoints[i] = transform3DGroup.Transform(WireFramePoints[i]);
-            }
+            Drawing3DHelper.TransformPoints(WireFramePoints, transform3DGroup);
+            //for (int i = 0; i < WireFramePoints.Count; i++)
+            //{
+            //    WireFramePoints[i] = transform3DGroup.Transform(WireFramePoints[i]);
+            //}
             
             return gr;
         }
