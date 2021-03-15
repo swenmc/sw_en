@@ -631,7 +631,6 @@ namespace BaseClasses.GraphObj
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
                     WireFramePoints.AddRange(area.GetWireFrame());
                 }
-                    
 
                 if (options.bUseTextures)
                 {
@@ -1055,7 +1054,6 @@ namespace BaseClasses.GraphObj
                             if (cIndex == breakIndex) break;
                             cIndex++;
                         }
-
                     }
                 }
             }
@@ -1525,7 +1523,7 @@ namespace BaseClasses.GraphObj
                     {
                         Drawing3DHelper.TransformPoints(listOfsheets[i].WireFramePoints, sheetModel.Transform);
                         WireFramePoints.AddRange(listOfsheets[i].WireFramePoints);
-                    }                    
+                    }
                     modelGroup.Children.Add(sheetModel);
                 }
             }
@@ -1562,8 +1560,6 @@ namespace BaseClasses.GraphObj
             {
                 bGenerateRoofCladding = purlin.Generate.Value;
             }
-
-
         }
     }
 }
