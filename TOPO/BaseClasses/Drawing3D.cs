@@ -114,15 +114,15 @@ namespace BaseClasses
                 if (slabsModel3DGroup != null) gr.Children.Add(slabsModel3DGroup);
 
                 Model3DGroup doorsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayDoors) doorsModel3DGroup = Drawing3D.CreateDoorsModel3DGroup(model, sDisplayOptions);
+                if (sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayDoors) doorsModel3DGroup = Drawing3D.CreateDoorsModel3DGroup(model, sDisplayOptions);
                 if (doorsModel3DGroup != null) gr.Children.Add(doorsModel3DGroup);
 
                 Model3DGroup windowsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) windowsModel3DGroup = Drawing3D.CreateWindowsModel3DGroup(model, sDisplayOptions);
+                if (sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) windowsModel3DGroup = Drawing3D.CreateWindowsModel3DGroup(model, sDisplayOptions);
                 if (windowsModel3DGroup != null) gr.Children.Add(windowsModel3DGroup);
 
                 Model3DGroup claddingModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayCladding) claddingModel3DGroup = Drawing3D.CreateCladdingModel3DGroup(model, sDisplayOptions);
+                if (sDisplayOptions.bDisplayCladding) claddingModel3DGroup = Drawing3D.CreateCladdingModel3DGroup(model, sDisplayOptions);
                 if (claddingModel3DGroup != null) gr.Children.Add(claddingModel3DGroup);
 
                 bool displayOtherObjects3D = true;
