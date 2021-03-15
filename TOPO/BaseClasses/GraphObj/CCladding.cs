@@ -1160,6 +1160,8 @@ namespace BaseClasses.GraphObj
                 // Ak kreslime individualne sheets pre cladding nepotrebujeme offset
                 outOffPlaneOffset_FG = 0.000;
                 //To Mato - toto je nutne? To sa neda oddelit do 2 roznych metod? Ak to spravne chapem,tak 1.(to hore) sa vytvara stale aj ked to netreba
+                //To Ondrej - asi sa to da oddelit, len neviem kolko je tam zavislosti. Dost vela veci bude treba vytiahnut este pred tie metody
+                //Najprv som urobil tu prvu cast a potom chceli samostatne sheets tak som pridal dalsiu, ako som Ti už skôr pisal, trebalo by to poriadne refaktorovať
                 model_gr = new Model3DGroup(); // Vyprazdnime model group s povodnym cladding 
                 WireFramePoints = new List<Point3D>(); //toto asi musim spravit,lebo inak by to bolo dvojmo aj pre cene aj pre osobitne sheets
             }
