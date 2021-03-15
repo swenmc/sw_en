@@ -2249,7 +2249,7 @@ namespace BaseClasses
         {
             Model3DGroup model3D_group = new Model3DGroup();
 
-            if (cmodel.m_arrGOCladding != null && sDisplayOptions.bDisplayCladding) // Some cladding exists
+            if (cmodel.m_arrGOCladding != null) // Some cladding exists
             {
                 // Model Groups of Cladding
                 for (int i = 0; i < cmodel.m_arrGOCladding.Count; i++)

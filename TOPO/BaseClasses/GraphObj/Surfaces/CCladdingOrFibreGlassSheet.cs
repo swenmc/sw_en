@@ -176,7 +176,7 @@ namespace BaseClasses.GraphObj
                 Width, LengthTopLeft, LengthTopRight, TipCoordinate_x, LengthTopTip, BIsDisplayed, FTime);
         }
 
-        public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material, double outOffPlaneOffset_y = 0)
+        public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material, bool createWireframe, double outOffPlaneOffset_y = 0)
         {
             Point3D pfront0_baseleft = new Point3D(0, outOffPlaneOffset_y, 0);
             Point3D pfront1_baseright = new Point3D(Width, outOffPlaneOffset_y, 0);
@@ -212,13 +212,13 @@ namespace BaseClasses.GraphObj
             if (NumberOfEdges == 4)
             {
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0);
-                WireFramePoints.AddRange(area.GetWireFrame());
+                if(createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
                 return area.CreateArea(options.bUseTextures, material);
             }
             else
             {
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0);
-                WireFramePoints.AddRange(area.GetWireFrame());
+                if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
                 return area.CreateArea(options.bUseTextures, material);
             }   
         }
