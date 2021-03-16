@@ -512,7 +512,7 @@ namespace PFD
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
                 if (!IsSetFromCode) CalculateWallHeightsForCladding();
-                if (!IsSetFromCode) CountWallAndRoofAreas();                
+                if (!IsSetFromCode) CountWallAndRoofAreas();
                 NotifyPropertyChanged("Width");
             }
         }

@@ -336,29 +336,49 @@ namespace PFD
                     if (vm._modelOptionsVM.OverallDimensions)
                     {
                         //Bug 737
-                        //tu by to chcelo
-                        //Width Overal sa nezmeni, tak to nechame ako to je
-                        //Length Overal sa nezmeni, tak to nechame ako to je
-                        //Prestavime Width
-                        //Prestavime Length
+
+                        // Width Overall a Length Overall sa nezmeni
+                        // Zmenou prierezu sa zmenia centerline rozmery
+                        vm.Width = vm.WidthOverall - 2 * vm.MainColumnCrsc_z_plus;
+                        vm.Length = vm.LengthOverall - Math.Abs(vm.EdgeColumnCrsc_y_minus) - vm.EdgeColumnCrsc_y_plus;
+
+                        // Tu by som urobil takyto hack
+                        // Ak boli various baywidths vypnute, tak sa prepocitaju rozmery L1
+                        if(!vm._modelOptionsVM.VariousBayWidths)
+                            vm.BayWidth = vm.Length / (vm.Frames - 1);
+                        else
+                        {
+                            // Upravime rozmery v poli bay widths a to tak ze prvu a poslednu bay width zmenime,
+                            // aby nam sedeli rozmery suctu bay widths a rozmerycenterline a pritom sa nezmenili rozmery overall
+                            // To by malo zabezpecit ze various bay widths a nebudu resetovat na equal
+
+                            // To Ondrej - tu treba zabezpecit, aby sa bay width neresetovali a prislo sem povodne pole
+                            float difference = vm.Length - vm._baysWidthOptionsVM.GetTotalWidth();
+
+                            vm._baysWidthOptionsVM.BayWidthList.First().Width += (0.5f * difference);
+                            vm._baysWidthOptionsVM.BayWidthList.Last().Width += (0.5f * difference);
+                        }
+
                         //if (!IsSetFromCode) SetCustomModel(); nastavime custom model
                         //if (!IsSetFromCode) CountWallAndRoofAreas(); toto asi prepocitat nemusime??? lebo sa celkovy rozmer nezmenil (ale zase ani to neuskodi prepocitat)
-                        //BayWidthsBy bolo dobre zachovat lebo ak sa zmeni Length, tak sa to proste resetne
 
+                        // TO Ondrej - toto mi nie je jasne preco to robime
                         vm.WidthOverall = vm.WidthOverall; vm.LengthOverall = vm.LengthOverall; //recalculate dimensions
                     }
                     else
                     {
                         //Bug 737
-                        //tuna by to zase chcelo
-                        //Width sa nezmeni, tak to nechame ako to je
-                        //Length sa nezmeni, tak to nechame ako to je
-                        //Prestavime Width Overal 
-                        //Prestavime Length Overal 
+
+                        // Centerline Width a Length sa nezmeni, Bay Widths sa nezmenia
+                        // Zmenou prierezu a zmenil celkový rozmer budovy - prepocitame Width Overall a Length Overall
+                        vm.WidthOverall = vm.Width + 2 * vm.MainColumnCrsc_z_plus;
+                        vm.LengthOverall = vm.Length + Math.Abs(vm.EdgeColumnCrsc_y_minus) + vm.EdgeColumnCrsc_y_plus;
+
                         //if (!IsSetFromCode) SetCustomModel(); nastavime custom model
                         //if (!IsSetFromCode) CountWallAndRoofAreas(); prepocitame area
-                        //BayWidthsBy bolo dobre zachovat??? lebo to su rozmery pre centerlinesDimensions, tak sa vlastne tam asi nic nezmenilo??? 
-                        vm.Width = vm.Width; vm.Length = vm.Length; //recalculate dimensions 
+
+                        // TO Ondrej - toto mi nie je jasne preco to robime
+                        vm.Width = vm.Width; vm.Length = vm.Length; //recalculate dimensions
                     }
                 }
                 if (e.PropertyName == "Color")
