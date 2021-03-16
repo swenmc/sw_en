@@ -350,7 +350,7 @@ namespace PFD
                         {
                             // Upravime rozmery v poli bay widths a to tak ze prvu a poslednu bay width zmenime,
                             // aby nam sedeli rozmery suctu bay widths a rozmery centerline a pritom sa nezmenili rozmery overall
-                            // To by malo zabezpecit ze various bay widths a nebudu resetovat na equal
+                            // To by malo zabezpecit ze various bay widths sa nebudu resetovat na equal
 
                             // To Ondrej - tu treba zabezpecit, aby sa bay width neresetovali a prislo sem povodne pole
                             float difference = vm.Length - vm._baysWidthOptionsVM.GetTotalWidth();
