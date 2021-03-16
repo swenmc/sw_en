@@ -42,10 +42,9 @@ namespace PFD
             
             //pfdVM._quotationExportOptionsVM = pfdVM._quotationDisplayOptionsVM.Clone();
 
-            pfdVM._quotationExportOptionsVM.PropertyChanged += HandleExportOptionsPropertyChangedEvent;            
+            pfdVM._quotationExportOptionsVM.PropertyChanged += HandleExportOptionsPropertyChangedEvent;
             this.DataContext = pfdVM._quotationExportOptionsVM;
         }
-
 
         private void HandleExportOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -55,9 +54,6 @@ namespace PFD
 
             }
         }
-        
-
-        
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
