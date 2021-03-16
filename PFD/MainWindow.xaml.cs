@@ -327,30 +327,26 @@ namespace PFD
                     vm.RecreateJoints = true; //need to recreate joint when Section was changed
                     vm.RecreateModel = true;
                     vm.RecreateFloorSlab = true;
-                    
-                    //To Mato - tu je kod co sposobuje Bug 737
-                    //musi sa tu asi prepocitavat nieco pokial sa zmeni section na zaklade toho co je nastavene v model OPtions ci Overal ci Center Dimensions
-                    //ty by si mohol povedat co konkretne sa ma prepocitat, lebo podla kodu nizsie vidis, ze sa to nastavi akoby nanovo to zadal pouzivatel
-                    //sposobuje to potom prepocet BayWidths, asi ale iba pre option vm._modelOptionsVM.OverallDimensions true
+
                     if (vm._modelOptionsVM.OverallDimensions)
                     {
                         //Bug 737
 
                         // Width Overall a Length Overall sa nezmeni
                         // Zmenou prierezu sa zmenia centerline rozmery
-                        bool isChangedFromCode = vm.IsSetFromCode;                        
+                        bool isChangedFromCode = vm.IsSetFromCode;
                         vm.IsSetFromCode = true;
                         vm.Width = vm.WidthOverall - 2 * vm.MainColumnCrsc_z_plus;
                         vm.Length = vm.LengthOverall - Math.Abs(vm.EdgeColumnCrsc_y_minus) - vm.EdgeColumnCrsc_y_plus;
                         vm.IsSetFromCode = isChangedFromCode;
-                        
+
                         // Tu by som urobil takyto hack
                         // Ak boli various baywidths vypnute, tak sa prepocitaju rozmery L1
                         if (!vm._modelOptionsVM.VariousBayWidths)
                         {
                             //vm.BayWidth = vm.Length / (vm.Frames - 1); //toto sa zmeni pri nastaveni Length
                             vm._baysWidthOptionsVM.ResetBaysWidths(vm.Frames - 1, vm.BayWidth);
-                        }                            
+                        }
                         else
                         {
                             // Upravime rozmery v poli bay widths a to tak ze prvu a poslednu bay width zmenime,
@@ -378,8 +374,8 @@ namespace PFD
                         vm.IsSetFromCode = true;
                         vm.WidthOverall = vm.Width + 2 * vm.MainColumnCrsc_z_plus;
                         vm.LengthOverall = vm.Length + Math.Abs(vm.EdgeColumnCrsc_y_minus) + vm.EdgeColumnCrsc_y_plus;
-                        vm.IsSetFromCode = isChangedFromCode;                        
-                        
+                        vm.IsSetFromCode = isChangedFromCode;
+
                         vm.SetCustomModel(); 
                         vm.CountWallAndRoofAreas(); 
                     }
