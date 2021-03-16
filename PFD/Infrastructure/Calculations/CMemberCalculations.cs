@@ -258,15 +258,24 @@ namespace PFD.Infrastructure
 
                             if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max || lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
                             {
+                                int index1 = 4;
+                                int index2 = index1 + 1;
+
+                                if (Model.eKitset == EModelType_FS.eKitsetMonoRoofEnclosed) // Pre monopitch sú v zozname ine povrchy
+                                {
+                                    index1--;
+                                    index2--;
+                                }
+
                                 // Windward - W
-                                float fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue); // Pa - tlak vetra na stenu (front alebo back)
+                                float fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[index1]).fValue); // Pa - tlak vetra na stenu (front alebo back)
                                 // Leeward - L
-                                float fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue); // Pa - sanie vetra na stenu (front alebo back)
+                                float fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[index2]).fValue); // Pa - sanie vetra na stenu (front alebo back)
 
                                 if (lc.MainDirection == ELCMainDirection.eMinusY)
                                 {
-                                    fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[5]).fValue);
-                                    fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[4]).fValue);
+                                    fp_e_W = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[index2]).fValue);
+                                    fp_e_L = Math.Abs(((CSLoad_FreeUniform)surfaceLoads[index1]).fValue);
                                 }
 
                                 fp_tot = Math.Abs(fp_e_W) + Math.Abs(fp_e_L);
