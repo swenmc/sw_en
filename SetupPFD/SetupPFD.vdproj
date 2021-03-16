@@ -87,12 +87,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_054F49A5C1394FA890FA88392F8A4821"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0584C08688D345419AEE13E3E27E1187"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -267,7 +261,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0E42C62082F2416A9FF1D47D130D1623"
+        "MsmKey" = "8:_0E6663A419CC4CE7A4F299652CD1F39C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -279,19 +273,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0F3457A6BB7947B78102D6C5B58ED4DE"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_1077AAFCDFF94A3485C87C4E7A57096F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_11194D694B5A440CBA4EC22D1F7A9E86"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -310,12 +292,6 @@
         "Entry"
         {
         "MsmKey" = "8:_1279F5B04C524762BA06E6B50208787F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_135B67E36FA94C53AADAD48978676535"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -345,19 +321,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_152747DF17F64893AD84379CF14953D4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_152C4CF1401D42B2956B186C0C605613"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_15694C162C3F40FD91830D4F4CFFA8EE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -371,12 +335,6 @@
         {
         "MsmKey" = "8:_16056CBE03C64240B7F6D1D79CF15981"
         "OwnerKey" = "8:_C77164A3D1944E48904BA09127581287"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_163250C0A2D14CF7A353D1FAE349E7BF"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -501,12 +459,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_21ADE1ED433C499C8351D6D2EB48B7E9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_21F4C0221654E003B283064996781038"
         "OwnerKey" = "8:_32C14EEF7A394FF2ACCD69A884D1D6BB"
         "MsmSig" = "8:_UNDEFINED"
@@ -573,25 +525,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_262F4FD0AAAF4B65B68CF9438A8F2293"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2651E4D5035548F5A90EBF16AE7D5863"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_2692AA23ED1F47BC83CB8A61E03338CE"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_277A64555C474AF6A3318A46F42333ED"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -681,12 +615,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2D67EF2C4B7A4EA3AC83963895A0B2C6"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_2F47559D5135499CBBE5B50676F1587D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -771,12 +699,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_33F45F7D03B04FD6AFA0F4648DC30C9C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_340259CFEDFA450AA12EA51DF7253B49"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -790,12 +712,6 @@
         "Entry"
         {
         "MsmKey" = "8:_34267ABDF95445A9BE30383E2FCA6C53"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_344264EDFF0445E7AA1647B7462D6673"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -861,12 +777,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_368339BAE35B42879EF2EBF40EEA9E13"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_369022D93B414B94A18DE9EE0BAA6AA9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -891,12 +801,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3B1427420F8E401599EF28B47902D930"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3BCB648B3D8D4B87952432170620BE30"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -904,12 +808,6 @@
         "Entry"
         {
         "MsmKey" = "8:_3BF89BC4209D44FC9D3752F4EABB0426"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_3C3AEF4B0289489A9B5123A2038BBCDF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -981,12 +879,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3F6C95E84C3E47FC9A0DAC70278CCC9A"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3F989353A29248828C7EB7F374F9238F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1000,12 +892,6 @@
         "Entry"
         {
         "MsmKey" = "8:_408D47E4162E42ABB972B491FB5DC50D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4137CAF2A0F5473598A63036A8D28F92"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1089,7 +975,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4970CDE8F5364FFCAD1AC2F90D2C8E68"
+        "MsmKey" = "8:_49D6BA7AA02548028B87D477AC5C2480"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1227,19 +1113,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_515CBAB0CB9F436989C9BF4D99D376EF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_5179746BA2CB444680C33F79402C4325"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_519758D35C94479AB9F4F04E52C9FF5F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1270,12 +1144,6 @@
         "Entry"
         {
         "MsmKey" = "8:_5369670AF9624A2D942E2281983A7752"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_545FF5F093CF4E1D8D5946E06E627D10"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1341,12 +1209,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_573FD37B990A43F380199D78D80F2EBF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_580A67EF9FBD4B849230415DFF10A174"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1373,12 +1235,6 @@
         {
         "MsmKey" = "8:_5903F9A7915F20492EF6401FB6844941"
         "OwnerKey" = "8:_EC754AE8E0A392AA964774589F4FF771"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_592F329412C74AA99127549EAB6123A0"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1425,6 +1281,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5A178F0E6B47463696C82DC56E9AEAAB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5A630AB0B9AD4D3480F4DFCC80DF8135"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1455,25 +1317,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_5CD5181123FC43029E08540EF7D5E8B6"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5CE620235B3245739E50167231388E10"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_5CEAA3A670F842E7AFF3AEEAD8E67967"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5CEC06E2F971431C827CD08E59E989D9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1498,12 +1342,6 @@
         "Entry"
         {
         "MsmKey" = "8:_5D93AD01B5B244288BC04FB8A2A4B50E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5DC366ED78AC47B5BD610E66A311B554"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1605,12 +1443,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6435015C5DED401397CB5CF1CE291319"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_64D0CC31FE5C4A219E662420F19033F5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1635,12 +1467,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_66C33C0B831442969C348CA717B36F9D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_66E650F7D26B4148B7DD9655DFAF84D6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1660,12 +1486,6 @@
         "Entry"
         {
         "MsmKey" = "8:_67507C41A2244324BA27EEAC2829F47D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6907F35C50FE4B01917E8CF28C0434C4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1707,12 +1527,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6C589EFF635A44F392A8892DA50EF3B7"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6C98FEB2909B40A397D805DDC89FD506"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1726,12 +1540,6 @@
         "Entry"
         {
         "MsmKey" = "8:_6D73A81BD6804D4B9C43DCDB1E829169"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6E349B06A39D4952BF181AADD3B1A371"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1881,12 +1689,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7ABC1230ABCF483D9ECD46CD5FED5C23"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_7B82F4EA0C904363BD36069F2D0F54C7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1935,12 +1737,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7F46BB1684944267AC322B454F505F2C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_7F5988BC04EEDB1CF7926555E5760FC4"
         "OwnerKey" = "8:_5963D8A2C92C456099E032B46F75FA97"
         "MsmSig" = "8:_UNDEFINED"
@@ -1983,19 +1779,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_80997EB470BB4A41AFA6D0FDDDFCB8A9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_815DA4E5A3654113B7411C1BBDDE2D56"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_816F808256EE499F9ADDEED0BD6D2A86"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2049,18 +1833,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_83AB79E478B64284A87358A546801464"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_84F37F21727A4804AEA0CEC03241EC0C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_85218AD63FE2AD4DFB14A8213B1DE684"
         "OwnerKey" = "8:_C0A369092921E6AB805210AF3C1CE757"
         "MsmSig" = "8:_UNDEFINED"
@@ -2079,12 +1851,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_881FED59C4134B9FB10B3B9ACD48D6F8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_886D3AC04A2A4437A7F285E64FDCC6E1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2097,12 +1863,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_88F5A55BA28B45178BC2CCBD4E6CDCA8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_89DFBF4F6CF249C09DB7137081309CD4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2110,18 +1870,6 @@
         "Entry"
         {
         "MsmKey" = "8:_8A154D4F21074D01B5FF3FC24E6A5958"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8AC37F659E08480D90EBBB68F2E9B0DD"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8B5DA484E4A248A6803381EB662737D5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2151,12 +1899,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_8D12DFAAC0BF4F0BA3E5D3241D3E09E3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_8D980A3736304C0F94790979E56FA3C2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2164,12 +1906,6 @@
         "Entry"
         {
         "MsmKey" = "8:_8DBD6F93B4D2453B824897F524E578CF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8E2DBE95B1954F0FAFFCDEBAFAA69DDA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2385,19 +2121,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_99F083C7C1284213B1D0AD30107623D8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_9A051BC3E616462886DCA165964DBEA4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9ADC4056F8294A73A315B3BF7FFF32D9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2415,13 +2139,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9F3420CE9E024A32A6A1B1931C38B4E1"
+        "MsmKey" = "8:_9EF28A853625434095106B56B6823BF2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A0664CF9989743069807BDF6F448D11B"
+        "MsmKey" = "8:_9F41344C739C4769B25CFB5C6CE10D7B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2433,19 +2157,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A0FB628A2CF540668D2DBED3CC364600"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A129639D8C514CAEA6F6D3864A68DB4E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A25D627E27BA4A2E82180FB707C1EB8A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2481,12 +2193,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A4276A1CD9C946C69CA05992DA8E719E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A47C482DCD344E05A558DBE0581D4F66"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2511,12 +2217,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A6742642AD104F699DE1744E42A27E60"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A6ED1F8F246645D59BA2D060FF3AC52B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2529,19 +2229,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A814AA5096684DE6BD05261FED9BDC0C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A831F229CDB341B483B022A57D90D33B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A873126CC9444EB1B696B6EE00C8A1B4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2590,12 +2278,6 @@
         "Entry"
         {
         "MsmKey" = "8:_ACC2C14E7FD6429195CF55CE32B5D6A8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ACFDB968F9CC4307BDB7D5DC31C184FC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2650,12 +2332,6 @@
         "Entry"
         {
         "MsmKey" = "8:_B03239AFE28740529DF2C40E5C9E4198"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B08D3F014C1247BCB8088FBE76FB10DD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3027,6 +2703,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_BCEA303C582A4777862C15529A80592D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_BED4DA8A89D14D44AF9F6F5AA662F1E3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -3117,13 +2799,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C2312235F11F40B59380A1DCDDDB8034"
+        "MsmKey" = "8:_C341E694D6674F429D02A6FC6EAEFDF0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C341E694D6674F429D02A6FC6EAEFDF0"
+        "MsmKey" = "8:_C35C5A5B7E2040C9B3B4CA0DBEF79276"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3165,12 +2847,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C550622D980C47A38C798914629EC1A8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C59421B8798B44C4965540434D71E40E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -3190,12 +2866,6 @@
         "Entry"
         {
         "MsmKey" = "8:_C6DE7739A31F48E79E1174D163787343"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C6F142605CEE48F6803D47D69744B362"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3226,12 +2896,6 @@
         "Entry"
         {
         "MsmKey" = "8:_C7DA6928E9D84EE195D0E3F2EDEEA32F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C7EEF02E061B4F1FB7317EB44FDE33B9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3339,31 +3003,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_CE5CA416BFD544908977E3A1C9F21A8D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_CF045B89F92244798FD0BAD9D73F45E5"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_CFEC99A60ED4466F837E05A8EA98DBB9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D0E5EB26CCEC43E0BC0CF5C75B72DD45"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D1060F2FC28746008AC774C5EAB8B4BC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3459,12 +3099,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D566539418DE4A06B62883B07CA40D5C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D5A6E0C2B8774652A8A772DE76185F50"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -3496,12 +3130,6 @@
         "Entry"
         {
         "MsmKey" = "8:_D7ADA37FB1B94858A9F631C0530380EE"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D82D812DC0104C9094CB03D4480579E1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3747,12 +3375,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_DFEB8E8EA73843F18F0358AAA611A57D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E031C5F4191C42D3B59E70E4AF982D45"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -3855,12 +3477,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E69FC3D47110488B9EB764A256678A22"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E6A60E2EC2C941D68B940281E97DA10E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -3891,31 +3507,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E88D3AD48F424FC1950EBB8F2A9E9280"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E8DF0F1770174DB18C0D53B1D151ABF9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E8E00EFD34BA4FA2A51DA9C246C49838"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E9A991EC3F514BB48B05BCA6AC826121"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_EA786C60A1A84E5DA39D7158076D0496"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3946,30 +3538,6 @@
         "Entry"
         {
         "MsmKey" = "8:_ED305B6EFA274E379DDD04339B9074C7"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ED74703BF1184B398634F310D7B9E417"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_EF06426544224B6B98C5A3FCE900B63B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_EF98FCF8430E4BC08F98F577368BDBF9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F07C9D5A5E9246AD8F5CA3E798369009"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -4246,12 +3814,6 @@
         "Entry"
         {
         "MsmKey" = "8:_FA65FDF068F240DD98854AA51DF6CCD0"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FB23914DCE764A75B40E658EA0093027"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -5577,26 +5139,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_054F49A5C1394FA890FA88392F8A4821"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_AS4600.pdb"
-            "TargetName" = "8:M_AS4600.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0584C08688D345419AEE13E3E27E1187"
             {
             "AssemblyRegister" = "3:1"
@@ -6087,12 +5629,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E42C62082F2416A9FF1D47D130D1623"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E6663A419CC4CE7A4F299652CD1F39C"
             {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.ValueTuple.xml"
-            "TargetName" = "8:System.ValueTuple.xml"
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\list_members.png"
+            "TargetName" = "8:list_members.png"
             "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
+            "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -6127,52 +5669,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0F3457A6BB7947B78102D6C5B58ED4DE"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PdfSharp-wpf.xml"
-            "TargetName" = "8:PdfSharp-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1077AAFCDFF94A3485C87C4E7A57096F"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Speedclad\\Speedclad_Titania.jpg"
             "TargetName" = "8:Speedclad_Titania.jpg"
             "Tag" = "8:"
             "Folder" = "8:_365D9B1949F2472F8B7D8214F2AD0AED"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_11194D694B5A440CBA4EC22D1F7A9E86"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\CRSC.pdb"
-            "TargetName" = "8:CRSC.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -6233,26 +5735,6 @@
             "TargetName" = "8:RollerDoorRebateDetail.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_135B67E36FA94C53AADAD48978676535"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Microsoft.Maps.MapControl.WPF.xml"
-            "TargetName" = "8:Microsoft.Maps.MapControl.WPF.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -6347,52 +5829,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_152747DF17F64893AD84379CF14953D4"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\MATH.pdb"
-            "TargetName" = "8:MATH.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_152C4CF1401D42B2956B186C0C605613"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\KC_RK.png"
             "TargetName" = "8:KC_RK.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_15694C162C3F40FD91830D4F4CFFA8EE"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\HelixToolkit.Wpf.xml"
-            "TargetName" = "8:HelixToolkit.Wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -6436,26 +5878,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_163250C0A2D14CF7A353D1FAE349E7BF"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Examples.pdb"
-            "TargetName" = "8:Examples.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_17CAD00C703A494FAA70C852A4221B4A"
@@ -6762,26 +6184,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_21ADE1ED433C499C8351D6D2EB48B7E9"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Microsoft.Expression.Interactions.xml"
-            "TargetName" = "8:Microsoft.Expression.Interactions.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_21F4C0221654E003B283064996781038"
             {
             "AssemblyRegister" = "3:1"
@@ -6975,72 +6377,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_262F4FD0AAAF4B65B68CF9438A8F2293"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\ExportDXF_20191213T135342.dxf"
-            "TargetName" = "8:ExportDXF_20191213T135342.dxf"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2651E4D5035548F5A90EBF16AE7D5863"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Reactive.Core.xml"
-            "TargetName" = "8:System.Reactive.Core.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2692AA23ED1F47BC83CB8A61E03338CE"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Smartdek\\Smartdek_Ironsand.jpg"
             "TargetName" = "8:Smartdek_Ironsand.jpg"
             "Tag" = "8:"
             "Folder" = "8:_2FA750D917D64BFB8082E71197FD8197"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_277A64555C474AF6A3318A46F42333ED"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Data.SQLite.xml"
-            "TargetName" = "8:System.Data.SQLite.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -7357,26 +6699,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2D67EF2C4B7A4EA3AC83963895A0B2C6"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\MigraDoc.Rendering-wpf.xml"
-            "TargetName" = "8:MigraDoc.Rendering-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2F47559D5135499CBBE5B50676F1587D"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\frame2D_01.png"
@@ -7621,26 +6943,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_33F45F7D03B04FD6AFA0F4648DC30C9C"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_EC7.pdb"
-            "TargetName" = "8:M_EC7.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_340259CFEDFA450AA12EA51DF7253B49"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\canvas.png"
@@ -7696,26 +6998,6 @@
                 }
             "SourcePath" = "8:D:\\Private\\PFD\\System.Data.SQLite.dll"
             "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_344264EDFF0445E7AA1647B7462D6673"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_EC2.pdb"
-            "TargetName" = "8:M_EC2.pdb"
             "Tag" = "8:"
             "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
@@ -7845,26 +7127,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_368339BAE35B42879EF2EBF40EEA9E13"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\EPPlus.xml"
-            "TargetName" = "8:EPPlus.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_369022D93B414B94A18DE9EE0BAA6AA9"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Corrugate\\Corrugate_Permanent Green.jpg"
@@ -7956,26 +7218,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3B1427420F8E401599EF28B47902D930"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Microsoft.Maps.MapControl.WPF.xml"
-            "TargetName" = "8:Microsoft.Maps.MapControl.WPF.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3BCB648B3D8D4B87952432170620BE30"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\DefaultOptions.eiuo"
@@ -8002,26 +7244,6 @@
             "TargetName" = "8:Smartdek_Azure.jpg"
             "Tag" = "8:"
             "Folder" = "8:_2FA750D917D64BFB8082E71197FD8197"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C3AEF4B0289489A9B5123A2038BBCDF"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Petzold.Media3D.pdb"
-            "TargetName" = "8:Petzold.Media3D.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -8178,26 +7400,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F6C95E84C3E47FC9A0DAC70278CCC9A"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\MigraDoc.DocumentObjectModel-wpf.xml"
-            "TargetName" = "8:MigraDoc.DocumentObjectModel-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F989353A29248828C7EB7F374F9238F"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\KD_RK.png"
@@ -8244,26 +7446,6 @@
             "TargetName" = "8:crsc50020n_3D.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4137CAF2A0F5473598A63036A8D28F92"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Test1.dxf"
-            "TargetName" = "8:Test1.dxf"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -8511,12 +7693,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4970CDE8F5364FFCAD1AC2F90D2C8E68"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_49D6BA7AA02548028B87D477AC5C2480"
             {
-            "SourcePath" = "8:D:\\Private\\PFD\\BriefFiniteElementNet.pdb"
-            "TargetName" = "8:BriefFiniteElementNet.pdb"
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Fibreglass\\Speedclad\\Speedclad_White.jpg"
+            "TargetName" = "8:Speedclad_White.jpg"
             "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
+            "Folder" = "8:_5611D05773BB4AF3B12C167B508E56C3"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -8810,7 +7992,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7705.27630, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7745.22527, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5131E559A61AF5BF33E8E890703090C0"
@@ -8857,52 +8039,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_515CBAB0CB9F436989C9BF4D99D376EF"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\netDxf.pdb"
-            "TargetName" = "8:netDxf.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5179746BA2CB444680C33F79402C4325"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\crsc50020n.png"
             "TargetName" = "8:crsc50020n.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_519758D35C94479AB9F4F04E52C9FF5F"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_EC1.pdb"
-            "TargetName" = "8:M_EC1.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -9003,26 +8145,6 @@
             "TargetName" = "8:FSlogoNew.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_545FF5F093CF4E1D8D5946E06E627D10"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Microsoft.Expression.Interactions.xml"
-            "TargetName" = "8:Microsoft.Expression.Interactions.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -9219,26 +8341,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_573FD37B990A43F380199D78D80F2EBF"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\sw_en_GUI.pdb"
-            "TargetName" = "8:sw_en_GUI.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_580A67EF9FBD4B849230415DFF10A174"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Purlindek\\Purlindek_New Denim Blue.jpg"
@@ -9328,26 +8430,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_592F329412C74AA99127549EAB6123A0"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_EC4.pdb"
-            "TargetName" = "8:M_EC4.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_593551941E95F0595D6E423934B41F37"
@@ -9483,6 +8565,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A178F0E6B47463696C82DC56E9AEAAB"
+            {
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Fibreglass\\Purlindek\\Purlindek_White.jpg"
+            "TargetName" = "8:Purlindek_White.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_BEBFAFD69BD149A0BA7C85EBB2E8D24A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A630AB0B9AD4D3480F4DFCC80DF8135"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\crsc63020s1.jpg"
@@ -9574,72 +8676,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5CD5181123FC43029E08540EF7D5E8B6"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\CENEX.pdb"
-            "TargetName" = "8:CENEX.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5CE620235B3245739E50167231388E10"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PdfSharp.Charting-wpf.xml"
-            "TargetName" = "8:PdfSharp.Charting-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5CEAA3A670F842E7AFF3AEEAD8E67967"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\fs-screen.jpg"
             "TargetName" = "8:fs-screen.jpg"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5CEC06E2F971431C827CD08E59E989D9"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\MATERIAL.pdb"
-            "TargetName" = "8:MATERIAL.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -9720,26 +8762,6 @@
             "TargetName" = "8:Purlindek_FORMCLAD_Rich Graphite.jpg"
             "Tag" = "8:"
             "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5DC366ED78AC47B5BD610E66A311B554"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Microsoft.Expression.Interactions.xml"
-            "TargetName" = "8:Microsoft.Expression.Interactions.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -10018,26 +9040,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6435015C5DED401397CB5CF1CE291319"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_BASE.pdb"
-            "TargetName" = "8:M_BASE.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_64D0CC31FE5C4A219E662420F19033F5"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Corrugate\\Corrugate_FORMCLAD_Ash Grey.jpg"
@@ -10102,26 +9104,6 @@
             {
             "SourcePath" = "8:D:\\Private\\PFD\\PFD.vshost.exe.config"
             "TargetName" = "8:PFD.vshost.exe.config"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_66C33C0B831442969C348CA717B36F9D"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\SharedLibraries.pdb"
-            "TargetName" = "8:SharedLibraries.pdb"
             "Tag" = "8:"
             "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
@@ -10204,26 +9186,6 @@
             "TargetName" = "8:MDBFibreglass.db3"
             "Tag" = "8:"
             "Folder" = "8:_ED655410F0F344F996571FB6365FEC04"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6907F35C50FE4B01917E8CF28C0434C4"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PdfSharp.Charting-wpf.xml"
-            "TargetName" = "8:PdfSharp.Charting-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -10380,26 +9342,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6C589EFF635A44F392A8892DA50EF3B7"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\BaseClasses.instr.pdb"
-            "TargetName" = "8:BaseClasses.instr.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6C98FEB2909B40A397D805DDC89FD506"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\crsc1x100x1.jpg"
@@ -10446,26 +9388,6 @@
             "TargetName" = "8:Purlindek_Azure.jpg"
             "Tag" = "8:"
             "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6E349B06A39D4952BF181AADD3B1A371"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\HelixToolkit.xml"
-            "TargetName" = "8:HelixToolkit.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -10924,26 +9846,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7ABC1230ABCF483D9ECD46CD5FED5C23"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\FEM_CALC_1D.pdb"
-            "TargetName" = "8:FEM_CALC_1D.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7B82F4EA0C904363BD36069F2D0F54C7"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Purlindek\\Purlindek_Zinc.jpg"
@@ -11126,26 +10028,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7F46BB1684944267AC322B454F505F2C"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\MigraDoc.Rendering-wpf.xml"
-            "TargetName" = "8:MigraDoc.Rendering-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7F5988BC04EEDB1CF7926555E5760FC4"
             {
             "AssemblyRegister" = "3:1"
@@ -11277,52 +10159,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_80997EB470BB4A41AFA6D0FDDDFCB8A9"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\netDxf.xml"
-            "TargetName" = "8:netDxf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_815DA4E5A3654113B7411C1BBDDE2D56"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Purlindek\\Purlindek_FORMCLAD_Ash Grey.jpg"
             "TargetName" = "8:Purlindek_FORMCLAD_Ash Grey.jpg"
             "Tag" = "8:"
             "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_816F808256EE499F9ADDEED0BD6D2A86"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Threading.Tasks.Extensions.xml"
-            "TargetName" = "8:System.Threading.Tasks.Extensions.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -11459,46 +10301,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_83AB79E478B64284A87358A546801464"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_EC7.pdb"
-            "TargetName" = "8:M_EC7.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_84F37F21727A4804AEA0CEC03241EC0C"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Test1.dxf"
-            "TargetName" = "8:Test1.dxf"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_85218AD63FE2AD4DFB14A8213B1DE684"
             {
             "AssemblyRegister" = "3:1"
@@ -11561,26 +10363,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_881FED59C4134B9FB10B3B9ACD48D6F8"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\TwoOpt.pdb"
-            "TargetName" = "8:TwoOpt.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_886D3AC04A2A4437A7F285E64FDCC6E1"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Speedclad\\Speedclad_Flaxpod.jpg"
@@ -11621,26 +10403,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_88F5A55BA28B45178BC2CCBD4E6CDCA8"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Runtime.CompilerServices.Unsafe.xml"
-            "TargetName" = "8:System.Runtime.CompilerServices.Unsafe.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_89DFBF4F6CF249C09DB7137081309CD4"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Smartdek\\Smartdek_Mist Green.jpg"
@@ -11667,46 +10429,6 @@
             "TargetName" = "8:KC_FK.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8AC37F659E08480D90EBBB68F2E9B0DD"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\FEM_CALC_BASE.pdb"
-            "TargetName" = "8:FEM_CALC_BASE.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B5DA484E4A248A6803381EB662737D5"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.ValueTuple.xml"
-            "TargetName" = "8:System.ValueTuple.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -11792,26 +10514,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8D12DFAAC0BF4F0BA3E5D3241D3E09E3"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\sw_en_GUI.pdb"
-            "TargetName" = "8:sw_en_GUI.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8D980A3736304C0F94790979E56FA3C2"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\ControlJointDetail_old.png"
@@ -11838,26 +10540,6 @@
             "TargetName" = "8:O_RK.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8E2DBE95B1954F0FAFFCDEBAFAA69DDA"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\DATABASE.pdb"
-            "TargetName" = "8:DATABASE.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -12360,52 +11042,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_99F083C7C1284213B1D0AD30107623D8"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Threading.Tasks.Extensions.xml"
-            "TargetName" = "8:System.Threading.Tasks.Extensions.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9A051BC3E616462886DCA165964DBEA4"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Smartdek\\Smartdek_FORMCLAD_Ash Grey.jpg"
             "TargetName" = "8:Smartdek_FORMCLAD_Ash Grey.jpg"
             "Tag" = "8:"
             "Folder" = "8:_2FA750D917D64BFB8082E71197FD8197"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9ADC4056F8294A73A315B3BF7FFF32D9"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_NZS3101.pdb"
-            "TargetName" = "8:M_NZS3101.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -12471,12 +11113,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9F3420CE9E024A32A6A1B1931C38B4E1"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9EF28A853625434095106B56B6823BF2"
             {
-            "SourcePath" = "8:D:\\Private\\PFD\\MigraDoc.DocumentObjectModel-wpf.xml"
-            "TargetName" = "8:MigraDoc.DocumentObjectModel-wpf.xml"
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\options_canopies.png"
+            "TargetName" = "8:options_canopies.png"
             "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
+            "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -12491,12 +11133,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A0664CF9989743069807BDF6F448D11B"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9F41344C739C4769B25CFB5C6CE10D7B"
             {
-            "SourcePath" = "8:D:\\Private\\PFD\\InteractiveDataDisplay.WPF.pdb"
-            "TargetName" = "8:InteractiveDataDisplay.WPF.pdb"
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\list_joints.png"
+            "TargetName" = "8:list_joints.png"
             "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
+            "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -12531,26 +11173,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A0FB628A2CF540668D2DBED3CC364600"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Reactive.Linq.xml"
-            "TargetName" = "8:System.Reactive.Linq.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A129639D8C514CAEA6F6D3864A68DB4E"
             {
             "AssemblyRegister" = "3:1"
@@ -12566,26 +11188,6 @@
                 }
             "SourcePath" = "8:D:\\Private\\PFD\\BaseClasses.dll"
             "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A25D627E27BA4A2E82180FB707C1EB8A"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_EC3.pdb"
-            "TargetName" = "8:M_EC3.pdb"
             "Tag" = "8:"
             "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
@@ -12746,26 +11348,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A4276A1CD9C946C69CA05992DA8E719E"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\BriefFiniteElementNet.Controls.pdb"
-            "TargetName" = "8:BriefFiniteElementNet.Controls.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A47C482DCD344E05A558DBE0581D4F66"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\ViewPort.png"
@@ -12846,26 +11428,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A6742642AD104F699DE1744E42A27E60"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\EXPIMP.pdb"
-            "TargetName" = "8:EXPIMP.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A6ED1F8F246645D59BA2D060FF3AC52B"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Corrugate\\Corrugate_Gull Grey.jpg"
@@ -12906,52 +11468,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A814AA5096684DE6BD05261FED9BDC0C"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\WpfAnimatedGif.xml"
-            "TargetName" = "8:WpfAnimatedGif.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A831F229CDB341B483B022A57D90D33B"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\RollerDoorRebateDetail_old.png"
             "TargetName" = "8:RollerDoorRebateDetail_old.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A873126CC9444EB1B696B6EE00C8A1B4"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\BaseClasses.pdb"
-            "TargetName" = "8:BaseClasses.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -13128,26 +11650,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ACFDB968F9CC4307BDB7D5DC31C184FC"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\HelixToolkit.Wpf.xml"
-            "TargetName" = "8:HelixToolkit.Wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AD71E5A153CE4996844CD87B4ADD225E"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\KF_RK.png"
@@ -13254,26 +11756,6 @@
                 }
             "SourcePath" = "8:D:\\Private\\PFD\\sw_en_GUI.exe"
             "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B08D3F014C1247BCB8088FBE76FB10DD"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Reactive.Core.xml"
-            "TargetName" = "8:System.Reactive.Core.xml"
             "Tag" = "8:"
             "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
@@ -13807,6 +12289,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCEA303C582A4777862C15529A80592D"
+            {
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Fibreglass\\Smartdek\\Smartdek_White.jpg"
+            "TargetName" = "8:Smartdek_White.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_CC151B1BB0D7487FB3360CD2C9D4A813"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BED4DA8A89D14D44AF9F6F5AA662F1E3"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\ViewPort.png"
@@ -14051,12 +12553,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C2312235F11F40B59380A1DCDDDB8034"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C341E694D6674F429D02A6FC6EAEFDF0"
             {
-            "SourcePath" = "8:D:\\Private\\PFD\\WpfAnimatedGif.xml"
-            "TargetName" = "8:WpfAnimatedGif.xml"
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Purlindek\\Purlindek_FORMCLAD_Zinc.jpg"
+            "TargetName" = "8:Purlindek_FORMCLAD_Zinc.jpg"
             "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
+            "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -14071,12 +12573,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C341E694D6674F429D02A6FC6EAEFDF0"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C35C5A5B7E2040C9B3B4CA0DBEF79276"
             {
-            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Purlindek\\Purlindek_FORMCLAD_Zinc.jpg"
-            "TargetName" = "8:Purlindek_FORMCLAD_Zinc.jpg"
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\fibreglasssheets.png"
+            "TargetName" = "8:fibreglasssheets.png"
             "Tag" = "8:"
-            "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
+            "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -14162,26 +12664,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C550622D980C47A38C798914629EC1A8"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\3DTools.pdb"
-            "TargetName" = "8:3DTools.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C59421B8798B44C4965540434D71E40E"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Purlindek\\Purlindek_Sandstone Grey.jpg"
@@ -14248,26 +12730,6 @@
             "TargetName" = "8:FSlogoNew_PFD.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C6F142605CEE48F6803D47D69744B362"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Microsoft.Maps.MapControl.WPF.xml"
-            "TargetName" = "8:Microsoft.Maps.MapControl.WPF.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -14390,26 +12852,6 @@
             "TargetName" = "8:crsc10075.png"
             "Tag" = "8:"
             "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C7EEF02E061B4F1FB7317EB44FDE33B9"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\MigraDoc.DocumentObjectModel-wpf.xml"
-            "TargetName" = "8:MigraDoc.DocumentObjectModel-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -14697,92 +13139,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CE5CA416BFD544908977E3A1C9F21A8D"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PFD.instr.pdb"
-            "TargetName" = "8:PFD.instr.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CF045B89F92244798FD0BAD9D73F45E5"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Purlindek\\Purlindek_Thunder Grey.jpg"
             "TargetName" = "8:Purlindek_Thunder Grey.jpg"
             "Tag" = "8:"
             "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CFEC99A60ED4466F837E05A8EA98DBB9"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Runtime.CompilerServices.Unsafe.xml"
-            "TargetName" = "8:System.Runtime.CompilerServices.Unsafe.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D0E5EB26CCEC43E0BC0CF5C75B72DD45"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\MigraDoc.Rendering-wpf.xml"
-            "TargetName" = "8:MigraDoc.Rendering-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D1060F2FC28746008AC774C5EAB8B4BC"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PdfSharp-wpf.xml"
-            "TargetName" = "8:PdfSharp-wpf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -15041,26 +13403,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D566539418DE4A06B62883B07CA40D5C"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\PFD.pdb"
-            "TargetName" = "8:PFD.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D5A6E0C2B8774652A8A772DE76185F50"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\FSlogoNew_SCV.ico"
@@ -15189,26 +13531,6 @@
             "TargetName" = "8:Purlindek_Lignite.jpg"
             "Tag" = "8:"
             "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D82D812DC0104C9094CB03D4480579E1"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_EC6.pdb"
-            "TargetName" = "8:M_EC6.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -15389,7 +13711,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7705.27630, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7745.22527, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_DC854C5FE59B4089A0231BCB2772AF4D"
@@ -15604,26 +13926,6 @@
             "TargetName" = "8:Speedclad_Karaka.jpg"
             "Tag" = "8:"
             "Folder" = "8:_365D9B1949F2472F8B7D8214F2AD0AED"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DFEB8E8EA73843F18F0358AAA611A57D"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\HelixToolkit.xml"
-            "TargetName" = "8:HelixToolkit.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -15933,26 +14235,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E69FC3D47110488B9EB764A256678A22"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Data.SQLite.xml"
-            "TargetName" = "8:System.Data.SQLite.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E6A60E2EC2C941D68B940281E97DA10E"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Speedclad\\Speedclad_FORMCLAD_Ash Grey.jpg"
@@ -16075,92 +14357,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E88D3AD48F424FC1950EBB8F2A9E9280"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\Test_CRSC_Viewer.pdb"
-            "TargetName" = "8:Test_CRSC_Viewer.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E8DF0F1770174DB18C0D53B1D151ABF9"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Reactive.Linq.xml"
-            "TargetName" = "8:System.Reactive.Linq.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E8E00EFD34BA4FA2A51DA9C246C49838"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Corrugate\\Corrugate_Ironsand.jpg"
             "TargetName" = "8:Corrugate_Ironsand.jpg"
             "Tag" = "8:"
             "Folder" = "8:_10B3EE72E2DC490B9E02AE38B500AC45"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E9A991EC3F514BB48B05BCA6AC826121"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\BriefFiniteElementNet.CodeProjectExamples.pdb"
-            "TargetName" = "8:BriefFiniteElementNet.CodeProjectExamples.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EA786C60A1A84E5DA39D7158076D0496"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Reactive.xml"
-            "TargetName" = "8:System.Reactive.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -16252,86 +14454,6 @@
             "TargetName" = "8:Smartdek_New Denim Blue.jpg"
             "Tag" = "8:"
             "Folder" = "8:_2FA750D917D64BFB8082E71197FD8197"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ED74703BF1184B398634F310D7B9E417"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\FEM_CALC_1Din2D.pdb"
-            "TargetName" = "8:FEM_CALC_1Din2D.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EF06426544224B6B98C5A3FCE900B63B"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\M_EC5.pdb"
-            "TargetName" = "8:M_EC5.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EF98FCF8430E4BC08F98F577368BDBF9"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\BriefFiniteElementNet.Common.pdb"
-            "TargetName" = "8:BriefFiniteElementNet.Common.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F07C9D5A5E9246AD8F5CA3E798369009"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\System.Reactive.xml"
-            "TargetName" = "8:System.Reactive.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -16892,26 +15014,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FB23914DCE764A75B40E658EA0093027"
-            {
-            "SourcePath" = "8:D:\\Private\\PFD\\netDxf.xml"
-            "TargetName" = "8:netDxf.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_F9B46C9A3FAB4996859EBD32F62C57BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FBAFA6224D04CD3589BDF71FC2BB5C9E"
             {
             "AssemblyRegister" = "3:1"
@@ -17457,6 +15559,50 @@
                                         {
                                         }
                                     }
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_531EC85747FA4D17829297373E657921"
+                                    {
+                                    "Name" = "8:Fibreglass"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_4E8A6836260C442B8D3F21676B96D302"
+                                        "Folders"
+                                        {
+                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_5611D05773BB4AF3B12C167B508E56C3"
+                                            {
+                                            "Name" = "8:Speedclad"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "Property" = "8:_1A734C1821144023B47A14B5165872E0"
+                                                "Folders"
+                                                {
+                                                }
+                                            }
+                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_BEBFAFD69BD149A0BA7C85EBB2E8D24A"
+                                            {
+                                            "Name" = "8:Purlindek"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "Property" = "8:_037AECBAC45E4C89B8A823E1120BF48A"
+                                                "Folders"
+                                                {
+                                                }
+                                            }
+                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_CC151B1BB0D7487FB3360CD2C9D4A813"
+                                            {
+                                            "Name" = "8:Smartdek"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "Property" = "8:_D89FD1D04FE94F6487C9FF6AE079EEE5"
+                                                "Folders"
+                                                {
+                                                }
+                                            }
+                                        }
+                                    }
                                     "{9EF0B969-E518-4E46-987F-47570745A589}:_73CDC9B89B194C61B69396AC9058B0C7"
                                     {
                                     "Name" = "8:Purlindek"
@@ -17547,13 +15693,13 @@
         "ProductName" = "8:Engenius"
         "ProductCode" = "8:{A98930C3-95AB-467E-9D7C-90F503124FF8}"
         "PackageCode" = "8:{3071262C-5240-43FE-AD3A-F5F2E048208D}"
-        "UpgradeCode" = "8:{C9617EF6-CFB1-4C07-96DE-D70E95FFEC52}"
+        "UpgradeCode" = "8:{AF16CF31-B9CC-4F07-9519-0B6AEAFA08CB}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.2"
+        "ProductVersion" = "8:1.0.3"
         "Manufacturer" = "8:OPMC"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
