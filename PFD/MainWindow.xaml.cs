@@ -327,8 +327,7 @@ namespace PFD
                     vm.RecreateJoints = true; //need to recreate joint when Section was changed
                     vm.RecreateModel = true;
                     vm.RecreateFloorSlab = true;
-
-
+                    
                     //To Mato - tu je kod co sposobuje Bug 737
                     //musi sa tu asi prepocitavat nieco pokial sa zmeni section na zaklade toho co je nastavene v model OPtions ci Overal ci Center Dimensions
                     //ty by si mohol povedat co konkretne sa ma prepocitat, lebo podla kodu nizsie vidis, ze sa to nastavi akoby nanovo to zadal pouzivatel
@@ -339,13 +338,19 @@ namespace PFD
 
                         // Width Overall a Length Overall sa nezmeni
                         // Zmenou prierezu sa zmenia centerline rozmery
+                        bool isChangedFromCode = vm.IsSetFromCode;                        
+                        vm.IsSetFromCode = true;
                         vm.Width = vm.WidthOverall - 2 * vm.MainColumnCrsc_z_plus;
                         vm.Length = vm.LengthOverall - Math.Abs(vm.EdgeColumnCrsc_y_minus) - vm.EdgeColumnCrsc_y_plus;
-
+                        vm.IsSetFromCode = isChangedFromCode;
+                        
                         // Tu by som urobil takyto hack
                         // Ak boli various baywidths vypnute, tak sa prepocitaju rozmery L1
-                        if(!vm._modelOptionsVM.VariousBayWidths)
-                            vm.BayWidth = vm.Length / (vm.Frames - 1);
+                        if (!vm._modelOptionsVM.VariousBayWidths)
+                        {
+                            //vm.BayWidth = vm.Length / (vm.Frames - 1); //toto sa zmeni pri nastaveni Length
+                            vm._baysWidthOptionsVM.ResetBaysWidths(vm.Frames - 1, vm.BayWidth);
+                        }                            
                         else
                         {
                             // Upravime rozmery v poli bay widths a to tak ze prvu a poslednu bay width zmenime,
@@ -359,11 +364,8 @@ namespace PFD
                             vm._baysWidthOptionsVM.BayWidthList.Last().Width += (0.5f * difference);
                         }
 
-                        //if (!IsSetFromCode) SetCustomModel(); nastavime custom model
-                        //if (!IsSetFromCode) CountWallAndRoofAreas(); toto asi prepocitat nemusime??? lebo sa celkovy rozmer nezmenil (ale zase ani to neuskodi prepocitat)
-
-                        // TO Ondrej - toto mi nie je jasne preco to robime
-                        vm.WidthOverall = vm.WidthOverall; vm.LengthOverall = vm.LengthOverall; //recalculate dimensions
+                        vm.SetCustomModel();
+                        vm.CountWallAndRoofAreas();
                     }
                     else
                     {
@@ -371,14 +373,15 @@ namespace PFD
 
                         // Centerline Width a Length sa nezmeni, Bay Widths sa nezmenia
                         // Zmenou prierezu a zmenil celkový rozmer budovy - prepocitame Width Overall a Length Overall
+
+                        bool isChangedFromCode = vm.IsSetFromCode;
+                        vm.IsSetFromCode = true;
                         vm.WidthOverall = vm.Width + 2 * vm.MainColumnCrsc_z_plus;
                         vm.LengthOverall = vm.Length + Math.Abs(vm.EdgeColumnCrsc_y_minus) + vm.EdgeColumnCrsc_y_plus;
-
-                        //if (!IsSetFromCode) SetCustomModel(); nastavime custom model
-                        //if (!IsSetFromCode) CountWallAndRoofAreas(); prepocitame area
-
-                        // TO Ondrej - toto mi nie je jasne preco to robime
-                        vm.Width = vm.Width; vm.Length = vm.Length; //recalculate dimensions
+                        vm.IsSetFromCode = isChangedFromCode;                        
+                        
+                        vm.SetCustomModel(); 
+                        vm.CountWallAndRoofAreas(); 
                     }
                 }
                 if (e.PropertyName == "Color")

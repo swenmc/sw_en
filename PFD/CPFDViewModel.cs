@@ -517,7 +517,7 @@ namespace PFD
             }
         }
 
-        private void SetCustomModel()
+        public void SetCustomModel()
         {
             if (!ModelTypes.Contains("Custom")) ModelTypes.Add("Custom");
             ModelIndex = ModelTypes.Count - 1;
