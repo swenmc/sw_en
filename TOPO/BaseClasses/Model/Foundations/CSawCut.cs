@@ -105,7 +105,7 @@ namespace BaseClasses
 
             iVectorOverFactor_LCS = -1;
             iVectorUpFactor_LCS = -1;
-                        
+
             float fOffsetFromPlane = 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
             // Mezera medzi ciarou a textom (kladna - text nad ciarou (+y), zaporna, text pod ciarou (-y))

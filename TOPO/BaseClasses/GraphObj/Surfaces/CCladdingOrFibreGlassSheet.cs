@@ -16,6 +16,9 @@ namespace BaseClasses.GraphObj
         Color m_Color;
         float m_fOpacity;
 
+        private Point3D m_PointText;
+        private string m_Text;
+
         private List<Point3D> m_WireFramePoints;
         public List<Point3D> WireFramePoints
         {
@@ -109,6 +112,21 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public Point3D PointText
+        {
+            get { return m_PointText; }
+            set { m_PointText = value; }
+        }
+
+        public string Text
+        {
+            get { return m_Text; }
+            set { m_Text = value; }
+        }
+
+        public int iVectorOverFactor_LCS;
+        public int iVectorUpFactor_LCS;
+
         public CCladdingOrFibreGlassSheet()
         {
 
@@ -167,6 +185,10 @@ namespace BaseClasses.GraphObj
                 LengthTotal = Math.Max(LengthTopLeft, LengthTopRight);
             else
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
+
+            m_Text = "WC" + ID.ToString(); // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
+
+            SetTextPointInLCS(); // Text v LCS
         }
 
         // TO Ondrej - vieme nejako krajsie pracovat s potomkami jednej triedy, aby sme ich mohli vzajomne pretypovat
@@ -220,7 +242,7 @@ namespace BaseClasses.GraphObj
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0);
                 if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
                 return area.CreateArea(options.bUseTextures, material);
-            }   
+            }
         }
 
         public Transform3DGroup GetTransformGroup(double dRot_X_deg, double dRot_Y_deg, double dRot_Z_deg)
@@ -257,6 +279,21 @@ namespace BaseClasses.GraphObj
             TransformGr.Children.Add(translateOrigin); // Presun v ramci GCS
 
             return TransformGr;
+        }
+
+        public void SetTextPointInLCS()
+        {
+            iVectorOverFactor_LCS = 1;
+            iVectorUpFactor_LCS = 1;
+
+            float fOffsetFromPlane = 0.005f; // Offset nad/ pred urovnou panela, aby sa text nevnoril do 3D reprezentacie
+
+            m_PointText = new Point3D()
+            {
+                X = 0.3 * Width, // Kreslime v 30% sirky zlava
+                Y = 0.4 * LengthTotal, // Kreslime v 40% dlzky zdola
+                Z = fOffsetFromPlane
+            };
         }
     }
 }

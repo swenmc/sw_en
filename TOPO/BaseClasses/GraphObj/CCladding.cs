@@ -79,6 +79,18 @@ namespace BaseClasses.GraphObj
         bool bGenerateBackSideCladding = true;
         bool bGenerateRoofCladding = true;
 
+        public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallLeft = null;
+        public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsLeftWall = null;
+        public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallFront = null;
+        public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsFrontWall = null;
+        public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallRight = null;
+        public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRightWall = null;
+        public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallBack = null;
+        public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsBackWall = null;
+        public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofRight = null;
+        public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofRight = null;
+        public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofLeft = null;
+        public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofLeft = null;
 
         private List<Point3D> m_WireFramePoints;
         public List<Point3D> WireFramePoints
@@ -790,7 +802,7 @@ namespace BaseClasses.GraphObj
             double dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
             int iNumberOfSheets = iNumberOfWholeSheets + 1;
 
-            List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallLeft = new List<CCladdingOrFibreGlassSheet>();
+            listOfFibreGlassSheetsWallLeft = new List<CCladdingOrFibreGlassSheet>();
 
             foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
             {
@@ -807,7 +819,6 @@ namespace BaseClasses.GraphObj
             GenerateCladdingOpenings(listOfFibreGlassSheetsWallLeft, "Left", pControlPoint_LeftWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
             ref iOpeningIndex, out listOfOpeningsLeftWall_All);
 
-            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsLeftWall = null;
             if (bGenerateLeftSideCladding && bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", pControlPoint_LeftWall, m_ColorNameWall,
@@ -827,7 +838,7 @@ namespace BaseClasses.GraphObj
             dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
 
-            List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallFront = new List<CCladdingOrFibreGlassSheet>();
+            listOfFibreGlassSheetsWallFront = new List<CCladdingOrFibreGlassSheet>();
 
             foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
             {
@@ -844,7 +855,6 @@ namespace BaseClasses.GraphObj
             GenerateCladdingOpenings(listOfFibreGlassSheetsWallFront, "Front", pControlPoint_FrontWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
             ref iOpeningIndex, out listOfOpeningsFrontWall_All);
 
-            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsFrontWall = null;
             if (bGenerateFrontSideCladding &&  bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", pControlPoint_FrontWall, m_ColorNameWall,
@@ -864,7 +874,7 @@ namespace BaseClasses.GraphObj
             dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
 
-            List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallRight = new List<CCladdingOrFibreGlassSheet>();
+            listOfFibreGlassSheetsWallRight = new List<CCladdingOrFibreGlassSheet>();
 
             foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
             {
@@ -881,7 +891,6 @@ namespace BaseClasses.GraphObj
             GenerateCladdingOpenings(listOfFibreGlassSheetsWallRight, "Right", pControlPoint_RightWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
             ref iOpeningIndex, out listOfOpeningsRightWall_All);
 
-            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRightWall = null;
             if (bGenerateRightSideCladding && bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", pControlPoint_RightWall, m_ColorNameWall,
@@ -901,7 +910,7 @@ namespace BaseClasses.GraphObj
             dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
 
-            List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallBack = new List<CCladdingOrFibreGlassSheet>();
+            listOfFibreGlassSheetsWallBack = new List<CCladdingOrFibreGlassSheet>();
 
             foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
             {
@@ -918,7 +927,6 @@ namespace BaseClasses.GraphObj
             GenerateCladdingOpenings(listOfFibreGlassSheetsWallBack, "Back", pControlPoint_BackWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
             ref iOpeningIndex, out listOfOpeningsBackWall_All);
 
-            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsBackWall = null;
             if (bGenerateBackSideCladding && bIndividualCladdingSheets)
             {
                 GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", pControlPoint_BackWall, m_ColorNameWall,
@@ -944,7 +952,7 @@ namespace BaseClasses.GraphObj
             dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
 
-            List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();
+            listOfFibreGlassSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();
 
             foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
             {
@@ -956,8 +964,6 @@ namespace BaseClasses.GraphObj
                     iSheet_FG_Index++;
                 }
             }
-
-            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofRight = null;
 
             if (bGenerateRoofCladding && bIndividualCladdingSheets)
             {
@@ -1058,8 +1064,8 @@ namespace BaseClasses.GraphObj
                 }
             }
             // Roof - Left Side
-            List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofLeft = null;
-            List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofLeft = new List<CCladdingOrFibreGlassSheet>();
+
+            listOfFibreGlassSheetsRoofLeft = new List<CCladdingOrFibreGlassSheet>();
 
             if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
             {
