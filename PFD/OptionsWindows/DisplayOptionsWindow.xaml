@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options" Height="940" Width="800" Loaded="Window_Loaded">
+        Title="Display Options" Height="1040" Width="800" Loaded="Window_Loaded">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -54,7 +54,7 @@
                             <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" IsChecked="{Binding Path=MaterialEmissive}">Emissive Material</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="2" Grid.Column="0">                            
+                        <StackPanel Grid.Row="2" Grid.Column="0">
                             <CheckBox Name="chbDisplayGlobalAxis" IsChecked="{Binding Path=ShowGlobalAxis}">Display Global Axis</CheckBox>
                             <CheckBox Name="chbDisplayLocalMemberAxis" IsChecked="{Binding Path=ShowLocalMembersAxis}" IsEnabled="{Binding Path=IsEnabledLocalMembersAxis}" >Display Local Member Axis</CheckBox>
                             <CheckBox Name="chbDisplaySurfaceLoadsAxis" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" IsEnabled="{Binding Path=IsEnabledSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
@@ -126,9 +126,8 @@
                                 <CheckBox Name="chbDisplayDoorsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayDoorsWireFrame}">Doors</CheckBox>
                                 <CheckBox Name="chbDisplayWindowsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayWindowsWireFrame}">Windows</CheckBox>
                             </StackPanel>
-
                         </StackPanel>
-                        
+
                         <StackPanel Grid.Row="0" Grid.Column="1">
                             <CheckBox Name="chbDisplayMemberDescription" IsChecked="{Binding Path=ShowMemberDescription}">Display Member Description</CheckBox>
                             <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >ID</CheckBox>
@@ -193,6 +192,10 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
@@ -558,6 +561,62 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=MemberCenterlineThickness, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
+                        <TextBlock Grid.Row="27" Grid.Column="0" Text="Cladding Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="27" Grid.Column="1" Name ="Combobox_CladdingTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=CladdingTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="28" Grid.Column="0" Text="Fibreglass Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="28" Grid.Column="1" Name ="Combobox_FibreglassTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=FibreglassTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="29" Grid.Column="0" Text="Door Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="29" Grid.Column="1" Name ="Combobox_DoorTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=DoorTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="30" Grid.Column="0" Text="Window Text Colour:" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row="30" Grid.Column="1" Name ="Combobox_WindowTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=WindowTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
                         <TextBlock Grid.Row="0" Grid.Column="2" Text="Member Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <!--<TextBox Grid.Row="0" Grid.Column="3" Name ="MemberSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
@@ -918,6 +977,26 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GUIDimensionsScale, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
+                        <TextBlock Grid.Row="16" Grid.Column="0" Text="GUI Cladding Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="16" Grid.Column="1" Name ="GUICladdingTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GUICladdingTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="17" Grid.Column="0" Text="GUI Fibreglass Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="17" Grid.Column="1" Name ="GUIFibreglassTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GUIFibreglassTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="18" Grid.Column="0" Text="GUI Door Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="18" Grid.Column="1" Name ="GUIDoorTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GUIDoorTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="19" Grid.Column="0" Text="GUI Window Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="19" Grid.Column="1" Name ="GUIWindowTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GUIWindowTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
 
                         <TextBlock Grid.Row="1" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <TextBox Grid.Row="1" Grid.Column="3" Name ="ExportFloorSlabTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -993,17 +1072,34 @@
                         <TextBox Grid.Row="15" Grid.Column="3" Name ="ExportDimensionsScale" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportDimensionsScale, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="16" Grid.Column="2" Text="Export Cladding Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="16" Grid.Column="3" Name ="ExportCladdingTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportCladdingTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="17" Grid.Column="2" Text="Export Fibreglass Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="17" Grid.Column="3" Name ="ExportFibreglassTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportFibreglassTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="18" Grid.Column="2" Text="Export Door Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="18" Grid.Column="3" Name ="ExportDoorTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportDoorTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+
+                        <TextBlock Grid.Row="19" Grid.Column="2" Text="Export Window Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="19" Grid.Column="3" Name ="ExportWindowTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ExportWindowTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
                     </Grid>
                 </ScrollViewer>
-
             </TabItem>
 
         </TabControl>
         <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
-            
             <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
         </StackPanel>
-
     </Grid>
 
 

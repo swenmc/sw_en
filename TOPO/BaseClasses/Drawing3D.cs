@@ -4577,7 +4577,7 @@ namespace BaseClasses
 
             // TODO - toto by sa asi malo odclenit z cladding a presunut k dveram a oknam
             // Doors
-            if(true/*displayOptions.bDisplayDoorDescription*/)
+            if(displayOptions.bDisplayDoorDescription)
             {
                 if (model.m_arrGOStrDoors != null)
                 {
@@ -4631,7 +4631,7 @@ namespace BaseClasses
             }
 
             // Windows
-            if (true/*displayOptions.bDisplayWindowDescription*/)
+            if (displayOptions.bDisplayWindowDescription)
             {
                 if (model.m_arrGOStrWindows != null)
                 {
