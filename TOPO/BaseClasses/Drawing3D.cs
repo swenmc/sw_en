@@ -4479,7 +4479,7 @@ namespace BaseClasses
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, 0.020f/*displayOptions.GUICladdingSheetTextSize*/, 0.015f /*displayOptions.ExportCladdingSheetTextSize*/, displayOptions);
+                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
 
                         float fTextBlockVerticalSizeFactor = 1f;
                         float fTextBlockHorizontalSizeFactor = 1f;
@@ -4487,7 +4487,7 @@ namespace BaseClasses
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Bold;
-                        tb.Foreground = new SolidColorBrush(Colors.Coral /*displayOptions.CladdingSheetTextColor*/);
+                        tb.Foreground = new SolidColorBrush(displayOptions.CladdingTextColor);
                         //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
                         // Nastavujeme pre GCS (rovina XZ - text v smere X)
@@ -4533,7 +4533,7 @@ namespace BaseClasses
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, 0.020f/*displayOptions.GUIFibreglassSheetTextSize*/, 0.015f /*displayOptions.ExportFibreglassSheetTextSize*/, displayOptions);
+                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions.ExportFibreglassDescriptionSize, displayOptions);
 
                         float fTextBlockVerticalSizeFactor = 1f;
                         float fTextBlockHorizontalSizeFactor = 1f;
@@ -4541,7 +4541,7 @@ namespace BaseClasses
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Bold;
-                        tb.Foreground = new SolidColorBrush(Colors.LightGreen /*displayOptions.FibreglassSheetTextColor*/);
+                        tb.Foreground = new SolidColorBrush(displayOptions.FibreglassTextColor);
                         //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
                         // Nastavujeme pre GCS (rovina XZ - text v smere X)
@@ -4588,7 +4588,7 @@ namespace BaseClasses
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, 0.020f/*displayOptions.GUIDoorDescriptionTextSize*/, 0.015f /*displayOptions.ExportDoorDescriptionTextSize*/, displayOptions);
+                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDoorDescriptionSize, displayOptions.ExportDoorDescriptionSize, displayOptions);
 
                         float fTextBlockVerticalSizeFactor = 1f;
                         float fTextBlockHorizontalSizeFactor = 1f;
@@ -4596,7 +4596,7 @@ namespace BaseClasses
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Bold;
-                        tb.Foreground = new SolidColorBrush(Colors.Cyan /*displayOptions.DoorDescriptionTextColor*/);
+                        tb.Foreground = new SolidColorBrush(displayOptions.DoorTextColor);
                         //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
                         // Nastavujeme pre GCS (rovina XZ - text v smere X)
@@ -4642,7 +4642,7 @@ namespace BaseClasses
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, 0.020f/*displayOptions.GUIWindowDescriptionTextSize*/, 0.015f /*displayOptions.ExportWindowDescriptionTextSize*/, displayOptions);
+                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIWindowDescriptionSize, displayOptions.ExportWindowDescriptionSize, displayOptions);
 
                         float fTextBlockVerticalSizeFactor = 1f;
                         float fTextBlockHorizontalSizeFactor = 1f;
@@ -4650,7 +4650,7 @@ namespace BaseClasses
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Bold;
-                        tb.Foreground = new SolidColorBrush(Colors.LightYellow /*displayOptions.WindowDescriptionTextColor*/);
+                        tb.Foreground = new SolidColorBrush(displayOptions.WindowTextColor);
                         //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
                         // Nastavujeme pre GCS (rovina XZ - text v smere X)
