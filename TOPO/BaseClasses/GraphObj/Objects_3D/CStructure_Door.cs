@@ -38,6 +38,9 @@ namespace BaseClasses.GraphObj
         public float m_fGThickness;
         public float m_fRotationZDegrees;
 
+        private Point3D m_PointText;
+        private string m_Text;
+
         private List<Point3D> m_WireFramePoints;
         public List<Point3D> WireFramePoints
         {
@@ -65,6 +68,21 @@ namespace BaseClasses.GraphObj
                 m_isRollerDoor = value;
             }
         }
+
+        public Point3D PointText
+        {
+            get { return m_PointText; }
+            set { m_PointText = value; }
+        }
+
+        public string Text
+        {
+            get { return m_Text; }
+            set { m_Text = value; }
+        }
+
+        public int iVectorOverFactor_LCS;
+        public int iVectorUpFactor_LCS;
 
         // Constructor 1
         public CStructure_Door()
@@ -105,7 +123,11 @@ namespace BaseClasses.GraphObj
             m_Material_1 = new DiffuseMaterial(flashingSolidBrush);
 
             m_doorPanelColorName = doorPanelColorName;
-            m_volColor_2 = doorPanelColor;            
+            m_volColor_2 = doorPanelColor;
+
+            m_Text = "Door H x W" + "\n" + (m_fDim2 * 1000).ToString("F0") + " x " + (m_fDim1 * 1000).ToString("F0") + " mm"; // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
+
+            SetTextPointInLCS();
 
             CreateM_3D_G_Door(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fDoorPanelThickness, fRotationZDegrees, useTextures);
         }
@@ -142,8 +164,8 @@ namespace BaseClasses.GraphObj
             gr.Children.Add(mFrame_03_V.CreateM_3D_G_Volume_8Edges(pArray[2], fT_Y, fT_Y, fH_Z - 1 * fT_Y, DiffMatF, DiffMatF)); // Vertical
             gr.Children.Add(mDoorPanel.CreateM_3D_G_Volume_8Edges(pArray[3], fL_X - 2 * fT_Y, fDoorPanelThickness, fH_Z - 1 * fT_Y, DiffMatD, DiffMatD)); // Door Panel No 1
 
-            //to Mato - tu je nutne nastavit wireframePoints            
-            //tu je nutne niekde ziskat Wireframe a aj ho nastavit            
+            //to Mato - tu je nutne nastavit wireframePoints
+            //tu je nutne niekde ziskat Wireframe a aj ho nastavit
             WireFramePoints.AddRange(mFrame_01_HU.WireFramePoints);
             WireFramePoints.AddRange(mFrame_02_V.WireFramePoints);
             WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
@@ -184,7 +206,7 @@ namespace BaseClasses.GraphObj
                 m_Material_2 = new DiffuseMaterial(imgBrush);
             }
             else
-            {   
+            {
                 SolidColorBrush panelSolidBrush = new SolidColorBrush(m_volColor_2);
                 panelSolidBrush.Opacity = m_fvolOpacity_2;
                 m_Material_2 = new DiffuseMaterial(panelSolidBrush);
@@ -197,15 +219,8 @@ namespace BaseClasses.GraphObj
                 gr.Children.Add(CreateM_3D_G_SegmDoor(i, fL_X, fH_Z, fT_Y, m_Material_1, m_Material_2, fGlassThickness));
             }
 
-            // Move and rotate door
-            Transform3DGroup transform3DGroup = new Transform3DGroup();
-            // Rotation about Y axis
-            RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZDegrees));
-            // Translation - move to control point
-            TranslateTransform3D translateTransform3D = new TranslateTransform3D(pControlPoint.X, pControlPoint.Y, pControlPoint.Z);
-            // Adding transforms
-            transform3DGroup.Children.Add(rotateTransformation3D);
-            transform3DGroup.Children.Add(translateTransform3D);
+            // Create transform group
+            Transform3DGroup transform3DGroup = GetTransformGroup(pControlPoint, fRotationZDegrees);
             // Set transformation to group
             gr.Transform = transform3DGroup;
 
@@ -215,8 +230,23 @@ namespace BaseClasses.GraphObj
             //{
             //    WireFramePoints[i] = transform3DGroup.Transform(WireFramePoints[i]);
             //}
-            
+
             return gr;
+        }
+
+        public Transform3DGroup GetTransformGroup(Point3D pControlPoint, float fRotationZDegrees)
+        {
+            // Move and rotate door
+            Transform3DGroup transform3DGroup = new Transform3DGroup();
+            // Rotation about Y axis
+            RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZDegrees));
+            // Translation - move to control point
+            TranslateTransform3D translateTransform3D = new TranslateTransform3D(pControlPoint.X, pControlPoint.Y, pControlPoint.Z);
+            // Adding transforms
+            transform3DGroup.Children.Add(rotateTransformation3D);
+            transform3DGroup.Children.Add(translateTransform3D);
+
+            return transform3DGroup;
         }
 
         //upravene vramci refaktoringu 2.3.2021 naco sa vytvara dalsia struktura Model3DGroup
@@ -235,6 +265,21 @@ namespace BaseClasses.GraphObj
             Point3D pControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
 
             return CreateM_3D_G_Door(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees, useTextures);
+        }
+
+        public void SetTextPointInLCS()
+        {
+            iVectorOverFactor_LCS = 1;
+            iVectorUpFactor_LCS = 1;
+
+            float fOffsetFromPlane = 0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
+
+            m_PointText = new Point3D()
+            {
+                X = 0.3 * m_fDim1, // Kreslime v 30% sirky zlava
+                Y = 0.4 * m_fDim2, // Kreslime v 40% dlzky zdola
+                Z = fOffsetFromPlane
+            };
         }
     }
 }
