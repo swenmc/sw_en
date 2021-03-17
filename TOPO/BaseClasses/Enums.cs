@@ -926,14 +926,33 @@ namespace BaseClasses
         public bool bDisplayFloorSlabDescription;
         public bool bDisplaySawCutsDescription;
         public bool bDisplayControlJointsDescription;
+
         public bool bDisplayCladdingDescription;
-        public bool bDisplayCladdingSheetID;
-        public bool bDisplayCladdingWidthHeight;
+        public bool bDisplayCladdingID;
+        public bool bDisplayCladdingPrefix;
+        public bool bDisplayCladdingLengthWidth;
         public bool bDisplayCladdingArea;
+        public bool bDisplayCladdingUnits;
+
         public bool bDisplayFibreglassDescription;
         public bool bDisplayFibreglassID;
-        public bool bDisplayFibreglassWidthHeight;
+        public bool bDisplayFibreglassPrefix;
+        public bool bDisplayFibreglassHeightWidth;
         public bool bDisplayFibreglassArea;
+        public bool bDisplayFibreglassUnits;
+
+        public bool bDisplayDoorDescription;
+        public bool bDisplayDoorID;
+        public bool bDisplayDoorType;
+        public bool bDisplayDoorHeightWidth;
+        public bool bDisplayDoorArea;
+        public bool bDisplayDoorUnits;
+
+        public bool bDisplayWindowDescription;
+        public bool bDisplayWindowID;
+        public bool bDisplayWindowHeightWidth;
+        public bool bDisplayWindowArea;
+        public bool bDisplayWindowUnits;
 
         public bool bDisplayDimensions;
         public bool bDisplayGridlines;

@@ -113,16 +113,32 @@ namespace PFD
         private bool MShowDetailSymbols;
         private bool MShowSlabRebates;
 
-
         private bool m_DisplayCladdingDescription;
-        private bool m_DisplayCladdingSheetID;
-        private bool m_DisplayCladdingWidthHeight;
-        private bool m_DisplayCladdingArea;        
+        private bool m_DisplayCladdingID;
+        private bool m_DisplayCladdingPrefix;
+        private bool m_DisplayCladdingLengthWidth;
+        private bool m_DisplayCladdingArea;
+        private bool m_DisplayCladdingUnits;
 
         private bool m_DisplayFibreglassDescription;
         private bool m_DisplayFibreglassID;
-        private bool m_DisplayFibreglassWidthHeight;
+        private bool m_DisplayFibreglassPrefix;
+        private bool m_DisplayFibreglassLengthWidth;
         private bool m_DisplayFibreglassArea;
+        private bool m_DisplayFibreglassUnits;
+
+        private bool m_DisplayDoorDescription;
+        private bool m_DisplayDoorID;
+        private bool m_DisplayDoorType;
+        private bool m_DisplayDoorHeightWidth;
+        private bool m_DisplayDoorArea;
+        private bool m_DisplayDoorUnits;
+
+        private bool m_DisplayWindowDescription;
+        private bool m_DisplayWindowID;
+        private bool m_DisplayWindowHeightWidth;
+        private bool m_DisplayWindowArea;
+        private bool m_DisplayWindowUnits;
 
         [NonSerialized]
         private Color m_WireframeColor;
@@ -3345,31 +3361,46 @@ namespace PFD
                 NotifyPropertyChanged("DisplayCladdingDescription");
             }
         }
-        public bool DisplayCladdingSheetID
+
+        public bool DisplayCladdingID
         {
             get
             {
-                return m_DisplayCladdingSheetID;
+                return m_DisplayCladdingID;
             }
 
             set
             {
-                m_DisplayCladdingSheetID = value;
-                NotifyPropertyChanged("DisplayCladdingSheetID");
+                m_DisplayCladdingID = value;
+                NotifyPropertyChanged("DisplayCladdingID");
             }
         }
 
-        public bool DisplayCladdingWidthHeight
+        public bool DisplayCladdingPrefix
         {
             get
             {
-                return m_DisplayCladdingWidthHeight;
+                return m_DisplayCladdingPrefix;
             }
 
             set
             {
-                m_DisplayCladdingWidthHeight = value;
-                NotifyPropertyChanged("DisplayCladdingWidthHeight");
+                m_DisplayCladdingPrefix = value;
+                NotifyPropertyChanged("DisplayCladdingPrefix");
+            }
+        }
+
+        public bool DisplayCladdingLengthWidth
+        {
+            get
+            {
+                return m_DisplayCladdingLengthWidth;
+            }
+
+            set
+            {
+                m_DisplayCladdingLengthWidth = value;
+                NotifyPropertyChanged("DisplayCladdingLengthWidth");
             }
         }
 
@@ -3387,6 +3418,20 @@ namespace PFD
             }
         }
 
+        public bool DisplayCladdingUnits
+        {
+            get
+            {
+                return m_DisplayCladdingUnits;
+            }
+
+            set
+            {
+                m_DisplayCladdingUnits = value;
+                NotifyPropertyChanged("DisplayCladdingUnits");
+            }
+        }
+
         public bool DisplayFibreglassDescription
         {
             get
@@ -3400,6 +3445,7 @@ namespace PFD
                 NotifyPropertyChanged("DisplayFibreglassDescription");
             }
         }
+
         public bool DisplayFibreglassID
         {
             get
@@ -3414,17 +3460,31 @@ namespace PFD
             }
         }
 
-        public bool DisplayFibreglassWidthHeight
+        public bool DisplayFibreglassPrefix
         {
             get
             {
-                return m_DisplayFibreglassWidthHeight;
+                return m_DisplayFibreglassPrefix;
             }
 
             set
             {
-                m_DisplayFibreglassWidthHeight = value;
-                NotifyPropertyChanged("DisplayFibreglassWidthHeight");
+                m_DisplayFibreglassPrefix = value;
+                NotifyPropertyChanged("DisplayFibreglassPrefix");
+            }
+        }
+
+        public bool DisplayFibreglassLengthWidth
+        {
+            get
+            {
+                return m_DisplayFibreglassLengthWidth;
+            }
+
+            set
+            {
+                m_DisplayFibreglassLengthWidth = value;
+                NotifyPropertyChanged("DisplayFibreglassLengthWidth");
             }
         }
 
@@ -3439,6 +3499,174 @@ namespace PFD
             {
                 m_DisplayFibreglassArea = value;
                 NotifyPropertyChanged("DisplayFibreglassArea");
+            }
+        }
+
+        public bool DisplayFibreglassUnits
+        {
+            get
+            {
+                return m_DisplayFibreglassUnits;
+            }
+
+            set
+            {
+                m_DisplayFibreglassUnits = value;
+                NotifyPropertyChanged("DisplayFibreglassUnits");
+            }
+        }
+
+        public bool DisplayDoorDescription
+        {
+            get
+            {
+                return m_DisplayDoorDescription;
+            }
+
+            set
+            {
+                m_DisplayDoorDescription = value;
+                NotifyPropertyChanged("DisplayDoorDescription");
+            }
+        }
+
+        public bool DisplayDoorID
+        {
+            get
+            {
+                return m_DisplayDoorID;
+            }
+
+            set
+            {
+                m_DisplayDoorID = value;
+                NotifyPropertyChanged("DisplayDoorID");
+            }
+        }
+
+        public bool DisplayDoorType
+        {
+            get
+            {
+                return m_DisplayDoorType;
+            }
+
+            set
+            {
+                m_DisplayDoorType = value;
+                NotifyPropertyChanged("DisplayDoorType");
+            }
+        }
+
+        public bool DisplayDoorHeightWidth
+        {
+            get
+            {
+                return m_DisplayDoorHeightWidth;
+            }
+
+            set
+            {
+                m_DisplayDoorHeightWidth = value;
+                NotifyPropertyChanged("DisplayDoorHeightWidth");
+            }
+        }
+
+        public bool DisplayDoorArea
+        {
+            get
+            {
+                return m_DisplayDoorArea;
+            }
+
+            set
+            {
+                m_DisplayDoorArea = value;
+                NotifyPropertyChanged("DisplayDoorArea");
+            }
+        }
+
+        public bool DisplayDoorUnits
+        {
+            get
+            {
+                return m_DisplayDoorUnits;
+            }
+
+            set
+            {
+                m_DisplayDoorUnits = value;
+                NotifyPropertyChanged("DisplayDoorUnits");
+            }
+        }
+
+        public bool DisplayWindowDescription
+        {
+            get
+            {
+                return m_DisplayWindowDescription;
+            }
+
+            set
+            {
+                m_DisplayWindowDescription = value;
+                NotifyPropertyChanged("DisplayWindowDescription");
+            }
+        }
+
+        public bool DisplayWindowID
+        {
+            get
+            {
+                return m_DisplayWindowID;
+            }
+
+            set
+            {
+                m_DisplayWindowID = value;
+                NotifyPropertyChanged("DisplayWindowID");
+            }
+        }
+
+        public bool DisplayWindowHeightWidth
+        {
+            get
+            {
+                return m_DisplayWindowHeightWidth;
+            }
+
+            set
+            {
+                m_DisplayWindowHeightWidth = value;
+                NotifyPropertyChanged("DisplayWindowHeightWidth");
+            }
+        }
+
+        public bool DisplayWindowArea
+        {
+            get
+            {
+                return m_DisplayWindowArea;
+            }
+
+            set
+            {
+                m_DisplayWindowArea = value;
+                NotifyPropertyChanged("DisplayWindowArea");
+            }
+        }
+
+        public bool DisplayWindowUnits
+        {
+            get
+            {
+                return m_DisplayWindowUnits;
+            }
+
+            set
+            {
+                m_DisplayWindowUnits = value;
+                NotifyPropertyChanged("DisplayWindowUnits");
             }
         }
 
@@ -3524,15 +3752,32 @@ namespace PFD
             ShowDetailSymbols = false;
             ShowSlabRebates = true;
 
-
             DisplayCladdingDescription = false;
-            DisplayCladdingSheetID = false;
-            DisplayCladdingWidthHeight = false;
+            DisplayCladdingID = false;
+            DisplayCladdingPrefix = false;
+            DisplayCladdingLengthWidth = false;
             DisplayCladdingArea = false;
+            DisplayCladdingUnits = false;
+
             DisplayFibreglassDescription = false;
             DisplayFibreglassID = false;
-            DisplayFibreglassWidthHeight = false;
+            DisplayFibreglassPrefix = false;
+            DisplayFibreglassLengthWidth = false;
             DisplayFibreglassArea = false;
+            DisplayFibreglassUnits = false;
+
+            DisplayDoorDescription = false;
+            DisplayDoorID = false;
+            DisplayDoorType = false;
+            DisplayDoorHeightWidth = false;
+            DisplayDoorArea = false;
+            DisplayDoorUnits = false;
+
+            DisplayWindowDescription = false;
+            DisplayWindowID = false;
+            DisplayWindowHeightWidth = false;
+            DisplayWindowArea = false;
+            DisplayWindowUnits = false;
 
             CladdingSheetColoursByID = false;
             UseTextures = false;
@@ -3765,14 +4010,31 @@ namespace PFD
             ShowSlabRebates = newVM.ShowSlabRebates;
 
             DisplayCladdingDescription = newVM.DisplayCladdingDescription;
-            DisplayCladdingSheetID = newVM.DisplayCladdingSheetID;
-            DisplayCladdingWidthHeight = newVM.DisplayCladdingWidthHeight;
+            DisplayCladdingID = newVM.DisplayCladdingID;
+            DisplayCladdingPrefix = newVM.DisplayCladdingPrefix;
+            DisplayCladdingLengthWidth = newVM.DisplayCladdingLengthWidth;
             DisplayCladdingArea = newVM.DisplayCladdingArea;
+            DisplayCladdingUnits = newVM.DisplayCladdingUnits;
 
             DisplayFibreglassDescription = newVM.DisplayFibreglassDescription;
             DisplayFibreglassID = newVM.DisplayFibreglassID;
-            DisplayFibreglassWidthHeight = newVM.DisplayFibreglassWidthHeight;
+            DisplayFibreglassPrefix = newVM.DisplayFibreglassPrefix;
+            DisplayFibreglassLengthWidth = newVM.DisplayFibreglassLengthWidth;
             DisplayFibreglassArea = newVM.DisplayFibreglassArea;
+            DisplayFibreglassUnits = newVM.DisplayFibreglassUnits;
+
+            DisplayDoorDescription = newVM.DisplayDoorDescription;
+            DisplayDoorID = newVM.DisplayDoorID;
+            DisplayDoorType = newVM.DisplayDoorType;
+            DisplayDoorHeightWidth = newVM.DisplayDoorHeightWidth;
+            DisplayDoorArea = newVM.DisplayDoorArea;
+            DisplayDoorUnits = newVM.DisplayDoorUnits;
+
+            DisplayWindowDescription = newVM.DisplayWindowDescription;
+            DisplayWindowID = newVM.DisplayWindowID;
+            DisplayWindowHeightWidth = newVM.DisplayWindowHeightWidth;
+            DisplayWindowArea = newVM.DisplayWindowArea;
+            DisplayWindowUnits = newVM.DisplayWindowUnits;
 
             ShowLoads = newVM.ShowLoads;
             ShowLoadsOnMembers = newVM.ShowLoadsOnMembers;
@@ -3925,6 +4187,5 @@ namespace PFD
 
             if (!IsEnabledSurfaceLoadsAxis && ShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
         }
-
     }
 }

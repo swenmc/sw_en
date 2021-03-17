@@ -90,7 +90,7 @@
                                 <CheckBox Name="chbDisplayFoundations" IsChecked="{Binding Path=DisplayFoundations}">Display Foundations</CheckBox>
                                 <CheckBox Name="chbDisplayReinforcementBars" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayReinforcementBars}">Display Reinforcement</CheckBox>
                                 <CheckBox Name="chbDisplayFloorSlab" IsChecked="{Binding Path=DisplayFloorSlab}">Display Floor Slab</CheckBox>
-                                <CheckBox Name="chbDisplaySawCuts" Margin="25 0 0 0" IsChecked="{Binding Path=DisplaySawCuts}">Display Saw Cuts Slab</CheckBox>
+                                <CheckBox Name="chbDisplaySawCuts" Margin="25 0 0 0" IsChecked="{Binding Path=DisplaySawCuts}">Display Saw Cuts</CheckBox>
                                 <CheckBox Name="chbDisplayControlJoints" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayControlJoints}">Display Control Joints</CheckBox>
                                 <CheckBox Name="chbDisplayNodalSupports" IsChecked="{Binding Path=DisplayNodalSupports}">Nodal Supports</CheckBox>
                             </StackPanel>
@@ -131,11 +131,11 @@
                         
                         <StackPanel Grid.Row="0" Grid.Column="1">
                             <CheckBox Name="chbDisplayMemberDescription" IsChecked="{Binding Path=ShowMemberDescription}">Display Member Description</CheckBox>
-                            <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >Display Member ID</CheckBox>
-                            <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
-                            <CheckBox Name="chbDisplayMemberCrossSectionStartName" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberCrossSectionStartName}" >Display Cross-Section name</CheckBox>
-                            <CheckBox Name="chbDisplayMemberRealLength" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLength}" >Display Member Real Length</CheckBox>
-                            <CheckBox Name="chbDisplayMemberRealLengthUnit" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLengthUnit}" >Display Unit</CheckBox>
+                            <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >ID</CheckBox>
+                            <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Prefix</CheckBox>
+                            <CheckBox Name="chbDisplayMemberCrossSectionStartName" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberCrossSectionStartName}" >Cross-Section name</CheckBox>
+                            <CheckBox Name="chbDisplayMemberRealLength" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLength}" >Real Length</CheckBox>
+                            <CheckBox Name="chbDisplayMemberRealLengthUnit" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLengthUnit}" >Unit</CheckBox>
                             <CheckBox Name="chbDisplayNodesDescription" Margin="0 5 0 0" IsChecked="{Binding Path=ShowNodesDescription}">Display Nodes ID</CheckBox>
                             <CheckBox Name="chbDisplayFoundationsDescription" IsChecked="{Binding Path=ShowFoundationsDescription}">Display Foundations Description</CheckBox>
                             <CheckBox Name="chbDisplayFloorSlabDescription" IsChecked="{Binding Path=ShowFloorSlabDescription}">Display FloorSlab Description</CheckBox>
@@ -148,18 +148,32 @@
                             <CheckBox Name="chbDisplaySlabRebates" IsChecked="{Binding Path=ShowSlabRebates}">Display Slab Rebates</CheckBox>
 
                             <CheckBox Name="chbDisplayCladdingDescription" IsChecked="{Binding Path=DisplayCladdingDescription}">Display Cladding Description</CheckBox>
-                            <CheckBox Name="chbDisplayCladdingSheetID" Margin="25 0 0 0"  IsChecked="{Binding Path=DisplayCladdingSheetID}">Display Cladding Sheet ID</CheckBox>
-                            <CheckBox Name="chbDisplayCladdingWidthHeight" Margin="25 0 0 0"  IsChecked="{Binding Path=DisplayCladdingWidthHeight}">Display Cladding Width x Height</CheckBox>
-                            <CheckBox Name="chbDisplayCladdingArea" Margin="25 0 0 0"  IsChecked="{Binding Path=DisplayCladdingArea}">Display Cladding Area</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingID" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingID}">ID</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingPrefix}">Prefix</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingLengthWidth" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingLengthWidth}">Length x Width</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingArea" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingArea}">Area</CheckBox>
+                            <CheckBox Name="chbDisplayCladdingUnits" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayCladdingUnits}">Units</CheckBox>
+
                             <CheckBox Name="chbDisplayFibreglassDescription" IsChecked="{Binding Path=DisplayFibreglassDescription}">Display Fibreglass Description</CheckBox>
-                            <CheckBox Name="chbDisplayFibreglassID" Margin="25 0 0 0"  IsChecked="{Binding Path=DisplayFibreglassID}">Display Fibreglass ID</CheckBox>
-                            <CheckBox Name="chbDisplayFibreglassWidthHeight" Margin="25 0 0 0"  IsChecked="{Binding Path=DisplayFibreglassWidthHeight}">Display Fibreglass Width x Height</CheckBox>
-                            <CheckBox Name="chbDisplayFibreglassArea" Margin="25 0 0 0"  IsChecked="{Binding Path=DisplayFibreglassArea}">Display Fibreglass Area</CheckBox>
+                            <CheckBox Name="chbDisplayFibreglassID" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglassID}">ID</CheckBox>
+                            <CheckBox Name="chbDisplayFibreglassPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglassPrefix}">Prefix</CheckBox>
+                            <CheckBox Name="chbDisplayFibreglassLengthWidth" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglassLengthWidth}">Length x Width</CheckBox>
+                            <CheckBox Name="chbDisplayFibreglassArea" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglassArea}">Area</CheckBox>
+                            <CheckBox Name="chbDisplayFibreglassUnits" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFibreglassUnits}">Units</CheckBox>
+
+                            <CheckBox Name="chbDisplayDoorDescription" IsChecked="{Binding Path=DisplayDoorDescription}">Display Door Description</CheckBox>
+                            <CheckBox Name="chbDisplayDoorID" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayDoorID}">ID</CheckBox>
+                            <CheckBox Name="chbDisplayDoorType" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayDoorType}">Type</CheckBox>
+                            <CheckBox Name="chbDisplayDoorHeightWidth" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayDoorHeightWidth}">Height x Width</CheckBox>
+                            <CheckBox Name="chbDisplayDoorArea" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayDoorArea}">Area</CheckBox>
+                            <CheckBox Name="chbDisplayDoorUnits" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayDoorUnits}">Units</CheckBox>
+
+                            <CheckBox Name="chbDisplayWindowDescription" IsChecked="{Binding Path=DisplayWindowDescription}">Display Window Description</CheckBox>
+                            <CheckBox Name="chbDisplayWindowID" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayWindowID}">ID</CheckBox>
+                            <CheckBox Name="chbDisplayWindowHeightWidth" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayWindowHeightWidth}">Height x Width</CheckBox>
+                            <CheckBox Name="chbDisplayWindowArea" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayWindowArea}">Area</CheckBox>
+                            <CheckBox Name="chbDisplayWindowUnits" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayWindowUnits}">Units</CheckBox>
                         </StackPanel>
-
-                        
-
-                        
                     </Grid>
                 </ScrollViewer>
             </TabItem>

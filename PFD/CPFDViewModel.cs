@@ -4343,14 +4343,33 @@ namespace PFD
             sDisplayOptions.bDisplayFloorSlabDescription = _displayOptionsVM.ShowFloorSlabDescription;
             sDisplayOptions.bDisplaySawCutsDescription = _displayOptionsVM.ShowSawCutsDescription;
             sDisplayOptions.bDisplayControlJointsDescription = _displayOptionsVM.ShowControlJointsDescription;
+
             sDisplayOptions.bDisplayCladdingDescription = _displayOptionsVM.DisplayCladdingDescription;
-            sDisplayOptions.bDisplayCladdingSheetID = _displayOptionsVM.DisplayCladdingSheetID;
-            sDisplayOptions.bDisplayCladdingWidthHeight = _displayOptionsVM.DisplayCladdingWidthHeight;
+            sDisplayOptions.bDisplayCladdingID = _displayOptionsVM.DisplayCladdingID;
+            sDisplayOptions.bDisplayCladdingPrefix = _displayOptionsVM.DisplayCladdingPrefix;
+            sDisplayOptions.bDisplayCladdingLengthWidth = _displayOptionsVM.DisplayCladdingLengthWidth;
             sDisplayOptions.bDisplayCladdingArea = _displayOptionsVM.DisplayCladdingArea;
+            sDisplayOptions.bDisplayCladdingUnits = _displayOptionsVM.DisplayCladdingUnits;
+
             sDisplayOptions.bDisplayFibreglassDescription = _displayOptionsVM.DisplayFibreglassDescription;
             sDisplayOptions.bDisplayFibreglassID = _displayOptionsVM.DisplayFibreglassID;
-            sDisplayOptions.bDisplayFibreglassWidthHeight = _displayOptionsVM.DisplayFibreglassWidthHeight;
+            sDisplayOptions.bDisplayFibreglassPrefix = _displayOptionsVM.DisplayFibreglassPrefix;
+            sDisplayOptions.bDisplayFibreglassHeightWidth = _displayOptionsVM.DisplayFibreglassLengthWidth;
             sDisplayOptions.bDisplayFibreglassArea = _displayOptionsVM.DisplayFibreglassArea;
+            sDisplayOptions.bDisplayFibreglassUnits = _displayOptionsVM.DisplayFibreglassUnits;
+
+            sDisplayOptions.bDisplayDoorDescription = _displayOptionsVM.DisplayDoorDescription;
+            sDisplayOptions.bDisplayDoorID = _displayOptionsVM.DisplayDoorID;
+            sDisplayOptions.bDisplayDoorType = _displayOptionsVM.DisplayDoorType;
+            sDisplayOptions.bDisplayDoorHeightWidth = _displayOptionsVM.DisplayDoorHeightWidth;
+            sDisplayOptions.bDisplayDoorArea = _displayOptionsVM.DisplayDoorArea;
+            sDisplayOptions.bDisplayDoorUnits = _displayOptionsVM.DisplayDoorUnits;
+
+            sDisplayOptions.bDisplayWindowDescription = _displayOptionsVM.DisplayWindowDescription;
+            sDisplayOptions.bDisplayWindowID = _displayOptionsVM.DisplayWindowID;
+            sDisplayOptions.bDisplayWindowHeightWidth = _displayOptionsVM.DisplayWindowHeightWidth;
+            sDisplayOptions.bDisplayWindowArea = _displayOptionsVM.DisplayWindowArea;
+            sDisplayOptions.bDisplayWindowUnits = _displayOptionsVM.DisplayWindowUnits;
 
             sDisplayOptions.bDisplayDimensions = _displayOptionsVM.ShowDimensions;
             sDisplayOptions.bDisplayGridlines = _displayOptionsVM.ShowGridLines;
