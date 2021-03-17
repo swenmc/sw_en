@@ -926,6 +926,15 @@ namespace BaseClasses
         public bool bDisplayFloorSlabDescription;
         public bool bDisplaySawCutsDescription;
         public bool bDisplayControlJointsDescription;
+        public bool bDisplayCladdingDescription;
+        public bool bDisplayCladdingSheetID;
+        public bool bDisplayCladdingWidthHeight;
+        public bool bDisplayCladdingArea;
+        public bool bDisplayFibreglassDescription;
+        public bool bDisplayFibreglassID;
+        public bool bDisplayFibreglassWidthHeight;
+        public bool bDisplayFibreglassArea;
+
         public bool bDisplayDimensions;
         public bool bDisplayGridlines;
         public bool bDisplaySectionSymbols;

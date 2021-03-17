@@ -4343,6 +4343,15 @@ namespace PFD
             sDisplayOptions.bDisplayFloorSlabDescription = _displayOptionsVM.ShowFloorSlabDescription;
             sDisplayOptions.bDisplaySawCutsDescription = _displayOptionsVM.ShowSawCutsDescription;
             sDisplayOptions.bDisplayControlJointsDescription = _displayOptionsVM.ShowControlJointsDescription;
+            sDisplayOptions.bDisplayCladdingDescription = _displayOptionsVM.DisplayCladdingDescription;
+            sDisplayOptions.bDisplayCladdingSheetID = _displayOptionsVM.DisplayCladdingSheetID;
+            sDisplayOptions.bDisplayCladdingWidthHeight = _displayOptionsVM.DisplayCladdingWidthHeight;
+            sDisplayOptions.bDisplayCladdingArea = _displayOptionsVM.DisplayCladdingArea;
+            sDisplayOptions.bDisplayFibreglassDescription = _displayOptionsVM.DisplayFibreglassDescription;
+            sDisplayOptions.bDisplayFibreglassID = _displayOptionsVM.DisplayFibreglassID;
+            sDisplayOptions.bDisplayFibreglassWidthHeight = _displayOptionsVM.DisplayFibreglassWidthHeight;
+            sDisplayOptions.bDisplayFibreglassArea = _displayOptionsVM.DisplayFibreglassArea;
+
             sDisplayOptions.bDisplayDimensions = _displayOptionsVM.ShowDimensions;
             sDisplayOptions.bDisplayGridlines = _displayOptionsVM.ShowGridLines;
             sDisplayOptions.bDisplaySectionSymbols = _displayOptionsVM.ShowSectionSymbols;

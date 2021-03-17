@@ -316,6 +316,10 @@ namespace BaseClasses
                 {
                     Drawing3D.CreateFloorSlabsDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
+                if (sDisplayOptions.bDisplayCladdingDescription)
+                {
+                    Drawing3D.CreateCladdingDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
             }
             //System.Diagnostics.Trace.WriteLine("Before SetupScene: " + (DateTime.Now - start).TotalMilliseconds);
             _trackport.SetupScene();
@@ -4446,6 +4450,76 @@ namespace BaseClasses
                     if (model.m_arrSlabs[i] != null) // Slab object is valid (not empty)
                     {
                         DrawFloorSlabText3D(model.m_arrSlabs[i], viewPort, displayOptions);
+                    }
+                }
+            }
+        }
+
+        // Draw Cladding Text 3D
+        public static void DrawCladdingText3D(CCladding cladding, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            //To Mato 
+            //tu sa treba zamysliet s akymi objektami budeme robit a potom potrebujeme pre ne vytvarat na zaklade displayOptions texty
+            //dalej potrebujeme urcite TextPoint, kde sa ma dany text zobrazit
+            //v neposlednom rade bude potrebne urcit aky velky ma byt text vzhladom na cely model, alebo vzhladom na dany sheet
+
+            //tu dole mozes podopisovat, alebo sa o nieco posnazit...
+
+
+            //TextBlock tb = new TextBlock();
+            //tb.Text = cladding.Text;
+            //tb.FontFamily = new FontFamily("Arial");
+
+            //float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            //float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFloorSlabTextSize, displayOptions.ExportFloorSlabTextSize, displayOptions);
+
+            //float fTextBlockVerticalSizeFactor = 1f;
+            //float fTextBlockHorizontalSizeFactor = 1f;
+
+            //tb.FontStretch = FontStretches.UltraCondensed;
+            //tb.FontStyle = FontStyles.Normal;
+            //tb.FontWeight = FontWeights.Bold;
+            //tb.Foreground = new SolidColorBrush(displayOptions.FloorSlabTextColor);
+            ////tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+            //// Nastavujeme pre GCS (rovina XY - text v smere Y)
+            //Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            //Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+
+            //// Create text
+            //ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, cladding.PointText, over, up, 0.04);
+            //Transform3DGroup tr = new Transform3DGroup();
+
+            //if (cladding.GetSlabTransformGroup() == null)
+            //{
+            //    throw new Exception("Slab in local coordinate system! \nTransformation object is null! \nText label is probably created before slab model exists!");
+            //}
+
+            //if (cladding.GetSlabTransformGroup() != null)
+            //{
+            //    tr.Children.Add(cladding.GetSlabTransformGroup());
+
+            //    // Nechceme transofrmovat cely text label len vkladaci bod
+            //    Point3D pTransformed = tr.Transform(cladding.PointText);
+            //    textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.04);
+            //}
+
+            //if (centerModel)
+            //{
+            //    textlabel.Transform = centerModelTransGr;
+            //}
+            //viewPort.Children.Add(textlabel);
+        }
+
+        public static void CreateCladdingDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrSlabs != null)
+            {
+                for (int i = 0; i < model.m_arrGOCladding.Count; i++)
+                {
+                    if (model.m_arrGOCladding[i] != null) // Slab object is valid (not empty)
+                    {
+                        DrawCladdingText3D(model.m_arrGOCladding[0], viewPort, displayOptions);
                     }
                 }
             }
