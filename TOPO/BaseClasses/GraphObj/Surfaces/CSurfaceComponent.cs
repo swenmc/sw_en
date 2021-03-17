@@ -9,7 +9,7 @@ namespace BaseClasses.GraphObj
     [Serializable]
     public class CSurfaceComponent : CEntity3D
     {
-        private Point3D m_ControlPoint;
+        //private Point3D m_ControlPoint;
         int m_iNumberOfEdges;
         double m_CoordinateInPlane_x;
         double m_CoordinateInPlane_y;
@@ -19,19 +19,22 @@ namespace BaseClasses.GraphObj
         double m_dTipCoordinate_x;
         double m_dLengthTopTip;
         double m_dLengthTopLeft;
+        
+        //To Mato
+        //preco tu mame control point ked CEntity3D ma v sebe control point???
+        //komentujem a zmazeme neskor
+        //public Point3D ControlPoint
+        //{
+        //    get
+        //    {
+        //        return m_ControlPoint;
+        //    }
 
-        public Point3D ControlPoint
-        {
-            get
-            {
-                return m_ControlPoint;
-            }
-
-            set
-            {
-                m_ControlPoint = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_ControlPoint = value;
+        //    }
+        //}
 
         public int NumberOfEdges
         {
@@ -164,7 +167,7 @@ namespace BaseClasses.GraphObj
             m_iNumberOfEdges = numberOfCorners;
             m_CoordinateInPlane_x = coordinateInPlane_x;
             m_CoordinateInPlane_y = coordinateInPlane_y;
-            m_ControlPoint = controlPoint_GCS;
+            ControlPoint = controlPoint_GCS;
             m_Width = width;
             m_dLengthTopLeft = lengthTopLeft;
             m_dLengthTopRight = lengthTopRight;
