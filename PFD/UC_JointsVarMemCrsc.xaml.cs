@@ -911,7 +911,7 @@ namespace PFD
 
                         //CConCom_Plate_B_basic pB = plate as CConCom_Plate_B_basic;
                         //CAnchorArrangement_BB_BG anchorArrangement = pB.AnchorArrangement;
-                        //plate = new CConCom_Plate_B_basic(componentName, pB.m_pControlPoint, pB.Fb_X, pB.Fh_Y, pB.Fl_Z, pB.Ft, pB.m_fRotationX_deg, pB.m_fRotationY_deg, pB.m_fRotationZ_deg, referenceAnchor, pB.ScrewArrangement);
+                        //plate = new CConCom_Plate_B_basic(componentName, pB.ControlPoint, pB.Fb_X, pB.Fh_Y, pB.Fl_Z, pB.Ft, pB.m_fRotationX_deg, pB.m_fRotationY_deg, pB.m_fRotationZ_deg, referenceAnchor, pB.ScrewArrangement);
                         //((CConCom_Plate_B_basic)plate).AnchorArrangement = anchorArrangement; //pokus zachovat povodny Anchor Arrangement
 
                         break;
@@ -931,7 +931,7 @@ namespace PFD
 
                         //CScrewArrangement_L sa = plate.ScrewArrangement as CScrewArrangement_L;
                         //CConCom_Plate_F_or_L pL = plate as CConCom_Plate_F_or_L;
-                        //plate = new CConCom_Plate_F_or_L(componentName, pL.m_pControlPoint, pL.Fb_X1, pL.Fh_Y, pL.Fl_Z, pL.Ft, fCrsc_h, 0, 0, 0, sa); // L
+                        //plate = new CConCom_Plate_F_or_L(componentName, pL.ControlPoint, pL.Fb_X1, pL.Fh_Y, pL.Fl_Z, pL.Ft, fCrsc_h, 0, 0, 0, sa); // L
                         break;
                     }
                 case ESerieTypePlate.eSerie_LL:
@@ -949,7 +949,7 @@ namespace PFD
 
                         //CScrewArrangement_LL sa = plate.ScrewArrangement as CScrewArrangement_LL;
                         //CConCom_Plate_LL pLL = plate as CConCom_Plate_LL;
-                        //plate = new CConCom_Plate_LL(componentName, pLL.m_pControlPoint, pLL.Fb_X1, pLL.Fh_Y, pLL.Fl_Z, pLL.Ft, fCrsc_h, 0, 0, 0, sa); // LL
+                        //plate = new CConCom_Plate_LL(componentName, pLL.ControlPoint, pLL.Fb_X1, pLL.Fh_Y, pLL.Fl_Z, pLL.Ft, fCrsc_h, 0, 0, 0, sa); // LL
                         break;
                     }
                 case ESerieTypePlate.eSerie_F:
@@ -968,7 +968,7 @@ namespace PFD
 
                         //CScrewArrangement_F sa = plate.ScrewArrangement as CScrewArrangement_F;
                         //CConCom_Plate_F_or_L pF = plate as CConCom_Plate_F_or_L;
-                        //plate = new CConCom_Plate_F_or_L(componentName, pF.m_pControlPoint, pF.Fb_X1, pF.Fb_X2, pF.Fh_Y, pF.Fl_Z, pF.Ft, fCrsc_h, 0, 0, 0, sa); // F
+                        //plate = new CConCom_Plate_F_or_L(componentName, pF.ControlPoint, pF.Fb_X1, pF.Fb_X2, pF.Fh_Y, pF.Fl_Z, pF.Ft, fCrsc_h, 0, 0, 0, sa); // F
                         break;
                     }
                 case ESerieTypePlate.eSerie_G:
@@ -976,7 +976,7 @@ namespace PFD
                         CScrewArrangement_G sa = plate.ScrewArrangement as CScrewArrangement_G;
 
                         CConCom_Plate_G pG = plate as CConCom_Plate_G;
-                        plate = new CConCom_Plate_G(componentName, pG.m_pControlPoint, pG.Fb_X1, pG.Fb_X2, pG.Fh_Y1, pG.Fh_Y2, pG.Fl_Z, fCrsc_h, pG.Ft, pG.m_fRotationX_deg, pG.m_fRotationY_deg, pG.m_fRotationZ_deg, sa); // G
+                        plate = new CConCom_Plate_G(componentName, pG.ControlPoint, pG.Fb_X1, pG.Fb_X2, pG.Fh_Y1, pG.Fh_Y2, pG.Fl_Z, fCrsc_h, pG.Ft, pG.m_fRotationX_deg, pG.m_fRotationY_deg, pG.m_fRotationZ_deg, sa); // G
 
                         break;
                     }
@@ -985,7 +985,7 @@ namespace PFD
                         CScrewArrangement_H sa = plate.ScrewArrangement as CScrewArrangement_H;
 
                         CConCom_Plate_H pH = plate as CConCom_Plate_H;
-                        plate = new CConCom_Plate_H(componentName, pH.m_pControlPoint, pH.Fb_X, pH.Fh_Y1, pH.Fh_Y2, fCrsc_h, pH.Ft, pH.FSlope_rad, pH.m_fRotationX_deg, pH.m_fRotationY_deg, pH.m_fRotationZ_deg, sa); // H
+                        plate = new CConCom_Plate_H(componentName, pH.ControlPoint, pH.Fb_X, pH.Fh_Y1, pH.Fh_Y2, fCrsc_h, pH.Ft, pH.FSlope_rad, pH.m_fRotationX_deg, pH.m_fRotationY_deg, pH.m_fRotationZ_deg, sa); // H
                         break;
                     }
                 case ESerieTypePlate.eSerie_Q:
@@ -998,7 +998,7 @@ namespace PFD
                         plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles); // Q
 
                         //CConCom_Plate_Q_T_Y pQ = plate as CConCom_Plate_Q_T_Y;
-                        //plate = new CConCom_Plate_Q_T_Y(componentName, pQ.m_pControlPoint, pQ.Fb_X, pQ.Fh_Y, pQ.Fl_Z1, pQ.Ft, pQ.m_iHolesNumber); // Q
+                        //plate = new CConCom_Plate_Q_T_Y(componentName, pQ.ControlPoint, pQ.Fb_X, pQ.Fh_Y, pQ.Fl_Z1, pQ.Ft, pQ.m_iHolesNumber); // Q
 
                         break;
                     }
@@ -1012,7 +1012,7 @@ namespace PFD
                         plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles); // T
 
                         //CConCom_Plate_Q_T_Y pT = plate as CConCom_Plate_Q_T_Y;
-                        //plate = new CConCom_Plate_Q_T_Y(componentName, pT.m_pControlPoint, pT.Fb_X, pT.Fh_Y, pT.Fl_Z1, pT.Ft, pT.m_iHolesNumber); // T
+                        //plate = new CConCom_Plate_Q_T_Y(componentName, pT.ControlPoint, pT.Fb_X, pT.Fh_Y, pT.Fl_Z1, pT.Ft, pT.m_iHolesNumber); // T
                         break;
                     }
                 case ESerieTypePlate.eSerie_Y:
@@ -1026,7 +1026,7 @@ namespace PFD
                         plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles); // Y
 
                         //CConCom_Plate_Q_T_Y pY = plate as CConCom_Plate_Q_T_Y;
-                        //plate = new CConCom_Plate_Q_T_Y(componentName, pY.m_pControlPoint, pY.Fb_X, pY.Fh_Y, pY.Fl_Z1, pY.Fl_Z2, pY.Ft, pY.m_iHolesNumber); // Y
+                        //plate = new CConCom_Plate_Q_T_Y(componentName, pY.ControlPoint, pY.Fb_X, pY.Fh_Y, pY.Fl_Z1, pY.Fl_Z2, pY.Ft, pY.m_iHolesNumber); // Y
 
                         break;
                     }
@@ -1044,7 +1044,7 @@ namespace PFD
                     {
                         CConCom_Plate_M pM = plate as CConCom_Plate_M;
                         CScrewArrangement_M sa = pM.ScrewArrangement as CScrewArrangement_M;
-                        plate = new CConCom_Plate_M(componentName, pM.m_pControlPoint, pM.Fb_X1, pM.Fb_X3, pM.Fh_Y, pM.Ft, pM.Fb_X2, pM.RoofPitch_rad, pM.Gamma1_rad, pM.m_fRotationX_deg, pM.m_fRotationY_deg, pM.m_fRotationZ_deg, sa);
+                        plate = new CConCom_Plate_M(componentName, pM.ControlPoint, pM.Fb_X1, pM.Fb_X3, pM.Fh_Y, pM.Ft, pM.Fb_X2, pM.RoofPitch_rad, pM.Gamma1_rad, pM.m_fRotationX_deg, pM.m_fRotationY_deg, pM.m_fRotationZ_deg, sa);
 
                         break;
                     }
@@ -1052,14 +1052,14 @@ namespace PFD
                     {
                         CConCom_Plate_N pN = plate as CConCom_Plate_N;
                         CScrewArrangement_N sa = plate.ScrewArrangement as CScrewArrangement_N;
-                        plate = new CConCom_Plate_N(componentName, pN.m_pControlPoint, pN.Fb_X1, pN.Fb_X3, pN.Fh_Y, pN.FZ, pN.Ft, pN.m_fRotationX_deg, pN.m_fRotationY_deg, pN.m_fRotationZ_deg, sa);
+                        plate = new CConCom_Plate_N(componentName, pN.ControlPoint, pN.Fb_X1, pN.Fb_X3, pN.Fh_Y, pN.FZ, pN.Ft, pN.m_fRotationX_deg, pN.m_fRotationY_deg, pN.m_fRotationZ_deg, sa);
                         break;
                     }
                 case ESerieTypePlate.eSerie_O:
                     {
                         CConCom_Plate_O pO = plate as CConCom_Plate_O;
                         CScrewArrangement_O sa = plate.ScrewArrangement as CScrewArrangement_O;
-                        plate = new CConCom_Plate_O(componentName, pO.m_pControlPoint, pO.Fb_X1, pO.Fb_X2, pO.Fh_Y1, pO.Fh_Y2, pO.Ft, pO.FSlope_rad, pO.m_fRotationX_deg, pO.m_fRotationY_deg, pO.m_fRotationZ_deg, sa);
+                        plate = new CConCom_Plate_O(componentName, pO.ControlPoint, pO.Fb_X1, pO.Fb_X2, pO.Fh_Y1, pO.Fh_Y2, pO.Ft, pO.FSlope_rad, pO.m_fRotationX_deg, pO.m_fRotationY_deg, pO.m_fRotationZ_deg, sa);
 
                         break;
                     }

@@ -97,7 +97,7 @@ namespace BaseClasses
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_B;
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             Fb_X = fbX_temp;
             Fh_Y = fhY_temp;
             Fl_Z = fl_Z_temp;

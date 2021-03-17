@@ -27,7 +27,7 @@ namespace BaseClasses
 
             JointType = jointType_temp;
             m_Node = Node_temp;
-            m_pControlPoint = m_Node.GetPoint3D();
+            ControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainRafter_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryRafter_temp;
@@ -81,8 +81,8 @@ namespace BaseClasses
             GetApexPlateGeneralParameters(m_arrPlates[0], out fPlate1_h_Y1, out fPlate1_h_Y2);
             GetApexPlateGeneralParameters(m_arrPlates[1], out fPlate2_h_Y1, out fPlate2_h_Y2);
 
-            m_arrPlates[0].m_pControlPoint = new Point3D(m_Node.X + 0.5 * m_arrPlates[0].Width_bx, m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - /*0.5f **/ m_arrPlates[0].Ft, m_Node.Z - (fPlate1_h_Y2 - 0.5 * fPlate1_h_Y1) - m_arrPlates[0].Ft);
-            m_arrPlates[1].m_pControlPoint = new Point3D(m_Node.X - 0.5 * m_arrPlates[1].Width_bx, m_Node.Y + m_MainMember.CrScStart.y_max /*+ 0.5f * m_MainMember.CrScStart.b*/ + /*1.5f **/ m_arrPlates[1].Ft, m_Node.Z - (fPlate2_h_Y2 - 0.5 * fPlate2_h_Y1) - m_arrPlates[1].Ft);
+            m_arrPlates[0].ControlPoint = new Point3D(m_Node.X + 0.5 * m_arrPlates[0].Width_bx, m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - /*0.5f **/ m_arrPlates[0].Ft, m_Node.Z - (fPlate1_h_Y2 - 0.5 * fPlate1_h_Y1) - m_arrPlates[0].Ft);
+            m_arrPlates[1].ControlPoint = new Point3D(m_Node.X - 0.5 * m_arrPlates[1].Width_bx, m_Node.Y + m_MainMember.CrScStart.y_max /*+ 0.5f * m_MainMember.CrScStart.b*/ + /*1.5f **/ m_arrPlates[1].Ft, m_Node.Z - (fPlate2_h_Y2 - 0.5 * fPlate2_h_Y1) - m_arrPlates[1].Ft);
         }
 
         private void GetApexPlateGeneralParameters(CPlate plate, out float fh_Y1, out float fh_Y2)

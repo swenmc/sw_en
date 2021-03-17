@@ -12,7 +12,7 @@ namespace BaseClasses
 
         public CBolt(Point3D controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fMass_temp)
         {
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             Length = fLength_temp;
             Diameter_thread = fDiameter_temp;
             Mass = fMass_temp;

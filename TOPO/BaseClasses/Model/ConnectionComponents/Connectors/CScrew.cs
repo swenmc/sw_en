@@ -210,7 +210,7 @@ namespace BaseClasses
 
             Length = referenceScrew.Length;
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;

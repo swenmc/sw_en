@@ -790,9 +790,9 @@ namespace BaseClasses
                     // Reinforcement in LCS x direction - circles
                     if (pad.Top_Bars_x != null && pad.Top_Bars_x.Count > 0)
                     {
-                        float fFirstPosition_y = (float)pad.Reference_Top_Bar_x.m_pControlPoint.Y;
+                        float fFirstPosition_y = (float)pad.Reference_Top_Bar_x.ControlPoint.Y;
                         float fDistanceInLCS_y = pad.DistanceOfBars_Top_x_SpacingInyDirection;
-                        double VerticalPosition = pad.Top_Bars_x.First().m_pControlPoint.Z; // Priama vyztuz - kreslime podla suradnic skutocneho bodu vlozenia
+                        double VerticalPosition = pad.Top_Bars_x.First().ControlPoint.Z; // Priama vyztuz - kreslime podla suradnic skutocneho bodu vlozenia
 
                         if (!bIsReinforcementBarStraight) // Tvar U - vkladaci bod je dole, vyztuz kreslime k hornemu okraju
                             VerticalPosition = -pad.ConcreteCover - pad.Reference_Top_Bar_y.Diameter - 0.5 * pad.Reference_Top_Bar_x.Diameter;
@@ -813,9 +813,9 @@ namespace BaseClasses
 
                     if (pad.Bottom_Bars_x != null && pad.Bottom_Bars_x.Count > 0)
                     {
-                        float fFirstPosition_y = (float)pad.Reference_Bottom_Bar_x.m_pControlPoint.Y;
+                        float fFirstPosition_y = (float)pad.Reference_Bottom_Bar_x.ControlPoint.Y;
                         float fDistanceInLCS_y = pad.DistanceOfBars_Bottom_x_SpacingInyDirection;
-                        double VerticalPosition = pad.Bottom_Bars_x.First().m_pControlPoint.Z; // Priama vyztuz - kreslime podla suradnic skutocneho bodu vlozenia
+                        double VerticalPosition = pad.Bottom_Bars_x.First().ControlPoint.Z; // Priama vyztuz - kreslime podla suradnic skutocneho bodu vlozenia
 
                         if (!bIsReinforcementBarStraight) // Tvar U - vkladaci bod je dole, vyztuz kreslime k hornemu okraju
                             VerticalPosition = -pad.m_fDim3 + pad.ConcreteCover + pad.Reference_Bottom_Bar_y.Diameter + 0.5 * pad.Reference_Bottom_Bar_x.Diameter;
@@ -1184,7 +1184,7 @@ namespace BaseClasses
 
                     foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
                     {
-                        if (MathF.d_equal(anchor.m_pControlPoint.X, basePlate.AnchorArrangement.Anchors[0].m_pControlPoint.X)) // Pridame do zoznamu len kotvy, ktore maju rovnaku suradnicu X (kolmo na zobrazovanu rovinu YZ) ako prva kotva
+                        if (MathF.d_equal(anchor.ControlPoint.X, basePlate.AnchorArrangement.Anchors[0].ControlPoint.X)) // Pridame do zoznamu len kotvy, ktore maju rovnaku suradnicu X (kolmo na zobrazovanu rovinu YZ) ako prva kotva
                             anchorsToDraw.Add(anchor);
                     }
 
@@ -1195,7 +1195,7 @@ namespace BaseClasses
                     {
                         // Zoradim kotvy od najvacsej suradnice control point Y, to znamena ze ta ktora je s najvacsim Y je uplne vlavo, najmensie x v canvas
                         // Robim to preto aby sa z poslednej kotvy upne napravo nastavili suradnice bodov pre poznamky a koty
-                        anchorsToDraw = anchorsToDraw.OrderByDescending(anchor => anchor.m_pControlPoint.Y).ToList();
+                        anchorsToDraw = anchorsToDraw.OrderByDescending(anchor => anchor.ControlPoint.Y).ToList();
 
                         foreach (CAnchor anchor in anchorsToDraw) // Kreslime vyfiltrovane kotvy
                         {
@@ -1203,7 +1203,7 @@ namespace BaseClasses
 
                             float fAnchorDiameter = anchor.Diameter_shank;
                             float fAnchorLength = anchor.Length;
-                            Point insertingPoint = new Point(lt_Plate.X + basePlate.Fh_Y - anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z); // Kotvy kreslime zlava doprava(os +x v canvas smeruje doprava) ale ich suradnice v plate su definovane zprava dolava (os +Y smeruje nalavo), preto musime prepocitat suradnice v horizontalnom smere
+                            Point insertingPoint = new Point(lt_Plate.X + basePlate.Fh_Y - anchor.ControlPoint.Y, anchor.ControlPoint.Z); // Kotvy kreslime zlava doprava(os +x v canvas smeruje doprava) ale ich suradnice v plate su definovane zprava dolava (os +Y smeruje nalavo), preto musime prepocitat suradnice v horizontalnom smere
 
                             // Pridame bod do zoznamu bodov pre kotovanie
                             Point insertingPointForDimesnions = new Point(); // Vytvorime nezavisly objekt pre bod - klon :)
@@ -1235,7 +1235,7 @@ namespace BaseClasses
                                 fPlateWasherWidth_y = anchor.WasherPlateTop.Height_hy;
                                 fPlateWasherThickness = anchor.WasherPlateTop.Ft;
 
-                                float fPlateWasherOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness; // TO napojit na GUI ???
+                                float fPlateWasherOffsetFromTop = (float)anchor.ControlPoint.Z - fPlateWasherThickness; // TO napojit na GUI ???
 
                                 Point lt_WasherPlate = new Point(insertingPoint.X - fPlateWasherWidth_y * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop);
                                 Point br_WasherPlate = new Point(insertingPoint.X + fPlateWasherWidth_y * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop - fPlateWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
@@ -1251,7 +1251,7 @@ namespace BaseClasses
                                 // Nut - Plate
                                 if (opts.bDrawNuts)
                                 {
-                                    float fPlateWasherNutOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness - fNutHeight;
+                                    float fPlateWasherNutOffsetFromTop = (float)anchor.ControlPoint.Z - fPlateWasherThickness - fNutHeight;
 
                                     Point lt_WasherPlateNut = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fPlateWasherNutOffsetFromTop);
                                     Point br_WasherPlateNut = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fPlateWasherNutOffsetFromTop - fNutHeight);

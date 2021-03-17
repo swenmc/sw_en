@@ -11,16 +11,6 @@ namespace BaseClasses
     // Base class of all topological model entities
     abstract public class CEntity3D : CEntity
     {
-        /*
-        Model3DGroup mObject3DModel = new Model3DGroup();
-
-        public Model3DGroup MObject3DModel
-        {
-            get { return mObject3DModel; }
-            set { mObject3DModel = value; }
-        }
-        */
-
         bool m_bIsDisplayed;
 
         public bool BIsDisplayed
@@ -45,7 +35,8 @@ namespace BaseClasses
             set { m_bIsSelectedForMaterialList = value; }
         }
 
-        public Point3D m_pControlPoint = new Point3D();
+        public Point3D ControlPoint = new Point3D();
+
         public CMat m_Mat;
         [NonSerialized]
         public DiffuseMaterial m_Material3DGraphics;

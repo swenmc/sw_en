@@ -483,7 +483,7 @@ namespace BaseClasses
 
         public void SetControlPoint()
         {
-            m_pControlPoint = new Point3D()
+            ControlPoint = new Point3D()
             {
                 X = -0.5 * m_fDim1 + m_EccentricityBasicColumn_x + m_Eccentricity_x,
                 Y = -0.5 * m_fDim2 + m_EccentricityBasicColumn_y + m_Eccentricity_y,
@@ -598,8 +598,8 @@ namespace BaseClasses
             {
                 List<CReinforcementBar> list = new List<CReinforcementBar>();
 
-                double cp_X_coordinate = referenceBar.m_pControlPoint.X; // Set first bar control point
-                double cp_Y_coordinate = referenceBar.m_pControlPoint.Y;
+                double cp_X_coordinate = referenceBar.ControlPoint.X; // Set first bar control point
+                double cp_Y_coordinate = referenceBar.ControlPoint.Y;
 
                 for (int i = 0; i < iCount_Bars_x; i++)
                 {
@@ -607,17 +607,17 @@ namespace BaseClasses
                     // TODO - zohladnit pootocenie celeho zakladu
 
                     // m_pControlPoint bod kam je vlozene [0,0,0] celeho zakladu v GCS
-                    // referenceBar.m_pControlPoint bod kam je vlozena prva tyc do zakladu v LCS zakladu
+                    // referenceBar.ControlPoint bod kam je vlozena prva tyc do zakladu v LCS zakladu
                     //Point3D controlPoint = new Point3D(i + 1,
                     //    m_pControlPoint.X + cp_X_coordinate,
                     //    m_pControlPoint.Y + cp_Y_coordinate,
-                    //    m_pControlPoint.Z + referenceBar.m_pControlPoint.Z,
+                    //    m_pControlPoint.Z + referenceBar.ControlPoint.Z,
                     //    0);
 
                     Point3D controlPoint = new Point3D(
-                        m_pControlPoint.X + cp_X_coordinate,
-                        m_pControlPoint.Y + cp_Y_coordinate,
-                        m_pControlPoint.Z + referenceBar.m_pControlPoint.Z);
+                        ControlPoint.X + cp_X_coordinate,
+                        ControlPoint.Y + cp_Y_coordinate,
+                        ControlPoint.Z + referenceBar.ControlPoint.Z);
 
                     if (referenceBar is CReinforcementBar_U)
                     {
@@ -701,7 +701,7 @@ namespace BaseClasses
             // Apply multiple transformations to the object.
             // Presun v ramci LCS (tak ze [0,0,0] bude v mieste, kde je joinNode
             // Create and apply translation
-            TranslateTransform3D myTranslateTransform3D = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            TranslateTransform3D myTranslateTransform3D = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             Transform3DGroup myTransform3DGroup = new Transform3DGroup();
             // Add the translation transform to the Transform3DGroup.

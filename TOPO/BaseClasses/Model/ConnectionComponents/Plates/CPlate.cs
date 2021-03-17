@@ -281,7 +281,7 @@ namespace BaseClasses
             RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), m_fRotationZ_deg); // Rotation in degrees
 
             // Move 0,0,0 to control point in LCS of member or GCS
-            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             Transform3DGroup Trans3DGroup = new Transform3DGroup();
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_X);

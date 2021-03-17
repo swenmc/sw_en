@@ -70,14 +70,14 @@ namespace BaseClasses
             ID = iBar_ID;
             Name = barName;
             BarIsInXDirection = bBarIsInXDirection_temp;
-            m_pControlPoint = pControlEdgePoint;
-            StartPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            ControlPoint = pControlEdgePoint;
+            StartPoint = new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
             //m_EndPoint - závisi od pootocenia
 
-            EndPoint = new Point3D(m_pControlPoint.X + fProjectionLength, m_pControlPoint.Y, m_pControlPoint.Z);
+            EndPoint = new Point3D(ControlPoint.X + fProjectionLength, ControlPoint.Y, ControlPoint.Z);
             if (!BarIsInXDirection)
             {
-                EndPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y + fProjectionLength, m_pControlPoint.Z);
+                EndPoint = new Point3D(ControlPoint.X, ControlPoint.Y + fProjectionLength, ControlPoint.Z);
             }
 
             m_arcRadiusNet = farcRadiusNet;

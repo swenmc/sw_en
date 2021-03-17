@@ -138,7 +138,7 @@ namespace BaseClasses
             m_RebateDepth_Step = rebateDepth_Step;
             m_RebateDepth_Edge = rebateDepth_Edge;
             m_RotationAboutZ_deg = rotationAboiutZInDeg;
-            m_pControlPoint = pControlPoint;
+            ControlPoint = pControlPoint;
             BIsDisplayed = bIsDiplayed_temp;
             FTime = fTime;
         }
@@ -157,7 +157,7 @@ namespace BaseClasses
             m_RebateDepth_Step = prop.RebateDepth_Step;
             m_RebateDepth_Edge = prop.RebateDepth_Edge;
             m_RotationAboutZ_deg = rotationAboiutZInDeg;
-            m_pControlPoint = pControlPoint;
+            ControlPoint = pControlPoint;
             BIsDisplayed = bIsDiplayed_temp;
             FTime = fTime;
 
@@ -224,7 +224,7 @@ namespace BaseClasses
 
             // Presun Rebate do GCS z [0,0,0] do control point
             // Create and apply translation
-            TranslateTransform3D myTranslateTransform3D_GCS = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            TranslateTransform3D myTranslateTransform3D_GCS = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             // Add the translation transform to the Transform3DGroup.
             myTransform3DGroup.Children.Add(myTranslateTransform3D_GCS);

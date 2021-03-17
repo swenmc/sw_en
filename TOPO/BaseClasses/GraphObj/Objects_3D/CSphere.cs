@@ -11,7 +11,7 @@ namespace BaseClasses.GraphObj.Objects_3D
         public CSphere(int iSphere_ID, Point3D pControlCenterPoint, float fr, DiffuseMaterial volMat1, bool bIsDisplayed, float fTime)
         {
             ID = iSphere_ID;
-            m_pControlPoint = pControlCenterPoint;
+            ControlPoint = pControlCenterPoint;
             m_fDim1 = fr;
             m_Material_1 = volMat1;
             m_volColor_2 = volMat1.Color;

@@ -22,7 +22,7 @@ namespace BaseClasses
 
             JointType = jointType_temp;
             m_Node = Node_temp;
-            m_pControlPoint = m_Node.GetPoint3D();
+            ControlPoint = m_Node.GetPoint3D();
             m_MainMember = Column_temp;
 
             Name = "Wind Post Base Joint";
@@ -86,13 +86,13 @@ namespace BaseClasses
             float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
 
-            m_arrPlates[0].m_pControlPoint = new Point3D(0, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
+            m_arrPlates[0].ControlPoint = new Point3D(0, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
             Vector3D RotationVector = new Vector3D(90, 0, 90);
 
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                m_arrPlates[0].m_pControlPoint = new Point3D(m_MainMember.FLength, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
+                m_arrPlates[0].ControlPoint = new Point3D(m_MainMember.FLength, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_arrPlates[0].Ft, -0.5f * m_arrPlates[0].Height_hy + flocaleccentricity_z);
                 RotationVector = new Vector3D(90, 0, 180 + 90);
             }
 

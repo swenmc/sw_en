@@ -60,7 +60,7 @@ namespace BaseClasses
             INoPoints2Dfor3D = 16 + 16;
             ITotNoPointsin3D = 32 + 32;
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             //m_fbX1 = fbx_1_temp;
             //m_fhY1 = fhy_1_temp;
             //Ft = ft_platethickness;

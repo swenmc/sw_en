@@ -29,7 +29,7 @@ namespace BaseClasses
 
             JointType = jointType_temp;
             m_Node = Node_temp;
-            m_pControlPoint = m_Node.GetPoint3D();
+            ControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainMember_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;
@@ -535,9 +535,9 @@ namespace BaseClasses
                     ControlPoint_P3 = new Point3D(fControlPoint3Position_x_end, fControlPoint3Position_y_end, fControlPoint3Position_z_end);
                 }
 
-                m_arrPlates[0].m_pControlPoint = ControlPoint_P2;
-                m_arrPlates[1].m_pControlPoint = ControlPoint_P3;
-                m_arrPlates[2].m_pControlPoint = ControlPoint_P1;
+                m_arrPlates[0].ControlPoint = ControlPoint_P2;
+                m_arrPlates[1].ControlPoint = ControlPoint_P3;
+                m_arrPlates[2].ControlPoint = ControlPoint_P1;
             }
             else if (bUseSamePlates)
             {
@@ -632,8 +632,8 @@ namespace BaseClasses
                     ControlPoint_P2 = new Point3D(fControlPoint2Position_x_end, fControlPoint2Position_y_end, fControlPoint2Position_z_end);
                 }
 
-                m_arrPlates[0].m_pControlPoint = ControlPoint_P1;
-                m_arrPlates[1].m_pControlPoint = ControlPoint_P2;
+                m_arrPlates[0].ControlPoint = ControlPoint_P1;
+                m_arrPlates[1].ControlPoint = ControlPoint_P2;
             }
         }
     }

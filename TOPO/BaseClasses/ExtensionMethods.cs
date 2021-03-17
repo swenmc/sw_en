@@ -178,7 +178,7 @@ namespace BaseClasses
 
             CPlate clone = null;
             int originalPlateID = plate.ID;
-            Point3D originalControlPoint = plate.m_pControlPoint;
+            Point3D originalControlPoint = plate.ControlPoint;
             float originalRotX = plate.m_fRotationX_deg;
             float originalRotY = plate.m_fRotationY_deg;
             float originalRotZ = plate.m_fRotationZ_deg;
@@ -327,7 +327,7 @@ namespace BaseClasses
 
             //Keep original properties
             clone.ID = originalPlateID;
-            clone.m_pControlPoint = originalControlPoint;
+            clone.ControlPoint = originalControlPoint;
             clone.m_fRotationX_deg = originalRotX;
             clone.m_fRotationY_deg = originalRotY;
             clone.m_fRotationZ_deg = originalRotZ;

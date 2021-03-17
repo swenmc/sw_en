@@ -3515,12 +3515,12 @@ namespace PFD
                 if (plate is CConCom_Plate_JBS)
                 {
                     CConCom_Plate_JBS p = plate as CConCom_Plate_JBS;
-                    plate = new CConCom_Plate_JA(componentName, p.m_pControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_JA(componentName, p.ControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_JB)
                 {
                     CConCom_Plate_JB p = plate as CConCom_Plate_JB;
-                    plate = new CConCom_Plate_JA(componentName, p.m_pControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_JA(componentName, p.ControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_JCS)
                 {
@@ -3532,7 +3532,7 @@ namespace PFD
                     */
 
                     CConCom_Plate_JCS p = plate as CConCom_Plate_JCS;
-                    plate = new CConCom_Plate_JA(componentName, p.m_pControlPoint, 2 * p.Fw_apexHalfLength * (float)Math.Cos(p.FSlope_rad), p.Fh_Y1, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_JA(componentName, p.ControlPoint, 2 * p.Fw_apexHalfLength * (float)Math.Cos(p.FSlope_rad), p.Fh_Y1, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
             }
             else if (componentIndex == 1) // JB
@@ -3542,12 +3542,12 @@ namespace PFD
                     if (plate is CConCom_Plate_JA) //JA -> JBS
                     {
                         CConCom_Plate_JA p = plate as CConCom_Plate_JA;
-                        plate = new CConCom_Plate_JBS(componentName, p.m_pControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JBS
+                        plate = new CConCom_Plate_JBS(componentName, p.ControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JBS
                     }
                     else if (plate is CConCom_Plate_JB)
                     {
                         CConCom_Plate_JB p = plate as CConCom_Plate_JB;
-                        plate = new CConCom_Plate_JBS(componentName, p.m_pControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JBS
+                        plate = new CConCom_Plate_JBS(componentName, p.ControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JBS
 
                     }
                     else if (plate is CConCom_Plate_JCS)
@@ -3560,7 +3560,7 @@ namespace PFD
                         */
 
                         CConCom_Plate_JCS p = plate as CConCom_Plate_JCS;
-                        plate = new CConCom_Plate_JBS(componentName, p.m_pControlPoint, 2 * p.Fw_apexHalfLength * (float)Math.Cos(p.FSlope_rad), p.Fh_Y1, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JBS
+                        plate = new CConCom_Plate_JBS(componentName, p.ControlPoint, 2 * p.Fw_apexHalfLength * (float)Math.Cos(p.FSlope_rad), p.Fh_Y1, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JBS
                     }
                 }
                 else
@@ -3568,12 +3568,12 @@ namespace PFD
                     if (plate is CConCom_Plate_JA) //JA -> JBS
                     {
                         CConCom_Plate_JA p = plate as CConCom_Plate_JA;
-                        plate = new CConCom_Plate_JB(componentName, p.m_pControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JB
+                        plate = new CConCom_Plate_JB(componentName, p.ControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JB
                     }
                     else if (plate is CConCom_Plate_JBS)
                     {
                         CConCom_Plate_JBS p = plate as CConCom_Plate_JBS;
-                        plate = new CConCom_Plate_JB(componentName, p.m_pControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JB
+                        plate = new CConCom_Plate_JB(componentName, p.ControlPoint, p.Fb_X, p.Fh_Y1, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JB
 
                     }
                     else if (plate is CConCom_Plate_JCS)
@@ -3586,7 +3586,7 @@ namespace PFD
                         */
 
                         CConCom_Plate_JCS p = plate as CConCom_Plate_JCS;
-                        plate = new CConCom_Plate_JB(componentName, p.m_pControlPoint, 2 * p.Fw_apexHalfLength * (float)Math.Cos(p.FSlope_rad), p.Fh_Y1, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JB
+                        plate = new CConCom_Plate_JB(componentName, p.ControlPoint, 2 * p.Fw_apexHalfLength * (float)Math.Cos(p.FSlope_rad), p.Fh_Y1, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JB
                     }
                 }
             }
@@ -3602,18 +3602,18 @@ namespace PFD
                 if (plate is CConCom_Plate_JA) //JA -> JBS
                 {
                     CConCom_Plate_JA p = plate as CConCom_Plate_JA;
-                    plate = new CConCom_Plate_JCS(componentName, p.m_pControlPoint, p.Fh_Y1 / (float)Math.Cos(p.FSlope_rad), 0.5f * p.Fb_X / (float)Math.Cos(p.FSlope_rad), fLipWidth_LZ, p.FSlope_rad, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JC
+                    plate = new CConCom_Plate_JCS(componentName, p.ControlPoint, p.Fh_Y1 / (float)Math.Cos(p.FSlope_rad), 0.5f * p.Fb_X / (float)Math.Cos(p.FSlope_rad), fLipWidth_LZ, p.FSlope_rad, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JC
                 }
                 else if (plate is CConCom_Plate_JBS)
                 {
                     CConCom_Plate_JBS p = plate as CConCom_Plate_JBS;
 
-                    plate = new CConCom_Plate_JCS(componentName, p.m_pControlPoint, p.Fh_Y1 / (float)Math.Cos(p.FSlope_rad), 0.5f * p.Fb_X / (float)Math.Cos(p.FSlope_rad), p.Fl_Z, p.FSlope_rad, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JC
+                    plate = new CConCom_Plate_JCS(componentName, p.ControlPoint, p.Fh_Y1 / (float)Math.Cos(p.FSlope_rad), 0.5f * p.Fb_X / (float)Math.Cos(p.FSlope_rad), p.Fl_Z, p.FSlope_rad, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JC
                 }
                 else if (plate is CConCom_Plate_JB)
                 {
                     CConCom_Plate_JB p = plate as CConCom_Plate_JB;
-                    plate = new CConCom_Plate_JCS(componentName, p.m_pControlPoint, p.Fh_Y1 / (float)Math.Cos(p.FSlope_rad), 0.5f * p.Fb_X / (float)Math.Cos(p.FSlope_rad), p.Fl_Z, p.FSlope_rad, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JC    
+                    plate = new CConCom_Plate_JCS(componentName, p.ControlPoint, p.Fh_Y1 / (float)Math.Cos(p.FSlope_rad), 0.5f * p.Fb_X / (float)Math.Cos(p.FSlope_rad), p.Fl_Z, p.FSlope_rad, p.Ft, p.m_fRotationX_deg, -p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // JC    
                 }
             }
         }
@@ -3632,63 +3632,63 @@ namespace PFD
                 if (plate is CConCom_Plate_KA)
                 {
                     CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
 
                 }
                 else if (plate is CConCom_Plate_KBS)
                 {
                     CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KB)
                 {
                     CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KCS)
                 {
                     CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KC)
                 {
                     CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KDS)
                 {
                     CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KD)
                 {
                     CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KES)
                 {
                     CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KFS)
                 {
                     CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KGS)
                 {
                     CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KHS)
                 {
                     CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KA
                 }
                 else if (plate is CConCom_Plate_KK)
                 {
                     CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                    plate = new CConCom_Plate_KA(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement); // KA
+                    plate = new CConCom_Plate_KA(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement); // KA
                 }
                 //-------------------- END KA
             }
@@ -3699,62 +3699,62 @@ namespace PFD
                     if (plate is CConCom_Plate_KA)
                     {
                         CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KBS)
                     {
                         CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KB)
                     {
                         CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KCS)
                     {
                         CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KC)
                     {
                         CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KDS)
                     {
                         CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KD)
                     {
                         CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KES)
                     {
                         CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KFS)
                     {
                         CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KGS)
                     {
                         CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KHS)
                     {
                         CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement); // KBS
                     }
                     else if (plate is CConCom_Plate_KK)
                     {
                         CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                        plate = new CConCom_Plate_KBS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement); // KBS
+                        plate = new CConCom_Plate_KBS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement); // KBS
                     }
                     // --------------- end KBS
                 }
@@ -3763,62 +3763,62 @@ namespace PFD
                     if (plate is CConCom_Plate_KA)
                     {
                         CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KBS)
                     {
                         CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KB)
                     {
                         CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KCS)
                     {
                         CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KC)
                     {
                         CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KDS)
                     {
                         CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KD)
                     {
                         CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KES)
                     {
                         CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KFS)
                     {
                         CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KGS)
                     {
                         CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KHS)
                     {
                         CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KK)
                     {
                         CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                        plate = new CConCom_Plate_KB(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KB(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                     }
                     // --------------- end KB
                 }
@@ -3830,62 +3830,62 @@ namespace PFD
                     if (plate is CConCom_Plate_KA)
                     {
                         CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KBS)
                     {
                         CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KB)
                     {
                         CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KCS)
                     {
                         CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KC)
                     {
                         CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KDS)
                     {
                         CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KD)
                     {
                         CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KES)
                     {
                         CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KFS)
                     {
                         CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KGS)
                     {
                         CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KHS)
                     {
                         CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KK)
                     {
                         CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                        plate = new CConCom_Plate_KCS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KCS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                     }
                     // ---------------- end KCS
                 }
@@ -3894,62 +3894,62 @@ namespace PFD
                     if (plate is CConCom_Plate_KA)
                     {
                         CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KBS)
                     {
                         CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KB)
                     {
                         CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KCS)
                     {
                         CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KC)
                     {
                         CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KDS)
                     {
                         CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KD)
                     {
                         CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KES)
                     {
                         CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KFS)
                     {
                         CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KGS)
                     {
                         CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KHS)
                     {
                         CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KK)
                     {
                         CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                        plate = new CConCom_Plate_KC(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KC(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                     }
                     // ------------------ end KC
                 }
@@ -3961,62 +3961,62 @@ namespace PFD
                     if (plate is CConCom_Plate_KA)
                     {
                         CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KBS)
                     {
                         CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KB)
                     {
                         CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KCS)
                     {
                         CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KC)
                     {
                         CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KDS)
                     {
                         CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KD)
                     {
                         CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KES)
                     {
                         CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KFS)
                     {
                         CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KGS)
                     {
                         CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KHS)
                     {
                         CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KK)
                     {
                         CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                        plate = new CConCom_Plate_KDS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KDS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                     }
                     // --------end KDS
                 }
@@ -4025,62 +4025,62 @@ namespace PFD
                     if (plate is CConCom_Plate_KA)
                     {
                         CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KBS)
                     {
                         CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KB)
                     {
                         CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KCS)
                     {
                         CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KC)
                     {
                         CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KDS)
                     {
                         CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KD)
                     {
                         CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KES)
                     {
                         CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KFS)
                     {
                         CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KGS)
                     {
                         CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KHS)
                     {
                         CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                     }
                     else if (plate is CConCom_Plate_KK)
                     {
                         CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                        plate = new CConCom_Plate_KD(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                        plate = new CConCom_Plate_KD(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                     }
                     //---------------end KD
                 }
@@ -4090,62 +4090,62 @@ namespace PFD
                 if (plate is CConCom_Plate_KA)
                 {
                     CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KBS)
                 {
                     CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KB)
                 {
                     CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KCS)
                 {
                     CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KC)
                 {
                     CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KDS)
                 {
                     CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KD)
                 {
                     CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KES)
                 {
                     CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KFS)
                 {
                     CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KGS)
                 {
                     CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KHS)
                 {
                     CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KK)
                 {
                     CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                    plate = new CConCom_Plate_KES(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KES(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                 }
                 //-----------------end KES
             }
@@ -4154,62 +4154,62 @@ namespace PFD
                 if (plate is CConCom_Plate_KA)
                 {
                     CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KBS)
                 {
                     CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KB)
                 {
                     CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KCS)
                 {
                     CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KC)
                 {
                     CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KDS)
                 {
                     CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KD)
                 {
                     CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KES)
                 {
                     CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KFS)
                 {
                     CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KGS)
                 {
                     CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KHS)
                 {
                     CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KK)
                 {
                     CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                    plate = new CConCom_Plate_KFS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KFS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                 }
                 //--------------------end KFS
             }
@@ -4218,62 +4218,62 @@ namespace PFD
                 if (plate is CConCom_Plate_KA)
                 {
                     CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KBS)
                 {
                     CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KB)
                 {
                     CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KCS)
                 {
                     CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KC)
                 {
                     CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KDS)
                 {
                     CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KD)
                 {
                     CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KES)
                 {
                     CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KFS)
                 {
                     CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KGS)
                 {
                     CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KHS)
                 {
                     CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KK)
                 {
                     CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                    plate = new CConCom_Plate_KGS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KGS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                 }
                 //--------------------end KGS
             }
@@ -4282,62 +4282,62 @@ namespace PFD
                 if (plate is CConCom_Plate_KA)
                 {
                     CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KBS)
                 {
                     CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KB)
                 {
                     CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KCS)
                 {
                     CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KC)
                 {
                     CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KDS)
                 {
                     CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KD)
                 {
                     CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KES)
                 {
                     CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KFS)
                 {
                     CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KGS)
                 {
                     CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KHS)
                 {
                     CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewInPlusZDirection, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KK)
                 {
                     CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                    plate = new CConCom_Plate_KHS(componentName, p.m_pControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KHS(componentName, p.ControlPoint, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, false /*p.ScrewInPlusZDirection*/, p.ScrewArrangement);
                 }
                 //--------------------end KHS
             }
@@ -4346,62 +4346,62 @@ namespace PFD
                 if (plate is CConCom_Plate_KA)
                 {
                     CConCom_Plate_KA p = plate as CConCom_Plate_KA;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, fLipWidth_LZ, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KBS)
                 {
                     CConCom_Plate_KBS p = plate as CConCom_Plate_KBS;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KB)
                 {
                     CConCom_Plate_KB p = plate as CConCom_Plate_KB;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KCS)
                 {
                     CConCom_Plate_KCS p = plate as CConCom_Plate_KCS;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KC)
                 {
                     CConCom_Plate_KC p = plate as CConCom_Plate_KC;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KDS)
                 {
                     CConCom_Plate_KDS p = plate as CConCom_Plate_KDS;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KD)
                 {
                     CConCom_Plate_KD p = plate as CConCom_Plate_KD;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KES)
                 {
                     CConCom_Plate_KES p = plate as CConCom_Plate_KES;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KFS)
                 {
                     CConCom_Plate_KFS p = plate as CConCom_Plate_KFS;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KGS)
                 {
                     CConCom_Plate_KGS p = plate as CConCom_Plate_KGS;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KHS)
                 {
                     CConCom_Plate_KHS p = plate as CConCom_Plate_KHS;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, fDefaultRafterWidth_b_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 else if (plate is CConCom_Plate_KK)
                 {
                     CConCom_Plate_KK p = plate as CConCom_Plate_KK;
-                    plate = new CConCom_Plate_KK(componentName, p.m_pControlPoint, p.Fb_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
+                    plate = new CConCom_Plate_KK(componentName, p.ControlPoint, p.Fb_XR, p.Fb_X1, p.Fh_Y1, p.Fb_X2, p.Fh_Y2, p.Fl_Z, p.Ft, p.m_fRotationX_deg, p.m_fRotationY_deg, p.m_fRotationZ_deg, p.ScrewArrangement);
                 }
                 //-------------end KK
             }

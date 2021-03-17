@@ -440,7 +440,7 @@ namespace BaseClasses
         {
             Prefix = "Anchor";
             Name = name_temp;
-            m_pControlPoint = new Point3D(0, 0, 0);
+            ControlPoint = new Point3D(0, 0, 0);
             Length = fLength_temp;
 
             CBoltProperties properties = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
@@ -487,7 +487,7 @@ namespace BaseClasses
         {
             Prefix = "Anchor";
             Name = name_temp;
-            m_pControlPoint = new Point3D(0, 0, 0);
+            ControlPoint = new Point3D(0, 0, 0);
             Length = fLength_temp;
 
             CBoltProperties properties = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
@@ -540,7 +540,7 @@ namespace BaseClasses
         {
             Prefix = "Anchor";
             Name = name_temp;
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             Length = fLength_temp;
 
             CBoltProperties properties = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
@@ -596,13 +596,13 @@ namespace BaseClasses
 
                 // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
                 float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit 
-                m_WasherPlateTop.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
+                m_WasherPlateTop.ControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
 
                 m_Nuts = new List<CNut>();
 
                 CNut nut = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0);
                 float fWasherTopPlateNutPosition = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness - m_WasherPlateTop.Ft - fOffsetFor3D;
-                nut.m_pControlPoint.X = fWasherTopPlateNutPosition;
+                nut.ControlPoint.X = fWasherTopPlateNutPosition;
 
                 m_Nuts.Add(nut);
             }
@@ -620,12 +620,12 @@ namespace BaseClasses
 
                 // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
                 m_fWasherBearing_OffsetFromBottom = nutBottom.Thickness_max + 0.02f; // vyska matice + 20 mm
-                m_WasherBearing.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
+                m_WasherBearing.ControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
 
-                float fWasherBearingTopNutPosition = (float)m_WasherBearing.m_pControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
-                float fWasherBearingBottomNutPosition = (float)m_WasherBearing.m_pControlPoint.X + nutBottom.Thickness_max + fOffsetFor3D;
-                nutTop.m_pControlPoint.X = fWasherBearingTopNutPosition;
-                nutBottom.m_pControlPoint.X = fWasherBearingBottomNutPosition;
+                float fWasherBearingTopNutPosition = (float)m_WasherBearing.ControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
+                float fWasherBearingBottomNutPosition = (float)m_WasherBearing.ControlPoint.X + nutBottom.Thickness_max + fOffsetFor3D;
+                nutTop.ControlPoint.X = fWasherBearingTopNutPosition;
+                nutBottom.ControlPoint.X = fWasherBearingBottomNutPosition;
 
                 m_Nuts.Add(nutTop);
                 m_Nuts.Add(nutBottom);
@@ -648,7 +648,7 @@ namespace BaseClasses
         {
             m_fPortionOtAnchorAbovePlate_abs = Length - m_fh_effective - (m_WasherBearing != null ? m_WasherBearing.Ft : 0) - m_fWasherBearing_OffsetFromBottom;
 
-            this.m_pControlPoint.Z = m_fPortionOtAnchorAbovePlate_abs; // Globalny system
+            this.ControlPoint.Z = m_fPortionOtAnchorAbovePlate_abs; // Globalny system
 
             if (WasherPlateTop != null)
             {
@@ -657,13 +657,13 @@ namespace BaseClasses
 
                 // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
                 float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit
-                m_WasherPlateTop.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
+                m_WasherPlateTop.ControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
 
                 m_Nuts = new List<CNut>();
 
                 CNut nut = new CNut(Name, m_Mat.Name, new Point3D(0, 0, 0), 0, -90, 0);
                 float fWasherTopPlateNutPosition = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness - m_WasherPlateTop.Ft - fOffsetFor3D;
-                nut.m_pControlPoint.X = fWasherTopPlateNutPosition;
+                nut.ControlPoint.X = fWasherTopPlateNutPosition;
 
                 m_Nuts.Add(nut);
             }
@@ -681,12 +681,12 @@ namespace BaseClasses
 
                 // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
                 m_fWasherBearing_OffsetFromBottom = nutBottom.Thickness_max + 0.02f; // vyska matice + 20 mm
-                m_WasherBearing.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
+                m_WasherBearing.ControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
 
-                float fWasherBearingTopNutPosition = (float)m_WasherBearing.m_pControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
-                float fWasherBearingBottomNutPosition = (float)m_WasherBearing.m_pControlPoint.X + nutBottom.Thickness_max + fOffsetFor3D;
-                nutTop.m_pControlPoint.X = fWasherBearingTopNutPosition;
-                nutBottom.m_pControlPoint.X = fWasherBearingBottomNutPosition;
+                float fWasherBearingTopNutPosition = (float)m_WasherBearing.ControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
+                float fWasherBearingBottomNutPosition = (float)m_WasherBearing.ControlPoint.X + nutBottom.Thickness_max + fOffsetFor3D;
+                nutTop.ControlPoint.X = fWasherBearingTopNutPosition;
+                nutBottom.ControlPoint.X = fWasherBearingBottomNutPosition;
 
                 m_Nuts.Add(nutTop);
                 m_Nuts.Add(nutBottom);

@@ -16,7 +16,7 @@ namespace BaseClasses
             bIsJointDefinedinGCS = true;
 
             m_Node = Node_temp;
-            m_pControlPoint = m_Node.GetPoint3D();
+            ControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainFrameColumn_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = Girt_temp;

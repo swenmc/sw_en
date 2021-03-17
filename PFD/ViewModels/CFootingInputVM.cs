@@ -2504,10 +2504,10 @@ namespace PFD
                 pad.Reference_Bottom_Bar_y.ProjectionLength = pad.Reference_Bottom_Bar_y is CReinforcementBarStraight ? m_FootingPadSize_y_Or_b - 2 * fConcreteCover : m_FootingPadSize_y_Or_b - 2 * fConcreteCover - pad.Reference_Bottom_Bar_y.Diameter;
 
                 // For each pad set for all reference bars current control point
-                pad.Reference_Top_Bar_x.m_pControlPoint = cp_Top_x;
-                pad.Reference_Top_Bar_y.m_pControlPoint = cp_Top_y;
-                pad.Reference_Bottom_Bar_x.m_pControlPoint = cp_Bottom_x;
-                pad.Reference_Bottom_Bar_y.m_pControlPoint = cp_Bottom_y;
+                pad.Reference_Top_Bar_x.ControlPoint = cp_Top_x;
+                pad.Reference_Top_Bar_y.ControlPoint = cp_Top_y;
+                pad.Reference_Bottom_Bar_x.ControlPoint = cp_Bottom_x;
+                pad.Reference_Bottom_Bar_y.ControlPoint = cp_Bottom_y;
 
                 // Create sets of reinforcement bars
                 pad.CreateReinforcementBars();

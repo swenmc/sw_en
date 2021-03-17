@@ -200,7 +200,7 @@ namespace BaseClasses.GraphObj
 
         public Model3DGroup GetCladdingModel(DisplayOptions options)
         {
-            m_pControlPoint = new Point3D(0, 0, 0);
+            ControlPoint = new Point3D(0, 0, 0);
 
             Model3DGroup model_gr = new Model3DGroup();
             WireFramePoints = new List<Point3D>();

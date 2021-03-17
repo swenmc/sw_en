@@ -113,7 +113,7 @@ namespace BaseClasses
             INoPoints2Dfor3D = 11;
             ITotNoPointsin3D = 26;
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             Fb_X1 = fb_1_temp;
             Fh_Y1 = fh_1_temp;
             Fb_X2 = fb_2_temp;

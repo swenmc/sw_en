@@ -8,7 +8,7 @@ namespace BaseClasses.GraphObj
     [Serializable]
     public class CStructure_Window : CEntity3D
     {
-        //public Point3D m_pControlPoint = new Point3D();
+        //public Point3D m_ControlPoint = new Point3D();
 
         EWindowShapeType m_eShapeType = EWindowShapeType.eClassic;
 
@@ -86,7 +86,7 @@ namespace BaseClasses.GraphObj
         {
             ID = i_ID;
             m_eShapeType = iShapeType;
-            m_pControlPoint = pControlEdgePoint;
+            ControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
@@ -105,7 +105,7 @@ namespace BaseClasses.GraphObj
             ID = iW_ID;
             m_eShapeType = iShapeType;
             m_iSegmentNum = iSegmentNum;
-            m_pControlPoint = pControlEdgePoint;
+            ControlPoint = pControlEdgePoint;
             m_fDim1 = fL;
             m_fDim2 = fH;
             m_fDim3 = ft;
@@ -142,7 +142,7 @@ namespace BaseClasses.GraphObj
             ID = iW_ID;
             m_eShapeType = iShapeType;
             m_iSegmentNum = iSegmentNum;
-            m_pControlPoint = pControlEdgePoint;
+            ControlPoint = pControlEdgePoint;
             m_fDim1 = fL;
             m_fDim2 = fH;
             m_fDim3 = ft;
@@ -215,7 +215,7 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Model3DGroup CreateM_3D_G_Window(int iSegmentNum, Point3D pControlPoint, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, float fRotationZDegrees)
+        public Model3DGroup CreateM_3D_G_Window(int iSegmentNum, Point3D ControlPoint, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, float fRotationZDegrees)
         {
             Model3DGroup gr = new Model3DGroup();
 
@@ -227,7 +227,7 @@ namespace BaseClasses.GraphObj
             }
 
             // Create transform group
-            Transform3DGroup transform3DGroup = GetTransformGroup(pControlPoint, fRotationZDegrees);
+            Transform3DGroup transform3DGroup = GetTransformGroup(ControlPoint, fRotationZDegrees);
             // Set transformation to group
             gr.Transform = transform3DGroup;
 
@@ -244,21 +244,21 @@ namespace BaseClasses.GraphObj
         {
             Model3DGroup m3Dg = new Model3DGroup();
 
-            Point3D pControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            Point3D pControlEdge = new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             m3Dg.Children.Add(CreateM_3D_G_Window(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees));
 
             return m3Dg;
         }
 
-        public Transform3DGroup GetTransformGroup(Point3D pControlPoint, float fRotationZDegrees)
+        public Transform3DGroup GetTransformGroup(Point3D ControlPoint, float fRotationZDegrees)
         {
             // Move and rotate window
             Transform3DGroup transform3DGroup = new Transform3DGroup();
             // Rotation about Y axis
             RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZDegrees));
             // Translation - move to control point
-            TranslateTransform3D translateTransform3D = new TranslateTransform3D(pControlPoint.X, pControlPoint.Y, pControlPoint.Z);
+            TranslateTransform3D translateTransform3D = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
             // Adding transforms
             transform3DGroup.Children.Add(rotateTransformation3D);
             transform3DGroup.Children.Add(translateTransform3D);

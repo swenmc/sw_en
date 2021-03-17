@@ -34,9 +34,9 @@ namespace BaseClasses.GraphObj
         public float m_fDim2;
         public float m_fDim3;
 
-        public int m_iSegmentNum;
-        public float m_fGThickness;
-        public float m_fRotationZDegrees;
+        private int m_iSegmentNum;
+        private float m_fGThickness;
+        private float m_fRotationZDegrees;
 
         private Point3D m_PointText;
         private string m_Text;
@@ -81,6 +81,45 @@ namespace BaseClasses.GraphObj
             set { m_Text = value; }
         }
 
+        public float RotationZDegrees
+        {
+            get
+            {
+                return m_fRotationZDegrees;
+            }
+
+            set
+            {
+                m_fRotationZDegrees = value;
+            }
+        }
+
+        public int SegmentNum
+        {
+            get
+            {
+                return m_iSegmentNum;
+            }
+
+            set
+            {
+                m_iSegmentNum = value;
+            }
+        }
+
+        public float GThickness
+        {
+            get
+            {
+                return m_fGThickness;
+            }
+
+            set
+            {
+                m_fGThickness = value;
+            }
+        }
+
         public int iVectorOverFactor_LCS;
         public int iVectorUpFactor_LCS;
 
@@ -101,8 +140,8 @@ namespace BaseClasses.GraphObj
             Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float doorPanelOpacity, bool isRollerDoor, bool useTextures)
         {
             ID = iW_ID;
-            m_iSegmentNum = iSegmentNum;
-            m_pControlPoint = pControlEdgePoint;
+            SegmentNum = iSegmentNum;
+            ControlPoint = pControlEdgePoint;
             m_fDim1 = fL;
             m_fDim2 = fH;
             m_fDim3 = ft;
@@ -110,8 +149,8 @@ namespace BaseClasses.GraphObj
             m_fvolOpacity_1 = 1.0f; // Flashings - TODO
             m_fvolOpacity_2 = doorPanelOpacity; // Vypln dveri
 
-            m_fGThickness = fDoorPanelThickness;
-            m_fRotationZDegrees = fRotationZDegrees;
+            GThickness = fDoorPanelThickness;
+            RotationZDegrees = fRotationZDegrees;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
             IsRollerDoor = isRollerDoor;
@@ -129,7 +168,7 @@ namespace BaseClasses.GraphObj
 
             SetTextPointInLCS();
 
-            CreateM_3D_G_Door(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fDoorPanelThickness, fRotationZDegrees, useTextures);
+            CreateM_3D_G_Door(iSegmentNum, fL, fH, ft, fDoorPanelThickness, useTextures);
         }
 
         // Temporary auxiliary function
@@ -180,7 +219,7 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Model3DGroup CreateM_3D_G_Door(int iSegmentNum, Point3D pControlPoint, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, float fRotationZDegrees, bool useTextures)
+        public Model3DGroup CreateM_3D_G_Door(int iSegmentNum, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, bool useTextures)
         {
             Model3DGroup gr = new Model3DGroup();
 
@@ -220,7 +259,7 @@ namespace BaseClasses.GraphObj
             }
 
             // Create transform group
-            Transform3DGroup transform3DGroup = GetTransformGroup(pControlPoint, fRotationZDegrees);
+            Transform3DGroup transform3DGroup = GetTransformGroup();
             // Set transformation to group
             gr.Transform = transform3DGroup;
 
@@ -234,14 +273,14 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Transform3DGroup GetTransformGroup(Point3D pControlPoint, float fRotationZDegrees)
+        public Transform3DGroup GetTransformGroup(/*Point3D pControlPoint, float fRotationZDegrees*/)
         {
             // Move and rotate door
             Transform3DGroup transform3DGroup = new Transform3DGroup();
             // Rotation about Y axis
-            RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZDegrees));
+            RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), RotationZDegrees));
             // Translation - move to control point
-            TranslateTransform3D translateTransform3D = new TranslateTransform3D(pControlPoint.X, pControlPoint.Y, pControlPoint.Z);
+            TranslateTransform3D translateTransform3D = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
             // Adding transforms
             transform3DGroup.Children.Add(rotateTransformation3D);
             transform3DGroup.Children.Add(translateTransform3D);
@@ -262,9 +301,10 @@ namespace BaseClasses.GraphObj
         //}
         public Model3DGroup CreateM_3D_G_Door(bool useTextures)
         {
-            Point3D pControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            //omg toto je naco
+            //Point3D pControlEdge = new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
-            return CreateM_3D_G_Door(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees, useTextures);
+            return CreateM_3D_G_Door(SegmentNum, m_fDim1, m_fDim2, m_fDim3, GThickness, useTextures);
         }
 
         public void SetTextPointInLCS()

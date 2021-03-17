@@ -219,7 +219,7 @@ namespace BaseClasses
             else
             {
                 CReinforcementBar_U bar = (CReinforcementBar_U)this;
-                CSolidCircleBar_U barModel = new CSolidCircleBar_U(BarIsInXDirection, m_pControlPoint, Diameter, bar.ArcRadiusNet, bar.IsTop_U, new DiffuseMaterial(brush));
+                CSolidCircleBar_U barModel = new CSolidCircleBar_U(BarIsInXDirection, ControlPoint, Diameter, bar.ArcRadiusNet, bar.IsTop_U, new DiffuseMaterial(brush));
                 float diameterOfBarInYdirection_Top = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
                 float diameterOfBarInYdirection_Bottom = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
                 barModel.SetSegmentLengths(diameterOfBarInYdirection_Top, diameterOfBarInYdirection_Bottom, pad);
@@ -280,7 +280,7 @@ namespace BaseClasses
             }
 
             // Create and apply translation
-            TranslateTransform3D myTranslateTransform3D = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            TranslateTransform3D myTranslateTransform3D = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             // Add the translation transform to the Transform3DGroup.
             myTransform3DGroup.Children.Add(myTranslateTransform3D);

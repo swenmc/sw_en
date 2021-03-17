@@ -196,7 +196,7 @@ namespace BaseClasses
             ITotNoPointsin2D = 9;
             ITotNoPointsin3D = 26;
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
 
             Fd_crsc = fd_crsc;
             Fw_apexHalfLength = fw_apexHalfLength;

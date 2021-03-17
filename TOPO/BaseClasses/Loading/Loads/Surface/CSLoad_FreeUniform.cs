@@ -36,7 +36,7 @@ namespace BaseClasses
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDir = eLoadDirection_temp;
-            m_pControlPoint = pControlPoint_temp;
+            ControlPoint = pControlPoint_temp;
             pSurfacePoints = pSurfacePoints_temp;
             SurfaceDefinitionPoints = new Point3DCollection(pSurfacePoints_temp);
             fValue = fValue_temp;
@@ -72,7 +72,7 @@ namespace BaseClasses
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDir = eLoadDirection_temp;
-            m_pControlPoint = pControlPoint_temp;
+            ControlPoint = pControlPoint_temp;
 
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
             SurfaceDefinitionPoints = new Point3DCollection(pSurfacePoints);
@@ -114,7 +114,7 @@ namespace BaseClasses
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDir = eLoadDirection_temp;
-            m_pControlPoint = pControlPoint_temp;
+            ControlPoint = pControlPoint_temp;
 
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
 
@@ -165,7 +165,7 @@ namespace BaseClasses
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDir = eLoadDirection_temp;
-            m_pControlPoint = pControlPoint_temp;
+            ControlPoint = pControlPoint_temp;
             bIsFourPointBase = bIsFourPointBase_temp;
 
             if (bIsFourPointBase)
@@ -220,7 +220,7 @@ namespace BaseClasses
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDir = eLoadDirection_temp;
-            m_pControlPoint = pControlPoint_temp;
+            ControlPoint = pControlPoint_temp;
             bIsFourPointBase = bIsFourPointBase_temp;
 
             if (bIsFourPointBase)
@@ -337,7 +337,7 @@ namespace BaseClasses
             RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), RotationZ_deg); // Rotation in degrees
 
             // Move 0,0,0 to control point in GCS
-            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             Transform3DGroup Trans3DGroup = new Transform3DGroup();
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_X);

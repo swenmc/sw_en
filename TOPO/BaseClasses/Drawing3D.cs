@@ -1769,7 +1769,7 @@ namespace BaseClasses
                             for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrPlates.Length; l++)
                             {
                                 if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_pControlPoint != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ControlPoint != null &&
                                 cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
                                 {
                                     GeometryModel3D plateGeom = null;
@@ -1880,7 +1880,7 @@ namespace BaseClasses
                                 foreach (CConnector connector in connectorGR.Connectors)
                                 {
                                     if (connector != null &&
-                                        connector.m_pControlPoint != null &&
+                                        connector.ControlPoint != null &&
                                         connector.BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
                                     {
                                         GeometryModel3D connectorModel3D = connector.CreateGeomModel3D(brushScrews);
@@ -1898,7 +1898,7 @@ namespace BaseClasses
                             for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrWelds.Length; l++)
                             {
                                 if (cmodel.m_arrConnectionJoints[i].m_arrWelds[l] != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrWelds[l].m_pControlPoint != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrWelds[l].ControlPoint != null &&
                                 cmodel.m_arrConnectionJoints[i].m_arrWelds[l].BIsDisplayed == true) // Weld object is valid (not empty) and should be displayed
                                 {
                                     JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrWelds[l].CreateGeomModel3D(brushWelds)); // Add weld 3D model to the model group
@@ -2035,7 +2035,7 @@ namespace BaseClasses
                 for (int i = 0; i < cmodel.m_arrFoundations.Count; i++)
                 {
                     if (cmodel.m_arrFoundations[i] != null &&
-                        cmodel.m_arrFoundations[i].m_pControlPoint != null &&
+                        cmodel.m_arrFoundations[i].ControlPoint != null &&
                         cmodel.m_arrFoundations[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                     {
                         if (sDisplayOptions.bDisplayReinforcementBars || sDisplayOptions.bDisplayReinforcementBarsWireFrame)
@@ -2049,7 +2049,7 @@ namespace BaseClasses
                             {
                                 for (int j = 0; j < cmodel.m_arrFoundations[i].Top_Bars_x.Count; j++) // Each bar in the list
                                 {
-                                    if (cmodel.m_arrFoundations[i].Top_Bars_x[j].m_pControlPoint != null &&
+                                    if (cmodel.m_arrFoundations[i].Top_Bars_x[j].ControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_x[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Top_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
@@ -2063,7 +2063,7 @@ namespace BaseClasses
                             {
                                 for (int j = 0; j < cmodel.m_arrFoundations[i].Top_Bars_y.Count; j++) // Each bar in the list
                                 {
-                                    if (cmodel.m_arrFoundations[i].Top_Bars_y[j].m_pControlPoint != null &&
+                                    if (cmodel.m_arrFoundations[i].Top_Bars_y[j].ControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_y[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Top_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
@@ -2077,7 +2077,7 @@ namespace BaseClasses
                             {
                                 for (int j = 0; j < cmodel.m_arrFoundations[i].Bottom_Bars_x.Count; j++) // Each bar in the list
                                 {
-                                    if (cmodel.m_arrFoundations[i].Bottom_Bars_x[j].m_pControlPoint != null &&
+                                    if (cmodel.m_arrFoundations[i].Bottom_Bars_x[j].ControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_x[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Bottom_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
@@ -2091,7 +2091,7 @@ namespace BaseClasses
                             {
                                 for (int j = 0; j < cmodel.m_arrFoundations[i].Bottom_Bars_y.Count; j++) // Each bar in the list
                                 {
-                                    if (cmodel.m_arrFoundations[i].Bottom_Bars_y[j].m_pControlPoint != null &&
+                                    if (cmodel.m_arrFoundations[i].Bottom_Bars_y[j].ControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_y[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Bottom_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
@@ -2129,7 +2129,7 @@ namespace BaseClasses
                 for (int i = 0; i < cmodel.m_arrSlabs.Count; i++)
                 {
                     if (cmodel.m_arrSlabs[i] != null &&
-                        cmodel.m_arrSlabs[i].m_pControlPoint != null &&
+                        cmodel.m_arrSlabs[i].ControlPoint != null &&
                         cmodel.m_arrSlabs[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                     {
                         // TODO - pridat vykreslovanie vystuze v doske - velmi nizka priorita, navyse moze byt dost narocne na grafiku
@@ -2145,7 +2145,7 @@ namespace BaseClasses
                             for (int j = 0; j < cmodel.m_arrSlabs[i].SawCuts.Count; j++)
                             {
                                 if (cmodel.m_arrSlabs[i].SawCuts[j] != null &&
-                                    cmodel.m_arrSlabs[i].SawCuts[j].m_pControlPoint != null &&
+                                    cmodel.m_arrSlabs[i].SawCuts[j].ControlPoint != null &&
                                     cmodel.m_arrSlabs[i].SawCuts[j].BIsDisplayed == true) // Saw Cut object is valid (not empty) and should be displayed
                                 {
                                     Model3DGroup modelsc = cmodel.m_arrSlabs[i].SawCuts[j].GetSawCutModel(sDisplayOptions.SawCutLineColor, sDisplayOptions.SawCutLinePatternType, lineRadius);
@@ -2160,7 +2160,7 @@ namespace BaseClasses
                             for (int j = 0; j < cmodel.m_arrSlabs[i].ControlJoints.Count; j++)
                             {
                                 if (cmodel.m_arrSlabs[i].ControlJoints[j] != null &&
-                                    cmodel.m_arrSlabs[i].ControlJoints[j].m_pControlPoint != null &&
+                                    cmodel.m_arrSlabs[i].ControlJoints[j].ControlPoint != null &&
                                     cmodel.m_arrSlabs[i].ControlJoints[j].BIsDisplayed == true) // Control Joint object is valid (not empty) and should be displayed
                                 {
                                     Model3DGroup modelcj = cmodel.m_arrSlabs[i].ControlJoints[j].GetControlJointModel(sDisplayOptions.ControlJointLineColor, sDisplayOptions.ControlJointLinePatternType, lineRadius);
@@ -2179,7 +2179,7 @@ namespace BaseClasses
                                     for (int k = 0; k < cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates.Count; k++)
                                     {
                                         if (cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k] != null &&
-                                        cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].m_pControlPoint != null &&
+                                        cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].ControlPoint != null &&
                                         cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].BIsDisplayed == true) // Rebate object is valid (not empty) and should be displayed
                                         {
                                             GeometryModel3D modelrb = cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].CreateGeomModel3D(sDisplayOptions.SlabRebateColor, sDisplayOptions.fSlabRebateSolidModelOpacity);
@@ -2206,7 +2206,7 @@ namespace BaseClasses
                 for (int i = 0; i < cmodel.m_arrGOStrDoors.Count; i++)
                 {
                     if (cmodel.m_arrGOStrDoors[i] != null &&
-                        cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOStrDoors[i].ControlPoint != null &&
                         cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
@@ -2234,7 +2234,7 @@ namespace BaseClasses
                 for (int i = 0; i < cmodel.m_arrGOStrWindows.Count; i++)
                 {
                     if (cmodel.m_arrGOStrWindows[i] != null &&
-                        cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOStrWindows[i].ControlPoint != null &&
                         cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
@@ -2259,7 +2259,7 @@ namespace BaseClasses
                 for (int i = 0; i < cmodel.m_arrGOCladding.Count; i++)
                 {
                     if (cmodel.m_arrGOCladding[i] != null &&
-                        cmodel.m_arrGOCladding[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOCladding[i].ControlPoint != null &&
                         cmodel.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
                     {
                         if (true/*cmodel.m_arrCladding[i].EShapeType == EWindowShapeType.eClassic*/) // moznost rozlisovat rozne geometricke tvary alebo podtypy
@@ -2297,7 +2297,7 @@ namespace BaseClasses
                 for (int i = 0; i < cmodel.m_arrGOVolumes.Length; i++)
                 {
                     if (cmodel.m_arrGOVolumes[i] != null &&
-                        cmodel.m_arrGOVolumes[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOVolumes[i].ControlPoint != null &&
                         cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         // Get shape - prism , sphere, ...
@@ -2331,7 +2331,7 @@ namespace BaseClasses
             //    for (int i = 0; i < cmodel.m_arrGOCladding.Count; i++)
             //    {
             //        if (cmodel.m_arrGOCladding[i] != null &&
-            //            cmodel.m_arrGOCladding[i].m_pControlPoint != null &&
+            //            cmodel.m_arrGOCladding[i].ControlPoint != null &&
             //            cmodel.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
             //        {
             //            if (true/*cmodel.m_arrCladding[i].EShapeType == EWindowShapeType.eClassic*/) // moznost rozlisovat rozne geometricke tvary alebo podtypy
@@ -2350,7 +2350,7 @@ namespace BaseClasses
             //    for (int i = 0; i < cmodel.m_arrGOStrDoors.Count; i++)
             //    {
             //        if (cmodel.m_arrGOStrDoors[i] != null &&
-            //            cmodel.m_arrGOStrDoors[i].m_pControlPoint != null &&
+            //            cmodel.m_arrGOStrDoors[i].ControlPoint != null &&
             //            cmodel.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
             //        {
             //            //if (cmodel.m_arrGOStrDoors[i].EShapeType == EWindowShapeType.eClassic)
@@ -2371,7 +2371,7 @@ namespace BaseClasses
             //    for (int i = 0; i < cmodel.m_arrGOStrWindows.Count; i++)
             //    {
             //        if (cmodel.m_arrGOStrWindows[i] != null &&
-            //            cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
+            //            cmodel.m_arrGOStrWindows[i].ControlPoint != null &&
             //            cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
             //        {
             //            if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
@@ -3069,7 +3069,7 @@ namespace BaseClasses
                                     for (int k = 0; k < model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates.Count; k++)
                                     {
                                         if (model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k] != null &&
-                                        model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].m_pControlPoint != null &&
+                                        model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].ControlPoint != null &&
                                         model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].BIsDisplayed == true) // Rebate object is valid (not empty) and should be displayed
                                         {
                                             wireFramePoints.AddRange(model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].WireFramePoints);
@@ -3123,7 +3123,7 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrGOStrDoors.Count; i++)
                 {
                     if (model.m_arrGOStrDoors[i] != null &&
-                        model.m_arrGOStrDoors[i].m_pControlPoint != null &&
+                        model.m_arrGOStrDoors[i].ControlPoint != null &&
                         model.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         wireFramePoints.AddRange(model.m_arrGOStrDoors[i].WireFramePoints);
@@ -3146,7 +3146,7 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
                 {
                     if (model.m_arrGOStrWindows[i] != null &&
-                        model.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                        model.m_arrGOStrWindows[i].ControlPoint != null &&
                         model.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         wireFramePoints.AddRange(model.m_arrGOStrWindows[i].WireFramePoints);
@@ -3170,7 +3170,7 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrGOCladding.Count; i++)
                 {
                     if (model.m_arrGOCladding[i] != null &&
-                        model.m_arrGOCladding[i].m_pControlPoint != null &&
+                        model.m_arrGOCladding[i].ControlPoint != null &&
                         model.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
                     {
                         wireFramePoints.AddRange(model.m_arrGOCladding[i].WireFramePoints);
@@ -3194,7 +3194,7 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrGOCladding.Count; i++)
                 {
                     if (model.m_arrGOCladding[i] != null &&
-                        model.m_arrGOCladding[i].m_pControlPoint != null &&
+                        model.m_arrGOCladding[i].ControlPoint != null &&
                         model.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
                     {
                         wireFramePoints.AddRange(model.m_arrGOCladding[i].WireFramePoints);
@@ -3208,7 +3208,7 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrGOStrDoors.Count; i++)
                 {
                     if (model.m_arrGOStrDoors[i] != null &&
-                        model.m_arrGOStrDoors[i].m_pControlPoint != null &&
+                        model.m_arrGOStrDoors[i].ControlPoint != null &&
                         model.m_arrGOStrDoors[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         wireFramePoints.AddRange(model.m_arrGOStrDoors[i].WireFramePoints);
@@ -3222,7 +3222,7 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
                 {
                     if (model.m_arrGOStrWindows[i] != null &&
-                        model.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                        model.m_arrGOStrWindows[i].ControlPoint != null &&
                         model.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         wireFramePoints.AddRange(model.m_arrGOStrWindows[i].WireFramePoints);
@@ -4607,14 +4607,14 @@ namespace BaseClasses
                         ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, door.PointText, over, up, 0.8);
                         Transform3DGroup tr = new Transform3DGroup();
 
-                        if (door.GetTransformGroup(door.m_pControlPoint, door.m_fRotationZDegrees) == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                        if (door.GetTransformGroup() == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
                         {
                             throw new Exception("Door in local coordinate system! \nTransformation object is null! \nText label is probably created before door model exists!");
                         }
 
-                        if (door.GetTransformGroup(door.m_pControlPoint, door.m_fRotationZDegrees) != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                        if (door.GetTransformGroup() != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
                         {
-                            tr.Children.Add(door.GetTransformGroup(door.m_pControlPoint, door.m_fRotationZDegrees)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                            tr.Children.Add(door.GetTransformGroup()); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
 
                             // Nechceme transofrmovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(door.PointText);
@@ -4661,14 +4661,14 @@ namespace BaseClasses
                         ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, window.PointText, over, up, 0.8);
                         Transform3DGroup tr = new Transform3DGroup();
 
-                        if (window.GetTransformGroup(window.m_pControlPoint, window.m_fRotationZDegrees) == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                        if (window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees) == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
                         {
                             throw new Exception("Window in local coordinate system! \nTransformation object is null! \nText label is probably created before window model exists!");
                         }
 
-                        if (window.GetTransformGroup(window.m_pControlPoint, window.m_fRotationZDegrees) != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                        if (window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees) != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
                         {
-                            tr.Children.Add(window.GetTransformGroup(window.m_pControlPoint, window.m_fRotationZDegrees)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                            tr.Children.Add(window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
 
                             // Nechceme transofrmovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(window.PointText);

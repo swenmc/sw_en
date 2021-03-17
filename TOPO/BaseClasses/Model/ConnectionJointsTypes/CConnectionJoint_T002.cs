@@ -25,7 +25,7 @@ namespace BaseClasses
 
             m_sPlateType_LL = "LLH";
             m_Node = Node_temp;
-            m_pControlPoint = m_Node.GetPoint3D();
+            ControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainFrameColumn_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = EavesPurlin_temp;
@@ -119,7 +119,7 @@ namespace BaseClasses
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
-            m_arrPlates[0].m_pControlPoint = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min - m_fPlate_Angle_Leg + flocaleccentricity_y), m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ - m_arrPlates[0].Ft + flocaleccentricity_z);
+            m_arrPlates[0].ControlPoint = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min - m_fPlate_Angle_Leg + flocaleccentricity_y), m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ - m_arrPlates[0].Ft + flocaleccentricity_z);
             m_arrPlates[0].SetPlateRotation(new Vector3D(90, 0, 90));
 
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -128,7 +128,7 @@ namespace BaseClasses
                     fAlignment_x = -m_SecondaryMembers[0].FAlignment_End + m_ft_main_plate - fCutOffOneSide;
 
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                m_arrPlates[0].m_pControlPoint = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + m_fPlate_Angle_Leg + flocaleccentricity_y), m_SecondaryMembers[0].CrScStart.z_min /* -0.5f * m_SecondaryMembers[0].CrScStart.h*/ - m_arrPlates[0].Ft + flocaleccentricity_z);
+                m_arrPlates[0].ControlPoint = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + m_fPlate_Angle_Leg + flocaleccentricity_y), m_SecondaryMembers[0].CrScStart.z_min /* -0.5f * m_SecondaryMembers[0].CrScStart.h*/ - m_arrPlates[0].Ft + flocaleccentricity_z);
                 m_arrPlates[0].SetPlateRotation(new Vector3D(90, 0, 90));
             }
         }

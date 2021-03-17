@@ -70,7 +70,7 @@ namespace BaseClasses
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp;
             ELoadDir = eLoadDirection_temp;
-            m_pControlPoint = pControlPoint_temp;
+            ControlPoint = pControlPoint_temp;
             fX_coordinates = fX_coordinates_temp;
             fX_dimension_max = fX_dimension_max_temp;
             fY_dimension = fY_dimension_temp;
@@ -117,7 +117,7 @@ namespace BaseClasses
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp;
             ELoadDir = eLoadDirection_temp;
-            m_pControlPoint = pControlPoint_temp;
+            ControlPoint = pControlPoint_temp;
             fX_coordinates = fX_coordinates_temp;
             fX_dimension_max = fX_dimension_max_temp;
             fY_dimension = fY_dimension_temp;
@@ -326,7 +326,7 @@ namespace BaseClasses
                 if (bUseAlternativeSolution)
                 {
                     // Create new translate transformation for segment (posun v smere x)
-                    TranslateTransform3D translateinx = new TranslateTransform3D(load.m_pControlPoint.X, 0, 0);
+                    TranslateTransform3D translateinx = new TranslateTransform3D(load.ControlPoint.X, 0, 0);
 
                     // Add segment translate transformation within LCS of group - pouzije sa nova TranslateTransform3D segmentu (obsahuje len posun)
                     tempTransformGroupOfLoadSegment.Children.Add(translateinx);
@@ -360,7 +360,7 @@ namespace BaseClasses
             RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), RotationZ_deg); // Rotation in degrees
 
             // Move 0,0,0 to control point in GCS
-            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             Transform3DGroup Trans3DGroup = new Transform3DGroup();
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_X);

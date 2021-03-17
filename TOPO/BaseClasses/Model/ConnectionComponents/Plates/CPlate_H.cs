@@ -189,7 +189,7 @@ namespace BaseClasses
             ITotNoPointsin2D = 6;
             ITotNoPointsin3D = 12;
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             m_iLeftRightIndex = sName_temp.Substring(4, 2) == "LH" ? 0 : 1; // Side index - 0 - left (original), 1 - right
             m_fbX = fbX_temp;
             m_fhY1 = fhY1_temp;

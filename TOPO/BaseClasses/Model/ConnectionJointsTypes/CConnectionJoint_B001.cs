@@ -35,7 +35,7 @@ namespace BaseClasses
 
             JointType = jointType_temp;
             m_Node = Node_temp;
-            m_pControlPoint = m_Node.GetPoint3D();
+            ControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainFrameColumn_temp;
 
             if (jointType_temp == EJointType.eKnee_EgdeRafter_Column || jointType_temp == EJointType.eKnee_MainRafter_Column)
@@ -297,8 +297,8 @@ namespace BaseClasses
 
             }
 
-            m_arrPlates[0].m_pControlPoint = new Point3D(fControlPointXCoord1, fControlPointYCoord1, m_pUpperLeftPointOfPlate.Y - fPlate1_h_Y1);
-            m_arrPlates[1].m_pControlPoint = new Point3D(fControlPointXCoord2, fControlPointYCoord2, m_pUpperLeftPointOfPlate.Y - fPlate2_h_Y1);
+            m_arrPlates[0].ControlPoint = new Point3D(fControlPointXCoord1, fControlPointYCoord1, m_pUpperLeftPointOfPlate.Y - fPlate1_h_Y1);
+            m_arrPlates[1].ControlPoint = new Point3D(fControlPointXCoord2, fControlPointYCoord2, m_pUpperLeftPointOfPlate.Y - fPlate2_h_Y1);
 
             Vector3D RotationVector_P1 = new Vector3D(90, 0, fRotatePlatesInJointAngle);
             Vector3D RotationVector_P2 = new Vector3D(90, 0, fRotatePlatesInJointAngle);

@@ -69,7 +69,7 @@ namespace BaseClasses.GraphObj
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
-            m_pControlPoint = pControlEdgePoint;
+            ControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
@@ -87,7 +87,7 @@ namespace BaseClasses.GraphObj
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
-            m_pControlPoint = pControlEdgePoint;
+            ControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
@@ -109,7 +109,7 @@ namespace BaseClasses.GraphObj
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
-            m_pControlPoint = pControlEdgePoint;
+            ControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
@@ -131,7 +131,7 @@ namespace BaseClasses.GraphObj
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
-            m_pControlPoint = pControlEdgePoint;
+            ControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
@@ -155,7 +155,7 @@ namespace BaseClasses.GraphObj
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
-            m_pControlPoint = pControlCenterPoint;
+            ControlPoint = pControlCenterPoint;
             m_fDim1 = fa;
             m_fDim2 = fh;
             m_Material_1 = volMat1;
@@ -420,7 +420,7 @@ namespace BaseClasses.GraphObj
         }
         public GeometryModel3D CreateGM_3D_Volume_8Edges(CVolume volume)
         {
-            Point3D solidControlEdge = new Point3D(volume.m_pControlPoint.X, volume.m_pControlPoint.Y, volume.m_pControlPoint.Z);
+            Point3D solidControlEdge = new Point3D(volume.ControlPoint.X, volume.ControlPoint.Y, volume.ControlPoint.Z);
 
             /*
             Point3D p0 = new Point3D(solidControlEdge.X               , solidControlEdge.Y               , solidControlEdge.Z);
@@ -988,7 +988,7 @@ namespace BaseClasses.GraphObj
         {
             Model3DGroup m3Dg = new Model3DGroup();
 
-            Point3D solidControlEdge = new Point3D(volume.m_pControlPoint.X, volume.m_pControlPoint.Y, volume.m_pControlPoint.Z);
+            Point3D solidControlEdge = new Point3D(volume.ControlPoint.X, volume.ControlPoint.Y, volume.ControlPoint.Z);
 
             m3Dg.Children.Add(CreateM_3D_G_Volume_8Edges(solidControlEdge, volume.m_fDim1, volume.m_fDim2, volume.m_fDim3, volume.m_Material_1, volume.m_Material_2));
 
@@ -998,7 +998,7 @@ namespace BaseClasses.GraphObj
         {
             Model3DGroup m3Dg = new Model3DGroup();
 
-            Point3D solidControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            Point3D solidControlEdge = new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             m3Dg.Children.Add(CreateM_3D_G_Volume_8Edges(solidControlEdge, m_fDim1, m_fDim2, m_fDim3, m_Material_1, m_Material_2));
 

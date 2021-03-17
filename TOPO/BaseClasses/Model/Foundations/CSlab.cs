@@ -1003,7 +1003,7 @@ namespace BaseClasses
 
             // Presun celej dosky do GCS z [0,0,0] do control point
             // Create and apply translation
-            TranslateTransform3D myTranslateTransform3D_GCS = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            TranslateTransform3D myTranslateTransform3D_GCS = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             // Add the translation transform to the Transform3DGroup.
             myTransform3DGroup.Children.Add(myTranslateTransform3D_GCS);
@@ -1022,38 +1022,38 @@ namespace BaseClasses
                 // Sawcuts per X axis - rezanie v smere Y
                 for (int i = 0; i < NumberOfSawCutsInDirectionX; i++)
                 {
-                    double coordX = m_pControlPoint.X;
-                    double coordStartY = m_pControlPoint.Y;
-                    double coordEndY = m_pControlPoint.Y + m_fDim2;
+                    double coordX = ControlPoint.X;
+                    double coordStartY = ControlPoint.Y;
+                    double coordEndY = ControlPoint.Y + m_fDim2;
                     double coordZ = fTolerance; // Nad hornou stranou plochy
 
                     if (i == 0) // First
                     {
-                        coordX = m_pControlPoint.X + FirstSawCutPositionInDirectionX;
+                        coordX = ControlPoint.X + FirstSawCutPositionInDirectionX;
                         SawCuts.Add(new CSawCut(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0, 0.1f));
                     }
                     else
                     {
-                        coordX = m_pControlPoint.X + FirstSawCutPositionInDirectionX + i * SawCutsSpacingInDirectionX;
+                        coordX = ControlPoint.X + FirstSawCutPositionInDirectionX + i * SawCutsSpacingInDirectionX;
                         SawCuts.Add(new CSawCut(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0, 0.1f));
                     }
                 }
                 // Sawcuts per Y axis - rezanie v smere X
                 for (int i = 0; i < NumberOfSawCutsInDirectionY; i++)
                 {
-                    double coordStartX = m_pControlPoint.X;
-                    double coordEndX = m_pControlPoint.X + m_fDim1;
-                    double coordY = m_pControlPoint.Y;
+                    double coordStartX = ControlPoint.X;
+                    double coordEndX = ControlPoint.X + m_fDim1;
+                    double coordY = ControlPoint.Y;
                     double coordZ = fTolerance; // Nad hornou stranou plochy
 
                     if (i == 0) // First
                     {
-                        coordY = m_pControlPoint.Y + FirstSawCutPositionInDirectionY;
+                        coordY = ControlPoint.Y + FirstSawCutPositionInDirectionY;
                         SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0, 0.1f));
                     }
                     else
                     {
-                        coordY = m_pControlPoint.Y + FirstSawCutPositionInDirectionY + i * SawCutsSpacingInDirectionY;
+                        coordY = ControlPoint.Y + FirstSawCutPositionInDirectionY + i * SawCutsSpacingInDirectionY;
                         SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), m_ReferenceSawCut.CutWidth, m_ReferenceSawCut.CutDepth, true, 0, 0.1f));
                     }
                 }
@@ -1082,38 +1082,38 @@ namespace BaseClasses
                 // ControlJoints per X axis
                 for (int i = 0; i < NumberOfControlJointsInDirectionX; i++)
                 {
-                    double coordX = m_pControlPoint.X;
-                    double coordStartY = m_pControlPoint.Y;
-                    double coordEndY = m_pControlPoint.Y + m_fDim2;
+                    double coordX = ControlPoint.X;
+                    double coordStartY = ControlPoint.Y;
+                    double coordEndY = ControlPoint.Y + m_fDim2;
                     double coordZ = fTolerance; // Nad hornou stranou plochy
 
                     if (i == 0) // First
                     {
-                        coordX = m_pControlPoint.X + FirstControlJointPositionInDirectionX;
+                        coordX = ControlPoint.X + FirstControlJointPositionInDirectionX;
                         ControlJoints.Add(new CControlJoint(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), m_ReferenceControlJoint.ReferenceDowel, m_ReferenceControlJoint.DowelSpacing, true, 0));
                     }
                     else
                     {
-                        coordX = m_pControlPoint.X + FirstControlJointPositionInDirectionX + i * ControlJointsSpacingInDirectionX;
+                        coordX = ControlPoint.X + FirstControlJointPositionInDirectionX + i * ControlJointsSpacingInDirectionX;
                         ControlJoints.Add(new CControlJoint(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), m_ReferenceControlJoint.ReferenceDowel, m_ReferenceControlJoint.DowelSpacing, true, 0));
                     }
                 }
                 // ControlJoints per Y axis
                 for (int i = 0; i < NumberOfControlJointsInDirectionY; i++)
                 {
-                    double coordStartX = m_pControlPoint.X;
-                    double coordEndX = m_pControlPoint.X + m_fDim1;
-                    double coordY = m_pControlPoint.Y;
+                    double coordStartX = ControlPoint.X;
+                    double coordEndX = ControlPoint.X + m_fDim1;
+                    double coordY = ControlPoint.Y;
                     double coordZ = fTolerance; // Nad hornou stranou plochy
 
                     if (i == 0) // First
                     {
-                        coordY = m_pControlPoint.Y + FirstControlJointPositionInDirectionY;
+                        coordY = ControlPoint.Y + FirstControlJointPositionInDirectionY;
                         ControlJoints.Add(new CControlJoint(NumberOfControlJointsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), m_ReferenceControlJoint.ReferenceDowel, m_ReferenceControlJoint.DowelSpacing, true, 0));
                     }
                     else
                     {
-                        coordY = m_pControlPoint.Y + FirstControlJointPositionInDirectionY + i * ControlJointsSpacingInDirectionY;
+                        coordY = ControlPoint.Y + FirstControlJointPositionInDirectionY + i * ControlJointsSpacingInDirectionY;
                         ControlJoints.Add(new CControlJoint(NumberOfControlJointsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), m_ReferenceControlJoint.ReferenceDowel, m_ReferenceControlJoint.DowelSpacing, true, 0));
                     }
                 }
@@ -1276,7 +1276,7 @@ namespace BaseClasses
 
         public void SetControlPoint()
         {
-            m_pControlPoint = new Point3D(0 + m_Eccentricity_x, 0 + m_Eccentricity_y, 0 - m_fDim3 - fTolerance);
+            ControlPoint = new Point3D(0 + m_Eccentricity_x, 0 + m_Eccentricity_y, 0 - m_fDim3 - fTolerance);
         }
     }
 }

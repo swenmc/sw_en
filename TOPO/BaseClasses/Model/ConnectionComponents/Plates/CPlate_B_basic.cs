@@ -192,7 +192,7 @@ namespace BaseClasses
             bool uniformDistributionOfShear = false; // TODO - Todo by malo prist z nastavenia design options
             AnchorArrangement = new CAnchorArrangement_BB_BG(Name, referenceAnchor_temp, uniformDistributionOfShear);
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             Fb_X = fbX_temp;
             Fh_Y = fhY_temp;
             m_flZ = fl_Z_temp;

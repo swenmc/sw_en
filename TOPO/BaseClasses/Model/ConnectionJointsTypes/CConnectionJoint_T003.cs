@@ -35,7 +35,7 @@ namespace BaseClasses
             m_sPlateType_F_right = sPlateType_F_right;
             m_ePlateNumberAndPosition = ePlateNumberAndPosition;
             m_Node = Node_temp;
-            m_pControlPoint = m_Node.GetPoint3D();
+            ControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainMember_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;
@@ -210,8 +210,8 @@ namespace BaseClasses
 
             if (m_ePlateNumberAndPosition == EPlateNumberAndPositionInJoint.eTwoPlates)
             {
-                m_arrPlates[0].m_pControlPoint = ControlPoint_P1;
-                m_arrPlates[1].m_pControlPoint = ControlPoint_P2;
+                m_arrPlates[0].ControlPoint = ControlPoint_P1;
+                m_arrPlates[1].ControlPoint = ControlPoint_P2;
 
                 m_arrPlates[0].SetPlateRotation(RotationVector_P1);
                 m_arrPlates[1].SetPlateRotation(RotationVector_P2);
@@ -222,23 +222,23 @@ namespace BaseClasses
 
                 if (m_ePlateNumberAndPosition == EPlateNumberAndPositionInJoint.eOneLeftPlate)
                 {
-                    m_arrPlates[0].m_pControlPoint = ControlPoint_P1;
+                    m_arrPlates[0].ControlPoint = ControlPoint_P1;
                     m_arrPlates[0].SetPlateRotation(RotationVector_P1);
 
                     if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID)
                     {
-                        m_arrPlates[0].m_pControlPoint = ControlPoint_P2;
+                        m_arrPlates[0].ControlPoint = ControlPoint_P2;
                         m_arrPlates[0].SetPlateRotation(RotationVector_P2);
                     }
                 }
                 else
                 {
-                    m_arrPlates[0].m_pControlPoint = ControlPoint_P2;
+                    m_arrPlates[0].ControlPoint = ControlPoint_P2;
                     m_arrPlates[0].SetPlateRotation(RotationVector_P2);
 
                     if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID)
                     {
-                        m_arrPlates[0].m_pControlPoint = ControlPoint_P1;
+                        m_arrPlates[0].ControlPoint = ControlPoint_P1;
                         m_arrPlates[0].SetPlateRotation(RotationVector_P1);
                     }
                 }

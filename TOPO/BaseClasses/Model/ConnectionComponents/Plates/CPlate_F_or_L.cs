@@ -185,7 +185,7 @@ namespace BaseClasses
             ITotNoPointsin2D = 6;
             ITotNoPointsin3D = 12;
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             m_iLeftRightIndex = 0; // Side index -0 - left(original)
             m_fbX1 = fbX_temp;
             m_fbX2 = m_fbX1; // L Series - without slope
@@ -221,7 +221,7 @@ namespace BaseClasses
             ITotNoPointsin2D = 6;
             ITotNoPointsin3D = 12;
 
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             m_iLeftRightIndex = sName_temp.Substring(5, 2) == "LH" ? 0 : 1; // Side index - 0 - left (original), 1 - right
             m_fbX1 = fbX1_temp;
             m_fbX2 = fbX2_temp;

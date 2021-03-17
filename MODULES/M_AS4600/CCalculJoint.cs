@@ -1494,14 +1494,14 @@ namespace M_AS4600
                     // Find maximum value of Y coordinate, close to the edge (+Y direction)
                     for (int i = 0; i < anchors.Count; i++)
                     {
-                        if (anchors[i].m_pControlPoint.Y > maxCoordinateY)
-                            maxCoordinateY = anchors[i].m_pControlPoint.Y;
+                        if (anchors[i].ControlPoint.Y > maxCoordinateY)
+                            maxCoordinateY = anchors[i].ControlPoint.Y;
                     }
                 }
 
                 for (int i = 0; i < anchors.Count; i++)
                 {
-                    if (!UniformShearDistributionInAnchors && MathF.d_equal(anchors[i].m_pControlPoint.Y, maxCoordinateY)) // Nerovnomerne rozdeleny smyk a kota sa nachadaza na okraji s (+Y) - ignorujeme ju vo smyku
+                    if (!UniformShearDistributionInAnchors && MathF.d_equal(anchors[i].ControlPoint.Y, maxCoordinateY)) // Nerovnomerne rozdeleny smyk a kota sa nachadaza na okraji s (+Y) - ignorujeme ju vo smyku
                         anchors[i].IsActiveInShear = basePlate.AnchorArrangement.Anchors[i].IsActiveInShear = false;
                 }
 

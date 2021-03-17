@@ -135,7 +135,7 @@ namespace BaseClasses
 
         public CConnector()
         {
-            m_pControlPoint = new Point3D(0, 0, 0);
+            ControlPoint = new Point3D(0, 0, 0);
             m_DiffuseMat = new DiffuseMaterial();
             //m_cylinder = new Cylinder();
         }
@@ -144,7 +144,7 @@ namespace BaseClasses
         {
             Name = sName_temp;
             m_Mat.Name = "Class 3 / 4 / B8";
-            m_pControlPoint = controlpoint;
+            ControlPoint = controlpoint;
             Length = fLength_temp;
             Diameter_thread = fDiameter_thread_temp;
             Mass = fMass_temp;
@@ -165,7 +165,7 @@ namespace BaseClasses
             ScreenSpaceLines3D ssl3D = new ScreenSpaceLines3D();
 
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat, 0);
+            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat, 0);
 
             Int32Collection wireFrameIndices = Cylinder.GetWireFrameIndices_Cylinder(13);
 
@@ -184,7 +184,7 @@ namespace BaseClasses
             Point3DCollection points3D = new Point3DCollection();
 
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat, 0);
+            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat, 0);
 
             Int32Collection wireFrameIndices = Cylinder.GetWireFrameIndices_Cylinder(13);
 
@@ -249,7 +249,7 @@ namespace BaseClasses
             RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), m_fRotationZ_deg); // Rotation in degrees
 
             // Move 0,0,0 to the control point in LCS of member or GCS
-            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
             Transform3DGroup Trans3DGroup = new Transform3DGroup();
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_X);
