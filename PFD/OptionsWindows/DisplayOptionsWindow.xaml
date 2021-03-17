@@ -977,25 +977,25 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GUIDimensionsScale, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="16" Grid.Column="0" Text="GUI Cladding Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="16" Grid.Column="1" Name ="GUICladdingTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="16" Grid.Column="0" Text="GUI Cladding Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="16" Grid.Column="1" Name ="GUICladdingDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUICladdingTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=GUICladdingDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="17" Grid.Column="0" Text="GUI Fibreglass Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="17" Grid.Column="1" Name ="GUIFibreglassTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="17" Grid.Column="0" Text="GUI Fibreglass Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="17" Grid.Column="1" Name ="GUIFibreglassDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIFibreglassTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=GUIFibreglassDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="18" Grid.Column="0" Text="GUI Door Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="18" Grid.Column="1" Name ="GUIDoorTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="18" Grid.Column="0" Text="GUI Door Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="18" Grid.Column="1" Name ="GUIDoorDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIDoorTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=GUIDoorDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="19" Grid.Column="0" Text="GUI Window Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="19" Grid.Column="1" Name ="GUIWindowTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="19" Grid.Column="0" Text="GUI Window Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="19" Grid.Column="1" Name ="GUIWindowDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIWindowTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=GUIWindowDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
 
                         <TextBlock Grid.Row="1" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
@@ -1073,25 +1073,25 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportDimensionsScale, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="16" Grid.Column="2" Text="Export Cladding Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="16" Grid.Column="3" Name ="ExportCladdingTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="16" Grid.Column="2" Text="Export Cladding Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="16" Grid.Column="3" Name ="ExportCladdingDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=ExportCladdingTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=ExportCladdingDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="17" Grid.Column="2" Text="Export Fibreglass Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="17" Grid.Column="3" Name ="ExportFibreglassTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="17" Grid.Column="2" Text="Export Fibreglass Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="17" Grid.Column="3" Name ="ExportFibreglassDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=ExportFibreglassTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=ExportFibreglassDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="18" Grid.Column="2" Text="Export Door Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="18" Grid.Column="3" Name ="ExportDoorTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="18" Grid.Column="2" Text="Export Door Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="18" Grid.Column="3" Name ="ExportDoorDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=ExportDoorTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=ExportDoorDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="19" Grid.Column="2" Text="Export Window Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="19" Grid.Column="3" Name ="ExportWindowTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="19" Grid.Column="2" Text="Export Window Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="19" Grid.Column="3" Name ="ExportWindowDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=ExportWindowTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=ExportWindowDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
                     </Grid>
                 </ScrollViewer>
             </TabItem>

@@ -1042,6 +1042,12 @@ namespace BaseClasses
         public System.Windows.Media.Color FoundationColor;
         public System.Windows.Media.Color FloorSlabColor;
         public System.Windows.Media.Color SlabRebateColor;
+
+        public System.Windows.Media.Color CladdingTextColor;
+        public System.Windows.Media.Color FibreglassTextColor;
+        public System.Windows.Media.Color DoorTextColor;
+        public System.Windows.Media.Color WindowTextColor;
+
         public System.Windows.Media.Color ReinforcementBarColor_Top_x;
         public System.Windows.Media.Color ReinforcementBarColor_Top_y;
         public System.Windows.Media.Color ReinforcementBarColor_Bottom_x;
@@ -1099,6 +1105,10 @@ namespace BaseClasses
         public float ExportDimensionsLineRadius;
         public float ExportDimensionsScale;
         public float ExportDescriptionTextWidthScaleFactor;
+        public float ExportCladdingDescriptionSize;
+        public float ExportFibreglassDescriptionSize;
+        public float ExportDoorDescriptionSize;
+        public float ExportWindowDescriptionSize;
 
         public float GUIFloorSlabTextSize;
         public float GUIGridlinesSize;
@@ -1116,6 +1126,10 @@ namespace BaseClasses
         public float GUIDimensionsLineRadius;
         public float GUIDimensionsScale;
         public float GUIDescriptionTextWidthScaleFactor;
+        public float GUICladdingDescriptionSize;
+        public float GUIFibreglassDescriptionSize;
+        public float GUIDoorDescriptionSize;
+        public float GUIWindowDescriptionSize;
 
         public bool SameScaleForViews;
     }

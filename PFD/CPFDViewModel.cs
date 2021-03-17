@@ -4462,6 +4462,11 @@ namespace PFD
 
             sDisplayOptions.SlabRebateColor = _displayOptionsVM.SlabRebateColor;
 
+            sDisplayOptions.CladdingTextColor = _displayOptionsVM.CladdingTextColor;
+            sDisplayOptions.FibreglassTextColor = _displayOptionsVM.FibreglassTextColor;
+            sDisplayOptions.DoorTextColor = _displayOptionsVM.DoorTextColor;
+            sDisplayOptions.WindowTextColor = _displayOptionsVM.WindowTextColor;
+
             if (FootingVM != null)
             {
                 sDisplayOptions.ReinforcementBarColor_Top_x = FootingVM.LongReinTop_x_Color;
@@ -4517,6 +4522,10 @@ namespace PFD
             sDisplayOptions.ExportDimensionsLineRadius = _displayOptionsVM.ExportDimensionsLineRadius;
             sDisplayOptions.ExportDimensionsScale = _displayOptionsVM.ExportDimensionsScale;
             sDisplayOptions.ExportDescriptionTextWidthScaleFactor = _displayOptionsVM.ExportDescriptionTextWidthScaleFactor;
+            sDisplayOptions.ExportCladdingDescriptionSize = _displayOptionsVM.ExportCladdingDescriptionSize;
+            sDisplayOptions.ExportFibreglassDescriptionSize = _displayOptionsVM.ExportFibreglassDescriptionSize;
+            sDisplayOptions.ExportDoorDescriptionSize = _displayOptionsVM.ExportDoorDescriptionSize;
+            sDisplayOptions.ExportWindowDescriptionSize = _displayOptionsVM.ExportWindowDescriptionSize;
 
             sDisplayOptions.GUIFloorSlabTextSize = _displayOptionsVM.GUIFloorSlabTextSize;
             sDisplayOptions.GUIGridlinesSize = _displayOptionsVM.GUIGridlinesSize;
@@ -4534,6 +4543,10 @@ namespace PFD
             sDisplayOptions.GUIDimensionsLineRadius = _displayOptionsVM.GUIDimensionsLineRadius;
             sDisplayOptions.GUIDimensionsScale = _displayOptionsVM.GUIDimensionsScale;
             sDisplayOptions.GUIDescriptionTextWidthScaleFactor = _displayOptionsVM.GUIDescriptionTextWidthScaleFactor;
+            sDisplayOptions.GUICladdingDescriptionSize = _displayOptionsVM.GUICladdingDescriptionSize;
+            sDisplayOptions.GUIFibreglassDescriptionSize = _displayOptionsVM.GUIFibreglassDescriptionSize;
+            sDisplayOptions.GUIDoorDescriptionSize = _displayOptionsVM.GUIDoorDescriptionSize;
+            sDisplayOptions.GUIWindowDescriptionSize = _displayOptionsVM.GUIWindowDescriptionSize;
 
             return sDisplayOptions;
         }

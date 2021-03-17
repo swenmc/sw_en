@@ -239,6 +239,19 @@ namespace PFD
         private Color m_SlabRebateColor = Colors.OrangeRed;
         private int m_SlabRebateColorIndex;
 
+        [NonSerialized]
+        private Color m_CladdingTextColor = Colors.OrangeRed;
+        private int m_CladdingTextColorIndex;
+        [NonSerialized]
+        private Color m_FibreglassTextColor = Colors.Azure;
+        private int m_FibreglassTextColorIndex;
+        [NonSerialized]
+        private Color m_DoorTextColor = Colors.AliceBlue;
+        private int m_DoorTextColorIndex;
+        [NonSerialized]
+        private Color m_WindowTextColor = Colors.Cyan;
+        private int m_WindowTextColorIndex;
+
         private int m_PlateColorIndex;
         [NonSerialized]
         private Color m_PlateColor = Colors.Gray;
@@ -296,6 +309,10 @@ namespace PFD
         private float m_ExportDimensionsLineRadius;
         private float m_ExportDimensionsScale;
         private float m_ExportDescriptionTextWidthScaleFactor;
+        private float m_ExportCladdingDescriptionSize;
+        private float m_ExportFibreglassDescriptionSize;
+        private float m_ExportDoorDescriptionSize;
+        private float m_ExportWindowDescriptionSize;
 
         private float m_GUIFloorSlabTextSize;
         private float m_GUIGridlinesSize;
@@ -313,6 +330,10 @@ namespace PFD
         private float m_GUIDimensionsLineRadius;
         private float m_GUIDimensionsScale;
         private float m_GUIDescriptionTextWidthScaleFactor;
+        private float m_GUICladdingDescriptionSize;
+        private float m_GUIFibreglassDescriptionSize;
+        private float m_GUIDoorDescriptionSize;
+        private float m_GUIWindowDescriptionSize;
 
         private bool m_CladdingSheetColoursByID;
         private bool m_UseTextures;
@@ -1488,6 +1509,62 @@ namespace PFD
             }
         }
 
+        public Color CladdingTextColor
+        {
+            get
+            {
+                return m_CladdingTextColor;
+            }
+
+            set
+            {
+                m_CladdingTextColor = value;
+                NotifyPropertyChanged("CladdingTextColor");
+            }
+        }
+
+        public Color FibreglassTextColor
+        {
+            get
+            {
+                return m_FibreglassTextColor;
+            }
+
+            set
+            {
+                m_FibreglassTextColor = value;
+                NotifyPropertyChanged("FibreglassTextColor");
+            }
+        }
+
+        public Color DoorTextColor
+        {
+            get
+            {
+                return m_DoorTextColor;
+            }
+
+            set
+            {
+                m_DoorTextColor = value;
+                NotifyPropertyChanged("DoorTextColor");
+            }
+        }
+
+        public Color WindowTextColor
+        {
+            get
+            {
+                return m_WindowTextColor;
+            }
+
+            set
+            {
+                m_WindowTextColor = value;
+                NotifyPropertyChanged("WindowTextColor");
+            }
+        }
+
         public float MemberSolidModelOpacity
         {
             get
@@ -1984,6 +2061,74 @@ namespace PFD
                 SlabRebateColor = CComboBoxHelper.ColorList[m_SlabRebateColorIndex].Color.Value;
 
                 NotifyPropertyChanged("SlabRebateColorIndex");
+            }
+        }
+
+        public int CladdingTextColorIndex
+        {
+            get
+            {
+                return m_CladdingTextColorIndex;
+            }
+
+            set
+            {
+                m_CladdingTextColorIndex = value;
+
+                CladdingTextColor = CComboBoxHelper.ColorList[m_CladdingTextColorIndex].Color.Value;
+
+                NotifyPropertyChanged("CladdingTextColorIndex");
+            }
+        }
+
+        public int FibreglassTextColorIndex
+        {
+            get
+            {
+                return m_FibreglassTextColorIndex;
+            }
+
+            set
+            {
+                m_FibreglassTextColorIndex = value;
+
+                FibreglassTextColor = CComboBoxHelper.ColorList[m_FibreglassTextColorIndex].Color.Value;
+
+                NotifyPropertyChanged("FibreglassTextColorIndex");
+            }
+        }
+
+        public int DoorTextColorIndex
+        {
+            get
+            {
+                return m_DoorTextColorIndex;
+            }
+
+            set
+            {
+                m_DoorTextColorIndex = value;
+
+                DoorTextColor = CComboBoxHelper.ColorList[m_DoorTextColorIndex].Color.Value;
+
+                NotifyPropertyChanged("DoorTextColorIndex");
+            }
+        }
+
+        public int WindowTextColorIndex
+        {
+            get
+            {
+                return m_WindowTextColorIndex;
+            }
+
+            set
+            {
+                m_WindowTextColorIndex = value;
+
+                WindowTextColor = CComboBoxHelper.ColorList[m_WindowTextColorIndex].Color.Value;
+
+                NotifyPropertyChanged("WindowTextColorIndex");
             }
         }
 
@@ -2945,6 +3090,62 @@ namespace PFD
             }
         }
 
+        public float ExportCladdingDescriptionSize
+        {
+            get
+            {
+                return m_ExportCladdingDescriptionSize;
+            }
+
+            set
+            {
+                m_ExportCladdingDescriptionSize = value;
+                NotifyPropertyChanged("ExportCladdingDescriptionSize");
+            }
+        }
+
+        public float ExportFibreglassDescriptionSize
+        {
+            get
+            {
+                return m_ExportFibreglassDescriptionSize;
+            }
+
+            set
+            {
+                m_ExportFibreglassDescriptionSize = value;
+                NotifyPropertyChanged("ExportFibreglassDescriptionSize");
+            }
+        }
+
+        public float ExportDoorDescriptionSize
+        {
+            get
+            {
+                return m_ExportDoorDescriptionSize;
+            }
+
+            set
+            {
+                m_ExportDoorDescriptionSize = value;
+                NotifyPropertyChanged("ExportDoorDescriptionSize");
+            }
+        }
+
+        public float ExportWindowDescriptionSize
+        {
+            get
+            {
+                return m_ExportWindowDescriptionSize;
+            }
+
+            set
+            {
+                m_ExportWindowDescriptionSize = value;
+                NotifyPropertyChanged("ExportWindowDescriptionSize");
+            }
+        }
+
         public float GUIFloorSlabTextSize
         {
             get
@@ -3113,20 +3314,6 @@ namespace PFD
             }
         }
 
-        public float ExportDimensionsTextSize
-        {
-            get
-            {
-                return m_ExportDimensionsTextSize;
-            }
-
-            set
-            {
-                m_ExportDimensionsTextSize = value;
-                NotifyPropertyChanged("ExportDimensionsTextSize");
-            }
-        }
-
         public float GUIDimensionsTextSize
         {
             get
@@ -3138,6 +3325,76 @@ namespace PFD
             {
                 m_GUIDimensionsTextSize = value;
                 NotifyPropertyChanged("GUIDimensionsTextSize");
+            }
+        }
+
+        public float GUICladdingDescriptionSize
+        {
+            get
+            {
+                return m_GUICladdingDescriptionSize;
+            }
+
+            set
+            {
+                m_GUICladdingDescriptionSize = value;
+                NotifyPropertyChanged("GUICladdingDescriptionSize");
+            }
+        }
+
+        public float GUIFibreglassDescriptionSize
+        {
+            get
+            {
+                return m_GUIFibreglassDescriptionSize;
+            }
+
+            set
+            {
+                m_GUIFibreglassDescriptionSize = value;
+                NotifyPropertyChanged("GUIFibreglassDescriptionSize");
+            }
+        }
+
+        public float GUIDoorDescriptionSize
+        {
+            get
+            {
+                return m_GUIDoorDescriptionSize;
+            }
+
+            set
+            {
+                m_GUIDoorDescriptionSize = value;
+                NotifyPropertyChanged("GUIDoorDescriptionSize");
+            }
+        }
+
+        public float GUIWindowDescriptionSize
+        {
+            get
+            {
+                return m_GUIWindowDescriptionSize;
+            }
+
+            set
+            {
+                m_GUIWindowDescriptionSize = value;
+                NotifyPropertyChanged("GUIWindowDescriptionSize");
+            }
+        }
+
+        public float ExportDimensionsTextSize
+        {
+            get
+            {
+                return m_ExportDimensionsTextSize;
+            }
+
+            set
+            {
+                m_ExportDimensionsTextSize = value;
+                NotifyPropertyChanged("ExportDimensionsTextSize");
             }
         }
 
@@ -3866,6 +4123,11 @@ namespace PFD
             FloorSlabColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGray);
             SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkOrange);
 
+            CladdingTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
+            FibreglassTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Azure);
+            DoorTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.AliceBlue);
+            WindowTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+
             PlateColorIndex = CComboBoxHelper.GetColorIndex(Colors.Gray);
             ScrewColorIndex = CComboBoxHelper.GetColorIndex(Colors.Blue);
             AnchorColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGoldenrodYellow);
@@ -3910,6 +4172,10 @@ namespace PFD
             ExportDimensionsLineRadius = 1f / 1500f;
             ExportDimensionsScale = 1f / 10f;
             ExportDescriptionTextWidthScaleFactor = 0.6f;
+            ExportCladdingDescriptionSize = 1f / 100f;
+            ExportFibreglassDescriptionSize = 1f / 100f;
+            ExportDoorDescriptionSize = 1f / 100f;
+            ExportWindowDescriptionSize = 1f / 100f;
 
             GUIGridlinesSize = 1f / 20f;
             GUIGridLineLabelSize = 1f / 40f;
@@ -3927,6 +4193,10 @@ namespace PFD
             GUIDimensionsLineRadius = 1f / 1500f;
             GUIDimensionsScale = 1f / 10f;
             GUIDescriptionTextWidthScaleFactor = 0.3f;
+            GUICladdingDescriptionSize = 1f / 100f;
+            GUIFibreglassDescriptionSize = 1f / 100f;
+            GUIDoorDescriptionSize = 1f / 100f;
+            GUIWindowDescriptionSize = 1f / 100f;
 
             IsSetFromCode = false;
         }
