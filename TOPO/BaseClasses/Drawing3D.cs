@@ -4073,7 +4073,7 @@ namespace BaseClasses
             {
                 tr.Children.Add(gridline.TransformGr);
 
-                // Nechceme transofrmovat cely text label len vkladaci bod
+                // Nechceme transformovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(gridline.PointLabelText);
                 gridline.PointLabelText = pTransformed;
             }
@@ -4357,7 +4357,7 @@ namespace BaseClasses
             {
                 tr.Children.Add(foundation.GetFoundationTransformGroup_Complete());
 
-                // Nechceme transofrmovat cely text label len vkladaci bod
+                // Nechceme transformovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(foundation.PointText);
                 textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.5);
             }
@@ -4429,7 +4429,7 @@ namespace BaseClasses
             {
                 tr.Children.Add(slab.GetSlabTransformGroup());
 
-                // Nechceme transofrmovat cely text label len vkladaci bod
+                // Nechceme transformovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(slab.PointText);
                 textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.04);
             }
@@ -4507,7 +4507,7 @@ namespace BaseClasses
                         {
                             tr.Children.Add(s.GetTransformGroup(0, 0, -90)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
 
-                            // Nechceme transofrmovat cely text label len vkladaci bod
+                            // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(s.PointText);
                             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
                         }
@@ -4561,7 +4561,7 @@ namespace BaseClasses
                         {
                             tr.Children.Add(s.GetTransformGroup(0, 0, -90)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
 
-                            // Nechceme transofrmovat cely text label len vkladaci bod
+                            // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(s.PointText);
                             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
                         }
@@ -4616,7 +4616,7 @@ namespace BaseClasses
                         {
                             tr.Children.Add(door.GetTransformGroup()); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
 
-                            // Nechceme transofrmovat cely text label len vkladaci bod
+                            // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(door.PointText);
                             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
                         }
@@ -4670,7 +4670,7 @@ namespace BaseClasses
                         {
                             tr.Children.Add(window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
 
-                            // Nechceme transofrmovat cely text label len vkladaci bod
+                            // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(window.PointText);
                             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
                         }
