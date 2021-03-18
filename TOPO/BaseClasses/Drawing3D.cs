@@ -4596,6 +4596,45 @@ namespace BaseClasses
             }
         }
 
+
+        //Task 764
+        //ja nemam z takychto vseobecnych funkcii vobec dobry pocit
+        //cokolvek sa zmeni pre jeden text, zmeni vsade vsetko
+        //podla mna to nie je to co chceme,
+        //niekedy chces len pre nieco konkretne to trosku inak...a pojde vsetko do kytek
+        //treba to premysliet
+        public static void AddMultilineLabel3DToViewPort(string text, int rowsCount, int maxRowLength, float fTextBlockVerticalSize, Color textColor, Point3D p, Transform3DGroup tr, ref Viewport3D viewPort)
+        {
+            TextBlock tb = new TextBlock();            
+            tb.Text = text;
+            tb.FontFamily = new FontFamily("Arial");
+
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
+
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Bold;
+            tb.Foreground = new SolidColorBrush(textColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+            // Nastavujeme pre GCS (rovina XZ - text v smere X)
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0); // smer X
+            Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor); // smer Z
+
+            // Create text
+            ModelVisual3D textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, p, over, up, rowsCount, maxRowLength, 0.6);
+
+            // Nechceme transformovat cely text label len vkladaci bod
+            Point3D pTransformed = tr.Transform(p);
+            textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, rowsCount, maxRowLength, 0.6);
+            
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
    
 
         private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet, out int rowsCount, out int maxRowLength)
