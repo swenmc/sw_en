@@ -38,6 +38,8 @@ namespace BaseClasses.GraphObj
                 LengthTotal = Math.Max(LengthTopLeft, LengthTopRight);
             else
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
+
+            Area_brutto = Width * LengthTotal;
         }
     }
 }

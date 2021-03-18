@@ -19,22 +19,9 @@ namespace BaseClasses.GraphObj
         double m_dTipCoordinate_x;
         double m_dLengthTopTip;
         double m_dLengthTopLeft;
-        
-        //To Mato
-        //preco tu mame control point ked CEntity3D ma v sebe control point???
-        //komentujem a zmazeme neskor
-        //public Point3D ControlPoint
-        //{
-        //    get
-        //    {
-        //        return m_ControlPoint;
-        //    }
 
-        //    set
-        //    {
-        //        m_ControlPoint = value;
-        //    }
-        //}
+        double m_dArea_net;
+        double m_dArea_brutto;
 
         public int NumberOfEdges
         {
@@ -153,6 +140,32 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public double Area_net
+        {
+            get
+            {
+                return m_dArea_net;
+            }
+
+            set
+            {
+                m_dArea_net = value;
+            }
+        }
+
+        public double Area_brutto
+        {
+            get
+            {
+                return m_dArea_brutto;
+            }
+
+            set
+            {
+                m_dArea_brutto = value;
+            }
+        }
+
         public CSurfaceComponent()
         {
 
@@ -204,6 +217,8 @@ namespace BaseClasses.GraphObj
                 m_dLengthTotal = Math.Max(m_dLengthTopLeft, m_dLengthTopRight);
             else
                 m_dLengthTotal = Math.Max(Math.Max(m_dLengthTopLeft, m_dLengthTopRight), m_dLengthTopTip);
+
+            m_dArea_brutto = m_Width * m_dLengthTotal;
         }
     }
 }

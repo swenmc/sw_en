@@ -233,8 +233,7 @@ namespace BaseClasses.GraphObj
             else
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
 
-            //toto nie je podla mna spravne miesto - zmazat
-            //m_Text = "WC" + ID.ToString(); // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
+            Area_brutto = Width * LengthTotal;
 
             SetTextPointInLCS(); // Text v LCS
         }
@@ -281,12 +280,23 @@ namespace BaseClasses.GraphObj
 
             if (NumberOfEdges == 4)
             {
+                Area_net = MATH.Geom2D.PolygonArea(new System.Windows.Point[] { new System.Windows.Point(0, 0),
+                new System.Windows.Point(Width, 0),
+                new System.Windows.Point(Width, LengthTopRight),
+                new System.Windows.Point(0, LengthTopLeft) });
+
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0);
-                if(createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
+                if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
                 return area.CreateArea(options.bUseTextures, material);
             }
             else
             {
+                Area_net = MATH.Geom2D.PolygonArea(new System.Windows.Point[] { new System.Windows.Point(0,0),
+                new System.Windows.Point(Width, 0),
+                new System.Windows.Point(Width,LengthTopRight),
+                new System.Windows.Point(TipCoordinate_x, LengthTopTip),
+                new System.Windows.Point(0, LengthTopLeft) });
+
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0);
                 if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
                 return area.CreateArea(options.bUseTextures, material);
