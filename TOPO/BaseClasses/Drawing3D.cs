@@ -113,6 +113,10 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFloorSlab) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
                 if (slabsModel3DGroup != null) gr.Children.Add(slabsModel3DGroup);
 
+                Model3DGroup claddingModel3DGroup = null;
+                if (sDisplayOptions.bDisplayCladding) claddingModel3DGroup = Drawing3D.CreateCladdingModel3DGroup(model, sDisplayOptions);
+                if (claddingModel3DGroup != null) gr.Children.Add(claddingModel3DGroup);
+
                 Model3DGroup doorsModel3DGroup = null;
                 if (sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayDoors) doorsModel3DGroup = Drawing3D.CreateDoorsModel3DGroup(model, sDisplayOptions);
                 if (doorsModel3DGroup != null) gr.Children.Add(doorsModel3DGroup);
@@ -120,10 +124,6 @@ namespace BaseClasses
                 Model3DGroup windowsModel3DGroup = null;
                 if (sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows) windowsModel3DGroup = Drawing3D.CreateWindowsModel3DGroup(model, sDisplayOptions);
                 if (windowsModel3DGroup != null) gr.Children.Add(windowsModel3DGroup);
-
-                Model3DGroup claddingModel3DGroup = null;
-                if (sDisplayOptions.bDisplayCladding) claddingModel3DGroup = Drawing3D.CreateCladdingModel3DGroup(model, sDisplayOptions);
-                if (claddingModel3DGroup != null) gr.Children.Add(claddingModel3DGroup);
 
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
@@ -207,6 +207,16 @@ namespace BaseClasses
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
+                // Cladding Wireframe
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame)
+                {
+                    Model3DGroup lines;  // linie ako 3D valcove plochy
+                    if (claddingModel3DGroup == null) claddingModel3DGroup = Drawing3D.CreateCladdingModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawCladdingWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
+                    if (lines != null)
+                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+
                 // Doors Wireframe
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame && sDisplayOptions.bDisplayDoorsWireFrame)
                 {
@@ -227,16 +237,6 @@ namespace BaseClasses
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
-                // Cladding Wireframe
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame)
-                {
-                    Model3DGroup lines;  // linie ako 3D valcove plochy
-                    if (claddingModel3DGroup == null) claddingModel3DGroup = Drawing3D.CreateCladdingModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawCladdingWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
-                    if (lines != null)
-                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
-                }
-
                 // Other Objects Wireframe
                 //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayCladdingWireFrame)
                 //{
@@ -246,7 +246,7 @@ namespace BaseClasses
                 //    if (lines != null)
                 //        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 //}
-                
+
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -290,7 +290,7 @@ namespace BaseClasses
                     //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
 
-                if (sDisplayOptions.bDisplayNodesDescription)
+                if (sDisplayOptions.bDisplayNodes && sDisplayOptions.bDisplayNodesDescription)
                 {
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
@@ -316,9 +316,25 @@ namespace BaseClasses
                 {
                     Drawing3D.CreateFloorSlabsDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
-                if (sDisplayOptions.bDisplayCladdingDescription)
+
+                if (sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayCladdingDescription)
                 {
                     Drawing3D.CreateCladdingDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
+
+                if (sDisplayOptions.bDisplayFibreglass && sDisplayOptions.bDisplayFibreglassDescription)
+                {
+                    Drawing3D.CreateFibreglassDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
+
+                if (sDisplayOptions.bDisplayDoors && sDisplayOptions.bDisplayDoorDescription)
+                {
+                    Drawing3D.CreateDoorDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
+
+                if (sDisplayOptions.bDisplayWindows && sDisplayOptions.bDisplayWindowDescription)
+                {
+                    Drawing3D.CreateWindowDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
             }
             //System.Diagnostics.Trace.WriteLine("Before SetupScene: " + (DateTime.Now - start).TotalMilliseconds);
@@ -4456,243 +4472,17 @@ namespace BaseClasses
         }
 
         // Draw Cladding Text 3D
-        public static void DrawCladdingText3D(CModel model /*docasne*/, CCladding cladding, Viewport3D viewPort, DisplayOptions displayOptions)
+        public static void DrawCladdingText3D(CModel model, CCladding cladding, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            //To Mato 
-            //tu sa treba zamysliet s akymi objektami budeme robit a potom potrebujeme pre ne vytvarat na zaklade displayOptions texty
-            //dalej potrebujeme urcite TextPoint, kde sa ma dany text zobrazit
-            //v neposlednom rade bude potrebne urcit aky velky ma byt text vzhladom na cely model, alebo vzhladom na dany sheet
-
-            //tu dole mozes podopisovat, alebo sa o nieco posnazit...
-
-            // Refaktorovat cykly foreach a zaviest vykreslovanie pre vsetky sides a roof
-
             // Cladding sheets
-            if (displayOptions.bDisplayCladdingDescription)
-            {
-                if (cladding.listOfCladdingSheetsLeftWall != null)
-                {
-                    int i = 1;
-                    foreach (CCladdingOrFibreGlassSheet s in cladding.listOfCladdingSheetsLeftWall)
-                    {
-                        TextBlock tb = new TextBlock();
-                        int rowsCount = 0;
-                        int maxRowLength = 0;
-                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount, out maxRowLength);
-                        tb.FontFamily = new FontFamily("Arial");
+            CreateTextLabels(cladding.listOfCladdingSheetsLeftWall, displayOptions.bDisplayCladdingLeftWall, displayOptions, ref viewPort);
+            CreateTextLabels(cladding.listOfCladdingSheetsFrontWall, displayOptions.bDisplayCladdingFrontWall, displayOptions, ref viewPort);
+            CreateTextLabels(cladding.listOfCladdingSheetsRightWall, displayOptions.bDisplayCladdingRightWall, displayOptions, ref viewPort);
+            CreateTextLabels(cladding.listOfCladdingSheetsBackWall, displayOptions.bDisplayCladdingBackWall, displayOptions, ref viewPort);
+            CreateTextLabels(cladding.listOfCladdingSheetsRoofRight, displayOptions.bDisplayCladdingRoof, displayOptions, ref viewPort);
 
-                        float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
-
-                        //fTextBlockVerticalSize *= rowsCount;
-
-                        float fTextBlockVerticalSizeFactor = 1f;
-                        float fTextBlockHorizontalSizeFactor = 1f;
-
-                        tb.FontStretch = FontStretches.UltraCondensed;
-                        tb.FontStyle = FontStyles.Normal;
-                        tb.FontWeight = FontWeights.Bold;
-                        tb.Foreground = new SolidColorBrush(displayOptions.CladdingTextColor);
-                        //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-
-                        // Nastavujeme pre GCS (rovina XZ - text v smere X)
-                        Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-                        Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-
-                        // Create text
-                        ModelVisual3D textlabel = null; // CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.7 / rowsCount / rowsCount);
-                        Transform3DGroup tr = new Transform3DGroup();
-
-                        //musime skontrolovat, ci su RotateX,RotateY,RotateZ stale inicializovane - vyzera,ze su
-                        if (s.GetTransformGroup() == null)
-                        {
-                            throw new Exception("Cladding sheet in local coordinate system! \nTransformation object is null! \nText label is probably created before cladding sheet model exists!");
-                        }
-
-                        if (s.GetTransformGroup() != null)
-                        {
-                            tr.Children.Add(s.GetTransformGroup());
-
-                            // Nechceme transformovat cely text label len vkladaci bod
-                            Point3D pTransformed = tr.Transform(s.PointText);
-                            //textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.7 / rowsCount / rowsCount);
-                            textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, rowsCount, maxRowLength, 0.6);
-                        }
-
-                        if (centerModel)
-                        {
-                            textlabel.Transform = centerModelTransGr;
-                        }
-                        viewPort.Children.Add(textlabel);
-                    }
-                }
-            }
-
-            // Fibreglass sheets
-            if (displayOptions.bDisplayFibreglassDescription)
-            {
-                if (cladding.listOfFibreGlassSheetsWallLeft != null)
-                {
-                    foreach (CCladdingOrFibreGlassSheet s in cladding.listOfFibreGlassSheetsWallLeft)
-                    {
-                        TextBlock tb = new TextBlock();
-                        int rowsCount = 0;
-                        int maxRowLength = 0;
-                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount, out maxRowLength);
-                        tb.FontFamily = new FontFamily("Arial");
-
-                        float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions.ExportFibreglassDescriptionSize, displayOptions);
-                        fTextBlockVerticalSize *= rowsCount;
-
-                        float fTextBlockVerticalSizeFactor = 1f;
-                        float fTextBlockHorizontalSizeFactor = 1f;
-
-                        tb.FontStretch = FontStretches.UltraCondensed;
-                        tb.FontStyle = FontStyles.Normal;
-                        tb.FontWeight = FontWeights.Bold;
-                        tb.Foreground = new SolidColorBrush(displayOptions.FibreglassTextColor);
-                        //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-
-                        // Nastavujeme pre GCS (rovina XZ - text v smere X)
-                        Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
-                        Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-
-                        // Create text
-                        ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.8);
-                        Transform3DGroup tr = new Transform3DGroup();
-
-                        if (s.GetTransformGroup() == null)
-                        {
-                            throw new Exception("Fibreglass sheet in local coordinate system! \nTransformation object is null! \nText label is probably created before fibreglass sheet model exists!");
-                        }
-
-                        if (s.GetTransformGroup() != null)
-                        {
-                            tr.Children.Add(s.GetTransformGroup());
-
-                            // Nechceme transformovat cely text label len vkladaci bod
-                            Point3D pTransformed = tr.Transform(s.PointText);
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
-                        }
-
-                        if (centerModel)
-                        {
-                            textlabel.Transform = centerModelTransGr;
-                        }
-                        viewPort.Children.Add(textlabel);
-                    }
-                }
-            }
-
-            // TODO - toto by sa asi malo odclenit z cladding a presunut k dveram a oknam
-            // Doors
-            if(displayOptions.bDisplayDoorDescription)
-            {
-                if (model.m_arrGOStrDoors != null)
-                {
-                    foreach (CStructure_Door door in model.m_arrGOStrDoors)
-                    {
-                        TextBlock tb = new TextBlock();
-                        tb.Text = door.Text; // Dopracovat text popisu
-                        tb.FontFamily = new FontFamily("Arial");
-
-                        float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDoorDescriptionSize, displayOptions.ExportDoorDescriptionSize, displayOptions);
-
-                        float fTextBlockVerticalSizeFactor = 1f;
-                        float fTextBlockHorizontalSizeFactor = 1f;
-
-                        tb.FontStretch = FontStretches.UltraCondensed;
-                        tb.FontStyle = FontStyles.Normal;
-                        tb.FontWeight = FontWeights.Bold;
-                        tb.Foreground = new SolidColorBrush(displayOptions.DoorTextColor);
-                        //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-
-                        // Nastavujeme pre GCS (rovina XZ - text v smere X)
-                        Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
-                        Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-
-                        // Create text
-                        ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, door.PointText, over, up, 0.8);
-                        Transform3DGroup tr = new Transform3DGroup();
-
-                        if (door.GetTransformGroup() == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
-                        {
-                            throw new Exception("Door in local coordinate system! \nTransformation object is null! \nText label is probably created before door model exists!");
-                        }
-
-                        if (door.GetTransformGroup() != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
-                        {
-                            tr.Children.Add(door.GetTransformGroup()); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
-
-                            // Nechceme transformovat cely text label len vkladaci bod
-                            Point3D pTransformed = tr.Transform(door.PointText);
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
-                        }
-
-                        if (centerModel)
-                        {
-                            textlabel.Transform = centerModelTransGr;
-                        }
-                        viewPort.Children.Add(textlabel);
-                    }
-                }
-            }
-
-            // Windows
-            if (displayOptions.bDisplayWindowDescription)
-            {
-                if (model.m_arrGOStrWindows != null)
-                {
-                    foreach (CStructure_Window window in model.m_arrGOStrWindows)
-                    {
-                        TextBlock tb = new TextBlock();
-                        tb.Text = window.Text; // Dopracovat text popisu
-                        tb.FontFamily = new FontFamily("Arial");
-
-                        float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                        float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIWindowDescriptionSize, displayOptions.ExportWindowDescriptionSize, displayOptions);
-
-                        float fTextBlockVerticalSizeFactor = 1f;
-                        float fTextBlockHorizontalSizeFactor = 1f;
-
-                        tb.FontStretch = FontStretches.UltraCondensed;
-                        tb.FontStyle = FontStyles.Normal;
-                        tb.FontWeight = FontWeights.Bold;
-                        tb.Foreground = new SolidColorBrush(displayOptions.WindowTextColor);
-                        //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-
-                        // Nastavujeme pre GCS (rovina XZ - text v smere X)
-                        Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
-                        Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-
-                        // Create text
-                        ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, window.PointText, over, up, 0.8);
-                        Transform3DGroup tr = new Transform3DGroup();
-
-                        if (window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees) == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
-                        {
-                            throw new Exception("Window in local coordinate system! \nTransformation object is null! \nText label is probably created before window model exists!");
-                        }
-
-                        if (window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees) != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
-                        {
-                            tr.Children.Add(window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
-
-                            // Nechceme transformovat cely text label len vkladaci bod
-                            Point3D pTransformed = tr.Transform(window.PointText);
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
-                        }
-
-                        if (centerModel)
-                        {
-                            textlabel.Transform = centerModelTransGr;
-                        }
-                        viewPort.Children.Add(textlabel);
-                    }
-                }
-            }
+            if (model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
+                CreateTextLabels(cladding.listOfCladdingSheetsRoofLeft, displayOptions.bDisplayCladdingRoof, displayOptions, ref viewPort);
         }
 
         public static void CreateCladdingDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
@@ -4703,13 +4493,107 @@ namespace BaseClasses
                 {
                     if (model.m_arrGOCladding[i] != null) // Cladding object is valid (not empty)
                     {
-                        DrawCladdingText3D(model /*docasne*/, model.m_arrGOCladding[0], viewPort, displayOptions);
+                        DrawCladdingText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);
                     }
                 }
             }
         }
 
-        private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet, out int rowsCount,out int maxRowLength)
+        // Draw Fibreglass Text 3D
+        public static void DrawFibreglassText3D(CModel model, CCladding cladding, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            // Fibreglass sheets
+            CreateTextLabels(cladding.listOfFibreGlassSheetsWallLeft, displayOptions.bDisplayCladdingLeftWall, displayOptions, ref viewPort);
+            CreateTextLabels(cladding.listOfFibreGlassSheetsWallFront, displayOptions.bDisplayCladdingFrontWall, displayOptions, ref viewPort);
+            CreateTextLabels(cladding.listOfFibreGlassSheetsWallRight, displayOptions.bDisplayCladdingRightWall, displayOptions, ref viewPort);
+            CreateTextLabels(cladding.listOfFibreGlassSheetsWallBack, displayOptions.bDisplayCladdingBackWall, displayOptions, ref viewPort);
+            CreateTextLabels(cladding.listOfFibreGlassSheetsRoofRight, displayOptions.bDisplayCladdingRoof, displayOptions, ref viewPort);
+
+            if (model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
+                CreateTextLabels(cladding.listOfFibreGlassSheetsRoofLeft, displayOptions.bDisplayCladdingRoof, displayOptions, ref viewPort);
+        }
+
+        public static void CreateFibreglassDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrGOCladding != null)
+            {
+                for (int i = 0; i < model.m_arrGOCladding.Count; i++)
+                {
+                    if (model.m_arrGOCladding[i] != null) // Cladding object is valid (not empty)
+                    {
+                        DrawFibreglassText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);
+                    }
+                }
+            }
+        }
+
+        // Pomocne funkcie pre cladding
+        public static void CreateTextLabels(List<CCladdingOrFibreGlassSheet> listOfCladdingSheets, bool bDisplayCladddingSide, DisplayOptions displayOptions, ref Viewport3D viewPort)
+        {
+            if (listOfCladdingSheets != null && displayOptions.bDisplayCladding && bDisplayCladddingSide)
+            {
+                foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheets)
+                {
+                    TextBlock tb = new TextBlock();
+                    int rowsCount = 0;
+                    int maxRowLength = 0;
+                    tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount, out maxRowLength);
+                    tb.FontFamily = new FontFamily("Arial");
+
+                    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                    float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
+
+                    //fTextBlockVerticalSize *= rowsCount;
+
+                    float fTextBlockVerticalSizeFactor = 1f;
+                    float fTextBlockHorizontalSizeFactor = 1f;
+
+                    tb.FontStretch = FontStretches.UltraCondensed;
+                    tb.FontStyle = FontStyles.Normal;
+                    tb.FontWeight = FontWeights.Bold;
+                    tb.Foreground = new SolidColorBrush(displayOptions.CladdingTextColor);
+                    //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+                    // Nastavujeme pre GCS (rovina XZ - text v smere X)
+                    Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+                    Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+                    if(s.Prefix == "WCF" || s.Prefix == "WCB" ||
+                        s.Prefix == "WFF" || s.Prefix == "WFB")
+                    {
+                        over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+                    }
+
+                    // Create text
+                    ModelVisual3D textlabel = null; // CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.7 / rowsCount / rowsCount);
+                    Transform3DGroup tr = new Transform3DGroup();
+
+                    //musime skontrolovat, ci su RotateX,RotateY,RotateZ stale inicializovane - vyzera,ze su
+                    if (s.GetTransformGroup() == null)
+                    {
+                        throw new Exception("Cladding sheet in local coordinate system! \nTransformation object is null! \nText label is probably created before cladding sheet model exists!");
+                    }
+
+                    if (s.GetTransformGroup() != null)
+                    {
+                        tr.Children.Add(s.GetTransformGroup());
+
+                        // Nechceme transformovat cely text label len vkladaci bod
+                        Point3D pTransformed = tr.Transform(s.PointText);
+                        //textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.7 / rowsCount / rowsCount);
+                        textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, rowsCount, maxRowLength, 0.6);
+                    }
+
+                    if (centerModel)
+                    {
+                        textlabel.Transform = centerModelTransGr;
+                    }
+                    viewPort.Children.Add(textlabel);
+                }
+            }
+        }
+
+        private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet, out int rowsCount, out int maxRowLength)
         {
             string separator = " \n";
             rowsCount = 0;
@@ -4736,6 +4620,130 @@ namespace BaseClasses
             }
 
             return string.Join(separator, parts);
+        }
+
+        // Draw Door Text 3D
+        public static void DrawDoorText3D(CStructure_Door door, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = door.Text; // Dopracovat text popisu
+            tb.FontFamily = new FontFamily("Arial");
+
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDoorDescriptionSize, displayOptions.ExportDoorDescriptionSize, displayOptions);
+
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
+
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Bold;
+            tb.Foreground = new SolidColorBrush(displayOptions.DoorTextColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+            // Nastavujeme pre GCS (rovina XZ - text v smere X)
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+            Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, door.PointText, over, up, 0.8);
+            Transform3DGroup tr = new Transform3DGroup();
+
+            if (door.GetTransformGroup() == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+            {
+                throw new Exception("Door in local coordinate system! \nTransformation object is null! \nText label is probably created before door model exists!");
+            }
+
+            if (door.GetTransformGroup() != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+            {
+                tr.Children.Add(door.GetTransformGroup()); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+
+                // Nechceme transformovat cely text label len vkladaci bod
+                Point3D pTransformed = tr.Transform(door.PointText);
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
+            }
+
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
+        public static void CreateDoorDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrGOStrDoors != null)
+            {
+                for (int i = 0; i < model.m_arrGOStrDoors.Count; i++)
+                {
+                    if (model.m_arrGOStrDoors[i] != null) // Door object is valid (not empty)
+                    {
+                        DrawDoorText3D(model.m_arrGOStrDoors[i], viewPort, displayOptions);
+                    }
+                }
+            }
+        }
+
+        // Draw Window Text 3D
+        public static void DrawWindowText3D(CStructure_Window window, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = window.Text; // Dopracovat text popisu
+            tb.FontFamily = new FontFamily("Arial");
+
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIWindowDescriptionSize, displayOptions.ExportWindowDescriptionSize, displayOptions);
+
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
+
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Bold;
+            tb.Foreground = new SolidColorBrush(displayOptions.WindowTextColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+            // Nastavujeme pre GCS (rovina XZ - text v smere X)
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+            Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, window.PointText, over, up, 0.8);
+            Transform3DGroup tr = new Transform3DGroup();
+
+            if (window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees) == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+            {
+                throw new Exception("Window in local coordinate system! \nTransformation object is null! \nText label is probably created before window model exists!");
+            }
+
+            if (window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees) != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+            {
+                tr.Children.Add(window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+
+                // Nechceme transformovat cely text label len vkladaci bod
+                Point3D pTransformed = tr.Transform(window.PointText);
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
+            }
+
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
+        public static void CreateWindowDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrGOStrWindows != null)
+            {
+                for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
+                {
+                    if (model.m_arrGOStrWindows[i] != null) // Window object is valid (not empty)
+                    {
+                        DrawWindowText3D(model.m_arrGOStrWindows[i], viewPort, displayOptions);
+                    }
+                }
+            }
         }
 
         #endregion
