@@ -4719,17 +4719,14 @@ namespace BaseClasses
 
             // Create text
             ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, window.PointText, over, up, 0.8);
-            Transform3DGroup tr = new Transform3DGroup();
+            Transform3DGroup tr = window.GetTransformGroup();
 
-            if (window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees) == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+            if (tr == null) 
             {
                 throw new Exception("Window in local coordinate system! \nTransformation object is null! \nText label is probably created before window model exists!");
             }
-
-            if (window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees) != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+            else
             {
-                tr.Children.Add(window.GetTransformGroup(window.ControlPoint, window.m_fRotationZDegrees)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
-
                 // Nechceme transformovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(window.PointText);
                 textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);

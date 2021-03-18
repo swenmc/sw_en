@@ -31,9 +31,9 @@ namespace BaseClasses.GraphObj
         public float m_fDim2;
         public float m_fDim3;
 
-        public int m_iSegmentNum;
-        public float m_fGThickness;
-        public float m_fRotationZDegrees;
+        private int iSegmentNum;
+        private float fGThickness;
+        private float fRotationZDegrees;
 
         private Point3D m_PointText;
         private string m_Text;
@@ -63,6 +63,45 @@ namespace BaseClasses.GraphObj
         {
             get { return m_Text; }
             set { m_Text = value; }
+        }
+
+        public int SegmentNum
+        {
+            get
+            {
+                return iSegmentNum;
+            }
+
+            set
+            {
+                iSegmentNum = value;
+            }
+        }
+
+        public float GThickness
+        {
+            get
+            {
+                return fGThickness;
+            }
+
+            set
+            {
+                fGThickness = value;
+            }
+        }
+
+        public float RotationZDegrees
+        {
+            get
+            {
+                return fRotationZDegrees;
+            }
+
+            set
+            {
+                fRotationZDegrees = value;
+            }
         }
 
         public int iVectorOverFactor_LCS;
@@ -104,7 +143,7 @@ namespace BaseClasses.GraphObj
         {
             ID = iW_ID;
             m_eShapeType = iShapeType;
-            m_iSegmentNum = iSegmentNum;
+            SegmentNum = iSegmentNum;
             ControlPoint = pControlEdgePoint;
             m_fDim1 = fL;
             m_fDim2 = fH;
@@ -124,8 +163,8 @@ namespace BaseClasses.GraphObj
             glassPanelSolidBrush.Opacity = m_fvolOpacity_2;
             m_Material_2 = new DiffuseMaterial(glassPanelSolidBrush);
 
-            m_fGThickness = fGlassThickness;
-            m_fRotationZDegrees = fRotationZDegrees;
+            GThickness = fGlassThickness;
+            RotationZDegrees = fRotationZDegrees;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
@@ -133,7 +172,7 @@ namespace BaseClasses.GraphObj
 
             SetTextPointInLCS();
 
-            CreateM_3D_G_Window(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fGlassThickness, fRotationZDegrees);
+            CreateM_3D_G_Window(iSegmentNum, fL, fH, ft, fGlassThickness);
         }
 
         public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft,
@@ -141,7 +180,7 @@ namespace BaseClasses.GraphObj
         {
             ID = iW_ID;
             m_eShapeType = iShapeType;
-            m_iSegmentNum = iSegmentNum;
+            SegmentNum = iSegmentNum;
             ControlPoint = pControlEdgePoint;
             m_fDim1 = fL;
             m_fDim2 = fH;
@@ -150,8 +189,8 @@ namespace BaseClasses.GraphObj
             m_Material_1 = matF;
             m_Material_2 = matG;
 
-            m_fGThickness = fGlassThickness;
-            m_fRotationZDegrees = fRotationZDegrees;
+            GThickness = fGlassThickness;
+            RotationZDegrees = fRotationZDegrees;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
@@ -159,7 +198,7 @@ namespace BaseClasses.GraphObj
 
             SetTextPointInLCS();
 
-            CreateM_3D_G_Window(iSegmentNum, new Point3D(pControlEdgePoint.X, pControlEdgePoint.Y, pControlEdgePoint.Z), fL, fH, ft, fGlassThickness, fRotationZDegrees);
+            CreateM_3D_G_Window(iSegmentNum, fL, fH, ft, fGlassThickness);
         }
 
         // Temporary auxiliary function - glass window (3D HOUSE)
@@ -215,7 +254,7 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Model3DGroup CreateM_3D_G_Window(int iSegmentNum, Point3D ControlPoint, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, float fRotationZDegrees)
+        public Model3DGroup CreateM_3D_G_Window(int iSegmentNum, float fL_X, float fH_Z, float fT_Y, float fGlassThickness)
         {
             Model3DGroup gr = new Model3DGroup();
 
@@ -227,7 +266,7 @@ namespace BaseClasses.GraphObj
             }
 
             // Create transform group
-            Transform3DGroup transform3DGroup = GetTransformGroup(ControlPoint, fRotationZDegrees);
+            Transform3DGroup transform3DGroup = GetTransformGroup();
             // Set transformation to group
             gr.Transform = transform3DGroup;
 
@@ -244,19 +283,19 @@ namespace BaseClasses.GraphObj
         {
             Model3DGroup m3Dg = new Model3DGroup();
 
-            Point3D pControlEdge = new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
+            //Point3D pControlEdge = new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
-            m3Dg.Children.Add(CreateM_3D_G_Window(m_iSegmentNum, pControlEdge, m_fDim1, m_fDim2, m_fDim3, m_fGThickness, m_fRotationZDegrees));
+            m3Dg.Children.Add(CreateM_3D_G_Window(SegmentNum, m_fDim1, m_fDim2, m_fDim3, GThickness));
 
             return m3Dg;
         }
 
-        public Transform3DGroup GetTransformGroup(Point3D ControlPoint, float fRotationZDegrees)
+        public Transform3DGroup GetTransformGroup()
         {
             // Move and rotate window
             Transform3DGroup transform3DGroup = new Transform3DGroup();
             // Rotation about Y axis
-            RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZDegrees));
+            RotateTransform3D rotateTransformation3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), RotationZDegrees));
             // Translation - move to control point
             TranslateTransform3D translateTransform3D = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
             // Adding transforms
