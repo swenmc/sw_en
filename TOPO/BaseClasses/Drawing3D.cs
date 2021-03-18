@@ -5329,10 +5329,16 @@ namespace BaseClasses
                 label.FontFamily = tb.FontFamily;
                 label.BorderThickness = new Thickness(2);
                 label.BorderBrush = tb.Foreground;
+
+                //pokusy pre alignment, ale nefunguje to
+                //label.RenderSize = new Size(tb.Text.Length * height * widthScaleFactor, height);
+                //label.HorizontalContentAlignment = HorizontalAlignment.Right;
+                //label.HorizontalAlignment = HorizontalAlignment.Right;
+
                 mat.Brush = new VisualBrush(label);
             }
             else
-            {
+            {                
                 mat.Brush = new VisualBrush(tb);
             }
 
