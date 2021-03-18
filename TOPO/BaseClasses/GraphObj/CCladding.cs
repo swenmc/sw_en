@@ -1528,7 +1528,7 @@ namespace BaseClasses.GraphObj
                     // Pridame sheet do model group
                     GeometryModel3D sheetModel = listOfsheets[i].GetCladdingSheetModel(options, material, createWireframe, outOffPlaneOffset);
                     sheetModel.Transform = listOfsheets[i].GetTransformGroup();
-                    listOfsheets[i].PointText = sheetModel.Transform.Transform(listOfsheets[i].PointText); //transformPoint
+                    //listOfsheets[i].PointText = sheetModel.Transform.Transform(listOfsheets[i].PointText); //transformPoint
                     if (createWireframe)
                     {
                         Drawing3DHelper.TransformPoints(listOfsheets[i].WireFramePoints, sheetModel.Transform);
