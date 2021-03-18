@@ -4476,7 +4476,7 @@ namespace BaseClasses
                     foreach (CCladdingOrFibreGlassSheet s in cladding.listOfCladdingSheetsLeftWall)
                     {
                         TextBlock tb = new TextBlock();
-                        tb.Text = "Left SH" + i++; // s.Text; // Dopracovat text popisu
+                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s); //"Left SH" + i++; // s.Text; // Dopracovat text popisu
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
@@ -4492,7 +4492,7 @@ namespace BaseClasses
                         //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
                         // Nastavujeme pre GCS (rovina XZ - text v smere X)
-                        Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+                        Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
                         Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
 
                         // Create text
@@ -4507,7 +4507,7 @@ namespace BaseClasses
 
                         if (s.GetTransformGroup() != null)
                         {
-                            tr.Children.Add(s.GetTransformGroup());
+                            //tr.Children.Add(s.GetTransformGroup());
 
                             // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(s.PointText);
@@ -4531,7 +4531,7 @@ namespace BaseClasses
                     foreach (CCladdingOrFibreGlassSheet s in cladding.listOfFibreGlassSheetsWallLeft)
                     {
                         TextBlock tb = new TextBlock();
-                        tb.Text = s.Text; // Dopracovat text popisu
+                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s); //s.Text; // Dopracovat text popisu
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
@@ -4699,6 +4699,23 @@ namespace BaseClasses
                     }
                 }
             }
+        }
+
+
+        //To Mato - 760 dopln si ako ma presne vyzerat generovany popis
+        //members maju navyse este prepinac, kde si vies povedat ci chces v [mm] alebo v [m] hodnoty
+        private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet)
+        {
+            string separator = " - ";
+            List<string> parts = new List<string>();
+            if (options.bDisplayCladdingID) parts.Add(sheet.ID.ToString());
+            if (options.bDisplayCladdingPrefix) parts.Add(sheet.Prefix.ToString());
+
+            if (options.bDisplayCladdingLengthWidth) parts.Add($"{sheet.LengthTotal}x{sheet.Width}");
+            if (options.bDisplayCladdingArea) parts.Add($"{sheet.LengthTotal * sheet.Width}");
+            if (options.bDisplayCladdingUnits) parts.Add("[m]");
+
+            return string.Join(separator, parts);
         }
 
         #endregion

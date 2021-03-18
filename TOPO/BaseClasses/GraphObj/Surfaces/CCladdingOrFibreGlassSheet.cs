@@ -17,7 +17,7 @@ namespace BaseClasses.GraphObj
         float m_fOpacity;
 
         private Point3D m_PointText;
-        private string m_Text;
+        //private string m_Text;
 
         private List<Point3D> m_WireFramePoints;
         private double m_RotationX;
@@ -124,11 +124,11 @@ namespace BaseClasses.GraphObj
             set { m_PointText = value; }
         }
 
-        public string Text
-        {
-            get { return m_Text; }
-            set { m_Text = value; }
-        }
+        //public string Text
+        //{
+        //    get { return m_Text; }
+        //    set { m_Text = value; }
+        //}
 
         public double RotationX
         {
@@ -184,6 +184,9 @@ namespace BaseClasses.GraphObj
         Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime)
         {
             ID = iCladdingSheet_ID;
+            //To Mato - 760, Prefix je null treba ho nejako inicializovat
+            Prefix = $"WC {ID}";
+
             NumberOfEdges = numberOfCorners;
             CoordinateInPlane_x = coordinateInPlane_x;
             CoordinateInPlane_y = coordinateInPlane_y;
@@ -231,7 +234,8 @@ namespace BaseClasses.GraphObj
             else
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
 
-            m_Text = "WC" + ID.ToString(); // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
+            //toto nie je podla mna spravne miesto - zmazat
+            //m_Text = "WC" + ID.ToString(); // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
 
             SetTextPointInLCS(); // Text v LCS
         }
