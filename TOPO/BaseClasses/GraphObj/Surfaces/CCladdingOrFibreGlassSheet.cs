@@ -37,8 +37,7 @@ namespace BaseClasses.GraphObj
                 m_WireFramePoints = value;
             }
         }
-
-
+        
 
         public double CladdingWidthRibModular
         {

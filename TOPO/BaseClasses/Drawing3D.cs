@@ -4543,8 +4543,6 @@ namespace BaseClasses
                     float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                     float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
 
-                    //fTextBlockVerticalSize *= rowsCount;
-
                     float fTextBlockVerticalSizeFactor = 1f;
                     float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -4576,21 +4574,16 @@ namespace BaseClasses
 
                     // Create text
                     ModelVisual3D textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, rowsCount, maxRowLength, 0.6);
-                    Transform3DGroup tr = new Transform3DGroup();
 
-                    //musime skontrolovat, ci su RotateX,RotateY,RotateZ stale inicializovane - vyzera,ze su
-                    if (s.GetTransformGroup() == null)
+                    Transform3DGroup tr = s.GetTransformGroup();
+                    if (tr == null)
                     {
                         throw new Exception("Cladding sheet in local coordinate system! \nTransformation object is null! \nText label is probably created before cladding sheet model exists!");
                     }
-
-                    if (s.GetTransformGroup() != null)
+                    else                    
                     {
-                        tr.Children.Add(s.GetTransformGroup());
-
                         // Nechceme transformovat cely text label len vkladaci bod
                         Point3D pTransformed = tr.Transform(s.PointText);
-
                         textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, rowsCount, maxRowLength, 0.6);
                     }
 
@@ -4602,6 +4595,8 @@ namespace BaseClasses
                 }
             }
         }
+
+   
 
         private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet, out int rowsCount, out int maxRowLength)
         {
@@ -4657,17 +4652,14 @@ namespace BaseClasses
 
             // Create text
             ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, door.PointText, over, up, 0.8);
-            Transform3DGroup tr = new Transform3DGroup();
+            Transform3DGroup tr = door.GetTransformGroup();
 
-            if (door.GetTransformGroup() == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+            if (tr == null) 
             {
                 throw new Exception("Door in local coordinate system! \nTransformation object is null! \nText label is probably created before door model exists!");
             }
-
-            if (door.GetTransformGroup() != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+            else
             {
-                tr.Children.Add(door.GetTransformGroup()); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
-
                 // Nechceme transformovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(door.PointText);
                 textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
