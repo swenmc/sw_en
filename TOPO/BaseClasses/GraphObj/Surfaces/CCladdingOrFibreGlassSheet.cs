@@ -337,12 +337,13 @@ namespace BaseClasses.GraphObj
 
             float fOffsetFromPlane = 0.005f; // Offset nad/ pred urovnou panela, aby sa text nevnoril do 3D reprezentacie
 
-            m_PointText = new Point3D()
-            {
-                X = 0.3 * Width, // Kreslime v 30% sirky zlava
-                Y = 0.4 * LengthTotal, // Kreslime v 40% dlzky zdola
-                Z = fOffsetFromPlane
-            };
+            PointText = new Point3D(0, 0, 0);
+            //PointText = new Point3D()
+            //{
+            //    X = 0.3 * Width, // Kreslime v 30% sirky zlava
+            //    Y = 0.4 * LengthTotal, // Kreslime v 40% dlzky zdola
+            //    Z = fOffsetFromPlane
+            //};
         }
     }
 }

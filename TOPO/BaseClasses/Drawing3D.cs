@@ -4500,20 +4500,21 @@ namespace BaseClasses
                         Transform3DGroup tr = new Transform3DGroup();
 
                         //musime skontrolovat, ci su RotateX,RotateY,RotateZ stale inicializovane - vyzera,ze su
-                        if (s.GetTransformGroup() == null)
-                        {
-                            throw new Exception("Cladding sheet in local coordinate system! \nTransformation object is null! \nText label is probably created before cladding sheet model exists!");
-                        }
+                        //if (s.GetTransformGroup() == null)
+                        //{
+                        //    throw new Exception("Cladding sheet in local coordinate system! \nTransformation object is null! \nText label is probably created before cladding sheet model exists!");
+                        //}
 
-                        if (s.GetTransformGroup() != null)
-                        {
-                            //tr.Children.Add(s.GetTransformGroup());
+                        //if (s.GetTransformGroup() != null)
+                        //{
+                        //    //tr.Children.Add(s.GetTransformGroup());
 
-                            // Nechceme transformovat cely text label len vkladaci bod
-                            Point3D pTransformed = tr.Transform(s.PointText);
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
-                        }
+                        //    // Nechceme transformovat cely text label len vkladaci bod
+                        //    Point3D pTransformed = tr.Transform(s.PointText);
+                        //    textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
+                        //}
 
+                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.8);
                         if (centerModel)
                         {
                             textlabel.Transform = centerModelTransGr;
