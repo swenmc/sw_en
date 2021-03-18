@@ -808,7 +808,7 @@ namespace BaseClasses.GraphObj
             {
                 if (fgsp.Side == "Left")
                 {
-                    listOfFibreGlassSheetsWallLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFL", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
+                    listOfFibreGlassSheetsWallLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFL", "Fibreglass - Left Wall", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                         pControlPoint_LeftWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                         m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                     iSheet_FG_Index++;
@@ -821,7 +821,7 @@ namespace BaseClasses.GraphObj
 
             if (bGenerateLeftSideCladding && bIndividualCladdingSheets)
             {
-                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", "WCL", pControlPoint_LeftWall, m_ColorNameWall,
+                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", "WCL", "Cladding - Left Wall", pControlPoint_LeftWall, m_ColorNameWall,
                 m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, width,
                 claddingWidthRibModular_Wall, claddingWidthModular_Wall, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
                 listOfOpeningsLeftWall_All, ref iSheetIndex, out listOfCladdingSheetsLeftWall);
@@ -844,7 +844,7 @@ namespace BaseClasses.GraphObj
             {
                 if (fgsp.Side == "Front")
                 {
-                    listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFF", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
+                    listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFF", "Fibreglass - Front Wall", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                         pControlPoint_FrontWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                         m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                     iSheet_FG_Index++;
@@ -857,7 +857,7 @@ namespace BaseClasses.GraphObj
 
             if (bGenerateFrontSideCladding &&  bIndividualCladdingSheets)
             {
-                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", "WCF", pControlPoint_FrontWall, m_ColorNameWall,
+                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", "WCF", "Cladding - Front Wall", pControlPoint_FrontWall, m_ColorNameWall,
                 m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, width,
                 claddingWidthRibModular_Wall, claddingWidthModular_Wall, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
                 listOfOpeningsFrontWall_All, ref iSheetIndex, out listOfCladdingSheetsFrontWall);
@@ -880,7 +880,7 @@ namespace BaseClasses.GraphObj
             {
                 if (fgsp.Side == "Right")
                 {
-                    listOfFibreGlassSheetsWallRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFR", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
+                    listOfFibreGlassSheetsWallRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFR", "Fibreglass - Right Wall", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                 pControlPoint_RightWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                 m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                     iSheet_FG_Index++;
@@ -893,7 +893,7 @@ namespace BaseClasses.GraphObj
 
             if (bGenerateRightSideCladding && bIndividualCladdingSheets)
             {
-                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", "WCR", pControlPoint_RightWall, m_ColorNameWall,
+                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", "WCR", "Cladding - Right Wall", pControlPoint_RightWall, m_ColorNameWall,
                 m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, width,
                 claddingWidthRibModular_Wall, claddingWidthModular_Wall, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
                 listOfOpeningsRightWall_All, ref iSheetIndex, out listOfCladdingSheetsRightWall);
@@ -916,7 +916,7 @@ namespace BaseClasses.GraphObj
             {
                 if (fgsp.Side == "Back")
                 {
-                    listOfFibreGlassSheetsWallBack.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFB", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
+                    listOfFibreGlassSheetsWallBack.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFB", "Fibreglass - Back Wall", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                          pControlPoint_BackWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                          m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                     iSheet_FG_Index++;
@@ -929,7 +929,7 @@ namespace BaseClasses.GraphObj
 
             if (bGenerateBackSideCladding && bIndividualCladdingSheets)
             {
-                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", "WCB", pControlPoint_BackWall, m_ColorNameWall,
+                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", "WCB", "Cladding - Back Wall", pControlPoint_BackWall, m_ColorNameWall,
                 m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, width,
                 claddingWidthRibModular_Wall, claddingWidthModular_Wall, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
                 listOfOpeningsBackWall_All, ref iSheetIndex, out listOfCladdingSheetsBackWall);
@@ -958,7 +958,7 @@ namespace BaseClasses.GraphObj
             {
                 if (fgsp.Side == "Roof" || fgsp.Side == "Roof-Right Side")
                 {
-                    listOfFibreGlassSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "RF", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
+                    listOfFibreGlassSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "RF", "Fibreglass - Roof-Right Side", iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                          pControlPoint_RoofRight, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
                          m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
                     iSheet_FG_Index++;
@@ -967,7 +967,7 @@ namespace BaseClasses.GraphObj
 
             if (bGenerateRoofCladding && bIndividualCladdingSheets)
             {
-                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-right", "RC", pControlPoint_RoofRight, m_ColorNameRoof,
+                GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-right", "RC", "Cladding - Roof-Right Side", pControlPoint_RoofRight, m_ColorNameRoof,
                 m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, width,
                 claddingWidthRibModular_Roof, claddingWidthModular_Roof, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
                 SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofRight), ref iSheetIndex, out listOfCladdingSheetsRoofRight);
@@ -1088,7 +1088,7 @@ namespace BaseClasses.GraphObj
                         // Pre Left side prevratime suradnice v LCS y, aby boli vstupy na oboch stranach brane od spodnej hrany H1
                         double Position_y = length_left_basic - fgsp.Y - fgsp.Length;
 
-                        listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "RF", iNumberOfEdges_FG_D_W, fgsp.X, Position_y,
+                        listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "RF", "Fibreglass - Roof-Left Side", iNumberOfEdges_FG_D_W, fgsp.X, Position_y,
                             pControlPoint_RoofLeft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
                         iSheet_FG_Index++;
@@ -1098,7 +1098,7 @@ namespace BaseClasses.GraphObj
                 listOfCladdingSheetsRoofLeft = null;
                 if (bGenerateRoofCladding && bIndividualCladdingSheets)
                 {
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof -left", "RC", pControlPoint_RoofLeft, m_ColorNameRoof,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof -left", "RC", "Cladding - Roof-Left Side", pControlPoint_RoofLeft, m_ColorNameRoof,
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, width,
                     claddingWidthRibModular_Roof, claddingWidthModular_Roof, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
                     SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofLeft), ref iSheetIndex, out listOfCladdingSheetsRoofLeft);
@@ -1223,6 +1223,7 @@ namespace BaseClasses.GraphObj
             bool bUseTop20Colors,
             string side,
             string prefix,
+            string name,
             Point3D pControlPoint,
             string colorName,
             string claddingShape,
@@ -1328,7 +1329,7 @@ namespace BaseClasses.GraphObj
                 if (objectInColision_In_Local_x == null || objectInColision_In_Local_x.Count == 0)
                 {
                     // Nie je potrebne delit sheet - pridame teda "originalsheet"
-                    listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, originalsheetNumberOfEdges, originalsheetCoordinateInPlane_x, originalsheetCoordinateInPlane_y,
+                    listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, originalsheetNumberOfEdges, originalsheetCoordinateInPlane_x, originalsheetCoordinateInPlane_y,
                     originalsheetControlPoint, originalsheetWidth, originalsheetLengthTopLeft, originalsheetLengthTopRight, originalsheetTipCoordinate_x, originalsheetLengthTopTip,
                     colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0));
                     iSheetIndex++;
@@ -1364,7 +1365,7 @@ namespace BaseClasses.GraphObj
                     {
                         if (j == iNumberOfNewSheets - 1) // Last segment of original sheet
                         {
-                            listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, originalsheetNumberOfEdges,
+                            listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, originalsheetNumberOfEdges,
                             originalsheetCoordinateInPlane_x,
                             objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + objectInColision_In_Local_x[j - 1].LengthTotal,
                             originalsheetControlPoint, originalsheetWidth,
@@ -1384,7 +1385,7 @@ namespace BaseClasses.GraphObj
                                 coordinate_y = objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + objectInColision_In_Local_x[j - 1].LengthTotal;
 
                             iNumberOfEdges = 4;
-                            listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, iNumberOfEdges,
+                            listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, iNumberOfEdges,
                             originalsheetCoordinateInPlane_x,
                             coordinate_y,
                             originalsheetControlPoint, originalsheetWidth,

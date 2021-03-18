@@ -4555,17 +4555,27 @@ namespace BaseClasses
                     //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
                     // Nastavujeme pre GCS (rovina XZ - text v smere X)
-                    Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-                    Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+                    Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0); // smer X
+                    Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor); // smer Z
 
-                    if(s.Prefix == "WCF" || s.Prefix == "WCB" ||
-                        s.Prefix == "WFF" || s.Prefix == "WFB")
+                    if(s.Prefix == "WCL" || s.Prefix == "WCR" ||
+                        s.Prefix == "WFL" || s.Prefix == "WFR" ||
+                        s.Prefix == "RC" || s.Prefix == "RF")
                     {
-                        over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+                        over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0); // smer Y
+                    }
+
+                    // TODO Ondrej - dopracovat smer vektorov pre roof, aby popis lezal v rovine strechy mozno by sme mali transformovat cely textlabel, nielen PointText
+                    if(s.Prefix == "RC" || s.Prefix == "RF")
+                    {
+                        up = new Vector3D(Math.Cos(5f / 180f * Math.PI), 0, Math.Sin(5f / 180f * Math.PI)); // Pokusne, rozlisit pravu a lavu stranu, resp kladny a zaporny sklon strechy
+
+                        if (s.Name == "Cladding - Roof-Right Side" || s.Name == "Fibreglass - Roof-Right Side")
+                            up = new Vector3D(Math.Cos(5f / 180f * Math.PI), 0, Math.Sin(-5f / 180f * Math.PI));
                     }
 
                     // Create text
-                    ModelVisual3D textlabel = null; // CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.7 / rowsCount / rowsCount);
+                    ModelVisual3D textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, rowsCount, maxRowLength, 0.6);
                     Transform3DGroup tr = new Transform3DGroup();
 
                     //musime skontrolovat, ci su RotateX,RotateY,RotateZ stale inicializovane - vyzera,ze su
@@ -4580,7 +4590,7 @@ namespace BaseClasses
 
                         // Nechceme transformovat cely text label len vkladaci bod
                         Point3D pTransformed = tr.Transform(s.PointText);
-                        //textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.7 / rowsCount / rowsCount);
+
                         textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, rowsCount, maxRowLength, 0.6);
                     }
 

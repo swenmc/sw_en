@@ -177,14 +177,15 @@ namespace BaseClasses.GraphObj
 
         }
 
-        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, int numberOfCorners,
+        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, string name, int numberOfCorners,
         double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
         Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime)
         {
             ID = iCladdingSheet_ID;
-            Prefix = prefix/* + $" {ID}"*/;
+            Prefix = prefix;
+            Name = name;
 
             NumberOfEdges = numberOfCorners;
             CoordinateInPlane_x = coordinateInPlane_x;
