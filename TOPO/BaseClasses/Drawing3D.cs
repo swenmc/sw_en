@@ -4476,7 +4476,7 @@ namespace BaseClasses
                     foreach (CCladdingOrFibreGlassSheet s in cladding.listOfCladdingSheetsLeftWall)
                     {
                         TextBlock tb = new TextBlock();
-                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s); //"Left SH" + i++; // s.Text; // Dopracovat text popisu
+                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s);
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
@@ -4531,7 +4531,7 @@ namespace BaseClasses
                     foreach (CCladdingOrFibreGlassSheet s in cladding.listOfFibreGlassSheetsWallLeft)
                     {
                         TextBlock tb = new TextBlock();
-                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s); //s.Text; // Dopracovat text popisu
+                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s);
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
@@ -4711,9 +4711,10 @@ namespace BaseClasses
             if (options.bDisplayCladdingID) parts.Add(sheet.ID.ToString());
             if (options.bDisplayCladdingPrefix) parts.Add(sheet.Prefix.ToString());
 
-            if (options.bDisplayCladdingLengthWidth) parts.Add($"{sheet.LengthTotal}x{sheet.Width}");
-            if (options.bDisplayCladdingArea) parts.Add($"{sheet.LengthTotal * sheet.Width}");
-            if (options.bDisplayCladdingUnits) parts.Add("[m]");
+            if (options.bDisplayCladdingLengthWidth) parts.Add($"{sheet.LengthTotal.ToString("F3")}x{sheet.Width.ToString("F3")}");
+            if (options.bDisplayCladdingUnits) parts.Add("m");
+            if (options.bDisplayCladdingArea) parts.Add(sheet.Area_net.ToString("F3"));
+            if (options.bDisplayCladdingUnits) parts.Add("m²");
 
             return string.Join(separator, parts);
         }

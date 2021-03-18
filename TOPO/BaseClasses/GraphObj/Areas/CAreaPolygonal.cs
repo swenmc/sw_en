@@ -139,7 +139,7 @@ namespace BaseClasses.GraphObj
             double y = EdgePointList.Average(p => p.Y);
             double z = EdgePointList.Average(p => p.Z);
             centreP = new Point3D(x, y, z);
-            return centreP;            
+            return centreP;
         }
     }
 }
