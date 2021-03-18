@@ -1173,7 +1173,7 @@ namespace BaseClasses.GraphObj
             bool claddingWireframe = options.bDisplayWireFrameModel && options.bDisplayCladdingWireFrame;
             bool fibreglassWireframe = options.bDisplayWireFrameModel && options.bDisplayCladdingWireFrame && options.bDisplayFibreglassWireFrame;
             if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && bIndividualCladdingSheets)
-               AddSheet3DModelsToModelGroup(listOfCladdingSheetsLeftWall, options, brushSide, material_SideWall, claddingWidthRibModular_Wall,0,0,-90, ref model_gr, claddingWireframe);
+               AddSheet3DModelsToModelGroup(listOfCladdingSheetsLeftWall, options, brushSide, material_SideWall, claddingWidthRibModular_Wall, 0, 0, -90, ref model_gr, claddingWireframe);
  
             if (options.bDisplayFibreglass || options.bDisplayFibreglassWireFrame)
                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallLeft, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, -90, ref model_gr, fibreglassWireframe, outOffPlaneOffset_FG);
@@ -1521,10 +1521,13 @@ namespace BaseClasses.GraphObj
                         }
                     }
 
+                    listOfsheets[i].RotationX = rotationX;
+                    listOfsheets[i].RotationY = rotationY;
+                    listOfsheets[i].RotationZ = rotationZ;
+
                     // Pridame sheet do model group
-                    //TODO - treba sa zamysliet ako riesit ak wireframe nechceme, nemusi sa stale vyrabat, ak Wireframe nepotrebujeme zobrazit [mozno len pridat jeden bool parameter createWireframe]
                     GeometryModel3D sheetModel = listOfsheets[i].GetCladdingSheetModel(options, material, createWireframe, outOffPlaneOffset);
-                    sheetModel.Transform = listOfsheets[i].GetTransformGroup(rotationX, rotationY, rotationZ);
+                    sheetModel.Transform = listOfsheets[i].GetTransformGroup();
                     if (createWireframe)
                     {
                         Drawing3DHelper.TransformPoints(listOfsheets[i].WireFramePoints, sheetModel.Transform);

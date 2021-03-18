@@ -20,6 +20,10 @@ namespace BaseClasses.GraphObj
         private string m_Text;
 
         private List<Point3D> m_WireFramePoints;
+        private double m_RotationX;
+        private double m_rotationY;
+        private double m_rotationZ;
+
         public List<Point3D> WireFramePoints
         {
             get
@@ -33,6 +37,8 @@ namespace BaseClasses.GraphObj
                 m_WireFramePoints = value;
             }
         }
+
+
 
         public double CladdingWidthRibModular
         {
@@ -122,6 +128,45 @@ namespace BaseClasses.GraphObj
         {
             get { return m_Text; }
             set { m_Text = value; }
+        }
+
+        public double RotationX
+        {
+            get
+            {
+                return m_RotationX;
+            }
+
+            set
+            {
+                m_RotationX = value;
+            }
+        }
+
+        public double RotationY
+        {
+            get
+            {
+                return m_rotationY;
+            }
+
+            set
+            {
+                m_rotationY = value;
+            }
+        }
+
+        public double RotationZ
+        {
+            get
+            {
+                return m_rotationZ;
+            }
+
+            set
+            {
+                m_rotationZ = value;
+            }
         }
 
         public int iVectorOverFactor_LCS;
@@ -245,7 +290,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public Transform3DGroup GetTransformGroup(double dRot_X_deg, double dRot_Y_deg, double dRot_Z_deg)
+        public Transform3DGroup GetTransformGroup(/*double dRot_X_deg, double dRot_Y_deg, double dRot_Z_deg*/)
         {
             // Transformacie
             RotateTransform3D rotateX = new RotateTransform3D();
@@ -255,19 +300,19 @@ namespace BaseClasses.GraphObj
             // About X
             AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
             axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
-            axisAngleRotation3dX.Angle = dRot_X_deg;
+            axisAngleRotation3dX.Angle = RotationX; //dRot_X_deg;
             rotateX.Rotation = axisAngleRotation3dX;
 
             // About Y
             AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
             axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
-            axisAngleRotation3dY.Angle = dRot_Y_deg;
+            axisAngleRotation3dY.Angle = RotationY; //dRot_Y_deg;
             rotateY.Rotation = axisAngleRotation3dY;
 
             // About Z
             AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
             axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
-            axisAngleRotation3dZ.Angle = dRot_Z_deg;
+            axisAngleRotation3dZ.Angle = RotationZ; //dRot_Z_deg;
             rotateZ.Rotation = axisAngleRotation3dZ;
 
             TranslateTransform3D translateOrigin = new TranslateTransform3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);

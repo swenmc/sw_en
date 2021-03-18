@@ -4472,10 +4472,11 @@ namespace BaseClasses
             {
                 if (cladding.listOfCladdingSheetsLeftWall != null)
                 {
+                    int i = 1;
                     foreach (CCladdingOrFibreGlassSheet s in cladding.listOfCladdingSheetsLeftWall)
                     {
                         TextBlock tb = new TextBlock();
-                        tb.Text = s.Text; // Dopracovat text popisu
+                        tb.Text = "Left SH" + i++; // s.Text; // Dopracovat text popisu
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
@@ -4498,14 +4499,15 @@ namespace BaseClasses
                         ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.8);
                         Transform3DGroup tr = new Transform3DGroup();
 
-                        if (s.GetTransformGroup(0, 0, -90) == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                        //musime skontrolovat, ci su RotateX,RotateY,RotateZ stale inicializovane - vyzera,ze su
+                        if (s.GetTransformGroup() == null)
                         {
                             throw new Exception("Cladding sheet in local coordinate system! \nTransformation object is null! \nText label is probably created before cladding sheet model exists!");
                         }
 
-                        if (s.GetTransformGroup(0, 0, -90) != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                        if (s.GetTransformGroup() != null)
                         {
-                            tr.Children.Add(s.GetTransformGroup(0, 0, -90)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                            tr.Children.Add(s.GetTransformGroup());
 
                             // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(s.PointText);
@@ -4552,14 +4554,14 @@ namespace BaseClasses
                         ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.8);
                         Transform3DGroup tr = new Transform3DGroup();
 
-                        if (s.GetTransformGroup(0, 0, -90) == null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                        if (s.GetTransformGroup() == null)
                         {
                             throw new Exception("Fibreglass sheet in local coordinate system! \nTransformation object is null! \nText label is probably created before fibreglass sheet model exists!");
                         }
 
-                        if (s.GetTransformGroup(0, 0, -90) != null) // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                        if (s.GetTransformGroup() != null)
                         {
-                            tr.Children.Add(s.GetTransformGroup(0, 0, -90)); // Todo - zovseobecnit tak, aby parametre rotacie nevstupovali do funkcie
+                            tr.Children.Add(s.GetTransformGroup());
 
                             // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(s.PointText);
@@ -4687,7 +4689,7 @@ namespace BaseClasses
 
         public static void CreateCladdingDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            if (model.m_arrSlabs != null)
+            if (model.m_arrGOCladding != null)
             {
                 for (int i = 0; i < model.m_arrGOCladding.Count; i++)
                 {
