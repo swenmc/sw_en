@@ -4477,13 +4477,14 @@ namespace BaseClasses
                     {
                         TextBlock tb = new TextBlock();
                         int rowsCount = 0;
-                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount);
+                        int maxRowLength = 0;
+                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount, out maxRowLength);
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                         float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
 
-                        fTextBlockVerticalSize *= rowsCount;
+                        //fTextBlockVerticalSize *= rowsCount;
 
                         float fTextBlockVerticalSizeFactor = 1f;
                         float fTextBlockHorizontalSizeFactor = 1f;
@@ -4499,7 +4500,7 @@ namespace BaseClasses
                         Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
 
                         // Create text
-                        ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.7 / rowsCount / rowsCount);
+                        ModelVisual3D textlabel = null; // CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.7 / rowsCount / rowsCount);
                         Transform3DGroup tr = new Transform3DGroup();
 
                         //musime skontrolovat, ci su RotateX,RotateY,RotateZ stale inicializovane - vyzera,ze su
@@ -4514,7 +4515,8 @@ namespace BaseClasses
 
                             // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(s.PointText);
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.7 / rowsCount / rowsCount);
+                            //textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.7 / rowsCount / rowsCount);
+                            textlabel = CreateMultilineTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, rowsCount, maxRowLength, 0.6);
                         }
 
                         if (centerModel)
@@ -4535,7 +4537,8 @@ namespace BaseClasses
                     {
                         TextBlock tb = new TextBlock();
                         int rowsCount = 0;
-                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount);
+                        int maxRowLength = 0;
+                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount, out maxRowLength);
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
@@ -4706,10 +4709,11 @@ namespace BaseClasses
             }
         }
 
-        private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet, out int rowsCount)
+        private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet, out int rowsCount,out int maxRowLength)
         {
             string separator = " \n";
             rowsCount = 0;
+            maxRowLength = 0;
             List<string> parts = new List<string>();
             if (options.bDisplayCladdingID) { parts.Add(sheet.ID.ToString()); rowsCount++; }
             if (options.bDisplayCladdingPrefix) { parts.Add(sheet.Prefix.ToString()); rowsCount++; }
@@ -4725,6 +4729,12 @@ namespace BaseClasses
                 parts.Add(sheet.Area_net.ToString("F3") + units);
                 rowsCount++;
             }
+
+            foreach (string s in parts)
+            {
+                if (s.Length > maxRowLength) maxRowLength = s.Length;
+            }
+
             return string.Join(separator, parts);
         }
 
@@ -5355,6 +5365,112 @@ namespace BaseClasses
             // We just assume the characters are square
             double width = tb.Text.Length * height * widthScaleFactor;
 
+            // Since the parameter coming in was the center of the label,
+            // we need to find the four corners
+            // p0 is the lower left corner
+            // p1 is the upper left
+            // p2 is the lower right
+            // p3 is the upper right
+            Point3D p0 = center - width / 2 * over - height / 2 * up;
+            Point3D p1 = p0 + up * 1 * height;
+            Point3D p2 = p0 + over * width;
+            Point3D p3 = p0 + up * 1 * height + over * width;
+
+            // Now build the geometry for the sign.  It's just a
+            // rectangle made of two triangles, on each side.
+
+            MeshGeometry3D mg = new MeshGeometry3D();
+            mg.Positions = new Point3DCollection();
+            mg.Positions.Add(p0);    // 0
+            mg.Positions.Add(p1);    // 1
+            mg.Positions.Add(p2);    // 2
+            mg.Positions.Add(p3);    // 3
+
+            if (bDoubleSided)
+            {
+                mg.Positions.Add(p0);    // 4
+                mg.Positions.Add(p1);    // 5
+                mg.Positions.Add(p2);    // 6
+                mg.Positions.Add(p3);    // 7
+            }
+
+            mg.TriangleIndices.Add(0);
+            mg.TriangleIndices.Add(3);
+            mg.TriangleIndices.Add(1);
+            mg.TriangleIndices.Add(0);
+            mg.TriangleIndices.Add(2);
+            mg.TriangleIndices.Add(3);
+
+            if (bDoubleSided)
+            {
+                mg.TriangleIndices.Add(4);
+                mg.TriangleIndices.Add(5);
+                mg.TriangleIndices.Add(7);
+                mg.TriangleIndices.Add(4);
+                mg.TriangleIndices.Add(7);
+                mg.TriangleIndices.Add(6);
+            }
+
+            // These texture coordinates basically stretch the
+            // TextBox brush to cover the full side of the label.
+
+            mg.TextureCoordinates.Add(new Point(0, 1));
+            mg.TextureCoordinates.Add(new Point(0, 0));
+            mg.TextureCoordinates.Add(new Point(1, 1));
+            mg.TextureCoordinates.Add(new Point(1, 0));
+
+            if (bDoubleSided)
+            {
+                mg.TextureCoordinates.Add(new Point(1, 1));
+                mg.TextureCoordinates.Add(new Point(1, 0));
+                mg.TextureCoordinates.Add(new Point(0, 1));
+                mg.TextureCoordinates.Add(new Point(0, 0));
+            }
+
+            // And that's all.  Return the result.
+
+            ModelVisual3D mv3d = new ModelVisual3D();
+            mv3d.Content = new GeometryModel3D(mg, mat);
+            return mv3d;
+        }
+
+        public static ModelVisual3D CreateMultilineTextLabel3D(
+            TextBlock tb,
+            bool bDoubleSided,
+            double height,
+            Point3D center,
+            Vector3D over,
+            Vector3D up, int rowsCount, int maxRowLength, double widthScaleFactor = 1.0)
+        {
+            // Now use that TextBlock as the brush for a material
+            DiffuseMaterial mat = new DiffuseMaterial();
+
+            bool borderRequired = false;
+            if (borderRequired)
+            {
+                Label label = new Label();
+                label.Content = tb.Text;
+                label.Foreground = tb.Foreground;
+                label.FontFamily = tb.FontFamily;
+                label.BorderThickness = new Thickness(2);
+                label.BorderBrush = tb.Foreground;
+
+                //pokusy pre alignment, ale nefunguje to
+                //label.RenderSize = new Size(tb.Text.Length * height * widthScaleFactor, height);
+                //label.HorizontalContentAlignment = HorizontalAlignment.Right;
+                //label.HorizontalAlignment = HorizontalAlignment.Right;
+
+                mat.Brush = new VisualBrush(label);
+            }
+            else
+            {
+                mat.Brush = new VisualBrush(tb);
+            }
+
+            // We just assume the characters are square
+            double width = maxRowLength * height * widthScaleFactor;
+
+            height = height * rowsCount;
             // Since the parameter coming in was the center of the label,
             // we need to find the four corners
             // p0 is the lower left corner
