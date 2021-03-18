@@ -4476,11 +4476,14 @@ namespace BaseClasses
                     foreach (CCladdingOrFibreGlassSheet s in cladding.listOfCladdingSheetsLeftWall)
                     {
                         TextBlock tb = new TextBlock();
-                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s);
+                        int rowsCount = 0;
+                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount);
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                         float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
+
+                        fTextBlockVerticalSize *= rowsCount;
 
                         float fTextBlockVerticalSizeFactor = 1f;
                         float fTextBlockHorizontalSizeFactor = 1f;
@@ -4496,7 +4499,7 @@ namespace BaseClasses
                         Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
 
                         // Create text
-                        ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.8);
+                        ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, s.PointText, over, up, 0.7 / rowsCount / rowsCount);
                         Transform3DGroup tr = new Transform3DGroup();
 
                         //musime skontrolovat, ci su RotateX,RotateY,RotateZ stale inicializovane - vyzera,ze su
@@ -4511,7 +4514,7 @@ namespace BaseClasses
 
                             // Nechceme transformovat cely text label len vkladaci bod
                             Point3D pTransformed = tr.Transform(s.PointText);
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.8);
+                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.7 / rowsCount / rowsCount);
                         }
 
                         if (centerModel)
@@ -4531,11 +4534,13 @@ namespace BaseClasses
                     foreach (CCladdingOrFibreGlassSheet s in cladding.listOfFibreGlassSheetsWallLeft)
                     {
                         TextBlock tb = new TextBlock();
-                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s);
+                        int rowsCount = 0;
+                        tb.Text = GetCladdingSheetDisplayText(displayOptions, s, out rowsCount);
                         tb.FontFamily = new FontFamily("Arial");
 
                         float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                         float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions.ExportFibreglassDescriptionSize, displayOptions);
+                        fTextBlockVerticalSize *= rowsCount;
 
                         float fTextBlockVerticalSizeFactor = 1f;
                         float fTextBlockHorizontalSizeFactor = 1f;
@@ -4701,21 +4706,25 @@ namespace BaseClasses
             }
         }
 
-
-        //To Mato - 760 dopln si ako ma presne vyzerat generovany popis
-        //members maju navyse este prepinac, kde si vies povedat ci chces v [mm] alebo v [m] hodnoty
-        private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet)
+        private static string GetCladdingSheetDisplayText(DisplayOptions options, CCladdingOrFibreGlassSheet sheet, out int rowsCount)
         {
-            string separator = " - ";
+            string separator = " \n";
+            rowsCount = 0;
             List<string> parts = new List<string>();
-            if (options.bDisplayCladdingID) parts.Add(sheet.ID.ToString());
-            if (options.bDisplayCladdingPrefix) parts.Add(sheet.Prefix.ToString());
-
-            if (options.bDisplayCladdingLengthWidth) parts.Add($"{sheet.LengthTotal.ToString("F3")}x{sheet.Width.ToString("F3")}");
-            if (options.bDisplayCladdingUnits) parts.Add("m");
-            if (options.bDisplayCladdingArea) parts.Add(sheet.Area_net.ToString("F3"));
-            if (options.bDisplayCladdingUnits) parts.Add("m²");
-
+            if (options.bDisplayCladdingID) { parts.Add(sheet.ID.ToString()); rowsCount++; }
+            if (options.bDisplayCladdingPrefix) { parts.Add(sheet.Prefix.ToString()); rowsCount++; }
+            if (options.bDisplayCladdingLengthWidth)
+            {
+                string units = options.bDisplayCladdingUnits ? " m" : "";
+                parts.Add($"{sheet.LengthTotal.ToString("F3")}x{sheet.Width.ToString("F3")}{units}");
+                rowsCount++;
+            }
+            if (options.bDisplayCladdingArea)
+            {
+                string units = options.bDisplayCladdingUnits ? " m²" : "";
+                parts.Add(sheet.Area_net.ToString("F3") + units);
+                rowsCount++;
+            }
             return string.Join(separator, parts);
         }
 
@@ -6299,7 +6308,6 @@ namespace BaseClasses
             else
             {
                 value = maxModelLength * sizeFactorGUI;
-
             }
             return value;
         }
