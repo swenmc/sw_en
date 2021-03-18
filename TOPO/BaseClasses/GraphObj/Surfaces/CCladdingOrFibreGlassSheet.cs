@@ -284,12 +284,14 @@ namespace BaseClasses.GraphObj
             {
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0);
                 if(createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
+                this.PointText = area.GetCenterPoint();
                 return area.CreateArea(options.bUseTextures, material);
             }
             else
             {
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0);
                 if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
+                this.PointText = area.GetCenterPoint();
                 return area.CreateArea(options.bUseTextures, material);
             }
         }

@@ -129,5 +129,17 @@ namespace BaseClasses.GraphObj
             wireframe.Add(EdgePointList.First());
             return wireframe;
         }
+
+        public Point3D GetCenterPoint()
+        {
+            Point3D centreP = new Point3D(0, 0, 0);
+            if (EdgePointList == null || EdgePointList.Count < 1) return centreP;
+
+            double x = EdgePointList.Average(p => p.X);
+            double y = EdgePointList.Average(p => p.Y);
+            double z = EdgePointList.Average(p => p.Z);
+            centreP = new Point3D(x, y, z);
+            return centreP;            
+        }
     }
 }
