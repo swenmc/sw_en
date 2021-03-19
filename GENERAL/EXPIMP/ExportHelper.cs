@@ -1569,7 +1569,7 @@ namespace EXPIMP
         public static Viewport3D GetBaseModelViewPortAsync(DisplayOptions sDisplayOptions, CModelData modelData, float fZoomFactor, Trackport3D _trackport, out CModel filteredModel)
         {
             double width = 1400; double height = 1000; // Todo 493 - vsade rovnake velkosti render size pre view port bez ohladu ci ide o export do doc alebo pdf
-                        
+
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
             //_trackport.Width = 2800;
             //_trackport.Height = 2000;

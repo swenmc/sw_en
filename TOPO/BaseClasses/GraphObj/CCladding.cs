@@ -400,7 +400,8 @@ namespace BaseClasses.GraphObj
                 {
                     CAreaPolygonal area = new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front3_heightleft }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_FrontBackWall));
-                    WireFramePoints.AddRange(area.GetWireFrame());
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
                 }
 
                 // Back Wall
@@ -408,9 +409,9 @@ namespace BaseClasses.GraphObj
                 {
                     CAreaPolygonal area = new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back2_heightright }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_FrontBackWall));
-                    WireFramePoints.AddRange(area.GetWireFrame());
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
                 }
-                    
 
                 if (options.bUseTextures)
                 {
@@ -425,7 +426,8 @@ namespace BaseClasses.GraphObj
                 {
                     CAreaPolygonal area = new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
-                    WireFramePoints.AddRange(area.GetWireFrame());
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
                 }
 
                 // Right Wall
@@ -433,8 +435,9 @@ namespace BaseClasses.GraphObj
                 {
                     CAreaPolygonal area = new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
-                    WireFramePoints.AddRange(area.GetWireFrame());
-                }                    
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
+                }
 
                 if (options.bUseTextures)
                 {
@@ -450,7 +453,8 @@ namespace BaseClasses.GraphObj
                 {
                     CAreaPolygonal area = new CAreaPolygonal(4, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_Roof));
-                    WireFramePoints.AddRange(area.GetWireFrame());
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
 
                     // Canopies
                     foreach (CCanopiesInfo canopy in canopyCollection)
@@ -504,7 +508,8 @@ namespace BaseClasses.GraphObj
 
                             CAreaPolygonal areaCL = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
                             model_gr.Children.Add(areaCL.CreateArea(options.bUseTextures, material_Roof));
-                            WireFramePoints.AddRange(areaCL.GetWireFrame());
+                            areaCL.SetWireFramePoints();
+                            WireFramePoints.AddRange(areaCL.WireFramePoints);
                             iAreaIndex++;
                         }
 
@@ -549,7 +554,8 @@ namespace BaseClasses.GraphObj
 
                             CAreaPolygonal areaCR = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
                             model_gr.Children.Add(areaCR.CreateArea(options.bUseTextures, material_Roof));
-                            WireFramePoints.AddRange(areaCR.GetWireFrame());
+                            areaCR.SetWireFramePoints();
+                            WireFramePoints.AddRange(areaCR.WireFramePoints);
                             iAreaIndex++;
                         }
                     }
@@ -597,7 +603,8 @@ namespace BaseClasses.GraphObj
                 {
                     CAreaPolygonal area = new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front4_top, pFBWall_front3_heightleft }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_FrontBackWall));
-                    WireFramePoints.AddRange(area.GetWireFrame());
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
                 }
 
                 // Back Wall
@@ -605,9 +612,9 @@ namespace BaseClasses.GraphObj
                 {
                     CAreaPolygonal area = new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back4_top, pFBWall_back2_heightright }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_FrontBackWall));
-                    WireFramePoints.AddRange(area.GetWireFrame());
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
                 }
-                    
 
                 if (options.bUseTextures)
                 {
@@ -622,15 +629,17 @@ namespace BaseClasses.GraphObj
                 {
                     CAreaPolygonal area = new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
-                    WireFramePoints.AddRange(area.GetWireFrame());
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
                 }
-                    
+
                 // Right Wall
                 if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && !bIndividualCladdingSheets)
                 {
                     CAreaPolygonal area = new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_SideWall));
-                    WireFramePoints.AddRange(area.GetWireFrame());
+                    area.SetWireFramePoints();
+                    WireFramePoints.AddRange(area.WireFramePoints);
                 }
 
                 if (options.bUseTextures)
@@ -647,11 +656,13 @@ namespace BaseClasses.GraphObj
                     // Roof - Left Side
                     CAreaPolygonal areaL = new CAreaPolygonal(4, new List<Point3D>() { pRoof_front4_top, pRoof_back4_top, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0);
                     model_gr.Children.Add(areaL.CreateArea(options.bUseTextures, material_Roof));
-                    WireFramePoints.AddRange(areaL.GetWireFrame());
+                    areaL.SetWireFramePoints();
+                    WireFramePoints.AddRange(areaL.WireFramePoints);
                     // Roof - Right Side
                     CAreaPolygonal areaR = new CAreaPolygonal(5, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back4_top, pRoof_front4_top }, 0);
                     model_gr.Children.Add(areaR.CreateArea(options.bUseTextures, material_Roof));
-                    WireFramePoints.AddRange(areaR.GetWireFrame());
+                    areaR.SetWireFramePoints();
+                    WireFramePoints.AddRange(areaR.WireFramePoints);
 
                     // Canopies
                     foreach (CCanopiesInfo canopy in canopyCollection)
@@ -699,7 +710,8 @@ namespace BaseClasses.GraphObj
 
                             CAreaPolygonal areaCL = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
                             model_gr.Children.Add(areaCL.CreateArea(options.bUseTextures, material_Roof));
-                            WireFramePoints.AddRange(areaCL.GetWireFrame());
+                            areaCL.SetWireFramePoints();
+                            WireFramePoints.AddRange(areaCL.WireFramePoints);
 
                             iAreaIndex++;
                         }
@@ -744,7 +756,8 @@ namespace BaseClasses.GraphObj
                             }
                             CAreaPolygonal areaCR = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
                             model_gr.Children.Add(areaCR.CreateArea(options.bUseTextures, material_Roof));
-                            WireFramePoints.AddRange(areaCR.GetWireFrame());
+                            areaCR.SetWireFramePoints();
+                            WireFramePoints.AddRange(areaCR.WireFramePoints);
                             iAreaIndex++;
                         }
                     }
@@ -1522,7 +1535,8 @@ namespace BaseClasses.GraphObj
                     //listOfsheets[i].PointText = sheetModel.Transform.Transform(listOfsheets[i].PointText); //transformPoint
                     //if (createWireframe)
                     //{
-                        List<Point3D> wireframe = listOfsheets[i].GetWireFrame(); // Vytvorime docasny zoznam bodov pre jeden sheet
+                        listOfsheets[i].SetWireFramePoints();
+                        List<Point3D> wireframe = listOfsheets[i].WireFramePoints; // Vytvorime docasny zoznam bodov pre jeden sheet
                         Drawing3DHelper.TransformPoints(wireframe, sheetModel.Transform); // Transformujeme body wireframe z LCS do GCS
                         WireFramePoints.AddRange(wireframe); // Pridame body do zoznamu
                     //}
@@ -1568,12 +1582,12 @@ namespace BaseClasses.GraphObj
         public void SetCladdingWireframePoints()
         {
             WireFramePoints = new List<Point3D>();
-            if(listOfCladdingSheetsLeftWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsLeftWall) WireFramePoints.AddRange(s.GetWireFrame());
-            if (listOfCladdingSheetsRightWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRightWall) WireFramePoints.AddRange(s.GetWireFrame());
-            if (listOfCladdingSheetsFrontWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsFrontWall) WireFramePoints.AddRange(s.GetWireFrame());
-            if (listOfCladdingSheetsBackWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsBackWall) WireFramePoints.AddRange(s.GetWireFrame());
-            if (listOfCladdingSheetsRoofLeft != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofLeft) WireFramePoints.AddRange(s.GetWireFrame());
-            if (listOfCladdingSheetsRoofRight != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofRight) WireFramePoints.AddRange(s.GetWireFrame());
+            if (listOfCladdingSheetsLeftWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsLeftWall) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsRightWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRightWall) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsFrontWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsFrontWall) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsBackWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsBackWall) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsRoofLeft != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofLeft) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsRoofRight != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofRight) WireFramePoints.AddRange(s.WireFramePoints);
         }
     }
 }

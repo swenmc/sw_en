@@ -511,7 +511,7 @@ namespace EXPIMP
         private static void DrawCladdingViews(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
             XGraphics gfx;
-            PdfPage page;            
+            PdfPage page;
             DisplayOptions opts = GetModelViewsDisplayOptions(data);
             opts.ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViewsCladding;
             opts.ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
@@ -530,7 +530,7 @@ namespace EXPIMP
             {
                 sheetNo++;
                 Trace.WriteLine(sheetNo + ". " + view.ToString());
-                page = s_document.AddPage();                
+                page = s_document.AddPage();
                 page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding);
                 page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientationViewsCladding);
 
@@ -934,8 +934,6 @@ namespace EXPIMP
                 opts.bDisplayFibreglassWireFrame = true;
                 opts.bDisplayDoorsWireFrame = true;
                 opts.bDisplayWindowsWireFrame = true;
-
-                opts.wireFrameColor = System.Windows.Media.Colors.Black;
 
                 opts.bDisplayCladdingDescription = true;
                 opts.bDisplayCladdingID = true;

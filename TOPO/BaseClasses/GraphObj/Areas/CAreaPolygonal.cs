@@ -113,19 +113,17 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public List<Point3D> GetWireFrame()
+        public void SetWireFramePoints()
         {
-            List<Point3D> wireframe = new List<Point3D>();
-            if (EdgePointList == null || EdgePointList.Count < 2) return wireframe;
+            if (EdgePointList == null || EdgePointList.Count < 2) return;
 
             for (int i = 0; i < EdgePointList.Count - 1; i++)
             {
-                wireframe.Add(EdgePointList[i]);
-                wireframe.Add(EdgePointList[i + 1]);
+                WireFramePoints.Add(EdgePointList[i]);
+                WireFramePoints.Add(EdgePointList[i + 1]);
             }
-            wireframe.Add(EdgePointList.Last());
-            wireframe.Add(EdgePointList.First());
-            return wireframe;
+            WireFramePoints.Add(EdgePointList.Last());
+            WireFramePoints.Add(EdgePointList.First());
         }
 
         public Point3D GetCenterPoint()
