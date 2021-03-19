@@ -824,7 +824,6 @@ namespace EXPIMP
                 opts.bDisplayWindows = true;
 
                 opts.bDisplayWireFrameModel = true;
-                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
                 opts.bDisplayCladdingWireFrame = true;
                 opts.bDisplayFibreglassWireFrame = true;
                 opts.bDisplayDoorsWireFrame = true;
@@ -866,7 +865,6 @@ namespace EXPIMP
                 opts.bDisplayWindows = true;
 
                 opts.bDisplayWireFrameModel = true;
-                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
                 opts.bDisplayCladdingWireFrame = true;
                 opts.bDisplayFibreglassWireFrame = true;
                 opts.bDisplayDoorsWireFrame = true;
@@ -908,7 +906,6 @@ namespace EXPIMP
                 opts.bDisplayWindows = true;
 
                 opts.bDisplayWireFrameModel = true;
-                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
                 opts.bDisplayCladdingWireFrame = true;
                 opts.bDisplayFibreglassWireFrame = true;
                 opts.bDisplayDoorsWireFrame = true;
@@ -950,7 +947,6 @@ namespace EXPIMP
                 opts.bDisplayWindows = true;
 
                 opts.bDisplayWireFrameModel = true;
-                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
                 opts.bDisplayCladdingWireFrame = true;
                 opts.bDisplayFibreglassWireFrame = true;
                 opts.bDisplayDoorsWireFrame = true;
@@ -993,7 +989,6 @@ namespace EXPIMP
 
                 opts.bDisplayWireFrameModel = true;
                 opts.bDisplayCladdingWireFrame = true;
-                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
                 opts.bDisplayFibreglassWireFrame = true;
                 opts.bDisplayDoorsWireFrame = true;
                 opts.bDisplayWindowsWireFrame = true;

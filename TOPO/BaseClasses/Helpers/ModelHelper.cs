@@ -156,8 +156,33 @@ namespace BaseClasses.Helpers
             return members.ToArray();
         }
 
-
-
+        // TO Ondrej - ako to budeme robit ???
+        // Vyrobil som samostatne funkcie pre strany cladding
+        // IN WORK
+        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Front(CModel model)
+        {
+            return model.m_arrGOCladding[0].listOfCladdingSheetsFrontWall;
+        }
+        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Back(CModel model)
+        {
+            return model.m_arrGOCladding[0].listOfCladdingSheetsBackWall;
+        }
+        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Left(CModel model)
+        {
+            return model.m_arrGOCladding[0].listOfCladdingSheetsLeftWall;
+        }
+        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Right(CModel model)
+        {
+            return model.m_arrGOCladding[0].listOfCladdingSheetsRightWall;
+        }
+        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof_Right(CModel model)
+        {
+            return model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight;
+        }
+        public static List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof_Left(CModel model)
+        {
+            return model.m_arrGOCladding[0].listOfCladdingSheetsRoofLeft;
+        }
 
         public static CNode[] GetColumnsViewNodes(CModel model)
         {
