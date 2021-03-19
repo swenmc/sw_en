@@ -543,8 +543,11 @@ namespace EXPIMP
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
 
                 opts.ModelView = GetView(view);
-                opts.ViewModelMembers = -1;
                 opts.ViewCladding = (int)view;
+
+                // Defaultne hodnoty pre vsetky pohlady
+                opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
+                opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
 
                 ChangeDisplayOptionsAcordingToView(view, ref opts);
 
@@ -556,7 +559,7 @@ namespace EXPIMP
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
                 viewPort.UpdateLayout();
-                
+
                 filteredModel = null;
                 //System.Diagnostics.Trace.WriteLine("DrawCladdingViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -954,26 +957,26 @@ namespace EXPIMP
                 opts.bDisplayWindowID = true;
                 opts.bDisplayWindowHeightWidth = true;
             }
-            
+
             if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
             {
-                opts.bDisplayCladdingFrontWall = true;
+                //opts.bDisplayCladdingFrontWall = true;
             }
             else if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
             { 
-                opts.bDisplayCladdingBackWall = true;
+                //opts.bDisplayCladdingBackWall = true;
             }
             else if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
             {
-                opts.bDisplayCladdingLeftWall = true;
+                //opts.bDisplayCladdingLeftWall = true;
             }
             else if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
             {
-                opts.bDisplayCladdingRightWall = true;
+                //opts.bDisplayCladdingRightWall = true;
             }
             else if (viewMembers == EViewCladdingFilters.CLADDING_ROOF)
             {
-                opts.bDisplayCladdingRoof = true;
+                //opts.bDisplayCladdingRoof = true;
             }
         }
 
