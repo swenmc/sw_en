@@ -4354,7 +4354,7 @@ namespace PFD
             sDisplayOptions.bDisplayFibreglassDescription = _displayOptionsVM.DisplayFibreglassDescription;
             sDisplayOptions.bDisplayFibreglassID = _displayOptionsVM.DisplayFibreglassID;
             sDisplayOptions.bDisplayFibreglassPrefix = _displayOptionsVM.DisplayFibreglassPrefix;
-            sDisplayOptions.bDisplayFibreglassHeightWidth = _displayOptionsVM.DisplayFibreglassLengthWidth;
+            sDisplayOptions.bDisplayFibreglassLengthWidth = _displayOptionsVM.DisplayFibreglassLengthWidth;
             sDisplayOptions.bDisplayFibreglassArea = _displayOptionsVM.DisplayFibreglassArea;
             sDisplayOptions.bDisplayFibreglassUnits = _displayOptionsVM.DisplayFibreglassUnits;
 

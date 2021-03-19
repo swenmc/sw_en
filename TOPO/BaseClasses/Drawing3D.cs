@@ -1427,6 +1427,17 @@ namespace BaseClasses
                 fMin_Z = Math.Min(fMin_Z, (float)allFoundationPoints.Min(p => p.Z));
             }
 
+            // TODO - Ondrej - zapracovat aj zohladenie rozmerov wireframe, ak je zapnuty napriklad len cladding
+            if(cmodel.WireFrameMembers != null) // Toto je cely wireframe alebo len pruty ???
+            {
+                fMax_X = Math.Max(fMax_X, (float)cmodel.WireFrameMembers.Points.Max(p => p.X));
+                fMin_X = Math.Min(fMin_X, (float)cmodel.WireFrameMembers.Points.Min(p => p.X));
+                fMax_Y = Math.Max(fMax_Y, (float)cmodel.WireFrameMembers.Points.Max(p => p.Y));
+                fMin_Y = Math.Min(fMin_Y, (float)cmodel.WireFrameMembers.Points.Min(p => p.Y));
+                fMax_Z = Math.Max(fMax_Z, (float)cmodel.WireFrameMembers.Points.Max(p => p.Z));
+                fMin_Z = Math.Min(fMin_Z, (float)cmodel.WireFrameMembers.Points.Min(p => p.Z));
+            }
+
             if (fMax_X == float.MinValue ||
             fMin_X == float.MaxValue ||
             fMax_Y == float.MinValue ||
@@ -1502,6 +1513,17 @@ namespace BaseClasses
                 fMin_Y = Math.Min(fMin_Y, (float)allFoundationPoints.Min(p => p.Y));
                 fMax_Z = Math.Max(fMax_Z, (float)allFoundationPoints.Max(p => p.Z));
                 fMin_Z = Math.Min(fMin_Z, (float)allFoundationPoints.Min(p => p.Z));
+            }
+
+            // TODO - Ondrej - zapracovat aj zohladenie rozmerov wireframe, ak je zapnuty napriklad len cladding
+            if (cmodel.WireFrameMembers != null) // Toto je cely wireframe alebo len pruty ???
+            {
+                fMax_X = Math.Max(fMax_X, (float)cmodel.WireFrameMembers.Points.Max(p => p.X));
+                fMin_X = Math.Min(fMin_X, (float)cmodel.WireFrameMembers.Points.Min(p => p.X));
+                fMax_Y = Math.Max(fMax_Y, (float)cmodel.WireFrameMembers.Points.Max(p => p.Y));
+                fMin_Y = Math.Min(fMin_Y, (float)cmodel.WireFrameMembers.Points.Min(p => p.Y));
+                fMax_Z = Math.Max(fMax_Z, (float)cmodel.WireFrameMembers.Points.Max(p => p.Z));
+                fMin_Z = Math.Min(fMin_Z, (float)cmodel.WireFrameMembers.Points.Min(p => p.Z));
             }
 
             if (fMax_X == float.MinValue ||
@@ -1581,6 +1603,17 @@ namespace BaseClasses
                 fMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);
                 fMax_Z = (float)cmodel.m_arrGOPoints.Max(p => p.Z);
                 fMin_Z = (float)cmodel.m_arrGOPoints.Min(p => p.Z);
+            }
+            else if (cmodel.WireFrameMembers != null) // Some wireframe exist
+            {
+                //WireFrameMembers to su len pruty alebo su v tom vsetky objekty ????
+                // TODO Ondrej - zapracovat aj body wireframe, napriklad ak je zapnuty len wireframe pre cladding
+                fMax_X = (float)cmodel.WireFrameMembers.Points.Max(p => p.X);
+                fMin_X = (float)cmodel.WireFrameMembers.Points.Min(p => p.X);
+                fMax_Y = (float)cmodel.WireFrameMembers.Points.Max(p => p.Y);
+                fMin_Y = (float)cmodel.WireFrameMembers.Points.Min(p => p.Y);
+                fMax_Z = (float)cmodel.WireFrameMembers.Points.Max(p => p.Z);
+                fMin_Z = (float)cmodel.WireFrameMembers.Points.Min(p => p.Z);
             }
             else
             {
@@ -6196,6 +6229,26 @@ namespace BaseClasses
 
                 //_model.m_arrSawCuts = model.m_arrSawCuts;
                 //_model.m_arrControlJoints = model.m_arrControlJoints;
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.CLADDING_FRONT)
+            {
+                _model.WireFrameMembers = model.WireFrameMembers; // Docasne cely wireframe
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.CLADDING_BACK)
+            {
+                _model.WireFrameMembers = model.WireFrameMembers; // Docasne cely wireframe
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.CLADDING_LEFT)
+            {
+                _model.WireFrameMembers = model.WireFrameMembers; // Docasne cely wireframe
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.CLADDING_RIGHT)
+            {
+                _model.WireFrameMembers = model.WireFrameMembers; // Docasne cely wireframe
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.CLADDING_ROOF)
+            {
+                _model.WireFrameMembers = model.WireFrameMembers; // Docasne cely wireframe
             }
 
             return _model;

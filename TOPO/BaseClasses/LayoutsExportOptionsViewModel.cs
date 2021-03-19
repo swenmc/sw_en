@@ -27,6 +27,13 @@ namespace BaseClasses
         private bool m_ExportModelViewsFoundations;
         private bool m_ExportModelViewsFloor;
 
+        private bool m_ExportModelCladdingLayingSchemeViews;
+        private bool m_ExportModelCladdingLayingSchemeViewsFront;
+        private bool m_ExportModelCladdingLayingSchemeViewsBack;
+        private bool m_ExportModelCladdingLayingSchemeViewsLeft;
+        private bool m_ExportModelCladdingLayingSchemeViewsRight;
+        private bool m_ExportModelCladdingLayingSchemeViewsRoof;
+
         private bool m_ExportJointTypes;
         private bool m_ExportFootingTypes;
         private bool m_ExportFloorDetails;
@@ -263,6 +270,100 @@ namespace BaseClasses
             }
         }
 
+        public bool ExportModelCladdingLayingSchemeViews
+        {
+            get
+            {
+                return m_ExportModelCladdingLayingSchemeViews;
+            }
+
+            set
+            {
+                bool changed = m_ExportModelCladdingLayingSchemeViews != value;
+                m_ExportModelCladdingLayingSchemeViews = value;
+                if (changed)
+                {
+                    ExportModelCladdingLayingSchemeViewsFront = m_ExportModelCladdingLayingSchemeViews;
+                    ExportModelCladdingLayingSchemeViewsBack = m_ExportModelCladdingLayingSchemeViews;
+                    ExportModelCladdingLayingSchemeViewsLeft = m_ExportModelCladdingLayingSchemeViews;
+                    ExportModelCladdingLayingSchemeViewsRight = m_ExportModelCladdingLayingSchemeViews;
+                    ExportModelCladdingLayingSchemeViewsRoof = m_ExportModelCladdingLayingSchemeViews;
+                }
+
+                NotifyPropertyChanged("ExportModelCladdingLayingSchemeViews");
+            }
+        }
+
+        public bool ExportModelCladdingLayingSchemeViewsFront
+        {
+            get
+            {
+                return m_ExportModelCladdingLayingSchemeViewsFront;
+            }
+
+            set
+            {
+                m_ExportModelCladdingLayingSchemeViewsFront = value;
+                NotifyPropertyChanged("ExportModelCladdingLayingSchemeViewsFront");
+            }
+        }
+
+        public bool ExportModelCladdingLayingSchemeViewsBack
+        {
+            get
+            {
+                return m_ExportModelCladdingLayingSchemeViewsBack;
+            }
+
+            set
+            {
+                m_ExportModelCladdingLayingSchemeViewsBack = value;
+                NotifyPropertyChanged("ExportModelCladdingLayingSchemeViewsBack");
+            }
+        }
+
+        public bool ExportModelCladdingLayingSchemeViewsLeft
+        {
+            get
+            {
+                return m_ExportModelCladdingLayingSchemeViewsLeft;
+            }
+
+            set
+            {
+                m_ExportModelCladdingLayingSchemeViewsLeft = value;
+                NotifyPropertyChanged("ExportModelCladdingLayingSchemeViewsLeft");
+            }
+        }
+
+        public bool ExportModelCladdingLayingSchemeViewsRight
+        {
+            get
+            {
+                return m_ExportModelCladdingLayingSchemeViewsRight;
+            }
+
+            set
+            {
+                m_ExportModelCladdingLayingSchemeViewsRight = value;
+                NotifyPropertyChanged("ExportModelCladdingLayingSchemeViewsRight");
+            }
+        }
+
+        public bool ExportModelCladdingLayingSchemeViewsRoof
+        {
+            get
+            {
+                return m_ExportModelCladdingLayingSchemeViewsRoof;
+            }
+
+            set
+            {
+                m_ExportModelCladdingLayingSchemeViewsRoof = value;
+                NotifyPropertyChanged("ExportModelCladdingLayingSchemeViewsRoof");
+            }
+        }
+
         public List<ComboItem> PageSizes
         {
             get
@@ -296,7 +397,6 @@ namespace BaseClasses
                 };
             }
         }
-
 
         public int ExportPageSize
         {
@@ -382,6 +482,13 @@ namespace BaseClasses
             ExportModelViewsFoundations = true;
             ExportModelViewsFloor = true;
 
+            ExportModelCladdingLayingSchemeViews = true;
+            ExportModelCladdingLayingSchemeViewsFront = true;
+            ExportModelCladdingLayingSchemeViewsBack = true;
+            ExportModelCladdingLayingSchemeViewsLeft = true;
+            ExportModelCladdingLayingSchemeViewsRight = true;
+            ExportModelCladdingLayingSchemeViewsRoof = true;
+
             ExportJointTypes = true;
             ExportFootingTypes = true;
             ExportFloorDetails = true;
@@ -418,6 +525,13 @@ namespace BaseClasses
             ExportModelViewsFoundations = vm.ExportModelViewsFoundations;
             ExportModelViewsFloor = vm.ExportModelViewsFloor;
 
+            ExportModelCladdingLayingSchemeViews = vm.ExportModelCladdingLayingSchemeViews;
+            ExportModelCladdingLayingSchemeViewsFront = vm.ExportModelCladdingLayingSchemeViewsFront;
+            ExportModelCladdingLayingSchemeViewsBack = vm.ExportModelCladdingLayingSchemeViewsBack;
+            ExportModelCladdingLayingSchemeViewsLeft = vm.ExportModelCladdingLayingSchemeViewsLeft;
+            ExportModelCladdingLayingSchemeViewsRight = vm.ExportModelCladdingLayingSchemeViewsRight;
+            ExportModelCladdingLayingSchemeViewsRoof = vm.ExportModelCladdingLayingSchemeViewsRoof;
+
             ExportJointTypes = vm.ExportJointTypes;
             ExportFootingTypes = vm.ExportFootingTypes;
             ExportFloorDetails = vm.ExportFloorDetails;
@@ -428,7 +542,5 @@ namespace BaseClasses
             ExportPageOrientationViews = vm.ExportPageOrientationViews;
             ExportImagesQuality = vm.ExportImagesQuality;
         }
-
-
     }
 }

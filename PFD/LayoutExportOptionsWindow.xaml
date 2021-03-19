@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Layout Export Options" Height="420" Width="420">
+        Title="Layout Export Options" Height="450" Width="420">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -23,16 +23,15 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>                
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="190"/>                
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="260"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="5">
                 <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
-                <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Model Views</CheckBox>
+                <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Framing Scheme Views</CheckBox>
 
                 <CheckBox Name="chckExportModelViewsFront" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsFront, UpdateSourceTrigger=PropertyChanged}">Front</CheckBox>
                 <CheckBox Name="chckExportModelViewsBack" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsBack, UpdateSourceTrigger=PropertyChanged}">Back</CheckBox>
@@ -44,6 +43,14 @@
                 <CheckBox Name="chckExportModelViewsFoundations" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsFoundations, UpdateSourceTrigger=PropertyChanged}">Foundations</CheckBox>
                 <CheckBox Name="chckExportModelViewsFloor" Margin="20 0 0 5" IsChecked="{Binding ExportModelViewsFloor, UpdateSourceTrigger=PropertyChanged}">Floor</CheckBox>
 
+                <CheckBox Name="chckExportModelCladdingLayingSchemeViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViews, UpdateSourceTrigger=PropertyChanged}">Cladding Scheme Views</CheckBox>
+
+                <CheckBox Name="chckExportModelCladdingLayingSchemeViewsFront" Margin="20 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViewsFront, UpdateSourceTrigger=PropertyChanged}">Front</CheckBox>
+                <CheckBox Name="chckExportModelCladdingLayingSchemeViewsBack" Margin="20 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViewsBack, UpdateSourceTrigger=PropertyChanged}">Back</CheckBox>
+                <CheckBox Name="chckExportModelCladdingLayingSchemeViewsLeft" Margin="20 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViewsLeft, UpdateSourceTrigger=PropertyChanged}">Left</CheckBox>
+                <CheckBox Name="chckExportModelCladdingLayingSchemeViewsRight" Margin="20 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViewsRight, UpdateSourceTrigger=PropertyChanged}">Right</CheckBox>
+                <CheckBox Name="chckExportModelCladdingLayingSchemeViewsRoof" Margin="20 0 0 5" IsChecked="{Binding ExportModelCladdingLayingSchemeViewsRoof, UpdateSourceTrigger=PropertyChanged}">Roof</CheckBox>
+                
                 <CheckBox Name="chckExportJointTypes" Margin="0 0 0 5" IsChecked="{Binding ExportJointTypes, UpdateSourceTrigger=PropertyChanged}">Joint Types</CheckBox>
                 <CheckBox Name="chckExportFootingTypes" Margin="0 0 0 5" IsChecked="{Binding ExportFootingTypes, UpdateSourceTrigger=PropertyChanged}">Footing Types</CheckBox>
                 <CheckBox Name="chckExportFloorDetails" Margin="0 0 0 5" IsChecked="{Binding ExportFloorDetails, UpdateSourceTrigger=PropertyChanged}">Floor Details</CheckBox>
@@ -79,9 +86,8 @@
                       Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ImagesQualities, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportImagesQuality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-            
+
             <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
-                
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
             </StackPanel>
         </Grid>

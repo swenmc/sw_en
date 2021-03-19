@@ -517,6 +517,12 @@ namespace EXPIMP
             if (exportOpts.ExportModelViewsColumns) list_views.Add(EViewModelMemberFilters.COLUMNS);
             if (exportOpts.ExportModelViewsFoundations) list_views.Add(EViewModelMemberFilters.FOUNDATIONS);
             if (exportOpts.ExportModelViewsFloor) list_views.Add(EViewModelMemberFilters.FLOOR);
+
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_FRONT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_BACK);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_LEFT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_RIGHT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_RIGHT);
             return list_views;
         }
 
@@ -805,8 +811,217 @@ namespace EXPIMP
 
                 opts.bCreateHorizontalGridlines = true;
             }
-        }
 
+            if(viewMembers == EViewModelMemberFilters.CLADDING_FRONT)
+            {
+                opts.bDisplayMembers = false;
+                opts.bDisplayLocalMembersAxis = false;
+                opts.bDisplayDimensions = false;
+
+                opts.bDisplayCladding = true;
+                opts.bDisplayFibreglass = true;
+                opts.bDisplayDoors = true;
+                opts.bDisplayWindows = true;
+
+                opts.bDisplayWireFrameModel = true;
+                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
+                opts.bDisplayCladdingWireFrame = true;
+                opts.bDisplayFibreglassWireFrame = true;
+                opts.bDisplayDoorsWireFrame = true;
+                opts.bDisplayWindowsWireFrame = true;
+
+                opts.wireFrameColor = System.Windows.Media.Colors.Black;
+
+                opts.bDisplayCladdingDescription = true;
+                opts.bDisplayCladdingID = true;
+                opts.bDisplayCladdingPrefix = true;
+                opts.bDisplayCladdingLengthWidth = true;
+
+                opts.bDisplayFibreglassDescription = true;
+                opts.bDisplayFibreglassID = true;
+                opts.bDisplayFibreglassPrefix = true;
+                opts.bDisplayFibreglassLengthWidth = true;
+
+                opts.bDisplayDoorDescription = true;
+                opts.bDisplayDoorID = true;
+                opts.bDisplayDoorType = true;
+                opts.bDisplayDoorHeightWidth = true;
+
+                opts.bDisplayWindowDescription = true;
+                opts.bDisplayWindowID = true;
+                opts.bDisplayWindowHeightWidth = true;
+
+                opts.bDisplayCladdingFrontWall = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.CLADDING_BACK)
+            {
+                opts.bDisplayMembers = false;
+                opts.bDisplayLocalMembersAxis = false;
+                opts.bDisplayDimensions = false;
+
+                opts.bDisplayCladding = true;
+                opts.bDisplayFibreglass = true;
+                opts.bDisplayDoors = true;
+                opts.bDisplayWindows = true;
+
+                opts.bDisplayWireFrameModel = true;
+                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
+                opts.bDisplayCladdingWireFrame = true;
+                opts.bDisplayFibreglassWireFrame = true;
+                opts.bDisplayDoorsWireFrame = true;
+                opts.bDisplayWindowsWireFrame = true;
+
+                opts.wireFrameColor = System.Windows.Media.Colors.Black;
+
+                opts.bDisplayCladdingDescription = true;
+                opts.bDisplayCladdingID = true;
+                opts.bDisplayCladdingPrefix = true;
+                opts.bDisplayCladdingLengthWidth = true;
+
+                opts.bDisplayFibreglassDescription = true;
+                opts.bDisplayFibreglassID = true;
+                opts.bDisplayFibreglassPrefix = true;
+                opts.bDisplayFibreglassLengthWidth = true;
+
+                opts.bDisplayDoorDescription = true;
+                opts.bDisplayDoorID = true;
+                opts.bDisplayDoorType = true;
+                opts.bDisplayDoorHeightWidth = true;
+
+                opts.bDisplayWindowDescription = true;
+                opts.bDisplayWindowID = true;
+                opts.bDisplayWindowHeightWidth = true;
+
+                opts.bDisplayCladdingBackWall = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.CLADDING_LEFT)
+            {
+                opts.bDisplayMembers = false;
+                opts.bDisplayLocalMembersAxis = false;
+                opts.bDisplayDimensions = false;
+
+                opts.bDisplayCladding = true;
+                opts.bDisplayFibreglass = true;
+                opts.bDisplayDoors = true;
+                opts.bDisplayWindows = true;
+
+                opts.bDisplayWireFrameModel = true;
+                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
+                opts.bDisplayCladdingWireFrame = true;
+                opts.bDisplayFibreglassWireFrame = true;
+                opts.bDisplayDoorsWireFrame = true;
+                opts.bDisplayWindowsWireFrame = true;
+
+                opts.wireFrameColor = System.Windows.Media.Colors.Black;
+
+                opts.bDisplayCladdingDescription = true;
+                opts.bDisplayCladdingID = true;
+                opts.bDisplayCladdingPrefix = true;
+                opts.bDisplayCladdingLengthWidth = true;
+
+                opts.bDisplayFibreglassDescription = true;
+                opts.bDisplayFibreglassID = true;
+                opts.bDisplayFibreglassPrefix = true;
+                opts.bDisplayFibreglassLengthWidth = true;
+
+                opts.bDisplayDoorDescription = true;
+                opts.bDisplayDoorID = true;
+                opts.bDisplayDoorType = true;
+                opts.bDisplayDoorHeightWidth = true;
+
+                opts.bDisplayWindowDescription = true;
+                opts.bDisplayWindowID = true;
+                opts.bDisplayWindowHeightWidth = true;
+
+                opts.bDisplayCladdingLeftWall = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.CLADDING_RIGHT)
+            {
+                opts.bDisplayMembers = false;
+                opts.bDisplayLocalMembersAxis = false;
+                opts.bDisplayDimensions = false;
+
+                opts.bDisplayCladding = true;
+                opts.bDisplayFibreglass = true;
+                opts.bDisplayDoors = true;
+                opts.bDisplayWindows = true;
+
+                opts.bDisplayWireFrameModel = true;
+                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
+                opts.bDisplayCladdingWireFrame = true;
+                opts.bDisplayFibreglassWireFrame = true;
+                opts.bDisplayDoorsWireFrame = true;
+                opts.bDisplayWindowsWireFrame = true;
+
+                opts.wireFrameColor = System.Windows.Media.Colors.Black;
+
+                opts.bDisplayCladdingDescription = true;
+                opts.bDisplayCladdingID = true;
+                opts.bDisplayCladdingPrefix = true;
+                opts.bDisplayCladdingLengthWidth = true;
+
+                opts.bDisplayFibreglassDescription = true;
+                opts.bDisplayFibreglassID = true;
+                opts.bDisplayFibreglassPrefix = true;
+                opts.bDisplayFibreglassLengthWidth = true;
+
+                opts.bDisplayDoorDescription = true;
+                opts.bDisplayDoorID = true;
+                opts.bDisplayDoorType = true;
+                opts.bDisplayDoorHeightWidth = true;
+
+                opts.bDisplayWindowDescription = true;
+                opts.bDisplayWindowID = true;
+                opts.bDisplayWindowHeightWidth = true;
+
+                opts.bDisplayCladdingRightWall = true;
+            }
+
+            if (viewMembers == EViewModelMemberFilters.CLADDING_ROOF)
+            {
+                opts.bDisplayMembers = false;
+                opts.bDisplayLocalMembersAxis = false;
+                opts.bDisplayDimensions = false;
+
+                opts.bDisplayCladding = true;
+                opts.bDisplayFibreglass = true;
+                opts.bDisplayDoors = true;
+                opts.bDisplayWindows = true;
+
+                opts.bDisplayWireFrameModel = true;
+                opts.bDisplayCladdingWireFrame = true;
+                opts.bDisplayMembersWireFrame = true; // TO Ondrej, docasne, potrebujeme zapracovat samostatny wireframe pre prvky cladding
+                opts.bDisplayFibreglassWireFrame = true;
+                opts.bDisplayDoorsWireFrame = true;
+                opts.bDisplayWindowsWireFrame = true;
+
+                opts.wireFrameColor = System.Windows.Media.Colors.Black;
+
+                opts.bDisplayCladdingDescription = true;
+                opts.bDisplayCladdingID = true;
+                opts.bDisplayCladdingPrefix = true;
+                opts.bDisplayCladdingLengthWidth = true;
+
+                opts.bDisplayFibreglassDescription = true;
+                opts.bDisplayFibreglassID = true;
+                opts.bDisplayFibreglassPrefix = true;
+                opts.bDisplayFibreglassLengthWidth = true;
+
+                opts.bDisplayDoorDescription = true;
+                opts.bDisplayDoorID = true;
+                opts.bDisplayDoorType = true;
+                opts.bDisplayDoorHeightWidth = true;
+
+                opts.bDisplayWindowDescription = true;
+                opts.bDisplayWindowID = true;
+                opts.bDisplayWindowHeightWidth = true;
+
+                opts.bDisplayCladdingRoof = true;
+            }
+        }
 
         private static void DrawJointTypes(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
         {
@@ -1739,6 +1954,13 @@ namespace EXPIMP
             else if (viewModelMembers == EViewModelMemberFilters.COLUMNS) return (int)EModelViews.TOP;
             else if (viewModelMembers == EViewModelMemberFilters.FOUNDATIONS) return (int)EModelViews.TOP;
             else if (viewModelMembers == EViewModelMemberFilters.FLOOR) return (int)EModelViews.TOP;
+
+            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_FRONT) return (int)EModelViews.FRONT;
+            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_BACK) return (int)EModelViews.BACK;
+            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_LEFT) return (int)EModelViews.LEFT;
+            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_RIGHT) return (int)EModelViews.RIGHT;
+            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_ROOF) return (int)EModelViews.TOP;
+
             else return (int)EModelViews.ISO_FRONT_RIGHT;
         }
 

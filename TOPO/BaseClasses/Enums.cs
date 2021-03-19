@@ -776,7 +776,14 @@ namespace BaseClasses
         MIDDLE_FRAME = 6,
         COLUMNS = 7,
         FOUNDATIONS = 8,
-        FLOOR = 9
+        FLOOR = 9,
+
+        // TO Ondrej - mozno by som pre tieto polozky urobil samostatny enum a uplne oddlelil vsetky funkcie pre vykreslovanie Model Members a Cladding
+        CLADDING_FRONT = 10,
+        CLADDING_BACK = 11,
+        CLADDING_LEFT = 12,
+        CLADDING_RIGHT = 13,
+        CLADDING_ROOF = 14
     }
 
     public enum EPDFPageContentType
@@ -937,7 +944,7 @@ namespace BaseClasses
         public bool bDisplayFibreglassDescription;
         public bool bDisplayFibreglassID;
         public bool bDisplayFibreglassPrefix;
-        public bool bDisplayFibreglassHeightWidth;
+        public bool bDisplayFibreglassLengthWidth;
         public bool bDisplayFibreglassArea;
         public bool bDisplayFibreglassUnits;
 
