@@ -538,6 +538,7 @@ namespace EXPIMP
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
                 DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
+                //to pretypovanie na EPDFPageContentType sa mi vobec nepaci, to je nejake divne
                 DrawTitleBlock(gfx, data.ProjectInfo, page, ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
                 contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
 
@@ -906,7 +907,8 @@ namespace EXPIMP
                 viewMembers == EViewCladdingFilters.CLADDING_ROOF)
             {
                 // Defaultne hodnoty pre vsetky pohlady
-                opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)                
+                opts.bTransformScreenLines3DToCylinders3D = true;
+                opts.wireFrameColor = System.Windows.Media.Colors.Red;
 
                 opts.bDisplayMembers = false;
                 opts.bDisplayJoints = false;
@@ -917,6 +919,12 @@ namespace EXPIMP
                 opts.bDisplayDimensions = false;
 
                 opts.bDisplayCladding = true;
+                opts.bDisplayCladdingLeftWall = true;
+                opts.bDisplayCladdingRightWall = true;
+                opts.bDisplayCladdingFrontWall = true;
+                opts.bDisplayCladdingBackWall = true;
+                opts.bDisplayCladdingRoof = true;                
+
                 opts.bDisplayFibreglass = true;
                 opts.bDisplayDoors = true;
                 opts.bDisplayWindows = true;
@@ -948,8 +956,7 @@ namespace EXPIMP
                 opts.bDisplayWindowID = true;
                 opts.bDisplayWindowHeightWidth = true;
             }
-
-
+            
             if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
             {                
                 opts.bDisplayCladdingFrontWall = true;
