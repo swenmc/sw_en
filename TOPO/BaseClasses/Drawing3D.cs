@@ -1180,8 +1180,6 @@ namespace BaseClasses
             }
         }
 
-
-
         private static void DrawDetailSymbolsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, List<CDetailSymbol> listOfDetailSymbols, Model3DGroup gr)
         {
             Model3DGroup detailSymbols3DGroup = null;
@@ -3159,8 +3157,7 @@ namespace BaseClasses
                 }*/
             }
         }
-
-
+        
         public static void DrawDoorsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
         {
             cylinders = null;
@@ -3446,83 +3443,10 @@ namespace BaseClasses
         }
 
 
-        ////Tu vyzera, ze tuto metodu vobec nepouzivame,takze ju zakomentovavam....
-        // TO Ondrej - pod nou je moja upravena metoda CreateMembersDescriptionModel3D_POKUS_MC takze ak si spokojny s tou novou takto toto cele zakomentovane vyhod
-
-        //// Draw Text in 3D
-        //public static void CreateMembersDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        //{
-        //    // Members
-        //    if (model.m_arrMembers != null)
-        //    {
-        //        ModelVisual3D textlabel = null;
-
-        //        for (int i = 0; i < model.m_arrMembers.Length; i++)
-        //        {
-        //            if (model.m_arrMembers[i] != null &&
-        //                model.m_arrMembers[i].NodeStart != null &&
-        //                model.m_arrMembers[i].NodeEnd != null &&
-        //                model.m_arrMembers[i].CrScStart != null &&
-        //                model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
-        //            {
-        //                Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
-        //                Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
-
-        //                string sTextToDisplay = GetMemberDisplayText(displayOptions, model.m_arrMembers[i]);
-
-        //                TextBlock tb = new TextBlock();
-        //                tb.Text = sTextToDisplay;
-        //                tb.FontFamily = new FontFamily("Arial");
-        //                float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f; //  0.1f; // To Ondrej - da sa velkost textu nejako prepojit s velkostou realne textu v 3D, napriklad vyska fontu 12 by bola 0.12 metra ???
-        //                float fTextBlockVerticalSizeFactor = 0.8f;
-        //                float fTextBlockHorizontalSizeFactor = 0.3f;
-
-        //                // Tieto nastavenia sa nepouziju
-        //                tb.FontStretch = FontStretches.UltraCondensed;
-        //                tb.FontStyle = FontStyles.Normal;
-        //                tb.FontWeight = FontWeights.Thin;
-        //                tb.Foreground = new SolidColorBrush(displayOptions.MemberDescriptionTextColor);
-        //                tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
-
-        //                float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
-
-        //                // TODO Ondrej - vylepsit vykreslovanie a odsadenie
-        //                // Teraz to kreslime priamo do GCS, ale asi by bolo lepsie kreslit do LCS a potom text transformovat
-        //                // pripadne vypocitat podla orientacie pruta vector z hodnot delta ako je prut orientovany v priestore a podla toho nastavit
-        //                // hodnoty vektorov pre funkciu CreateTextLabel3D) :over" and "up"
-        //                // Do user options by som dal nastavenie ci sa ma text kreslit horizontalne na obrazovke v rovine obrazovky
-        //                // alebo podla polohy pruta (rovnobezne s lokalnou osou x pruta) horizontalne alebo vertikalne podla orientacie osi x pruta v lokanych rovinach x,y alebo x,z pruta
-
-        //                float fOffsetZ = 0.07f;
-        //                Point3D pTextPosition = new Point3D();
-        //                pTextPosition.X = pNodeStart.X + fRelativePositionFactor * model.m_arrMembers[i].Delta_X;
-        //                pTextPosition.Y = pNodeStart.Y + fRelativePositionFactor * model.m_arrMembers[i].Delta_Y;
-        //                pTextPosition.Z = pNodeStart.Z + fRelativePositionFactor * model.m_arrMembers[i].Delta_Z + fOffsetZ;
-
-        //                Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-        //                Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-
-        //                SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
-        //                // Create text
-        //                textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPosition, over, up);
-
-        //                if (centerModel)
-        //                {
-        //                    textlabel.Transform = centerModelTransGr;
-        //                }
-        //                viewPort.Children.Add(textlabel);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        #region Descriptions/labels in 3D
 
         // 17.8.2019
         // TO Ondrej - pokus kreslit text do LCS a potom ho presunut do GCS s tym ze vektrory pre smerovanie textu sa nastavia podla pohladu
-
         public static void CreateMembersDescriptionModel3D_POKUS_MC(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             double descriptionTextWidthScaleFactor = displayOptions.GUIDescriptionTextWidthScaleFactor;
@@ -3858,10 +3782,6 @@ namespace BaseClasses
             }
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         // Draw Text in 3D
         public static void CreateNodesDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
@@ -3967,100 +3887,7 @@ namespace BaseClasses
                 }
             }
         }
-
-        // Draw Dimension 3D
-        //public static void DrawDimension3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
-        //{
-        //    TextBlock tb = new TextBlock();
-        //    tb.Text = dimension.Text;
-        //    tb.FontFamily = new FontFamily("Arial");
-        //    //float fTextBlockVerticalSize = 0.1f;
-        //    //float fTextBlockVerticalSizeFactor = 0.8f;
-        //    //float fTextBlockHorizontalSizeFactor = 0.3f;
-        //    float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
-        //    float fTextBlockVerticalSizeFactor = 1f;
-        //    float fTextBlockHorizontalSizeFactor = 1f;
-
-        //    tb.FontStretch = FontStretches.UltraCondensed;
-        //    tb.FontStyle = FontStyles.Normal;
-        //    tb.FontWeight = FontWeights.Thin;
-        //    tb.Foreground = Brushes.Coral;
-        //    //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-        //    Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-        //    Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-
-        //    SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
-        //    // Create text
-        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up);
-
-        //    if (centerModel)
-        //    {
-        //        textlabel.Transform = centerModelTransGr;
-        //    }
-        //    viewPort.Children.Add(textlabel);
-
-        //    // LINES
-
-        //    float flineThickness = 4;
-
-        //    //WireLine wL1 = new WireLine();
-        //    //wL1.Point1 = dimension.PointStart;
-        //    //wL1.Point2 = dimension.PointStartL2;
-        //    //wL1.Thickness = flineThickness;
-        //    //wL1.Color = dimensionColor;
-
-        //    //WireLine wL2 = new WireLine();
-        //    //wL2.Point1 = dimension.PointEnd;
-        //    //wL2.Point2 = dimension.PointEndL2;
-        //    //wL2.Thickness = flineThickness;
-        //    //wL2.Color = dimensionColor;
-
-        //    //WireLine wMain = new WireLine();
-        //    //wMain.Point1 = dimension.PointMainLine1;
-        //    //wMain.Point2 = dimension.PointMainLine2;
-        //    //wMain.Thickness = flineThickness;
-        //    //wMain.Color = dimensionColor;
-
-        //    //LinesVisual3D wL1 = new LinesVisual3D();
-        //    //LinesVisual3D wL2 = new LinesVisual3D();
-        //    //LinesVisual3D wMain = new LinesVisual3D();
-
-        //    ScreenSpaceLines3D wL1 = new ScreenSpaceLines3D();
-        //    ScreenSpaceLines3D wL2 = new ScreenSpaceLines3D();
-        //    ScreenSpaceLines3D wMain = new ScreenSpaceLines3D();
-        //    wL1.Points.Add(dimension.PointStart);
-        //    wL1.Points.Add(dimension.PointStartL2);
-        //    wL1.Color = displayOptions.DimensionLineColor;
-        //    wL1.Thickness = flineThickness;
-
-        //    wL2.Points.Add(dimension.PointEnd);
-        //    wL2.Points.Add(dimension.PointEndL2);
-        //    wL2.Color = displayOptions.DimensionLineColor;
-        //    wL2.Thickness = flineThickness;
-
-        //    wMain.Points.Add(dimension.PointMainLine1);
-        //    wMain.Points.Add(dimension.PointMainLine2);
-        //    wMain.Color = displayOptions.DimensionLineColor;
-        //    wMain.Thickness = flineThickness;
-
-        //    if (centerModel)
-        //    {
-        //        wL1.Transform = centerModelTransGr;
-        //        wL2.Transform = centerModelTransGr;
-        //        wMain.Transform = centerModelTransGr;
-        //    }
-
-        //    viewPort.Children.Add(wL1);
-        //    viewPort.Children.Add(wL2);
-        //    viewPort.Children.Add(wMain);
-        //    //viewPort.UpdateLayout();
-        //    wL1.Rescale();
-        //    wL2.Rescale();
-        //    wMain.Rescale();
-        //    //viewPort.UpdateLayout();
-        //}
-
-        // Draw Grid Line Label Text 3D
+                
         public static void DrawGridLineLabelText3D(CGridLine gridline, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             TextBlock tb = new TextBlock();
@@ -4135,374 +3962,249 @@ namespace BaseClasses
             viewPort.Children.Add(textlabel);
         }
 
+        public static void CreateSawCutDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrSlabs == null) return;
+            
+            for (int i = 0; i < model.m_arrSlabs.Count; i++)
+            {
+                if (model.m_arrSlabs[i].SawCuts != null)
+                {
+                    for (int j = 0; j < model.m_arrSlabs[i].SawCuts.Count; j++)
+                    {
+                        if (model.m_arrSlabs[i].SawCuts[j] != null) // Saw cut object is valid (not empty)
+                        {
+                            DrawSawCutText3D(model.m_arrSlabs[i].SawCuts[j], viewPort, displayOptions);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void CreateControlJointDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrSlabs == null) return;
+            
+            for (int i = 0; i < model.m_arrSlabs.Count; i++)
+            {
+                if (model.m_arrSlabs[i].ControlJoints != null)
+                {
+                    for (int j = 0; j < model.m_arrSlabs[i].ControlJoints.Count; j++)
+                    {
+                        if (model.m_arrSlabs[i].ControlJoints[j] != null) // Control joint object is valid (not empty)
+                        {
+                            DrawControlJointText3D(model.m_arrSlabs[i].ControlJoints[j], viewPort, displayOptions);
+                        }
+                    }
+                }
+            }
+        }
+        public static void CreateFoundationsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            //List<Point3D?> points = new List<Point3D?>();
+            //float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFoundationTextSize;
+
+            if (model.m_arrFoundations == null) return;
+            
+            for (int i = 0; i < model.m_arrFoundations.Count; i++)
+            {
+                if (model.m_arrFoundations[i] == null) continue;
+                    // Foundation object is valid (not empty)
+                
+                DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
+
+                //tu je pokus riesit prekryvanie textov, ale ja mam pocit ze tie Foundations maju vsetky body ControlPoint aj PointText proste rovnake
+                //if (!CheckTextsOverlaps(points, model.m_arrFoundations[i].PointText, fTextBlockVerticalSize * 3))
+                //{
+                //    points.Add(model.m_arrFoundations[i].PointText);
+                //    DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
+                //}                
+            }
+        }
+        public static void CreateFloorSlabsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrSlabs == null) return;
+            
+            for (int i = 0; i < model.m_arrSlabs.Count; i++)
+            {
+                if (model.m_arrSlabs[i] == null) continue; // Slab object is valid (not empty)
+                
+                DrawFloorSlabText3D(model.m_arrSlabs[i], viewPort, displayOptions);                
+            }
+        }
+        public static void CreateCladdingDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrGOCladding == null) return;
+            
+            for (int i = 0; i < model.m_arrGOCladding.Count; i++)
+            {
+                if (model.m_arrGOCladding[i] == null) continue; // Cladding object is valid (not empty)
+                
+                DrawCladdingText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);                
+            }
+        }
+        public static void CreateFibreglassDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrGOCladding == null) return;
+            
+            for (int i = 0; i < model.m_arrGOCladding.Count; i++)
+            {
+                if (model.m_arrGOCladding[i] == null) continue;
+                // Cladding object is valid (not empty)                
+                DrawFibreglassText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);                
+            }
+        }
+        public static void CreateDoorDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrGOStrDoors == null) return;
+            
+            for (int i = 0; i < model.m_arrGOStrDoors.Count; i++)
+            {
+                if (model.m_arrGOStrDoors[i] == null) continue;
+                // Door object is valid (not empty)                
+                DrawDoorText3D(model.m_arrGOStrDoors[i], viewPort, displayOptions);                
+            }
+        }
+        public static void CreateWindowDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrGOStrWindows == null) return;
+            
+            for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
+            {
+                if (model.m_arrGOStrWindows[i] == null) continue;
+                // Window object is valid (not empty)                
+                DrawWindowText3D(model.m_arrGOStrWindows[i], viewPort, displayOptions);                
+            }
+        }
+
+
         // Draw Section Symbol Label Text 3D
         public static void DrawSectionSymbolLabelText3D(CSectionSymbol sectionSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            TextBlock tb = new TextBlock();
-            tb.Text = sectionSymbol.LabelText;
-            tb.FontFamily = new FontFamily("Arial");
-            //float fTextBlockVerticalSize = displayOptions.fSectionSymbolLabelTextFontSize / 100f;
-            //float fTextBlockVerticalSizeFactor = 0.8f;
-            //float fTextBlockHorizontalSizeFactor = 0.5f;
-
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISectionSymbolLabelSize, displayOptions.ExportSectionSymbolLabelSize, displayOptions);
 
-            float fTextBlockVerticalSizeFactor = 1f;
-            float fTextBlockHorizontalSizeFactor = 1f;
+            Vector3D over = new Vector3D(1f * sectionSymbol.iVectorOverFactor_LCS, 0, 0);
+            Vector3D up = new Vector3D(0, 1f * sectionSymbol.iVectorUpFactor_LCS, 0);
 
-            tb.FontStretch = FontStretches.Normal;
-            tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Normal;
-            tb.Foreground = new SolidColorBrush(displayOptions.SectionSymbolLabelTextColor);
-            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor); //netreba nastavovat ak chceme mat transparentne
-            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sectionSymbol.iVectorOverFactor_LCS, 0, 0);
-            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sectionSymbol.iVectorUpFactor_LCS, 0);
-
-            // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, sectionSymbol.PointLabelText, over, up);
-
-            if (centerModel)
-            {
-                Transform3DGroup tr = new Transform3DGroup();
-
-                //if (sectionSymbol.TransformGr == null)
-                //{
-                //    throw new Exception("");
-                //}
-
-                if (sectionSymbol.TransformGr != null)
-                {
-                    tr.Children.Add(sectionSymbol.TransformGr);
-                }
-                tr.Children.Add(centerModelTransGr);
-                textlabel.Transform = tr;
-            }
-            viewPort.Children.Add(textlabel);
+            AddLabel3DToViewPort(sectionSymbol.Text, fTextBlockVerticalSize, displayOptions.SectionSymbolLabelTextColor, null, sectionSymbol.PointText, over, up, sectionSymbol.TransformGr, 1, false, ref viewPort);
         }
-
+        
         // Draw Detail Symbol Label Text 3D
         public static void DrawDetailSymbolLabelText3D(CDetailSymbol detailSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            TextBlock tb = new TextBlock();
-            tb.Text = detailSymbol.LabelText;
-            tb.FontFamily = new FontFamily("Arial");
-            //float fTextBlockVerticalSize = displayOptions.fDetailSymbolLabelTextFontSize / 100f;
-            //float fTextBlockVerticalSizeFactor = 0.8f;
-            //float fTextBlockHorizontalSizeFactor = 0.5f;
-
-            //float fTextBlockVerticalSize = detailSymbol.LineCylinderRadius * 30;            
-
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDetailSymbolLabelSize, displayOptions.ExportDetailSymbolLabelSize, displayOptions);
 
-            float fTextBlockVerticalSizeFactor = 1f;
-            float fTextBlockHorizontalSizeFactor = 1f;
+            Vector3D over = new Vector3D(1f, 0, 0);
+            Vector3D up = new Vector3D(0, 0, 1f);
+            GetTextVectorsAccordingToView(displayOptions, out up, out over, 1f, 1f);
 
-            tb.FontStretch = FontStretches.Normal;
-            tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Normal;
-            tb.Foreground = new SolidColorBrush(displayOptions.DetailSymbolLabelTextColor);
-            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-            if (displayOptions.DetailSymbolLabelBackColor != null) tb.Background = new SolidColorBrush(displayOptions.DetailSymbolLabelBackColor.Value);
-
-            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
-            Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-            GetTextVectorsAccordingToView(displayOptions, out up, out over, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor);
-
-            // Create text
-            Transform3DGroup tr = new Transform3DGroup();
-
-            if (detailSymbol.TransformGr != null)
-            {
-                tr.Children.Add(detailSymbol.TransformGr);
-
-                Point3D pTransformed = tr.Transform(detailSymbol.PointLabelText);
-                detailSymbol.PointLabelText = pTransformed;
-            }
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, detailSymbol.PointLabelText, over, up, 0.6);
-
-            if (centerModel)
-            {
-                textlabel.Transform = centerModelTransGr;
-            }
-            viewPort.Children.Add(textlabel);
+            AddLabel3DToViewPort(detailSymbol.Text, fTextBlockVerticalSize, displayOptions.DetailSymbolLabelTextColor, displayOptions.DetailSymbolLabelBackColor, 
+                detailSymbol.PointText, over, up, detailSymbol.TransformGr, 0.6, true, ref viewPort);
         }
 
         // Draw Saw Cut Text 3D
         public static void DrawSawCutText3D(CSawCut sawcut, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            TextBlock tb = new TextBlock();
-            tb.Text = sawcut.Text;
-            tb.FontFamily = new FontFamily("Arial");
-            //float fTextBlockVerticalSize = displayOptions.fSawCutTextFontSize / 100f;
-            //float fTextBlockVerticalSizeFactor = 0.8f;
-            //float fTextBlockHorizontalSizeFactor = 0.3f;
-
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISawCutTextSize, displayOptions.ExportSawCutTextSize, displayOptions);
+            sawcut.OffsetFromLine = fTextBlockVerticalSize / 2;  //toto vyzera ze sa pouziva kvoli TextPoint
 
-            sawcut.OffsetFromLine = fTextBlockVerticalSize / 2;
+            Vector3D over = new Vector3D(1f * sawcut.iVectorOverFactor_LCS, 0, 0);
+            Vector3D up = new Vector3D(0, 1f * sawcut.iVectorUpFactor_LCS, 0);
 
-            float fTextBlockVerticalSizeFactor = 1f;
-            float fTextBlockHorizontalSizeFactor = 1f;
-
-            tb.FontStretch = FontStretches.UltraCondensed;
-            tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Normal;
-            tb.Foreground = new SolidColorBrush(displayOptions.SawCutTextColor);
-            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sawcut.iVectorOverFactor_LCS, 0, 0);
-            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sawcut.iVectorUpFactor_LCS, 0);
-
-            // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, sawcut.PointText, over, up, 0.5);
-
-            if (centerModel)
-            {
-                Transform3DGroup tr = new Transform3DGroup();
-
-                if (sawcut.TransformGr == null)
-                {
-                    throw new Exception("Saw cut in local coordinate system! \nTransformation object is null! \nText label is probably created before saw cut model exists!");
-                }
-
-                if (sawcut.TransformGr != null)
-                {
-                    tr.Children.Add(sawcut.TransformGr);
-                }
-                tr.Children.Add(centerModelTransGr);
-                textlabel.Transform = tr;
-            }
-            viewPort.Children.Add(textlabel);
+            AddLabel3DToViewPort(sawcut.Text, fTextBlockVerticalSize, displayOptions.SawCutTextColor, null, sawcut.PointText, over, up, sawcut.TransformGr, 0.5, false, ref viewPort);
         }
-
-        public static void CreateSawCutDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            if (model.m_arrSlabs != null)
-            {
-                for (int i = 0; i < model.m_arrSlabs.Count; i++)
-                {
-                    if (model.m_arrSlabs[i].SawCuts != null)
-                    {
-                        for (int j = 0; j < model.m_arrSlabs[i].SawCuts.Count; j++)
-                        {
-                            if (model.m_arrSlabs[i].SawCuts[j] != null) // Saw cut object is valid (not empty)
-                            {
-                                DrawSawCutText3D(model.m_arrSlabs[i].SawCuts[j], viewPort, displayOptions);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
+        
         // Draw Control Joint Text 3D
         public static void DrawControlJointText3D(CControlJoint controlJoint, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            TextBlock tb = new TextBlock();
-            tb.Text = controlJoint.Text;
-            tb.FontFamily = new FontFamily("Arial");
-            //float fTextBlockVerticalSize = displayOptions.fControlJointTextFontSize / 100f;
-            //float fTextBlockVerticalSizeFactor = 0.8f;
-            //float fTextBlockHorizontalSizeFactor = 0.3f;
-
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIControlJointTextSize, displayOptions.ExportControlJointTextSize, displayOptions);
-
             controlJoint.OffsetFromLine = fTextBlockVerticalSize / 2;
 
-            float fTextBlockVerticalSizeFactor = 1f;
-            float fTextBlockHorizontalSizeFactor = 1f;
+            Vector3D over = new Vector3D(1f * controlJoint.iVectorOverFactor_LCS, 0, 0);
+            Vector3D up = new Vector3D(0, 1f * controlJoint.iVectorUpFactor_LCS, 0);
 
-            tb.FontStretch = FontStretches.UltraCondensed;
-            tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Normal;
-            tb.Foreground = new SolidColorBrush(displayOptions.ControlJointTextColor);
-            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * controlJoint.iVectorOverFactor_LCS, 0, 0);
-            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * controlJoint.iVectorUpFactor_LCS, 0);
-
-            // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, controlJoint.PointText, over, up, 0.5);
-
-            if (centerModel)
-            {
-                Transform3DGroup tr = new Transform3DGroup();
-
-                if (controlJoint.TransformGr == null)
-                {
-                    throw new Exception("Control joint in local coordinate system! \nTransformation object is null! \nText label is probably created before control joint model exists!");
-                }
-
-                if (controlJoint.TransformGr != null)
-                {
-                    tr.Children.Add(controlJoint.TransformGr);
-                }
-                tr.Children.Add(centerModelTransGr);
-                textlabel.Transform = tr;
-            }
-            viewPort.Children.Add(textlabel);
-        }
-
-        public static void CreateControlJointDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            if (model.m_arrSlabs != null)
-            {
-                for (int i = 0; i < model.m_arrSlabs.Count; i++)
-                {
-                    if (model.m_arrSlabs[i].ControlJoints != null)
-                    {
-                        for (int j = 0; j < model.m_arrSlabs[i].ControlJoints.Count; j++)
-                        {
-                            if (model.m_arrSlabs[i].ControlJoints[j] != null) // Control joint object is valid (not empty)
-                            {
-                                DrawControlJointText3D(model.m_arrSlabs[i].ControlJoints[j], viewPort, displayOptions);
-                            }
-                        }
-                    }
-                }
-            }
+            AddLabel3DToViewPort(controlJoint.Text, fTextBlockVerticalSize, displayOptions.ControlJointTextColor, null, controlJoint.PointText, over, up, controlJoint.TransformGr, 0.5, false, ref viewPort);
         }
 
         // Draw Foundations Text 3D
         public static void DrawFoundationText3D(CFoundation foundation, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            TextBlock tb = new TextBlock();
-            tb.Text = foundation.Text;
-            tb.FontFamily = new FontFamily("Arial");
-            //float fTextBlockVerticalSize = displayOptions.fFoundationTextFontSize / 100f;
-            //float fTextBlockVerticalSizeFactor = 0.8f;
-            //float fTextBlockHorizontalSizeFactor = 0.3f;
-
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFoundationTextSize, displayOptions.ExportFoundationTextSize, displayOptions);
-
             foundation.SetTextPoint(fTextBlockVerticalSize);
-
-            float fTextBlockVerticalSizeFactor = 1f;
-            float fTextBlockHorizontalSizeFactor = 1f;
-
-            tb.FontStretch = FontStretches.UltraCondensed;
-            tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Thin;
-            tb.Foreground = new SolidColorBrush(displayOptions.FoundationTextColor);
-            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
-            Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-            Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+            Vector3D over = new Vector3D(0, 1f, 0);
+            Vector3D up = new Vector3D(-1f, 0, 0);
 
-            // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up, 0.5);
-            Transform3DGroup tr = new Transform3DGroup();
-
-            if (foundation.GetFoundationTransformGroup_Complete() == null)
-            {
-                throw new Exception("Foundation in local coordinate system! \nTransformation object is null! \nText label is probably created before foundation model exists!");
-            }
-
-            if (foundation.GetFoundationTransformGroup_Complete() != null)
-            {
-                tr.Children.Add(foundation.GetFoundationTransformGroup_Complete());
-
-                // Nechceme transformovat cely text label len vkladaci bod
-                Point3D pTransformed = tr.Transform(foundation.PointText);
-                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.5);
-            }
-
-            if (centerModel)
-            {
-                textlabel.Transform = centerModelTransGr;
-            }
-            viewPort.Children.Add(textlabel);
-        }
-
-        public static void CreateFoundationsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            List<Point3D?> points = new List<Point3D?>();
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFoundationTextSize;
-
-            if (model.m_arrFoundations != null)
-            {
-                for (int i = 0; i < model.m_arrFoundations.Count; i++)
-                {
-                    if (model.m_arrFoundations[i] != null) // Foundation object is valid (not empty)
-                    {
-                        DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
-
-                        //tu je pokus riesit prekryvanie textov, ale ja mam pocit ze tie Foundations maju vsetky body ControlPoint aj PointText proste rovnake
-                        //if (!CheckTextsOverlaps(points, model.m_arrFoundations[i].PointText, fTextBlockVerticalSize * 3))
-                        //{
-                        //    points.Add(model.m_arrFoundations[i].PointText);
-                        //    DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
-                        //}
-                    }
-                }
-            }
+            Transform3DGroup tr = foundation.GetFoundationTransformGroup_Complete();
+            AddLabel3DToViewPort(foundation.Text, fTextBlockVerticalSize, displayOptions.FoundationTextColor, null, foundation.PointText, over, up, tr, 0.5, true, ref viewPort);
         }
 
         // Draw Floor Slabs Text 3D
         public static void DrawFloorSlabText3D(CSlab slab, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            TextBlock tb = new TextBlock();
-            tb.Text = slab.Text;
-            tb.FontFamily = new FontFamily("Arial");
-
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
             float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFloorSlabTextSize, displayOptions.ExportFloorSlabTextSize, displayOptions);
 
-            float fTextBlockVerticalSizeFactor = 1f;
-            float fTextBlockHorizontalSizeFactor = 1f;
+            // Nastavujeme pre GCS (rovina XY - text v smere Y)
+            Vector3D over = new Vector3D(0, 1f, 0);
+            Vector3D up = new Vector3D(-1f, 0, 0);
+            Transform3DGroup tr = slab.GetSlabTransformGroup();
 
+            AddLabel3DToViewPort(slab.Text, fTextBlockVerticalSize, displayOptions.FloorSlabTextColor, null, slab.PointText, over, up, tr, 0.04, true, ref viewPort);            
+        }
+
+
+        public static void AddLabel3DToViewPort(string text, float fTextBlockVerticalSize, Color textColor, Color? backColor, Point3D p, Vector3D over, Vector3D up, 
+            Transform3DGroup tr, double widthScaleFactor, bool transformOnlyTextPoint, ref Viewport3D viewPort)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = text;
+            tb.FontFamily = new FontFamily("Arial");
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Bold;
-            tb.Foreground = new SolidColorBrush(displayOptions.FloorSlabTextColor);
-            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-
-            // Nastavujeme pre GCS (rovina XY - text v smere Y)
-            Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-            Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
-
+            tb.Foreground = new SolidColorBrush(textColor);
+            if(backColor.HasValue) tb.Background = new SolidColorBrush(backColor.Value);
+            
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, slab.PointText, over, up, 0.04);
-            Transform3DGroup tr = new Transform3DGroup();
+            ModelVisual3D textlabel = null;
 
-            if (slab.GetSlabTransformGroup() == null)
+            if (tr == null)
             {
-                throw new Exception("Slab in local coordinate system! \nTransformation object is null! \nText label is probably created before slab model exists!");
+                throw new Exception("Object in local coordinate system! \nTransformation object is null! \nText label is probably created before object model exists!");
             }
 
-            if (slab.GetSlabTransformGroup() != null)
+            if (transformOnlyTextPoint)
             {
-                tr.Children.Add(slab.GetSlabTransformGroup());
-
                 // Nechceme transformovat cely text label len vkladaci bod
-                Point3D pTransformed = tr.Transform(slab.PointText);
-                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.04);
-            }
+                Point3D pTransformed = tr.Transform(p);
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, widthScaleFactor);
 
-            if (centerModel)
-            {
-                textlabel.Transform = centerModelTransGr;
+                if (centerModel)
+                {
+                    textlabel.Transform = centerModelTransGr;
+                }
             }
+            else
+            {
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, p, over, up, widthScaleFactor);
+                if (centerModel)
+                {
+                    Transform3DGroup tr_group = new Transform3DGroup();
+                    tr_group.Children.Add(tr);                    
+                    tr_group.Children.Add(centerModelTransGr);
+                    textlabel.Transform = tr_group;
+                }
+            }
+            
             viewPort.Children.Add(textlabel);
         }
 
-        public static void CreateFloorSlabsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            if (model.m_arrSlabs != null)
-            {
-                for (int i = 0; i < model.m_arrSlabs.Count; i++)
-                {
-                    if (model.m_arrSlabs[i] != null) // Slab object is valid (not empty)
-                    {
-                        DrawFloorSlabText3D(model.m_arrSlabs[i], viewPort, displayOptions);
-                    }
-                }
-            }
-        }
 
         // Draw Cladding Text 3D
         public static void DrawCladdingText3D(CModel model, CCladding cladding, Viewport3D viewPort, DisplayOptions displayOptions)
@@ -4518,20 +4220,6 @@ namespace BaseClasses
                 CreateTextLabels(cladding.listOfCladdingSheetsRoofLeft, displayOptions.bDisplayCladdingRoof, displayOptions, ref viewPort);
         }
 
-        public static void CreateCladdingDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            if (model.m_arrGOCladding != null)
-            {
-                for (int i = 0; i < model.m_arrGOCladding.Count; i++)
-                {
-                    if (model.m_arrGOCladding[i] != null) // Cladding object is valid (not empty)
-                    {
-                        DrawCladdingText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);
-                    }
-                }
-            }
-        }
-
         // Draw Fibreglass Text 3D
         public static void DrawFibreglassText3D(CModel model, CCladding cladding, Viewport3D viewPort, DisplayOptions displayOptions)
         {
@@ -4544,20 +4232,6 @@ namespace BaseClasses
 
             if (model.eKitset == EModelType_FS.eKitsetGableRoofEnclosed)
                 CreateTextLabels(cladding.listOfFibreGlassSheetsRoofLeft, displayOptions.bDisplayCladdingRoof, displayOptions, ref viewPort);
-        }
-
-        public static void CreateFibreglassDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            if (model.m_arrGOCladding != null)
-            {
-                for (int i = 0; i < model.m_arrGOCladding.Count; i++)
-                {
-                    if (model.m_arrGOCladding[i] != null) // Cladding object is valid (not empty)
-                    {
-                        DrawFibreglassText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);
-                    }
-                }
-            }
         }
 
         // Pomocne funkcie pre cladding
@@ -4744,19 +4418,7 @@ namespace BaseClasses
             viewPort.Children.Add(textlabel);
         }
 
-        public static void CreateDoorDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            if (model.m_arrGOStrDoors != null)
-            {
-                for (int i = 0; i < model.m_arrGOStrDoors.Count; i++)
-                {
-                    if (model.m_arrGOStrDoors[i] != null) // Door object is valid (not empty)
-                    {
-                        DrawDoorText3D(model.m_arrGOStrDoors[i], viewPort, displayOptions);
-                    }
-                }
-            }
-        }
+        
 
         // Draw Window Text 3D
         public static void DrawWindowText3D(CStructure_Window window, Viewport3D viewPort, DisplayOptions displayOptions)
@@ -4803,20 +4465,8 @@ namespace BaseClasses
             viewPort.Children.Add(textlabel);
         }
 
-        public static void CreateWindowDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            if (model.m_arrGOStrWindows != null)
-            {
-                for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
-                {
-                    if (model.m_arrGOStrWindows[i] != null) // Window object is valid (not empty)
-                    {
-                        DrawWindowText3D(model.m_arrGOStrWindows[i], viewPort, displayOptions);
-                    }
-                }
-            }
-        }
-
+        
+        #endregion
         #endregion
 
         private static Transform3DGroup GetModelRotationAccordingToView(DisplayOptions sDisplayOptions)
@@ -6727,6 +6377,451 @@ namespace BaseClasses
         }
 
 
+        #endregion
+
+
+        #region stare kody odlozene
+        ////Tu vyzera, ze tuto metodu vobec nepouzivame,takze ju zakomentovavam....
+        // TO Ondrej - pod nou je moja upravena metoda CreateMembersDescriptionModel3D_POKUS_MC takze ak si spokojny s tou novou takto toto cele zakomentovane vyhod
+
+        //// Draw Text in 3D
+        //public static void CreateMembersDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    // Members
+        //    if (model.m_arrMembers != null)
+        //    {
+        //        ModelVisual3D textlabel = null;
+
+        //        for (int i = 0; i < model.m_arrMembers.Length; i++)
+        //        {
+        //            if (model.m_arrMembers[i] != null &&
+        //                model.m_arrMembers[i].NodeStart != null &&
+        //                model.m_arrMembers[i].NodeEnd != null &&
+        //                model.m_arrMembers[i].CrScStart != null &&
+        //                model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
+        //            {
+        //                Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
+        //                Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
+
+        //                string sTextToDisplay = GetMemberDisplayText(displayOptions, model.m_arrMembers[i]);
+
+        //                TextBlock tb = new TextBlock();
+        //                tb.Text = sTextToDisplay;
+        //                tb.FontFamily = new FontFamily("Arial");
+        //                float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f; //  0.1f; // To Ondrej - da sa velkost textu nejako prepojit s velkostou realne textu v 3D, napriklad vyska fontu 12 by bola 0.12 metra ???
+        //                float fTextBlockVerticalSizeFactor = 0.8f;
+        //                float fTextBlockHorizontalSizeFactor = 0.3f;
+
+        //                // Tieto nastavenia sa nepouziju
+        //                tb.FontStretch = FontStretches.UltraCondensed;
+        //                tb.FontStyle = FontStyles.Normal;
+        //                tb.FontWeight = FontWeights.Thin;
+        //                tb.Foreground = new SolidColorBrush(displayOptions.MemberDescriptionTextColor);
+        //                tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
+
+        //                float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
+
+        //                // TODO Ondrej - vylepsit vykreslovanie a odsadenie
+        //                // Teraz to kreslime priamo do GCS, ale asi by bolo lepsie kreslit do LCS a potom text transformovat
+        //                // pripadne vypocitat podla orientacie pruta vector z hodnot delta ako je prut orientovany v priestore a podla toho nastavit
+        //                // hodnoty vektorov pre funkciu CreateTextLabel3D) :over" and "up"
+        //                // Do user options by som dal nastavenie ci sa ma text kreslit horizontalne na obrazovke v rovine obrazovky
+        //                // alebo podla polohy pruta (rovnobezne s lokalnou osou x pruta) horizontalne alebo vertikalne podla orientacie osi x pruta v lokanych rovinach x,y alebo x,z pruta
+
+        //                float fOffsetZ = 0.07f;
+        //                Point3D pTextPosition = new Point3D();
+        //                pTextPosition.X = pNodeStart.X + fRelativePositionFactor * model.m_arrMembers[i].Delta_X;
+        //                pTextPosition.Y = pNodeStart.Y + fRelativePositionFactor * model.m_arrMembers[i].Delta_Y;
+        //                pTextPosition.Z = pNodeStart.Z + fRelativePositionFactor * model.m_arrMembers[i].Delta_Z + fOffsetZ;
+
+        //                Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+        //                Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+        //                SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
+        //                // Create text
+        //                textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPosition, over, up);
+
+        //                if (centerModel)
+        //                {
+        //                    textlabel.Transform = centerModelTransGr;
+        //                }
+        //                viewPort.Children.Add(textlabel);
+        //            }
+        //        }
+        //    }
+        //}
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Draw Dimension 3D
+        //public static void DrawDimension3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    TextBlock tb = new TextBlock();
+        //    tb.Text = dimension.Text;
+        //    tb.FontFamily = new FontFamily("Arial");
+        //    //float fTextBlockVerticalSize = 0.1f;
+        //    //float fTextBlockVerticalSizeFactor = 0.8f;
+        //    //float fTextBlockHorizontalSizeFactor = 0.3f;
+        //    float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+        //    float fTextBlockVerticalSizeFactor = 1f;
+        //    float fTextBlockHorizontalSizeFactor = 1f;
+
+        //    tb.FontStretch = FontStretches.UltraCondensed;
+        //    tb.FontStyle = FontStyles.Normal;
+        //    tb.FontWeight = FontWeights.Thin;
+        //    tb.Foreground = Brushes.Coral;
+        //    //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+        //    Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+        //    Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+        //    SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
+        //    // Create text
+        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up);
+
+        //    if (centerModel)
+        //    {
+        //        textlabel.Transform = centerModelTransGr;
+        //    }
+        //    viewPort.Children.Add(textlabel);
+
+        //    // LINES
+
+        //    float flineThickness = 4;
+
+        //    //WireLine wL1 = new WireLine();
+        //    //wL1.Point1 = dimension.PointStart;
+        //    //wL1.Point2 = dimension.PointStartL2;
+        //    //wL1.Thickness = flineThickness;
+        //    //wL1.Color = dimensionColor;
+
+        //    //WireLine wL2 = new WireLine();
+        //    //wL2.Point1 = dimension.PointEnd;
+        //    //wL2.Point2 = dimension.PointEndL2;
+        //    //wL2.Thickness = flineThickness;
+        //    //wL2.Color = dimensionColor;
+
+        //    //WireLine wMain = new WireLine();
+        //    //wMain.Point1 = dimension.PointMainLine1;
+        //    //wMain.Point2 = dimension.PointMainLine2;
+        //    //wMain.Thickness = flineThickness;
+        //    //wMain.Color = dimensionColor;
+
+        //    //LinesVisual3D wL1 = new LinesVisual3D();
+        //    //LinesVisual3D wL2 = new LinesVisual3D();
+        //    //LinesVisual3D wMain = new LinesVisual3D();
+
+        //    ScreenSpaceLines3D wL1 = new ScreenSpaceLines3D();
+        //    ScreenSpaceLines3D wL2 = new ScreenSpaceLines3D();
+        //    ScreenSpaceLines3D wMain = new ScreenSpaceLines3D();
+        //    wL1.Points.Add(dimension.PointStart);
+        //    wL1.Points.Add(dimension.PointStartL2);
+        //    wL1.Color = displayOptions.DimensionLineColor;
+        //    wL1.Thickness = flineThickness;
+
+        //    wL2.Points.Add(dimension.PointEnd);
+        //    wL2.Points.Add(dimension.PointEndL2);
+        //    wL2.Color = displayOptions.DimensionLineColor;
+        //    wL2.Thickness = flineThickness;
+
+        //    wMain.Points.Add(dimension.PointMainLine1);
+        //    wMain.Points.Add(dimension.PointMainLine2);
+        //    wMain.Color = displayOptions.DimensionLineColor;
+        //    wMain.Thickness = flineThickness;
+
+        //    if (centerModel)
+        //    {
+        //        wL1.Transform = centerModelTransGr;
+        //        wL2.Transform = centerModelTransGr;
+        //        wMain.Transform = centerModelTransGr;
+        //    }
+
+        //    viewPort.Children.Add(wL1);
+        //    viewPort.Children.Add(wL2);
+        //    viewPort.Children.Add(wMain);
+        //    //viewPort.UpdateLayout();
+        //    wL1.Rescale();
+        //    wL2.Rescale();
+        //    wMain.Rescale();
+        //    //viewPort.UpdateLayout();
+        //}
+
+        // Draw Grid Line Label Text 3D
+
+        // Draw Floor Slabs Text 3D
+        //public static void DrawFloorSlabText3D(CSlab slab, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    TextBlock tb = new TextBlock();
+        //    tb.Text = slab.Text;
+        //    tb.FontFamily = new FontFamily("Arial");
+
+        //    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+        //    float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFloorSlabTextSize, displayOptions.ExportFloorSlabTextSize, displayOptions);
+
+        //    float fTextBlockVerticalSizeFactor = 1f;
+        //    float fTextBlockHorizontalSizeFactor = 1f;
+
+        //    tb.FontStretch = FontStretches.UltraCondensed;
+        //    tb.FontStyle = FontStyles.Normal;
+        //    tb.FontWeight = FontWeights.Bold;
+        //    tb.Foreground = new SolidColorBrush(displayOptions.FloorSlabTextColor);
+        //    //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+        //    // Nastavujeme pre GCS (rovina XY - text v smere Y)
+        //    Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+        //    Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+
+        //    // Create text
+        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, slab.PointText, over, up, 0.04);
+        //    Transform3DGroup tr = new Transform3DGroup();
+
+        //    if (slab.GetSlabTransformGroup() == null)
+        //    {
+        //        throw new Exception("Slab in local coordinate system! \nTransformation object is null! \nText label is probably created before slab model exists!");
+        //    }
+
+        //    if (slab.GetSlabTransformGroup() != null)
+        //    {
+        //        tr.Children.Add(slab.GetSlabTransformGroup());
+
+        //        // Nechceme transformovat cely text label len vkladaci bod
+        //        Point3D pTransformed = tr.Transform(slab.PointText);
+        //        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.04);
+        //    }
+
+        //    if (centerModel)
+        //    {
+        //        textlabel.Transform = centerModelTransGr;
+        //    }
+        //    viewPort.Children.Add(textlabel);
+        //}
+
+
+        //ODPAD z REFAKTORINGU 19.3.2021 potom ZMAZAT
+        //// Draw Foundations Text 3D
+        //public static void DrawFoundationText3D(CFoundation foundation, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    TextBlock tb = new TextBlock();
+        //    tb.Text = foundation.Text;
+        //    tb.FontFamily = new FontFamily("Arial");
+
+        //    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+        //    float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFoundationTextSize, displayOptions.ExportFoundationTextSize, displayOptions);
+
+        //    foundation.SetTextPoint(fTextBlockVerticalSize);
+
+        //    float fTextBlockVerticalSizeFactor = 1f;
+        //    float fTextBlockHorizontalSizeFactor = 1f;
+
+        //    tb.FontStretch = FontStretches.UltraCondensed;
+        //    tb.FontStyle = FontStyles.Normal;
+        //    tb.FontWeight = FontWeights.Thin;
+        //    tb.Foreground = new SolidColorBrush(displayOptions.FoundationTextColor);
+        //    //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+        //    // Nastavujeme pre GCS (rovina XY - text v smere Y)
+        //    Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+        //    Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+
+        //    // Create text
+        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up, 0.5);
+        //    Transform3DGroup tr = new Transform3DGroup();
+
+        //    if (foundation.GetFoundationTransformGroup_Complete() == null)
+        //    {
+        //        throw new Exception("Foundation in local coordinate system! \nTransformation object is null! \nText label is probably created before foundation model exists!");
+        //    }
+
+        //    if (foundation.GetFoundationTransformGroup_Complete() != null)
+        //    {
+        //        tr.Children.Add(foundation.GetFoundationTransformGroup_Complete());
+
+        //        // Nechceme transformovat cely text label len vkladaci bod
+        //        Point3D pTransformed = tr.Transform(foundation.PointText);
+        //        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.5);
+        //    }
+
+        //    if (centerModel)
+        //    {
+        //        textlabel.Transform = centerModelTransGr;
+        //    }
+        //    viewPort.Children.Add(textlabel);
+        //}
+
+        //// Draw Control Joint Text 3D
+        //public static void DrawControlJointText3D(CControlJoint controlJoint, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    TextBlock tb = new TextBlock();
+        //    tb.Text = controlJoint.Text;
+        //    tb.FontFamily = new FontFamily("Arial");
+
+        //    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+        //    float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIControlJointTextSize, displayOptions.ExportControlJointTextSize, displayOptions);
+
+        //    controlJoint.OffsetFromLine = fTextBlockVerticalSize / 2;
+
+        //    float fTextBlockVerticalSizeFactor = 1f;
+        //    float fTextBlockHorizontalSizeFactor = 1f;
+
+        //    tb.FontStretch = FontStretches.UltraCondensed;
+        //    tb.FontStyle = FontStyles.Normal;
+        //    tb.FontWeight = FontWeights.Normal;
+        //    tb.Foreground = new SolidColorBrush(displayOptions.ControlJointTextColor);
+        //    //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+        //    Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * controlJoint.iVectorOverFactor_LCS, 0, 0);
+        //    Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * controlJoint.iVectorUpFactor_LCS, 0);
+
+        //    // Create text
+        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, controlJoint.PointText, over, up, 0.5);
+
+        //    if (centerModel)
+        //    {
+        //        Transform3DGroup tr = new Transform3DGroup();
+
+        //        if (controlJoint.TransformGr == null)
+        //        {
+        //            throw new Exception("Control joint in local coordinate system! \nTransformation object is null! \nText label is probably created before control joint model exists!");
+        //        }
+
+        //        if (controlJoint.TransformGr != null)
+        //        {
+        //            tr.Children.Add(controlJoint.TransformGr);
+        //        }
+        //        tr.Children.Add(centerModelTransGr);
+        //        textlabel.Transform = tr;
+        //    }
+        //    viewPort.Children.Add(textlabel);
+        //}
+        // Draw Saw Cut Text 3D
+        //public static void DrawSawCutText3D(CSawCut sawcut, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    TextBlock tb = new TextBlock();
+        //    tb.Text = sawcut.Text;
+        //    tb.FontFamily = new FontFamily("Arial");
+
+        //    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+        //    float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISawCutTextSize, displayOptions.ExportSawCutTextSize, displayOptions);
+
+        //    sawcut.OffsetFromLine = fTextBlockVerticalSize / 2;  //toto vyzera ze sa pouziva kvoli TextPoint
+
+        //    float fTextBlockVerticalSizeFactor = 1f;
+        //    float fTextBlockHorizontalSizeFactor = 1f;
+
+        //    tb.FontStretch = FontStretches.UltraCondensed;
+        //    tb.FontStyle = FontStyles.Normal;
+        //    tb.FontWeight = FontWeights.Normal;
+        //    tb.Foreground = new SolidColorBrush(displayOptions.SawCutTextColor);
+
+        //    Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sawcut.iVectorOverFactor_LCS, 0, 0);
+        //    Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sawcut.iVectorUpFactor_LCS, 0);
+
+        //    // Create text
+        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, sawcut.PointText, over, up, 0.5);
+
+        //    if (centerModel)
+        //    {
+        //        Transform3DGroup tr = new Transform3DGroup();
+
+        //        if (sawcut.TransformGr == null)
+        //        {
+        //            throw new Exception("Saw cut in local coordinate system! \nTransformation object is null! \nText label is probably created before saw cut model exists!");
+        //        }
+
+        //        if (sawcut.TransformGr != null)
+        //        {
+        //            tr.Children.Add(sawcut.TransformGr);
+        //        }
+        //        tr.Children.Add(centerModelTransGr);
+        //        textlabel.Transform = tr;
+        //    }
+        //    viewPort.Children.Add(textlabel);
+        //}
+
+        //// Draw Detail Symbol Label Text 3D
+        //public static void DrawDetailSymbolLabelText3D(CDetailSymbol detailSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    TextBlock tb = new TextBlock();
+        //    tb.Text = detailSymbol.LabelText;
+        //    tb.FontFamily = new FontFamily("Arial");
+
+        //    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+        //    float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDetailSymbolLabelSize, displayOptions.ExportDetailSymbolLabelSize, displayOptions);
+
+        //    float fTextBlockVerticalSizeFactor = 1f;
+        //    float fTextBlockHorizontalSizeFactor = 1f;
+
+        //    tb.FontStretch = FontStretches.Normal;
+        //    tb.FontStyle = FontStyles.Normal;
+        //    tb.FontWeight = FontWeights.Normal;
+        //    tb.Foreground = new SolidColorBrush(displayOptions.DetailSymbolLabelTextColor);
+
+        //    if (displayOptions.DetailSymbolLabelBackColor != null) tb.Background = new SolidColorBrush(displayOptions.DetailSymbolLabelBackColor.Value);
+
+        //    Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+        //    Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+        //    GetTextVectorsAccordingToView(displayOptions, out up, out over, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor);
+
+        //    // Create text
+        //    Transform3DGroup tr = new Transform3DGroup();
+
+        //    if (detailSymbol.TransformGr != null)
+        //    {
+        //        tr.Children.Add(detailSymbol.TransformGr);
+
+        //        Point3D pTransformed = tr.Transform(detailSymbol.PointLabelText);
+        //        detailSymbol.PointLabelText = pTransformed;
+        //    }
+        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, detailSymbol.PointLabelText, over, up, 0.6);
+
+        //    if (centerModel)
+        //    {
+        //        textlabel.Transform = centerModelTransGr;
+        //    }
+        //    viewPort.Children.Add(textlabel);
+        //}
+
+        //// Draw Section Symbol Label Text 3D
+        //public static void DrawSectionSymbolLabelText3D(CSectionSymbol sectionSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    TextBlock tb = new TextBlock();
+        //    tb.Text = sectionSymbol.LabelText;
+        //    tb.FontFamily = new FontFamily("Arial");
+
+        //    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+        //    float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISectionSymbolLabelSize, displayOptions.ExportSectionSymbolLabelSize, displayOptions);
+
+        //    float fTextBlockVerticalSizeFactor = 1f;
+        //    float fTextBlockHorizontalSizeFactor = 1f;
+
+        //    tb.FontStretch = FontStretches.Normal;
+        //    tb.FontStyle = FontStyles.Normal;
+        //    tb.FontWeight = FontWeights.Normal;
+        //    tb.Foreground = new SolidColorBrush(displayOptions.SectionSymbolLabelTextColor);
+
+        //    Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sectionSymbol.iVectorOverFactor_LCS, 0, 0);
+        //    Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sectionSymbol.iVectorUpFactor_LCS, 0);
+
+        //    // Create text
+        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, sectionSymbol.PointLabelText, over, up);
+
+        //    if (centerModel)
+        //    {
+        //        Transform3DGroup tr = new Transform3DGroup();
+
+        //        //if (sectionSymbol.TransformGr == null)
+        //        //{
+        //        //    throw new Exception("");
+        //        //}
+
+        //        if (sectionSymbol.TransformGr != null)
+        //        {
+        //            tr.Children.Add(sectionSymbol.TransformGr);
+        //        }
+        //        tr.Children.Add(centerModelTransGr);
+        //        textlabel.Transform = tr;
+        //    }
+        //    viewPort.Children.Add(textlabel);
+        //}
         #endregion
     }
 }
