@@ -1425,15 +1425,19 @@ namespace BaseClasses
                 fMin_Z = Math.Min(fMin_Z, (float)allFoundationPoints.Min(p => p.Z));
             }
 
-            // TODO - Ondrej - zapracovat aj zohladenie rozmerov wireframe, ak je zapnuty napriklad len cladding, resp jeho wireframe
-            if(cmodel.m_arrGOCladding != null && cmodel.m_arrGOCladding[0].WireFramePoints != null && cmodel.m_arrGOCladding[0].WireFramePoints.Count >= 2)
+            //Ondrej - zapracovat aj zohladenie rozmerov wireframe, ak je zapnuty napriklad len cladding, resp jeho wireframe
+            //OK, ale nechcem to pouzivat stale, to je asi zbytocne, tak pouzijem iba ak nic ostatne nie je
+            if (fMax_X == float.MinValue || fMin_X == float.MaxValue || fMax_Y == float.MinValue || fMin_Y == float.MaxValue || fMax_Z == float.MinValue || fMin_Z == float.MaxValue)
             {
-                fMax_X = Math.Max(fMax_X, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Max(p => p.X));
-                fMin_X = Math.Min(fMin_X, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Min(p => p.X));
-                fMax_Y = Math.Max(fMax_Y, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Max(p => p.Y));
-                fMin_Y = Math.Min(fMin_Y, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Min(p => p.Y));
-                fMax_Z = Math.Max(fMax_Z, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Max(p => p.Z));
-                fMin_Z = Math.Min(fMin_Z, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Min(p => p.Z));
+                if (cmodel.m_arrGOCladding != null && cmodel.m_arrGOCladding.ElementAtOrDefault(0) != null && cmodel.m_arrGOCladding[0].WireFramePoints != null && cmodel.m_arrGOCladding[0].WireFramePoints.Count >= 2)
+                {
+                    fMax_X = Math.Max(fMax_X, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Max(p => p.X));
+                    fMin_X = Math.Min(fMin_X, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Min(p => p.X));
+                    fMax_Y = Math.Max(fMax_Y, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Max(p => p.Y));
+                    fMin_Y = Math.Min(fMin_Y, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Min(p => p.Y));
+                    fMax_Z = Math.Max(fMax_Z, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Max(p => p.Z));
+                    fMin_Z = Math.Min(fMin_Z, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Min(p => p.Z));
+                }
             }
 
             if (fMax_X == float.MinValue ||
@@ -5884,24 +5888,28 @@ namespace BaseClasses
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsFrontWall = ModelHelper.GetCladdingSheets_Front(model);
+                cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
             else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_BACK)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsBackWall = ModelHelper.GetCladdingSheets_Back(model);
+                cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
             else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_LEFT)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsLeftWall = ModelHelper.GetCladdingSheets_Left(model);
+                cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
             else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_RIGHT)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsRightWall = ModelHelper.GetCladdingSheets_Right(model);
+                cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
             else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_ROOF)
@@ -5909,6 +5917,7 @@ namespace BaseClasses
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsRoofRight = ModelHelper.GetCladdingSheets_Roof_Right(model);
                 cl.listOfCladdingSheetsRoofLeft = ModelHelper.GetCladdingSheets_Roof_Left(model);
+                cl.SetCladdingWireframePoints();
                 _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
 

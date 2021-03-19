@@ -1573,5 +1573,16 @@ namespace BaseClasses.GraphObj
                 bGenerateRoofCladding = purlin.Generate.Value;
             }
         }
+
+        public void SetCladdingWireframePoints()
+        {
+            WireFramePoints = new List<Point3D>();
+            if(listOfCladdingSheetsLeftWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsLeftWall) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsRightWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRightWall) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsFrontWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsFrontWall) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsBackWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsBackWall) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsRoofLeft != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofLeft) WireFramePoints.AddRange(s.WireFramePoints);
+            if (listOfCladdingSheetsRoofRight != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofRight) WireFramePoints.AddRange(s.WireFramePoints);
+        }
     }
 }
