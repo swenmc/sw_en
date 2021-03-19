@@ -776,14 +776,16 @@ namespace BaseClasses
         MIDDLE_FRAME = 6,
         COLUMNS = 7,
         FOUNDATIONS = 8,
-        FLOOR = 9,
+        FLOOR = 9
+    }
 
-        // TO Ondrej - mozno by som pre tieto polozky urobil samostatny enum a uplne oddlelil vsetky funkcie pre vykreslovanie Model Members a Cladding
-        CLADDING_FRONT = 10,
-        CLADDING_BACK = 11,
-        CLADDING_LEFT = 12,
-        CLADDING_RIGHT = 13,
-        CLADDING_ROOF = 14
+    public enum EViewCladdingFilters
+    {        
+        CLADDING_FRONT = 1,
+        CLADDING_BACK = 2,
+        CLADDING_LEFT = 3,
+        CLADDING_RIGHT = 4,
+        CLADDING_ROOF = 5
     }
 
     public enum EPDFPageContentType
@@ -994,6 +996,7 @@ namespace BaseClasses
         public int RotateModelZ;
         public int ModelView;
         public int ViewModelMembers;
+        public int ViewCladding;
         public bool bUseOrtographicCamera;
         public double OrtographicCameraWidth;
 
