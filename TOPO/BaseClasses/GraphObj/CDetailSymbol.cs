@@ -63,7 +63,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public Point3D PointLabelText
+        public Point3D PointText
         {
             get
             {
@@ -89,7 +89,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public string LabelText
+        public string Text
         {
             get
             {
