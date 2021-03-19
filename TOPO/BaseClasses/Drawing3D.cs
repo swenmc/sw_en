@@ -1429,8 +1429,12 @@ namespace BaseClasses
             //OK, ale nechcem to pouzivat stale, to je asi zbytocne, tak pouzijem iba ak nic ostatne nie je
             if (fMax_X == float.MinValue || fMin_X == float.MaxValue || fMax_Y == float.MinValue || fMin_Y == float.MaxValue || fMax_Z == float.MinValue || fMin_Z == float.MaxValue)
             {
+                // TODO Ondrej - potrebujeme osetrit aby boli naplnene zoznamy wireframepoints,
+                // jednak jednotlive cladding sheets a jednak wireframepoints v ramci objektu m_arrGOCladding[0]
+
                 if (cmodel.m_arrGOCladding != null && cmodel.m_arrGOCladding.ElementAtOrDefault(0) != null && cmodel.m_arrGOCladding[0].WireFramePoints != null && cmodel.m_arrGOCladding[0].WireFramePoints.Count >= 2)
                 {
+                    // TO Ondrej - stale je tu problem, ze sem moze vojst list WireFramePoints, ktory obsahuje nula bodov, takze urcenie rozmerov zlyha
                     fMax_X = Math.Max(fMax_X, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Max(p => p.X));
                     fMin_X = Math.Min(fMin_X, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Min(p => p.X));
                     fMax_Y = Math.Max(fMax_Y, (float)cmodel.m_arrGOCladding[0].WireFramePoints.Max(p => p.Y));

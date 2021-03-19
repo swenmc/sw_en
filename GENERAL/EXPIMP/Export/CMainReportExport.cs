@@ -521,7 +521,7 @@ namespace EXPIMP
             List<EViewCladdingFilters> list_views = GetCladdingViewsFromExportOptions(exportOpts);
 
             int legendImgWidth = 100;
-            int legendTextWidth = 70;            
+            int legendTextWidth = 70;
 
             //DateTime start = DateTime.Now;
             //System.Diagnostics.Trace.WriteLine("DrawCladdingViews Beginning: " + (DateTime.Now - start).TotalMilliseconds);
@@ -549,7 +549,7 @@ namespace EXPIMP
                 ChangeDisplayOptionsAcordingToView(view, ref opts);
 
                 CModel filteredModel = null;
-                Trackport3D trackport = null;                
+                Trackport3D trackport = null;
                 double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.ExportImagesQuality);
                 double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.ExportImagesQuality);
 
@@ -600,13 +600,13 @@ namespace EXPIMP
         }
         private static List<EViewCladdingFilters> GetCladdingViewsFromExportOptions(LayoutsExportOptionsViewModel exportOpts)
         {
-            List<EViewCladdingFilters> list_views = new List<EViewCladdingFilters>();            
+            List<EViewCladdingFilters> list_views = new List<EViewCladdingFilters>();
 
             if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_FRONT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_BACK);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_LEFT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_RIGHT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_RIGHT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsBack) list_views.Add(EViewCladdingFilters.CLADDING_BACK);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsLeft) list_views.Add(EViewCladdingFilters.CLADDING_LEFT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsRight) list_views.Add(EViewCladdingFilters.CLADDING_RIGHT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsRoof) list_views.Add(EViewCladdingFilters.CLADDING_ROOF);
             return list_views;
         }
 
@@ -923,7 +923,7 @@ namespace EXPIMP
                 opts.bDisplayCladdingRightWall = true;
                 opts.bDisplayCladdingFrontWall = true;
                 opts.bDisplayCladdingBackWall = true;
-                opts.bDisplayCladdingRoof = true;                
+                opts.bDisplayCladdingRoof = true;
 
                 opts.bDisplayFibreglass = true;
                 opts.bDisplayDoors = true;
@@ -958,23 +958,23 @@ namespace EXPIMP
             }
             
             if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
-            {                
+            {
                 opts.bDisplayCladdingFrontWall = true;
             }
             else if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
-            {                
+            { 
                 opts.bDisplayCladdingBackWall = true;
             }
             else if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
-            {                
+            {
                 opts.bDisplayCladdingLeftWall = true;
             }
             else if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
-            {                
+            {
                 opts.bDisplayCladdingRightWall = true;
             }
             else if (viewMembers == EViewCladdingFilters.CLADDING_ROOF)
-            {                
+            {
                 opts.bDisplayCladdingRoof = true;
             }
         }
