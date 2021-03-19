@@ -556,7 +556,6 @@ namespace EXPIMP
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
                 viewPort.UpdateLayout();
                 
-                DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth);
                 filteredModel = null;
                 //System.Diagnostics.Trace.WriteLine("DrawCladdingViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -910,6 +909,10 @@ namespace EXPIMP
                 opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)                
 
                 opts.bDisplayMembers = false;
+                opts.bDisplayJoints = false;
+                opts.bDisplayFoundations = false;
+                opts.bDisplayFloorSlab = false;
+
                 opts.bDisplayLocalMembersAxis = false;
                 opts.bDisplayDimensions = false;
 

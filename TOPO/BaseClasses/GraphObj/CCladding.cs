@@ -109,7 +109,11 @@ namespace BaseClasses.GraphObj
 
         public CCladding()
         {
-
+            canopyCollection = new System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo>(); //nechce sa nam stale kontrolovat na null
+            fibreglassSheetCollection = new System.Collections.ObjectModel.ObservableCollection<FibreglassProperties>(); //nechce sa nam stale kontrolovat na null
+            bayWidthCollection = new System.Collections.ObjectModel.ObservableCollection<CBayInfo>();//nechce sa nam stale kontrolovat na null
+            doorPropCollection = new System.Collections.ObjectModel.ObservableCollection<DoorProperties>();//nechce sa nam stale kontrolovat na null
+            windowPropCollection = new System.Collections.ObjectModel.ObservableCollection<WindowProperties>();//nechce sa nam stale kontrolovat na null
         }
 
         // Constructor 2
