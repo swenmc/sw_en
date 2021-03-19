@@ -247,7 +247,7 @@
       <DependentUpon>UC_FootingDesign.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CComponentListVM.cs" />
-    <Compile Include="CComboBoxHelper.cs" />
+    <Compile Include="Infrastructure\CComboBoxHelper.cs" />
     <Compile Include="CComponentParamsViewList.cs" />
     <Compile Include="CComponentParamsViewString.cs" />
     <Compile Include="CComponentParamsViewBool.cs" />

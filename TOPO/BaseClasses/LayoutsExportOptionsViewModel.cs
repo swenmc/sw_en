@@ -43,6 +43,8 @@ namespace BaseClasses
         private int m_ExportPageOrientation;
         private int m_ExportPageSizeViews;
         private int m_ExportPageOrientationViews;
+        private int m_ExportPageSizeViewsCladding;
+        private int m_ExportPageOrientationViewsCladding;
 
         private int m_ExportImagesQuality;
 
@@ -468,6 +470,34 @@ namespace BaseClasses
             }
         }
 
+        public int ExportPageSizeViewsCladding
+        {
+            get
+            {
+                return m_ExportPageSizeViewsCladding;
+            }
+
+            set
+            {
+                m_ExportPageSizeViewsCladding = value;
+                NotifyPropertyChanged("ExportPageSizeViewsCladding");
+            }
+        }
+
+        public int ExportPageOrientationViewsCladding
+        {
+            get
+            {
+                return m_ExportPageOrientationViewsCladding;
+            }
+
+            set
+            {
+                m_ExportPageOrientationViewsCladding = value;
+                NotifyPropertyChanged("ExportPageOrientationViewsCladding");
+            }
+        }
+
         public LayoutsExportOptionsViewModel()
         {
             ExportModel3D = true;
@@ -499,6 +529,9 @@ namespace BaseClasses
 
             ExportPageSizeViews = (int)EPageSizes.A3;
             ExportPageOrientationViews = (int)EPageOrientation.Landscape;
+
+            ExportPageSizeViewsCladding = (int)EPageSizes.A3;
+            ExportPageOrientationViewsCladding = (int)EPageOrientation.Landscape;
 
             ExportImagesQuality = (int)EImagesQuality.Normal;
         }
@@ -540,6 +573,8 @@ namespace BaseClasses
             ExportPageOrientation = vm.ExportPageOrientation;
             ExportPageSizeViews = vm.ExportPageSizeViews;
             ExportPageOrientationViews = vm.ExportPageOrientationViews;
+            ExportPageSizeViewsCladding = vm.ExportPageSizeViewsCladding;
+            ExportPageOrientationViewsCladding = vm.ExportPageOrientationViewsCladding;
             ExportImagesQuality = vm.ExportImagesQuality;
         }
     }

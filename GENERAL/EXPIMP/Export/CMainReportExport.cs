@@ -513,7 +513,7 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;            
             DisplayOptions opts = GetModelViewsDisplayOptions(data);
-            opts.ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViews;
+            opts.ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViewsCladding;
             opts.ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
             opts.IsExport = true;
             opts.SameScaleForViews = true;
@@ -531,8 +531,8 @@ namespace EXPIMP
                 sheetNo++;
                 Trace.WriteLine(sheetNo + ". " + view.ToString());
                 page = s_document.AddPage();                
-                page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
-                page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientationViews);
+                page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding);
+                page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientationViewsCladding);
 
                 gfx = XGraphics.FromPdfPage(page);
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
@@ -549,8 +549,8 @@ namespace EXPIMP
 
                 CModel filteredModel = null;
                 Trackport3D trackport = null;                
-                double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.ExportImagesQuality);
-                double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.ExportImagesQuality);
+                double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.ExportImagesQuality);
+                double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViewsCladding, opts.ExportImagesQuality);
 
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
                 System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);

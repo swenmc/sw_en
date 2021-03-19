@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Layout Export Options" Height="450" Width="420">
+        Title="Layout Export Options" Height="480" Width="550">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -15,8 +15,8 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Name="GridExportOptions" Margin="5">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.7*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 
             </Grid.ColumnDefinitions>
@@ -25,11 +25,13 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="260"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="200"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="5">
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="8">
                 <CheckBox Name="chckExportModel3D" Margin="0 0 0 5" IsChecked="{Binding ExportModel3D, UpdateSourceTrigger=PropertyChanged}">Model 3D</CheckBox>
                 <CheckBox Name="chckExportModelViews" Margin="0 0 0 5" IsChecked="{Binding ExportModelViews, UpdateSourceTrigger=PropertyChanged}">Framing Scheme Views</CheckBox>
 
@@ -69,25 +71,37 @@
                       ItemsSource="{Binding Path=PageOrientations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageOrientation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="1">Views Page Size:</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="1">Framing Views Page Size:</TextBlock>
             <ComboBox Grid.Row="2" Grid.Column="2" Name ="Combobox_PageSizeViews" HorizontalAlignment="Left" 
                       Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=PageSizes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageSizeViews, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="1">Views Page Orientation:</TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="1">Framing Views Page Orientation:</TextBlock>
             <ComboBox Grid.Row="3" Grid.Column="2" Name ="Combobox_PageOrientationViews" HorizontalAlignment="Left" 
                       Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=PageOrientations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageOrientationViews, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="4" Grid.Column="1">Images Quality:</TextBlock>
-            <ComboBox Grid.Row="4" Grid.Column="2" Name ="Combobox_ImagesQuality" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="4" Grid.Column="1">Cladding Views Page Size:</TextBlock>
+            <ComboBox Grid.Row="4" Grid.Column="2" Name ="Combobox_PageSizeViewsCladding" HorizontalAlignment="Left" 
+                      Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=PageSizes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageSizeViewsCladding, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="1">Cladding Views Page Orientation:</TextBlock>
+            <ComboBox Grid.Row="5" Grid.Column="2" Name ="Combobox_PageOrientationViewsCladding" HorizontalAlignment="Left" 
+                      Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=PageOrientations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportPageOrientationViewsCladding, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="1">Images Quality:</TextBlock>
+            <ComboBox Grid.Row="6" Grid.Column="2" Name ="Combobox_ImagesQuality" HorizontalAlignment="Left" 
                       Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ImagesQualities, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ExportImagesQuality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-            <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
             </StackPanel>
         </Grid>
