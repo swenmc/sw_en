@@ -70,6 +70,9 @@ namespace EXPIMP
             if (exportOpts.ExportModelViews)
                 DrawModelViews(s_document, modelData, exportOpts);
 
+            if (exportOpts.ExportModelCladdingLayingSchemeViews)
+                DrawCladdingViews(s_document, modelData, exportOpts);
+
             if (exportOpts.ExportJointTypes)
                 DrawJointTypes(s_document, modelData, exportOpts);
 
@@ -383,7 +386,7 @@ namespace EXPIMP
 
             opts.SameScaleForViews = true;
 
-            List<EViewModelMemberFilters> list_views = GetViewsFromExportOptions(exportOpts);
+            List<EViewModelMemberFilters> list_views = GetModelViewsFromExportOptions(exportOpts);
             
             int legendImgWidth = 100;
             int legendTextWidth = 70;
@@ -505,7 +508,82 @@ namespace EXPIMP
             }
         }
 
-        private static List<EViewModelMemberFilters> GetViewsFromExportOptions(LayoutsExportOptionsViewModel exportOpts)
+        private static void DrawCladdingViews(PdfDocument s_document, CModelData data, LayoutsExportOptionsViewModel exportOpts)
+        {
+            XGraphics gfx;
+            PdfPage page;            
+            DisplayOptions opts = GetModelViewsDisplayOptions(data);
+            opts.ViewsPageSize = (EPageSizes)exportOpts.ExportPageSizeViews;
+            opts.ExportImagesQuality = (EImagesQuality)exportOpts.ExportImagesQuality;
+            opts.IsExport = true;
+            opts.SameScaleForViews = true;
+
+            List<EViewCladdingFilters> list_views = GetCladdingViewsFromExportOptions(exportOpts);
+
+            int legendImgWidth = 100;
+            int legendTextWidth = 70;            
+
+            //DateTime start = DateTime.Now;
+            //System.Diagnostics.Trace.WriteLine("DrawCladdingViews Beginning: " + (DateTime.Now - start).TotalMilliseconds);
+
+            foreach (EViewCladdingFilters view in list_views)
+            {
+                sheetNo++;
+                Trace.WriteLine(sheetNo + ". " + view.ToString());
+                page = s_document.AddPage();                
+                page.Size = GetPageSize((EPageSizes)exportOpts.ExportPageSizeViews);
+                page.Orientation = GetPageOrientation((EPageOrientation)exportOpts.ExportPageOrientationViews);
+
+                gfx = XGraphics.FromPdfPage(page);
+                DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+                DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
+
+                DrawTitleBlock(gfx, data.ProjectInfo, page, ((EPDFPageContentType)view).GetFriendlyName(), sheetNo, 0);
+                contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)view).GetFriendlyName() });
+
+                opts.ModelView = GetView(view);
+                opts.ViewModelMembers = -1;
+                opts.ViewCladding = (int)view;
+
+                ChangeDisplayOptionsAcordingToView(view, ref opts);
+
+                CModel filteredModel = null;
+                Trackport3D trackport = null;                
+                double width = GetCanvasWidthAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.ExportImagesQuality);
+                double height = GetCanvasHeightAcordingToPageSize((EPageSizes)exportOpts.ExportPageSizeViews, opts.ExportImagesQuality);
+
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport, width, height);
+                System.Windows.Media.RenderOptions.SetEdgeMode((DependencyObject)viewPort, System.Windows.Media.EdgeMode.Aliased);
+                viewPort.UpdateLayout();
+                
+                DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth);
+                filteredModel = null;
+                //System.Diagnostics.Trace.WriteLine("DrawCladdingViews after DrawCrscLegendTable: " + (DateTime.Now - start).TotalMilliseconds);
+
+                XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+                gfx.DrawString($"{(view).ToString()}:", fontBold, XBrushes.Black, 20, 20);
+
+                //System.Diagnostics.Trace.WriteLine("DrawCladdingViews before RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
+
+                BitmapSource bs = ExportHelper.RenderVisual(viewPort);
+                XImage image = XImage.FromBitmapSource(bs);
+                bs = null;
+                //System.Diagnostics.Trace.WriteLine("DrawCladdingViews after RenderVisual: " + (DateTime.Now - start).TotalMilliseconds);
+
+                double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
+                double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
+                double scaledImageHeight = image.PointHeight * scaleFactor;
+
+                gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+                image.Dispose();
+                viewPort.Dispose();
+                trackport.Dispose();
+                gfx.Dispose();
+                page.Close();
+            }
+        }
+
+        private static List<EViewModelMemberFilters> GetModelViewsFromExportOptions(LayoutsExportOptionsViewModel exportOpts)
         {
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>();
             if (exportOpts.ExportModelViewsFront) list_views.Add(EViewModelMemberFilters.FRONT);
@@ -518,11 +596,17 @@ namespace EXPIMP
             if (exportOpts.ExportModelViewsFoundations) list_views.Add(EViewModelMemberFilters.FOUNDATIONS);
             if (exportOpts.ExportModelViewsFloor) list_views.Add(EViewModelMemberFilters.FLOOR);
 
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_FRONT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_BACK);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_LEFT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_RIGHT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewModelMemberFilters.CLADDING_RIGHT);
+            return list_views;
+        }
+        private static List<EViewCladdingFilters> GetCladdingViewsFromExportOptions(LayoutsExportOptionsViewModel exportOpts)
+        {
+            List<EViewCladdingFilters> list_views = new List<EViewCladdingFilters>();            
+
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_FRONT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_BACK);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_LEFT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_RIGHT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_RIGHT);
             return list_views;
         }
 
@@ -811,9 +895,20 @@ namespace EXPIMP
 
                 opts.bCreateHorizontalGridlines = true;
             }
+        }
 
-            if(viewMembers == EViewModelMemberFilters.CLADDING_FRONT)
+        private static void ChangeDisplayOptionsAcordingToView(EViewCladdingFilters viewMembers, ref DisplayOptions opts)
+        {
+            //spolocne Display Options
+            if (viewMembers == EViewCladdingFilters.CLADDING_FRONT ||
+                viewMembers == EViewCladdingFilters.CLADDING_BACK ||
+                viewMembers == EViewCladdingFilters.CLADDING_LEFT ||
+                viewMembers == EViewCladdingFilters.CLADDING_RIGHT ||
+                viewMembers == EViewCladdingFilters.CLADDING_ROOF)
             {
+                // Defaultne hodnoty pre vsetky pohlady
+                opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)                
+
                 opts.bDisplayMembers = false;
                 opts.bDisplayLocalMembersAxis = false;
                 opts.bDisplayDimensions = false;
@@ -849,171 +944,27 @@ namespace EXPIMP
                 opts.bDisplayWindowDescription = true;
                 opts.bDisplayWindowID = true;
                 opts.bDisplayWindowHeightWidth = true;
+            }
 
+
+            if (viewMembers == EViewCladdingFilters.CLADDING_FRONT)
+            {                
                 opts.bDisplayCladdingFrontWall = true;
             }
-
-            if (viewMembers == EViewModelMemberFilters.CLADDING_BACK)
-            {
-                opts.bDisplayMembers = false;
-                opts.bDisplayLocalMembersAxis = false;
-                opts.bDisplayDimensions = false;
-
-                opts.bDisplayCladding = true;
-                opts.bDisplayFibreglass = true;
-                opts.bDisplayDoors = true;
-                opts.bDisplayWindows = true;
-
-                opts.bDisplayWireFrameModel = true;
-                opts.bDisplayCladdingWireFrame = true;
-                opts.bDisplayFibreglassWireFrame = true;
-                opts.bDisplayDoorsWireFrame = true;
-                opts.bDisplayWindowsWireFrame = true;
-
-                opts.wireFrameColor = System.Windows.Media.Colors.Black;
-
-                opts.bDisplayCladdingDescription = true;
-                opts.bDisplayCladdingID = true;
-                opts.bDisplayCladdingPrefix = true;
-                opts.bDisplayCladdingLengthWidth = true;
-
-                opts.bDisplayFibreglassDescription = true;
-                opts.bDisplayFibreglassID = true;
-                opts.bDisplayFibreglassPrefix = true;
-                opts.bDisplayFibreglassLengthWidth = true;
-
-                opts.bDisplayDoorDescription = true;
-                opts.bDisplayDoorID = true;
-                opts.bDisplayDoorType = true;
-                opts.bDisplayDoorHeightWidth = true;
-
-                opts.bDisplayWindowDescription = true;
-                opts.bDisplayWindowID = true;
-                opts.bDisplayWindowHeightWidth = true;
-
+            else if (viewMembers == EViewCladdingFilters.CLADDING_BACK)
+            {                
                 opts.bDisplayCladdingBackWall = true;
             }
-
-            if (viewMembers == EViewModelMemberFilters.CLADDING_LEFT)
-            {
-                opts.bDisplayMembers = false;
-                opts.bDisplayLocalMembersAxis = false;
-                opts.bDisplayDimensions = false;
-
-                opts.bDisplayCladding = true;
-                opts.bDisplayFibreglass = true;
-                opts.bDisplayDoors = true;
-                opts.bDisplayWindows = true;
-
-                opts.bDisplayWireFrameModel = true;
-                opts.bDisplayCladdingWireFrame = true;
-                opts.bDisplayFibreglassWireFrame = true;
-                opts.bDisplayDoorsWireFrame = true;
-                opts.bDisplayWindowsWireFrame = true;
-
-                opts.wireFrameColor = System.Windows.Media.Colors.Black;
-
-                opts.bDisplayCladdingDescription = true;
-                opts.bDisplayCladdingID = true;
-                opts.bDisplayCladdingPrefix = true;
-                opts.bDisplayCladdingLengthWidth = true;
-
-                opts.bDisplayFibreglassDescription = true;
-                opts.bDisplayFibreglassID = true;
-                opts.bDisplayFibreglassPrefix = true;
-                opts.bDisplayFibreglassLengthWidth = true;
-
-                opts.bDisplayDoorDescription = true;
-                opts.bDisplayDoorID = true;
-                opts.bDisplayDoorType = true;
-                opts.bDisplayDoorHeightWidth = true;
-
-                opts.bDisplayWindowDescription = true;
-                opts.bDisplayWindowID = true;
-                opts.bDisplayWindowHeightWidth = true;
-
+            else if (viewMembers == EViewCladdingFilters.CLADDING_LEFT)
+            {                
                 opts.bDisplayCladdingLeftWall = true;
             }
-
-            if (viewMembers == EViewModelMemberFilters.CLADDING_RIGHT)
-            {
-                opts.bDisplayMembers = false;
-                opts.bDisplayLocalMembersAxis = false;
-                opts.bDisplayDimensions = false;
-
-                opts.bDisplayCladding = true;
-                opts.bDisplayFibreglass = true;
-                opts.bDisplayDoors = true;
-                opts.bDisplayWindows = true;
-
-                opts.bDisplayWireFrameModel = true;
-                opts.bDisplayCladdingWireFrame = true;
-                opts.bDisplayFibreglassWireFrame = true;
-                opts.bDisplayDoorsWireFrame = true;
-                opts.bDisplayWindowsWireFrame = true;
-
-                opts.wireFrameColor = System.Windows.Media.Colors.Black;
-
-                opts.bDisplayCladdingDescription = true;
-                opts.bDisplayCladdingID = true;
-                opts.bDisplayCladdingPrefix = true;
-                opts.bDisplayCladdingLengthWidth = true;
-
-                opts.bDisplayFibreglassDescription = true;
-                opts.bDisplayFibreglassID = true;
-                opts.bDisplayFibreglassPrefix = true;
-                opts.bDisplayFibreglassLengthWidth = true;
-
-                opts.bDisplayDoorDescription = true;
-                opts.bDisplayDoorID = true;
-                opts.bDisplayDoorType = true;
-                opts.bDisplayDoorHeightWidth = true;
-
-                opts.bDisplayWindowDescription = true;
-                opts.bDisplayWindowID = true;
-                opts.bDisplayWindowHeightWidth = true;
-
+            else if (viewMembers == EViewCladdingFilters.CLADDING_RIGHT)
+            {                
                 opts.bDisplayCladdingRightWall = true;
             }
-
-            if (viewMembers == EViewModelMemberFilters.CLADDING_ROOF)
-            {
-                opts.bDisplayMembers = false;
-                opts.bDisplayLocalMembersAxis = false;
-                opts.bDisplayDimensions = false;
-
-                opts.bDisplayCladding = true;
-                opts.bDisplayFibreglass = true;
-                opts.bDisplayDoors = true;
-                opts.bDisplayWindows = true;
-
-                opts.bDisplayWireFrameModel = true;
-                opts.bDisplayCladdingWireFrame = true;
-                opts.bDisplayFibreglassWireFrame = true;
-                opts.bDisplayDoorsWireFrame = true;
-                opts.bDisplayWindowsWireFrame = true;
-
-                opts.wireFrameColor = System.Windows.Media.Colors.Black;
-
-                opts.bDisplayCladdingDescription = true;
-                opts.bDisplayCladdingID = true;
-                opts.bDisplayCladdingPrefix = true;
-                opts.bDisplayCladdingLengthWidth = true;
-
-                opts.bDisplayFibreglassDescription = true;
-                opts.bDisplayFibreglassID = true;
-                opts.bDisplayFibreglassPrefix = true;
-                opts.bDisplayFibreglassLengthWidth = true;
-
-                opts.bDisplayDoorDescription = true;
-                opts.bDisplayDoorID = true;
-                opts.bDisplayDoorType = true;
-                opts.bDisplayDoorHeightWidth = true;
-
-                opts.bDisplayWindowDescription = true;
-                opts.bDisplayWindowID = true;
-                opts.bDisplayWindowHeightWidth = true;
-
+            else if (viewMembers == EViewCladdingFilters.CLADDING_ROOF)
+            {                
                 opts.bDisplayCladdingRoof = true;
             }
         }
@@ -1950,11 +1901,15 @@ namespace EXPIMP
             else if (viewModelMembers == EViewModelMemberFilters.FOUNDATIONS) return (int)EModelViews.TOP;
             else if (viewModelMembers == EViewModelMemberFilters.FLOOR) return (int)EModelViews.TOP;
 
-            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_FRONT) return (int)EModelViews.FRONT;
-            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_BACK) return (int)EModelViews.BACK;
-            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_LEFT) return (int)EModelViews.LEFT;
-            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_RIGHT) return (int)EModelViews.RIGHT;
-            else if (viewModelMembers == EViewModelMemberFilters.CLADDING_ROOF) return (int)EModelViews.TOP;
+            else return (int)EModelViews.ISO_FRONT_RIGHT;
+        }
+        private static int GetView(EViewCladdingFilters view)
+        {
+            if (view == EViewCladdingFilters.CLADDING_FRONT) return (int)EModelViews.FRONT;
+            else if (view == EViewCladdingFilters.CLADDING_BACK) return (int)EModelViews.BACK;
+            else if (view == EViewCladdingFilters.CLADDING_LEFT) return (int)EModelViews.LEFT;
+            else if (view == EViewCladdingFilters.CLADDING_RIGHT) return (int)EModelViews.RIGHT;
+            else if (view == EViewCladdingFilters.CLADDING_ROOF) return (int)EModelViews.TOP;
 
             else return (int)EModelViews.ISO_FRONT_RIGHT;
         }
