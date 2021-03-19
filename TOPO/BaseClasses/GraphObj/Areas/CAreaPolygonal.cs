@@ -116,7 +116,7 @@ namespace BaseClasses.GraphObj
         }
 
         public List<Point3D> GetWireFrame()
-        {            
+        {
             List<Point3D> wireframe = new List<Point3D>();
             if (EdgePointList == null || EdgePointList.Count < 2) return wireframe;
 
