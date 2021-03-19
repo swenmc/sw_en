@@ -280,10 +280,15 @@ namespace BaseClasses.GraphObj
 
             if (NumberOfEdges == 4)
             {
-                Area_net = MATH.Geom2D.PolygonArea(new System.Windows.Point[] { new System.Windows.Point(0, 0),
+                EdgePoints2D = new List<System.Windows.Point>
+                {
+                new System.Windows.Point(0, 0),
                 new System.Windows.Point(Width, 0),
                 new System.Windows.Point(Width, LengthTopRight),
-                new System.Windows.Point(0, LengthTopLeft) });
+                new System.Windows.Point(0, LengthTopLeft)
+                };
+
+                Area_netto = MATH.Geom2D.PolygonArea(EdgePoints2D.ToArray());
 
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0);
                 if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
@@ -291,11 +296,16 @@ namespace BaseClasses.GraphObj
             }
             else
             {
-                Area_net = MATH.Geom2D.PolygonArea(new System.Windows.Point[] { new System.Windows.Point(0,0),
+                EdgePoints2D = new List<System.Windows.Point>
+                {
+                new System.Windows.Point(0,0),
                 new System.Windows.Point(Width, 0),
                 new System.Windows.Point(Width,LengthTopRight),
                 new System.Windows.Point(TipCoordinate_x, LengthTopTip),
-                new System.Windows.Point(0, LengthTopLeft) });
+                new System.Windows.Point(0, LengthTopLeft)
+                };
+
+                Area_netto = MATH.Geom2D.PolygonArea(EdgePoints2D.ToArray());
 
                 CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0);
                 if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());

@@ -4360,7 +4360,7 @@ namespace BaseClasses
             if (options.bDisplayCladdingArea)
             {
                 string units = options.bDisplayCladdingUnits ? " m²" : "";
-                parts.Add(sheet.Area_net.ToString("F3") + units);
+                parts.Add(sheet.Area_netto.ToString("F3") + units);
                 rowsCount++;
             }
 

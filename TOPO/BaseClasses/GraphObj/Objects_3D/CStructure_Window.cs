@@ -6,7 +6,7 @@ using System.Windows.Media.Media3D;
 namespace BaseClasses.GraphObj
 {
     [Serializable]
-    public class CStructure_Window : CEntity3D
+    public class CStructure_Window : CSurfaceComponent
     {
         //public Point3D m_ControlPoint = new Point3D();
 
@@ -237,12 +237,42 @@ namespace BaseClasses.GraphObj
             gr.Children.Add(mFrame_04_V.CreateM_3D_G_Volume_8Edges(pArray[3], fT_Y, fT_Y, fH_Z - 2 * fT_Y, DiffMatF, DiffMatF)); // Vertical
             gr.Children.Add(mGlassTable.CreateM_3D_G_Volume_8Edges(pArray[4], fL_X - 2 * fT_Y, fGlassThickness, fH_Z - 2 * fT_Y, DiffMatG, DiffMatG)); // Glass No 1
 
-            //to Mato - tu je nutne nastavit wireframePoints                        
-            WireFramePoints.AddRange(mFrame_01_HB.WireFramePoints);
-            WireFramePoints.AddRange(mFrame_02_HU.WireFramePoints);
-            WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
-            WireFramePoints.AddRange(mFrame_04_V.WireFramePoints);
-            WireFramePoints.AddRange(mGlassTable.WireFramePoints);
+            UseSimpleWireFrame2D = true; // TODO - Zapracovat ako volbu v GUI
+
+            EdgePoints2D = new List<System.Windows.Point>()
+            {
+                new System.Windows.Point(0, 0),
+                new System.Windows.Point(m_fDim1, 0),
+                new System.Windows.Point(m_fDim1, m_fDim2),
+                new System.Windows.Point(0, m_fDim2)
+            };
+
+            if (UseSimpleWireFrame2D)
+            {
+                // GCS -system plane XZ
+                double offset = 0.010;
+
+                WireFramePoints.Add(new Point3D(0, offset, 0));
+                WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
+
+                WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
+                WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
+
+                WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
+                WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+
+                WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+                WireFramePoints.Add(new Point3D(0, offset, 0));
+            }
+            else
+            {
+                //to Mato - tu je nutne nastavit wireframePoints
+                WireFramePoints.AddRange(mFrame_01_HB.WireFramePoints);
+                WireFramePoints.AddRange(mFrame_02_HU.WireFramePoints);
+                WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
+                WireFramePoints.AddRange(mFrame_04_V.WireFramePoints);
+                WireFramePoints.AddRange(mGlassTable.WireFramePoints);
+            }
 
             //ak sa nepouziva,tak treba zmazat z pamate
             mFrame_01_HB = null;

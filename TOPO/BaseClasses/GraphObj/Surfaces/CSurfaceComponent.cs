@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -20,8 +21,12 @@ namespace BaseClasses.GraphObj
         double m_dLengthTopTip;
         double m_dLengthTopLeft;
 
-        double m_dArea_net;
+        double m_dArea_netto;
         double m_dArea_brutto;
+
+        bool m_UseSimpleWireFrame2D; // 2D polygon alebo 3D wireframe vsetkych podruznych objektov a casti
+
+        List<Point> m_EdgePoints2D;
 
         public int NumberOfEdges
         {
@@ -140,16 +145,16 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public double Area_net
+        public double Area_netto
         {
             get
             {
-                return m_dArea_net;
+                return m_dArea_netto;
             }
 
             set
             {
-                m_dArea_net = value;
+                m_dArea_netto = value;
             }
         }
 
@@ -163,6 +168,32 @@ namespace BaseClasses.GraphObj
             set
             {
                 m_dArea_brutto = value;
+            }
+        }
+
+        public bool UseSimpleWireFrame2D
+        {
+            get
+            {
+                return m_UseSimpleWireFrame2D;
+            }
+
+            set
+            {
+                m_UseSimpleWireFrame2D = value;
+            }
+        }
+
+        public List<Point>EdgePoints2D
+        {
+            get
+            {
+                return m_EdgePoints2D;
+            }
+
+            set
+            {
+                m_EdgePoints2D = value;
             }
         }
 
