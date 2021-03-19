@@ -19,7 +19,6 @@ namespace BaseClasses
         private float m_RebateDepth_Edge; // Total depth at the edge (20 mm)
 
         private float m_RotationAboutZ_deg;
-        private List<Point3D> MWireFramePoints;
 
         //-------------------------------------------------------------------------------------------------------------
         public float RebateWidth
@@ -105,21 +104,6 @@ namespace BaseClasses
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                if (MWireFramePoints == null) MWireFramePoints = new List<Point3D>();
-                return MWireFramePoints;
-            }
-
-            set
-            {
-                MWireFramePoints = value;
-            }
-        }
-
         public CSlabRebate(int id,
            float rebateWidth,
            float rebatePosition,
@@ -200,7 +184,7 @@ namespace BaseClasses
             // Naplnime pole bodov wireFrame
             // TODO - Ondrej - chcelo by to nejako elegantne zjednotit u vsetkych objektov ktore maju 3D geometriu kde a ako ziskavat wireframe
             // TODO Ondrej - tu chyba v tom ze beriem pozicie z povodneho zakladu nie z posunuteho do finalnej pozicie
-            WireFramePoints = GetWireFramePoints_Volume(model);
+            SetWireFramePoints_Volume(model);
 
             Visual_Object = model;
 

@@ -33,21 +33,6 @@ namespace BaseClasses.GraphObj
 
         public float m_fVolume;
 
-        private List<Point3D> m_WireFramePoints;
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
-                return m_WireFramePoints;
-            }
-
-            set
-            {
-                m_WireFramePoints = value;
-            }
-        }
-
         // Constructor 1
         public CVolume()
         {
@@ -435,11 +420,10 @@ namespace BaseClasses.GraphObj
 
             return CreateGM_3D_Volume_8EdgesOld(solidControlEdge, volume.m_fDim1, volume.m_fDim2, volume.m_fDim3, volume.m_Material_1);
         }
-        public static List<Point3D> GetWireFramePoints_Volume(GeometryModel3D volumeModel, bool bIsPointOnBase = false)
+        public void SetWireFramePoints_Volume(GeometryModel3D volumeModel, bool bIsPointOnBase = false)
         {
             // Funguje len pre prizmaticke prvky pravidelneho tvaru (rovnaky pocet bodov na hornej aj spodnej podstave)
 
-            List<Point3D> wireframePoints = new List<Point3D>();
             MeshGeometry3D geom = volumeModel.Geometry as MeshGeometry3D;
 
             List<Point3D> transformedPoints = new List<Point3D>(); // Pole transformovanych bodov
@@ -460,13 +444,13 @@ namespace BaseClasses.GraphObj
                 {
                     if (i < iNumberOfEdges_Base - 1)
                     {
-                        wireframePoints.Add(transformedPoints[i]);
-                        wireframePoints.Add(transformedPoints[i + 1]);
+                        WireFramePoints.Add(transformedPoints[i]);
+                        WireFramePoints.Add(transformedPoints[i + 1]);
                     }
                     else
                     {
-                        wireframePoints.Add(transformedPoints[i]);
-                        wireframePoints.Add(transformedPoints[0]);
+                        WireFramePoints.Add(transformedPoints[i]);
+                        WireFramePoints.Add(transformedPoints[0]);
                     }
                 }
 
@@ -475,21 +459,21 @@ namespace BaseClasses.GraphObj
                 {
                     if (i < iNumberOfEdges_Base - 1)
                     {
-                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
-                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i + 1]);
+                        WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                        WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + i + 1]);
                     }
                     else
                     {
-                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
-                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + 0]);
+                        WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                        WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + 0]);
                     }
                 }
 
                 // Plast hranola
                 for (int i = 0; i < iNumberOfEdges_Base; i++)
                 {
-                    wireframePoints.Add(transformedPoints[i]);
-                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                    WireFramePoints.Add(transformedPoints[i]);
+                    WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
                 }
             }
             else
@@ -501,13 +485,13 @@ namespace BaseClasses.GraphObj
                 {
                     if (i < iNumberOfEdges_BaseWithoutMiddle - 1)
                     {
-                        wireframePoints.Add(transformedPoints[i]);
-                        wireframePoints.Add(transformedPoints[i + 1]);
+                        WireFramePoints.Add(transformedPoints[i]);
+                        WireFramePoints.Add(transformedPoints[i + 1]);
                     }
                     else
                     {
-                        wireframePoints.Add(transformedPoints[i]);
-                        wireframePoints.Add(transformedPoints[0]);
+                        WireFramePoints.Add(transformedPoints[i]);
+                        WireFramePoints.Add(transformedPoints[0]);
                     }
                 }
 
@@ -516,25 +500,23 @@ namespace BaseClasses.GraphObj
                 {
                     if (i < iNumberOfEdges_BaseWithoutMiddle - 1)
                     {
-                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
-                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i + 1]);
+                        WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                        WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + i + 1]);
                     }
                     else
                     {
-                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
-                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + 0]);
+                        WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                        WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + 0]);
                     }
                 }
 
                 // Plast hranola
                 for (int i = 0; i < iNumberOfEdges_BaseWithoutMiddle; i++)
                 {
-                    wireframePoints.Add(transformedPoints[i]);
-                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                    WireFramePoints.Add(transformedPoints[i]);
+                    WireFramePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
                 }
             }
-
-            return wireframePoints;
         }
 
         //--------------------------------------------------------------------------------------------

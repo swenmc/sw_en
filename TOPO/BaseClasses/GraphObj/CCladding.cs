@@ -92,21 +92,6 @@ namespace BaseClasses.GraphObj
         public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofLeft = null;
         public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofLeft = null;
 
-        private List<Point3D> m_WireFramePoints;
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
-                return m_WireFramePoints;
-            }
-
-            set
-            {
-                m_WireFramePoints = value;
-            }
-        }
-
         public CCladding()
         {
             canopyCollection = new System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo>(); //nechce sa nam stale kontrolovat na null
@@ -1177,37 +1162,37 @@ namespace BaseClasses.GraphObj
             bool claddingWireframe = options.bDisplayWireFrameModel && options.bDisplayCladdingWireFrame;
             bool fibreglassWireframe = options.bDisplayWireFrameModel && options.bDisplayCladdingWireFrame && options.bDisplayFibreglassWireFrame;
             if (bGenerateLeftSideCladding && options.bDisplayCladdingLeftWall && bIndividualCladdingSheets)
-               AddSheet3DModelsToModelGroup(listOfCladdingSheetsLeftWall, options, brushSide, material_SideWall, claddingWidthRibModular_Wall, 0, 0, -90, ref model_gr, claddingWireframe);
+               AddSheet3DModelsToModelGroup(listOfCladdingSheetsLeftWall, options, brushSide, material_SideWall, claddingWidthRibModular_Wall, 0, 0, -90, ref model_gr/*, claddingWireframe*/);
  
             if (options.bDisplayFibreglass || options.bDisplayFibreglassWireFrame)
-               AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallLeft, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, -90, ref model_gr, fibreglassWireframe, outOffPlaneOffset_FG);
+               AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallLeft, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, -90, ref model_gr/*, fibreglassWireframe*/, outOffPlaneOffset_FG);
 
             if (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && bIndividualCladdingSheets)
-               AddSheet3DModelsToModelGroup(listOfCladdingSheetsFrontWall, options, brushFront, material_FrontBackWall, claddingWidthRibModular_Wall, 0, 0, 0, ref model_gr, claddingWireframe);
+               AddSheet3DModelsToModelGroup(listOfCladdingSheetsFrontWall, options, brushFront, material_FrontBackWall, claddingWidthRibModular_Wall, 0, 0, 0, ref model_gr/*, claddingWireframe*/);
 
             if (options.bDisplayFibreglass || options.bDisplayFibreglassWireFrame)
-                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallFront, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 0, ref model_gr, fibreglassWireframe, outOffPlaneOffset_FG);
+                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallFront, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 0, ref model_gr/*, fibreglassWireframe*/, outOffPlaneOffset_FG);
 
             if (bGenerateRightSideCladding && options.bDisplayCladdingRightWall && bIndividualCladdingSheets)
-                AddSheet3DModelsToModelGroup(listOfCladdingSheetsRightWall, options, brushSide, material_SideWall, claddingWidthRibModular_Wall, 0, 0, 90, ref model_gr, claddingWireframe);
+                AddSheet3DModelsToModelGroup(listOfCladdingSheetsRightWall, options, brushSide, material_SideWall, claddingWidthRibModular_Wall, 0, 0, 90, ref model_gr/*, claddingWireframe*/);
 
             if (options.bDisplayFibreglass || options.bDisplayFibreglassWireFrame)
-                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallRight, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 90, ref model_gr, fibreglassWireframe, outOffPlaneOffset_FG);
+                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallRight, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 90, ref model_gr/*, fibreglassWireframe*/, outOffPlaneOffset_FG);
 
             if (bGenerateBackSideCladding && options.bDisplayCladdingBackWall && bIndividualCladdingSheets)
-                AddSheet3DModelsToModelGroup(listOfCladdingSheetsBackWall, options, brushFront, material_FrontBackWall, claddingWidthRibModular_Wall, 0, 0, 180, ref model_gr, claddingWireframe);
+                AddSheet3DModelsToModelGroup(listOfCladdingSheetsBackWall, options, brushFront, material_FrontBackWall, claddingWidthRibModular_Wall, 0, 0, 180, ref model_gr/*, claddingWireframe*/);
 
             if (options.bDisplayFibreglass || options.bDisplayFibreglassWireFrame)
-                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallBack, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 180, ref model_gr, fibreglassWireframe, outOffPlaneOffset_FG);
+                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsWallBack, options, brushWall_FG, material_Wall_FG, claddingWidthRibModular_Wall_FG, 0, 0, 180, ref model_gr/*, fibreglassWireframe*/, outOffPlaneOffset_FG);
  
             // Set rotation about GCS X-axis - Roof - Right Side (Gable Roof) and Monopitch Roof
             double rotationAboutX = -90f + (eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? sBuildingGeomInputData.fRoofPitch_deg : -sBuildingGeomInputData.fRoofPitch_deg);
 
             if (bGenerateRoofCladding && options.bDisplayCladdingRoof && bIndividualCladdingSheets)
-                AddSheet3DModelsToModelGroup(listOfCladdingSheetsRoofRight, options, brushRoof, material_Roof, claddingWidthRibModular_Roof, rotationAboutX, 0, 90, ref model_gr, claddingWireframe);
+                AddSheet3DModelsToModelGroup(listOfCladdingSheetsRoofRight, options, brushRoof, material_Roof, claddingWidthRibModular_Roof, rotationAboutX, 0, 90, ref model_gr/*, claddingWireframe*/);
 
             if (options.bDisplayFibreglass || options.bDisplayFibreglassWireFrame)
-                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsRoofRight, options, brushRoof_FG, material_Roof_FG, claddingWidthRibModular_Roof_FG, rotationAboutX, 0, 90, ref model_gr, fibreglassWireframe, outOffPlaneOffset_FG);
+                AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsRoofRight, options, brushRoof_FG, material_Roof_FG, claddingWidthRibModular_Roof_FG, rotationAboutX, 0, 90, ref model_gr/*, fibreglassWireframe*/, outOffPlaneOffset_FG);
 
             if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
             {
@@ -1215,10 +1200,10 @@ namespace BaseClasses.GraphObj
                 rotationAboutX = -90f - sBuildingGeomInputData.fRoofPitch_deg;
 
                 if (bGenerateRoofCladding && options.bDisplayCladdingRoof && bIndividualCladdingSheets)
-                    AddSheet3DModelsToModelGroup(listOfCladdingSheetsRoofLeft, options, brushRoof, material_Roof, claddingWidthRibModular_Roof, rotationAboutX, 0, 90, ref model_gr, claddingWireframe);
+                    AddSheet3DModelsToModelGroup(listOfCladdingSheetsRoofLeft, options, brushRoof, material_Roof, claddingWidthRibModular_Roof, rotationAboutX, 0, 90, ref model_gr/*, claddingWireframe*/);
 
                 if (options.bDisplayFibreglass || options.bDisplayFibreglassWireFrame)
-                    AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsRoofLeft, options, brushRoof_FG, material_Roof_FG, claddingWidthRibModular_Roof_FG, rotationAboutX, 0, 90, ref model_gr, fibreglassWireframe, outOffPlaneOffset_FG);
+                    AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsRoofLeft, options, brushRoof_FG, material_Roof_FG, claddingWidthRibModular_Roof_FG, rotationAboutX, 0, 90, ref model_gr/*, fibreglassWireframe*/, outOffPlaneOffset_FG);
             }
             return model_gr;
         }
@@ -1499,7 +1484,7 @@ namespace BaseClasses.GraphObj
             double rotationY,
             double rotationZ,
             ref Model3DGroup modelGroup,
-            bool createWireframe,
+            //bool createWireframe,
             double outOffPlaneOffset = 0)
         {
             if (listOfsheets != null || listOfsheets.Count > 0)
@@ -1532,14 +1517,16 @@ namespace BaseClasses.GraphObj
                     listOfsheets[i].RotationZ = rotationZ;
 
                     // Pridame sheet do model group
-                    GeometryModel3D sheetModel = listOfsheets[i].GetCladdingSheetModel(options, material, createWireframe, outOffPlaneOffset);
+                    GeometryModel3D sheetModel = listOfsheets[i].GetCladdingSheetModel(options, material, outOffPlaneOffset);
                     sheetModel.Transform = listOfsheets[i].GetTransformGroup();
                     //listOfsheets[i].PointText = sheetModel.Transform.Transform(listOfsheets[i].PointText); //transformPoint
-                    if (createWireframe)
-                    {
-                        Drawing3DHelper.TransformPoints(listOfsheets[i].WireFramePoints, sheetModel.Transform);
-                        WireFramePoints.AddRange(listOfsheets[i].WireFramePoints);
-                    }
+                    //if (createWireframe)
+                    //{
+                        List<Point3D> wireframe = listOfsheets[i].GetWireFrame(); // Vytvorime docasny zoznam bodov pre jeden sheet
+                        Drawing3DHelper.TransformPoints(wireframe, sheetModel.Transform); // Transformujeme body wireframe z LCS do GCS
+                        WireFramePoints.AddRange(wireframe); // Pridame body do zoznamu
+                    //}
+
                     modelGroup.Children.Add(sheetModel);
                 }
             }
@@ -1581,12 +1568,12 @@ namespace BaseClasses.GraphObj
         public void SetCladdingWireframePoints()
         {
             WireFramePoints = new List<Point3D>();
-            if(listOfCladdingSheetsLeftWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsLeftWall) WireFramePoints.AddRange(s.WireFramePoints);
-            if (listOfCladdingSheetsRightWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRightWall) WireFramePoints.AddRange(s.WireFramePoints);
-            if (listOfCladdingSheetsFrontWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsFrontWall) WireFramePoints.AddRange(s.WireFramePoints);
-            if (listOfCladdingSheetsBackWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsBackWall) WireFramePoints.AddRange(s.WireFramePoints);
-            if (listOfCladdingSheetsRoofLeft != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofLeft) WireFramePoints.AddRange(s.WireFramePoints);
-            if (listOfCladdingSheetsRoofRight != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofRight) WireFramePoints.AddRange(s.WireFramePoints);
+            if(listOfCladdingSheetsLeftWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsLeftWall) WireFramePoints.AddRange(s.GetWireFrame());
+            if (listOfCladdingSheetsRightWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRightWall) WireFramePoints.AddRange(s.GetWireFrame());
+            if (listOfCladdingSheetsFrontWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsFrontWall) WireFramePoints.AddRange(s.GetWireFrame());
+            if (listOfCladdingSheetsBackWall != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsBackWall) WireFramePoints.AddRange(s.GetWireFrame());
+            if (listOfCladdingSheetsRoofLeft != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofLeft) WireFramePoints.AddRange(s.GetWireFrame());
+            if (listOfCladdingSheetsRoofRight != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofRight) WireFramePoints.AddRange(s.GetWireFrame());
         }
     }
 }

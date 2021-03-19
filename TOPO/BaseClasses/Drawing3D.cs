@@ -3233,27 +3233,12 @@ namespace BaseClasses
 
             if (wireFramePoints.Count > 0)
                 DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
-
         }
 
         public static void DrawModelOtherObjectsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
         {
             cylinders = null;
             List<Point3D> wireFramePoints = new List<Point3D>();
-
-            if (model.m_arrGOCladding != null && sDisplayOptions.bDisplayCladdingWireFrame) // Some cladding exists
-            {
-                // Model Groups of Cladding
-                for (int i = 0; i < model.m_arrGOCladding.Count; i++)
-                {
-                    if (model.m_arrGOCladding[i] != null &&
-                        model.m_arrGOCladding[i].ControlPoint != null &&
-                        model.m_arrGOCladding[i].BIsDisplayed == true) // Surface object is valid (not empty) and should be displayed
-                    {
-                        wireFramePoints.AddRange(model.m_arrGOCladding[i].WireFramePoints);
-                    }
-                }
-            }
 
             if (model.m_arrGOStrDoors != null && sDisplayOptions.bDisplayCladdingWireFrame && sDisplayOptions.bDisplayDoorsWireFrame) // Some doors exist
             {
@@ -3285,7 +3270,6 @@ namespace BaseClasses
 
             if (wireFramePoints.Count > 0)
                 DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
-
         }
 
         private static void AddLineToViewPort(List<Point3D> points, Color color, double thickness, Viewport3D viewPort)

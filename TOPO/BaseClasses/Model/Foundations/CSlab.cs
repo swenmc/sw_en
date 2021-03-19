@@ -86,8 +86,6 @@ namespace BaseClasses
 
         private ObservableCollection<DoorProperties> m_DoorBlocksProperties;
 
-        private List<Point3D> MWireFramePoints;
-
         public float Eccentricity_x
         {
             get
@@ -365,36 +363,6 @@ namespace BaseClasses
             {
                 m_RCMesh = value;
             }
-        }
-
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                if (MWireFramePoints == null) MWireFramePoints = new List<Point3D>();
-                return MWireFramePoints;
-            }
-
-            set
-            {
-                MWireFramePoints = value;
-            }
-        }
-
-        private Point3D m_PointText;
-
-        public Point3D PointText
-        {
-            get { return m_PointText; }
-            set { m_PointText = value; }
-        }
-
-        private string m_Text;
-
-        public string Text
-        {
-            get { return m_Text; }
-            set { m_Text = value; }
         }
 
         public int NumberOfSawCutsInDirectionX
@@ -939,7 +907,7 @@ namespace BaseClasses
             float fOffsetY = 0.5f * m_fDim2 + fAdditionalOffsetY;
             float fOffsetFromPlane = m_fDim3 + 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
-            m_PointText = new Point3D()
+            PointText = new Point3D()
             {
                 X = fOffsetX,
                 Y = fOffsetY,
@@ -979,7 +947,7 @@ namespace BaseClasses
             // Naplnime pole bodov wireFrame
             // TODO - Ondrej - chcelo by to nejako elegantne zjednotit u vsetkych objektov ktore maju 3D geometriu kde a ako ziskavat wireframe
             // TODO Ondrej - tu chyba v tom ze beriem pozicie z povodneho zakladu nie z posunuteho do finalnej pozicie
-            WireFramePoints = GetWireFramePoints_Volume(model);
+            SetWireFramePoints_Volume(model);
 
             Visual_Object = model;
 
@@ -1264,7 +1232,7 @@ namespace BaseClasses
                         "& COMPACTED HARDFILL";
             */
 
-            m_Text = (m_fDim3 * 1000).ToString("F0") + " mm THICK CONCRETE SLAB" + "\n" +
+            Text = (m_fDim3 * 1000).ToString("F0") + " mm THICK CONCRETE SLAB" + "\n" +
                      "WITH " + m_sMeshGradeName + " MESH on DPM" + "\n" +
                      "ON 25 mm THICK SAND" + "\n" +
                      "ON 150 mm THICK COMPACTED GAP 40 mm";

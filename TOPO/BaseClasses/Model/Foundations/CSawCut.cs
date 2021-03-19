@@ -15,13 +15,10 @@ namespace BaseClasses
     {
         private Point3D m_PointStart;
         private Point3D m_PointEnd;
-        private Point3D m_PointText;
         private float m_fLength;
-        private string m_Text;
         private float m_CutWidth;
         private float m_CutDepth;
         private float m_fOffsetFromLine;
-
 
         public Point3D PointStart
         {
@@ -33,20 +30,10 @@ namespace BaseClasses
             get { return m_PointEnd; }
             set { m_PointEnd = value; }
         }
-        public Point3D PointText
-        {
-            get { return m_PointText; }
-            set { m_PointText = value; }
-        }
         public float Length
         {
             get { return m_fLength; }
             set { m_fLength = value; }
-        }
-        public string Text
-        {
-            get { return m_Text; }
-            set { m_Text = value; }
         }
         public float CutWidth
         {
@@ -68,8 +55,8 @@ namespace BaseClasses
             set
             {
                 m_fOffsetFromLine = value;
-                if(bTextAboveLine) m_PointText.Y = m_fOffsetFromLine;
-                else m_PointText.Y = -m_fOffsetFromLine;
+                if(bTextAboveLine) PointText.Y = m_fOffsetFromLine;
+                else PointText.Y = -m_fOffsetFromLine;
             }
         }
 
@@ -90,7 +77,7 @@ namespace BaseClasses
             BIsDisplayed = bIsDiplayed_temp;
             FTime = fTime;
 
-            m_Text = "SAW CUT";
+            Text = "SAW CUT";
             m_fOffsetFromLine = offsetFromLine;
 
             Length = Drawing3D.GetPoint3DDistanceFloat(m_PointStart, m_PointEnd);
@@ -111,7 +98,7 @@ namespace BaseClasses
             // Mezera medzi ciarou a textom (kladna - text nad ciarou (+y), zaporna, text pod ciarou (-y))
             if (bTextAboveLine) m_fOffsetFromLine = Math.Abs(m_fOffsetFromLine) * -1;
                 
-            m_PointText = new Point3D()
+            PointText = new Point3D()
             {
                 X = 0.3 * m_fLength, // Kreslime v 30% dlzky od zaciatku
                 Y = OffsetFromLine,
@@ -171,7 +158,7 @@ namespace BaseClasses
                 //float fOffsetFromLine = 0.1f;
                 float fOffsetFromPlane = 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
-                m_PointText = new Point3D()
+                PointText = new Point3D()
                 {
                     X = 0.2 * m_fLength, // Kreslime v 20% dlzky od zaciatku
                     Y = OffsetFromLine,

@@ -8,7 +8,7 @@ namespace BaseClasses.GraphObj
 {
     // Uvazujeme zatial 4 alebo 5 definicnych bodov
     [Serializable]
-    public class CSurfaceComponent : CEntity3D
+    public class CSurfaceComponent : CAreaPolygonal // TODO Ondrej - Doriesit hierarchiu dedenia objektov
     {
         //private Point3D m_ControlPoint;
         int m_iNumberOfEdges;

@@ -246,21 +246,6 @@ namespace BaseClasses
             set { m_sBDef_x = value; }
         }
 
-        private List<Point3D> MWireFramePoints;
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                if (MWireFramePoints == null) MWireFramePoints = new List<Point3D>();
-                return MWireFramePoints;
-            }
-
-            set
-            {
-                MWireFramePoints = value;
-            }
-        }
-
         private List<CLoad> MLoads;
         public List<CLoad> Loads
         {

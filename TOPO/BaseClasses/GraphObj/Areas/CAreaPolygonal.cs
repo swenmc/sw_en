@@ -104,15 +104,13 @@ namespace BaseClasses.GraphObj
             return model3D;
         }
 
-        private static List<Point3D> GetWireFramePointsFromGeometryPositions(Point3DCollection positions)
+        private void GetWireFramePointsFromGeometryPositions(Point3DCollection positions)
         {
-            List<Point3D> wireframePoints = new List<Point3D>();
             for (int i = 0; i < positions.Count - 1; i++)
             {
-                wireframePoints.Add(positions[i]);
-                wireframePoints.Add(positions[i + 1]);
+                WireFramePoints.Add(positions[i]);
+                WireFramePoints.Add(positions[i + 1]);
             }
-            return wireframePoints;
         }
 
         public List<Point3D> GetWireFrame()

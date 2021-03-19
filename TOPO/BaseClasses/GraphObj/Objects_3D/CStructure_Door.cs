@@ -38,23 +38,7 @@ namespace BaseClasses.GraphObj
         private float m_fGThickness;
         private float m_fRotationZDegrees;
 
-        private Point3D m_PointText;
-        private string m_Text;
 
-        private List<Point3D> m_WireFramePoints;
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
-                return m_WireFramePoints;
-            }
-
-            set
-            {
-                m_WireFramePoints = value;
-            }
-        }
 
         public bool IsRollerDoor
         {
@@ -67,18 +51,6 @@ namespace BaseClasses.GraphObj
             {
                 m_isRollerDoor = value;
             }
-        }
-
-        public Point3D PointText
-        {
-            get { return m_PointText; }
-            set { m_PointText = value; }
-        }
-
-        public string Text
-        {
-            get { return m_Text; }
-            set { m_Text = value; }
         }
 
         public float RotationZDegrees
@@ -164,7 +136,7 @@ namespace BaseClasses.GraphObj
             m_doorPanelColorName = doorPanelColorName;
             m_volColor_2 = doorPanelColor;
 
-            m_Text = "Door H x W" + "\n" + (m_fDim2 * 1000).ToString("F0") + " x " + (m_fDim1 * 1000).ToString("F0") + " mm"; // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
+            Text = "Door H x W" + "\n" + (m_fDim2 * 1000).ToString("F0") + " x " + (m_fDim1 * 1000).ToString("F0") + " mm"; // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
 
             SetTextPointInLCS();
 
@@ -344,7 +316,7 @@ namespace BaseClasses.GraphObj
 
             float fOffsetFromPlane = 0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
 
-            m_PointText = new Point3D()
+            PointText = new Point3D()
             {
                 X = 0.3 * m_fDim1, // Kreslime v 30% sirky zlava
                 Y = 0.4 * m_fDim2, // Kreslime v 40% dlzky zdola

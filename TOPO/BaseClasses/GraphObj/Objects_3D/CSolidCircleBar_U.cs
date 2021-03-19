@@ -6,7 +6,7 @@ using System.Windows.Media.Media3D;
 
 namespace BaseClasses.GraphObj.Objects_3D
 {
-    public class CSolidCircleBar_U
+    public class CSolidCircleBar_U : CVolume
     {
         public bool bBarIsInXDirection;
         public float m_fDiameter;
@@ -93,7 +93,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             ps.Nv = iRadius;
             ps.CreateSurface(mat);
 
-            wireFramePoints = ps.WireframePoints;
+            wireFramePoints = ps.WireFramePoints;
 
             return ps.GeometryModel3D;
         }
@@ -128,11 +128,22 @@ namespace BaseClasses.GraphObj.Objects_3D
             // TODO Ondrej - pripravit wireframe model pre cely tvar U (zlucit wireframe poinst z 5 objektov)
             // Urobil som to zatial takto ale nepaci sa mi to, lebo je to dost divoke a nejednotne pre priame casti a obluciky
 
-            models.AddRange(CVolume.GetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[0], true));
+            // TODO - toto treba nejako rozumne prerobit
+            CVolume s1 = new CVolume();
+            s1.SetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[0], true);
+            models.AddRange(s1.WireFramePoints);
+
             models.AddRange(arcLeft_wireFramePoints);
-            models.AddRange(CVolume.GetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[2], true));
+
+            CVolume s3 = new CVolume();
+            s3.SetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[2], true);
+            models.AddRange(s3.WireFramePoints);
+
             models.AddRange(arcRight_wireFramePoints);
-            models.AddRange(CVolume.GetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[4], true));
+
+            CVolume s5 = new CVolume();
+            s5.SetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[4], true);
+            models.AddRange(s5.WireFramePoints);
 
             return models;
         }

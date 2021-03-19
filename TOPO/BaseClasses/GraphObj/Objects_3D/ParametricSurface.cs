@@ -6,7 +6,7 @@ using System.Windows.Media.Media3D;
 
 namespace BaseClasses.GraphObj.Objects_3D
 {
-    public class ParametricSurface
+    public class ParametricSurface : CEntity3D
     {
         private int nu = 30;
         private int nv = 30;
@@ -30,7 +30,6 @@ namespace BaseClasses.GraphObj.Objects_3D
         private bool isWireframe = true;
         //private Viewport3D viewport3d = new Viewport3D();
         private GeometryModel3D m_geometryModel3D;
-        private List<Point3D> m_WireframePoints;
 
         public bool IsWireframe
         {
@@ -145,19 +144,6 @@ namespace BaseClasses.GraphObj.Objects_3D
             set { m_geometryModel3D = value; }
         }
 
-        public List<Point3D> WireframePoints
-        {
-            get
-            {
-                return m_WireframePoints;
-            }
-
-            set
-            {
-                m_WireframePoints = value;
-            }
-        }
-
         public ParametricSurface(double mainradius, double radius, Point3D pCenterPoint)
         {
             //SurfaceColor = cSurfaceColor;
@@ -200,7 +186,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             Point3D[] p = new Point3D[4];
             List<Point3D> positions = new List<Point3D>();
             List<int> triangleIndices = new List<int>();
-            m_WireframePoints = new List<Point3D>();
+            WireFramePoints = new List<Point3D>();
             int index = 0;
             for (int i = 0; i < Nu - 1; i++)
             {
@@ -215,7 +201,7 @@ namespace BaseClasses.GraphObj.Objects_3D
                     index = index + 4;
 
                     // Create wireframe
-                    if (IsWireframe == true) Utility.CreateWireframe(p[0], p[1], p[2], p[3], m_WireframePoints);
+                    if (IsWireframe == true) Utility.CreateWireframe(p[0], p[1], p[2], p[3], WireFramePoints);
                 }
             }
 

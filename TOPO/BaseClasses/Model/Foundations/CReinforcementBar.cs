@@ -13,7 +13,7 @@ using BaseClasses.GraphObj.Objects_3D;
 namespace BaseClasses
 {
     [Serializable]
-    public class CReinforcementBar : CEntity3D
+    public class CReinforcementBar : CVolume
     {
         private Point3D m_StartPoint;
         private Point3D m_EndPoint;
@@ -27,8 +27,6 @@ namespace BaseClasses
         private float m_fOpacity;
 
         private Color m_Color;
-
-        private List<Point3D> m_WireFramePoints;
 
         public float Diameter
         {
@@ -147,19 +145,6 @@ namespace BaseClasses
             }
         }
 
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                return m_WireFramePoints;
-            }
-
-            set
-            {
-                m_WireFramePoints = value;
-            }
-        }
-
         [NonSerialized]
         public Model3DGroup Visual_Object;
 
@@ -214,7 +199,7 @@ namespace BaseClasses
                 model = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 6 + 1, 0.5f * m_diameter, m_projectionLength, new DiffuseMaterial(brush), 0);
                 modelGroup.Children.Add(model);
 
-                m_WireFramePoints = CVolume.GetWireFramePoints_Volume(model, true);
+                SetWireFramePoints_Volume(model, true);
             }
             else
             {
@@ -226,7 +211,7 @@ namespace BaseClasses
                 TotalLength = bar.TotalLength = barModel.m_fTotalLength;
                 modelGroup = barModel.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 6 + 1);
 
-                m_WireFramePoints = barModel.GetWireFramePoints_Volume(modelGroup);
+                WireFramePoints = barModel.GetWireFramePoints_Volume(modelGroup);
             }
 
             // Transformacia vyztuze vratane transformacie zakladu v GCS
@@ -301,7 +286,7 @@ namespace BaseClasses
 
         public List<Point3D> GetWireFramePoints_Volume(Transform3D trans)
         {
-            return TransformListOfPoints(trans, m_WireFramePoints);
+            return TransformListOfPoints(trans, WireFramePoints);
         }
 
         private List<Point3D> TransformListOfPoints(Transform3D trans, List<Point3D> list)

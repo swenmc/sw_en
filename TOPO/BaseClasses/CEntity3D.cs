@@ -35,6 +35,32 @@ namespace BaseClasses
             set { m_bIsSelectedForMaterialList = value; }
         }
 
+        private List<Point3D> m_WireFramePoints;
+
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
+                return m_WireFramePoints;
+            }
+
+            set
+            {
+                m_WireFramePoints = value;
+            }
+        }
+
+        private string m_Text;
+
+        public string Text
+        {
+            get { return m_Text; }
+            set { m_Text = value; }
+        }
+
+        public Point3D PointText = new Point3D();
+
         public Point3D ControlPoint = new Point3D();
 
         public CMat m_Mat;

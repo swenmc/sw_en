@@ -19,25 +19,9 @@ namespace BaseClasses.GraphObj
         private Point3D m_PointText;
         //private string m_Text;
 
-        private List<Point3D> m_WireFramePoints;
         private double m_RotationX;
         private double m_rotationY;
         private double m_rotationZ;
-
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                if (m_WireFramePoints == null) m_WireFramePoints = new List<Point3D>();
-                return m_WireFramePoints;
-            }
-
-            set
-            {
-                m_WireFramePoints = value;
-            }
-        }
-        
 
         public double CladdingWidthRibModular
         {
@@ -245,7 +229,7 @@ namespace BaseClasses.GraphObj
                 Width, LengthTopLeft, LengthTopRight, TipCoordinate_x, LengthTopTip, BIsDisplayed, FTime);
         }
 
-        public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material, bool createWireframe, double outOffPlaneOffset_y = 0)
+        public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material, double outOffPlaneOffset_y = 0)
         {
             Point3D pfront0_baseleft = new Point3D(0, outOffPlaneOffset_y, 0);
             Point3D pfront1_baseright = new Point3D(Width, outOffPlaneOffset_y, 0);
@@ -289,10 +273,8 @@ namespace BaseClasses.GraphObj
                 };
 
                 Area_netto = MATH.Geom2D.PolygonArea(EdgePoints2D.ToArray());
-
-                CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft }, 0);
-                if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
-                return area.CreateArea(options.bUseTextures, material);
+                EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft };
+                return CreateArea(options.bUseTextures, material);
             }
             else
             {
@@ -306,10 +288,8 @@ namespace BaseClasses.GraphObj
                 };
 
                 Area_netto = MATH.Geom2D.PolygonArea(EdgePoints2D.ToArray());
-
-                CAreaPolygonal area = new CAreaPolygonal(ID, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft }, 0);
-                if (createWireframe) WireFramePoints.AddRange(area.GetWireFrame());
-                return area.CreateArea(options.bUseTextures, material);
+                EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft };
+                return CreateArea(options.bUseTextures, material);
             }
         }
 

@@ -46,8 +46,6 @@ namespace BaseClasses
 
         private float m_fConcreteCover;
 
-        private List<Point3D> MWireFramePoints;
-
         private CJointDesignDetails m_DesignDetails;
         public CJointDesignDetails DesignDetails
         {
@@ -356,36 +354,6 @@ namespace BaseClasses
             }
         }
 
-        public List<Point3D> WireFramePoints
-        {
-            get
-            {
-                if (MWireFramePoints == null) MWireFramePoints = new List<Point3D>();
-                return MWireFramePoints;
-            }
-
-            set
-            {
-                MWireFramePoints = value;
-            }
-        }
-
-        private Point3D m_PointText;
-
-        public Point3D PointText
-        {
-            get { return m_PointText; }
-            set { m_PointText = value; }
-        }
-
-        private string m_Text;
-
-        public string Text
-        {
-            get { return m_Text; }
-            set { m_Text = value; }
-        }
-
         public CFoundation()
         {
         }
@@ -427,7 +395,7 @@ namespace BaseClasses
             m_Mat = materialConcrete;
             m_ColumnMemberTypePosition = memberTypePosition;
             Name = sName;
-            m_Text = descriptionText;
+            Text = descriptionText;
             //m_pControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
@@ -473,7 +441,7 @@ namespace BaseClasses
             float fOffsetY = m_fDim2 + m_EccentricityBasicColumn_y + m_Eccentricity_y + textSize;
             float fOffsetFromPlane = m_fDim3 + 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
-            m_PointText = new Point3D()
+            PointText = new Point3D()
             {
                 X = fOffsetX,
                 Y = fOffsetY,
@@ -536,7 +504,8 @@ namespace BaseClasses
                 // Naplnime pole bodov wireFrame
                 // TODO - Ondrej - chcelo by to nejako elegantne zjednotit u vsetkych objektov ktore maju 3D geometriu kde a ako ziskavat wireframe
                 // TODO Ondrej - tu chyba v tom ze beriem pozicie z povodneho zakladu nie z posunuteho do finalnej pozicie
-                WireFramePoints = GetWireFramePoints_Volume(model);
+                volume.SetWireFramePoints_Volume(model);
+                WireFramePoints = volume.WireFramePoints;
             }
             else
             {
