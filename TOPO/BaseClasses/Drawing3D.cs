@@ -5884,32 +5884,32 @@ namespace BaseClasses
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsFrontWall = ModelHelper.GetCladdingSheets_Front(model);
-                _model.m_arrGOCladding[0] = cl; // Docasne - dopracovat fibreglass, door a windows
+                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
             else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_BACK)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsBackWall = ModelHelper.GetCladdingSheets_Back(model);
-                _model.m_arrGOCladding[0] = cl; // Docasne - dopracovat fibreglass, door a windows
+                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
             else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_LEFT)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsLeftWall = ModelHelper.GetCladdingSheets_Left(model);
-                _model.m_arrGOCladding[0] = cl; // Docasne - dopracovat fibreglass, door a windows
+                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
             else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_RIGHT)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsRightWall = ModelHelper.GetCladdingSheets_Right(model);
-                _model.m_arrGOCladding[0] = cl; // Docasne - dopracovat fibreglass, door a windows
+                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
             else if (sDisplayOptions.ViewCladding == (int)EViewCladdingFilters.CLADDING_ROOF)
             {
                 CCladding cl = new CCladding();
                 cl.listOfCladdingSheetsRoofRight = ModelHelper.GetCladdingSheets_Roof_Right(model);
                 cl.listOfCladdingSheetsRoofLeft = ModelHelper.GetCladdingSheets_Roof_Left(model);
-                _model.m_arrGOCladding[0] = cl; // Docasne - dopracovat fibreglass
+                _model.m_arrGOCladding = new List<CCladding>() { cl }; // Docasne - dopracovat fibreglass, door a windows
             }
 
             return _model;

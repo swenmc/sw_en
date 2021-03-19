@@ -70,6 +70,9 @@ namespace EXPIMP
             if (exportOpts.ExportModelViews)
                 DrawModelViews(s_document, modelData, exportOpts);
 
+            if (exportOpts.ExportModelCladdingLayingSchemeViews)
+                DrawCladdingViews(s_document, modelData, exportOpts);
+
             if (exportOpts.ExportJointTypes)
                 DrawJointTypes(s_document, modelData, exportOpts);
 
