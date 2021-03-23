@@ -123,5 +123,31 @@ namespace PFD.Infrastructure
             }
             return WindowBlocks;
         }
+
+
+        public static bool IsEnoughtPlaceForDoors(int bayNum, float width, ObservableCollection<DoorProperties> doors)
+        {            
+            foreach (DoorProperties d in doors)
+            {
+                if (d.sBuildingSide != "Left" && d.sBuildingSide != "Right") continue;
+                if (d.iBayNumber != bayNum) continue;
+                
+                if (width < d.fDoorsWidth + d.fDoorCoordinateXinBlock) return false;
+            }
+
+            return true;
+        }
+        public static bool IsEnoughtPlaceForWindows(int bayNum, float width, ObservableCollection<WindowProperties> windows)
+        {
+            foreach (WindowProperties w in windows)
+            {
+                if (w.sBuildingSide != "Left" && w.sBuildingSide != "Right") continue;
+                if (w.iBayNumber != bayNum) continue;
+
+                if (width < w.fWindowsWidth + w.fWindowCoordinateXinBay) return false;
+            }
+            
+            return true;
+        }
     }
 }

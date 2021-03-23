@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using BaseClasses;
+using PFD.Infrastructure;
 
 namespace PFD
 {
@@ -58,8 +59,17 @@ namespace PFD
                         bi.UndoWidth();
                     }
                     //To Mato zvladnes check, co tam vojde okno, dvere?
-                    //tu treba check, ci vojde okno, dvere                    
-                    //if()
+                    //uz implementovane, staci ak skontrolujes/otestujes a mozu sa komenty zmazat
+                    else if (!CDoorsAndWindowsHelper.IsEnoughtPlaceForDoors(bi.BayNumber, bi.Width, _pfdVM.DoorBlocksProperties))
+                    {
+                        MessageBox.Show("Not enought space for doors.");
+                        bi.UndoWidth();
+                    }
+                    else if (!CDoorsAndWindowsHelper.IsEnoughtPlaceForWindows(bi.BayNumber, bi.Width, _pfdVM.WindowBlocksProperties))
+                    {
+                        MessageBox.Show("Not enought space for windows.");
+                        bi.UndoWidth();
+                    }
                 }
                 BaysWidthOptionsChanged = true;
             }
