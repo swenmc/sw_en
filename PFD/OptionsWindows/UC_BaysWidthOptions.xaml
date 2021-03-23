@@ -39,9 +39,9 @@
 
         </StackPanel>
 
-        <DataGrid Name ="Datagrid_CrossBracing" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+        <DataGrid Name ="Datagrid_BayWidths" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" ItemsSource="{Binding BayWidthList, Mode=TwoWay}" 
-                  MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown" CanUserSortColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">
+                  CanUserSortColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" PreviewTextInput="Datagrid_BayWidths_PreviewTextInput">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="ContentTemplate">

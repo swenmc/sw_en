@@ -49,19 +49,23 @@ namespace PFD
             }
             if (sender is CBayInfo)
             {
+                if (e.PropertyName == "Width")
+                {
+                    CBayInfo bi = sender as CBayInfo;
+                    if (!bi.ValidateWidth(_pfdVM.LengthOverall))
+                    {
+                        MessageBox.Show("Wrong width value.");
+                        bi.UndoWidth();
+                    }
+                    //To Mato zvladnes check, co tam vojde okno, dvere?
+                    //tu treba check, ci vojde okno, dvere                    
+                    //if()
+                }
                 BaysWidthOptionsChanged = true;
             }
         }
         
-        private void Datagrid_Components_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void Datagrid_Components_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
+        
 
         private void BtnApply_Click(object sender, RoutedEventArgs e)
         {
@@ -93,6 +97,27 @@ namespace PFD
             _pfdVM._baysWidthOptionsVM.PropertyChanged -= HandleBayWidthsOptionsPropertyChangedEvent; //reregister events
             _pfdVM._baysWidthOptionsVM.PropertyChanged += HandleBayWidthsOptionsPropertyChangedEvent;
             this.DataContext = _pfdVM._baysWidthOptionsVM;
+        }
+
+        private void Datagrid_BayWidths_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsDataValid(e.Text);            
+        }
+
+        bool IsDataValid(string data)
+        {
+            //allow commas and dots
+            if (data == "," || data == ".") return true;
+
+            try
+            {
+                float.Parse(data);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

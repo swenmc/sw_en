@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace BaseClasses
@@ -22,7 +23,8 @@ namespace BaseClasses
         private int m_BayNumber;
         private int m_BayIndex;
         private float m_Width;
-        
+        private float m_Width_old;
+
 
 
         public bool IsSetFromCode
@@ -76,8 +78,29 @@ namespace BaseClasses
 
             set
             {
+                m_Width_old = m_Width;
                 m_Width = value;
+
+                if (m_Width <= 0)
+                {
+                    m_Width = m_Width_old;
+                    MessageBox.Show("Wrong input value.");
+                }                
+
                 NotifyPropertyChanged("Width");
+            }
+        }
+
+        public float Width_old
+        {
+            get
+            {
+                return m_Width_old;
+            }
+
+            set
+            {
+                m_Width_old = value;
             }
         }
 
@@ -96,6 +119,16 @@ namespace BaseClasses
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public bool ValidateWidth(float maxWidth)
+        {
+            if (Width <= 0 || Width >= maxWidth) return false;
+            else return true;
+        }
+
+        public void UndoWidth()
+        {
+            Width = Width_old;
+        }
                
     }
 }
