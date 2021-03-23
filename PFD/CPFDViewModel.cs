@@ -84,56 +84,11 @@ namespace PFD
         private double m_Height_2_final_edge_FB_Wall;
         private double m_AdditionalOffsetWall;
 
-        //private int MRoofCladdingIndex;
-        //private int MRoofCladdingID;
-        //private int MRoofCladdingCoatingIndex;
-        //private int MRoofCladdingCoatingID;
-        //private List<CoatingColour> MRoofCladdingColors;
-        //private int MRoofCladdingColorIndex;
-        //private int MRoofCladdingThicknessIndex;
-        //private int MWallCladdingIndex;
-        //private int MWallCladdingID;
-        //private int MWallCladdingCoatingIndex;
-        //private int MWallCladdingCoatingID;
-        //private List<CoatingColour> MWallCladdingColors;
-        //private int MWallCladdingColorIndex;
-        //private int MWallCladdingThicknessIndex;
-
         private int MOneRafterPurlinNo;
-
-        //private int MRoofFibreglassThicknessIndex;
-        //private int MWallFibreglassThicknessIndex;
-
         private int MSupportTypeIndex;
-
-        //private float MFibreglassAreaRoof;
-        //private float MFibreglassAreaWall;
-
-        //private List<string> m_Claddings;
-        //private List<string> m_Coatings;
-        //private string m_RoofCladding;
-        //private string m_WallCladding;
-        //private string m_RoofCladdingCoating;
-        //private string m_WallCladdingCoating;
-
-        //private CTS_CrscProperties m_RoofCladdingProps;
-        //private CTS_CrscProperties m_WallCladdingProps;
-
-        //private List<string> m_RoofCladdingsThicknessTypes;
-        //private List<string> m_WallCladdingsThicknessTypes;
-        //private string m_RoofCladdingThickness;
-        //private string m_WallCladdingThickness;
-
-        //private List<string> m_RoofFibreglassThicknessTypes;
-        //private List<string> m_WallFibreglassThicknessTypes;
-
         private List<string> m_SupportTypes;
         private List<string> m_ModelTypes;
         private List<string> m_KitsetTypes;
-
-
-        //private int MWireframeColorIndex;
-        //public Color WireframeColor;
 
         private int MViewIndex;
         private int MViewModelMemberFilterIndex;
@@ -156,9 +111,6 @@ namespace PFD
         private bool m_CladdingOptionsChanged;
 
         private bool m_OptionsLoaded;
-
-        //private bool m_BracingEverySecondRowOfGirts;
-        //private bool m_BracingEverySecondRowOfPurlins;
 
         // Loads - generate options
         private bool MGenerateNodalLoads;
@@ -380,7 +332,8 @@ namespace PFD
                 BottomGirtPosition = dmodel.fdist_girt_bottom;
                 Frames = dmodel.iFrNo;
                 BayWidth = MLength / (MFrames - 1); // je sice v DB, ale istejsie je to tu prepocitavat
-                _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
+                //_baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
+                _baysWidthOptionsVM.ResetBaysWidths(Frames - 1, BayWidth);
 
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
@@ -838,11 +791,13 @@ namespace PFD
             if (IsSetFromCode) //zmeneny je Model
             {
                 //ak je zmeneny model, nesnazime sa o update ale priamo nanovo
-                _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
+                //_crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
+                UpdateCrossBracingViewModel();
                 _modelOptionsVM.EnableCrossBracing = true;  //default zapnute
 
                 //ak je zmeneny model, nesnazime sa o update ale priamo nanovo
-                _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
+                //_canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);                
+                UpdateCanopiesViewModel();
                 _modelOptionsVM.EnableCanopies = false; //default vypnute
                                 
                 _modelOptionsVM.VariousBayWidths = false; //default vypnute
@@ -851,18 +806,26 @@ namespace PFD
             {
                 if (_modelOptionsVM.EnableCrossBracing == true) //iba ak je zapnute
                 {
-                    if (_crossBracingOptionsVM == null) _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
-                    else _crossBracingOptionsVM.Update(Frames - 1, OneRafterPurlinNo);
+                    UpdateCrossBracingViewModel();                    
                 }
                 if (_modelOptionsVM.EnableCanopies == true) //iba ak je zapnute
                 {
-                    if (_canopiesOptionsVM == null) _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
-                    else _canopiesOptionsVM.Update(Frames - 1, Width);
-                }
-                
+                    UpdateCanopiesViewModel();                    
+                }                
             }
 
             _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
+        }
+
+        public void UpdateCanopiesViewModel()
+        {
+            if (_canopiesOptionsVM == null) _canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);
+            else _canopiesOptionsVM.Update(Frames - 1, Width);
+        }
+        public void UpdateCrossBracingViewModel()
+        {
+            if (_crossBracingOptionsVM == null) _crossBracingOptionsVM = new CrossBracingOptionsViewModel(Frames - 1, OneRafterPurlinNo);
+            else _crossBracingOptionsVM.Update(Frames - 1, OneRafterPurlinNo);
         }
 
         //-------------------------------------------------------------------------------------------------------------

@@ -63,7 +63,7 @@ namespace PFD
                     }
                     else
                     {
-                        _pfdVM._crossBracingOptionsVM = new CrossBracingOptionsViewModel(_pfdVM.Frames - 1, _pfdVM.OneRafterPurlinNo);
+                        _pfdVM._crossBracingOptionsVM.Update(_pfdVM.Frames - 1, _pfdVM.OneRafterPurlinNo);
                     }
                 }
                 if (e.PropertyName == "EnableCanopies")
