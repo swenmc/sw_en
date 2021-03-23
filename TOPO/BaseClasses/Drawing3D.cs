@@ -4239,15 +4239,19 @@ namespace BaseClasses
                     tb.FontFamily = new FontFamily("Arial");
 
                     float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                    float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
+                    float fTextBlockVerticalSize = 1;
+                    
+                    //tu este view ma asi ine velkosti treba pozriet kde sa nastavuje ViewPageSize
+                    if(s.IsFibreglass) fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions.ExportFibreglassDescriptionSize, displayOptions);
+                    else fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
 
                     float fTextBlockVerticalSizeFactor = 1f;
                     float fTextBlockHorizontalSizeFactor = 1f;
 
                     tb.FontStretch = FontStretches.UltraCondensed;
                     tb.FontStyle = FontStyles.Normal;
-                    tb.FontWeight = FontWeights.Bold;
-                    tb.Foreground = new SolidColorBrush(displayOptions.CladdingTextColor);
+                    tb.FontWeight = FontWeights.Bold;                    
+                    tb.Foreground = new SolidColorBrush(s.IsFibreglass ? displayOptions.FibreglassTextColor : displayOptions.CladdingTextColor);
                     //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
                     // Nastavujeme pre GCS (rovina XZ - text v smere X)
@@ -4341,17 +4345,24 @@ namespace BaseClasses
             rowsCount = 0;
             maxRowLength = 0;
             List<string> parts = new List<string>();
-            if (options.bDisplayCladdingID) { parts.Add(sheet.ID.ToString()); rowsCount++; }
-            if (options.bDisplayCladdingPrefix) { parts.Add(sheet.Prefix.ToString()); rowsCount++; }
-            if (options.bDisplayCladdingLengthWidth)
+
+            bool bDisplayID = sheet.IsFibreglass ? options.bDisplayFibreglassID : options.bDisplayCladdingID;
+            bool bDisplayPrefix = sheet.IsFibreglass ? options.bDisplayFibreglassPrefix : options.bDisplayCladdingPrefix;
+            bool bDisplayLengthWidth = sheet.IsFibreglass ? options.bDisplayFibreglassLengthWidth : options.bDisplayCladdingLengthWidth;
+            bool bDisplayArea = sheet.IsFibreglass ? options.bDisplayFibreglassArea : options.bDisplayCladdingArea;
+            bool bDisplayUnits = sheet.IsFibreglass ? options.bDisplayFibreglassUnits : options.bDisplayCladdingUnits;
+
+            if (bDisplayID) { parts.Add(sheet.ID.ToString()); rowsCount++; }
+            if (bDisplayPrefix) { parts.Add(sheet.Prefix.ToString()); rowsCount++; }
+            if (bDisplayLengthWidth)
             {
-                string units = options.bDisplayCladdingUnits ? " m" : "";
+                string units = bDisplayUnits ? " m" : "";
                 parts.Add($"{sheet.LengthTotal.ToString("F3")}x{sheet.Width.ToString("F3")}{units}");
                 rowsCount++;
             }
-            if (options.bDisplayCladdingArea)
+            if (bDisplayArea)
             {
-                string units = options.bDisplayCladdingUnits ? " m²" : "";
+                string units = bDisplayUnits ? " m²" : "";
                 parts.Add(sheet.Area_netto.ToString("F3") + units);
                 rowsCount++;
             }

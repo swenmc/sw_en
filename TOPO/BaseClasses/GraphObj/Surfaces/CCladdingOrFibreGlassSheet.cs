@@ -22,6 +22,8 @@ namespace BaseClasses.GraphObj
         private double m_RotationX;
         private double m_rotationY;
         private double m_rotationZ;
+        
+        private bool m_IsFibreglass;
 
         public double CladdingWidthRibModular
         {
@@ -101,11 +103,11 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public Point3D PointText
-        {
-            get { return m_PointText; }
-            set { m_PointText = value; }
-        }
+        //public Point3D PointText
+        //{
+        //    get { return m_PointText; }
+        //    set { m_PointText = value; }
+        //}
 
         //public string Text
         //{
@@ -149,6 +151,16 @@ namespace BaseClasses.GraphObj
             set
             {
                 m_rotationZ = value;
+            }
+        }
+
+        public bool IsFibreglass
+        {
+            get
+            {
+                if (Prefix == "RF") return true;                
+                else if (Prefix.StartsWith("WF")) return true;
+                else return false;
             }
         }
 
@@ -336,7 +348,7 @@ namespace BaseClasses.GraphObj
 
             float fOffsetFromPlane = -0.005f; // Offset nad/ pred urovnou panela, aby sa text nevnoril do 3D reprezentacie
 
-            PointText = new Point3D(0, 0, 0);
+            //PointText = new Point3D(0, 0, 0);
             PointText = new Point3D()
             {
                 X = 0.3 * Width, // Kreslime v 30% sirky zlava
