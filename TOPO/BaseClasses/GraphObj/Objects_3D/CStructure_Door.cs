@@ -136,8 +136,6 @@ namespace BaseClasses.GraphObj
             m_doorPanelColorName = doorPanelColorName;
             m_volColor_2 = doorPanelColor;
 
-            Text = "Door H x W" + "\n" + (m_fDim2 * 1000).ToString("F0") + " x " + (m_fDim1 * 1000).ToString("F0") + " mm"; // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
-
             SetTextPointInLCS();
 
             CreateM_3D_G_Door(iSegmentNum, fL, fH, ft, fDoorPanelThickness, useTextures);
@@ -314,13 +312,19 @@ namespace BaseClasses.GraphObj
             iVectorOverFactor_LCS = 1;
             iVectorUpFactor_LCS = 1;
 
-            float fOffsetFromPlane = 0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
+            float fOffsetFromPlane = -0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
 
+            //PointText = new Point3D()
+            //{
+            //    X = 0.3 * m_fDim1, // Kreslime v 30% sirky zlava
+            //    Y = 0.4 * m_fDim2, // Kreslime v 40% dlzky zdola
+            //    Z = fOffsetFromPlane
+            //};
             PointText = new Point3D()
             {
-                X = 0.3 * m_fDim1, // Kreslime v 30% sirky zlava
-                Y = 0.4 * m_fDim2, // Kreslime v 40% dlzky zdola
-                Z = fOffsetFromPlane
+                X = 0.5 * m_fDim1, // Kreslime v 30% sirky zlava
+                Y = fOffsetFromPlane,
+                Z = 0.4 * m_fDim2 // Kreslime v 40% dlzky zdola
             };
         }
     }

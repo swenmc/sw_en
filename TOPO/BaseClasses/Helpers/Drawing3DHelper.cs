@@ -74,18 +74,21 @@ namespace BaseClasses.Helpers
             maxRowLength = 0;
             List<string> parts = new List<string>();
 
+            //Text = "Door H x W" + "\n" + (m_fDim2 * 1000).ToString("F0") + " x " + (m_fDim1 * 1000).ToString("F0") + " mm"; // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
+
             if (options.bDisplayDoorID) { parts.Add(door.ID.ToString()); rowsCount++; }
             if (options.bDisplayDoorType) { parts.Add(door.IsRollerDoor ? "Roller Door" : "Personnel Door"); rowsCount++; }
             if (options.bDisplayDoorHeightWidth)
             {
                 string units = options.bDisplayDoorUnits ? " m" : "";
-                parts.Add($"{door.LengthTotal.ToString("F3")}x{door.Width.ToString("F3")}{units}");
+                parts.Add($"{door.m_fDim2.ToString("F3")}x{door.m_fDim1.ToString("F3")}{units}");
                 rowsCount++;
             }
             if (options.bDisplayDoorArea)
             {
+                float area = door.m_fDim2 * door.m_fDim1;
                 string units = options.bDisplayDoorUnits ? " m²" : "";
-                parts.Add(door.Area_netto.ToString("F3") + units);
+                parts.Add(area.ToString("F3") + units);
                 rowsCount++;
             }
 
@@ -104,17 +107,20 @@ namespace BaseClasses.Helpers
             maxRowLength = 0;
             List<string> parts = new List<string>();
 
+            //Text = "Window H x W" + "\n" + (m_fDim2 * 1000).ToString("F0") + " x " + (m_fDim1 * 1000).ToString("F0") + " mm"; // TODO - dopracovat texty podla nastaveni v GUI - Display Options, zaviest text popisu ako vstupny parameter objektu
+
             if (options.bDisplayWindowID) { parts.Add(window.ID.ToString()); rowsCount++; }
             if (options.bDisplayWindowHeightWidth)
             {
                 string units = options.bDisplayWindowUnits ? " m" : "";
-                parts.Add($"{window.LengthTotal.ToString("F3")}x{window.Width.ToString("F3")}{units}");
+                parts.Add($"{window.m_fDim2.ToString("F3")}x{window.m_fDim1.ToString("F3")}{units}");
                 rowsCount++;
             }
             if (options.bDisplayWindowArea)
             {
+                float area = window.m_fDim2 * window.m_fDim1;
                 string units = options.bDisplayWindowUnits ? " m²" : "";
-                parts.Add(window.Area_netto.ToString("F3") + units);
+                parts.Add(area.ToString("F3") + units);
                 rowsCount++;
             }
 

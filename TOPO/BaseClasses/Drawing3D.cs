@@ -4252,7 +4252,8 @@ namespace BaseClasses
             Vector3D over = new Vector3D(1f, 0, 0);
             Vector3D up = new Vector3D(0, 0, 1f);
             Transform3DGroup tr = door.GetTransformGroup();
-            AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, displayOptions.DoorTextColor, null, door.PointText, over, up, tr, 0.8, true, ref viewPort);
+            double widthScaleFactor = displayOptions.bDisplayDoorHeightWidth ? 0.4 : 0.6;
+            AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, displayOptions.DoorTextColor, null, door.PointText, over, up, tr, widthScaleFactor, false, ref viewPort);
         }
 
         // Draw Window Text 3D
@@ -4268,7 +4269,8 @@ namespace BaseClasses
             Vector3D over = new Vector3D(1f, 0, 0);
             Vector3D up = new Vector3D(0, 0, 1f);
             Transform3DGroup tr = window.GetTransformGroup();
-            AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, displayOptions.WindowTextColor, null, window.PointText, over, up, tr, 0.8, true, ref viewPort);
+            double widthScaleFactor = displayOptions.bDisplayWindowHeightWidth ? 0.4 : 0.6;
+            AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, displayOptions.WindowTextColor, null, window.PointText, over, up, tr, widthScaleFactor, false, ref viewPort);
         }
 
         public static void AddLabel3DToViewPort(string text, float fTextBlockVerticalSize, Color textColor, Color? backColor, Point3D p, Vector3D over, Vector3D up,
