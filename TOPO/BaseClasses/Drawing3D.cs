@@ -4194,10 +4194,19 @@ namespace BaseClasses
                     
                     float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                     float fTextBlockVerticalSize = 1;
-                    
+                    double widthScaleFactor = 0.6;
+
                     //tu este view ma asi ine velkosti treba pozriet kde sa nastavuje ViewPageSize
-                    if(s.IsFibreglass) fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions.ExportFibreglassDescriptionSize, displayOptions);
-                    else fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
+                    if (s.IsFibreglass)
+                    {
+                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions.ExportFibreglassDescriptionSize, displayOptions);
+                        widthScaleFactor = displayOptions.bDisplayFibreglassLengthWidth ? 0.4 : 0.6;
+                    }
+                    else
+                    {
+                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
+                        widthScaleFactor = displayOptions.bDisplayCladdingLengthWidth ? 0.4 : 0.6;
+                    }
 
                     float fTextBlockVerticalSizeFactor = 1f;
                     float fTextBlockHorizontalSizeFactor = 1f;
@@ -4225,7 +4234,7 @@ namespace BaseClasses
 
                     Transform3DGroup tr = s.GetTransformGroup();
 
-                    AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, textColor, null, s.PointText, over, up, tr, 0.6, false, ref viewPort);
+                    AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, textColor, null, s.PointText, over, up, tr, widthScaleFactor, false, ref viewPort);
                 } //end foreach
             }
         }

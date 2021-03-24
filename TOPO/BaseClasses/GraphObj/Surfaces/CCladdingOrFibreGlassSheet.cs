@@ -334,7 +334,7 @@ namespace BaseClasses.GraphObj
             //PointText = new Point3D(0, 0, 0);
             PointText = new Point3D()
             {
-                X = 0.3 * Width, // Kreslime v 30% sirky zlava
+                X = 0.5 * Width, // Kreslime v 30% sirky zlava
                 Y = /*outOffPlaneOffset_y +*/ fOffsetFromPlane,
                 Z = 0.4 * LengthTotal // Kreslime v 40% dlzky zdola
             };
