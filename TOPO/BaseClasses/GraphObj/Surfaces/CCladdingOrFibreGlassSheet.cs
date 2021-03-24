@@ -16,15 +16,10 @@ namespace BaseClasses.GraphObj
         Color m_Color;
         float m_fOpacity;
 
-        //private Point3D m_PointText;
-        //private string m_Text;
-
         private double m_RotationX;
         private double m_rotationY;
         private double m_rotationZ;
         
-        private bool m_IsFibreglass;
-
         public double CladdingWidthRibModular
         {
             get
@@ -102,18 +97,6 @@ namespace BaseClasses.GraphObj
                 m_fOpacity = value;
             }
         }
-
-        //public Point3D PointText
-        //{
-        //    get { return m_PointText; }
-        //    set { m_PointText = value; }
-        //}
-
-        //public string Text
-        //{
-        //    get { return m_Text; }
-        //    set { m_Text = value; }
-        //}
 
         public double RotationX
         {

@@ -4207,25 +4207,25 @@ namespace BaseClasses
                     Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0); // smer X
                     Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor); // smer Z
 
-                    if(s.Prefix == "WCL" || s.Prefix == "WCR" ||
-                        s.Prefix == "WFL" || s.Prefix == "WFR" ||
-                        s.Prefix == "RC" || s.Prefix == "RF")
-                    {
-                        over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0); // smer Y
-                    }
+                    //if(s.Prefix == "WCL" || s.Prefix == "WCR" ||
+                    //    s.Prefix == "WFL" || s.Prefix == "WFR" ||
+                    //    s.Prefix == "RC" || s.Prefix == "RF")
+                    //{
+                    //    over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0); // smer Y
+                    //}
 
-                    // TODO Ondrej - dopracovat smer vektorov pre roof, aby popis lezal v rovine strechy mozno by sme mali transformovat cely textlabel, nielen PointText
-                    if(s.Prefix == "RC" || s.Prefix == "RF")
-                    {
-                        up = new Vector3D(Math.Cos(5f / 180f * Math.PI), 0, Math.Sin(5f / 180f * Math.PI)); // Pokusne, rozlisit pravu a lavu stranu, resp kladny a zaporny sklon strechy
+                    //// TODO Ondrej - dopracovat smer vektorov pre roof, aby popis lezal v rovine strechy mozno by sme mali transformovat cely textlabel, nielen PointText
+                    //if(s.Prefix == "RC" || s.Prefix == "RF")
+                    //{
+                    //    up = new Vector3D(Math.Cos(5f / 180f * Math.PI), 0, Math.Sin(5f / 180f * Math.PI)); // Pokusne, rozlisit pravu a lavu stranu, resp kladny a zaporny sklon strechy
 
-                        if (s.Name == "Cladding - Roof-Right Side" || s.Name == "Fibreglass - Roof-Right Side")
-                            up = new Vector3D(Math.Cos(5f / 180f * Math.PI), 0, Math.Sin(-5f / 180f * Math.PI));
-                    }
+                    //    if (s.Name == "Cladding - Roof-Right Side" || s.Name == "Fibreglass - Roof-Right Side")
+                    //        up = new Vector3D(Math.Cos(5f / 180f * Math.PI), 0, Math.Sin(-5f / 180f * Math.PI));
+                    //}
 
                     Transform3DGroup tr = s.GetTransformGroup();
 
-                    AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, textColor, null, s.PointText, over, up, tr, 0.6, true, ref viewPort);
+                    AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, textColor, null, s.PointText, over, up, tr, 0.6, false, ref viewPort);
                 } //end foreach
             }
         }
