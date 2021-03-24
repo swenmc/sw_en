@@ -4375,11 +4375,72 @@ namespace BaseClasses
             return string.Join(separator, parts);
         }
 
+        private static string GetDoorDisplayText(DisplayOptions options, CStructure_Door door, out int rowsCount, out int maxRowLength)
+        {
+            string separator = " \n";
+            rowsCount = 0;
+            maxRowLength = 0;
+            List<string> parts = new List<string>();
+            
+            if (options.bDisplayDoorID) { parts.Add(door.ID.ToString()); rowsCount++; }
+            if (options.bDisplayDoorType) { parts.Add(door.IsRollerDoor ? "Roller Door" : "Personnel Door"); rowsCount++; }
+            if (options.bDisplayDoorHeightWidth)
+            {
+                string units = options.bDisplayDoorUnits ? " m" : "";
+                parts.Add($"{door.LengthTotal.ToString("F3")}x{door.Width.ToString("F3")}{units}");
+                rowsCount++;
+            }
+            if (options.bDisplayDoorArea)
+            {
+                string units = options.bDisplayDoorUnits ? " m²" : "";
+                parts.Add(door.Area_netto.ToString("F3") + units);
+                rowsCount++;
+            }
+
+            foreach (string s in parts)
+            {
+                if (s.Length > maxRowLength) maxRowLength = s.Length;
+            }
+
+            return string.Join(separator, parts);
+        }
+
+        private static string GetWindowDisplayText(DisplayOptions options, CStructure_Window window, out int rowsCount, out int maxRowLength)
+        {
+            string separator = " \n";
+            rowsCount = 0;
+            maxRowLength = 0;
+            List<string> parts = new List<string>();
+
+            if (options.bDisplayWindowID) { parts.Add(window.ID.ToString()); rowsCount++; }            
+            if (options.bDisplayWindowHeightWidth)
+            {
+                string units = options.bDisplayWindowUnits ? " m" : "";
+                parts.Add($"{window.LengthTotal.ToString("F3")}x{window.Width.ToString("F3")}{units}");
+                rowsCount++;
+            }
+            if (options.bDisplayWindowArea)
+            {
+                string units = options.bDisplayWindowUnits ? " m²" : "";
+                parts.Add(window.Area_netto.ToString("F3") + units);
+                rowsCount++;
+            }
+
+            foreach (string s in parts)
+            {
+                if (s.Length > maxRowLength) maxRowLength = s.Length;
+            }
+
+            return string.Join(separator, parts);
+        }
+
         // Draw Door Text 3D
         public static void DrawDoorText3D(CStructure_Door door, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             TextBlock tb = new TextBlock();
-            tb.Text = door.Text; // Dopracovat text popisu
+            int rowsCount = 0;
+            int maxRowLength = 0;
+            tb.Text = GetDoorDisplayText(displayOptions, door, out rowsCount, out maxRowLength);
             tb.FontFamily = new FontFamily("Arial");
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
@@ -4420,13 +4481,13 @@ namespace BaseClasses
             viewPort.Children.Add(textlabel);
         }
 
-        
-
         // Draw Window Text 3D
         public static void DrawWindowText3D(CStructure_Window window, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             TextBlock tb = new TextBlock();
-            tb.Text = window.Text; // Dopracovat text popisu
+            int rowsCount = 0;
+            int maxRowLength = 0;
+            tb.Text = GetWindowDisplayText(displayOptions, window, out rowsCount, out maxRowLength);            
             tb.FontFamily = new FontFamily("Arial");
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
