@@ -550,7 +550,7 @@ namespace BaseClasses.GraphObj
                 else // (bGenerateLeftSideCladding && !bIndividualCladdingSheets)
                 {
                     listOfCladdingSheetsLeftWall = new List<CCladdingOrFibreGlassSheet>();
-                    listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(2, "WCL", "Cladding - Left Wall", 4, 0, 0,
+                    listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(1, "WCL", "Cladding - Left Wall", 4, 0, 0,
                         pControlPoint_LeftWall, width, height_left_basic, height_left_basic, 0.5 * width, height_left_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, options.bDisplayCladdingLeftWall, 0));
 
@@ -616,7 +616,7 @@ namespace BaseClasses.GraphObj
                     }
 
                     listOfCladdingSheetsFrontWall = new List<CCladdingOrFibreGlassSheet>();
-                    listOfCladdingSheetsFrontWall.Add(new CCladdingOrFibreGlassSheet(0, "WCF", "Cladding - Front Wall", iNumberOfFrontBackWallEdges, 0, 0,
+                    listOfCladdingSheetsFrontWall.Add(new CCladdingOrFibreGlassSheet(2, "WCF", "Cladding - Front Wall", iNumberOfFrontBackWallEdges, 0, 0,
                         pControlPoint_FrontWall, width, height_left_basic, height_right_basic, 0.5 * width, height_middle_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, options.bDisplayCladdingFrontWall, 0));
 
@@ -739,7 +739,7 @@ namespace BaseClasses.GraphObj
                     }
 
                     listOfCladdingSheetsBackWall = new List<CCladdingOrFibreGlassSheet>();
-                    listOfCladdingSheetsBackWall.Add(new CCladdingOrFibreGlassSheet(1, "WCB", "Cladding - Back Wall", iNumberOfFrontBackWallEdges, 0, 0,
+                    listOfCladdingSheetsBackWall.Add(new CCladdingOrFibreGlassSheet(4, "WCB", "Cladding - Back Wall", iNumberOfFrontBackWallEdges, 0, 0,
                         pControlPoint_BackWall, width, height_left_basic, height_right_basic, 0.5 * width, height_middle_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, options.bDisplayCladdingBackWall, 0));
 
@@ -893,7 +893,7 @@ namespace BaseClasses.GraphObj
                 else
                 {
                     listOfCladdingSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();
-                    listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(4, "RC", "Cladding - Roof", 4, 0, 0,
+                    listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(5, "RC", "Cladding - Roof", 4, 0, 0,
                         pControlPoint_RoofRight, width, length_left_basic, length_left_basic, 0.5 * width, length_left_basic,
                         m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, options.bDisplayCladdingRoof, 0));
                     /* Mono
@@ -916,7 +916,7 @@ namespace BaseClasses.GraphObj
                         foreach (CCanopiesInfo canopy in canopyCollection)
                         {
                             double width_temp;
-                            int iAreaIndex = 5;
+                            int iAreaIndex = 6;
 
                             if (canopy.Right)
                             {
@@ -1131,7 +1131,7 @@ namespace BaseClasses.GraphObj
                     else
                     {
                         listOfCladdingSheetsRoofLeft = new List<CCladdingOrFibreGlassSheet>();
-                        listOfCladdingSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(5, "RC", "Cladding - Roof-Left Side", 4, 0, 0,
+                        listOfCladdingSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(6, "RC", "Cladding - Roof-Left Side", 4, 0, 0,
                             pControlPoint_RoofLeft, width, length_left_basic, length_left_basic, 0.5 * width, length_left_basic,
                             m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, options.bDisplayCladdingRoof, 0));
 
@@ -1145,7 +1145,7 @@ namespace BaseClasses.GraphObj
                         // Canopies
                         foreach (CCanopiesInfo canopy in canopyCollection)
                         {
-                            int iAreaIndex = 6;
+                            int iAreaIndex = 7;
 
                             double width_temp;
 
