@@ -4224,6 +4224,7 @@ namespace BaseClasses
                     }
 
                     Transform3DGroup tr = s.GetTransformGroup();
+
                     AddMultilineLabel3DToViewPort(text, rowsCount, maxRowLength, fTextBlockVerticalSize, textColor, null, s.PointText, over, up, tr, 0.6, true, ref viewPort);
                 } //end foreach
             }

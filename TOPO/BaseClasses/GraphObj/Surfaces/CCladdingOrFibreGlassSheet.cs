@@ -16,7 +16,7 @@ namespace BaseClasses.GraphObj
         Color m_Color;
         float m_fOpacity;
 
-        private Point3D m_PointText;
+        //private Point3D m_PointText;
         //private string m_Text;
 
         private double m_RotationX;
@@ -357,8 +357,8 @@ namespace BaseClasses.GraphObj
             };
 
             // Posun v LCS v ramci side
-            m_PointText.X += CoordinateInPlane_x;
-            m_PointText.Z += CoordinateInPlane_y;
+            PointText.X += CoordinateInPlane_x;
+            PointText.Z += CoordinateInPlane_y;
         }
     }
 }
