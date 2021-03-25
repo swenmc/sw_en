@@ -99,5 +99,12 @@ namespace PFD
 
             CanopiesOptionsChanged = false;
         }
+
+        private void BtnApplyChanges_Click(object sender, RoutedEventArgs e)
+        {
+            if (CanopiesOptionsChanged) _pfdVM.CanopiesOptionsChanged = true;
+
+            CanopiesOptionsChanged = false;
+        }
     }
 }

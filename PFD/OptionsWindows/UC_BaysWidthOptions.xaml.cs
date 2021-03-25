@@ -134,5 +134,16 @@ namespace PFD
         {
             e.Handled = !IsDataValid(e.Text);
         }
+
+        private void BtnApplyChanges_Click(object sender, RoutedEventArgs e)
+        {
+            if (BaysWidthOptionsChanged)
+            {
+                _pfdVM.BaysWidthOptionsChanged = true;
+
+            }
+
+            BaysWidthOptionsChanged = false;
+        }
     }
 }

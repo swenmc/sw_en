@@ -90,5 +90,12 @@ namespace PFD
 
             CrossBracingOptionsChanged = false;
         }
+
+        private void BtnApplyChanges_Click(object sender, RoutedEventArgs e)
+        {
+            if (CrossBracingOptionsChanged) _pfdVM.CrossBracingOptionsChanged = true;
+
+            CrossBracingOptionsChanged = false;
+        }
     }
 }

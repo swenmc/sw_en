@@ -22,19 +22,24 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Bay From:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                <ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <DockPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Bay From:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                    <ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=BayFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-                <TextBlock Text="Bay To:" HorizontalAlignment="Left" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                <ComboBox Name ="Combobox_BayTo" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                    <TextBlock Text="Bay To:" HorizontalAlignment="Left" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                    <ComboBox Name ="Combobox_BayTo" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=BayTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-                <Button Width="80" Height="25" Name="BtnApply" Margin="10 0 0 0" Click="BtnApply_Click">Apply</Button>
+                    <Button Width="80" Height="25" Name="BtnApply" Margin="10 0 0 0" Click="BtnApply_Click">Apply</Button>
 
-            </StackPanel>
+                </StackPanel>
+                <Button Name="btnApplyChanges" VerticalAlignment="Top" Cursor="Hand" HorizontalAlignment="Right" ToolTip="Apply Changes" Margin="0 0 5 0" Width="25" Height="25" Click="BtnApplyChanges_Click">
+                    <Image Source="..\Resources\fibreglasssheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                </Button>
+            </DockPanel>
             <Grid Grid.Row="0" Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
