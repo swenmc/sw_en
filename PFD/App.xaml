@@ -25,5 +25,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <!--Tu by sa dal nastavit kurzor pre tlacidla pre celu aplikaciu -->
+        <!--<Style TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>-->
+
     </Application.Resources>
 </Application>

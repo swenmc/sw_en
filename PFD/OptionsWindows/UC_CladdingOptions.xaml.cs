@@ -169,6 +169,15 @@ namespace PFD
             return mergedLists;
         }
 
+        private void BtnApplyChanges_Click(object sender, RoutedEventArgs e)
+        {
+            if (ErrorDetected) { return; }
 
+            if (CladdingOptionsChanged)
+            {
+                _pfdVM.CladdingOptionsChanged = true;
+            }
+            CladdingOptionsChanged = false;
+        }
     }
 }

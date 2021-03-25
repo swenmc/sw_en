@@ -20,24 +20,30 @@
             <RowDefinition Height="*" />            
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Bay From:" HorizontalAlignment="Left" Margin="5,5" TextWrapping="Wrap" VerticalAlignment="Top" />
-            <ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <DockPanel Grid.Row="0" Grid.Column="0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Bay From:" HorizontalAlignment="Left" Margin="5,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   Margin="0,5" SelectedValue="{Binding Path=BayFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
-            <TextBlock Text="Bay To:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
-            <ComboBox Name ="Combobox_BayTo" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                <TextBlock Text="Bay To:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <ComboBox Name ="Combobox_BayTo" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   Margin="0,5" SelectedValue="{Binding Path=BayTo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Text="Width:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
-            <TextBox Margin="0 5 5 0" Name="TextBox_Width" Width="{StaticResource theTextBoxWidthLarge}"
+                <TextBlock Text="Width:" HorizontalAlignment="Left" Margin="10,5" TextWrapping="Wrap" VerticalAlignment="Top" />
+                <TextBox Margin="0 5 5 0" Name="TextBox_Width" Width="{StaticResource theTextBoxWidthLarge}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="TextBox_Width_PreviewTextInput"
                          Text="{Binding Path=Width, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <Button Width="80" Height="25" Name="BtnApply" Margin="0 0 0 0" Click="BtnApply_Click">Apply</Button>
-
-        </StackPanel>
+                <Button Width="80" Height="25" Name="BtnApply" Margin="0 0 0 0" Click="BtnApply_Click">Apply</Button>
+                
+            </StackPanel>
+            <Button Name="btnApplyChanges" VerticalAlignment="Top" Cursor="Hand" HorizontalAlignment="Right" ToolTip="Apply Changes" Margin="0 0 5 0" Width="25" Height="25" Click="BtnApplyChanges_Click">
+                <Image Source="..\Resources\fibreglasssheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+            </Button>
+        </DockPanel>
+        
 
         <DataGrid Name ="Datagrid_BayWidths" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" ItemsSource="{Binding BayWidthList, Mode=TwoWay}" 

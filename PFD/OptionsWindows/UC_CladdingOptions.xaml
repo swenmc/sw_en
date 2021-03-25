@@ -56,6 +56,10 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <Button Name="btnApplyChanges" Grid.Row="0" Grid.Column="4" Cursor="Hand" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="Apply Changes" Margin="0 -5 0 0" Width="25" Height="25" Click="BtnApplyChanges_Click">
+                <Image Source="..\Resources\fibreglasssheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+            </Button>
+
             <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="Roof Cladding:" HorizontalAlignment="Left" />
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Profile:" HorizontalAlignment="Left" />
             <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_RoofCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
