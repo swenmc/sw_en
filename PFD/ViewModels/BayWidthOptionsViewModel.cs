@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace PFD
 {
@@ -31,7 +32,8 @@ namespace PFD
         private int m_BayFrom;
         private int m_BayTo;
         private float m_Width;
-        
+        private float m_Width_old;
+
         public ObservableCollection<CBayInfo> BayWidthList
         {
             get
@@ -107,8 +109,28 @@ namespace PFD
 
             set
             {
+                m_Width_old = m_Width;
                 m_Width = value;
+
+                if (m_Width <= 0)
+                {
+                    m_Width = m_Width_old;
+                    MessageBox.Show("Wrong input value.");
+                }
+
                 NotifyPropertyChanged("Width");
+            }
+        }
+        public float Width_old
+        {
+            get
+            {
+                return m_Width_old;
+            }
+
+            set
+            {
+                m_Width_old = value;
             }
         }
 

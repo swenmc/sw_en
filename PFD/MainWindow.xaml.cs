@@ -28,7 +28,7 @@ using PFD.ViewModels;
 using BaseClasses.Results;
 using System.Threading;
 using _3DTools;
-
+using System.Globalization;
 
 namespace PFD
 {
@@ -86,6 +86,11 @@ namespace PFD
         public MainWindow()
         {
             if (!CheckLicenseKey()) { MessageBox.Show("Not valid license key!"); this.Close(); return; }
+
+            //Nastavenie jazyka a vstupov
+            var culture = CultureInfo.GetCultureInfo("en-NZ");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             // Initial Screen
             if (ConfigurationManager.AppSettings["ShowSplashScreen"] == "1")

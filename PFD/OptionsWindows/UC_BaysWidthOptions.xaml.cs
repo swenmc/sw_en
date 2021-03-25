@@ -111,7 +111,7 @@ namespace PFD
 
         private void Datagrid_BayWidths_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !IsDataValid(e.Text);            
+            e.Handled = !IsDataValid(e.Text);
         }
 
         bool IsDataValid(string data)
@@ -128,6 +128,11 @@ namespace PFD
             {
                 return false;
             }
+        }
+
+        private void TextBox_Width_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsDataValid(e.Text);
         }
     }
 }
