@@ -1619,6 +1619,8 @@ namespace BaseClasses.GraphObj
                     {
                         if (listOfsheets[i].IsCanopy)
                         {
+                            wpWidth = widthRibModular / listOfsheets[i].Width;
+                            wpHeight = widthRibModular / listOfsheets[i].LengthTotal;
                             ImageBrush brushCanopy = brush.Clone();
                             System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
                             r.Location = new System.Windows.Point(-listOfsheets[i].WpWidthOffset, 0);
