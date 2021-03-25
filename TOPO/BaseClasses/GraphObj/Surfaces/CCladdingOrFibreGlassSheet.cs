@@ -145,7 +145,7 @@ namespace BaseClasses.GraphObj
         {
             get
             {
-                if (Prefix == "RF") return true;                
+                if (Prefix == "RF") return true;
                 else if (Prefix.StartsWith("WF")) return true;
                 else return false;
             }
@@ -259,11 +259,13 @@ namespace BaseClasses.GraphObj
 
         public GeometryModel3D GetCladdingSheetModel(DisplayOptions options, DiffuseMaterial material, double outOffPlaneOffset_y = 0)
         {
-            Point3D pfront0_baseleft = new Point3D(0, outOffPlaneOffset_y, 0);
-            Point3D pfront1_baseright = new Point3D(Width, outOffPlaneOffset_y, 0);
-            Point3D pfront2_topright = new Point3D(Width, outOffPlaneOffset_y, LengthTopRight);
-            Point3D pfront3_toptip = new Point3D(TipCoordinate_x, outOffPlaneOffset_y, LengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
-            Point3D pfront4_topleft = new Point3D(0, outOffPlaneOffset_y, LengthTopLeft);
+            OutOffPlaneOffset_y = outOffPlaneOffset_y; // Nastavime offset z roviny
+
+            Point3D pfront0_baseleft = new Point3D(0, OutOffPlaneOffset_y, 0);
+            Point3D pfront1_baseright = new Point3D(Width, OutOffPlaneOffset_y, 0);
+            Point3D pfront2_topright = new Point3D(Width, OutOffPlaneOffset_y, LengthTopRight);
+            Point3D pfront3_toptip = new Point3D(TipCoordinate_x, OutOffPlaneOffset_y, LengthTopTip);// TODO - dopracovat moznost zadania presnej suradnice hornej spicky
+            Point3D pfront4_topleft = new Point3D(0, OutOffPlaneOffset_y, LengthTopLeft);
 
             // Local in-plane offset
             pfront0_baseleft.X += CoordinateInPlane_x;
@@ -362,13 +364,13 @@ namespace BaseClasses.GraphObj
             iVectorOverFactor_LCS = 1;
             iVectorUpFactor_LCS = 1;
 
-            float fOffsetFromPlane = -0.005f; // Offset nad/ pred urovnou panela, aby sa text nevnoril do 3D reprezentacie
+            float fOffsetFromPlane = -0.010f; // Offset nad / pred urovnou panela, aby sa text nevnoril do 3D reprezentacie
 
             //PointText = new Point3D(0, 0, 0);
             PointText = new Point3D()
             {
                 X = 0.5 * Width, // Kreslime v 30% sirky zlava
-                Y = /*outOffPlaneOffset_y +*/ fOffsetFromPlane,
+                Y = /*OutOffPlaneOffset_y +*/ fOffsetFromPlane,
                 Z = 0.4 * LengthTotal // Kreslime v 40% dlzky zdola
             };
 

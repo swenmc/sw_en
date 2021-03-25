@@ -1273,7 +1273,7 @@ namespace BaseClasses.GraphObj
             }
 
             // Vytvorime geometry model
-            double outOffPlaneOffset_FG = -0.010; // Pokial kreslime cladding ako jednoliatu plochu na celu stenu alebo strechu, nastavime offset, aby sa fibreglasa nevnarali do cladding
+            double outOffPlaneOffset_FG = -0.005; // Pokial kreslime cladding ako jednoliatu plochu na celu stenu alebo strechu, nastavime offset, aby sa fibreglasa nevnarali do cladding
             if (bIndividualCladdingSheets)
             {
                 // Ak kreslime individualne sheets pre cladding nepotrebujeme offset

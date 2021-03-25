@@ -13,7 +13,8 @@ namespace BaseClasses.GraphObj
         //private Point3D m_ControlPoint;
         int m_iNumberOfEdges;
         double m_CoordinateInPlane_x;
-        double m_CoordinateInPlane_y;
+        double m_CoordinateInPlane_y; // hodnota y je pre vykreslenie povazovana za z
+        double m_OutOffPlaneOffset_y; // Offset out-of-plane defined by edge points // Lreslime do xz, takze uvazujeme ako y
         double m_Width; // Bezne uvazujeme width modular podla DB, ale pre koncove plechy moze byt sirka mensia
         double m_dLengthTotal;
         double m_dLengthTopRight;
@@ -64,6 +65,19 @@ namespace BaseClasses.GraphObj
             set
             {
                 m_CoordinateInPlane_y = value;
+            }
+        }
+
+        public double OutOffPlaneOffset_y
+        {
+            get
+            {
+                return m_OutOffPlaneOffset_y;
+            }
+
+            set
+            {
+                m_OutOffPlaneOffset_y = value;
             }
         }
 
