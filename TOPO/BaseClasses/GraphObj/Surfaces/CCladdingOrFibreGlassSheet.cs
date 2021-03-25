@@ -19,7 +19,11 @@ namespace BaseClasses.GraphObj
         private double m_RotationX;
         private double m_rotationY;
         private double m_rotationZ;
-        
+
+        private bool m_IsCanopy;
+        private double m_WpWidthOffset;
+
+
         public double CladdingWidthRibModular
         {
             get
@@ -147,6 +151,32 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public bool IsCanopy
+        {
+            get
+            {
+                return m_IsCanopy;
+            }
+
+            set
+            {
+                m_IsCanopy = value;
+            }
+        }
+
+        public double WpWidthOffset
+        {
+            get
+            {
+                return m_WpWidthOffset;
+            }
+
+            set
+            {
+                m_WpWidthOffset = value;
+            }
+        }
+
         public int iVectorOverFactor_LCS;
         public int iVectorUpFactor_LCS;
 
@@ -159,7 +189,7 @@ namespace BaseClasses.GraphObj
         double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
-        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime)
+        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime, bool isCanopy = false, double wpWidthOffset = 0)
         {
             ID = iCladdingSheet_ID;
             Prefix = prefix;
@@ -182,6 +212,9 @@ namespace BaseClasses.GraphObj
             m_dCladdingWidthRibModular = claddingWidthRib;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
+
+            IsCanopy = isCanopy;
+            WpWidthOffset = wpWidthOffset;
 
             // 5 edges
             //   3 ____ 2

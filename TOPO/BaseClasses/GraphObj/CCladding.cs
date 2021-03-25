@@ -552,7 +552,8 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsLeftWall = new List<CCladdingOrFibreGlassSheet>();
                     listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(1, "WCL", "Cladding - Left Wall", 4, 0, 0,
                         pControlPoint_LeftWall, width, height_left_basic, height_left_basic, 0.5 * width, height_left_basic,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, options.bDisplayCladdingLeftWall, 0));
+                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, 
+                        claddingWidthRibModular_Wall, options.bDisplayCladdingLeftWall, 0));
 
                     /* Mono
                     CAreaPolygonal area = new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0);
@@ -618,7 +619,8 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsFrontWall = new List<CCladdingOrFibreGlassSheet>();
                     listOfCladdingSheetsFrontWall.Add(new CCladdingOrFibreGlassSheet(2, "WCF", "Cladding - Front Wall", iNumberOfFrontBackWallEdges, 0, 0,
                         pControlPoint_FrontWall, width, height_left_basic, height_right_basic, 0.5 * width, height_middle_basic,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, options.bDisplayCladdingFrontWall, 0));
+                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, 
+                        options.bDisplayCladdingFrontWall, 0));
 
                     /* Mono
                     CAreaPolygonal area = new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front3_heightleft }, 0);
@@ -675,7 +677,8 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsRightWall = new List<CCladdingOrFibreGlassSheet>();
                     listOfCladdingSheetsRightWall.Add(new CCladdingOrFibreGlassSheet(3, "WCR", "Cladding - Right Wall", 4, 0, 0,
                         pControlPoint_RightWall, width, height_left_basic, height_left_basic, 0.5 * width, height_left_basic,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, claddingWidthRibModular_Wall, options.bDisplayCladdingRightWall, 0));
+                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, 
+                        claddingWidthRibModular_Wall, options.bDisplayCladdingRightWall, 0, false, 0));
  
                     /* Monopitch
                     CAreaPolygonal area = new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0);
@@ -944,25 +947,27 @@ namespace BaseClasses.GraphObj
 
                                 double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
 
-                                if (options.bUseTextures)
-                                {
-                                    wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
-                                    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                                double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
 
-                                    double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+                                //if (options.bUseTextures)
+                                //{
+                                //    wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
+                                //    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
-                                    ImageBrush brushRoofCanopy = brushRoof.Clone();
-                                    System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                    r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-                                    brushRoofCanopy.Viewport = r;
-                                    material_Roof = new DiffuseMaterial(brushRoofCanopy);
-                                }
+                                //    wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+
+                                //    ImageBrush brushRoofCanopy = brushRoof.Clone();
+                                //    System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                //    r.Location = new System.Windows.Point(-wpWidthOffset, 0);
+                                //    brushRoofCanopy.Viewport = r;
+                                //    material_Roof = new DiffuseMaterial(brushRoofCanopy);
+                                //}
 
                                 width_temp = pback_left.Y - pfront_left.Y;
 
                                 listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iAreaIndex, "RC", "Cladding - Roof", 4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
-                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
+                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0, true, wpWidthOffset));
 
                                 /*
                                 CAreaPolygonal areaCR = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
@@ -1005,25 +1010,26 @@ namespace BaseClasses.GraphObj
 
                                 double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
 
-                                if (options.bUseTextures)
-                                {
-                                    wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
-                                    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                                double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+                                //if (options.bUseTextures)
+                                //{
+                                //    wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
+                                //    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
-                                    double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+                                //    double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
 
-                                    ImageBrush brushRoofCanopy = brushRoof.Clone();
-                                    System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                    r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-                                    brushRoofCanopy.Viewport = r;
-                                    material_Roof = new DiffuseMaterial(brushRoofCanopy);
-                                }
+                                //    ImageBrush brushRoofCanopy = brushRoof.Clone();
+                                //    System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                //    r.Location = new System.Windows.Point(-wpWidthOffset, 0);
+                                //    brushRoofCanopy.Viewport = r;
+                                //    material_Roof = new DiffuseMaterial(brushRoofCanopy);
+                                //}
 
                                 width_temp = pback_left.Y - pfront_left.Y;
 
                                 listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iAreaIndex, "RC", "Cladding - Roof", 4, 0, 0,
                                 pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
-                                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
+                                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0, true, wpWidthOffset));
 
                                 /*
                                 CAreaPolygonal areaCL = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
@@ -1175,25 +1181,26 @@ namespace BaseClasses.GraphObj
 
                                 double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
 
-                                if (options.bUseTextures)
-                                {
-                                    wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
-                                    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                                double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y);
+                                //if (options.bUseTextures)
+                                //{
+                                //    wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
+                                //    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
-                                    double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y);
+                                //    double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y);
 
-                                    ImageBrush brushRoofCanopy = brushRoof.Clone();
-                                    System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                    r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-                                    brushRoofCanopy.Viewport = r;
-                                    material_Roof = new DiffuseMaterial(brushRoofCanopy);
-                                }
+                                //    ImageBrush brushRoofCanopy = brushRoof.Clone();
+                                //    System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                //    r.Location = new System.Windows.Point(-wpWidthOffset, 0);
+                                //    brushRoofCanopy.Viewport = r;
+                                //    material_Roof = new DiffuseMaterial(brushRoofCanopy);
+                                //}
 
                                 width_temp = pback_left.Y - pfront_left.Y;
 
                                 listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iAreaIndex, "RC", "Cladding - Roof", 4, 0, 0,
                                 pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
-                                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
+                                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0, true, wpWidthOffset));
 
                                 /*
                                 CAreaPolygonal areaCR = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
@@ -1230,25 +1237,26 @@ namespace BaseClasses.GraphObj
 
                                 double poinstsDist = Drawing3D.GetPoint3DDistanceDouble(pfront_right, pfront_left);
 
-                                if (options.bUseTextures)
-                                {
-                                    wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
-                                    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
+                                double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+                                //if (options.bUseTextures)
+                                //{
+                                //    wpWidth = claddingWidthRibModular_Roof / (pback_left.Y - pfront_left.Y);
+                                //    wpHeight = claddingWidthRibModular_Roof / poinstsDist;
 
-                                    double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
+                                //    double wpWidthOffset = dPartialRib / (pback_left.Y - pfront_left.Y); // To Ondrej - Posun rebier relativne
 
-                                    ImageBrush brushRoofCanopy = brushRoof.Clone();
-                                    System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                                    r.Location = new System.Windows.Point(-wpWidthOffset, 0);
-                                    brushRoofCanopy.Viewport = r;
-                                    material_Roof = new DiffuseMaterial(brushRoofCanopy);
-                                }
+                                //    ImageBrush brushRoofCanopy = brushRoof.Clone();
+                                //    System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                //    r.Location = new System.Windows.Point(-wpWidthOffset, 0);
+                                //    brushRoofCanopy.Viewport = r;
+                                //    material_Roof = new DiffuseMaterial(brushRoofCanopy);
+                                //}
 
                                 width_temp = pback_left.Y - pfront_left.Y;
 
                                 listOfCladdingSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iAreaIndex, "RC", "Cladding - Roof", 4, 0, 0,
                                 pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
-                                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0));
+                                m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0, true, wpWidthOffset));
 
                                 /*
                                 CAreaPolygonal areaCL = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
@@ -1597,7 +1605,7 @@ namespace BaseClasses.GraphObj
             double rotationX,
             double rotationY,
             double rotationZ,
-            ref Model3DGroup modelGroup,
+            ref Model3DGroup modelGroup,            
             //bool createWireframe,
             double outOffPlaneOffset = 0)
         {
@@ -1609,21 +1617,32 @@ namespace BaseClasses.GraphObj
                 {
                     if (options.bUseTextures)
                     {
-                        if (i == 0)
+                        if (listOfsheets[i].IsCanopy)
                         {
-                            double poinstsDist = listOfsheets[i].LengthTotal;
-                            wpWidth = widthRibModular / listOfsheets[i].Width;
-                            wpHeight = widthRibModular / poinstsDist;
-                            brush.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material = new DiffuseMaterial(brush);
+                            ImageBrush brushCanopy = brush.Clone();
+                            System.Windows.Rect r = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                            r.Location = new System.Windows.Point(-listOfsheets[i].WpWidthOffset, 0);
+                            brushCanopy.Viewport = r;
+                            material = new DiffuseMaterial(brushCanopy); //tu dufam,ze neprepise material ten ktory sa nastavil
                         }
-                        else if (i == listOfsheets.Count - 1)
+                        else
                         {
-                            wpWidth = widthRibModular / listOfsheets[i].Width;
-                            ImageBrush brush_Last = brush.Clone();
-                            brush_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
-                            material = new DiffuseMaterial(brush_Last);
+                            if (i == 0)
+                            {
+                                wpWidth = widthRibModular / listOfsheets[i].Width;
+                                wpHeight = widthRibModular / listOfsheets[i].LengthTotal;
+                                brush.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material = new DiffuseMaterial(brush);
+                            }
+                            else if (i == listOfsheets.Count - 1)
+                            {
+                                wpWidth = widthRibModular / listOfsheets[i].Width;
+                                ImageBrush brush_Last = brush.Clone();
+                                brush_Last.Viewport = new System.Windows.Rect(0, 0, wpWidth, wpHeight);
+                                material = new DiffuseMaterial(brush_Last);
+                            }
                         }
+                        
                     }
 
                     listOfsheets[i].RotationX = rotationX;
