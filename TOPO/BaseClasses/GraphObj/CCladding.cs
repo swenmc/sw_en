@@ -1737,6 +1737,24 @@ namespace BaseClasses.GraphObj
 
             return list;
         }
+        public List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Wall()
+        {
+            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();
+            if (listOfCladdingSheetsLeftWall != null) list.AddRange(listOfCladdingSheetsLeftWall);
+            if (listOfCladdingSheetsFrontWall != null) list.AddRange(listOfCladdingSheetsFrontWall);
+            if (listOfCladdingSheetsRightWall != null) list.AddRange(listOfCladdingSheetsRightWall);
+            if (listOfCladdingSheetsBackWall != null) list.AddRange(listOfCladdingSheetsBackWall);            
+
+            return list;
+        }
+        public List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof()
+        {
+            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();            
+            if (listOfCladdingSheetsRoofRight != null) list.AddRange(listOfCladdingSheetsRoofRight);
+            if (listOfCladdingSheetsRoofLeft != null) list.AddRange(listOfCladdingSheetsRoofLeft);
+
+            return list;
+        }
         public List<CCladdingOrFibreGlassSheet> GetFibreglassSheets()
         {
             List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();
@@ -1749,6 +1767,7 @@ namespace BaseClasses.GraphObj
 
             return list;
         }
+        
 
 
     }

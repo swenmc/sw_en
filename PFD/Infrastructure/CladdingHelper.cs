@@ -2,6 +2,7 @@
 using BaseClasses.GraphObj;
 using CRSC;
 using DATABASE;
+using DATABASE.DTO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,7 +51,40 @@ namespace PFD.Infrastructure
                 vm._claddingOptionsVM.WallBottomOffset_Z,
                 vm._claddingOptionsVM.ConsiderRoofCladdingFor_FB_WallHeight);
 
+            SetCladdingSheetsMaterial(vm, cladding);
+
             return cladding;
+        }
+
+        //TODO - Mato review
+        private static void SetCladdingSheetsMaterial(CPFDViewModel vm, CCladding cladding)
+        {
+            //-----------------------------------------------------------------------------
+            CTS_CrscProperties prop_RoofCladding = vm._claddingOptionsVM.RoofCladdingProps;
+            CTS_CrscProperties prop_WallCladding = vm._claddingOptionsVM.WallCladdingProps;
+            CTS_CoilProperties prop_RoofCladdingCoil;
+            CTS_CoilProperties prop_WallCladdingCoil;
+            CoatingColour prop_RoofCladdingColor;
+            CoatingColour prop_WallCladdingColor;
+            vm._claddingOptionsVM.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+
+            string prop_RoofCladdingMaterialName = prop_RoofCladdingCoil.materialName;
+            string prop_WallCladdingMaterialName = prop_WallCladdingCoil.materialName;
+
+            //To Mato - podla mna take nieco by sme potrebovali
+            //CMatPropertiesRC props = CMaterialManager.LoadMaterialPropertiesRC(prop_WallCladdingMaterialName);
+            //float wall_rho = (float)props.Rho;
+            //props = CMaterialManager.LoadMaterialPropertiesRC(prop_RoofCladdingMaterialName);
+            //float roof_rho = (float)props.Rho;
+
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets_Wall())
+            {
+                sheet.m_Mat.Name = prop_WallCladdingMaterialName;
+            }
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets_Roof())
+            {
+                sheet.m_Mat.Name = prop_WallCladdingMaterialName;
+            }
         }
 
 

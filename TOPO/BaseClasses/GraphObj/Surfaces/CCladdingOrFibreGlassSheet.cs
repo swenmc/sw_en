@@ -198,6 +198,7 @@ namespace BaseClasses.GraphObj
             m_Mat = new MATERIAL.CMat_03_00();
             // TODO 740 - napojit material name
             // Vid MainWindow.xaml.cs - Line 642
+            // asi su potrebne aj dalsie propertie ako je RHO
 
             NumberOfEdges = numberOfCorners;
             CoordinateInPlane_x = coordinateInPlane_x;
