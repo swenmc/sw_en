@@ -1711,5 +1711,45 @@ namespace BaseClasses.GraphObj
             if (listOfCladdingSheetsRoofLeft != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofLeft) WireFramePoints.AddRange(s.WireFramePoints);
             if (listOfCladdingSheetsRoofRight != null) foreach (CCladdingOrFibreGlassSheet s in listOfCladdingSheetsRoofRight) WireFramePoints.AddRange(s.WireFramePoints);
         }
+
+        //        public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallLeft = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsLeftWall = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallFront = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsFrontWall = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallRight = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRightWall = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsWallBack = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsBackWall = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofRight = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofRight = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofLeft = null;
+        //public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofLeft = null;
+
+        public List<CCladdingOrFibreGlassSheet> GetCladdingSheets()
+        {
+            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();
+            if (listOfCladdingSheetsLeftWall != null) list.AddRange(listOfCladdingSheetsLeftWall);
+            if (listOfCladdingSheetsFrontWall != null) list.AddRange(listOfCladdingSheetsFrontWall);
+            if (listOfCladdingSheetsRightWall != null) list.AddRange(listOfCladdingSheetsRightWall);
+            if (listOfCladdingSheetsBackWall != null) list.AddRange(listOfCladdingSheetsBackWall);
+            if (listOfCladdingSheetsRoofRight != null) list.AddRange(listOfCladdingSheetsRoofRight);
+            if (listOfCladdingSheetsRoofLeft != null) list.AddRange(listOfCladdingSheetsRoofLeft);
+
+            return list;
+        }
+        public List<CCladdingOrFibreGlassSheet> GetFibreglassSheets()
+        {
+            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();
+            if (listOfFibreGlassSheetsWallLeft != null) list.AddRange(listOfFibreGlassSheetsWallLeft);
+            if (listOfFibreGlassSheetsWallFront != null) list.AddRange(listOfFibreGlassSheetsWallFront);
+            if (listOfFibreGlassSheetsWallRight != null) list.AddRange(listOfFibreGlassSheetsWallRight);
+            if (listOfFibreGlassSheetsWallBack != null) list.AddRange(listOfFibreGlassSheetsWallBack);
+            if (listOfFibreGlassSheetsRoofRight != null) list.AddRange(listOfFibreGlassSheetsRoofRight);
+            if (listOfFibreGlassSheetsRoofLeft != null) list.AddRange(listOfFibreGlassSheetsRoofLeft);
+
+            return list;
+        }
+
+
     }
 }

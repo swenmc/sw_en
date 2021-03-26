@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using BaseClasses.GraphObj;
 using MATH;
 using System;
 using System.Collections.Generic;
@@ -765,6 +766,311 @@ namespace PFD
             return ds;
             //Datagrid_Connectors.ItemsSource = ds.Tables[0].AsDataView();
             //Datagrid_Connectors.Loaded += Datagrid_Connectors_Loaded;
+        }
+
+
+        public static DataSet GetTableCladdingSheets(CModel model, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
+        {
+            const float fCFS_PricePerKg_CladdingSheets_Material = 1.698f;    // NZD / kg
+            const float fCFS_PricePerKg_CladdingSheets_Manufacture = 0.0f;   // NZD / kg
+            float fCFS_PricePerKg_CladdingSheets_Total = fCFS_PricePerKg_CladdingSheets_Material + fCFS_PricePerKg_CladdingSheets_Manufacture;           // NZD / kg
+
+            // Cladding Sheets
+            List<QuotationItem> quotation = GetCladdingSheetsQuotation(model, fCFS_PricePerKg_CladdingSheets_Total);
+
+            // Check Data
+            double dTotalCladdingSheetsArea_Model = 0, dTotalCladdingSheetsArea_Table = 0;
+            double dTotalCladdingSheetsVolume_Model = 0, dTotalCladdingSheetsVolume_Table = 0;
+            double dTotalCladdingSheetsMass_Model = 0, dTotalCladdingSheetsMass_Table = 0;
+            double dTotalCladdingSheetsPrice_Model = 0, dTotalCladdingSheetsPrice_Table = 0;
+            int iTotalCladdingSheetsNumber_Model = 0, iTotalCladdingSheetsNumber_Table = 0;
+
+            
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) throw new Exception("Cladding is empty.");
+            
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets()) 
+            {
+                if (!sheet.BIsSelectedForMaterialList) continue;
+
+                dTotalCladdingSheetsArea_Model += sheet.Area_brutto; //To Mato - ci sheet.Area_netto ???
+                dTotalCladdingSheetsVolume_Model += sheet.Area_brutto * sheet.FTime;//To Mato - ci sheet.Area_netto ???
+                dTotalCladdingSheetsMass_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho;//To Mato - ci sheet.Area_netto ???
+
+                //if (sheet.Price_PPKG_NZD > 0) //nakolko nie je Price_PPKG_NZD definovane, tak komentujem cele
+                //    dTotalCladdingSheetsPrice_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
+                //else                
+                //    dTotalCladdingSheetsPrice_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho * fCFS_PricePerKg_CladdingSheets_Total; //To Mato - ci sheet.Area_netto ???
+
+                iTotalCladdingSheetsNumber_Model += 1;
+            }
+
+            foreach (QuotationItem item in quotation)
+            {
+                dTotalCladdingSheetsArea_Table += item.Area * item.Quantity;
+                dTotalCladdingSheetsVolume_Table += item.Area * item.Quantity * item.Ft;
+                dTotalCladdingSheetsMass_Table += item.TotalMass;
+                dTotalCladdingSheetsPrice_Table += item.TotalPrice;
+                iTotalCladdingSheetsNumber_Table += item.Quantity;
+            }
+            dBuildingMass += dTotalCladdingSheetsMass_Table;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalCladdingSheetsPrice_Table;
+
+            // Create Table
+            DataTable table = new DataTable("CladdingSheets");
+            // Create Table Rows
+            table.Columns.Add(QuotationHelper.colProp_Prefix.ColumnName, QuotationHelper.colProp_Prefix.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Material.ColumnName, QuotationHelper.colProp_Material.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Height_m.ColumnName, QuotationHelper.colProp_Height_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Thickness_m.ColumnName, QuotationHelper.colProp_Thickness_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Area_m2.ColumnName, QuotationHelper.colProp_Area_m2.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitMass_P.ColumnName, QuotationHelper.colProp_UnitMass_P.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_P_NZD.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
+
+            // Set Table Column Properties
+            QuotationHelper.SetDataTableColumnProperties(table);
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table);
+
+            DataRow row = null;
+            foreach (QuotationItem item in quotation)
+            {
+                row = table.NewRow();
+
+                try
+                {
+                    row[QuotationHelper.colProp_Prefix.ColumnName] = item.Prefix;
+                    row[QuotationHelper.colProp_Count.ColumnName] = item.Quantity;
+                    row[QuotationHelper.colProp_Material.ColumnName] = item.MaterialName;
+                    row[QuotationHelper.colProp_Width_m.ColumnName] = item.Width_bx.ToString("F2");
+                    row[QuotationHelper.colProp_Height_m.ColumnName] = item.Height_hy.ToString("F2");
+                    row[QuotationHelper.colProp_Thickness_m.ColumnName] = item.Ft.ToString("F3"); // meters
+                    row[QuotationHelper.colProp_Area_m2.ColumnName] = item.Area.ToString("F2");
+                    row[QuotationHelper.colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
+                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = item.TotalArea.ToString("F2");
+                    row[QuotationHelper.colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
+                    row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = item.PricePerPiece.ToString("F2");
+                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table.Rows.Add(row);
+            }
+
+            // Last row
+            row = table.NewRow();
+            row[QuotationHelper.colProp_Prefix.ColumnName] = "Total:";
+            row[QuotationHelper.colProp_Count.ColumnName] = iTotalCladdingSheetsNumber_Table;
+            row[QuotationHelper.colProp_Material.ColumnName] = "";
+            row[QuotationHelper.colProp_Width_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Height_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Thickness_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Area_m2.ColumnName] = "";
+            row[QuotationHelper.colProp_UnitMass_P.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = dTotalCladdingSheetsArea_Table.ToString("F2");
+            row[QuotationHelper.colProp_TotalMass.ColumnName] = dTotalCladdingSheetsMass_Table.ToString("F2");
+            row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = dTotalCladdingSheetsPrice_Table.ToString("F2");
+            table.Rows.Add(row);
+
+            return ds;
+        }
+
+        public static List<QuotationItem> GetCladdingSheetsQuotation(CModel model, float fCFS_PricePerKg_CladdingSheets_Total)
+        {
+            List<QuotationItem> quotation = new List<QuotationItem>();
+            if (model.m_arrGOCladding == null) return quotation;            
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return quotation;
+
+
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets())
+            {
+                if (!sheet.BIsSelectedForMaterialList) continue;
+
+                QuotationHelper.AddCladdingSheetToQuotation(sheet, quotation, 1, fCFS_PricePerKg_CladdingSheets_Total);
+            }
+
+            return quotation;
+        }
+
+        public static void AddCladdingSheetToQuotation(CCladdingOrFibreGlassSheet sheet, List<QuotationItem> quotation, int iQuantity, float fCFS_PricePerKg_CladdingSheets_Total)
+        {
+            if (sheet == null) return;
+
+            float fMassPerPiece = (float)(sheet.Area_brutto) * sheet.FTime * sheet.m_Mat.m_fRho;  //To Mato - ci sheet.Area_netto ???
+            float fPricePerPiece = 0f; //nevidim ceny pre CCladdingOrFibreGlassSheet:  sheet.Price_PPKG_NZD > 0 ? (float)sheet.Price_PPKG_NZD * fMassPerPiece : fCFS_PricePerKg_CladdingSheets_Total * fMassPerPiece;
+
+            QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == sheet.Prefix && MathF.d_equal(q.Width_bx, sheet.Width) &&
+                    MathF.d_equal(q.Height_hy, sheet.LengthTotal) &&
+                    MathF.d_equal(q.Ft, sheet.FTime) &&
+                    MathF.d_equal(q.Area, sheet.Area_brutto)); //To Mato - ci sheet.Area_netto ???
+            if (qItem != null) //this quotation exists
+            {
+                qItem.Quantity += iQuantity;
+                qItem.TotalArea = qItem.Quantity * qItem.Area;
+                qItem.TotalMass = qItem.Quantity * qItem.MassPerPiece;
+                qItem.TotalPrice = qItem.Quantity * qItem.PricePerPiece;
+            }
+            else //quotation item does not exist = add to collection
+            {
+                QuotationItem item = new QuotationItem
+                {
+                    Prefix = sheet.Prefix,
+                    Quantity = iQuantity,
+                    Width_bx = (float)sheet.Width,
+                    Height_hy = (float)sheet.LengthTotal,
+                    Ft = sheet.FTime,
+                    MaterialName = sheet.m_Mat.Name,
+                    Area = (float)sheet.Area_brutto, //To Mato - ci sheet.Area_netto ???
+                    MassPerPiece = fMassPerPiece,
+                    PricePerPiece = fPricePerPiece,
+                    TotalArea = iQuantity * (float)sheet.Area_brutto,//To Mato - ci sheet.Area_netto ???
+                    TotalMass = iQuantity * fMassPerPiece,
+                    TotalPrice = iQuantity * fPricePerPiece
+                };
+                quotation.Add(item);
+            }
+        }
+
+
+        
+        public static DataSet GetTableFibreglassSheets(CModel model, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
+        {
+            const float fCFS_PricePerKg_FibreglassSheets_Material = 1.698f;    // NZD / kg
+            const float fCFS_PricePerKg_FibreglassSheets_Manufacture = 0.0f;   // NZD / kg
+            float fCFS_PricePerKg_FibreglassSheets_Total = fCFS_PricePerKg_FibreglassSheets_Material + fCFS_PricePerKg_FibreglassSheets_Manufacture;           // NZD / kg
+
+            // Cladding Sheets
+            List<QuotationItem> quotation = GetFibreglassSheetsQuotation(model, fCFS_PricePerKg_FibreglassSheets_Total);
+
+            // Check Data
+            double dTotalFibreglassSheetsArea_Model = 0, dTotalFibreglassSheetsArea_Table = 0;
+            double dTotalFibreglassSheetsVolume_Model = 0, dTotalFibreglassSheetsVolume_Table = 0;
+            double dTotalFibreglassSheetsMass_Model = 0, dTotalFibreglassSheetsMass_Table = 0;
+            double dTotalFibreglassSheetsPrice_Model = 0, dTotalFibreglassSheetsPrice_Table = 0;
+            int iTotalFibreglassSheetsNumber_Model = 0, iTotalFibreglassSheetsNumber_Table = 0;
+
+
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) throw new Exception("Cladding is empty.");
+
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets())
+            {
+                if (!sheet.BIsSelectedForMaterialList) continue;
+
+                dTotalFibreglassSheetsArea_Model += sheet.Area_brutto; //To Mato - ci sheet.Area_netto ???
+                dTotalFibreglassSheetsVolume_Model += sheet.Area_brutto * sheet.FTime;//To Mato - ci sheet.Area_netto ???
+                dTotalFibreglassSheetsMass_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho;//To Mato - ci sheet.Area_netto ???
+
+                //if (sheet.Price_PPKG_NZD > 0) //nakolko nie je Price_PPKG_NZD definovane, tak komentujem cele
+                //    dTotalFibreglassSheetsPrice_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
+                //else                
+                //    dTotalFibreglassSheetsPrice_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho * fCFS_PricePerKg_FibreglassSheets_Total; //To Mato - ci sheet.Area_netto ???
+
+                iTotalFibreglassSheetsNumber_Model += 1;
+            }
+
+            foreach (QuotationItem item in quotation)
+            {
+                dTotalFibreglassSheetsArea_Table += item.Area * item.Quantity;
+                dTotalFibreglassSheetsVolume_Table += item.Area * item.Quantity * item.Ft;
+                dTotalFibreglassSheetsMass_Table += item.TotalMass;
+                dTotalFibreglassSheetsPrice_Table += item.TotalPrice;
+                iTotalFibreglassSheetsNumber_Table += item.Quantity;
+            }
+            dBuildingMass += dTotalFibreglassSheetsMass_Table;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalFibreglassSheetsPrice_Table;
+
+            // Create Table
+            DataTable table = new DataTable("FibreglassSheets");
+            // Create Table Rows
+            table.Columns.Add(QuotationHelper.colProp_Prefix.ColumnName, QuotationHelper.colProp_Prefix.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
+            //table.Columns.Add(QuotationHelper.colProp_Material.ColumnName, QuotationHelper.colProp_Material.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Height_m.ColumnName, QuotationHelper.colProp_Height_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Thickness_m.ColumnName, QuotationHelper.colProp_Thickness_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Area_m2.ColumnName, QuotationHelper.colProp_Area_m2.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitMass_P.ColumnName, QuotationHelper.colProp_UnitMass_P.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_P_NZD.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
+
+            // Set Table Column Properties
+            QuotationHelper.SetDataTableColumnProperties(table);
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table);
+
+            DataRow row = null;
+            foreach (QuotationItem item in quotation)
+            {
+                row = table.NewRow();
+
+                try
+                {
+                    row[QuotationHelper.colProp_Prefix.ColumnName] = item.Prefix;
+                    row[QuotationHelper.colProp_Count.ColumnName] = item.Quantity;
+                    //row[QuotationHelper.colProp_Material.ColumnName] = item.MaterialName;
+                    row[QuotationHelper.colProp_Width_m.ColumnName] = item.Width_bx.ToString("F2");
+                    row[QuotationHelper.colProp_Height_m.ColumnName] = item.Height_hy.ToString("F2");
+                    row[QuotationHelper.colProp_Thickness_m.ColumnName] = item.Ft.ToString("F3"); // meters
+                    row[QuotationHelper.colProp_Area_m2.ColumnName] = item.Area.ToString("F2");
+                    row[QuotationHelper.colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
+                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = item.TotalArea.ToString("F2");
+                    row[QuotationHelper.colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
+                    row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = item.PricePerPiece.ToString("F2");
+                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table.Rows.Add(row);
+            }
+
+            // Last row
+            row = table.NewRow();
+            row[QuotationHelper.colProp_Prefix.ColumnName] = "Total:";
+            row[QuotationHelper.colProp_Count.ColumnName] = iTotalFibreglassSheetsNumber_Table;
+            //row[QuotationHelper.colProp_Material.ColumnName] = "";
+            row[QuotationHelper.colProp_Width_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Height_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Thickness_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Area_m2.ColumnName] = "";
+            row[QuotationHelper.colProp_UnitMass_P.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = dTotalFibreglassSheetsArea_Table.ToString("F2");
+            row[QuotationHelper.colProp_TotalMass.ColumnName] = dTotalFibreglassSheetsMass_Table.ToString("F2");
+            row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = dTotalFibreglassSheetsPrice_Table.ToString("F2");
+            table.Rows.Add(row);
+
+            return ds;
+        }
+
+        public static List<QuotationItem> GetFibreglassSheetsQuotation(CModel model, float fCFS_PricePerKg_FibreglassSheets_Total)
+        {
+            List<QuotationItem> quotation = new List<QuotationItem>();
+            if (model.m_arrGOCladding == null) return quotation;
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return quotation;
+            
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetFibreglassSheets())
+            {
+                if (!sheet.BIsSelectedForMaterialList) continue;
+
+                QuotationHelper.AddCladdingSheetToQuotation(sheet, quotation, 1, fCFS_PricePerKg_FibreglassSheets_Total);
+            }
+
+            return quotation;
         }
 
     }

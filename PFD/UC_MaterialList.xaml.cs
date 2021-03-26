@@ -47,6 +47,12 @@ namespace PFD
             // Bolts
             // Anchors
             CreateTableConnectors(model);
+
+            // Cladding Sheets
+            CreateTableCladdingSheets(model);
+
+            // Fibreglass Sheets
+            CreateTableFibreglassSheets(model);
         }
 
         private void MaterialListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -79,6 +85,36 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_Connectors);
         }
+
+
+        private void CreateTableCladdingSheets(CModel model)
+        {
+            DataSet ds = QuotationHelper.GetTableCladdingSheets(model, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+
+            Datagrid_CladdingSheets.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            Datagrid_CladdingSheets.Loaded += Datagrid_CladdingSheets_Loaded;
+        }
+
+        private void Datagrid_CladdingSheets_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_CladdingSheets);
+        }
+
+        private void CreateTableFibreglassSheets(CModel model)
+        {
+            DataSet ds = QuotationHelper.GetTableFibreglassSheets(model, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+
+            Datagrid_FibreglassSheets.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            Datagrid_FibreglassSheets.Loaded += Datagrid_FibreglassSheets_Loaded;
+        }
+
+        private void Datagrid_FibreglassSheets_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_FibreglassSheets);
+        }
+
+
+
 
         private void SetLastRowBold(DataGrid datagrid)
         {
