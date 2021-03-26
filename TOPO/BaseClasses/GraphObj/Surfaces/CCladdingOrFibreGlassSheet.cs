@@ -195,6 +195,10 @@ namespace BaseClasses.GraphObj
             Prefix = prefix;
             Name = name;
 
+            m_Mat = new MATERIAL.CMat_03_00();
+            // TODO 740 - napojit material name
+            // Vid MainWindow.xaml.cs - Line 642
+
             NumberOfEdges = numberOfCorners;
             CoordinateInPlane_x = coordinateInPlane_x;
             CoordinateInPlane_y = coordinateInPlane_y;
