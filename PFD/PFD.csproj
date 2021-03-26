@@ -999,6 +999,9 @@
   <ItemGroup>
     <Resource Include="Resources\Textures\Fibreglass\Speedclad\Speedclad_White.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\apply_changes.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
