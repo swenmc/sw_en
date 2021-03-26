@@ -243,7 +243,7 @@ namespace PFD
         private Color m_CladdingTextColor = Colors.OrangeRed;
         private int m_CladdingTextColorIndex;
         [NonSerialized]
-        private Color m_FibreglassTextColor = Colors.Azure;
+        private Color m_FibreglassTextColor = Colors.Indigo;
         private int m_FibreglassTextColorIndex;
         [NonSerialized]
         private Color m_DoorTextColor = Colors.Coral;
@@ -4124,7 +4124,7 @@ namespace PFD
             SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkOrange);
 
             CladdingTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
-            FibreglassTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Azure);
+            FibreglassTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Indigo);
             DoorTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
             WindowTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
 
