@@ -30,9 +30,9 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
@@ -66,7 +66,7 @@
             </DataGrid>
 
             <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Plates" 
-                       VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>            
+                       VerticalAlignment="Top" Width="120" Margin="10,5,0,0" FontSize="16"/>            
             <DataGrid Name="Datagrid_Plates" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
             IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
@@ -98,7 +98,7 @@
             </DataGrid>
 
 
-            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Margin="10,2,0,0" FontSize="16">
+            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Margin="10,5,0,0" FontSize="16">
                 <Run Text="Connectors (Anchors, Bolts, Screws, Rivets)"/></TextBlock>
             <DataGrid Name ="Datagrid_Connectors" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
@@ -126,8 +126,8 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <TextBlock Name="TxtCladdingSheets" Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Cladding Sheets" 
-                       VerticalAlignment="Top" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Name="TxtCladdingSheets" Grid.Row="6" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="Cladding Sheets" 
+                       VerticalAlignment="Top" Margin="10,5,0,0" FontSize="16"/>
             <DataGrid Name="Datagrid_CladdingSheets" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
             IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
@@ -156,8 +156,8 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <TextBlock Name="TxtFibreglassSheets" Grid.Row="8" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Fibreglass Sheets" 
-                       VerticalAlignment="Top" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Name="TxtFibreglassSheets" Grid.Row="8" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="Fibreglass Sheets" 
+                       VerticalAlignment="Top" Margin="10,5,0,0" FontSize="16"/>
             <DataGrid Name="Datagrid_FibreglassSheets" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
             IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>

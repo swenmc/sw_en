@@ -27,32 +27,64 @@ namespace PFD
     {        
         double dBuildingMass = 0;
         double dBuildingNetPrice_WithoutMargin_WithoutGST = 0;
+        CPFDViewModel _pfdVM;
 
-        public UC_MaterialList(CModel_PFD model)
+        public UC_MaterialList(CPFDViewModel pfdVM)
         {
+            _pfdVM = pfdVM;
             //DateTime start = DateTime.Now;
             //System.Diagnostics.Trace.WriteLine("UC_MaterialList");
             InitializeComponent();
             //System.Diagnostics.Trace.WriteLine("after InitializeComponent: " + (DateTime.Now - start).TotalMilliseconds);
 
-            CMaterialListViewModel vm = new CMaterialListViewModel(model);
+            CMaterialListViewModel vm = new CMaterialListViewModel(pfdVM.Model);
             vm.PropertyChanged += MaterialListViewModel_PropertyChanged;
             this.DataContext = vm;
             //System.Diagnostics.Trace.WriteLine("after CMaterialListViewModel: " + (DateTime.Now - start).TotalMilliseconds) ;
                         
             // Plates
-            CreateTablePlates(model);
+            CreateTablePlates(pfdVM.Model);
 
             // Screws
             // Bolts
             // Anchors
-            CreateTableConnectors(model);
+            CreateTableConnectors(pfdVM.Model);
 
             // Cladding Sheets
-            CreateTableCladdingSheets(model);
+            if (pfdVM._modelOptionsVM.IndividualCladdingSheets)            
+                CreateTableCladdingSheets(pfdVM.Model);
+            
 
             // Fibreglass Sheets
-            CreateTableFibreglassSheets(model);
+            if (_pfdVM._claddingOptionsVM.HasFibreglass())
+                CreateTableFibreglassSheets(pfdVM.Model);
+
+            SetControlsVisibility();
+        }
+
+        private void SetControlsVisibility()
+        {
+            if (_pfdVM._modelOptionsVM.IndividualCladdingSheets)
+            {
+                TxtCladdingSheets.Visibility = Visibility.Visible;
+                Datagrid_CladdingSheets.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TxtCladdingSheets.Visibility = Visibility.Collapsed;
+                Datagrid_CladdingSheets.Visibility = Visibility.Collapsed;                
+            }
+
+            if (_pfdVM._claddingOptionsVM.HasFibreglass())
+            {
+                TxtFibreglassSheets.Visibility = Visibility.Visible;
+                Datagrid_FibreglassSheets.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TxtFibreglassSheets.Visibility = Visibility.Collapsed;
+                Datagrid_FibreglassSheets.Visibility = Visibility.Collapsed;                
+            }
         }
 
         private void MaterialListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

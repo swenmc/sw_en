@@ -1572,7 +1572,7 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {
-                Part_List.Content = new UC_MaterialList(vm.Model);
+                Part_List.Content = new UC_MaterialList(vm);
                 //if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm.Model);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eQuoation)
@@ -2424,7 +2424,7 @@ namespace PFD
                         if (vm._documentationExportOptionsVM.ExportMembersXLS)
                         {
                             //xlsx document
-                            if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm.Model);
+                            if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm);
                             CMaterialListViewModel materialListVM = (Part_List.Content as UC_MaterialList).DataContext as CMaterialListViewModel;
                             DocumentationHelper.ExportMembersExcelDocument(materialListVM, di.FullName);
                         }

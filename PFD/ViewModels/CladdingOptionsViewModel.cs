@@ -1678,5 +1678,12 @@ namespace PFD
             FibreglassAreaWall = GetTotalFibreglassAreaWall() / _pfdVM.TotalWallArea * 100;
         }
 
+        public bool HasFibreglass()
+        {
+            if (FibreglassProperties == null) return false;
+            else if (FibreglassProperties.Count == 0) return false;
+            else return true;
+        }
+
     }
 }
