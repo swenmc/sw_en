@@ -162,6 +162,12 @@
     <Compile Include="DocumentationExportOptionsWindow.xaml.cs">
       <DependentUpon>DocumentationExportOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\FibreglassSheetsValidation.xaml.cs">
+      <DependentUpon>FibreglassSheetsValidation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsWindows\CladdingSheetsValidation.xaml.cs">
+      <DependentUpon>CladdingSheetsValidation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsWindows\UC_CladdingOptions.xaml.cs">
       <DependentUpon>UC_CladdingOptions.xaml</DependentUpon>
     </Compile>
@@ -389,6 +395,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DocumentationExportOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\FibreglassSheetsValidation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\CladdingSheetsValidation.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

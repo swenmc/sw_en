@@ -1352,6 +1352,9 @@ namespace PFD
             if (vm._modelOptionsVM.EnableCladding) TabCladding.Visibility = Visibility.Visible;
             else TabCladding.Visibility = Visibility.Collapsed;
 
+            btnCladdingSheetsValidation.IsEnabled = vm._modelOptionsVM.IndividualCladdingSheets;
+            btnFibreglassSheetsValidation.IsEnabled = vm._claddingOptionsVM.HasFibreglass();
+
             SetUIElementsVisibilityAccordingPermissions();
         }
 
@@ -2965,6 +2968,18 @@ namespace PFD
         {
             JointsValidation jv_window = new JointsValidation(vm);
             jv_window.ShowDialog();
+        }
+
+        private void BtnCladdingSheetsValidation_Click(object sender, RoutedEventArgs e)
+        {
+            CladdingSheetsValidation cs_window = new CladdingSheetsValidation(vm);
+            cs_window.ShowDialog();
+        }
+
+        private void BtnFibreglassSheetsValidation_Click(object sender, RoutedEventArgs e)
+        {
+            FibreglassSheetsValidation fs_window = new FibreglassSheetsValidation(vm);
+            fs_window.ShowDialog();
         }
 
 

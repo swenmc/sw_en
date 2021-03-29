@@ -48,5 +48,8 @@ namespace BaseClasses.Helpers
             if (qlItem.ID == 1) return string.Empty; //Blank
             else return (value * qlItem.GUIUnitFactor).ToString($"F{qlItem.GUIDecimalPlaces}", nfi);
         }
+
+
+        
     }
 }

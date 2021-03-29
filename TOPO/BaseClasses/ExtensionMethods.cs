@@ -821,5 +821,21 @@ namespace BaseClasses
             float distance = (float)Math.Sqrt((float)Math.Pow(Delta_X, 2f) + (float)Math.Pow(Delta_Y, 2f) + (float)Math.Pow(Delta_Z, 2f));
             return distance;
         }
+
+
+        // Pomocna funkcia pre vypis suradnic bodu Point3D
+        public static string ToString(this Point3D p, int iCoordDecimalPlaces)
+        {
+            string sDecPlaces = "F" + iCoordDecimalPlaces;
+
+            return $"[{p.X.ToString(sDecPlaces)};\t {p.Y.ToString(sDecPlaces)};\t {p.Z.ToString(sDecPlaces)}]";
+        }
+
+        public static string ToString(this CNode n, int iCoordDecimalPlaces)
+        {
+            string sDecPlaces = "F" + iCoordDecimalPlaces;
+
+            return $"ID: {n.ID} [{n.X.ToString(sDecPlaces)};\t {n.Y.ToString(sDecPlaces)};\t {n.Z.ToString(sDecPlaces)}]";
+        }
     }
 }

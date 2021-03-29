@@ -70,8 +70,8 @@ namespace PFD
                 //row["CrScEnd"] = m.CrScEnd?.Name_short;
                 row["Mat"] = mat;
 
-                row["NodeStart"] = Node3D_ToString(m.NodeStart, 3);
-                row["NodeEnd"] = Node3D_ToString(m.NodeEnd, 3);
+                row["NodeStart"] = m.NodeStart.ToString(3);
+                row["NodeEnd"] = m.NodeEnd.ToString(3);
                 
                 row["IsGenerated"] = m.BIsGenerated;
                 row["IsDisplayed"] = m.BIsDisplayed;
@@ -79,8 +79,8 @@ namespace PFD
                 row["IsSelectedForIFCalculation"] = m.BIsSelectedForIFCalculation;
                 row["IsSelectedForMaterialList"] = m.BIsSelectedForMaterialList;
 
-                row["PointStart"] = Point3D_ToString(m.PointStart, 3);
-                row["PointEnd"] = Point3D_ToString(m.PointEnd, 3);
+                row["PointStart"] = m.PointStart.ToString(3);
+                row["PointEnd"] = m.PointEnd.ToString(3);
 
                 dt.Rows.Add(row);
             }
@@ -96,19 +96,6 @@ namespace PFD
         {
         }
 
-        // Pomocna funkcia pre vypis suradnic bodu Point3D
-        public string Point3D_ToString(System.Windows.Media.Media3D.Point3D p, int iCoordDecimalPlaces)
-        {
-            string sDecPlaces = "F" + iCoordDecimalPlaces;
-
-            return $"[{p.X.ToString(sDecPlaces)};\t {p.Y.ToString(sDecPlaces)};\t {p.Z.ToString(sDecPlaces)}]";
-        }
-
-        public string Node3D_ToString(CNode n, int iCoordDecimalPlaces)
-        {
-            string sDecPlaces = "F" + iCoordDecimalPlaces;
-
-            return $"ID: {n.ID} [{n.X.ToString(sDecPlaces)};\t {n.Y.ToString(sDecPlaces)};\t {n.Z.ToString(sDecPlaces)}]";
-        }
+        
     }
 }
