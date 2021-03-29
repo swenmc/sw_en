@@ -159,5 +159,9 @@ namespace PFD
             dtrow.Style = newStyle;
         }
 
+        private void BtnReload_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
