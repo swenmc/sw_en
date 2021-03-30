@@ -104,7 +104,7 @@
             </DataGrid>
 
 
-            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Margin="10,5,0,0" FontSize="16">
+            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="407" Margin="10,5,0,0" FontSize="16">
                 <Run Text="Connectors (Anchors, Bolts, Screws, Rivets)"/></TextBlock>
             <DataGrid Name ="Datagrid_Connectors" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
