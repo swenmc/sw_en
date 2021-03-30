@@ -120,10 +120,10 @@
                                 <Image Source="Resources/list_joints.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                             <Button Name="btnCladdingSheetsValidation" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Cladding sheets properties" Margin="5 0 0 0" Width="20" Height="20" Click="BtnCladdingSheetsValidation_Click">
-                                <Image Source="Resources/list_joints.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                                <Image Source="Resources/list_cladding_sheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                             <Button Name="btnFibreglassSheetsValidation" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Fibreglass sheets properties" Margin="5 0 0 0" Width="20" Height="20" Click="BtnFibreglassSheetsValidation_Click">
-                                <Image Source="Resources/list_joints.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                                <Image Source="Resources/list_fibreglass_sheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                             <Button Name="btnAbout" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="About application" Margin="33 0 0 0" Width="20" Height="20" Click="BtnAbout_Click">
                                 <Image Source="Resources/info.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
