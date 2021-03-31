@@ -227,7 +227,7 @@ namespace PFD
 
             // DG 7
             // Gutters
-            if (vm._quotationDisplayOptionsVM.DisplayGutters && _pfdVM.Gutters.Count > 0) CreateTableGutters(model);
+            if (vm._quotationDisplayOptionsVM.DisplayGutters && _pfdVM._doorsAndWindowsVM.Gutters.Count > 0) CreateTableGutters(model);
             else
             {
                 TextBlock_Gutters.Visibility = Visibility.Collapsed;
@@ -236,7 +236,7 @@ namespace PFD
 
             // DG 8
             // Downpipes
-            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && _pfdVM.Downpipes.Count > 0) CreateTableDownpipes(model);
+            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && _pfdVM._doorsAndWindowsVM.Downpipes.Count > 0) CreateTableDownpipes(model);
             else
             {
                 TextBlock_Downpipes.Visibility = Visibility.Collapsed;
@@ -263,7 +263,7 @@ namespace PFD
 
             // DG 11
             // Flashing and Packers
-            if (vm._quotationDisplayOptionsVM.DisplayFlashing && _pfdVM.Flashings.Count > 0)
+            if (vm._quotationDisplayOptionsVM.DisplayFlashing && _pfdVM._doorsAndWindowsVM.Flashings.Count > 0)
             {
                 CreateTableFlashing(model,
                 vm.RoofSideLength, // fRoofSideLength,
@@ -897,7 +897,7 @@ namespace PFD
 
             List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
 
-            foreach (DoorProperties dp in vm.DoorBlocksProperties)
+            foreach (DoorProperties dp in vm._doorsAndWindowsVM.DoorBlocksProperties)
             {
                 fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
 
@@ -916,7 +916,7 @@ namespace PFD
                 listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight, dp.CoatingColor.ID, dp.Serie));
             }
 
-            foreach (WindowProperties wp in vm.WindowBlocksProperties)
+            foreach (WindowProperties wp in vm._doorsAndWindowsVM.WindowBlocksProperties)
             {
                 fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
 
@@ -1306,34 +1306,34 @@ namespace PFD
             }
 
             //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
-            CAccessories_LengthItemProperties flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[0]);
+            CAccessories_LengthItemProperties flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[0]);
             if(flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[1]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[1]);
             if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[2]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[2]);
             if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[3]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[3]);
             if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[4]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[4]);
             if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[5]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[5]);
             if (flashing != null) flashing.Length_total = fRollerDoorLintelFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[6]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[6]);
             if (flashing != null) flashing.Length_total = fRollerDoorLintelCapFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[7]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[7]);
             if (flashing != null) flashing.Length_total = fPADoorTrimmerFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[8]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[8]);
             if (flashing != null) flashing.Length_total = fPADoorLintelFlashing_TotalLength;
 
-            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.AllFlashingsNames[9]);
+            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[9]);
             if (flashing != null) flashing.Length_total = fWindowFlashing_TotalLength;
             
             // Create Table
@@ -1362,7 +1362,7 @@ namespace PFD
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
 
-            foreach (CAccessories_LengthItemProperties fl in _pfdVM.Flashings)
+            foreach (CAccessories_LengthItemProperties fl in _pfdVM._doorsAndWindowsVM.Flashings)
             {
                 AddLengthItemRow(dt,
                             QuotationHelper.colProp_Flashing.ColumnName,
@@ -1454,7 +1454,7 @@ namespace PFD
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
 
-            foreach (CAccessories_LengthItemProperties gutter in _pfdVM.Gutters)
+            foreach (CAccessories_LengthItemProperties gutter in _pfdVM._doorsAndWindowsVM.Gutters)
             {
                 //TO Mato - tu neviem co s tymto
                 gutter.Length_total = fGuttersTotalLength;
@@ -1509,7 +1509,7 @@ namespace PFD
         private void CreateTableDownpipes(CModel model)
         {
             // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-            CAccessories_DownpipeProperties downpipe = _pfdVM.Downpipes[0];
+            CAccessories_DownpipeProperties downpipe = _pfdVM._doorsAndWindowsVM.Downpipes[0];
             float fDownpipesTotalLength = 0;
 
             if (model is CModel_PFD_01_MR)

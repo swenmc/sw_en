@@ -60,12 +60,12 @@ namespace PFD
                     }
                     //To Mato zvladnes check, co tam vojde okno, dvere?
                     //uz implementovane, staci ak skontrolujes/otestujes a mozu sa komenty zmazat
-                    else if (!CDoorsAndWindowsHelper.IsEnoughtPlaceForDoors(bi.BayNumber, bi.Width, _pfdVM.DoorBlocksProperties))
+                    else if (!CDoorsAndWindowsHelper.IsEnoughtPlaceForDoors(bi.BayNumber, bi.Width, _pfdVM._doorsAndWindowsVM.DoorBlocksProperties))
                     {
                         MessageBox.Show("Not enought space for doors.");
                         bi.UndoWidth();
                     }
-                    else if (!CDoorsAndWindowsHelper.IsEnoughtPlaceForWindows(bi.BayNumber, bi.Width, _pfdVM.WindowBlocksProperties))
+                    else if (!CDoorsAndWindowsHelper.IsEnoughtPlaceForWindows(bi.BayNumber, bi.Width, _pfdVM._doorsAndWindowsVM.WindowBlocksProperties))
                     {
                         MessageBox.Show("Not enought space for windows.");
                         bi.UndoWidth();

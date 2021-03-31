@@ -60,9 +60,7 @@
                             <ColumnDefinition Width="40" />
                             <ColumnDefinition Width="150" />
                             <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                            <!--<ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />-->
+                            <ColumnDefinition Width="*" />                            
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40"/>
@@ -288,7 +286,7 @@
                         <TextBlock Text="Accessories" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Margin="5,5,0,0" Height="430" Width="570" MouseWheel="FrameDoorWindowPreview3D_MouseWheel"/>
                         <StackPanel Orientation="Horizontal" Width="570" HorizontalAlignment="Left">
@@ -315,8 +313,7 @@
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Bays}"/>
-                                            <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
+                                            <Setter Property="ItemsSource" Value="{Binding Bays}"/>                                            
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
@@ -400,8 +397,7 @@
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
-                                            <Setter Property="ItemsSource" Value="{Binding Bays}"/>
-                                            <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
+                                            <Setter Property="ItemsSource" Value="{Binding Bays}"/>                                            
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
@@ -418,8 +414,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
-                                        <Style TargetType="ComboBox">
-                                            <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
+                                        <Style TargetType="ComboBox">                                            
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
@@ -607,7 +602,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>
-                </ScrollViewer>
+                </ScrollViewer>-->
             </TabItem>
             <TabItem Name="Joint_Input">
                 <TabItem.Header>

@@ -24,8 +24,8 @@ namespace PFD.Infrastructure
                 vm._canopiesOptionsVM.CanopiesList,
                 vm._baysWidthOptionsVM.BayWidthList,
                 vm._claddingOptionsVM.FibreglassProperties,
-                vm.DoorBlocksProperties,
-                vm.WindowBlocksProperties,
+                vm._doorsAndWindowsVM.DoorBlocksProperties,
+                vm._doorsAndWindowsVM.WindowBlocksProperties,
                 columnSection, //(CRSC.CCrSc_TW)vm.Model.m_arrCrSc[EMemberType_FS_Position.EdgeColumn] //takto som to chcel mat, ale Model je null
                 vm.ColumnDistance, vm.ColumnDistance,
                 vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex).Name,

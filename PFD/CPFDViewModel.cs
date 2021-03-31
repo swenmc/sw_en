@@ -109,6 +109,7 @@ namespace PFD
         private bool m_BaysWidthOptionsChanged;
         private bool m_CanopiesOptionsChanged;
         private bool m_CladdingOptionsChanged;
+        private bool m_DoorsAndWindowsChanged;
 
         private bool m_OptionsLoaded;
 
@@ -138,10 +139,7 @@ namespace PFD
         private bool MUseCRSCGeometricalAxes = true;
         //private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
 
-        private ObservableCollection<DoorProperties> MDoorBlocksProperties;
-        private ObservableCollection<WindowProperties> MWindowBlocksProperties;
-        private List<string> MBuildingSides;
-        private List<string> MDoorsTypes;
+        
         private List<string> MModelViews;
         private List<string> MViewModelMemberFilters;
 
@@ -1372,7 +1370,7 @@ namespace PFD
                 MModel = value;
                 bool isChangedFromCode = IsSetFromCode;
                 if (!isChangedFromCode) IsSetFromCode = true;
-                SetModelBays();
+                _doorsAndWindowsVM.SetModelBays();
                 if (!isChangedFromCode) IsSetFromCode = false;
             }
         }
@@ -1524,119 +1522,7 @@ namespace PFD
             }
         }
 
-        public ObservableCollection<DoorProperties> DoorBlocksProperties
-        {
-            get
-            {
-                if (MDoorBlocksProperties == null) MDoorBlocksProperties = new ObservableCollection<DoorProperties>();
-                return MDoorBlocksProperties;
-            }
-
-            set
-            {
-                MDoorBlocksProperties = value;
-                if (MDoorBlocksProperties == null) return;
-                MDoorBlocksProperties.CollectionChanged += DoorBlocksProperties_CollectionChanged;
-                foreach (DoorProperties d in MDoorBlocksProperties)
-                {
-                    d.PropertyChanged -= HandleDoorPropertiesPropertyChangedEvent;
-                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
-                }
-                RecreateModel = true;
-                RecreateJoints = true;
-                RecreateFloorSlab = true;
-                NotifyPropertyChanged("DoorBlocksProperties");
-            }
-        }
-
-        private void DoorBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            //{
-            //    DoorProperties d = MDoorBlocksProperties.LastOrDefault();
-            //    if (d != null)
-            //    {
-            //        CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
-            //        d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
-            //        NotifyPropertyChanged("DoorBlocksProperties_Add");
-            //        SetResultsAreNotValid();
-            //    }
-            //}
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                RecreateModel = true;
-                RecreateJoints = true;
-                RecreateFloorSlab = true;
-                NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
-                SetResultsAreNotValid();
-            }
-            SetComponentListAccordingToDoors();
-        }
-
-        public ObservableCollection<WindowProperties> WindowBlocksProperties
-        {
-            get
-            {
-                if (MWindowBlocksProperties == null) MWindowBlocksProperties = new ObservableCollection<WindowProperties>();
-                return MWindowBlocksProperties;
-            }
-
-            set
-            {
-                MWindowBlocksProperties = value;
-                if (MWindowBlocksProperties == null) return;
-                MWindowBlocksProperties.CollectionChanged += WindowBlocksProperties_CollectionChanged;
-                foreach (WindowProperties w in MWindowBlocksProperties)
-                {
-                    w.PropertyChanged -= HandleWindowPropertiesPropertyChangedEvent;
-                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
-                }
-                RecreateModel = true;
-                RecreateJoints = true;
-                NotifyPropertyChanged("WindowBlocksProperties");
-            }
-        }
-
-        private void WindowBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            //{
-            //    WindowProperties w = MWindowBlocksProperties.LastOrDefault();
-            //    if (w != null)
-            //    {
-            //        CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
-            //        w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
-            //        NotifyPropertyChanged("WindowBlocksProperties_Add");
-            //        SetResultsAreNotValid();
-            //    }
-            //}
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                RecreateModel = true;
-                RecreateJoints = true;
-                NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
-                SetResultsAreNotValid();
-            }
-            SetComponentListAccordingToWindows();
-        }
-
-        public List<string> BuildingSides
-        {
-            get
-            {
-                if (MBuildingSides == null) MBuildingSides = new List<string>() { "Left", "Right", "Front", "Back" };
-                return MBuildingSides;
-            }
-        }
-
-        public List<string> DoorsTypes
-        {
-            get
-            {
-                if (MDoorsTypes == null) MDoorsTypes = new List<string>() { "Personnel Door", "Roller Door" };
-                return MDoorsTypes;
-            }
-        }
+       
 
         public List<string> ModelViews
         {
@@ -2226,144 +2112,14 @@ namespace PFD
         //    }
         //}
 
-        private ObservableCollection<int> frontBays;
-        private ObservableCollection<int> backBays;
-        private ObservableCollection<int> leftRightBays;
+        
 
-        private void SetModelBays()
-        {
-            CModel_PFD model;
-
-            if (this.Model is CModel_PFD_01_MR)
-                model = (CModel_PFD_01_MR)this.Model;
-            else if (this.Model is CModel_PFD_01_GR)
-                model = (CModel_PFD_01_GR)this.Model;
-            else
-            {
-                model = null;
-                throw new Exception("Kitset model is not implemented.");
-            }
-
-            frontBays = new ObservableCollection<int>();
-            backBays = new ObservableCollection<int>();
-            leftRightBays = new ObservableCollection<int>();
-
-            int iFrameNo = model != null ? model.iFrameNo : 4;
-            int i = 0;
-            while (i < iFrameNo - 1)
-            {
-                leftRightBays.Add((++i));
-            }
-            i = 0;
-            while (i < IFrontColumnNoInOneFrame + 1)
-            {
-                frontBays.Add((++i));
-            }
-            i = 0;
-            while (i < IFrontColumnNoInOneFrame + 1)
-            {
-                backBays.Add((++i));
-            }
-
-            SetDoorsBays();
-            SetWindowsBays();
-            SetDoorsWindowsValidationProperties();
-        }
-
-        public void SetModelBays(int iFrameNo)
-        {
-            frontBays = new ObservableCollection<int>();
-            backBays = new ObservableCollection<int>();
-            leftRightBays = new ObservableCollection<int>();
-
-            int i = 0;
-            while (i < iFrameNo - 1)
-            {
-                leftRightBays.Add((++i));
-            }
-            i = 0;
-            while (i < IFrontColumnNoInOneFrame + 1)
-            {
-                frontBays.Add((++i));
-            }
-            i = 0;
-            while (i < IFrontColumnNoInOneFrame + 1)
-            {
-                backBays.Add((++i));
-            }
-
-            SetDoorsBays(false);
-            SetWindowsBays(false);
-        }
-
-        private void SetDoorsBays(bool check = true)
-        {
-            foreach (DoorProperties d in MDoorBlocksProperties)
-            {
-                if (d.sBuildingSide == "Front" && !d.Bays.SequenceEqual(frontBays)) d.Bays = frontBays;
-                else if (d.sBuildingSide == "Back" && !d.Bays.SequenceEqual(backBays)) d.Bays = backBays;
-                else if (d.sBuildingSide == "Left" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
-                else if (d.sBuildingSide == "Right" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
-            }
-            if (check) CheckDoorsBays();
-        }
-
-        private bool SetDoorsBays(DoorProperties d)
-        {
-            if (d.sBuildingSide == "Front" && !d.Bays.SequenceEqual(frontBays)) d.Bays = frontBays;
-            else if (d.sBuildingSide == "Back" && !d.Bays.SequenceEqual(backBays)) d.Bays = backBays;
-            else if (d.sBuildingSide == "Left" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
-            else if (d.sBuildingSide == "Right" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
-
-            if (!CheckDoorsBays(d))
-            {
-                this.IsSetFromCode = true;
-                d.sBuildingSide = d.sBuildingSide_old;
-                this.IsSetFromCode = false;
-                return false;
-            }
-            return true;
-        }
-
-        private void CheckDoorsBays()
-        {
-            foreach (DoorProperties d in MDoorBlocksProperties)
-            {
-                if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
-                if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
-                {
-                    //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri
-                    int bayNum = GetFreeBayFor(d);
-                    if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
-                    else d.iBayNumber = bayNum;
-                }
-            }
-        }
-
-        private bool CheckDoorsBays(DoorProperties d)
-        {
-            bool isValid = true;
-            if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
-
-            if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
-            {
-                PFDMainWindow.ShowMessageBoxInPFDWindow("This bay is already occupied with a door.");
-                isValid = false;
-                //throw new Exception($"This bay is already occupied with a door.");
-            }
-            if (MWindowBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() == 1)
-            {
-                PFDMainWindow.ShowMessageBoxInPFDWindow("This bay is already occupied with a window.");
-                isValid = false;
-                //throw new Exception($"This bay is already occupied with a window.");
-            }
-            return isValid;
-        }
+        
 
         //private void CheckDoorsBays(DoorProperties d)
         //{
         //    if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
-        //    if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
+        //    if (_doorsAndWindowsVM.DoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
         //    {
         //        //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri
         //        int bayNum = GetFreeBayFor(d);
@@ -2381,79 +2137,12 @@ namespace PFD
         //    }
         //}
 
-        private void SetWindowsBays(bool check = true)
-        {
-            foreach (WindowProperties w in MWindowBlocksProperties)
-            {
-                if (w.sBuildingSide == "Front" && !w.Bays.SequenceEqual(frontBays)) w.Bays = frontBays;
-                else if (w.sBuildingSide == "Back" && !w.Bays.SequenceEqual(backBays)) w.Bays = backBays;
-                else if (w.sBuildingSide == "Left" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
-                else if (w.sBuildingSide == "Right" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
-            }
-            if (check)
-            {
-                CheckWindowsBays();
-            }
-        }
-
-        private bool SetWindowsBays(WindowProperties w)
-        {
-            if (w.sBuildingSide == "Front" && !w.Bays.SequenceEqual(frontBays)) w.Bays = frontBays;
-            else if (w.sBuildingSide == "Back" && !w.Bays.SequenceEqual(backBays)) w.Bays = backBays;
-            else if (w.sBuildingSide == "Left" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
-            else if (w.sBuildingSide == "Right" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
-
-            if (!CheckWindowsBays(w))
-            {
-                this.IsSetFromCode = true;
-                w.sBuildingSide = w.sBuildingSide_old;
-                this.IsSetFromCode = false;
-                return false;
-            }
-            return true;
-        }
-
-        private void CheckWindowsBays()
-        {
-            foreach (WindowProperties w in MWindowBlocksProperties)
-            {
-                if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
-                if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
-                {
-                    //w.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie okna
-                    int bayNum = GetFreeBayFor(w);
-                    if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{w.sBuildingSide}]");
-                    else
-                    {
-                        w.IsSetFromCode = true;
-                        w.iBayNumber = bayNum;
-                        w.IsSetFromCode = false;
-                    }
-                }
-            }
-        }
-
-        private bool CheckWindowsBays(WindowProperties w)
-        {
-            bool isValid = true;
-            if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
-            if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
-            {
-                PFDMainWindow.ShowMessageBoxInPFDWindow("The position is already occupied with a window.");
-                isValid = false;
-            }
-            if (MDoorBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() == 1)
-            {
-                PFDMainWindow.ShowMessageBoxInPFDWindow("The position is already occupied with a door.");
-                isValid = false;
-            }
-            return isValid;
-        }
+        
 
         //private void CheckWindowsBays(WindowProperties w)
         //{
         //    if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
-        //    if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
+        //    if (_doorsAndWindowsVM.WindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
         //    {
         //        //w.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie okna
         //        int bayNum = GetFreeBayFor(w);
@@ -2462,73 +2151,7 @@ namespace PFD
         //    }
         //}
 
-        private int GetFreeBayFor(WindowProperties win)
-        {
-            foreach (int bayNum in win.Bays)
-            {
-                if (MWindowBlocksProperties.Where(x => x.iBayNumber == bayNum && x.sBuildingSide == win.sBuildingSide).Count() == 0) return bayNum;
-            }
-            return -1;
-        }
-
-        private int GetFreeBayFor(DoorProperties d)
-        {
-            foreach (int bayNum in d.Bays)
-            {
-                if (MDoorBlocksProperties.Where(x => x.iBayNumber == bayNum && x.sBuildingSide == d.sBuildingSide).Count() == 0) return bayNum;
-            }
-            return -1;
-        }
-
-        private void SetDoorsWindowsValidationProperties()
-        {
-            SetDoorsValidationProperties();
-            SetWindowsValidationProperties();
-        }
-
-        private void SetDoorsValidationProperties()
-        {
-            CModel_PFD model;
-
-            if (this.Model is CModel_PFD_01_MR)
-                model = (CModel_PFD_01_MR)this.Model;
-            else if (this.Model is CModel_PFD_01_GR)
-                model = (CModel_PFD_01_GR)this.Model;
-            else
-            {
-                model = null;
-                throw new Exception("Kitset model is not implemented.");
-            }
-
-            foreach (DoorProperties d in MDoorBlocksProperties)
-            {
-                //task 600
-                //d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
-                d.SetValidationValues(MWallHeight, model.GetBayWidth(d.iBayNumber), model.fDist_FrontColumns, model.fDist_BackColumns);
-            }
-        }
-
-        private void SetWindowsValidationProperties()
-        {
-            CModel_PFD model;
-
-            if (this.Model is CModel_PFD_01_MR)
-                model = (CModel_PFD_01_MR)this.Model;
-            else if (this.Model is CModel_PFD_01_GR)
-                model = (CModel_PFD_01_GR)this.Model;
-            else
-            {
-                model = null;
-                throw new Exception("Kitset model is not implemented.");
-            }
-
-            foreach (WindowProperties w in MWindowBlocksProperties)
-            {
-                //task 600
-                //w.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
-                w.SetValidationValues(MWallHeight, model.GetBayWidth(w.iBayNumber), model.fDist_FrontColumns, model.fDist_BackColumns);
-            }
-        }
+        
 
         public DoorsAndWindowsViewModel _doorsAndWindowsVM;
 
@@ -2565,308 +2188,6 @@ namespace PFD
         [NonSerialized]
         public CPFDLoadInput _loadInput;
 
-        private ObservableCollection<CAccessories_LengthItemProperties> m_Flashings;
-        private List<string> m_FlashingsNames;
-        public ObservableCollection<CAccessories_LengthItemProperties> Flashings
-        {
-            get
-            {
-                if (m_Flashings == null)
-                {
-                    SetDefaultFlashings();
-                }
-                return m_Flashings;
-            }
-
-            set
-            {
-                if (value == null) return;
-                m_Flashings = value;
-                m_Flashings.CollectionChanged += Flashings_CollectionChanged;
-                foreach (CAccessories_LengthItemProperties item in Flashings)
-                {
-                    item.PropertyChanged += FlashingsItem_PropertyChanged;
-                }
-
-                NotifyPropertyChanged("Flashings");
-            }
-        }
-
-        private void Flashings_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                RecreateQuotation = true;
-            }
-        }
-
-        public void FlashingsItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Name")
-            {
-                if (!ValidateFlashings())
-                {
-                    PFDMainWindow.ShowMessageBoxInPFDWindow("ERROR.\nDuplicated definition of flashing type.\nChoose a unique type, please.");
-                    CAccessories_LengthItemProperties item = sender as CAccessories_LengthItemProperties;
-                    if (item != null) item.Name = item.NameOld;
-                    PFDMainWindow.Datagrid_Flashings.ItemsSource = null;
-                    PFDMainWindow.Datagrid_Flashings.ItemsSource = Flashings;
-                }
-            }
-            if (e.PropertyName == "Thickness") return;
-            if (e.PropertyName == "Width_total") return;
-            PropertyChanged(sender, e);
-        }
-
-        public void SetDefaultFlashings()
-        {
-            float fRoofSideLength = 0;
-
-            if (Model is CModel_PFD_01_MR)
-            {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - MWallHeightOverall) + MathF.Pow2(MWidthOverall)); // Dlzka hrany strechy
-            }
-            else if (Model is CModel_PFD_01_GR)
-            {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - MWallHeightOverall) + MathF.Pow2(0.5f * MWidthOverall)); // Dlzka hrany strechy
-            }
-            else
-            {
-                // Exception - not implemented
-                fRoofSideLength = 0;
-            }
-
-            float fRoofRidgeFlashing_TotalLength = 0;
-            float fWallCornerFlashing_TotalLength = 0;
-            float fBargeFlashing_TotalLength = 0;
-
-            if (Model is CModel_PFD_01_MR)
-            {
-                fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 2 * MWallHeightOverall + 2 * Height_H2_Overall;
-                fBargeFlashing_TotalLength = 2 * fRoofSideLength;
-            }
-            else if (Model is CModel_PFD_01_GR)
-            {
-                fRoofRidgeFlashing_TotalLength = MLengthOverall;
-                fWallCornerFlashing_TotalLength = 4 * MWallHeightOverall;
-                fBargeFlashing_TotalLength = 4 * fRoofSideLength;
-            }
-            else
-            {
-                // Exception - not implemented
-                fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 0;
-                fBargeFlashing_TotalLength = 0;
-            }
-
-            float fRollerDoorTrimmerFlashing_TotalLength = 0;
-            float fRollerDoorLintelFlashing_TotalLength = 0;
-            float fRollerDoorLintelCapFlashing_TotalLength = 0;
-            float fPADoorTrimmerFlashing_TotalLength = 0;
-            float fPADoorLintelFlashing_TotalLength = 0;
-            float fWindowFlashing_TotalLength = 0;
-
-            ObservableCollection<CAccessories_LengthItemProperties> flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
-
-            if (KitsetTypeIndex != 0)
-            {
-                flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
-            }
-
-            flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
-            flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
-            flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
-            flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
-            Flashings = flashings;
-
-            SetFlashingsNames();
-        }
-
-        public bool ValidateFlashings()
-        {
-            foreach (CAccessories_LengthItemProperties item in Flashings)
-            {
-                int count = Flashings.Where(f => f.Name == item.Name).Count();
-                if (count > 1) return false;
-
-                if (item.Name == "Roof Ridge")
-                {
-                    if (Flashings.FirstOrDefault(f => f.Name == "Roof Ridge (Soft Edge)") != null) return false;
-                }
-
-                if (item.Name == "Roof Ridge (Soft Edge)")
-                {
-                    if (Flashings.FirstOrDefault(f => f.Name == "Roof Ridge") != null) return false;
-                }
-            }
-            return true;
-        }
-
-        public void AccessoriesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Thickness") return;
-            if (e.PropertyName == "Width_total") return;
-            PropertyChanged(sender, e);
-        }
-
-
-        private ObservableCollection<CAccessories_LengthItemProperties> m_Gutters;
-        private List<string> m_GuttersNames;
-        public ObservableCollection<CAccessories_LengthItemProperties> Gutters
-        {
-            get
-            {
-                if (m_Gutters == null)
-                {
-                    float fGuttersTotalLength = 0; // na dvoch okrajoch strechy
-
-                    if (MModel is CModel_PFD_01_MR)
-                    {
-                        fGuttersTotalLength = MLengthOverall; // na jednom okraji strechy
-                    }
-                    else if (MModel is CModel_PFD_01_GR)
-                    {
-                        fGuttersTotalLength = 2 * MLengthOverall; // na dvoch okrajoch strechy
-                    }
-                    else
-                    {
-                        // Exception - not implemented
-                        fGuttersTotalLength = 0;
-                    }
-
-                    CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
-                    gutter.PropertyChanged += AccessoriesItem_PropertyChanged;
-                    Gutters = new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
-
-                    NotifyPropertyChanged("Gutters");
-                }
-                return m_Gutters;
-            }
-
-            set
-            {
-                if (value == null) return;
-                m_Gutters = value;
-                m_Gutters.CollectionChanged += Gutters_CollectionChanged;
-            }
-        }
-
-        private void Gutters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                RecreateQuotation = true;
-            }
-        }
-
-        private ObservableCollection<CAccessories_DownpipeProperties> m_Downpipes;
-        public ObservableCollection<CAccessories_DownpipeProperties> Downpipes
-        {
-            get
-            {
-                if (m_Downpipes == null)
-                {
-                    SetDefaultDownpipes();
-                }
-                return m_Downpipes;
-            }
-
-            set
-            {
-                if (value == null) return;
-                m_Downpipes = value;
-                m_Downpipes.CollectionChanged += Downpipes_CollectionChanged;
-
-                NotifyPropertyChanged("Downpipes");
-            }
-        }
-
-        public void SetDefaultDownpipes()
-        {
-            // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-            int iCountOfDownpipePoints = 0;
-            float fDownpipesTotalLength = 0;
-
-            if (MModel is CModel_PFD_01_MR)
-            {
-                iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
-                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(MWallHeightOverall, Height_H2_Overall); // Pocet zvodov krat vyska steny
-            }
-            else if (MModel is CModel_PFD_01_GR)
-            {
-                iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-                fDownpipesTotalLength = iCountOfDownpipePoints * MWallHeightOverall; // Pocet zvodov krat vyska steny
-            }
-            else
-            {
-                // Exception - not implemented
-                iCountOfDownpipePoints = 0;
-                fDownpipesTotalLength = 0;
-            }
-
-            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);
-
-            downpipe.PropertyChanged += AccessoriesItem_PropertyChanged;
-            Downpipes = new ObservableCollection<CAccessories_DownpipeProperties>() { downpipe };
-        }
-
-        private void Downpipes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                RecreateQuotation = true;
-            }
-        }
-
-        public List<string> FlashingsNames
-        {
-            get
-            {
-                if (m_FlashingsNames == null) SetFlashingsNames();
-                return m_FlashingsNames;
-            }
-            set
-            {
-                m_FlashingsNames = value;
-                NotifyPropertyChanged("FlashingsNames");
-            }
-        }
-        public List<string> AllFlashingsNames
-        {
-            get
-            {
-                return new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
-            }
-        }
-
-        private void SetFlashingsNames()
-        {
-            if (KitsetTypeIndex == 0)
-            {
-                FlashingsNames = new List<string>() { "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
-            }
-            else
-            {
-                FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
-            }
-        }
-
-        public List<string> GuttersNames
-        {
-            get
-            {
-                if (m_GuttersNames == null) m_GuttersNames = new List<string>() { "Roof Gutter 430", "Roof Gutter 520", "Roof Gutter 550"/*, "Internal Gutter"*/ };
-                return m_GuttersNames;
-            }
-        }
 
         public bool ModelOptionsChanged
         {
@@ -3024,6 +2345,25 @@ namespace PFD
                 RecreateModel = false;
 
                 NotifyPropertyChanged("DisplayOptionsChanged");
+            }
+        }
+
+        public bool DoorsAndWindowsChanged
+        {
+            get
+            {
+                return m_DoorsAndWindowsChanged;
+            }
+
+            set
+            {                
+                m_DoorsAndWindowsChanged = value;
+                RecreateModel = true;
+                RecreateJoints = true;
+                RecreateFloorSlab = true;
+                SetResultsAreNotValid();
+                SetComponentListAccordingToDoors();
+                NotifyPropertyChanged("DoorsAndWindowsChanged");
             }
         }
 
@@ -3412,6 +2752,8 @@ namespace PFD
             }
         }
 
+        
+
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -3423,8 +2765,8 @@ namespace PFD
             MIsRelease = bRelease;
 
             IsSetFromCode = true;
-            DoorBlocksProperties = doorBlocksProperties;
-            WindowBlocksProperties = windowBlocksProperties;
+            _doorsAndWindowsVM.DoorBlocksProperties = doorBlocksProperties;
+            _doorsAndWindowsVM.WindowBlocksProperties = windowBlocksProperties;
 
             _componentVM = componentVM;
             SetComponentListAccordingToDoorsAndWindows();
@@ -3744,44 +3086,21 @@ namespace PFD
 
         private void SetComponentListAccordingToDoors()
         {
-            if (ModelHasPersonelDoor()) _componentVM.AddPersonelDoor();
+            if (_doorsAndWindowsVM.ModelHasPersonelDoor()) _componentVM.AddPersonelDoor();
             else _componentVM.RemovePersonelDoor();
 
-            if (ModelHasRollerDoor()) _componentVM.AddRollerDoor();
+            if (_doorsAndWindowsVM.ModelHasRollerDoor()) _componentVM.AddRollerDoor();
             else _componentVM.RemoveRollerDoor();
 
         }
 
         private void SetComponentListAccordingToWindows()
         {
-            if (ModelHasWindow()) _componentVM.AddWindow();
+            if (_doorsAndWindowsVM.ModelHasWindow()) _componentVM.AddWindow();
             else _componentVM.RemoveWindow();
         }
 
-        private bool ModelHasPersonelDoor()
-        {
-            foreach (DoorProperties d in DoorBlocksProperties)
-            {
-                if (d.sDoorType == "Personnel Door") return true;
-            }
-            return false;
-        }
-
-        private bool ModelHasRollerDoor()
-        {
-            foreach (DoorProperties d in DoorBlocksProperties)
-            {
-                if (d.sDoorType == "Roller Door") return true;
-            }
-            return false;
-        }
-
-        private bool ModelHasWindow()
-        {
-            if (WindowBlocksProperties == null) return false;
-
-            return WindowBlocksProperties.Count > 0;
-        }
+        
 
         public void SetComponentListAccordingToCanopies()
         {
@@ -3806,121 +3125,7 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void HandleDoorPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
-        {
-            try
-            {
-                if (IsSetFromCode) return;
-
-                if (e.PropertyName == "sBuildingSide")
-                {
-                    SetResultsAreNotValid();
-                    if (sender is DoorProperties) { if (!SetDoorsBays(sender as DoorProperties)) return; }
-                    if (sender is WindowProperties) { if (!SetWindowsBays(sender as WindowProperties)) return; }
-                }
-                else if (e.PropertyName == "iBayNumber")
-                {
-                    SetResultsAreNotValid();
-                    if (sender is DoorProperties)
-                    {
-                        DoorProperties d = sender as DoorProperties;
-                        if (!CheckDoorsBays(d)) { IsSetFromCode = true; d.iBayNumber = d.iBayNumber_old; IsSetFromCode = false; return; }
-                    }
-                    if (sender is WindowProperties)
-                    {
-                        WindowProperties w = sender as WindowProperties;
-                        if (!CheckWindowsBays(w)) { IsSetFromCode = true; w.iBayNumber = w.iBayNumber_old; IsSetFromCode = false; return; }
-                    }
-                }
-                else if (e.PropertyName == "sDoorType")
-                {
-                    SetResultsAreNotValid();
-                    SetComponentListAccordingToDoors();
-                }
-                else if (e.PropertyName == "CoatingColor")
-                {
-                    //SetResultsAreNotValid(); //regenerate after change
-                }
-                else if (e.PropertyName == "Series" || e.PropertyName == "Series")
-                {
-                    return;
-                }
-
-                if (e.PropertyName == "fDoorsHeight" || e.PropertyName == "fDoorsWidth" ||
-                    e.PropertyName == "fDoorCoordinateXinBlock")
-                {
-                    SetResultsAreNotValid();
-                }
-                RecreateFloorSlab = true;
-                this.PropertyChanged(sender, e);
-            }
-            catch (Exception ex)
-            {
-                //task 551
-                //toto este prerobit tak,ze zdetekuje koliziu dveri a okna
-                PFDMainWindow.ShowMessageBoxInPFDWindow(ex.Message);
-                //bug 436
-                //tu by som chcel reagovat na to,ze neexistuje volna bay, zistit koliziu = ze su rovnake objekty a jeden surovo zmazat
-                var duplicates = DoorBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() > 1).Select(g => g.FirstOrDefault());
-                if (duplicates.Count() > 0)
-                {
-                    var doorProps = DoorBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() == 1).Select(g => g.FirstOrDefault()).ToList();
-                    doorProps.AddRange(duplicates);
-                    DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProps);
-                }
-            }
-        }
-
-        private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
-        {
-            try
-            {
-                if (IsSetFromCode) return;
-
-                if (e.PropertyName == "sBuildingSide")
-                {
-                    SetResultsAreNotValid();
-                    if (sender is DoorProperties) { if (!SetDoorsBays(sender as DoorProperties)) return; }
-                    if (sender is WindowProperties) { if (!SetWindowsBays(sender as WindowProperties)) return; }
-                }
-                else if (e.PropertyName == "iBayNumber")
-                {
-                    SetResultsAreNotValid();
-                    if (sender is DoorProperties)
-                    {
-                        DoorProperties d = sender as DoorProperties;
-                        if (!CheckDoorsBays(d)) { IsSetFromCode = true; d.iBayNumber = d.iBayNumber_old; IsSetFromCode = false; return; }
-                    }
-                    if (sender is WindowProperties)
-                    {
-                        WindowProperties w = sender as WindowProperties;
-                        if (!CheckWindowsBays(w)) { IsSetFromCode = true; w.iBayNumber = w.iBayNumber_old; IsSetFromCode = false; return; }
-                    }
-                }
-                else if (e.PropertyName == "fWindowsHeight" || e.PropertyName == "fWindowsWidth" || e.PropertyName == "fWindowCoordinateXinBay" || e.PropertyName == "fWindowCoordinateZinBay")
-                {
-                    SetResultsAreNotValid();
-                }
-                this.PropertyChanged(sender, e);
-            }
-            catch (Exception ex)
-            {
-                //task 551
-                //toto este prerobit tak,ze zdetekuje koliziu dveri a okna
-                PFDMainWindow.ShowMessageBoxInPFDWindow(ex.Message);
-                //bug 436
-                //tu by som chcel reagovat na to,ze neexistuje volna bay, zistit koliziu = ze su rovnake objekty a jeden surovo zmazat
-                var duplicates = WindowBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() > 1).Select(g => g.FirstOrDefault());
-                if (duplicates.Count() > 0)
-                {
-                    var windowsProps = WindowBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() == 1).Select(g => g.FirstOrDefault()).ToList();
-                    windowsProps.AddRange(duplicates);
-                    WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowsProps);
-                }
-            }
-
-
-        }
+        
 
         private void HandleComponentInfoPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
@@ -3966,8 +3171,8 @@ namespace PFD
             data.Snow = Snow;
             data.Eq = Eq;
 
-            data.DoorBlocksProperties = DoorBlocksProperties;
-            data.WindowBlocksProperties = WindowBlocksProperties;
+            data.DoorBlocksProperties = _doorsAndWindowsVM.DoorBlocksProperties;
+            data.WindowBlocksProperties = _doorsAndWindowsVM.WindowBlocksProperties;
 
             data.ComponentList = ComponentList;
             data.Model = Model;
@@ -4075,8 +3280,8 @@ namespace PFD
 
             data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
             data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
-            data.NumberOfRollerDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Roller Door").Count();
-            data.NumberOfPersonnelDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Personnel Door").Count();
+            data.NumberOfRollerDoors = _doorsAndWindowsVM.DoorBlocksProperties.Where(d => d.sDoorType == "Roller Door").Count();
+            data.NumberOfPersonnelDoors = _doorsAndWindowsVM.DoorBlocksProperties.Where(d => d.sDoorType == "Personnel Door").Count();
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
 
@@ -4516,141 +3721,6 @@ namespace PFD
             return sDisplayOptions;
         }
 
-        //public void GetCTS_CoilProperties(out CTS_CoilProperties prop_RoofCladdingCoil, out CTS_CoilProperties prop_WallCladdingCoil,
-        //        out CoatingColour prop_RoofCladdingColor, out CoatingColour prop_WallCladdingColor)
-        //{
-        //    List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
-
-        //    CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
-        //    prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(RoofCladdingCoating);
-
-        //    CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
-        //    prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(WallCladdingCoating);
-
-        //    prop_RoofCladdingColor = RoofCladdingColors.ElementAtOrDefault(RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-        //    prop_WallCladdingColor = WallCladdingColors.ElementAtOrDefault(WallCladdingColorIndex);
-
-        //    prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color
-        //    prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
-        //}
-
-        public void SetAllDoorCoatingColorAccordingTo(DoorProperties doorProperties)
-        {
-            if (DoorBlocksProperties == null) return;
-            if (doorProperties == null) return;
-
-            foreach (DoorProperties dp in DoorBlocksProperties)
-            {
-                if (dp.CoatingColor.ID != doorProperties.CoatingColor.ID)
-                {
-                    dp.IsSetFromCode = true;
-                    dp.CoatingColor = dp.CoatingColors.FirstOrDefault(c => c.ID == doorProperties.CoatingColor.ID);
-                    dp.IsSetFromCode = false;
-                }
-            }
-        }
-        public void SetAllDoorCoatingColorToSame()
-        {
-            if (DoorBlocksProperties == null) return;
-
-            SetAllDoorCoatingColorAccordingTo(DoorBlocksProperties.FirstOrDefault());
-        }
-
-        public void SetAllFlashingsCoatingColorAccordingTo(CoatingColour colour)
-        {
-            if (Flashings == null) return;
-
-            IsSetFromCode = true;
-            foreach (CAccessories_LengthItemProperties p in Flashings)
-            {
-                if (p.CoatingColor.ID != colour.ID)
-                {
-                    //p.IsSetFromCode = true;
-                    p.CoatingColor = p.CoatingColors.FirstOrDefault(c => c.ID == colour.ID);
-                    //p.IsSetFromCode = false;
-                }
-            }
-            IsSetFromCode = false;
-        }
-        public void SetAllGuttersCoatingColorAccordingTo(CoatingColour colour)
-        {
-            if (Gutters == null) return;
-
-            IsSetFromCode = true;
-            foreach (CAccessories_LengthItemProperties p in Gutters)
-            {
-                if (p.CoatingColor.ID != colour.ID)
-                {
-                    //p.IsSetFromCode = true;
-                    p.CoatingColor = p.CoatingColors.FirstOrDefault(c => c.ID == colour.ID);
-                    //p.IsSetFromCode = false;
-                }
-            }
-            IsSetFromCode = false;
-        }
-
-        public void SetAllDownpipeCoatingColorAccordingTo(CoatingColour colour)
-        {
-            if (Downpipes == null) return;
-
-            IsSetFromCode = true;
-            foreach (CAccessories_DownpipeProperties p in Downpipes)
-            {
-                if (p.CoatingColor.ID != colour.ID)
-                {
-                    //p.IsSetFromCode = true;
-                    p.CoatingColor = p.CoatingColors.FirstOrDefault(c => c.ID == colour.ID);
-                    //p.IsSetFromCode = false;
-                }
-            }
-            IsSetFromCode = false;
-        }
-
-        public void SetAll_FGD_CoatingColorAccordingTo(CoatingColour colour)
-        {
-            SetAllFlashingsCoatingColorAccordingTo(colour);
-            SetAllGuttersCoatingColorAccordingTo(colour);
-            SetAllDownpipeCoatingColorAccordingTo(colour);
-        }
-
-        public void SetAllFlashingsCoatingColorToSame()
-        {
-            CoatingColour col = null;
-            if (Flashings != null) col = Flashings.FirstOrDefault().CoatingColor;
-
-            if (col != null) SetAllFlashingsCoatingColorAccordingTo(col);
-        }
-        public void SetAllGuttersCoatingColorToSame()
-        {
-            CoatingColour col = null;
-            if (Gutters != null) col = Gutters.FirstOrDefault().CoatingColor;
-
-            if (col != null) SetAllGuttersCoatingColorAccordingTo(col);
-        }
-        public void SetAllDownpipesCoatingColorToSame()
-        {
-            CoatingColour col = null;
-            if (Downpipes != null) col = Downpipes.FirstOrDefault().CoatingColor;
-
-            if (col != null) SetAllDownpipeCoatingColorAccordingTo(col);
-        }
-
-        public void SetAll_FGD_CoatingColorToSame()
-        {
-            CoatingColour col = GetActual_FGD_Color();
-
-            if (col != null) SetAll_FGD_CoatingColorAccordingTo(col);
-        }
-
-        public CoatingColour GetActual_FGD_Color()
-        {
-            CoatingColour col = null;
-            if (Flashings != null) col = Flashings.FirstOrDefault().CoatingColor;
-            else if (Gutters != null) col = Gutters.FirstOrDefault().CoatingColor;
-            else if (Downpipes != null) col = Downpipes.FirstOrDefault().CoatingColor;
-
-            return col;
-        }
 
         private void CountWallAreas()
         {

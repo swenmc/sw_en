@@ -92,13 +92,13 @@ namespace PFD
         {
             if (ModelOptionsChanged)
             {
-                if (_pfdVM._modelOptionsVM.SameColorsDoor) _pfdVM.SetAllDoorCoatingColorToSame();
-                if (_pfdVM._modelOptionsVM.SameColorsFGD) _pfdVM.SetAll_FGD_CoatingColorToSame();
+                if (_pfdVM._modelOptionsVM.SameColorsDoor) _pfdVM._doorsAndWindowsVM.SetAllDoorCoatingColorToSame();
+                if (_pfdVM._modelOptionsVM.SameColorsFGD) _pfdVM._doorsAndWindowsVM.SetAll_FGD_CoatingColorToSame();
                 else
                 {
-                    if (_pfdVM._modelOptionsVM.SameColorsFlashings) _pfdVM.SetAllFlashingsCoatingColorToSame();
-                    if (_pfdVM._modelOptionsVM.SameColorsGutters) _pfdVM.SetAllGuttersCoatingColorToSame();
-                    if (_pfdVM._modelOptionsVM.SameColorsDownpipes) _pfdVM.SetAllDownpipesCoatingColorToSame();
+                    if (_pfdVM._modelOptionsVM.SameColorsFlashings) _pfdVM._doorsAndWindowsVM.SetAllFlashingsCoatingColorToSame();
+                    if (_pfdVM._modelOptionsVM.SameColorsGutters) _pfdVM._doorsAndWindowsVM.SetAllGuttersCoatingColorToSame();
+                    if (_pfdVM._modelOptionsVM.SameColorsDownpipes) _pfdVM._doorsAndWindowsVM.SetAllDownpipesCoatingColorToSame();
                 }
                 
                 _pfdVM.ModelOptionsChanged = true;

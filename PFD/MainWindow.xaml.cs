@@ -184,7 +184,7 @@ namespace PFD
                 if (e.PropertyName == "Downpipes") return;
                 if (e.PropertyName == "ComponentList") return;
 
-                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccessoriesButtonsVisibility(); } return; }
+                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; } return; }
 
                 if (e.PropertyName == "RoofCladdingColorIndex" || e.PropertyName == "WallCladdingColorIndex"
                     || e.PropertyName == "RoofCladdingCoatingIndex" || e.PropertyName == "WallCladdingCoatingIndex")
@@ -206,13 +206,13 @@ namespace PFD
                     CAccessories_LengthItemProperties prop = sender as CAccessories_LengthItemProperties;
                     if (prop.DatabaseTable == "Flashings")
                     {
-                        if (vm._modelOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
-                        else if (vm._modelOptionsVM.SameColorsFlashings) vm.SetAllFlashingsCoatingColorAccordingTo(prop.CoatingColor);
+                        if (vm._modelOptionsVM.SameColorsFGD) vm._doorsAndWindowsVM.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                        else if (vm._modelOptionsVM.SameColorsFlashings) vm._doorsAndWindowsVM.SetAllFlashingsCoatingColorAccordingTo(prop.CoatingColor);
                     }
                     else if (prop.DatabaseTable == "Gutters")
                     {
-                        if (vm._modelOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
-                        else if (vm._modelOptionsVM.SameColorsGutters) vm.SetAllGuttersCoatingColorAccordingTo(prop.CoatingColor);
+                        if (vm._modelOptionsVM.SameColorsFGD) vm._doorsAndWindowsVM.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                        else if (vm._modelOptionsVM.SameColorsGutters) vm._doorsAndWindowsVM.SetAllGuttersCoatingColorAccordingTo(prop.CoatingColor);
                     }
                 }
                 else
@@ -230,8 +230,8 @@ namespace PFD
                     vm.RecreateModel = true;
 
                     CAccessories_DownpipeProperties prop = sender as CAccessories_DownpipeProperties;
-                    if (vm._modelOptionsVM.SameColorsFGD) vm.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
-                    else if (vm._modelOptionsVM.SameColorsDownpipes) vm.SetAllDownpipeCoatingColorAccordingTo(prop.CoatingColor);
+                    if (vm._modelOptionsVM.SameColorsFGD) vm._doorsAndWindowsVM.SetAll_FGD_CoatingColorAccordingTo(prop.CoatingColor);
+                    else if (vm._modelOptionsVM.SameColorsDownpipes) vm._doorsAndWindowsVM.SetAllDownpipeCoatingColorAccordingTo(prop.CoatingColor);
                 }
 
                 //only reset quotation do not regenerate model
@@ -265,37 +265,37 @@ namespace PFD
             }
             else if (sender is DoorProperties)
             {
-                if (e.PropertyName == "Bays") return;
-                if (e.PropertyName == "Series") return;
-                if (e.PropertyName == "Serie") return;
-                if (e.PropertyName == "SerieEnabled") return;
+                //if (e.PropertyName == "Bays") return;
+                //if (e.PropertyName == "Series") return;
+                //if (e.PropertyName == "Serie") return;
+                //if (e.PropertyName == "SerieEnabled") return;
 
-                DoorProperties doorProperties = sender as DoorProperties;
-                if (doorProperties.IsSetFromCode) return;
+                //DoorProperties doorProperties = sender as DoorProperties;
+                //if (doorProperties.IsSetFromCode) return;
 
-                if (e.PropertyName == "CoatingColor")
-                {
-                    //recreate model after color changed
-                    vm.RecreateModel = true;
-                    if (vm._modelOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorAccordingTo(doorProperties);
-                }
-                else
-                {
-                    Datagrid_DoorsAndGates_SelectionChanged(null, null);
-                    vm.RecreateModel = true;
-                    vm.RecreateJoints = true;
-                    vm.RecreateFloorSlab = true;
-                }
+                //if (e.PropertyName == "CoatingColor")
+                //{
+                //    //recreate model after color changed
+                //    vm.RecreateModel = true;
+                //    if (vm._modelOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorAccordingTo(doorProperties);
+                //}
+                //else
+                //{
+                //    Datagrid_DoorsAndGates_SelectionChanged(null, null);
+                //    vm.RecreateModel = true;
+                //    vm.RecreateJoints = true;
+                //    vm.RecreateFloorSlab = true;
+                //}
             }
             else if (sender is WindowProperties)
             {
-                if (e.PropertyName == "Bays") return;
-                WindowProperties wProperties = sender as WindowProperties;
-                if (wProperties.IsSetFromCode) return;
+                //if (e.PropertyName == "Bays") return;
+                //WindowProperties wProperties = sender as WindowProperties;
+                //if (wProperties.IsSetFromCode) return;
 
-                Datagrid_Windows_SelectionChanged(null, null);
-                vm.RecreateModel = true;
-                vm.RecreateJoints = true;
+                //Datagrid_Windows_SelectionChanged(null, null);
+                //vm.RecreateModel = true;
+                //vm.RecreateJoints = true;
             }
             else if (sender is CComponentInfo)
             {
@@ -410,12 +410,12 @@ namespace PFD
                     vm.RecreateModel = true;
                 }
 
-                if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
+                if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && cInfo.Generate == false && vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Front"))
                 {
                     MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the front wall?", "Warning", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {
-                        RemoveDoorsAndWindowsBuildingSide("Front");
+                        vm._doorsAndWindowsVM.RemoveDoorsAndWindowsBuildingSide("Front");
                     }
                     else
                     {
@@ -424,12 +424,12 @@ namespace PFD
                     }
                 }
 
-                if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Back"))
+                if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide && cInfo.Generate == false && vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Back"))
                 {
                     MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the back wall?", "Warning", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {
-                        RemoveDoorsAndWindowsBuildingSide("Back");
+                        vm._doorsAndWindowsVM.RemoveDoorsAndWindowsBuildingSide("Back");
                     }
                     else
                     {
@@ -506,56 +506,7 @@ namespace PFD
             if (vm.RecreateQuotation) vm.RecreateQuotation = false;
         }
 
-        private void RemoveDoorsAndWindowsBuildingSide(string sBuildingSide)
-        {
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
-            int doorsToRemoveCount = 0;
-            List<DoorProperties> doorsProps = new List<DoorProperties>();
-
-            foreach (DoorProperties d in vm.DoorBlocksProperties)
-            {
-                if (d.sBuildingSide == sBuildingSide) doorsToRemoveCount++;
-                else doorsProps.Add(d);
-            }
-
-            int windowsToRemoveCount = 0;
-            List<WindowProperties> windowsProps = new List<WindowProperties>();
-            foreach (WindowProperties w in vm.WindowBlocksProperties)
-            {
-                if (w.sBuildingSide == sBuildingSide) windowsToRemoveCount++;
-                else windowsProps.Add(w);
-            }
-
-            if (doorsToRemoveCount > 0)
-            {
-                vm.IsSetFromCode = true;
-                vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorsProps);
-                vm.IsSetFromCode = false;
-            }
-            if (windowsToRemoveCount > 0)
-            {
-                vm.IsSetFromCode = true;
-                vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowsProps);
-                vm.IsSetFromCode = false;
-            }
-        }
-
-        private bool AreDoorsOrWindowsOnBuildingSide(string sBuildingSide)
-        {
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
-            foreach (DoorProperties d in vm.DoorBlocksProperties)
-            {
-                if (d.sBuildingSide == sBuildingSide) return true;
-            }
-
-            foreach (WindowProperties w in vm.WindowBlocksProperties)
-            {
-                if (w.sBuildingSide == sBuildingSide) return true;
-            }
-            return false;
-        }
+        
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
@@ -1048,11 +999,11 @@ namespace PFD
                 System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);
 
                 //toto sa ma udiat iba ak sa menila nejaka property z modelu, rozmer a podobne
-                if (vm.RecreateJoints)
-                {
-                    vm.SetDefaultFlashings();
-                    vm.SetDefaultDownpipes();
-                }
+                //if (vm.RecreateJoints)
+                //{
+                //    vm._doorsAndWindowsVM.SetDefaultFlashings();
+                //    vm._doorsAndWindowsVM.SetDefaultDownpipes();
+                //}
 
             }
 
@@ -1378,27 +1329,7 @@ namespace PFD
             if (!CPermissions.UserHasPermission(EUserPermission.ExportReport)) { ExportWord.Visibility = Visibility.Collapsed; ExportPDF.Visibility = Visibility.Collapsed; }
         }
 
-        private void SetAccessoriesButtonsVisibility()
-        {
-            //if (vm.Flashings.Count >= 9) btnAddFlashing.Visibility = Visibility.Hidden;
-            //else btnAddFlashing.Visibility = Visibility.Visible;
-
-            //if (vm.Gutters.Count >= 1) btnAddGutter.Visibility = Visibility.Hidden;
-            //else btnAddGutter.Visibility = Visibility.Visible;
-
-            //if (vm.Downpipes.Count >= 1) btnAddDownpipe.Visibility = Visibility.Hidden;
-            //else btnAddDownpipe.Visibility = Visibility.Visible;
-
-            //2.moznost
-            if (vm.Flashings.Count >= 9) btnAddFlashing.IsEnabled = false;
-            else btnAddFlashing.IsEnabled = true;
-
-            if (vm.Gutters.Count >= 1) btnAddGutter.IsEnabled = false;
-            else btnAddGutter.IsEnabled = true;
-
-            if (vm.Downpipes.Count >= 1) btnAddDownpipe.IsEnabled = false;
-            else btnAddDownpipe.IsEnabled = true;
-        }
+        
 
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
@@ -1464,11 +1395,11 @@ namespace PFD
                 //Takto by to malo byt
                 //if (TabDoorsAndWindows.Content == null) TabDoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
 
-                if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
-                else RedrawDoorOrWindowPreview();
+                //if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
+                //else RedrawDoorOrWindowPreview();
 
-                FrameDoorWindowPreview3D.Focus(); //asi nefunguje :-( stve ma ten focus na prvom riadku v prvom gride
-                LabelDoors.Focus();
+                //FrameDoorWindowPreview3D.Focus(); //asi nefunguje :-( stve ma ten focus na prvom riadku v prvom gride
+                //LabelDoors.Focus();
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eJoint_Input)
             {
@@ -1699,16 +1630,6 @@ namespace PFD
             win.Show();
         }
 
-        private void Datagrid_DoorsAndGates_AddingNewItem(object sender, AddingNewItemEventArgs e)
-        {
-            Frame1.UpdateLayout();  // Nutne kvôli pridaniu riadku a update v GUI
-        }
-
-        private void Datagrid_Windows_AddingNewItem(object sender, AddingNewItemEventArgs e)
-        {
-            Frame1.UpdateLayout(); // Nutne kvôli pridaniu riadku a update v GUI
-        }
-
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
             LayoutExportOptionsWindow exportOptions = new LayoutExportOptionsWindow(vm);
@@ -1823,287 +1744,145 @@ namespace PFD
             pi.ShowDialog();
         }
 
-        int actualPreview = 0;
-        private void RedrawDoorOrWindowPreview()
-        {
-            if (actualPreview == 2) RedrawWindowPreview();
-            else RedrawDoorPreview();
-        }
+        //int actualPreview = 0;
+        //private void RedrawDoorOrWindowPreview()
+        //{
+        //    if (actualPreview == 2) RedrawWindowPreview();
+        //    else RedrawDoorPreview();
+        //}
 
-        private void Datagrid_DoorsAndGates_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //if (!Datagrid_DoorsAndGates.IsLoaded) return;
-            if (e != null && e.Source != null)
-            {
-                DataGrid dg = e.Source as DataGrid;
-                if (!dg.IsLoaded) return;
-                if (!dg.IsMouseOver) return;
-            }
-            RedrawDoorPreview();
-        }
-        private void RedrawDoorPreview()
-        {
-            CModel_PFD modelPFD = vm.Model as CModel_PFD;
+        //private void Datagrid_DoorsAndGates_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    //if (!Datagrid_DoorsAndGates.IsLoaded) return;
+        //    if (e != null && e.Source != null)
+        //    {
+        //        DataGrid dg = e.Source as DataGrid;
+        //        if (!dg.IsLoaded) return;
+        //        if (!dg.IsMouseOver) return;
+        //    }
+        //    RedrawDoorPreview();
+        //}
+        //private void RedrawDoorPreview()
+        //{
+        //    CModel_PFD modelPFD = vm.Model as CModel_PFD;
 
-            if (modelPFD.DoorsModels == null) return;
-            //if (modelPFD.DoorsModels.Count == 0) return;
+        //    if (modelPFD.DoorsModels == null) return;
+        //    //if (modelPFD.DoorsModels.Count == 0) return;
 
-            int index = Datagrid_DoorsAndGates.SelectedIndex;
-            if (index < 0) index = 0;
-            CModel doorModel = modelPFD.DoorsModels.ElementAtOrDefault(index);
-            if (doorModel == null) doorModel = modelPFD.DoorsModels.FirstOrDefault();
-            if (doorModel == null) doorModel = new CModel();
+        //    int index = Datagrid_DoorsAndGates.SelectedIndex;
+        //    if (index < 0) index = 0;
+        //    CModel doorModel = modelPFD.DoorsModels.ElementAtOrDefault(index);
+        //    if (doorModel == null) doorModel = modelPFD.DoorsModels.FirstOrDefault();
+        //    if (doorModel == null) doorModel = new CModel();
 
-            DisplayOptions displayOptions = vm.GetDisplayOptions();
-            //Here is the place to overwrite displayOptions from Main Model
-            displayOptions.bDisplayGlobalAxis = false;
-            displayOptions.RotateModelX = -90;
-            displayOptions.RotateModelY = 20;
-            //Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
-            Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, EModelType.eJoint);
+        //    DisplayOptions displayOptions = vm.GetDisplayOptions();
+        //    //Here is the place to overwrite displayOptions from Main Model
+        //    displayOptions.bDisplayGlobalAxis = false;
+        //    displayOptions.RotateModelX = -90;
+        //    displayOptions.RotateModelY = 20;
+        //    //Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
+        //    Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, EModelType.eJoint);
 
-            // Display model in 3D preview frame
-            FrameDoorWindowPreview3D.Content = page3D;
-            FrameDoorWindowPreview3D.UpdateLayout();
-            actualPreview = 1;
-        }
+        //    // Display model in 3D preview frame
+        //    FrameDoorWindowPreview3D.Content = page3D;
+        //    FrameDoorWindowPreview3D.UpdateLayout();
+        //    actualPreview = 1;
+        //}
 
-        private void Datagrid_Windows_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e != null && e.Source != null)
-            {
-                DataGrid dg = e.Source as DataGrid;
-                if (!dg.IsLoaded) return;
-                if (!dg.IsMouseOver) return;
-            }
-            RedrawWindowPreview();
-        }
+        //private void Datagrid_Windows_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (e != null && e.Source != null)
+        //    {
+        //        DataGrid dg = e.Source as DataGrid;
+        //        if (!dg.IsLoaded) return;
+        //        if (!dg.IsMouseOver) return;
+        //    }
+        //    RedrawWindowPreview();
+        //}
 
-        private void RedrawWindowPreview()
-        {
-            ////Mato??? - tieto komenty dole su aktualne? Lebo task 266 je uzavrety.
-            //// TO Ondrej - no mne sa zda ze preberame z bloku WindowProperties props
-            //// ale dalsie parametre samotneho bay, objekty stlpov, girts, odstup od stlpov atd tu nastavujem natvrdo,
-            //// Mali by sa tiez dat urcit z parametrov globalneho modelu
-            //// Tieto parametre sa totiz nastavuju pri vytvarani objektu bloku v CModel_01_PFD
-            //// vid metoda DeterminateBasicPropertiesToInsertBlock
+        //private void RedrawWindowPreview()
+        //{
+        //    ////Mato??? - tieto komenty dole su aktualne? Lebo task 266 je uzavrety.
+        //    //// TO Ondrej - no mne sa zda ze preberame z bloku WindowProperties props
+        //    //// ale dalsie parametre samotneho bay, objekty stlpov, girts, odstup od stlpov atd tu nastavujem natvrdo,
+        //    //// Mali by sa tiez dat urcit z parametrov globalneho modelu
+        //    //// Tieto parametre sa totiz nastavuju pri vytvarani objektu bloku v CModel_01_PFD
+        //    //// vid metoda DeterminateBasicPropertiesToInsertBlock
 
-            ////------------------------------------------------
-            //// TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
-            ////
-            //// Tento kod by mal byt zmazany
-            //// Girt
-            //CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
-            //CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
-            //CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
-            //refgirt.EccentricityStart = eccentricity;
-            //refgirt.EccentricityEnd = eccentricity;
-            //refgirt.DTheta_x = Math.PI / 2;
+        //    ////------------------------------------------------
+        //    //// TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
+        //    ////
+        //    //// Tento kod by mal byt zmazany
+        //    //// Girt
+        //    //CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+        //    //CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+        //    //CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+        //    //refgirt.EccentricityStart = eccentricity;
+        //    //refgirt.EccentricityEnd = eccentricity;
+        //    //refgirt.DTheta_x = Math.PI / 2;
 
-            //CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
-            //CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
-            //CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
-            ////------------------------------------------------
+        //    //CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+        //    //CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+        //    //CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+        //    ////------------------------------------------------
 
-            //WindowProperties props = null;
-            //if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
-            //if (props == null) props = vm.WindowBlocksProperties.FirstOrDefault();
+        //    //WindowProperties props = null;
+        //    //if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
+        //    //if (props == null) props = vm.WindowBlocksProperties.FirstOrDefault();
 
-            //// TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
-            //// V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
-            //// Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
+        //    //// TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
+        //    //// V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
+        //    //// Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
 
-            //// Druha moznost je vytvorit konrektny zobrazovany blok znova.
-            //// V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddWindowBlock, tj. 
-            //// 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
-            //// 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
+        //    //// Druha moznost je vytvorit konrektny zobrazovany blok znova.
+        //    //// V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddWindowBlock, tj. 
+        //    //// 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
+        //    //// 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
 
-            //CModel model;
-            //if (props == null) model = new CModel();
-            //else model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+        //    //CModel model;
+        //    //if (props == null) model = new CModel();
+        //    //else model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
 
-            CModel_PFD modelPFD = vm.Model as CModel_PFD;
-            if (modelPFD.WindowsModels == null) return;
+        //    CModel_PFD modelPFD = vm.Model as CModel_PFD;
+        //    if (modelPFD.WindowsModels == null) return;
 
-            int index = Datagrid_Windows.SelectedIndex;
-            if (index < 0) index = 0;
-            CModel model = modelPFD.WindowsModels.ElementAtOrDefault(index);
-            if (model == null) model = modelPFD.WindowsModels.FirstOrDefault();
-            if (model == null) model = new CModel();
-
-
-            DisplayOptions displayOptions = vm.GetDisplayOptions();
-            //Here is the place to overwrite displayOptions from Main Model
-            displayOptions.bDisplayGlobalAxis = false;
-            displayOptions.RotateModelX = -90;
-            displayOptions.RotateModelY = 20;
-            //Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
-            Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, EModelType.eJoint);
-
-            // Display model in 3D preview frame
-            FrameDoorWindowPreview3D.Content = page3D;
-            FrameDoorWindowPreview3D.UpdateLayout();
-            actualPreview = 2;
-        }
-
-        private void Datagrid_DoorsAndGates_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (actualPreview != 1) Datagrid_DoorsAndGates_SelectionChanged(sender, null);
-        }
-
-        private void Datagrid_Windows_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (actualPreview != 2) Datagrid_Windows_SelectionChanged(sender, null);
-        }
-
-        private void FrameDoorWindowPreview3D_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            e.Handled = true;
-        }
+        //    int index = Datagrid_Windows.SelectedIndex;
+        //    if (index < 0) index = 0;
+        //    CModel model = modelPFD.WindowsModels.ElementAtOrDefault(index);
+        //    if (model == null) model = modelPFD.WindowsModels.FirstOrDefault();
+        //    if (model == null) model = new CModel();
 
 
-        private void BtnDoorGenerator_Click(object sender, RoutedEventArgs e)
-        {
-            DoorGeneratorWindow generatorWindow = new DoorGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1);
-            generatorWindow.ShowDialog();
+        //    DisplayOptions displayOptions = vm.GetDisplayOptions();
+        //    //Here is the place to overwrite displayOptions from Main Model
+        //    displayOptions.bDisplayGlobalAxis = false;
+        //    displayOptions.RotateModelX = -90;
+        //    displayOptions.RotateModelY = 20;
+        //    //Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
+        //    Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, EModelType.eJoint);
 
-            DoorGeneratorViewModel doorGeneratorViewModel = generatorWindow.DataContext as DoorGeneratorViewModel;
-            if (doorGeneratorViewModel == null) return;
-            if (doorGeneratorViewModel.AddDoors)
-            {
-                List<DoorProperties> doorProperties = generatorWindow.GetDoorProperties();
-                List<DoorProperties> validatedDoorProperties = new List<DoorProperties>();
-                bool errorOccurs = false;
-                foreach (DoorProperties dp in doorProperties)
-                {
-                    //task 600
-                    //dp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
-                    dp.SetValidationValues(vm.WallHeight, vm.Model.GetBayWidth(dp.iBayNumber), vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
-                    if (!dp.ValidateDoorInsideBay())
-                    {
-                        if (!errorOccurs) MessageBox.Show("Door is defined out of frame bay.");
-                        errorOccurs = true;
-                        continue;
-                    }
+        //    // Display model in 3D preview frame
+        //    FrameDoorWindowPreview3D.Content = page3D;
+        //    FrameDoorWindowPreview3D.UpdateLayout();
+        //    actualPreview = 2;
+        //}
 
-                    validatedDoorProperties.Add(dp);
-                }
-                if (validatedDoorProperties.Count != doorProperties.Count) doorProperties = validatedDoorProperties;
+        //private void Datagrid_DoorsAndGates_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (actualPreview != 1) Datagrid_DoorsAndGates_SelectionChanged(sender, null);
+        //}
 
-                if (doorProperties.Count == 0) return;
+        //private void Datagrid_Windows_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (actualPreview != 2) Datagrid_Windows_SelectionChanged(sender, null);
+        //}
+
+        //private void FrameDoorWindowPreview3D_MouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    e.Handled = true;
+        //}
 
 
-                foreach (DoorProperties dp in vm.DoorBlocksProperties)
-                {
-                    //dp.PropertyChanged -= null;
-                    bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
-                    if (!existsSameItem) doorProperties.Add(dp);
-                }
-
-                //door and windows collision detection
-                List<WindowProperties> windowProperties = new List<WindowProperties>();
-                bool doorWindowColision = false;
-                foreach (WindowProperties wp in vm.WindowBlocksProperties)
-                {
-                    bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == wp.iBayNumber && p.sBuildingSide == wp.sBuildingSide);
-                    if (!existsSameItem) windowProperties.Add(wp);
-                    else doorWindowColision = true;
-                }
-                if (doorWindowColision)
-                {
-                    vm.IsSetFromCode = true;
-                    vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
-                    vm.IsSetFromCode = false;
-                }
-
-                vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
-                if (vm._modelOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorToSame();
-            }
-            else if (doorGeneratorViewModel.DeleteDoors)
-            {
-                List<DoorProperties> doorsToDelete = generatorWindow.GetDoorsToDelete();
-                if (doorsToDelete.Count == 0) return;
-
-                List<DoorProperties> doorProperties = new List<DoorProperties>();
-
-                foreach (DoorProperties dp in vm.DoorBlocksProperties)
-                {
-                    bool isTheItemToDelete = doorsToDelete.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
-                    if (!isTheItemToDelete) doorProperties.Add(dp);
-                }
-                vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
-            }
-        }
-
-        private void btnWindowsGenerator_Click(object sender, RoutedEventArgs e)
-        {
-            WindowsGeneratorWindow generatorWindow = new WindowsGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1, vm.WallHeight, vm.BayWidth, vm.ColumnDistance);
-            generatorWindow.ShowDialog();
-
-            WindowGeneratorViewModel windowGeneratorViewModel = generatorWindow.DataContext as WindowGeneratorViewModel;
-            if (windowGeneratorViewModel == null) return;
-
-            if (windowGeneratorViewModel.AddWindows)
-            {
-                List<WindowProperties> windowProperties = generatorWindow.GetWindowsProperties();
-                List<WindowProperties> validatedWindowProperties = new List<WindowProperties>();
-                bool errorOccurs = false;
-                foreach (WindowProperties wp in windowProperties)
-                {
-                    //task 600
-                    //wp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
-                    wp.SetValidationValues(vm.WallHeight, vm.Model.GetBayWidth(wp.iBayNumber), vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
-                    if (!wp.ValidateWindowInsideBay())
-                    {
-                        if (!errorOccurs) MessageBox.Show("Window is defined out of frame bay.");
-                        errorOccurs = true;
-                        continue;
-                    }
-                    validatedWindowProperties.Add(wp);
-                }
-                if (validatedWindowProperties.Count != windowProperties.Count) windowProperties = validatedWindowProperties;
-
-                if (windowProperties.Count == 0) return;
-
-                foreach (WindowProperties dp in vm.WindowBlocksProperties)
-                {
-                    bool existsSameItem = windowProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
-                    if (!existsSameItem) windowProperties.Add(dp);
-                }
-
-                //door and windows collision detection
-                List<DoorProperties> doorProperties = new List<DoorProperties>();
-                bool doorWindowColision = false;
-                foreach (DoorProperties dp in vm.DoorBlocksProperties)
-                {
-                    bool existsSameItem = windowProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
-                    if (!existsSameItem) doorProperties.Add(dp);
-                    else doorWindowColision = true;
-                }
-                if (doorWindowColision)
-                {
-                    vm.IsSetFromCode = true;
-                    vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
-                    vm.IsSetFromCode = false;
-                }
-
-                vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
-            }
-            else if (windowGeneratorViewModel.DeleteWindows)
-            {
-                List<WindowProperties> windowsToDelete = generatorWindow.GetWindowsToDelete();
-                if (windowsToDelete.Count == 0) return;
-
-                List<WindowProperties> windowProperties = new List<WindowProperties>();
-
-                foreach (WindowProperties wp in vm.WindowBlocksProperties)
-                {
-                    bool isTheItemToDelete = windowsToDelete.Exists(p => p.iBayNumber == wp.iBayNumber && p.sBuildingSide == wp.sBuildingSide);
-                    if (!isTheItemToDelete) windowProperties.Add(wp);
-                }
-                vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
-            }
-        }
 
         private void ExportQuotation_Click(object sender, RoutedEventArgs e)
         {
@@ -2225,123 +2004,7 @@ namespace PFD
             }
         }
 
-        private void btnAddFlashing_Click(object sender, RoutedEventArgs e)
-        {
-            string flashingName = FindNotUsedFlashingName();
-            if (string.IsNullOrEmpty(flashingName)) return;
-
-            int colorIndex = 2;
-
-            if (vm._modelOptionsVM.SameColorsFGD)
-            {
-                CoatingColour colour = vm.GetActual_FGD_Color();
-                if (colour != null)
-                {
-                    CAccessories_LengthItemProperties p = new CAccessories_LengthItemProperties();
-                    colorIndex = p.CoatingColors.IndexOf(colour);
-                }
-            }
-            else if (vm._modelOptionsVM.SameColorsFlashings)
-            {
-                CAccessories_LengthItemProperties prop = vm.Flashings.FirstOrDefault();
-                if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
-            }
-            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties(flashingName, "Flashings", 0, colorIndex);
-            item.PropertyChanged += vm.FlashingsItem_PropertyChanged;
-            vm.Flashings.Add(item);
-            vm.RecreateQuotation = true;
-        }
-        private string FindNotUsedFlashingName()
-        {
-            foreach (string s in vm.FlashingsNames)
-            {
-                if (vm.Flashings.FirstOrDefault(f => f.Name == s) != null) continue;
-
-                if (s == "Roof Ridge")
-                {
-                    if (vm.Flashings.FirstOrDefault(f => f.Name == "Roof Ridge (Soft Edge)") != null) continue;
-                }
-
-                if (s == "Roof Ridge (Soft Edge)")
-                {
-                    if (vm.Flashings.FirstOrDefault(f => f.Name == "Roof Ridge") != null) continue;
-                }
-
-                return s;
-            }
-            return null;
-        }
-
-        private void btnAddGutter_Click(object sender, RoutedEventArgs e)
-        {
-            float fGuttersTotalLength = 2 * vm.LengthOverall; // na dvoch okrajoch strechy
-
-            int colorIndex = 2;
-            if (vm._modelOptionsVM.SameColorsFGD)
-            {
-                CoatingColour colour = vm.GetActual_FGD_Color();
-                if (colour != null)
-                {
-                    CAccessories_LengthItemProperties p = new CAccessories_LengthItemProperties();
-                    colorIndex = p.CoatingColors.IndexOf(colour);
-                }
-            }
-            else if (vm._modelOptionsVM.SameColorsGutters)
-            {
-                CAccessories_LengthItemProperties prop = vm.Gutters.FirstOrDefault();
-                if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
-            }
-
-            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, colorIndex);
-            item.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
-            vm.Gutters.Add(item);
-            vm.RecreateQuotation = true;
-        }
-
-        private void BtnAddDownpipe_Click(object sender, RoutedEventArgs e)
-        {
-            int iCountOfDownpipePoints = 0;
-            float fDownpipesTotalLength = 0;
-
-            if (vm.Model is CModel_PFD_01_MR)
-            {
-                iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
-                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(vm.WallHeightOverall, vm.Height_H2_Overall); // Pocet zvodov krat vyska steny
-            }
-            else if (vm.Model is CModel_PFD_01_GR)
-            {
-                iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-                fDownpipesTotalLength = iCountOfDownpipePoints * vm.WallHeightOverall; // Pocet zvodov krat vyska steny
-            }
-            else
-            {
-                // Exception - not implemented
-                iCountOfDownpipePoints = 0;
-                fDownpipesTotalLength = 0;
-            }
-
-            int colorIndex = 2;
-            if (vm._modelOptionsVM.SameColorsFGD)
-            {
-                CoatingColour colour = vm.GetActual_FGD_Color();
-                if (colour != null)
-                {
-                    CAccessories_DownpipeProperties p = new CAccessories_DownpipeProperties();
-                    colorIndex = p.CoatingColors.IndexOf(colour);
-                }
-            }
-            else if (vm._modelOptionsVM.SameColorsDownpipes)
-            {
-                CAccessories_DownpipeProperties prop = vm.Downpipes.FirstOrDefault();
-                if (prop != null) colorIndex = prop.CoatingColors.IndexOf(prop.CoatingColor);
-            }
-
-            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, colorIndex);
-            downpipe.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
-
-            vm.Downpipes.Add(downpipe);
-            vm.RecreateQuotation = true;
-        }
+        
 
         private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
         {
@@ -2730,12 +2393,7 @@ namespace PFD
             //vm.FibreglassAreaRoof = newVM.FibreglassAreaRoof;
             //vm.FibreglassAreaWall = newVM.FibreglassAreaWall;
 
-            vm.DoorBlocksProperties = newVM.DoorBlocksProperties;
-            vm.WindowBlocksProperties = newVM.WindowBlocksProperties;
-
-            vm.Flashings = newVM.Flashings;
-            vm.Gutters = newVM.Gutters;
-            vm.Downpipes = newVM.Downpipes;
+            vm._doorsAndWindowsVM.SetViewModel(newVM._doorsAndWindowsVM);
 
             vm._displayOptionsVM.SetViewModel(newVM._displayOptionsVM);
             vm._modelOptionsVM.SetViewModel(newVM._modelOptionsVM);
