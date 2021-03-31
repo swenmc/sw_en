@@ -21,13 +21,13 @@ namespace PFD
     public partial class CladdingSheetsValidation : Window
     {
         private CPFDViewModel _pfdVM;
-        
+
         public CladdingSheetsValidation(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
-            
+
             // Create Table
             DataTable dt = new DataTable("CladdingSheets");
             // Create Table Rows
@@ -90,13 +90,13 @@ namespace PFD
                 row["Mat"] = sheet.m_Mat != null ? sheet.m_Mat.Name : "-"; ;
                 row["IsGenerated"] = sheet.BIsGenerated;
                 row["IsDisplayed"] = sheet.BIsDisplayed;
-                row["IsSelectedForDesign"] = sheet.BIsSelectedForDesign;                
+                row["IsSelectedForDesign"] = sheet.BIsSelectedForDesign;
                 row["IsSelectedForMaterialList"] = sheet.BIsSelectedForMaterialList;
 
                 dt.Rows.Add(row);
             }
 
-            Datagrid_CladdingSheets.ItemsSource = ds.Tables[0].AsDataView();            
+            Datagrid_CladdingSheets.ItemsSource = ds.Tables[0].AsDataView();
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
@@ -110,7 +110,5 @@ namespace PFD
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
         }
-
-        
     }
 }

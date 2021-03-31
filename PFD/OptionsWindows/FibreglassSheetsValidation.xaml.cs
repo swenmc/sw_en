@@ -21,13 +21,13 @@ namespace PFD
     public partial class FibreglassSheetsValidation : Window
     {
         private CPFDViewModel _pfdVM;
-        
+
         public FibreglassSheetsValidation(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
-            
+
             // Create Table
             DataTable dt = new DataTable("FibreglassSheets");
             // Create Table Rows
@@ -41,7 +41,7 @@ namespace PFD
             dt.Columns.Add("y");
             dt.Columns.Add("Area_brutto");
             dt.Columns.Add("Area_netto");
-            dt.Columns.Add("FTime");
+            //dt.Columns.Add("FTime");
             dt.Columns.Add("Opacity");
             dt.Columns.Add("LengthTotal");
             dt.Columns.Add("Width");
@@ -72,7 +72,7 @@ namespace PFD
                 row = dt.NewRow();
                 row["ID"] = sheet.ID;
                 row["Prefix"] = sheet.Prefix;
-                row["Name"] = sheet.Name;                
+                row["Name"] = sheet.Name;
                 //row["CladdingCoatingType"] = sheet.CladdingCoatingType;
                 row["CladdingShape"] = sheet.CladdingShape;
                 row["x"] = sheet.CoordinateInPlane_x.ToString("F3");
@@ -80,7 +80,7 @@ namespace PFD
                 //row["CladdingWidthRibModular"] = sheet.CladdingWidthRibModular;
                 row["Area_brutto"] = sheet.Area_brutto.ToString("F3");
                 row["Area_netto"] = sheet.Area_netto.ToString("F3");
-                row["FTime"] = sheet.FTime;
+                //row["FTime"] = sheet.FTime;
                 row["Opacity"] = sheet.Opacity;
                 row["LengthTotal"] = sheet.LengthTotal.ToString("F3");
                 row["Width"] = sheet.Width.ToString("F3");
@@ -100,16 +100,13 @@ namespace PFD
                 dt.Rows.Add(row);
             }
 
-            Datagrid_FibreglassSheets.ItemsSource = ds.Tables[0].AsDataView();            
+            Datagrid_FibreglassSheets.ItemsSource = ds.Tables[0].AsDataView();
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
 
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
         }
-
-        
     }
 }
