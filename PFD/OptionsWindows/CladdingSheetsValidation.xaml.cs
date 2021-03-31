@@ -39,13 +39,14 @@ namespace PFD
             dt.Columns.Add("CladdingWidthRibModular");
             dt.Columns.Add("Area_brutto");
             dt.Columns.Add("Area_netto");
-            dt.Columns.Add("FTime");
+            //dt.Columns.Add("FTime");
             dt.Columns.Add("Opacity");
+            dt.Columns.Add("Width");
             dt.Columns.Add("LengthTotal");
             dt.Columns.Add("LengthTopLeft");
             dt.Columns.Add("LengthTopRight");
             dt.Columns.Add("LengthTopTip");
-            dt.Columns.Add("IsCanopy");
+            //dt.Columns.Add("IsCanopy");
             dt.Columns.Add("ColorName");
             dt.Columns.Add("ControlPoint");
             dt.Columns.Add("PointText");
@@ -73,15 +74,16 @@ namespace PFD
                 row["CladdingCoatingType"] = sheet.CladdingCoatingType;
                 row["CladdingShape"] = sheet.CladdingShape;
                 row["CladdingWidthRibModular"] = sheet.CladdingWidthRibModular;
-                row["Area_brutto"] = sheet.Area_brutto;
-                row["Area_netto"] = sheet.Area_netto;
-                row["FTime"] = sheet.FTime;
+                row["Area_brutto"] = sheet.Area_brutto.ToString("F3");
+                row["Area_netto"] = sheet.Area_netto.ToString("F3");
+                //row["FTime"] = sheet.FTime;
                 row["Opacity"] = sheet.Opacity;
-                row["LengthTotal"] = sheet.LengthTotal;
-                row["LengthTopLeft"] = sheet.LengthTopLeft;
-                row["LengthTopRight"] = sheet.LengthTopRight;
-                row["LengthTopTip"] = sheet.LengthTopTip;
-                row["IsCanopy"] = sheet.IsCanopy;
+                row["Width"] = sheet.Width.ToString("F3");
+                row["LengthTotal"] = sheet.LengthTotal.ToString("F3");
+                row["LengthTopLeft"] = sheet.LengthTopLeft.ToString("F3");
+                row["LengthTopRight"] = sheet.LengthTopRight.ToString("F3");
+                row["LengthTopTip"] = GetLengthTopTip(sheet);
+                //row["IsCanopy"] = sheet.IsCanopy;
                 row["ColorName"] = sheet.ColorName;
                 row["ControlPoint"] = sheet.ControlPoint.ToString(3);
                 row["PointText"] = sheet.PointText.ToString(3);
@@ -99,6 +101,11 @@ namespace PFD
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
 
+        private string GetLengthTopTip(CCladdingOrFibreGlassSheet sheet)
+        {
+            if (MathF.d_equal(sheet.LengthTopTip, sheet.LengthTopLeft) && MathF.d_equal(sheet.LengthTopTip, sheet.LengthTopRight)) return "";
+            else return sheet.LengthTopTip.ToString("F3");
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Cladding Sheets Validation" Height="940" Width="1400" Loaded="Window_Loaded">
+        Title="Fibreglass Sheets Validation" Height="940" Width="1400" Loaded="Window_Loaded">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">50</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">100</System:Double>
