@@ -1876,14 +1876,15 @@ namespace PFD
                         if (_pfdVM.DoorBlocksProperties[i].sBuildingSide == "Right")
                             pControlEdgePoint.X = rightEdge;
                     }
-                    
+                    bool isLeftOrBack = _pfdVM.DoorBlocksProperties[i].sBuildingSide == "Left" || _pfdVM.DoorBlocksProperties[i].sBuildingSide == "Back";
+
                     BaseClasses.GraphObj.CStructure_Door door_temp = new BaseClasses.GraphObj.CStructure_Door(i + 1, 1,
                        pControlEdgePoint, _pfdVM.DoorBlocksProperties[i].fDoorsWidth, _pfdVM.DoorBlocksProperties[i].fDoorsHeight, fDoorFrameThickness, fPanelThickness, fRotationZDegrees, true, 0f,
                        doorFlashingColor,
                        (Color)ColorConverter.ConvertFromString(_pfdVM.DoorBlocksProperties[i].CoatingColor.CodeHEX), 
                        _pfdVM.DoorBlocksProperties[i].CoatingColor.Name,
                        vm._displayOptionsVM.DoorPanelOpacity,
-                       _pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door", vm._displayOptionsVM.UseTextures);
+                       _pfdVM.DoorBlocksProperties[i].sDoorType == "Roller Door", isLeftOrBack, vm._displayOptionsVM.UseTextures);
 
                     m_arrGOStrDoors.Add(door_temp);
                 }
@@ -1921,11 +1922,13 @@ namespace PFD
                             pControlEdgePoint.X = rightEdge;
                     }
 
+                    bool isLeftOrBack = _pfdVM.WindowBlocksProperties[i].sBuildingSide == "Left" || _pfdVM.WindowBlocksProperties[i].sBuildingSide == "Back";
+
                     BaseClasses.GraphObj.CStructure_Window window_temp = new BaseClasses.GraphObj.CStructure_Window(i + 1, EWindowShapeType.eClassic, _pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1,
                        pControlEdgePoint, _pfdVM.WindowBlocksProperties[i].fWindowsWidth / (_pfdVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1), _pfdVM.WindowBlocksProperties[i].fWindowsHeight, fWindowFrameThickness,
                        windowFlashingColor, Colors.LightBlue,
                        vm._displayOptionsVM.WindowPanelOpacity,
-                       fPanelThickness, fRotationZDegrees, true, 0f);
+                       fPanelThickness, fRotationZDegrees, true, 0f, isLeftOrBack);
 
                     m_arrGOStrWindows.Add(window_temp);
                 }

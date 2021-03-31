@@ -8,8 +8,6 @@ namespace BaseClasses.GraphObj
     [Serializable]
     public class CStructure_Window : CSurfaceComponent
     {
-        //public Point3D m_ControlPoint = new Point3D();
-
         EWindowShapeType m_eShapeType = EWindowShapeType.eClassic;
 
         public EWindowShapeType EShapeType
@@ -34,6 +32,8 @@ namespace BaseClasses.GraphObj
         private int iSegmentNum;
         private float fGThickness;
         private float fRotationZDegrees;
+
+        private bool m_LeftOrBack;
 
         public int SegmentNum
         {
@@ -91,7 +91,8 @@ namespace BaseClasses.GraphObj
 
         // Constructor 4
 
-        public CStructure_Window(int i_ID, EWindowShapeType iShapeType, Point3D pControlEdgePoint, float fX, float fY, float fZ, DiffuseMaterial volMat1, DiffuseMaterial volMat2, bool bIsDisplayed, float fTime)
+        public CStructure_Window(int i_ID, EWindowShapeType iShapeType, Point3D pControlEdgePoint, float fX, float fY, float fZ, DiffuseMaterial volMat1, DiffuseMaterial volMat2, 
+            bool bIsDisplayed, float fTime)
         {
             ID = i_ID;
             m_eShapeType = iShapeType;
@@ -109,7 +110,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 5
         public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft,
-            Color windowFlashingColor, Color windowPanelColor, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime)
+            Color windowFlashingColor, Color windowPanelColor, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, bool leftOrBack)
         {
             ID = iW_ID;
             m_eShapeType = iShapeType;
@@ -137,6 +138,8 @@ namespace BaseClasses.GraphObj
             RotationZDegrees = fRotationZDegrees;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
+
+            m_LeftOrBack = leftOrBack;
 
             SetTextPointInLCS();
 
@@ -309,13 +312,7 @@ namespace BaseClasses.GraphObj
             iVectorUpFactor_LCS = 1;
 
             float fOffsetFromPlane = - 0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
-
-            //PointText = new Point3D()
-            //{
-            //    X = 0.5 * m_fDim1, // Kreslime v 30% sirky zlava
-            //    Y = 0.4 * m_fDim2, // Kreslime v 40% dlzky zdola
-            //    Z = fOffsetFromPlane
-            //};
+            if (m_LeftOrBack) fOffsetFromPlane = -fOffsetFromPlane + m_fDim3 + GThickness;
 
             PointText = new Point3D()
             {

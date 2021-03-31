@@ -29,6 +29,7 @@ namespace BaseClasses.GraphObj
         private DiffuseMaterial m_Material_1 = null;
         private DiffuseMaterial m_Material_2 = null;
         private bool m_isRollerDoor;
+        private bool m_LeftOrBack;
 
         public float m_fDim1;
         public float m_fDim2;
@@ -92,8 +93,8 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public int iVectorOverFactor_LCS;
-        public int iVectorUpFactor_LCS;
+        //public int iVectorOverFactor_LCS;
+        //public int iVectorUpFactor_LCS;
 
         // Constructor 1
         public CStructure_Door()
@@ -109,7 +110,7 @@ namespace BaseClasses.GraphObj
         
         // Constructor 3
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
-            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float doorPanelOpacity, bool isRollerDoor, bool useTextures)
+            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float doorPanelOpacity, bool isRollerDoor, bool LeftOrBack, bool useTextures)
         {
             ID = iW_ID;
             SegmentNum = iSegmentNum;
@@ -126,6 +127,7 @@ namespace BaseClasses.GraphObj
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
             IsRollerDoor = isRollerDoor;
+            m_LeftOrBack = LeftOrBack;
 
             m_volColor_1 = doorFlashingColor;
 
@@ -309,20 +311,15 @@ namespace BaseClasses.GraphObj
 
         public void SetTextPointInLCS()
         {
-            iVectorOverFactor_LCS = 1;
-            iVectorUpFactor_LCS = 1;
+            //iVectorOverFactor_LCS = 1;
+            //iVectorUpFactor_LCS = 1;
 
             float fOffsetFromPlane = -0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
-
-            //PointText = new Point3D()
-            //{
-            //    X = 0.3 * m_fDim1, // Kreslime v 30% sirky zlava
-            //    Y = 0.4 * m_fDim2, // Kreslime v 40% dlzky zdola
-            //    Z = fOffsetFromPlane
-            //};
+            if (m_LeftOrBack) fOffsetFromPlane = -fOffsetFromPlane + m_fDim3 + GThickness;
+            
             PointText = new Point3D()
             {
-                X = 0.5 * m_fDim1, // Kreslime v 30% sirky zlava
+                X = 0.5 * m_fDim1, // Kreslime v 50% sirky zlava
                 Y = fOffsetFromPlane,
                 Z = 0.4 * m_fDim2 // Kreslime v 40% dlzky zdola
             };
