@@ -265,7 +265,7 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Name ="Member_Input">
+            <TabItem Name="Member_Input">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Members" Foreground="Blue"/>
@@ -275,14 +275,14 @@
                 <local:UC_ComponentList x:Name="uc_ComponentList"></local:UC_ComponentList>
                 <!--</ScrollViewer>-->
             </TabItem>
-            <TabItem Name ="TabBayWidths">
+            <TabItem Name="TabBayWidths">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Bay Widths" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-            <TabItem Name ="DoorsAndWindows">
+            <TabItem Name="TabDoorsAndWindows">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Accessories" Foreground="Blue"/>
@@ -609,35 +609,35 @@
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Name ="Joint_Input">
+            <TabItem Name="Joint_Input">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Joints" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-            <TabItem Name ="Footing_Input">
+            <TabItem Name="Footing_Input">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Footings" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-            <TabItem Name ="TabCrossBracing">
+            <TabItem Name="TabCrossBracing">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Cross Bracing" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-            <TabItem Name ="TabCanopies">
+            <TabItem Name="TabCanopies">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Canopies" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-            <TabItem Name ="TabCladding">
+            <TabItem Name="TabCladding">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Cladding" Foreground="Blue"/>

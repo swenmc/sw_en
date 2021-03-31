@@ -1338,8 +1338,8 @@ namespace PFD
 
             if (vm._modelOptionsVM.VariousBayWidths) TabBayWidths.Visibility = Visibility.Visible;
             else TabBayWidths.Visibility = Visibility.Collapsed;
-            if (vm._modelOptionsVM.EnableAccessories) DoorsAndWindows.Visibility = Visibility.Visible;
-            else DoorsAndWindows.Visibility = Visibility.Collapsed;
+            if (vm._modelOptionsVM.EnableAccessories) TabDoorsAndWindows.Visibility = Visibility.Visible;
+            else TabDoorsAndWindows.Visibility = Visibility.Collapsed;
             if (vm._modelOptionsVM.EnableJoints) Joint_Input.Visibility = Visibility.Visible;
             else Joint_Input.Visibility = Visibility.Collapsed;
             if (vm._modelOptionsVM.EnableFootings) Footing_Input.Visibility = Visibility.Visible;
@@ -1362,7 +1362,7 @@ namespace PFD
         {
             if (!CPermissions.UserHasPermission(EUserPermission.ViewTabGeneral)) General.Visibility = Visibility.Collapsed;
             if (!CPermissions.UserHasPermission(EUserPermission.ViewTabMember_Input)) Member_Input.Visibility = Visibility.Collapsed;
-            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabDoorsAndWindows)) DoorsAndWindows.Visibility = Visibility.Collapsed;
+            if (!CPermissions.UserHasPermission(EUserPermission.ViewTabDoorsAndWindows)) TabDoorsAndWindows.Visibility = Visibility.Collapsed;
             if (!CPermissions.UserHasPermission(EUserPermission.ViewTabJoint_Input)) Joint_Input.Visibility = Visibility.Collapsed;
             if (!CPermissions.UserHasPermission(EUserPermission.ViewTabFooting_Input)) Footing_Input.Visibility = Visibility.Collapsed;
             if (!CPermissions.UserHasPermission(EUserPermission.ViewTabLoads)) Loads.Visibility = Visibility.Collapsed;
@@ -1460,6 +1460,10 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eAccessories)
             {
+                //768
+                //Takto by to malo byt
+                //if (TabDoorsAndWindows.Content == null) TabDoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
+
                 if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
                 else RedrawDoorOrWindowPreview();
 
@@ -1486,7 +1490,7 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eCladding)
             {
-                if (TabCladding.Content == null) TabCladding.Content = new UC_CladdingOptions(vm);                
+                if (TabCladding.Content == null) TabCladding.Content = new UC_CladdingOptions(vm);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoads)
             {

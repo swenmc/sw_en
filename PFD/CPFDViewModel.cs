@@ -2529,7 +2529,9 @@ namespace PFD
                 w.SetValidationValues(MWallHeight, model.GetBayWidth(w.iBayNumber), model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
-                
+
+        public DoorsAndWindowsViewModel _doorsAndWindowsVM;
+
         public CComponentListVM _componentVM;
         [NonSerialized]
         public CProjectInfoVM _projectInfoVM;

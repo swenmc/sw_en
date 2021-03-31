@@ -195,12 +195,16 @@
     <Compile Include="OptionsWindows\CrossBracingOptionsWindow.xaml.cs">
       <DependentUpon>CrossBracingOptionsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_JointsVarMemCrsc.xaml.cs">
+    <Compile Include="UserControls\UC_DoorsAndWindows.xaml.cs">
+      <DependentUpon>UC_DoorsAndWindows.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UC_JointsVarMemCrsc.xaml.cs">
       <DependentUpon>UC_JointsVarMemCrsc.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BayWidthOptionsViewModel.cs" />
     <Compile Include="ViewModels\CJointsVarMemCrscVM.cs" />
     <Compile Include="ViewModels\CanopiesOptionsViewModel.cs" />
+    <Compile Include="ViewModels\DoorsAndWindowsViewModel.cs" />
     <Compile Include="ViewModels\DesignSummaryViewModel.cs" />
     <Compile Include="ViewModels\CrossBracingOptionsViewModel.cs" />
     <Compile Include="ViewModels\CladdingOptionsViewModel.cs" />
@@ -227,7 +231,7 @@
     <Compile Include="QuotationDisplayOptionsWindow.xaml.cs">
       <DependentUpon>QuotationDisplayOptionsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_Quotation.xaml.cs">
+    <Compile Include="UserControls\UC_Quotation.xaml.cs">
       <DependentUpon>UC_Quotation.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DesignOptionsViewModel.cs" />
@@ -249,7 +253,7 @@
     <Compile Include="Infrastructure\Calculations\CCladdingDesignCalculations.cs" />
     <Compile Include="Infrastructure\CPlateHelper.cs" />
     <Compile Include="SCVDisplayOptionsViewModel.cs" />
-    <Compile Include="UC_FootingDesign.xaml.cs">
+    <Compile Include="UserControls\UC_FootingDesign.xaml.cs">
       <DependentUpon>UC_FootingDesign.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CComponentListVM.cs" />
@@ -318,10 +322,10 @@
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="TextBoxEnterKeyUpdateBehavior.cs" />
-    <Compile Include="UC_FootingInput.xaml.cs">
+    <Compile Include="UserControls\UC_FootingInput.xaml.cs">
       <DependentUpon>UC_FootingInput.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_Joints.xaml.cs">
+    <Compile Include="UserControls\UC_Joints.xaml.cs">
       <DependentUpon>UC_Joints.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CProjectInfoVM.cs" />
@@ -336,28 +340,28 @@
     </Compile>
     <Compile Include="WindPressureCalculatorViewModel.cs" />
     <Compile Include="SystemComponentViewerViewModel.cs" />
-    <Compile Include="UC_InternalForces.xaml.cs">
+    <Compile Include="UserControls\UC_InternalForces.xaml.cs">
       <DependentUpon>UC_InternalForces.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_JointDesign.xaml.cs">
+    <Compile Include="UserControls\UC_JointDesign.xaml.cs">
       <DependentUpon>UC_JointDesign.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_Loads.xaml.cs">
+    <Compile Include="UserControls\UC_Loads.xaml.cs">
       <DependentUpon>UC_Loads.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_MemberDesign.xaml.cs">
+    <Compile Include="UserControls\UC_MemberDesign.xaml.cs">
       <DependentUpon>UC_MemberDesign.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_LoadCombinationsList.xaml.cs">
+    <Compile Include="UserControls\UC_LoadCombinationsList.xaml.cs">
       <DependentUpon>UC_LoadCombinationsList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_LoadCasesList.xaml.cs">
+    <Compile Include="UserControls\UC_LoadCasesList.xaml.cs">
       <DependentUpon>UC_LoadCasesList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_ComponentList.xaml.cs">
+    <Compile Include="UserControls\UC_ComponentList.xaml.cs">
       <DependentUpon>UC_ComponentList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_MaterialList.xaml.cs">
+    <Compile Include="UserControls\UC_MaterialList.xaml.cs">
       <DependentUpon>UC_MaterialList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pokus2DView.xaml.cs">
@@ -442,7 +446,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_JointsVarMemCrsc.xaml">
+    <Page Include="UserControls\UC_DoorsAndWindows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UC_JointsVarMemCrsc.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -474,7 +482,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_Quotation.xaml">
+    <Page Include="UserControls\UC_Quotation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -523,15 +531,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UC_FootingInput.xaml">
+    <Page Include="UserControls\UC_FootingInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UC_FootingDesign.xaml">
+    <Page Include="UserControls\UC_FootingDesign.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_Joints.xaml">
+    <Page Include="UserControls\UC_Joints.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -567,35 +575,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_InternalForces.xaml">
+    <Page Include="UserControls\UC_InternalForces.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UC_JointDesign.xaml">
+    <Page Include="UserControls\UC_JointDesign.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UC_Loads.xaml">
+    <Page Include="UserControls\UC_Loads.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_MemberDesign.xaml">
+    <Page Include="UserControls\UC_MemberDesign.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UC_LoadCombinationsList.xaml">
+    <Page Include="UserControls\UC_LoadCombinationsList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_LoadCasesList.xaml">
+    <Page Include="UserControls\UC_LoadCasesList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_ComponentList.xaml">
+    <Page Include="UserControls\UC_ComponentList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_MaterialList.xaml">
+    <Page Include="UserControls\UC_MaterialList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
