@@ -38,7 +38,7 @@
             <DockPanel Grid.Row="0" Grid.Column="0">
                 <TextBlock  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
                 <Button Name="btnReload" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip="Reload" Margin="200 -5 0 0" Width="25" Height="25" Click="BtnReload_Click">
-                    <Image Source="~\..\Resources\apply_changes.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                    <Image Source="..\Resources\apply_changes.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                 </Button>
             </DockPanel>
             

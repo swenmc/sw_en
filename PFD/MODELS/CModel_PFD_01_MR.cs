@@ -1560,11 +1560,8 @@ namespace PFD
             DoorsModels = new List<CBlock_3D_001_DoorInBay>();
             WindowsModels = new List<CBlock_3D_002_WindowInBay>();
 
-            // To Ondrej _doorsAndWindowsVM nemusi byt vzdy inicializovane
-            if (vm._doorsAndWindowsVM != null)
-            {
-                vm._doorsAndWindowsVM.SetModelBays(iFrameNo);
-            }
+            vm._doorsAndWindowsVM.SetModelBays(iFrameNo, vm);
+            
             bool isChangedFromCode = vm.IsSetFromCode;
 
             if (DoorBlocksProperties != null)

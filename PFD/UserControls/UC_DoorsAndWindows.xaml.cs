@@ -33,15 +33,6 @@ namespace PFD
 
             DoorsAndWindowsOptionsChanged = false;
 
-            if (_pfdVM._doorsAndWindowsVM == null)
-            {
-                _pfdVM._doorsAndWindowsVM = new DoorsAndWindowsViewModel();
-                SetDefaultFlashings();
-                SetDefaultDownpipes();
-                SetFlashingsNames();
-            }
-            
-
             _pfdVM._doorsAndWindowsVM.PropertyChanged += HandleDoorsAndWindowsOptionsPropertyChangedEvent;
 
             this.DataContext = _pfdVM._doorsAndWindowsVM;
@@ -131,102 +122,7 @@ namespace PFD
         }
 
 
-        public void SetDefaultFlashings()
-        {
-            float fRoofSideLength = 0;
-
-            if (_pfdVM.Model is CModel_PFD_01_MR)
-            {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(_pfdVM.Height_H2_Overall - _pfdVM.WallHeightOverall) + MathF.Pow2(_pfdVM.WidthOverall)); // Dlzka hrany strechy
-            }
-            else if (_pfdVM.Model is CModel_PFD_01_GR)
-            {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(_pfdVM.Height_H2_Overall - _pfdVM.WallHeightOverall) + MathF.Pow2(0.5f * _pfdVM.WidthOverall)); // Dlzka hrany strechy
-            }
-            else
-            {
-                // Exception - not implemented
-                fRoofSideLength = 0;
-            }
-
-            float fRoofRidgeFlashing_TotalLength = 0;
-            float fWallCornerFlashing_TotalLength = 0;
-            float fBargeFlashing_TotalLength = 0;
-
-            if (_pfdVM.Model is CModel_PFD_01_MR)
-            {
-                fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 2 * _pfdVM.WallHeightOverall + 2 * _pfdVM.Height_H2_Overall;
-                fBargeFlashing_TotalLength = 2 * fRoofSideLength;
-            }
-            else if (_pfdVM.Model is CModel_PFD_01_GR)
-            {
-                fRoofRidgeFlashing_TotalLength = _pfdVM.LengthOverall;
-                fWallCornerFlashing_TotalLength = 4 * _pfdVM.WallHeightOverall;
-                fBargeFlashing_TotalLength = 4 * fRoofSideLength;
-            }
-            else
-            {
-                // Exception - not implemented
-                fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 0;
-                fBargeFlashing_TotalLength = 0;
-            }
-
-            float fRollerDoorTrimmerFlashing_TotalLength = 0;
-            float fRollerDoorLintelFlashing_TotalLength = 0;
-            float fRollerDoorLintelCapFlashing_TotalLength = 0;
-            float fPADoorTrimmerFlashing_TotalLength = 0;
-            float fPADoorLintelFlashing_TotalLength = 0;
-            float fWindowFlashing_TotalLength = 0;
-
-            ObservableCollection<CAccessories_LengthItemProperties> flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
-
-            if (_pfdVM.KitsetTypeIndex != 0)
-            {
-                flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
-            }
-
-            flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
-            flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
-            flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
-            flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
-            _pfdVM._doorsAndWindowsVM.Flashings = flashings;
-
-            SetFlashingsNames();
-        }
-
-        public void SetDefaultDownpipes()
-        {
-            // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-            int iCountOfDownpipePoints = 0;
-            float fDownpipesTotalLength = 0;
-
-            if (_pfdVM.Model is CModel_PFD_01_MR)
-            {
-                iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
-                fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(_pfdVM.WallHeightOverall, _pfdVM.Height_H2_Overall); // Pocet zvodov krat vyska steny
-            }
-            else if (_pfdVM.Model is CModel_PFD_01_GR)
-            {
-                iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-                fDownpipesTotalLength = iCountOfDownpipePoints * _pfdVM.WallHeightOverall; // Pocet zvodov krat vyska steny
-            }
-            else
-            {
-                // Exception - not implemented
-                iCountOfDownpipePoints = 0;
-                fDownpipesTotalLength = 0;
-            }
-
-            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);
-            //downpipe.PropertyChanged += AccessoriesItem_PropertyChanged;
-            _pfdVM._doorsAndWindowsVM.Downpipes = new ObservableCollection<CAccessories_DownpipeProperties>() { downpipe };
-        }
+        
 
         
 
@@ -662,18 +558,18 @@ namespace PFD
             else btnAddDownpipe.IsEnabled = true;
         }
 
-        private void SetFlashingsNames()
-        {
-            if (_pfdVM.KitsetTypeIndex == 0)
-            {
-                _pfdVM._doorsAndWindowsVM.FlashingsNames = new List<string>() { "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
-            }
-            else
-            {
-                _pfdVM._doorsAndWindowsVM.FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
-            }
-        }
+        //private void SetFlashingsNames()
+        //{
+        //    if (_pfdVM.KitsetTypeIndex == 0)
+        //    {
+        //        _pfdVM._doorsAndWindowsVM.FlashingsNames = new List<string>() { "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+        //                "PA Door Trimmer",  "PA Door Header", "Window"};
+        //    }
+        //    else
+        //    {
+        //        _pfdVM._doorsAndWindowsVM.FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+        //                "PA Door Trimmer",  "PA Door Header", "Window"};
+        //    }
+        //}
     }
 }

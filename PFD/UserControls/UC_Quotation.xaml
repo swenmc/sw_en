@@ -44,10 +44,10 @@
                     <TextBlock Name="TextBlock_Members"  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>                    
                     <!--<Button Grid.Row="0" Grid.Column="0" Name="btnRefreshQuotation" Content="Refresh" Height="20" Width="70" Margin="320 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnRefreshQuotation_Click"></Button>-->
                     <Button Name="btnDisplayOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Quotation Options" Margin="200 0 0 0" Width="20" Height="20" Click="BtnDisplayOptions_Click">
-                        <Image Source="Resources/options_quotation.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                        <Image Source="..\Resources/options_quotation.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                     </Button>
                     <Button Name="btnRefreshQuotation" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Apply Changes" Margin="50 0 0 0" Width="25" Height="25" Click="btnRefreshQuotation_Click">
-                        <Image Source="~\..\Resources\apply_changes.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                        <Image Source="..\Resources\apply_changes.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                     </Button>
 
                 </DockPanel>

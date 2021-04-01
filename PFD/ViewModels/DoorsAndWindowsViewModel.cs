@@ -176,6 +176,7 @@ namespace PFD
                 m_Flashings.CollectionChanged += Flashings_CollectionChanged;
                 foreach (CAccessories_LengthItemProperties item in Flashings)
                 {
+                    item.PropertyChanged -= FlashingsItem_PropertyChanged;
                     item.PropertyChanged += FlashingsItem_PropertyChanged;
                 }
 
@@ -235,8 +236,19 @@ namespace PFD
                 m_Downpipes = value;
                 m_Downpipes.CollectionChanged += Downpipes_CollectionChanged;
 
+                foreach (CAccessories_DownpipeProperties item in Downpipes)
+                {
+                    item.PropertyChanged -= DownpipeItem_PropertyChanged;
+                    item.PropertyChanged += DownpipeItem_PropertyChanged;
+                }
+
                 NotifyPropertyChanged("Downpipes");
             }
+        }
+
+        private void DownpipeItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged(sender, e);            
         }
 
         public List<string> FlashingsNames
@@ -276,8 +288,9 @@ namespace PFD
         private ObservableCollection<int> backBays;
         private ObservableCollection<int> leftRightBays;
 
-        public void SetModelBays()
+        public void SetModelBays(CPFDViewModel pfdVM)
         {
+            _pfdVM = pfdVM;
             CModel_PFD model;
 
             if (_pfdVM.Model is CModel_PFD_01_MR)
@@ -316,8 +329,9 @@ namespace PFD
             SetDoorsWindowsValidationProperties();
         }
 
-        public void SetModelBays(int iFrameNo)
+        public void SetModelBays(int iFrameNo, CPFDViewModel pfdVM)
         {
+            _pfdVM = pfdVM;
             frontBays = new ObservableCollection<int>();
             backBays = new ObservableCollection<int>();
             leftRightBays = new ObservableCollection<int>();
@@ -422,6 +436,14 @@ namespace PFD
 
             
             IsSetFromCode = false;
+        }
+        public DoorsAndWindowsViewModel(ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, 
+            ObservableCollection<CAccessories_LengthItemProperties> flashings, ObservableCollection<CAccessories_DownpipeProperties> downpipes)
+        {
+            DoorBlocksProperties = doorBlocksProperties;
+            WindowBlocksProperties = windowBlocksProperties;
+            Flashings = flashings;
+            Downpipes = downpipes;
         }
 
        
@@ -735,8 +757,6 @@ namespace PFD
             PropertyChanged(sender, e);
         }
 
-        
-
         public bool ValidateFlashings()
         {
             foreach (CAccessories_LengthItemProperties item in Flashings)
@@ -935,8 +955,6 @@ namespace PFD
 
         public void RemoveDoorsAndWindowsBuildingSide(string sBuildingSide)
         {
-            //CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
             int doorsToRemoveCount = 0;
             List<DoorProperties> doorsProps = new List<DoorProperties>();
 
@@ -970,8 +988,6 @@ namespace PFD
 
         public bool AreDoorsOrWindowsOnBuildingSide(string sBuildingSide)
         {
-            //CPFDViewModel vm = this.DataContext as CPFDViewModel;
-
             foreach (DoorProperties d in DoorBlocksProperties)
             {
                 if (d.sBuildingSide == sBuildingSide) return true;

@@ -1435,11 +1435,8 @@ namespace PFD
             DoorsModels = new List<CBlock_3D_001_DoorInBay>();
             WindowsModels = new List<CBlock_3D_002_WindowInBay>();
 
-            // To Ondrej _doorsAndWindowsVM nemusi byt vzdy inicializovane
-            if (vm._doorsAndWindowsVM != null)
-            {
-                vm._doorsAndWindowsVM.SetModelBays(iFrameNo);
-            }
+            vm._doorsAndWindowsVM.SetModelBays(iFrameNo, vm);
+            
             bool isChangedFromCode = vm.IsSetFromCode;
 
             //TODO - to Mato - toto by sme mali nejako otestovat,ked to bolo zmenene tak,ze to ide z CPFDViewModelu,ci to funguje tak ako predtym a tak ako ma
