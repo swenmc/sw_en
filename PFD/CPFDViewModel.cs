@@ -1370,7 +1370,7 @@ namespace PFD
                 MModel = value;
                 bool isChangedFromCode = IsSetFromCode;
                 if (!isChangedFromCode) IsSetFromCode = true;
-                _doorsAndWindowsVM.SetModelBays();
+                if(_doorsAndWindowsVM != null) _doorsAndWindowsVM.SetModelBays();
                 if (!isChangedFromCode) IsSetFromCode = false;
             }
         }
@@ -2765,8 +2765,14 @@ namespace PFD
             MIsRelease = bRelease;
 
             IsSetFromCode = true;
-            _doorsAndWindowsVM.DoorBlocksProperties = doorBlocksProperties;
-            _doorsAndWindowsVM.WindowBlocksProperties = windowBlocksProperties;
+
+            // To Ondrej _doorsAndWindowsVM nemusi byt vzdy inicializovane
+
+            if (_doorsAndWindowsVM != null)
+            {
+                _doorsAndWindowsVM.DoorBlocksProperties = doorBlocksProperties;
+                _doorsAndWindowsVM.WindowBlocksProperties = windowBlocksProperties;
+            }
 
             _componentVM = componentVM;
             SetComponentListAccordingToDoorsAndWindows();
@@ -3079,8 +3085,14 @@ namespace PFD
 
         public void SetComponentListAccordingToDoorsAndWindows()
         {
-            SetComponentListAccordingToDoors();
-            SetComponentListAccordingToWindows();
+            // To Ondrej _doorsAndWindowsVM nemusi byt vzdy inicializovane
+
+            if (_doorsAndWindowsVM != null)
+            {
+                SetComponentListAccordingToDoors();
+                SetComponentListAccordingToWindows();
+            }
+
             ComponentList = _componentVM.ComponentList;
         }
 
@@ -3099,8 +3111,6 @@ namespace PFD
             if (_doorsAndWindowsVM.ModelHasWindow()) _componentVM.AddWindow();
             else _componentVM.RemoveWindow();
         }
-
-        
 
         public void SetComponentListAccordingToCanopies()
         {
@@ -3171,8 +3181,11 @@ namespace PFD
             data.Snow = Snow;
             data.Eq = Eq;
 
-            data.DoorBlocksProperties = _doorsAndWindowsVM.DoorBlocksProperties;
-            data.WindowBlocksProperties = _doorsAndWindowsVM.WindowBlocksProperties;
+            if (_doorsAndWindowsVM != null)
+            {
+                data.DoorBlocksProperties = _doorsAndWindowsVM.DoorBlocksProperties;
+                data.WindowBlocksProperties = _doorsAndWindowsVM.WindowBlocksProperties;
+            }
 
             data.ComponentList = ComponentList;
             data.Model = Model;
@@ -3280,8 +3293,12 @@ namespace PFD
 
             data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
             data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
-            data.NumberOfRollerDoors = _doorsAndWindowsVM.DoorBlocksProperties.Where(d => d.sDoorType == "Roller Door").Count();
-            data.NumberOfPersonnelDoors = _doorsAndWindowsVM.DoorBlocksProperties.Where(d => d.sDoorType == "Personnel Door").Count();
+
+            if (_doorsAndWindowsVM != null)
+            {
+                data.NumberOfRollerDoors = _doorsAndWindowsVM.DoorBlocksProperties.Where(d => d.sDoorType == "Roller Door").Count();
+                data.NumberOfPersonnelDoors = _doorsAndWindowsVM.DoorBlocksProperties.Where(d => d.sDoorType == "Personnel Door").Count();
+            }
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
 

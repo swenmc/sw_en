@@ -100,7 +100,12 @@ namespace PFD
             fFrontFrameRakeAngle_temp_rad = fFrontFrameRakeAngle_deg * MathF.fPI / 180f;
             fBackFrameRakeAngle_temp_rad = fBackFrameRakeAngle_deg * MathF.fPI / 180f;
 
-            DoorBlocksProperties = vm._doorsAndWindowsVM.DoorBlocksProperties;
+            // To Ondrej _doorsAndWindowsVM nemusi byt vzdy inicializovane
+
+            if (vm._doorsAndWindowsVM != null)
+            {
+                DoorBlocksProperties = vm._doorsAndWindowsVM.DoorBlocksProperties;
+            }
 
             m_eSLN = ESLN.e3DD_1D; // 1D members in 3D model
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
@@ -1554,7 +1559,12 @@ namespace PFD
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             DoorsModels = new List<CBlock_3D_001_DoorInBay>();
             WindowsModels = new List<CBlock_3D_002_WindowInBay>();
-            vm._doorsAndWindowsVM.SetModelBays(iFrameNo);
+
+            // To Ondrej _doorsAndWindowsVM nemusi byt vzdy inicializovane
+            if (vm._doorsAndWindowsVM != null)
+            {
+                vm._doorsAndWindowsVM.SetModelBays(iFrameNo);
+            }
             bool isChangedFromCode = vm.IsSetFromCode;
 
             if (DoorBlocksProperties != null)
@@ -1636,7 +1646,7 @@ namespace PFD
                 //}
             }
 
-            if (vm._doorsAndWindowsVM.WindowBlocksProperties != null)
+            if (vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.WindowBlocksProperties != null)
             {
                 foreach (WindowProperties wp in vm._doorsAndWindowsVM.WindowBlocksProperties.ToList())
                 {
@@ -1829,7 +1839,7 @@ namespace PFD
             float fWindowFrameThickness = 0.1f; // Rozmer ramu - plati pre stvorec, treba prerobit pre obdlznik, rozmer podla sirky Flashings
 
             #region Doors
-            if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties != null)
+            if (_pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.DoorBlocksProperties != null)
             {
                 m_arrGOStrDoors = new List<BaseClasses.GraphObj.CStructure_Door>();
 
@@ -1892,7 +1902,7 @@ namespace PFD
             #endregion
 
             #region Windows
-            if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties != null)
+            if (_pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.WindowBlocksProperties != null)
             {
                 m_arrGOStrWindows = new List<BaseClasses.GraphObj.CStructure_Window>();
 

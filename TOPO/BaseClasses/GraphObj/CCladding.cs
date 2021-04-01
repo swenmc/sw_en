@@ -1530,53 +1530,59 @@ namespace BaseClasses.GraphObj
                 listOfOpenings_All = SheetListToOpeningListConverter(listOfFibreGlassSheets);
 
             // Do zoznamu pridame otvory pre doors
-            foreach (DoorProperties door in doorPropCollection)
+            if (doorPropCollection != null)
             {
-                if (door.sBuildingSide == side)
+                foreach (DoorProperties door in doorPropCollection)
                 {
-                    // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                    if (door.sBuildingSide == side)
+                    {
+                        // TODO - vypocitat presnu poziciu otvoru dveri od laveho okraja steny
+                        // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
 
-                    double doorPosition_x_Input_GUI;
+                        double doorPosition_x_Input_GUI;
 
-                if(side == "Left" || side == "Right")
-                    doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
-                else
-                    doorPosition_x_Input_GUI = column_crsc_z_plus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * (door.sBuildingSide == "Front" ? m_fFrontColumnDistance : m_fBackColumnDistance));
+                        if (side == "Left" || side == "Right")
+                            doorPosition_x_Input_GUI = -column_crsc_y_minus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * bayWidthCollection[door.iBayNumber - 1].Width);
+                        else
+                            doorPosition_x_Input_GUI = column_crsc_z_plus_temp + (door.fDoorCoordinateXinBlock + (door.iBayNumber - 1) * (door.sBuildingSide == "Front" ? m_fFrontColumnDistance : m_fBackColumnDistance));
 
-                double doorPosition_x = doorPosition_x_Input_GUI;
+                        double doorPosition_x = doorPosition_x_Input_GUI;
 
-                if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
-                    doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
+                        if (door.sBuildingSide == "Left" || door.sBuildingSide == "Back") // Reverse x-direction in GUI
+                            doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
 
-                    listOfOpenings_All.Add(new COpening(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
-                    pControlPoint, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0, true, 0));
-                    iOpeningIndex++;
+                        listOfOpenings_All.Add(new COpening(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
+                        pControlPoint, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0, true, 0));
+                        iOpeningIndex++;
+                    }
                 }
             }
 
             // Do zoznamu pridame otvory pre windows
-            foreach (WindowProperties window in windowPropCollection)
+            if (windowPropCollection != null)
             {
-                if (window.sBuildingSide == side)
+                foreach (WindowProperties window in windowPropCollection)
                 {
-                    // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
-                    // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
-                    double windowPosition_x_Input_GUI;
+                    if (window.sBuildingSide == side)
+                    {
+                        // TODO - vypocitat presnu poziciu otvoru okna od laveho okraja steny
+                        // Moze sa menit podla strany a aj podla orientacie steny (left a back !!!)
+                        double windowPosition_x_Input_GUI;
 
-                if (side == "Left" || side == "Right")
-                    windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
-                else
-                    windowPosition_x_Input_GUI = column_crsc_z_plus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * (window.sBuildingSide == "Front" ? m_fFrontColumnDistance : m_fBackColumnDistance));
+                        if (side == "Left" || side == "Right")
+                            windowPosition_x_Input_GUI = -column_crsc_y_minus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * bayWidthCollection[window.iBayNumber - 1].Width);
+                        else
+                            windowPosition_x_Input_GUI = column_crsc_z_plus_temp + (window.fWindowCoordinateXinBay + (window.iBayNumber - 1) * (window.sBuildingSide == "Front" ? m_fFrontColumnDistance : m_fBackColumnDistance));
 
-                double windowPosition_x = windowPosition_x_Input_GUI;
+                        double windowPosition_x = windowPosition_x_Input_GUI;
 
-                if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
-                    windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
+                        if (window.sBuildingSide == "Left" || window.sBuildingSide == "Back") // Reverse x-direction in GUI
+                            windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
 
-                    listOfOpenings_All.Add(new COpening(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, -bottomEdge_z + window.fWindowCoordinateZinBay,
-                    pControlPoint, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0, true, 0));
-                    iOpeningIndex++;
+                        listOfOpenings_All.Add(new COpening(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, -bottomEdge_z + window.fWindowCoordinateZinBay,
+                        pControlPoint, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0, true, 0));
+                        iOpeningIndex++;
+                    }
                 }
             }
         }

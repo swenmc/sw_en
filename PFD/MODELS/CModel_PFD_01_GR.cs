@@ -86,7 +86,12 @@ namespace PFD
             fFrontFrameRakeAngle_temp_rad = fFrontFrameRakeAngle_deg * MathF.fPI / 180f;
             fBackFrameRakeAngle_temp_rad = fBackFrameRakeAngle_deg * MathF.fPI / 180f;
 
-            DoorBlocksProperties = vm._doorsAndWindowsVM.DoorBlocksProperties;
+            // To Ondrej _doorsAndWindowsVM nemusi byt vzdy inicializovane
+
+            if (vm._doorsAndWindowsVM != null)
+            {
+                DoorBlocksProperties = vm._doorsAndWindowsVM.DoorBlocksProperties;
+            }
 
             m_eSLN = ESLN.e3DD_1D; // 1D members in 3D model
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
@@ -151,7 +156,7 @@ namespace PFD
             float fHorizontalDisplacementLimit_WindPost_IL = 1f / fHorizontalDisplacementLimitDenominator_WindPost_IL;
             float fHorizontalDisplacementLimit_WindPost_TL = 1f / fHorizontalDisplacementLimitDenominator_WindPost_TL;
 
-            
+
 
             listOfModelMemberGroups.Add(new CMemberGroup(1, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.MainColumn), EMemberType_FS.eMC, EMemberType_FS_Position.MainColumn, m_arrCrSc[EMemberType_FS_Position.MainColumn], fHorizontalDisplacementLimitDenominator_Column_PL, fHorizontalDisplacementLimitDenominator_Column_IL, fHorizontalDisplacementLimitDenominator_Column_TL, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(2, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.MainRafter), EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, m_arrCrSc[EMemberType_FS_Position.MainRafter], fVerticalDisplacementLimitDenominator_Rafter_PL, fVerticalDisplacementLimitDenominator_Rafter_IL, fVerticalDisplacementLimitDenominator_Rafter_TL, 0));
@@ -166,7 +171,7 @@ namespace PFD
             listOfModelMemberGroups.Add(new CMemberGroup(11, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.GirtBackSide), EMemberType_FS.eG, EMemberType_FS_Position.GirtBackSide, m_arrCrSc[EMemberType_FS_Position.GirtBackSide], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
 
             CComponentInfo ci_BBG = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
-            if(ci_BBG != null) listOfModelMemberGroups.Add(new CMemberGroup(12, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.BracingBlockGirts), EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirts], 0, 0, 0, 0));
+            if (ci_BBG != null) listOfModelMemberGroups.Add(new CMemberGroup(12, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.BracingBlockGirts), EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirts], 0, 0, 0, 0));
 
             CComponentInfo ci_BBP = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
             if (ci_BBP != null) listOfModelMemberGroups.Add(new CMemberGroup(13, CModelHelper.GetComponentInfoName(componentList, EMemberType_FS_Position.BracingBlockPurlins), EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, m_arrCrSc[EMemberType_FS_Position.BracingBlockPurlins], 0, 0, 0, 0));
@@ -181,7 +186,7 @@ namespace PFD
             CComponentInfo ci_CBR = componentList.FirstOrDefault(ci => ci.MemberTypePosition == EMemberType_FS_Position.CrossBracingRoof);
             if (ci_CBW != null)
                 listOfModelMemberGroups.Add(new CMemberGroup(16, ci_CBW.ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingWall, m_arrCrSc[EMemberType_FS_Position.CrossBracingWall], 0, 0, 0, 0));
-            if(ci_CBR != null)
+            if (ci_CBR != null)
                 listOfModelMemberGroups.Add(new CMemberGroup(17, ci_CBR.ComponentName, EMemberType_FS.eCB, EMemberType_FS_Position.CrossBracingRoof, m_arrCrSc[EMemberType_FS_Position.CrossBracingRoof], 0, 0, 0, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
@@ -327,7 +332,7 @@ namespace PFD
 
             iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
-            
+
             bool bGeneratePurlins = CModelHelper.IsGenerateSet(componentList, EMemberType_FS_Position.Purlin);
             if (bGeneratePurlins)
             {
@@ -458,11 +463,11 @@ namespace PFD
 
             int iNumberOfGBSideWallsMembersInOneBayOneSide = 0;
             int iNumberOfGBSideWallsMembersInOneBay = 0;
-            
+
             // TODO 408 - Zapracovat toto nastavenie do GUI - prebrat s Ondrejom a dopracovat funkcionalitu tak ze sa budu generovat len bracing blocks na stenach 
             // alebo pre purlins v kazdom druhom rade (medzera medzi girts alebo purlins)
 
-            bool bUseGBEverySecondGUI = vm._modelOptionsVM.BracingEverySecondRowOfGirts; 
+            bool bUseGBEverySecondGUI = vm._modelOptionsVM.BracingEverySecondRowOfGirts;
             bool bUseGBEverySecond = bUseGBEverySecondGUI && (iOneColumnGirtNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
 
             if (bGenerateGirtBracingSideWalls)
@@ -520,9 +525,9 @@ namespace PFD
 
                 for (int i = 0; i < iArrNumberOfNodesPerFrontColumnFromLeft.Length; i++)
                 {
-                    iArrGB_FS_NumberOfNodesPerBay[i+1] = (iArrNumberOfNodesPerFrontColumnFromLeft[i] + 1) * iNumberOfTransverseSupports_FrontGirts;
+                    iArrGB_FS_NumberOfNodesPerBay[i + 1] = (iArrNumberOfNodesPerFrontColumnFromLeft[i] + 1) * iNumberOfTransverseSupports_FrontGirts;
                     iArrGB_FS_NumberOfNodesPerBayFirstNode[i + 1] = iArrNumberOfNodesPerFrontColumnFromLeft[i] + 1;
-                    iArrGB_FS_NumberOfMembersPerBay[i+1] = iArrNumberOfNodesPerFrontColumnFromLeft[i] * iNumberOfTransverseSupports_FrontGirts;
+                    iArrGB_FS_NumberOfMembersPerBay[i + 1] = iArrNumberOfNodesPerFrontColumnFromLeft[i] * iNumberOfTransverseSupports_FrontGirts;
 
                     iNumberOfGB_FSNodesInOneFrame += iArrGB_FS_NumberOfNodesPerBay[i + 1];
                     iNumberOfGB_FSMembersInOneFrame += iArrGB_FS_NumberOfMembersPerBay[i + 1];
@@ -575,7 +580,7 @@ namespace PFD
             // Cross-bracing
             bool bGenerateCrossBracing = vm._crossBracingOptionsVM.HasCrosses(); //vm._modelOptionsVM.EnableCrossBracing;
             bool bGenerateSideWallCrossBracing = false;
-            if(ci_CBW != null && ci_CBW.Generate != null) bGenerateSideWallCrossBracing = ci_CBW.Generate.Value;
+            if (ci_CBW != null && ci_CBW.Generate != null) bGenerateSideWallCrossBracing = ci_CBW.Generate.Value;
 
             bool bGenerateRoofCrossBracing = false;
             if (ci_CBR != null && ci_CBR.Generate != null) bGenerateRoofCrossBracing = ci_CBR.Generate.Value;
@@ -705,7 +710,7 @@ namespace PFD
                     }
 
                     // Canopy Bracing Block Nodes and Members
-                    if(bGeneratePurlinBracingBlocksCanopy)
+                    if (bGeneratePurlinBracingBlocksCanopy)
                     {
                         if (canopyBay.Left)
                         {
@@ -732,7 +737,7 @@ namespace PFD
             }
 
             m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame + iCanopyRafterNodes_Total + iCanopyPurlinNodes_Total + iCanopyPurlinBlockNodes_Total];
-            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total+ iCanopyRafterOverhangs_Total + iCanopyPurlins_Total + iCanopyPurlinBlockMembers_Total + iCanopyCrossBracingMembers_Total];
+            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame + iNumberOfCrossBracingMembers_Walls_Total + iNumberOfCrossBracingMembers_Roof_Total + iCanopyRafterOverhangs_Total + iCanopyPurlins_Total + iCanopyPurlinBlockMembers_Total + iCanopyCrossBracingMembers_Total];
 
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
 
@@ -906,7 +911,7 @@ namespace PFD
 
             // Members - Girts
             int i_temp_numberofMembers = iMainColumnNo + iRafterNo + iEavesPurlinNoInOneFrame * (iFrameNo - 1);
-            
+
             if (bGenerateGirts)
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
@@ -1096,7 +1101,7 @@ namespace PFD
             i_temp_numberofNodes += bGenerateBackGirts ? iBackIntermediateColumnNodesForGirtsOneFrameNo : 0;
             if (bGenerateGirtBracingSideWalls)
             {
-                for (int i = 0; i < (iFrameNo-1); i++)
+                for (int i = 0; i < (iFrameNo - 1); i++)
                 {
                     float fIntermediateSupportSpacingGirts = L1_Bays[i] / (iNumberOfTransverseSupports_Girts + 1); // number of LTB segments = number of support + 1
 
@@ -1104,7 +1109,7 @@ namespace PFD
                     {
                         float zCoord = j < iOneColumnGirtNo ? (fBottomGirtPosition + j * fDist_Girt) : fH1_frame_centerline;
 
-                        for (int k = 0; k < iNumberOfTransverseSupports_Girts ; k++)
+                        for (int k = 0; k < iNumberOfTransverseSupports_Girts; k++)
                         {
                             //task 600
                             //m_arrNodes[i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k] = new CNode(i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + j * iNumberOfTransverseSupports_Girts + k + 1, 000000, i * fL1_frame + (k + 1) * fIntermediateSupportSpacingGirts, zCoord, 0);
@@ -1171,7 +1176,7 @@ namespace PFD
                             int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + +iNumberOfGBSideWallsNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Girts + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[EMemberType_FS_Position.BracingBlockGirts], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
 
-                            if(bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
+                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
                     }
                 }
@@ -1318,11 +1323,11 @@ namespace PFD
             i_temp_numberofMembers += bGeneratePurlinBracing ? iPBMembersNo : 0;
             if (bGenerateGirtBracingFrontSide)
             {
-               float fGBFrontSideEndToRafter = (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_min / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsFrontSide].y_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+                float fGBFrontSideEndToRafter = (float)m_arrCrSc[EMemberType_FS_Position.EdgeRafter].z_min / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsFrontSide].y_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
 
-               AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode, iArrGB_FS_NumberOfMembersPerBay,
-               iNumberOfGB_FSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_FrontGirts, eccentricityGirtFront_Y0, fGBFrontSideStart, fGBFrontSideEnd, fGBFrontSideEndToRafter, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsFrontSide],
-               EMemberType_FS_Position.BracingBlockGirtsFrontSide, fColumnsRotation, bUseGBEverySecond);
+                AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode, iArrGB_FS_NumberOfMembersPerBay,
+                iNumberOfGB_FSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_FrontGirts, eccentricityGirtFront_Y0, fGBFrontSideStart, fGBFrontSideEnd, fGBFrontSideEndToRafter, m_arrCrSc[EMemberType_FS_Position.BracingBlockGirtsFrontSide],
+                EMemberType_FS_Position.BracingBlockGirtsFrontSide, fColumnsRotation, bUseGBEverySecond);
             }
 
             // Girt Bracing - Back side
@@ -1429,7 +1434,12 @@ namespace PFD
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             DoorsModels = new List<CBlock_3D_001_DoorInBay>();
             WindowsModels = new List<CBlock_3D_002_WindowInBay>();
-            vm._doorsAndWindowsVM.SetModelBays(iFrameNo);
+
+            // To Ondrej _doorsAndWindowsVM nemusi byt vzdy inicializovane
+            if (vm._doorsAndWindowsVM != null)
+            {
+                vm._doorsAndWindowsVM.SetModelBays(iFrameNo);
+            }
             bool isChangedFromCode = vm.IsSetFromCode;
 
             //TODO - to Mato - toto by sme mali nejako otestovat,ked to bolo zmenene tak,ze to ide z CPFDViewModelu,ci to funguje tak ako predtym a tak ako ma
@@ -1502,7 +1512,7 @@ namespace PFD
                 //}
             }
 
-            if (vm._doorsAndWindowsVM.WindowBlocksProperties != null)
+            if (vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.WindowBlocksProperties != null)
             {
                 foreach (WindowProperties wp in vm._doorsAndWindowsVM.WindowBlocksProperties.ToList())
                 {
@@ -1683,7 +1693,7 @@ namespace PFD
             //pokial sa nachadzaju casti kodu, ktore su uplne rovnake pre _GR aj _MR model, tak by som ich rad vytiahol do nejakej spolocnej metody
             //neviem ale ako skontrolovat, ci je dana cast kodu uplne rovnaka...aby som ti nieco nepokazil ked si nevsimnem nejake znamienko,alebo take nieco
             #region Doors
-            if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties != null)
+            if (_pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.DoorBlocksProperties != null)
             {
                 m_arrGOStrDoors = new List<BaseClasses.GraphObj.CStructure_Door>();
 
@@ -1746,7 +1756,7 @@ namespace PFD
             #endregion
 
             #region Windows
-            if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties != null)
+            if (_pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.WindowBlocksProperties != null)
             {
                 m_arrGOStrWindows = new List<BaseClasses.GraphObj.CStructure_Window>();
 

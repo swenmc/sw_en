@@ -227,7 +227,7 @@ namespace PFD
 
             // DG 7
             // Gutters
-            if (vm._quotationDisplayOptionsVM.DisplayGutters && _pfdVM._doorsAndWindowsVM.Gutters.Count > 0) CreateTableGutters(model);
+            if (vm._quotationDisplayOptionsVM.DisplayGutters && _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Gutters.Count > 0) CreateTableGutters(model);
             else
             {
                 TextBlock_Gutters.Visibility = Visibility.Collapsed;
@@ -236,7 +236,7 @@ namespace PFD
 
             // DG 8
             // Downpipes
-            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && _pfdVM._doorsAndWindowsVM.Downpipes.Count > 0) CreateTableDownpipes(model);
+            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Downpipes.Count > 0) CreateTableDownpipes(model);
             else
             {
                 TextBlock_Downpipes.Visibility = Visibility.Collapsed;
@@ -263,7 +263,7 @@ namespace PFD
 
             // DG 11
             // Flashing and Packers
-            if (vm._quotationDisplayOptionsVM.DisplayFlashing && _pfdVM._doorsAndWindowsVM.Flashings.Count > 0)
+            if (vm._quotationDisplayOptionsVM.DisplayFlashing && _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Flashings.Count > 0)
             {
                 CreateTableFlashing(model,
                 vm.RoofSideLength, // fRoofSideLength,
@@ -897,32 +897,35 @@ namespace PFD
 
             List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
 
-            foreach (DoorProperties dp in vm._doorsAndWindowsVM.DoorBlocksProperties)
+            if (vm._doorsAndWindowsVM != null)
             {
-                fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
-
-                if (dp.sDoorType == "Roller Door")
+                foreach (DoorProperties dp in vm._doorsAndWindowsVM.DoorBlocksProperties)
                 {
-                    fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
-                    fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
-                    fRollerDoorLintelCapFlashing_TotalLength += dp.fDoorsWidth;
+                    fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
+
+                    if (dp.sDoorType == "Roller Door")
+                    {
+                        fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
+                        fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                        fRollerDoorLintelCapFlashing_TotalLength += dp.fDoorsWidth;
+                    }
+                    else
+                    {
+                        fPADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
+                        fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                    }
+
+                    listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight, dp.CoatingColor.ID, dp.Serie));
                 }
-                else
+
+                foreach (WindowProperties wp in vm._doorsAndWindowsVM.WindowBlocksProperties)
                 {
-                    fPADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
-                    fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                    fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
+
+                    fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
+
+                    listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight, wp.CoatingColor.ID, null));
                 }
-
-                listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight, dp.CoatingColor.ID, dp.Serie));
-            }
-
-            foreach (WindowProperties wp in vm._doorsAndWindowsVM.WindowBlocksProperties)
-            {
-                fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
-
-                fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
-
-                listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight, wp.CoatingColor.ID, null));
             }
 
             // TODO Ondrej
