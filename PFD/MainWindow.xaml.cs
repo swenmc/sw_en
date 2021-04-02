@@ -1391,9 +1391,7 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eAccessories)
             {
-                //768
-                //Takto by to malo byt
-                //if (TabDoorsAndWindows.Content == null) TabDoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
+                if (TabDoorsAndWindows.Content == null) TabDoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
 
                 //if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
                 //else RedrawDoorOrWindowPreview();

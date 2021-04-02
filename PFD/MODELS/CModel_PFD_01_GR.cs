@@ -1435,7 +1435,7 @@ namespace PFD
             DoorsModels = new List<CBlock_3D_001_DoorInBay>();
             WindowsModels = new List<CBlock_3D_002_WindowInBay>();
 
-            vm._doorsAndWindowsVM.SetModelBays(iFrameNo, vm);
+            vm._doorsAndWindowsVM.SetModelBays(iFrameNo, vm.IFrontColumnNoInOneFrame);
             
             bool isChangedFromCode = vm.IsSetFromCode;
 

@@ -2358,9 +2358,10 @@ namespace PFD
             set
             {                
                 m_DoorsAndWindowsChanged = value;
+                RecreateQuotation = true;
                 RecreateModel = true;
                 RecreateJoints = true;
-                RecreateFloorSlab = true;
+                RecreateFloorSlab = true;                
                 SetResultsAreNotValid();
                 SetComponentListAccordingToDoors();
                 NotifyPropertyChanged("DoorsAndWindowsChanged");

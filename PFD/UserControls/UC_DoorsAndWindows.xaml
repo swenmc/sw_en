@@ -30,7 +30,13 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <StackPanel>
-            <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Margin="5,5,0,0" Height="430" Width="570" MouseWheel="FrameDoorWindowPreview3D_MouseWheel"/>
+            <Grid Margin="5 5 0 0">
+                <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Margin="0" Height="430" Width="570" MouseWheel="FrameDoorWindowPreview3D_MouseWheel"/>
+                <Button Name="btnApplyChanges" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Apply Changes" Margin="545 0 0 0" Width="25" Height="25" Click="BtnApplyChanges_Click">
+                    <Image Source="..\Resources\apply_changes.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                </Button>
+            </Grid>
+            
             <StackPanel Orientation="Horizontal" Width="570" HorizontalAlignment="Left">
                 <TextBlock Name="LabelDoors" HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Doors" VerticalAlignment="Top" Margin="5,2,0,0" FontSize="16" />
