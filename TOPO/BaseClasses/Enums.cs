@@ -1084,6 +1084,7 @@ namespace BaseClasses
         public float fFrontCladdingOpacity;
         public float fLeftCladdingOpacity;
         public float fRoofCladdingOpacity;
+        public float fFlashingOpacity;
         public float fDoorPanelOpacity;
         public float fWindowPanelOpacity;
         public float fFibreglassOpacity;

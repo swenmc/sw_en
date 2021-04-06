@@ -106,7 +106,7 @@ namespace BaseClasses.GraphObj
         
         // Constructor 3
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
-            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float doorPanelOpacity, bool isRollerDoor, bool LeftOrBack, bool useTextures)
+            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float flashingOpacity, float doorPanelOpacity, bool isRollerDoor, bool LeftOrBack, bool useTextures)
         {
             ID = iW_ID;
             SegmentNum = iSegmentNum;
@@ -115,7 +115,7 @@ namespace BaseClasses.GraphObj
             m_fDim2 = fH;
             m_fDim3 = ft;
 
-            m_fvolOpacity_1 = 1.0f; // Flashings - TODO
+            m_fvolOpacity_1 = flashingOpacity; // Flashings
             m_fvolOpacity_2 = doorPanelOpacity; // Vypln dveri
 
             GThickness = fDoorPanelThickness;

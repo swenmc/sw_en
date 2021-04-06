@@ -3785,6 +3785,7 @@ namespace PFD
             sDisplayOptions.fFrontCladdingOpacity = _displayOptionsVM.FrontCladdingOpacity;
             sDisplayOptions.fLeftCladdingOpacity = _displayOptionsVM.LeftCladdingOpacity;
             sDisplayOptions.fRoofCladdingOpacity = _displayOptionsVM.RoofCladdingOpacity;
+            sDisplayOptions.fFlashingOpacity = _displayOptionsVM.FlashingOpacity;
             sDisplayOptions.fDoorPanelOpacity = _displayOptionsVM.DoorPanelOpacity;
             sDisplayOptions.fWindowPanelOpacity = _displayOptionsVM.WindowPanelOpacity;
             sDisplayOptions.fFibreglassOpacity = _displayOptionsVM.FibreglassOpacity;
