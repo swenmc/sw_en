@@ -170,12 +170,31 @@ namespace BaseClasses.GraphObj
             CVolume mDoorPanel = new CVolume();
             Model3DGroup gr = new Model3DGroup(); // Door Segment
 
-            gr.Children.Add(mFrame_01_HU.CreateM_3D_G_Volume_8Edges(pArray[0], fL_X, fT_Y, fT_Y, DiffMatF, DiffMatF)); // Horizontal upper
-            gr.Children.Add(mFrame_02_V.CreateM_3D_G_Volume_8Edges(pArray[1], fT_Y, fT_Y, fH_Z - 1 * fT_Y, DiffMatF, DiffMatF)); // Vertical
-            gr.Children.Add(mFrame_03_V.CreateM_3D_G_Volume_8Edges(pArray[2], fT_Y, fT_Y, fH_Z - 1 * fT_Y, DiffMatF, DiffMatF)); // Vertical
-            gr.Children.Add(mDoorPanel.CreateM_3D_G_Volume_8Edges(pArray[3], fL_X - 2 * fT_Y, fDoorPanelThickness, fH_Z - 1 * fT_Y, DiffMatD, DiffMatD)); // Door Panel No 1
+            bool UseSimpleModel2D = true; // TODO 772 - Zapracovat ako volbu v GUI
 
-            UseSimpleWireFrame2D = true; // TODO - Zapracovat ako volbu v GUI
+            if (!UseSimpleModel2D)
+            {
+                // 3D Model - Prims
+                gr.Children.Add(mFrame_01_HU.CreateM_3D_G_Volume_8Edges(pArray[0], fL_X, fT_Y, fT_Y, DiffMatF, DiffMatF)); // Horizontal upper
+                gr.Children.Add(mFrame_02_V.CreateM_3D_G_Volume_8Edges(pArray[1], fT_Y, fT_Y, fH_Z - 1 * fT_Y, DiffMatF, DiffMatF)); // Vertical
+                gr.Children.Add(mFrame_03_V.CreateM_3D_G_Volume_8Edges(pArray[2], fT_Y, fT_Y, fH_Z - 1 * fT_Y, DiffMatF, DiffMatF)); // Vertical
+                gr.Children.Add(mDoorPanel.CreateM_3D_G_Volume_8Edges(pArray[3], fL_X - 2 * fT_Y, fDoorPanelThickness, fH_Z - 1 * fT_Y, DiffMatD, DiffMatD)); // Door Panel No 1
+            }
+            else
+            {
+                // Surface model
+                CAreaRectangular mA_01_HU = new CAreaRectangular(0, new System.Windows.Point(p01_HU.X, p01_HU.Z), fL_X, fT_Y, 0, 0);
+                CAreaRectangular mA_02_V = new CAreaRectangular(0, new System.Windows.Point(p02_V.X, p02_V.Z), fT_Y, fH_Z - 1 * fT_Y, 0, 0);
+                CAreaRectangular mA_03_V = new CAreaRectangular(0, new System.Windows.Point(p03_V.X, p03_V.Z), fT_Y, fH_Z - 1 * fT_Y, 0, 0);
+                CAreaRectangular mA_DoorPanel = new CAreaRectangular(0, new System.Windows.Point(p04_DoorPanel.X, p04_DoorPanel.Z), fL_X - 2 * fT_Y, fH_Z - 1 * fT_Y, 0, 0);
+
+                gr.Children.Add(mA_01_HU.CreateArea(DiffMatF));
+                gr.Children.Add(mA_02_V.CreateArea(DiffMatF));
+                gr.Children.Add(mA_03_V.CreateArea(DiffMatF));
+                gr.Children.Add(mA_DoorPanel.CreateArea(DiffMatD, true)); // Display texture for roller door panel
+            }
+
+            UseSimpleWireFrame2D = false; // TODO 772 - Zapracovat ako volbu v GUI
 
             EdgePoints2D = new List<System.Windows.Point>()
             {
@@ -190,6 +209,7 @@ namespace BaseClasses.GraphObj
                 // GCS -system plane XZ
                 double offset = 0.010;
 
+                // One rectangle
                 WireFramePoints.Add(new Point3D(0, offset, 0));
                 WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
 
@@ -206,10 +226,47 @@ namespace BaseClasses.GraphObj
             {
                 //to Mato - tu je nutne nastavit wireframePoints
                 //tu je nutne niekde ziskat Wireframe a aj ho nastavit
-                WireFramePoints.AddRange(mFrame_01_HU.WireFramePoints);
-                WireFramePoints.AddRange(mFrame_02_V.WireFramePoints);
-                WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
-                WireFramePoints.AddRange(mDoorPanel.WireFramePoints);
+
+                if (UseSimpleModel2D)
+                {
+                    // Two rectangles
+
+                    // GCS -system plane XZ
+                    double offset = 0.000;
+
+                    // Door opening outline
+                    WireFramePoints.Add(new Point3D(0, offset, 0));
+                    WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
+
+                    WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
+                    WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
+
+                    WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+
+                    WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(0, offset, 0));
+
+                    // Door panel outline
+                    WireFramePoints.Add(new Point3D(m_fDim3, offset, 0));
+                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, 0));
+
+                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, 0));
+                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim2 - m_fDim3));
+
+                    WireFramePoints.Add(new Point3D(m_fDim1- m_fDim3, offset, m_fDim2 - m_fDim3));
+                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim2 - m_fDim3));
+
+                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim2 - m_fDim3));
+                    WireFramePoints.Add(new Point3D(m_fDim3, offset, 0));
+                }
+                else
+                {
+                    WireFramePoints.AddRange(mFrame_01_HU.WireFramePoints);
+                    WireFramePoints.AddRange(mFrame_02_V.WireFramePoints);
+                    WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
+                    WireFramePoints.AddRange(mDoorPanel.WireFramePoints);
+                }
             }
 
             //ak sa nepouziva,tak treba zmazat z pamate
