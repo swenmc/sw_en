@@ -28,6 +28,7 @@ namespace PFD
         private float m_fWindowCoordinateZinBay;
         private int m_iNumberOfWindowColumns;
         private bool m_AddWindows;
+        private List<int> m_WindowsColumns;
         private bool m_DeleteWindows;
 
         public bool IsSetFromCode = false;
@@ -106,7 +107,8 @@ namespace PFD
         {
             get
             {
-                return new List<int>() { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                if(m_WindowsColumns == null) m_WindowsColumns = new List<int>() { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                return m_WindowsColumns;
             }
         }
 

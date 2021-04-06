@@ -156,15 +156,16 @@
                     <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter horizontal position of window in the bay" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowCoordinateXinBay, StringFormat={}{0:0.0}}"/>
                     <DataGridTextColumn Header="z [m]" ToolTipService.ToolTip="Enter vertical position of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowCoordinateZinBay, StringFormat={}{0:0.0}}"/>
                     <DataGridComboBoxColumn Header="Muntin Number" ToolTipService.ToolTip="Enter number of window block columns" Width="2*"
-                                    SelectedItemBinding="{Binding Path=iNumberOfWindowColumns}"
-                                    ItemsSource="{Binding Source={StaticResource WindowColumns}}">
+                                    SelectedValueBinding="{Binding Path=iNumberOfWindowColumns, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>
                             <Style TargetType="ComboBox">
+                                <Setter Property="ItemsSource" Value="{Binding WindowColumns}"/>
                                 <Setter Property="HorizontalAlignment" Value="Right" />
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                         <DataGridComboBoxColumn.EditingElementStyle>
-                            <Style TargetType="ComboBox">                                
+                            <Style TargetType="ComboBox">
+                                <Setter Property="ItemsSource" Value="{Binding WindowColumns}"/>
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
                     </DataGridComboBoxColumn>
