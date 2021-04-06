@@ -18,6 +18,20 @@ namespace BaseClasses.GraphObj
 
         private List<Point3D> m_EdgePointList;
 
+        public List<Point3D> EdgePointList
+        {
+            get
+            {
+                return m_EdgePointList;
+            }
+
+            set
+            {
+                m_EdgePointList = value;
+            }
+        }
+
+        // Constructor 1
         public CAreaPolygonal()
         {
 
@@ -37,19 +51,6 @@ namespace BaseClasses.GraphObj
             ID = iArea_ID;
             EdgePointList = edgePointList;
             FTime = fTime;
-        }
-
-        public List<Point3D> EdgePointList
-        {
-            get
-            {
-                return m_EdgePointList;
-            }
-
-            set
-            {
-                m_EdgePointList = value;
-            }
         }
 
         public GeometryModel3D CreateArea(bool useTextures, DiffuseMaterial material, bool setBackMaterial = true)
