@@ -164,8 +164,7 @@
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                         <DataGridComboBoxColumn.EditingElementStyle>
-                            <Style TargetType="ComboBox">
-                                <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
+                            <Style TargetType="ComboBox">                                
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
                     </DataGridComboBoxColumn>
