@@ -686,5 +686,9 @@ namespace BaseClasses.Helpers
 
             return Math.Min(Math.Min(height_left, height_right), height_toptip);
         }
+
+
+
+        
     }
 }

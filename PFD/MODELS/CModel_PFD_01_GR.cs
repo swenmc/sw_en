@@ -1794,7 +1794,10 @@ namespace PFD
                 }
             }
             #endregion
+
         }
+
+        
 
         //temp test zatial task 612
         private void changeMembersVariousCrsc()
@@ -2618,5 +2621,44 @@ namespace PFD
         }
 
         */
+        //task 771
+        //private void ChangeGenerateAccordingToComponentList()
+        //{
+        //    CCladding cladding = m_arrGOCladding.FirstOrDefault();
+        //    if (cladding == null) return;
+
+        //    CComponentInfo purlin = _pfdVM.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+        //    if (purlin != null && purlin.Generate.HasValue)
+        //    {
+        //        foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets_Roof())
+        //        {
+        //            sheet.BIsGenerated = purlin.Generate.Value;
+        //            sheet.BIsDisplayed = purlin.Generate.Value;
+        //            sheet.BIsSelectedForMaterialList = purlin.Generate.Value;
+        //        }
+        //    }
+
+        //    CComponentInfo leftGirt = _pfdVM.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+        //    if (leftGirt != null && leftGirt.Generate.HasValue)
+        //    {                
+        //        foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfCladdingSheetsLeftWall)
+        //        {
+        //            sheet.BIsGenerated = leftGirt.Generate.Value;
+        //            sheet.BIsDisplayed = leftGirt.Generate.Value;
+        //            sheet.BIsSelectedForMaterialList = leftGirt.Generate.Value;
+        //        }
+        //    }
+        //    CComponentInfo rightGirt = _pfdVM.ComponentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+        //    if (rightGirt != null && rightGirt.Generate.HasValue)
+        //    {
+        //        foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfCladdingSheetsRightWall)
+        //        {
+        //            sheet.BIsGenerated = rightGirt.Generate.Value;
+        //            sheet.BIsDisplayed = rightGirt.Generate.Value;
+        //            sheet.BIsSelectedForMaterialList = rightGirt.Generate.Value;
+        //        }
+        //    }
+
+        //}
     }
 }
