@@ -27,6 +27,7 @@ namespace BaseClasses
         private float m_fWindowCoordinateXinBay;
         private float m_fWindowCoordinateZinBay;
         private int m_iNumberOfWindowColumns;
+        private List<int> m_WindowColumns;
 
         private List<CoatingColour> m_CoatingColors;
         private CoatingColour m_coatingColor;
@@ -197,6 +198,15 @@ namespace BaseClasses
             {
                 m_Bays = value;
                 if (m_Bays != null) NotifyPropertyChanged("Bays");
+            }
+        }
+
+        public List<int> WindowColumns
+        {
+            get
+            {
+                if (m_WindowColumns == null) m_WindowColumns = new List<int>() { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                return m_WindowColumns;
             }
         }
 
