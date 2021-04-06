@@ -74,8 +74,8 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public int iVectorOverFactor_LCS;
-        public int iVectorUpFactor_LCS;
+        //public int iVectorOverFactor_LCS;
+        //public int iVectorUpFactor_LCS;
 
         // Constructor 1
         public CStructure_Window()
@@ -202,13 +202,34 @@ namespace BaseClasses.GraphObj
             CVolume mGlassTable = new CVolume();
             Model3DGroup gr = new Model3DGroup(); // Window Segment
 
-            gr.Children.Add(mFrame_01_HB.CreateM_3D_G_Volume_8Edges(pArray[0], fL_X, fT_Y, fT_Y, DiffMatF, DiffMatF)); // Horizontal bottom;
-            gr.Children.Add(mFrame_02_HU.CreateM_3D_G_Volume_8Edges(pArray[1], fL_X, fT_Y, fT_Y, DiffMatF, DiffMatF)); // Horizontal upper
-            gr.Children.Add(mFrame_03_V.CreateM_3D_G_Volume_8Edges(pArray[2], fT_Y, fT_Y, fH_Z - 2 * fT_Y, DiffMatF, DiffMatF)); // Vertical
-            gr.Children.Add(mFrame_04_V.CreateM_3D_G_Volume_8Edges(pArray[3], fT_Y, fT_Y, fH_Z - 2 * fT_Y, DiffMatF, DiffMatF)); // Vertical
-            gr.Children.Add(mGlassTable.CreateM_3D_G_Volume_8Edges(pArray[4], fL_X - 2 * fT_Y, fGlassThickness, fH_Z - 2 * fT_Y, DiffMatG, DiffMatG)); // Glass No 1
+            bool UseSimpleModel2D = true; // TODO 772 - Zapracovat ako volbu v GUI
 
-            UseSimpleWireFrame2D = true; // TODO - Zapracovat ako volbu v GUI
+            if (!UseSimpleModel2D)
+            {
+                // 3D Model - Prims
+                gr.Children.Add(mFrame_01_HB.CreateM_3D_G_Volume_8Edges(pArray[0], fL_X, fT_Y, fT_Y, DiffMatF, DiffMatF)); // Horizontal bottom;
+                gr.Children.Add(mFrame_02_HU.CreateM_3D_G_Volume_8Edges(pArray[1], fL_X, fT_Y, fT_Y, DiffMatF, DiffMatF)); // Horizontal upper
+                gr.Children.Add(mFrame_03_V.CreateM_3D_G_Volume_8Edges(pArray[2], fT_Y, fT_Y, fH_Z - 2 * fT_Y, DiffMatF, DiffMatF)); // Vertical
+                gr.Children.Add(mFrame_04_V.CreateM_3D_G_Volume_8Edges(pArray[3], fT_Y, fT_Y, fH_Z - 2 * fT_Y, DiffMatF, DiffMatF)); // Vertical
+                gr.Children.Add(mGlassTable.CreateM_3D_G_Volume_8Edges(pArray[4], fL_X - 2 * fT_Y, fGlassThickness, fH_Z - 2 * fT_Y, DiffMatG, DiffMatG)); // Glass No 1
+            }
+            else
+            {
+                // Surface model
+                CAreaRectangular mA_01_HB = new CAreaRectangular(0, new System.Windows.Point(p01_HB.X, p01_HB.Z), fL_X, fT_Y, 0, 0);
+                CAreaRectangular mA_02_HU = new CAreaRectangular(0, new System.Windows.Point(p02_HU.X, p02_HU.Z), fL_X, fT_Y, 0, 0);
+                CAreaRectangular mA_03_V = new CAreaRectangular(0, new System.Windows.Point(p03_V.X, p03_V.Z), fT_Y, fH_Z - 2 * fT_Y, 0, 0);
+                CAreaRectangular mA_04_V = new CAreaRectangular(0, new System.Windows.Point(p04_V.X, p04_V.Z), fT_Y, fH_Z - 2 * fT_Y, 0, 0);
+                CAreaRectangular mA_GlassTable = new CAreaRectangular(0, new System.Windows.Point(p05_GlassTable.X, p05_GlassTable.Z), fL_X - 2 * fT_Y, fH_Z - 2 * fT_Y, 0, 0);
+
+                gr.Children.Add(mA_01_HB.CreateArea(DiffMatF));
+                gr.Children.Add(mA_02_HU.CreateArea(DiffMatF));
+                gr.Children.Add(mA_03_V.CreateArea(DiffMatF));
+                gr.Children.Add(mA_04_V.CreateArea(DiffMatF));
+                gr.Children.Add(mA_GlassTable.CreateArea(DiffMatG, true)); // Display texture for roller door panel
+            }
+
+            UseSimpleWireFrame2D = false; // TODO 772 - Zapracovat ako volbu v GUI
 
             EdgePoints2D = new List<System.Windows.Point>()
             {
@@ -223,6 +244,7 @@ namespace BaseClasses.GraphObj
                 // GCS -system plane XZ
                 double offset = 0.010;
 
+                // One rectangle
                 WireFramePoints.Add(new Point3D(0, offset, 0));
                 WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
 
@@ -238,11 +260,48 @@ namespace BaseClasses.GraphObj
             else
             {
                 //to Mato - tu je nutne nastavit wireframePoints
-                WireFramePoints.AddRange(mFrame_01_HB.WireFramePoints);
-                WireFramePoints.AddRange(mFrame_02_HU.WireFramePoints);
-                WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
-                WireFramePoints.AddRange(mFrame_04_V.WireFramePoints);
-                WireFramePoints.AddRange(mGlassTable.WireFramePoints);
+
+                if (UseSimpleModel2D)
+                {
+                    // Two rectangles
+
+                    // GCS -system plane XZ
+                    double offset = 0.000;
+
+                    // Window opening outline
+                    WireFramePoints.Add(new Point3D(0, offset, 0));
+                    WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
+
+                    WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
+                    WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
+
+                    WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+
+                    WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(0, offset, 0));
+
+                    // Window panel outline
+                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim3));
+                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim3));
+
+                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim3));
+                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim2 - m_fDim3));
+
+                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim2 - m_fDim3));
+                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim2 - m_fDim3));
+
+                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim2 - m_fDim3));
+                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim3));
+                }
+                else
+                {
+                    WireFramePoints.AddRange(mFrame_01_HB.WireFramePoints);
+                    WireFramePoints.AddRange(mFrame_02_HU.WireFramePoints);
+                    WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);
+                    WireFramePoints.AddRange(mFrame_04_V.WireFramePoints);
+                    WireFramePoints.AddRange(mGlassTable.WireFramePoints);
+                }
             }
 
             //ak sa nepouziva,tak treba zmazat z pamate
@@ -308,8 +367,8 @@ namespace BaseClasses.GraphObj
 
         public void SetTextPointInLCS()
         {
-            iVectorOverFactor_LCS = 1;
-            iVectorUpFactor_LCS = 1;
+            //iVectorOverFactor_LCS = 1;
+            //iVectorUpFactor_LCS = 1;
 
             float fOffsetFromPlane = - 0.050f; // Offset pred rovinou dveri, aby sa text nevnoril do 3D reprezentacie
             if (m_LeftOrBack) fOffsetFromPlane = -fOffsetFromPlane + m_fDim3 + GThickness;

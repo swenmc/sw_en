@@ -10,8 +10,6 @@ namespace BaseClasses.GraphObj
     [Serializable]
     public class CStructure_Door : CSurfaceComponent
     {
-        //public Point3D m_pControlPoint = new Point3D();
-
         //EWindowShapeType m_eShapeType = EWindowShapeType.eClassic;
         //
         //public EWindowShapeType EShapeType
@@ -38,8 +36,6 @@ namespace BaseClasses.GraphObj
         private int m_iSegmentNum;
         private float m_fGThickness;
         private float m_fRotationZDegrees;
-
-
 
         public bool IsRollerDoor
         {
