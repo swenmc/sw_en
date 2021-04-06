@@ -44,7 +44,7 @@ namespace PFD
             {
                 if (e.PropertyName == "DisplayCladding" || e.PropertyName == "DisplayDoors" || e.PropertyName == "DisplayWindows" ||
                     e.PropertyName == "FrontCladdingOpacity" || e.PropertyName == "LeftCladdingOpacity" || e.PropertyName == "RoofCladdingOpacity" ||
-                    e.PropertyName == "DoorPanelOpacity" || e.PropertyName == "WindowPanelOpacity" || e.PropertyName == "FibreglassOpacity")
+                    e.PropertyName == "FlashingOpacity" || e.PropertyName == "DoorPanelOpacity" || e.PropertyName == "WindowPanelOpacity" || e.PropertyName == "FibreglassOpacity")
                     RecreateModelRequired = true;
 
                 if (e.PropertyName == "ColorsAccordingToMembersPrefix" || e.PropertyName == "ColorsAccordingToMembersPosition")

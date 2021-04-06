@@ -110,7 +110,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 5
         public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft,
-            Color windowFlashingColor, Color windowPanelColor, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, bool leftOrBack)
+            Color windowFlashingColor, Color windowPanelColor, float fFlashingOpacity, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, bool leftOrBack)
         {
             ID = iW_ID;
             m_eShapeType = iShapeType;
@@ -120,7 +120,7 @@ namespace BaseClasses.GraphObj
             m_fDim2 = fH;
             m_fDim3 = ft;
 
-            m_fvolOpacity_1 = 1.0f; // Flashings - TODO
+            m_fvolOpacity_1 = fFlashingOpacity; // Flashings
             m_fvolOpacity_2 = fGlassPanelOpacity; // Vypln okna - sklo
 
             m_volColor_1 = windowFlashingColor;
@@ -229,7 +229,7 @@ namespace BaseClasses.GraphObj
                 gr.Children.Add(mA_GlassTable.CreateArea(DiffMatG, true)); // Display texture for roller door panel
             }
 
-            UseSimpleWireFrame2D = false; // TODO 772 - Zapracovat ako volbu v GUI
+            UseSimpleWireFrame2D = true; // TODO 772 - Zapracovat ako volbu v GUI (kreslime len obrys okna alebo obrys segmentu)
 
             EdgePoints2D = new List<System.Windows.Point>()
             {
@@ -246,9 +246,9 @@ namespace BaseClasses.GraphObj
 
                 // One rectangle for window
 
-                bool bSingleWindowFrame = false;
+                bool bSingleWindowFrame = false; // TODO 772 - Zapracovat ako volbu v GUI ?? Cele okno je len jeden obdlznik
 
-                if(bSingleWindowFrame && iSegm == 0) // Cele okno je len jeden ram, pridame len pre prvy segment
+                if (bSingleWindowFrame && iSegm == 0) // Cele okno je len jeden ram, pridame len pre prvy segment
                 {
                     // One rectangle for whole window
                     WireFramePoints.Add(new Point3D(0, offset, 0));
@@ -285,12 +285,12 @@ namespace BaseClasses.GraphObj
 
                 if (UseSimpleModel2D)
                 {
-                    // Two rectangles
+                    // Two rectangles (obrys segmentu a obrys sklenenej vyplne)
 
                     // GCS -system plane XZ
                     double offset = 0.000;
 
-                    // Window opening outline
+                    // Window segment outline
                     WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, 0));
                     WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, 0));
 
@@ -318,6 +318,7 @@ namespace BaseClasses.GraphObj
                 }
                 else
                 {
+                    // Samostatny obrys jednotlivych casti ramu a skla (5 obdlznikov pre 2D alebo 5 kvadrov pre 3D)
                     WireFramePoints.AddRange(mFrame_01_HB.WireFramePoints);
                     WireFramePoints.AddRange(mFrame_02_HU.WireFramePoints);
                     WireFramePoints.AddRange(mFrame_03_V.WireFramePoints);

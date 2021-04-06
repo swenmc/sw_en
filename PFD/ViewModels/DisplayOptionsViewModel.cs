@@ -289,6 +289,7 @@ namespace PFD
         private float m_FrontCladdingOpacity;
         private float m_LeftCladdingOpacity;
         private float m_RoofCladdingOpacity;
+        private float m_FlashingOpacity;
         private float m_DoorPanelOpacity;
         private float m_WindowPanelOpacity;
         private float m_FibreglassOpacity;
@@ -3510,6 +3511,20 @@ namespace PFD
             }
         }
 
+        public float FlashingOpacity
+        {
+            get
+            {
+                return m_FlashingOpacity;
+            }
+
+            set
+            {
+                m_FlashingOpacity = value;
+                NotifyPropertyChanged("FlashingOpacity");
+            }
+        }
+
         public float DoorPanelOpacity
         {
             get
@@ -4146,6 +4161,7 @@ namespace PFD
             FrontCladdingOpacity = 0.95f;
             LeftCladdingOpacity = 0.95f;
             RoofCladdingOpacity = 0.95f;
+            FlashingOpacity = 0.90f;
             DoorPanelOpacity = 0.95f;
             WindowPanelOpacity = 0.95f;
             FibreglassOpacity = 0.70f;
@@ -4388,6 +4404,7 @@ namespace PFD
             FrontCladdingOpacity = newVM.FrontCladdingOpacity;
             LeftCladdingOpacity = newVM.LeftCladdingOpacity;
             RoofCladdingOpacity = newVM.RoofCladdingOpacity;
+            FlashingOpacity = newVM.FlashingOpacity;
             DoorPanelOpacity = newVM.DoorPanelOpacity;
             WindowPanelOpacity = newVM.WindowPanelOpacity;
             FibreglassOpacity = newVM.FibreglassOpacity;

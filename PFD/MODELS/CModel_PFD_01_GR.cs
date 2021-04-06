@@ -1744,6 +1744,7 @@ namespace PFD
                        doorFlashingColor,
                        (Color)ColorConverter.ConvertFromString(_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].CoatingColor.CodeHEX), 
                        _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].CoatingColor.Name,
+                       vm._displayOptionsVM.FlashingOpacity,
                        vm._displayOptionsVM.DoorPanelOpacity,
                        _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Roller Door", isLeftOrBack, vm._displayOptionsVM.UseTextures);
 
@@ -1787,6 +1788,7 @@ namespace PFD
                     BaseClasses.GraphObj.CStructure_Window window_temp = new BaseClasses.GraphObj.CStructure_Window(i + 1, EWindowShapeType.eClassic, _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1,
                        pControlEdgePoint, _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].fWindowsWidth / (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].iNumberOfWindowColumns - 1), _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].fWindowsHeight, fWindowFrameThickness,
                        windowFlashingColor, Colors.LightBlue,
+                       vm._displayOptionsVM.FlashingOpacity,
                        vm._displayOptionsVM.WindowPanelOpacity,
                        fPanelThickness, fRotationZDegrees, true, 0f, isLeftOrBack);
 
