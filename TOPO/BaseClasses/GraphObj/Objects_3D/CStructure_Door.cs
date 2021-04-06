@@ -179,10 +179,10 @@ namespace BaseClasses.GraphObj
             else
             {
                 // Surface model
-                CAreaRectangular mA_01_HU = new CAreaRectangular(0, new System.Windows.Point(p01_HU.X, p01_HU.Z), fL_X, fT_Y, 0, 0);
-                CAreaRectangular mA_02_V = new CAreaRectangular(0, new System.Windows.Point(p02_V.X, p02_V.Z), fT_Y, fH_Z - 1 * fT_Y, 0, 0);
-                CAreaRectangular mA_03_V = new CAreaRectangular(0, new System.Windows.Point(p03_V.X, p03_V.Z), fT_Y, fH_Z - 1 * fT_Y, 0, 0);
-                CAreaRectangular mA_DoorPanel = new CAreaRectangular(0, new System.Windows.Point(p04_DoorPanel.X, p04_DoorPanel.Z), fL_X - 2 * fT_Y, fH_Z - 1 * fT_Y, 0, 0);
+                CAreaRectangular mA_01_HU = new CAreaRectangular(0, new System.Windows.Point(pArray[0].X, pArray[0].Z), fL_X, fT_Y, 0, 0);
+                CAreaRectangular mA_02_V = new CAreaRectangular(0, new System.Windows.Point(pArray[1].X, pArray[1].Z), fT_Y, fH_Z - 1 * fT_Y, 0, 0);
+                CAreaRectangular mA_03_V = new CAreaRectangular(0, new System.Windows.Point(pArray[2].X, pArray[2].Z), fT_Y, fH_Z - 1 * fT_Y, 0, 0);
+                CAreaRectangular mA_DoorPanel = new CAreaRectangular(0, new System.Windows.Point(pArray[3].X, pArray[3].Z), fL_X - 2 * fT_Y, fH_Z - 1 * fT_Y, 0, 0);
 
                 gr.Children.Add(mA_01_HU.CreateArea(DiffMatF));
                 gr.Children.Add(mA_02_V.CreateArea(DiffMatF));

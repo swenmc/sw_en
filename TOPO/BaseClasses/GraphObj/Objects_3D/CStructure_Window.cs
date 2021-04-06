@@ -216,11 +216,11 @@ namespace BaseClasses.GraphObj
             else
             {
                 // Surface model
-                CAreaRectangular mA_01_HB = new CAreaRectangular(0, new System.Windows.Point(p01_HB.X, p01_HB.Z), fL_X, fT_Y, 0, 0);
-                CAreaRectangular mA_02_HU = new CAreaRectangular(0, new System.Windows.Point(p02_HU.X, p02_HU.Z), fL_X, fT_Y, 0, 0);
-                CAreaRectangular mA_03_V = new CAreaRectangular(0, new System.Windows.Point(p03_V.X, p03_V.Z), fT_Y, fH_Z - 2 * fT_Y, 0, 0);
-                CAreaRectangular mA_04_V = new CAreaRectangular(0, new System.Windows.Point(p04_V.X, p04_V.Z), fT_Y, fH_Z - 2 * fT_Y, 0, 0);
-                CAreaRectangular mA_GlassTable = new CAreaRectangular(0, new System.Windows.Point(p05_GlassTable.X, p05_GlassTable.Z), fL_X - 2 * fT_Y, fH_Z - 2 * fT_Y, 0, 0);
+                CAreaRectangular mA_01_HB = new CAreaRectangular(0, new System.Windows.Point(pArray[0].X, pArray[0].Z), fL_X, fT_Y, 0, 0);
+                CAreaRectangular mA_02_HU = new CAreaRectangular(0, new System.Windows.Point(pArray[1].X, pArray[1].Z), fL_X, fT_Y, 0, 0);
+                CAreaRectangular mA_03_V = new CAreaRectangular(0, new System.Windows.Point(pArray[2].X, pArray[2].Z), fT_Y, fH_Z - 2 * fT_Y, 0, 0);
+                CAreaRectangular mA_04_V = new CAreaRectangular(0, new System.Windows.Point(pArray[3].X, pArray[3].Z), fT_Y, fH_Z - 2 * fT_Y, 0, 0);
+                CAreaRectangular mA_GlassTable = new CAreaRectangular(0, new System.Windows.Point(pArray[4].X, pArray[4].Z), fL_X - 2 * fT_Y, fH_Z - 2 * fT_Y, 0, 0);
 
                 gr.Children.Add(mA_01_HB.CreateArea(DiffMatF));
                 gr.Children.Add(mA_02_HU.CreateArea(DiffMatF));
@@ -233,10 +233,10 @@ namespace BaseClasses.GraphObj
 
             EdgePoints2D = new List<System.Windows.Point>()
             {
-                new System.Windows.Point(0, 0),
-                new System.Windows.Point(m_fDim1, 0),
-                new System.Windows.Point(m_fDim1, m_fDim2),
-                new System.Windows.Point(0, m_fDim2)
+                new System.Windows.Point(iSegm * fL_X + 0, 0),
+                new System.Windows.Point(iSegm * fL_X + m_fDim1, 0),
+                new System.Windows.Point(iSegm * fL_X + m_fDim1, m_fDim2),
+                new System.Windows.Point(iSegm * fL_X + 0, m_fDim2)
             };
 
             if (UseSimpleWireFrame2D)
@@ -244,18 +244,40 @@ namespace BaseClasses.GraphObj
                 // GCS -system plane XZ
                 double offset = 0.010;
 
-                // One rectangle
-                WireFramePoints.Add(new Point3D(0, offset, 0));
-                WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
+                // One rectangle for window
 
-                WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
-                WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
+                bool bSingleWindowFrame = false;
 
-                WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
-                WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+                if(bSingleWindowFrame && iSegm == 0) // Cele okno je len jeden ram, pridame len pre prvy segment
+                {
+                    // One rectangle for whole window
+                    WireFramePoints.Add(new Point3D(0, offset, 0));
+                    WireFramePoints.Add(new Point3D(SegmentNum * fL_X, offset, 0));
 
-                WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
-                WireFramePoints.Add(new Point3D(0, offset, 0));
+                    WireFramePoints.Add(new Point3D(SegmentNum * fL_X, offset, 0));
+                    WireFramePoints.Add(new Point3D(SegmentNum * fL_X, offset, m_fDim2));
+
+                    WireFramePoints.Add(new Point3D(SegmentNum * fL_X, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+
+                    WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(0, offset, 0));
+                }
+                else
+                {
+                    // One rectangle for segment
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, 0));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, 0));
+
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, 0));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, m_fDim2));
+
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, m_fDim2));
+
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, 0));
+                }
             }
             else
             {
@@ -269,30 +291,30 @@ namespace BaseClasses.GraphObj
                     double offset = 0.000;
 
                     // Window opening outline
-                    WireFramePoints.Add(new Point3D(0, offset, 0));
-                    WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, 0));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, 0));
 
-                    WireFramePoints.Add(new Point3D(m_fDim1, offset, 0));
-                    WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, 0));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, m_fDim2));
 
-                    WireFramePoints.Add(new Point3D(m_fDim1, offset, m_fDim2));
-                    WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, m_fDim2));
 
-                    WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
-                    WireFramePoints.Add(new Point3D(0, offset, 0));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, m_fDim2));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, 0));
 
                     // Window panel outline
-                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim3));
-                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim3));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim3, offset, m_fDim3));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1 - m_fDim3, offset, m_fDim3));
 
-                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim3));
-                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim2 - m_fDim3));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1 - m_fDim3, offset, m_fDim3));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1 - m_fDim3, offset, m_fDim2 - m_fDim3));
 
-                    WireFramePoints.Add(new Point3D(m_fDim1 - m_fDim3, offset, m_fDim2 - m_fDim3));
-                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim2 - m_fDim3));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim1 - m_fDim3, offset, m_fDim2 - m_fDim3));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim3, offset, m_fDim2 - m_fDim3));
 
-                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim2 - m_fDim3));
-                    WireFramePoints.Add(new Point3D(m_fDim3, offset, m_fDim3));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim3, offset, m_fDim2 - m_fDim3));
+                    WireFramePoints.Add(new Point3D(iSegm * fL_X + m_fDim3, offset, m_fDim3));
                 }
                 else
                 {
