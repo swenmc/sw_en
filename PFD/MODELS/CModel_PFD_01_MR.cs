@@ -1835,6 +1835,35 @@ namespace PFD
             float fRollerDoorFrameThickness = 0.12f; // Rozmer ramu - plati pre stvorec, treba prerobit pre obdlznik, rozmer podla sirky Flashings
             float fWindowFrameThickness = 0.1f; // Rozmer ramu - plati pre stvorec, treba prerobit pre obdlznik, rozmer podla sirky Flashings
 
+            bool bGenerateLeftSideCladding = true;
+            bool bGenerateFrontSideCladding = true;
+            bool bGenerateRightSideCladding = true;
+            bool bGenerateBackSideCladding = true;
+
+            CComponentInfo girtL = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (girtL != null && girtL.Generate.HasValue)
+            {
+                bGenerateLeftSideCladding = girtL.Generate.Value;
+            }
+
+            CComponentInfo girtR = componentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (girtR != null && girtR.Generate.HasValue)
+            {
+                bGenerateRightSideCladding = girtR.Generate.Value;
+            }
+
+            CComponentInfo girtFront = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (girtFront != null && girtFront.Generate.HasValue)
+            {
+                bGenerateFrontSideCladding = girtFront.Generate.Value;
+            }
+
+            CComponentInfo girtBack = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (girtBack != null && girtBack.Generate.HasValue)
+            {
+                bGenerateBackSideCladding = girtBack.Generate.Value;
+            }
+
             #region Doors
             if (_pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.DoorBlocksProperties != null)
             {
@@ -1842,6 +1871,11 @@ namespace PFD
 
                 for (int i = 0; i < _pfdVM._doorsAndWindowsVM.DoorBlocksProperties.Count; i++)
                 {
+                    if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Left" && !bGenerateLeftSideCladding) continue;
+                    if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Right" && !bGenerateRightSideCladding) continue;
+                    if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Front" && !bGenerateFrontSideCladding) continue;
+                    if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Back" && !bGenerateBackSideCladding) continue;
+
                     Color doorFlashingColor = Colors.White;
                     float fDoorFrameThickness = 0;
 
@@ -1909,6 +1943,11 @@ namespace PFD
 
                 for (int i = 0; i < _pfdVM._doorsAndWindowsVM.WindowBlocksProperties.Count; i++)
                 {
+                    if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Left" && !bGenerateLeftSideCladding) continue;
+                    if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Right" && !bGenerateRightSideCladding) continue;
+                    if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Front" && !bGenerateFrontSideCladding) continue;
+                    if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Back" && !bGenerateBackSideCladding) continue;
+
                     double leftEdge = -column_crsc_z_plus - claddingThickness_Wall + fWindowFrameThickness;
                     double frontEdge = column_crsc_y_minus;
                     double rightEdge = fW_frame_centerline + column_crsc_z_plus + claddingThickness_Wall;
