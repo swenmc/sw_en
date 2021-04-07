@@ -185,7 +185,7 @@ namespace BaseClasses.GraphObj
 
         }
 
-        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, string name, int numberOfCorners,
+        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, string name, MATERIAL.CMat claddingMaterial, int numberOfCorners,
         double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
@@ -194,11 +194,7 @@ namespace BaseClasses.GraphObj
             ID = iCladdingSheet_ID;
             Prefix = prefix;
             Name = name;
-
-            m_Mat = new MATERIAL.CMat_03_00();
-            // TODO 740 - napojit material name
-            // Vid MainWindow.xaml.cs - Line 642
-            // asi su potrebne aj dalsie propertie ako je RHO
+            m_Mat = claddingMaterial; // TODO upravit na vseobecny lebo FG nemusi byt steel
 
             NumberOfEdges = numberOfCorners;
             CoordinateInPlane_x = coordinateInPlane_x;
