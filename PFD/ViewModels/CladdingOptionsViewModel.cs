@@ -488,6 +488,7 @@ namespace PFD
             {
                 m_RoofCladding = value;
                 UpdateFibreglassPropertiesRoof();
+                SetRoofCladdingProps();
             }
         }
 
@@ -501,7 +502,8 @@ namespace PFD
             set
             {
                 m_WallCladding = value;
-                UpdateFibreglassPropertiesWall();                
+                UpdateFibreglassPropertiesWall();
+                SetWallCladdingProps();
             }
         }
 
@@ -596,6 +598,7 @@ namespace PFD
             set
             {
                 m_RoofCladdingThickness = value;
+                SetRoofCladdingProps();
             }
         }
 
@@ -609,6 +612,7 @@ namespace PFD
             set
             {
                 m_WallCladdingThickness = value;
+                SetWallCladdingProps();
             }
         }
 
@@ -677,21 +681,21 @@ namespace PFD
             {
                 if (m_RoofCladdingProps == null)
                 {
-                    m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
-                    SetCTS_CoilProperties_Roof();
+                    RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
                 }
-                else if (m_RoofCladdingProps.name != RoofCladding || m_RoofCladdingProps.thickness_for_name != RoofCladdingThickness)
-                {
-                    m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
-                    SetCTS_CoilProperties_Roof();
-                }
+                //tato podmienka nizsie je pekna ale vobec nefunguje
+                //else if (m_RoofCladdingProps.name != RoofCladding || m_RoofCladdingProps.thickness_for_name != RoofCladdingThickness)
+                //{
+                //    RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");                    
+                //}
                 return m_RoofCladdingProps;
             }
 
-            //set
-            //{
-            //    m_RoofCladdingProps = value;
-            //}
+            set
+            {
+                m_RoofCladdingProps = value;
+                SetCTS_CoilProperties_Roof();
+            }
         }
 
         public CTS_CrscProperties WallCladdingProps
@@ -700,21 +704,21 @@ namespace PFD
             {
                 if (m_WallCladdingProps == null)
                 {
-                    m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
-                    SetCTS_CoilProperties_Wall();
+                    WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
                 }
-                else if (m_WallCladdingProps.name != WallCladding || m_WallCladdingProps.thickness_for_name != WallCladdingThickness)
-                {
-                    m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
-                    SetCTS_CoilProperties_Wall();
-                }
+                //tato podmienka nizsie je pekna ale vobec nefunguje
+                //else if (m_WallCladdingProps.name != WallCladding || m_WallCladdingProps.thickness_for_name != WallCladdingThickness)
+                //{
+                //    WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");                    
+                //}
                 return m_WallCladdingProps;
             }
 
-            //set
-            //{
-            //    m_WallCladdingProps = value;
-            //}
+            set
+            {
+                m_WallCladdingProps = value;
+                SetCTS_CoilProperties_Wall();
+            }
         }
 
         public CTS_CoilProperties RoofCladdingCoilProps
@@ -1625,6 +1629,15 @@ namespace PFD
         //    prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color
         //    prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
         //}
+
+        public void SetWallCladdingProps()
+        {
+            WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+        }
+        public void SetRoofCladdingProps()
+        {
+            RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+        }
 
         public void SetCTS_CoilProperties_Wall()
         {
