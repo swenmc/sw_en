@@ -584,11 +584,11 @@ namespace PFD
             //-----------------------------------------------------------------------------
             CTS_CrscProperties prop_RoofCladding = vm._claddingOptionsVM.RoofCladdingProps;
             CTS_CrscProperties prop_WallCladding = vm._claddingOptionsVM.WallCladdingProps;
-            CTS_CoilProperties prop_RoofCladdingCoil;
-            CTS_CoilProperties prop_WallCladdingCoil;
-            CoatingColour prop_RoofCladdingColor;
-            CoatingColour prop_WallCladdingColor;
-            vm._claddingOptionsVM.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            CTS_CoilProperties prop_RoofCladdingCoil = vm._claddingOptionsVM.RoofCladdingCoilProps;
+            CTS_CoilProperties prop_WallCladdingCoil = vm._claddingOptionsVM.WallCladdingCoilProps;
+            //CoatingColour prop_RoofCladdingColor;
+            //CoatingColour prop_WallCladdingColor;
+            //vm._claddingOptionsVM.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
 
             // TODO 740
             // To Ondrej - takto sa vieme dostat ku stringu s coil, resp. cladding sheet material name
