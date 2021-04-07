@@ -256,6 +256,8 @@ namespace BaseClasses.GraphObj
         }
 
         // TO Ondrej - vieme nejako krajsie pracovat s potomkami jednej triedy, aby sme ich mohli vzajomne pretypovat
+        // To Mato - toto je uplna blbost, lebo potomok je aj predok,cize nemusis robit vobec nic,ale to musi asi tato trieda priamo dedit od COpening 
+        // taketo veci si musime prekonzultovat,az potom to viem zrefaktorovat
         public COpening ConvertToOpening()
         {
             return new COpening(ID, NumberOfEdges, CoordinateInPlane_x, CoordinateInPlane_y, ControlPoint,

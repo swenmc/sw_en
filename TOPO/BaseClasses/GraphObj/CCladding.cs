@@ -11,6 +11,7 @@ namespace BaseClasses.GraphObj
 {
     [Serializable]
     // TO Ondrej - z tejto triedy by som chcel urobit skor nejaky "manager", ktory bude pripravovať data a funkcie pre generovanie samotnych objektov sheets
+    //To Mato - nechavame stale strasne vela komentovaneho kodu, mam chut to vsetko pomazat
     public class CCladding : CEntity3D
     {
         EModelType_FS eModelType;
