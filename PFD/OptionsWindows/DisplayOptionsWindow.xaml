@@ -674,16 +674,20 @@
                                 Minimum="0.05" Maximum="1" Value="{Binding Path=SlabRebateSolidModelOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
 
                         <TextBlock Grid.Row="8" Grid.Column="2" Text="Front/Back Cladding Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <Slider Grid.Row="8" Grid.Column="3" x:Name="sldFrontCladdingOpacity" Margin="0 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.05" Maximum="1" Value="{Binding Path=FrontCladdingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
+                        <Slider Grid.Row="8" Grid.Column="3" x:Name="sldFrontCladdingOpacity" Margin="0 5 0 0" Orientation="Horizontal" 
+                                IsMoveToPointEnabled="True" Minimum="0.00" Maximum="1" Value="{Binding Path=FrontCladdingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
                         
                         <TextBlock Grid.Row="9" Grid.Column="2" Text="Left/Right Cladding Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <Slider Grid.Row="9" Grid.Column="3" x:Name="sldLeftCladdingOpacity" Margin="0 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.05" Maximum="1" Value="{Binding Path=LeftCladdingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
+                        <Slider Grid.Row="9" Grid.Column="3" x:Name="sldLeftCladdingOpacity" Margin="0 5 0 0" Orientation="Horizontal" 
+                                IsMoveToPointEnabled="True" Minimum="0.00" Maximum="1" Value="{Binding Path=LeftCladdingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
                         
                         <TextBlock Grid.Row="10" Grid.Column="2" Text="Roof Cladding Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <Slider Grid.Row="10" Grid.Column="3" x:Name="sldRoofCladdingOpacity" Margin="0 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.05" Maximum="1" Value="{Binding Path=RoofCladdingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
+                        <Slider Grid.Row="10" Grid.Column="3" x:Name="sldRoofCladdingOpacity" Margin="0 5 0 0" Orientation="Horizontal" 
+                                IsMoveToPointEnabled="True" Minimum="0.00" Maximum="1" Value="{Binding Path=RoofCladdingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
 
                         <TextBlock Grid.Row="11" Grid.Column="2" Text="Flashing Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <Slider Grid.Row="11" Grid.Column="3" x:Name="sldFlashingOpacity" Margin="0 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.05" Maximum="1" Value="{Binding Path=FlashingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
+                        <Slider Grid.Row="11" Grid.Column="3" x:Name="sldFlashingOpacity" Margin="0 5 0 0" Orientation="Horizontal" 
+                                IsMoveToPointEnabled="True" Minimum="0.00" Maximum="1" Value="{Binding Path=FlashingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
 
                         <TextBlock Grid.Row="12" Grid.Column="2" Text="Door Panel Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <Slider Grid.Row="12" Grid.Column="3" x:Name="sldDoorPanelOpacity" Margin="0 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.05" Maximum="1" Value="{Binding Path=DoorPanelOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.05" LargeChange="0.1" TickFrequency="0.05"/>
