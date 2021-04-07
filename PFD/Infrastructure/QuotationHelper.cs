@@ -182,8 +182,6 @@ namespace PFD
 
         public static void AddConnector(CConnector connector, List<QuotationItem> quotation, int iQuantity)
         {
-            
-
             string sPrefix = "";
             string name = "";
             float fTotalMass = iQuantity * connector.Mass;
