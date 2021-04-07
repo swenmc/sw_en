@@ -28,8 +28,8 @@ namespace PFD.Infrastructure
                 vm._doorsAndWindowsVM == null ? null : vm._doorsAndWindowsVM.WindowBlocksProperties,
                 columnSection, //(CRSC.CCrSc_TW)vm.Model.m_arrCrSc[EMemberType_FS_Position.EdgeColumn] //takto som to chcel mat, ale Model je null
                 vm.ColumnDistance, vm.ColumnDistance,
-                new MATERIAL.CMat_03_00(vm._claddingOptionsVM.WallCladdingCoilProps.materialName, 200e+9f, 80e+9f, 0.3f, 7850f),
-                new MATERIAL.CMat_03_00(vm._claddingOptionsVM.RoofCladdingCoilProps.materialName, 200e+9f, 80e+9f, 0.3f, 7850f),
+                new MATERIAL.CMat_03_00(vm._claddingOptionsVM.WallCladdingProps.material_Name, 200e+9f, 80e+9f, 0.3f, 7850f),
+                new MATERIAL.CMat_03_00(vm._claddingOptionsVM.RoofCladdingProps.material_Name, 200e+9f, 80e+9f, 0.3f, 7850f),
                 new MATERIAL.CMat_10_00("default"), // Default - TODO dopracovat databazu materialov fibreglass, pripade do GUI moznost volby materialu
                 new MATERIAL.CMat_10_00("default"), // Default - TODO dopracovat databazu materialov fibreglass, pripade do GUI moznost volby materialu
                 vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex).Name,

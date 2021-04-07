@@ -501,8 +501,6 @@ namespace DATABASE
             coilprop.widthCoil = double.Parse(reader["widthCoil_mm"].ToString(), nfi) / 1000;
             coilprop.thicknessID = Int32.Parse(reader["thicknessID"].ToString());
             coilprop.thicknessCore = double.Parse(reader["thicknessCore_mm"].ToString(), nfi) / 1000;
-            coilprop.material_ID = Int32.Parse(reader["material_ID"].ToString());
-            coilprop.materialName = reader["materialName"].ToString();
             coilprop.coatingID = Int32.Parse(reader["coatingID"].ToString());
             coilprop.coatingName = reader["coatingName"].ToString();
             coilprop.colorRangeIDs = ConvertStringArrayOfIDs(reader["colorRangeIDs"].ToString());

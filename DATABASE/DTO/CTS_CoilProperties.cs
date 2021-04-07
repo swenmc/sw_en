@@ -14,8 +14,6 @@ namespace DATABASE.DTO
         public double widthCoil;
         public int thicknessID;
         public double thicknessCore;
-        public int material_ID;
-        public string materialName;
         public int coatingID;
         public string coatingName;
         public int[] colorRangeIDs;
