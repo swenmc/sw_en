@@ -194,7 +194,7 @@ namespace BaseClasses.GraphObj
             ID = iCladdingSheet_ID;
             Prefix = prefix;
             Name = name;
-            m_Mat = claddingMaterial; // TODO upravit na vseobecny lebo FG nemusi byt steel
+            m_Mat = claddingMaterial; // Vseobecny material lebo FG nemusi byt steel
 
             NumberOfEdges = numberOfCorners;
             CoordinateInPlane_x = coordinateInPlane_x;

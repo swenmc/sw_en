@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CMat.cs" />
+    <Compile Include="CMat_10\CMat_10_00.cs" />
     <Compile Include="CMat_2\CMat_02_00_AAC.cs" />
     <Compile Include="CMat_5\CMat_05_00.cs" />
     <Compile Include="CMat_6\CMat_06_00.cs" />
