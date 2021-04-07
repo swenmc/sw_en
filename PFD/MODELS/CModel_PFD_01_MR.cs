@@ -1806,7 +1806,7 @@ namespace PFD
             #region Cladding
             
             if (_pfdVM._modelOptionsVM.EnableCladding && _pfdVM._claddingOptionsVM != null)
-                m_arrGOCladding = new List<CCladding>(1) { CladdingHelper.GetCladding(0, _pfdVM, sGeometryInputData, (CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn]) };
+                m_arrGOCladding = new List<CCladding>(1) { CladdingHelper.GetCladding(0, _pfdVM, sGeometryInputData)};
            
             #endregion
 

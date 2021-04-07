@@ -15,7 +15,7 @@ namespace PFD.Infrastructure
 {
     public static class CladdingHelper
     {
-        public static CCladding GetCladding(int claddingIndex, CPFDViewModel vm, BuildingGeometryDataInput sGeometryInputData, CCrSc_TW columnSection)
+        public static CCladding GetCladding(int claddingIndex, CPFDViewModel vm, BuildingGeometryDataInput sGeometryInputData)
         {
             CCladding cladding = new CCladding(claddingIndex, (EModelType_FS)vm.KitsetTypeIndex, 
                 sGeometryInputData,
@@ -26,7 +26,7 @@ namespace PFD.Infrastructure
                 vm._claddingOptionsVM.FibreglassProperties,
                 vm._doorsAndWindowsVM == null ? null : vm._doorsAndWindowsVM.DoorBlocksProperties,
                 vm._doorsAndWindowsVM == null ? null : vm._doorsAndWindowsVM.WindowBlocksProperties,
-                columnSection, //(CRSC.CCrSc_TW)vm.Model.m_arrCrSc[EMemberType_FS_Position.EdgeColumn] //takto som to chcel mat, ale Model je null
+                BaseClasses.Helpers.CrScFactory.GetCrSc(vm.ComponentList[(int)EMemberType_FS_Position.EdgeColumn].Section), // Vyrobime cross-section podla nazvu prierezu v zozname (crsc by mohol do funckie vstupovat aj ako objekt z modelu)
                 vm.ColumnDistance, vm.ColumnDistance,
                 new MATERIAL.CMat_03_00(vm._claddingOptionsVM.WallCladdingProps.material_Name, 200e+9f, 80e+9f, 0.3f, 7850f),
                 new MATERIAL.CMat_03_00(vm._claddingOptionsVM.RoofCladdingProps.material_Name, 200e+9f, 80e+9f, 0.3f, 7850f),
