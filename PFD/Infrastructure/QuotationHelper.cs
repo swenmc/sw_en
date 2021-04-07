@@ -14,7 +14,7 @@ namespace PFD
     public static class QuotationHelper
     {
         // Tu by som chcel pre stlpce, ktore sa casto opakuju ale najlepsie pre vsetky
-        // vyrobit defaultne, ktore sa budu vsade pouzivat, aby sa nestalo ze niekde nieco zmenime a niekde zabudneme        
+        // vyrobit defaultne, ktore sa budu vsade pouzivat, aby sa nestalo ze niekde nieco zmenime a niekde zabudneme
 
         static string sEP_Width = "Width";
         static string sEP_Unit = "Unit";
@@ -620,10 +620,10 @@ namespace PFD
                             // Screws
                             if (connector is CScrew) // TODO Nemalo by sa posuzovat podla prveho objektu, mozu tam byt rozne, ale zatial to necham tak. Mal to byt cyklus cez vsetky polozky a roztriedit ich podla typu
                             {
-                                screw = connector;                                
+                                screw = connector;
                             }
                             else throw new Exception("Not implemented type of connector.");
-                        }                        
+                        }
                     }
                     if(screw != null) QuotationHelper.AddConnector(screw, quotation, screwsCount);
                 }
@@ -768,7 +768,6 @@ namespace PFD
             //Datagrid_Connectors.Loaded += Datagrid_Connectors_Loaded;
         }
 
-
         public static DataSet GetTableCladdingSheets(CModel model, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
             const float fCFS_PricePerKg_CladdingSheets_Material = 1.698f;    // NZD / kg
@@ -799,7 +798,7 @@ namespace PFD
 
                 //if (sheet.Price_PPKG_NZD > 0) //nakolko nie je Price_PPKG_NZD definovane, tak komentujem cele
                 //    dTotalCladdingSheetsPrice_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
-                //else                
+                //else
                 //    dTotalCladdingSheetsPrice_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho * fCFS_PricePerKg_CladdingSheets_Total; //To Mato - ci sheet.Area_netto ???
 
                 iTotalCladdingSheetsNumber_Model += 1;
@@ -940,8 +939,6 @@ namespace PFD
             }
         }
 
-
-        
         public static DataSet GetTableFibreglassSheets(CModel model, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
             const float fCFS_PricePerKg_FibreglassSheets_Material = 1.698f;    // NZD / kg
@@ -958,7 +955,7 @@ namespace PFD
             double dTotalFibreglassSheetsPrice_Model = 0, dTotalFibreglassSheetsPrice_Table = 0;
             int iTotalFibreglassSheetsNumber_Model = 0, iTotalFibreglassSheetsNumber_Table = 0;
 
-
+            if (model.m_arrGOCladding == null) return null;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) throw new Exception("Cladding is empty.");
 
@@ -972,7 +969,7 @@ namespace PFD
 
                 //if (sheet.Price_PPKG_NZD > 0) //nakolko nie je Price_PPKG_NZD definovane, tak komentujem cele
                 //    dTotalFibreglassSheetsPrice_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
-                //else                
+                //else
                 //    dTotalFibreglassSheetsPrice_Model += sheet.Area_brutto * sheet.FTime * sheet.m_Mat.m_fRho * fCFS_PricePerKg_FibreglassSheets_Total; //To Mato - ci sheet.Area_netto ???
 
                 iTotalFibreglassSheetsNumber_Model += 1;
@@ -1072,6 +1069,5 @@ namespace PFD
 
             return quotation;
         }
-
     }
 }

@@ -62,8 +62,10 @@ namespace PFD
             DataSet ds = new DataSet();
             // Add Table to Dataset
             ds.Tables.Add(dt);
-            
+
             DataRow row;
+
+            if (_pfdVM.Model.m_arrGOCladding == null) return;
             CCladding cladding = _pfdVM.Model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return;
 
