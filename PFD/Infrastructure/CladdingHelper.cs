@@ -28,6 +28,10 @@ namespace PFD.Infrastructure
                 vm._doorsAndWindowsVM == null ? null : vm._doorsAndWindowsVM.WindowBlocksProperties,
                 columnSection, //(CRSC.CCrSc_TW)vm.Model.m_arrCrSc[EMemberType_FS_Position.EdgeColumn] //takto som to chcel mat, ale Model je null
                 vm.ColumnDistance, vm.ColumnDistance,
+                new MATERIAL.CMat_03_00(vm._claddingOptionsVM.WallCladdingCoilProps.materialName, 200e+9f, 80e+9f, 0.3f, 7850f),
+                new MATERIAL.CMat_03_00(vm._claddingOptionsVM.RoofCladdingCoilProps.materialName, 200e+9f, 80e+9f, 0.3f, 7850f),
+                new MATERIAL.CMat_03_00(""),
+                new MATERIAL.CMat_03_00(""),
                 vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex).Name,
                 vm._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.RoofCladdingColorIndex).Name,
                 vm._claddingOptionsVM.WallCladding, vm._claddingOptionsVM.WallCladdingCoating,
@@ -53,8 +57,5 @@ namespace PFD.Infrastructure
 
             return cladding;
         }
-
-
-
     }
 }

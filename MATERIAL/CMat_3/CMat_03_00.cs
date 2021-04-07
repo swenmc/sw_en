@@ -39,6 +39,7 @@ namespace MATERIAL
             m_fNu = 0.3f;    // Unit [-]
             m_fG = m_fE / (2f * (1f + m_fNu)); // Unit [Pa]
             m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
+            m_fRho = 7850; // Default steel density [kg /m^3]
 
             m_ft_interval = new float[1];
             m_ff_yk = new float[1];
@@ -47,6 +48,18 @@ namespace MATERIAL
             m_ft_interval[0] = 0.4f; // 400 mm
             m_ff_yk[0] = 2.35e+8f;
             m_ff_u[0] = 3.60e+8f;
+        }
+
+        public CMat_03_00(string name_temp)
+        {
+            Standard = "";
+            Name = name_temp; // Default Name
+            m_sMatType = 3;
+            m_fE = 2.1e11f;   // Unit [Pa]
+            m_fNu = 0.3f;    // Unit [-]
+            m_fG = m_fE / (2f * (1f + m_fNu)); // Unit [Pa]
+            m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
+            m_fRho = 7850; // Default steel density [kg /m^3]
         }
 
         public CMat_03_00(string name_temp, float ft, float fy, float fu)
@@ -58,10 +71,22 @@ namespace MATERIAL
             m_fNu = 0.3f;    // Unit [-]
             m_fG = m_fE / (2f * (1f + m_fNu)); // Unit [Pa]
             m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
+            m_fRho = 7850; // Default steel density [kg /m^3]
 
             m_ft_interval = new float [1] { ft };
             m_ff_yk = new float[1] { fy };
             m_ff_u = new float[1] { fu };
+        }
+
+        public CMat_03_00(string name_temp, float fE, float fG, float fNu, float fRho)
+        {
+            Name = name_temp; // Default Name
+            m_sMatType = 3;
+            m_fE = fE;   // Unit [Pa]
+            m_fNu = fNu;    // Unit [-]
+            m_fG = fG; // m_fE / (2f * (1f + m_fNu)); // Unit [Pa]
+            m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
+            m_fRho = fRho; // Steel density [kg /m^3]
         }
 
         public CMat_03_00(int id, string name_temp, float fE, float fNu)
@@ -73,6 +98,7 @@ namespace MATERIAL
             m_fNu = fNu;    // Unit [-]
             m_fG = m_fE / (2f * (1f + m_fNu)); // Unit [Pa]
             m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
+            m_fRho = 7850; // Default steel density [kg /m^3]
         }
 
         public CMat_03_00(int id, string name_temp, float fE, float fNu, float ft, float fy, float fu)
@@ -85,6 +111,7 @@ namespace MATERIAL
             m_fNu = fNu;    // Unit [-]
             m_fG = m_fE / (2f * (1f + m_fNu)); // Unit [Pa]
             m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
+            m_fRho = 7850; // Default steel density [kg /m^3]
 
             m_ft_interval = new float[1] { ft };
             m_ff_yk = new float[1] { fy };
@@ -100,6 +127,7 @@ namespace MATERIAL
             m_fNu = 0.3f;    // Unit [-]
             m_fG = m_fE / (2f * (1f + m_fNu)); // Unit [Pa]
             m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
+            m_fRho = 7850; // Default steel density [kg /m^3]
 
             m_ft_interval = ft;
             m_ff_yk = fy;

@@ -47,11 +47,11 @@ namespace BaseClasses.GraphObj
         Color m_ColorWall;
         Color m_ColorRoof;
 
-        MATERIAL.CMat_03_00 m_MaterialCladding_Wall = new MATERIAL.CMat_03_00();
-        MATERIAL.CMat_03_00 m_MaterialCladding_Roof = new MATERIAL.CMat_03_00();
+        MATERIAL.CMat m_MaterialCladding_Wall;
+        MATERIAL.CMat m_MaterialCladding_Roof;
 
-        MATERIAL.CMat_03_00 m_MaterialFibreglass_Wall = new MATERIAL.CMat_03_00();
-        MATERIAL.CMat_03_00 m_MaterialFibreglass_Roof = new MATERIAL.CMat_03_00();
+        MATERIAL.CMat m_MaterialFibreglass_Wall;
+        MATERIAL.CMat m_MaterialFibreglass_Roof;
 
         // Consider roof cladding height for front and back wall
         bool considerRoofCladdingFor_FB_WallHeight;
@@ -126,7 +126,11 @@ namespace BaseClasses.GraphObj
             System.Collections.ObjectModel.ObservableCollection<WindowProperties> windowProp,
             CRSC.CCrSc_TW columnSection,
             float fFrontColumnDistance, float fBackColumnDistance,
-            string colorName_Wall, string colorName_Roof, string claddingShape_Wall, string claddingCoatingType_Wall, string claddingShape_Roof, string claddingCoatingType_Roof,
+            MATERIAL.CMat material_CladdingWall, MATERIAL.CMat material_CladdingRoof,
+            MATERIAL.CMat material_FibreglassWall, MATERIAL.CMat material_FibreglassRoof,
+            string colorName_Wall, string colorName_Roof,
+            string claddingShape_Wall, string claddingCoatingType_Wall,
+            string claddingShape_Roof, string claddingCoatingType_Roof,
             Color colorWall, Color colorRoof,
             Color colorWall_FG, Color colorRoof_FG,
             string colorWall_FG_Name, string colorRoof_FG_Name,
@@ -157,6 +161,12 @@ namespace BaseClasses.GraphObj
             column_crsc_y_plus = columnSection.y_max;
             m_fFrontColumnDistance = fFrontColumnDistance;
             m_fBackColumnDistance = fBackColumnDistance;
+
+            m_MaterialCladding_Wall = material_CladdingWall;
+            m_MaterialCladding_Roof = material_CladdingRoof;
+            m_MaterialFibreglass_Wall = material_FibreglassWall;
+            m_MaterialFibreglass_Roof = material_FibreglassRoof;
+
             m_ColorNameWall = colorName_Wall;
             m_ColorNameRoof = colorName_Roof;
             m_claddingShape_Wall = claddingShape_Wall;
