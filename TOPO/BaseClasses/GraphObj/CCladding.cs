@@ -1769,6 +1769,10 @@ namespace BaseClasses.GraphObj
 
             return list;
         }
+        public bool HasCladdingSheets()
+        {
+            return HasCladdingSheets_Roof() || HasCladdingSheets_Wall();
+        }
         public bool HasCladdingSheets_Wall()
         {
             if (listOfCladdingSheetsLeftWall != null && listOfCladdingSheetsLeftWall.Count > 0) return true;
@@ -1808,12 +1812,22 @@ namespace BaseClasses.GraphObj
 
         public bool HasFibreglassSheets()
         {
+            return HasFibreglassSheets_Wall() || HasFibreglassSheets_Roof();
+        }
+
+        public bool HasFibreglassSheets_Roof()
+        {
+            if (listOfFibreGlassSheetsRoofRight != null && listOfFibreGlassSheetsRoofRight.Count > 0) return true;
+            if (listOfFibreGlassSheetsRoofLeft != null && listOfFibreGlassSheetsRoofLeft.Count > 0) return true;
+
+            return false;
+        }
+        public bool HasFibreglassSheets_Wall()
+        {
             if (listOfFibreGlassSheetsWallLeft != null && listOfFibreGlassSheetsWallLeft.Count > 0) return true;
             if (listOfFibreGlassSheetsWallFront != null && listOfFibreGlassSheetsWallFront.Count > 0) return true;
             if (listOfFibreGlassSheetsWallRight != null && listOfFibreGlassSheetsWallRight.Count > 0) return true;
-            if (listOfFibreGlassSheetsWallBack != null && listOfFibreGlassSheetsWallBack.Count > 0) return true;
-            if (listOfFibreGlassSheetsRoofRight != null && listOfFibreGlassSheetsRoofRight.Count > 0) return true;
-            if (listOfFibreGlassSheetsRoofLeft != null && listOfFibreGlassSheetsRoofLeft.Count > 0) return true;
+            if (listOfFibreGlassSheetsWallBack != null && listOfFibreGlassSheetsWallBack.Count > 0) return true;            
 
             return false;
         }

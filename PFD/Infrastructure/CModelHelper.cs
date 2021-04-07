@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using BaseClasses.GraphObj;
 using BaseClasses.Helpers;
 using MATH;
 using System;
@@ -728,6 +729,54 @@ namespace PFD
             return resNode;
         }
 
-        
+
+        public static bool ModelHasCladding(CModel_PFD model)
+        {
+            if (model == null) return false;
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return false;
+
+            return cladding.HasCladdingSheets();
+        }
+        public static bool ModelHasCladding_Roof(CModel_PFD model)
+        {
+            if (model == null) return false;
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return false;
+
+            return cladding.HasCladdingSheets_Roof();
+        }
+        public static bool ModelHasCladding_Wall(CModel_PFD model)
+        {
+            if (model == null) return false;
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return false;
+
+            return cladding.HasCladdingSheets_Wall();
+        }
+        public static bool ModelHasFibreglass(CModel_PFD model)
+        {
+            if (model == null) return false;
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return false;
+
+            return cladding.HasFibreglassSheets();
+        }
+        public static bool ModelHasFibreglass_Roof(CModel_PFD model)
+        {
+            if (model == null) return false;
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return false;
+
+            return cladding.HasFibreglassSheets_Roof();
+        }
+        public static bool ModelHasFibreglass_Wall(CModel_PFD model)
+        {
+            if (model == null) return false;
+            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return false;
+
+            return cladding.HasFibreglassSheets_Wall();
+        }
     }
 }
