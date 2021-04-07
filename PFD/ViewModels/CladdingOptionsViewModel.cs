@@ -681,7 +681,7 @@ namespace PFD
             {
                 if (m_RoofCladdingProps == null)
                 {
-                    RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+                    SetRoofCladdingProps();
                 }
                 //tato podmienka nizsie je pekna ale vobec nefunguje
                 //else if (m_RoofCladdingProps.name != RoofCladding || m_RoofCladdingProps.thickness_for_name != RoofCladdingThickness)
@@ -694,7 +694,7 @@ namespace PFD
             set
             {
                 m_RoofCladdingProps = value;
-                SetCTS_CoilProperties_Roof();
+                //SetCTS_CoilProperties_Roof();
             }
         }
 
@@ -704,7 +704,7 @@ namespace PFD
             {
                 if (m_WallCladdingProps == null)
                 {
-                    WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+                    SetWallCladdingProps();
                 }
                 //tato podmienka nizsie je pekna ale vobec nefunguje
                 //else if (m_WallCladdingProps.name != WallCladding || m_WallCladdingProps.thickness_for_name != WallCladdingThickness)
@@ -717,7 +717,7 @@ namespace PFD
             set
             {
                 m_WallCladdingProps = value;
-                SetCTS_CoilProperties_Wall();
+                //SetCTS_CoilProperties_Wall();
             }
         }
 
@@ -1632,24 +1632,30 @@ namespace PFD
 
         public void SetWallCladdingProps()
         {
-            WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+            if (m_WallCladdingProps != null && m_WallCladdingProps.name == $"{WallCladding}-{WallCladdingThickness}") return;  //tieto returny treba prejst, lebo nechapem preco sa to tak vela krat vola
+            m_WallCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+            SetCTS_CoilProperties_Wall();
         }
         public void SetRoofCladdingProps()
         {
-            RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+            if (m_RoofCladdingProps != null && m_RoofCladdingProps.name == $"{RoofCladding}-{RoofCladdingThickness}") return;
+            m_RoofCladdingProps = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+            SetCTS_CoilProperties_Roof();
         }
 
         public void SetCTS_CoilProperties_Wall()
         {
+            if (m_WallCladdingProps == null) return;
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
             CoatingColour WallCladdingColor = WallCladdingColors.ElementAtOrDefault(WallCladdingColorIndex);
-            WallCladdingCoilProps = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
+            WallCladdingCoilProps = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), WallCladdingColor, m_WallCladdingProps); // Ceny urcujeme podla coating a color
         }
         public void SetCTS_CoilProperties_Roof()
         {
+            if (m_RoofCladdingProps == null) return;
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
             CoatingColour RoofCladdingColor = RoofCladdingColors.ElementAtOrDefault(RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-            RoofCladdingCoilProps = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color            
+            RoofCladdingCoilProps = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), RoofCladdingColor, m_RoofCladdingProps); // Ceny urcujeme podla coating a color            
         }
 
         public bool CollisionsExists()
