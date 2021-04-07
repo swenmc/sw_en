@@ -1776,20 +1776,7 @@ namespace BaseClasses.GraphObj
             if (listOfCladdingSheetsBackWall != null) list.AddRange(listOfCladdingSheetsBackWall);            
 
             return list;
-        }
-        public bool HasCladdingSheets()
-        {
-            return HasCladdingSheets_Roof() || HasCladdingSheets_Wall();
-        }
-        public bool HasCladdingSheets_Wall()
-        {
-            if (listOfCladdingSheetsLeftWall != null && listOfCladdingSheetsLeftWall.Count > 0) return true;
-            if (listOfCladdingSheetsFrontWall != null && listOfCladdingSheetsFrontWall.Count > 0) return true;
-            if (listOfCladdingSheetsRightWall != null && listOfCladdingSheetsRightWall.Count > 0) return true;
-            if (listOfCladdingSheetsBackWall != null && listOfCladdingSheetsBackWall.Count > 0) return true;
-
-            return false;
-        }
+        }        
         public List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof()
         {
             List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();            
@@ -1797,14 +1784,7 @@ namespace BaseClasses.GraphObj
             if (listOfCladdingSheetsRoofLeft != null) list.AddRange(listOfCladdingSheetsRoofLeft);
 
             return list;
-        }
-        public bool HasCladdingSheets_Roof()
-        {
-            if (listOfCladdingSheetsRoofRight != null && listOfCladdingSheetsRoofRight.Count > 0) return true;
-            if (listOfCladdingSheetsRoofLeft != null && listOfCladdingSheetsRoofLeft.Count > 0) return true;
-
-            return false;
-        }
+        }        
         public List<CCladdingOrFibreGlassSheet> GetFibreglassSheets()
         {
             List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();
@@ -1818,11 +1798,30 @@ namespace BaseClasses.GraphObj
             return list;
         }
 
+        public bool HasCladdingSheets()
+        {
+            return HasCladdingSheets_Roof() || HasCladdingSheets_Wall();
+        }
+        public bool HasCladdingSheets_Wall()
+        {
+            if (listOfCladdingSheetsLeftWall != null && listOfCladdingSheetsLeftWall.Count > 0) return true;
+            if (listOfCladdingSheetsFrontWall != null && listOfCladdingSheetsFrontWall.Count > 0) return true;
+            if (listOfCladdingSheetsRightWall != null && listOfCladdingSheetsRightWall.Count > 0) return true;
+            if (listOfCladdingSheetsBackWall != null && listOfCladdingSheetsBackWall.Count > 0) return true;
+
+            return false;
+        }
+        public bool HasCladdingSheets_Roof()
+        {
+            if (listOfCladdingSheetsRoofRight != null && listOfCladdingSheetsRoofRight.Count > 0) return true;
+            if (listOfCladdingSheetsRoofLeft != null && listOfCladdingSheetsRoofLeft.Count > 0) return true;
+
+            return false;
+        }
         public bool HasFibreglassSheets()
         {
             return HasFibreglassSheets_Wall() || HasFibreglassSheets_Roof();
         }
-
         public bool HasFibreglassSheets_Roof()
         {
             if (listOfFibreGlassSheetsRoofRight != null && listOfFibreGlassSheetsRoofRight.Count > 0) return true;

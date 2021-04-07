@@ -738,12 +738,11 @@ namespace PFD
             // TODO 438
             CTS_CrscProperties prop_RoofCladding = vm._claddingOptionsVM.RoofCladdingProps;
             CTS_CrscProperties prop_WallCladding = vm._claddingOptionsVM.WallCladdingProps;
-            CTS_CoilProperties prop_RoofCladdingCoil;
-            CTS_CoilProperties prop_WallCladdingCoil;
-            CoatingColour prop_RoofCladdingColor;
-            CoatingColour prop_WallCladdingColor;
-            vm._claddingOptionsVM.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
-            
+            CTS_CoilProperties prop_RoofCladdingCoil = vm._claddingOptionsVM.RoofCladdingCoilProps;
+            CTS_CoilProperties prop_WallCladdingCoil = vm._claddingOptionsVM.WallCladdingCoilProps;
+            CoatingColour prop_RoofCladdingColor = vm._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.RoofCladdingColorIndex);
+            CoatingColour prop_WallCladdingColor = vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex);           
+
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
             //-----------------------------------------------------------------------------
