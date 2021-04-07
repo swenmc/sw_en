@@ -17,6 +17,7 @@ using BaseClasses;
 using MATH;
 using BaseClasses.Results;
 using PFD.ViewModels;
+using BaseClasses.GraphObj;
 
 namespace PFD
 {
@@ -75,7 +76,7 @@ namespace PFD
                 Datagrid_CladdingSheets.Visibility = Visibility.Collapsed;                
             }
 
-            if (_pfdVM._claddingOptionsVM.HasFibreglass())
+            if (_pfdVM._claddingOptionsVM.HasFibreglass() && ModelHasFibreglass())
             {
                 TxtFibreglassSheets.Visibility = Visibility.Visible;
                 Datagrid_FibreglassSheets.Visibility = Visibility.Visible;
@@ -85,6 +86,14 @@ namespace PFD
                 TxtFibreglassSheets.Visibility = Visibility.Collapsed;
                 Datagrid_FibreglassSheets.Visibility = Visibility.Collapsed;                
             }
+        }
+
+        private bool ModelHasFibreglass()
+        {
+            CCladding cladding = _pfdVM.Model.m_arrGOCladding.FirstOrDefault();
+            if (cladding == null) return false;
+
+            return cladding.HasFibreglassSheets();
         }
 
         private void MaterialListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
