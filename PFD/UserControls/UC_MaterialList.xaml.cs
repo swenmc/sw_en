@@ -52,9 +52,8 @@ namespace PFD
             CreateTableConnectors(pfdVM.Model);
 
             // Cladding Sheets
-            if (pfdVM._modelOptionsVM.IndividualCladdingSheets)            
+            if (pfdVM._modelOptionsVM.IndividualCladdingSheets)
                 CreateTableCladdingSheets(pfdVM.Model);
-            
 
             // Fibreglass Sheets
             if (_pfdVM._claddingOptionsVM.HasFibreglass())
@@ -73,7 +72,7 @@ namespace PFD
             else
             {
                 TxtCladdingSheets.Visibility = Visibility.Collapsed;
-                Datagrid_CladdingSheets.Visibility = Visibility.Collapsed;                
+                Datagrid_CladdingSheets.Visibility = Visibility.Collapsed;
             }
 
             if (_pfdVM._claddingOptionsVM.HasFibreglass() && CModelHelper.ModelHasFibreglass(_pfdVM.Model))
@@ -84,7 +83,7 @@ namespace PFD
             else
             {
                 TxtFibreglassSheets.Visibility = Visibility.Collapsed;
-                Datagrid_FibreglassSheets.Visibility = Visibility.Collapsed;                
+                Datagrid_FibreglassSheets.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -92,10 +91,11 @@ namespace PFD
         {
 
         }
-        
+
         private void CreateTablePlates(CModel model)
         {
             DataSet ds = QuotationHelper.GetTablePlates(model, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            if (ds == null) return;
 
             Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
             Datagrid_Plates.Loaded += Datagrid_Plates_Loaded;
@@ -105,10 +105,11 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_Plates);
         }
-                
+
         private void CreateTableConnectors(CModel model)
         {
             DataSet ds = QuotationHelper.GetTableConnectors(model, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            if (ds == null) return;
 
             Datagrid_Connectors.ItemsSource = ds.Tables[0].AsDataView();
             Datagrid_Connectors.Loaded += Datagrid_Connectors_Loaded;
@@ -119,10 +120,10 @@ namespace PFD
             SetLastRowBold(Datagrid_Connectors);
         }
 
-
         private void CreateTableCladdingSheets(CModel model)
         {
             DataSet ds = QuotationHelper.GetTableCladdingSheets(model, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            if (ds == null) return;
 
             Datagrid_CladdingSheets.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
             Datagrid_CladdingSheets.Loaded += Datagrid_CladdingSheets_Loaded;
@@ -136,6 +137,7 @@ namespace PFD
         private void CreateTableFibreglassSheets(CModel model)
         {
             DataSet ds = QuotationHelper.GetTableFibreglassSheets(model, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            if (ds == null) return;
 
             Datagrid_FibreglassSheets.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
             Datagrid_FibreglassSheets.Loaded += Datagrid_FibreglassSheets_Loaded;
@@ -145,9 +147,6 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_FibreglassSheets);
         }
-
-
-
 
         private void SetLastRowBold(DataGrid datagrid)
         {

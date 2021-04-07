@@ -724,7 +724,7 @@ namespace PFD
                 {
                     if (deactivateDuplicitNodes) node.BIsGenerated = false;
                     resNode = n;
-                }                
+                }
             }
             return resNode;
         }
@@ -732,7 +732,7 @@ namespace PFD
 
         public static bool ModelHasCladding(CModel_PFD model)
         {
-            if (model == null) return false;
+            if (model == null || model.m_arrGOCladding == null) return false;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return false;
 
@@ -740,7 +740,7 @@ namespace PFD
         }
         public static bool ModelHasCladding_Roof(CModel_PFD model)
         {
-            if (model == null) return false;
+            if (model == null || model.m_arrGOCladding == null) return false;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return false;
 
@@ -748,7 +748,7 @@ namespace PFD
         }
         public static bool ModelHasCladding_Wall(CModel_PFD model)
         {
-            if (model == null) return false;
+            if (model == null || model.m_arrGOCladding == null) return false;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return false;
 
@@ -756,7 +756,7 @@ namespace PFD
         }
         public static bool ModelHasFibreglass(CModel_PFD model)
         {
-            if (model == null) return false;
+            if (model == null || model.m_arrGOCladding == null) return false;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return false;
 
@@ -764,7 +764,7 @@ namespace PFD
         }
         public static bool ModelHasFibreglass_Roof(CModel_PFD model)
         {
-            if (model == null) return false;
+            if (model == null || model.m_arrGOCladding == null) return false;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return false;
 
@@ -772,7 +772,7 @@ namespace PFD
         }
         public static bool ModelHasFibreglass_Wall(CModel_PFD model)
         {
-            if (model == null) return false;
+            if (model == null || model.m_arrGOCladding == null) return false;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return false;
 

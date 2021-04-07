@@ -785,7 +785,7 @@ namespace PFD
             double dTotalCladdingSheetsPrice_Model = 0, dTotalCladdingSheetsPrice_Table = 0;
             int iTotalCladdingSheetsNumber_Model = 0, iTotalCladdingSheetsNumber_Table = 0;
 
-            
+            if (model.m_arrGOCladding == null) return null;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) throw new Exception("Cladding is empty.");
             
