@@ -2226,29 +2226,7 @@ namespace PFD
                 iTemp += iArrGB_NumberOfNodesPerBay[i];
             }
 
-            iNumberOfGB_NodesInOneSideAndMiddleBay = iTemp;
-            //iTemp = 0;
-            //
-            //for (int i = 0; i < iArrGB_NumberOfNodesPerBay.Length - 1; i++) // Right side
-            //{
-            //    for (int j = 0; j < iArrGB_NumberOfNodesPerBayFirstNode[i]; j++) // Bay
-            //    {
-            //        for (int k = 0; k < iNumberOfTransverseSupports; k++)
-            //        {
-            //            float x_glob = i * fDist_Columns + (k + 1) * fIntermediateSupportSpacing;
-            //            float z_glob;
-            //
-            //            if (j < iArrGB_NumberOfNodesPerBayFirstNode[i] - 1)
-            //                z_glob = (fBottomGirtPosition + j * fDist_Girts);
-            //            else
-            //                CalcColumnNodeCoord_Z(bConsiderAbsoluteValueOfRoofPitch, fHeight, x_glob, out z_glob); // Top bracing blocks under the edge rafter
-            //
-            //            m_arrNodes[i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports + k] = new CNode(i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports + k + 1, fW_frame - x_glob, fy_Global_Coord, z_glob, 0);
-            //            RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports + k]);
-            //        }
-            //    }
-            //    iTemp += iArrGB_NumberOfNodesPerBay[i];
-            //}
+            iNumberOfGB_NodesInOneSideAndMiddleBay = iTemp;            
         }
 
         public void AddFrontOrBackGirtsBracingBlocksMembers(int i_temp_numberofNodes, int i_temp_numberofMembers, int[] iArrGB_NumberOfNodesPerBay, int[] iArrGB_NumberOfNodesPerBayFirstNode, int[] iArrGB_NumberOfMembersPerBay,
@@ -2289,38 +2267,7 @@ namespace PFD
                 iTemp2 += iArrGB_NumberOfMembersPerBay[i];
             }
 
-            int iNumberOfGB_MembersInOneSideAndMiddleBay = iTemp2;
-            //iTemp = 0;
-            //iTemp2 = 0;
-
-            //for (int i = 0; i < iArrGB_NumberOfMembersPerBay.Length - 1; i++) // Right side
-            //{
-            //    for (int j = 0; j < (iArrGB_NumberOfNodesPerBayFirstNode[i] - 1); j++) // Bay
-            //    {
-            //        bool bDeactivateMember = false;
-            //        if (bUseBraicingEverySecond && j % 2 == 1) bDeactivateMember = true;
-            //
-            //        float fGBAlignmentEnd_Current = fGBAlignmentEnd;
-            //
-            //        if (j == iArrGB_NumberOfNodesPerBayFirstNode[i] - 1 - 1) // Last
-            //            fGBAlignmentEnd_Current = fGBAlignmentEndToRafter;
-            //
-            //        for (int k = 0; k < iNumberOfTransverseSupports; k++)
-            //        {
-            //            int memberIndex = i_temp_numberofMembers + iNumberOfGB_MembersInOneSideAndMiddleBay + iTemp2 + j * iNumberOfTransverseSupports + k;
-            //            int startNodeIndex = i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports + k;
-            //            int endNodeIndex = i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + (j + 1) * iNumberOfTransverseSupports + k;
-            //            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], section, EMemberType_FS.eGB, eMemberType_FS_Position, eGirtEccentricity, eGirtEccentricity, fGBAlignmentStart, fGBAlignmentEnd_Current, fColumnsRotation, 0);
-            //
-            //            if (m_arrMembers[memberIndex].FLength_real < fRealLengthLimit)
-            //                DeactivateMember(ref m_arrMembers[memberIndex]);
-            //
-            //            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
-            //        }
-            //    }
-            //    iTemp += iArrGB_NumberOfNodesPerBay[i];
-            //    iTemp2 += iArrGB_NumberOfMembersPerBay[i];
-            //}
+            int iNumberOfGB_MembersInOneSideAndMiddleBay = iTemp2;            
         }
     }
 }
