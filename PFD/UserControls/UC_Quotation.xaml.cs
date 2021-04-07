@@ -734,21 +734,14 @@ namespace PFD
             // Plocha strechy bez fibre glass
             float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
 
-            //-----------------------------------------------------------------------------            
-            // TODO 438
-            CTS_CrscProperties prop_RoofCladding = vm._claddingOptionsVM.RoofCladdingProps;
-            CTS_CrscProperties prop_WallCladding = vm._claddingOptionsVM.WallCladdingProps;
-            CTS_CoilProperties prop_RoofCladdingCoil = vm._claddingOptionsVM.RoofCladdingCoilProps;
-            CTS_CoilProperties prop_WallCladdingCoil = vm._claddingOptionsVM.WallCladdingCoilProps;
             CoatingColour prop_RoofCladdingColor = vm._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.RoofCladdingColorIndex);
-            CoatingColour prop_WallCladdingColor = vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex);           
+            CoatingColour prop_WallCladdingColor = vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex);
 
-            float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
-            float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
-            //-----------------------------------------------------------------------------
+            float fRoofCladdingUnitMass_kg_m2 = (float)(vm._claddingOptionsVM.RoofCladdingCoilProps.mass_kg_lm / vm._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+            float fWallCladdingUnitMass_kg_m2 = (float)(vm._claddingOptionsVM.WallCladdingCoilProps.mass_kg_lm / vm._claddingOptionsVM.WallCladdingProps.widthModular_m);
 
-            float fRoofCladdingPrice_PSM_NZD = (float)(prop_RoofCladdingCoil.price_PPLM_NZD / prop_RoofCladding.widthModular_m);
-            float fWallCladdingPrice_PSM_NZD = (float)(prop_WallCladdingCoil.price_PPLM_NZD / prop_WallCladding.widthModular_m);
+            float fRoofCladdingPrice_PSM_NZD = (float)(vm._claddingOptionsVM.RoofCladdingCoilProps.price_PPLM_NZD / vm._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+            float fWallCladdingPrice_PSM_NZD = (float)(vm._claddingOptionsVM.WallCladdingCoilProps.price_PPLM_NZD / vm._claddingOptionsVM.WallCladdingProps.widthModular_m);
 
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
@@ -792,7 +785,7 @@ namespace PFD
                 try
                 {
                     row[QuotationHelper.colProp_Cladding.ColumnName] = vm._claddingOptionsVM.RoofCladding;
-                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (prop_RoofCladding.thicknessCore_m * 1000).ToString("F2"); // mm
+                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (vm._claddingOptionsVM.RoofCladdingProps.thicknessCore_m * 1000).ToString("F2"); // mm
                     row[QuotationHelper.colProp_Coating.ColumnName] = vm._claddingOptionsVM.RoofCladdingCoating;
                     row[QuotationHelper.colProp_Color.ColumnName] = prop_RoofCladdingColor.CodeHEX;
                     row[QuotationHelper.colProp_ColorName.ColumnName] = prop_RoofCladdingColor.Name;
@@ -822,7 +815,7 @@ namespace PFD
                 try
                 {
                     row[QuotationHelper.colProp_Cladding.ColumnName] = vm._claddingOptionsVM.WallCladding;
-                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (prop_WallCladding.thicknessCore_m * 1000).ToString("F2"); // mm
+                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (vm._claddingOptionsVM.WallCladdingProps.thicknessCore_m * 1000).ToString("F2"); // mm
                     row[QuotationHelper.colProp_Coating.ColumnName] = vm._claddingOptionsVM.WallCladdingCoating;
                     row[QuotationHelper.colProp_Color.ColumnName] = prop_WallCladdingColor.CodeHEX;
                     row[QuotationHelper.colProp_ColorName.ColumnName] = prop_WallCladdingColor.Name;

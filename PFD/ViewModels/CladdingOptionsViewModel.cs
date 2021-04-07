@@ -1612,24 +1612,6 @@ namespace PFD
             IsSetFromCode = false;
         }
 
-        //public void GetCTS_CoilProperties(out CTS_CoilProperties prop_RoofCladdingCoil, out CTS_CoilProperties prop_WallCladdingCoil,
-        //        out CoatingColour prop_RoofCladdingColor, out CoatingColour prop_WallCladdingColor)
-        //{
-        //    List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
-
-        //    CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
-        //    prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(RoofCladdingCoating);
-
-        //    CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
-        //    prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(WallCladdingCoating);
-
-        //    prop_RoofCladdingColor = RoofCladdingColors.ElementAtOrDefault(RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-        //    prop_WallCladdingColor = WallCladdingColors.ElementAtOrDefault(WallCladdingColorIndex);
-
-        //    prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, RoofCladdingProps); // Ceny urcujeme podla coating a color
-        //    prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, WallCladdingProps); // Ceny urcujeme podla coating a color
-        //}
-
         public void SetWallCladdingProps()
         {
             if (m_WallCladdingProps != null && m_WallCladdingProps.name == $"{WallCladding}-{WallCladdingThickness}") return;  //tieto returny treba prejst, lebo nechapem preco sa to tak vela krat vola

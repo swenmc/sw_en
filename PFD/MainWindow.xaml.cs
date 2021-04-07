@@ -578,28 +578,10 @@ namespace PFD
 
             // Load Generation
             // General loading
-            // toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
-            // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
 
-            //-----------------------------------------------------------------------------
-            CTS_CrscProperties prop_RoofCladding = vm._claddingOptionsVM.RoofCladdingProps;
-            CTS_CrscProperties prop_WallCladding = vm._claddingOptionsVM.WallCladdingProps;
-            CTS_CoilProperties prop_RoofCladdingCoil = vm._claddingOptionsVM.RoofCladdingCoilProps;
-            CTS_CoilProperties prop_WallCladdingCoil = vm._claddingOptionsVM.WallCladdingCoilProps;
-            //CoatingColour prop_RoofCladdingColor;
-            //CoatingColour prop_WallCladdingColor;
-            //vm._claddingOptionsVM.GetCTS_CoilProperties(out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
-
-            // TODO 740
-            // To Ondrej - takto sa vieme dostat ku stringu s coil, resp. cladding sheet material name
-            // Akurat ze to potrebujes nejako elegantne dostat az do CCladdingOrFibreGlassSheet
-            string prop_RoofCladdingMaterialName = prop_RoofCladdingCoil.materialName;
-            string prop_WallCladdingMaterialName = prop_WallCladdingCoil.materialName;
-
-            float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
-            float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
-            //-----------------------------------------------------------------------------
-
+            float fRoofCladdingUnitMass_kg_m2 = vm._claddingOptionsVM == null ? 0 : (float)(vm._claddingOptionsVM.RoofCladdingCoilProps.mass_kg_lm / vm._claddingOptionsVM.RoofCladdingProps.widthModular_m);
+            float fWallCladdingUnitMass_kg_m2 = vm._claddingOptionsVM == null ? 0 : (float)(vm._claddingOptionsVM.WallCladdingCoilProps.mass_kg_lm / vm._claddingOptionsVM.WallCladdingProps.widthModular_m);
+ 
             // General Load (AS / NZS 1170.1)
             CalculateBasicLoad(fRoofCladdingUnitMass_kg_m2, fWallCladdingUnitMass_kg_m2);
 
