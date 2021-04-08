@@ -52,11 +52,11 @@ namespace PFD
             CreateTableConnectors(pfdVM.Model);
 
             // Cladding Sheets
-            if (pfdVM._modelOptionsVM.IndividualCladdingSheets)
+            if (pfdVM._modelOptionsVM.EnableCladding && pfdVM._modelOptionsVM.IndividualCladdingSheets)
                 CreateTableCladdingSheets(pfdVM.Model);
 
             // Fibreglass Sheets
-            if (_pfdVM._claddingOptionsVM.HasFibreglass())
+            if (pfdVM._modelOptionsVM.EnableCladding && pfdVM._claddingOptionsVM.HasFibreglass())
                 CreateTableFibreglassSheets(pfdVM.Model);
 
             SetControlsVisibility();
@@ -64,7 +64,7 @@ namespace PFD
 
         private void SetControlsVisibility()
         {
-            if (_pfdVM._modelOptionsVM.IndividualCladdingSheets)
+            if (_pfdVM._modelOptionsVM.EnableCladding && _pfdVM._modelOptionsVM.IndividualCladdingSheets)
             {
                 TxtCladdingSheets.Visibility = Visibility.Visible;
                 Datagrid_CladdingSheets.Visibility = Visibility.Visible;
@@ -75,7 +75,7 @@ namespace PFD
                 Datagrid_CladdingSheets.Visibility = Visibility.Collapsed;
             }
 
-            if (_pfdVM._claddingOptionsVM.HasFibreglass() && CModelHelper.ModelHasFibreglass(_pfdVM.Model))
+            if (_pfdVM._modelOptionsVM.EnableCladding && _pfdVM._claddingOptionsVM.HasFibreglass() && CModelHelper.ModelHasFibreglass(_pfdVM.Model))
             {
                 TxtFibreglassSheets.Visibility = Visibility.Visible;
                 Datagrid_FibreglassSheets.Visibility = Visibility.Visible;

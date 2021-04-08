@@ -58,58 +58,6 @@ namespace PFD
 
             CModel model = vm.Model;
 
-            //List<Point> WallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(_pfdVM.LengthOverall, 0), new Point(_pfdVM.LengthOverall,_pfdVM.WallHeightOverall), new Point(0, _pfdVM.WallHeightOverall) };
-
-            //List<Point> WallDefinitionPoints_Right;
-            //List<Point> WallDefinitionPoints_Front;
-
-            //if (_pfdVM.Model is CModel_PFD_01_MR)
-            //{
-            //    WallDefinitionPoints_Right = new List<Point>(4) { new Point(0, 0), new Point(_pfdVM.LengthOverall, 0), new Point(_pfdVM.LengthOverall, _pfdVM.Height_H2_Overall), new Point(0, _pfdVM.Height_H2_Overall) };
-            //    WallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(_pfdVM.WidthOverall, 0), new Point(_pfdVM.WidthOverall, _pfdVM.Height_H2_Overall), new Point(0, _pfdVM.WallHeightOverall) };
-            //}
-            //else if (_pfdVM.Model is CModel_PFD_01_GR)
-            //{
-            //    WallDefinitionPoints_Right = WallDefinitionPoints_Left;
-            //    WallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(_pfdVM.WidthOverall, 0), new Point(_pfdVM.WidthOverall, _pfdVM.WallHeightOverall), new Point(0.5 * _pfdVM.WidthOverall, _pfdVM.Height_H2_Overall), new Point(0, _pfdVM.WallHeightOverall) };
-            //}
-            //else
-            //{
-            //    WallDefinitionPoints_Right = null; // Exception - not implemented
-            //    WallDefinitionPoints_Front = null; // Exception - not implemented
-            //}
-
-            //float fWallArea_Left = 0; float fWallArea_Right = 0;
-
-            //// TO Ondrej - prosim skontroluj mi tieto podmienky, ci sa to da napisat inak
-            //// da sa to hocijako, ale kedze nemame rozdielne position, tak asi takto, resp. sa da vybrat len na zaklade spolocneho enumu ak su len 2 a potom vybrat first a last
-            ////vm.ComponentList.FirstOrDefault(x=> x.MemberTypePosition == EMemberType_FS_Position.Girt) //left
-            ////vm.ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt) //right
-            ////ja ale osobne nevidim dovod preco sa pocita rozloha iba ked su Generate zapnute na true ???
-            //if (vm.ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Left Side").Generate == true)
-            //    fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left.ToArray());
-
-            //if (vm.ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Right Side").Generate == true)
-            //{
-            //    if (_pfdVM.Model is CModel_PFD_01_MR)
-            //        fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
-            //    else if (_pfdVM.Model is CModel_PFD_01_GR)
-            //        fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
-            //    else
-            //        fWallArea_Right = float.MinValue; //  Exception - not implemented
-            //}
-
-            //float fWallArea_Front = 0;
-            //if (vm.ComponentList[(int)EMemberType_FS_Position.GirtFrontSide].Generate == true)
-            //    fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
-
-            //float fWallArea_Back = 0;
-            //if (vm.ComponentList[(int)EMemberType_FS_Position.GirtBackSide].Generate == true)
-            //    fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
-
-            //float fBuildingArea_Gross = _pfdVM.WidthOverall * _pfdVM.LengthOverall;
-            //float fBuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray()) * _pfdVM.LengthOverall;
-
             // DG 1
             // Members
             if (vm._quotationDisplayOptionsVM.DisplayMembers) CreateTableMembers(model);
@@ -162,32 +110,6 @@ namespace PFD
 
             // DG 6
             // Cladding
-            //float fWallArea_Total = vm.TotalWallArea; //fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
-            //float fRoofArea = vm.TotalRoofArea;
-
-            //float fRoofSideLength = 0;
-            //int iNumberOfRoofSides = 0; // Number of roof planes (2 - gable, 1 - monopitch)
-
-            //if (_pfdVM.Model is CModel_PFD_01_MR)
-            //{
-            //    fRoofSideLength = MathF.Sqrt(MathF.Pow2(_pfdVM.Height_H2_Overall - _pfdVM.WallHeightOverall) + MathF.Pow2(_pfdVM.WidthOverall)); // Dlzka hrany strechy
-            //    iNumberOfRoofSides = 1;
-            //}
-            //else if(_pfdVM.Model is CModel_PFD_01_GR)
-            //{
-            //    fRoofSideLength = MathF.Sqrt(MathF.Pow2(_pfdVM.Height_H2_Overall - _pfdVM.WallHeightOverall) + MathF.Pow2(0.5f * _pfdVM.WidthOverall)); // Dlzka hrany strechy
-            //    iNumberOfRoofSides = 2;
-            //}
-            //else
-            //{
-            //    // Exception - not implemented
-            //    fRoofSideLength = 0;
-            //    iNumberOfRoofSides = 0;
-            //}
-            
-            //if (vm.ComponentList[(int)EMemberType_FS_Position.Purlin].Generate == true)
-            //    fRoofArea = iNumberOfRoofSides * fRoofSideLength * _pfdVM.LengthOverall;
-
             // Canopies
             float fCanopyRoofArea = 0;
 
@@ -203,12 +125,10 @@ namespace PFD
                 }
             }
 
-            //vm.TotalRoofArea = fRoofArea;
-            //vm.TotalWallArea = fWallArea_Total;
             float fFibreGlassArea_Roof = vm._claddingOptionsVM.FibreglassAreaRoof; // / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = vm._claddingOptionsVM.FibreglassAreaWall; // / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
-            if (vm._quotationDisplayOptionsVM.DisplayCladding && CModelHelper.ModelHasCladding(vm.Model)) //iba ak je nejaky cladding
+            if (vm._quotationDisplayOptionsVM.DisplayCladding && vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasCladding(vm.Model)) //iba ak je nejaky cladding
             {
                 // TODO Ondrej - refaktoring - funckia CreateTableCladding
                 CreateTableCladding(vm,
@@ -247,7 +167,8 @@ namespace PFD
 
             // DG 9
             // FibreGlass
-            if (vm._quotationDisplayOptionsVM.DisplayFibreglass && CModelHelper.ModelHasFibreglass(vm.Model)) CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
+            if (vm._quotationDisplayOptionsVM.DisplayFibreglass && vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasFibreglass(vm.Model))
+                CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
             else
             {
                 TextBlock_Fibreglass.Visibility = Visibility.Collapsed;
@@ -1303,17 +1224,25 @@ namespace PFD
             }
 
             //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
-            CAccessories_LengthItemProperties flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[0]);
-            if(flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
+            CAccessories_LengthItemProperties flashing = null;
 
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[1]);
-            if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
+            //to Mato- tu si nie som isty...mozno by bolo lepsie menit zoznam flashings priamo v tabe Accesories pokial sa vypne EnableCladding option v model options
+            //ak by sme to chceli riesit az ty v Quotation,tak by som to dal takto:
 
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[2]);
-            if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
+            if (_pfdVM._modelOptionsVM.EnableCladding) //to Mato-zaroven neviem coho vsetkeho sa to tyka
+            {
+                flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[0]);
+                if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[3]);
-            if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
+                flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[1]);
+                if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
+
+                flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[2]);
+                if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
+
+                flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[3]);
+                if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
+            }            
 
             flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[4]);
             if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
