@@ -564,7 +564,7 @@ namespace BaseClasses.GraphObj
                     if (fgsp.Side == "Left")
                     {
                         listOfFibreGlassSheetsWallLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFL", "Fibreglass - Left Wall", m_MaterialFibreglass_Wall,
-                            0.001f /*TODO napojit z GUI*/, m_WallCoilProps.widthCoil, 1.800f, 1.1680f, 0.1f, 0.3f /*TODO*/,
+                            0.001f /*TODO napojit z GUI*/, m_WallCoilProps.widthCoil, 1.800f, 0.3f /*TODO*/, claddingWidthModular_Wall_FG,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pControlPoint_LeftWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
@@ -580,15 +580,14 @@ namespace BaseClasses.GraphObj
                 if (bIndividualCladdingSheets)
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall, pControlPoint_LeftWall, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
-                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.mass_kg_lm,
-                    m_WallCoilProps.price_PPLM_NZD, m_WallCoilProps.price_PPSM_NZD, width,
+                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, width,
                     claddingWidthRibModular_Wall, claddingWidthModular_Wall, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
                     listOfOpeningsLeftWall_All, ref iSheetIndex, out listOfCladdingSheetsLeftWall);
                 else // (bGenerateLeftSideCladding && !bIndividualCladdingSheets)
                 {
                     listOfCladdingSheetsLeftWall = new List<CCladdingOrFibreGlassSheet>();
                     listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(1, "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall,
-                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, 1.800f, 1.1680f, 0.1f, 0.3f /*TODO*/, 
+                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, 1.800f, 0.3f /*TODO*/, claddingWidthModular_Wall,
                         4, 0, 0,
                         pControlPoint_LeftWall, width, height_left_basic, height_left_basic, 0.5 * width, height_left_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, 
@@ -630,14 +629,14 @@ namespace BaseClasses.GraphObj
                     if (fgsp.Side == "Front")
                     {
                         listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFF", "Fibreglass - Front Wall", m_MaterialFibreglass_Wall,
-                            0.001f /*TODO napojit z GUI*/, m_WallCoilProps.widthCoil, 1.800f, 1.1680f, 0.1f, 0.3f /*TODO*/, 
+                            0.001f /*TODO napojit z GUI*/, m_WallCoilProps.widthCoil, 1.800f, 0.3f /*TODO*/, claddingWidthModular_Wall_FG,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pControlPoint_FrontWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
                         iSheet_FG_Index++;
                     }
                 }
-                
+
                 GenerateCladdingOpenings(listOfFibreGlassSheetsWallFront, "Front", pControlPoint_FrontWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsFrontWall_All);
             }
@@ -647,8 +646,7 @@ namespace BaseClasses.GraphObj
                 if (bIndividualCladdingSheets)
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall, pControlPoint_FrontWall, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity,
-                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.mass_kg_lm,
-                    m_WallCoilProps.price_PPLM_NZD, m_WallCoilProps.price_PPSM_NZD, width,
+                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, width,
                     claddingWidthRibModular_Wall, claddingWidthModular_Wall, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
                     listOfOpeningsFrontWall_All, ref iSheetIndex, out listOfCladdingSheetsFrontWall);
                 else // (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && !bIndividualCladdingSheets)
@@ -664,8 +662,7 @@ namespace BaseClasses.GraphObj
 
                     listOfCladdingSheetsFrontWall = new List<CCladdingOrFibreGlassSheet>();
                     listOfCladdingSheetsFrontWall.Add(new CCladdingOrFibreGlassSheet(2, "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall,
-                        m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.mass_kg_lm,
-                        m_WallCoilProps.price_PPLM_NZD, m_WallCoilProps.price_PPSM_NZD,
+                        m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, claddingWidthModular_Wall,
                         iNumberOfFrontBackWallEdges, 0, 0,
                         pControlPoint_FrontWall, width, height_left_basic, height_right_basic, 0.5 * width, height_middle_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, 
@@ -708,7 +705,7 @@ namespace BaseClasses.GraphObj
                     if (fgsp.Side == "Right")
                     {
                         listOfFibreGlassSheetsWallRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFR", "Fibreglass - Right Wall", m_MaterialFibreglass_Wall,
-                            0.001f /*TODO napojit z GUI*/, m_WallCoilProps.widthCoil, 1.800f, 1.1680f, 0.1f, 0.3f /*TODO*/, 
+                            0.001f /*TODO napojit z GUI*/, m_WallCoilProps.widthCoil, 1.800f, 0.3f /*TODO*/, claddingWidthModular_Wall_FG,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                         pControlPoint_RightWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                         m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
@@ -724,16 +721,14 @@ namespace BaseClasses.GraphObj
                 if (bIndividualCladdingSheets)
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall, pControlPoint_RightWall, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
-                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.mass_kg_lm,
-                    m_WallCoilProps.price_PPLM_NZD, m_WallCoilProps.price_PPSM_NZD, width,
+                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, width,
                     claddingWidthRibModular_Wall, claddingWidthModular_Wall, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
                     listOfOpeningsRightWall_All, ref iSheetIndex, out listOfCladdingSheetsRightWall);
                 else
                 {
                     listOfCladdingSheetsRightWall = new List<CCladdingOrFibreGlassSheet>();
                     listOfCladdingSheetsRightWall.Add(new CCladdingOrFibreGlassSheet(3, "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall,
-                        m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.mass_kg_lm,
-                        m_WallCoilProps.price_PPLM_NZD, m_WallCoilProps.price_PPSM_NZD,
+                        m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, claddingWidthModular_Wall,
                         4, 0, 0,
                         pControlPoint_RightWall, width, height_left_basic, height_left_basic, 0.5 * width, height_left_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, 
@@ -776,7 +771,7 @@ namespace BaseClasses.GraphObj
                     if (fgsp.Side == "Back")
                     {
                         listOfFibreGlassSheetsWallBack.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFB", "Fibreglass - Back Wall", m_MaterialFibreglass_Wall,
-                            0.001f /*TODO napojit z GUI*/, m_WallCoilProps.widthCoil, 1.800f, 1.1680f, 0.1f, 0.3f /*TODO*/,
+                            0.001f /*TODO napojit z GUI*/, m_WallCoilProps.widthCoil, 1.800f, 0.3f /*TODO*/, claddingWidthModular_Wall_FG,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pControlPoint_BackWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Wall_FG, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, claddingWidthRibModular_Wall_FG, true, 0));
@@ -792,8 +787,7 @@ namespace BaseClasses.GraphObj
                 if (bIndividualCladdingSheets)
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall, pControlPoint_BackWall, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity,
-                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.mass_kg_lm,
-                    m_WallCoilProps.price_PPLM_NZD, m_WallCoilProps.price_PPSM_NZD, width,
+                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, width,
                     claddingWidthRibModular_Wall, claddingWidthModular_Wall, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
                     listOfOpeningsBackWall_All, ref iSheetIndex, out listOfCladdingSheetsBackWall);
                 else //(bGenerateBackSideCladding && !bIndividualCladdingSheets)
@@ -809,8 +803,7 @@ namespace BaseClasses.GraphObj
 
                     listOfCladdingSheetsBackWall = new List<CCladdingOrFibreGlassSheet>();
                     listOfCladdingSheetsBackWall.Add(new CCladdingOrFibreGlassSheet(4, "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall,
-                        m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.mass_kg_lm,
-                        m_WallCoilProps.price_PPLM_NZD, m_WallCoilProps.price_PPSM_NZD,
+                        m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, claddingWidthModular_Wall,
                         iNumberOfFrontBackWallEdges, 0, 0,
                         pControlPoint_BackWall, width, height_left_basic, height_right_basic, 0.5 * width, height_middle_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, claddingWidthRibModular_Wall, options.bDisplayCladdingBackWall, 0));
@@ -858,7 +851,7 @@ namespace BaseClasses.GraphObj
                     if (fgsp.Side == "Roof" || fgsp.Side == "Roof-Right Side")
                     {
                         listOfFibreGlassSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "RF", "Fibreglass - Roof-Right Side", m_MaterialFibreglass_Roof,
-                             0.001f /*TODO napojit z GUI*/, m_RoofCoilProps.widthCoil, 1.800f, 1.1680f, 0.1f, 0.3f /*TODO*/, 
+                             0.001f /*TODO napojit z GUI*/, m_RoofCoilProps.widthCoil, 1.800f, 0.3f /*TODO*/, claddingWidthModular_Roof_FG,
                              iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                              pControlPoint_RoofRight, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
                              m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
@@ -873,8 +866,7 @@ namespace BaseClasses.GraphObj
                 {
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-right", "RC", "Cladding - Roof-Right Side", m_MaterialCladding_Roof, pControlPoint_RoofRight, m_ColorNameRoof,
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
-                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.mass_kg_lm,
-                    m_RoofCoilProps.price_PPLM_NZD, m_RoofCoilProps.price_PPSM_NZD, width,
+                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, width,
                     claddingWidthRibModular_Roof, claddingWidthModular_Roof, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
                     SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofRight), ref iSheetIndex, out listOfCladdingSheetsRoofRight);
 
@@ -973,8 +965,7 @@ namespace BaseClasses.GraphObj
                 {
                     listOfCladdingSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();
                     listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(5, "RC", "Cladding - Roof", m_MaterialCladding_Roof,
-                        m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.mass_kg_lm,
-                        m_RoofCoilProps.price_PPLM_NZD, m_RoofCoilProps.price_PPSM_NZD,
+                        m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, claddingWidthModular_Roof,
                         4, 0, 0,
                         pControlPoint_RoofRight, width, length_left_basic, length_left_basic, 0.5 * width, length_left_basic,
                         m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, options.bDisplayCladdingRoof, 0));
@@ -1045,8 +1036,7 @@ namespace BaseClasses.GraphObj
                                 width_temp = pback_left.Y - pfront_left.Y;
 
                                 listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iAreaIndex, "RC", "Cladding - Roof", m_MaterialCladding_Roof,
-                                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.mass_kg_lm,
-                                    m_RoofCoilProps.price_PPLM_NZD, m_RoofCoilProps.price_PPSM_NZD,
+                                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, claddingWidthModular_Roof,
                                     4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
                                     m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0, true, wpWidthOffset));
@@ -1110,8 +1100,7 @@ namespace BaseClasses.GraphObj
                                 width_temp = pback_left.Y - pfront_left.Y;
 
                                 listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iAreaIndex, "RC", "Cladding - Roof", m_MaterialCladding_Roof,
-                                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.mass_kg_lm,
-                                    m_RoofCoilProps.price_PPLM_NZD, m_RoofCoilProps.price_PPSM_NZD,
+                                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, claddingWidthModular_Roof,
                                     4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
                                     m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0, true, wpWidthOffset));
@@ -1157,7 +1146,7 @@ namespace BaseClasses.GraphObj
                             double Position_y = length_left_basic - fgsp.Y - fgsp.Length;
 
                             listOfFibreGlassSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "RF", "Fibreglass - Roof-Left Side", m_MaterialFibreglass_Roof,
-                                0.001f /*TODO napojit z GUI*/, m_RoofCoilProps.widthCoil, 1.800f, 1.1680f, 0.1f, 0.3f /*TODO*/, 
+                                0.001f /*TODO napojit z GUI*/, m_RoofCoilProps.widthCoil, 1.800f, 0.3f /*TODO*/, claddingWidthModular_Roof_FG,
                                 iNumberOfEdges_FG_D_W, fgsp.X, Position_y,
                                 pControlPoint_RoofLeft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : claddingWidthModular_Roof_FG, fgsp.Length, fgsp.Length, 0, 0,
                                 m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, claddingWidthRibModular_Roof_FG, true, 0));
@@ -1173,8 +1162,7 @@ namespace BaseClasses.GraphObj
                         GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof -left", "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
                         pControlPoint_RoofLeft, m_ColorNameRoof,
                         m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
-                        m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.mass_kg_lm,
-                        m_RoofCoilProps.price_PPLM_NZD, m_RoofCoilProps.price_PPSM_NZD,
+                        m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD,
                         width,
                         claddingWidthRibModular_Roof, claddingWidthModular_Roof, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
                         SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofLeft), ref iSheetIndex, out listOfCladdingSheetsRoofLeft);
@@ -1232,8 +1220,7 @@ namespace BaseClasses.GraphObj
                     {
                         listOfCladdingSheetsRoofLeft = new List<CCladdingOrFibreGlassSheet>();
                         listOfCladdingSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(6, "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
-                            m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.mass_kg_lm,
-                            m_RoofCoilProps.price_PPLM_NZD, m_RoofCoilProps.price_PPSM_NZD, 
+                            m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, claddingWidthModular_Roof,
                             4, 0, 0,
                             pControlPoint_RoofLeft, width, length_left_basic, length_left_basic, 0.5 * width, length_left_basic,
                             m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, options.bDisplayCladdingRoof, 0));
@@ -1296,8 +1283,7 @@ namespace BaseClasses.GraphObj
                                 width_temp = pback_left.Y - pfront_left.Y;
 
                                 listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(iAreaIndex, "RC", "Cladding - Roof", m_MaterialCladding_Roof,
-                                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.mass_kg_lm,
-                                    m_RoofCoilProps.price_PPLM_NZD, m_RoofCoilProps.price_PPSM_NZD,
+                                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, claddingWidthModular_Roof,
                                     4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
                                     m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0, true, wpWidthOffset));
@@ -1355,8 +1341,7 @@ namespace BaseClasses.GraphObj
                                 width_temp = pback_left.Y - pfront_left.Y;
 
                                 listOfCladdingSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(iAreaIndex, "RC", "Cladding - Roof", m_MaterialCladding_Roof,
-                                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.mass_kg_lm,
-                                    m_RoofCoilProps.price_PPLM_NZD, m_RoofCoilProps.price_PPSM_NZD,
+                                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, claddingWidthModular_Roof,
                                     4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
                                     m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, claddingWidthRibModular_Roof, true, 0, true, wpWidthOffset));
@@ -1446,10 +1431,8 @@ namespace BaseClasses.GraphObj
             Color color,
             float fOpacity,
             double thicknessCore_m,
-            double widthCoil, 
+            double widthCoil,
             double coilMass_kg_m2,
-            double coilMass_kg_lm,
-            double coilPrice_PPLM_NZD,
             double coilPrice_PPSM_NZD,
             double width,
             double claddingWidthRibModular,
@@ -1551,8 +1534,7 @@ namespace BaseClasses.GraphObj
                 {
                     // Nie je potrebne delit sheet - pridame teda "originalsheet"
                     listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
-                    thicknessCore_m, widthCoil, coilMass_kg_m2, coilMass_kg_lm,
-                    coilPrice_PPLM_NZD, coilPrice_PPSM_NZD,
+                    thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
                     originalsheetNumberOfEdges, originalsheetCoordinateInPlane_x, originalsheetCoordinateInPlane_y,
                     originalsheetControlPoint, originalsheetWidth, originalsheetLengthTopLeft, originalsheetLengthTopRight, originalsheetTipCoordinate_x, originalsheetLengthTopTip,
                     colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0));
@@ -1590,8 +1572,7 @@ namespace BaseClasses.GraphObj
                         if (j == iNumberOfNewSheets - 1) // Last segment of original sheet
                         {
                             listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
-                            thicknessCore_m, widthCoil, coilMass_kg_m2, coilMass_kg_lm,
-                            coilPrice_PPLM_NZD, coilPrice_PPSM_NZD,
+                            thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
                             originalsheetNumberOfEdges,
                             originalsheetCoordinateInPlane_x,
                             objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + objectInColision_In_Local_x[j - 1].LengthTotal,
@@ -1613,8 +1594,7 @@ namespace BaseClasses.GraphObj
 
                             iNumberOfEdges = 4;
                             listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
-                            thicknessCore_m, widthCoil, coilMass_kg_m2, coilMass_kg_lm,
-                            coilPrice_PPLM_NZD, coilPrice_PPSM_NZD,
+                            thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
                             iNumberOfEdges,
                             originalsheetCoordinateInPlane_x,
                             coordinate_y,
