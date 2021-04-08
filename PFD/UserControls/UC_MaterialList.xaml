@@ -93,7 +93,7 @@
                     <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Width_m}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Height_m}" Header="Height [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Thickness_m}" Header="Thickness [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Thickness_mm}" Header="Thickness [mm]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Area_m2}" Header="Area [m²]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass_P}" Header="Unit Mass [kg/piece]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalArea_m2}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
@@ -153,8 +153,8 @@
                     <DataGridTextColumn Binding="{Binding Count}" Header="Count [-]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Width_m}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Height_m}" Header="Length [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Thickness_m}" Header="Thickness [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Length_m}" Header="Length [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Thickness_mm}" Header="Thickness [mm]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Area_m2}" Header="Area [m²]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass_P}" Header="Unit Mass [kg/piece]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalArea_m2}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
@@ -182,8 +182,8 @@
                     <DataGridTextColumn Binding="{Binding Prefix}" Header="Prefix" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Count}" Header="Count [-]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
                     <DataGridTextColumn Binding="{Binding Width_m}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Height_m}" Header="Length [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Thickness_m}" Header="Thickness [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Length_m}" Header="Length [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Thickness_mm}" Header="Thickness [mm]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Area_m2}" Header="Area [m²]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass_P}" Header="Unit Mass [kg/piece]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalArea_m2}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>

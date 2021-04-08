@@ -45,6 +45,7 @@ namespace PFD
         public static ColumnProperties colProp_Count = new ColumnProperties(typeof(Int32), "Count", "Count", 7.5f, "[-]", AlignmentX.Right);
         public static ColumnProperties colProp_Width_m = new ColumnProperties(typeof(String), "Width_m", "Width", 7.5f, "[m]", AlignmentX.Right);
         public static ColumnProperties colProp_Height_m = new ColumnProperties(typeof(String), "Height_m", "Height", 7.5f, "[m]", AlignmentX.Right);
+        public static ColumnProperties colProp_Length_m = new ColumnProperties(typeof(String), "Length_m", "Length", 7.5f, "[m]", AlignmentX.Right);
         public static ColumnProperties colProp_Thickness_m = new ColumnProperties(typeof(String), "Thickness_m", "Thickness", 7.5f, "[m]", AlignmentX.Right);
         public static ColumnProperties colProp_Thickness_mm = new ColumnProperties(typeof(String), "Thickness_mm", "Thickness", 7.5f, "[mm]", AlignmentX.Right);
         public static ColumnProperties colProp_Diameter_mm = new ColumnProperties(typeof(String), "Diameter_mm", "Diameter", 7.5f, "[mm]", AlignmentX.Right);
@@ -61,7 +62,7 @@ namespace PFD
         public static ColumnProperties colProp_TotalPrice_NZD = new ColumnProperties(typeof(String), "TotalPrice_NZD", "Price", 0f, "[NZD]", AlignmentX.Right);
 
         static List<ColumnProperties> colPropList = new List<ColumnProperties>()
-            {
+        {
                 colProp_Prefix,
                 colProp_Name,
                 colProp_Component,
@@ -84,6 +85,7 @@ namespace PFD
                 colProp_Count,
                 colProp_Width_m,
                 colProp_Height_m,
+                colProp_Length_m,
                 colProp_Thickness_m,
                 colProp_Thickness_mm,
                 colProp_Diameter_mm,
@@ -98,7 +100,7 @@ namespace PFD
                 colProp_TotalArea_m2,
                 colProp_TotalMass,
                 colProp_TotalPrice_NZD
-    };
+        };
 
         private const float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece / !!! priblizna cena - nezohladnuje priemer skrutky
         private const float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce
@@ -306,7 +308,7 @@ namespace PFD
             table.Columns.Add(QuotationHelper.colProp_Material.ColumnName, QuotationHelper.colProp_Material.DataType);
             table.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
             table.Columns.Add(QuotationHelper.colProp_Height_m.ColumnName, QuotationHelper.colProp_Height_m.DataType);
-            table.Columns.Add(QuotationHelper.colProp_Thickness_m.ColumnName, QuotationHelper.colProp_Thickness_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
             table.Columns.Add(QuotationHelper.colProp_Area_m2.ColumnName, QuotationHelper.colProp_Area_m2.DataType);
             table.Columns.Add(QuotationHelper.colProp_UnitMass_P.ColumnName, QuotationHelper.colProp_UnitMass_P.DataType);
             table.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
@@ -334,7 +336,7 @@ namespace PFD
                     row[QuotationHelper.colProp_Material.ColumnName] = item.MaterialName;
                     row[QuotationHelper.colProp_Width_m.ColumnName] = item.Width_bx.ToString("F2");
                     row[QuotationHelper.colProp_Height_m.ColumnName] = item.Height_hy.ToString("F2");
-                    row[QuotationHelper.colProp_Thickness_m.ColumnName] = item.Ft.ToString("F3"); // meters
+                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (1000 * item.Ft).ToString("F3"); // milimeters
                     row[QuotationHelper.colProp_Area_m2.ColumnName] = item.Area.ToString("F2");
                     row[QuotationHelper.colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
                     row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = item.TotalArea.ToString("F2");
@@ -353,7 +355,7 @@ namespace PFD
             row[QuotationHelper.colProp_Material.ColumnName] = "";
             row[QuotationHelper.colProp_Width_m.ColumnName] = "";
             row[QuotationHelper.colProp_Height_m.ColumnName] = "";
-            row[QuotationHelper.colProp_Thickness_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
             row[QuotationHelper.colProp_Area_m2.ColumnName] = "";
             row[QuotationHelper.colProp_UnitMass_P.ColumnName] = "";
             row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = dTotalPlatesArea_Table.ToString("F2");
@@ -820,8 +822,8 @@ namespace PFD
             table.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
             table.Columns.Add(QuotationHelper.colProp_Material.ColumnName, QuotationHelper.colProp_Material.DataType);
             table.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
-            table.Columns.Add(QuotationHelper.colProp_Height_m.ColumnName, QuotationHelper.colProp_Height_m.DataType);
-            table.Columns.Add(QuotationHelper.colProp_Thickness_m.ColumnName, QuotationHelper.colProp_Thickness_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Length_m.ColumnName, QuotationHelper.colProp_Length_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
             table.Columns.Add(QuotationHelper.colProp_Area_m2.ColumnName, QuotationHelper.colProp_Area_m2.DataType);
             table.Columns.Add(QuotationHelper.colProp_UnitMass_P.ColumnName, QuotationHelper.colProp_UnitMass_P.DataType);
             table.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
@@ -848,8 +850,8 @@ namespace PFD
                     row[QuotationHelper.colProp_Count.ColumnName] = item.Quantity;
                     row[QuotationHelper.colProp_Material.ColumnName] = item.MaterialName;
                     row[QuotationHelper.colProp_Width_m.ColumnName] = item.Width_bx.ToString("F2");
-                    row[QuotationHelper.colProp_Height_m.ColumnName] = item.Height_hy.ToString("F2");
-                    row[QuotationHelper.colProp_Thickness_m.ColumnName] = item.Ft.ToString("F3"); // meters
+                    row[QuotationHelper.colProp_Length_m.ColumnName] = item.Length.ToString("F2");
+                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (1000 * item.Ft).ToString("F3"); // milimeters
                     row[QuotationHelper.colProp_Area_m2.ColumnName] = item.Area.ToString("F2");
                     row[QuotationHelper.colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
                     row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = item.TotalArea.ToString("F2");
@@ -867,8 +869,8 @@ namespace PFD
             row[QuotationHelper.colProp_Count.ColumnName] = iTotalCladdingSheetsNumber_Table;
             row[QuotationHelper.colProp_Material.ColumnName] = "";
             row[QuotationHelper.colProp_Width_m.ColumnName] = "";
-            row[QuotationHelper.colProp_Height_m.ColumnName] = "";
-            row[QuotationHelper.colProp_Thickness_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Length_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
             row[QuotationHelper.colProp_Area_m2.ColumnName] = "";
             row[QuotationHelper.colProp_UnitMass_P.ColumnName] = "";
             row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = dTotalCladdingSheetsArea_Table.ToString("F2");
@@ -906,7 +908,7 @@ namespace PFD
 
             QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == sheet.Prefix &&
                     MathF.d_equal(q.Width_bx, sheet.Width) &&
-                    MathF.d_equal(q.Height_hy, sheet.LengthTotal) &&
+                    MathF.d_equal(q.Length, sheet.LengthTotal) &&
                     MathF.d_equal(q.Ft, sheet.Ft) &&
                     MathF.d_equal(q.Area, sheet.Area_brutto)); //To Mato - ci sheet.Area_netto ???
             if (qItem != null) //this quotation exists
@@ -923,7 +925,7 @@ namespace PFD
                     Prefix = sheet.Prefix,
                     Quantity = iQuantity,
                     Width_bx = (float)sheet.Width,
-                    Height_hy = (float)sheet.LengthTotal,
+                    Length = (float)sheet.LengthTotal,
                     Ft = sheet.Ft,
                     MaterialName = sheet.m_Mat.Name,
                     Area = (float)sheet.Area_brutto, //To Mato - ci sheet.Area_netto ???
@@ -991,8 +993,8 @@ namespace PFD
             table.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
             //table.Columns.Add(QuotationHelper.colProp_Material.ColumnName, QuotationHelper.colProp_Material.DataType);
             table.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
-            table.Columns.Add(QuotationHelper.colProp_Height_m.ColumnName, QuotationHelper.colProp_Height_m.DataType);
-            table.Columns.Add(QuotationHelper.colProp_Thickness_m.ColumnName, QuotationHelper.colProp_Thickness_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Length_m.ColumnName, QuotationHelper.colProp_Length_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
             table.Columns.Add(QuotationHelper.colProp_Area_m2.ColumnName, QuotationHelper.colProp_Area_m2.DataType);
             table.Columns.Add(QuotationHelper.colProp_UnitMass_P.ColumnName, QuotationHelper.colProp_UnitMass_P.DataType);
             table.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
@@ -1019,8 +1021,8 @@ namespace PFD
                     row[QuotationHelper.colProp_Count.ColumnName] = item.Quantity;
                     //row[QuotationHelper.colProp_Material.ColumnName] = item.MaterialName;
                     row[QuotationHelper.colProp_Width_m.ColumnName] = item.Width_bx.ToString("F2");
-                    row[QuotationHelper.colProp_Height_m.ColumnName] = item.Height_hy.ToString("F2");
-                    row[QuotationHelper.colProp_Thickness_m.ColumnName] = item.Ft.ToString("F3"); // meters
+                    row[QuotationHelper.colProp_Length_m.ColumnName] = item.Length.ToString("F2");
+                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (1000 * item.Ft).ToString("F3"); // milimeters
                     row[QuotationHelper.colProp_Area_m2.ColumnName] = item.Area.ToString("F2");
                     row[QuotationHelper.colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
                     row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = item.TotalArea.ToString("F2");
@@ -1038,8 +1040,8 @@ namespace PFD
             row[QuotationHelper.colProp_Count.ColumnName] = iTotalFibreglassSheetsNumber_Table;
             //row[QuotationHelper.colProp_Material.ColumnName] = "";
             row[QuotationHelper.colProp_Width_m.ColumnName] = "";
-            row[QuotationHelper.colProp_Height_m.ColumnName] = "";
-            row[QuotationHelper.colProp_Thickness_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Length_m.ColumnName] = "";
+            row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
             row[QuotationHelper.colProp_Area_m2.ColumnName] = "";
             row[QuotationHelper.colProp_UnitMass_P.ColumnName] = "";
             row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = dTotalFibreglassSheetsArea_Table.ToString("F2");
