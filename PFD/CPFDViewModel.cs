@@ -3937,8 +3937,11 @@ namespace PFD
                 iNumberOfRoofSides = 0;
             }
 
-            if (ComponentList[(int)EMemberType_FS_Position.Purlin].Generate == true)
+            CComponentInfo purlin = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (purlin != null && purlin.Generate == true)
+            {
                 TotalRoofArea = iNumberOfRoofSides * RoofSideLength * LengthOverall;
+            }                
         }
 
         //to Mato - treba sa zamysliet, kde vsade to treba volat
