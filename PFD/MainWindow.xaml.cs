@@ -408,6 +408,7 @@ namespace PFD
                     vm.RecreateFloorSlab = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruje FloorSlab
                     vm.RecreateJoints = true; //need to recreate joint when generate was changed
                     vm.RecreateModel = true;
+                    vm.CountWallAndRoofAreas();
                 }
 
                 if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && cInfo.Generate == false && vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Front"))
