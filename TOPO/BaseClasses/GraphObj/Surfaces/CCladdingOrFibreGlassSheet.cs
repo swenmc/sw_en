@@ -26,7 +26,8 @@ namespace BaseClasses.GraphObj
         private float m_fMass_brutto;
 
         private double _price_PPKG_NZD;
-        private double _price_PPP_NZD;
+        private double _price_PPP_NZD_netto;
+        private double _price_PPP_NZD_brutto;
 
         private double m_RotationX;
         private double m_rotationY;
@@ -34,6 +35,8 @@ namespace BaseClasses.GraphObj
 
         private bool m_IsCanopy;
         private double m_WpWidthOffset;
+
+        private double m_Width_flat;
 
         public double CladdingWidthRibModular
         {
@@ -217,16 +220,29 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public double Price_PPP_NZD
+        public double Price_PPP_NZD_netto
         {
             get
             {
-                return _price_PPP_NZD;
+                return _price_PPP_NZD_netto;
             }
 
             set
             {
-                _price_PPP_NZD = value;
+                _price_PPP_NZD_netto = value;
+            }
+        }
+
+        public double Price_PPP_NZD_brutto
+        {
+            get
+            {
+                return _price_PPP_NZD_brutto;
+            }
+
+            set
+            {
+                _price_PPP_NZD_brutto = value;
             }
         }
 
@@ -305,6 +321,19 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public double Width_flat
+        {
+            get
+            {
+                return m_Width_flat;
+            }
+
+            set
+            {
+                m_Width_flat = value;
+            }
+        }
+
         public int iVectorOverFactor_LCS;
         public int iVectorUpFactor_LCS;
 
@@ -314,7 +343,8 @@ namespace BaseClasses.GraphObj
         }
 
         public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, string name, MATERIAL.CMat claddingMaterial,
-        double thickness, double coilWidth, double coilMass_kg_m2, double coilMass_kg_lm, double coilPrice_PPLM_NZD, double coilPrice_PPSM_NZD,
+        double thickness, double coilWidth, double coilMass_kg_m2, double coilPrice_PPSM_NZD,
+        double basicModularWidth,
         int numberOfCorners, double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
@@ -324,6 +354,8 @@ namespace BaseClasses.GraphObj
             Prefix = prefix;
             Name = name;
             m_Mat = claddingMaterial; // Vseobecny material lebo FG nemusi byt steel
+
+            Ft = (float)thickness;
 
             NumberOfEdges = numberOfCorners;
             CoordinateInPlane_x = coordinateInPlane_x;
@@ -376,6 +408,13 @@ namespace BaseClasses.GraphObj
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
 
             Area_brutto = Width * LengthTotal;
+
+            Width_flat = width / basicModularWidth * coilWidth;
+            Surface_brutto = (float)(Width_flat * LengthTotal);
+            Volume_brutto = (float)(Surface_brutto * Ft);
+            Mass_brutto = (float)(coilMass_kg_m2 * Surface_brutto);
+            Price_PPKG_NZD = coilPrice_PPSM_NZD / (Ft * GlobalConstants.MATERIAL_DENSITY_STEEL);
+            Price_PPP_NZD_brutto = Price_PPKG_NZD * Mass_brutto;
 
             SetTextPointInLCS(); // Text v LCS
         }
@@ -435,6 +474,11 @@ namespace BaseClasses.GraphObj
                 };
 
                 Area_netto = MATH.Geom2D.PolygonArea(EdgePoints2D.ToArray());
+                Surface_netto = (float)(Width_flat / Width * Area_netto);
+                Volume_netto = Surface_netto * Ft;
+                Mass_netto = Volume_netto * GlobalConstants.MATERIAL_DENSITY_STEEL;
+                Price_PPP_NZD_netto = Price_PPKG_NZD * Mass_netto;
+
                 EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft };
                 return CreateArea(options.bUseTextures, material);
             }
@@ -450,6 +494,11 @@ namespace BaseClasses.GraphObj
                 };
 
                 Area_netto = MATH.Geom2D.PolygonArea(EdgePoints2D.ToArray());
+                Surface_netto = (float)(Width_flat / Width * Area_netto);
+                Volume_netto = Surface_netto * Ft;
+                Mass_netto = Volume_netto * GlobalConstants.MATERIAL_DENSITY_STEEL;
+                Price_PPP_NZD_netto = Price_PPKG_NZD * Mass_netto;
+
                 EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft };
                 return CreateArea(options.bUseTextures, material);
             }
