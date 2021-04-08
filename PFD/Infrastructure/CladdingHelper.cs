@@ -28,10 +28,6 @@ namespace PFD.Infrastructure
                 vm._doorsAndWindowsVM == null ? null : vm._doorsAndWindowsVM.WindowBlocksProperties,
                 BaseClasses.Helpers.CrScFactory.GetCrSc(vm.ComponentList[(int)EMemberType_FS_Position.EdgeColumn].Section), // Vyrobime cross-section podla nazvu prierezu v zozname (crsc by mohol do funckie vstupovat aj ako objekt z modelu)
                 vm.ColumnDistance, vm.ColumnDistance,
-                new MATERIAL.CMat_03_00(vm._claddingOptionsVM.WallCladdingProps.material_Name, 200e+9f, 80e+9f, 0.3f, 7850f),
-                new MATERIAL.CMat_03_00(vm._claddingOptionsVM.RoofCladdingProps.material_Name, 200e+9f, 80e+9f, 0.3f, 7850f),
-                new MATERIAL.CMat_10_00("default"), // Default - TODO dopracovat databazu materialov fibreglass, pripade do GUI moznost volby materialu
-                new MATERIAL.CMat_10_00("default"), // Default - TODO dopracovat databazu materialov fibreglass, pripade do GUI moznost volby materialu
                 vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex).Name,
                 vm._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.RoofCladdingColorIndex).Name,
                 vm._claddingOptionsVM.WallCladding, vm._claddingOptionsVM.WallCladdingCoating,
@@ -43,12 +39,10 @@ namespace PFD.Infrastructure
                 vm._claddingOptionsVM.FibreglassColors.ElementAtOrDefault(vm._claddingOptionsVM.ColorWall_FG_Index).Name,
                 vm._claddingOptionsVM.FibreglassColors.ElementAtOrDefault(vm._claddingOptionsVM.ColorRoof_FG_Index).Name,
                 true, 0,
-                vm._claddingOptionsVM.WallCladdingProps.height_m,
-                vm._claddingOptionsVM.RoofCladdingProps.height_m,
-                vm._claddingOptionsVM.WallCladdingProps.widthRib_m,
-                vm._claddingOptionsVM.RoofCladdingProps.widthRib_m,
-                (float)vm._claddingOptionsVM.WallCladdingProps.widthModular_m,
-                (float)vm._claddingOptionsVM.RoofCladdingProps.widthModular_m,
+                vm._claddingOptionsVM.WallCladdingProps,
+                vm._claddingOptionsVM.RoofCladdingProps,
+                vm._claddingOptionsVM.WallCladdingCoilProps,
+                vm._claddingOptionsVM.RoofCladdingCoilProps,
                 vm._claddingOptionsVM.RoofEdgeOverHang_FB_Y,
                 vm._claddingOptionsVM.RoofEdgeOverHang_LR_X,
                 vm._claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,

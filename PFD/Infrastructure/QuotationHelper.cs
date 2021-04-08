@@ -883,10 +883,9 @@ namespace PFD
         public static List<QuotationItem> GetCladdingSheetsQuotation(CModel model, float fCFS_PricePerKg_CladdingSheets_Total)
         {
             List<QuotationItem> quotation = new List<QuotationItem>();
-            if (model.m_arrGOCladding == null) return quotation;            
+            if (model.m_arrGOCladding == null) return quotation;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return quotation;
-
 
             foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets())
             {

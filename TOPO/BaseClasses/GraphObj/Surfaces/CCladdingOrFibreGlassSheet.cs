@@ -16,13 +16,24 @@ namespace BaseClasses.GraphObj
         Color m_Color;
         float m_fOpacity;
 
+        private float m_ft; // Thickness
+
+        private float m_fSurface_netto;
+        private float m_fSurface_brutto;
+        private float m_fVolume_netto;
+        private float m_fVolume_brutto;
+        private float m_fMass_netto;
+        private float m_fMass_brutto;
+
+        private double _price_PPKG_NZD;
+        private double _price_PPP_NZD;
+
         private double m_RotationX;
         private double m_rotationY;
         private double m_rotationZ;
 
         private bool m_IsCanopy;
         private double m_WpWidthOffset;
-
 
         public double CladdingWidthRibModular
         {
@@ -99,6 +110,123 @@ namespace BaseClasses.GraphObj
             set
             {
                 m_fOpacity = value;
+            }
+        }
+
+        public float Ft
+        {
+            get
+            {
+                return m_ft;
+            }
+
+            set
+            {
+                m_ft = value;
+            }
+        }
+
+        public float Surface_netto
+        {
+            get
+            {
+                return m_fSurface_netto;
+            }
+
+            set
+            {
+                m_fSurface_netto = value;
+            }
+        }
+
+        public float Surface_brutto
+        {
+            get
+            {
+                return m_fSurface_brutto;
+            }
+
+            set
+            {
+                m_fSurface_brutto = value;
+            }
+        }
+
+        public float Volume_netto
+        {
+            get
+            {
+                return m_fVolume_netto;
+            }
+
+            set
+            {
+                m_fVolume_netto = value;
+            }
+        }
+
+        public float Volume_brutto
+        {
+            get
+            {
+                return m_fVolume_brutto;
+            }
+
+            set
+            {
+                m_fVolume_brutto = value;
+            }
+        }
+
+        public float Mass_netto
+        {
+            get
+            {
+                return m_fMass_netto;
+            }
+
+            set
+            {
+                m_fMass_netto = value;
+            }
+        }
+
+        public float Mass_brutto
+        {
+            get
+            {
+                return m_fMass_brutto;
+            }
+
+            set
+            {
+                m_fMass_brutto = value;
+            }
+        }
+
+        public double Price_PPKG_NZD
+        {
+            get
+            {
+                return _price_PPKG_NZD;
+            }
+
+            set
+            {
+                _price_PPKG_NZD = value;
+            }
+        }
+
+        public double Price_PPP_NZD
+        {
+            get
+            {
+                return _price_PPP_NZD;
+            }
+
+            set
+            {
+                _price_PPP_NZD = value;
             }
         }
 
@@ -185,8 +313,9 @@ namespace BaseClasses.GraphObj
 
         }
 
-        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, string name, MATERIAL.CMat claddingMaterial, int numberOfCorners,
-        double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
+        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, string name, MATERIAL.CMat claddingMaterial,
+        double thickness, double coilWidth, double coilMass_kg_m2, double coilMass_kg_lm, double coilPrice_PPLM_NZD, double coilPrice_PPSM_NZD,
+        int numberOfCorners, double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
         Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime, bool isCanopy = false, double wpWidthOffset = 0)
