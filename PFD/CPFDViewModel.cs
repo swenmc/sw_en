@@ -274,6 +274,8 @@ namespace PFD
                 else if (MKitsetTypeIndex == 3) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetShelterDoubleSpan", "modelName");
 
                 ModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type (menim property aby som vyvolal aj zmenu modelu)
+                
+                UpdateAccesoriesOnModelTypeChange();
 
                 NotifyPropertyChanged("KitsetTypeIndex");
             }
@@ -338,47 +340,8 @@ namespace PFD
 
                 SetResultsAreNotValid();
 
-                //refaktoring 24.11.2020 - toto mi pride,ze je davno nastavene a je to tu dvojmo
-                // ak bude vsekto OK, tak treba zmazat zakomentovane
-                //if (MKitsetTypeIndex == 0)
-                //{
-                //    Height_H2 = MWallHeight + MWidth * (float)Math.Tan(RoofPitch_radians);
-                //    Height_H2_Overall = GetOverallHeight_H2();
-
-                //    // Re-calculate value of distance between columns (number of columns per frame is always even
-                //    int iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
-                //    IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
-                //}
-                //else if (MKitsetTypeIndex == 1)
-                //{
-                //    Height_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(RoofPitch_radians);
-                //    Height_H2_Overall = GetOverallHeight_H2();
-
-                //    // Re-calculate value of distance between columns (number of columns per frame is always even
-                //    int iOneRafterFrontColumnNo = Math.Max(1, (int)((0.5f * MWidth - 0.45f * MColumnDistance) / MColumnDistance));
-                //    IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
-                //}
-                //else
-                //{
-                //    Height_H2 = 0; // Exception
-                //    Height_H2_Overall = 0;
-                //    IFrontColumnNoInOneFrame = 0;
-                //}
-                //MColumnDistance = MWidth / (IFrontColumnNoInOneFrame + 1); // Update distance between columns
-
-                //task 710, hmm co s tymto? treba potom _claddingOptionsVM nejako updatovat pri zmene Modelu?
-                //RoofCladdingIndex = 1;
-                //RoofCladdingCoatingIndex = 1;
-                //RoofCladdingColorIndex = 8;
-                //WallCladdingIndex = 0;
-                //WallCladdingCoatingIndex = 1;
-                //WallCladdingColorIndex = 8;
-                //FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
-                //FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
-
                 CalculateWallHeightsForCladding();
                 _claddingOptionsVM.SetDefaultValuesOnModelIndexChange(this);
-                
                 CountWallAndRoofAreas();
 
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
@@ -2761,8 +2724,7 @@ namespace PFD
 
             IsSetFromCode = true;
 
-            _doorsAndWindowsVM = new DoorsAndWindowsViewModel(doorBlocksProperties, windowBlocksProperties, GetDefaultFlashings(), GetDefaultDownpipes());
-            SetFlashingsNames();
+            _doorsAndWindowsVM = new DoorsAndWindowsViewModel(doorBlocksProperties, windowBlocksProperties);            
 
             _componentVM = componentVM;
             SetComponentListAccordingToDoorsAndWindows();
@@ -2856,6 +2818,11 @@ namespace PFD
             if (PropertyChanged != null) PropertyChanged(sender, e);
         }
 
+        public void SetDefaultFlashings()
+        {
+            _doorsAndWindowsVM.Flashings = GetDefaultFlashings();
+            SetFlashingsNames();
+        }
 
         public ObservableCollection<CAccessories_LengthItemProperties> GetDefaultFlashings()
         {
@@ -2908,7 +2875,7 @@ namespace PFD
 
             ObservableCollection<CAccessories_LengthItemProperties> flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
 
-            if (KitsetTypeIndex != 0)
+            if (KitsetTypeIndex != (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
             }
@@ -2923,6 +2890,11 @@ namespace PFD
             flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
 
             return flashings;
+        }
+
+        public void SetDefaultDownpipes()
+        {
+            _doorsAndWindowsVM.Downpipes = GetDefaultDownpipes();
         }
 
         public ObservableCollection<CAccessories_DownpipeProperties> GetDefaultDownpipes()
@@ -2955,7 +2927,7 @@ namespace PFD
 
         public void SetFlashingsNames()
         {
-            if (KitsetTypeIndex == 0)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 _doorsAndWindowsVM.FlashingsNames = new List<string>() { "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
                         "PA Door Trimmer",  "PA Door Header", "Window"};
@@ -2967,6 +2939,39 @@ namespace PFD
             }
         }
 
+        public void SetDefaultGutters()
+        {
+            _doorsAndWindowsVM.Gutters = GetDefaultGutters();
+        }
+
+        public ObservableCollection<CAccessories_LengthItemProperties> GetDefaultGutters()
+        {
+            float fGuttersTotalLength = 0; // na dvoch okrajoch strechy
+
+            if (Model is CModel_PFD_01_MR)
+            {
+                fGuttersTotalLength = LengthOverall; // na jednom okraji strechy
+            }
+            else if (Model is CModel_PFD_01_GR)
+            {
+                fGuttersTotalLength = 2 * LengthOverall; // na dvoch okrajoch strechy
+            }
+            else
+            {
+                // Exception - not implemented
+                fGuttersTotalLength = 0;
+            }
+
+            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);            
+            return new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
+        }
+
+        public void UpdateAccesoriesOnModelTypeChange()
+        {            
+            SetDefaultFlashings();            
+            SetDefaultDownpipes();
+            SetDefaultGutters();
+        }
 
 
         //toto je cele divne

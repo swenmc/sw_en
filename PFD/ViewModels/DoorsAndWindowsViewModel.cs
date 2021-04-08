@@ -140,31 +140,7 @@ namespace PFD
         public ObservableCollection<CAccessories_LengthItemProperties> Gutters
         {
             get
-            {
-                if (m_Gutters == null)
-                {
-                    float fGuttersTotalLength = 0; // na dvoch okrajoch strechy
-
-                    if (_pfdVM.Model is CModel_PFD_01_MR)
-                    {
-                        fGuttersTotalLength = _pfdVM.LengthOverall; // na jednom okraji strechy
-                    }
-                    else if (_pfdVM.Model is CModel_PFD_01_GR)
-                    {
-                        fGuttersTotalLength = 2 * _pfdVM.LengthOverall; // na dvoch okrajoch strechy
-                    }
-                    else
-                    {
-                        // Exception - not implemented
-                        fGuttersTotalLength = 0;
-                    }
-
-                    CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
-                    gutter.PropertyChanged += AccessoriesItem_PropertyChanged;
-                    Gutters = new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
-
-                    NotifyPropertyChanged("Gutters");
-                }
+            {                
                 return m_Gutters;
             }
 
@@ -173,6 +149,14 @@ namespace PFD
                 if (value == null) return;
                 m_Gutters = value;
                 m_Gutters.CollectionChanged += Gutters_CollectionChanged;
+
+                foreach (CAccessories_LengthItemProperties item in Gutters)
+                {
+                    item.PropertyChanged -= AccessoriesItem_PropertyChanged;
+                    item.PropertyChanged += AccessoriesItem_PropertyChanged;
+                }
+
+                NotifyPropertyChanged("Gutters");
             }
         }
 
@@ -242,13 +226,11 @@ namespace PFD
             
             IsSetFromCode = false;
         }
-        public DoorsAndWindowsViewModel(ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, 
-            ObservableCollection<CAccessories_LengthItemProperties> flashings, ObservableCollection<CAccessories_DownpipeProperties> downpipes)
+        public DoorsAndWindowsViewModel(ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties)            
         {
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
-            Flashings = flashings;
-            Downpipes = downpipes;
+            //Flashings, Downpipes a Gutters sa nastavia po zmene/nastaveni ModelTypeIndex
         }
 
         //-------------------------------------------------------------------------------------------------------------
