@@ -1285,8 +1285,16 @@ namespace PFD
             if (vm._modelOptionsVM.EnableCladding) TabCladding.Visibility = Visibility.Visible;
             else TabCladding.Visibility = Visibility.Collapsed;
 
-            btnCladdingSheetsValidation.IsEnabled = vm._modelOptionsVM.IndividualCladdingSheets;
-            btnFibreglassSheetsValidation.IsEnabled = vm._claddingOptionsVM.HasFibreglass();
+            if (vm._modelOptionsVM.EnableCladding)
+            {
+                btnCladdingSheetsValidation.IsEnabled = vm._modelOptionsVM.IndividualCladdingSheets;
+                btnFibreglassSheetsValidation.IsEnabled = vm._claddingOptionsVM.HasFibreglass();
+            }
+            else
+            {
+                btnCladdingSheetsValidation.IsEnabled = false;
+                btnFibreglassSheetsValidation.IsEnabled = false;
+            }
 
             SetUIElementsVisibilityAccordingPermissions();
         }
