@@ -131,6 +131,7 @@ namespace PFD
             if (vm._quotationDisplayOptionsVM.DisplayCladding && vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasCladding(vm.Model)) //iba ak je nejaky cladding
             {
                 // TODO Ondrej - refaktoring - funckia CreateTableCladding
+                //TO Mato - je ten koment hore aktualny?
                 CreateTableCladding(vm,
                     vm.TotalWallArea,
                     fTotalAreaOfOpennings,

@@ -3878,15 +3878,14 @@ namespace PFD
 
             float fWallArea_Left = 0; float fWallArea_Right = 0;
 
-            // TO Ondrej - prosim skontroluj mi tieto podmienky, ci sa to da napisat inak
-            // da sa to hocijako, ale kedze nemame rozdielne position, tak asi takto, resp. sa da vybrat len na zaklade spolocneho enumu ak su len 2 a potom vybrat first a last
-            //vm.ComponentList.FirstOrDefault(x=> x.MemberTypePosition == EMemberType_FS_Position.Girt) //left
-            //vm.ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt) //right
-            //ja ale osobne nevidim dovod preco sa pocita rozloha iba ked su Generate zapnute na true ???
-            if (ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Left Side").Generate == true)
+            CComponentInfo girtLeft = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (girtLeft != null && girtLeft.Generate.Value == true)
+            {
                 fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left.ToArray());
+            }
 
-            if (ComponentList.FirstOrDefault(x => x.ComponentName == "Girt - Right Side").Generate == true)
+            CComponentInfo girtRight = ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (girtRight != null && girtRight.Generate.Value == true)
             {
                 if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) //if (Model is CModel_PFD_01_MR)
                     fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
@@ -3897,12 +3896,18 @@ namespace PFD
             }
 
             float fWallArea_Front = 0;
-            if (ComponentList[(int)EMemberType_FS_Position.GirtFrontSide].Generate == true)
+            CComponentInfo girtFS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (girtFS != null && girtFS.Generate.Value == true)
+            {
                 fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
+            }
 
             float fWallArea_Back = 0;
-            if (ComponentList[(int)EMemberType_FS_Position.GirtBackSide].Generate == true)
+            CComponentInfo girtBS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (girtBS != null && girtBS.Generate.Value == true)
+            {
                 fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
+            }
 
             BuildingArea_Gross = WidthOverall * LengthOverall;
             BuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray()) * LengthOverall;
