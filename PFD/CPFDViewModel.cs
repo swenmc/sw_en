@@ -3671,6 +3671,9 @@ namespace PFD
             sDisplayOptions.bDisplayFibreglassWireFrame = _displayOptionsVM.DisplayFibreglassWireFrame;
             sDisplayOptions.bDisplayDoorsWireFrame = _displayOptionsVM.DisplayDoorsWireFrame;
             sDisplayOptions.bDisplayWindowsWireFrame = _displayOptionsVM.DisplayWindowsWireFrame;
+            sDisplayOptions.bDoorsSimpleSolidModel = _displayOptionsVM.DoorsSimpleSolidModel;
+            sDisplayOptions.bDoorsSimpleWireframe = _displayOptionsVM.DoorsSimpleWireframe;
+            sDisplayOptions.bWindowOutlineOnly = _displayOptionsVM.WindowOutlineOnly;
 
             sDisplayOptions.bDisplayCladding = _displayOptionsVM.DisplayCladding;
             sDisplayOptions.bDisplayCladdingLeftWall = _displayOptionsVM.DisplayCladdingLeftWall;

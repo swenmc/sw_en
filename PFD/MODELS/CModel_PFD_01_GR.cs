@@ -1780,7 +1780,7 @@ namespace PFD
                        _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].CoatingColor.Name,
                        vm._displayOptionsVM.FlashingOpacity,
                        vm._displayOptionsVM.DoorPanelOpacity,
-                       _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Roller Door", isLeftOrBack, vm._displayOptionsVM.UseTextures);
+                       _pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Roller Door", isLeftOrBack, vm.GetDisplayOptions());
 
                     m_arrGOStrDoors.Add(door_temp);
                 }
@@ -1829,7 +1829,7 @@ namespace PFD
                        windowFlashingColor, Colors.LightBlue,
                        vm._displayOptionsVM.FlashingOpacity,
                        vm._displayOptionsVM.WindowPanelOpacity,
-                       fPanelThickness, fRotationZDegrees, true, 0f, isLeftOrBack);
+                       fPanelThickness, fRotationZDegrees, true, 0f, isLeftOrBack, vm.GetDisplayOptions());
 
                     m_arrGOStrWindows.Add(window_temp);
                 }

@@ -899,6 +899,10 @@ namespace BaseClasses
         public bool bDisplayDoorsWireFrame;
         public bool bDisplayWindowsWireFrame;
 
+        public bool bDoorsSimpleSolidModel;
+        public bool bDoorsSimpleWireframe;
+        public bool bWindowOutlineOnly;
+
         public bool bDisplayCladding;
         //public bool bDisplayIndividualCladdingSheets;
         public bool bDisplayCladdingLeftWall;

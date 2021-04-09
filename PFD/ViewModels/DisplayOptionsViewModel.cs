@@ -77,6 +77,10 @@ namespace PFD
         private bool m_DisplayDoorsWireFrame;
         private bool m_DisplayWindowsWireFrame;
 
+        private bool m_DoorsSimpleSolidModel;
+        private bool m_DoorsSimpleWireframe;
+        private bool m_WindowOutlineOnly;
+
         private bool m_DisplayCladding;
         private bool m_DisplayCladdingLeftWall;
         private bool m_DisplayCladdingRightWall;
@@ -3942,6 +3946,58 @@ namespace PFD
             }
         }
 
+        public bool DoorsSimpleSolidModel
+        {
+            get
+            {
+                return m_DoorsSimpleSolidModel;
+            }
+
+            set
+            {
+                m_DoorsSimpleSolidModel = value;
+                if (m_DoorsSimpleSolidModel == false)
+                {
+                    DoorsSimpleWireframe = false;
+                    WindowOutlineOnly = false;
+                }
+                
+                NotifyPropertyChanged("DoorsSimpleSolidModel");
+            }
+        }
+
+        public bool DoorsSimpleWireframe
+        {
+            get
+            {
+                return m_DoorsSimpleWireframe;
+            }
+
+            set
+            {
+                m_DoorsSimpleWireframe = value;
+                if (m_DoorsSimpleSolidModel == false && m_DoorsSimpleWireframe == true) m_DoorsSimpleWireframe = false;
+
+                if (m_DoorsSimpleWireframe == false && m_WindowOutlineOnly == true) WindowOutlineOnly = false;
+                NotifyPropertyChanged("DoorsSimpleWireframe");
+            }
+        }
+
+        public bool WindowOutlineOnly
+        {
+            get
+            {
+                return m_WindowOutlineOnly;
+            }
+
+            set
+            {
+                m_WindowOutlineOnly = value;
+                if (m_DoorsSimpleWireframe == false && m_WindowOutlineOnly == true) m_WindowOutlineOnly = false;
+                NotifyPropertyChanged("WindowOutlineOnly");
+            }
+        }
+
 
         #endregion Properties
 
@@ -3983,6 +4039,10 @@ namespace PFD
             DisplayFibreglassWireFrame = false;
             DisplayDoorsWireFrame = false;
             DisplayWindowsWireFrame = false;
+
+            DoorsSimpleSolidModel = true;
+            DoorsSimpleWireframe = true;
+            WindowOutlineOnly = true;
 
             DisplayCladding = false;
             DisplayCladdingLeftWall = false;
@@ -4256,6 +4316,10 @@ namespace PFD
             DisplayFibreglassWireFrame = newVM.DisplayFibreglassWireFrame;
             DisplayDoorsWireFrame = newVM.DisplayDoorsWireFrame;
             DisplayWindowsWireFrame = newVM.DisplayWindowsWireFrame;
+
+            DoorsSimpleSolidModel = newVM.DoorsSimpleSolidModel;
+            DoorsSimpleWireframe = newVM.DoorsSimpleWireframe;
+            WindowOutlineOnly = newVM.WindowOutlineOnly;
 
             DisplayCladding = newVM.DisplayCladding;
             DisplayCladdingLeftWall = newVM.DisplayCladdingLeftWall;

@@ -110,7 +110,8 @@ namespace BaseClasses.GraphObj
 
         // Constructor 5
         public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft,
-            Color windowFlashingColor, Color windowPanelColor, float fFlashingOpacity, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, bool leftOrBack)
+            Color windowFlashingColor, Color windowPanelColor, float fFlashingOpacity, float fGlassPanelOpacity, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, 
+            float fTime, bool leftOrBack, DisplayOptions opts)
         {
             ID = iW_ID;
             m_eShapeType = iShapeType;
@@ -143,7 +144,7 @@ namespace BaseClasses.GraphObj
 
             SetTextPointInLCS();
 
-            CreateM_3D_G_Window(iSegmentNum, fL, fH, ft, fGlassThickness);
+            CreateM_3D_G_Window(iSegmentNum, fL, fH, ft, fGlassThickness, opts);
         }
 
         public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft,
@@ -169,11 +170,12 @@ namespace BaseClasses.GraphObj
 
             SetTextPointInLCS();
 
-            CreateM_3D_G_Window(iSegmentNum, fL, fH, ft, fGlassThickness);
+            DisplayOptions opts = new DisplayOptions();
+            CreateM_3D_G_Window(iSegmentNum, fL, fH, ft, fGlassThickness, opts);
         }
 
         // Temporary auxiliary function - glass window (3D HOUSE)
-        public Model3DGroup CreateM_3D_G_SegmWindow(int iSegm, float fL_X, float fH_Z, float fT_Y, DiffuseMaterial DiffMatF, DiffuseMaterial DiffMatG, float fGlassThickness)
+        public Model3DGroup CreateM_3D_G_SegmWindow(int iSegm, float fL_X, float fH_Z, float fT_Y, DiffuseMaterial DiffMatF, DiffuseMaterial DiffMatG, float fGlassThickness, DisplayOptions opts)
         {
             // Create Window Segment in LCS 0,0,0
             Point3D p01_HB = new Point3D(0, 0, 0);
@@ -202,9 +204,9 @@ namespace BaseClasses.GraphObj
             CVolume mGlassTable = new CVolume();
             Model3DGroup gr = new Model3DGroup(); // Window Segment
 
-            bool UseSimpleModel2D = true; // TODO 772 - Zapracovat ako volbu v GUI
+            //bool UseSimpleModel2D = true; // TODO 772 - Zapracovat ako volbu v GUI
 
-            if (!UseSimpleModel2D)
+            if (!opts.bDoorsSimpleSolidModel)
             {
                 // 3D Model - Prims
                 gr.Children.Add(mFrame_01_HB.CreateM_3D_G_Volume_8Edges(pArray[0], fL_X, fT_Y, fT_Y, DiffMatF, DiffMatF)); // Horizontal bottom;
@@ -229,7 +231,7 @@ namespace BaseClasses.GraphObj
                 gr.Children.Add(mA_GlassTable.CreateArea(DiffMatG, true)); // Display texture for roller door panel
             }
 
-            UseSimpleWireFrame2D = true; // TODO 772 - Zapracovat ako volbu v GUI (kreslime len obrys okna alebo obrys segmentu)
+            //UseSimpleWireFrame2D = true; // TODO 772 - Zapracovat ako volbu v GUI (kreslime len obrys okna alebo obrys segmentu)
 
             EdgePoints2D = new List<System.Windows.Point>()
             {
@@ -239,7 +241,7 @@ namespace BaseClasses.GraphObj
                 new System.Windows.Point(iSegm * fL_X + 0, m_fDim2)
             };
 
-            if (UseSimpleWireFrame2D)
+            if (opts.bDoorsSimpleWireframe)
             {
                 // GCS -system plane XZ
                 double offset = 0.010;
@@ -283,7 +285,7 @@ namespace BaseClasses.GraphObj
             {
                 //to Mato - tu je nutne nastavit wireframePoints
 
-                if (UseSimpleModel2D)
+                if (opts.bDoorsSimpleSolidModel)
                 {
                     // Two rectangles (obrys segmentu a obrys sklenenej vyplne)
 
@@ -337,7 +339,7 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Model3DGroup CreateM_3D_G_Window(int iSegmentNum, float fL_X, float fH_Z, float fT_Y, float fGlassThickness)
+        public Model3DGroup CreateM_3D_G_Window(int iSegmentNum, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, DisplayOptions opts)
         {
             Model3DGroup gr = new Model3DGroup();
 
@@ -345,7 +347,7 @@ namespace BaseClasses.GraphObj
             // Create Window in LCS
             for (int i = 0; i < iSegmentNum; i++) // Add segments
             {
-                gr.Children.Add(CreateM_3D_G_SegmWindow(i, fL_X, fH_Z, fT_Y, m_Material_1, m_Material_2, fGlassThickness));
+                gr.Children.Add(CreateM_3D_G_SegmWindow(i, fL_X, fH_Z, fT_Y, m_Material_1, m_Material_2, fGlassThickness, opts));
             }
 
             // Create transform group
@@ -362,13 +364,13 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Model3DGroup CreateM_3D_G_Window()
+        public Model3DGroup CreateM_3D_G_Window(DisplayOptions opts)
         {
             Model3DGroup m3Dg = new Model3DGroup();
 
             //Point3D pControlEdge = new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
 
-            m3Dg.Children.Add(CreateM_3D_G_Window(SegmentNum, m_fDim1, m_fDim2, m_fDim3, GThickness));
+            m3Dg.Children.Add(CreateM_3D_G_Window(SegmentNum, m_fDim1, m_fDim2, m_fDim3, GThickness, opts));
 
             return m3Dg;
         }

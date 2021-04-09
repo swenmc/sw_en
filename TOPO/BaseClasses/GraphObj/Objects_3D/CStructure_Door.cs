@@ -106,7 +106,7 @@ namespace BaseClasses.GraphObj
         
         // Constructor 3
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
-            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float flashingOpacity, float doorPanelOpacity, bool isRollerDoor, bool LeftOrBack, bool useTextures)
+            Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float flashingOpacity, float doorPanelOpacity, bool isRollerDoor, bool LeftOrBack, DisplayOptions opts)
         {
             ID = iW_ID;
             SegmentNum = iSegmentNum;
@@ -136,11 +136,11 @@ namespace BaseClasses.GraphObj
 
             SetTextPointInLCS();
 
-            CreateM_3D_G_Door(iSegmentNum, fL, fH, ft, fDoorPanelThickness, useTextures);
+            CreateM_3D_G_Door(iSegmentNum, fL, fH, ft, fDoorPanelThickness, opts);
         }
 
         // Temporary auxiliary function
-        public Model3DGroup CreateM_3D_G_SegmDoor(int iSegm, float fL_X, float fH_Z, float fT_Y, DiffuseMaterial DiffMatF, DiffuseMaterial DiffMatD, float fDoorPanelThickness)
+        public Model3DGroup CreateM_3D_G_SegmDoor(int iSegm, float fL_X, float fH_Z, float fT_Y, DiffuseMaterial DiffMatF, DiffuseMaterial DiffMatD, float fDoorPanelThickness, DisplayOptions opts)
         {
             // Create Door Segment in LCS 0,0,0
             Point3D p01_HU = new Point3D(0, 0, fH_Z - fT_Y);
@@ -166,9 +166,7 @@ namespace BaseClasses.GraphObj
             CVolume mDoorPanel = new CVolume();
             Model3DGroup gr = new Model3DGroup(); // Door Segment
 
-            bool UseSimpleModel2D = true; // TODO 772 - Zapracovat ako volbu v GUI
-
-            if (!UseSimpleModel2D)
+            if (!opts.bDoorsSimpleSolidModel)
             {
                 // 3D Model - Prims
                 gr.Children.Add(mFrame_01_HU.CreateM_3D_G_Volume_8Edges(pArray[0], fL_X, fT_Y, fT_Y, DiffMatF, DiffMatF)); // Horizontal upper
@@ -190,7 +188,9 @@ namespace BaseClasses.GraphObj
                 gr.Children.Add(mA_DoorPanel.CreateArea(DiffMatD, true)); // Display texture for roller door panel
             }
 
-            UseSimpleWireFrame2D = false; // TODO 772 - Zapracovat ako volbu v GUI
+
+            //UseSimpleWireFrame2D = false; // TODO 772 - Zapracovat ako volbu v GUI
+
 
             EdgePoints2D = new List<System.Windows.Point>()
             {
@@ -200,7 +200,7 @@ namespace BaseClasses.GraphObj
                 new System.Windows.Point(0, m_fDim2)
             };
 
-            if (UseSimpleWireFrame2D)
+            if (opts.bDoorsSimpleWireframe)
             {
                 // GCS -system plane XZ
                 double offset = 0.010;
@@ -223,7 +223,7 @@ namespace BaseClasses.GraphObj
                 //to Mato - tu je nutne nastavit wireframePoints
                 //tu je nutne niekde ziskat Wireframe a aj ho nastavit
 
-                if (UseSimpleModel2D)
+                if (opts.bDoorsSimpleSolidModel)
                 {
                     // Two rectangles
 
@@ -274,13 +274,13 @@ namespace BaseClasses.GraphObj
             return gr;
         }
 
-        public Model3DGroup CreateM_3D_G_Door(int iSegmentNum, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, bool useTextures)
+        public Model3DGroup CreateM_3D_G_Door(int iSegmentNum, float fL_X, float fH_Z, float fT_Y, float fGlassThickness, DisplayOptions opts)
         {
             Model3DGroup gr = new Model3DGroup();
 
             ImageBrush imgBrush = null;
 
-            if (useTextures && IsRollerDoor) // Použijeme len pre typ roller door
+            if (opts.bUseTextures && IsRollerDoor) // Použijeme len pre typ roller door
             {
                 string uriString = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_" + m_doorPanelColorName + ".jpg";
 
@@ -310,7 +310,7 @@ namespace BaseClasses.GraphObj
             // Create Door in LCS
             for (int i = 0; i < iSegmentNum; i++) // Add segments
             {
-                gr.Children.Add(CreateM_3D_G_SegmDoor(i, fL_X, fH_Z, fT_Y, m_Material_1, m_Material_2, fGlassThickness));
+                gr.Children.Add(CreateM_3D_G_SegmDoor(i, fL_X, fH_Z, fT_Y, m_Material_1, m_Material_2, fGlassThickness, opts));
             }
 
             // Create transform group
@@ -354,12 +354,9 @@ namespace BaseClasses.GraphObj
 
         //    return m3Dg;
         //}
-        public Model3DGroup CreateM_3D_G_Door(bool useTextures)
+        public Model3DGroup CreateM_3D_G_Door(DisplayOptions opts)
         {
-            //omg toto je naco
-            //Point3D pControlEdge = new Point3D(ControlPoint.X, ControlPoint.Y, ControlPoint.Z);
-
-            return CreateM_3D_G_Door(SegmentNum, m_fDim1, m_fDim2, m_fDim3, GThickness, useTextures);
+            return CreateM_3D_G_Door(SegmentNum, m_fDim1, m_fDim2, m_fDim3, GThickness, opts);
         }
 
         public void SetTextPointInLCS()

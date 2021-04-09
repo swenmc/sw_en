@@ -25,7 +25,7 @@ namespace BaseClasses.GraphObj
         double m_dArea_netto;
         double m_dArea_brutto;
 
-        bool m_UseSimpleWireFrame2D; // 2D polygon alebo 3D wireframe vsetkych podruznych objektov a casti
+        //bool m_UseSimpleWireFrame2D; // 2D polygon alebo 3D wireframe vsetkych podruznych objektov a casti
 
         List<Point> m_EdgePoints2D;
 
@@ -185,18 +185,18 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public bool UseSimpleWireFrame2D
-        {
-            get
-            {
-                return m_UseSimpleWireFrame2D;
-            }
+        //public bool UseSimpleWireFrame2D
+        //{
+        //    get
+        //    {
+        //        return m_UseSimpleWireFrame2D;
+        //    }
 
-            set
-            {
-                m_UseSimpleWireFrame2D = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_UseSimpleWireFrame2D = value;
+        //    }
+        //}
 
         public List<Point>EdgePoints2D
         {
