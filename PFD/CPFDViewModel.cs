@@ -74,6 +74,11 @@ namespace PFD
 
         private float m_TotalRoofArea;
         private float m_TotalWallArea;
+        private float m_WallAreaLeft;
+        private float m_WallAreaRight;
+        private float m_WallAreaFront;
+        private float m_WallAreaBack;
+
         private float m_BuildingArea_Gross;
         private float m_BuildingVolume_Gross;
         private float m_RoofSideLength;
@@ -139,7 +144,7 @@ namespace PFD
         private bool MUseCRSCGeometricalAxes = true;
         //private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
 
-        
+
         private List<string> MModelViews;
         private List<string> MViewModelMemberFilters;
 
@@ -274,7 +279,7 @@ namespace PFD
                 else if (MKitsetTypeIndex == 3) ModelTypes = CDatabaseManager.GetStringList("ModelsSQLiteDB", "KitsetShelterDoubleSpan", "modelName");
 
                 ModelIndex = 1; // Nastavime defaultny model index pre vybrany kitset type (menim property aby som vyvolal aj zmenu modelu)
-                
+
                 UpdateAccesoriesOnModelTypeChange();
 
                 NotifyPropertyChanged("KitsetTypeIndex");
@@ -760,19 +765,19 @@ namespace PFD
                 //_canopiesOptionsVM = new CanopiesOptionsViewModel(Frames - 1, Width);                
                 UpdateCanopiesViewModel();
                 _modelOptionsVM.EnableCanopies = false; //default vypnute
-                                
+
                 _modelOptionsVM.VariousBayWidths = false; //default vypnute
             }
             else
             {
                 if (_modelOptionsVM.EnableCrossBracing == true) //iba ak je zapnute
                 {
-                    UpdateCrossBracingViewModel();                    
+                    UpdateCrossBracingViewModel();
                 }
                 if (_modelOptionsVM.EnableCanopies == true) //iba ak je zapnute
                 {
-                    UpdateCanopiesViewModel();                    
-                }                
+                    UpdateCanopiesViewModel();
+                }
             }
 
             _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
@@ -1485,7 +1490,7 @@ namespace PFD
             }
         }
 
-       
+
 
         public List<string> ModelViews
         {
@@ -1505,7 +1510,7 @@ namespace PFD
             }
         }
 
-        
+
 
         public ObservableCollection<CComponentInfo> ComponentList
         {
@@ -2069,9 +2074,9 @@ namespace PFD
         //    }
         //}
 
-        
 
-        
+
+
 
         //private void CheckDoorsBays(DoorProperties d)
         //{
@@ -2094,7 +2099,7 @@ namespace PFD
         //    }
         //}
 
-        
+
 
         //private void CheckWindowsBays(WindowProperties w)
         //{
@@ -2108,7 +2113,7 @@ namespace PFD
         //    }
         //}
 
-        
+
 
         public DoorsAndWindowsViewModel _doorsAndWindowsVM;
 
@@ -2202,7 +2207,7 @@ namespace PFD
                 RecreateModel = true;
                 RecreateJoints = true;
                 RecreateQuotation = true;
-                SetComponentListAccordingToCanopies();                
+                SetComponentListAccordingToCanopies();
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CanopiesOptionsChanged");
 
@@ -2313,12 +2318,12 @@ namespace PFD
             }
 
             set
-            {                
+            {
                 m_DoorsAndWindowsChanged = value;
                 RecreateQuotation = true;
                 RecreateModel = true;
                 RecreateJoints = true;
-                RecreateFloorSlab = true;                
+                RecreateFloorSlab = true;
                 SetResultsAreNotValid();
                 SetComponentListAccordingToDoors();
                 NotifyPropertyChanged("DoorsAndWindowsChanged");
@@ -2335,7 +2340,7 @@ namespace PFD
             set
             {
                 m_OptionsLoaded = value;
-                                
+
                 SetResultsAreNotValid();
                 RecreateModel = true;
 
@@ -2605,6 +2610,57 @@ namespace PFD
                 m_TotalWallArea = value;
             }
         }
+        public float WallAreaLeft
+        {
+            get
+            {
+                return m_WallAreaLeft;
+            }
+
+            set
+            {
+                m_WallAreaLeft = value;
+            }
+        }
+
+        public float WallAreaRight
+        {
+            get
+            {
+                return m_WallAreaRight;
+            }
+
+            set
+            {
+                m_WallAreaRight = value;
+            }
+        }
+
+        public float WallAreaFront
+        {
+            get
+            {
+                return m_WallAreaFront;
+            }
+
+            set
+            {
+                m_WallAreaFront = value;
+            }
+        }
+
+        public float WallAreaBack
+        {
+            get
+            {
+                return m_WallAreaBack;
+            }
+
+            set
+            {
+                m_WallAreaBack = value;
+            }
+        }
 
         public float BuildingArea_Gross
         {
@@ -2710,7 +2766,9 @@ namespace PFD
             }
         }
 
-        
+
+
+
 
 
 
@@ -2724,7 +2782,7 @@ namespace PFD
 
             IsSetFromCode = true;
 
-            _doorsAndWindowsVM = new DoorsAndWindowsViewModel(doorBlocksProperties, windowBlocksProperties);            
+            _doorsAndWindowsVM = new DoorsAndWindowsViewModel(doorBlocksProperties, windowBlocksProperties);
 
             _componentVM = componentVM;
             SetComponentListAccordingToDoorsAndWindows();
@@ -2920,7 +2978,7 @@ namespace PFD
                 fDownpipesTotalLength = 0;
             }
 
-            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);                        
+            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, 2);
 
             return new ObservableCollection<CAccessories_DownpipeProperties>() { downpipe };
         }
@@ -2962,13 +3020,13 @@ namespace PFD
                 fGuttersTotalLength = 0;
             }
 
-            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);            
+            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
             return new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
         }
 
         public void UpdateAccesoriesOnModelTypeChange()
-        {            
-            SetDefaultFlashings();            
+        {
+            SetDefaultFlashings();
             SetDefaultDownpipes();
             SetDefaultGutters();
         }
@@ -3242,7 +3300,7 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
+
 
         private void HandleComponentInfoPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
@@ -3912,6 +3970,10 @@ namespace PFD
             BuildingArea_Gross = WidthOverall * LengthOverall;
             BuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray()) * LengthOverall;
 
+            WallAreaLeft = fWallArea_Left;
+            WallAreaRight = fWallArea_Right;
+            WallAreaFront = fWallArea_Front;
+            WallAreaBack = fWallArea_Back;
             TotalWallArea = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
         }
 
@@ -3941,7 +4003,8 @@ namespace PFD
             if (purlin != null && purlin.Generate == true)
             {
                 TotalRoofArea = iNumberOfRoofSides * RoofSideLength * LengthOverall;
-            }                
+            }
+            else TotalRoofArea = 0;
         }
 
         //to Mato - treba sa zamysliet, kde vsade to treba volat
@@ -3949,9 +4012,77 @@ namespace PFD
         public void CountWallAndRoofAreas()
         {
             CountWallAreas();
-            CountRoofAreas();
+            CountRoofAreas();            
         }
+        
+        public void CountFlashings()
+        {
+            if (_doorsAndWindowsVM == null) return;
+            if (_doorsAndWindowsVM.Flashings == null) return;
 
+            float fRoofRidgeFlashing_TotalLength = 0;
+            float fWallCornerFlashing_TotalLength = 0;
+            float fBargeFlashing_TotalLength = 0;
+
+            if (Model is CModel_PFD_01_MR)
+            {
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 2 * WallHeightOverall + 2 * Height_H2_Overall;
+                fBargeFlashing_TotalLength = 2 * RoofSideLength;
+            }
+            else if (Model is CModel_PFD_01_GR)
+            {
+                fRoofRidgeFlashing_TotalLength = LengthOverall;
+                fWallCornerFlashing_TotalLength = 4 * WallHeightOverall;
+                fBargeFlashing_TotalLength = 4 * RoofSideLength;
+            }
+            else
+            {
+                // Exception - not implemented
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 0;
+                fBargeFlashing_TotalLength = 0;
+            }
+
+            //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
+            CAccessories_LengthItemProperties flashing = null;
+
+            //Tab Accesories: tam su vsetky Flashings, aby bolo vidno co vsetko je na vyber pre dany typ budovy
+            //Tab Quotation: tu sa uz konkretne riesi ktore Flashings su na danej budove(vypinaju sa tie,ktore nie su pouzite)
+            if (_modelOptionsVM.EnableCladding) //to Mato-zaroven neviem coho vsetkeho sa to tyka
+            {
+                if (MathF.d_equal(TotalRoofArea, 0)) //only if roof exists
+                {
+                    fRoofRidgeFlashing_TotalLength = 0;
+                }
+                if (MathF.d_equal(TotalWallArea, 0)) //only if walls exists
+                {
+                    fWallCornerFlashing_TotalLength = 0;
+                }
+                if (MathF.d_equal(WallAreaFront, 0) && MathF.d_equal(WallAreaBack, 0) && MathF.d_equal(TotalRoofArea, 0)) //only if front/back walls or roof exists
+                {
+                    fBargeFlashing_TotalLength = 0;
+                }
+            }
+            else
+            {
+                fRoofRidgeFlashing_TotalLength = 0;
+                fWallCornerFlashing_TotalLength = 0;
+                fBargeFlashing_TotalLength = 0;
+            }
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[0]);
+            if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[1]);
+            if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[2]); //Wall Corner
+            if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[3]); //Barge
+            if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
+        }
 
         public void CalculateWallHeightsForCladding()
         {

@@ -189,14 +189,13 @@ namespace PFD
             // Flashing and Packers
             if (vm._quotationDisplayOptionsVM.DisplayFlashing && _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Flashings.Count > 0)
             {
-                CreateTableFlashing(model,
-                vm.RoofSideLength, // fRoofSideLength,
-                fRollerDoorTrimmerFlashing_TotalLength,
-                fRollerDoorLintelFlashing_TotalLength,
-                fRollerDoorLintelCapFlashing_TotalLength,
-                fPADoorTrimmerFlashing_TotalLength,
-                fPADoorLintelFlashing_TotalLength,
-                fWindowFlashing_TotalLength);
+                CreateTableFlashing(
+                    fRollerDoorTrimmerFlashing_TotalLength,
+                    fRollerDoorLintelFlashing_TotalLength,
+                    fRollerDoorLintelCapFlashing_TotalLength,
+                    fPADoorTrimmerFlashing_TotalLength,
+                    fPADoorLintelFlashing_TotalLength,
+                    fWindowFlashing_TotalLength);
             }
             else
             {
@@ -1191,60 +1190,17 @@ namespace PFD
             SetLastRowBold(Datagrid_RoofNetting);
         }
 
-        private void CreateTableFlashing(CModel model,
-        float fRoofSideLength,
-        float fRollerDoorTrimmerFlashing_TotalLength,
-        float fRollerDoorLintelFlashing_TotalLength,
-        float fRollerDoorLintelCapFlashing_TotalLength,
-        float fPADoorTrimmerFlashing_TotalLength,
-        float fPADoorLintelFlashing_TotalLength,
-        float fWindowFlashing_TotalLength)
+        private void CreateTableFlashing(
+            float fRollerDoorTrimmerFlashing_TotalLength,
+            float fRollerDoorLintelFlashing_TotalLength,
+            float fRollerDoorLintelCapFlashing_TotalLength,
+            float fPADoorTrimmerFlashing_TotalLength,
+            float fPADoorLintelFlashing_TotalLength,
+            float fWindowFlashing_TotalLength)
         {
-            float fRoofRidgeFlashing_TotalLength = 0;
-            float fWallCornerFlashing_TotalLength = 0;
-            float fBargeFlashing_TotalLength = 0;
+            _pfdVM.CountFlashings();
 
-            if (model is CModel_PFD_01_MR)
-            {
-                fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 2 * _pfdVM.WallHeightOverall + 2 * _pfdVM.Height_H2_Overall;
-                fBargeFlashing_TotalLength = 2 * fRoofSideLength;
-            }
-            else if(model is CModel_PFD_01_GR)
-            {
-                fRoofRidgeFlashing_TotalLength = _pfdVM.LengthOverall;
-                fWallCornerFlashing_TotalLength = 4 * _pfdVM.WallHeightOverall;
-                fBargeFlashing_TotalLength = 4 * fRoofSideLength;
-            }
-            else
-            {
-                // Exception - not implemented
-                fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 0;
-                fBargeFlashing_TotalLength = 0;
-            }
-
-            //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
             CAccessories_LengthItemProperties flashing = null;
-
-            //to Mato- tu si nie som isty...mozno by bolo lepsie menit zoznam flashings priamo v tabe Accesories pokial sa vypne EnableCladding option v model options
-            //ak by sme to chceli riesit az ty v Quotation,tak by som to dal takto:
-
-            if (_pfdVM._modelOptionsVM.EnableCladding) //to Mato-zaroven neviem coho vsetkeho sa to tyka
-            {
-                flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[0]);
-                if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
-
-                flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[1]);
-                if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
-
-                flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[2]);
-                if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
-
-                flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[3]);
-                if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
-            }            
-
             flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[4]);
             if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
 
