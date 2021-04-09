@@ -262,41 +262,7 @@ namespace PFD
             {
                 //CJointsVM vm = sender as CJointsVM;
                 vm.RecreateJoints = false;
-            }
-            else if (sender is DoorProperties)
-            {
-                //if (e.PropertyName == "Bays") return;
-                //if (e.PropertyName == "Series") return;
-                //if (e.PropertyName == "Serie") return;
-                //if (e.PropertyName == "SerieEnabled") return;
-
-                //DoorProperties doorProperties = sender as DoorProperties;
-                //if (doorProperties.IsSetFromCode) return;
-
-                //if (e.PropertyName == "CoatingColor")
-                //{
-                //    //recreate model after color changed
-                //    vm.RecreateModel = true;
-                //    if (vm._modelOptionsVM.SameColorsDoor) vm.SetAllDoorCoatingColorAccordingTo(doorProperties);
-                //}
-                //else
-                //{
-                //    Datagrid_DoorsAndGates_SelectionChanged(null, null);
-                //    vm.RecreateModel = true;
-                //    vm.RecreateJoints = true;
-                //    vm.RecreateFloorSlab = true;
-                //}
-            }
-            else if (sender is WindowProperties)
-            {
-                //if (e.PropertyName == "Bays") return;
-                //WindowProperties wProperties = sender as WindowProperties;
-                //if (wProperties.IsSetFromCode) return;
-
-                //Datagrid_Windows_SelectionChanged(null, null);
-                //vm.RecreateModel = true;
-                //vm.RecreateJoints = true;
-            }
+            }            
             else if (sender is CComponentInfo)
             {
                 CComponentInfo cInfo = sender as CComponentInfo;
@@ -409,33 +375,27 @@ namespace PFD
                     vm.RecreateJoints = true; //need to recreate joint when generate was changed
                     vm.RecreateModel = true;
                     vm.CountWallAndRoofAreas();
-                }
 
-                if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && cInfo.Generate == false && vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Front"))
-                {
-                    MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the front wall?", "Warning", MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.Yes)
+                    if (cInfo.Generate == false)
                     {
-                        vm._doorsAndWindowsVM.RemoveDoorsAndWindowsBuildingSide("Front");
-                    }
-                    else
-                    {
-                        cInfo.Generate = true; //vsetky ostatne property sa same oznacia (len aby to nemalo dosah inde)
-                        return;
-                    }
-                }
-
-                if (e.PropertyName == "Generate" && cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide && cInfo.Generate == false && vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Back"))
-                {
-                    MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the back wall?", "Warning", MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        vm._doorsAndWindowsVM.RemoveDoorsAndWindowsBuildingSide("Back");
-                    }
-                    else
-                    {
-                        cInfo.Generate = true;
-                        return;
+                        if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide && vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Front"))
+                        {
+                            MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the front wall?", "Warning", MessageBoxButton.YesNo);
+                            if (result == MessageBoxResult.Yes) vm._doorsAndWindowsVM.RemoveDoorsAndWindowsBuildingSide("Front");
+                            else { cInfo.Generate = true; return; } //vsetky ostatne property sa same oznacia (len aby to nemalo dosah inde)
+                        }
+                        if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide && vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Back"))
+                        {
+                            MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the back wall?", "Warning", MessageBoxButton.YesNo);
+                            if (result == MessageBoxResult.Yes) vm._doorsAndWindowsVM.RemoveDoorsAndWindowsBuildingSide("Back");
+                            else {cInfo.Generate = true; return;}
+                        }
+                        if (cInfo.MemberTypePosition == EMemberType_FS_Position.Girt && (vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Left") || vm._doorsAndWindowsVM.AreDoorsOrWindowsOnBuildingSide("Right")))
+                        {
+                            MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the left and right wall?", "Warning", MessageBoxButton.YesNo);
+                            if (result == MessageBoxResult.Yes) { vm._doorsAndWindowsVM.RemoveDoorsAndWindowsBuildingSide("Left"); vm._doorsAndWindowsVM.RemoveDoorsAndWindowsBuildingSide("Right"); }
+                            else { cInfo.Generate = true; return; }
+                        }
                     }
                 }
 
@@ -1320,8 +1280,6 @@ namespace PFD
             if (!CPermissions.UserHasPermission(EUserPermission.ExportReport)) { ExportWord.Visibility = Visibility.Collapsed; ExportPDF.Visibility = Visibility.Collapsed; }
         }
 
-        
-
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel page3D = (Page3Dmodel)Frame1.Content;
@@ -1993,34 +1951,26 @@ namespace PFD
             }
         }
 
-        
-
         private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
         {
             DisplayOptionsWindow w = new DisplayOptionsWindow(vm);
             w.ShowDialog();
         }
-
         private void btnModelOptions_Click(object sender, RoutedEventArgs e)
         {
             ModelOptionsWindow w = new ModelOptionsWindow(vm);
             w.ShowDialog();
         }
-
         private void btnSolverOptions_Click(object sender, RoutedEventArgs e)
         {
             SolverOptionsWindow w = new SolverOptionsWindow(vm);
             w.ShowDialog();
         }
-
         private void btnDesignOptions_Click(object sender, RoutedEventArgs e)
         {
             DesignOptionsWindow w = new DesignOptionsWindow(vm);
             w.ShowDialog();
-        }
-
-
-
+        }        
         private void ButtonGenerateModel_Click(object sender, RoutedEventArgs e)
         {
             UpdateModelAndGUI();
@@ -2100,194 +2050,16 @@ namespace PFD
             w.ShowDialog();
 
         }
-
         private void BtnBayWidthsOptions_Click(object sender, RoutedEventArgs e)
         {
             BaysWidthOptionsWindow w = new BaysWidthOptionsWindow(vm);
             w.ShowDialog();
-        }
-
-
+        }        
         private void BtnCanopiesOptions_Click(object sender, RoutedEventArgs e)
         {
             CanopiesOptionsWindow w = new CanopiesOptionsWindow(vm);
             w.ShowDialog();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //Zdaju sa mi nepouzite tieto metody
-        //Treba prehodnotit,ci chceme si ponechat a ak nie, tak zmazat
-
-        private void RunFEMSOlver()
-        {
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // Calculate Internal Forces
-            // Todo - napojit FEM vypocet
-
-            // TODO - Ondrej Task No 41
-            // Todo - nefunguje implementovany 2D solver, asi je chybna detekcia zakladnej tuhostnej matici pruta
-            // Treba sa na to pozriet podrobnejsie
-            // Navrhujem napojit nejaky externy solver
-
-            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[EMemberType_FS_Position.MainColumn], vm.Model.m_arrCrSc[EMemberType_FS_Position.MainColumn], vm.Model.m_arrCrSc[EMemberType_FS_Position.MainRafter], vm.Width, vm.WallHeight, vm.Height_H2, 1000, 0, 1000, 1000, 1000);
-            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
-
-            // Auxialiary string - result data
-            int iDispDecPrecision = 3; // Precision of numerical values of displacement and rotations
-            string sDOFResults = null;
-
-            for (int i = 0; i < obj_Calc.m_V_Displ.FVectorItems.Length; i++)
-            {
-                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Increase index (1st member "0" to "1"
-                int iNodeDOFNumber = obj_Calc.m_fDisp_Vector_CN[i, 2] + 1;
-
-                sDOFResults += "Node No:" + "\t" + iNodeNumber + "\t" +
-                               "Node DOF No:" + "\t" + iNodeDOFNumber + "\t" +
-                               "Value:" + "\t" + String.Format("{0:0.000}", Math.Round(obj_Calc.m_V_Displ.FVectorItems[i], iDispDecPrecision))
-                               + "\n";
-            }
-
-            // Main String
-            string sMessageCalc =
-                "Calculation was successful!" + "\n\n" +
-                "Result - vector of calculated values of unrestraint DOF displacement or rotation" + "\n\n" + sDOFResults;
-
-            // Display Message
-            MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
-        }
-
-        private void SetLoadGCSCoordinates(CSLoad_FreeUniform load)
-        {
-            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load, null, 0.001f);
-        }
-
-        private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)
-        {
-            foreach (Point3D p in load.PointsGCS)
-            {
-                if (m.NodeStart.Y - 0.5 * fL1_frame <= p.Y && m.NodeStart.Y + 0.5 * fL1_frame >= p.Y
-                    || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
-                {
-                    if (bDebugging)
-                        System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID}");
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // Returns tributary width "b" which is representing a portion of surface load area transferred to the member
-        // "b" is a dimension perpendicular to the member local x-axis
-        private double GetTributaryWidth_B(CSLoad_FreeUniform load, CMember m, float fL1_frame)
-        {
-            // Odpoved na tento problem je v podmienke if (Math.Abs(fValue) > 0) public class CSLoad_FreeUniform, line 257
-            // Ak je hodnota zatazenia nulova tak sa ModelGroup nevyrobi a vracia to ModelGroup = null;
-
-            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane // TO Ondrej - nastava pre nulovu hodnotu zatazenia, nevyrobi sa ModelGroup3D
-
-            double MinLoadY = load.PointsGCS.Min(p => p.Y);
-            double MaxLoadY = load.PointsGCS.Max(p => p.Y);
-
-            double minY = m.NodeStart.Y - 0.5 * fL1_frame;
-            double maxY = m.NodeStart.Y + 0.5 * fL1_frame;
-
-            if (MaxLoadY < minY) return 0;
-            else if (MinLoadY > maxY) return 0;
-
-            if (MinLoadY < minY) MinLoadY = minY;
-            if (MaxLoadY > maxY) MaxLoadY = maxY;
-
-            double b = (MaxLoadY - MinLoadY) / (maxY - minY);
-            if (bDebugging)
-                System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID} b: {b}");
-            return b;
-        }
-
-        private List<double> GetMemberX1X2(CSLoad_FreeUniform load, CMember m, float fL1_frame)
-        {
-            double x1 = 0;
-            double x2 = 0;
-
-            if (load.PointsGCS.Count == 0) return null; //toto by podla mna nemalo nastavat a just nastane // To Ondrej - vid komentar vyssie GetTributaryWidth_B
-
-            if (load.ELoadDir == ELoadDirection.eLD_Z)
-            {
-                if (m.EMemberType == EMemberType_FS.eMR)
-                {
-                    //urcit x1,x2 pre member v LCS
-
-                    //double minLoadY = load.PointsGCS
-                    //m.NodeStart.Y
-
-                }
-            }
-            else
-            {
-                //todo
-            }
-
-            return new List<double> { x1, x2 };
-        }
-
-        public void ShowBFEMNetModel(Model model)
-        {
-            //tu by som chcel zobrazit BFEMNEt model
-            // stiahol som do projektu PFD HelixToolkit aj DynamicDataDisplay nuget packages...ale aj tak sa to nerozbehlo
-
-            /*
-            Dispatcher.Invoke(() =>
-            {
-                var wnd = new Window();
-                var ctrl = new ModelVisualizerControl();
-                ctrl.ModelToVisualize = model;
-
-                wnd.Content = ctrl;
-
-                wnd.ShowDialog();
-
-            });*/
-        }
-
-        
-
 
         private void BtnLoadModel_Click(object sender, RoutedEventArgs e)
         {
@@ -2635,6 +2407,8 @@ namespace PFD
 
 
 
+
+
         //private void SetInitialItemsInComboboxes()
         //{
         //    // Fill kitset type combobox items
@@ -2841,5 +2615,150 @@ namespace PFD
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+        //Zdaju sa mi nepouzite tieto metody
+        //Treba prehodnotit,ci chceme si ponechat a ak nie, tak zmazat
+
+        private void RunFEMSOlver()
+        {
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Calculate Internal Forces
+            // Todo - napojit FEM vypocet
+
+            // TODO - Ondrej Task No 41
+            // Todo - nefunguje implementovany 2D solver, asi je chybna detekcia zakladnej tuhostnej matici pruta
+            // Treba sa na to pozriet podrobnejsie
+            // Navrhujem napojit nejaky externy solver
+
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[EMemberType_FS_Position.MainColumn], vm.Model.m_arrCrSc[EMemberType_FS_Position.MainColumn], vm.Model.m_arrCrSc[EMemberType_FS_Position.MainRafter], vm.Width, vm.WallHeight, vm.Height_H2, 1000, 0, 1000, 1000, 1000);
+            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
+
+            // Auxialiary string - result data
+            int iDispDecPrecision = 3; // Precision of numerical values of displacement and rotations
+            string sDOFResults = null;
+
+            for (int i = 0; i < obj_Calc.m_V_Displ.FVectorItems.Length; i++)
+            {
+                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Increase index (1st member "0" to "1"
+                int iNodeDOFNumber = obj_Calc.m_fDisp_Vector_CN[i, 2] + 1;
+
+                sDOFResults += "Node No:" + "\t" + iNodeNumber + "\t" +
+                               "Node DOF No:" + "\t" + iNodeDOFNumber + "\t" +
+                               "Value:" + "\t" + String.Format("{0:0.000}", Math.Round(obj_Calc.m_V_Displ.FVectorItems[i], iDispDecPrecision))
+                               + "\n";
+            }
+
+            // Main String
+            string sMessageCalc =
+                "Calculation was successful!" + "\n\n" +
+                "Result - vector of calculated values of unrestraint DOF displacement or rotation" + "\n\n" + sDOFResults;
+
+            // Display Message
+            MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
+        }
+
+        private void SetLoadGCSCoordinates(CSLoad_FreeUniform load)
+        {
+            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load, null, 0.001f);
+        }
+
+        private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        {
+            foreach (Point3D p in load.PointsGCS)
+            {
+                if (m.NodeStart.Y - 0.5 * fL1_frame <= p.Y && m.NodeStart.Y + 0.5 * fL1_frame >= p.Y
+                    || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
+                {
+                    if (bDebugging)
+                        System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID}");
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Returns tributary width "b" which is representing a portion of surface load area transferred to the member
+        // "b" is a dimension perpendicular to the member local x-axis
+        private double GetTributaryWidth_B(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        {
+            // Odpoved na tento problem je v podmienke if (Math.Abs(fValue) > 0) public class CSLoad_FreeUniform, line 257
+            // Ak je hodnota zatazenia nulova tak sa ModelGroup nevyrobi a vracia to ModelGroup = null;
+
+            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane // TO Ondrej - nastava pre nulovu hodnotu zatazenia, nevyrobi sa ModelGroup3D
+
+            double MinLoadY = load.PointsGCS.Min(p => p.Y);
+            double MaxLoadY = load.PointsGCS.Max(p => p.Y);
+
+            double minY = m.NodeStart.Y - 0.5 * fL1_frame;
+            double maxY = m.NodeStart.Y + 0.5 * fL1_frame;
+
+            if (MaxLoadY < minY) return 0;
+            else if (MinLoadY > maxY) return 0;
+
+            if (MinLoadY < minY) MinLoadY = minY;
+            if (MaxLoadY > maxY) MaxLoadY = maxY;
+
+            double b = (MaxLoadY - MinLoadY) / (maxY - minY);
+            if (bDebugging)
+                System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID} b: {b}");
+            return b;
+        }
+
+        private List<double> GetMemberX1X2(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        {
+            double x1 = 0;
+            double x2 = 0;
+
+            if (load.PointsGCS.Count == 0) return null; //toto by podla mna nemalo nastavat a just nastane // To Ondrej - vid komentar vyssie GetTributaryWidth_B
+
+            if (load.ELoadDir == ELoadDirection.eLD_Z)
+            {
+                if (m.EMemberType == EMemberType_FS.eMR)
+                {
+                    //urcit x1,x2 pre member v LCS
+
+                    //double minLoadY = load.PointsGCS
+                    //m.NodeStart.Y
+
+                }
+            }
+            else
+            {
+                //todo
+            }
+
+            return new List<double> { x1, x2 };
+        }
+
+        public void ShowBFEMNetModel(Model model)
+        {
+            //tu by som chcel zobrazit BFEMNEt model
+            // stiahol som do projektu PFD HelixToolkit aj DynamicDataDisplay nuget packages...ale aj tak sa to nerozbehlo
+
+            /*
+            Dispatcher.Invoke(() =>
+            {
+                var wnd = new Window();
+                var ctrl = new ModelVisualizerControl();
+                ctrl.ModelToVisualize = model;
+
+                wnd.Content = ctrl;
+
+                wnd.ShowDialog();
+
+            });*/
+        }
     }
 }
