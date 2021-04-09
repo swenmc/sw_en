@@ -188,10 +188,6 @@ namespace BaseClasses.GraphObj
                 gr.Children.Add(mA_DoorPanel.CreateArea(DiffMatD, true)); // Display texture for roller door panel
             }
 
-
-            //UseSimpleWireFrame2D = false; // TODO 772 - Zapracovat ako volbu v GUI
-
-
             EdgePoints2D = new List<System.Windows.Point>()
             {
                 new System.Windows.Point(0, 0),

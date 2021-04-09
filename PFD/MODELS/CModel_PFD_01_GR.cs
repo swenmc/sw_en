@@ -1743,16 +1743,20 @@ namespace PFD
                         CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "PA Door Trimmer");
                         if(prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fPersonnelDoorFrameThickness;
-                        leftEdge += fPersonnelDoorFrameThickness;
-                        backEdge -= fPersonnelDoorFrameThickness;
+                        //leftEdge += fPersonnelDoorFrameThickness;
+                        //backEdge -= fPersonnelDoorFrameThickness;
+                        leftEdge += fPersonnelDoorFrameThickness / 2;
+                        backEdge -= fPersonnelDoorFrameThickness / 2;
                     }
                     else if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Roller Door")
                     {
                         CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "Roller Door Trimmer");
                         if(prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fRollerDoorFrameThickness;
-                        leftEdge += fRollerDoorFrameThickness;
-                        backEdge -= fRollerDoorFrameThickness;
+                        //leftEdge += fRollerDoorFrameThickness;
+                        //backEdge -= fRollerDoorFrameThickness;
+                        leftEdge += fRollerDoorFrameThickness / 2;
+                        backEdge -= fRollerDoorFrameThickness / 2;
                     }
                     else
                         throw new Exception("Invalid door type");

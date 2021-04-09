@@ -248,9 +248,7 @@ namespace BaseClasses.GraphObj
 
                 // One rectangle for window
 
-                bool bSingleWindowFrame = false; // TODO 772 - Zapracovat ako volbu v GUI ?? Cele okno je len jeden obdlznik
-
-                if (bSingleWindowFrame && iSegm == 0) // Cele okno je len jeden ram, pridame len pre prvy segment
+                if (opts.bWindowOutlineOnly && iSegm == 0) // Cele okno je len jeden ram, pridame len pre prvy segment
                 {
                     // One rectangle for whole window
                     WireFramePoints.Add(new Point3D(0, offset, 0));
