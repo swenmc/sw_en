@@ -439,6 +439,7 @@ namespace PFD
                 DisplayMainModel();
             }
 
+
             //toto tu asi nepotrebujeme ak zakazeme pridavat cez klik na novy riadok
             //kvoli Doors Models,  najprv musi byt update
             //if (sender is DoorProperties || e.PropertyName == "DoorBlocksProperties_Add")
@@ -939,17 +940,8 @@ namespace PFD
                 UpdateUC_Joints();
                 System.Diagnostics.Trace.WriteLine("UpdateUC_Joints: " + (DateTime.Now - start).TotalMilliseconds);
                 UpdateUC_Footings();
-                System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);
-
-                //toto sa ma udiat iba ak sa menila nejaka property z modelu, rozmer a podobne
-                //if (vm.RecreateJoints)
-                //{
-                //    vm._doorsAndWindowsVM.SetDefaultFlashings();
-                //    vm._doorsAndWindowsVM.SetDefaultDownpipes();
-                //}
-
-            }
-
+                System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);                
+            }            
 
             bool generateSurfaceLoads = vm._displayOptionsVM.ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||
@@ -1246,14 +1238,23 @@ namespace PFD
             if (vm._modelOptionsVM.EnableCladding) TabCladding.Visibility = Visibility.Visible;
             else TabCladding.Visibility = Visibility.Collapsed;
 
-            if (vm._modelOptionsVM.EnableCladding)
+            //tu je trosku problem,ze to berie z vygenerovaneho modelu, cize az ked sa updatuje model,az potom tam budu validne hodnoty (mozno by to trebalo skor viazat na nieco ine)
+            //ono je to takto spravne ta samotna metoda, ale pre zapnutie a vypnutie v GUI by sa to mozno dalo viazat na nejake ine zapnute a vypnute prvky (detto pre fibreglass)
+            //tie zoznamy cladding sa vytvaraju az pri zobrazovani...takze je to nepouzitelne = prepisat
+            if (vm._modelOptionsVM.EnableCladding && vm._modelOptionsVM.IndividualCladdingSheets && vm.ModelHasPurlinsOrGirts())
             {
-                btnCladdingSheetsValidation.IsEnabled = vm._modelOptionsVM.IndividualCladdingSheets;
-                btnFibreglassSheetsValidation.IsEnabled = vm._claddingOptionsVM.HasFibreglass();
+                btnCladdingSheetsValidation.IsEnabled = true;                
             }
             else
             {
-                btnCladdingSheetsValidation.IsEnabled = false;
+                btnCladdingSheetsValidation.IsEnabled = false;                
+            }
+            if (vm._modelOptionsVM.EnableCladding && vm._claddingOptionsVM.HasFibreglass() && vm.ModelHasPurlinsOrGirts())
+            {
+                btnFibreglassSheetsValidation.IsEnabled = true;
+            }
+            else
+            {                
                 btnFibreglassSheetsValidation.IsEnabled = false;
             }
 

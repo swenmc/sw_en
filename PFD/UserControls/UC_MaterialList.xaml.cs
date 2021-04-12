@@ -64,7 +64,7 @@ namespace PFD
 
         private void SetControlsVisibility()
         {
-            if (_pfdVM._modelOptionsVM.EnableCladding && _pfdVM._modelOptionsVM.IndividualCladdingSheets)
+            if (_pfdVM._modelOptionsVM.EnableCladding && _pfdVM._modelOptionsVM.IndividualCladdingSheets && CModelHelper.ModelHasCladding(_pfdVM.Model))
             {
                 TxtCladdingSheets.Visibility = Visibility.Visible;
                 Datagrid_CladdingSheets.Visibility = Visibility.Visible;

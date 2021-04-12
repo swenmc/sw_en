@@ -4144,5 +4144,24 @@ namespace PFD
                     Height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + claddingHeight_Roof) * Math.Tan(RoofPitch_deg * Math.PI / 180);
             }
         }
+
+        public bool ModelHasPurlinsOrGirts()
+        {
+            CComponentInfo purlin = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (purlin != null && purlin.Generate == true) return true;
+
+            CComponentInfo gF = ComponentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (gF != null && gF.Generate == true) return true;
+            CComponentInfo gB = ComponentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (gB != null && gB.Generate == true) return true;
+
+            CComponentInfo gL = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (gL != null && gL.Generate == true) return true;
+            CComponentInfo gR = ComponentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (gR != null && gR.Generate == true) return true;
+
+            return false;
+        }
+
     }
 }
