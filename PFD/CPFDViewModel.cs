@@ -4163,20 +4163,43 @@ namespace PFD
 
         public bool ModelHasPurlinsOrGirts()
         {
-            CComponentInfo purlin = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
-            if (purlin != null && purlin.Generate == true) return true;
-
-            CComponentInfo gF = ComponentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
-            if (gF != null && gF.Generate == true) return true;
-            CComponentInfo gB = ComponentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
-            if (gB != null && gB.Generate == true) return true;
-
-            CComponentInfo gL = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (gL != null && gL.Generate == true) return true;
-            CComponentInfo gR = ComponentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (gR != null && gR.Generate == true) return true;
+            if (ModelHasRoof()) return true;
+            if (ModelHasFrontWall()) return true;
+            if (ModelHasBackWall()) return true;
+            if (ModelHasLeftWall()) return true;
+            if (ModelHasRightWall()) return true;
 
             return false;
+        }
+        public bool ModelHasRoof()
+        {
+            CComponentInfo purlin = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (purlin != null && purlin.Generate == true) return true;
+            else return false;
+        }
+        public bool ModelHasFrontWall()
+        {            
+            CComponentInfo gF = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (gF != null && gF.Generate == true) return true;
+            else return false;
+        }
+        public bool ModelHasBackWall()
+        {
+            CComponentInfo gB = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (gB != null && gB.Generate == true) return true;
+            else return false;
+        }
+        public bool ModelHasLeftWall()
+        {
+            CComponentInfo gL = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (gL != null && gL.Generate == true) return true;
+            else return false;
+        }
+        public bool ModelHasRightWall()
+        {
+            CComponentInfo gR = ComponentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (gR != null && gR.Generate == true) return true;
+            else return false;
         }
 
     }
