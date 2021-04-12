@@ -4058,10 +4058,16 @@ namespace PFD
                 {
                     fRoofRidgeFlashing_TotalLength = 0;
                 }
+
                 if (MathF.d_equal(TotalWallArea, 0)) //only if walls exists
                 {
                     fWallCornerFlashing_TotalLength = 0;
                 }
+                else
+                {
+                    fWallCornerFlashing_TotalLength = fWallCornerFlashing_TotalLength / 4.0f * GetCornersCount();
+                }                
+
                 if (MathF.d_equal(WallAreaFront, 0) && MathF.d_equal(WallAreaBack, 0) && MathF.d_equal(TotalRoofArea, 0)) //only if front/back walls or roof exists
                 {
                     fBargeFlashing_TotalLength = 0;
@@ -4085,6 +4091,16 @@ namespace PFD
 
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[3]); //Barge
             if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
+        }
+
+        private int GetCornersCount()
+        {
+            int count = 0;
+            if (!MathF.d_equal(WallAreaLeft, 0) && !MathF.d_equal(WallAreaFront, 0)) count++;
+            if (!MathF.d_equal(WallAreaLeft, 0) && !MathF.d_equal(WallAreaBack, 0)) count++;
+            if (!MathF.d_equal(WallAreaRight, 0) && !MathF.d_equal(WallAreaFront, 0)) count++;
+            if (!MathF.d_equal(WallAreaRight, 0) && !MathF.d_equal(WallAreaBack, 0)) count++;
+            return count;
         }
 
         public void CalculateWallHeightsForCladding()
