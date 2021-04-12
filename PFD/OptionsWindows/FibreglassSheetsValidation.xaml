@@ -20,12 +20,22 @@
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
             <RowDefinition Height="*" />            
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock>Cladding sheets area:</TextBlock>
+            <TextBox Name="TxtTotalSheetsAreaCladding" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 20 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Fibreglass sheets area:</TextBlock>
+            <TextBox Name="TxtTotalSheetsAreaFibreglass" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 20 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Cladding total area:</TextBlock>
+            <TextBox Name="TxtTotalCladdingArea" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 0 0" FontWeight="Bold" IsEnabled="False"></TextBox>
 
-        <DataGrid Name="Datagrid_FibreglassSheets" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        </StackPanel>
+
+        <DataGrid Name="Datagrid_FibreglassSheets" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="True" AutoGenerateColumns="True"
                   CanUserSortColumns="True">
         </DataGrid>

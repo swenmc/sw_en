@@ -69,8 +69,11 @@ namespace PFD
             CCladding cladding = _pfdVM.Model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) return;
 
+            double fibreglassSheetsArea = 0;
             foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetFibreglassSheets())
             {
+                fibreglassSheetsArea += sheet.Area_netto;
+
                 row = dt.NewRow();
                 row["ID"] = sheet.ID;
                 row["Prefix"] = sheet.Prefix;
@@ -103,6 +106,16 @@ namespace PFD
             }
 
             Datagrid_FibreglassSheets.ItemsSource = ds.Tables[0].AsDataView();
+
+            double claddingSheetsArea = 0;
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets())
+            {
+                claddingSheetsArea += sheet.Area_netto;
+            }
+
+            TxtTotalSheetsAreaCladding.Text = claddingSheetsArea.ToString("F3");
+            TxtTotalSheetsAreaFibreglass.Text = fibreglassSheetsArea.ToString("F3");
+            TxtTotalCladdingArea.Text = (_pfdVM.TotalWallArea + _pfdVM.TotalRoofArea).ToString("F3");
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
