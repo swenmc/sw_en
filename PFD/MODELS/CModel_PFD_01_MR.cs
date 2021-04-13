@@ -1987,218 +1987,7 @@ namespace PFD
 
         
 
-        public override void CalculateLoadValuesAndGenerateLoads(
-                CCalcul_1170_1 generalLoad,
-                CCalcul_1170_2 wind,
-                CCalcul_1170_3 snow,
-                CCalcul_1170_5 eq,
-                bool bGenerateNodalLoads,
-                bool bGenerateLoadsOnGirts,
-                bool bGenerateLoadsOnPurlins,
-                bool bGenerateLoadsOnColumns,
-                bool bGenerateLoadsOnFrameMembers,
-                bool bGenerateSurfaceLoads)
-        {
-            // Loading
-            #region Load Cases
-            // Load Cases
-            CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator();
-            m_arrLoadCases = loadCaseGenerator.GenerateLoadCases();
-            #endregion
-
-            // Snow load factor - projection on roof
-            // Faktor ktory prepocita zatazenie z podorysneho rozmeru premietnute na stresnu rovinu
-            fSlopeFactor = (fW_frame_centerline / (fW_frame_centerline / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
-
-            #region Surface Loads
-            // Surface Loads
-
-            if (bGenerateSurfaceLoads)
-            {
-                CSurfaceLoadGenerator surfaceLoadGenerator = new CSurfaceLoadGenerator(fH1_frame_centerline, fH2_frame_centerline, fW_frame_centerline, fL_tot_centerline, fRoofPitch_rad,
-                    fDist_Purlin, fDist_Girt, fDist_FrontGirts, fDist_BackGirts, fDist_FrontColumns, fDist_BackColumns,
-                    fSlopeFactor, m_arrLoadCases, generalLoad, wind, snow);
-                surfaceLoadGenerator.GenerateSurfaceLoads_M();
-            }
-
-            #endregion
-
-            #region Earthquake - nodal loads
-            // Earthquake
-
-            if (bGenerateNodalLoads)
-            {
-                int iNumberOfLoadsInXDirection = iFrameNo;
-                int iNumberOfLoadsInYDirection = 2;
-
-                CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, iFrameNodesNo, m_arrLoadCases, m_arrNodes,/* fL1_frame,*/ eq);
-                nodalLoadGenerator.GenerateNodalLoads();
-            }
-            #endregion
-
-            #region Member Loads
-            if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns || bGenerateLoadsOnFrameMembers)
-            {
-                CMemberLoadGenerator loadGenerator =
-                new CMemberLoadGenerator(
-                iFrameNodesNo,
-                iEavesPurlinNoInOneFrame,
-                iFrameNo,
-                //fL1_frame,
-                L1_Bays,
-                fL_tot_centerline,
-                fSlopeFactor,
-                m_arrCrSc[EMemberType_FS_Position.Girt],
-                m_arrCrSc[EMemberType_FS_Position.Purlin],
-                fDist_Girt,
-                fDist_Purlin,
-                m_arrCrSc[EMemberType_FS_Position.MainColumn],
-                m_arrCrSc[EMemberType_FS_Position.MainRafter],
-                m_arrCrSc[EMemberType_FS_Position.EdgeColumn],
-                m_arrCrSc[EMemberType_FS_Position.EdgeRafter],
-                m_arrLoadCases,
-                m_arrMembers,
-                generalLoad,
-                snow,
-                wind);
-
-                #region Secondary Member Loads (girts, purlins, wind posts, door trimmers)
-                // Purlins, eave purlins, girts, ....
-                LoadCasesMemberLoads memberLoadsOnPurlinsGirtsColumns = new LoadCasesMemberLoads();
-                // Generate single member loads
-                if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns)
-                {
-                    memberLoadsOnPurlinsGirtsColumns = loadGenerator.GetGeneratedMemberLoads(m_arrLoadCases, m_arrMembers);
-                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnPurlinsGirtsColumns);
-                }
-                #endregion
-
-                #region Frame Member Loads (main and edge columns and rafters)
-                // Frame Member Loads
-                LoadCasesMemberLoads memberLoadsOnFrames = new LoadCasesMemberLoads();
-                if (bGenerateLoadsOnFrameMembers)
-                {
-                    memberLoadsOnFrames = loadGenerator.GetGenerateMemberLoadsOnFrames();
-                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
-                }
-                #endregion
-
-                #region Merge Member Load Lists
-                if ((bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns) && bGenerateLoadsOnFrameMembers)
-                {
-                    if (memberLoadsOnFrames.Count != memberLoadsOnPurlinsGirtsColumns.Count)
-                    {
-                        throw new Exception("Not all member load list in all load cases were generated for frames and single members.");
-                    }
-
-                    // Merge lists
-                    memberLoadsOnFrames.Merge(memberLoadsOnPurlinsGirtsColumns); //Merge both to first LoadCasesMemberLoads
-                    // Assign merged list of member loads to the load cases
-                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
-                }
-                #endregion
-            }
-
-            #endregion
-
-            #region Load Groups
-            // Create load groups and assigned load cases to the load group
-            // Load Case Groups
-            m_arrLoadCaseGroups = new CLoadCaseGroup[10];
-
-            // Dead Load
-            m_arrLoadCaseGroups[0] = new CLoadCaseGroup(1, "Dead load", ELCGTypeForLimitState.eUniversal, ELCGType.eTogether);
-            m_arrLoadCaseGroups[0].MLoadCasesList.Add(m_arrLoadCases[00]);
-
-            // Imposed Load
-            m_arrLoadCaseGroups[1] = new CLoadCaseGroup(2, "Imposed load", ELCGTypeForLimitState.eUniversal, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[1].MLoadCasesList.Add(m_arrLoadCases[01]);
-
-            // ULS Load Case Groups
-            // Snow Load - only one item from group can be in combination
-            m_arrLoadCaseGroups[2] = new CLoadCaseGroup(3, "Snow load", ELCGTypeForLimitState.eULSOnly, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[2].MLoadCasesList.Add(m_arrLoadCases[02]);
-            m_arrLoadCaseGroups[2].MLoadCasesList.Add(m_arrLoadCases[03]);
-            m_arrLoadCaseGroups[2].MLoadCasesList.Add(m_arrLoadCases[04]);
-
-            // Wind Load - only one item from group can be in combination
-            m_arrLoadCaseGroups[3] = new CLoadCaseGroup(4, "Wind load - Cpi", ELCGTypeForLimitState.eULSOnly, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[05]);
-            m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[06]);
-            m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[07]);
-            m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[08]);
-            m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[09]);
-            m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[10]);
-            m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[11]);
-            m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[12]);
-
-            // Wind Load - only one item from group can be in combination
-            m_arrLoadCaseGroups[4] = new CLoadCaseGroup(5, "Wind load - Cpe", ELCGTypeForLimitState.eULSOnly, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[13]);
-            m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[14]);
-            m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[15]);
-            m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[16]);
-            m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[17]);
-            m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[18]);
-            m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[19]);
-            m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[20]);
-
-            // Earthquake Load
-            m_arrLoadCaseGroups[5] = new CLoadCaseGroup(6, "Earthquake", ELCGTypeForLimitState.eULSOnly, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[5].MLoadCasesList.Add(m_arrLoadCases[21]);
-            m_arrLoadCaseGroups[5].MLoadCasesList.Add(m_arrLoadCases[22]);
-
-            // SLS Load Case Groups
-            // Snow Load - only one item from group can be in combination
-            m_arrLoadCaseGroups[6] = new CLoadCaseGroup(7, "Snow load", ELCGTypeForLimitState.eSLSOnly, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[6].MLoadCasesList.Add(m_arrLoadCases[23]);
-            m_arrLoadCaseGroups[6].MLoadCasesList.Add(m_arrLoadCases[24]);
-            m_arrLoadCaseGroups[6].MLoadCasesList.Add(m_arrLoadCases[25]);
-
-            // Wind Load - only one item from group can be in combination
-            m_arrLoadCaseGroups[7] = new CLoadCaseGroup(8, "Wind load - Cpi", ELCGTypeForLimitState.eSLSOnly, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[26]);
-            m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[27]);
-            m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[28]);
-            m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[29]);
-            m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[30]);
-            m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[31]);
-            m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[32]);
-            m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[33]);
-
-            // Wind Load - only one item from group can be in combination
-            m_arrLoadCaseGroups[8] = new CLoadCaseGroup(9, "Wind load - Cpe", ELCGTypeForLimitState.eSLSOnly, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[34]);
-            m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[35]);
-            m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[36]);
-            m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[37]);
-            m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[38]);
-            m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[39]);
-            m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[40]);
-            m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[41]);
-
-            // Earthquake Load
-            m_arrLoadCaseGroups[9] = new CLoadCaseGroup(10, "Earthquake", ELCGTypeForLimitState.eSLSOnly, ELCGType.eExclusive);
-            m_arrLoadCaseGroups[9].MLoadCasesList.Add(m_arrLoadCases[42]);
-            m_arrLoadCaseGroups[9].MLoadCasesList.Add(m_arrLoadCases[43]);
-
-            #endregion
-
-            #region Load Combinations
-            // Load Combinations
-            CLoadCombinationsGenerator generator = new CLoadCombinationsGenerator(m_arrLoadCaseGroups);
-            generator.GenerateAll();
-            m_arrLoadCombs = generator.Combinations.ToArray();
-            #endregion
-
-            #region Limit states
-            // Limit States
-            m_arrLimitStates = new CLimitState[3];
-            m_arrLimitStates[0] = new CLimitState("Ultimate Limit State - Stability", ELSType.eLS_ULS);
-            m_arrLimitStates[1] = new CLimitState("Ultimate Limit State - Strength", ELSType.eLS_ULS);
-            m_arrLimitStates[2] = new CLimitState("Serviceability Limit State", ELSType.eLS_SLS);
-            #endregion
-        }
+        
 
         public void AddFrontOrBackGirtsBracingBlocksNodes(bool bConsiderAbsoluteValueOfRoofPitch, int i_temp_numberofNodes, int[] iArrGB_NumberOfNodesPerBay, int[] iArrGB_NumberOfNodesPerBayFirstNode,
             int iNumberOfTransverseSupports, float fHeight, float fIntermediateSupportSpacing, float fDist_Girts, float fDist_Columns, float fy_Global_Coord, out int iNumberOfGB_NodesInOneSideAndMiddleBay)
@@ -2269,5 +2058,226 @@ namespace PFD
 
             int iNumberOfGB_MembersInOneSideAndMiddleBay = iTemp2;            
         }
+
+
+
+
+
+
+
+
+        //odpad po refaktoringu
+        //public override void CalculateLoadValuesAndGenerateLoads(
+        //        CCalcul_1170_1 generalLoad,
+        //        CCalcul_1170_2 wind,
+        //        CCalcul_1170_3 snow,
+        //        CCalcul_1170_5 eq,
+        //        bool bGenerateNodalLoads,
+        //        bool bGenerateLoadsOnGirts,
+        //        bool bGenerateLoadsOnPurlins,
+        //        bool bGenerateLoadsOnColumns,
+        //        bool bGenerateLoadsOnFrameMembers,
+        //        bool bGenerateSurfaceLoads)
+        //{
+        //    // Loading
+        //    #region Load Cases
+        //    // Load Cases
+        //    CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator();
+        //    m_arrLoadCases = loadCaseGenerator.GenerateLoadCases();
+        //    #endregion
+
+        //    // Snow load factor - projection on roof
+        //    // Faktor ktory prepocita zatazenie z podorysneho rozmeru premietnute na stresnu rovinu
+        //    fSlopeFactor = (fW_frame_centerline / (fW_frame_centerline / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
+
+        //    #region Surface Loads
+        //    // Surface Loads
+
+        //    if (bGenerateSurfaceLoads)
+        //    {
+        //        CSurfaceLoadGenerator surfaceLoadGenerator = new CSurfaceLoadGenerator(fH1_frame_centerline, fH2_frame_centerline, fW_frame_centerline, fL_tot_centerline, fRoofPitch_rad,
+        //            fDist_Purlin, fDist_Girt, fDist_FrontGirts, fDist_BackGirts, fDist_FrontColumns, fDist_BackColumns,
+        //            fSlopeFactor, m_arrLoadCases, generalLoad, wind, snow);
+        //        surfaceLoadGenerator.GenerateSurfaceLoads_M();
+        //    }
+
+        //    #endregion
+
+        //    #region Earthquake - nodal loads
+        //    // Earthquake
+
+        //    if (bGenerateNodalLoads)
+        //    {
+        //        int iNumberOfLoadsInXDirection = iFrameNo;
+        //        int iNumberOfLoadsInYDirection = 2;
+
+        //        CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, iFrameNodesNo, m_arrLoadCases, m_arrNodes,/* fL1_frame,*/ eq);
+        //        nodalLoadGenerator.GenerateNodalLoads();
+        //    }
+        //    #endregion
+
+        //    #region Member Loads
+        //    if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns || bGenerateLoadsOnFrameMembers)
+        //    {
+        //        CMemberLoadGenerator loadGenerator =
+        //        new CMemberLoadGenerator(
+        //        iFrameNodesNo,
+        //        iEavesPurlinNoInOneFrame,
+        //        iFrameNo,
+        //        //fL1_frame,
+        //        L1_Bays,
+        //        fL_tot_centerline,
+        //        fSlopeFactor,
+        //        m_arrCrSc[EMemberType_FS_Position.Girt],
+        //        m_arrCrSc[EMemberType_FS_Position.Purlin],
+        //        fDist_Girt,
+        //        fDist_Purlin,
+        //        m_arrCrSc[EMemberType_FS_Position.MainColumn],
+        //        m_arrCrSc[EMemberType_FS_Position.MainRafter],
+        //        m_arrCrSc[EMemberType_FS_Position.EdgeColumn],
+        //        m_arrCrSc[EMemberType_FS_Position.EdgeRafter],
+        //        m_arrLoadCases,
+        //        m_arrMembers,
+        //        generalLoad,
+        //        snow,
+        //        wind);
+
+        //        #region Secondary Member Loads (girts, purlins, wind posts, door trimmers)
+        //        // Purlins, eave purlins, girts, ....
+        //        LoadCasesMemberLoads memberLoadsOnPurlinsGirtsColumns = new LoadCasesMemberLoads();
+        //        // Generate single member loads
+        //        if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns)
+        //        {
+        //            memberLoadsOnPurlinsGirtsColumns = loadGenerator.GetGeneratedMemberLoads(m_arrLoadCases, m_arrMembers);
+        //            loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnPurlinsGirtsColumns);
+        //        }
+        //        #endregion
+
+        //        #region Frame Member Loads (main and edge columns and rafters)
+        //        // Frame Member Loads
+        //        LoadCasesMemberLoads memberLoadsOnFrames = new LoadCasesMemberLoads();
+        //        if (bGenerateLoadsOnFrameMembers)
+        //        {
+        //            memberLoadsOnFrames = loadGenerator.GetGenerateMemberLoadsOnFrames();
+        //            loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
+        //        }
+        //        #endregion
+
+        //        #region Merge Member Load Lists
+        //        if ((bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns) && bGenerateLoadsOnFrameMembers)
+        //        {
+        //            if (memberLoadsOnFrames.Count != memberLoadsOnPurlinsGirtsColumns.Count)
+        //            {
+        //                throw new Exception("Not all member load list in all load cases were generated for frames and single members.");
+        //            }
+
+        //            // Merge lists
+        //            memberLoadsOnFrames.Merge(memberLoadsOnPurlinsGirtsColumns); //Merge both to first LoadCasesMemberLoads
+        //            // Assign merged list of member loads to the load cases
+        //            loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
+        //        }
+        //        #endregion
+        //    }
+
+        //    #endregion
+
+        //    #region Load Groups
+        //    // Create load groups and assigned load cases to the load group
+        //    // Load Case Groups
+        //    m_arrLoadCaseGroups = new CLoadCaseGroup[10];
+
+        //    // Dead Load
+        //    m_arrLoadCaseGroups[0] = new CLoadCaseGroup(1, "Dead load", ELCGTypeForLimitState.eUniversal, ELCGType.eTogether);
+        //    m_arrLoadCaseGroups[0].MLoadCasesList.Add(m_arrLoadCases[00]);
+
+        //    // Imposed Load
+        //    m_arrLoadCaseGroups[1] = new CLoadCaseGroup(2, "Imposed load", ELCGTypeForLimitState.eUniversal, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[1].MLoadCasesList.Add(m_arrLoadCases[01]);
+
+        //    // ULS Load Case Groups
+        //    // Snow Load - only one item from group can be in combination
+        //    m_arrLoadCaseGroups[2] = new CLoadCaseGroup(3, "Snow load", ELCGTypeForLimitState.eULSOnly, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[2].MLoadCasesList.Add(m_arrLoadCases[02]);
+        //    m_arrLoadCaseGroups[2].MLoadCasesList.Add(m_arrLoadCases[03]);
+        //    m_arrLoadCaseGroups[2].MLoadCasesList.Add(m_arrLoadCases[04]);
+
+        //    // Wind Load - only one item from group can be in combination
+        //    m_arrLoadCaseGroups[3] = new CLoadCaseGroup(4, "Wind load - Cpi", ELCGTypeForLimitState.eULSOnly, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[05]);
+        //    m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[06]);
+        //    m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[07]);
+        //    m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[08]);
+        //    m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[09]);
+        //    m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[10]);
+        //    m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[11]);
+        //    m_arrLoadCaseGroups[3].MLoadCasesList.Add(m_arrLoadCases[12]);
+
+        //    // Wind Load - only one item from group can be in combination
+        //    m_arrLoadCaseGroups[4] = new CLoadCaseGroup(5, "Wind load - Cpe", ELCGTypeForLimitState.eULSOnly, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[13]);
+        //    m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[14]);
+        //    m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[15]);
+        //    m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[16]);
+        //    m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[17]);
+        //    m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[18]);
+        //    m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[19]);
+        //    m_arrLoadCaseGroups[4].MLoadCasesList.Add(m_arrLoadCases[20]);
+
+        //    // Earthquake Load
+        //    m_arrLoadCaseGroups[5] = new CLoadCaseGroup(6, "Earthquake", ELCGTypeForLimitState.eULSOnly, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[5].MLoadCasesList.Add(m_arrLoadCases[21]);
+        //    m_arrLoadCaseGroups[5].MLoadCasesList.Add(m_arrLoadCases[22]);
+
+        //    // SLS Load Case Groups
+        //    // Snow Load - only one item from group can be in combination
+        //    m_arrLoadCaseGroups[6] = new CLoadCaseGroup(7, "Snow load", ELCGTypeForLimitState.eSLSOnly, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[6].MLoadCasesList.Add(m_arrLoadCases[23]);
+        //    m_arrLoadCaseGroups[6].MLoadCasesList.Add(m_arrLoadCases[24]);
+        //    m_arrLoadCaseGroups[6].MLoadCasesList.Add(m_arrLoadCases[25]);
+
+        //    // Wind Load - only one item from group can be in combination
+        //    m_arrLoadCaseGroups[7] = new CLoadCaseGroup(8, "Wind load - Cpi", ELCGTypeForLimitState.eSLSOnly, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[26]);
+        //    m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[27]);
+        //    m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[28]);
+        //    m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[29]);
+        //    m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[30]);
+        //    m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[31]);
+        //    m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[32]);
+        //    m_arrLoadCaseGroups[7].MLoadCasesList.Add(m_arrLoadCases[33]);
+
+        //    // Wind Load - only one item from group can be in combination
+        //    m_arrLoadCaseGroups[8] = new CLoadCaseGroup(9, "Wind load - Cpe", ELCGTypeForLimitState.eSLSOnly, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[34]);
+        //    m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[35]);
+        //    m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[36]);
+        //    m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[37]);
+        //    m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[38]);
+        //    m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[39]);
+        //    m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[40]);
+        //    m_arrLoadCaseGroups[8].MLoadCasesList.Add(m_arrLoadCases[41]);
+
+        //    // Earthquake Load
+        //    m_arrLoadCaseGroups[9] = new CLoadCaseGroup(10, "Earthquake", ELCGTypeForLimitState.eSLSOnly, ELCGType.eExclusive);
+        //    m_arrLoadCaseGroups[9].MLoadCasesList.Add(m_arrLoadCases[42]);
+        //    m_arrLoadCaseGroups[9].MLoadCasesList.Add(m_arrLoadCases[43]);
+
+        //    #endregion
+
+        //    #region Load Combinations
+        //    // Load Combinations
+        //    CLoadCombinationsGenerator generator = new CLoadCombinationsGenerator(m_arrLoadCaseGroups);
+        //    generator.GenerateAll();
+        //    m_arrLoadCombs = generator.Combinations.ToArray();
+        //    #endregion
+
+        //    #region Limit states
+        //    // Limit States
+        //    m_arrLimitStates = new CLimitState[3];
+        //    m_arrLimitStates[0] = new CLimitState("Ultimate Limit State - Stability", ELSType.eLS_ULS);
+        //    m_arrLimitStates[1] = new CLimitState("Ultimate Limit State - Strength", ELSType.eLS_ULS);
+        //    m_arrLimitStates[2] = new CLimitState("Serviceability Limit State", ELSType.eLS_SLS);
+        //    #endregion
+        //}
     }
 }

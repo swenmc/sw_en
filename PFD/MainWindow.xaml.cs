@@ -957,15 +957,16 @@ namespace PFD
             if (calculateLoadingValues)
             {
                 vm.Model.CalculateLoadValuesAndGenerateLoads(vm.GeneralLoad,
-                vm.Wind,
-                vm.Snow,
-                vm.Eq,
-                vm.GenerateNodalLoads,
-                vm.GenerateLoadsOnGirts,
-                vm.GenerateLoadsOnPurlins,
-                vm.GenerateLoadsOnColumns,
-                vm.GenerateLoadsOnFrameMembers,
-                generateSurfaceLoads);
+                    vm.Wind,
+                    vm.Snow,
+                    vm.Eq,
+                    vm.GenerateNodalLoads,
+                    vm.GenerateLoadsOnGirts,
+                    vm.GenerateLoadsOnPurlins,
+                    vm.GenerateLoadsOnColumns,
+                    vm.GenerateLoadsOnFrameMembers,
+                    generateSurfaceLoads, 
+                    (EModelType_FS)vm.KitsetTypeIndex);
             }
 
             System.Diagnostics.Trace.WriteLine("CalculateLoadValuesAndGenerateLoads: " + (DateTime.Now - start).TotalMilliseconds);
