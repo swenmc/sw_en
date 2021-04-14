@@ -38,6 +38,8 @@ namespace PFD.Infrastructure
                 (Color)ColorConverter.ConvertFromString(vm._claddingOptionsVM.FibreglassColors.ElementAtOrDefault(vm._claddingOptionsVM.ColorRoof_FG_Index).CodeHEX),
                 vm._claddingOptionsVM.FibreglassColors.ElementAtOrDefault(vm._claddingOptionsVM.ColorWall_FG_Index).Name,
                 vm._claddingOptionsVM.FibreglassColors.ElementAtOrDefault(vm._claddingOptionsVM.ColorRoof_FG_Index).Name,
+                vm._claddingOptionsVM.WallFibreglassThicknessTypes.ElementAtOrDefault(vm._claddingOptionsVM.WallFibreglassThicknessIndex),
+                vm._claddingOptionsVM.RoofFibreglassThicknessTypes.ElementAtOrDefault(vm._claddingOptionsVM.RoofFibreglassThicknessIndex),
                 true, 0,
                 vm._claddingOptionsVM.WallCladdingProps,
                 vm._claddingOptionsVM.RoofCladdingProps,
