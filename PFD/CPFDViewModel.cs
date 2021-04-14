@@ -3907,6 +3907,11 @@ namespace PFD
             return sDisplayOptions;
         }
 
+
+        // TODO - urcenie presnej geometrie cladding - malo by zodpovedat tomu co kreslime v 3D
+        // TO Ondrej - CountWallAreas a CountRoofAreas nepocitaju s uplne presnymi hodnotami, potreboval by som kod upravit tak, ze sa dostanem k rozmerom,
+        // ktore pocitam v CCladding.cs - Model3DGroup GetCladdingModel
+
         private void CountWallAreas()
         {
             List<Point> WallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, WallHeightOverall), new Point(0, WallHeightOverall) };
