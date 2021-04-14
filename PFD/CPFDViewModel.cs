@@ -3914,10 +3914,11 @@ namespace PFD
 
         private void CountWallAreas()
         {
-            List<Point> WallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, WallHeightOverall), new Point(0, WallHeightOverall) };
+            List<Point> WallDefinitionPoints_Left_Cladding = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
 
-            List<Point> WallDefinitionPoints_Right;
-            List<Point> WallDefinitionPoints_Front;
+            List<Point> WallDefinitionPoints_Right_Cladding;
+            List<Point> WallDefinitionPoints_Front_Cladding;
+            List<Point> WallDefinitionPoints_Front_Netto;
 
             //To Mato
             //tu je otazka,ci takto,ze ked nie je este model, tak proste nepocitame...
@@ -3927,18 +3928,25 @@ namespace PFD
 
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) //if (Model is CModel_PFD_01_MR)
             {
-                WallDefinitionPoints_Right = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, Height_H2_Overall), new Point(0, Height_H2_Overall) };
-                WallDefinitionPoints_Front = new List<Point>(4) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_H2_Overall), new Point(0, WallHeightOverall) };
+                WallDefinitionPoints_Right_Cladding = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
+                WallDefinitionPoints_Front_Cladding = new List<Point>(4) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_2_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_1_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
+
+                // Bez bottom offset pre cladding
+                WallDefinitionPoints_Front_Netto = new List<Point>(4) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_2_final_edge_FB_Wall), new Point(0, Height_1_final_edge_FB_Wall) };
             }
             else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) // Model is CModel_PFD_01_GR
             {
-                WallDefinitionPoints_Right = WallDefinitionPoints_Left;
-                WallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, WallHeightOverall), new Point(0.5 * WidthOverall, Height_H2_Overall), new Point(0, WallHeightOverall) };
+                WallDefinitionPoints_Right_Cladding = WallDefinitionPoints_Left_Cladding;
+                WallDefinitionPoints_Front_Cladding = new List<Point>(5) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_1_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0.5 * WidthOverall, Height_2_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_1_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
+
+                // Bez bottom offset pre cladding
+                WallDefinitionPoints_Front_Netto = new List<Point>(5) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_1_final_edge_FB_Wall), new Point(0.5 * WidthOverall, Height_2_final_edge_FB_Wall), new Point(0, Height_1_final_edge_FB_Wall) };
             }
             else
             {
-                WallDefinitionPoints_Right = null; // Exception - not implemented
-                WallDefinitionPoints_Front = null; // Exception - not implemented
+                WallDefinitionPoints_Right_Cladding = null; // Exception - not implemented
+                WallDefinitionPoints_Front_Cladding = null; // Exception - not implemented
+                WallDefinitionPoints_Front_Netto = null; // Exception - not implemented
             }
 
             float fWallArea_Left = 0; float fWallArea_Right = 0;
@@ -3946,16 +3954,16 @@ namespace PFD
             CComponentInfo girtLeft = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
             if (girtLeft != null && girtLeft.Generate.Value == true)
             {
-                fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left.ToArray());
+                fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left_Cladding.ToArray());
             }
 
             CComponentInfo girtRight = ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
             if (girtRight != null && girtRight.Generate.Value == true)
             {
                 if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) //if (Model is CModel_PFD_01_MR)
-                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
+                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right_Cladding.ToArray());
                 else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) //if (Model is CModel_PFD_01_GR)
-                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right.ToArray());
+                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right_Cladding.ToArray());
                 else
                     fWallArea_Right = float.MinValue; //  Exception - not implemented
             }
@@ -3964,18 +3972,18 @@ namespace PFD
             CComponentInfo girtFS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
             if (girtFS != null && girtFS.Generate.Value == true)
             {
-                fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
+                fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_Front_Cladding.ToArray());
             }
 
             float fWallArea_Back = 0;
             CComponentInfo girtBS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (girtBS != null && girtBS.Generate.Value == true)
             {
-                fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray());
+                fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_Front_Cladding.ToArray());
             }
 
             BuildingArea_Gross = WidthOverall * LengthOverall;
-            BuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_Front.ToArray()) * LengthOverall;
+            BuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_Front_Netto.ToArray()) * LengthOverall; // Bez bottom offset pre cladding
 
             WallAreaLeft = fWallArea_Left;
             WallAreaRight = fWallArea_Right;
@@ -3984,9 +3992,11 @@ namespace PFD
             TotalWallArea = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
         }
 
-
         private void CountRoofAreas()
         {
+            // !!!!!!! TODO - upravit vypocet plochy pre rozmery strechy podla cladding, zohladnit FB overhang, LR overhang a canopies
+
+
             int iNumberOfRoofSides = 0; // Number of roof planes (2 - gable, 1 - monopitch)
 
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)  //if (Model is CModel_PFD_01_MR)
@@ -4070,7 +4080,7 @@ namespace PFD
                 else
                 {
                     fWallCornerFlashing_TotalLength = fWallCornerFlashing_TotalLength / 4.0f * GetCornersCount();
-                }                
+                }
 
                 if (MathF.d_equal(WallAreaFront, 0) && MathF.d_equal(WallAreaBack, 0) && MathF.d_equal(TotalRoofArea, 0)) //only if front/back walls or roof exists
                 {
@@ -4128,8 +4138,8 @@ namespace PFD
             double column_crsc_y_plus = edgeColumn.y_max;
             double column_crsc_z_plus = edgeColumn.z_max;
 
-            AdditionalOffsetWall = 0.005;  // 5 mm Aby nekolidovali plochy cladding s members
-            double additionalOffsetRoof = 0.010; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
+            AdditionalOffsetWall = 0.001;  // 1 mm Aby nekolidovali plochy cladding s members
+            double additionalOffsetRoof = 0.001; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
             double column_crsc_y_minus_temp = column_crsc_y_minus - AdditionalOffsetWall;
@@ -4205,6 +4215,5 @@ namespace PFD
             if (gR != null && gR.Generate == true) return true;
             else return false;
         }
-
     }
 }

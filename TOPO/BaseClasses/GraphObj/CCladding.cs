@@ -230,8 +230,8 @@ namespace BaseClasses.GraphObj
             // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
             // Start
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-            double additionalOffset = 0.005;  // 5 mm Aby nekolidovali plochy cladding s members
-            double additionalOffsetRoof = 0.010; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
+            double additionalOffset = 0.001;  // 5 mm Aby nekolidovali plochy cladding s members
+            double additionalOffsetRoof = 0.001; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
             double column_crsc_y_minus_temp = column_crsc_y_minus - additionalOffset;

@@ -383,9 +383,6 @@ namespace PFD
 
             dGST_Absolute = dGST_Percentage / 100f * buildingPrice_WithMargin_WithoutGST;
             dTotalBuildingPrice_IncludingGST = buildingPrice_WithMargin_WithoutGST + dGST_Absolute;
-
-            
-
         }
 
         private void CreateTableMembers(CModel model)
