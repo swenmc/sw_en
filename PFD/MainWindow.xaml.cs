@@ -184,6 +184,7 @@ namespace PFD
                 if (e.PropertyName == "Downpipes") return;
                 if (e.PropertyName == "ComponentList") return;
 
+                //toto by som mozno aj najradsej zakomentoval, vyznam to ma asi len ked sa ma updatovat Quotation bez updatu Modelu (RecreateModel)
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; } return; }
 
                 if (e.PropertyName == "RoofCladdingColorIndex" || e.PropertyName == "WallCladdingColorIndex"
@@ -940,7 +941,10 @@ namespace PFD
                 UpdateUC_Joints();
                 System.Diagnostics.Trace.WriteLine("UpdateUC_Joints: " + (DateTime.Now - start).TotalMilliseconds);
                 UpdateUC_Footings();
-                System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);                
+                System.Diagnostics.Trace.WriteLine("UpdateUC_Footings: " + (DateTime.Now - start).TotalMilliseconds);
+
+                UpdateUC_Quotation();
+                UpdateUC_MaterialList();
             }            
 
             bool generateSurfaceLoads = vm._displayOptionsVM.ShowSurfaceLoadsAxis ||
@@ -1054,6 +1058,15 @@ namespace PFD
                 vm.FootingVM.UpdateFloorSlabViewModelFromModel();
                 vm.FootingVM.IsSetFromCode = false;
             }
+        }
+
+        private void UpdateUC_Quotation()
+        {
+            Quotation.Content = new UC_Quotation(vm);            
+        }
+        private void UpdateUC_MaterialList()
+        {
+            Part_List.Content = new UC_MaterialList(vm);
         }
 
         private void UpdateGeometryInputData()
