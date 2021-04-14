@@ -37,7 +37,7 @@
 
                 </StackPanel>
                 <Button Name="btnApplyChanges" VerticalAlignment="Top" Cursor="Hand" HorizontalAlignment="Right" ToolTip="Apply Changes" Margin="0 0 5 0" Width="25" Height="25" Click="BtnApplyChanges_Click">
-                    <Image Source="..\Resources\fibreglasssheets.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                    <Image Source="..\Resources\apply_changes.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                 </Button>
             </DockPanel>
             <Grid Grid.Row="0" Grid.Column="0">
