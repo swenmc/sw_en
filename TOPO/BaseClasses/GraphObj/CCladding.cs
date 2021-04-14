@@ -227,6 +227,9 @@ namespace BaseClasses.GraphObj
 
             // Vytvorime model v GCS [0,0,0] je uvazovana v bode m_ControlPoint
 
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // Start
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
             double additionalOffset = 0.005;  // 5 mm Aby nekolidovali plochy cladding s members
             double additionalOffsetRoof = 0.010; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
@@ -274,6 +277,10 @@ namespace BaseClasses.GraphObj
 
             Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, bottomEdge_z);
             Point3D pback1_baseright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, bottomEdge_z);
+
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // End
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
             Brush solidBrushFront = new SolidColorBrush(m_ColorWall);
             Brush solidBrushSide = new SolidColorBrush(m_ColorWall);
@@ -369,6 +376,9 @@ namespace BaseClasses.GraphObj
                 brushRoof_FG.Opacity = options.fFibreglassOpacity;
             }
 
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // Start
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
             // Wall Points
             Point3D pLRWall_front2_heightright = new Point3D();
             Point3D pLRWall_back2_heightright = new Point3D();
@@ -395,6 +405,10 @@ namespace BaseClasses.GraphObj
             // Roof edge offset from centerline in Y-direction
             float fRoofEdgeOffsetFromCenterline = -(float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y;
 
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // End
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
             int iNumberOfFrontBackWallEdges = 4;
 
             Point3D pControlPoint_FrontWall = new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z);
@@ -405,6 +419,9 @@ namespace BaseClasses.GraphObj
             Point3D pControlPoint_RoofRight;
             Point3D pControlPoint_RoofLeft;
 
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // Start
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
             // Nastavenie bodov suradnic hornych bodov stien a bodov strechy pre monopitch a gable roof model
             if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
             {
@@ -517,6 +534,10 @@ namespace BaseClasses.GraphObj
             {
                 throw new Exception("Not implemented kitset type.");
             }
+
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // End
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
             // Ak je bDisplayIndividualCladdingSheets = false
             // Zobrazime len jednoliatu plochu s farbou alebo texturou, nad nou mozeme zobrazit fibreglass sheet s offsetom aby sa nevnarali do cladding

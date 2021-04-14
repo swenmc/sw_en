@@ -118,10 +118,10 @@ namespace PFD
                 foreach (CCanopiesInfo canopy in vm._canopiesOptionsVM.CanopiesList)
                 {
                     if (canopy.Left)
-                        fCanopyRoofArea += ((float)canopy.WidthLeft / (float)Math.Cos(Math.Abs(vm.RoofPitch_radians))) * vm._baysWidthOptionsVM.BayWidthList[canopy.BayIndex].Width; 
+                        fCanopyRoofArea += (((float)canopy.WidthLeft + vm._claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X) / (float)Math.Cos(Math.Abs(vm.RoofPitch_radians))) * (vm._baysWidthOptionsVM.BayWidthList[canopy.BayIndex].Width + 2 * vm._claddingOptionsVM.RoofEdgeOverHang_FB_Y); 
 
-                    if(canopy.Right)
-                        fCanopyRoofArea += ((float)canopy.WidthRight / (float)Math.Cos(Math.Abs(vm.RoofPitch_radians))) * vm._baysWidthOptionsVM.BayWidthList[canopy.BayIndex].Width;
+                    if (canopy.Right)
+                        fCanopyRoofArea += (((float)canopy.WidthRight + vm._claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X) / (float)Math.Cos(Math.Abs(vm.RoofPitch_radians))) * (vm._baysWidthOptionsVM.BayWidthList[canopy.BayIndex].Width + 2 * vm._claddingOptionsVM.RoofEdgeOverHang_FB_Y);
                 }
             }
 

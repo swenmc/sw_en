@@ -3907,7 +3907,6 @@ namespace PFD
             return sDisplayOptions;
         }
 
-
         private void CountWallAreas()
         {
             List<Point> WallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, WallHeightOverall), new Point(0, WallHeightOverall) };
@@ -4015,9 +4014,9 @@ namespace PFD
         public void CountWallAndRoofAreas()
         {
             CountWallAreas();
-            CountRoofAreas();            
+            CountRoofAreas();
         }
-        
+
         public void CountFlashings()
         {
             if (_doorsAndWindowsVM == null) return;
