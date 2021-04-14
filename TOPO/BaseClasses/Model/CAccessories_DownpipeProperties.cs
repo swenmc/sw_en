@@ -240,7 +240,6 @@ namespace BaseClasses
 
         public CAccessories_DownpipeProperties()
         {
-            m_CountOfDownpipePoints = 4; //default
         }
 
         public CAccessories_DownpipeProperties(string name, int countDownPipePoints, double totalLength, int colorIndex)

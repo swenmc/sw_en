@@ -2886,11 +2886,11 @@ namespace PFD
         {
             float fRoofSideLength = 0;
 
-            if (Model is CModel_PFD_01_MR)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(WidthOverall)); // Dlzka hrany strechy
             }
-            else if (Model is CModel_PFD_01_GR)
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(0.5f * WidthOverall)); // Dlzka hrany strechy
             }
@@ -2904,13 +2904,13 @@ namespace PFD
             float fWallCornerFlashing_TotalLength = 0;
             float fBargeFlashing_TotalLength = 0;
 
-            if (Model is CModel_PFD_01_MR)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 fRoofRidgeFlashing_TotalLength = 0;
                 fWallCornerFlashing_TotalLength = 2 * WallHeightOverall + 2 * Height_H2_Overall;
                 fBargeFlashing_TotalLength = 2 * fRoofSideLength;
             }
-            else if (Model is CModel_PFD_01_GR)
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 fRoofRidgeFlashing_TotalLength = LengthOverall;
                 fWallCornerFlashing_TotalLength = 4 * WallHeightOverall;
@@ -2961,12 +2961,12 @@ namespace PFD
             int iCountOfDownpipePoints = 0;
             float fDownpipesTotalLength = 0;
 
-            if (Model is CModel_PFD_01_MR)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 iCountOfDownpipePoints = 2; // TODO - prevziat z GUI - 2 rohy budovy kde je nizsia vyska steny (H1 alebo H2)
                 fDownpipesTotalLength = iCountOfDownpipePoints * Math.Min(WallHeightOverall, Height_H2_Overall); // Pocet zvodov krat vyska steny
             }
-            else if (Model is CModel_PFD_01_GR)
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
                 fDownpipesTotalLength = iCountOfDownpipePoints * WallHeightOverall; // Pocet zvodov krat vyska steny
@@ -2990,10 +2990,15 @@ namespace PFD
                 _doorsAndWindowsVM.FlashingsNames = new List<string>() { "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
                         "PA Door Trimmer",  "PA Door Header", "Window"};
             }
-            else
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 _doorsAndWindowsVM.FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
                         "PA Door Trimmer",  "PA Door Header", "Window"};
+            }
+            else
+            {
+                // Exception - not implemented
+                _doorsAndWindowsVM.FlashingsNames = null;
             }
         }
 
@@ -3006,11 +3011,11 @@ namespace PFD
         {
             float fGuttersTotalLength = 0; // na dvoch okrajoch strechy
 
-            if (Model is CModel_PFD_01_MR)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 fGuttersTotalLength = LengthOverall; // na jednom okraji strechy
             }
-            else if (Model is CModel_PFD_01_GR)
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 fGuttersTotalLength = 2 * LengthOverall; // na dvoch okrajoch strechy
             }
@@ -3027,10 +3032,9 @@ namespace PFD
         public void UpdateAccesoriesOnModelTypeChange()
         {
             SetDefaultFlashings();
-            SetDefaultDownpipes();
             SetDefaultGutters();
+            SetDefaultDownpipes();
         }
-
 
         //toto je cele divne
         //podla mna mame 2 eventy na to iste
@@ -4041,13 +4045,13 @@ namespace PFD
             float fWallCornerFlashing_TotalLength = 0;
             float fBargeFlashing_TotalLength = 0;
 
-            if (Model is CModel_PFD_01_MR)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 fRoofRidgeFlashing_TotalLength = 0;
                 fWallCornerFlashing_TotalLength = 2 * WallHeightOverall + 2 * Height_H2_Overall;
                 fBargeFlashing_TotalLength = 2 * RoofSideLength;
             }
-            else if (Model is CModel_PFD_01_GR)
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 fRoofRidgeFlashing_TotalLength = LengthOverall;
                 fWallCornerFlashing_TotalLength = 4 * WallHeightOverall;

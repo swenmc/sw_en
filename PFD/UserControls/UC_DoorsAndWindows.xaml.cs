@@ -411,7 +411,7 @@ namespace PFD
 
             CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, colorIndex);
             item.PropertyChanged += _pfdVM._doorsAndWindowsVM.AccessoriesItem_PropertyChanged;
-            _pfdVM._doorsAndWindowsVM.Gutters.Add(item);            
+            _pfdVM._doorsAndWindowsVM.Gutters.Add(item);
         }
         private void BtnAddDownpipe_Click(object sender, RoutedEventArgs e)
         {
@@ -454,7 +454,7 @@ namespace PFD
             CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", iCountOfDownpipePoints, fDownpipesTotalLength, colorIndex);
             downpipe.PropertyChanged += _pfdVM._doorsAndWindowsVM.AccessoriesItem_PropertyChanged;
 
-            _pfdVM._doorsAndWindowsVM.Downpipes.Add(downpipe);            
+            _pfdVM._doorsAndWindowsVM.Downpipes.Add(downpipe);
         }
 
         private void SetAccessoriesButtonsVisibility()

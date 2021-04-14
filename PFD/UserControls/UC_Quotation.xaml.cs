@@ -1407,7 +1407,7 @@ namespace PFD
             }
 
             downpipe.Length_total = fDownpipesTotalLength;
-            
+
             double fDownpipesTotalMass = fDownpipesTotalLength * downpipe.Mass_kg_lm;
             double fDownpipesTotalPrice = fDownpipesTotalLength * downpipe.Price_PPLM_NZD;
 
