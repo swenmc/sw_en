@@ -413,7 +413,7 @@ namespace BaseClasses.GraphObj
             Surface_brutto = (float)(Width_flat * LengthTotal);
             Volume_brutto = (float)(Surface_brutto * Ft);
             Mass_brutto = (float)(coilMass_kg_m2 * Surface_brutto);
-            Price_PPKG_NZD = coilPrice_PPSM_NZD / (Ft * GlobalConstants.MATERIAL_DENSITY_STEEL);
+            Price_PPKG_NZD = coilPrice_PPSM_NZD / coilMass_kg_m2;
             Price_PPP_NZD_brutto = Price_PPKG_NZD * Mass_brutto;
 
             SetTextPointInLCS(); // Text v LCS
