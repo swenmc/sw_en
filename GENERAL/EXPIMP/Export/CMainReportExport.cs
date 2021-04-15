@@ -81,8 +81,9 @@ namespace EXPIMP
 
             if (exportOpts.ExportFloorDetails)
                 DrawFloorDetails(s_document, modelData, exportOpts);
-
-            if (exportOpts.ExportStandardDetails)
+                        
+            //To Mato - task 787, neviem ci staci aby bol nejaky cladding a davame vsetko, alebo treba dovnutra a davat obrazky iba ak je to relevantne
+            if (exportOpts.ExportStandardDetails && modelData.HasCladding) 
                 DrawStandardDetails(s_document, modelData, exportOpts);
 
             AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
@@ -518,7 +519,7 @@ namespace EXPIMP
             opts.IsExport = true;
             opts.SameScaleForViews = true;
 
-            List<EViewCladdingFilters> list_views = GetCladdingViewsFromExportOptions(exportOpts);
+            List<EViewCladdingFilters> list_views = GetCladdingViewsFromExportOptions(exportOpts, data);
 
             int legendImgWidth = 100;
             int legendTextWidth = 70;
@@ -601,15 +602,15 @@ namespace EXPIMP
 
             return list_views;
         }
-        private static List<EViewCladdingFilters> GetCladdingViewsFromExportOptions(LayoutsExportOptionsViewModel exportOpts)
+        private static List<EViewCladdingFilters> GetCladdingViewsFromExportOptions(LayoutsExportOptionsViewModel exportOpts, CModelData data)
         {
             List<EViewCladdingFilters> list_views = new List<EViewCladdingFilters>();
 
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront) list_views.Add(EViewCladdingFilters.CLADDING_FRONT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsBack) list_views.Add(EViewCladdingFilters.CLADDING_BACK);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsLeft) list_views.Add(EViewCladdingFilters.CLADDING_LEFT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsRight) list_views.Add(EViewCladdingFilters.CLADDING_RIGHT);
-            if (exportOpts.ExportModelCladdingLayingSchemeViewsRoof) list_views.Add(EViewCladdingFilters.CLADDING_ROOF);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsFront && data.HasCladdingFront) list_views.Add(EViewCladdingFilters.CLADDING_FRONT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsBack && data.HasCladdingBack) list_views.Add(EViewCladdingFilters.CLADDING_BACK);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsLeft && data.HasCladdingLeft) list_views.Add(EViewCladdingFilters.CLADDING_LEFT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsRight && data.HasCladdingRight) list_views.Add(EViewCladdingFilters.CLADDING_RIGHT);
+            if (exportOpts.ExportModelCladdingLayingSchemeViewsRoof && data.HasCladdingRoof) list_views.Add(EViewCladdingFilters.CLADDING_ROOF);
             return list_views;
         }
 

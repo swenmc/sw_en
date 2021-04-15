@@ -184,7 +184,9 @@ namespace PFD
                 if (e.PropertyName == "Downpipes") return;
                 if (e.PropertyName == "ComponentList") return;
 
+                //To Mato
                 //toto by som mozno aj najradsej zakomentoval, vyznam to ma asi len ked sa ma updatovat Quotation bez updatu Modelu (RecreateModel)
+                //ak by sa niekomu chcelo testovat...tak toto zakomentovat a otestovat,ci to funguje aj tak
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; } return; }
 
                 if (e.PropertyName == "RoofCladdingColorIndex" || e.PropertyName == "WallCladdingColorIndex"
@@ -218,6 +220,7 @@ namespace PFD
                 }
                 else
                 {
+                    //toto je asi neaktualne, lebo Accesories uz su ako UserControl a teda az ked sa preklikne,tak sa updatuje vsetko a az potom sa ma pregenerovat Quotation
                     //only reset quotation do not regenerate model
                     vm.RecreateQuotation = true;
                     //Quotation.Content = null;
