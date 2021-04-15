@@ -128,7 +128,7 @@ namespace PFD
             float fFibreGlassArea_Roof = vm._claddingOptionsVM.FibreglassAreaRoof; // / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = vm._claddingOptionsVM.FibreglassAreaWall; // / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
-            if (vm._quotationDisplayOptionsVM.DisplayCladding && vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasCladding(vm.Model)) //iba ak je nejaky cladding
+            if (QuotationHelper.DisplayCladdingTable(vm)) //iba ak je nejaky cladding
             {
                 // TODO Ondrej - refaktoring - funckia CreateTableCladding
                 //TO Mato - je ten koment hore aktualny?
@@ -148,7 +148,7 @@ namespace PFD
 
             // DG 7
             // Gutters
-            if (vm._quotationDisplayOptionsVM.DisplayGutters && CModelHelper.ModelHasCladding_Roof(vm.Model) &&
+            if (vm._quotationDisplayOptionsVM.DisplayGutters && vm.ModelHasRoof() &&   //CModelHelper.ModelHasCladding_Roof(vm.Model)
                 _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Gutters.Count > 0) CreateTableGutters(model);
             else
             {
@@ -158,7 +158,7 @@ namespace PFD
 
             // DG 8
             // Downpipes
-            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && CModelHelper.ModelHasCladding_Roof(vm.Model) &&
+            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && vm.ModelHasRoof() &&  //CModelHelper.ModelHasCladding_Roof(vm.Model)
                 vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.Downpipes.Count > 0) CreateTableDownpipes(model);
             else
             {
@@ -168,7 +168,7 @@ namespace PFD
 
             // DG 9
             // FibreGlass
-            if (vm._quotationDisplayOptionsVM.DisplayFibreglass && vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasFibreglass(vm.Model))
+            if (QuotationHelper.DisplayFibreglassTable(vm))
                 CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
             else
             {
@@ -178,7 +178,7 @@ namespace PFD
 
             // DG 10
             // Roof Netting
-            if (vm._quotationDisplayOptionsVM.DisplayRoofNetting && CModelHelper.ModelHasCladding_Roof(vm.Model)) CreateTableRoofNetting(vm.TotalRoofArea);
+            if (vm._quotationDisplayOptionsVM.DisplayRoofNetting && vm.ModelHasRoof()) CreateTableRoofNetting(vm.TotalRoofArea);  //CModelHelper.ModelHasCladding_Roof(vm.Model)
             else
             {
                 TextBlock_RoofNetting.Visibility = Visibility.Collapsed;
@@ -694,7 +694,7 @@ namespace PFD
 
             DataRow row;
 
-            if (fRoofArea_Total_Netto > 0 && CModelHelper.ModelHasCladding_Roof(vm.Model)) // Roof Cladding
+            if (fRoofArea_Total_Netto > 0 && vm.ModelHasRoof()) // Roof Cladding   //CModelHelper.ModelHasCladding_Roof(vm.Model)
             {
                 row = dt.NewRow();
 
@@ -724,7 +724,7 @@ namespace PFD
                 dt.Rows.Add(row);
             }
 
-            if (fWallArea_Total_Netto > 0 && CModelHelper.ModelHasCladding_Wall(vm.Model)) // Wall Cladding
+            if (fWallArea_Total_Netto > 0 && vm.ModelHasWalls()) // Wall Cladding  // CModelHelper.ModelHasCladding_Wall(vm.Model)
             {
                 row = dt.NewRow();
 
@@ -997,7 +997,7 @@ namespace PFD
 
             DataRow row;
 
-            if (fFibreGlassArea_Roof > 0 && CModelHelper.ModelHasFibreglass_Roof(vm.Model)) // Roof Cladding
+            if (fFibreGlassArea_Roof > 0 && vm.ModelHasRoof()) // Roof Cladding  //CModelHelper.ModelHasFibreglass_Roof(vm.Model)
             {
                 row = dt.NewRow();
 
@@ -1029,7 +1029,7 @@ namespace PFD
                 dt.Rows.Add(row);
             }
 
-            if (fFibreGlassArea_Walls > 0 && CModelHelper.ModelHasFibreglass_Wall(vm.Model)) // Wall Cladding
+            if (fFibreGlassArea_Walls > 0 && vm.ModelHasWalls()) // Wall Cladding  //CModelHelper.ModelHasFibreglass_Wall(vm.Model)
             {
                 row = dt.NewRow();
 

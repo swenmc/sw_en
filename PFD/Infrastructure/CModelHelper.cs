@@ -730,54 +730,54 @@ namespace PFD
         }
 
 
-        public static bool ModelHasCladding(CModel_PFD model)
-        {
-            if (model == null || model.m_arrGOCladding == null) return false;
-            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
-            if (cladding == null) return false;
+        //public static bool ModelHasCladding(CModel_PFD model)
+        //{
+        //    if (model == null || model.m_arrGOCladding == null) return false;
+        //    CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+        //    if (cladding == null) return false;
 
-            return cladding.HasCladdingSheets();
-        }
-        public static bool ModelHasCladding_Roof(CModel_PFD model)
-        {
-            if (model == null || model.m_arrGOCladding == null) return false;
-            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
-            if (cladding == null) return false;
+        //    return cladding.HasCladdingSheets();
+        //}
+        //public static bool ModelHasCladding_Roof(CModel_PFD model)
+        //{
+        //    if (model == null || model.m_arrGOCladding == null) return false;
+        //    CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+        //    if (cladding == null) return false;
 
-            return cladding.HasCladdingSheets_Roof();
-        }
-        public static bool ModelHasCladding_Wall(CModel_PFD model)
-        {
-            if (model == null || model.m_arrGOCladding == null) return false;
-            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
-            if (cladding == null) return false;
+        //    return cladding.HasCladdingSheets_Roof();
+        //}
+        //public static bool ModelHasCladding_Wall(CModel_PFD model)
+        //{
+        //    if (model == null || model.m_arrGOCladding == null) return false;
+        //    CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+        //    if (cladding == null) return false;
 
-            return cladding.HasCladdingSheets_Wall();
-        }
-        public static bool ModelHasFibreglass(CModel_PFD model)
-        {
-            if (model == null || model.m_arrGOCladding == null) return false;
-            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
-            if (cladding == null) return false;
+        //    return cladding.HasCladdingSheets_Wall();
+        //}
+        //public static bool ModelHasFibreglass(CModel_PFD model)
+        //{
+        //    if (model == null || model.m_arrGOCladding == null) return false;
+        //    CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+        //    if (cladding == null) return false;
 
-            return cladding.HasFibreglassSheets();
-        }
-        public static bool ModelHasFibreglass_Roof(CModel_PFD model)
-        {
-            if (model == null || model.m_arrGOCladding == null) return false;
-            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
-            if (cladding == null) return false;
+        //    return cladding.HasFibreglassSheets();
+        //}
+        //public static bool ModelHasFibreglass_Roof(CModel_PFD model)
+        //{
+        //    if (model == null || model.m_arrGOCladding == null) return false;
+        //    CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+        //    if (cladding == null) return false;
 
-            return cladding.HasFibreglassSheets_Roof();
-        }
-        public static bool ModelHasFibreglass_Wall(CModel_PFD model)
-        {
-            if (model == null || model.m_arrGOCladding == null) return false;
-            CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
-            if (cladding == null) return false;
+        //    return cladding.HasFibreglassSheets_Roof();
+        //}
+        //public static bool ModelHasFibreglass_Wall(CModel_PFD model)
+        //{
+        //    if (model == null || model.m_arrGOCladding == null) return false;
+        //    CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
+        //    if (cladding == null) return false;
 
-            return cladding.HasFibreglassSheets_Wall();
-        }
+        //    return cladding.HasFibreglassSheets_Wall();
+        //}
 
 
 

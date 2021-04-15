@@ -1069,5 +1069,18 @@ namespace PFD
 
             return quotation;
         }
+
+
+        //aby boli podmienky rovnake pre Material list aj pre Quotation
+        public static bool DisplayCladdingTable(CPFDViewModel vm)
+        {
+            //return vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasCladding(vm.Model);
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts();
+        }
+        public static bool DisplayFibreglassTable(CPFDViewModel vm)
+        {
+            //return vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasFibreglass(vm.Model);
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._claddingOptionsVM.HasFibreglass();
+        }
     }
 }

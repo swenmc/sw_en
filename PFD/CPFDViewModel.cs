@@ -4179,9 +4179,19 @@ namespace PFD
             }
         }
 
+        //To Mato - alebo to nazveme ModelHasCladding?
         public bool ModelHasPurlinsOrGirts()
         {
             if (ModelHasRoof()) return true;
+            if (ModelHasFrontWall()) return true;
+            if (ModelHasBackWall()) return true;
+            if (ModelHasLeftWall()) return true;
+            if (ModelHasRightWall()) return true;
+
+            return false;
+        }
+        public bool ModelHasWalls()
+        {
             if (ModelHasFrontWall()) return true;
             if (ModelHasBackWall()) return true;
             if (ModelHasLeftWall()) return true;
