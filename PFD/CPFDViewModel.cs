@@ -83,6 +83,7 @@ namespace PFD
         private float m_BuildingArea_Gross;
         private float m_BuildingVolume_Gross;
         private float m_RoofSideLength;
+        private float m_RoofLength_Y;
 
         private double m_Height_1_final_edge_LR_Wall;
         private double m_Height_2_final_edge_LR_Wall;
@@ -2702,6 +2703,19 @@ namespace PFD
             }
         }
 
+        public float RoofLength_Y
+        {
+            get
+            {
+                return m_RoofLength_Y;
+            }
+
+            set
+            {
+                m_RoofLength_Y = value;
+            }
+        }
+
         public double Height_1_final_edge_LR_Wall
         {
             get
@@ -3940,13 +3954,7 @@ namespace PFD
             List<Point> WallDefinitionPoints_Front_Cladding;
             List<Point> WallDefinitionPoints_Front_Netto;
 
-            //To Mato
-            //tu je otazka,ci takto,ze ked nie je este model, tak proste nepocitame...
-            // alebo by sa to dalo cez KitsetTypeIndex napr. if (KitsetTypeIndex == EModelType_FS.eKitsetMonoRoofEnclosed)
-            //if (Model == null) return;
-            //prerobil som cez KitsetTypeIndex
-
-            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) //if (Model is CModel_PFD_01_MR)
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) // Model is CModel_PFD_01_MR
             {
                 WallDefinitionPoints_Right_Cladding = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
                 WallDefinitionPoints_Front_Cladding = new List<Point>(4) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_2_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_1_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
@@ -3980,9 +3988,9 @@ namespace PFD
             CComponentInfo girtRight = ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
             if (girtRight != null && girtRight.Generate.Value == true)
             {
-                if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) //if (Model is CModel_PFD_01_MR)
+                if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) // Model is CModel_PFD_01_MR
                     fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right_Cladding.ToArray());
-                else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) //if (Model is CModel_PFD_01_GR)
+                else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) // Model is CModel_PFD_01_GR
                     fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right_Cladding.ToArray());
                 else
                     fWallArea_Right = float.MinValue; //  Exception - not implemented
@@ -4015,31 +4023,19 @@ namespace PFD
         private void CountRoofAreas()
         {
             // !!!!!!! TODO - upravit vypocet plochy pre rozmery strechy podla cladding, zohladnit FB overhang, LR overhang a canopies
-
+            // TODO - postupne zjednotit, presunut do CalculateCladdingParameters a odstranit tieto samostatne funckie CountWallAreas a CountRoofAreas
 
             int iNumberOfRoofSides = 0; // Number of roof planes (2 - gable, 1 - monopitch)
 
-            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)  //if (Model is CModel_PFD_01_MR)
-            {
-                RoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(WidthOverall)); // Dlzka hrany strechy
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)  // Model is CModel_PFD_01_MR
                 iNumberOfRoofSides = 1;
-            }
-            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)  //if (Model is CModel_PFD_01_GR)
-            {
-                RoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(0.5f * WidthOverall)); // Dlzka hrany strechy
+            else //if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)  // Model is CModel_PFD_01_GR
                 iNumberOfRoofSides = 2;
-            }
-            else
-            {
-                // Exception - not implemented
-                RoofSideLength = 0;
-                iNumberOfRoofSides = 0;
-            }
 
             CComponentInfo purlin = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Purlin);
             if (purlin != null && purlin.Generate == true)
             {
-                TotalRoofArea = iNumberOfRoofSides * RoofSideLength * LengthOverall;
+                TotalRoofArea = iNumberOfRoofSides * RoofSideLength * RoofLength_Y;
             }
             else TotalRoofArea = 0;
         }
@@ -4048,6 +4044,8 @@ namespace PFD
         //toto zacina byt naozaj obtiazne, aby sme presne urcili, kde vsade sa maju prepocitavat hocijake prepocty, treba reagovat vzdy na spravnych miestach
         public void CountWallAndRoofAreas()
         {
+            CalculateCladdingParameters_Mato(); // IN WORK
+
             CountWallAreas();
             CountRoofAreas();
         }
@@ -4195,14 +4193,10 @@ namespace PFD
             }
         }
 
-
-        public void CalculateWallHeightsForCladding_ToMato()
+        public void CalculateCladdingParameters_Mato()
         {
-            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
-            // Start
-            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-            double additionalOffset = 0.001;  // 5 mm Aby nekolidovali plochy cladding s members
-            double additionalOffsetRoof = 0.001; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
+            double additionalOffset = 0.001; // 1 mm Aby nekolidovali plochy cladding s members
+            double additionalOffsetRoof = 0.001; // 1 mm Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
             double column_crsc_y_minus_temp = EdgeColumnCrsc_y_minus - additionalOffset;
@@ -4249,13 +4243,6 @@ namespace PFD
             Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, _claddingOptionsVM.WallBottomOffset_Z);
             Point3D pback1_baseright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, _claddingOptionsVM.WallBottomOffset_Z);
 
-            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
-            // End
-
-
-            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
-            // Start
-            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
             // Wall Points
             Point3D pLRWall_front2_heightright = new Point3D();
             Point3D pLRWall_back2_heightright = new Point3D();
@@ -4282,15 +4269,12 @@ namespace PFD
             // Roof edge offset from centerline in Y-direction
             float fRoofEdgeOffsetFromCenterline = -(float)column_crsc_y_minus_temp + (float)_claddingOptionsVM.RoofEdgeOverHang_FB_Y;
 
-            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
-            // End
-
-            //toto jedine som dolnil a inicializoval, ale realne nie je dana premenna nikde pouzita
+            // Toto jedine som dolnil a inicializoval, ale realne nie je dana premenna nikde pouzita
+            // TO ONDREJ Pouziva len dalej v kode CCladding.cs, v tychto ifoch a len nastaví
             int iNumberOfFrontBackWallEdges = 0;
 
-            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
-            // Start
-            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+            RoofLength_Y = (float)(fRoofEdgeOffsetFromCenterline + Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y);
+
             // Nastavenie bodov suradnic hornych bodov stien a bodov strechy pre monopitch a gable roof model
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
@@ -4316,6 +4300,7 @@ namespace PFD
                 pRoof_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_2_final_edge_Roof);
                 pRoof_back3_heightleft = new Point3D(-column_crsc_z_plus_temp - _claddingOptionsVM.RoofEdgeOverHang_LR_X, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
 
+                RoofSideLength = Drawing3D.GetPoint3DDistanceFloat(pRoof_front3_heightleft, pRoof_front2_heightright);
             }
             else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
@@ -4346,14 +4331,13 @@ namespace PFD
                 pRoof_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
                 pRoof_back3_heightleft = new Point3D(-column_crsc_z_plus_temp - _claddingOptionsVM.RoofEdgeOverHang_LR_X, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
                 pRoof_back4_top = new Point3D(0.5 * Width, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_2_final_edge_Roof);
+
+                RoofSideLength = Drawing3D.GetPoint3DDistanceFloat(pRoof_front2_heightright, pRoof_front4_top);
             }
             else
             {
                 throw new Exception("Not implemented kitset type.");
             }
-
-            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
-            // End
         }
 
         //To Mato - alebo to nazveme ModelHasCladding?
