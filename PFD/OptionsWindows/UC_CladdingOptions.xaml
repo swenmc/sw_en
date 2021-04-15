@@ -189,11 +189,11 @@
             <TextBlock Grid.Row="13" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="14" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="14" Grid.Column="0" Text="Fibreglass Area Ratio - Roof:" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
-            <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_FibreglassAreaRoofRatio" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=FibreglassAreaRoof, StringFormat={}{0:0.00}, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=FibreglassAreaRoofRatio, StringFormat={}{0:0.00}, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
@@ -242,11 +242,11 @@
             <TextBlock Grid.Row="13" Grid.Column="5" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="14" Grid.Column="3" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="14" Grid.Column="3" Text="Fibreglass Area Ratio- Wall:" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" VerticalAlignment="Top"  />
-            <TextBox Grid.Row="14" Grid.Column="4" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="14" Grid.Column="4" Name ="TextBox_FibreglassAreaWallRatio" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=FibreglassAreaWall, StringFormat={}{0:0.00}, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=FibreglassAreaWallRatio, StringFormat={}{0:0.00}, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="14" Grid.Column="5" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 

@@ -3339,8 +3339,8 @@ namespace PFD
             data.WallFibreglassThicknessIndex = _claddingOptionsVM.WallFibreglassThicknessIndex;
 
             data.SupportTypeIndex = MSupportTypeIndex;
-            data.FibreglassAreaRoof = _claddingOptionsVM.FibreglassAreaRoof;
-            data.FibreglassAreaWall = _claddingOptionsVM.FibreglassAreaWall;
+            data.FibreglassAreaRoofRatio = _claddingOptionsVM.FibreglassAreaRoofRatio;
+            data.FibreglassAreaWallRatio = _claddingOptionsVM.FibreglassAreaWallRatio;
             data.LoadCaseIndex = MLoadCaseIndex;
             data.IFrontColumnNoInOneFrame = IFrontColumnNoInOneFrame;
             data.UseCRSCGeometricalAxes = UseCRSCGeometricalAxes;

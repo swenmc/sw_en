@@ -41,8 +41,8 @@ namespace EXPIMP
         private int MRoofFibreglassThicknessIndex;
         private int MWallFibreglassThicknessIndex;
         private int MSupportTypeIndex;
-        private float MFibreglassAreaRoof;
-        private float MFibreglassAreaWall;
+        private float MFibreglassAreaRoofRatio;
+        private float MFibreglassAreaWallRatio;
 
         private int MLoadCaseIndex;
         private int iFrontColumnNoInOneFrame;
@@ -446,29 +446,29 @@ namespace EXPIMP
             }
         }
 
-        public float FibreglassAreaRoof
+        public float FibreglassAreaRoofRatio
         {
             get
             {
-                return MFibreglassAreaRoof;
+                return MFibreglassAreaRoofRatio;
             }
 
             set
             {
-                MFibreglassAreaRoof = value;
+                MFibreglassAreaRoofRatio = value;
             }
         }
 
-        public float FibreglassAreaWall
+        public float FibreglassAreaWallRatio
         {
             get
             {
-                return MFibreglassAreaWall;
+                return MFibreglassAreaWallRatio;
             }
 
             set
             {
-                MFibreglassAreaWall = value;
+                MFibreglassAreaWallRatio = value;
             }
         }
 

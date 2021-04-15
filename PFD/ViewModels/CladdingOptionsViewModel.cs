@@ -65,8 +65,8 @@ namespace PFD
         private float m_MaxSheetLengthWallFibreglass;
         private float m_RoofFibreglassOverlap;
         private float m_WallFibreglassOverlap;
-        private float m_FibreglassAreaRoof;
-        private float m_FibreglassAreaWall;
+        private float m_FibreglassAreaRoofRatio;
+        private float m_FibreglassAreaWallRatio;
         private List<CoatingColour> m_FibreglassColors;
 
         private List<string> m_Claddings;
@@ -360,39 +360,39 @@ namespace PFD
         }
 
         //percentage of fibreglass of total area roof
-        public float FibreglassAreaRoof
+        public float FibreglassAreaRoofRatio
         {
             get
             {
-                return m_FibreglassAreaRoof;
+                return m_FibreglassAreaRoofRatio;
             }
 
             set
             {
                 if (value < 0.0 || value > 99.0) // Limit is 99% of area
                     throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
-                m_FibreglassAreaRoof = value;
+                m_FibreglassAreaRoofRatio = value;
                 //RecreateModel = true;
-                NotifyPropertyChanged("FibreglassAreaRoof");
+                NotifyPropertyChanged("FibreglassAreaRoofRatio");
             }
         }
 
         //percentage of fibreglass of total area wall
         //-------------------------------------------------------------------------------------------------------------
-        public float FibreglassAreaWall
+        public float FibreglassAreaWallRatio
         {
             get
             {
-                return m_FibreglassAreaWall;
+                return m_FibreglassAreaWallRatio;
             }
 
             set
             {
                 if (value < 0.0 || value > 99.0) // Limit is 99% of area
                     throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
-                m_FibreglassAreaWall = value;
+                m_FibreglassAreaWallRatio = value;
                 //RecreateModel = true;
-                NotifyPropertyChanged("FibreglassAreaWall");
+                NotifyPropertyChanged("FibreglassAreaWallRatio");
             }
         }
 
@@ -1334,8 +1334,8 @@ namespace PFD
             WallCladdingIndex = 0;
             WallCladdingCoatingIndex = 1;
             WallCladdingColorIndex = 8;
-            FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
-            FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+            FibreglassAreaRoofRatio = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+            FibreglassAreaWallRatio = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
 
             LoadFibreglassColors();
             ColorRoof_FG_Index = 0;
@@ -1437,8 +1437,8 @@ namespace PFD
             WallCladdingIndex = 0;
             WallCladdingCoatingIndex = 1;
             WallCladdingColorIndex = 8;
-            FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
-            FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+            FibreglassAreaRoofRatio = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+            FibreglassAreaWallRatio = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
 
             MaxSheetLengthRoof = 6;
             MaxSheetLengthWall = 6;
@@ -1589,8 +1589,8 @@ namespace PFD
             WallCladdingIndex = newVM.WallCladdingIndex;
             WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
             WallCladdingColorIndex = newVM.WallCladdingColorIndex;
-            FibreglassAreaRoof = newVM.FibreglassAreaRoof;
-            FibreglassAreaWall = newVM.FibreglassAreaWall;
+            FibreglassAreaRoofRatio = newVM.FibreglassAreaRoofRatio;
+            FibreglassAreaWallRatio = newVM.FibreglassAreaWallRatio;
 
             MaxSheetLengthRoof = newVM.MaxSheetLengthRoof;
             MaxSheetLengthWall = newVM.MaxSheetLengthWall;
@@ -1723,8 +1723,8 @@ namespace PFD
             if (MathF.d_equal(_pfdVM.TotalWallArea, 0)) _pfdVM.CountWallAndRoofAreas();
 
             //ak to ale stale je 0, tak ideme prec lebo 0 sa delit neda
-            if (!MathF.d_equal(_pfdVM.TotalRoofArea, 0)) FibreglassAreaRoof = GetTotalFibreglassAreaRoof() / _pfdVM.TotalRoofArea * 100;
-            if (!MathF.d_equal(_pfdVM.TotalWallArea, 0)) FibreglassAreaWall = GetTotalFibreglassAreaWall() / _pfdVM.TotalWallArea * 100;
+            if (!MathF.d_equal(_pfdVM.TotalRoofArea, 0)) FibreglassAreaRoofRatio = GetTotalFibreglassAreaRoof() / _pfdVM.TotalRoofArea * 100;
+            if (!MathF.d_equal(_pfdVM.TotalWallArea, 0)) FibreglassAreaWallRatio = GetTotalFibreglassAreaWall() / _pfdVM.TotalWallArea * 100;
         }
 
         public bool HasFibreglass()
@@ -1733,6 +1733,5 @@ namespace PFD
             else if (FibreglassProperties.Count == 0) return false;
             else return true;
         }
-
     }
 }

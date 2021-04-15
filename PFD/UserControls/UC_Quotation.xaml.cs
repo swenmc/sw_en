@@ -125,8 +125,8 @@ namespace PFD
                 }
             }
 
-            float fFibreGlassArea_Roof = vm._claddingOptionsVM.FibreglassAreaRoof; // / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
-            float fFibreGlassArea_Walls = vm._claddingOptionsVM.FibreglassAreaWall; // / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
+            float fFibreGlassArea_Roof = vm._claddingOptionsVM.FibreglassAreaRoofRatio / 100f * vm.TotalRoofArea; // Priesvitna cast strechy (bez canopies)
+            float fFibreGlassArea_Walls = vm._claddingOptionsVM.FibreglassAreaWallRatio / 100f * vm.TotalWallArea; // Priesvitna cast stien
 
             if (vm._quotationDisplayOptionsVM.DisplayCladding && vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasCladding(vm.Model)) //iba ak je nejaky cladding
             {
