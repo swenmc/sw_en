@@ -130,6 +130,14 @@ namespace EXPIMP
         public Dictionary<CConnectionDescription, CConnectionJointTypes> JointsDict;
         public Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> FootingsDict;
 
+        private bool m_HasCladding;
+        private bool m_HasCladdingFront;
+        private bool m_HasCladdingBack;
+        private bool m_HasCladdingLeft;
+        private bool m_HasCladdingRight;
+        private bool m_HasCladdingRoof;
+
+
         private CModel MModel;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -1028,6 +1036,84 @@ namespace EXPIMP
             set
             {
                 sDisplayOptions = value;
+            }
+        }
+
+        public bool HasCladdingFront
+        {
+            get
+            {
+                return m_HasCladdingFront;
+            }
+
+            set
+            {
+                m_HasCladdingFront = value;
+            }
+        }
+
+        public bool HasCladdingBack
+        {
+            get
+            {
+                return m_HasCladdingBack;
+            }
+
+            set
+            {
+                m_HasCladdingBack = value;
+            }
+        }
+
+        public bool HasCladdingLeft
+        {
+            get
+            {
+                return m_HasCladdingLeft;
+            }
+
+            set
+            {
+                m_HasCladdingLeft = value;
+            }
+        }
+
+        public bool HasCladdingRight
+        {
+            get
+            {
+                return m_HasCladdingRight;
+            }
+
+            set
+            {
+                m_HasCladdingRight = value;
+            }
+        }
+
+        public bool HasCladdingRoof
+        {
+            get
+            {
+                return m_HasCladdingRoof;
+            }
+
+            set
+            {
+                m_HasCladdingRoof = value;
+            }
+        }
+
+        public bool HasCladding
+        {
+            get
+            {
+                return m_HasCladding;
+            }
+
+            set
+            {
+                m_HasCladding = value;
             }
         }
 

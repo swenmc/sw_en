@@ -3422,6 +3422,13 @@ namespace PFD
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
             data.DisplayOptions = GetDisplayOptions();
+
+            data.HasCladding = _modelOptionsVM.EnableCladding && ModelHasPurlinsOrGirts();
+            data.HasCladdingBack = _modelOptionsVM.EnableCladding && ModelHasBackWall();
+            data.HasCladdingFront = _modelOptionsVM.EnableCladding && ModelHasFrontWall();
+            data.HasCladdingLeft = _modelOptionsVM.EnableCladding && ModelHasLeftWall();
+            data.HasCladdingRight = _modelOptionsVM.EnableCladding && ModelHasRightWall();
+            data.HasCladdingRoof = _modelOptionsVM.EnableCladding && ModelHasRoof();
             return data;
         }
 
