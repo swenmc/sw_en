@@ -899,46 +899,6 @@ namespace PFD
             return quotation;
         }
 
-        public static void AddSheetToQuotation(CCladdingOrFibreGlassSheet sheet, List<QuotationItem> quotation, int iQuantity, float fCFS_PricePerKg_CladdingSheets_Total)
-        {
-            if (sheet == null) return;
-
-            float fMassPerPiece = sheet.Mass_brutto;  //To Mato - ci sheet.Area_netto ???
-            float fPricePerPiece = sheet.Price_PPKG_NZD > 0 ? (float)sheet.Price_PPKG_NZD * fMassPerPiece : fCFS_PricePerKg_CladdingSheets_Total * fMassPerPiece;
-
-            QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == sheet.Prefix &&
-                    MathF.d_equal(q.Width_bx, sheet.Width) &&
-                    MathF.d_equal(q.Length, sheet.LengthTotal) &&
-                    MathF.d_equal(q.Ft, sheet.Ft) &&
-                    MathF.d_equal(q.Area, sheet.Area_brutto)); //To Mato - ci sheet.Area_netto ???
-            if (qItem != null) //this quotation exists
-            {
-                qItem.Quantity += iQuantity;
-                qItem.TotalArea = qItem.Quantity * qItem.Area;
-                qItem.TotalMass = qItem.Quantity * qItem.MassPerPiece;
-                qItem.TotalPrice = qItem.Quantity * qItem.PricePerPiece;
-            }
-            else //quotation item does not exist = add to collection
-            {
-                QuotationItem item = new QuotationItem
-                {
-                    Prefix = sheet.Prefix,
-                    Quantity = iQuantity,
-                    Width_bx = (float)sheet.Width,
-                    Length = (float)sheet.LengthTotal,
-                    Ft = sheet.Ft,
-                    MaterialName = sheet.m_Mat.Name,
-                    Area = (float)sheet.Area_brutto, //To Mato - ci sheet.Area_netto ???
-                    MassPerPiece = fMassPerPiece,
-                    PricePerPiece = fPricePerPiece,
-                    TotalArea = iQuantity * (float)sheet.Area_brutto,//To Mato - ci sheet.Area_netto ???
-                    TotalMass = iQuantity * fMassPerPiece,
-                    TotalPrice = iQuantity * fPricePerPiece
-                };
-                quotation.Add(item);
-            }
-        }
-
         public static DataSet GetTableFibreglassSheets(CModel model, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
             const float fCFS_PricePerKg_FibreglassSheets_Material = 1.698f;    // NZD / kg
@@ -1068,6 +1028,47 @@ namespace PFD
             }
 
             return quotation;
+        }
+
+        // Add cladding or fibreglass sheet
+        public static void AddSheetToQuotation(CCladdingOrFibreGlassSheet sheet, List<QuotationItem> quotation, int iQuantity, float fCFS_PricePerKg_CladdingSheets_Total)
+        {
+            if (sheet == null) return;
+
+            float fMassPerPiece = sheet.Mass_brutto;  //To Mato - ci sheet.Area_netto ???
+            float fPricePerPiece = sheet.Price_PPKG_NZD > 0 ? (float)sheet.Price_PPKG_NZD * fMassPerPiece : fCFS_PricePerKg_CladdingSheets_Total * fMassPerPiece;
+
+            QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == sheet.Prefix &&
+                    MathF.d_equal(q.Width_bx, sheet.Width) &&
+                    MathF.d_equal(q.Length, sheet.LengthTotal) &&
+                    MathF.d_equal(q.Ft, sheet.Ft) &&
+                    MathF.d_equal(q.Area, sheet.Area_brutto)); //To Mato - ci sheet.Area_netto ???
+            if (qItem != null) //this quotation exists
+            {
+                qItem.Quantity += iQuantity;
+                qItem.TotalArea = qItem.Quantity * qItem.Area;
+                qItem.TotalMass = qItem.Quantity * qItem.MassPerPiece;
+                qItem.TotalPrice = qItem.Quantity * qItem.PricePerPiece;
+            }
+            else //quotation item does not exist = add to collection
+            {
+                QuotationItem item = new QuotationItem
+                {
+                    Prefix = sheet.Prefix,
+                    Quantity = iQuantity,
+                    Width_bx = (float)sheet.Width,
+                    Length = (float)sheet.LengthTotal,
+                    Ft = sheet.Ft,
+                    MaterialName = sheet.m_Mat.Name,
+                    Area = (float)sheet.Area_brutto, //To Mato - ci sheet.Area_netto ???
+                    MassPerPiece = fMassPerPiece,
+                    PricePerPiece = fPricePerPiece,
+                    TotalArea = iQuantity * (float)sheet.Area_brutto,//To Mato - ci sheet.Area_netto ???
+                    TotalMass = iQuantity * fMassPerPiece,
+                    TotalPrice = iQuantity * fPricePerPiece
+                };
+                quotation.Add(item);
+            }
         }
 
         //aby boli podmienky rovnake pre Material list aj pre Quotation
