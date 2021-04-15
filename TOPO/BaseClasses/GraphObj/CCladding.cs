@@ -358,6 +358,7 @@ namespace BaseClasses.GraphObj
                 brushRoof_FG.Opacity = options.fFibreglassOpacity;
             }
 
+
             // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
             // Start
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------

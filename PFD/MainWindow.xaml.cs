@@ -220,6 +220,7 @@ namespace PFD
                 }
                 else
                 {
+                    //toto je asi neaktualne, lebo Accesories uz su ako UserControl a teda az ked sa preklikne,tak sa updatuje vsetko a az potom sa ma pregenerovat Quotation
                     //only reset quotation do not regenerate model
                     vm.RecreateQuotation = true;
                     //Quotation.Content = null;

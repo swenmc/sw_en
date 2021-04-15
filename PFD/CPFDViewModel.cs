@@ -25,6 +25,7 @@ using System.Windows.Media;
 using DATABASE;
 using System.Globalization;
 using CRSC;
+using System.Windows.Media.Media3D;
 
 namespace PFD
 {
@@ -4177,6 +4178,64 @@ namespace PFD
                 if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
                     Height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + claddingHeight_Roof) * Math.Tan(RoofPitch_deg * Math.PI / 180);
             }
+        }
+
+
+        public void CalculateWallHeightsForCladding_ToMato()
+        {
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // Start
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+            double additionalOffset = 0.001;  // 5 mm Aby nekolidovali plochy cladding s members
+            double additionalOffsetRoof = 0.001; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
+
+            // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
+            double column_crsc_y_minus_temp = EdgeColumnCrsc_y_minus - additionalOffset;
+            double column_crsc_y_plus_temp = EdgeColumnCrsc_y_plus + additionalOffset;
+            double column_crsc_z_plus_temp = MainColumnCrsc_z_plus + additionalOffset;
+
+            //----------------------------------------
+            // To Ondrej - toto by sme mali nahradit funkciou
+            // CalculateWallHeightsForCladding
+            double height_1_final = WallHeight + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
+            double height_2_final = m_fHeight_H2 + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
+
+            double height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            double height_2_final_edge_LR_Wall = height_2_final;
+
+            double height_1_final_edge_Roof = height_1_final + additionalOffsetRoof - (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            double height_2_final_edge_Roof = height_2_final + additionalOffsetRoof;
+
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            {
+                height_2_final_edge_LR_Wall = height_2_final + column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
+                height_2_final_edge_Roof = height_2_final + additionalOffsetRoof + (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            }
+
+            // Nastavime rovnaku vysku hornej hrany
+            double height_1_final_edge_FB_Wall = height_1_final_edge_LR_Wall;
+            double height_2_final_edge_FB_Wall = height_2_final_edge_LR_Wall;
+
+            if (_claddingOptionsVM.ConsiderRoofCladdingFor_FB_WallHeight)
+            {
+                height_1_final_edge_FB_Wall = height_1_final_edge_FB_Wall + _claddingOptionsVM.RoofCladdingProps.height_m * Math.Tan(RoofPitch_deg * Math.PI / 180);
+                height_2_final_edge_FB_Wall = height_2_final_edge_FB_Wall + _claddingOptionsVM.RoofCladdingProps.height_m * Math.Tan(RoofPitch_deg * Math.PI / 180);
+
+                if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+                    height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + _claddingOptionsVM.RoofCladdingProps.height_m) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            }
+            //----------------------------------------
+
+            // Wall Cladding Edges
+
+            Point3D pfront0_baseleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, _claddingOptionsVM.WallBottomOffset_Z);
+            Point3D pfront1_baseright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, _claddingOptionsVM.WallBottomOffset_Z);
+
+            Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, _claddingOptionsVM.WallBottomOffset_Z);
+            Point3D pback1_baseright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, _claddingOptionsVM.WallBottomOffset_Z);
+
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // End
         }
 
         //To Mato - alebo to nazveme ModelHasCladding?
