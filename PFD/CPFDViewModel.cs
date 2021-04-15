@@ -3495,6 +3495,14 @@ namespace PFD
             data.Markup_Percentage = _quotationViewModel.Markup_Percentage;
             data.TotalBuildingPrice_IncludingGST = _quotationViewModel.TotalBuildingPrice_IncludingGST;
 
+            data.HasCladding = _modelOptionsVM.EnableCladding && ModelHasPurlinsOrGirts();
+            data.HasCladdingWalls = _modelOptionsVM.EnableCladding && ModelHasWalls();
+            data.HasCladdingBack = _modelOptionsVM.EnableCladding && ModelHasBackWall();
+            data.HasCladdingFront = _modelOptionsVM.EnableCladding && ModelHasFrontWall();
+            data.HasCladdingLeft = _modelOptionsVM.EnableCladding && ModelHasLeftWall();
+            data.HasCladdingRight = _modelOptionsVM.EnableCladding && ModelHasRightWall();
+            data.HasCladdingRoof = _modelOptionsVM.EnableCladding && ModelHasRoof();
+
             return data;
         }
 

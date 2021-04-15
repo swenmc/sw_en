@@ -118,8 +118,19 @@ namespace EXPIMP
                 document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString("F0"));
                 document.ReplaceText("[BayWidth]", data.BayWidth.ToString(sStringFormat_Length));
 
-                document.ReplaceText("[roofCladding]", $"{data.RoofCladding}-{data.RoofCladdingThickness_mm}");
-                document.ReplaceText("[wallCladding]", $"{data.WallCladding}-{data.WallCladdingThickness_mm}");
+                if (data.HasCladdingRoof) document.ReplaceText("[roofCladding]", $"{data.RoofCladding}-{data.RoofCladdingThickness_mm}");
+                else
+                {
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).RemoveText(0, false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).InsertText("");
+                }
+
+                if (data.HasCladdingWalls) document.ReplaceText("[wallCladding]", $"{data.WallCladding}-{data.WallCladdingThickness_mm}");
+                else
+                {
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[wallCladding]"))).RemoveText(0, false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[wallCladding]"))).InsertText("");
+                }
 
                 document.ReplaceText("[roofCoating]", data.RoofCladdingCoating);
                 document.ReplaceText("[wallCoating]", data.WallCladdingCoating);
@@ -148,12 +159,20 @@ namespace EXPIMP
                 }
 
                 if ((tables.Find(x => x.TableName == "Doors and Windows")) == null)
-                    document.ReplaceText("[exterior_RollerDoors]", "Doors not included.");
+                {
+                    //document.ReplaceText("[exterior_RollerDoors]", "Doors not included.");
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_RollerDoors]"))).RemoveText(0, false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_RollerDoors]"))).InsertText("");
+                }                    
                 else
                     document.ReplaceText("[exterior_RollerDoors]", "");
 
                 if ((tables.Find(x => x.TableName == "Doors and Windows")) == null)
-                    document.ReplaceText("[exterior_PersonnelDoors]", "Doors not included.");
+                {
+                    //document.ReplaceText("[exterior_PersonnelDoors]", "Doors not included.");
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_PersonnelDoors]"))).RemoveText(0, false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_PersonnelDoors]"))).InsertText("");
+                }                    
                 else
                     document.ReplaceText("[exterior_PersonnelDoors]", "");
 
@@ -190,7 +209,9 @@ namespace EXPIMP
 
                 if ((tables.Find(x => x.TableName == "Gutters")) == null)
                 {
-                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[guttersCoatingType]"))).Remove(false); 
+                    //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[guttersCoatingType]"))).Remove(false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[guttersCoatingType]"))).RemoveText(0, false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[guttersCoatingType]"))).InsertText("");
                     document.ReplaceText("[exclusion_Gutters]", "Gutters");
                 }
                 else
@@ -198,7 +219,9 @@ namespace EXPIMP
 
                 if ((tables.Find(x => x.TableName == "Flashings")) == null)
                 {
-                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[flashingsCoatingType]"))).Remove(false);
+                    //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[flashingsCoatingType]"))).Remove(false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[flashingsCoatingType]"))).RemoveText(0, false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[flashingsCoatingType]"))).InsertText("");
                     document.ReplaceText("[exclusion_Flashings]", "Flashings");
                 }
                 else
