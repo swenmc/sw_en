@@ -787,19 +787,19 @@ namespace PFD
             if (model.m_arrGOCladding == null) return null;
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) throw new Exception("Cladding is empty.");
-            
+
             foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets()) 
             {
                 if (!sheet.BIsSelectedForMaterialList) continue;
 
                 dTotalCladdingSheetsArea_Model += sheet.Area_brutto; //To Mato - ci sheet.Area_netto ???
-                dTotalCladdingSheetsVolume_Model += sheet.Surface_brutto * sheet.Ft;//To Mato - ci sheet.Area_netto ???
-                dTotalCladdingSheetsMass_Model += sheet.Surface_brutto * sheet.Ft * sheet.m_Mat.m_fRho;//To Mato - ci sheet.Area_netto ???
+                dTotalCladdingSheetsVolume_Model += sheet.Volume_brutto;//To Mato - ci sheet.Area_netto ???
+                dTotalCladdingSheetsMass_Model += sheet.Mass_brutto;//To Mato - ci sheet.Area_netto ???
 
                 if (sheet.Price_PPKG_NZD > 0) //nakolko nie je Price_PPKG_NZD definovane, tak komentujem cele
-                    dTotalCladdingSheetsPrice_Model += sheet.Surface_brutto * sheet.Ft * sheet.m_Mat.m_fRho * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
+                    dTotalCladdingSheetsPrice_Model += sheet.Mass_brutto * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
                 else
-                    dTotalCladdingSheetsPrice_Model += sheet.Surface_brutto * sheet.Ft * sheet.m_Mat.m_fRho * fCFS_PricePerKg_CladdingSheets_Total; //To Mato - ci sheet.Area_netto ???
+                    dTotalCladdingSheetsPrice_Model += sheet.Mass_brutto * fCFS_PricePerKg_CladdingSheets_Total; //To Mato - ci sheet.Area_netto ???
 
                 iTotalCladdingSheetsNumber_Model += 1;
             }
@@ -893,17 +893,17 @@ namespace PFD
             {
                 if (!sheet.BIsSelectedForMaterialList) continue;
 
-                QuotationHelper.AddCladdingSheetToQuotation(sheet, quotation, 1, fCFS_PricePerKg_CladdingSheets_Total);
+                QuotationHelper.AddSheetToQuotation(sheet, quotation, 1, fCFS_PricePerKg_CladdingSheets_Total);
             }
 
             return quotation;
         }
 
-        public static void AddCladdingSheetToQuotation(CCladdingOrFibreGlassSheet sheet, List<QuotationItem> quotation, int iQuantity, float fCFS_PricePerKg_CladdingSheets_Total)
+        public static void AddSheetToQuotation(CCladdingOrFibreGlassSheet sheet, List<QuotationItem> quotation, int iQuantity, float fCFS_PricePerKg_CladdingSheets_Total)
         {
             if (sheet == null) return;
 
-            float fMassPerPiece = (float)(sheet.Area_brutto) * sheet.Ft * sheet.m_Mat.m_fRho;  //To Mato - ci sheet.Area_netto ???
+            float fMassPerPiece = sheet.Mass_brutto;  //To Mato - ci sheet.Area_netto ???
             float fPricePerPiece = sheet.Price_PPKG_NZD > 0 ? (float)sheet.Price_PPKG_NZD * fMassPerPiece : fCFS_PricePerKg_CladdingSheets_Total * fMassPerPiece;
 
             QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == sheet.Prefix &&
@@ -959,18 +959,18 @@ namespace PFD
             CCladding cladding = model.m_arrGOCladding.FirstOrDefault();
             if (cladding == null) throw new Exception("Cladding is empty.");
 
-            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets())
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetFibreglassSheets())
             {
                 if (!sheet.BIsSelectedForMaterialList) continue;
 
                 dTotalFibreglassSheetsArea_Model += sheet.Area_brutto; //To Mato - ci sheet.Area_netto ???
-                dTotalFibreglassSheetsVolume_Model += sheet.Surface_brutto * sheet.Ft;//To Mato - ci sheet.Area_netto ???
-                dTotalFibreglassSheetsMass_Model += sheet.Surface_brutto * sheet.Ft * sheet.m_Mat.m_fRho;//To Mato - ci sheet.Area_netto ???
+                dTotalFibreglassSheetsVolume_Model += sheet.Volume_brutto;//To Mato - ci sheet.Area_netto ???
+                dTotalFibreglassSheetsMass_Model += sheet.Mass_brutto;//To Mato - ci sheet.Area_netto ???
 
                 if (sheet.Price_PPKG_NZD > 0) //nakolko nie je Price_PPKG_NZD definovane, tak komentujem cele
-                    dTotalFibreglassSheetsPrice_Model += sheet.Surface_brutto * sheet.Ft * sheet.m_Mat.m_fRho * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
+                    dTotalFibreglassSheetsPrice_Model += sheet.Mass_brutto * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
                 else
-                    dTotalFibreglassSheetsPrice_Model += sheet.Surface_brutto * sheet.Ft * sheet.m_Mat.m_fRho * fCFS_PricePerKg_FibreglassSheets_Total; //To Mato - ci sheet.Area_netto ???
+                    dTotalFibreglassSheetsPrice_Model += sheet.Mass_brutto * fCFS_PricePerKg_FibreglassSheets_Total; //To Mato - ci sheet.Area_netto ???
 
                 iTotalFibreglassSheetsNumber_Model += 1;
             }
@@ -1064,12 +1064,11 @@ namespace PFD
             {
                 if (!sheet.BIsSelectedForMaterialList) continue;
 
-                QuotationHelper.AddCladdingSheetToQuotation(sheet, quotation, 1, fCFS_PricePerKg_FibreglassSheets_Total);
+                QuotationHelper.AddSheetToQuotation(sheet, quotation, 1, fCFS_PricePerKg_FibreglassSheets_Total);
             }
 
             return quotation;
         }
-
 
         //aby boli podmienky rovnake pre Material list aj pre Quotation
         public static bool DisplayCladdingTable(CPFDViewModel vm)

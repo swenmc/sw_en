@@ -1844,13 +1844,13 @@ namespace BaseClasses.GraphObj
             if (listOfCladdingSheetsLeftWall != null) list.AddRange(listOfCladdingSheetsLeftWall);
             if (listOfCladdingSheetsFrontWall != null) list.AddRange(listOfCladdingSheetsFrontWall);
             if (listOfCladdingSheetsRightWall != null) list.AddRange(listOfCladdingSheetsRightWall);
-            if (listOfCladdingSheetsBackWall != null) list.AddRange(listOfCladdingSheetsBackWall);            
+            if (listOfCladdingSheetsBackWall != null) list.AddRange(listOfCladdingSheetsBackWall);
 
             return list;
         }        
         public List<CCladdingOrFibreGlassSheet> GetCladdingSheets_Roof()
         {
-            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();            
+            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();
             if (listOfCladdingSheetsRoofRight != null) list.AddRange(listOfCladdingSheetsRoofRight);
             if (listOfCladdingSheetsRoofLeft != null) list.AddRange(listOfCladdingSheetsRoofLeft);
 
