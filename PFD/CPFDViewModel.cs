@@ -4198,7 +4198,7 @@ namespace PFD
             // To Ondrej - toto by sme mali nahradit funkciou
             // CalculateWallHeightsForCladding
             double height_1_final = WallHeight + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
-            double height_2_final = m_fHeight_H2 + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
+            double height_2_final = Height_H2 + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
 
             double height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
             double height_2_final_edge_LR_Wall = height_2_final;
@@ -4233,6 +4233,109 @@ namespace PFD
 
             Point3D pback0_baseleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, _claddingOptionsVM.WallBottomOffset_Z);
             Point3D pback1_baseright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, _claddingOptionsVM.WallBottomOffset_Z);
+
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // End
+
+
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // Start
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+            // Wall Points
+            Point3D pLRWall_front2_heightright = new Point3D();
+            Point3D pLRWall_back2_heightright = new Point3D();
+            Point3D pLRWall_front3_heightleft = new Point3D();
+            Point3D pLRWall_back3_heightleft = new Point3D();
+            Point3D pLRWall_front4_top = new Point3D();
+            Point3D pLRWall_back4_top = new Point3D();
+
+            Point3D pFBWall_front2_heightright = new Point3D();
+            Point3D pFBWall_back2_heightright = new Point3D();
+            Point3D pFBWall_front3_heightleft = new Point3D();
+            Point3D pFBWall_back3_heightleft = new Point3D();
+            Point3D pFBWall_front4_top = new Point3D();
+            Point3D pFBWall_back4_top = new Point3D();
+
+            // Roof Points - oddelene pretoze strecha ma presahy
+            Point3D pRoof_front2_heightright = new Point3D();
+            Point3D pRoof_back2_heightright = new Point3D();
+            Point3D pRoof_front3_heightleft = new Point3D();
+            Point3D pRoof_back3_heightleft = new Point3D();
+            Point3D pRoof_front4_top = new Point3D();
+            Point3D pRoof_back4_top = new Point3D();
+
+            // Roof edge offset from centerline in Y-direction
+            float fRoofEdgeOffsetFromCenterline = -(float)column_crsc_y_minus_temp + (float)_claddingOptionsVM.RoofEdgeOverHang_FB_Y;
+
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // End
+
+            //toto jedine som dolnil a inicializoval, ale realne nie je dana premenna nikde pouzita
+            int iNumberOfFrontBackWallEdges = 0;
+
+            // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
+            // Start
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+            // Nastavenie bodov suradnic hornych bodov stien a bodov strechy pre monopitch a gable roof model
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            {
+                // Monopitch Roof
+
+                // Wall
+                iNumberOfFrontBackWallEdges = 4;
+                pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_2_final_edge_FB_Wall);
+                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_FB_Wall);
+
+                pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, height_2_final_edge_FB_Wall);
+                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, height_1_final_edge_FB_Wall);
+
+                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, height_2_final_edge_FB_Wall);
+                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, height_2_final_edge_FB_Wall);
+                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, height_1_final_edge_FB_Wall);
+                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, height_1_final_edge_FB_Wall);
+
+                // Roof
+                pRoof_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X, column_crsc_y_minus_temp - _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_2_final_edge_Roof);
+                pRoof_front3_heightleft = new Point3D(-column_crsc_z_plus_temp - _claddingOptionsVM.RoofEdgeOverHang_LR_X, column_crsc_y_minus_temp - _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
+
+                pRoof_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_2_final_edge_Roof);
+                pRoof_back3_heightleft = new Point3D(-column_crsc_z_plus_temp - _claddingOptionsVM.RoofEdgeOverHang_LR_X, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
+
+            }
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
+            {
+                // Gable Roof Building
+
+                // Wall
+                iNumberOfFrontBackWallEdges = 5;
+                pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_LR_Wall);
+                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_LR_Wall);
+                pLRWall_front4_top = new Point3D(0.5 * Width, column_crsc_y_minus_temp, height_2_final_edge_LR_Wall);
+
+                pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, height_1_final_edge_LR_Wall);
+                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, height_1_final_edge_LR_Wall);
+                pLRWall_back4_top = new Point3D(0.5 * Width, Length + column_crsc_y_plus_temp, height_2_final_edge_LR_Wall);
+
+                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, height_1_final_edge_FB_Wall);
+                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, height_1_final_edge_FB_Wall);
+                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, height_1_final_edge_FB_Wall);
+                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, height_1_final_edge_FB_Wall);
+                pFBWall_front4_top = new Point3D(pLRWall_front4_top.X, pLRWall_front4_top.Y, height_2_final_edge_FB_Wall);
+                pFBWall_back4_top = new Point3D(pLRWall_back4_top.X, pLRWall_back4_top.Y, height_2_final_edge_FB_Wall);
+
+                // Roof
+                pRoof_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X, column_crsc_y_minus_temp - _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
+                pRoof_front3_heightleft = new Point3D(-column_crsc_z_plus_temp - _claddingOptionsVM.RoofEdgeOverHang_LR_X, column_crsc_y_minus_temp - _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
+                pRoof_front4_top = new Point3D(0.5 * Width, column_crsc_y_minus_temp - _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_2_final_edge_Roof);
+
+                pRoof_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
+                pRoof_back3_heightleft = new Point3D(-column_crsc_z_plus_temp - _claddingOptionsVM.RoofEdgeOverHang_LR_X, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_1_final_edge_Roof);
+                pRoof_back4_top = new Point3D(0.5 * Width, Length + column_crsc_y_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_FB_Y, height_2_final_edge_Roof);
+            }
+            else
+            {
+                throw new Exception("Not implemented kitset type.");
+            }
 
             // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
             // End
