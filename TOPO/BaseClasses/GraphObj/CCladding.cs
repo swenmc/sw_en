@@ -784,7 +784,7 @@ namespace BaseClasses.GraphObj
                 }
                 GenerateCladdingOpenings(listOfFibreGlassSheetsWallBack, "Back", pControlPoint_BackWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsBackWall_All);
-            }            
+            }
 
             if (bGenerateBackSideCladding)
             {
@@ -845,7 +845,7 @@ namespace BaseClasses.GraphObj
             dWidthOfWholeSheets = iNumberOfWholeSheets * m_RoofProps.widthModular_m;
             dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
-            
+
             if (bGenerateRoofFibreglass)
             {
                 listOfFibreGlassSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();

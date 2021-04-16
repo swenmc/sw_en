@@ -112,7 +112,7 @@ namespace PFD
 
             TxtTotalSheetsAreaCladding.Text = claddingSheetsArea.ToString("F3");
             TxtTotalSheetsAreaFibreglass.Text = fibreglassSheetsArea.ToString("F3");
-            TxtTotalCladdingArea.Text = (_pfdVM.TotalWallArea + _pfdVM.TotalRoofArea).ToString("F3");
+            TxtTotalCladdingArea.Text = (_pfdVM.TotalWallArea + _pfdVM.TotalRoofAreaInclCanopies).ToString("F3");
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }

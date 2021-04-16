@@ -111,20 +111,6 @@ namespace PFD
             // DG 6
             // Cladding
             // Canopies
-            float fCanopyRoofArea = 0;
-
-            if (vm._canopiesOptionsVM != null && vm._canopiesOptionsVM.CanopiesList != null)
-            {
-                foreach (CCanopiesInfo canopy in vm._canopiesOptionsVM.CanopiesList)
-                {
-                    if (canopy.Left)
-                        fCanopyRoofArea += (((float)canopy.WidthLeft + vm._claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X) / (float)Math.Cos(Math.Abs(vm.RoofPitch_radians))) * (vm._baysWidthOptionsVM.BayWidthList[canopy.BayIndex].Width + 2 * vm._claddingOptionsVM.RoofEdgeOverHang_FB_Y); 
-
-                    if (canopy.Right)
-                        fCanopyRoofArea += (((float)canopy.WidthRight + vm._claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X) / (float)Math.Cos(Math.Abs(vm.RoofPitch_radians))) * (vm._baysWidthOptionsVM.BayWidthList[canopy.BayIndex].Width + 2 * vm._claddingOptionsVM.RoofEdgeOverHang_FB_Y);
-                }
-            }
-
             float fFibreGlassArea_Roof = vm._claddingOptionsVM.FibreglassAreaRoofRatio / 100f * vm.TotalRoofArea; // Priesvitna cast strechy (bez canopies)
             float fFibreGlassArea_Walls = vm._claddingOptionsVM.FibreglassAreaWallRatio / 100f * vm.TotalWallArea; // Priesvitna cast stien
 
@@ -136,7 +122,7 @@ namespace PFD
                     vm.TotalWallArea,
                     fTotalAreaOfOpennings,
                     fFibreGlassArea_Walls,
-                    vm.TotalRoofArea + fCanopyRoofArea, // TODO - rozdelit riadky pre roof a canopies
+                    vm.TotalRoofAreaInclCanopies, // TODO - rozdelit riadky pre basic roof a canopies ???
                     fFibreGlassArea_Roof
                    );
             }
@@ -178,7 +164,7 @@ namespace PFD
 
             // DG 10
             // Roof Netting
-            if (vm._quotationDisplayOptionsVM.DisplayRoofNetting && vm.ModelHasRoof()) CreateTableRoofNetting(vm.TotalRoofArea);  //CModelHelper.ModelHasCladding_Roof(vm.Model)
+            if (vm._quotationDisplayOptionsVM.DisplayRoofNetting && vm.ModelHasRoof()) CreateTableRoofNetting(vm.TotalRoofAreaInclCanopies);  //CModelHelper.ModelHasCladding_Roof(vm.Model)
             else
             {
                 TextBlock_RoofNetting.Visibility = Visibility.Collapsed;
