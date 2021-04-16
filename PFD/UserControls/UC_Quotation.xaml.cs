@@ -134,7 +134,7 @@ namespace PFD
 
             // DG 7
             // Gutters
-            if (vm._quotationDisplayOptionsVM.DisplayGutters && vm.ModelHasRoof() &&   //CModelHelper.ModelHasCladding_Roof(vm.Model)
+            if (vm._quotationDisplayOptionsVM.DisplayGutters && QuotationHelper.DisplayGuttersTable(vm) &&
                 _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Gutters.Count > 0) CreateTableGutters(model);
             else
             {
@@ -144,7 +144,7 @@ namespace PFD
 
             // DG 8
             // Downpipes
-            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && vm.ModelHasRoof() &&  //CModelHelper.ModelHasCladding_Roof(vm.Model)
+            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && QuotationHelper.DisplayDownpipesTable(vm) &&
                 vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.Downpipes.Count > 0) CreateTableDownpipes(model);
             else
             {
@@ -164,7 +164,7 @@ namespace PFD
 
             // DG 10
             // Roof Netting
-            if (vm._quotationDisplayOptionsVM.DisplayRoofNetting && vm.ModelHasRoof()) CreateTableRoofNetting(vm.TotalRoofAreaInclCanopies);  //CModelHelper.ModelHasCladding_Roof(vm.Model)
+            if (vm._quotationDisplayOptionsVM.DisplayRoofNetting && QuotationHelper.DisplayRoofNettingTable(vm)) CreateTableRoofNetting(vm.TotalRoofAreaInclCanopies);
             else
             {
                 TextBlock_RoofNetting.Visibility = Visibility.Collapsed;
@@ -173,7 +173,7 @@ namespace PFD
 
             // DG 11
             // Flashing and Packers
-            if (vm._quotationDisplayOptionsVM.DisplayFlashing && _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Flashings.Count > 0)
+            if (vm._quotationDisplayOptionsVM.DisplayFlashing && QuotationHelper.DisplayFlashingsTable(vm) && vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.Flashings.Count > 0)
             {
                 CreateTableFlashing(
                     fRollerDoorTrimmerFlashing_TotalLength,
@@ -795,7 +795,7 @@ namespace PFD
 
             List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
 
-            if (vm._doorsAndWindowsVM != null)
+            if (vm._doorsAndWindowsVM != null && QuotationHelper.DisplayDoorsAndWindowsTable(vm))
             {
                 foreach (DoorProperties dp in vm._doorsAndWindowsVM.DoorBlocksProperties)
                 {
