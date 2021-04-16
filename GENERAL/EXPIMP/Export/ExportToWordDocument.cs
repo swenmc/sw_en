@@ -118,12 +118,17 @@ namespace EXPIMP
                 document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString("F0"));
                 document.ReplaceText("[BayWidth]", data.BayWidth.ToString(sStringFormat_Length));
 
+                if (!data.HasCladding)
+                {
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).RemoveText(0, false);
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).InsertText("Not included");
+                }
+
                 if (data.HasCladdingRoof) document.ReplaceText("[roofCladding]", $"{data.RoofCladding}-{data.RoofCladdingThickness_mm}");
                 else
                 {
-                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).Remove(false);
-                    //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).RemoveText(0, false);
-                    //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).InsertText("");
+                    Paragraph parRC = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"));
+                    if (parRC != null) parRC.Remove(false);
                 }
 
                 if (data.HasCladdingWalls) document.ReplaceText("[wallCladding]", $"{data.WallCladding}-{data.WallCladdingThickness_mm}");
@@ -168,7 +173,8 @@ namespace EXPIMP
                     //document.ReplaceText("[exterior_RollerDoors]", "Doors not included.");
                     //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_RollerDoors]"))).RemoveText(0, false);
                     //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_RollerDoors]"))).InsertText("");
-                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_RollerDoors]"))).Remove(false);
+                    Paragraph par_RD = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_RollerDoors]"));
+                    if (par_RD != null) par_RD.Remove(false);
                 }                    
                 else
                     document.ReplaceText("[exterior_RollerDoors]", "");
@@ -178,7 +184,8 @@ namespace EXPIMP
                     //document.ReplaceText("[exterior_PersonnelDoors]", "Doors not included.");
                     //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_PersonnelDoors]"))).RemoveText(0, false);
                     //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_PersonnelDoors]"))).InsertText("");
-                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_PersonnelDoors]"))).Remove(false);
+                    Paragraph par_PD = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_PersonnelDoors]"));
+                    if (par_PD != null) par_PD.Remove(false);
                 }                    
                 else
                     document.ReplaceText("[exterior_PersonnelDoors]", "");
