@@ -1231,21 +1231,6 @@ namespace PFD
                 FibreglassProperties f = m_FibreglassProperties.LastOrDefault();
                 if (f != null)
                 {
-                    //// Neviem ci je vhodne aby boli toto vsetko properties a ak ano, tak ci to rovno nedat priamo do pfdVM
-                    //double height_1_final_edge_LR_Wall;
-                    //double height_2_final_edge_LR_Wall;
-                    //double height_1_final_edge_FB_Wall;
-                    //double height_2_final_edge_FB_Wall;
-                    //double additionalOffsetWall;
-
-                    //CalculateWallHeightsForCladding(
-                    //out height_1_final_edge_LR_Wall,
-                    //out height_2_final_edge_LR_Wall,
-                    //out height_1_final_edge_FB_Wall,
-                    //out height_2_final_edge_FB_Wall,
-                    ////out bottomEdge_z,
-                    //out additionalOffsetWall);
-
                     //To Mato - skontrolovat parametre
                     //Podla mna pre strechu staci tento parameter _pfdVM.RoofSideLength a ten kontrolovat
                     f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM.RoofPitch_deg,
@@ -1362,71 +1347,6 @@ namespace PFD
             IsSetFromCode = false;
         }
 
-        //Toto je premiestnene do PFDViewModel
-        //TODO - zmazat
-        //public void CalculateWallHeightsForCladding(
-        //    out double height_1_final_edge_LR_Wall,
-        //    out double height_2_final_edge_LR_Wall,
-        //    out double height_1_final_edge_FB_Wall,
-        //    out double height_2_final_edge_FB_Wall,
-        //    //out double bottomEdge_z,
-        //    out double additionalOffsetWall)
-        //{
-        //    double claddingHeight_Roof = 0;
-
-        //    if (m_RoofCladdingProps != null)
-        //       claddingHeight_Roof = m_RoofCladdingProps.height_m;
-        //    else
-        //    {
-        //        CTS_CrscProperties prop = CTrapezoidalSheetingManager.LoadCrossSectionProperties_meters(RoofCladding);
-        //        claddingHeight_Roof = prop.height_m;
-        //    }
-
-        //    //bottomEdge_z = WallBottomOffset_Z;
-
-        //    CCrSc_TW edgeColumn = CrScFactory.GetCrSc(_pfdVM.ComponentList[(int)EMemberType_FS_Position.EdgeColumn].Section);
-
-        //    double column_crsc_y_minus = edgeColumn.y_min;
-        //    double column_crsc_y_plus = edgeColumn.y_max;
-        //    double column_crsc_z_plus = edgeColumn.z_max;
-
-        //    additionalOffsetWall = 0.005;  // 5 mm Aby nekolidovali plochy cladding s members
-        //    double additionalOffsetRoof = 0.010; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
-
-        //    // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
-        //    double column_crsc_y_minus_temp = column_crsc_y_minus - additionalOffsetWall;
-        //    double column_crsc_y_plus_temp = column_crsc_y_plus + additionalOffsetWall;
-        //    double column_crsc_z_plus_temp = column_crsc_z_plus + additionalOffsetWall;
-
-        //    double height_1_final = _pfdVM.WallHeight + column_crsc_z_plus / Math.Cos(_pfdVM.RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
-        //    double height_2_final = _pfdVM.Height_H2 + column_crsc_z_plus / Math.Cos(_pfdVM.RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
-
-        //    height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(_pfdVM.RoofPitch_deg * Math.PI / 180);
-        //    height_2_final_edge_LR_Wall = height_2_final;
-
-        //    double height_1_final_edge_Roof = height_1_final + additionalOffsetRoof - (column_crsc_z_plus_temp + RoofEdgeOverHang_LR_X) * Math.Tan(_pfdVM.RoofPitch_deg * Math.PI / 180);
-        //    double height_2_final_edge_Roof = height_2_final + additionalOffsetRoof;
-
-        //    if (_pfdVM.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-        //    {
-        //        height_2_final_edge_LR_Wall = height_2_final + column_crsc_z_plus_temp * Math.Tan(_pfdVM.RoofPitch_deg * Math.PI / 180);
-        //        height_2_final_edge_Roof = height_2_final + additionalOffsetRoof + (column_crsc_z_plus_temp + RoofEdgeOverHang_LR_X) * Math.Tan(_pfdVM.RoofPitch_deg * Math.PI / 180);
-        //    }
-
-        //    // Nastavime rovnaku vysku hornej hrany
-        //    height_1_final_edge_FB_Wall = height_1_final_edge_LR_Wall;
-        //    height_2_final_edge_FB_Wall = height_2_final_edge_LR_Wall;
-
-        //    if (ConsiderRoofCladdingFor_FB_WallHeight)
-        //    {
-        //        height_1_final_edge_FB_Wall = height_1_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(_pfdVM.RoofPitch_deg * Math.PI / 180);
-        //        height_2_final_edge_FB_Wall = height_2_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(_pfdVM.RoofPitch_deg * Math.PI / 180);
-
-        //        if (_pfdVM.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-        //            height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + claddingHeight_Roof) * Math.Tan(_pfdVM.RoofPitch_deg * Math.PI / 180);
-        //    }
-        //}
-
         public void SetDefaultValuesOnModelIndexChange(CPFDViewModel pfdVM)
         {
             _pfdVM = pfdVM;
@@ -1457,17 +1377,6 @@ namespace PFD
             ConsiderRoofCladdingFor_FB_WallHeight = true;
 
             FibreglassProperties = new ObservableCollection<FibreglassProperties>();
-
-            ////to Mato 748 - skontrolovat parametre
-            ////temp for testing first object
-            //FibreglassProperties f = new FibreglassProperties();
-            //f.SetDefaults((EModelType_FS)_pfdVM.KitsetTypeIndex, _pfdVM.WidthOverall, _pfdVM.LengthOverall, _pfdVM.RoofPitch_deg,
-            //  _pfdVM.Height_1_final_edge_LR_Wall, _pfdVM.Height_2_final_edge_LR_Wall,
-            //  _pfdVM.Height_1_final_edge_FB_Wall, _pfdVM.Height_2_final_edge_FB_Wall,
-            //  WallBottomOffset_Z, _pfdVM.AdditionalOffsetWall,
-            //  RoofEdgeOverHang_LR_X, RoofEdgeOverHang_FB_Y,
-            //  _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
-            //FibreglassProperties.Add(f);
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -1719,8 +1628,8 @@ namespace PFD
             if (IsSetFromCode) return;
 
             //mozno by bolo lepsie takto...ked to treba, tak vtedy sa to prepocita
-            if (MathF.d_equal(_pfdVM.TotalRoofArea, 0)) _pfdVM.CountWallAndRoofAreas();
-            if (MathF.d_equal(_pfdVM.TotalWallArea, 0)) _pfdVM.CountWallAndRoofAreas();
+            if (MathF.d_equal(_pfdVM.TotalRoofArea, 0)) _pfdVM.CalculateCladdingParameters_Mato();
+            if (MathF.d_equal(_pfdVM.TotalWallArea, 0)) _pfdVM.CalculateCladdingParameters_Mato();
 
             //ak to ale stale je 0, tak ideme prec lebo 0 sa delit neda
             if (!MathF.d_equal(_pfdVM.TotalRoofArea, 0)) FibreglassAreaRoofRatio = GetTotalFibreglassAreaRoof() / _pfdVM.TotalRoofArea * 100;

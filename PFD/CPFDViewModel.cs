@@ -91,6 +91,7 @@ namespace PFD
         private double m_Height_1_final_edge_FB_Wall;
         private double m_Height_2_final_edge_FB_Wall;
         private double m_AdditionalOffsetWall;
+        private double m_AdditionalOffsetRoof;
 
         private int MOneRafterPurlinNo;
         private int MSupportTypeIndex;
@@ -348,9 +349,8 @@ namespace PFD
 
                 SetResultsAreNotValid();
 
-                CalculateWallHeightsForCladding();
                 _claddingOptionsVM.SetDefaultValuesOnModelIndexChange(this);
-                CountWallAndRoofAreas();
+                CalculateCladdingParameters_Mato();
 
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
 
@@ -433,8 +433,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
-                if (!IsSetFromCode) CalculateWallHeightsForCladding();
-                if (!IsSetFromCode) CountWallAndRoofAreas();
+                if (!IsSetFromCode) CalculateCladdingParameters_Mato();
                 NotifyPropertyChanged("Width");
             }
         }
@@ -482,8 +481,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
-                if (!IsSetFromCode) CalculateWallHeightsForCladding();
-                if (!IsSetFromCode) CountWallAndRoofAreas();
+                if (!IsSetFromCode) CalculateCladdingParameters_Mato();
                 NotifyPropertyChanged("Length");
             }
         }
@@ -535,8 +533,7 @@ namespace PFD
                 RecreateFloorSlab = true;
                 RecreateFoundations = true;
                 if (!IsSetFromCode) SetCustomModel();
-                if (!IsSetFromCode) CalculateWallHeightsForCladding();
-                if (!IsSetFromCode) CountWallAndRoofAreas();
+                if (!IsSetFromCode) CalculateCladdingParameters_Mato();
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -564,8 +561,7 @@ namespace PFD
                 }
 
                 if (!IsSetFromCode) SetCustomModel();
-                if (!IsSetFromCode) CalculateWallHeightsForCladding();
-                if (!IsSetFromCode) CountWallAndRoofAreas();
+                if (!IsSetFromCode) CalculateCladdingParameters_Mato();
                 NotifyPropertyChanged("WidthOverall");
             }
         }
@@ -599,8 +595,7 @@ namespace PFD
                 }
                 if (!IsSetFromCode) _baysWidthOptionsVM = new BayWidthOptionsViewModel(Frames - 1, BayWidth);
                 if (!IsSetFromCode) SetCustomModel();
-                if (!IsSetFromCode) CalculateWallHeightsForCladding();
-                if (!IsSetFromCode) CountWallAndRoofAreas();
+                if (!IsSetFromCode) CalculateCladdingParameters_Mato();
                 NotifyPropertyChanged("LengthOverall");
             }
         }
@@ -626,8 +621,7 @@ namespace PFD
                     IsSetFromCode = isChangedFromCode;
                 }
                 if (!IsSetFromCode) SetCustomModel();
-                if (!IsSetFromCode) CalculateWallHeightsForCladding();
-                if (!IsSetFromCode) CountWallAndRoofAreas();
+                if (!IsSetFromCode) CalculateCladdingParameters_Mato();
                 NotifyPropertyChanged("WallHeightOverall");
             }
         }
@@ -691,7 +685,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 if (!IsSetFromCode) SetCustomModel();
-                if (!IsSetFromCode) CalculateWallHeightsForCladding();
+                if (!IsSetFromCode) CalculateCladdingParameters_Mato();
                 NotifyPropertyChanged("RoofPitch_deg");
             }
         }
@@ -747,7 +741,7 @@ namespace PFD
                 UpdateViewModelsOnFramesChange();
 
                 if (!IsSetFromCode) SetCustomModel();  //TODO Mato - toto si mozes zavesit vsade kde to treba, ku kazdej prperty a zmene na nej
-                if (!IsSetFromCode) CalculateWallHeightsForCladding();
+                if (!IsSetFromCode) CalculateCladdingParameters_Mato();
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -2795,11 +2789,18 @@ namespace PFD
             }
         }
 
+        public double AdditionalOffsetRoof
+        {
+            get
+            {
+                return m_AdditionalOffsetRoof;
+            }
 
-
-
-
-
+            set
+            {
+                m_AdditionalOffsetRoof = value;
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -3955,94 +3956,6 @@ namespace PFD
             return sDisplayOptions;
         }
 
-
-        // TODO - urcenie presnej geometrie cladding - malo by zodpovedat tomu co kreslime v 3D
-        // TO Ondrej - CountWallAreas a CountRoofAreas nepocitaju s uplne presnymi hodnotami, potreboval by som kod upravit tak, ze sa dostanem k rozmerom,
-        // ktore pocitam v CCladding.cs - Model3DGroup GetCladdingModel
-
-        private void CountWallAreas()
-        {
-            List<Point> WallDefinitionPoints_Left_Cladding = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
-
-            List<Point> WallDefinitionPoints_Right_Cladding;
-            List<Point> WallDefinitionPoints_Front_Cladding;
-            List<Point> WallDefinitionPoints_Front_Netto;
-
-            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) // Model is CModel_PFD_01_MR
-            {
-                WallDefinitionPoints_Right_Cladding = new List<Point>(4) { new Point(0, 0), new Point(LengthOverall, 0), new Point(LengthOverall, Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
-                WallDefinitionPoints_Front_Cladding = new List<Point>(4) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_2_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_1_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
-
-                // Bez bottom offset pre cladding
-                WallDefinitionPoints_Front_Netto = new List<Point>(4) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_2_final_edge_FB_Wall), new Point(0, Height_1_final_edge_FB_Wall) };
-            }
-            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) // Model is CModel_PFD_01_GR
-            {
-                WallDefinitionPoints_Right_Cladding = WallDefinitionPoints_Left_Cladding;
-                WallDefinitionPoints_Front_Cladding = new List<Point>(5) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_1_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0.5 * WidthOverall, Height_2_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z), new Point(0, Height_1_final_edge_FB_Wall - _claddingOptionsVM.WallBottomOffset_Z) };
-
-                // Bez bottom offset pre cladding
-                WallDefinitionPoints_Front_Netto = new List<Point>(5) { new Point(0, 0), new Point(WidthOverall, 0), new Point(WidthOverall, Height_1_final_edge_FB_Wall), new Point(0.5 * WidthOverall, Height_2_final_edge_FB_Wall), new Point(0, Height_1_final_edge_FB_Wall) };
-            }
-            else
-            {
-                WallDefinitionPoints_Right_Cladding = null; // Exception - not implemented
-                WallDefinitionPoints_Front_Cladding = null; // Exception - not implemented
-                WallDefinitionPoints_Front_Netto = null; // Exception - not implemented
-            }
-
-            float fWallArea_Left = 0; float fWallArea_Right = 0;
-
-            CComponentInfo girtLeft = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (girtLeft != null && girtLeft.Generate.Value == true)
-            {
-                fWallArea_Left = Geom2D.PolygonArea(WallDefinitionPoints_Left_Cladding.ToArray());
-            }
-
-            CComponentInfo girtRight = ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (girtRight != null && girtRight.Generate.Value == true)
-            {
-                if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed) // Model is CModel_PFD_01_MR
-                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right_Cladding.ToArray());
-                else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) // Model is CModel_PFD_01_GR
-                    fWallArea_Right = Geom2D.PolygonArea(WallDefinitionPoints_Right_Cladding.ToArray());
-                else
-                    fWallArea_Right = float.MinValue; //  Exception - not implemented
-            }
-
-            float fWallArea_Front = 0;
-            CComponentInfo girtFS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
-            if (girtFS != null && girtFS.Generate.Value == true)
-            {
-                fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_Front_Cladding.ToArray());
-            }
-
-            float fWallArea_Back = 0;
-            CComponentInfo girtBS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
-            if (girtBS != null && girtBS.Generate.Value == true)
-            {
-                fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_Front_Cladding.ToArray());
-            }
-
-            BuildingArea_Gross = WidthOverall * LengthOverall;
-            BuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_Front_Netto.ToArray()) * LengthOverall; // Bez bottom offset pre cladding
-
-            WallAreaLeft = fWallArea_Left;
-            WallAreaRight = fWallArea_Right;
-            WallAreaFront = fWallArea_Front;
-            WallAreaBack = fWallArea_Back;
-            TotalWallArea = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
-        }
-
-        //to Mato - treba sa zamysliet, kde vsade to treba volat
-        //toto zacina byt naozaj obtiazne, aby sme presne urcili, kde vsade sa maju prepocitavat hocijake prepocty, treba reagovat vzdy na spravnych miestach
-        public void CountWallAndRoofAreas()
-        {
-            CalculateCladdingParameters_Mato(); // IN WORK
-
-            CountWallAreas();
-        }
-
         public void CountFlashings()
         {
             if (_doorsAndWindowsVM == null) return;
@@ -4128,48 +4041,31 @@ namespace PFD
             return count;
         }
 
-        public void CalculateWallHeightsForCladding()
+        public void CalculateCladdingParameters_Mato()
         {
             if (_claddingOptionsVM == null) return;
-            double claddingHeight_Roof = 0;
 
-            if (_claddingOptionsVM.RoofCladdingProps != null)
-                claddingHeight_Roof = _claddingOptionsVM.RoofCladdingProps.height_m;
-            else
-            {
-                CTS_CrscProperties prop = CTrapezoidalSheetingManager.LoadCrossSectionProperties_meters(_claddingOptionsVM.RoofCladding);
-                claddingHeight_Roof = prop.height_m;
-            }
-
-            //bottomEdge_z = WallBottomOffset_Z;
-
-            CCrSc_TW edgeColumn = CrScFactory.GetCrSc(ComponentList[(int)EMemberType_FS_Position.EdgeColumn].Section);
-
-            double column_crsc_y_minus = edgeColumn.y_min;
-            double column_crsc_y_plus = edgeColumn.y_max;
-            double column_crsc_z_plus = edgeColumn.z_max;
-
-            AdditionalOffsetWall = 0.001;  // 1 mm Aby nekolidovali plochy cladding s members
-            double additionalOffsetRoof = 0.001; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
+            AdditionalOffsetWall = 0.001; // 1 mm Aby nekolidovali plochy cladding s members
+            AdditionalOffsetRoof = 0.001; // 1 mm Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
-            double column_crsc_y_minus_temp = column_crsc_y_minus - AdditionalOffsetWall;
-            double column_crsc_y_plus_temp = column_crsc_y_plus + AdditionalOffsetWall;
-            double column_crsc_z_plus_temp = column_crsc_z_plus + AdditionalOffsetWall;
+            double column_crsc_y_minus_temp = EdgeColumnCrsc_y_minus - AdditionalOffsetWall;
+            double column_crsc_y_plus_temp = EdgeColumnCrsc_y_plus + AdditionalOffsetWall;
+            double column_crsc_z_plus_temp = MainColumnCrsc_z_plus + AdditionalOffsetWall;
 
-            double height_1_final = WallHeight + column_crsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
-            double height_2_final = Height_H2 + column_crsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
+            double height_1_final = WallHeight + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
+            double height_2_final = Height_H2 + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
 
             Height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
             Height_2_final_edge_LR_Wall = height_2_final;
 
-            double height_1_final_edge_Roof = height_1_final + additionalOffsetRoof - (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            double height_2_final_edge_Roof = height_2_final + additionalOffsetRoof;
+            double height_1_final_edge_Roof = height_1_final + AdditionalOffsetRoof - (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+            double height_2_final_edge_Roof = height_2_final + AdditionalOffsetRoof;
 
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 Height_2_final_edge_LR_Wall = height_2_final + column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
-                height_2_final_edge_Roof = height_2_final + additionalOffsetRoof + (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+                height_2_final_edge_Roof = height_2_final + AdditionalOffsetRoof + (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
             }
 
             // Nastavime rovnaku vysku hornej hrany
@@ -4178,55 +4074,12 @@ namespace PFD
 
             if (_claddingOptionsVM.ConsiderRoofCladdingFor_FB_WallHeight)
             {
-                Height_1_final_edge_FB_Wall = Height_1_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(RoofPitch_deg * Math.PI / 180);
-                Height_2_final_edge_FB_Wall = Height_2_final_edge_FB_Wall + claddingHeight_Roof * Math.Tan(RoofPitch_deg * Math.PI / 180);
+                Height_1_final_edge_FB_Wall = Height_1_final_edge_FB_Wall + _claddingOptionsVM.RoofCladdingProps.height_m * Math.Tan(RoofPitch_deg * Math.PI / 180);
+                Height_2_final_edge_FB_Wall = Height_2_final_edge_FB_Wall + _claddingOptionsVM.RoofCladdingProps.height_m * Math.Tan(RoofPitch_deg * Math.PI / 180);
 
                 if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-                    Height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + claddingHeight_Roof) * Math.Tan(RoofPitch_deg * Math.PI / 180);
+                    Height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + _claddingOptionsVM.RoofCladdingProps.height_m) * Math.Tan(RoofPitch_deg * Math.PI / 180);
             }
-        }
-
-        public void CalculateCladdingParameters_Mato()
-        {
-            double additionalOffset = 0.001; // 1 mm Aby nekolidovali plochy cladding s members
-            double additionalOffsetRoof = 0.001; // 1 mm Aby nekolidovali plochy cladding s members (cross-bracing) na streche
-
-            // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
-            double column_crsc_y_minus_temp = EdgeColumnCrsc_y_minus - additionalOffset;
-            double column_crsc_y_plus_temp = EdgeColumnCrsc_y_plus + additionalOffset;
-            double column_crsc_z_plus_temp = MainColumnCrsc_z_plus + additionalOffset;
-
-            //----------------------------------------
-            // To Ondrej - toto by sme mali nahradit funkciou
-            // CalculateWallHeightsForCladding
-            double height_1_final = WallHeight + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
-            double height_2_final = Height_H2 + MainColumnCrsc_z_plus / Math.Cos(RoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
-
-            double height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            double height_2_final_edge_LR_Wall = height_2_final;
-
-            double height_1_final_edge_Roof = height_1_final + additionalOffsetRoof - (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            double height_2_final_edge_Roof = height_2_final + additionalOffsetRoof;
-
-            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-            {
-                height_2_final_edge_LR_Wall = height_2_final + column_crsc_z_plus_temp * Math.Tan(RoofPitch_deg * Math.PI / 180);
-                height_2_final_edge_Roof = height_2_final + additionalOffsetRoof + (column_crsc_z_plus_temp + _claddingOptionsVM.RoofEdgeOverHang_LR_X) * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            }
-
-            // Nastavime rovnaku vysku hornej hrany
-            double height_1_final_edge_FB_Wall = height_1_final_edge_LR_Wall;
-            double height_2_final_edge_FB_Wall = height_2_final_edge_LR_Wall;
-
-            if (_claddingOptionsVM.ConsiderRoofCladdingFor_FB_WallHeight)
-            {
-                height_1_final_edge_FB_Wall = height_1_final_edge_FB_Wall + _claddingOptionsVM.RoofCladdingProps.height_m * Math.Tan(RoofPitch_deg * Math.PI / 180);
-                height_2_final_edge_FB_Wall = height_2_final_edge_FB_Wall + _claddingOptionsVM.RoofCladdingProps.height_m * Math.Tan(RoofPitch_deg * Math.PI / 180);
-
-                if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-                    height_2_final_edge_FB_Wall = height_2_final + (column_crsc_z_plus_temp + _claddingOptionsVM.RoofCladdingProps.height_m) * Math.Tan(RoofPitch_deg * Math.PI / 180);
-            }
-            //----------------------------------------
 
             // Wall Cladding Edges
 
@@ -4259,6 +4112,9 @@ namespace PFD
             Point3D pRoof_front4_top = new Point3D();
             Point3D pRoof_back4_top = new Point3D();
 
+            List<Point> WallDefinitionPoints_FrontOrBack_Cladding; // Cladding (od hrany WallBottomOffset_Z)
+            List<Point> WallDefinitionPoints_FrontOrBack_Netto; // Od podlahy - (+0.000)
+
             // Roof edge offset from centerline in Y-direction
             float fRoofEdgeOffsetFromCenterline = -(float)column_crsc_y_minus_temp + (float)_claddingOptionsVM.RoofEdgeOverHang_FB_Y;
 
@@ -4277,16 +4133,29 @@ namespace PFD
 
                 // Wall
                 iNumberOfFrontBackWallEdges = 4;
-                pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_2_final_edge_FB_Wall);
-                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_FB_Wall);
+                pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_2_final_edge_FB_Wall);
+                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_FB_Wall);
 
-                pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, height_2_final_edge_FB_Wall);
-                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, height_1_final_edge_FB_Wall);
+                pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_2_final_edge_FB_Wall);
+                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_FB_Wall);
 
-                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, height_2_final_edge_FB_Wall);
-                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, height_2_final_edge_FB_Wall);
-                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, height_1_final_edge_FB_Wall);
-                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, height_1_final_edge_FB_Wall);
+                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, Height_2_final_edge_FB_Wall);
+                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, Height_2_final_edge_FB_Wall);
+                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, Height_1_final_edge_FB_Wall);
+                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, Height_1_final_edge_FB_Wall);
+
+                WallDefinitionPoints_FrontOrBack_Cladding = new List<Point>(4) {
+                    new Point(-column_crsc_z_plus_temp, _claddingOptionsVM.WallBottomOffset_Z),
+                    new Point(Width + column_crsc_z_plus_temp, _claddingOptionsVM.WallBottomOffset_Z),
+                    new Point(Width + column_crsc_z_plus_temp, Height_2_final_edge_FB_Wall),
+                    new Point(-column_crsc_z_plus_temp, Height_1_final_edge_FB_Wall) };
+
+                // Bez bottom offset pre cladding
+                WallDefinitionPoints_FrontOrBack_Netto = new List<Point>(4) {
+                    new Point(-column_crsc_z_plus_temp, 0),
+                    new Point(Width + column_crsc_z_plus_temp, 0),
+                    new Point(Width + column_crsc_z_plus_temp, Height_2_final_edge_FB_Wall),
+                    new Point(-column_crsc_z_plus_temp, Height_1_final_edge_FB_Wall) };
 
                 // Roof
                 iNumberOfRoofSides = 1;
@@ -4304,20 +4173,35 @@ namespace PFD
 
                 // Wall
                 iNumberOfFrontBackWallEdges = 5;
-                pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_LR_Wall);
-                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_LR_Wall);
-                pLRWall_front4_top = new Point3D(0.5 * Width, column_crsc_y_minus_temp, height_2_final_edge_LR_Wall);
+                pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_LR_Wall);
+                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_LR_Wall);
+                pLRWall_front4_top = new Point3D(0.5 * Width, column_crsc_y_minus_temp, Height_2_final_edge_LR_Wall);
 
-                pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, height_1_final_edge_LR_Wall);
-                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, height_1_final_edge_LR_Wall);
-                pLRWall_back4_top = new Point3D(0.5 * Width, Length + column_crsc_y_plus_temp, height_2_final_edge_LR_Wall);
+                pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_LR_Wall);
+                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_LR_Wall);
+                pLRWall_back4_top = new Point3D(0.5 * Width, Length + column_crsc_y_plus_temp, Height_2_final_edge_LR_Wall);
 
-                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, height_1_final_edge_FB_Wall);
-                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, height_1_final_edge_FB_Wall);
-                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, height_1_final_edge_FB_Wall);
-                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, height_1_final_edge_FB_Wall);
-                pFBWall_front4_top = new Point3D(pLRWall_front4_top.X, pLRWall_front4_top.Y, height_2_final_edge_FB_Wall);
-                pFBWall_back4_top = new Point3D(pLRWall_back4_top.X, pLRWall_back4_top.Y, height_2_final_edge_FB_Wall);
+                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, Height_1_final_edge_FB_Wall);
+                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, Height_1_final_edge_FB_Wall);
+                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, Height_1_final_edge_FB_Wall);
+                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, Height_1_final_edge_FB_Wall);
+                pFBWall_front4_top = new Point3D(pLRWall_front4_top.X, pLRWall_front4_top.Y, Height_2_final_edge_FB_Wall);
+                pFBWall_back4_top = new Point3D(pLRWall_back4_top.X, pLRWall_back4_top.Y, Height_2_final_edge_FB_Wall);
+
+                WallDefinitionPoints_FrontOrBack_Cladding = new List<Point>(5) {
+                    new Point(-column_crsc_z_plus_temp, _claddingOptionsVM.WallBottomOffset_Z),
+                    new Point(Width + column_crsc_z_plus_temp, _claddingOptionsVM.WallBottomOffset_Z),
+                    new Point(Width + column_crsc_z_plus_temp, Height_1_final_edge_FB_Wall),
+                    new Point(0.5 * Width, Height_2_final_edge_FB_Wall),
+                    new Point(-column_crsc_z_plus_temp, Height_1_final_edge_FB_Wall) };
+
+                // Bez bottom offset pre cladding
+                WallDefinitionPoints_FrontOrBack_Netto = new List<Point>(5) {
+                    new Point(-column_crsc_z_plus_temp, 0),
+                    new Point(Width + column_crsc_z_plus_temp, 0),
+                    new Point(Width + column_crsc_z_plus_temp, Height_1_final_edge_FB_Wall),
+                    new Point(0.5 * Width, Height_2_final_edge_FB_Wall),
+                    new Point(-column_crsc_z_plus_temp, Height_1_final_edge_FB_Wall) };
 
                 // Roof
                 iNumberOfRoofSides = 2;
@@ -4430,6 +4314,40 @@ namespace PFD
                 }
             }
 
+            float fWallArea_Left = 0; float fWallArea_Right = 0;
+
+            CComponentInfo girtLeft = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (girtLeft != null && girtLeft.Generate.Value == true)
+                fWallArea_Left = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);
+
+            CComponentInfo girtRight = ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (girtRight != null && girtRight.Generate.Value == true)
+            {
+                if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+                    fWallArea_Right = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);
+                else
+                    fWallArea_Right = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);
+            }
+
+            float fWallArea_Front = 0;
+            CComponentInfo girtFS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (girtFS != null && girtFS.Generate.Value == true)
+                fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_FrontOrBack_Cladding.ToArray());
+
+            float fWallArea_Back = 0;
+            CComponentInfo girtBS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (girtBS != null && girtBS.Generate.Value == true)
+                fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_FrontOrBack_Cladding.ToArray());
+
+            BuildingArea_Gross = WidthOverall * LengthOverall;
+            BuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_FrontOrBack_Netto.ToArray()) * LengthOverall; // Bez bottom offset pre cladding
+
+            WallAreaLeft = fWallArea_Left; // To Ondrej potrebujeme tieto lokalne premenne a potom aj properties ???
+            WallAreaRight = fWallArea_Right;
+            WallAreaFront = fWallArea_Front;
+            WallAreaBack = fWallArea_Back;
+            TotalWallArea = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
+
             CComponentInfo purlin = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Purlin);
             if (purlin != null && purlin.Generate == true)
             {
@@ -4438,9 +4356,6 @@ namespace PFD
             }
             else { TotalRoofArea = 0; TotalRoofAreaInclCanopies = 0; }
         }
-
-
-
 
         //To Mato - alebo to nazveme ModelHasCladding?
         public bool ModelHasPurlinsOrGirts()

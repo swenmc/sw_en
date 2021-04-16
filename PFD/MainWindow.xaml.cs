@@ -336,7 +336,7 @@ namespace PFD
                         }
 
                         vm.SetCustomModel();
-                        vm.CountWallAndRoofAreas();
+                        vm.CalculateCladdingParameters_Mato();
                     }
                     else
                     {
@@ -351,8 +351,8 @@ namespace PFD
                         vm.LengthOverall = vm.Length + Math.Abs(vm.EdgeColumnCrsc_y_minus) + vm.EdgeColumnCrsc_y_plus;
                         vm.IsSetFromCode = isChangedFromCode;
 
-                        vm.SetCustomModel(); 
-                        vm.CountWallAndRoofAreas(); 
+                        vm.SetCustomModel();
+                        vm.CalculateCladdingParameters_Mato();
                     }
                 }
                 if (e.PropertyName == "Color")
@@ -378,7 +378,7 @@ namespace PFD
                     vm.RecreateFloorSlab = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruje FloorSlab
                     vm.RecreateJoints = true; //need to recreate joint when generate was changed
                     vm.RecreateModel = true;
-                    vm.CountWallAndRoofAreas();
+                    vm.CalculateCladdingParameters_Mato();
 
                     if (cInfo.Generate == false)
                     {
