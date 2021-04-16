@@ -27,6 +27,9 @@ using System.Configuration;
 using BaseClasses.Helpers;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Markup;
+using System.ComponentModel;
 
 namespace PFD
 {
@@ -607,10 +610,11 @@ namespace PFD
         {
             if (vm.ComponentTypeIndex == 0)  //CRSC
             {
-                TxtCombScrewArrangment.Visibility = Visibility.Hidden;
-                Combobox_ScrewArrangement.Visibility = Visibility.Hidden;
-                TxtScrewArrangment.Visibility = Visibility.Hidden;
-                DataGridScrewArrangement.Visibility = Visibility.Hidden;
+                ScrewArrangementTabControl.Visibility = Visibility.Hidden;
+                //TxtCombScrewArrangment.Visibility = Visibility.Hidden;
+                //Combobox_ScrewArrangement.Visibility = Visibility.Hidden;                
+                //TxtScrewArrangment.Visibility = Visibility.Hidden;
+                //DataGridScrewArrangement.Visibility = Visibility.Hidden;
 
                 TxtGeometry.Visibility = Visibility.Hidden;
                 DataGridGeometry.Visibility = Visibility.Hidden;
@@ -660,10 +664,11 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1) //plate
             {
-                TxtCombScrewArrangment.Visibility = Visibility.Visible;
-                Combobox_ScrewArrangement.Visibility = Visibility.Visible;
-                TxtScrewArrangment.Visibility = Visibility.Visible;
-                DataGridScrewArrangement.Visibility = Visibility.Visible;
+                ScrewArrangementTabControl.Visibility = Visibility.Visible;
+                //TxtCombScrewArrangment.Visibility = Visibility.Visible;
+                //Combobox_ScrewArrangement.Visibility = Visibility.Visible;
+                //TxtScrewArrangment.Visibility = Visibility.Visible;
+                //DataGridScrewArrangement.Visibility = Visibility.Visible;
 
                 TxtGeometry.Visibility = Visibility.Visible;
                 DataGridGeometry.IsReadOnly = false;
@@ -744,10 +749,11 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 2) //screw
             {
-                TxtCombScrewArrangment.Visibility = Visibility.Hidden;
-                Combobox_ScrewArrangement.Visibility = Visibility.Hidden;
-                TxtScrewArrangment.Visibility = Visibility.Hidden;
-                DataGridScrewArrangement.Visibility = Visibility.Hidden;
+                ScrewArrangementTabControl.Visibility = Visibility.Hidden;
+                //TxtCombScrewArrangment.Visibility = Visibility.Hidden;
+                //Combobox_ScrewArrangement.Visibility = Visibility.Hidden;
+                //TxtScrewArrangment.Visibility = Visibility.Hidden;
+                //DataGridScrewArrangement.Visibility = Visibility.Hidden;
 
                 TxtGeometry.Visibility = Visibility.Hidden;
                 DataGridGeometry.Visibility = Visibility.Hidden;
@@ -794,8 +800,6 @@ namespace PFD
         {
             if (vm.ScrewArrangementIndex == 0)
             {
-                //TxtScrewArrangment.Visibility = Visibility.Hidden;
-                //DataGridScrewArrangement.Visibility = Visibility.Hidden;
                 chbDrawHoles2D.IsEnabled = false;
                 chbDrawHoleCentreSymbol2D.IsEnabled = false;
                 chbDrawDrillingRoute2D.IsEnabled = false;
@@ -804,8 +808,6 @@ namespace PFD
             }
             else
             {
-                //TxtScrewArrangment.Visibility = Visibility.Visible;
-                //DataGridScrewArrangement.Visibility = Visibility.Visible;
                 chbDrawHoles2D.IsEnabled = true;
                 chbDrawHoleCentreSymbol2D.IsEnabled = true;
                 chbDrawDrillingRoute2D.IsEnabled = true;
@@ -2913,15 +2915,219 @@ namespace PFD
             }            
         }
 
-        
+
+        private void SetTabContent(TabItem ti, CPlate plate)
+        {
+            StackPanel sp = new StackPanel();
+            sp.Width = 560;
+            sp.VerticalAlignment = VerticalAlignment.Top;
+            sp.HorizontalAlignment = HorizontalAlignment.Left;
+
+            // Base Plate - Anchor Arrangement
+            if (plate is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+
+                // Anchor arrangement
+                StackPanel spAA = new StackPanel();
+                sp.Width = 550;
+                spAA.Orientation = Orientation.Horizontal;
+                Label lAA = new Label() { Content = "Anchor Arrangement: " };
+                lAA.Width = 150;
+                ComboBox selectAA = new ComboBox();
+
+                selectAA.Width = 120;
+                selectAA.Height = 20;
+                var marginAA = selectAA.Margin;
+                marginAA.Top = 5;
+                marginAA.Bottom = 5;
+                selectAA.Margin = marginAA;
+                selectAA.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
+                selectAA.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
+                selectAA.SelectionChanged += SelectAA_SelectionChanged;
+                spAA.Children.Add(lAA);
+                spAA.Children.Add(selectAA);
+                sp.Children.Add(spAA);
+
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+                sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));
+            }
+
+            ti.Content = sp;            
+        }
+        private void SelectAA_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cbAA = sender as ComboBox;
+            if (cbAA == null) return;
+
+            ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
+
+            SetTabContent(TabItemAnchorArrangement, plate);
+        }
+
+        private void ChangeAllSameJointsPlateAnchorArrangement(int anchorArrangementIndex)
+        {
+            CPlateHelper.AnchorArrangementChanged(null, plate, anchorArrangementIndex);
+            CPlateHelper.UpdatePlateAnchorArrangementData(plate);
+        }
+
+        private DataGrid GetDatagridForAnchorArrangement(List<CComponentParamsView> anchorArrangementParams)
+        {
+            DataGrid dgAA = new DataGrid();
+            dgAA.Name = "DatagridForAnchorArrangement";
+            //dgAA.SetValue(Grid.RowProperty, 1);
+            dgAA.ItemsSource = anchorArrangementParams;
+            dgAA.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dgAA.AutoGenerateColumns = false;
+            dgAA.IsEnabled = true;
+            dgAA.IsReadOnly = false;
+            dgAA.CanUserSortColumns = false;
+            dgAA.HeadersVisibility = DataGridHeadersVisibility.Column;
+            dgAA.SelectionMode = DataGridSelectionMode.Extended;
+            dgAA.SelectionUnit = DataGridSelectionUnit.Cell;
+            dgAA.SelectedItems.Clear();
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Header = "Name";
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Header = "Symbol";
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc2);
+
+            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.Header = "Value";
+            tc3.IsReadOnly = false;
+            tc3.CellTemplate = GetDataTemplate();
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Header = "Unit";
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc4);
+
+            foreach (CComponentParamsView cpw in anchorArrangementParams)
+            {
+                cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
+            }
+
+            if (anchorArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
+                dgAA.Visibility = Visibility.Collapsed;
+
+            return dgAA;
+        }
+
+        private void HandleAnchorArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (!(sender is CComponentParamsView)) return;
+            CComponentParamsView item = sender as CComponentParamsView;
+
+            if (plate is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+
+                CPlateHelper.UpdatePlateScrewArrangementData(plate);
+
+                if (anchorArrangementParams != null)
+                {
+                    StackPanel sp = TabItemAnchorArrangement.Content as StackPanel;
+                    DataGrid dgAA = sp.Children[2] as DataGrid;
+                    dgAA.ItemsSource = anchorArrangementParams;
+                    foreach (CComponentParamsView cpw in anchorArrangementParams)
+                    {
+                        cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
+                    }
+                }
+            }
+            //vm.ChangedAnchorArrangementParameter = item;
+        }
+
+        private DataTemplate GetDataTemplate()
+        {
+            DataTemplate retVal = null;
+
+            var context = new ParserContext();
+            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+
+            string s = @"<DataTemplate><ContentControl Content='{Binding}'><ContentControl.Style><Style TargetType='ContentControl'><Style.Triggers>            
+            <DataTrigger Binding='{Binding CheckType}' Value='CheckBox'>
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <CheckBox HorizontalAlignment='Center' IsChecked='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            <DataTrigger Binding='{Binding CheckType}' Value='ComboBox' >
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            <DataTrigger Binding='{Binding CheckType}' Value='TextBox'>
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' IsEnabled='{Binding IsEnabled}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            <DataTrigger Binding='{ Binding CheckType}' Value='TextBlock'>
+            <Setter Property = 'ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <TextBlock TextAlignment='Right' Text = '{Binding Value}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            <Setter Property='Focusable' Value='False'></Setter>
+            </DataTrigger>
+            </Style.Triggers>
+            </Style>
+            </ContentControl.Style>
+            </ContentControl>
+            </DataTemplate>";
+
+            retVal = XamlReader.Parse(s, context) as DataTemplate;
+            return retVal;
+        }
+
+        private Style GetReadonlyCellStyle()
+        {
+            Style style = new Style(typeof(DataGridCell));
+            style.Setters.Add(new Setter(BackgroundProperty, new SolidColorBrush(Colors.WhiteSmoke)));
+            style.Setters.Add(new Setter(ForegroundProperty, new SolidColorBrush(Colors.Black)));
+            return style;
+        }
+
 
         //private void DataGridScrewArrangement_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         //{
-            
+
         //    //MessageBox.Show("SelectedCellsChanged");
         //}
 
-        
+
 
 
 

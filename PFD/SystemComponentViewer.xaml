@@ -135,7 +135,7 @@
                 </Grid>
             </StackPanel>
 
-            <TabControl Name="MainTabConrol" Grid.Row="3" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2">
+            <TabControl Name="ScrewArrangementTabControl" Grid.Row="3" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2">
                 <TabItem Name="TabItemScrewArrangement" >                    
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
@@ -255,7 +255,7 @@
                         
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Name="TabItemAnchorArrangement" IsEnabled="False">
+                <TabItem Name="TabItemAnchorArrangement" IsEnabled="{Binding Path=AnchorArrangementIsEnabled}">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Anchor Arrangement" Foreground="Blue"/>
