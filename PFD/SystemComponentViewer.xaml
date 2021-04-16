@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="System Component Viewer"  Height="800" Width="1350" Icon="Resources/FSlogoNew_SCV.png" KeyDown="Window_KeyDown">
+        Title="System Component Viewer"  Height="840" Width="1350" Icon="Resources/FSlogoNew_SCV.png" KeyDown="Window_KeyDown">
     <Window.Resources>
         <SolidColorBrush x:Key="colorReadOnlyCell" Color="WhiteSmoke" />
         <!-- Light gray color of readonly cell background -->
@@ -51,7 +51,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
@@ -65,25 +65,16 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 5 0 0"/>
             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Type" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" Margin="0 5 0 0"
                       ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
-            <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Com_Type" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" Margin="155 5 0 0"
-                      ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>-->
-
+            
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Serie:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
-            <!--<ComboBox Grid.Row="1" Grid.Column="2" Name ="Com_Series" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
-                      ItemsSource="{Binding Path=Plates}" DisplayMemberPath="Key" SelectedItem="{Binding Path=}" />-->
-
+            
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Component:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_Component" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
-            <!--<ComboBox Grid.Row="2" Grid.Column="1" Name ="Com_Component" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
-                      ItemsSource="{Binding SelectedItem.Value, ElementName=Com_Series}" 
-                      DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedComponent, UpdateSourceTrigger=PropertyChanged}" />-->
-
-            <TextBlock Grid.Row="3" Grid.Column="0" Name="TxtCombScrewArrangment" Text="Screw Arrangement:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
-            <ComboBox Grid.Row="3" Grid.Column="1" Name ="Combobox_ScrewArrangement" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" 
-                      ItemsSource="{Binding Path=ScrewArrangements}" SelectedIndex="{Binding Path=ScrewArrangementIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
+            
+            
 
             <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="6" Grid.Column="2" Margin="10,5,0,120">
                 <TextBlock Text="Display Options" HorizontalAlignment="Left"/>
@@ -105,7 +96,7 @@
                 <CheckBox Name="chbMirrorPlate3D" IsChecked="{Binding Path=MirrorPlate3D}" Content="Mirror" Margin="0 5 0 0"/>
             </StackPanel>
 
-            <StackPanel Name="panelOptionsTransform2D" Grid.Row="5" Grid.Column="2" Margin="10,45,0,0" Grid.RowSpan="2">
+            <StackPanel Name="panelOptionsTransform2D" Grid.Row="5" Grid.Column="2" Margin="10,65,0,0" Grid.RowSpan="2">
                 <TextBlock Text="Transformation Options" HorizontalAlignment="Left"/>
                 <CheckBox x:Name="CheckBox_MirrorY" IsChecked="{Binding Path=MirrorY}" Content="Mirror about vertical axis y-y" Margin="0 5 0 0" />
                 <!--Checked="CheckBox_MirrorY_Checked" Unchecked="CheckBox_MirrorY_Unchecked"-->
@@ -144,100 +135,156 @@
                 </Grid>
             </StackPanel>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
-            <DataGrid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"
+            <TabControl Name="MainTabConrol" Grid.Row="3" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2">
+                <TabItem Name="TabItemScrewArrangement" >                    
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Screw Arrangement" Foreground="Blue"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <ScrollViewer>
+                        <Grid Name="ScrewArrangementGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Name="TxtCombScrewArrangment" Text="Screw Arrangement:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10 0 0 0"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_ScrewArrangement" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Center" 
+                      ItemsSource="{Binding Path=ScrewArrangements}" SelectedIndex="{Binding Path=ScrewArrangementIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
+                            <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ScrewArrangementParameters}"
                       HeadersVisibility="Column" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
                       SelectionMode="Extended" SelectionUnit="Cell" CanUserSortColumns="False"                                              
                       >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
-                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
-                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Symbol" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}">
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
-                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
-                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" CellStyle="{StaticResource NotFocusableCellStyle}">                        
-                        <DataGridTemplateColumn.CellTemplate>                            
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}">
-                                    <ContentControl.Style>                                        
-                                        <Style TargetType="ContentControl">
-                                            <Style.Triggers>
-                                                <!--<DataTrigger Binding="{Binding IsReadonly}" Value="0" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
+                                        <DataGridTextColumn.CellStyle>
+                                            <Style TargetType="DataGridCell">
+                                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
+                                            </Style>
+                                        </DataGridTextColumn.CellStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Symbol" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}">
+                                        <DataGridTextColumn.CellStyle>
+                                            <Style TargetType="DataGridCell">
+                                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
+                                            </Style>
+                                        </DataGridTextColumn.CellStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" CellStyle="{StaticResource NotFocusableCellStyle}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ContentControl Content="{Binding}">
+                                                    <ContentControl.Style>
+                                                        <Style TargetType="ContentControl">
+                                                            <Style.Triggers>
+                                                                <!--<DataTrigger Binding="{Binding IsReadonly}" Value="0" >
                                                     <Setter Property="Background" Value="WhiteSmoke" />
                                                 </DataTrigger>-->
-                                                <DataTrigger Binding="{Binding CheckType}" Value="CheckBox">
-                                                    <Setter Property="ContentTemplate">
-                                                        <Setter.Value>
-                                                            <DataTemplate>
-                                                                <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                                            </DataTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                    <Setter Property="Focusable" Value="False"></Setter>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding CheckType}" Value="ComboBox">
-                                                    <Setter Property="ContentTemplate">
-                                                        <Setter.Value>
-                                                            <DataTemplate>
-                                                                <ComboBox HorizontalAlignment="Right" SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ItemsSource="{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                            </DataTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                    <Setter Property="Focusable" Value="False"></Setter>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">
-                                                    <Setter Property="ContentTemplate">
-                                                        <Setter.Value>
-                                                            <DataTemplate>
-                                                                <TextBox Name="SA_TextBox" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" local:FocusAttacher.Focus="True" />
-                                                            </DataTemplate>                                                            
-                                                        </Setter.Value>                                                        
-                                                    </Setter>
-                                                    <Setter Property="Focusable" Value="False"></Setter>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBlock">
-                                                    <Setter Property="ContentTemplate">
-                                                        <Setter.Value>
-                                                            <DataTemplate>
-                                                                <TextBlock TextAlignment="Right" Text="{Binding Value}" />
-                                                            </DataTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                    <Setter Property="Focusable" Value="False"></Setter>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                            
-                                        </Style>
-                                    </ContentControl.Style>
-                                </ContentControl>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Unit" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
-                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
-                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+                                                                <DataTrigger Binding="{Binding CheckType}" Value="CheckBox">
+                                                                    <Setter Property="ContentTemplate">
+                                                                        <Setter.Value>
+                                                                            <DataTemplate>
+                                                                                <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                                                                            </DataTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CheckType}" Value="ComboBox">
+                                                                    <Setter Property="ContentTemplate">
+                                                                        <Setter.Value>
+                                                                            <DataTemplate>
+                                                                                <ComboBox HorizontalAlignment="Right" SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ItemsSource="{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                            </DataTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">
+                                                                    <Setter Property="ContentTemplate">
+                                                                        <Setter.Value>
+                                                                            <DataTemplate>
+                                                                                <TextBox Name="SA_TextBox" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" local:FocusAttacher.Focus="True" />
+                                                                            </DataTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBlock">
+                                                                    <Setter Property="ContentTemplate">
+                                                                        <Setter.Value>
+                                                                            <DataTemplate>
+                                                                                <TextBlock TextAlignment="Right" Text="{Binding Value}" />
+                                                                            </DataTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+
+                                                        </Style>
+                                                    </ContentControl.Style>
+                                                </ContentControl>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Unit" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
+                                        <DataGridTextColumn.CellStyle>
+                                            <Style TargetType="DataGridCell">
+                                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
+                                            </Style>
+                                        </DataGridTextColumn.CellStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Name="TabItemAnchorArrangement" IsEnabled="False">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Anchor Arrangement" Foreground="Blue"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <ScrollViewer>
+                        <Grid Name="AnchorArrangementGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>                
+            </TabControl>
+
+
+            
+            
+            
+
+
 
             <TextBlock Grid.Row="6" Grid.Column="0" Name="TxtGeometry" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" Margin="10 0 0 0"
