@@ -198,7 +198,6 @@ namespace BaseClasses.Helpers
             //        3, 1, 0.030f, 0.030f, 0.060f, 0.050f,
             //        3, 1, 0.030f, 0.135f, 0.060f, 0.050f,
             //        3, 1, 0.030f, 0.260f, 0.060f, 0.050f);
-            
 
             if (platePrefix == "BA")
             {
@@ -226,7 +225,7 @@ namespace BaseClasses.Helpers
                       3, 3, 0.027f, 0.345f, 0.050f, 0.060f);
                 return screwArrangement1_50020_154;
             }
-            else if (platePrefix == "BE-2 holes" || platePrefix == "BE-3 holes")
+            else if (platePrefix == "BE-2 holes" || platePrefix == "BE-3 holes" || platePrefix == "BE-4 holes")
             {
                 CScrewArrangement_BX screwArrangement1_50020n_154 = new CScrewArrangement_BX(referenceScrew, /*fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.182f,*/
                     3, 3, 0.027f, 0.030f, 0.050f, 0.060f,
@@ -236,16 +235,16 @@ namespace BaseClasses.Helpers
             else if (platePrefix == "BF-4 holes" || platePrefix == "BF-6 holes")
             {
                 CScrewArrangement_BX screwArrangement1_63020_400 = new CScrewArrangement_BX(referenceScrew, /*fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,*/
-                    7, 5, 0.050f, 0.029f, 0.050f, 0.035f,
-                    7, 5, 0.050f, 0.401f, 0.050f, 0.035f);
+                    3, 3, 0.020f, 0.020f, 0.150f, 0.080f,
+                    3, 3, 0.020f, 0.400f, 0.150f, 0.080f);
                 return screwArrangement1_63020_400;
-            }                
+            }
             else if (platePrefix == "BH" || platePrefix == "BI")
             {
                 CScrewArrangement_BX screwArrangement2_10075_92 = new CScrewArrangement_BX(referenceScrew,
                     2, 3, 0.020f, 0.012f, 0.030f, 0.035f);
                 return screwArrangement2_10075_92;
-            }                
+            }
             else if (platePrefix == "BJ-2 holes" || platePrefix == "BJ-3 holes")
             {
                 CScrewArrangement_BX screwArrangement1_63020_180 = new CScrewArrangement_BX(referenceScrew, /*fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,*/
@@ -253,11 +252,10 @@ namespace BaseClasses.Helpers
                     3, 5, 0.030f, 0.404f, 0.060f, 0.035f);
                 return screwArrangement1_63020_180;
             }
-                
             else
                 return null; // Exception - not defined plate prefix
         }
-        
+
         public static CScrewArrangementCircleApexOrKnee GetDefaultCircleScrewArrangement(
             float fCrscDepth,
             float fCrscWebEndArcExternalRadius,
@@ -310,7 +308,6 @@ namespace BaseClasses.Helpers
 
             return new CScrewArrangementCircleApexOrKnee(referenceScrew, fCrscDepth, fCrscWebStraightDepth, fCrscWebMiddlePart, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance, bUseExtraScrews, iExtraScrewsRows, iExtraScrewsInRow, positionOfExtraScrews_y, 0.05f, 0.03f);
         }
-
 
         public static CJointLoadCombinationRatio_ULS FindResultWithMaximumDesignRatio(IEnumerable<CJointLoadCombinationRatio_ULS> results)
         {

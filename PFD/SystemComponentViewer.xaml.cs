@@ -325,29 +325,31 @@ namespace PFD
                         // "BD" - 3
                         // "BE-2 holes" - 4
                         // "BE-3 holes" - 5
-                        // "BF-4 holes" - 6
-                        // "BF-6 holes" - 7
-                        // "BG" - 8
-                        // "BH" - 9
-                        // "BI" - 10
-                        // "BJ- 2 holes" - 11
-                        // "BJ- 3 holes" - 12
+                        // "BE-4 holes" - 6
+                        // "BF-4 holes" - 7
+                        // "BF-6 holes" - 8
+                        // "BG" - 9
+                        // "BH" - 10
+                        // "BI" - 11
+                        // "BJ- 2 holes" - 12
+                        // "BJ- 3 holes" - 13
 
                         switch (vm.ComponentIndex)
                         {
                             case 0: // BA
                             case 1: // BB
                             case 2: // BC
-                            case 8: // BG
+                            case 9: // BG
                             case 3: // BD
                             case 4: // BE
                             case 5: // BE
-                            case 6: // BF
+                            case 6: // BE
                             case 7: // BF
-                            case 11: // BJ
+                            case 8: // BF
                             case 12: // BJ
-                            case 9:  // BH
-                            case 10: // BI
+                            case 13: // BJ
+                            case 10:  // BH
+                            case 11: // BI
                             default:
                                 {
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
