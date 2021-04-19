@@ -2203,8 +2203,9 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateModel = true;
                 RecreateJoints = true;
+                CalculateCladdingParameters_Mato(); //before recreate quotation
                 RecreateQuotation = true;
-                SetComponentListAccordingToCanopies();
+                SetComponentListAccordingToCanopies();                
 
                 if (MSynchronizeGUI) NotifyPropertyChanged("CanopiesOptionsChanged");
 
@@ -2224,6 +2225,8 @@ namespace PFD
 
                 RecreateModel = true;
                 RecreateQuotation = true;
+                //To mato - treba spustit prepocet ak sa zmenia Cladding Options?
+                CalculateCladdingParameters_Mato();
                 //to mato a co vysledky? treba vymazat ak sa zmenil Cladding options?
                 //SetResultsAreNotValid();
 

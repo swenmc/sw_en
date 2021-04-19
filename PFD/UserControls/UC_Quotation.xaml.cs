@@ -118,13 +118,8 @@ namespace PFD
             {
                 // TODO Ondrej - refaktoring - funckia CreateTableCladding
                 //TO Mato - je ten koment hore aktualny?
-                CreateTableCladding(vm,
-                    vm.TotalWallArea,
-                    fTotalAreaOfOpennings,
-                    fFibreGlassArea_Walls,
-                    vm.TotalRoofAreaInclCanopies, // TODO - rozdelit riadky pre basic roof a canopies ???
-                    fFibreGlassArea_Roof
-                   );
+                // TODO - rozdelit riadky pre basic roof a canopies ???
+                CreateTableCladding(vm, fTotalAreaOfOpennings, fFibreGlassArea_Walls, fFibreGlassArea_Roof);
             }
             else
             {
@@ -624,19 +619,17 @@ namespace PFD
             }
         }
 
-        private void CreateTableCladding(CPFDViewModel vm,
-             float fWallArea_Total,
+        private void CreateTableCladding(CPFDViewModel vm,             
              float fTotalAreaOfOpennings,
-             float fFibreGlassArea_Walls,
-             float fRoofArea,
+             float fFibreGlassArea_Walls,             
              float fFibreGlassArea_Roof
             )
         {
             // Plocha stien bez otvorov a fibre glass
-            float fWallArea_Total_Netto = fWallArea_Total - fTotalAreaOfOpennings - fFibreGlassArea_Walls;
+            float fWallArea_Total_Netto = vm.TotalWallArea - fTotalAreaOfOpennings - fFibreGlassArea_Walls;  //float fWallArea_Total,
 
             // Plocha strechy bez fibre glass
-            float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
+            float fRoofArea_Total_Netto = vm.TotalRoofAreaInclCanopies - fFibreGlassArea_Roof;    //float fRoofArea,
 
             CoatingColour prop_RoofCladdingColor = vm._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.RoofCladdingColorIndex);
             CoatingColour prop_WallCladdingColor = vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex);
