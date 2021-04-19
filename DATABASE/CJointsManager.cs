@@ -179,6 +179,8 @@ namespace DATABASE
             properties.dist_y1 = double.Parse(reader["dist_y1"].ToString(), nfi) / 1000;
             properties.dist_x2 = reader["dist_x2"].ToString() == "" ? double.NaN : double.Parse(reader["dist_x2"].ToString(), nfi) / 1000;
             properties.dist_y2 = reader["dist_y2"].ToString() == "" ? double.NaN : double.Parse(reader["dist_y2"].ToString(), nfi) / 1000;
+            properties.dist_x3 = reader["dist_x3"].ToString() == "" ? double.NaN : double.Parse(reader["dist_x3"].ToString(), nfi) / 1000;
+            properties.dist_y3 = reader["dist_y3"].ToString() == "" ? double.NaN : double.Parse(reader["dist_y3"].ToString(), nfi) / 1000;
             properties.TotalDim_x = double.Parse(reader["totalDim_x"].ToString(), nfi) / 1000;
             properties.TotalDim_y = double.Parse(reader["totalDim_y"].ToString(), nfi) / 1000;
             properties.Area = double.Parse(reader["area"].ToString(), nfi) / 1000000;

@@ -23,6 +23,8 @@ namespace DATABASE.DTO
         private double m_dist_y1;
         private double m_dist_x2;
         private double m_dist_y2;
+        private double m_dist_x3;
+        private double m_dist_y3;
         private double m_totalDim_x;
         private double m_totalDim_y;
         private double m_area;
@@ -224,6 +226,32 @@ namespace DATABASE.DTO
             set
             {
                 m_dist_y2 = value;
+            }
+        }
+
+        public double dist_x3
+        {
+            get
+            {
+                return m_dist_x3;
+            }
+
+            set
+            {
+                m_dist_x3 = value;
+            }
+        }
+
+        public double dist_y3
+        {
+            get
+            {
+                return m_dist_y3;
+            }
+
+            set
+            {
+                m_dist_y3 = value;
             }
         }
 

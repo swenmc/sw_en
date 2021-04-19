@@ -83,6 +83,8 @@ namespace BaseClasses
             float dist_y1 = (float)prop.dist_y1;
             float dist_x2 = (float)prop.dist_x2;
             float dist_y2 = (float)prop.dist_y2;
+            float dist_x3 = (float)prop.dist_x3;
+            float dist_y3 = (float)prop.dist_y3;
 
             if (float.IsNaN(dist_x2) || float.IsNaN(dist_y2))
             {
@@ -92,10 +94,15 @@ namespace BaseClasses
                 fDistanceOfPointsX_SQ1 = new List<float> { dist_x1 };
                 fDistanceOfPointsY_SQ1 = new List<float> { dist_y1 };
             }
-            else
+            else if (float.IsNaN(dist_x3) || float.IsNaN(dist_y3))
             {
                 fDistanceOfPointsX_SQ1 = new List<float> { dist_x1, dist_x2 };
                 fDistanceOfPointsY_SQ1 = new List<float> { dist_y1, dist_y2 };
+            }
+            else
+            {
+                fDistanceOfPointsX_SQ1 = new List<float> { dist_x1, dist_x2, dist_x3 };
+                fDistanceOfPointsY_SQ1 = new List<float> { dist_y1, dist_y2, dist_y3 };
             }
 
             referenceAnchor = referenceAnchor_temp;
