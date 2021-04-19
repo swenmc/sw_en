@@ -82,6 +82,8 @@ namespace PFD
         private int MAmountRH;
         private int MAmountLH;
 
+        private bool m_AnchorArrangementIsEnabled;
+
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
         {
@@ -117,7 +119,8 @@ namespace PFD
                 {
                     NotifyPropertyChanged("ComponentSerieIndex");
                     
-                    ComponentSeriesChanged();                    
+                    ComponentSeriesChanged();
+                    SetAnchorArrangementIsEnabled();
                 }
             }
         }
@@ -587,6 +590,20 @@ namespace PFD
             }
         }
 
+        public bool AnchorArrangementIsEnabled
+        {
+            get
+            {
+                return m_AnchorArrangementIsEnabled;
+            }
+
+            set
+            {
+                m_AnchorArrangementIsEnabled = value;
+                NotifyPropertyChanged("AnchorArrangementIsEnabled");
+            }
+        }
+
         CDatabaseComponents databaseComponents;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -669,6 +686,12 @@ namespace PFD
                 List<string> arr_Serie_TEK_Names = dict.Keys.ToList();
                 Components = arr_Serie_TEK_Names;
             }
+        }
+
+        private void SetAnchorArrangementIsEnabled()
+        {
+            if (ComponentTypeIndex == 1 && MComponentSerieIndex == (int)ESerieTypePlate.eSerie_B) AnchorArrangementIsEnabled = true;
+            else AnchorArrangementIsEnabled = false;
         }
 
         private void ComponentSeriesChanged()

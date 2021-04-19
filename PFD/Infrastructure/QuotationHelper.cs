@@ -1082,5 +1082,25 @@ namespace PFD
             //return vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasFibreglass(vm.Model);
             return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._claddingOptionsVM.HasFibreglass();
         }
+        public static bool DisplayDoorsAndWindowsTable(CPFDViewModel vm)
+        {
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts();
+        }
+        public static bool DisplayFlashingsTable(CPFDViewModel vm)
+        {
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts();
+        }
+        public static bool DisplayGuttersTable(CPFDViewModel vm)
+        {
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasRoof();
+        }        
+        public static bool DisplayDownpipesTable(CPFDViewModel vm)
+        {
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasRoof();
+        }
+        public static bool DisplayRoofNettingTable(CPFDViewModel vm)
+        {
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasRoof();
+        }
     }
 }

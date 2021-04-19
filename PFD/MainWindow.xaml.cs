@@ -1181,8 +1181,8 @@ namespace PFD
 
             if (vm.RecreateModel)
             {
-                Part_List.Content = null;
-                Quotation.Content = null;
+                //Part_List.Content = null;
+                //Quotation.Content = null;
             }
 
             // Nechcem tlacitka, resp. celkovo widgety skryvat a zobrazovat, skor len menit enabled a read-only mode

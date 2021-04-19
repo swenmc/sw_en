@@ -120,8 +120,11 @@ namespace EXPIMP
 
                 if (!data.HasCladding)
                 {
-                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).RemoveText(0, false);
-                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).InsertText("Not included");
+                    Paragraph parRC = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"));
+                    if (parRC != null) { parRC.ReplaceText(parRC.Text, "Not included.", false); } //RemoveText(0, false); parRC.InsertText("Not included"); }
+
+                    //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).RemoveText(0, false);
+                    //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[roofCladding]"))).InsertText("Not included");
                 }
 
                 if (data.HasCladdingRoof) document.ReplaceText("[roofCladding]", $"{data.RoofCladding}-{data.RoofCladdingThickness_mm}");
