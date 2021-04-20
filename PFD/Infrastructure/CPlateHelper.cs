@@ -231,24 +231,40 @@ namespace PFD
 
                         if (arrangementTemp.RectSequences[seqIndex].SameDistancesX)
                         {
-                            if (item.Name.Contains("Distance between anchors x SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Distance between anchors x SQ"))
+                            {
+                                arrangementTemp.RectSequences[seqIndex].DistanceOfPointsX = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                arrangementTemp.fDistanceOfPointsX_SQ1[seqIndex] = float.Parse(itemStr.Value) / fLengthUnitFactor; //temp pre 794
+                            }
                         }
                         else
                         {
                             for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX.Count; i++)
                             {
-                                if (item.Name.Contains($"Distance between anchors x{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                if (item.Name.Contains($"Distance between anchors x{i + 1} SQ"))
+                                {
+                                    arrangementTemp.RectSequences[seqIndex].DistancesOfPointsX[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                    arrangementTemp.fDistanceOfPointsX_SQ1[seqIndex] = float.Parse(itemStr.Value) / fLengthUnitFactor;//temp pre 794
+                                }
                             }
                         }
                         if (arrangementTemp.RectSequences[seqIndex].SameDistancesY)
                         {
-                            if (item.Name.Contains("Distance between anchors y SQ")) arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                            if (item.Name.Contains("Distance between anchors y SQ"))
+                            {
+                                arrangementTemp.RectSequences[seqIndex].DistanceOfPointsY = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                arrangementTemp.fDistanceOfPointsY_SQ1[seqIndex] = float.Parse(itemStr.Value) / fLengthUnitFactor;//temp pre 794
+                            }
                         }
                         else
                         {
                             for (int i = 0; i < arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY.Count; i++)
                             {
-                                if (item.Name.Contains($"Distance between anchors y{i + 1} SQ")) arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                if (item.Name.Contains($"Distance between anchors y{i + 1} SQ"))
+                                {
+                                    arrangementTemp.RectSequences[seqIndex].DistancesOfPointsY[i] = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                                    arrangementTemp.fDistanceOfPointsY_SQ1[seqIndex] = float.Parse(itemStr.Value) / fLengthUnitFactor;//temp pre 794
+                                }
                             }
                         }
                     }
