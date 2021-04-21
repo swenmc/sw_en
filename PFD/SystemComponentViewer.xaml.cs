@@ -2945,10 +2945,9 @@ namespace PFD
                 Combobox_AnchorArrangement.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
                 Combobox_AnchorArrangement.SelectionChanged += SelectAA_SelectionChanged;
 
-                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement, ESoftware.SCV);
-                DataGrid dg = GetDatagridForAnchorArrangement(anchorArrangementParams);
-
-                DataGridAnchorArrangement.ItemsSource = dg.ItemsSource;
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement, ESoftware.SCV);                
+                RegisterEventsForAnchorArrangementParams(anchorArrangementParams);
+                DataGridAnchorArrangement.ItemsSource = anchorArrangementParams;
             }
             else
             {
@@ -2972,64 +2971,15 @@ namespace PFD
             CPlateHelper.UpdatePlateAnchorArrangementData(plate);
         }
 
-        private DataGrid GetDatagridForAnchorArrangement(List<CComponentParamsView> anchorArrangementParams)
+        private void RegisterEventsForAnchorArrangementParams(List<CComponentParamsView> anchorArrangementParams)
         {
-            DataGrid dgAA = new DataGrid();
-            dgAA.Name = "DatagridForAnchorArrangement";
-            //dgAA.SetValue(Grid.RowProperty, 1);
-            dgAA.ItemsSource = anchorArrangementParams;
-            dgAA.HorizontalAlignment = HorizontalAlignment.Stretch;
-            dgAA.AutoGenerateColumns = false;
-            dgAA.IsEnabled = true;
-            dgAA.IsReadOnly = false;
-            dgAA.CanUserSortColumns = false;
-            dgAA.HeadersVisibility = DataGridHeadersVisibility.Column;
-            dgAA.SelectionMode = DataGridSelectionMode.Extended;
-            dgAA.SelectionUnit = DataGridSelectionUnit.Cell;
-            dgAA.SelectedItems.Clear();
-
-            DataGridTextColumn tc1 = new DataGridTextColumn();
-            tc1.Header = "Name";
-            tc1.Binding = new Binding("Name");
-            tc1.CellStyle = GetReadonlyCellStyle();
-            tc1.IsReadOnly = true;
-            tc1.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
-            dgAA.Columns.Add(tc1);
-
-            DataGridTextColumn tc2 = new DataGridTextColumn();
-            tc2.Header = "Symbol";
-            tc2.Binding = new Binding("ShortCut");
-            tc2.CellStyle = GetReadonlyCellStyle();
-            tc2.IsReadOnly = true;
-            tc2.Width = new DataGridLength(40, DataGridLengthUnitType.Pixel);
-            dgAA.Columns.Add(tc2);
-
-            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
-            tc3.Header = "Value";
-            tc3.IsReadOnly = false;
-            tc3.CellTemplate = GetDataTemplate();
-            tc3.Width = new DataGridLength(60, DataGridLengthUnitType.Pixel);
-            dgAA.Columns.Add(tc3);
-
-            DataGridTextColumn tc4 = new DataGridTextColumn();
-            tc4.Header = "Unit";
-            tc4.Binding = new Binding("Unit");
-            tc4.CellStyle = GetReadonlyCellStyle();
-            tc4.IsReadOnly = true;
-            tc4.Width = new DataGridLength(50, DataGridLengthUnitType.Pixel);
-            dgAA.Columns.Add(tc4);
-
             foreach (CComponentParamsView cpw in anchorArrangementParams)
             {
                 cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
             }
-
-            if (anchorArrangementParams.Count == 0) // Datagrid je prazdny (nema ziadne riadky) - nezobraz ani hlavicku
-                dgAA.Visibility = Visibility.Collapsed;
-
-            return dgAA;
         }
 
+        
         private void HandleAnchorArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (!(sender is CComponentParamsView)) return;
@@ -3057,69 +3007,26 @@ namespace PFD
             //vm.ChangedAnchorArrangementParameter = item;
         }
 
-        private DataTemplate GetDataTemplate()
-        {
-            DataTemplate retVal = null;
+        
 
-            var context = new ParserContext();
-            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
 
-            string s = @"<DataTemplate><ContentControl Content='{Binding}'><ContentControl.Style><Style TargetType='ContentControl'><Style.Triggers>            
-            <DataTrigger Binding='{Binding CheckType}' Value='CheckBox'>
-            <Setter Property='ContentTemplate'>
-            <Setter.Value>
-            <DataTemplate>
-            <CheckBox HorizontalAlignment='Center' IsChecked='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
-            </DataTemplate>
-            </Setter.Value>
-            </Setter>
-            </DataTrigger>
-            <DataTrigger Binding='{Binding CheckType}' Value='ComboBox' >
-            <Setter Property='ContentTemplate'>
-            <Setter.Value>
-            <DataTemplate>
-            <ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
-            </DataTemplate>
-            </Setter.Value>
-            </Setter>
-            </DataTrigger>
-            <DataTrigger Binding='{Binding CheckType}' Value='TextBox'>
-            <Setter Property='ContentTemplate'>
-            <Setter.Value>
-            <DataTemplate>
-            <TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' IsEnabled='{Binding IsEnabled}' />
-            </DataTemplate>
-            </Setter.Value>
-            </Setter>
-            </DataTrigger>
-            <DataTrigger Binding='{ Binding CheckType}' Value='TextBlock'>
-            <Setter Property = 'ContentTemplate'>
-            <Setter.Value>
-            <DataTemplate>
-            <TextBlock TextAlignment='Right' Text = '{Binding Value}' />
-            </DataTemplate>
-            </Setter.Value>
-            </Setter>
-            <Setter Property='Focusable' Value='False'></Setter>
-            </DataTrigger>
-            </Style.Triggers>
-            </Style>
-            </ContentControl.Style>
-            </ContentControl>
-            </DataTemplate>";
 
-            retVal = XamlReader.Parse(s, context) as DataTemplate;
-            return retVal;
-        }
 
-        private Style GetReadonlyCellStyle()
-        {
-            Style style = new Style(typeof(DataGridCell));
-            style.Setters.Add(new Setter(BackgroundProperty, new SolidColorBrush(Colors.WhiteSmoke)));
-            style.Setters.Add(new Setter(ForegroundProperty, new SolidColorBrush(Colors.Black)));
-            return style;
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         

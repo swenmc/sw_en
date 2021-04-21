@@ -295,59 +295,52 @@
                                     <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" CellStyle="{StaticResource NotFocusableCellStyle}">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <ContentControl Content="{Binding}">
+                                                <ContentControl Content='{Binding}'>
                                                     <ContentControl.Style>
-                                                        <Style TargetType="ContentControl">
+                                                        <Style TargetType='ContentControl'>
                                                             <Style.Triggers>
-                                                                <!--<DataTrigger Binding="{Binding IsReadonly}" Value="0" >
-                                                    <Setter Property="Background" Value="WhiteSmoke" />
-                                                </DataTrigger>-->
-                                                                <DataTrigger Binding="{Binding CheckType}" Value="CheckBox">
-                                                                    <Setter Property="ContentTemplate">
+                                                                <DataTrigger Binding='{Binding CheckType}' Value='CheckBox'>
+                                                                    <Setter Property='ContentTemplate'>
                                                                         <Setter.Value>
                                                                             <DataTemplate>
-                                                                                <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                                                                                <CheckBox HorizontalAlignment='Center' IsChecked='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
                                                                             </DataTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
-                                                                    <Setter Property="Focusable" Value="False"></Setter>
                                                                 </DataTrigger>
-                                                                <DataTrigger Binding="{Binding CheckType}" Value="ComboBox">
-                                                                    <Setter Property="ContentTemplate">
+                                                                <DataTrigger Binding='{Binding CheckType}' Value='ComboBox' >
+                                                                    <Setter Property='ContentTemplate'>
                                                                         <Setter.Value>
                                                                             <DataTemplate>
-                                                                                <ComboBox HorizontalAlignment="Right" SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ItemsSource="{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                                <ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
                                                                             </DataTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
-                                                                    <Setter Property="Focusable" Value="False"></Setter>
                                                                 </DataTrigger>
-                                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">
-                                                                    <Setter Property="ContentTemplate">
+                                                                <DataTrigger Binding='{Binding CheckType}' Value='TextBox'>
+                                                                    <Setter Property='ContentTemplate'>
                                                                         <Setter.Value>
                                                                             <DataTemplate>
-                                                                                <TextBox Name="SA_TextBox" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" local:FocusAttacher.Focus="True" />
+                                                                                <TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' IsEnabled='{Binding IsEnabled}' />
                                                                             </DataTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
-                                                                    <Setter Property="Focusable" Value="False"></Setter>
                                                                 </DataTrigger>
-                                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBlock">
-                                                                    <Setter Property="ContentTemplate">
+                                                                <DataTrigger Binding='{ Binding CheckType}' Value='TextBlock'>
+                                                                    <Setter Property = 'ContentTemplate'>
                                                                         <Setter.Value>
                                                                             <DataTemplate>
-                                                                                <TextBlock TextAlignment="Right" Text="{Binding Value}" />
+                                                                                <TextBlock TextAlignment='Right' Text = '{Binding Value}' />
                                                                             </DataTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
-                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                    <Setter Property='Focusable' Value='False'></Setter>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
-
                                                         </Style>
                                                     </ContentControl.Style>
                                                 </ContentControl>
-                                            </DataTemplate>
+                                            </DataTemplate>                                            
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTextColumn Header="Unit" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
