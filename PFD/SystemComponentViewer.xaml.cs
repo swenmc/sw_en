@@ -217,6 +217,12 @@ namespace PFD
 
                     ClearHistory();
                 }
+
+                if (e.PropertyName == "AnchorArrangementIsEnabled")
+                {
+                    if (vm.AnchorArrangementIsEnabled) SetAnchorArrangementTabContent(plate);
+                }
+
             }
             else if (sender is CComponentParamsViewBool)
             {
@@ -2918,44 +2924,22 @@ namespace PFD
         }
 
 
-        private void SetTabContent(TabItem ti, CPlate plate)
+        private void SetAnchorArrangementTabContent(CPlate plate)
         {
-            StackPanel sp = new StackPanel();
-            sp.Width = 560;
-            sp.VerticalAlignment = VerticalAlignment.Top;
-            sp.HorizontalAlignment = HorizontalAlignment.Left;
-
             // Base Plate - Anchor Arrangement
             if (plate is CConCom_Plate_B_basic)
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
-
-                // Anchor arrangement
-                StackPanel spAA = new StackPanel();
-                sp.Width = 550;
-                spAA.Orientation = Orientation.Horizontal;
-                Label lAA = new Label() { Content = "Anchor Arrangement: " };
-                lAA.Width = 150;
-                ComboBox selectAA = new ComboBox();
-
-                selectAA.Width = 120;
-                selectAA.Height = 20;
-                var marginAA = selectAA.Margin;
-                marginAA.Top = 5;
-                marginAA.Bottom = 5;
-                selectAA.Margin = marginAA;
-                selectAA.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
-                selectAA.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
-                selectAA.SelectionChanged += SelectAA_SelectionChanged;
-                spAA.Children.Add(lAA);
-                spAA.Children.Add(selectAA);
-                sp.Children.Add(spAA);
+                
+                Combobox_AnchorArrangement.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
+                Combobox_AnchorArrangement.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
+                Combobox_AnchorArrangement.SelectionChanged += SelectAA_SelectionChanged;                
 
                 List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
-                sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));
-            }
+                DataGrid dg = GetDatagridForAnchorArrangement(anchorArrangementParams);                
 
-            ti.Content = sp;            
+                DataGridAnchorArrangement.ItemsSource = dg.ItemsSource;
+            }
         }
         private void SelectAA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -2964,7 +2948,7 @@ namespace PFD
 
             ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
 
-            SetTabContent(TabItemAnchorArrangement, plate);
+            SetAnchorArrangementTabContent(plate);
         }
 
         private void ChangeAllSameJointsPlateAnchorArrangement(int anchorArrangementIndex)
@@ -2994,7 +2978,7 @@ namespace PFD
             tc1.Binding = new Binding("Name");
             tc1.CellStyle = GetReadonlyCellStyle();
             tc1.IsReadOnly = true;
-            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            tc1.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
             dgAA.Columns.Add(tc1);
 
             DataGridTextColumn tc2 = new DataGridTextColumn();
@@ -3002,14 +2986,14 @@ namespace PFD
             tc2.Binding = new Binding("ShortCut");
             tc2.CellStyle = GetReadonlyCellStyle();
             tc2.IsReadOnly = true;
-            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            tc2.Width = new DataGridLength(40, DataGridLengthUnitType.Pixel);
             dgAA.Columns.Add(tc2);
 
             DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
             tc3.Header = "Value";
             tc3.IsReadOnly = false;
             tc3.CellTemplate = GetDataTemplate();
-            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            tc3.Width = new DataGridLength(60, DataGridLengthUnitType.Pixel);
             dgAA.Columns.Add(tc3);
 
             DataGridTextColumn tc4 = new DataGridTextColumn();
@@ -3017,7 +3001,7 @@ namespace PFD
             tc4.Binding = new Binding("Unit");
             tc4.CellStyle = GetReadonlyCellStyle();
             tc4.IsReadOnly = true;
-            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            tc4.Width = new DataGridLength(50, DataGridLengthUnitType.Pixel);
             dgAA.Columns.Add(tc4);
 
             foreach (CComponentParamsView cpw in anchorArrangementParams)
@@ -3123,22 +3107,7 @@ namespace PFD
         }
 
 
-        //private void DataGridScrewArrangement_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
-        //{
-
-        //    //MessageBox.Show("SelectedCellsChanged");
-        //}
-
-
-
-
-
-
-
-
-
-
-
+        
         //private void RedrawComponentIn2D()
         //{
         //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;

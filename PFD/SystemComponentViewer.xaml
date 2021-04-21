@@ -14,18 +14,18 @@
         <SolidColorBrush x:Key="colorReadOnlyCellText" Color="Black" />
         <!-- Black color of readonly cell text -->
         <SolidColorBrush x:Key="colorCellError" Color="Red" />
-        <Style TargetType="{x:Type TextBox}">            
+        <Style TargetType="{x:Type TextBox}">
             <EventSetter Event="GotFocus"  Handler="SA_TextBox_GotFocus"/>
             <!--<EventSetter Event="LostFocus"  Handler="TextBox_LostFocus"/>-->
         </Style>
-        
+
         <Style x:Key="NotFocusableCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="Focusable" Value="False"></Setter>
             <!--<Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>-->
             <Setter Property="IsTabStop" Value="False"/>
         </Style>
-        
-            
+
+
     </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -65,16 +65,16 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 5 0 0"/>
             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Type" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" Margin="0 5 0 0"
                       ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
-            
+
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Serie:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
-            
+
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Component:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_Component" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
-            
-            
+
+
 
             <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="6" Grid.Column="2" Margin="10,5,0,120">
                 <TextBlock Text="Display Options" HorizontalAlignment="Left"/>
@@ -98,10 +98,10 @@
 
             <StackPanel Name="panelOptionsTransform2D" Grid.Row="4" Grid.Column="2" Margin="10,100,0,0" Grid.RowSpan="2">
                 <TextBlock Text="Transformation Options" HorizontalAlignment="Left"/>
-                <CheckBox x:Name="CheckBox_MirrorY" IsChecked="{Binding Path=MirrorY}" Content="Mirror about vertical axis y-y" Margin="0 5 0 0" />                
-                <CheckBox x:Name="CheckBox_MirrorX" IsChecked="{Binding Path=MirrorX}" Content="Mirror about horizontal axis x-x" Margin="0 5 0 0" />                
-                <CheckBox x:Name="CheckBox_Rotate_CW" IsChecked="{Binding Path=Rotate90CW}" Content="Rotate 90 deg clockwise" Margin="0 5 0 0" />                
-                <CheckBox x:Name="CheckBox_Rotate_CCW" IsChecked="{Binding Path=Rotate90CCW}" Content="Rotate 90 deg counter-clockwise" Margin="0 5 0 0" />                
+                <CheckBox x:Name="CheckBox_MirrorY" IsChecked="{Binding Path=MirrorY}" Content="Mirror about vertical axis y-y" Margin="0 5 0 0" />
+                <CheckBox x:Name="CheckBox_MirrorX" IsChecked="{Binding Path=MirrorX}" Content="Mirror about horizontal axis x-x" Margin="0 5 0 0" />
+                <CheckBox x:Name="CheckBox_Rotate_CW" IsChecked="{Binding Path=Rotate90CW}" Content="Rotate 90 deg clockwise" Margin="0 5 0 0" />
+                <CheckBox x:Name="CheckBox_Rotate_CCW" IsChecked="{Binding Path=Rotate90CCW}" Content="Rotate 90 deg counter-clockwise" Margin="0 5 0 0" />
             </StackPanel>
             <StackPanel Name="panelProductionInfo" Grid.Row="5" Grid.Column="2" Margin="10,10,0,0" Grid.RowSpan="2">
                 <Grid>
@@ -120,9 +120,9 @@
                     <TextBlock Text="Production Info: " HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
                     <Label Name="LabelJobNumber" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1">Job Number:</Label>
                     <TextBox Name="TextBoxJobNumber" Grid.Column="1" Grid.Row="1" Text="{Binding Path=JobNumber}" MinWidth="150" Height="20" HorizontalAlignment="Left"></TextBox>
-                    <Label Name="LabelCustomer" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2">Customer: </Label>
+                    <Label Name="LabelCustomer" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2">Customer:</Label>
                     <TextBox Name="TextBoxCustomer" Grid.Column="1" Grid.Row="2" Text="{Binding Path=Customer}" MinWidth="150" Height="20" HorizontalAlignment="Left"></TextBox>
-                    <Label Name="LabelAmount" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3">Amount: </Label>
+                    <Label Name="LabelAmount" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3">Amount:</Label>
                     <TextBox Name="TextBoxAmount" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Amount}" MinWidth="60" Height="20" HorizontalAlignment="Left"></TextBox>
                     <Label Name="LabelAmountRH" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="4">RH:</Label>
                     <TextBox Name="TextBoxAmountRH" Grid.Column="1" Grid.Row="4" Text="{Binding Path=AmountRH}" MinWidth="40" Height="20" HorizontalAlignment="Left"></TextBox>
@@ -132,13 +132,13 @@
             </StackPanel>
 
             <TabControl Name="ScrewArrangementTabControl" Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
-                <TabItem Name="TabItemScrewArrangement" >                    
+                <TabItem Name="TabItemScrewArrangement" >
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Screw Arrangement" Foreground="Blue"/>
                         </StackPanel>
                     </TabItem.Header>
-                    <ScrollViewer>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid Name="ScrewArrangementGrid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -149,7 +149,7 @@
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            
+
                             <TextBlock Grid.Row="0" Grid.Column="0" Name="TxtCombScrewArrangment" Text="Screw Arrangement:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10 0 0 0"/>
                             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_ScrewArrangement" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Center" 
                       ItemsSource="{Binding Path=ScrewArrangements}" SelectedIndex="{Binding Path=ScrewArrangementIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
@@ -248,7 +248,7 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
-                        
+
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Name="TabItemAnchorArrangement" IsEnabled="{Binding Path=AnchorArrangementIsEnabled}">
@@ -257,7 +257,7 @@
                             <TextBlock Text="Anchor Arrangement" Foreground="Blue"/>
                         </StackPanel>
                     </TabItem.Header>
-                    <ScrollViewer>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" >
                         <Grid Name="AnchorArrangementGrid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -265,19 +265,111 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Name="TxtCombAnchorArrangment" Text="Anchor Arrangement:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10 0 0 0"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_AnchorArrangement" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Center" />
+
+                            <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridAnchorArrangement" Margin="10 0 0 0" HeadersVisibility="Column" AutoGenerateColumns="False" 
+                                      IsEnabled="True" IsReadOnly="False" SelectionMode="Extended" SelectionUnit="Cell" CanUserSortColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
+                                        <DataGridTextColumn.CellStyle>
+                                            <Style TargetType="DataGridCell">
+                                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
+                                            </Style>
+                                        </DataGridTextColumn.CellStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Symbol" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}">
+                                        <DataGridTextColumn.CellStyle>
+                                            <Style TargetType="DataGridCell">
+                                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
+                                            </Style>
+                                        </DataGridTextColumn.CellStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTemplateColumn Header="Value" Width="60" IsReadOnly="False" CellStyle="{StaticResource NotFocusableCellStyle}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ContentControl Content="{Binding}">
+                                                    <ContentControl.Style>
+                                                        <Style TargetType="ContentControl">
+                                                            <Style.Triggers>
+                                                                <!--<DataTrigger Binding="{Binding IsReadonly}" Value="0" >
+                                                    <Setter Property="Background" Value="WhiteSmoke" />
+                                                </DataTrigger>-->
+                                                                <DataTrigger Binding="{Binding CheckType}" Value="CheckBox">
+                                                                    <Setter Property="ContentTemplate">
+                                                                        <Setter.Value>
+                                                                            <DataTemplate>
+                                                                                <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                                                                            </DataTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CheckType}" Value="ComboBox">
+                                                                    <Setter Property="ContentTemplate">
+                                                                        <Setter.Value>
+                                                                            <DataTemplate>
+                                                                                <ComboBox HorizontalAlignment="Right" SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ItemsSource="{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                            </DataTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">
+                                                                    <Setter Property="ContentTemplate">
+                                                                        <Setter.Value>
+                                                                            <DataTemplate>
+                                                                                <TextBox Name="SA_TextBox" TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" local:FocusAttacher.Focus="True" />
+                                                                            </DataTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBlock">
+                                                                    <Setter Property="ContentTemplate">
+                                                                        <Setter.Value>
+                                                                            <DataTemplate>
+                                                                                <TextBlock TextAlignment="Right" Text="{Binding Value}" />
+                                                                            </DataTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Focusable" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+
+                                                        </Style>
+                                                    </ContentControl.Style>
+                                                </ContentControl>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Unit" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
+                                        <DataGridTextColumn.CellStyle>
+                                            <Style TargetType="DataGridCell">
+                                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False"></Setter>
+                                            </Style>
+                                        </DataGridTextColumn.CellStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
                         </Grid>
                     </ScrollViewer>
-                </TabItem>                
+                </TabItem>
             </TabControl>
 
 
-            
-            
+
+
 
             <TextBlock Grid.Row="5" Grid.Column="0" Name="TxtGeometry" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" Margin="10 0 0 0"
