@@ -660,8 +660,8 @@ namespace PFD
                 BtnSavePlate.Visibility = Visibility.Hidden;
                 BtnLoadPlate.Visibility = Visibility.Hidden;
 
-                Grid.SetRow(txtParameters, 4);
-                Grid.SetRow(DataGridDetails, 5);
+                Grid.SetRow(txtParameters, 3);
+                Grid.SetRow(DataGridDetails, 4);
                 Grid.SetRowSpan(DataGridDetails, 5);
             }
             else if (vm.ComponentTypeIndex == 1) //plate
@@ -745,8 +745,8 @@ namespace PFD
                     TextBoxAmountLH.Visibility = Visibility.Hidden;
                 }
                                 
-                Grid.SetRow(txtParameters, 8);
-                Grid.SetRow(DataGridDetails, 9);
+                Grid.SetRow(txtParameters, 7);
+                Grid.SetRow(DataGridDetails, 8);
                 Grid.SetRowSpan(DataGridDetails, 1);
             }
             else if (vm.ComponentTypeIndex == 2) //screw
@@ -786,8 +786,8 @@ namespace PFD
                 BtnSavePlate.Visibility = Visibility.Hidden;
                 BtnLoadPlate.Visibility = Visibility.Hidden;
 
-                Grid.SetRow(txtParameters, 4);
-                Grid.SetRow(DataGridDetails, 5);
+                Grid.SetRow(txtParameters, 3);
+                Grid.SetRow(DataGridDetails, 4);
                 Grid.SetRowSpan(DataGridDetails, 5);
             }
 
