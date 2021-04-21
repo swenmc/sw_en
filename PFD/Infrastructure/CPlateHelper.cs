@@ -16,7 +16,7 @@ namespace PFD
     {
         // Anchors
 
-        public static List<CComponentParamsView> GetAnchorArrangementProperties(CAnchorArrangement anchorArrangement)
+        public static List<CComponentParamsView> GetAnchorArrangementProperties(CAnchorArrangement anchorArrangement, ESoftware sw = ESoftware.PFD)
         {
             int iNumberOfDecimalPlaces_Length = 1;
             float fUnitFactor_Length = 1000;
@@ -36,53 +36,36 @@ namespace PFD
 
                 anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.AnchorNameS.Name, CParamsResources.AnchorNameS.Symbol, baseArrangement.referenceAnchor.Name.ToString(), listAnchorDiameters, CParamsResources.AnchorNameS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
                 anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorDiameterS.Name, CParamsResources.AnchorDiameterS.Symbol, (Math.Round(baseArrangement.referenceAnchor.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorDiameterS.Unit, false));
-                anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorLengthS.Name, CParamsResources.AnchorLengthS.Symbol, (Math.Round(baseArrangement.referenceAnchor.Length * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
-                anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorEffectiveDepthS.Name, CParamsResources.AnchorEffectiveDepthS.Symbol, (Math.Round(baseArrangement.referenceAnchor.h_effective * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorEffectiveDepthS.Unit, true));
 
-                if (baseArrangement.referenceAnchor.WasherPlateTop != null)
+                if (sw == ESoftware.PFD)
                 {
-                    anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.PlateWasherNameS.Name, CParamsResources.PlateWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherPlateTop.Name.ToString(), listWashersNames, CParamsResources.PlateWasherNameS.Unit));
-                    //anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherNameS.Name, CParamsResources.PlateWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherPlateTop.Name.ToString(), CParamsResources.PlateWasherNameS.Unit, false));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherWidthxS.Name, CParamsResources.PlateWasherWidthxS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherWidthxS.Unit, true));
-                    //anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherWidthyS.Name, CParamsResources.PlateWasherWidthyS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Height_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherWidthyS.Unit, true));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherThicknessS.Name, CParamsResources.PlateWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherThicknessS.Unit, true));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorLengthS.Name, CParamsResources.AnchorLengthS.Symbol, (Math.Round(baseArrangement.referenceAnchor.Length * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
+                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorEffectiveDepthS.Name, CParamsResources.AnchorEffectiveDepthS.Symbol, (Math.Round(baseArrangement.referenceAnchor.h_effective * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorEffectiveDepthS.Unit, true));
+
+                    if (baseArrangement.referenceAnchor.WasherPlateTop != null)
+                    {
+                        anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.PlateWasherNameS.Name, CParamsResources.PlateWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherPlateTop.Name.ToString(), listWashersNames, CParamsResources.PlateWasherNameS.Unit));
+                        anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherWidthxS.Name, CParamsResources.PlateWasherWidthxS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherWidthxS.Unit, true));
+                        anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.PlateWasherThicknessS.Name, CParamsResources.PlateWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherPlateTop.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWasherThicknessS.Unit, true));
+                    }
+
+                    if (baseArrangement.referenceAnchor.WasherBearing != null)
+                    {
+                        anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.BearingWasherNameS.Name, CParamsResources.BearingWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherBearing.Name.ToString(), listWashersNames, CParamsResources.BearingWasherNameS.Unit));
+                        anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherWidthxS.Name, CParamsResources.BearingWasherWidthxS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherWidthxS.Unit, true));
+                        anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherThicknessS.Name, CParamsResources.BearingWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherThicknessS.Unit, true));
+                    }
                 }
-
-                if (baseArrangement.referenceAnchor.WasherBearing != null)
-                {
-                    anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.BearingWasherNameS.Name, CParamsResources.BearingWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherBearing.Name.ToString(), listWashersNames, CParamsResources.BearingWasherNameS.Unit));
-                    //anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherNameS.Name, CParamsResources.BearingWasherNameS.Symbol, baseArrangement.referenceAnchor.WasherBearing.Name.ToString(), CParamsResources.BearingWasherNameS.Unit, false));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherWidthxS.Name, CParamsResources.BearingWasherWidthxS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Width_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherWidthxS.Unit, true));
-                    //anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherWidthyS.Name, CParamsResources.BearingWasherWidthyS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Height_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherWidthyS.Unit, true));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.BearingWasherThicknessS.Name, CParamsResources.BearingWasherThicknessS.Symbol, (Math.Round(baseArrangement.referenceAnchor.WasherBearing.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.BearingWasherThicknessS.Unit, true));
-                }
-
-                //anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in row SQ1", "No", baseArrangement.iNumberOfAnchorsInRow_xDirection_SQ1.ToString(), "[-]"));
-                //anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in column SQ1", "No", baseArrangement.iNumberOfAnchorsInColumn_yDirection_SQ1.ToString(), "[-]"));
-                //anchorArrangementProperties.Add(new CComponentParamsViewString("Inserting point coordinate x SQ1", "xc1", (Math.Round(baseArrangement.RefPointX /*baseArrangement.fx_c_SQ1*/ * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                //anchorArrangementProperties.Add(new CComponentParamsViewString("Inserting point coordinate y SQ1", "yc1", (Math.Round(baseArrangement.RefPointY /*baseArrangement.fy_c_SQ1*/ * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-
-                //if (baseArrangement.fDistanceOfPointsX_SQ1.Count > 0 && baseArrangement.fDistanceOfPointsX_SQ1[0] > 0)
-                //    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.1", "x1", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                //if (baseArrangement.fDistanceOfPointsY_SQ1.Count > 0 && baseArrangement.fDistanceOfPointsY_SQ1[0] > 0)
-                //    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.1", "y1", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-
-                //// Pole pozicii obsahuje rozne pocty (1 alebo 2 medzery medzi kotvami v jednom rade, pocet kotiev je 1 - 3 v rade
-                //if (baseArrangement.fDistanceOfPointsX_SQ1.Count > 1 && baseArrangement.fDistanceOfPointsX_SQ1[1] > 0)
-                //    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.2", "x2", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                //if (baseArrangement.fDistanceOfPointsY_SQ1.Count > 1 && baseArrangement.fDistanceOfPointsY_SQ1[1] > 0)
-                //    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.2", "y2", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-
-
-
+                
+                
                 //TODO 527
                 int num = 0;
                 foreach (CAnchorRectSequence src in baseArrangement.RectSequences)
                 {
                     num++;
-
-                    anchorArrangementProperties.Add(new CComponentParamsViewString($"Number of anchors in row SQ{num}", "No", src.NumberOfAnchorsInRow_xDirection.ToString(), "[-]"));
-                    anchorArrangementProperties.Add(new CComponentParamsViewString($"Number of anchors in column SQ{num}", "No", src.NumberOfAnchorsInColumn_yDirection.ToString(), "[-]"));
+                    
+                    anchorArrangementProperties.Add(new CComponentParamsViewString($"Number of anchors in row SQ{num}", "No", src.NumberOfAnchorsInRow_xDirection.ToString(), "[-]", sw == ESoftware.PFD)); //Enabled only on PFD, Disabled in SCV
+                    anchorArrangementProperties.Add(new CComponentParamsViewString($"Number of anchors in column SQ{num}", "No", src.NumberOfAnchorsInColumn_yDirection.ToString(), "[-]", sw == ESoftware.PFD));//Enabled only on PFD, Disabled in SCV
                     anchorArrangementProperties.Add(new CComponentParamsViewString($"Inserting point coordinate x SQ{num}", $"xc{num}", (Math.Round(src.RefPointX * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                     anchorArrangementProperties.Add(new CComponentParamsViewString($"Inserting point coordinate y SQ{num}", $"yc{num}", (Math.Round(src.RefPointY * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 

@@ -108,6 +108,7 @@
     <Compile Include="ComboItem.cs" />
     <Compile Include="CProjectInfo.cs" />
     <Compile Include="CProductionInfo.cs" />
+    <Compile Include="Structs.cs" />
     <Compile Include="GraphObj\Areas\CAreaPolygonal.cs" />
     <Compile Include="GraphObj\Areas\CAreaCircle.cs" />
     <Compile Include="GraphObj\Areas\CAreaRectangular.cs" />

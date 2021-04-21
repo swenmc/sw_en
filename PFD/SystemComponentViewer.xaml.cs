@@ -2945,7 +2945,7 @@ namespace PFD
                 Combobox_AnchorArrangement.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
                 Combobox_AnchorArrangement.SelectionChanged += SelectAA_SelectionChanged;
 
-                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement, ESoftware.SCV);
                 DataGrid dg = GetDatagridForAnchorArrangement(anchorArrangementParams);
 
                 DataGridAnchorArrangement.ItemsSource = dg.ItemsSource;
@@ -3039,7 +3039,7 @@ namespace PFD
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
                 CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
-                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+                List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement, ESoftware.SCV);
 
                 CPlateHelper.UpdatePlateScrewArrangementData(plate);
 
