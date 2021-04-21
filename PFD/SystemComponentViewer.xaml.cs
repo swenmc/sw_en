@@ -221,11 +221,7 @@ namespace PFD
                 if (e.PropertyName == "AnchorArrangementIsEnabled")
                 {
                     UpdateAnchorArrangement(vm);                    
-                }
-                if (e.PropertyName == "")
-                {
-                    if (vm.AnchorArrangementIsEnabled) SetAnchorArrangementTabContent(plate);
-                }
+                }                
 
             }
             else if (sender is CComponentParamsViewBool)
@@ -2990,21 +2986,16 @@ namespace PFD
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
                 CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
                 List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement, ESoftware.SCV);
-
                 CPlateHelper.UpdatePlateScrewArrangementData(plate);
 
                 if (anchorArrangementParams != null)
                 {
-                    StackPanel sp = TabItemAnchorArrangement.Content as StackPanel;
-                    DataGrid dgAA = sp.Children[2] as DataGrid;
-                    dgAA.ItemsSource = anchorArrangementParams;
-                    foreach (CComponentParamsView cpw in anchorArrangementParams)
-                    {
-                        cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
-                    }
+                    RegisterEventsForAnchorArrangementParams(anchorArrangementParams);
+                    DataGridAnchorArrangement.ItemsSource = anchorArrangementParams;                    
                 }
+
+                UpdateAndDisplayPlate();
             }
-            //vm.ChangedAnchorArrangementParameter = item;
         }
 
         
