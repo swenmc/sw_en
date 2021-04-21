@@ -134,7 +134,7 @@ namespace PFD
                 SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
                 if (vm != null && vm.IsSetFromCode) return;
 
-                if (e.PropertyName == "ComponentIndex") { vm.DrillingRoutePoints = null; UpdateAll(); SetUIElementsVisibility(vm); this.Title = "System Component Viewer"; ClearHistory(); }
+                if (e.PropertyName == "ComponentIndex") { vm.DrillingRoutePoints = null; UpdateAll(); SetUIElementsVisibility(vm); UpdateAnchorArrangement(vm); this.Title = "System Component Viewer"; ClearHistory(); }
 
                 if (e.PropertyName == "DrawPoints2D" ||
                     e.PropertyName == "DrawOutLine2D" ||
@@ -220,6 +220,10 @@ namespace PFD
 
                 if (e.PropertyName == "AnchorArrangementIsEnabled")
                 {
+                    UpdateAnchorArrangement(vm);                    
+                }
+                if (e.PropertyName == "")
+                {
                     if (vm.AnchorArrangementIsEnabled) SetAnchorArrangementTabContent(plate);
                 }
 
@@ -245,6 +249,12 @@ namespace PFD
                 CComponentParamsViewList cpw = sender as CComponentParamsViewList;
                 DataGridScrewArrangement_ValueChanged(cpw);
             }
+        }
+
+        private void UpdateAnchorArrangement(SystemComponentViewerViewModel vm)
+        {
+            //plate
+            if (vm.ComponentTypeIndex == 1 && vm.AnchorArrangementIsEnabled) SetAnchorArrangementTabContent(plate);
         }
 
         private void DataGridScrewArrangement_ValueChanged(CComponentParamsView cpw)
@@ -2930,16 +2940,21 @@ namespace PFD
             if (plate is CConCom_Plate_B_basic)
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
-                
+
                 Combobox_AnchorArrangement.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
                 Combobox_AnchorArrangement.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
-                Combobox_AnchorArrangement.SelectionChanged += SelectAA_SelectionChanged;                
+                Combobox_AnchorArrangement.SelectionChanged += SelectAA_SelectionChanged;
 
                 List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
-                DataGrid dg = GetDatagridForAnchorArrangement(anchorArrangementParams);                
+                DataGrid dg = GetDatagridForAnchorArrangement(anchorArrangementParams);
 
                 DataGridAnchorArrangement.ItemsSource = dg.ItemsSource;
             }
+            else
+            {
+                Combobox_AnchorArrangement.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(plate);
+                DataGridAnchorArrangement.ItemsSource = new List<CComponentParamsView>();
+            }            
         }
         private void SelectAA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
