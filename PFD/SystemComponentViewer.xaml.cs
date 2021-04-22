@@ -220,8 +220,8 @@ namespace PFD
 
                 if (e.PropertyName == "AnchorArrangementIsEnabled")
                 {
-                    UpdateAnchorArrangement(vm);                    
-                }                
+                    UpdateAnchorArrangement(vm);
+                }
 
             }
             else if (sender is CComponentParamsViewBool)
@@ -263,9 +263,9 @@ namespace PFD
             List<CComponentParamsView> sa_params = CPlateHelper.GetScrewArrangementProperties(plate);
             //toto tu je preto,ze ked sa robi tab, tak aby to chodilo do dalsich riadkov, plati iba ak sa nemeni pocet riadkov
             if (vm.ScrewArrangementParameters.Count != sa_params.Count) vm.ScrewArrangementParameters = sa_params;
-             
+
             CPlateHelper.UpdatePlateScrewArrangementData(plate);
-            
+
             // Delete drilling route
             vm.DrillingRoutePoints = null;
             // Redraw plate in 2D and 3D
