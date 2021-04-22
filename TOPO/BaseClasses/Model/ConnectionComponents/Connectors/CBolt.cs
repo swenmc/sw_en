@@ -10,11 +10,14 @@ namespace BaseClasses
         public CBolt()
         { }
 
-        public CBolt(Point3D controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fMass_temp)
+        public CBolt(Point3D controlpoint, float fDiameter_shank, float fLength_temp, float fMass_temp)
         {
             ControlPoint = controlpoint;
             Length = fLength_temp;
-            Diameter_thread = fDiameter_temp;
+            Diameter_shank = fDiameter_shank;
+
+            Diameter_hole = GetDiameter_Hole();
+
             Mass = fMass_temp;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);

@@ -15,6 +15,9 @@ namespace BaseClasses
             ControlPoint = controlpoint;
             Length = fLength_temp;
             Diameter_shank = fDiameter_temp;
+
+            Diameter_hole = GetDiameter_Hole();
+
             Mass = fMass_temp;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.DarkSalmon);

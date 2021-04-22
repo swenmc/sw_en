@@ -292,5 +292,21 @@ namespace BaseClasses
         /*
         public override void loadWireFrameIndices()
         { }*/
+
+        public float GetDiameter_Hole()
+        {
+            if (Diameter_shank < 0.008)
+                return Diameter_shank + 0.001f;
+            else if(Diameter_shank < 0.014)
+                return Diameter_shank + 0.002f;
+            else if (Diameter_shank < 0.024)
+                return Diameter_shank + 0.003f;
+            else if (Diameter_shank < 0.036)
+                return Diameter_shank + 0.004f;
+            else if (Diameter_shank < 0.048)
+                return Diameter_shank + 0.005f;
+            else
+                return Diameter_shank + 0.006f;
+        }
     }
 }

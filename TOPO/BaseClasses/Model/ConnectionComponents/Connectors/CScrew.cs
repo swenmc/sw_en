@@ -188,6 +188,8 @@ namespace BaseClasses
             m_iGauge = referenceScrew.Gauge;
             Diameter_thread = referenceScrew.Diameter_thread;
             Diameter_shank = referenceScrew.Diameter_shank;
+
+            Diameter_hole = GetDiameter_Hole();
             //threadType1;
             //threadsPerInch1;
             //threadType2;

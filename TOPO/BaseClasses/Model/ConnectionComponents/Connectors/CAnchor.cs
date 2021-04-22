@@ -449,6 +449,8 @@ namespace BaseClasses
             Diameter_thread = (float)properties.ThreadDiameter;
             Diameter_pitch = (float)properties.PitchDiameter;
 
+            Diameter_hole = GetDiameter_Hole();
+
             Price_PPKG_NZD = (float)properties.Price_PPKG_NZD;
             Price_PPLM_NZD = (float)properties.Price_PPLM_NZD;
             Price_PPP_NZD = (float)properties.Price_PPLM_NZD * fLength_temp;
@@ -495,6 +497,8 @@ namespace BaseClasses
             Diameter_shank = (float)properties.ShankDiameter;
             Diameter_thread = (float)properties.ThreadDiameter;
             Diameter_pitch = (float)properties.PitchDiameter;
+
+            Diameter_hole = GetDiameter_Hole();
 
             Price_PPKG_NZD = (float)properties.Price_PPKG_NZD;
             Price_PPLM_NZD = (float)properties.Price_PPLM_NZD;
@@ -548,6 +552,8 @@ namespace BaseClasses
             Diameter_shank = (float)properties.ShankDiameter;
             Diameter_thread = (float)properties.ThreadDiameter;
             Diameter_pitch = (float)properties.PitchDiameter;
+
+            Diameter_hole = GetDiameter_Hole();
 
             Price_PPKG_NZD = (float)properties.Price_PPKG_NZD;
             Price_PPLM_NZD = (float)properties.Price_PPLM_NZD;
