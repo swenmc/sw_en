@@ -220,9 +220,8 @@ namespace PFD
 
                 if (e.PropertyName == "AnchorArrangementIsEnabled")
                 {
-                    UpdateAnchorArrangement(vm);                    
-                }                
-
+                    UpdateAnchorArrangement(vm);
+                }
             }
             else if (sender is CComponentParamsViewBool)
             {
@@ -249,8 +248,14 @@ namespace PFD
 
         private void UpdateAnchorArrangement(SystemComponentViewerViewModel vm)
         {
+            SetAnchorArrangementVisibility(vm);
             //plate
             if (vm.ComponentTypeIndex == 1 && vm.AnchorArrangementIsEnabled) SetAnchorArrangementTabContent(plate);
+        }
+        private void SetAnchorArrangementVisibility(SystemComponentViewerViewModel vm)
+        {
+            if (vm.AnchorArrangementIsEnabled) TabItemAnchorArrangement.Visibility = Visibility.Visible;
+            else TabItemAnchorArrangement.Visibility = Visibility.Hidden;
         }
 
         private void DataGridScrewArrangement_ValueChanged(CComponentParamsView cpw)
@@ -679,11 +684,7 @@ namespace PFD
             else if (vm.ComponentTypeIndex == 1) //plate
             {
                 ScrewArrangementTabControl.Visibility = Visibility.Visible;
-                //TxtCombScrewArrangment.Visibility = Visibility.Visible;
-                //Combobox_ScrewArrangement.Visibility = Visibility.Visible;
-                //TxtScrewArrangment.Visibility = Visibility.Visible;
-                //DataGridScrewArrangement.Visibility = Visibility.Visible;
-
+                
                 TxtGeometry.Visibility = Visibility.Visible;
                 DataGridGeometry.IsReadOnly = false;
                 DataGridGeometry.Visibility = Visibility.Visible;
