@@ -928,6 +928,15 @@ namespace PFD
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
                     if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+
+                    // To Ondrej tu sa ma asi updatovat viac parametrov ???
+                    // TODO
+                    // DOcasne hodnoty
+                    arrangementTemp.referenceScrew.Diameter_thread = 0.010f;
+                    arrangementTemp.referenceScrew.Diameter_shank = 0.012f;
+                    arrangementTemp.referenceScrew.Diameter_hole = arrangementTemp.referenceScrew.GetDiameter_Hole();
+                    arrangementTemp.referenceScrew.D_predrillholediameter = 0.5f * arrangementTemp.referenceScrew.Diameter_shank; // Docasne
+
                     if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name)) arrangementTemp.IAdditionalConnectorInCornerNumber = int.Parse(itemList.Value);
                 }
 
@@ -1147,6 +1156,14 @@ namespace PFD
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
                     if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) sa_JKL.referenceScrew.Gauge = int.Parse(itemList.Value);
+
+                    // To Ondrej tu sa ma asi updatovat viac parametrov ???
+                    // TODO
+                    // DOcasne hodnoty
+                    sa_JKL.referenceScrew.Diameter_thread = 0.010f;
+                    sa_JKL.referenceScrew.Diameter_shank = 0.012f;
+                    sa_JKL.referenceScrew.Diameter_hole = sa_JKL.referenceScrew.GetDiameter_Hole();
+                    sa_JKL.referenceScrew.D_predrillholediameter = 0.5f * sa_JKL.referenceScrew.Diameter_shank; // Docasne
                 }
 
                 sa_JKL.UpdateArrangmentData();        // Update data of screw arrangement
@@ -1270,6 +1287,14 @@ namespace PFD
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
                     if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+
+                    // To Ondrej tu sa ma asi updatovat viac parametrov ???
+                    // TODO
+                    // DOcasne hodnoty
+                    arrangementTemp.referenceScrew.Diameter_thread = 0.010f;
+                    arrangementTemp.referenceScrew.Diameter_shank = 0.012f;
+                    arrangementTemp.referenceScrew.Diameter_hole = arrangementTemp.referenceScrew.GetDiameter_Hole();
+                    arrangementTemp.referenceScrew.D_predrillholediameter = 0.5f * arrangementTemp.referenceScrew.Diameter_shank; // Docasne
                 }
 
                 arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
@@ -1297,6 +1322,13 @@ namespace PFD
 
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
                     if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    // To Ondrej tu sa ma asi updatovat viac parametrov ???
+                    // TODO
+                    // DOcasne hodnoty
+                    arrangementTemp.referenceScrew.Diameter_thread = 0.010f;
+                    arrangementTemp.referenceScrew.Diameter_shank = 0.012f;
+                    arrangementTemp.referenceScrew.Diameter_hole = arrangementTemp.referenceScrew.GetDiameter_Hole();
+                    arrangementTemp.referenceScrew.D_predrillholediameter = 0.5f * arrangementTemp.referenceScrew.Diameter_shank; // Docasne
                 }
 
                 arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
@@ -1342,6 +1374,13 @@ namespace PFD
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
                     if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    // To Ondrej tu sa ma asi updatovat viac parametrov ???
+                    // TODO
+                    // DOcasne hodnoty
+                    arrangementTemp.referenceScrew.Diameter_thread = 0.010f;
+                    arrangementTemp.referenceScrew.Diameter_shank = 0.012f;
+                    arrangementTemp.referenceScrew.Diameter_hole = arrangementTemp.referenceScrew.GetDiameter_Hole();
+                    arrangementTemp.referenceScrew.D_predrillholediameter = 0.5f * arrangementTemp.referenceScrew.Diameter_shank; // Docasne
                 }
 
                 arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
