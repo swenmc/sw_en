@@ -230,10 +230,12 @@ namespace BaseClasses
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            m_iGauge = properties.gauge;  // Gauge v mm
+            m_iGauge = properties.gauge;  // Gauge - hodnota int
             Diameter_thread = (float)properties.threadDiameter;
             Diameter_shank = (float)properties.shankDiameter;
             float shankLength = (float)properties.shankLength;
+
+            Diameter_hole = GetDiameter_Hole();
             //threadType1;
             //threadsPerInch1;
             //threadType2;
@@ -284,10 +286,8 @@ namespace BaseClasses
 
         private void UpdateAllValuesOnGaugeChange()
         {
-            this.Diameter_thread = 0.010f;
-            this.Diameter_shank = 0.012f;
-            this.Diameter_hole = GetDiameter_Hole();
-            this.D_predrillholediameter = 0.5f * Diameter_shank; // Docasne
+            CTEKScrewProp screwProperties = CTEKScrewsManager.GetScrewProperties2(m_iGauge.ToString()); // !!! Ak je to int tak sa uvazuje ID, ak je to string tak gauge
+            SetScrewValuesFromDatabase(screwProperties);
 
             System.Diagnostics.Trace.WriteLine("UpdateAllValuesOnGaugeChange call " + DateTime.Now.ToLongTimeString());
         }
