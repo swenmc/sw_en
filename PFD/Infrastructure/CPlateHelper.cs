@@ -1538,6 +1538,14 @@ namespace PFD
             {
                 CComponentParamsViewList itemList = item as CComponentParamsViewList;
                 if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) sa_CB.referenceScrew.Gauge = int.Parse(itemList.Value);
+
+                // To Ondrej tu sa ma asi updatovat viac parametrov ???
+                // TODO
+                // DOcasne hodnoty
+                sa_CB.referenceScrew.Diameter_thread = 0.010f;
+                sa_CB.referenceScrew.Diameter_shank = 0.012f;
+                sa_CB.referenceScrew.Diameter_hole = sa_CB.referenceScrew.GetDiameter_Hole();
+                sa_CB.referenceScrew.D_predrillholediameter = 0.5f * sa_CB.referenceScrew.Diameter_shank; // Docasne
             }
 
             sa_CB.UpdateArrangmentData();        // Update data of screw arrangement
