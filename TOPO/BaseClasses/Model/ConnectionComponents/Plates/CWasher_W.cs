@@ -18,7 +18,7 @@ namespace BaseClasses
         List<Point> pointsIn_2D;
         List<Point> pointsOut_2D;
 
-        private float m_fHoleDiameter; // Priemer otvoru vo washer - priemer kotvy pre < 20 mm je to 16 mm + 2 mm = 18 mm, pre >= 20 mm je to napr. 20 + 3 mm = 23 mm
+        private float m_fHoleDiameter; // Priemer otvoru vo washer
 
         public float HoleDiameter
         {

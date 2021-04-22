@@ -233,19 +233,19 @@ namespace BaseClasses
             if (plate.ScrewArrangement != null && plate.ScrewArrangement.Screws != null)
             {
                 CScrew screw = plate.ScrewArrangement.Screws.FirstOrDefault();
-                if(screw != null) fDiameter_screwPreDrilledHole = screw.Diameter_thread;   //To Mato - D_holediameter nejako nefunguje je tam stale rovnaka hodnota, tak som pouzil Diameter_thread
+                if(screw != null) fDiameter_screwPreDrilledHole = screw.D_predrillholediameter;
             }
 
             if (plate is CConCom_Plate_B_basic) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
                 //if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.referenceAnchor != null)
-                //    fDiameter_anchorPreDrilledHole = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread; // TODO - Doplnit do databazy velkost otvorov pre bolts a anchors
+                //    fDiameter_anchorPreDrilledHole = basePlate.AnchorArrangement.referenceAnchor.Diameter_hole;
                 if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.Anchors != null)
                 {
                     CAnchor anchor = basePlate.AnchorArrangement.Anchors.FirstOrDefault();
-                    if(anchor != null) fDiameter_anchorPreDrilledHole = anchor.Diameter_thread; // TODO - Doplnit do databazy velkost otvorov pre bolts a anchors
-                }                    
+                    if(anchor != null) fDiameter_anchorPreDrilledHole = anchor.Diameter_hole;
+                }
             }
 
             canvasForImage.Children.Clear();

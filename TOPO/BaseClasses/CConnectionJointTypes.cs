@@ -107,12 +107,7 @@ namespace BaseClasses
             washerPlateTop = null;
             plateProp = null;
 
-            float fWasherHoleDiameter = referenceAnchor.Diameter_shank; // Priemer otvoru vo washer - priemer kotvy pre < 20 mm je to 16 mm + 2 mm = 18 mm, pre >= 20 mm je to napr. 20 + 3 mm = 23 mm
-
-            if (fWasherHoleDiameter < 0.020f)
-                fWasherHoleDiameter += 0.002f; // Add 2 mm
-            else
-                fWasherHoleDiameter += 0.003f; // Add 3 mm
+            float fWasherHoleDiameter = referenceAnchor.Diameter_hole; // Priemer otvoru vo washer
 
             string washerPlateTopName;
             washerBearing = new CWasher_W("WA", new Point3D(0,0,0), fWasherHoleDiameter, 0, -90, 0); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
