@@ -699,6 +699,15 @@ namespace BaseClasses
             }
         }
 
+        public void UpdateAnchorOnNameChanged()
+        {
+            CBoltProperties props = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
+
+            Diameter_thread = (float)props.ThreadDiameter;
+            Diameter_shank = (float)props.ShankDiameter;
+            Diameter_hole = GetDiameter_Hole();
+        }
+
         /*
         protected override void loadIndices()
         {

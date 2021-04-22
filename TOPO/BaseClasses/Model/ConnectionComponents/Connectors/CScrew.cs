@@ -37,7 +37,10 @@ namespace BaseClasses
 
             set
             {
+                bool changedValue = m_iGauge != value;
                 m_iGauge = value;
+
+                if(changedValue) UpdateAllValuesOnGaugeChange();
             }
         }
 
@@ -277,5 +280,16 @@ namespace BaseClasses
             return geometryWireFrameModel;
         }
         */
+
+
+        private void UpdateAllValuesOnGaugeChange()
+        {
+            this.Diameter_thread = 0.010f;
+            this.Diameter_shank = 0.012f;
+            this.Diameter_hole = GetDiameter_Hole();
+            this.D_predrillholediameter = 0.5f * Diameter_shank; // Docasne
+
+            System.Diagnostics.Trace.WriteLine("UpdateAllValuesOnGaugeChange call " + DateTime.Now.ToLongTimeString());
+        }
     }
 }
