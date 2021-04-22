@@ -39,6 +39,20 @@ namespace BaseClasses
             }
         }
 
+        private float m_fDiameter_hole;
+        public float Diameter_hole // d_o - hole final diameter
+        {
+            get
+            {
+                return m_fDiameter_hole;
+            }
+
+            set
+            {
+                m_fDiameter_hole = value;
+            }
+        }
+
         private float m_fArea_c_thread;
         public float Area_c_thread  // Core / thread area
         {

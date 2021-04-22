@@ -229,7 +229,7 @@ namespace BaseClasses
 
             // Holes diameters
             //if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
-            //    fDiameter_screwPreDrilledHole = plate.ScrewArrangement.referenceScrew.D_holediameter;
+            //    fDiameter_screwPreDrilledHole = plate.ScrewArrangement.referenceScrew.D_predrillholediameter;
             if (plate.ScrewArrangement != null && plate.ScrewArrangement.Screws != null)
             {
                 CScrew screw = plate.ScrewArrangement.Screws.FirstOrDefault();
@@ -355,7 +355,7 @@ namespace BaseClasses
 
             // Holes diameters
             if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
-                fDiameter_screwPreDrilledHoles = plate.ScrewArrangement.referenceScrew.D_holediameter;
+                fDiameter_screwPreDrilledHoles = plate.ScrewArrangement.referenceScrew.D_predrillholediameter;
 
             if (plate is CConCom_Plate_B_basic) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
             {

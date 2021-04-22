@@ -112,7 +112,7 @@ namespace BaseClasses
         }
 
         private float m_fd_predrillholediameter;
-        public float D_holediameter
+        public float D_predrillholediameter
         {
             get
             {
@@ -200,7 +200,7 @@ namespace BaseClasses
             m_ft_ht_headTotalThickness = referenceScrew.T_ht_headTotalThickness;
             m_fd_w_washerdiameter = referenceScrew.D_w_washerdiameter;
             m_ft_w_washerthickness = referenceScrew.T_w_washerthickness;
-            m_fd_predrillholediameter = referenceScrew.D_holediameter;
+            m_fd_predrillholediameter = referenceScrew.D_predrillholediameter;
             m_fShearStrength_nominal = referenceScrew.ShearStrength_nominal;
             m_fAxialTensileStrength_nominal = referenceScrew.AxialTensileStrength_nominal;
             m_fTorsionalStrength_nominal = referenceScrew.TorsionalStrength_nominal;
