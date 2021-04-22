@@ -473,7 +473,7 @@ namespace BaseClasses
             ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
             ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
-            Mass = GetMass();
+            //Mass = GetMass();
 
             m_fRotationX_deg = 0;
             m_fRotationY_deg = 90;
@@ -522,7 +522,7 @@ namespace BaseClasses
             ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
             ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
-            Mass = GetMass();
+            //Mass = GetMass();
 
             BIsDisplayed = bIsDisplayed;
 
@@ -578,7 +578,7 @@ namespace BaseClasses
             ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
             ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
-            Mass = GetMass();
+            //Mass = GetMass();
 
             BIsDisplayed = bIsDisplayed;
 
@@ -638,10 +638,10 @@ namespace BaseClasses
             }
         }
 
-        public float GetMass()
-        {
-            return Area_p_pitch * Length * m_Mat.m_fRho;
-        }
+        //public float GetMass()
+        //{
+        //    return Area_p_pitch * Length * m_Mat.m_fRho;
+        //}
 
         private void SetPortionOtAnchorAbovePlateDefault()
         {
@@ -701,11 +701,67 @@ namespace BaseClasses
 
         public void UpdateAnchorOnNameChanged()
         {
-            CBoltProperties props = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
+            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
 
-            Diameter_thread = (float)props.ThreadDiameter;
-            Diameter_shank = (float)props.ShankDiameter;
+            Diameter_shank = (float)properties.ShankDiameter;
+            Diameter_thread = (float)properties.ThreadDiameter;
+            Diameter_pitch = (float)properties.PitchDiameter;
+
             Diameter_hole = GetDiameter_Hole();
+
+            Price_PPKG_NZD = (float)properties.Price_PPKG_NZD;
+            Price_PPLM_NZD = (float)properties.Price_PPLM_NZD;
+            Price_PPP_NZD = (float)properties.Price_PPLM_NZD * Length;
+            Mass = (float)properties.Mass_kg_LM * Length;
+
+            Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
+            Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
+            Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
+
+            if (m_fPortionOtAnchorAbovePlate_abs <= 0)
+                SetPortionOtAnchorAbovePlateDefault();
+
+            // Washer size
+            // Plate washer
+            if (m_WasherPlateTop != null)
+            {
+                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
+                float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit
+                m_WasherPlateTop.ControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
+
+                m_Nuts[0].Name = Name;
+                m_Nuts[0].UpdateNutOnNameChanged();
+
+                float fWasherTopPlateNutPosition = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness - m_WasherPlateTop.Ft - fOffsetFor3D;
+                m_Nuts[0].ControlPoint.X = fWasherTopPlateNutPosition;
+            }
+
+            // Bearing washer
+            if (m_WasherBearing != null)
+            {
+                int indexTopNut = 0; int indexBottomNut = 1;
+
+                if (m_WasherPlateTop != null)
+                {
+                    indexTopNut = 1;
+                    indexBottomNut = 2;
+                }
+
+                m_Nuts[indexTopNut].Name = Name;
+                m_Nuts[indexBottomNut].Name = Name;
+
+                m_Nuts[indexTopNut].UpdateNutOnNameChanged();
+                m_Nuts[indexBottomNut].UpdateNutOnNameChanged();
+
+                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
+                m_fWasherBearing_OffsetFromBottom = m_Nuts[indexBottomNut].Thickness_max + 0.02f; // vyska matice + 20 mm
+                m_WasherBearing.ControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
+
+                float fWasherBearingTopNutPosition = (float)m_WasherBearing.ControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
+                float fWasherBearingBottomNutPosition = (float)m_WasherBearing.ControlPoint.X + m_Nuts[indexBottomNut].Thickness_max + fOffsetFor3D;
+                m_Nuts[indexTopNut].ControlPoint.X = fWasherBearingTopNutPosition;
+                m_Nuts[indexBottomNut].ControlPoint.X = fWasherBearingBottomNutPosition;
+            }
         }
 
         /*

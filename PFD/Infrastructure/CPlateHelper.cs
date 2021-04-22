@@ -274,13 +274,6 @@ namespace PFD
                         arrangementTemp.referenceAnchor.Name = itemList.Value;
                         arrangementTemp.referenceAnchor.UpdateAnchorOnNameChanged();
 
-                        //CBoltProperties props = CBoltsManager.GetBoltProperties(arrangementTemp.referenceAnchor.Name, "ThreadedBars");
-
-                        //// To Ondrej tu sa ma asi updatovat viac parametrov
-                        //arrangementTemp.referenceAnchor.Diameter_thread = (float)props.ThreadDiameter;
-                        //arrangementTemp.referenceAnchor.Diameter_shank = (float)props.ShankDiameter;
-                        //arrangementTemp.referenceAnchor.Diameter_hole = arrangementTemp.referenceAnchor.GetDiameter_Hole();
-
                         // Ak zmenime priemer kotvy zmenia sa velkosti otvorov vo washers
 
                         if (arrangementTemp.referenceAnchor.WasherPlateTop != null)
