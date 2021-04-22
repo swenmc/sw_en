@@ -135,7 +135,7 @@
                 <TabItem Name="TabItemScrewArrangement" >
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Screw Arrangement" Foreground="Blue"/>
+                            <TextBlock Text="Screw Arrangement" Foreground="Black"/>
                         </StackPanel>
                     </TabItem.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -145,15 +145,14 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />                                
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Grid.Column="0" Name="TxtCombScrewArrangment" Text="Screw Arrangement:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10 0 0 0"/>
                             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_ScrewArrangement" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Center" 
                       ItemsSource="{Binding Path=ScrewArrangements}" SelectedIndex="{Binding Path=ScrewArrangementIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
+                            <!--<TextBlock Grid.Row="1" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>-->
                             <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ScrewArrangementParameters}"
                       HeadersVisibility="Column" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
@@ -254,7 +253,7 @@
                 <TabItem Name="TabItemAnchorArrangement" IsEnabled="{Binding Path=AnchorArrangementIsEnabled}">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Anchor Arrangement" Foreground="Blue"/>
+                            <TextBlock Text="Anchor Arrangement" Foreground="Black"/>
                         </StackPanel>
                     </TabItem.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" >
