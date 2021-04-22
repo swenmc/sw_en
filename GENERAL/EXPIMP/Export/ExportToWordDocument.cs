@@ -178,7 +178,7 @@ namespace EXPIMP
                     //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_RollerDoors]"))).InsertText("");
                     Paragraph par_RD = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_RollerDoors]"));
                     if (par_RD != null) par_RD.Remove(false);
-                }                    
+                }
                 else
                     document.ReplaceText("[exterior_RollerDoors]", "");
 
@@ -189,7 +189,7 @@ namespace EXPIMP
                     //(document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_PersonnelDoors]"))).InsertText("");
                     Paragraph par_PD = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exterior_PersonnelDoors]"));
                     if (par_PD != null) par_PD.Remove(false);
-                }                    
+                }
                 else
                     document.ReplaceText("[exterior_PersonnelDoors]", "");
 
