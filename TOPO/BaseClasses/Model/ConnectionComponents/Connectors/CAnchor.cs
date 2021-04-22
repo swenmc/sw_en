@@ -720,48 +720,6 @@ namespace BaseClasses
 
             if (m_fPortionOtAnchorAbovePlate_abs <= 0)
                 SetPortionOtAnchorAbovePlateDefault();
-
-            // Washer size
-            // Plate washer
-            if (m_WasherPlateTop != null)
-            {
-                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
-                float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit
-                m_WasherPlateTop.ControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
-
-                m_Nuts[0].Name = Name;
-                m_Nuts[0].UpdateNutOnNameChanged();
-
-                float fWasherTopPlateNutPosition = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness - m_WasherPlateTop.Ft - fOffsetFor3D;
-                m_Nuts[0].ControlPoint.X = fWasherTopPlateNutPosition;
-            }
-
-            // Bearing washer
-            if (m_WasherBearing != null)
-            {
-                int indexTopNut = 0; int indexBottomNut = 1;
-
-                if (m_WasherPlateTop != null)
-                {
-                    indexTopNut = 1;
-                    indexBottomNut = 2;
-                }
-
-                m_Nuts[indexTopNut].Name = Name;
-                m_Nuts[indexBottomNut].Name = Name;
-
-                m_Nuts[indexTopNut].UpdateNutOnNameChanged();
-                m_Nuts[indexBottomNut].UpdateNutOnNameChanged();
-
-                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
-                m_fWasherBearing_OffsetFromBottom = m_Nuts[indexBottomNut].Thickness_max + 0.02f; // vyska matice + 20 mm
-                m_WasherBearing.ControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - m_fWasherBearing_OffsetFromBottom);
-
-                float fWasherBearingTopNutPosition = (float)m_WasherBearing.ControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
-                float fWasherBearingBottomNutPosition = (float)m_WasherBearing.ControlPoint.X + m_Nuts[indexBottomNut].Thickness_max + fOffsetFor3D;
-                m_Nuts[indexTopNut].ControlPoint.X = fWasherBearingTopNutPosition;
-                m_Nuts[indexBottomNut].ControlPoint.X = fWasherBearingBottomNutPosition;
-            }
         }
 
         /*
