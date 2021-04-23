@@ -123,6 +123,9 @@ namespace BaseClasses
 
             set
             {
+                bool changed = m_SameDistancesX != value;
+                if (!changed) return;
+
                 m_SameDistancesX = value;
                 if (m_SameDistancesX == false) SetDistancesX();
                 else SetDistanceX();
@@ -138,6 +141,9 @@ namespace BaseClasses
 
             set
             {
+                bool changed = m_SameDistancesY != value;
+                if (!changed) return;
+
                 m_SameDistancesY = value;
                 if (m_SameDistancesY == false) SetDistancesY();
                 else SetDistanceY();
