@@ -52,11 +52,11 @@ namespace PFD
             CreateTableConnectors(pfdVM.Model);
 
             // Cladding Sheets
-            if (QuotationHelper.DisplayCladdingTable(pfdVM))
+            if (PartListHelper.DisplayCladdingTable(pfdVM))
                 CreateTableCladdingSheets(pfdVM.Model);
 
             // Fibreglass Sheets
-            if (QuotationHelper.DisplayFibreglassTable(pfdVM))
+            if (PartListHelper.DisplayFibreglassTable(pfdVM))
                 CreateTableFibreglassSheets(pfdVM.Model);
 
             SetControlsVisibility();

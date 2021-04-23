@@ -1071,7 +1071,6 @@ namespace PFD
             }
         }
 
-        //aby boli podmienky rovnake pre Material list aj pre Quotation
         public static bool DisplayCladdingTable(CPFDViewModel vm)
         {
             //return vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasCladding(vm.Model);
@@ -1082,6 +1081,9 @@ namespace PFD
             //return vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasFibreglass(vm.Model);
             return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._claddingOptionsVM.HasFibreglass();
         }
+        
+
+
         public static bool DisplayDoorsAndWindowsTable(CPFDViewModel vm)
         {
             return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts();
