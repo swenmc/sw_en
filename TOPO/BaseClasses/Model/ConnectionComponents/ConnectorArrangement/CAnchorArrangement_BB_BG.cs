@@ -26,7 +26,7 @@ namespace BaseClasses
 
         private List<CAnchorRectSequence> m_RectSequences;
 
-        
+
 
         private bool m_UniformDistributionOfShear;
 
@@ -115,7 +115,8 @@ namespace BaseClasses
             seq1.NumberOfAnchorsInRow_xDirection = iNumberOfAnchorsInRow_xDirection_SQ1;
             seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfAnchorsInColumn_yDirection_SQ1;
             //seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
-            if (fDistanceOfPointsX_SQ1.Count > 1)
+            //if (fDistanceOfPointsX_SQ1.Count > 1)
+            if (fDistanceOfPointsX_SQ1.Count > 1 && seq1.NumberOfAnchorsInRow_xDirection > 1)
             {
                 seq1.SameDistancesX = false;
                 seq1.DistancesOfPointsX = fDistanceOfPointsX_SQ1;
@@ -126,7 +127,8 @@ namespace BaseClasses
                 seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1.First();
             }
 
-            if (fDistanceOfPointsY_SQ1.Count > 1)
+            //if (fDistanceOfPointsY_SQ1.Count > 1)
+            if (fDistanceOfPointsY_SQ1.Count > 1 && seq1.NumberOfAnchorsInColumn_yDirection > 1)
             {
                 seq1.SameDistancesY = false;
                 seq1.DistancesOfPointsY = fDistanceOfPointsY_SQ1;
@@ -145,7 +147,7 @@ namespace BaseClasses
         }
 
         public override void UpdateArrangmentData()
-        {            
+        {
             ListOfSequenceGroups = new List<CAnchorSequenceGroup>(1);
             ListOfSequenceGroups.Add(new CAnchorSequenceGroup());
 
@@ -186,7 +188,7 @@ namespace BaseClasses
             ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
 
             // Translate from [0,0] on plate to the final position
-            TranslateSequence(flZ + 0,  0, (CAnchorRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            TranslateSequence(flZ + 0, 0, (CAnchorRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
 
             FillArrayOfHolesCentersInWholeArrangement();
         }
@@ -242,7 +244,7 @@ namespace BaseClasses
                 Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
 
                 // Preberaju sa parametre z referencneho objektu anchor
-                Anchors[i] = new CAnchor(referenceAnchor.Name, referenceAnchor.m_Mat.Name, controlpoint, referenceAnchor.Length, referenceAnchor.h_effective, referenceAnchor.PortionOtAnchorAbovePlate_abs, referenceAnchor.WasherPlateTop, referenceAnchor.WasherBearing, 0, 90 , 0, true);
+                Anchors[i] = new CAnchor(referenceAnchor.Name, referenceAnchor.m_Mat.Name, controlpoint, referenceAnchor.Length, referenceAnchor.h_effective, referenceAnchor.PortionOtAnchorAbovePlate_abs, referenceAnchor.WasherPlateTop, referenceAnchor.WasherBearing, 0, 90, 0, true);
             }
         }
     }

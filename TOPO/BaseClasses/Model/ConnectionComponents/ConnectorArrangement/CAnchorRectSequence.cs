@@ -155,6 +155,7 @@ namespace BaseClasses
             get
             {
                 if (m_DistancesOfPointsX == null) SetDistancesX();
+                if (m_DistancesOfPointsX.Count > m_iNumberOfAnchorsInRow_xDirection - 1) FixDistancesOfPointsX();
                 return m_DistancesOfPointsX;
             }
 
@@ -173,6 +174,7 @@ namespace BaseClasses
             get
             {
                 if (m_DistancesOfPointsY == null) SetDistancesY();
+                if (m_DistancesOfPointsY.Count > m_iNumberOfAnchorsInColumn_yDirection - 1) FixDistancesOfPointsY();
                 return m_DistancesOfPointsY;
             }
 
@@ -183,6 +185,28 @@ namespace BaseClasses
                 {
                     if (m_DistancesOfPointsY.Count > 0) m_fDistanceOfPointsY = m_DistancesOfPointsY.First();
                 }
+            }
+        }
+
+        //bug 794, najskaredsi fix v historii
+        //kedze sa nijako nevieme dopatrat preco je v kolekcii viac prvkov ako tam pridavame
+        //ak by na to bol cas, tak do tejto metody breakpoint a nikdy by sa pouzit vlastne nemala
+        private void FixDistancesOfPointsX()
+        {
+            while (m_DistancesOfPointsX.Count > m_iNumberOfAnchorsInRow_xDirection - 1)
+            {
+                m_DistancesOfPointsX.RemoveAt(0);
+            }
+        }
+
+        //bug 794, najskaredsi fix v historii
+        //kedze sa nijako nevieme dopatrat preco je v kolekcii viac prvkov ako tam pridavame
+        //ak by na to bol cas, tak do tejto metody breakpoint a nikdy by sa pouzit vlastne nemala
+        private void FixDistancesOfPointsY()
+        {
+            while (m_DistancesOfPointsY.Count > m_iNumberOfAnchorsInColumn_yDirection - 1)
+            {
+                m_DistancesOfPointsY.RemoveAt(0);
             }
         }
 
@@ -211,6 +235,7 @@ namespace BaseClasses
             m_DistancesOfPointsY = new List<float>();
             for (int i = 0; i < m_iNumberOfAnchorsInColumn_yDirection - 1; i++)
             {
+                //if (m_DistancesOfPointsY.Count > m_iNumberOfAnchorsInColumn_yDirection - 1) m_DistancesOfPointsY.RemoveAt(0); //ani tu sa to nikdy nedostalo, tak odkial tam pohadze viac prvkov,nechapem
                 m_DistancesOfPointsY.Add(m_fDistanceOfPointsY);
             }
         }

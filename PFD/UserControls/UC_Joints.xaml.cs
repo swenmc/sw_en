@@ -1400,6 +1400,7 @@ namespace PFD
                     dgAA.ItemsSource = anchorArrangementParams;
                     foreach (CComponentParamsView cpw in anchorArrangementParams)
                     {
+                        cpw.PropertyChanged -= HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
                         cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
                     }
                 }
