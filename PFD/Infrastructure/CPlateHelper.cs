@@ -922,7 +922,11 @@ namespace PFD
                 else if (item is CComponentParamsViewList)
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name))
+                    {
+                        arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                        arrangementTemp.referenceScrew.UpdateAllValuesOnGaugeChange();
+                    }
 
                     //// To Ondrej tu sa ma asi updatovat viac parametrov ???
                     //// TODO
@@ -1150,7 +1154,11 @@ namespace PFD
                 else if (item is CComponentParamsViewList)
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) sa_JKL.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name))
+                    {
+                        sa_JKL.referenceScrew.Gauge = int.Parse(itemList.Value);
+                        sa_JKL.referenceScrew.UpdateAllValuesOnGaugeChange();
+                    }
 
                     //// To Ondrej tu sa ma asi updatovat viac parametrov ???
                     //// TODO
@@ -1281,7 +1289,11 @@ namespace PFD
                 else if (item is CComponentParamsViewList)
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name))
+                    {
+                        arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                        arrangementTemp.referenceScrew.UpdateAllValuesOnGaugeChange();
+                    }
 
                     //// To Ondrej tu sa ma asi updatovat viac parametrov ???
                     //// TODO
@@ -1316,7 +1328,11 @@ namespace PFD
                     if (item.Name == CParamsResources.RightLegEdgeOffset_yS.Name) arrangementTemp.Feoy_right = item_val / fLengthUnitFactor;
 
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name))
+                    {
+                        arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                        arrangementTemp.referenceScrew.UpdateAllValuesOnGaugeChange();
+                    }
                     //// To Ondrej tu sa ma asi updatovat viac parametrov ???
                     //// TODO
                     //// DOcasne hodnoty
@@ -1368,7 +1384,11 @@ namespace PFD
                 else if (item is CComponentParamsViewList)
                 {
                     CComponentParamsViewList itemList = item as CComponentParamsViewList;
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name))
+                    {
+                        arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                        arrangementTemp.referenceScrew.UpdateAllValuesOnGaugeChange();
+                    }
                     //// To Ondrej tu sa ma asi updatovat viac parametrov ???
                     //// TODO
                     //// DOcasne hodnoty
@@ -1532,7 +1552,11 @@ namespace PFD
             else if (item is CComponentParamsViewList)
             {
                 CComponentParamsViewList itemList = item as CComponentParamsViewList;
-                if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) sa_CB.referenceScrew.Gauge = int.Parse(itemList.Value);
+                if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name))
+                {
+                    sa_CB.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    sa_CB.referenceScrew.UpdateAllValuesOnGaugeChange();
+                }
 
                 //// To Ondrej tu sa ma asi updatovat viac parametrov ???
                 //// TODO

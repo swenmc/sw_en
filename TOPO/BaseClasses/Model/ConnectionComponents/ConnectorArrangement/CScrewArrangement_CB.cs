@@ -151,15 +151,7 @@ namespace BaseClasses
         }
 
         public override void UpdateArrangmentData()
-        {
-            // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-
-            // Update reference screw properties
-            DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
-            referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
-            
+        {   
             //upravene,ze iba ak nie je inicializovane vobec tak vtedy
             if (ListOfSequenceGroups == null || ListOfSequenceGroups.Count == 0)
             {

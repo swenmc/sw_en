@@ -145,48 +145,9 @@ namespace BaseClasses
         }
 
         public override void UpdateArrangmentData()
-        {
-            // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CAnchorsManager a nie tu
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-
-            // Update reference anchor properties
-            //DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
-            //referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
-            
+        {            
             ListOfSequenceGroups = new List<CAnchorSequenceGroup>(1);
             ListOfSequenceGroups.Add(new CAnchorSequenceGroup());
-                        
-            //CAnchorRectSequence seq1 = new CAnchorRectSequence();
-            //seq1.NumberOfAnchorsInRow_xDirection = iNumberOfAnchorsInRow_xDirection_SQ1;
-            //seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfAnchorsInColumn_yDirection_SQ1;
-            ////seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
-            //if (fDistanceOfPointsX_SQ1.Count > 1)
-            //{
-            //    seq1.SameDistancesX = false;
-            //    seq1.DistancesOfPointsX = fDistanceOfPointsX_SQ1;
-            //}
-            //else
-            //{
-            //    seq1.SameDistancesX = true;
-            //    seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1.First();
-            //}
-
-            //if (fDistanceOfPointsY_SQ1.Count > 1)
-            //{
-            //    seq1.SameDistancesY = false;
-            //    seq1.DistancesOfPointsY = fDistanceOfPointsY_SQ1;
-            //}
-            //else
-            //{
-            //    seq1.SameDistancesY = true;
-            //    seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1.First();
-            //}
-            
-            //seq1.INumberOfConnectors = seq1.NumberOfAnchorsInRow_xDirection * seq1.NumberOfAnchorsInColumn_yDirection;
-            //seq1.HolesCentersPoints = new Point[seq1.INumberOfConnectors];
-
-            
 
             ListOfSequenceGroups[0].ListSequence.Add(RectSequences.First());
 

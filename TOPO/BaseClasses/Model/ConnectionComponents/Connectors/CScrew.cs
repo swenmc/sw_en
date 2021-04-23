@@ -37,10 +37,10 @@ namespace BaseClasses
 
             set
             {
-                bool changedValue = m_iGauge != value;
+                //bool changedValue = m_iGauge != value;
                 m_iGauge = value;
 
-                if(changedValue) UpdateAllValuesOnGaugeChange();
+                //if(changedValue) UpdateAllValuesOnGaugeChange();
             }
         }
 
@@ -284,7 +284,7 @@ namespace BaseClasses
         */
 
 
-        private void UpdateAllValuesOnGaugeChange()
+        public void UpdateAllValuesOnGaugeChange()
         {
             CTEKScrewProp screwProperties = CTEKScrewsManager.GetScrewProperties2(m_iGauge.ToString()); // !!! Ak je to int tak sa uvazuje ID, ak je to string tak gauge
             SetScrewValuesFromDatabase(screwProperties);
