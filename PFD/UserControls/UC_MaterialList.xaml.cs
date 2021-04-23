@@ -64,7 +64,7 @@ namespace PFD
 
         private void SetControlsVisibility()
         {
-            if (QuotationHelper.DisplayCladdingTable(_pfdVM)) //CModelHelper.ModelHasCladding(_pfdVM.Model)
+            if (PartListHelper.DisplayCladdingTable(_pfdVM)) 
             {
                 TxtCladdingSheets.Visibility = Visibility.Visible;
                 Datagrid_CladdingSheets.Visibility = Visibility.Visible;
@@ -75,7 +75,7 @@ namespace PFD
                 Datagrid_CladdingSheets.Visibility = Visibility.Collapsed;
             }
 
-            if (QuotationHelper.DisplayFibreglassTable(_pfdVM)) //CModelHelper.ModelHasFibreglass(_pfdVM.Model)
+            if (PartListHelper.DisplayFibreglassTable(_pfdVM)) 
             {
                 TxtFibreglassSheets.Visibility = Visibility.Visible;
                 Datagrid_FibreglassSheets.Visibility = Visibility.Visible;
