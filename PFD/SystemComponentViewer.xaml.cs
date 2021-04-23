@@ -2957,15 +2957,12 @@ namespace PFD
             ComboBox cbAA = sender as ComboBox;
             if (cbAA == null) return;
 
-            ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
+            CPlateHelper.AnchorArrangementChanged(null, plate, cbAA.SelectedIndex);
+            CPlateHelper.UpdatePlateAnchorArrangementData(plate);  //toto asi ani netreba, lebo asi je to v UpdateAndDisplayPlate
 
             SetAnchorArrangementTabContent(plate);
-        }
 
-        private void ChangeAllSameJointsPlateAnchorArrangement(int anchorArrangementIndex)
-        {
-            CPlateHelper.AnchorArrangementChanged(null, plate, anchorArrangementIndex);
-            CPlateHelper.UpdatePlateAnchorArrangementData(plate);
+            UpdateAndDisplayPlate();
         }
 
         private void RegisterEventsForAnchorArrangementParams(List<CComponentParamsView> anchorArrangementParams)
