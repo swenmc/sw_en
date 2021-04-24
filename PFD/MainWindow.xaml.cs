@@ -187,7 +187,7 @@ namespace PFD
                 //To Mato
                 //toto by som mozno aj najradsej zakomentoval, vyznam to ma asi len ked sa ma updatovat Quotation bez updatu Modelu (RecreateModel)
                 //ak by sa niekomu chcelo testovat...tak toto zakomentovat a otestovat,ci to funguje aj tak
-                // To Ondrej - zamentoval som to, nefungovalo, ani ked som dal Apply button v dialogu nefungovalo, zapol som v Model Options Update Model Automatically a fungovalo
+                // To Ondrej - zakomentoval som to, nefungovalo, ani ked som dal Apply button v dialogu nefungovalo, zapol som v Model Options Update Model Automatically a fungovalo
                 // Mali by sme nejako jednoznacne oddelit nutné updaty v grafike (3D scena), v modeli (_01_GR, 01_MR) a v GUI a upratat to
 
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; } return; }
@@ -369,6 +369,8 @@ namespace PFD
                 if (e.PropertyName == "Design")
                 {
                     //TO Mato - co sa ma stat ak sa zmeni Design v tabulke component list?
+                    // TO Ondrej, maju sa zmazat vysledky posudeni, vysledky vypoctu Internal forces by sa nemuseli mazat, ale asi to nemame uplne pekne oddelene
+                    // Malo by sa aktivovat Calculate s tym ze hodnoty vysledkov pre Design sa pri jeho stlaceni znova dopocitaju
                     //vm.RecreateModel = true;
                 }
                 if (e.PropertyName == "Calculate")
@@ -377,8 +379,8 @@ namespace PFD
                 }
                 if (e.PropertyName == "Generate")
                 {
-                    vm.RecreateFoundations = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruju Foundations
-                    vm.RecreateFloorSlab = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruje FloorSlab
+                    vm.RecreateFoundations = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruju Foundations (To Ondrej to asi staci urobit pre pruty typu columns a wind posts)
+                    vm.RecreateFloorSlab = true; //To Mato - pozor toto znamena,ze ak odskrtnem akykolvek Generate tak sa pregeneruje FloorSlab (To Ondrej to asi staci urobit pre pruty typu columns a wind posts, vtedy sa moze zmenit rozmer dosky v podoryse)
                     vm.RecreateJoints = true; //need to recreate joint when generate was changed
                     vm.RecreateModel = true;
                     vm.CalculateCladdingParameters_Mato();
@@ -1254,7 +1256,7 @@ namespace PFD
             if (vm._modelOptionsVM.EnableCrossBracing) TabCrossBracing.Visibility = Visibility.Visible;
             else TabCrossBracing.Visibility = Visibility.Collapsed;
             if (vm._modelOptionsVM.EnableCanopies) TabCanopies.Visibility = Visibility.Visible;
-            else TabCanopies.Visibility = Visibility.Collapsed;            
+            else TabCanopies.Visibility = Visibility.Collapsed;
             if (vm._modelOptionsVM.EnableCladding) TabCladding.Visibility = Visibility.Visible;
             else TabCladding.Visibility = Visibility.Collapsed;
 
@@ -1263,18 +1265,18 @@ namespace PFD
             //tie zoznamy cladding sa vytvaraju az pri zobrazovani...takze je to nepouzitelne = prepisat
             if (vm._modelOptionsVM.EnableCladding && vm._modelOptionsVM.IndividualCladdingSheets && vm.ModelHasPurlinsOrGirts())
             {
-                btnCladdingSheetsValidation.IsEnabled = true;                
+                btnCladdingSheetsValidation.IsEnabled = true;
             }
             else
             {
-                btnCladdingSheetsValidation.IsEnabled = false;                
+                btnCladdingSheetsValidation.IsEnabled = false;
             }
             if (vm._modelOptionsVM.EnableCladding && vm._claddingOptionsVM.HasFibreglass() && vm.ModelHasPurlinsOrGirts())
             {
                 btnFibreglassSheetsValidation.IsEnabled = true;
             }
             else
-            {                
+            {
                 btnFibreglassSheetsValidation.IsEnabled = false;
             }
 

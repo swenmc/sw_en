@@ -895,7 +895,7 @@ namespace PFD
                     MessageBox.Show("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
                     m_RoofEdgeOverHang_FB_Y = m_RoofEdgeOverHang_FB_Y_old;
                     //throw new Exception("Invalid input. Roof cladding is in the collision with front/back wall cladding.");
-                }                    
+                }
 
                 UpdateFibreglassProperties();
                 NotifyPropertyChanged("RoofEdgeOverHang_FB_Y");

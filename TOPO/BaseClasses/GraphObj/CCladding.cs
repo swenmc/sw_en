@@ -264,6 +264,11 @@ namespace BaseClasses.GraphObj
             // End
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+            // TODO - mohlo by prist z Main Window, rozdiel je ze pridavame nejake odstadenie od hrany profilu, aby s nim plech nekolidoval v 3D
+            double baseWidth_Overall_for3D = sBuildingGeomInputData.fWidth_overall + 2 * additionalOffset;
+            // TODO - mohlo by prist z Main Window, rozdiel je ze pridavame nejake odstadenie od hrany profilu, aby s nim plech nekolidoval v 3D
+            double baseLength_Overall_for3D = sBuildingGeomInputData.fLength_overall + 2 * additionalOffset;
+
             Brush solidBrushFront = new SolidColorBrush(m_ColorWall);
             Brush solidBrushSide = new SolidColorBrush(m_ColorWall);
             Brush solidBrushRoof = new SolidColorBrush(m_ColorRoof);
@@ -292,8 +297,8 @@ namespace BaseClasses.GraphObj
             ImageBrush brushWall_FG = null;
             ImageBrush brushRoof_FG = null;
 
-            double wpWidth = 0;
-            double wpHeight = 0;
+            //double wpWidth = 0;
+            //double wpHeight = 0;
 
             if (options.bUseTextures)
             {
@@ -363,19 +368,19 @@ namespace BaseClasses.GraphObj
             // Start
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------
             // Wall Points
-            Point3D pLRWall_front2_heightright = new Point3D();
-            Point3D pLRWall_back2_heightright = new Point3D();
-            Point3D pLRWall_front3_heightleft = new Point3D();
-            Point3D pLRWall_back3_heightleft = new Point3D();
-            Point3D pLRWall_front4_top = new Point3D();
-            Point3D pLRWall_back4_top = new Point3D();
+            //Point3D pLRWall_front2_heightright = new Point3D();
+            //Point3D pLRWall_back2_heightright = new Point3D();
+            //Point3D pLRWall_front3_heightleft = new Point3D();
+            //Point3D pLRWall_back3_heightleft = new Point3D();
+            //Point3D pLRWall_front4_top = new Point3D();
+            //Point3D pLRWall_back4_top = new Point3D();
 
-            Point3D pFBWall_front2_heightright = new Point3D();
-            Point3D pFBWall_back2_heightright = new Point3D();
-            Point3D pFBWall_front3_heightleft = new Point3D();
-            Point3D pFBWall_back3_heightleft = new Point3D();
-            Point3D pFBWall_front4_top = new Point3D();
-            Point3D pFBWall_back4_top = new Point3D();
+            //Point3D pFBWall_front2_heightright = new Point3D();
+            //Point3D pFBWall_back2_heightright = new Point3D();
+            //Point3D pFBWall_front3_heightleft = new Point3D();
+            //Point3D pFBWall_back3_heightleft = new Point3D();
+            //Point3D pFBWall_front4_top = new Point3D();
+            //Point3D pFBWall_back4_top = new Point3D();
 
             // Roof Points - oddelene pretoze strecha ma presahy
             Point3D pRoof_front2_heightright = new Point3D();
@@ -394,10 +399,10 @@ namespace BaseClasses.GraphObj
 
             int iNumberOfFrontBackWallEdges = 4;
 
-            Point3D pControlPoint_FrontWall = new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z);
-            Point3D pControlPoint_BackWall = new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z);
-            Point3D pControlPoint_LeftWall = new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z);
-            Point3D pControlPoint_RightWall = new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z);
+            //Point3D pControlPoint_FrontWall = new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, pfront0_baseleft.Z);
+            //Point3D pControlPoint_BackWall = new Point3D(pback1_baseright.X, pback1_baseright.Y, pback1_baseright.Z);
+            //Point3D pControlPoint_LeftWall = new Point3D(pback0_baseleft.X, pback0_baseleft.Y, pback0_baseleft.Z);
+            //Point3D pControlPoint_RightWall = new Point3D(pfront1_baseright.X, pfront1_baseright.Y, pfront1_baseright.Z);
 
             Point3D pControlPoint_RoofRight;
             Point3D pControlPoint_RoofLeft;
@@ -412,16 +417,16 @@ namespace BaseClasses.GraphObj
 
                 // Wall
                 iNumberOfFrontBackWallEdges = 4;
-                pLRWall_front2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_2_final_edge_FB_Wall);
-                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_FB_Wall);
+                //pLRWall_front2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_2_final_edge_FB_Wall);
+                //pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_FB_Wall);
 
-                pLRWall_back2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_2_final_edge_FB_Wall);
-                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final_edge_FB_Wall);
+                //pLRWall_back2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_2_final_edge_FB_Wall);
+                //pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final_edge_FB_Wall);
 
-                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, height_2_final_edge_FB_Wall);
-                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, height_2_final_edge_FB_Wall);
-                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, height_1_final_edge_FB_Wall);
-                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, height_1_final_edge_FB_Wall);
+                //pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, height_2_final_edge_FB_Wall);
+                //pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, height_2_final_edge_FB_Wall);
+                //pFBWall_front3_heightleft = new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, height_1_final_edge_FB_Wall);
+                //pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, height_1_final_edge_FB_Wall);
 
                 // Roof
                 pRoof_front2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + roofEdgeOverhang_X, column_crsc_y_minus_temp - roofEdgeOverhang_Y, height_2_final_edge_Roof);
@@ -462,20 +467,20 @@ namespace BaseClasses.GraphObj
 
                 // Wall
                 iNumberOfFrontBackWallEdges = 5;
-                pLRWall_front2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_LR_Wall);
-                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_LR_Wall);
-                pLRWall_front4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, column_crsc_y_minus_temp, height_2_final_edge_LR_Wall);
+                //pLRWall_front2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_LR_Wall);
+                //pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, height_1_final_edge_LR_Wall);
+                //pLRWall_front4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, column_crsc_y_minus_temp, height_2_final_edge_LR_Wall);
 
-                pLRWall_back2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final_edge_LR_Wall);
-                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final_edge_LR_Wall);
-                pLRWall_back4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_2_final_edge_LR_Wall);
+                //pLRWall_back2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final_edge_LR_Wall);
+                //pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_1_final_edge_LR_Wall);
+                //pLRWall_back4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp, height_2_final_edge_LR_Wall);
 
-                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, height_1_final_edge_FB_Wall);
-                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, height_1_final_edge_FB_Wall);
-                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, height_1_final_edge_FB_Wall);
-                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, height_1_final_edge_FB_Wall);
-                pFBWall_front4_top = new Point3D(pLRWall_front4_top.X, pLRWall_front4_top.Y, height_2_final_edge_FB_Wall);
-                pFBWall_back4_top = new Point3D(pLRWall_back4_top.X, pLRWall_back4_top.Y, height_2_final_edge_FB_Wall);
+                //pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, height_1_final_edge_FB_Wall);
+                //pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, height_1_final_edge_FB_Wall);
+                //pFBWall_front3_heightleft = new Point3D(pfront0_baseleft.X, pfront0_baseleft.Y, height_1_final_edge_FB_Wall);
+                //pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, height_1_final_edge_FB_Wall);
+                //pFBWall_front4_top = new Point3D(0.5 * sBuildingGeomInputData.fW_centerline, column_crsc_y_minus_temp, height_2_final_edge_FB_Wall);
+                //pFBWall_back4_top = new Point3D(pLRWall_back4_top.X, pLRWall_back4_top.Y, height_2_final_edge_FB_Wall);
 
                 // Roof
                 pRoof_front2_heightright = new Point3D(sBuildingGeomInputData.fW_centerline + column_crsc_z_plus_temp + roofEdgeOverhang_X, column_crsc_y_minus_temp - roofEdgeOverhang_Y, height_1_final_edge_Roof);
@@ -548,13 +553,11 @@ namespace BaseClasses.GraphObj
             bool bUseTop20Colors = true; // Pouzit vsetky farby v zozname (141) alebo striedat len vybrane (20)
 
             // Left Wall
-            // Total Wall Width
-            double width = pback0_baseleft.Y - pfront0_baseleft.Y;
             double height_left_basic = -bottomEdge_z + height_1_final_edge_LR_Wall;
 
-            int iNumberOfWholeSheets = (int)(width / m_WallProps.widthModular_m);
+            int iNumberOfWholeSheets = (int)(baseLength_Overall_for3D / m_WallProps.widthModular_m);
             double dWidthOfWholeSheets = iNumberOfWholeSheets * m_WallProps.widthModular_m;
-            double dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            double dPartialSheet_End = baseLength_Overall_for3D - dWidthOfWholeSheets; // Last Sheet
             int iNumberOfSheets = iNumberOfWholeSheets + 1;
 
             List<COpening> listOfOpeningsLeftWall_All = null;
@@ -570,21 +573,21 @@ namespace BaseClasses.GraphObj
                         listOfFibreGlassSheetsWallLeft.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFL", "Fibreglass - Left Wall", m_MaterialFibreglass_Wall,
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
-                            pControlPoint_LeftWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
+                            pback0_baseleft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0));
                         iSheet_FG_Index++;
                     }
                 }
-                GenerateCladdingOpenings(listOfFibreGlassSheetsWallLeft, "Left", pControlPoint_LeftWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                GenerateCladdingOpenings(listOfFibreGlassSheetsWallLeft, "Left", pback0_baseleft, baseLength_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsLeftWall_All);
             }
 
             if (bGenerateLeftSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall, pControlPoint_LeftWall, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall, pback0_baseleft, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
-                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, width,
+                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseLength_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
                     listOfOpeningsLeftWall_All, ref iSheetIndex, out listOfCladdingSheetsLeftWall);
                 else // (bGenerateLeftSideCladding && !bIndividualCladdingSheets)
@@ -593,7 +596,7 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsLeftWall.Add(new CCladdingOrFibreGlassSheet(1, "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall,
                      m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, m_WallProps.widthModular_m,
                         4, 0, 0,
-                        pControlPoint_LeftWall, width, height_left_basic, height_left_basic, 0.5 * width, height_left_basic,
+                        pback0_baseleft, baseLength_Overall_for3D, height_left_basic, height_left_basic, 0.5 * baseLength_Overall_for3D, height_left_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
                         m_WallProps.widthRib_m, options.bDisplayCladdingLeftWall, 0));
 
@@ -614,13 +617,11 @@ namespace BaseClasses.GraphObj
             }
 
             // Front Wall
-            // Total Wall Width
-            width = pfront1_baseright.X - pfront0_baseleft.X;
             height_left_basic = -bottomEdge_z + height_1_final_edge_FB_Wall;
 
-            iNumberOfWholeSheets = (int)(width / m_WallProps.widthModular_m);
+            iNumberOfWholeSheets = (int)(baseWidth_Overall_for3D / m_WallProps.widthModular_m);
             dWidthOfWholeSheets = iNumberOfWholeSheets * m_WallProps.widthModular_m;
-            dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            dPartialSheet_End = baseWidth_Overall_for3D - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
 
             List<COpening> listOfOpeningsFrontWall_All = null;
@@ -635,22 +636,22 @@ namespace BaseClasses.GraphObj
                         listOfFibreGlassSheetsWallFront.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFF", "Fibreglass - Front Wall", m_MaterialFibreglass_Wall,
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
-                            pControlPoint_FrontWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
+                            pfront0_baseleft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0));
                         iSheet_FG_Index++;
                     }
                 }
 
-                GenerateCladdingOpenings(listOfFibreGlassSheetsWallFront, "Front", pControlPoint_FrontWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                GenerateCladdingOpenings(listOfFibreGlassSheetsWallFront, "Front", pfront0_baseleft, baseWidth_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsFrontWall_All);
             }
 
             if (bGenerateFrontSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall, pControlPoint_FrontWall, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall, pfront0_baseleft, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity,
-                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, width,
+                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseWidth_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
                     listOfOpeningsFrontWall_All, ref iSheetIndex, out listOfCladdingSheetsFrontWall);
                 else // (bGenerateFrontSideCladding && options.bDisplayCladdingFrontWall && !bIndividualCladdingSheets)
@@ -668,7 +669,7 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsFrontWall.Add(new CCladdingOrFibreGlassSheet(2, "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall,
                         m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, m_WallProps.widthModular_m,
                         iNumberOfFrontBackWallEdges, 0, 0,
-                        pControlPoint_FrontWall, width, height_left_basic, height_right_basic, 0.5 * width, height_middle_basic,
+                        pfront0_baseleft, baseWidth_Overall_for3D, height_left_basic, height_right_basic, 0.5 * baseWidth_Overall_for3D, height_middle_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, m_WallProps.widthRib_m, 
                         options.bDisplayCladdingFrontWall, 0));
 
@@ -689,13 +690,11 @@ namespace BaseClasses.GraphObj
             }
 
             // Right Wall
-            // Total Wall Width
-            width = pback1_baseright.Y - pfront1_baseright.Y;
             height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? -bottomEdge_z + height_1_final_edge_LR_Wall : -bottomEdge_z + height_2_final_edge_LR_Wall;
 
-            iNumberOfWholeSheets = (int)(width / m_WallProps.widthModular_m);
+            iNumberOfWholeSheets = (int)(baseLength_Overall_for3D / m_WallProps.widthModular_m);
             dWidthOfWholeSheets = iNumberOfWholeSheets * m_WallProps.widthModular_m;
-            dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            dPartialSheet_End = baseLength_Overall_for3D - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
 
             List<COpening> listOfOpeningsRightWall_All = null;
@@ -711,21 +710,21 @@ namespace BaseClasses.GraphObj
                         listOfFibreGlassSheetsWallRight.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFR", "Fibreglass - Right Wall", m_MaterialFibreglass_Wall,
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
-                            pControlPoint_RightWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
+                            pfront1_baseright, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0));
                         iSheet_FG_Index++;
                     }
                 }
-                GenerateCladdingOpenings(listOfFibreGlassSheetsWallRight, "Right", pControlPoint_RightWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                GenerateCladdingOpenings(listOfFibreGlassSheetsWallRight, "Right", pfront1_baseright, baseLength_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsRightWall_All);
-            }            
+            }
 
             if (bGenerateRightSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall, pControlPoint_RightWall, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall, pfront1_baseright, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
-                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, width,
+                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseLength_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
                     listOfOpeningsRightWall_All, ref iSheetIndex, out listOfCladdingSheetsRightWall);
                 else
@@ -734,7 +733,7 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsRightWall.Add(new CCladdingOrFibreGlassSheet(3, "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall,
                         m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, m_WallProps.widthModular_m,
                         4, 0, 0,
-                        pControlPoint_RightWall, width, height_left_basic, height_left_basic, 0.5 * width, height_left_basic,
+                        pfront1_baseright, baseLength_Overall_for3D, height_left_basic, height_left_basic, 0.5 * baseLength_Overall_for3D, height_left_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity, 
                         m_WallProps.widthRib_m, options.bDisplayCladdingRightWall, 0, false, 0));
  
@@ -755,13 +754,11 @@ namespace BaseClasses.GraphObj
             }
 
             // Back Wall
-            // Total Wall Width
-            width = pback1_baseright.X - pback0_baseleft.X;
             height_left_basic = eModelType == EModelType_FS.eKitsetGableRoofEnclosed ? -bottomEdge_z + height_1_final_edge_FB_Wall : -bottomEdge_z + height_2_final_edge_FB_Wall;
 
-            iNumberOfWholeSheets = (int)(width / m_WallProps.widthModular_m);
+            iNumberOfWholeSheets = (int)(baseWidth_Overall_for3D / m_WallProps.widthModular_m);
             dWidthOfWholeSheets = iNumberOfWholeSheets * m_WallProps.widthModular_m;
-            dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            dPartialSheet_End = baseWidth_Overall_for3D - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
 
             List<COpening> listOfOpeningsBackWall_All = null;
@@ -777,21 +774,21 @@ namespace BaseClasses.GraphObj
                         listOfFibreGlassSheetsWallBack.Add(new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "WFB", "Fibreglass - Back Wall", m_MaterialFibreglass_Wall,
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
-                            pControlPoint_BackWall, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
+                            pback1_baseright, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0));
                         iSheet_FG_Index++;
                     }
                 }
-                GenerateCladdingOpenings(listOfFibreGlassSheetsWallBack, "Back", pControlPoint_BackWall, width, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                GenerateCladdingOpenings(listOfFibreGlassSheetsWallBack, "Back", pback1_baseright, baseWidth_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsBackWall_All);
             }
 
             if (bGenerateBackSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall, pControlPoint_BackWall, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall, pback1_baseright, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity,
-                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, width,
+                    m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseWidth_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
                     listOfOpeningsBackWall_All, ref iSheetIndex, out listOfCladdingSheetsBackWall);
                 else //(bGenerateBackSideCladding && !bIndividualCladdingSheets)
@@ -809,7 +806,7 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsBackWall.Add(new CCladdingOrFibreGlassSheet(4, "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall,
                         m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, m_WallProps.widthModular_m,
                         iNumberOfFrontBackWallEdges, 0, 0,
-                        pControlPoint_BackWall, width, height_left_basic, height_right_basic, 0.5 * width, height_middle_basic,
+                        pback1_baseright, baseWidth_Overall_for3D, height_left_basic, height_right_basic, 0.5 * baseWidth_Overall_for3D, height_middle_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, m_WallProps.widthRib_m, options.bDisplayCladdingBackWall, 0));
 
                     /* Mono
@@ -828,10 +825,10 @@ namespace BaseClasses.GraphObj
                 }
             }
 
-            // Roof - Right Side
-            // Total Width
-            width = pRoof_back2_heightright.Y - pRoof_front2_heightright.Y;
+            // TODO - vstup z main Window
+            float RoofLength_Y = (float)(fRoofEdgeOffsetFromCenterline + sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + roofEdgeOverhang_Y);
 
+            // Roof - Right Side
             double length_left_basic;
 
             if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
@@ -841,9 +838,9 @@ namespace BaseClasses.GraphObj
 
             pControlPoint_RoofRight = new Point3D(pRoof_front2_heightright.X, pRoof_front2_heightright.Y, pRoof_front2_heightright.Z);
 
-            iNumberOfWholeSheets = (int)(width / m_RoofProps.widthModular_m);
+            iNumberOfWholeSheets = (int)(RoofLength_Y / m_RoofProps.widthModular_m);
             dWidthOfWholeSheets = iNumberOfWholeSheets * m_RoofProps.widthModular_m;
-            dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+            dPartialSheet_End = RoofLength_Y - dWidthOfWholeSheets; // Last Sheet
             iNumberOfSheets = iNumberOfWholeSheets + 1;
 
             if (bGenerateRoofFibreglass)
@@ -870,7 +867,7 @@ namespace BaseClasses.GraphObj
                 {
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-right", "RC", "Cladding - Roof-Right Side", m_MaterialCladding_Roof, pControlPoint_RoofRight, m_ColorNameRoof,
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
-                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, width,
+                    m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, RoofLength_Y,
                     m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
                     SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofRight), ref iSheetIndex, out listOfCladdingSheetsRoofRight);
 
@@ -971,7 +968,7 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(5, "RC", "Cladding - Roof", m_MaterialCladding_Roof,
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                         4, 0, 0,
-                        pControlPoint_RoofRight, width, length_left_basic, length_left_basic, 0.5 * width, length_left_basic,
+                        pControlPoint_RoofRight, RoofLength_Y, length_left_basic, length_left_basic, 0.5 * RoofLength_Y, length_left_basic,
                         m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, options.bDisplayCladdingRoof, 0));
                     /* Mono
                     CAreaPolygonal area = new CAreaPolygonal(4, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0);
@@ -1129,13 +1126,10 @@ namespace BaseClasses.GraphObj
             if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
             {
                 // Roof - Left Side
-                // Total Width
-                width = pRoof_back3_heightleft.Y - pRoof_front3_heightleft.Y;
-
                 pControlPoint_RoofLeft = new Point3D(pRoof_front4_top.X, pRoof_front4_top.Y, pRoof_front4_top.Z);
-                iNumberOfWholeSheets = (int)(width / m_RoofProps.widthModular_m);
+                iNumberOfWholeSheets = (int)(RoofLength_Y / m_RoofProps.widthModular_m);
                 dWidthOfWholeSheets = iNumberOfWholeSheets * m_RoofProps.widthModular_m;
-                dPartialSheet_End = width - dWidthOfWholeSheets; // Last Sheet
+                dPartialSheet_End = RoofLength_Y - dWidthOfWholeSheets; // Last Sheet
                 iNumberOfSheets = iNumberOfWholeSheets + 1;
 
                 if (bGenerateRoofFibreglass)
@@ -1167,7 +1161,7 @@ namespace BaseClasses.GraphObj
                         pControlPoint_RoofLeft, m_ColorNameRoof,
                         m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD,
-                        width,
+                        RoofLength_Y,
                         m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
                         SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofLeft), ref iSheetIndex, out listOfCladdingSheetsRoofLeft);
 
@@ -1226,7 +1220,7 @@ namespace BaseClasses.GraphObj
                         listOfCladdingSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(6, "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
                             m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                             4, 0, 0,
-                            pControlPoint_RoofLeft, width, length_left_basic, length_left_basic, 0.5 * width, length_left_basic,
+                            pControlPoint_RoofLeft, RoofLength_Y, length_left_basic, length_left_basic, 0.5 * RoofLength_Y, length_left_basic,
                             m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, options.bDisplayCladdingRoof, 0));
 
                         /*

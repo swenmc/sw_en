@@ -4093,19 +4093,19 @@ namespace PFD
             Point3D pback1_baseright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, _claddingOptionsVM.WallBottomOffset_Z);
 
             // Wall Points
-            Point3D pLRWall_front2_heightright = new Point3D();
-            Point3D pLRWall_back2_heightright = new Point3D();
-            Point3D pLRWall_front3_heightleft = new Point3D();
-            Point3D pLRWall_back3_heightleft = new Point3D();
-            Point3D pLRWall_front4_top = new Point3D();
-            Point3D pLRWall_back4_top = new Point3D();
-
-            Point3D pFBWall_front2_heightright = new Point3D();
-            Point3D pFBWall_back2_heightright = new Point3D();
-            Point3D pFBWall_front3_heightleft = new Point3D();
-            Point3D pFBWall_back3_heightleft = new Point3D();
-            Point3D pFBWall_front4_top = new Point3D();
-            Point3D pFBWall_back4_top = new Point3D();
+            //Point3D pLRWall_front2_heightright = new Point3D();
+            //Point3D pLRWall_back2_heightright = new Point3D();
+            //Point3D pLRWall_front3_heightleft = new Point3D();
+            //Point3D pLRWall_back3_heightleft = new Point3D();
+            //Point3D pLRWall_front4_top = new Point3D();
+            //Point3D pLRWall_back4_top = new Point3D();
+            //
+            //Point3D pFBWall_front2_heightright = new Point3D();
+            //Point3D pFBWall_back2_heightright = new Point3D();
+            //Point3D pFBWall_front3_heightleft = new Point3D();
+            //Point3D pFBWall_back3_heightleft = new Point3D();
+            //Point3D pFBWall_front4_top = new Point3D();
+            //Point3D pFBWall_back4_top = new Point3D();
 
             // Roof Points - oddelene pretoze strecha ma presahy
             Point3D pRoof_front2_heightright = new Point3D();
@@ -4136,16 +4136,16 @@ namespace PFD
 
                 // Wall
                 iNumberOfFrontBackWallEdges = 4;
-                pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_2_final_edge_FB_Wall);
-                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_FB_Wall);
+                //pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_2_final_edge_FB_Wall);
+                //pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_FB_Wall);
 
-                pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_2_final_edge_FB_Wall);
-                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_FB_Wall);
+                //pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_2_final_edge_FB_Wall);
+                //pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_FB_Wall);
 
-                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, Height_2_final_edge_FB_Wall);
-                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, Height_2_final_edge_FB_Wall);
-                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, Height_1_final_edge_FB_Wall);
-                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, Height_1_final_edge_FB_Wall);
+                //pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, Height_2_final_edge_FB_Wall);
+                //pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, Height_2_final_edge_FB_Wall);
+                //pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, Height_1_final_edge_FB_Wall);
+                //pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, Height_1_final_edge_FB_Wall);
 
                 WallDefinitionPoints_FrontOrBack_Cladding = new List<Point>(4) {
                     new Point(-column_crsc_z_plus_temp, _claddingOptionsVM.WallBottomOffset_Z),
@@ -4176,20 +4176,20 @@ namespace PFD
 
                 // Wall
                 iNumberOfFrontBackWallEdges = 5;
-                pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_LR_Wall);
-                pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_LR_Wall);
-                pLRWall_front4_top = new Point3D(0.5 * Width, column_crsc_y_minus_temp, Height_2_final_edge_LR_Wall);
+                //pLRWall_front2_heightright = new Point3D(Width + column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_LR_Wall);
+                //pLRWall_front3_heightleft = new Point3D(-column_crsc_z_plus_temp, column_crsc_y_minus_temp, Height_1_final_edge_LR_Wall);
+                //pLRWall_front4_top = new Point3D(0.5 * Width, column_crsc_y_minus_temp, Height_2_final_edge_LR_Wall);
 
-                pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_LR_Wall);
-                pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_LR_Wall);
-                pLRWall_back4_top = new Point3D(0.5 * Width, Length + column_crsc_y_plus_temp, Height_2_final_edge_LR_Wall);
+                //pLRWall_back2_heightright = new Point3D(Width + column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_LR_Wall);
+                //pLRWall_back3_heightleft = new Point3D(-column_crsc_z_plus_temp, Length + column_crsc_y_plus_temp, Height_1_final_edge_LR_Wall);
+                //pLRWall_back4_top = new Point3D(0.5 * Width, Length + column_crsc_y_plus_temp, Height_2_final_edge_LR_Wall);
 
-                pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, Height_1_final_edge_FB_Wall);
-                pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, Height_1_final_edge_FB_Wall);
-                pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, Height_1_final_edge_FB_Wall);
-                pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, Height_1_final_edge_FB_Wall);
-                pFBWall_front4_top = new Point3D(pLRWall_front4_top.X, pLRWall_front4_top.Y, Height_2_final_edge_FB_Wall);
-                pFBWall_back4_top = new Point3D(pLRWall_back4_top.X, pLRWall_back4_top.Y, Height_2_final_edge_FB_Wall);
+                //pFBWall_front2_heightright = new Point3D(pLRWall_front2_heightright.X, pLRWall_front2_heightright.Y, Height_1_final_edge_FB_Wall);
+                //pFBWall_back2_heightright = new Point3D(pLRWall_back2_heightright.X, pLRWall_back2_heightright.Y, Height_1_final_edge_FB_Wall);
+                //pFBWall_front3_heightleft = new Point3D(pLRWall_front3_heightleft.X, pLRWall_front3_heightleft.Y, Height_1_final_edge_FB_Wall);
+                //pFBWall_back3_heightleft = new Point3D(pLRWall_back3_heightleft.X, pLRWall_back3_heightleft.Y, Height_1_final_edge_FB_Wall);
+                //pFBWall_front4_top = new Point3D(pLRWall_front4_top.X, pLRWall_front4_top.Y, Height_2_final_edge_FB_Wall);
+                //pFBWall_back4_top = new Point3D(pLRWall_back4_top.X, pLRWall_back4_top.Y, Height_2_final_edge_FB_Wall);
 
                 WallDefinitionPoints_FrontOrBack_Cladding = new List<Point>(5) {
                     new Point(-column_crsc_z_plus_temp, _claddingOptionsVM.WallBottomOffset_Z),
