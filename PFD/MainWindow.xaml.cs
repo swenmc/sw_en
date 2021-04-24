@@ -187,6 +187,9 @@ namespace PFD
                 //To Mato
                 //toto by som mozno aj najradsej zakomentoval, vyznam to ma asi len ked sa ma updatovat Quotation bez updatu Modelu (RecreateModel)
                 //ak by sa niekomu chcelo testovat...tak toto zakomentovat a otestovat,ci to funguje aj tak
+                // To Ondrej - zamentoval som to, nefungovalo, ani ked som dal Apply button v dialogu nefungovalo, zapol som v Model Options Update Model Automatically a fungovalo
+                // Mali by sme nejako jednoznacne oddelit nutné updaty v grafike (3D scena), v modeli (_01_GR, 01_MR) a v GUI a upratat to
+
                 if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; } return; }
 
                 if (e.PropertyName == "RoofCladdingColorIndex" || e.PropertyName == "WallCladdingColorIndex"
