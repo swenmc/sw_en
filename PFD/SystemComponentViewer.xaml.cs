@@ -1082,6 +1082,7 @@ namespace PFD
         private void UpdateAndDisplayPlate()
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            if (vm.IsSetFromCode) return;
 
             if (vm.ComponentTypeIndex == 1) // Plate
             {
@@ -2626,7 +2627,8 @@ namespace PFD
             else if (plate.ScrewArrangement is CScrewArrangement_BX) return 1;
             else if (plate.ScrewArrangement is CScrewArrangement_L) return 1;
             else if (plate.ScrewArrangement is CScrewArrangement_LL) return 1;
-            
+            else if (plate.ScrewArrangement is CScrewArrangement_F) return 1;
+
             return 0;
         }
 
@@ -2763,6 +2765,7 @@ namespace PFD
             }
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            
             if (pInfo != null)
             {
                 vm.JobNumber = pInfo.JobNumber;
@@ -2783,7 +2786,7 @@ namespace PFD
                 
                 if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate);
                 if (plate != null) SetAnchorArrangementTabContent(plate);
-
+                
                 DisplayComponent(vm);
                 
                 this.Title = $"System Component Viewer - {Path.GetFileName(fileName)}";
@@ -2979,6 +2982,7 @@ namespace PFD
 
                 Combobox_AnchorArrangement.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
                 Combobox_AnchorArrangement.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
+                Combobox_AnchorArrangement.SelectionChanged -= SelectAA_SelectionChanged;
                 Combobox_AnchorArrangement.SelectionChanged += SelectAA_SelectionChanged;
 
                 List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement, ESoftware.SCV);                
@@ -2996,6 +3000,9 @@ namespace PFD
             ComboBox cbAA = sender as ComboBox;
             if (cbAA == null) return;
 
+            if (plate == null) return;
+            if (!(plate is CConCom_Plate_B_basic)) return; //optimalizacia, aby sa nic neupdatovalo ak plate nema Anchor arrangement
+
             CPlateHelper.AnchorArrangementChanged(null, plate, cbAA.SelectedIndex);
             CPlateHelper.UpdatePlateAnchorArrangementData(plate);  //toto asi ani netreba, lebo asi je to v UpdateAndDisplayPlate
 
@@ -3008,6 +3015,7 @@ namespace PFD
         {
             foreach (CComponentParamsView cpw in anchorArrangementParams)
             {
+                cpw.PropertyChanged -= HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
                 cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
             }
         }
