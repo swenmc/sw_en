@@ -2601,6 +2601,34 @@ namespace PFD
             //else if (plate is CConCom_Plate_KK) return 8;
             //else return 0; // JA, KA, O
         }
+        private int GetScrewArrangementIndex(CPlate plate)
+        {
+            if (plate == null) return -1;
+            if (plate.ScrewArrangement == null) return 0;
+
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            //To Mato, keby mal aj ScrewArrangement Name, tak by sa to mozno dalo podobne ako v GetPlateIndex
+
+            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_L)
+            {
+                if (plate.ScrewArrangement is CScrewArrangement_L)
+                {
+                    if (plate.ScrewArrangement.IHolesNumber == 16) return 1;
+                    if (plate.ScrewArrangement.IHolesNumber == 8) return 2;
+                }
+                else if (plate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL) return 3;
+            }
+
+
+            if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) return 2;
+            else if (plate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL) return 1;
+            else if (plate.ScrewArrangement is CScrewArrangement_O) return 1;
+            else if (plate.ScrewArrangement is CScrewArrangement_BX) return 1;
+            else if (plate.ScrewArrangement is CScrewArrangement_L) return 1;
+            else if (plate.ScrewArrangement is CScrewArrangement_LL) return 1;
+            
+            return 0;
+        }
 
         private void BtnExportToPDFFromDirectory_Click(object sender, RoutedEventArgs e)
         {
@@ -2748,15 +2776,7 @@ namespace PFD
                 vm.ComponentTypeIndex = 1;
                 vm.ComponentSerieIndex = (int)deserializedPlate.m_ePlateSerieType_FS;
                 vm.ComponentIndex = GetPlateIndex(deserializedPlate);
-
-                //TODO Mato: tu by trebalo ponastavovat vsetky dolezite premenne,ktore chceme preniest, lebo ked to preniesiem tak ako je na riadku dole, tak to potom neskor pada
-                // samozrejme preto,ze nie je mozne serializovat vsetko ako je napr. Material, 3DTriedy ktore nie su urcene na serializaciu atd
-
-                if (deserializedPlate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
-                else if (deserializedPlate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL) vm.ScrewArrangementIndex = 1;
-                else if (deserializedPlate.ScrewArrangement is CScrewArrangement_O) vm.ScrewArrangementIndex = 1;
-                else if (deserializedPlate.ScrewArrangement is CScrewArrangement_BX) vm.ScrewArrangementIndex = 1;
-                else vm.ScrewArrangementIndex = 0;
+                vm.ScrewArrangementIndex = GetScrewArrangementIndex(deserializedPlate);
 
                 plate = deserializedPlate;
                 vm.SetComponentProperties(plate);
