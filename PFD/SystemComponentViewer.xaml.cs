@@ -2755,8 +2755,9 @@ namespace PFD
 
                 plate = deserializedPlate;
                 vm.SetComponentProperties(plate);
-                //if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
+                
                 if (plate != null) vm.ScrewArrangementParameters = CPlateHelper.GetScrewArrangementProperties(plate);
+                if (plate != null) SetAnchorArrangementTabContent(plate);
 
                 DisplayComponent(vm);
                 
