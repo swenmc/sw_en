@@ -255,7 +255,11 @@ namespace PFD
         private void SetAnchorArrangementVisibility(SystemComponentViewerViewModel vm)
         {
             if (vm.AnchorArrangementIsEnabled) TabItemAnchorArrangement.Visibility = Visibility.Visible;
-            else TabItemAnchorArrangement.Visibility = Visibility.Hidden;
+            else
+            {
+                TabItemAnchorArrangement.Visibility = Visibility.Hidden;
+                if (TabItemAnchorArrangement.IsSelected) TabItemScrewArrangement.IsSelected = true;
+            }
         }
 
         private void DataGridScrewArrangement_ValueChanged(CComponentParamsView cpw)

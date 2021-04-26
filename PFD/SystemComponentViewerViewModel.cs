@@ -682,7 +682,7 @@ namespace PFD
             {
                 ComponentSeries = databaseComponents.arr_Serie_Screws_Names; // Screws
 
-                Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.DictTEKScrewProperties;
+                Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.GetTEKScrewPropertiesDict();
                 List<string> arr_Serie_TEK_Names = dict.Keys.ToList();
                 Components = arr_Serie_TEK_Names;
             }
@@ -886,7 +886,7 @@ namespace PFD
             }
             else // Screws
             {
-                Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.DictTEKScrewProperties;
+                Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.GetTEKScrewPropertiesDict();
                 List<string> arr_Serie_TEK_Names = dict.Keys.ToList();
                 Components = arr_Serie_TEK_Names;
                 ComponentIndex = 0;

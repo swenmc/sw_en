@@ -11,7 +11,15 @@ namespace DATABASE
     public static class CTEKScrewsManager
     {
         // String data
-        public static Dictionary<string, CTEKScrewProperties> DictTEKScrewProperties;
+        private static Dictionary<string, CTEKScrewProperties> DictTEKScrewProperties;  //toto nema byt verejne pristupne ma sa volat nejaka metoda !!!
+
+        public static Dictionary<string, CTEKScrewProperties> GetTEKScrewPropertiesDict()
+        {
+            if (DictTEKScrewProperties == null) LoadTEKScrewsPropertiesDictionary();
+
+            return DictTEKScrewProperties;
+        }
+
 
         public static List<CTEKScrewProperties> LoadTEKScrewsProperties()
         {
