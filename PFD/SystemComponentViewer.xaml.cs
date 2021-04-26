@@ -2575,8 +2575,16 @@ namespace PFD
         {
             // TODO Ondrej - da sa na tieto indexy vymysliet nieco krajsie :)
             //Type plateObjectClassType = plate.GetType(); // pre porovnanie plate ak plate A dedi od plate B , akurat neviem co s tym
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
 
-            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS ||
+            if (plate is CConCom_Plate_B_basic)
+            {
+                int plateIndex = vm.Components.IndexOf(plate.Name);
+                if (plateIndex == -1) plateIndex = 0; //ak sa nenajde, tak 1. oznacit
+
+                return plateIndex;
+            }
+            else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS ||
                 plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
             else if (plate is CConCom_Plate_JCS ||
                 plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
@@ -2742,6 +2750,7 @@ namespace PFD
                 if (deserializedPlate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
                 else if (deserializedPlate.ScrewArrangement is CScrewArrangementRect_PlateType_JKL) vm.ScrewArrangementIndex = 1;
                 else if (deserializedPlate.ScrewArrangement is CScrewArrangement_O) vm.ScrewArrangementIndex = 1;
+                else if (deserializedPlate.ScrewArrangement is CScrewArrangement_BX) vm.ScrewArrangementIndex = 1;
                 else vm.ScrewArrangementIndex = 0;
 
                 plate = deserializedPlate;
