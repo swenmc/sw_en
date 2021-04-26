@@ -349,9 +349,9 @@ namespace BaseClasses
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
                 if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.referenceAnchor != null)
-                    fDiameter_anchorPreDrilledHoles = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread; // TODO - doplnit do databazy priemer otvorov pre bolts a anchors
+                    fDiameter_anchorPreDrilledHoles = basePlate.AnchorArrangement.referenceAnchor.Diameter_hole;
             }
-
+            
             Canvas canvasForImage = new Canvas();
             canvasForImage.RenderSize = new Size(dModel_Length_x_real, dModel_Length_y_real);
 
