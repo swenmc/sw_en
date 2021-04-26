@@ -2573,28 +2573,33 @@ namespace PFD
 
         private int GetPlateIndex(CPlate plate)
         {
-            // TODO Ondrej - da sa na tieto indexy vymysliet nieco krajsie :)
-            //Type plateObjectClassType = plate.GetType(); // pre porovnanie plate ak plate A dedi od plate B , akurat neviem co s tym
+            if (plate == null) return -1;
+
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            int plateIndex = vm.Components.IndexOf(plate.Name);
+            if (plateIndex == -1) plateIndex = 0; //ak sa nenajde, tak 1. oznacit
 
-            if (plate is CConCom_Plate_B_basic)
-            {
-                int plateIndex = vm.Components.IndexOf(plate.Name);
-                if (plateIndex == -1) plateIndex = 0; //ak sa nenajde, tak 1. oznacit
+            return plateIndex;
 
-                return plateIndex;
-            }
-            else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS ||
-                plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
-            else if (plate is CConCom_Plate_JCS ||
-                plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
-            else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
-            else if (plate is CConCom_Plate_KES) return 4;
-            else if (plate is CConCom_Plate_KFS) return 5;
-            else if (plate is CConCom_Plate_KGS) return 6;
-            else if (plate is CConCom_Plate_KHS) return 7;
-            else if (plate is CConCom_Plate_KK) return 8;
-            else return 0; // JA, KA, O
+            //refaktoring toto hore by malo stacit pokial su dobre nastavene mena pre plate (plate.Name)
+            //if (plate is CConCom_Plate_B_basic)
+            //{
+            //    int plateIndex = vm.Components.IndexOf(plate.Name);
+            //    if (plateIndex == -1) plateIndex = 0; //ak sa nenajde, tak 1. oznacit
+
+            //    return plateIndex;
+            //}
+            //else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS ||
+            //    plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
+            //else if (plate is CConCom_Plate_JCS ||
+            //    plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
+            //else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
+            //else if (plate is CConCom_Plate_KES) return 4;
+            //else if (plate is CConCom_Plate_KFS) return 5;
+            //else if (plate is CConCom_Plate_KGS) return 6;
+            //else if (plate is CConCom_Plate_KHS) return 7;
+            //else if (plate is CConCom_Plate_KK) return 8;
+            //else return 0; // JA, KA, O
         }
 
         private void BtnExportToPDFFromDirectory_Click(object sender, RoutedEventArgs e)
