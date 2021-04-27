@@ -38,6 +38,14 @@ namespace BaseClasses.GraphObj
 
         private double m_Width_flat;
 
+
+
+        private double m_BasicModularWidth;
+        private double m_CoilWidth;
+        private double m_CoilMass_kg_m2;
+        private double m_CoilPrice_PPSM_NZD;
+        
+
         public double CladdingWidthRibModular
         {
             get
@@ -410,6 +418,11 @@ namespace BaseClasses.GraphObj
             IsCanopy = isCanopy;
             WpWidthOffset = wpWidthOffset;
 
+            m_BasicModularWidth = basicModularWidth;
+            m_CoilWidth = coilWidth;
+            m_CoilMass_kg_m2 = coilMass_kg_m2;
+            m_CoilPrice_PPSM_NZD = coilPrice_PPSM_NZD;
+
             // 5 edges
             //   3 ____ 2
             //    /    |
@@ -439,16 +452,34 @@ namespace BaseClasses.GraphObj
             else
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
 
+
+            Update();
+
+            //Area_brutto = Width * LengthTotal;
+
+            //Width_flat = width / basicModularWidth * coilWidth;
+            //Surface_brutto = (float)(Width_flat * LengthTotal);
+            //Volume_brutto = (float)(Surface_brutto * Ft);
+            //Mass_brutto = (float)(coilMass_kg_m2 * Surface_brutto);
+            //Price_PPKG_NZD = coilPrice_PPSM_NZD / coilMass_kg_m2;
+            //Price_PPP_NZD_brutto = Price_PPKG_NZD * Mass_brutto;
+
+            //SetTextPointInLCS(); // Text v LCS
+        }
+
+        public void Update()
+        {
             Area_brutto = Width * LengthTotal;
 
-            Width_flat = width / basicModularWidth * coilWidth;
+            Width_flat = Width / m_BasicModularWidth * m_CoilWidth;
             Surface_brutto = (float)(Width_flat * LengthTotal);
             Volume_brutto = (float)(Surface_brutto * Ft);
-            Mass_brutto = (float)(coilMass_kg_m2 * Surface_brutto);
-            Price_PPKG_NZD = coilPrice_PPSM_NZD / coilMass_kg_m2;
+            Mass_brutto = (float)(m_CoilMass_kg_m2 * Surface_brutto);
+            Price_PPKG_NZD = m_CoilPrice_PPSM_NZD / m_CoilMass_kg_m2;
             Price_PPP_NZD_brutto = Price_PPKG_NZD * Mass_brutto;
 
             SetTextPointInLCS(); // Text v LCS
+
         }
 
         // TO Ondrej - vieme nejako krajsie pracovat s potomkami jednej triedy, aby sme ich mohli vzajomne pretypovat

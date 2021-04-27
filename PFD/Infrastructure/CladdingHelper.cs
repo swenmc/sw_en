@@ -53,7 +53,11 @@ namespace PFD.Infrastructure
                 vm._claddingOptionsVM.MaxSheetLengthRoof,
                 vm._claddingOptionsVM.MaxSheetLengthWall,
                 vm._claddingOptionsVM.MaxSheetLengthRoofFibreglass,
-                vm._claddingOptionsVM.MaxSheetLengthWallFibreglass
+                vm._claddingOptionsVM.MaxSheetLengthWallFibreglass,
+                vm._claddingOptionsVM.RoofCladdingOverlap,
+                vm._claddingOptionsVM.WallCladdingOverlap,
+                vm._claddingOptionsVM.RoofFibreglassOverlap,
+                vm._claddingOptionsVM.WallFibreglassOverlap
                 );
 
             return cladding;
