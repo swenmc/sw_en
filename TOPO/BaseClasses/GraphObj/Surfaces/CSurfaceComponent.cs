@@ -16,11 +16,17 @@ namespace BaseClasses.GraphObj
         double m_CoordinateInPlane_y; // hodnota y je pre vykreslenie povazovana za z
         double m_OutOffPlaneOffset_y; // Offset out-of-plane defined by edge points // Lreslime do xz, takze uvazujeme ako y
         double m_Width; // Bezne uvazujeme width modular podla DB, ale pre koncove plechy moze byt sirka mensia
-        double m_dLengthTotal;
-        double m_dLengthTopRight;
         double m_dTipCoordinate_x;
+
+        double m_dLengthTotal;
+        double m_dLengthTopRight;        
         double m_dLengthTopTip;
         double m_dLengthTopLeft;
+
+        double m_dLengthTotal_Real;
+        double m_dLengthTopRight_Real;
+        double m_dLengthTopTip_Real;
+        double m_dLengthTopLeft_Real;
 
         double m_dArea_netto;
         double m_dArea_brutto;
@@ -208,6 +214,58 @@ namespace BaseClasses.GraphObj
             set
             {
                 m_EdgePoints2D = value;
+            }
+        }
+
+        public double LengthTotal_Real
+        {
+            get
+            {
+                return m_dLengthTotal_Real;
+            }
+
+            set
+            {
+                m_dLengthTotal_Real = value;
+            }
+        }
+
+        public double LengthTopRight_Real
+        {
+            get
+            {
+                return m_dLengthTopRight_Real;
+            }
+
+            set
+            {
+                m_dLengthTopRight_Real = value;
+            }
+        }
+
+        public double LengthTopTip_Real
+        {
+            get
+            {
+                return m_dLengthTopTip_Real;
+            }
+
+            set
+            {
+                m_dLengthTopTip_Real = value;
+            }
+        }
+
+        public double LengthTopLeft_Real
+        {
+            get
+            {
+                return m_dLengthTopLeft_Real;
+            }
+
+            set
+            {
+                m_dLengthTopLeft_Real = value;
             }
         }
 

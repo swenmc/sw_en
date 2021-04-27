@@ -49,7 +49,12 @@ namespace PFD.Infrastructure
                 vm._claddingOptionsVM.RoofEdgeOverHang_LR_X,
                 vm._claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,
                 vm._claddingOptionsVM.WallBottomOffset_Z,
-                vm._claddingOptionsVM.ConsiderRoofCladdingFor_FB_WallHeight);
+                vm._claddingOptionsVM.ConsiderRoofCladdingFor_FB_WallHeight,
+                vm._claddingOptionsVM.MaxSheetLengthRoof,
+                vm._claddingOptionsVM.MaxSheetLengthWall,
+                vm._claddingOptionsVM.MaxSheetLengthRoofFibreglass,
+                vm._claddingOptionsVM.MaxSheetLengthWallFibreglass
+                );
 
             return cladding;
         }

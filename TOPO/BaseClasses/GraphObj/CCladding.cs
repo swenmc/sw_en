@@ -102,6 +102,12 @@ namespace BaseClasses.GraphObj
         public List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheetsRoofLeft = null;
         public List<CCladdingOrFibreGlassSheet> listOfCladdingSheetsRoofLeft = null;
 
+
+        float maxSheetLegth_RoofCladding;
+        float maxSheetLegth_WallCladding;
+        float maxSheetLegth_RoofFibreglass;
+        float maxSheetLegth_WallFibreglass;
+
         public CCladding()
         {
             canopyCollection = new System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo>(); //nechce sa nam stale kontrolovat na null
@@ -138,7 +144,10 @@ namespace BaseClasses.GraphObj
             float fRoofEdgeOverHang_LR_X,
             float fCanopyRoofEdgeOverHang_LR_X,
             float fWallBottomOffset_Z,
-            bool bConsiderRoofCladdingFor_FB_WallHeight)
+            bool bConsiderRoofCladdingFor_FB_WallHeight,
+            float fMaxSheetLegth_RoofCladding, float fMaxSheetLegth_WallCladding,
+            float fMaxSheetLegth_RoofFibreglass, float fMaxSheetLegth_WallFibreglass
+            )
         {
             ID = iCladding_ID;
             eModelType = modelType_FS;
@@ -154,6 +163,11 @@ namespace BaseClasses.GraphObj
             column_crsc_y_plus = columnSection.y_max;
             m_fFrontColumnDistance = fFrontColumnDistance;
             m_fBackColumnDistance = fBackColumnDistance;
+
+            maxSheetLegth_RoofCladding = fMaxSheetLegth_RoofCladding;
+            maxSheetLegth_WallCladding = fMaxSheetLegth_WallCladding;
+            maxSheetLegth_RoofFibreglass = fMaxSheetLegth_RoofFibreglass;
+            maxSheetLegth_WallFibreglass = fMaxSheetLegth_WallFibreglass;
 
             m_ColorNameWall = colorName_Wall;
             m_ColorNameRoof = colorName_Roof;
@@ -1530,13 +1544,28 @@ namespace BaseClasses.GraphObj
                 // Ak neexistuju objekty v kolizii s originalsheet mozeme opustit funkciu
                 if (objectInColision_In_Local_x == null || objectInColision_In_Local_x.Count == 0)
                 {
-                    // Nie je potrebne delit sheet - pridame teda "originalsheet"
-                    listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
+
+                    CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
                     thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
                     originalsheetNumberOfEdges, originalsheetCoordinateInPlane_x, originalsheetCoordinateInPlane_y,
                     originalsheetControlPoint, originalsheetWidth, originalsheetLengthTopLeft, originalsheetLengthTopRight, originalsheetTipCoordinate_x, originalsheetLengthTopTip,
-                    colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0));
+                    colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0);
+
+
+                    List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
+                    CountRealLenghts(sheets);
+                    listOfSheets.AddRange(sheets);
+
+                    // Nie je potrebne delit sheet - pridame teda "originalsheet"
+                    //listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
+                    //thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
+                    //originalsheetNumberOfEdges, originalsheetCoordinateInPlane_x, originalsheetCoordinateInPlane_y,
+                    //originalsheetControlPoint, originalsheetWidth, originalsheetLengthTopLeft, originalsheetLengthTopRight, originalsheetTipCoordinate_x, originalsheetLengthTopTip,
+                    //colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0));
                     iSheetIndex++;
+
+                    //  ---- real lengths su rovnake
+                    
                 }
                 else if (objectInColision_In_Local_x.Count == 1 &&
                          objectInColision_In_Local_x[0].CoordinateInPlane_y <= originalsheetCoordinateInPlane_y &&
@@ -1567,6 +1596,15 @@ namespace BaseClasses.GraphObj
                     // 5. Pridame nove sheets do zoznamu
                     for (int j = 0; j < iNumberOfNewSheets; j++)
                     {
+                        if (j == 0)
+                        {
+                            //real lenghts su rovnake
+                        }
+                        else
+                        {
+                            //real lengths treba prepocitat
+                        }
+
                         if (j == iNumberOfNewSheets - 1) // Last segment of original sheet
                         {
                             listOfSheets.Add(new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
@@ -1609,6 +1647,73 @@ namespace BaseClasses.GraphObj
                 }
             }
         }
+
+
+        private List<CCladdingOrFibreGlassSheet> CutSheetAccordingToMaxLength(CCladdingOrFibreGlassSheet sheet)
+        {
+            List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
+
+            //ako viem ci je na stene alebo roof???
+            if (sheet.IsFibreglass)
+            {
+                while (sheet.LengthTotal > maxSheetLegth_RoofFibreglass)
+                {
+                    CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref sheet, maxSheetLegth_RoofFibreglass);
+                    sheets.Add(cuttedSheet);
+                }
+                sheets.Add(sheet);
+            }
+            else
+            {
+                while (sheet.LengthTotal > maxSheetLegth_RoofCladding)
+                {
+                    CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref sheet, maxSheetLegth_RoofCladding);
+                    sheets.Add(cuttedSheet);
+                }
+                sheets.Add(sheet);
+             }
+
+            return sheets;
+        }
+
+        private void CountRealLenghts(List<CCladdingOrFibreGlassSheet> sheets)
+        {
+            float overlap = 0.015f;
+            for (int i = 0; i < sheets.Count; i++)
+            {
+                if (i == 0)
+                {
+                    sheets[i].LengthTopLeft_Real = sheets[i].LengthTopLeft;
+                    sheets[i].LengthTopRight_Real = sheets[i].LengthTopRight;
+                    sheets[i].LengthTopTip_Real = sheets[i].LengthTopTip;
+                    sheets[i].LengthTotal_Real = sheets[i].LengthTotal;
+                }
+                else
+                {
+                    sheets[i].LengthTopLeft_Real = sheets[i].LengthTopLeft - overlap;
+                    sheets[i].LengthTopRight_Real = sheets[i].LengthTopRight - overlap;
+                    sheets[i].LengthTopTip_Real = sheets[i].LengthTopTip - overlap;
+                    sheets[i].LengthTotal_Real = sheets[i].LengthTotal - overlap;
+                }
+            }
+        }
+
+        private CCladdingOrFibreGlassSheet GetCuttedSheetAndShortenOriginal(ref CCladdingOrFibreGlassSheet originalSheet, float maxLength)
+        {
+            CCladdingOrFibreGlassSheet cuttedSheet = originalSheet.Clone();
+            cuttedSheet.LengthTopTip = maxLength;
+            cuttedSheet.LengthTopRight = maxLength;
+            cuttedSheet.LengthTopLeft = maxLength;
+            cuttedSheet.LengthTotal = maxLength;
+            
+            originalSheet.LengthTopTip -= maxLength;
+            originalSheet.LengthTopRight -= maxLength;
+            originalSheet.LengthTopLeft -= maxLength;
+            originalSheet.LengthTotal -= maxLength;
+
+            return cuttedSheet;
+        }
+
 
         public void GenerateCladdingOpenings(List<CCladdingOrFibreGlassSheet> listOfFibreGlassSheets,
             string side,
