@@ -1656,20 +1656,43 @@ namespace BaseClasses.GraphObj
             //ako viem ci je na stene alebo roof???
             if (sheet.IsFibreglass)
             {
-                while (sheet.LengthTotal > maxSheetLegth_RoofFibreglass)
+                if (sheet.IsRoofFibreglass)
                 {
-                    CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref sheet, maxSheetLegth_RoofFibreglass);
-                    sheets.Add(cuttedSheet);
+                    while (sheet.LengthTotal > maxSheetLegth_RoofFibreglass)
+                    {
+                        CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref sheet, maxSheetLegth_RoofFibreglass);
+                        sheets.Add(cuttedSheet);
+                    }
                 }
+                else if (sheet.IsWalllFibreglass)
+                {
+                    while (sheet.LengthTotal > maxSheetLegth_WallFibreglass)
+                    {
+                        CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref sheet, maxSheetLegth_WallFibreglass);
+                        sheets.Add(cuttedSheet);
+                    }
+                }
+                
                 sheets.Add(sheet);
             }
             else
             {
-                while (sheet.LengthTotal > maxSheetLegth_RoofCladding)
+                if (sheet.IsRoofCladding)
                 {
-                    CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref sheet, maxSheetLegth_RoofCladding);
-                    sheets.Add(cuttedSheet);
+                    while (sheet.LengthTotal > maxSheetLegth_RoofCladding)
+                    {
+                        CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref sheet, maxSheetLegth_RoofCladding);
+                        sheets.Add(cuttedSheet);
+                    }
                 }
+                else if (sheet.IsWallCladding)
+                {
+                    while (sheet.LengthTotal > maxSheetLegth_WallCladding)
+                    {
+                        CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref sheet, maxSheetLegth_WallCladding);
+                        sheets.Add(cuttedSheet);
+                    }
+                }                
                 sheets.Add(sheet);
              }
 

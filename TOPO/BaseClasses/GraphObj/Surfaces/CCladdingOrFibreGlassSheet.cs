@@ -294,6 +294,38 @@ namespace BaseClasses.GraphObj
                 else return false;
             }
         }
+        public bool IsWalllFibreglass
+        {
+            get
+            {                
+                if(Prefix.StartsWith("WF")) return true;
+                else return false;
+            }
+        }
+        public bool IsRoofFibreglass
+        {
+            get
+            {
+                if(Prefix.StartsWith("RF")) return true;
+                else return false;
+            }
+        }
+        public bool IsRoofCladding
+        {
+            get
+            {
+                if (Prefix.StartsWith("RC")) return true;
+                else return false;
+            }
+        }
+        public bool IsWallCladding
+        {
+            get
+            {
+                if (Prefix.StartsWith("WC")) return true;
+                else return false;
+            }
+        }
 
         public bool IsCanopy
         {
