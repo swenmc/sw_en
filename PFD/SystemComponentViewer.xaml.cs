@@ -633,11 +633,7 @@ namespace PFD
         {
             if (vm.ComponentTypeIndex == 0)  //CRSC
             {
-                ScrewArrangementTabControl.Visibility = Visibility.Hidden;
-                //TxtCombScrewArrangment.Visibility = Visibility.Hidden;
-                //Combobox_ScrewArrangement.Visibility = Visibility.Hidden;                
-                //TxtScrewArrangment.Visibility = Visibility.Hidden;
-                //DataGridScrewArrangement.Visibility = Visibility.Hidden;
+                ScrewArrangementTabControl.Visibility = Visibility.Hidden;                
 
                 TxtGeometry.Visibility = Visibility.Hidden;
                 DataGridGeometry.Visibility = Visibility.Hidden;
@@ -647,35 +643,40 @@ namespace PFD
                 BtnShowCNCSetupFile.Visibility = Visibility.Hidden;
                 BtnShowCNCDrillingFile.Visibility = Visibility.Hidden;
 
+                if (MainTabControl.SelectedIndex == 2) MainTabControl.SelectedIndex = 0;
+
                 if (MainTabControl.SelectedIndex == 0) // 2D
                 {
                     panelOptions2D.Visibility = Visibility.Visible;
                     panelOptions3D.Visibility = Visibility.Hidden;
+                    panelOptionsTransform2D.Visibility = Visibility.Visible;
                 }
                 else if (MainTabControl.SelectedIndex == 1) //3D
                 {
                     panelOptions2D.Visibility = Visibility.Hidden;
                     panelOptions3D.Visibility = Visibility.Hidden;
+                    panelOptionsTransform2D.Visibility = Visibility.Hidden;
                 }
                 else
                 {
                     panelOptions2D.Visibility = Visibility.Hidden;
                     panelOptions3D.Visibility = Visibility.Hidden;
+                    panelOptionsTransform2D.Visibility = Visibility.Hidden;
                 }
 
-                chbDrawPoints2D.IsEnabled = true;
-                chbDrawOutLine2D.IsEnabled = true;
-                chbDrawPointNumbers2D.IsEnabled = true;
-                chbDrawHoles2D.IsEnabled = false;
-                chbDrawHoleCentreSymbol2D.IsEnabled = false;
-                chbDrawDrillingRoute2D.IsEnabled = false;
-                chbDrawDimensions2D.IsEnabled = false;
-                chbDrawMemberOutline2D.IsEnabled = false;
-                chbDrawBendLines2D.IsEnabled = false;
-
-                panelOptionsTransform2D.Visibility = Visibility.Visible;
+                //chbDrawPoints2D.IsEnabled = true;
+                //chbDrawOutLine2D.IsEnabled = true;
+                //chbDrawPointNumbers2D.IsEnabled = true;
+                chbDrawHoles2D.Visibility = Visibility.Hidden;
+                chbDrawHoleCentreSymbol2D.Visibility = Visibility.Hidden;
+                chbDrawDrillingRoute2D.Visibility = Visibility.Hidden;
+                chbDrawDimensions2D.Visibility = Visibility.Hidden;
+                chbDrawMemberOutline2D.Visibility = Visibility.Hidden;
+                chbDrawBendLines2D.Visibility = Visibility.Hidden;
 
                 tabItemDoc.IsEnabled = false;
+                tabItemDoc.Visibility = Visibility.Hidden;
+
                 panelProductionInfo.Visibility = Visibility.Hidden;
                 BtnExportToPDF.Visibility = Visibility.Hidden;
                 BtnSavePlate.Visibility = Visibility.Hidden;
@@ -701,29 +702,30 @@ namespace PFD
                 {
                     panelOptions2D.Visibility = Visibility.Visible;
                     panelOptions3D.Visibility = Visibility.Hidden;
+                    panelOptionsTransform2D.Visibility = Visibility.Visible;
                 }
                 else if (MainTabControl.SelectedIndex == 1) //3D
                 {
                     panelOptions2D.Visibility = Visibility.Hidden;
                     panelOptions3D.Visibility = Visibility.Visible;
+                    panelOptionsTransform2D.Visibility = Visibility.Hidden;
                 }
                 else
                 {
                     panelOptions2D.Visibility = Visibility.Hidden;
                     panelOptions3D.Visibility = Visibility.Hidden;
+                    panelOptionsTransform2D.Visibility = Visibility.Hidden;
                 }
 
-                chbDrawPoints2D.IsEnabled = true;
-                chbDrawOutLine2D.IsEnabled = true;
-                chbDrawPointNumbers2D.IsEnabled = true;
-                chbDrawHoles2D.IsEnabled = true;
-                chbDrawHoleCentreSymbol2D.IsEnabled = true;
-                chbDrawDrillingRoute2D.IsEnabled = true;
-                chbDrawDimensions2D.IsEnabled = true;
-                chbDrawMemberOutline2D.IsEnabled = true;
-                chbDrawBendLines2D.IsEnabled = true;
-
-                panelOptionsTransform2D.Visibility = Visibility.Visible;
+                //chbDrawPoints2D.IsEnabled = true;
+                //chbDrawOutLine2D.IsEnabled = true;
+                //chbDrawPointNumbers2D.IsEnabled = true;
+                chbDrawHoles2D.Visibility = Visibility.Visible;
+                chbDrawHoleCentreSymbol2D.Visibility = Visibility.Visible;
+                chbDrawDrillingRoute2D.Visibility = Visibility.Visible;
+                chbDrawDimensions2D.Visibility = Visibility.Visible;
+                chbDrawMemberOutline2D.Visibility = Visibility.Visible;
+                chbDrawBendLines2D.Visibility = Visibility.Visible;
 
                 if (plate is CPlate_Frame)
                 {
@@ -732,6 +734,8 @@ namespace PFD
                 else chbMirrorPlate3D.Visibility = Visibility.Collapsed;
 
                 tabItemDoc.IsEnabled = true;
+                tabItemDoc.Visibility = Visibility.Visible;
+
                 if (plate != null && plate.ScrewArrangement != null)
                 {
                     BtnFindCNCPath.IsEnabled = plate.ScrewArrangement.IHolesNumber > 0;
@@ -768,11 +772,7 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 2) //screw
             {
-                ScrewArrangementTabControl.Visibility = Visibility.Hidden;
-                //TxtCombScrewArrangment.Visibility = Visibility.Hidden;
-                //Combobox_ScrewArrangement.Visibility = Visibility.Hidden;
-                //TxtScrewArrangment.Visibility = Visibility.Hidden;
-                //DataGridScrewArrangement.Visibility = Visibility.Hidden;
+                ScrewArrangementTabControl.Visibility = Visibility.Hidden;                
 
                 TxtGeometry.Visibility = Visibility.Hidden;
                 DataGridGeometry.Visibility = Visibility.Hidden;
@@ -782,21 +782,13 @@ namespace PFD
                 BtnShowCNCSetupFile.Visibility = Visibility.Hidden;
                 BtnShowCNCDrillingFile.Visibility = Visibility.Hidden;
 
+                if (MainTabControl.SelectedIndex == 2) MainTabControl.SelectedIndex = 0;
+
                 panelOptions2D.Visibility = Visibility.Hidden;
                 panelOptions3D.Visibility = Visibility.Hidden;
-                chbDrawPoints2D.IsEnabled = false;
-                chbDrawOutLine2D.IsEnabled = false;
-                chbDrawPointNumbers2D.IsEnabled = false;
-                chbDrawHoles2D.IsEnabled = false;
-                chbDrawHoleCentreSymbol2D.IsEnabled = false;
-                chbDrawDrillingRoute2D.IsEnabled = false;
-                chbDrawDimensions2D.IsEnabled = false;
-                chbDrawMemberOutline2D.IsEnabled = false;
-                chbDrawBendLines2D.IsEnabled = false;
-
-                panelOptionsTransform2D.Visibility = Visibility.Hidden;
-
-                tabItemDoc.IsEnabled = false;
+                panelOptionsTransform2D.Visibility = Visibility.Hidden;                
+                
+                tabItemDoc.Visibility = Visibility.Hidden;
 
                 panelProductionInfo.Visibility = Visibility.Hidden;
                 BtnExportToPDF.Visibility = Visibility.Hidden;
@@ -2424,9 +2416,11 @@ namespace PFD
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MainTabControl.SelectedIndex == 0 && Combobox_Type.SelectedIndex != 2)
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            if (MainTabControl.SelectedIndex == 0)   //view 2D   
             {
-                if (Combobox_Type.SelectedIndex != 2)
+                if (vm.ComponentTypeIndex != 2) //not Screw
                 {
                     // Display only for cross-sections and plates (for 2D view of screw display options and transformations are not implemented yet)
                     panelOptions2D.Visibility = Visibility.Visible;
@@ -2438,7 +2432,7 @@ namespace PFD
                     //Frame2DWidth = Frame2D.ActualWidth;
                     //Frame2DHeight = Frame2D.ActualHeight;
                     //RedrawComponentIn2D();
-                    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+                    
                     DisplayComponent(vm);
                 }
                 else
@@ -2448,13 +2442,15 @@ namespace PFD
                     panelOptions3D.Visibility = Visibility.Hidden;
                 }
             }
-            else if (MainTabControl.SelectedIndex == 1)
+            else if (MainTabControl.SelectedIndex == 1)   //view 3D
             {
                 panelOptions2D.Visibility = Visibility.Hidden;
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
-                panelOptions3D.Visibility = Visibility.Visible;
+                
+                if (vm.ComponentTypeIndex == 1) panelOptions3D.Visibility = Visibility.Visible;
+                else panelOptions3D.Visibility = Visibility.Hidden;
             }
-            else if (MainTabControl.SelectedIndex == 2)
+            else if (MainTabControl.SelectedIndex == 2)  //view CNC file
             {
                 panelOptions2D.Visibility = Visibility.Hidden;
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
