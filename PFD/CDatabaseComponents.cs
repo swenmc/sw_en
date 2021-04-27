@@ -84,8 +84,9 @@ namespace PFD
          "KE",
          "KF",
          "KG",
-         "KH",
-         "KK"};
+         "KH"
+         //"KK"   //natvrdo vyhadzujeme
+        };
 
         public List<string> arr_Serie_K_ScrewArrangement_Names = new List<string>(3)
         {"Undefined",

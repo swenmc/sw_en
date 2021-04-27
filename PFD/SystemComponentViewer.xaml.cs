@@ -1679,20 +1679,20 @@ namespace PFD
                             else if (vm.ComponentIndex == 7) // KHS
                             {
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_KHS(dcomponents.arr_Serie_K_Names[6], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, null);
+                                    plate = new CConCom_Plate_KHS(dcomponents.arr_Serie_K_Names[7], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, null);
                                 else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_KHS(dcomponents.arr_Serie_K_Names[6], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, screwArrangementRectangleKnee);
+                                    plate = new CConCom_Plate_KHS(dcomponents.arr_Serie_K_Names[7], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, screwArrangementRectangleKnee);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_KHS(dcomponents.arr_Serie_K_Names[6], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, screwArrangementCircle);
+                                    plate = new CConCom_Plate_KHS(dcomponents.arr_Serie_K_Names[7], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, false, screwArrangementCircle);
                             }
                             else // KK - TODO - screws are not implemented !!!
                             {
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[7], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null);
+                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[8], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null);
                                 else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[7], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee);
+                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[8], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[7], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle);
+                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[8], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle);
                             }
                             break;
                         }
