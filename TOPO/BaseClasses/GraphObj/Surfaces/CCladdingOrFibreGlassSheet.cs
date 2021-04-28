@@ -526,6 +526,20 @@ namespace BaseClasses.GraphObj
                 material = new DiffuseMaterial(solidBrush);
             }
 
+            // TODO 783 - Ondrej
+            BIsDebugging = true; // Docasne
+
+            if (BIsDebugging)
+            {
+                // Testovanie
+                // TODO 783 - Ondrej
+                // Pre tie sheets ktore maju sadu real lengths rovnaku ako lengths nastavime specificku farbu
+                // Malo by sa tym dat vizualne skontrolovat, ktore sheet maju pripocitany overlap a ktore nie
+
+                if (MATH.MathF.d_equal(LengthTotal, LengthTotal_Real))
+                    material = new DiffuseMaterial(new SolidColorBrush(Colors.Yellow)); // Nastavime zltu farbu
+            }
+
             if (NumberOfEdges == 4)
             {
                 EdgePoints2D = new List<System.Windows.Point>
