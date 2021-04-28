@@ -1827,6 +1827,13 @@ namespace BaseClasses.GraphObj
             cuttedSheet.LengthTotal = maxLength;
             cuttedSheet.Update();
 
+            // TODO 783 - Ondrej
+            // Ak je pre vykreslovanie cladding sheet nastavene by IDs, tak by sa asi mala nastavit nova farba y kolekcie tych 20-tich preferovanych
+            /* vid if na yaciatku funkcie GenerateCladdingSheets, line 1516
+            if (bCladdingSheetColoursByID)
+                color = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
+            */
+
             originalSheet.CoordinateInPlane_y += maxLength;
             originalSheet.ID++;
             originalSheet.LengthTopTip -= maxLength;
