@@ -1786,8 +1786,12 @@ namespace BaseClasses.GraphObj
                 // TODO 783 - Ondrej
                 // Je potrebne doladit podla specifickych podmienok kedy sa nema jednat o overlap
                 if (    /*i == 0*/
-                    (sheets[i].Name != "Fibreglass - Roof-Left Side" && sheets[i].Name != "Cladding - Roof-Left Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
-                    ((sheets[i].Name == "Fibreglass - Roof-Left Side" || sheets[i].Name == "Cladding - Roof-Left Side") && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic)))
+                    (eModelType == EModelType_FS.eKitsetGableRoofEnclosed && (sheets[i].Name != "Fibreglass - Roof-Left Side" && sheets[i].Name != "Cladding - Roof-Left Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
+                    ((sheets[i].Name == "Fibreglass - Roof-Left Side" || sheets[i].Name == "Cladding - Roof-Left Side") && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic))) ||
+                    (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && (sheets[i].Name != "Fibreglass - Roof-Right Side" && sheets[i].Name != "Cladding - Roof-Right Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0) ||
+                    ((sheets[i].Name == "Fibreglass - Roof-Right Side" || sheets[i].Name == "Cladding - Roof-Right Side") && sBuildingGeomInputData.fRoofPitch_deg < 0 && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
+                    ((sheets[i].Name == "Fibreglass - Roof-Right Side" || sheets[i].Name == "Cladding - Roof-Right Side") && sBuildingGeomInputData.fRoofPitch_deg > 0 && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic))))
+                   )
                 {
                     // Nemusi platit pre prvy sheet zo zoznamu, ale skor by tu mala byt podmienka pre sheet, ktory je na spodnom okraji steny, pripadne na okraji strechy kde je gutter
                     // alebo je to prvy sheet nad otvorom v stene
