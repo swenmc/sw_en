@@ -537,7 +537,12 @@ namespace BaseClasses.GraphObj
                 // Malo by sa tym dat vizualne skontrolovat, ktore sheet maju pripocitany overlap a ktore nie
 
                 if (MATH.MathF.d_equal(LengthTotal, LengthTotal_Real))
-                    material = new DiffuseMaterial(new SolidColorBrush(Colors.Yellow)); // Nastavime zltu farbu
+                {
+                    if (IsFibreglass)
+                        material = new DiffuseMaterial(new SolidColorBrush(Colors.Orange)); // Nastavime oranzovu farbu
+                    else
+                        material = new DiffuseMaterial(new SolidColorBrush(Colors.Yellow)); // Nastavime zltu farbu
+                }
             }
 
             if (NumberOfEdges == 4)

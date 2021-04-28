@@ -601,7 +601,7 @@ namespace BaseClasses.GraphObj
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets);
+                        CountRealLenghts(sheets, height_left_basic);
                         listOfFibreGlassSheetsWallLeft.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -669,7 +669,7 @@ namespace BaseClasses.GraphObj
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets);
+                        CountRealLenghts(sheets, height_left_basic);
                         listOfFibreGlassSheetsWallFront.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -748,7 +748,7 @@ namespace BaseClasses.GraphObj
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets);
+                        CountRealLenghts(sheets, height_left_basic);
                         listOfFibreGlassSheetsWallRight.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -817,7 +817,7 @@ namespace BaseClasses.GraphObj
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets);
+                        CountRealLenghts(sheets, height_left_basic);
                         listOfFibreGlassSheetsWallBack.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -902,7 +902,7 @@ namespace BaseClasses.GraphObj
                              m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets);
+                        CountRealLenghts(sheets, length_left_basic);
                         listOfFibreGlassSheetsRoofRight.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -1207,7 +1207,7 @@ namespace BaseClasses.GraphObj
                                 m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0);
 
                             List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                            CountRealLenghts(sheets);
+                            CountRealLenghts(sheets, length_left_basic);
                             listOfFibreGlassSheetsRoofLeft.AddRange(sheets);
                             iSheet_FG_Index += sheets.Count;
                         }
@@ -1218,7 +1218,7 @@ namespace BaseClasses.GraphObj
                 {
                     if (bIndividualCladdingSheets)
                     {
-                        GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof -left", "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
+                        GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-left", "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
                         pControlPoint_RoofLeft, m_ColorNameRoof,
                         m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD,
@@ -1604,7 +1604,7 @@ namespace BaseClasses.GraphObj
 
 
                     List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                    CountRealLenghts(sheets);
+                    CountRealLenghts(sheets, height_left_basic);
                     listOfSheets.AddRange(sheets);
 
                     // Nie je potrebne delit sheet - pridame teda "originalsheet"
@@ -1721,7 +1721,7 @@ namespace BaseClasses.GraphObj
                             //iSheetIndex++;
                         }
                     }
-                    CountRealLenghts(sheets);  //az na konci sa prepocitaju 
+                    CountRealLenghts(sheets, height_left_basic);  //az na konci sa prepocitaju 
                     listOfSheets.AddRange(sheets); //a potom sa pridaju do kolekcie listOfSheets
 
                 }
@@ -1778,14 +1778,16 @@ namespace BaseClasses.GraphObj
             return sheets;
         }
 
-        private void CountRealLenghts(List<CCladdingOrFibreGlassSheet> sheets)
+        private void CountRealLenghts(List<CCladdingOrFibreGlassSheet> sheets, double height_left_basic /* celkovy rozmer y pre danu plochu wall side alebo roof side */)
         {
             float overlap = 0f;
             for (int i = 0; i < sheets.Count; i++)
             {
                 // TODO 783 - Ondrej
                 // Je potrebne doladit podla specifickych podmienok kedy sa nema jednat o overlap
-                if (/*i == 0*/ MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0))
+                if (    /*i == 0*/
+                    (sheets[i].Name != "Fibreglass - Roof-Left Side" && sheets[i].Name != "Cladding - Roof-Left Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
+                    ((sheets[i].Name == "Fibreglass - Roof-Left Side" || sheets[i].Name == "Cladding - Roof-Left Side") && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic)))
                 {
                     // Nemusi platit pre prvy sheet zo zoznamu, ale skor by tu mala byt podmienka pre sheet, ktory je na spodnom okraji steny, pripadne na okraji strechy kde je gutter
                     // alebo je to prvy sheet nad otvorom v stene
