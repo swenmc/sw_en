@@ -1784,8 +1784,14 @@ namespace BaseClasses.GraphObj
             float overlap = 0f;
             for (int i = 0; i < sheets.Count; i++)
             {
-                if (i == 0)
+                // TODO 783 - Ondrej
+                // Je potrebne doladit podla specifickych podmienok kedy sa nema jednat o overlap
+                if (/*i == 0*/ MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0))
                 {
+                    // Nemusi platit pre prvy sheet zo zoznamu, ale skor by tu mala byt podmienka pre sheet, ktory je na spodnom okraji steny, pripadne na okraji strechy kde je gutter
+                    // alebo je to prvy sheet nad otvorom v stene
+                    // Pre sheets ktore su na gable roof, left side sa ma uvazovat ze nie prvy ale posledny sheet v smere y je pri gutter a nema mat pripocitane overlap
+                    // podobne pre monopitch roof treba zohladnit sklon strechy
                     sheets[i].LengthTopLeft_Real = sheets[i].LengthTopLeft;
                     sheets[i].LengthTopRight_Real = sheets[i].LengthTopRight;
                     sheets[i].LengthTopTip_Real = sheets[i].LengthTopTip;
