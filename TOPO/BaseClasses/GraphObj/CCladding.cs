@@ -584,10 +584,12 @@ namespace BaseClasses.GraphObj
             int iNumberOfSheets = iNumberOfWholeSheets + 1;
 
             List<COpening> listOfOpeningsLeftWall_All = null;
+            List<CCladdingOrFibreGlassSheet> listOfFibreGlassOpenings = null;
 
             if (bGenerateLeftSideFibreglass)
             {
                 listOfFibreGlassSheetsWallLeft = new List<CCladdingOrFibreGlassSheet>();
+                listOfFibreGlassOpenings = new List<CCladdingOrFibreGlassSheet>();
 
                 foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
                 {
@@ -600,14 +602,15 @@ namespace BaseClasses.GraphObj
                             pback0_baseleft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
 
+                        listOfFibreGlassOpenings.Add(sheet);
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                         CountRealLenghts(sheets, height_left_basic);
                         listOfFibreGlassSheetsWallLeft.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
                 }
-                GenerateCladdingOpenings(listOfFibreGlassSheetsWallLeft, "Left", pback0_baseleft, baseLength_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
-                ref iOpeningIndex, out listOfOpeningsLeftWall_All);
+                GenerateCladdingOpenings(listOfFibreGlassOpenings, "Left", pback0_baseleft, baseLength_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                ref iOpeningIndex, out listOfOpeningsLeftWall_All);                
             }
 
             if (bGenerateLeftSideCladding)
@@ -656,6 +659,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateFrontSideFibreglass)
             {
                 listOfFibreGlassSheetsWallFront = new List<CCladdingOrFibreGlassSheet>();
+                listOfFibreGlassOpenings = new List<CCladdingOrFibreGlassSheet>();
 
                 foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
                 {
@@ -667,6 +671,7 @@ namespace BaseClasses.GraphObj
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pfront0_baseleft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
+                        listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                         CountRealLenghts(sheets, height_left_basic);
@@ -675,7 +680,7 @@ namespace BaseClasses.GraphObj
                     }
                 }
 
-                GenerateCladdingOpenings(listOfFibreGlassSheetsWallFront, "Front", pfront0_baseleft, baseWidth_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                GenerateCladdingOpenings(listOfFibreGlassOpenings, "Front", pfront0_baseleft, baseWidth_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsFrontWall_All);
             }
 
@@ -735,6 +740,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateRightSideFibreglass)
             {
                 listOfFibreGlassSheetsWallRight = new List<CCladdingOrFibreGlassSheet>();
+                listOfFibreGlassOpenings = new List<CCladdingOrFibreGlassSheet>();
 
                 foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
                 {
@@ -746,6 +752,7 @@ namespace BaseClasses.GraphObj
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pfront1_baseright, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
+                        listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                         CountRealLenghts(sheets, height_left_basic);
@@ -753,7 +760,7 @@ namespace BaseClasses.GraphObj
                         iSheet_FG_Index += sheets.Count;
                     }
                 }
-                GenerateCladdingOpenings(listOfFibreGlassSheetsWallRight, "Right", pfront1_baseright, baseLength_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                GenerateCladdingOpenings(listOfFibreGlassOpenings, "Right", pfront1_baseright, baseLength_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsRightWall_All);
             }
 
@@ -804,6 +811,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateBackSideFibreglass)
             {
                 listOfFibreGlassSheetsWallBack = new List<CCladdingOrFibreGlassSheet>();
+                listOfFibreGlassOpenings = new List<CCladdingOrFibreGlassSheet>();
 
                 foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
                 {
@@ -815,6 +823,7 @@ namespace BaseClasses.GraphObj
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pback1_baseright, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                             m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
+                        listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                         CountRealLenghts(sheets, height_left_basic);
@@ -822,7 +831,7 @@ namespace BaseClasses.GraphObj
                         iSheet_FG_Index += sheets.Count;
                     }
                 }
-                GenerateCladdingOpenings(listOfFibreGlassSheetsWallBack, "Back", pback1_baseright, baseWidth_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
+                GenerateCladdingOpenings(listOfFibreGlassOpenings, "Back", pback1_baseright, baseWidth_Overall_for3D, iNumberOfEdges_FG_D_W, column_crsc_y_minus_temp, column_crsc_z_plus_temp,
                 ref iOpeningIndex, out listOfOpeningsBackWall_All);
             }
 
@@ -889,6 +898,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateRoofFibreglass)
             {
                 listOfFibreGlassSheetsRoofRight = new List<CCladdingOrFibreGlassSheet>();
+                listOfFibreGlassOpenings = new List<CCladdingOrFibreGlassSheet>();
 
                 foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
                 {
@@ -900,6 +910,7 @@ namespace BaseClasses.GraphObj
                              iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                              pControlPoint_RoofRight, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_RoofProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                              m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0);
+                        listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                         CountRealLenghts(sheets, length_left_basic);
@@ -917,7 +928,7 @@ namespace BaseClasses.GraphObj
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                     m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, RoofLength_Y,
                     m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
-                    SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofRight), ref iSheetIndex, out listOfCladdingSheetsRoofRight);
+                    SheetListToOpeningListConverter(listOfFibreGlassOpenings), ref iSheetIndex, out listOfCladdingSheetsRoofRight);
 
                     // TODO - upravit plechy pre canopies
                     if (canopyCollection != null)
@@ -1190,6 +1201,8 @@ namespace BaseClasses.GraphObj
 
                 if (bGenerateRoofFibreglass)
                 {
+                    listOfFibreGlassOpenings = new List<CCladdingOrFibreGlassSheet>();
+
                     foreach (FibreglassProperties fgsp in fibreglassSheetCollection)
                     {
                         if (fgsp.Side == "Roof-Left Side")
@@ -1205,6 +1218,7 @@ namespace BaseClasses.GraphObj
                                 iNumberOfEdges_FG_D_W, fgsp.X, Position_y,
                                 pControlPoint_RoofLeft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_RoofProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                                 m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0);
+                            listOfFibreGlassOpenings.Add(sheet);
 
                             List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                             CountRealLenghts(sheets, length_left_basic);
@@ -1224,7 +1238,7 @@ namespace BaseClasses.GraphObj
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD,
                         RoofLength_Y,
                         m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
-                        SheetListToOpeningListConverter(listOfFibreGlassSheetsRoofLeft), ref iSheetIndex, out listOfCladdingSheetsRoofLeft);
+                        SheetListToOpeningListConverter(listOfFibreGlassOpenings), ref iSheetIndex, out listOfCladdingSheetsRoofLeft);
 
                         // TODO - upravit plechy pre canopies
                         if (canopyCollection != null)
