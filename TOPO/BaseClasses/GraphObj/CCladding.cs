@@ -1,4 +1,5 @@
 ﻿using BaseClasses.Helpers;
+using MATH;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1652,6 +1653,8 @@ namespace BaseClasses.GraphObj
                     // Skontrolovat podla suradnic ci objekt zacina alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
                     foreach(COpening o in objectInColision_In_Local_x)
                     {
+                        if(MathF.d_equal(o.CoordinateInPlane_y, 0)) iNumberOfNewSheets--;
+
                         if (o.CoordinateInPlane_y >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal) ||
                             ((o.CoordinateInPlane_y + o.LengthTotal) >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal)))
                             iNumberOfNewSheets--;
@@ -1697,6 +1700,9 @@ namespace BaseClasses.GraphObj
                         else
                         {
                             double coordinate_y = 0; // Zacat od okraja  !!! - je potrebne zmenit pre doors a zacat nad dverami
+
+                            if (j == 0 && MathF.d_equal(objectInColision_In_Local_x[0].CoordinateInPlane_y, 0))
+                                coordinate_y = (double)objectInColision_In_Local_x[0].LengthTotal;
 
                             if (j > 0)
                                 coordinate_y = objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + objectInColision_In_Local_x[j - 1].LengthTotal;
