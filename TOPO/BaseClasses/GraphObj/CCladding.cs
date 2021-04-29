@@ -1742,8 +1742,9 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private List<CCladdingOrFibreGlassSheet> CutSheetAccordingToMaxLength(CCladdingOrFibreGlassSheet sheet)
+        private List<CCladdingOrFibreGlassSheet> CutSheetAccordingToMaxLength(CCladdingOrFibreGlassSheet orig_sheet)
         {
+            CCladdingOrFibreGlassSheet sheet = orig_sheet.Clone();
             List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
 
             if (sheet.IsFibreglass)
