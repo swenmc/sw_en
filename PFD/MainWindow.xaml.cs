@@ -69,7 +69,7 @@ namespace PFD
         // PORTAL FRAME DESIGNER
         ////////////////////////////////////////////////////////////////////////
 
-        bool bDebugging = false;
+        bool bDebugging = true;
         bool bRelease = true;
 
         public CPFDViewModel vm;
@@ -1260,9 +1260,6 @@ namespace PFD
             if (vm._modelOptionsVM.EnableCladding) TabCladding.Visibility = Visibility.Visible;
             else TabCladding.Visibility = Visibility.Collapsed;
 
-            //tu je trosku problem,ze to berie z vygenerovaneho modelu, cize az ked sa updatuje model,az potom tam budu validne hodnoty (mozno by to trebalo skor viazat na nieco ine)
-            //ono je to takto spravne ta samotna metoda, ale pre zapnutie a vypnutie v GUI by sa to mozno dalo viazat na nejake ine zapnute a vypnute prvky (detto pre fibreglass)
-            //tie zoznamy cladding sa vytvaraju az pri zobrazovani...takze je to nepouzitelne = prepisat
             if (vm._modelOptionsVM.EnableCladding && vm._modelOptionsVM.IndividualCladdingSheets && vm.ModelHasPurlinsOrGirts())
             {
                 btnCladdingSheetsValidation.IsEnabled = true;
@@ -1279,6 +1276,7 @@ namespace PFD
             {
                 btnFibreglassSheetsValidation.IsEnabled = false;
             }
+            if (bDebugging) { btnCladdingSheetsValidation.IsEnabled = true; btnFibreglassSheetsValidation.IsEnabled = true; } //prepisuje sa zobrazovanie tlacidiel pokial je to debugging
 
             SetUIElementsVisibilityAccordingPermissions();
         }

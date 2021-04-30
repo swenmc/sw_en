@@ -133,21 +133,21 @@ namespace PFD
 
             TxtTotalSheetsAreaCladding.Text = claddingSheetsArea.ToString("F3");
             TxtTotalSheetsAreaFibreglass.Text = fibreglassSheetsArea.ToString("F3");
-            TxtTotalCladdingArea.Text = (_pfdVM.TotalWallArea + _pfdVM.TotalRoofAreaInclCanopies).ToString("F3");
+            
             
             float fFibreGlassArea_Roof = _pfdVM._claddingOptionsVM.FibreglassAreaRoofRatio / 100f * _pfdVM.TotalRoofArea; // Priesvitna cast strechy (bez canopies)
             float fFibreGlassArea_Walls = _pfdVM._claddingOptionsVM.FibreglassAreaWallRatio / 100f * _pfdVM.TotalWallArea; // Priesvitna cast stien
-            TxtTotalFibreglassArea.Text = (fFibreGlassArea_Roof + fFibreGlassArea_Walls).ToString("F3");
-            
-            TxtSheetsAreaCladding_Roof.Text = claddingSheetsArea_Roof.ToString("F3");
-            TxtSheetsAreaCladding_Walls.Text = claddingSheetsArea_Walls.ToString("F3");
-
 
             // Plocha stien bez otvorov a fibre glass
             float fWallArea_Total_Netto = _pfdVM.TotalWallArea - GetTotalAreaOpeningsDoorsAnWindows() - fFibreGlassArea_Walls;  //float fWallArea_Total,
             // Plocha strechy bez fibre glass
             float fRoofArea_Total_Netto = _pfdVM.TotalRoofAreaInclCanopies - fFibreGlassArea_Roof;    //float fRoofArea,
-
+            
+            TxtTotalCladdingArea.Text = (fWallArea_Total_Netto + fRoofArea_Total_Netto).ToString("F3");
+            TxtTotalFibreglassArea.Text = (fFibreGlassArea_Roof + fFibreGlassArea_Walls).ToString("F3");
+            
+            TxtSheetsAreaCladding_Roof.Text = claddingSheetsArea_Roof.ToString("F3");
+            TxtSheetsAreaCladding_Walls.Text = claddingSheetsArea_Walls.ToString("F3");
             TxtTotalCladdingArea_Roof.Text = fRoofArea_Total_Netto.ToString("F3");
             TxtTotalCladdingArea_Walls.Text = fWallArea_Total_Netto.ToString("F3");
 
