@@ -1020,6 +1020,8 @@ namespace BaseClasses.GraphObj
                                             //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                             originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
 
+
+
                                             breakIndex = cIndex + 1;
                                         }
                                     }
