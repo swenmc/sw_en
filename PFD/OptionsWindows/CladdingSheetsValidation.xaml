@@ -22,6 +22,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -32,10 +34,34 @@
             <TextBox Name="TxtTotalSheetsAreaFibreglass" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 20 0" FontWeight="Bold" IsEnabled="False"></TextBox>
             <TextBlock>Cladding total area:</TextBlock>
             <TextBox Name="TxtTotalCladdingArea" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 0 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Fibreglass total area:</TextBlock>
+            <TextBox Name="TxtTotalFibreglassArea" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 0 0" FontWeight="Bold" IsEnabled="False"></TextBox>
             
         </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock>Cladding sheets area - roof:</TextBlock>
+            <TextBox Name="TxtSheetsAreaCladding_Roof" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 20 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Fibreglass sheets area - roof:</TextBlock>
+            <TextBox Name="TxtSheetsAreaFibreglass_Roof" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 20 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Cladding total area - roof:</TextBlock>
+            <TextBox Name="TxtTotalCladdingArea_Roof" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 0 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Fibreglass total area - roof:</TextBlock>
+            <TextBox Name="TxtTotalFibreglassArea_Roof" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 0 0" FontWeight="Bold" IsEnabled="False"></TextBox>
 
-        <DataGrid Name="Datagrid_CladdingSheets" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock>Cladding sheets area - walls:</TextBlock>
+            <TextBox Name="TxtSheetsAreaCladding_Walls" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 20 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Fibreglass sheets area - walls:</TextBlock>
+            <TextBox Name="TxtSheetsAreaFibreglass_Walls" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 20 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Cladding total area - walls:</TextBlock>
+            <TextBox Name="TxtTotalCladdingArea_Walls" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 0 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+            <TextBlock>Fibreglass total area - walls:</TextBlock>
+            <TextBox Name="TxtTotalFibreglassArea_Walls" Width="100" Height="20" VerticalAlignment="Top" Margin="10 0 0 0" FontWeight="Bold" IsEnabled="False"></TextBox>
+
+        </StackPanel>
+
+        <DataGrid Name="Datagrid_CladdingSheets" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="True" AutoGenerateColumns="True"
                   CanUserSortColumns="True">
         </DataGrid>

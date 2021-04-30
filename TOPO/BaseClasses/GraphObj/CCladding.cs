@@ -2127,6 +2127,24 @@ namespace BaseClasses.GraphObj
 
             return list;
         }
+        public List<CCladdingOrFibreGlassSheet> GetFibreglassSheets_Roof()
+        {
+            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();            
+            if (listOfFibreGlassSheetsRoofRight != null) list.AddRange(listOfFibreGlassSheetsRoofRight);
+            if (listOfFibreGlassSheetsRoofLeft != null) list.AddRange(listOfFibreGlassSheetsRoofLeft);
+
+            return list;
+        }
+        public List<CCladdingOrFibreGlassSheet> GetFibreglassSheets_Wall()
+        {
+            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();
+            if (listOfFibreGlassSheetsWallLeft != null) list.AddRange(listOfFibreGlassSheetsWallLeft);
+            if (listOfFibreGlassSheetsWallFront != null) list.AddRange(listOfFibreGlassSheetsWallFront);
+            if (listOfFibreGlassSheetsWallRight != null) list.AddRange(listOfFibreGlassSheetsWallRight);
+            if (listOfFibreGlassSheetsWallBack != null) list.AddRange(listOfFibreGlassSheetsWallBack);            
+
+            return list;
+        }
 
         public bool HasCladdingSheets()
         {

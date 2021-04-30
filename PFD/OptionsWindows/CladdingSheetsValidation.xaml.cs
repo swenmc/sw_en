@@ -104,17 +104,75 @@ namespace PFD
 
             Datagrid_CladdingSheets.ItemsSource = ds.Tables[0].AsDataView();
 
+            double claddingSheetsArea_Roof = 0;
+            double claddingSheetsArea_Walls = 0;
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets_Roof())
+            {
+                claddingSheetsArea_Roof += sheet.Area_netto;
+            }
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetCladdingSheets_Wall())
+            {
+                claddingSheetsArea_Walls += sheet.Area_netto;
+            }
+
             double fibreglassSheetsArea = 0;
+            double fibreglassSheetsArea_Roof = 0;
+            double fibreglassSheetsArea_Wall = 0;
             foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetFibreglassSheets())
             {
                 fibreglassSheetsArea += sheet.Area_netto;
+            }
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetFibreglassSheets_Roof())
+            {
+                fibreglassSheetsArea_Roof += sheet.Area_netto;
+            }
+            foreach (CCladdingOrFibreGlassSheet sheet in cladding.GetFibreglassSheets_Wall())
+            {
+                fibreglassSheetsArea_Wall += sheet.Area_netto;
             }
 
             TxtTotalSheetsAreaCladding.Text = claddingSheetsArea.ToString("F3");
             TxtTotalSheetsAreaFibreglass.Text = fibreglassSheetsArea.ToString("F3");
             TxtTotalCladdingArea.Text = (_pfdVM.TotalWallArea + _pfdVM.TotalRoofAreaInclCanopies).ToString("F3");
+            
+            float fFibreGlassArea_Roof = _pfdVM._claddingOptionsVM.FibreglassAreaRoofRatio / 100f * _pfdVM.TotalRoofArea; // Priesvitna cast strechy (bez canopies)
+            float fFibreGlassArea_Walls = _pfdVM._claddingOptionsVM.FibreglassAreaWallRatio / 100f * _pfdVM.TotalWallArea; // Priesvitna cast stien
+            TxtTotalFibreglassArea.Text = (fFibreGlassArea_Roof + fFibreGlassArea_Walls).ToString("F3");
+            
+            TxtSheetsAreaCladding_Roof.Text = claddingSheetsArea_Roof.ToString("F3");
+            TxtSheetsAreaCladding_Walls.Text = claddingSheetsArea_Walls.ToString("F3");
 
+
+            // Plocha stien bez otvorov a fibre glass
+            float fWallArea_Total_Netto = _pfdVM.TotalWallArea - GetTotalAreaOpeningsDoorsAnWindows() - fFibreGlassArea_Walls;  //float fWallArea_Total,
+            // Plocha strechy bez fibre glass
+            float fRoofArea_Total_Netto = _pfdVM.TotalRoofAreaInclCanopies - fFibreGlassArea_Roof;    //float fRoofArea,
+
+            TxtTotalCladdingArea_Roof.Text = fRoofArea_Total_Netto.ToString("F3");
+            TxtTotalCladdingArea_Walls.Text = fWallArea_Total_Netto.ToString("F3");
+
+            TxtSheetsAreaFibreglass_Roof.Text = fibreglassSheetsArea_Roof.ToString("F3");
+            TxtSheetsAreaFibreglass_Walls.Text = fibreglassSheetsArea_Wall.ToString("F3");
+            TxtTotalFibreglassArea_Roof.Text = fFibreGlassArea_Roof.ToString("F3");
+            TxtTotalFibreglassArea_Walls.Text = fFibreGlassArea_Walls.ToString("F3");
+            
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
+        }
+
+
+        private float GetTotalAreaOpeningsDoorsAnWindows()
+        {
+            float fTotalAreaOfOpennings = 0;
+            foreach (DoorProperties dp in _pfdVM._doorsAndWindowsVM.DoorBlocksProperties)
+            {
+                fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
+            }
+
+            foreach (WindowProperties wp in _pfdVM._doorsAndWindowsVM.WindowBlocksProperties)
+            {
+                fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
+            }
+            return fTotalAreaOfOpennings;
         }
 
         private string GetLengthTopTip(CCladdingOrFibreGlassSheet sheet)
