@@ -66,7 +66,7 @@ namespace PFD
                 }
                 else
                 {
-                    Datagrid_DoorsAndGates_SelectionChanged(null, null);                    
+                    Datagrid_DoorsAndGates_SelectionChanged(null, null);
                 }
                 DoorsAndWindowsOptionsChanged = true;
             }
@@ -80,6 +80,14 @@ namespace PFD
                 //_pfdVM.RecreateModel = true;
                 //_pfdVM.RecreateJoints = true;
 
+                DoorsAndWindowsOptionsChanged = true;
+            }
+            else if (sender is CAccessories_LengthItemProperties)
+            {
+                DoorsAndWindowsOptionsChanged = true;
+            }
+            else if (sender is CAccessories_DownpipeProperties)
+            {
                 DoorsAndWindowsOptionsChanged = true;
             }
         }
