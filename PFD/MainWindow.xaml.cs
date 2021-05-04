@@ -69,7 +69,7 @@ namespace PFD
         // PORTAL FRAME DESIGNER
         ////////////////////////////////////////////////////////////////////////
 
-        bool bDebugging = true;
+        bool bDebugging = false;
         bool bRelease = true;
 
         public CPFDViewModel vm;
@@ -1268,7 +1268,7 @@ namespace PFD
             {
                 btnCladdingSheetsValidation.IsEnabled = false;
             }
-            if (vm._modelOptionsVM.EnableCladding && vm._claddingOptionsVM.HasFibreglass() && vm.ModelHasPurlinsOrGirts())
+            if (vm._modelOptionsVM.EnableCladding && vm._modelOptionsVM.IndividualCladdingSheets && vm._claddingOptionsVM.HasFibreglass() && vm.ModelHasPurlinsOrGirts())
             {
                 btnFibreglassSheetsValidation.IsEnabled = true;
             }
