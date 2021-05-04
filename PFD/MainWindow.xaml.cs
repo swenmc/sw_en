@@ -1605,6 +1605,8 @@ namespace PFD
 
             if (result.HasValue && result.Value == true)
             {
+                if (vm.RecreateModel == true) UpdateModelAndGUI(); //Bug 798
+
                 WaitWindow ww = new WaitWindow("PDF");
                 ww.ContentRendered += PDF_WaitWindow_ContentRendered;
                 ww.Show();
