@@ -979,6 +979,8 @@ namespace BaseClasses.GraphObj
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                         originalsheet.Update();
 
+                                        CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic);
+
                                         if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed || (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && !canopy.Left))
                                             breakIndex = cIndex + 1;
                                     }
@@ -1022,6 +1024,8 @@ namespace BaseClasses.GraphObj
                                             originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                             originalsheet.Update();
 
+                                            CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic);
+                                            
                                             breakIndex = cIndex + 1;
                                         }
                                     }
@@ -1289,6 +1293,8 @@ namespace BaseClasses.GraphObj
                                             //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                             originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                             originalsheet.Update();
+
+                                            CutCanopySheet(originalsheet, true, ref iSheetIndex, length_left_basic);
 
                                             break;
                                         }
@@ -1810,6 +1816,23 @@ namespace BaseClasses.GraphObj
             return sheets;
         }
 
+        private void CutCanopySheet(CCladdingOrFibreGlassSheet originalsheet, bool isRoofLeft, ref int iSheetIndex, double length_left_basic)
+        {
+            List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>() { originalsheet };
+            while (originalsheet.LengthTotal > maxSheetLegth_RoofCladding)
+            {
+                CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref originalsheet, maxSheetLegth_RoofCladding, false);
+                iSheetIndex++;
+                cuttedSheet.ID = iSheetIndex;
+                sheets.Add(cuttedSheet);
+
+                if(isRoofLeft) listOfCladdingSheetsRoofLeft.Add(cuttedSheet);
+                else listOfCladdingSheetsRoofRight.Add(cuttedSheet);
+            }
+            originalsheet.Update();
+            CountRealLenghts(sheets, length_left_basic);
+        }
+
         private void CountRealLenghts(List<CCladdingOrFibreGlassSheet> sheets, double height_left_basic /* celkovy rozmer y pre danu plochu wall side alebo roof side */)
         {
             float overlap = 0f;
@@ -1849,7 +1872,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private CCladdingOrFibreGlassSheet GetCuttedSheetAndShortenOriginal(ref CCladdingOrFibreGlassSheet originalSheet, float maxLength)
+        private CCladdingOrFibreGlassSheet GetCuttedSheetAndShortenOriginal(ref CCladdingOrFibreGlassSheet originalSheet, float maxLength, bool changeOriginalID = true)
         {
             CCladdingOrFibreGlassSheet cuttedSheet = originalSheet.Clone();
             cuttedSheet.NumberOfEdges = 4;
@@ -1867,11 +1890,12 @@ namespace BaseClasses.GraphObj
             */
 
             originalSheet.CoordinateInPlane_y += maxLength;
-            originalSheet.ID++;
+            if(changeOriginalID) originalSheet.ID++;
             originalSheet.LengthTopTip -= maxLength;
             originalSheet.LengthTopRight -= maxLength;
             originalSheet.LengthTopLeft -= maxLength;
             originalSheet.LengthTotal -= maxLength;
+            //originalSheet.Color = ColorsHelper.GetColorWithIndex(originalSheet.ID - 1, bUseTop20Colors); //predpokladam,ze ID ide od zaciatku
 
             return cuttedSheet;
         }
