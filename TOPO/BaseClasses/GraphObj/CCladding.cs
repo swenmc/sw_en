@@ -977,6 +977,7 @@ namespace BaseClasses.GraphObj
                                         originalsheet.LengthTopRight += CanopyCladdingWidth_Right;
                                         //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
+                                        originalsheet.Update();
 
                                         if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed || (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && !canopy.Left))
                                             breakIndex = cIndex + 1;
@@ -1019,8 +1020,7 @@ namespace BaseClasses.GraphObj
                                             originalsheet.LengthTopRight += CanopyCladdingWidth_Left;
                                             //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                             originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
-
-
+                                            originalsheet.Update();
 
                                             breakIndex = cIndex + 1;
                                         }
@@ -1288,6 +1288,7 @@ namespace BaseClasses.GraphObj
                                             originalsheet.LengthTopRight += CanopyCladdingWidth_Left;
                                             //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                             originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
+                                            originalsheet.Update();
 
                                             break;
                                         }

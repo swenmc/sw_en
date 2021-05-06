@@ -470,6 +470,7 @@ namespace BaseClasses.GraphObj
         public void Update()
         {
             Area_brutto = Width * LengthTotal;
+            //To Mato - a co tak Area_Netto,  to updatovat netreba?
 
             Width_flat = Width / m_BasicModularWidth * m_CoilWidth;
             Surface_brutto = (float)(Width_flat * LengthTotal);
