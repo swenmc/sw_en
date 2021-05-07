@@ -20,12 +20,32 @@
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>            
-            <RowDefinition Height="*" />            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+            <!--<ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=BayFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>-->
+            <ComboBox Name ="Combobox_EMemberType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_EMemberTypePosition" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_EMemberType_FEM" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_CrSc" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_Mat" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_IsGenerated" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_IsDisplayed" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_IsSelectedForDesign" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_IsSelectedForIFCalculation" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
+            <ComboBox Name ="Combobox_IsSelectedForMaterialList" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />            
+
+            <Button Width="80" Height="25" Name="BtnFilter" Margin="10 0 0 0" Click="BtnFilter_Click">Filter</Button>
+
+        </StackPanel>
         
 
-        <DataGrid Name="Datagrid_Members" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <DataGrid Name="Datagrid_Members" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="True" AutoGenerateColumns="True"
                   CanUserSortColumns="True">
         </DataGrid>
