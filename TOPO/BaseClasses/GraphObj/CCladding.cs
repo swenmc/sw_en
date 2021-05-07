@@ -114,6 +114,8 @@ namespace BaseClasses.GraphObj
         float overlap_RoofFibreglass;
         float overlap_WallFibreglass;
 
+        bool bUseTop20Colors = true; // Pouzit vsetky farby v zozname (141) alebo striedat len vybrane (20)
+
         public CCladding()
         {
             canopyCollection = new System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo>(); //nechce sa nam stale kontrolovat na null
@@ -574,7 +576,7 @@ namespace BaseClasses.GraphObj
             int iSheet_FG_Index = 0;
             int iOpeningIndex = 0;
             int iNumberOfEdges_FG_D_W = 4; // Number of edges - fibreglass shet, door, window opening
-            bool bUseTop20Colors = true; // Pouzit vsetky farby v zozname (141) alebo striedat len vybrane (20)
+            
 
             // Left Wall
             double height_left_basic = -bottomEdge_z + height_1_final_edge_LR_Wall;
@@ -617,7 +619,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateLeftSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Left", "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall, pback0_baseleft, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Left", "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall, pback0_baseleft, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseLength_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
@@ -688,7 +690,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateFrontSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Front", "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall, pfront0_baseleft, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Front", "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall, pfront0_baseleft, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity,
                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseWidth_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
@@ -768,7 +770,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateRightSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Right", "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall, pfront1_baseright, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Right", "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall, pfront1_baseright, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseLength_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
@@ -839,7 +841,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateBackSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Back", "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall, pback1_baseright, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Back", "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall, pback1_baseright, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity,
                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseWidth_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
@@ -925,7 +927,7 @@ namespace BaseClasses.GraphObj
             {
                 if (bIndividualCladdingSheets)
                 {
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-right", "RC", "Cladding - Roof-Right Side", m_MaterialCladding_Roof, pControlPoint_RoofRight, m_ColorNameRoof,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Roof-right", "RC", "Cladding - Roof-Right Side", m_MaterialCladding_Roof, pControlPoint_RoofRight, m_ColorNameRoof,
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                     m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, RoofLength_Y,
                     m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
@@ -980,6 +982,7 @@ namespace BaseClasses.GraphObj
                                         originalsheet.Update();
 
                                         CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic);
+
 
                                         if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed || (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && !canopy.Left))
                                             breakIndex = cIndex + 1;
@@ -1239,7 +1242,7 @@ namespace BaseClasses.GraphObj
                 {
                     if (bIndividualCladdingSheets)
                     {
-                        GenerateCladdingSheets(options.bCladdingSheetColoursByID, bUseTop20Colors, "Roof-left", "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
+                        GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Roof-left", "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
                         pControlPoint_RoofLeft, m_ColorNameRoof,
                         m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD,
@@ -1505,8 +1508,7 @@ namespace BaseClasses.GraphObj
             return model_gr;
         }
 
-        public void GenerateCladdingSheets(bool bCladdingSheetColoursByID,
-            bool bUseTop20Colors,
+        public void GenerateCladdingSheets(bool bCladdingSheetColoursByID,            
             string side,
             string prefix,
             string name,
@@ -1537,9 +1539,6 @@ namespace BaseClasses.GraphObj
 
             for (int i = 0; i < iNumberOfOriginalSheetsOnSide; i++)
             {
-                //if (bCladdingSheetColoursByID)
-                //    color = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
-
                 // Zakladne hodnoty pre obdlznik
                 int iNumberOfEdges = 4;
                 // TODO - overit ci sa ma v height pocitat s bottomEdge_z
@@ -1763,16 +1762,6 @@ namespace BaseClasses.GraphObj
 
                 }
             }
-
-            if(bCladdingSheetColoursByID) ChangeSheetsColors(listOfSheets, bUseTop20Colors);
-        }
-
-        private void ChangeSheetsColors(List<CCladdingOrFibreGlassSheet> listOfSheets, bool bUseTop20Colors)
-        {
-            for(int i = 0; i < listOfSheets.Count; i++)
-            {
-                listOfSheets[i].Color = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
-            }
         }
 
         private List<CCladdingOrFibreGlassSheet> CutSheetAccordingToMaxLength(CCladdingOrFibreGlassSheet orig_sheet)
@@ -1897,8 +1886,7 @@ namespace BaseClasses.GraphObj
             originalSheet.LengthTopTip -= maxLength;
             originalSheet.LengthTopRight -= maxLength;
             originalSheet.LengthTopLeft -= maxLength;
-            originalSheet.LengthTotal -= maxLength;
-            //originalSheet.Color = ColorsHelper.GetColorWithIndex(originalSheet.ID - 1, bUseTop20Colors); //predpokladam,ze ID ide od zaciatku
+            originalSheet.LengthTotal -= maxLength;            
 
             return cuttedSheet;
         }
@@ -2007,6 +1995,7 @@ namespace BaseClasses.GraphObj
         {
             if (listOfsheets != null && listOfsheets.Count > 0)
             {
+
                 double wpWidth = 0, wpHeight = 0;
 
                 for (int i = 0; i < listOfsheets.Count; i++)
@@ -2040,6 +2029,10 @@ namespace BaseClasses.GraphObj
                                 material = new DiffuseMaterial(brush_Last);
                             }
                         }
+                    }
+                    else if (options.bCladdingSheetColoursByID)
+                    {
+                        listOfsheets[i].Color = ColorsHelper.GetColorWithIndex(i, bUseTop20Colors);
                     }
 
                     listOfsheets[i].RotationX = rotationX;
