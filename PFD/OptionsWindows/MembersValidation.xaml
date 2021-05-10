@@ -17,7 +17,7 @@
     <Grid Name="GridMain" Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
             <!-- do buducna by mohol byt filter parametrov ktore chceme pozapinat na lavej strane --> 
-            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -25,10 +25,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-            <!--<ComboBox Name ="Combobox_BayFrom" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                  VerticalAlignment="Top" ItemsSource="{Binding Path=Bays, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                  SelectedValue="{Binding Path=BayFrom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>-->
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
             <ComboBox Name ="Combobox_EMemberType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
             <ComboBox Name ="Combobox_EMemberTypePosition" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
             <ComboBox Name ="Combobox_EMemberType_FEM" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" />
