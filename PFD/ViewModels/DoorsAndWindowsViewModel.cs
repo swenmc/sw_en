@@ -41,6 +41,8 @@ namespace PFD
 
         private ObservableCollection<CAccessories_DownpipeProperties> m_Downpipes;
 
+
+        //private CAccessories_LengthItemProperties m_RemovedFlashing;
         #endregion private fields
 
         public bool IsSetFromCode = false;
@@ -211,6 +213,19 @@ namespace PFD
                 return m_GuttersNames;
             }
         }
+
+        //public CAccessories_LengthItemProperties RemovedFlashing
+        //{
+        //    get
+        //    {
+        //        return m_RemovedFlashing;
+        //    }
+
+        //    set
+        //    {
+        //        m_RemovedFlashing = value;
+        //    }
+        //}
 
         #endregion Properties
 
@@ -422,12 +437,17 @@ namespace PFD
         }
 
         private void Flashings_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            NotifyPropertyChanged("Flashings_CollectionChanged");
+        {            
             //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             //{
-                
+            //    //e.OldItems
+            //    if (e.OldItems.Count > 0)
+            //    {
+            //        CAccessories_LengthItemProperties item = (CAccessories_LengthItemProperties)e.OldItems[0];
+            //        m_RemovedFlashing = item;
+            //    }
             //}
+            NotifyPropertyChanged("Flashings_CollectionChanged");
         }
         public void FlashingsItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -963,5 +983,65 @@ namespace PFD
             return false;
         }
 
+        public void RemoveRollerDoors()
+        {
+            int doorsToRemoveCount = 0;
+            List<DoorProperties> doorsProps = new List<DoorProperties>();
+
+            foreach (DoorProperties d in DoorBlocksProperties)
+            {
+                if (d.sDoorType == "Roller Door") doorsToRemoveCount++;
+                else doorsProps.Add(d);
+            }
+
+            if (doorsToRemoveCount > 0)
+            {
+                IsSetFromCode = true;
+                DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorsProps);
+                IsSetFromCode = false;
+            }            
+        }
+        public void RemovePersonelDoors()
+        {
+            int doorsToRemoveCount = 0;
+            List<DoorProperties> doorsProps = new List<DoorProperties>();
+
+            foreach (DoorProperties d in DoorBlocksProperties)
+            {
+                if (d.sDoorType == "Personnel Door") doorsToRemoveCount++;
+                else doorsProps.Add(d);
+            }
+
+            if (doorsToRemoveCount > 0)
+            {
+                IsSetFromCode = true;
+                DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorsProps);
+                IsSetFromCode = false;
+            }
+        }
+        public void RemoveWindows()
+        {
+            IsSetFromCode = true;
+            WindowBlocksProperties = new ObservableCollection<WindowProperties>();
+            IsSetFromCode = false;
+        }
+
+        public bool AreAnyDoorsOrWindowsWith(CAccessories_LengthItemProperties flashing)
+        {
+            if (flashing.Name.Contains("Roller Door") && ModelHasRollerDoor()) return true;
+
+            if (flashing.Name.Contains("PA Door") && ModelHasPersonelDoor()) return true;
+
+            if (flashing.Name.Contains("Window") && ModelHasWindow()) return true;
+
+            return false;
+        }
+
+        public void DeleteDoorsOrWindowsWith(CAccessories_LengthItemProperties flashing)
+        {
+            if (flashing.Name.Contains("Roller Door") && ModelHasRollerDoor()) RemoveRollerDoors();
+            else if (flashing.Name.Contains("PA Door") && ModelHasPersonelDoor()) RemovePersonelDoors();
+            else if (flashing.Name.Contains("Window") && ModelHasWindow()) RemoveWindows();
+        }
     }
 }

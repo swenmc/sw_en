@@ -182,7 +182,7 @@
             </StackPanel>
             <DataGrid Name="Datagrid_Flashings" ItemsSource="{Binding Path=Flashings, Mode=TwoWay}" 
                                   HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
-                                  CanUserAddRows="False" CanUserDeleteRows="True" CanUserSortColumns="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0"
+                                  CanUserAddRows="False" CanUserDeleteRows="True" CanUserSortColumns="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" PreviewKeyDown="Datagrid_Flashings_PreviewKeyDown"
                                   >
                 <DataGrid.Columns>
                     <DataGridComboBoxColumn Header="Name" ToolTipService.ToolTip="Select name" Width="2*" 

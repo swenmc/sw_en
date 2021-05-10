@@ -43,7 +43,10 @@ namespace PFD
             if (sender == null) return;
             if (sender is DoorsAndWindowsViewModel)
             {
-                if (e.PropertyName == "Flashings_CollectionChanged") SetAccessoriesButtonsVisibility();
+                if (e.PropertyName == "Flashings_CollectionChanged")
+                {
+                    SetAccessoriesButtonsVisibility();                    
+                }
                 if (e.PropertyName == "Gutters_CollectionChanged") SetAccessoriesButtonsVisibility();
                 if (e.PropertyName == "Downpipes_CollectionChanged") SetAccessoriesButtonsVisibility();
 
@@ -487,6 +490,32 @@ namespace PFD
             else btnAddDownpipe.IsEnabled = true;
         }
 
-        
+        private void Datagrid_Flashings_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                var grid = (DataGrid)sender;
+
+                if (grid.SelectedItems.Count > 0)
+                {
+                    CAccessories_LengthItemProperties item = grid.SelectedItems[0] as CAccessories_LengthItemProperties;
+                    DoorsAndWindowsViewModel vm = this.DataContext as DoorsAndWindowsViewModel;
+                    if (vm.AreAnyDoorsOrWindowsWith(item))
+                    {
+                        var result = MessageBox.Show($"Do you really want to delete {item.Name}? Doors or windows with this flashing will be deleted from model.", "Warning", MessageBoxButton.OKCancel);
+                        if (result == MessageBoxResult.OK)
+                        {
+                            vm.DeleteDoorsOrWindowsWith(item);
+                        }
+                        else
+                        {
+                            e.Handled = true;
+                        }
+                    }
+
+                    
+                }
+            }
+        }
     }
 }
