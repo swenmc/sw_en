@@ -1662,11 +1662,16 @@ namespace BaseClasses.GraphObj
                     // Skontrolovat podla suradnic ci objekt zacina alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
                     foreach (COpening o in objectInColision_In_Local_x)
                     {
-                        if (MathF.d_equal(o.CoordinateInPlane_y, 0)) { iNumberOfNewSheets--; isFibreglassFirst = true; }
+                        if (side == "Roof-left")
+                        {
+                            if (MathF.d_equal(o.CoordinateInPlane_y, height_left_basic - o.LengthTotal)) { iNumberOfNewSheets--; isFibreglassFirst = true; }
+                        }
+                        else if (MathF.d_equal(o.CoordinateInPlane_y, 0)) { iNumberOfNewSheets--; isFibreglassFirst = true; }
 
-                        if (o.CoordinateInPlane_y >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal) ||
-                            ((o.CoordinateInPlane_y + o.LengthTotal) >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal)))
-                            iNumberOfNewSheets--;
+                        //riesenie ak je mimo budovu
+                        //if (o.CoordinateInPlane_y >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal) ||
+                        //    ((o.CoordinateInPlane_y + o.LengthTotal) >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal)))
+                        //    iNumberOfNewSheets--;
                     }
 
                     List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
@@ -1679,11 +1684,22 @@ namespace BaseClasses.GraphObj
                             if (isFibreglassFirst) openingIndex = j;
                             else openingIndex = j - 1;
 
+                            double coordinateInPlane_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
+                            if (side == "Roof-left")
+                            {
+                                coordinateInPlane_y = 0;
+                                //POZOR!!!
+                                //tu navyse nesedia ani dlzky, takze aj toto ma byt ine
+                                //originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
+                                //originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
+                            }
+                            
+
                             CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
                                 thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
                                 originalsheetNumberOfEdges, // 4 alebo 5 vrcholov
                                 originalsheetCoordinateInPlane_x,
-                                objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal,
+                                coordinateInPlane_y,
                                 originalsheetControlPoint, originalsheetWidth,
                                 originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
                                 originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
@@ -1722,6 +1738,9 @@ namespace BaseClasses.GraphObj
 
                             if (j > 0)
                                 coordinate_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
+
+                            //to Mato tu treba riesit
+                            //if (side == "Roof-left") coordinate_y = nieco ine;
 
                             iNumberOfEdges = 4;
                             CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
