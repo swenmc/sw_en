@@ -3843,7 +3843,6 @@ namespace BaseClasses
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
 
-
                 for (int i = 0; i < model.arrPoints3D.Length; i++)
                 {
                     if (model.arrPoints3D[i] != null) // Node object is valid (not empty)
@@ -3878,7 +3877,7 @@ namespace BaseClasses
                 }
             }
         }
-                
+
         public static void DrawGridLineLabelText3D(CGridLine gridline, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             TextBlock tb = new TextBlock();
@@ -3956,7 +3955,7 @@ namespace BaseClasses
         public static void CreateSawCutDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             if (model.m_arrSlabs == null) return;
-            
+
             for (int i = 0; i < model.m_arrSlabs.Count; i++)
             {
                 if (model.m_arrSlabs[i].SawCuts != null)
@@ -3975,7 +3974,7 @@ namespace BaseClasses
         public static void CreateControlJointDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             if (model.m_arrSlabs == null) return;
-            
+
             for (int i = 0; i < model.m_arrSlabs.Count; i++)
             {
                 if (model.m_arrSlabs[i].ControlJoints != null)
@@ -3996,12 +3995,12 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * displayOptions.ExportFoundationTextSize;
 
             if (model.m_arrFoundations == null) return;
-            
+
             for (int i = 0; i < model.m_arrFoundations.Count; i++)
             {
                 if (model.m_arrFoundations[i] == null) continue;
                     // Foundation object is valid (not empty)
-                
+
                 DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
 
                 //tu je pokus riesit prekryvanie textov, ale ja mam pocit ze tie Foundations maju vsetky body ControlPoint aj PointText proste rovnake
@@ -4009,29 +4008,29 @@ namespace BaseClasses
                 //{
                 //    points.Add(model.m_arrFoundations[i].PointText);
                 //    DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
-                //}                
+                //}
             }
         }
         public static void CreateFloorSlabsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             if (model.m_arrSlabs == null) return;
-            
+
             for (int i = 0; i < model.m_arrSlabs.Count; i++)
             {
                 if (model.m_arrSlabs[i] == null) continue; // Slab object is valid (not empty)
-                
-                DrawFloorSlabText3D(model.m_arrSlabs[i], viewPort, displayOptions);                
+
+                DrawFloorSlabText3D(model.m_arrSlabs[i], viewPort, displayOptions);
             }
         }
         public static void CreateCladdingDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             if (model.m_arrGOCladding == null) return;
-            
+
             for (int i = 0; i < model.m_arrGOCladding.Count; i++)
             {
                 if (model.m_arrGOCladding[i] == null) continue; // Cladding object is valid (not empty)
-                
-                DrawCladdingText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);                
+
+                DrawCladdingText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);
             }
         }
         public static void CreateFibreglassDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
@@ -4042,18 +4041,18 @@ namespace BaseClasses
             {
                 if (model.m_arrGOCladding[i] == null) continue;
                 // Cladding object is valid (not empty)
-                DrawFibreglassText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);                
+                DrawFibreglassText3D(model /*docasne*/, model.m_arrGOCladding[i], viewPort, displayOptions);
             }
         }
         public static void CreateDoorDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             if (model.m_arrGOStrDoors == null) return;
-            
+
             for (int i = 0; i < model.m_arrGOStrDoors.Count; i++)
             {
                 if (model.m_arrGOStrDoors[i] == null) continue;
-                // Door object is valid (not empty)                
-                DrawDoorText3D(model.m_arrGOStrDoors[i], viewPort, displayOptions);                
+                // Door object is valid (not empty)
+                DrawDoorText3D(model.m_arrGOStrDoors[i], viewPort, displayOptions);
             }
         }
         public static void CreateWindowDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
@@ -4063,11 +4062,10 @@ namespace BaseClasses
             for (int i = 0; i < model.m_arrGOStrWindows.Count; i++)
             {
                 if (model.m_arrGOStrWindows[i] == null) continue;
-                // Window object is valid (not empty)                
-                DrawWindowText3D(model.m_arrGOStrWindows[i], viewPort, displayOptions);                
+                // Window object is valid (not empty)
+                DrawWindowText3D(model.m_arrGOStrWindows[i], viewPort, displayOptions);
             }
         }
-
 
         // Draw Section Symbol Label Text 3D
         public static void DrawSectionSymbolLabelText3D(CSectionSymbol sectionSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
@@ -4080,7 +4078,7 @@ namespace BaseClasses
 
             AddLabel3DToViewPort(sectionSymbol.Text, fTextBlockVerticalSize, displayOptions.SectionSymbolLabelTextColor, null, sectionSymbol.PointText, over, up, sectionSymbol.TransformGr, 1, false, ref viewPort);
         }
-        
+
         // Draw Detail Symbol Label Text 3D
         public static void DrawDetailSymbolLabelText3D(CDetailSymbol detailSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
         {
@@ -4107,7 +4105,7 @@ namespace BaseClasses
 
             AddLabel3DToViewPort(sawcut.Text, fTextBlockVerticalSize, displayOptions.SawCutTextColor, null, sawcut.PointText, over, up, sawcut.TransformGr, 0.5, false, ref viewPort);
         }
-        
+
         // Draw Control Joint Text 3D
         public static void DrawControlJointText3D(CControlJoint controlJoint, Viewport3D viewPort, DisplayOptions displayOptions)
         {
@@ -4148,10 +4146,6 @@ namespace BaseClasses
 
             AddLabel3DToViewPort(slab.Text, fTextBlockVerticalSize, displayOptions.FloorSlabTextColor, null, slab.PointText, over, up, tr, 0.04, true, ref viewPort);            
         }
-
-
-        
-
 
         // Draw Cladding Text 3D
         public static void DrawCladdingText3D(CModel model, CCladding cladding, Viewport3D viewPort, DisplayOptions displayOptions)

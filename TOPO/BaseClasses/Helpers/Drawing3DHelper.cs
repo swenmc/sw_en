@@ -49,13 +49,13 @@ namespace BaseClasses.Helpers
             if (bDisplayLengthWidth)
             {
                 string units = bDisplayUnits ? " m" : "";
-                parts.Add($"{sheet.LengthTotal.ToString("F3")}x{sheet.Width.ToString("F3")}{units}");
+                parts.Add($"{sheet.LengthTotal_Real.ToString("F3")}x{sheet.Width.ToString("F3")}{units}");
                 rowsCount++;
             }
             if (bDisplayArea)
             {
                 string units = bDisplayUnits ? " m²" : "";
-                parts.Add(sheet.Area_netto.ToString("F3") + units);
+                parts.Add(sheet.Area_netto_Real.ToString("F3") + units);
                 rowsCount++;
             }
 

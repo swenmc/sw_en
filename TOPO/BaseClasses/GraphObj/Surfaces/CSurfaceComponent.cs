@@ -18,15 +18,11 @@ namespace BaseClasses.GraphObj
         double m_Width; // Bezne uvazujeme width modular podla DB, ale pre koncove plechy moze byt sirka mensia
         double m_dTipCoordinate_x;
 
+        // Without overlap
         double m_dLengthTotal;
-        double m_dLengthTopRight;        
+        double m_dLengthTopRight;
         double m_dLengthTopTip;
         double m_dLengthTopLeft;
-
-        double m_dLengthTotal_Real;
-        double m_dLengthTopRight_Real;
-        double m_dLengthTopTip_Real;
-        double m_dLengthTopLeft_Real;
 
         double m_dArea_netto;
         double m_dArea_brutto;
@@ -34,6 +30,16 @@ namespace BaseClasses.GraphObj
         //bool m_UseSimpleWireFrame2D; // 2D polygon alebo 3D wireframe vsetkych podruznych objektov a casti
 
         List<Point> m_EdgePoints2D;
+
+        // Including overlap
+        double m_dLengthTotal_Real;
+        double m_dLengthTopRight_Real;
+        double m_dLengthTopTip_Real;
+        double m_dLengthTopLeft_Real;
+        double m_dArea_netto_Real;
+        double m_dArea_brutto_Real;
+        List<Point> m_EdgePoints2D_Real;
+
 
         public int NumberOfEdges
         {
@@ -266,6 +272,45 @@ namespace BaseClasses.GraphObj
             set
             {
                 m_dLengthTopLeft_Real = value;
+            }
+        }
+
+        public double Area_netto_Real
+        {
+            get
+            {
+                return m_dArea_netto_Real;
+            }
+
+            set
+            {
+                m_dArea_netto_Real = value;
+            }
+        }
+
+        public double Area_brutto_Real
+        {
+            get
+            {
+                return m_dArea_brutto_Real;
+            }
+
+            set
+            {
+                m_dArea_brutto_Real = value;
+            }
+        }
+
+        public List<Point> EdgePoints2D_Real
+        {
+            get
+            {
+                return m_EdgePoints2D_Real;
+            }
+
+            set
+            {
+                m_EdgePoints2D_Real = value;
             }
         }
 

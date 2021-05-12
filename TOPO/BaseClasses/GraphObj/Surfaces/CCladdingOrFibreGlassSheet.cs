@@ -18,6 +18,7 @@ namespace BaseClasses.GraphObj
 
         private float m_ft; // Thickness
 
+        // Without overlap
         private float m_fSurface_netto;
         private float m_fSurface_brutto;
         private float m_fVolume_netto;
@@ -28,6 +29,17 @@ namespace BaseClasses.GraphObj
         private double _price_PPKG_NZD;
         private double _price_PPP_NZD_netto;
         private double _price_PPP_NZD_brutto;
+
+        // Including overlap
+        private float m_fSurface_netto_Real;
+        private float m_fSurface_brutto_Real;
+        private float m_fVolume_netto_Real;
+        private float m_fVolume_brutto_Real;
+        private float m_fMass_netto_Real;
+        private float m_fMass_brutto_Real;
+
+        private double _price_PPP_NZD_netto_Real;
+        private double _price_PPP_NZD_brutto_Real;
 
         private double m_RotationX;
         private double m_rotationY;
@@ -248,6 +260,110 @@ namespace BaseClasses.GraphObj
             set
             {
                 _price_PPP_NZD_brutto = value;
+            }
+        }
+
+        public float Surface_netto_Real
+        {
+            get
+            {
+                return m_fSurface_netto_Real;
+            }
+
+            set
+            {
+                m_fSurface_netto_Real = value;
+            }
+        }
+
+        public float Surface_brutto_Real
+        {
+            get
+            {
+                return m_fSurface_brutto_Real;
+            }
+
+            set
+            {
+                m_fSurface_brutto_Real = value;
+            }
+        }
+
+        public float Volume_netto_Real
+        {
+            get
+            {
+                return m_fVolume_netto_Real;
+            }
+
+            set
+            {
+                m_fVolume_netto_Real = value;
+            }
+        }
+
+        public float Volume_brutto_Real
+        {
+            get
+            {
+                return m_fVolume_brutto_Real;
+            }
+
+            set
+            {
+                m_fVolume_brutto_Real = value;
+            }
+        }
+
+        public float Mass_netto_Real
+        {
+            get
+            {
+                return m_fMass_netto_Real;
+            }
+
+            set
+            {
+                m_fMass_netto_Real = value;
+            }
+        }
+
+        public float Mass_brutto_Real
+        {
+            get
+            {
+                return m_fMass_brutto_Real;
+            }
+
+            set
+            {
+                m_fMass_brutto_Real = value;
+            }
+        }
+
+        public double Price_PPP_NZD_netto_Real
+        {
+            get
+            {
+                return _price_PPP_NZD_netto_Real;
+            }
+
+            set
+            {
+                _price_PPP_NZD_netto_Real = value;
+            }
+        }
+
+        public double Price_PPP_NZD_brutto_Real
+        {
+            get
+            {
+                return _price_PPP_NZD_brutto_Real;
+            }
+
+            set
+            {
+                _price_PPP_NZD_brutto_Real = value;
             }
         }
 
@@ -504,20 +620,29 @@ namespace BaseClasses.GraphObj
             //      /
 
             if (NumberOfEdges == 4)
-                LengthTotal = Math.Max(LengthTopLeft, LengthTopRight);
+            { LengthTotal = Math.Max(LengthTopLeft, LengthTopRight); LengthTotal_Real = Math.Max(LengthTopLeft_Real, LengthTopRight_Real); }
             else
-                LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
-
-            Area_brutto = Width * LengthTotal;
-            //To Mato - a co tak Area_Netto,  to updatovat netreba?
-            // TO Ondrej - to sa pocita v GetCladdingSheetModel, mozes to sem dostat
+            { LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip); LengthTotal_Real = Math.Max(Math.Max(LengthTopLeft_Real, LengthTopRight_Real), LengthTopTip_Real); }
 
             Width_flat = Width / m_BasicModularWidth * m_CoilOrFlatSheetWidth;
+            Price_PPKG_NZD = m_CoilOrFlatSheetPrice_PPSM_NZD / m_CoilOrFlatSheetMass_kg_m2;
+
+            // To Mato - a co tak Area_Netto,  to updatovat netreba?
+            // TO Ondrej - to sa pocita v GetCladdingSheetModel, mozes to sem dostat
+
+            // Without overlap
+            Area_brutto = Width * LengthTotal;
             Surface_brutto = (float)(Width_flat * LengthTotal);
             Volume_brutto = (float)(Surface_brutto * Ft);
             Mass_brutto = (float)(m_CoilOrFlatSheetMass_kg_m2 * Surface_brutto);
-            Price_PPKG_NZD = m_CoilOrFlatSheetPrice_PPSM_NZD / m_CoilOrFlatSheetMass_kg_m2;
             Price_PPP_NZD_brutto = Price_PPKG_NZD * Mass_brutto;
+
+            // Including overlap
+            Area_brutto_Real = Width * LengthTotal;
+            Surface_brutto_Real = (float)(Width_flat * LengthTotal_Real);
+            Volume_brutto_Real = (float)(Surface_brutto_Real * Ft);
+            Mass_brutto_Real = (float)(m_CoilOrFlatSheetMass_kg_m2 * Surface_brutto_Real);
+            Price_PPP_NZD_brutto_Real = Price_PPKG_NZD * Mass_brutto_Real;
 
             SetTextPointInLCS(); // Text v LCS
         }
@@ -593,6 +718,7 @@ namespace BaseClasses.GraphObj
 
             if (NumberOfEdges == 4)
             {
+                // Without overlap
                 EdgePoints2D = new List<System.Windows.Point>
                 {
                 new System.Windows.Point(0, 0),
@@ -607,11 +733,28 @@ namespace BaseClasses.GraphObj
                 Mass_netto = Volume_netto * m_Mat.m_fRho;
                 Price_PPP_NZD_netto = Price_PPKG_NZD * Mass_netto;
 
+                // Including overlap
+                EdgePoints2D_Real = new List<System.Windows.Point>
+                {
+                new System.Windows.Point(0, 0),
+                new System.Windows.Point(Width, 0),
+                new System.Windows.Point(Width, LengthTopRight_Real),
+                new System.Windows.Point(0, LengthTopLeft_Real)
+                };
+
+                Area_netto_Real = MATH.Geom2D.PolygonArea(EdgePoints2D_Real.ToArray());
+                Surface_netto_Real = (float)(Width_flat / Width * Area_netto_Real);
+                Volume_netto_Real = Surface_netto_Real * Ft;
+                Mass_netto_Real = Volume_netto_Real * m_Mat.m_fRho;
+                Price_PPP_NZD_netto_Real = Price_PPKG_NZD * Mass_netto_Real;
+
+                // 3D
                 EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft };
                 return CreateArea(options.bUseTextures, material);
             }
             else
             {
+                // Without overlap
                 EdgePoints2D = new List<System.Windows.Point>
                 {
                 new System.Windows.Point(0,0),
@@ -627,6 +770,23 @@ namespace BaseClasses.GraphObj
                 Mass_netto = Volume_netto * m_Mat.m_fRho;
                 Price_PPP_NZD_netto = Price_PPKG_NZD * Mass_netto;
 
+                // Including overlap
+                EdgePoints2D_Real = new List<System.Windows.Point>
+                {
+                new System.Windows.Point(0,0),
+                new System.Windows.Point(Width, 0),
+                new System.Windows.Point(Width,LengthTopRight_Real),
+                new System.Windows.Point(TipCoordinate_x, LengthTopTip_Real),
+                new System.Windows.Point(0, LengthTopLeft_Real)
+                };
+
+                Area_netto_Real = MATH.Geom2D.PolygonArea(EdgePoints2D_Real.ToArray());
+                Surface_netto_Real = (float)(Width_flat / Width * Area_netto_Real);
+                Volume_netto_Real = Surface_netto_Real * Ft;
+                Mass_netto_Real = Volume_netto_Real * m_Mat.m_fRho;
+                Price_PPP_NZD_netto_Real = Price_PPKG_NZD * Mass_netto_Real;
+
+                // 3D
                 EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft };
                 return CreateArea(options.bUseTextures, material);
             }
@@ -678,7 +838,7 @@ namespace BaseClasses.GraphObj
             //PointText = new Point3D(0, 0, 0);
             PointText = new Point3D()
             {
-                X = 0.5 * Width, // Kreslime v 30% sirky zlava
+                X = 0.5 * Width, // Kreslime v 50% sirky zlava
                 Y = /*OutOffPlaneOffset_y +*/ fOffsetFromPlane,
                 Z = 0.4 * LengthTotal // Kreslime v 40% dlzky zdola
             };

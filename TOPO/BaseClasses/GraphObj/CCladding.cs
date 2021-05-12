@@ -1659,19 +1659,13 @@ namespace BaseClasses.GraphObj
                     int iNumberOfNewSheets = objectInColision_In_Local_x.Count + 1;
 
                     bool isFibreglassFirst = false;
+                    bool isFibreglassLast = false;
+
                     // Skontrolovat podla suradnic ci objekt zacina alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
                     foreach (COpening o in objectInColision_In_Local_x)
                     {
-                        if (side == "Roof-left")
-                        {
-                            if (MathF.d_equal(o.CoordinateInPlane_y, height_left_basic - o.LengthTotal)) { iNumberOfNewSheets--; isFibreglassFirst = true; }
-                        }
-                        else if (MathF.d_equal(o.CoordinateInPlane_y, 0)) { iNumberOfNewSheets--; isFibreglassFirst = true; }
-
-                        //riesenie ak je mimo budovu
-                        //if (o.CoordinateInPlane_y >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal) ||
-                        //    ((o.CoordinateInPlane_y + o.LengthTotal) >= (originalsheetCoordinateInPlane_y + originalsheetLengthTotal)))
-                        //    iNumberOfNewSheets--;
+                        if (MathF.d_equal(o.CoordinateInPlane_y, 0)) { iNumberOfNewSheets--; isFibreglassFirst = true; }
+                        if (MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic)) { iNumberOfNewSheets--; isFibreglassLast = true; }
                     }
 
                     List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
@@ -1682,31 +1676,43 @@ namespace BaseClasses.GraphObj
                         if (j == iNumberOfNewSheets - 1) // Last segment of original sheet
                         {
                             if (isFibreglassFirst) openingIndex = j;
+                            else if (isFibreglassLast) openingIndex = j;
                             else openingIndex = j - 1;
 
                             double coordinateInPlane_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
-                            if (side == "Roof-left")
+                            double lengthTopLeft = originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                            double lengthTopRight = originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                            double lengthTopTip = originalsheetLengthTopTip - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+
+                            // To Ondrej, mrkni na tieto dve podmienky ci sa to neda zapisat nejako jednoduchsie
+                            if (side == "Roof-left" && isFibreglassLast)
                             {
-                                coordinateInPlane_y = 0;
-                                //POZOR!!!
-                                //tu navyse nesedia ani dlzky, takze aj toto ma byt ine
-                                //originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
-                                //originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
+                                coordinateInPlane_y = height_left_basic - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                lengthTopLeft = originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                lengthTopRight = originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                lengthTopTip = originalsheetLengthTopTip - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
                             }
-                            
+
+                            if (side == "Roof-left" && isFibreglassLast && objectInColision_In_Local_x.Count > 1)
+                            {
+                                coordinateInPlane_y = objectInColision_In_Local_x[openingIndex - 1].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex-1].LengthTotal;
+                                lengthTopLeft = originalsheetLengthTopLeft - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                lengthTopRight = originalsheetLengthTopRight - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                lengthTopTip = originalsheetLengthTopTip - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
+                            }
 
                             CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
-                                thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
-                                originalsheetNumberOfEdges, // 4 alebo 5 vrcholov
-                                originalsheetCoordinateInPlane_x,
-                                coordinateInPlane_y,
-                                originalsheetControlPoint, originalsheetWidth,
-                                originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
-                                originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
-                                originalsheetTipCoordinate_x,
-                                originalsheetLengthTopTip - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal,
-                                colorName, claddingShape, claddingCoatingType,
-                                color, fOpacity, claddingWidthRibModular, true, 0);
+                            thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
+                            originalsheetNumberOfEdges, // 4 alebo 5 vrcholov
+                            originalsheetCoordinateInPlane_x,
+                            coordinateInPlane_y,
+                            originalsheetControlPoint, originalsheetWidth,
+                            lengthTopLeft,
+                            lengthTopRight,
+                            originalsheetTipCoordinate_x,
+                            lengthTopTip,
+                            colorName, claddingShape, claddingCoatingType,
+                            color, fOpacity, claddingWidthRibModular, true, 0);
 
                             List<CCladdingOrFibreGlassSheet> cuttedSheets = CutSheetAccordingToMaxLength(sheet);
                             sheets.AddRange(cuttedSheets);
@@ -1728,29 +1734,47 @@ namespace BaseClasses.GraphObj
                         }
                         else
                         {
-                            double coordinate_y = 0; // Zacat od okraja  !!! - je potrebne zmenit pre doors a zacat nad dverami
+                            double coordinateInPlane_y = 0; // Zacat od okraja  !!! - je potrebne zmenit pre doors a zacat nad dverami
 
                             if (j == 0 && isFibreglassFirst)
-                                coordinate_y = (double)objectInColision_In_Local_x[0].LengthTotal;
+                                coordinateInPlane_y = (double)objectInColision_In_Local_x[0].LengthTotal;
 
                             if (isFibreglassFirst) openingIndex = j;
                             else openingIndex = j - 1;
 
                             if (j > 0)
-                                coordinate_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                coordinateInPlane_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
 
-                            //to Mato tu treba riesit
-                            //if (side == "Roof-left") coordinate_y = nieco ine;
+                            double lengthTopLeft = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
+                            double lengthTopRight = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
+
+                            if (side == "Roof-left" && isFibreglassLast)
+                            {
+                                if (j > 0)
+                                    coordinateInPlane_y = objectInColision_In_Local_x[j].CoordinateInPlane_y + objectInColision_In_Local_x[j].LengthTotal;
+
+                                if (j < iNumberOfNewSheets - 1)
+                                {
+                                    lengthTopLeft = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
+                                    lengthTopRight = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
+                                }
+                                else
+                                {
+                                    // TO Ondrej - toto je asi zbytocne, sem by to nemalo vojst, lebo posledny cladding sheet sa riesi v hornom bloku if
+                                    lengthTopLeft = height_left_basic - coordinateInPlane_y;
+                                    lengthTopRight = height_left_basic - coordinateInPlane_y;
+                                }
+                            }
 
                             iNumberOfEdges = 4;
                             CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
                                 thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
                                 iNumberOfEdges, // 4 vrcholy
                                 originalsheetCoordinateInPlane_x,
-                                coordinate_y,
+                                coordinateInPlane_y,
                                 originalsheetControlPoint, originalsheetWidth,
-                                objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinate_y,  //tu Mato nebude problem,ze tam ide stale objectInColision_In_Local_x[j]?
-                                objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinate_y,
+                                lengthTopLeft,  //tu Mato nebude problem,ze tam ide stale objectInColision_In_Local_x[j]?
+                                lengthTopRight,
                                 0,
                                 0,
                                 colorName, claddingShape, claddingCoatingType,

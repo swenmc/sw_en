@@ -119,6 +119,9 @@ namespace PFD
                 // TODO Ondrej - refaktoring - funckia CreateTableCladding
                 //TO Mato - je ten koment hore aktualny?
                 // TODO - rozdelit riadky pre basic roof a canopies ???
+
+                // fTotalAreaOfOpennings - TODO - Treba zarucit ze tato premenna sa naplni plochou vsetkych doors a windows na stenach skor nez sa zavola CreateTableCladding
+
                 CreateTableCladding(vm, fTotalAreaOfOpennings, fFibreGlassArea_Walls, fFibreGlassArea_Roof);
             }
             else
@@ -619,9 +622,9 @@ namespace PFD
             }
         }
 
-        private void CreateTableCladding(CPFDViewModel vm,             
+        private void CreateTableCladding(CPFDViewModel vm,
              float fTotalAreaOfOpennings,
-             float fFibreGlassArea_Walls,             
+             float fFibreGlassArea_Walls,
              float fFibreGlassArea_Roof
             )
         {
