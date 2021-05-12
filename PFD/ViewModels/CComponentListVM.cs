@@ -101,6 +101,7 @@ namespace PFD
                 MComponentList = value;
                 foreach (CComponentInfo ci in ComponentList)
                 {
+                    ci.PropertyChanged -= ComponentListItem_PropertyChanged;
                     ci.PropertyChanged += ComponentListItem_PropertyChanged;
                 }
                 NotifyPropertyChanged("ComponentList");
@@ -121,8 +122,9 @@ namespace PFD
 
                 if (e.PropertyName == "Generate")
                 {
-                    if (!ValidateGirts()) { cInfo.IsSetFromCode = true; cInfo.Generate = !cInfo.Generate; ValidateGirts(); cInfo.IsSetFromCode = false; return; }
+                    //if (!ValidateGirts()) { cInfo.IsSetFromCode = true; cInfo.Generate = !cInfo.Generate; ValidateGirts(); cInfo.IsSetFromCode = false; return; }
                     ChangeGenerateAccordingToRelations(cInfo);
+                    ChangeGenerateIsEnabledAccordingToRelations();
                 }
 
                 if (e.PropertyName == "ILS")
@@ -290,7 +292,65 @@ namespace PFD
 
         //tato metoda je cela divna.
         //Musim ju rozdelit a refaktorovat
-        private bool ValidateGirts()
+        //private bool ValidateGirts()
+        //{
+        //    // Ak je zaskrtnute generovanie front girts alebo back girts musia byt zaskrtnute aj girt (teda side wall)
+        //    // Problem je ze uzly generovane pre girts sa pouziju aj pre girts - front / back side, takze keby sme negenerovali girts nebolo by mozne girts - front / back side vytvorit
+        //    // S tymto bude este problem, lebo oni chcu, aby bolo mozne vypnut side girts a nechat girts - front / back side
+
+        //    CComponentInfo girtL = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+        //    CComponentInfo girtR = ComponentList.Last(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+
+        //    CComponentInfo girtFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+        //    CComponentInfo girtBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+
+        //    //ak je front aj back false tak vtedy dovolit editovat girt
+        //    if (!girtFront.Generate.Value && !girtBack.Generate.Value)
+        //    {
+        //        girtL.GenerateIsEnabled = true; girtL.GenerateIsReadonly = false;
+        //        girtR.GenerateIsEnabled = true; girtR.GenerateIsReadonly = false;
+        //    }
+        //    else
+        //    {
+        //        girtL.GenerateIsEnabled = false; girtL.GenerateIsReadonly = true;
+        //        girtR.GenerateIsEnabled = false; girtR.GenerateIsReadonly = true;
+        //    }
+
+        //    if (girtL.GenerateIsEnabled && !girtL.Generate.Value)
+        //    {
+        //        girtFront.GenerateIsEnabled = false; girtFront.GenerateIsReadonly = true;
+        //        girtBack.GenerateIsEnabled = false; girtBack.GenerateIsReadonly = true;
+        //    }
+        //    else
+        //    {
+        //        girtFront.GenerateIsEnabled = true; girtFront.GenerateIsReadonly = false;
+        //        girtBack.GenerateIsEnabled = true; girtBack.GenerateIsReadonly = false;
+        //    }
+
+        //    if (girtR.GenerateIsEnabled && !girtR.Generate.Value)
+        //    {
+        //        girtFront.GenerateIsEnabled = false; girtFront.GenerateIsReadonly = true;
+        //        girtBack.GenerateIsEnabled = false; girtBack.GenerateIsReadonly = true;
+        //    }
+        //    else
+        //    {
+        //        girtFront.GenerateIsEnabled = true; girtFront.GenerateIsReadonly = false;
+        //        girtBack.GenerateIsEnabled = true; girtBack.GenerateIsReadonly = false;
+        //    }
+
+        //    if (girtL.Generate.Value)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        if (girtFront.Generate.Value || girtBack.Generate.Value) return false;
+        //    }
+
+        //    return true;
+        //}
+
+        private void ChangeGenerateIsEnabledAccordingToRelations()
         {
             // Ak je zaskrtnute generovanie front girts alebo back girts musia byt zaskrtnute aj girt (teda side wall)
             // Problem je ze uzly generovane pre girts sa pouziju aj pre girts - front / back side, takze keby sme negenerovali girts nebolo by mozne girts - front / back side vytvorit
@@ -302,7 +362,10 @@ namespace PFD
             CComponentInfo girtFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
             CComponentInfo girtBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
 
-            //ak je front aj back false tak vtedy dovolit editovat girt
+            CComponentInfo WPFront = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostFrontSide);
+            CComponentInfo WPBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.WindPostBackSide);
+
+            //ak je front aj back girt false tak vtedy dovolit editovat girt L/R
             if (!girtFront.Generate.Value && !girtBack.Generate.Value)
             {
                 girtL.GenerateIsEnabled = true; girtL.GenerateIsReadonly = false;
@@ -336,16 +399,25 @@ namespace PFD
                 girtBack.GenerateIsEnabled = true; girtBack.GenerateIsReadonly = false;
             }
 
-            if (girtL.Generate.Value)
-            {
-                return true;
-            }
-            else
-            {
-                if (girtFront.Generate.Value || girtBack.Generate.Value) return false;
-            }
+            if (WPFront.Generate.Value && girtFront.Generate.Value) { WPFront.GenerateIsEnabled = false; WPFront.GenerateIsReadonly = true; }
+            else { WPFront.GenerateIsEnabled = true; WPFront.GenerateIsReadonly = false; }
 
-            return true;
+            if (WPBack.Generate.Value && girtBack.Generate.Value) { WPBack.GenerateIsEnabled = false; WPBack.GenerateIsReadonly = true; }
+            else { WPBack.GenerateIsEnabled = true; WPBack.GenerateIsReadonly = false; }
+
+            //girtFront da sa vypnut len ak su WPF a Girt zapnute
+            if (!girtFront.Generate.Value && (!WPFront.Generate.Value || !girtL.Generate.Value))
+            {
+                girtFront.GenerateIsEnabled = false; girtFront.GenerateIsReadonly = true;
+            }
+            else { girtFront.GenerateIsEnabled = true; girtFront.GenerateIsReadonly = false; }
+
+            //girtBack da sa vypnut len ak su WPB a Girt zapnute
+            if (!girtBack.Generate.Value && (!WPBack.Generate.Value || !girtL.Generate.Value))
+            {
+                girtBack.GenerateIsEnabled = false; girtBack.GenerateIsReadonly = true;
+            }
+            else { girtBack.GenerateIsEnabled = true; girtBack.GenerateIsReadonly = false; }
         }
 
         //To Mato - treba nam dat lepsi nazov metode
