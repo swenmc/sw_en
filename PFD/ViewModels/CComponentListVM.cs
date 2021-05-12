@@ -287,6 +287,9 @@ namespace PFD
             }
         }
 
+
+        //tato metoda je cela divna.
+        //Musim ju rozdelit a refaktorovat
         private bool ValidateGirts()
         {
             // Ak je zaskrtnute generovanie front girts alebo back girts musia byt zaskrtnute aj girt (teda side wall)
@@ -300,8 +303,16 @@ namespace PFD
             CComponentInfo girtBack = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
 
             //ak je front aj back false tak vtedy dovolit editovat girt
-            if (!girtFront.Generate.Value && !girtBack.Generate.Value) { girtL.GenerateIsEnabled = true; girtL.GenerateIsReadonly = false; girtR.GenerateIsEnabled = true; girtR.GenerateIsReadonly = false; }
-            else { girtL.GenerateIsEnabled = false; girtL.GenerateIsReadonly = true; girtR.GenerateIsEnabled = false; girtR.GenerateIsReadonly = true; }
+            if (!girtFront.Generate.Value && !girtBack.Generate.Value)
+            {
+                girtL.GenerateIsEnabled = true; girtL.GenerateIsReadonly = false;
+                girtR.GenerateIsEnabled = true; girtR.GenerateIsReadonly = false;
+            }
+            else
+            {
+                girtL.GenerateIsEnabled = false; girtL.GenerateIsReadonly = true;
+                girtR.GenerateIsEnabled = false; girtR.GenerateIsReadonly = true;
+            }
 
             if (girtL.GenerateIsEnabled && !girtL.Generate.Value)
             {
