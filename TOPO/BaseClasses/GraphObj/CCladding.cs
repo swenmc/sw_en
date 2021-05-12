@@ -1905,7 +1905,7 @@ namespace BaseClasses.GraphObj
             originalSheet.LengthTopTip -= maxLength;
             originalSheet.LengthTopRight -= maxLength;
             originalSheet.LengthTopLeft -= maxLength;
-            originalSheet.LengthTotal -= maxLength;            
+            originalSheet.LengthTotal -= maxLength;
 
             return cuttedSheet;
         }

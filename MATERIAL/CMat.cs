@@ -25,6 +25,8 @@ namespace MATERIAL
         }
 
         // Default material - steel
+
+        // TODO - prerobit na properties
         public short m_sMatType = 3;
         public float m_fE = 2.1e11f;       // Unit [Pa]
         public float m_fNu = 0.3f;         // Unit [-]

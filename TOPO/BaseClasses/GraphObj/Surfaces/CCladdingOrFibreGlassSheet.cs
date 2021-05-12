@@ -38,13 +38,10 @@ namespace BaseClasses.GraphObj
 
         private double m_Width_flat;
 
-
-
         private double m_BasicModularWidth;
-        private double m_CoilWidth;
-        private double m_CoilMass_kg_m2;
-        private double m_CoilPrice_PPSM_NZD;
-        
+        private double m_CoilOrFlatSheetWidth;
+        private double m_CoilOrFlatSheetMass_kg_m2;
+        private double m_CoilOrFlatSheetPrice_PPSM_NZD;
 
         public double CladdingWidthRibModular
         {
@@ -374,6 +371,58 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public double BasicModularWidth
+        {
+            get
+            {
+                return m_BasicModularWidth;
+            }
+
+            set
+            {
+                m_BasicModularWidth = value;
+            }
+        }
+
+        public double CoilOrFlatSheetWidth
+        {
+            get
+            {
+                return m_CoilOrFlatSheetWidth;
+            }
+
+            set
+            {
+                m_CoilOrFlatSheetWidth = value;
+            }
+        }
+
+        public double CoilOrFlatSheetMass_kg_m2
+        {
+            get
+            {
+                return m_CoilOrFlatSheetMass_kg_m2;
+            }
+
+            set
+            {
+                m_CoilOrFlatSheetMass_kg_m2 = value;
+            }
+        }
+
+        public double CoilPrice_PPSM_NZD
+        {
+            get
+            {
+                return m_CoilOrFlatSheetPrice_PPSM_NZD;
+            }
+
+            set
+            {
+                m_CoilOrFlatSheetPrice_PPSM_NZD = value;
+            }
+        }
+
         public int iVectorOverFactor_LCS;
         public int iVectorUpFactor_LCS;
 
@@ -419,9 +468,16 @@ namespace BaseClasses.GraphObj
             WpWidthOffset = wpWidthOffset;
 
             m_BasicModularWidth = basicModularWidth;
-            m_CoilWidth = coilWidth;
-            m_CoilMass_kg_m2 = coilMass_kg_m2;
-            m_CoilPrice_PPSM_NZD = coilPrice_PPSM_NZD;
+            m_CoilOrFlatSheetWidth = coilWidth;
+            m_CoilOrFlatSheetMass_kg_m2 = coilMass_kg_m2;
+            m_CoilOrFlatSheetPrice_PPSM_NZD = coilPrice_PPSM_NZD;
+
+            Update();
+        }
+
+        public void Update()
+        {
+            m_Mat.m_fRho = (float)m_CoilOrFlatSheetMass_kg_m2 / m_ft; // Set material density // Nastavíme hustotu materialu urcenu z plosneho hmotnosti a hrubky
 
             // 5 edges
             //   3 ____ 2
@@ -452,35 +508,18 @@ namespace BaseClasses.GraphObj
             else
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
 
-
-            Update();
-
-            //Area_brutto = Width * LengthTotal;
-
-            //Width_flat = width / basicModularWidth * coilWidth;
-            //Surface_brutto = (float)(Width_flat * LengthTotal);
-            //Volume_brutto = (float)(Surface_brutto * Ft);
-            //Mass_brutto = (float)(coilMass_kg_m2 * Surface_brutto);
-            //Price_PPKG_NZD = coilPrice_PPSM_NZD / coilMass_kg_m2;
-            //Price_PPP_NZD_brutto = Price_PPKG_NZD * Mass_brutto;
-
-            //SetTextPointInLCS(); // Text v LCS
-        }
-
-        public void Update()
-        {
             Area_brutto = Width * LengthTotal;
             //To Mato - a co tak Area_Netto,  to updatovat netreba?
+            // TO Ondrej - to sa pocita v GetCladdingSheetModel, mozes to sem dostat
 
-            Width_flat = Width / m_BasicModularWidth * m_CoilWidth;
+            Width_flat = Width / m_BasicModularWidth * m_CoilOrFlatSheetWidth;
             Surface_brutto = (float)(Width_flat * LengthTotal);
             Volume_brutto = (float)(Surface_brutto * Ft);
-            Mass_brutto = (float)(m_CoilMass_kg_m2 * Surface_brutto);
-            Price_PPKG_NZD = m_CoilPrice_PPSM_NZD / m_CoilMass_kg_m2;
+            Mass_brutto = (float)(m_CoilOrFlatSheetMass_kg_m2 * Surface_brutto);
+            Price_PPKG_NZD = m_CoilOrFlatSheetPrice_PPSM_NZD / m_CoilOrFlatSheetMass_kg_m2;
             Price_PPP_NZD_brutto = Price_PPKG_NZD * Mass_brutto;
 
             SetTextPointInLCS(); // Text v LCS
-
         }
 
         // TO Ondrej - vieme nejako krajsie pracovat s potomkami jednej triedy, aby sme ich mohli vzajomne pretypovat
@@ -559,7 +598,7 @@ namespace BaseClasses.GraphObj
                 Area_netto = MATH.Geom2D.PolygonArea(EdgePoints2D.ToArray());
                 Surface_netto = (float)(Width_flat / Width * Area_netto);
                 Volume_netto = Surface_netto * Ft;
-                Mass_netto = Volume_netto * GlobalConstants.MATERIAL_DENSITY_STEEL;
+                Mass_netto = Volume_netto * m_Mat.m_fRho;
                 Price_PPP_NZD_netto = Price_PPKG_NZD * Mass_netto;
 
                 EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft };
@@ -579,7 +618,7 @@ namespace BaseClasses.GraphObj
                 Area_netto = MATH.Geom2D.PolygonArea(EdgePoints2D.ToArray());
                 Surface_netto = (float)(Width_flat / Width * Area_netto);
                 Volume_netto = Surface_netto * Ft;
-                Mass_netto = Volume_netto * GlobalConstants.MATERIAL_DENSITY_STEEL;
+                Mass_netto = Volume_netto * m_Mat.m_fRho;
                 Price_PPP_NZD_netto = Price_PPKG_NZD * Mass_netto;
 
                 EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft };
