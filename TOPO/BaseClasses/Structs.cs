@@ -215,6 +215,8 @@ namespace BaseClasses
 
         public bool bCladdingSheetColoursByID;
         public bool bUseTextures;
+        public bool bUseTexturesMembers; // TODO 819 - Ondrej
+        public bool bUseTexturesCladding; // TODO 819 - Ondrej
 
         public float fMemberSolidModelOpacity;
         public float fPlateSolidModelOpacity;

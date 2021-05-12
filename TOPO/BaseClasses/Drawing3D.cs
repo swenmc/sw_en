@@ -1758,7 +1758,7 @@ namespace BaseClasses
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
 
-                                GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, opts.bUseDiffuseMaterial, opts.bUseEmissiveMaterial, opts.bUseTextures);
+                                GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, opts.bUseDiffuseMaterial, opts.bUseEmissiveMaterial, opts.bUseTextures && opts.bUseTexturesMembers);
                                 model3D.Children.Add(geom3D); // Use shell color for whole member
                             }
                             else

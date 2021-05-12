@@ -326,7 +326,7 @@ namespace BaseClasses.GraphObj
             //double wpWidth = 0;
             //double wpHeight = 0;
 
-            if (options.bUseTextures)
+            if (options.bUseTextures && options.bUseTexturesCladding)
             {
                 //CS ENDURA® a CS MAXX® maju rovnake farby, takze pre nich coating type v nazve suboru nepouzivam
                 string uriString_Wall = "pack://application:,,,/Resources/Textures/" + m_claddingShape_Wall + "/" + m_claddingShape_Wall + "_" + m_ColorNameWall + ".jpg";
@@ -2019,7 +2019,7 @@ namespace BaseClasses.GraphObj
 
                 for (int i = 0; i < listOfsheets.Count; i++)
                 {
-                    if (options.bUseTextures)
+                    if (options.bUseTextures && options.bUseTexturesCladding)
                     {
                         if (listOfsheets[i].IsCanopy)
                         {

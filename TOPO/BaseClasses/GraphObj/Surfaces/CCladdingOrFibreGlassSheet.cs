@@ -567,21 +567,27 @@ namespace BaseClasses.GraphObj
             }
 
             // TODO 783 - Ondrej
-            BIsDebugging = true; // Docasne
+            // TODO 819 - Ondrej
 
-            if (BIsDebugging)
+            bool bUseDistColorOfSheetWithoutOverlap = true; // TODO 819
+
+            if (bUseDistColorOfSheetWithoutOverlap)
             {
                 // Testovanie
                 // TODO 783 - Ondrej
+                // TODO 819 - Ondrej
                 // Pre tie sheets ktore maju sadu real lengths rovnaku ako lengths nastavime specificku farbu
                 // Malo by sa tym dat vizualne skontrolovat, ktore sheet maju pripocitany overlap a ktore nie
+
+                Color colFibreglassSheetWithoutOverlap = Colors.Orange; // TODO 819
+                Color colCladdingSheetWithoutOverlap = Colors.Yellow; // TODO 819
 
                 if (MATH.MathF.d_equal(LengthTotal, LengthTotal_Real))
                 {
                     if (IsFibreglass)
-                        material = new DiffuseMaterial(new SolidColorBrush(Colors.Orange)); // Nastavime oranzovu farbu
+                        material = new DiffuseMaterial(new SolidColorBrush(colFibreglassSheetWithoutOverlap)); // Nastavime oranzovu farbu
                     else
-                        material = new DiffuseMaterial(new SolidColorBrush(Colors.Yellow)); // Nastavime zltu farbu
+                        material = new DiffuseMaterial(new SolidColorBrush(colCladdingSheetWithoutOverlap)); // Nastavime zltu farbu
                 }
             }
 
