@@ -2158,24 +2158,8 @@ namespace PFD
             vm.ColumnDistance = newVM.ColumnDistance;
             vm.BottomGirtPosition = newVM.BottomGirtPosition;
             vm.FrontFrameRakeAngle = newVM.FrontFrameRakeAngle;
-            vm.BackFrameRakeAngle = newVM.BackFrameRakeAngle;
-            //vm.RoofCladdingIndex = newVM.RoofCladdingIndex;
-            //vm.RoofCladdingID = newVM.RoofCladdingID;
-            //vm.RoofCladdingCoatingIndex = newVM.RoofCladdingCoatingIndex;
-            //vm.RoofCladdingCoatingID = newVM.RoofCladdingCoatingID;
-            //vm.RoofCladdingColorIndex = newVM.RoofCladdingColorIndex;
-            //vm.RoofCladdingThicknessIndex = newVM.RoofCladdingThicknessIndex;
-            //vm.WallCladdingIndex = newVM.WallCladdingIndex;
-            //vm.WallCladdingID = newVM.WallCladdingID;
-            //vm.WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
-            //vm.WallCladdingCoatingID = newVM.WallCladdingCoatingID;
-            //vm.WallCladdingColorIndex = newVM.WallCladdingColorIndex;
-            //vm.WallCladdingThicknessIndex = newVM.WallCladdingThicknessIndex;
-            //vm.RoofFibreglassThicknessIndex = newVM.RoofFibreglassThicknessIndex;
-            //vm.WallFibreglassThicknessIndex = newVM.WallFibreglassThicknessIndex;
-            vm.SupportTypeIndex = newVM.SupportTypeIndex;
-            //vm.FibreglassAreaRoof = newVM.FibreglassAreaRoof;
-            //vm.FibreglassAreaWall = newVM.FibreglassAreaWall;
+            vm.BackFrameRakeAngle = newVM.BackFrameRakeAngle;            
+            vm.SupportTypeIndex = newVM.SupportTypeIndex;            
 
             vm._doorsAndWindowsVM.SetViewModel(newVM._doorsAndWindowsVM);
 

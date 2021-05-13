@@ -1495,11 +1495,27 @@ namespace PFD
             RoofCladdingIndex = newVM.RoofCladdingIndex;
             RoofCladdingCoatingIndex = newVM.RoofCladdingCoatingIndex;
             RoofCladdingColorIndex = newVM.RoofCladdingColorIndex;
+            RoofCladdingThicknessIndex = newVM.RoofCladdingThicknessIndex;
             WallCladdingIndex = newVM.WallCladdingIndex;
             WallCladdingCoatingIndex = newVM.WallCladdingCoatingIndex;
             WallCladdingColorIndex = newVM.WallCladdingColorIndex;
+            WallCladdingThicknessIndex = newVM.WallCladdingThicknessIndex;
             FibreglassAreaRoofRatio = newVM.FibreglassAreaRoofRatio;
             FibreglassAreaWallRatio = newVM.FibreglassAreaWallRatio;
+
+            RoofFibreglassThicknessIndex = newVM.RoofFibreglassThicknessIndex;
+            WallFibreglassThicknessIndex = newVM.WallFibreglassThicknessIndex;
+
+            RoofCladdingID = newVM.RoofCladdingID;
+            RoofCladdingCoatingID = newVM.RoofCladdingCoatingID;
+            WallCladdingID = newVM.WallCladdingID;
+            WallCladdingCoatingID = newVM.WallCladdingCoatingID;
+            RoofCladding = newVM.RoofCladding;
+            WallCladding = newVM.WallCladding;
+            RoofCladdingCoating = newVM.RoofCladdingCoating;
+            WallCladdingCoating = newVM.WallCladdingCoating;
+            RoofCladdingThickness = newVM.RoofCladdingThickness;
+            WallCladdingThickness = newVM.WallCladdingThickness;
 
             MaxSheetLengthRoof = newVM.MaxSheetLengthRoof;
             MaxSheetLengthWall = newVM.MaxSheetLengthWall;
@@ -1517,6 +1533,17 @@ namespace PFD
             WallBottomOffset_Z = newVM.WallBottomOffset_Z;
 
             ConsiderRoofCladdingFor_FB_WallHeight = newVM.ConsiderRoofCladdingFor_FB_WallHeight;
+
+            FibreglassProperties = newVM.FibreglassProperties;
+
+            ColorRoof_FG_Index = newVM.ColorRoof_FG_Index;
+            ColorWall_FG_Index = newVM.ColorWall_FG_Index;
+            FibreglassRoofSurfaceMass = newVM.FibreglassRoofSurfaceMass;
+            RoofFibreglassType = newVM.RoofFibreglassType;
+            FibreglassWallSurfaceMass = newVM.FibreglassWallSurfaceMass;
+            WallFibreglassType = newVM.WallFibreglassType;
+            RoofFibreglassTypeIndex = newVM.RoofFibreglassTypeIndex;
+            WallFibreglassTypeIndex = newVM.WallFibreglassTypeIndex;
 
             IsSetFromCode = false;
         }
