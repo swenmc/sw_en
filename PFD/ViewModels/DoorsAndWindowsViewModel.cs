@@ -68,7 +68,8 @@ namespace PFD
                 {
                     d.PropertyChanged -= HandleDoorPropertiesPropertyChangedEvent;
                     d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
-                }                
+                }
+                CheckFlashings();
                 NotifyPropertyChanged("DoorBlocksProperties");
             }
         }
@@ -93,6 +94,7 @@ namespace PFD
                 }
                 //RecreateModel = true;
                 //RecreateJoints = true;
+                CheckFlashings();
                 NotifyPropertyChanged("WindowBlocksProperties");
             }
         }
@@ -1043,5 +1045,37 @@ namespace PFD
             else if (flashing.Name.Contains("PA Door") && ModelHasPersonelDoor()) RemovePersonelDoors();
             else if (flashing.Name.Contains("Window") && ModelHasWindow()) RemoveWindows();
         }
+
+
+        private void CheckFlashings()
+        {
+            List<CAccessories_LengthItemProperties> flashingsToAdd = new List<CAccessories_LengthItemProperties>();
+            if (ModelHasRollerDoor())
+            {
+                if (!Flashings.Any(f => f.Name == "Roller Door Trimmer")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", 0, 4));
+                if (!Flashings.Any(f => f.Name == "Roller Door Header")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", 0, 4));
+                if (!Flashings.Any(f => f.Name == "Roller Door Header Cap")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", 0, 4));
+
+            }
+
+            if (ModelHasPersonelDoor())
+            {
+                if (!Flashings.Any(f => f.Name == "PA Door Trimmer")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", 0, 18));
+                if (!Flashings.Any(f => f.Name == "PA Door Trimmer")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", 0, 18));
+            }
+
+            if (ModelHasWindow())
+            {
+                if (!Flashings.Any(f => f.Name == "Window")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("Window", "Flashings", 0, 9));
+            }
+
+
+            if (flashingsToAdd.Count > 0)
+            {
+                flashingsToAdd.InsertRange(0, Flashings);
+                Flashings = new ObservableCollection<CAccessories_LengthItemProperties>(flashingsToAdd.OrderBy(f=>f.ID));
+            }
+        }
+
     }
 }

@@ -15,6 +15,7 @@ namespace BaseClasses
         [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private int m_ID;
         private string m_Name;
         private string m_NameOld;
         private string m_DatabaseTable;
@@ -34,6 +35,18 @@ namespace BaseClasses
 
         private CLengthItemProperties m_properties;
 
+        public int ID
+        {
+            get
+            {
+                return m_ID;
+            }
+
+            set
+            {
+                m_ID = value;
+            }
+        }
         public string Name
         {
             get
@@ -253,6 +266,7 @@ namespace BaseClasses
 
         public CAccessories_LengthItemProperties(string databaseName, string databaseTable, double totalLength, int colorIndex)
         {
+            //m_ID = id;
             m_Name = databaseName;
             m_DatabaseTable = databaseTable;
             m_length_total = totalLength;            
@@ -265,6 +279,7 @@ namespace BaseClasses
             m_properties = CLengthItemManager.GetLengthItemProperties(m_Name, m_DatabaseTable);
             Thickness = m_properties.Thickness * 1000; // z [m] do [mm]
             Width_total = m_properties.Width_total;
+            ID = m_properties.ID;
 
             SetColorProperties();
         }
