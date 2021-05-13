@@ -1691,14 +1691,14 @@ namespace BaseClasses.GraphObj
                                 lengthTopLeft = originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].LengthTotal;
                                 lengthTopRight = originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].LengthTotal;
                                 lengthTopTip = originalsheetLengthTopTip - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
-                            }
 
-                            if (side == "Roof-left" && isFibreglassLast && objectInColision_In_Local_x.Count > 1)
-                            {
-                                coordinateInPlane_y = objectInColision_In_Local_x[openingIndex - 1].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex-1].LengthTotal;
-                                lengthTopLeft = originalsheetLengthTopLeft - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
-                                lengthTopRight = originalsheetLengthTopRight - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
-                                lengthTopTip = originalsheetLengthTopTip - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
+                                if (objectInColision_In_Local_x.Count > 1)
+                                {
+                                    coordinateInPlane_y = objectInColision_In_Local_x[openingIndex - 1].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex - 1].LengthTotal;
+                                    lengthTopLeft = originalsheetLengthTopLeft - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                    lengthTopRight = originalsheetLengthTopRight - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                    lengthTopTip = originalsheetLengthTopTip - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
+                                }
                             }
 
                             CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
@@ -1748,10 +1748,16 @@ namespace BaseClasses.GraphObj
                             double lengthTopLeft = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
                             double lengthTopRight = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
 
+                            if(objectInColision_In_Local_x.Count > 1)
+                            {
+                                lengthTopLeft = objectInColision_In_Local_x[j+1].CoordinateInPlane_y - coordinateInPlane_y;
+                                lengthTopRight = objectInColision_In_Local_x[j+1].CoordinateInPlane_y - coordinateInPlane_y;
+                            }
+
                             if (side == "Roof-left" && isFibreglassLast)
                             {
                                 if (j > 0)
-                                    coordinateInPlane_y = objectInColision_In_Local_x[j].CoordinateInPlane_y + objectInColision_In_Local_x[j].LengthTotal;
+                                    coordinateInPlane_y = objectInColision_In_Local_x[j-1].CoordinateInPlane_y + objectInColision_In_Local_x[j-1].LengthTotal;
 
                                 if (j < iNumberOfNewSheets - 1)
                                 {
