@@ -792,14 +792,15 @@ namespace PFD
             {
                 if (!sheet.BIsSelectedForMaterialList) continue;
 
-                dTotalCladdingSheetsArea_Model += sheet.Area_brutto; //To Mato - ci sheet.Area_netto ???
-                dTotalCladdingSheetsVolume_Model += sheet.Volume_brutto;//To Mato - ci sheet.Area_netto ???
-                dTotalCladdingSheetsMass_Model += sheet.Mass_brutto;//To Mato - ci sheet.Area_netto ???
+                // Do vykazu materialu jednotlivych sheets davame plochu brutto vratane overlap - k diskusii s NZ
+                dTotalCladdingSheetsArea_Model += sheet.Area_brutto_Real;
+                dTotalCladdingSheetsVolume_Model += sheet.Volume_brutto_Real;
+                dTotalCladdingSheetsMass_Model += sheet.Mass_brutto_Real;
 
-                if (sheet.Price_PPKG_NZD > 0) //nakolko nie je Price_PPKG_NZD definovane, tak komentujem cele
-                    dTotalCladdingSheetsPrice_Model += sheet.Mass_brutto * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
+                if (sheet.Price_PPKG_NZD > 0)
+                    dTotalCladdingSheetsPrice_Model += sheet.Mass_brutto_Real * sheet.Price_PPKG_NZD;
                 else
-                    dTotalCladdingSheetsPrice_Model += sheet.Mass_brutto * fCFS_PricePerKg_CladdingSheets_Total; //To Mato - ci sheet.Area_netto ???
+                    dTotalCladdingSheetsPrice_Model += sheet.Mass_brutto_Real * fCFS_PricePerKg_CladdingSheets_Total;
 
                 iTotalCladdingSheetsNumber_Model += 1;
             }
@@ -901,7 +902,7 @@ namespace PFD
 
         public static DataSet GetTableFibreglassSheets(CModel model, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
-            const float fCFS_PricePerKg_FibreglassSheets_Material = 1.698f;    // NZD / kg
+            const float fCFS_PricePerKg_FibreglassSheets_Material = 9.500f;    // NZD / kg
             const float fCFS_PricePerKg_FibreglassSheets_Manufacture = 0.0f;   // NZD / kg
             float fCFS_PricePerKg_FibreglassSheets_Total = fCFS_PricePerKg_FibreglassSheets_Material + fCFS_PricePerKg_FibreglassSheets_Manufacture;           // NZD / kg
 
@@ -923,14 +924,15 @@ namespace PFD
             {
                 if (!sheet.BIsSelectedForMaterialList) continue;
 
-                dTotalFibreglassSheetsArea_Model += sheet.Area_brutto; //To Mato - ci sheet.Area_netto ???
-                dTotalFibreglassSheetsVolume_Model += sheet.Volume_brutto;//To Mato - ci sheet.Area_netto ???
-                dTotalFibreglassSheetsMass_Model += sheet.Mass_brutto;//To Mato - ci sheet.Area_netto ???
+                // Do vykazu materialu jednotlivych sheets davame plochu brutto vratane overlap - k diskusii s NZ
+                dTotalFibreglassSheetsArea_Model += sheet.Area_brutto_Real;
+                dTotalFibreglassSheetsVolume_Model += sheet.Volume_brutto_Real;
+                dTotalFibreglassSheetsMass_Model += sheet.Mass_brutto_Real;
 
-                if (sheet.Price_PPKG_NZD > 0) //nakolko nie je Price_PPKG_NZD definovane, tak komentujem cele
-                    dTotalFibreglassSheetsPrice_Model += sheet.Mass_brutto * sheet.Price_PPKG_NZD;//To Mato - ci sheet.Area_netto ???
+                if (sheet.Price_PPKG_NZD > 0)
+                    dTotalFibreglassSheetsPrice_Model += sheet.Mass_brutto_Real * sheet.Price_PPKG_NZD;
                 else
-                    dTotalFibreglassSheetsPrice_Model += sheet.Mass_brutto * fCFS_PricePerKg_FibreglassSheets_Total; //To Mato - ci sheet.Area_netto ???
+                    dTotalFibreglassSheetsPrice_Model += sheet.Mass_brutto_Real * fCFS_PricePerKg_FibreglassSheets_Total;
 
                 iTotalFibreglassSheetsNumber_Model += 1;
             }
@@ -1035,14 +1037,15 @@ namespace PFD
         {
             if (sheet == null) return;
 
-            float fMassPerPiece = sheet.Mass_brutto;  //To Mato - ci sheet.Area_netto ???
+            // Do vykazu materialu jednotlivych sheets davame plochu brutto vratane overlap - k diskusii s NZ
+            float fMassPerPiece = sheet.Mass_brutto_Real;
             float fPricePerPiece = sheet.Price_PPKG_NZD > 0 ? (float)sheet.Price_PPKG_NZD * fMassPerPiece : fCFS_PricePerKg_CladdingSheets_Total * fMassPerPiece;
 
             QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == sheet.Prefix &&
                     MathF.d_equal(q.Width_bx, sheet.Width) &&
-                    MathF.d_equal(q.Length, sheet.LengthTotal) &&
+                    MathF.d_equal(q.Length, sheet.LengthTotal_Real) &&
                     MathF.d_equal(q.Ft, sheet.Ft) &&
-                    MathF.d_equal(q.Area, sheet.Area_brutto)); //To Mato - ci sheet.Area_netto ???
+                    MathF.d_equal(q.Area, sheet.Area_brutto_Real));
             if (qItem != null) //this quotation exists
             {
                 qItem.Quantity += iQuantity;
@@ -1057,13 +1060,13 @@ namespace PFD
                     Prefix = sheet.Prefix,
                     Quantity = iQuantity,
                     Width_bx = (float)sheet.Width,
-                    Length = (float)sheet.LengthTotal,
+                    Length = (float)sheet.LengthTotal_Real,
                     Ft = sheet.Ft,
                     MaterialName = sheet.m_Mat.Name,
-                    Area = (float)sheet.Area_brutto, //To Mato - ci sheet.Area_netto ???
+                    Area = (float)sheet.Area_brutto_Real,
                     MassPerPiece = fMassPerPiece,
                     PricePerPiece = fPricePerPiece,
-                    TotalArea = iQuantity * (float)sheet.Area_brutto,//To Mato - ci sheet.Area_netto ???
+                    TotalArea = iQuantity * (float)sheet.Area_brutto_Real,
                     TotalMass = iQuantity * fMassPerPiece,
                     TotalPrice = iQuantity * fPricePerPiece
                 };
@@ -1081,9 +1084,6 @@ namespace PFD
             //return vm._modelOptionsVM.EnableCladding && CModelHelper.ModelHasFibreglass(vm.Model);
             return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._claddingOptionsVM.HasFibreglass();
         }
-        
-
-
         public static bool DisplayDoorsAndWindowsTable(CPFDViewModel vm)
         {
             return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts();
