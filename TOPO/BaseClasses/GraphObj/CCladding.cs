@@ -1748,7 +1748,7 @@ namespace BaseClasses.GraphObj
                             double lengthTopLeft = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
                             double lengthTopRight = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
 
-                            if(objectInColision_In_Local_x.Count > 1)
+                            if((isFibreglassFirst || isFibreglassLast) && objectInColision_In_Local_x.Count > 1)
                             {
                                 lengthTopLeft = objectInColision_In_Local_x[j+1].CoordinateInPlane_y - coordinateInPlane_y;
                                 lengthTopRight = objectInColision_In_Local_x[j+1].CoordinateInPlane_y - coordinateInPlane_y;
