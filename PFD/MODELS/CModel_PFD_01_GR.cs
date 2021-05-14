@@ -1672,14 +1672,14 @@ namespace PFD
             double column_crsc_y_minus = ((CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn]).y_min;
             double column_crsc_y_plus = ((CCrSc_TW)m_arrCrSc[EMemberType_FS_Position.EdgeColumn]).y_max;
 
-            double additionalOffset = 0.080;  // 80 mm (70 mm pre fasadny plech, ten ma odsadenie 10 mm)
+            double additionalOffset = 0.015;  // 15 mm odsadenie 15 mm
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
             column_crsc_y_minus -= additionalOffset;
             column_crsc_y_plus += additionalOffset;
             column_crsc_z_plus += additionalOffset;
-            ///*******************************************************************************
 
+            // TODO - toto by sme mali niekde nastavovat
             float fPanelThickness = 0.010f; // Hrubka vyplne dveri, resp hrubka skla v okne - 10 mm
             float fPersonnelDoorFrameThickness = 0.08f; // Rozmer ramu - plati pre stvorec, treba prerobit pre obdlznik, rozmer podla sirky Flashings
             float fRollerDoorFrameThickness = 0.12f; // Rozmer ramu - plati pre stvorec, treba prerobit pre obdlznik, rozmer podla sirky Flashings
@@ -1693,27 +1693,26 @@ namespace PFD
             CComponentInfo girtL = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
             if (girtL != null && girtL.Generate.HasValue)
             {
-                bGenerateLeftSideCladding = girtL.Generate.Value;                
+                bGenerateLeftSideCladding = girtL.Generate.Value;
             }
 
             CComponentInfo girtR = componentList.LastOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
             if (girtR != null && girtR.Generate.HasValue)
             {
-                bGenerateRightSideCladding = girtR.Generate.Value;                
+                bGenerateRightSideCladding = girtR.Generate.Value;
             }
 
             CComponentInfo girtFront = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
             if (girtFront != null && girtFront.Generate.HasValue)
             {
-                bGenerateFrontSideCladding = girtFront.Generate.Value;                
+                bGenerateFrontSideCladding = girtFront.Generate.Value;
             }
 
             CComponentInfo girtBack = componentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (girtBack != null && girtBack.Generate.HasValue)
             {
-                bGenerateBackSideCladding = girtBack.Generate.Value;                
+                bGenerateBackSideCladding = girtBack.Generate.Value;
             }
-
 
             //To Mato - tu by ma zaujimalo,ci to nebude rovnake pre _GR a _MR  (Doors aj Windows)
             //pokial sa nachadzaju casti kodu, ktore su uplne rovnake pre _GR aj _MR model, tak by som ich rad vytiahol do nejakej spolocnej metody
@@ -1732,10 +1731,12 @@ namespace PFD
 
                     Color doorFlashingColor = Colors.White;
                     float fDoorFrameThickness = 0;
+                    double frameEdgeToCladdingOffsetExteriorFrontRight = 0;
+                    double frameEdgeToCladdingOffsetExteriorBackLeft = 0;
 
-                    double leftEdge = -column_crsc_z_plus - claddingThickness_Wall;
+                    double leftEdge = -column_crsc_z_plus/* - claddingThickness_Wall*/;
                     double frontEdge = column_crsc_y_minus;
-                    double rightEdge = fW_frame_centerline + column_crsc_z_plus + claddingThickness_Wall;
+                    double rightEdge = fW_frame_centerline + column_crsc_z_plus/* + claddingThickness_Wall*/;
                     double backEdge = fL_tot_centerline + column_crsc_y_plus;
 
                     if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Personnel Door")
@@ -1743,20 +1744,32 @@ namespace PFD
                         CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "PA Door Trimmer");
                         if(prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fPersonnelDoorFrameThickness;
-                        //leftEdge += fPersonnelDoorFrameThickness;
-                        //backEdge -= fPersonnelDoorFrameThickness;
-                        leftEdge += fPersonnelDoorFrameThickness / 2;
-                        backEdge -= fPersonnelDoorFrameThickness / 2;
+                        frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
+                        frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
+
+                        if (!vm.GetDisplayOptions().bDoorsSimpleSolidModel)
+                        {
+                            leftEdge += frameEdgeToCladdingOffsetExteriorBackLeft;
+                            frontEdge -= frameEdgeToCladdingOffsetExteriorFrontRight;
+                            rightEdge += frameEdgeToCladdingOffsetExteriorFrontRight;
+                            backEdge -= frameEdgeToCladdingOffsetExteriorBackLeft;
+                        }
                     }
                     else if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Roller Door")
                     {
                         CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "Roller Door Trimmer");
                         if(prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fRollerDoorFrameThickness;
-                        //leftEdge += fRollerDoorFrameThickness;
-                        //backEdge -= fRollerDoorFrameThickness;
-                        leftEdge += fRollerDoorFrameThickness / 2;
-                        backEdge -= fRollerDoorFrameThickness / 2;
+                        frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
+                        frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
+
+                        if (!vm.GetDisplayOptions().bDoorsSimpleSolidModel)
+                        {
+                            leftEdge += frameEdgeToCladdingOffsetExteriorBackLeft;
+                            frontEdge -= frameEdgeToCladdingOffsetExteriorFrontRight;
+                            rightEdge += frameEdgeToCladdingOffsetExteriorFrontRight;
+                            backEdge -= frameEdgeToCladdingOffsetExteriorBackLeft;
+                        }
                     }
                     else
                         throw new Exception("Invalid door type");
@@ -1807,10 +1820,12 @@ namespace PFD
                     if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Front" && !bGenerateFrontSideCladding) continue;
                     if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Back" && !bGenerateBackSideCladding) continue;
 
-                    double leftEdge = -column_crsc_z_plus - claddingThickness_Wall + fWindowFrameThickness;
-                    double frontEdge = column_crsc_y_minus;
-                    double rightEdge = fW_frame_centerline + column_crsc_z_plus + claddingThickness_Wall;
-                    double backEdge = fL_tot_centerline + column_crsc_y_plus - fWindowFrameThickness;
+                    double frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fWindowFrameThickness);
+                    double frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fWindowFrameThickness);
+                    double leftEdge = -column_crsc_z_plus /* - claddingThickness_Wall*/ + frameEdgeToCladdingOffsetExteriorBackLeft;
+                    double frontEdge = column_crsc_y_minus - frameEdgeToCladdingOffsetExteriorFrontRight;
+                    double rightEdge = fW_frame_centerline + column_crsc_z_plus /* + claddingThickness_Wall*/ + frameEdgeToCladdingOffsetExteriorFrontRight;
+                    double backEdge = fL_tot_centerline + column_crsc_y_plus - frameEdgeToCladdingOffsetExteriorBackLeft;
 
                     float fRotationZDegrees = 0f;
                     Point3D pControlEdgePoint = new Point3D((_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].iBayNumber - 1) * fDist_FrontColumns + _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].fWindowCoordinateXinBay, frontEdge, _pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].fWindowCoordinateZinBay);
@@ -1839,10 +1854,7 @@ namespace PFD
                 }
             }
             #endregion
-
         }
-
-        
 
         //temp test zatial task 612
         private void changeMembersVariousCrsc()
@@ -1936,8 +1948,6 @@ namespace PFD
                 dist += L1_Bays.ElementAtOrDefault(index);
             }
         }
-
-        
 
         public void AddFrontOrBackGirtsBracingBlocksNodes(int i_temp_numberofNodes, int [] iArrGB_NumberOfNodesPerBay, int [] iArrGB_NumberOfNodesPerBayFirstNode,
             int iNumberOfTransverseSupports, float fHeight, float fIntermediateSupportSpacing,  float fDist_Girts, float fDist_Columns, float fy_Global_Coord, out int iNumberOfGB_NodesInOneSideAndMiddleBay)
