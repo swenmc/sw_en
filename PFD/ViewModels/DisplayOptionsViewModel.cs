@@ -341,6 +341,15 @@ namespace PFD
         private float m_GUIWindowDescriptionSize;
 
         private bool m_CladdingSheetColoursByID;
+
+        private bool m_UseDifColorForSheetWithOverlap;
+        private int m_CladdingSheetColorIndex;
+        [NonSerialized]
+        private Color m_CladdingSheetColor = Colors.Yellow;
+        private int m_FibreglassSheetColorIndex;
+        [NonSerialized]
+        private Color m_FibreglassSheetColor = Colors.Orange;
+
         private bool m_UseTextures;
 
         #region Loads
@@ -3998,6 +4007,78 @@ namespace PFD
             }
         }
 
+        public bool UseDifColorForSheetWithOverlap
+        {
+            get
+            {
+                return m_UseDifColorForSheetWithOverlap;
+            }
+
+            set
+            {
+                m_UseDifColorForSheetWithOverlap = value;
+                NotifyPropertyChanged("UseDifColorForSheetWithOverlap");
+            }
+        }
+
+        public int CladdingSheetColorIndex
+        {
+            get
+            {
+                return m_CladdingSheetColorIndex;
+            }
+
+            set
+            {
+                m_CladdingSheetColorIndex = value;
+
+                CladdingSheetColor = CComboBoxHelper.ColorList[m_FloorSlabTextColorIndex].Color.Value;
+                NotifyPropertyChanged("CladdingSheetColorIndex");
+            }
+        }
+
+        public int FibreglassSheetColorIndex
+        {
+            get
+            {
+                return m_FibreglassSheetColorIndex;
+            }
+
+            set
+            {
+                m_FibreglassSheetColorIndex = value;
+
+                FibreglassSheetColor = CComboBoxHelper.ColorList[m_FloorSlabTextColorIndex].Color.Value;
+                NotifyPropertyChanged("FibreglassSheetColorIndex");
+            }
+        }
+
+        public Color CladdingSheetColor
+        {
+            get
+            {
+                return m_CladdingSheetColor;
+            }
+
+            set
+            {
+                m_CladdingSheetColor = value;
+            }
+        }
+
+        public Color FibreglassSheetColor
+        {
+            get
+            {
+                return m_FibreglassSheetColor;
+            }
+
+            set
+            {
+                m_FibreglassSheetColor = value;
+            }
+        }
+
 
         #endregion Properties
 
@@ -4208,6 +4289,9 @@ namespace PFD
             AnchorColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGoldenrodYellow);
             WasherColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
             NutColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
+
+            CladdingSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.Yellow);
+            FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.Orange);
 
             MemberSolidModelOpacity = 0.8f;
             PlateSolidModelOpacity = 0.5f;
@@ -4512,6 +4596,10 @@ namespace PFD
             UseTextures = newVM.UseTextures;
             ColoredCenterlines = newVM.ColoredCenterlines;
             CladdingSheetColoursByID = newVM.CladdingSheetColoursByID;
+
+            UseDifColorForSheetWithOverlap = newVM.UseDifColorForSheetWithOverlap;
+            CladdingSheetColorIndex = newVM.CladdingSheetColorIndex;
+            FibreglassSheetColorIndex = newVM.FibreglassSheetColorIndex;
 
             IsSetFromCode = false;
         }
