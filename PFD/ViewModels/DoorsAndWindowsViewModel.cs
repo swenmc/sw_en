@@ -41,7 +41,7 @@ namespace PFD
 
         private ObservableCollection<CAccessories_DownpipeProperties> m_Downpipes;
 
-
+        private bool m_IsCladdingEnabled;
         //private CAccessories_LengthItemProperties m_RemovedFlashing;
         #endregion private fields
 
@@ -213,6 +213,19 @@ namespace PFD
             {
                 if (m_GuttersNames == null) m_GuttersNames = new List<string>() { "Roof Gutter 430", "Roof Gutter 520", "Roof Gutter 550"/*, "Internal Gutter"*/ };
                 return m_GuttersNames;
+            }
+        }
+
+        public bool IsCladdingEnabled
+        {
+            get
+            {
+                return m_IsCladdingEnabled;
+            }
+
+            set
+            {
+                m_IsCladdingEnabled = value;
             }
         }
 
@@ -1047,8 +1060,13 @@ namespace PFD
         }
 
 
-        private void CheckFlashings()
+        public bool CheckFlashings()
         {
+            bool changed = false;
+            if (_pfdVM != null)
+            {
+                if (!_pfdVM._modelOptionsVM.EnableCladding) return changed; //ak nie je zapnuty cladding, netreba doplnat naspat Flashings
+            }
             List<CAccessories_LengthItemProperties> flashingsToAdd = new List<CAccessories_LengthItemProperties>();
             if (ModelHasRollerDoor())
             {
@@ -1061,7 +1079,7 @@ namespace PFD
             if (ModelHasPersonelDoor())
             {
                 if (!Flashings.Any(f => f.Name == "PA Door Trimmer")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", 0, 18));
-                if (!Flashings.Any(f => f.Name == "PA Door Trimmer")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", 0, 18));
+                if (!Flashings.Any(f => f.Name == "PA Door Header")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", 0, 18));
             }
 
             if (ModelHasWindow())
@@ -1074,7 +1092,10 @@ namespace PFD
             {
                 flashingsToAdd.InsertRange(0, Flashings);
                 Flashings = new ObservableCollection<CAccessories_LengthItemProperties>(flashingsToAdd.OrderBy(f=>f.ID));
+                changed = true;
             }
+
+            return changed;
         }
 
     }
