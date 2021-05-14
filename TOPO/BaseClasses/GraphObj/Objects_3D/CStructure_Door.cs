@@ -103,7 +103,7 @@ namespace BaseClasses.GraphObj
             ID = i_ID;
             FTime = fTime;
         }
-        
+
         // Constructor 3
         public CStructure_Door(int iW_ID, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, float fDoorPanelThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime, 
             Color doorFlashingColor, Color doorPanelColor, string doorPanelColorName, float flashingOpacity, float doorPanelOpacity, bool isRollerDoor, bool LeftOrBack, DisplayOptions opts)
