@@ -48,6 +48,7 @@ namespace PFD
             dt.Columns.Add("LengthTopLeft");
             dt.Columns.Add("LengthTopRight");
             dt.Columns.Add("LengthTopTip");
+            dt.Columns.Add("NumberOfEdges");
             //dt.Columns.Add("IsCanopy");
             dt.Columns.Add("ColorName");
             dt.Columns.Add("ControlPoint");
@@ -89,6 +90,7 @@ namespace PFD
                 row["LengthTopLeft"] = sheet.LengthTopLeft.ToString("F3");
                 row["LengthTopRight"] = sheet.LengthTopRight.ToString("F3");
                 row["LengthTopTip"] = GetLengthTopTip(sheet);
+                row["NumberOfEdges"] = sheet.NumberOfEdges;
                 //row["IsCanopy"] = sheet.IsCanopy;
                 row["ColorName"] = sheet.ColorName;
                 row["ControlPoint"] = sheet.ControlPoint.ToString(3);
@@ -177,7 +179,8 @@ namespace PFD
 
         private string GetLengthTopTip(CCladdingOrFibreGlassSheet sheet)
         {
-            if (MathF.d_equal(sheet.LengthTopTip, sheet.LengthTopLeft) && MathF.d_equal(sheet.LengthTopTip, sheet.LengthTopRight)) return "";
+            if (sheet.NumberOfEdges == 4) return "";
+            else if (MathF.d_equal(sheet.LengthTopTip, sheet.LengthTopLeft) && MathF.d_equal(sheet.LengthTopTip, sheet.LengthTopRight)) return "";
             else return sheet.LengthTopTip.ToString("F3");
         }
 

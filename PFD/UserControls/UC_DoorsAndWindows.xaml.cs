@@ -492,6 +492,8 @@ namespace PFD
 
         private void Datagrid_Flashings_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (!_pfdVM._modelOptionsVM.EnableCladding) return; //ak nie je zapnute Cladding, tak nie je nutne mazat dvere po zmazani Flashing (814)
+
             if (e.Key == Key.Delete)
             {
                 var grid = (DataGrid)sender;

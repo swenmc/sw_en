@@ -19,7 +19,8 @@ namespace PFD
     public partial class ModelOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-        private bool ModelOptionsChanged = false;        
+        private bool ModelOptionsChanged = false;
+        private bool EnableCladdingChanged = false;
         public ModelOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
@@ -81,6 +82,7 @@ namespace PFD
                 if (e.PropertyName == "EnableCladding")
                 {
                     //reset cladding
+                    EnableCladdingChanged = true;
                 }
                 
                 ModelOptionsChanged = true;
@@ -92,6 +94,11 @@ namespace PFD
         {
             if (ModelOptionsChanged)
             {
+                if (EnableCladdingChanged && _pfdVM._modelOptionsVM.EnableCladding)
+                {
+                    if (_pfdVM._doorsAndWindowsVM.CheckFlashings()) MessageBox.Show("Missing flashings were added to the model.");                    
+                }
+
                 if (_pfdVM._modelOptionsVM.SameColorsDoor) _pfdVM._doorsAndWindowsVM.SetAllDoorCoatingColorToSame();
                 if (_pfdVM._modelOptionsVM.SameColorsFGD) _pfdVM._doorsAndWindowsVM.SetAll_FGD_CoatingColorToSame();
                 else
