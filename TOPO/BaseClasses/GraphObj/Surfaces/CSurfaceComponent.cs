@@ -22,7 +22,7 @@ namespace BaseClasses.GraphObj
         double m_dLengthTotal;
         double m_dLengthTopRight;
         double m_dLengthTopTip;
-        double m_dLengthTopLeft;
+        double m_dLengthTopLeft;        
 
         double m_dArea_netto;
         double m_dArea_brutto;

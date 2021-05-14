@@ -46,6 +46,8 @@ namespace BaseClasses.GraphObj
         private double m_rotationZ;
 
         private bool m_IsCanopy;
+        private bool m_HasOverlap;
+
         private double m_WpWidthOffset;
 
         private double m_Width_flat;
@@ -539,6 +541,19 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public bool HasOverlap
+        {
+            get
+            {
+                return m_HasOverlap;
+            }
+
+            set
+            {
+                m_HasOverlap = value;
+            }
+        }
+
         public int iVectorOverFactor_LCS;
         public int iVectorUpFactor_LCS;
 
@@ -553,7 +568,7 @@ namespace BaseClasses.GraphObj
         int numberOfCorners, double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
-        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime, bool isCanopy = false, double wpWidthOffset = 0)
+        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime, bool isCanopy = false, double wpWidthOffset = 0, bool hasOverlap = false)
         {
             ID = iCladdingSheet_ID;
             Prefix = prefix;
@@ -587,6 +602,8 @@ namespace BaseClasses.GraphObj
             m_CoilOrFlatSheetWidth = coilWidth;
             m_CoilOrFlatSheetMass_kg_m2 = coilMass_kg_m2;
             m_CoilOrFlatSheetPrice_PPSM_NZD = coilPrice_PPSM_NZD;
+
+            m_HasOverlap = hasOverlap;
 
             Update();
         }
