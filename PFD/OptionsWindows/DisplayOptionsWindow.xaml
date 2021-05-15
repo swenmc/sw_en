@@ -787,7 +787,7 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <StackPanel Grid.Row="22" Grid.Column="2" Grid.RowSpan="4" Orientation="Vertical" Grid.ColumnSpan="2">
+                        <StackPanel Grid.Row="21" Grid.Column="2" Grid.RowSpan="4" Orientation="Vertical" Grid.ColumnSpan="2">
                             <TextBlock Text="Member Colour:" HorizontalAlignment="Left"/>
                             <RadioButton Name="radioColorsIn3DMembersPrefix" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPrefix, Mode=TwoWay}">according to Prefix</RadioButton>
                             <RadioButton Name="radioColorsIn3DMembersPosition" GroupName="Mode"  IsChecked="{Binding Path=ColorsAccordingToMembersPosition, Mode=TwoWay}">according to Position</RadioButton>
@@ -797,14 +797,14 @@
                             <CheckBox Name="chbColoredCenterlines" IsChecked="{Binding Path=ColoredCenterlines}">Colored Centerlines</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="26" Grid.Column="2" Grid.RowSpan="2">
+                        <StackPanel Grid.Row="25" Grid.Column="2" Grid.RowSpan="2">
                             <TextBlock Text="Cladding Colour:" HorizontalAlignment="Left"/>                            
                             <CheckBox Name="chbCladdingSheetColoursByID" IsChecked="{Binding Path=CladdingSheetColoursByID}">Cladding Sheet Colours By ID</CheckBox>
                             <CheckBox Name="chbUseDifColorForSheetWithOverlap" Margin="0 5 0 0" IsChecked="{Binding Path=UseDifColorForSheetWithOverlap}">Use distinguished colour of sheet without overlap</CheckBox>
                         </StackPanel>
 
-                        <TextBlock Grid.Row="28" Grid.Column="2" Text="Cladding Sheet Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="28" Grid.Column="3" Name ="Combobox_CladdingSheetColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="27" Grid.Column="2" Text="Cladding Sheet Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="27" Grid.Column="3" Name ="Combobox_CladdingSheetColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=CladdingSheetColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -816,8 +816,8 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <TextBlock Grid.Row="29" Grid.Column="2" Text="Fibreglass Sheet Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox Grid.Row="29" Grid.Column="3" Name ="Combobox_FibreglassSheetColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                        <TextBlock Grid.Row="28" Grid.Column="2" Text="Fibreglass Sheet Colour:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Row="28" Grid.Column="3" Name ="Combobox_FibreglassSheetColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                          SelectedIndex="{Binding Path=FibreglassSheetColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                          ItemsSource="{Binding Path=ColorList}">
                             <ComboBox.ItemTemplate>
@@ -829,8 +829,13 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+
+                        <StackPanel Grid.Row="29" Grid.Column="2" Grid.RowSpan="2">
+                            <CheckBox Name="chbUseTextures" IsChecked="{Binding Path=UseTextures}">Use Textures</CheckBox>
+                            <CheckBox Name="chbUseTexturesMembers" IsChecked="{Binding Path=UseTexturesMembers}" Margin="25 0 0 0">Members</CheckBox>
+                            <CheckBox Name="chbUseTexturesCladding" IsChecked="{Binding Path=UseTexturesCladding}" Margin="25 0 0 0">Cladding</CheckBox>
+                        </StackPanel>
                         
-                        <CheckBox Grid.Row="30" Grid.Column="2" VerticalAlignment="Bottom" Name="chbUseTextures" IsChecked="{Binding Path=UseTextures}">Use Textures</CheckBox>
 
                     </Grid>
                 </ScrollViewer>

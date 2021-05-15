@@ -348,9 +348,11 @@ namespace PFD
         private Color m_CladdingSheetColor = Colors.Yellow;
         private int m_FibreglassSheetColorIndex;
         [NonSerialized]
-        private Color m_FibreglassSheetColor = Colors.Orange;
+        private Color m_FibreglassSheetColor = Colors.OrangeRed;
 
         private bool m_UseTextures;
+        private bool m_UseTexturesMembers;
+        private bool m_UseTexturesCladding;
 
         #region Loads
         // Load Case - display options
@@ -3468,20 +3470,6 @@ namespace PFD
             }
         }
 
-        public bool UseTextures
-        {
-            get
-            {
-                return m_UseTextures;
-            }
-
-            set
-            {
-                m_UseTextures = value;
-                NotifyPropertyChanged("UseTextures");
-            }
-        }
-
         public float FrontCladdingOpacity
         {
             get
@@ -4032,7 +4020,7 @@ namespace PFD
             {
                 m_CladdingSheetColorIndex = value;
 
-                CladdingSheetColor = CComboBoxHelper.ColorList[m_FloorSlabTextColorIndex].Color.Value;
+                CladdingSheetColor = CComboBoxHelper.ColorList[m_CladdingSheetColorIndex].Color.Value;
                 NotifyPropertyChanged("CladdingSheetColorIndex");
             }
         }
@@ -4048,7 +4036,7 @@ namespace PFD
             {
                 m_FibreglassSheetColorIndex = value;
 
-                FibreglassSheetColor = CComboBoxHelper.ColorList[m_FloorSlabTextColorIndex].Color.Value;
+                FibreglassSheetColor = CComboBoxHelper.ColorList[m_FibreglassSheetColorIndex].Color.Value;
                 NotifyPropertyChanged("FibreglassSheetColorIndex");
             }
         }
@@ -4076,6 +4064,47 @@ namespace PFD
             set
             {
                 m_FibreglassSheetColor = value;
+            }
+        }
+
+        public bool UseTextures
+        {
+            get
+            {
+                return m_UseTextures;
+            }
+
+            set
+            {
+                m_UseTextures = value;
+                NotifyPropertyChanged("UseTextures");
+            }
+        }
+        public bool UseTexturesMembers
+        {
+            get
+            {
+                return m_UseTexturesMembers;
+            }
+
+            set
+            {
+                m_UseTexturesMembers = value;
+                NotifyPropertyChanged("UseTexturesMembers");
+            }
+        }
+
+        public bool UseTexturesCladding
+        {
+            get
+            {
+                return m_UseTexturesCladding;
+            }
+
+            set
+            {
+                m_UseTexturesCladding = value;
+                NotifyPropertyChanged("UseTexturesCladding");
             }
         }
 
@@ -4194,8 +4223,10 @@ namespace PFD
 
             CladdingSheetColoursByID = false;
             UseTextures = false;
+            UseTexturesMembers = false;
+            UseTexturesCladding = false;
 
-            if(bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
+            if (bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
             {
                 LightAmbient = true;
                 DisplayJoints = false;
@@ -4291,7 +4322,7 @@ namespace PFD
             NutColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
 
             CladdingSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.Yellow);
-            FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.Orange);
+            FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.OrangeRed);
 
             MemberSolidModelOpacity = 0.8f;
             PlateSolidModelOpacity = 0.5f;
@@ -4594,6 +4625,8 @@ namespace PFD
             GUIDescriptionTextWidthScaleFactor = newVM.GUIDescriptionTextWidthScaleFactor;
 
             UseTextures = newVM.UseTextures;
+            UseTexturesMembers = newVM.UseTexturesMembers;
+            UseTexturesCladding = newVM.UseTexturesCladding;
             ColoredCenterlines = newVM.ColoredCenterlines;
             CladdingSheetColoursByID = newVM.CladdingSheetColoursByID;
 

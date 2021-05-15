@@ -3176,6 +3176,11 @@ namespace PFD
 
             sDisplayOptions.bCladdingSheetColoursByID = _displayOptionsVM.CladdingSheetColoursByID;
             sDisplayOptions.bUseTextures = _displayOptionsVM.UseTextures;
+            sDisplayOptions.bUseTexturesMembers = _displayOptionsVM.UseTexturesMembers;
+            sDisplayOptions.bUseTexturesCladding = _displayOptionsVM.UseTexturesCladding;
+            sDisplayOptions.bUseDistColorOfSheetWithoutOverlap = _displayOptionsVM.UseDifColorForSheetWithOverlap;
+            sDisplayOptions.CladdingSheetNoOverlapColor = _displayOptionsVM.CladdingSheetColor;
+            sDisplayOptions.FibreglassSheetNoOverlapColor = _displayOptionsVM.FibreglassSheetColor;
 
             sDisplayOptions.fMemberSolidModelOpacity = _displayOptionsVM.MemberSolidModelOpacity;
             sDisplayOptions.fPlateSolidModelOpacity = _displayOptionsVM.PlateSolidModelOpacity;

@@ -699,7 +699,7 @@ namespace BaseClasses.GraphObj
             pfront4_topleft.X += CoordinateInPlane_x;
             pfront4_topleft.Z += CoordinateInPlane_y;
 
-            if (options.bCladdingSheetColoursByID && !options.bUseTextures) // Ak je zapnuta textura, tak je nadradena solid brush farbam
+            if (options.bCladdingSheetColoursByID && !options.bUseTexturesCladding) // Ak je zapnuta textura, tak je nadradena solid brush farbam
             {
                 // TODO Ondrej - pouzije sa farba priradena objektu
                 // Chcelo by to nejako vylepsit, aby sme tu farbu a material nastavovali len raz a nemuselo sa to tu prepisovat
@@ -709,27 +709,19 @@ namespace BaseClasses.GraphObj
             }
 
             // TODO 783 - Ondrej
-            // TODO 819 - Ondrej
-
-            bool bUseDistColorOfSheetWithoutOverlap = true; // TODO 819
-
-            if (bUseDistColorOfSheetWithoutOverlap)
+            if (options.bUseDistColorOfSheetWithoutOverlap)
             {
                 // Testovanie
-                // TODO 783 - Ondrej
-                // TODO 819 - Ondrej
+                // TODO 783 - Ondrej                
                 // Pre tie sheets ktore maju sadu real lengths rovnaku ako lengths nastavime specificku farbu
                 // Malo by sa tym dat vizualne skontrolovat, ktore sheet maju pripocitany overlap a ktore nie
-
-                Color colFibreglassSheetWithoutOverlap = Colors.Orange; // TODO 819
-                Color colCladdingSheetWithoutOverlap = Colors.Yellow; // TODO 819
 
                 if (MATH.MathF.d_equal(LengthTotal, LengthTotal_Real))
                 {
                     if (IsFibreglass)
-                        material = new DiffuseMaterial(new SolidColorBrush(colFibreglassSheetWithoutOverlap)); // Nastavime oranzovu farbu
+                        material = new DiffuseMaterial(new SolidColorBrush(options.FibreglassSheetNoOverlapColor));
                     else
-                        material = new DiffuseMaterial(new SolidColorBrush(colCladdingSheetWithoutOverlap)); // Nastavime zltu farbu
+                        material = new DiffuseMaterial(new SolidColorBrush(options.CladdingSheetNoOverlapColor));
                 }
             }
 
@@ -767,7 +759,7 @@ namespace BaseClasses.GraphObj
 
                 // 3D
                 EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront4_topleft };
-                return CreateArea(options.bUseTextures, material);
+                return CreateArea(options.bUseTextures && options.bUseTexturesCladding, material);
             }
             else
             {
@@ -805,7 +797,7 @@ namespace BaseClasses.GraphObj
 
                 // 3D
                 EdgePointList = new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pfront2_topright, pfront3_toptip, pfront4_topleft };
-                return CreateArea(options.bUseTextures, material);
+                return CreateArea(options.bUseTextures && options.bUseTexturesCladding, material);
             }
         }
 

@@ -276,7 +276,7 @@ namespace BaseClasses.GraphObj
 
             ImageBrush imgBrush = null;
 
-            if (opts.bUseTextures && IsRollerDoor) // Použijeme len pre typ roller door
+            if (opts.bUseTextures && opts.bUseTexturesCladding && IsRollerDoor) // Použijeme len pre typ roller door
             {
                 string uriString = "pack://application:,,,/Resources/Textures/Corrugate/Corrugate_" + m_doorPanelColorName + ".jpg";
 
