@@ -1871,8 +1871,17 @@ namespace BaseClasses.GraphObj
         {
             for (int i = 0; i < sheets.Count; i++)
             {
-                if (i == 0) sheets[i].HasOverlap = false;
-                else sheets[i].HasOverlap = true;
+                if (sheets[i].Name == "Cladding - Roof-Left Side")
+                {
+                    if (i == sheets.Count - 1) sheets[i].HasOverlap = false;
+                    else sheets[i].HasOverlap = true;
+                }
+                else
+                {
+                    if (i == 0) sheets[i].HasOverlap = false;
+                    else sheets[i].HasOverlap = true;
+                }
+                
             }
         }
 
@@ -1883,13 +1892,16 @@ namespace BaseClasses.GraphObj
             {
                 CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref originalsheet, maxSheetLegth_RoofCladding, false);
                 iSheetIndex++;
-                cuttedSheet.ID = iSheetIndex;
+                cuttedSheet.ID = iSheetIndex;                
                 sheets.Add(cuttedSheet);
 
                 if (isRoofLeft) listOfCladdingSheetsRoofLeft.Add(cuttedSheet);
                 else listOfCladdingSheetsRoofRight.Add(cuttedSheet);
             }
             originalsheet.Update();
+
+            if (!originalsheet.HasOverlap) SetCuttedSheetsOverlaps(sheets);
+
             CountRealLenghts(sheets, length_left_basic);
         }
 
