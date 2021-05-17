@@ -1301,51 +1301,74 @@ namespace BaseClasses.GraphObj
                             for (int i = 0; i < listOfCladdingSheetsRoofLeft.Count; i++)
                             {
                                 CCladdingOrFibreGlassSheet originalsheet = listOfCladdingSheetsRoofLeft[i];
-
+                                
                                 // Musime menit len tie sheets ktore maju koniec na hrane strechy
                                 if (MATH.MathF.d_equal(originalsheet.CoordinateInPlane_y + originalsheet.LengthTotal, length_left_basic, 0.002))
                                 {
                                     foreach (CCanopiesInfo canopy in canopyCollection)
                                     {
-                                        bool hasNextCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1));
-                                        bool hasPreviousCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex - 1));
-
-                                        float fCanopyBayStartOffsetLeft = hasPreviousCanopyLeft ? 0f : ((canopy.BayIndex == 0 ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
-                                        float fCanopyBayEndOffsetLeft = hasNextCanopyLeft ? 0f : (((canopy.BayIndex == canopyCollection.Count - 1) ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
-
-                                        float fBayStartCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopy.BayIndex, bayWidthCollection) - fCanopyBayStartOffsetLeft;
-                                        float fBayEndCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopy.BayIndex + 1, bayWidthCollection) + fCanopyBayEndOffsetLeft;
-
-                                        // Zistime ci je plocha originalsheet v kolizii s nejakym canopy - right
-                                        // Myslim ze mame niekde uz funkcie ktore vedia skontrolovat ci sa dve plochy prekryvaju
-
-                                        // Zistime ci je canopy v kolizii s plechom
-                                        // Ak ano upravime koncove lokalne suradnice plechu y na suradnice canopy a nastavime nove dlzky plechu
-                                        if (canopy.Left && (
-                                            (fBayStartCoordinate_Y_Left + fCanopyBayStartOffsetLeft <= originalsheet.CoordinateInPlane_x &&
-                                            fBayEndCoordinate_Y_Left + fCanopyBayStartOffsetLeft >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
-                                            (fBayStartCoordinate_Y_Left + fCanopyBayStartOffsetLeft >= originalsheet.CoordinateInPlane_x &&
-                                            fBayStartCoordinate_Y_Left + fCanopyBayStartOffsetLeft <= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
-                                            (fBayEndCoordinate_Y_Left + fCanopyBayStartOffsetLeft >= originalsheet.CoordinateInPlane_x &&
-                                            fBayEndCoordinate_Y_Left + fCanopyBayStartOffsetLeft <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
+                                        double CanopyCladdingWidth_Left = 0;
+                                        //To Mato - tam vo vnutri su ine podmienky...je tam fRoofEdgeOffsetFromCenterline a tu dalej dole je pouzite fCanopyBayStartOffsetLeft
+                                        if (LeftSheetNeedsToBeExtendedToCanopy(originalsheet, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic, out CanopyCladdingWidth_Left))
                                         {
-                                            double CanopyCladdingWidth_Left = canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
-
                                             // TODO 783 - Ondrej
                                             // Tu sa upravia dlzky pre sheet ktory zasahuje do canopy
                                             // Je potrebne nasledne este sheet rozdelit podla jeho maximalnej dlzky a rozdelenym sheet nastavit overlap (okrem krajneho)
 
-                                            //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth_Left;
+                                            //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth; // Ostava povodne
                                             originalsheet.LengthTopLeft += CanopyCladdingWidth_Left;
                                             originalsheet.LengthTopRight += CanopyCladdingWidth_Left;
                                             //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                             originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                             originalsheet.Update();
 
-                                            CutCanopySheet(originalsheet, true, ref iSheetIndex, length_left_basic);
+                                            CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic);
 
                                             break;
                                         }
+                                        
+
+
+                                        //bool hasNextCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1));
+                                        //bool hasPreviousCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex - 1));
+
+                                        //float fCanopyBayStartOffsetLeft = hasPreviousCanopyLeft ? 0f : ((canopy.BayIndex == 0 ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
+                                        //float fCanopyBayEndOffsetLeft = hasNextCanopyLeft ? 0f : (((canopy.BayIndex == canopyCollection.Count - 1) ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
+
+                                        //float fBayStartCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopy.BayIndex, bayWidthCollection) - fCanopyBayStartOffsetLeft;
+                                        //float fBayEndCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopy.BayIndex + 1, bayWidthCollection) + fCanopyBayEndOffsetLeft;
+
+                                        //// Zistime ci je plocha originalsheet v kolizii s nejakym canopy - right
+                                        //// Myslim ze mame niekde uz funkcie ktore vedia skontrolovat ci sa dve plochy prekryvaju
+
+                                        //// Zistime ci je canopy v kolizii s plechom
+                                        //// Ak ano upravime koncove lokalne suradnice plechu y na suradnice canopy a nastavime nove dlzky plechu
+                                        //if (canopy.Left && (
+                                        //    (fBayStartCoordinate_Y_Left + fCanopyBayStartOffsetLeft <= originalsheet.CoordinateInPlane_x &&
+                                        //    fBayEndCoordinate_Y_Left + fCanopyBayStartOffsetLeft >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
+                                        //    (fBayStartCoordinate_Y_Left + fCanopyBayStartOffsetLeft >= originalsheet.CoordinateInPlane_x &&
+                                        //    fBayStartCoordinate_Y_Left + fCanopyBayStartOffsetLeft <= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
+                                        //    (fBayEndCoordinate_Y_Left + fCanopyBayStartOffsetLeft >= originalsheet.CoordinateInPlane_x &&
+                                        //    fBayEndCoordinate_Y_Left + fCanopyBayStartOffsetLeft <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
+                                        //{
+                                        //    double CanopyCladdingWidth_Left = canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
+
+                                        //    // TODO 783 - Ondrej
+                                        //    // Tu sa upravia dlzky pre sheet ktory zasahuje do canopy
+                                        //    // Je potrebne nasledne este sheet rozdelit podla jeho maximalnej dlzky a rozdelenym sheet nastavit overlap (okrem krajneho)
+
+                                        //    //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth_Left;
+                                        //    originalsheet.LengthTopLeft += CanopyCladdingWidth_Left;
+                                        //    originalsheet.LengthTopRight += CanopyCladdingWidth_Left;
+                                        //    //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
+                                        //    originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
+                                        //    originalsheet.Update();
+
+                                        //    CutCanopySheet(originalsheet, true, ref iSheetIndex, length_left_basic);
+
+                                        //    break;
+                                        //}
+
                                     }
                                 }
                             }
