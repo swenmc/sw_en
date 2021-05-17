@@ -979,7 +979,7 @@ namespace BaseClasses.GraphObj
                                         originalsheet.LengthTopRight += CanopyCladdingWidth_Right;
                                         //originalsheet.LengthTopTip - vsetky plechy canopies maju len 4 hrany
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
-                                        originalsheet.Update();
+                                        originalsheet.Update();                                        
 
                                         CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic);
 
@@ -1871,11 +1871,11 @@ namespace BaseClasses.GraphObj
         {
             for (int i = 0; i < sheets.Count; i++)
             {
-                if (sheets[i].Name == "Cladding - Roof-Left Side")
+                if (sheets[i].Name == "Cladding - Roof-Left Side"/* || sheets[i].IsCanopy*/)
                 {
                     if (i == sheets.Count - 1) sheets[i].HasOverlap = false;
                     else sheets[i].HasOverlap = true;
-                }
+                }                
                 else
                 {
                     if (i == 0) sheets[i].HasOverlap = false;
@@ -1887,7 +1887,7 @@ namespace BaseClasses.GraphObj
 
         private void CutCanopySheet(CCladdingOrFibreGlassSheet originalsheet, bool isRoofLeft, ref int iSheetIndex, double length_left_basic)
         {
-            List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>() { originalsheet };
+            List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
             while (originalsheet.LengthTotal > maxSheetLegth_RoofCladding)
             {
                 CCladdingOrFibreGlassSheet cuttedSheet = GetCuttedSheetAndShortenOriginal(ref originalsheet, maxSheetLegth_RoofCladding, false);
@@ -1899,6 +1899,7 @@ namespace BaseClasses.GraphObj
                 else listOfCladdingSheetsRoofRight.Add(cuttedSheet);
             }
             originalsheet.Update();
+            sheets.Add(originalsheet);
 
             if (!originalsheet.HasOverlap) SetCuttedSheetsOverlaps(sheets);
 

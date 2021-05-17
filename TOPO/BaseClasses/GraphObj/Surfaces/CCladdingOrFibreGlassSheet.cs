@@ -568,7 +568,7 @@ namespace BaseClasses.GraphObj
         int numberOfCorners, double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
-        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime, bool hasOverlap/* = true*/, bool isCanopy = false, double wpWidthOffset = 0)
+        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime, bool hasOverlap, bool isCanopy = false, double wpWidthOffset = 0)
         {
             ID = iCladdingSheet_ID;
             Prefix = prefix;
