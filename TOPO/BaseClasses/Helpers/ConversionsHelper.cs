@@ -50,5 +50,7 @@ namespace BaseClasses.Helpers
             strValue = strValue.Replace(",", ".");            
             return float.Parse(strValue, nfi);
         }
+
+        
     }
 }

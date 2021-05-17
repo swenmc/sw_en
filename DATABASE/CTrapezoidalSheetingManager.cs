@@ -402,7 +402,7 @@ namespace DATABASE
             CTS_CoatingProperties coatingprop = new CTS_CoatingProperties();
             coatingprop.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             coatingprop.Name = reader["name_short"].ToString();
-            coatingprop.ColorIDs = ConvertStringArrayOfIDs(reader["colorRangeIDs"].ToString());
+            coatingprop.ColorIDs = StringHelper.ConvertStringArrayOfIDs(reader["colorRangeIDs"].ToString());
             //coatingprop.PriceCode = Int32.Parse(reader["priceCode"].ToString(), nfi);
 
             return coatingprop;
@@ -503,7 +503,7 @@ namespace DATABASE
             coilprop.thicknessCore = double.Parse(reader["thicknessCore_mm"].ToString(), nfi) / 1000;
             coilprop.coatingID = Int32.Parse(reader["coatingID"].ToString());
             coilprop.coatingName = reader["coatingName"].ToString();
-            coilprop.colorRangeIDs = ConvertStringArrayOfIDs(reader["colorRangeIDs"].ToString());
+            coilprop.colorRangeIDs = StringHelper.ConvertStringArrayOfIDs(reader["colorRangeIDs"].ToString());
             coilprop.mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
             coilprop.coilmass_kg_m2 = double.Parse(reader["coilmass_kg_m2"].ToString(), nfi);
             coilprop.coilLengthPerTonne = double.Parse(reader["coilLengthPerTonne"].ToString(), nfi);
@@ -621,9 +621,9 @@ namespace DATABASE
             thicknessprop.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             thicknessprop.thicknessCore = double.Parse(reader["thicknessCore_mm"].ToString(), nfi) / 100f;
             thicknessprop.thicknessTot = double.Parse(reader["thicknessTot_mm"].ToString(), nfi) / 100f;
-            thicknessprop.claddingIDs = ConvertStringArrayOfIDs(reader["claddingIDs"].ToString());
-            thicknessprop.coatingIDs = ConvertStringArrayOfIDs(reader["coatingIDs"].ToString());
-            thicknessprop.coil_IDs = ConvertStringArrayOfIDs(reader["coil_IDs"].ToString());
+            thicknessprop.claddingIDs = StringHelper.ConvertStringArrayOfIDs(reader["claddingIDs"].ToString());
+            thicknessprop.coatingIDs = StringHelper.ConvertStringArrayOfIDs(reader["coatingIDs"].ToString());
+            thicknessprop.coil_IDs = StringHelper.ConvertStringArrayOfIDs(reader["coil_IDs"].ToString());
 
             return thicknessprop;
         }
@@ -635,42 +635,6 @@ namespace DATABASE
 
 
 
-        // TODO Ondrej - Toto by sa malo presunut do nejake bazovej triedy pre pracu s textom a pod
-
-        // Split text
-        // Returns array of words (strings)
-        public static string[] SplitText(string inputText)
-        {
-            char[] delimiterChars = { ' ', ',', ';', '.', ':', '\t', '\n' }; // Znaky, ktore urcuju rozdelenie textu
-
-            //System.Console.WriteLine($"Original text: '{inputText}'");
-
-            string[] words = inputText.Split(delimiterChars);
-
-            /*
-            System.Console.WriteLine($"{words.Length} words in text:");
-
-                foreach (var word in words)
-                {
-                    System.Console.WriteLine($"<{word}>");
-            }
-            */
-
-            return words;
-        }
-
-        // Convert string to array of int IDs
-
-        public static int[] ConvertStringArrayOfIDs(string inputText)
-        {
-            string[] words = SplitText(inputText);
-
-            int[] arrayIDs = new int[words.Length];
-
-            for (int i = 0; i < words.Length; i++)
-                arrayIDs[i] = Int32.Parse(words[i]);
-
-            return arrayIDs;
-        }
+        
     }
 }
