@@ -568,7 +568,7 @@ namespace BaseClasses.GraphObj
         int numberOfCorners, double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
         string colorName, string claddingShape, string claddingCoatingType,
-        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime, bool isCanopy = false, double wpWidthOffset = 0, bool hasOverlap = false)
+        Color color, float opacity, double claddingWidthRib, bool bIsDisplayed, float fTime, bool hasOverlap/* = true*/, bool isCanopy = false, double wpWidthOffset = 0)
         {
             ID = iCladdingSheet_ID;
             Prefix = prefix;
@@ -716,7 +716,15 @@ namespace BaseClasses.GraphObj
                 // Pre tie sheets ktore maju sadu real lengths rovnaku ako lengths nastavime specificku farbu
                 // Malo by sa tym dat vizualne skontrolovat, ktore sheet maju pripocitany overlap a ktore nie
 
-                if (MATH.MathF.d_equal(LengthTotal, LengthTotal_Real))
+                //if (MATH.MathF.d_equal(LengthTotal, LengthTotal_Real))
+                //{
+                //    if (IsFibreglass)
+                //        material = new DiffuseMaterial(new SolidColorBrush(options.FibreglassSheetNoOverlapColor));
+                //    else
+                //        material = new DiffuseMaterial(new SolidColorBrush(options.CladdingSheetNoOverlapColor));
+                //}
+
+                if (!HasOverlap)
                 {
                     if (IsFibreglass)
                         material = new DiffuseMaterial(new SolidColorBrush(options.FibreglassSheetNoOverlapColor));

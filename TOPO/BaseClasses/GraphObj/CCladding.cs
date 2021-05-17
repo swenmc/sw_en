@@ -576,7 +576,7 @@ namespace BaseClasses.GraphObj
             int iSheet_FG_Index = 0;
             int iOpeningIndex = 0;
             int iNumberOfEdges_FG_D_W = 4; // Number of edges - fibreglass shet, door, window opening
-            
+
 
             // Left Wall
             double height_left_basic = -bottomEdge_z + height_1_final_edge_LR_Wall;
@@ -603,7 +603,7 @@ namespace BaseClasses.GraphObj
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pback0_baseleft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, !MathF.d_equal(fgsp.Y, 0));
 
                         listOfFibreGlassOpenings.Add(sheet);
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -632,7 +632,7 @@ namespace BaseClasses.GraphObj
                         4, 0, 0,
                         pback0_baseleft, baseLength_Overall_for3D, height_left_basic, height_left_basic, 0.5 * baseLength_Overall_for3D, height_left_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
-                        m_WallProps.widthRib_m, options.bDisplayCladdingLeftWall, 0));
+                        m_WallProps.widthRib_m, options.bDisplayCladdingLeftWall, 0, false));
 
                     /* Mono
                     CAreaPolygonal area = new CAreaPolygonal(2, new List<Point3D>() { pback0_baseleft, pfront0_baseleft, pLRWall_front3_heightleft, pLRWall_back3_heightleft }, 0);
@@ -673,7 +673,7 @@ namespace BaseClasses.GraphObj
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pfront0_baseleft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, !MathF.d_equal(fgsp.Y, 0));
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -712,7 +712,7 @@ namespace BaseClasses.GraphObj
                         iNumberOfFrontBackWallEdges, 0, 0,
                         pfront0_baseleft, baseWidth_Overall_for3D, height_left_basic, height_right_basic, 0.5 * baseWidth_Overall_for3D, height_middle_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, m_WallProps.widthRib_m,
-                        options.bDisplayCladdingFrontWall, 0));
+                        options.bDisplayCladdingFrontWall, 0, false));
 
                     /* Mono
                     CAreaPolygonal area = new CAreaPolygonal(0, new List<Point3D>() { pfront0_baseleft, pfront1_baseright, pFBWall_front2_heightright, pFBWall_front3_heightleft }, 0);
@@ -754,7 +754,7 @@ namespace BaseClasses.GraphObj
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pfront1_baseright, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, !MathF.d_equal(fgsp.Y, 0));
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -783,7 +783,7 @@ namespace BaseClasses.GraphObj
                         4, 0, 0,
                         pfront1_baseright, baseLength_Overall_for3D, height_left_basic, height_left_basic, 0.5 * baseLength_Overall_for3D, height_left_basic,
                         m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
-                        m_WallProps.widthRib_m, options.bDisplayCladdingRightWall, 0, false, 0));
+                        m_WallProps.widthRib_m, options.bDisplayCladdingRightWall, 0, false, false));
 
                     /* Monopitch
                     CAreaPolygonal area = new CAreaPolygonal(3, new List<Point3D>() { pfront1_baseright, pback1_baseright, pLRWall_back2_heightright, pLRWall_front2_heightright }, 0);
@@ -825,7 +825,7 @@ namespace BaseClasses.GraphObj
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pback1_baseright, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0);
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, !MathF.d_equal(fgsp.Y, 0));
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -862,7 +862,7 @@ namespace BaseClasses.GraphObj
                         m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, m_WallProps.widthModular_m,
                         iNumberOfFrontBackWallEdges, 0, 0,
                         pback1_baseright, baseWidth_Overall_for3D, height_left_basic, height_right_basic, 0.5 * baseWidth_Overall_for3D, height_middle_basic,
-                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, m_WallProps.widthRib_m, options.bDisplayCladdingBackWall, 0));
+                        m_ColorNameWall, m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity, m_WallProps.widthRib_m, options.bDisplayCladdingBackWall, 0, false));
 
                     /* Mono
                     CAreaPolygonal area = new CAreaPolygonal(1, new List<Point3D>() { pback1_baseright, pback0_baseleft, pFBWall_back3_heightleft, pFBWall_back2_heightright }, 0);
@@ -912,7 +912,7 @@ namespace BaseClasses.GraphObj
                              m_RoofProps_FG.thickness_m, m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.flatsheet_mass_kg_m2, m_RoofProps_FG.price_PPSM_NZD * m_RoofProps_FG.widthModular_m / m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.widthModular_m,
                              iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                              pControlPoint_RoofRight, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_RoofProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                             m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0);
+                             m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, false);
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -1046,7 +1046,7 @@ namespace BaseClasses.GraphObj
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                         4, 0, 0,
                         pControlPoint_RoofRight, RoofLength_Y, length_left_basic, length_left_basic, 0.5 * RoofLength_Y, length_left_basic,
-                        m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, options.bDisplayCladdingRoof, 0));
+                        m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, options.bDisplayCladdingRoof, 0, false));
                     /* Mono
                     CAreaPolygonal area = new CAreaPolygonal(4, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0);
                     model_gr.Children.Add(area.CreateArea(options.bUseTextures, material_Roof));
@@ -1117,7 +1117,7 @@ namespace BaseClasses.GraphObj
                                     m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                                     4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
-                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, true, 0, true, wpWidthOffset));
+                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, true, 0, false, true, wpWidthOffset));
 
                                 /*
                                 CAreaPolygonal areaCR = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
@@ -1181,7 +1181,7 @@ namespace BaseClasses.GraphObj
                                     m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                                     4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
-                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, true, 0, true, wpWidthOffset));
+                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, true, 0, false, true, wpWidthOffset));
 
                                 /*
                                 CAreaPolygonal areaCL = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
@@ -1227,7 +1227,7 @@ namespace BaseClasses.GraphObj
                                 m_RoofProps_FG.thickness_m, m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.flatsheet_mass_kg_m2, m_RoofProps_FG.price_PPSM_NZD * m_RoofProps_FG.widthModular_m / m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.widthModular_m,
                                 iNumberOfEdges_FG_D_W, fgsp.X, Position_y,
                                 pControlPoint_RoofLeft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_RoofProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                                m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0);
+                                m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, !MathF.Equals(fgsp.Y + fgsp.Length, length_left_basic));
                             listOfFibreGlassOpenings.Add(sheet);
 
                             List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -1313,7 +1313,7 @@ namespace BaseClasses.GraphObj
                             m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                             4, 0, 0,
                             pControlPoint_RoofLeft, RoofLength_Y, length_left_basic, length_left_basic, 0.5 * RoofLength_Y, length_left_basic,
-                            m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, options.bDisplayCladdingRoof, 0));
+                            m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, options.bDisplayCladdingRoof, 0, false));
 
                         /*
                         CAreaPolygonal areaL = new CAreaPolygonal(5, new List<Point3D>() { pRoof_front4_top, pRoof_back4_top, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0);
@@ -1376,7 +1376,7 @@ namespace BaseClasses.GraphObj
                                     m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                                     4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
-                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, true, 0, true, wpWidthOffset));
+                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, true, 0, false, true, wpWidthOffset));
 
                                 /*
                                 CAreaPolygonal areaCR = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
@@ -1434,7 +1434,7 @@ namespace BaseClasses.GraphObj
                                     m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                                     4, 0, 0,
                                     pfront_right, width_temp, poinstsDist, poinstsDist, 0.5 * width_temp, poinstsDist,
-                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, true, 0, true, wpWidthOffset));
+                                    m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, true, 0, false, true, wpWidthOffset));
 
                                 /*
                                 CAreaPolygonal areaCL = new CAreaPolygonal(iAreaIndex, new List<Point3D>() { pfront_right, pback_right, pback_left, pfront_left }, 0);
@@ -1508,7 +1508,7 @@ namespace BaseClasses.GraphObj
             return model_gr;
         }
 
-        public void GenerateCladdingSheets(bool bCladdingSheetColoursByID,            
+        public void GenerateCladdingSheets(bool bCladdingSheetColoursByID,
             string side,
             string prefix,
             string name,
@@ -1618,13 +1618,11 @@ namespace BaseClasses.GraphObj
                 // Ak neexistuju objekty v kolizii s originalsheet mozeme opustit funkciu
                 if (objectInColision_In_Local_x == null || objectInColision_In_Local_x.Count == 0)
                 {
-
                     CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, material,
                     thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
                     originalsheetNumberOfEdges, originalsheetCoordinateInPlane_x, originalsheetCoordinateInPlane_y,
                     originalsheetControlPoint, originalsheetWidth, originalsheetLengthTopLeft, originalsheetLengthTopRight, originalsheetTipCoordinate_x, originalsheetLengthTopTip,
-                    colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0);
-
+                    colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0, false);
 
                     List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                     CountRealLenghts(sheets, height_left_basic);
@@ -1670,9 +1668,13 @@ namespace BaseClasses.GraphObj
 
                     List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
                     int openingIndex = 0;
+                    bool hasOverlap = true;
                     // 5. Pridame nove sheets do zoznamu
                     for (int j = 0; j < iNumberOfNewSheets; j++)
                     {
+                        if (j == 0) hasOverlap = false;
+                        else hasOverlap = true;
+
                         if (j == iNumberOfNewSheets - 1) // Last segment of original sheet
                         {
                             if (isFibreglassFirst) openingIndex = j;
@@ -1712,7 +1714,7 @@ namespace BaseClasses.GraphObj
                             originalsheetTipCoordinate_x,
                             lengthTopTip,
                             colorName, claddingShape, claddingCoatingType,
-                            color, fOpacity, claddingWidthRibModular, true, 0);
+                            color, fOpacity, claddingWidthRibModular, true, 0, hasOverlap);
 
                             List<CCladdingOrFibreGlassSheet> cuttedSheets = CutSheetAccordingToMaxLength(sheet);
                             sheets.AddRange(cuttedSheets);
@@ -1748,16 +1750,16 @@ namespace BaseClasses.GraphObj
                             double lengthTopLeft = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
                             double lengthTopRight = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
 
-                            if((isFibreglassFirst || isFibreglassLast) && objectInColision_In_Local_x.Count > 1)
+                            if ((isFibreglassFirst || isFibreglassLast) && objectInColision_In_Local_x.Count > 1)
                             {
-                                lengthTopLeft = objectInColision_In_Local_x[j+1].CoordinateInPlane_y - coordinateInPlane_y;
-                                lengthTopRight = objectInColision_In_Local_x[j+1].CoordinateInPlane_y - coordinateInPlane_y;
+                                lengthTopLeft = objectInColision_In_Local_x[j + 1].CoordinateInPlane_y - coordinateInPlane_y;
+                                lengthTopRight = objectInColision_In_Local_x[j + 1].CoordinateInPlane_y - coordinateInPlane_y;
                             }
 
                             if (side == "Roof-left" && isFibreglassLast)
                             {
                                 if (j > 0)
-                                    coordinateInPlane_y = objectInColision_In_Local_x[j-1].CoordinateInPlane_y + objectInColision_In_Local_x[j-1].LengthTotal;
+                                    coordinateInPlane_y = objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + objectInColision_In_Local_x[j - 1].LengthTotal;
 
                                 if (j < iNumberOfNewSheets - 1)
                                 {
@@ -1784,7 +1786,7 @@ namespace BaseClasses.GraphObj
                                 0,
                                 0,
                                 colorName, claddingShape, claddingCoatingType,
-                                color, fOpacity, claddingWidthRibModular, true, 0);
+                                color, fOpacity, claddingWidthRibModular, true, 0, hasOverlap);
 
                             List<CCladdingOrFibreGlassSheet> cuttedSheets = CutSheetAccordingToMaxLength(sheet);
                             sheets.AddRange(cuttedSheets);
@@ -1859,9 +1861,19 @@ namespace BaseClasses.GraphObj
                 }
                 sheet.Update();
                 sheets.Add(sheet);
-             }
+            }
+            if(!orig_sheet.HasOverlap) SetCuttedSheetsOverlaps(sheets);
 
             return sheets;
+        }
+
+        private void SetCuttedSheetsOverlaps(List<CCladdingOrFibreGlassSheet> sheets)
+        {
+            for (int i = 0; i < sheets.Count; i++)
+            {
+                if (i == 0) sheets[i].HasOverlap = false;
+                else sheets[i].HasOverlap = true;
+            }
         }
 
         private void CutCanopySheet(CCladdingOrFibreGlassSheet originalsheet, bool isRoofLeft, ref int iSheetIndex, double length_left_basic)
@@ -1874,7 +1886,7 @@ namespace BaseClasses.GraphObj
                 cuttedSheet.ID = iSheetIndex;
                 sheets.Add(cuttedSheet);
 
-                if(isRoofLeft) listOfCladdingSheetsRoofLeft.Add(cuttedSheet);
+                if (isRoofLeft) listOfCladdingSheetsRoofLeft.Add(cuttedSheet);
                 else listOfCladdingSheetsRoofRight.Add(cuttedSheet);
             }
             originalsheet.Update();
@@ -1931,7 +1943,7 @@ namespace BaseClasses.GraphObj
             cuttedSheet.Update();
 
             originalSheet.CoordinateInPlane_y += maxLength;
-            if(changeOriginalID) originalSheet.ID++;
+            if (changeOriginalID) originalSheet.ID++;
             originalSheet.LengthTopTip -= maxLength;
             originalSheet.LengthTopRight -= maxLength;
             originalSheet.LengthTopLeft -= maxLength;
@@ -2015,8 +2027,8 @@ namespace BaseClasses.GraphObj
         }
 
         // TO Ondrej - je nejaka krasia cesta ako prevadzat medzi sebou objekty potomkov spolocneho predka, ak chceme pouzit len parametre predka??
-       public List<COpening> SheetListToOpeningListConverter (List<CCladdingOrFibreGlassSheet> input)
-       {
+        public List<COpening> SheetListToOpeningListConverter(List<CCladdingOrFibreGlassSheet> input)
+        {
             List<COpening> output = null;
 
             if (input != null && input.Count > 0)
@@ -2024,11 +2036,11 @@ namespace BaseClasses.GraphObj
                 output = new List<COpening>();
 
                 foreach (CCladdingOrFibreGlassSheet sheet in input)
-                  output.Add(sheet.ConvertToOpening());
+                    output.Add(sheet.ConvertToOpening());
             }
 
             return output;
-       }
+        }
 
         public void AddSheet3DModelsToModelGroup(List<CCladdingOrFibreGlassSheet> listOfsheets,
             DisplayOptions options,
@@ -2094,10 +2106,10 @@ namespace BaseClasses.GraphObj
                     //listOfsheets[i].PointText = sheetModel.Transform.Transform(listOfsheets[i].PointText); //transformPoint
                     //if (createWireframe)
                     //{
-                        listOfsheets[i].SetWireFramePoints();
-                        List<Point3D> wireframe = listOfsheets[i].WireFramePoints; // Vytvorime docasny zoznam bodov pre jeden sheet
-                        Drawing3DHelper.TransformPoints(wireframe, sheetModel.Transform); // Transformujeme body wireframe z LCS do GCS
-                        WireFramePoints.AddRange(wireframe); // Pridame body do zoznamu
+                    listOfsheets[i].SetWireFramePoints();
+                    List<Point3D> wireframe = listOfsheets[i].WireFramePoints; // Vytvorime docasny zoznam bodov pre jeden sheet
+                    Drawing3DHelper.TransformPoints(wireframe, sheetModel.Transform); // Transformujeme body wireframe z LCS do GCS
+                    WireFramePoints.AddRange(wireframe); // Pridame body do zoznamu
                     //}
 
                     modelGroup.Children.Add(sheetModel);
@@ -2201,7 +2213,7 @@ namespace BaseClasses.GraphObj
         }
         public List<CCladdingOrFibreGlassSheet> GetFibreglassSheets_Roof()
         {
-            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();            
+            List<CCladdingOrFibreGlassSheet> list = new List<CCladdingOrFibreGlassSheet>();
             if (listOfFibreGlassSheetsRoofRight != null) list.AddRange(listOfFibreGlassSheetsRoofRight);
             if (listOfFibreGlassSheetsRoofLeft != null) list.AddRange(listOfFibreGlassSheetsRoofLeft);
 
@@ -2213,7 +2225,7 @@ namespace BaseClasses.GraphObj
             if (listOfFibreGlassSheetsWallLeft != null) list.AddRange(listOfFibreGlassSheetsWallLeft);
             if (listOfFibreGlassSheetsWallFront != null) list.AddRange(listOfFibreGlassSheetsWallFront);
             if (listOfFibreGlassSheetsWallRight != null) list.AddRange(listOfFibreGlassSheetsWallRight);
-            if (listOfFibreGlassSheetsWallBack != null) list.AddRange(listOfFibreGlassSheetsWallBack);            
+            if (listOfFibreGlassSheetsWallBack != null) list.AddRange(listOfFibreGlassSheetsWallBack);
 
             return list;
         }
@@ -2259,7 +2271,7 @@ namespace BaseClasses.GraphObj
             if (listOfFibreGlassSheetsWallLeft != null && listOfFibreGlassSheetsWallLeft.Count > 0) return true;
             if (listOfFibreGlassSheetsWallFront != null && listOfFibreGlassSheetsWallFront.Count > 0) return true;
             if (listOfFibreGlassSheetsWallRight != null && listOfFibreGlassSheetsWallRight.Count > 0) return true;
-            if (listOfFibreGlassSheetsWallBack != null && listOfFibreGlassSheetsWallBack.Count > 0) return true;            
+            if (listOfFibreGlassSheetsWallBack != null && listOfFibreGlassSheetsWallBack.Count > 0) return true;
 
             return false;
         }
