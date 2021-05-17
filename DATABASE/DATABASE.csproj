@@ -143,6 +143,7 @@
     <Compile Include="DTO\CKitsetMonoOrGableRoofEnclosed.cs" />
     <Compile Include="DTO\CSectionProperties.cs" />
     <Compile Include="DTO\CoatingColours.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

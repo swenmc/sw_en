@@ -1591,17 +1591,17 @@ namespace BaseClasses.GraphObj
 
                 if (hasNextCanopyRight)
                 {
-                    canopy = canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1); //go to next canopy
-                    hasNextCanopyRight = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1));
-                    hasPreviousCanopyRight = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex - 1));
+                    CCanopiesInfo canopyNext = canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1); //go to next canopy
+                    hasNextCanopyRight = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(canopyNext.BayIndex + 1));
+                    hasPreviousCanopyRight = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(canopyNext.BayIndex - 1));
 
-                    fCanopyBayStartOffsetRight = hasPreviousCanopyRight ? 0f : ((canopy.BayIndex == 0 ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
-                    fCanopyBayEndOffsetRight = hasNextCanopyRight ? 0f : (((canopy.BayIndex == canopyCollection.Count - 1) ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
+                    fCanopyBayStartOffsetRight = hasPreviousCanopyRight ? 0f : ((canopyNext.BayIndex == 0 ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
+                    fCanopyBayEndOffsetRight = hasNextCanopyRight ? 0f : (((canopyNext.BayIndex == canopyCollection.Count - 1) ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
 
-                    fBayStartCoordinate_Y_Right = ModelHelper.GetBaysWidthUntil(canopy.BayIndex, bayWidthCollection) - fCanopyBayStartOffsetRight;
-                    fBayEndCoordinate_Y_Right = ModelHelper.GetBaysWidthUntil(canopy.BayIndex + 1, bayWidthCollection) + fCanopyBayEndOffsetRight;
+                    fBayStartCoordinate_Y_Right = ModelHelper.GetBaysWidthUntil(canopyNext.BayIndex, bayWidthCollection) - fCanopyBayStartOffsetRight;
+                    fBayEndCoordinate_Y_Right = ModelHelper.GetBaysWidthUntil(canopyNext.BayIndex + 1, bayWidthCollection) + fCanopyBayEndOffsetRight;
 
-                    if (canopy.Right && (
+                    if (canopyNext.Right && (
                        (fBayStartCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline <= originalsheet.CoordinateInPlane_x &&
                        fBayEndCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
                        (fBayStartCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline >= originalsheet.CoordinateInPlane_x &&
@@ -1609,7 +1609,7 @@ namespace BaseClasses.GraphObj
                        (fBayEndCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline >= originalsheet.CoordinateInPlane_x &&
                        fBayEndCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
                     {
-                        double CanopyCladdingWidth_Right = canopy.WidthRight + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
+                        double CanopyCladdingWidth_Right = canopyNext.WidthRight + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
                         if (maxCanopyCladdingWidth_Right < CanopyCladdingWidth_Right) maxCanopyCladdingWidth_Right = CanopyCladdingWidth_Right;
                     }
                 }
@@ -1654,17 +1654,17 @@ namespace BaseClasses.GraphObj
 
                 if (hasNextCanopyLeft)
                 {
-                    canopy = canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1); //go to next canopy
-                    hasNextCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1));
-                    hasPreviousCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex - 1));
+                    CCanopiesInfo canopyNext = canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1); //go to next canopy
+                    hasNextCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopyNext.BayIndex + 1));
+                    hasPreviousCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopyNext.BayIndex - 1));
 
-                    fCanopyBayStartOffsetLeft = hasPreviousCanopyLeft ? 0f : ((canopy.BayIndex == 0 ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
-                    fCanopyBayEndOffsetLeft = hasNextCanopyLeft ? 0f : (((canopy.BayIndex == canopyCollection.Count - 1) ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
+                    fCanopyBayStartOffsetLeft = hasPreviousCanopyLeft ? 0f : ((canopyNext.BayIndex == 0 ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
+                    fCanopyBayEndOffsetLeft = hasNextCanopyLeft ? 0f : (((canopyNext.BayIndex == canopyCollection.Count - 1) ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
 
-                    fBayStartCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopy.BayIndex, bayWidthCollection) - fCanopyBayStartOffsetLeft;
-                    fBayEndCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopy.BayIndex + 1, bayWidthCollection) + fCanopyBayEndOffsetLeft;
+                    fBayStartCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopyNext.BayIndex, bayWidthCollection) - fCanopyBayStartOffsetLeft;
+                    fBayEndCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopyNext.BayIndex + 1, bayWidthCollection) + fCanopyBayEndOffsetLeft;
 
-                    if (canopy.Left && (
+                    if (canopyNext.Left && (
                    (fBayStartCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline <= originalsheet.CoordinateInPlane_x &&
                    fBayEndCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline >= (originalsheet.CoordinateInPlane_x + originalsheet.Width)) ||
                    (fBayStartCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline >= originalsheet.CoordinateInPlane_x &&
@@ -1672,7 +1672,7 @@ namespace BaseClasses.GraphObj
                    (fBayEndCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline >= originalsheet.CoordinateInPlane_x &&
                    fBayEndCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline <= (originalsheet.CoordinateInPlane_x + originalsheet.Width))))
                     {
-                        double CanopyCladdingWidth_Left = canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
+                        double CanopyCladdingWidth_Left = canopyNext.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
                         if (maxCanopyCladdingWidth_Left < CanopyCladdingWidth_Left) maxCanopyCladdingWidth_Left = CanopyCladdingWidth_Left;
                     }
                 }
