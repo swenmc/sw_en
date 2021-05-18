@@ -11,7 +11,7 @@ namespace DATABASE.DTO
         private int m_ID;
         private string m_Name;
         private string m_code;
-        private double m_default_spacing_m;
+        private string m_default_spacing_m;
         private string m_Standard;
         private bool m_isFixingItem;
         private string m_fixingIDs;
@@ -63,7 +63,7 @@ namespace DATABASE.DTO
             }
         }
 
-        public double Default_spacing_m
+        public string Default_spacing_m
         {
             get
             {

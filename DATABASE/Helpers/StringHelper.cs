@@ -52,6 +52,8 @@ namespace DATABASE
         // Convert string to array of int IDs
         public static int[] ConvertStringArrayOfIDs(string inputText, char delimiterChar)
         {
+            if (inputText == "") return null;
+
             string[] words = SplitText(inputText, delimiterChar);
 
             int[] arrayIDs = new int[words.Length];
@@ -65,6 +67,8 @@ namespace DATABASE
         // Convert string to of numbers (double)
         public static double[] ConvertStringArray(string inputText, char delimiterChar)
         {
+            if (inputText == "") return null;
+
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 

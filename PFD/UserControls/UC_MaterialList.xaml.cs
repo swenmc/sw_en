@@ -42,7 +42,7 @@ namespace PFD
             vm.PropertyChanged += MaterialListViewModel_PropertyChanged;
             this.DataContext = vm;
             //System.Diagnostics.Trace.WriteLine("after CMaterialListViewModel: " + (DateTime.Now - start).TotalMilliseconds) ;
-                        
+
             // Plates
             CreateTablePlates(pfdVM.Model);
 
@@ -58,6 +58,10 @@ namespace PFD
             // Fibreglass Sheets
             if (PartListHelper.DisplayFibreglassTable(pfdVM))
                 CreateTableFibreglassSheets(pfdVM.Model);
+
+            // Cladding Accessories
+            // IN WORK
+            CreateTableCladdingAccessories(pfdVM.Model);
 
             SetControlsVisibility();
         }
@@ -157,6 +161,159 @@ namespace PFD
 
             newStyle.Setters.Add(bold);
             dtrow.Style = newStyle;
+        }
+
+        private void CreateTableCladdingAccessories(CModel model)
+        {
+            // Cladding Accessories Item and Fixing - IN WORK
+            List<CCladdingAccessories_Item> claddingAccessoriesItems = new List<CCladdingAccessories_Item>();
+
+            // Tests
+            DATABASE.DTO.CCladdingAccessories_Fixing_Properties fixingProp = new DATABASE.DTO.CCladdingAccessories_Fixing_Properties();
+            fixingProp = DATABASE.CCladdingAccessoriesManager.GetFixingProperties("Galvanized cap assembly (for TEK screw 14gx115)");
+
+            CCladdingAccessories_Item item;
+
+            if (model.m_arrGOCladding[0] != null)
+            {
+                // 11 - Standard Roofing
+                // Sposob A
+                double ribWidth = _pfdVM._claddingOptionsVM.RoofCladdingProps.widthRib_m;
+                double fixingPointTributaryArea = ribWidth * model.fDist_Purlin;
+
+                double fRoofCladdingArea_WithoutFibreglass = 200; // Todo napojit
+                int iNumberOfFixingPoints = (int)(fRoofCladdingArea_WithoutFibreglass / fixingPointTributaryArea);
+
+                // Sposob B
+
+                int iNumberOfFixingPoints2 = 0;
+                if (model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight != null)
+                {
+                    foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight)
+                    {
+                        iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                    }
+                }
+
+                if (model.m_arrGOCladding[0].listOfCladdingSheetsRoofLeft != null)
+                {
+                    foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsRoofLeft)
+                    {
+                        iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                    }
+                }
+
+                item = new CCladdingAccessories_Item("TEK screw 14gx115(platic profile washer and galvanized cap)", iNumberOfFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+
+
+
+
+
+                // 12 - Fibreglass rooflites
+
+                // Todo napojit
+                // Zistit kolko FG sheets (resp ich sirku) konci na hrane alebo tesne pod hranou strechy pre gable roof (napriklad < 0.3 m
+                // Podla suradnice y a hodnoty length v porovnani s length_left_basic (right side) a hodnoty y = 0 (left side)
+
+                int iNumberOfFGSheetsRidge = 5; // Todo napojit
+                double fTotalLengthFGSheetsRidge = 20.15; // Todo napojit
+
+                // Todo pridat do DB capFlashingFibreglass_Ridge
+                // Todo pridat do DB plasticBlokFibreglass_Ridge
+
+                int iNumberOfSupportBracketBetweenPurlins;
+                double supportBracketBetweenPurlinsLengthTotal = 0;
+                int iNumberOfSupportBracketBetweenPurlinsFixingPoints = 0;
+
+                if (model.fDist_Purlin <= 2.5)
+                    iNumberOfSupportBracketBetweenPurlins = 0;
+                if (model.fDist_Purlin <= 4.5)
+                    iNumberOfSupportBracketBetweenPurlins = 1;
+                else
+                    iNumberOfSupportBracketBetweenPurlins = 2;
+
+                // Sposob A
+                fixingPointTributaryArea = ribWidth * model.fDist_Purlin;
+
+                double fRoofCladdingAreaFibreglass = 22; // Todo napojit
+                iNumberOfFixingPoints = (int)(fRoofCladdingAreaFibreglass / fixingPointTributaryArea);
+
+                // Sposob B
+
+                iNumberOfFixingPoints2 = 0;
+                int iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji sheet, TODO doriesit ak su 2 fibreglass sheets vedla seba
+                double dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
+
+                if (model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofRight != null)
+                {
+                    foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofRight)
+                    {
+                        iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                        iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
+                        int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenPurlins * ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1);
+                        supportBracketBetweenPurlinsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                        iNumberOfSupportBracketBetweenPurlinsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 + 2); // Pridany jeden bod pre koncove rebro FG + 2 pre rebra cladding sheet
+                    }
+                }
+
+                if (model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofLeft != null)
+                {
+                    foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofLeft)
+                    {
+                        iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                        iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
+                        int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenPurlins * ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1);
+                        supportBracketBetweenPurlinsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                        iNumberOfSupportBracketBetweenPurlinsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 + 2); // Pridany jeden bod pre koncove rebro FG + 2 pre rebra cladding sheet
+                    }
+                }
+
+                // Crown roof fixing
+                item = new CCladdingAccessories_Item("TEK screw 14gx115 (platic profile washer and galvanized cap)", iNumberOfFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+                // Lapstitch fixing
+                item = new CCladdingAccessories_Item("Lapstitch with TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+                // Protection strip
+                double fLengthProtectionstrip = iNumberOfFixingPoints2 * ribWidth;
+
+                // CAccessories_LengthItemProperties - asi by bolo dobre pouzit
+                item = new CCladdingAccessories_Item("Fibreglass protection strip 80 mm wide", (int)fLengthProtectionstrip); // DOCASNE INT
+                claddingAccessoriesItems.Add(item);
+
+                // 13 - Rooflite support bracket
+
+                // Support bracket
+                item = new CCladdingAccessories_Item("Fibreglass support bracket 30x40x1400x1 mm", (int)supportBracketBetweenPurlinsLengthTotal); // DOCASNE INT
+                claddingAccessoriesItems.Add(item);
+
+                // Support bracket Fixing
+                item = new CCladdingAccessories_Item("TEK screw 14gx115 (platic profile washer and galvanized cap)", iNumberOfSupportBracketBetweenPurlinsFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+
+
+
+
+
+
+
+                // 21 - Cladding
+                ribWidth = _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m;
+                float profileFactor = 1; // 1 - Smartdek, 2 - Purlindek and Speedclad
+                fixingPointTributaryArea = (ribWidth / profileFactor) * model.fDist_Girt;
+
+                double fWallCladdingArea_WithoutFibreglassAndOpenings = 200; // Todo napojit
+                iNumberOfFixingPoints = (int)(fWallCladdingArea_WithoutFibreglassAndOpenings / fixingPointTributaryArea);
+
+                item = new CCladdingAccessories_Item("Smartdek TEK screw 12gx20 (neo washer)", iNumberOfFixingPoints);
+                claddingAccessoriesItems.Add(item);
+            }
+
         }
 
         private void BtnReload_Click(object sender, RoutedEventArgs e)
