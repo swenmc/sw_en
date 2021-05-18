@@ -1873,6 +1873,9 @@ namespace BaseClasses.GraphObj
                 if (listOfOpenings != null && listOfOpenings.Count > 0) // Nejake opening su zadefinovane, takze ma zmysel hladat kolizie
                     objectInColision_In_Local_x = listOfOpenings.Where(o => (o.CoordinateInPlane_x <= originalsheetCoordinateInPlane_x + dLimit && (o.CoordinateInPlane_x + o.Width) >= (originalsheetCoordinateInPlane_x - dLimit + originalsheetWidth))).ToList();
 
+
+                bool isOrigSheetLast = true;
+                if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && side == "Roof-right") isOrigSheetLast = false;
                 // Ak neexistuju objekty v kolizii s originalsheet mozeme opustit funkciu
                 if (objectInColision_In_Local_x == null || objectInColision_In_Local_x.Count == 0)
                 {
@@ -1882,7 +1885,7 @@ namespace BaseClasses.GraphObj
                     originalsheetControlPoint, originalsheetWidth, originalsheetLengthTopLeft, originalsheetLengthTopRight, originalsheetTipCoordinate_x, originalsheetLengthTopTip,
                     colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0, false);
 
-                    List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
+                    List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet, isOrigSheetLast);
                     CountRealLenghts(sheets, height_left_basic);
                     listOfSheets.AddRange(sheets);
 
@@ -1974,7 +1977,7 @@ namespace BaseClasses.GraphObj
                             colorName, claddingShape, claddingCoatingType,
                             color, fOpacity, claddingWidthRibModular, true, 0, hasOverlap);
 
-                            List<CCladdingOrFibreGlassSheet> cuttedSheets = CutSheetAccordingToMaxLength(sheet);
+                            List<CCladdingOrFibreGlassSheet> cuttedSheets = CutSheetAccordingToMaxLength(sheet, isOrigSheetLast);
                             sheets.AddRange(cuttedSheets);
                             iSheetIndex += cuttedSheets.Count;
 
@@ -2046,7 +2049,7 @@ namespace BaseClasses.GraphObj
                                 colorName, claddingShape, claddingCoatingType,
                                 color, fOpacity, claddingWidthRibModular, true, 0, hasOverlap);
 
-                            List<CCladdingOrFibreGlassSheet> cuttedSheets = CutSheetAccordingToMaxLength(sheet);
+                            List<CCladdingOrFibreGlassSheet> cuttedSheets = CutSheetAccordingToMaxLength(sheet, isOrigSheetLast);
                             sheets.AddRange(cuttedSheets);
                             iSheetIndex += cuttedSheets.Count;
 
@@ -2073,7 +2076,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private List<CCladdingOrFibreGlassSheet> CutSheetAccordingToMaxLength(CCladdingOrFibreGlassSheet orig_sheet)
+        private List<CCladdingOrFibreGlassSheet> CutSheetAccordingToMaxLength(CCladdingOrFibreGlassSheet orig_sheet, bool isOrigSheetLast = true)
         {
             CCladdingOrFibreGlassSheet sheet = orig_sheet.Clone();
             List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
@@ -2097,7 +2100,8 @@ namespace BaseClasses.GraphObj
                     }
                 }
                 sheet.Update();
-                sheets.Add(sheet);
+                if(isOrigSheetLast) sheets.Add(sheet);
+                else sheets.Insert(0, sheet);
             }
             else
             {
@@ -2118,7 +2122,8 @@ namespace BaseClasses.GraphObj
                     }
                 }
                 sheet.Update();
-                sheets.Add(sheet);
+                if (isOrigSheetLast) sheets.Add(sheet);
+                else sheets.Insert(0, sheet);
             }
             if (!orig_sheet.HasOverlap) SetCuttedSheetsOverlaps(sheets);
 
