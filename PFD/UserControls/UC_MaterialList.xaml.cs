@@ -679,7 +679,7 @@ namespace PFD
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Roller door extension plate fixing
-                int iNumberOfFixingPointsPerPlate = 6; // DB
+                int iNumberOfFixingPointsPerPlate = 2*6; // DB
                 iNumberOfFixingPoints = iNumberOfRollerDoorTrimmers * iNumberOfFixingPointsPerPlate;
                 itemPiece = new CCladdingAccessories_Item_Piece("Roller door extension plate TEK screw 14gx22", iNumberOfFixingPoints);
                 claddingAccessoriesItems_Piece.Add(itemPiece);
