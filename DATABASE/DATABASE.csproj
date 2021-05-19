@@ -104,7 +104,8 @@
     <Compile Include="CWashersManager.cs" />
     <Compile Include="DTO\CBoltNutProperties.cs" />
     <Compile Include="DTO\CCladdingAccessories_Fixing_Properties.cs" />
-    <Compile Include="DTO\CCladdingAccessories_Item_Properties.cs" />
+    <Compile Include="DTO\CCladdingAccessories_Item_Length_Properties.cs" />
+    <Compile Include="DTO\CCladdingAccessories_Item_Piece_Properties.cs" />
     <Compile Include="DTO\CDownpipeProperties.cs" />
     <Compile Include="DTO\CPlaneItemProperties.cs" />
     <Compile Include="DTO\CLengthItemProperties.cs" />
