@@ -295,7 +295,7 @@ namespace PFD
                 item = new CCladdingAccessories_Item("Fibreglass support bracket 30x40x1400x1 mm", supportBracketBetweenPurlinsLengthTotal);
                 claddingAccessoriesItems.Add(item);
 
-                // Support bracket Fixing
+                // Support bracket fixing
                 item = new CCladdingAccessories_Item("TEK screw 14gx115 (platic profile washer and galvanized cap)", iNumberOfSupportBracketBetweenPurlinsFixingPoints);
                 claddingAccessoriesItems.Add(item);
 
@@ -391,12 +391,17 @@ namespace PFD
                     iNumberEavePurlinBirdProofFixingPoints = 2 * ((int)(_pfdVM.RoofSideLength / dEavePurlinBirdProofFixingPointSpacing) + 1);
                 }
 
-                // TODO Bird proof flashing - pridat ku flashing
+                // TODO - dopracovat podmienky
+                // Pouzit ak su front a back wall
+                // TODO Bird proof flashing - pridat ku flashing list
+
 
                 // Barge flashing fixing - Rivets
                 item = new CCladdingAccessories_Item("Barge flashing rivet 73AS6.4", iNumberOfFixingPoints);
                 claddingAccessoriesItems.Add(item);
 
+                // TODO - dopracovat podmienky
+                // Pouzit ak su front a back wall
                 // Bird proof flashing fixing - Rivets
                 item = new CCladdingAccessories_Item("Birdgproof flashing rivet 73AS6.4", iNumberOfFixingPointsBirdProofFlashing);
                 claddingAccessoriesItems.Add(item);
@@ -493,8 +498,27 @@ namespace PFD
                 double dBuildingPerimeter = 2 * (_pfdVM.LengthOverall + _pfdVM.WidthOverall);
                 double dBuildingCladdingPerimeterWithoutDoors = dBuildingPerimeter; // Obvod budovy bez sirky dveri
 
+                double dRollerDoorTrimmerLengh = 0;
+                double dRollerDoorHeaderLengh = 0;
+                int iNumberOfRollerDoorTrimmers = 0; // Trimmers or extension plates
+
+                double dPADoorHeaderLengh = 0;
+
                 foreach (DoorProperties door in _pfdVM._doorsAndWindowsVM.DoorBlocksProperties)
+                {
                     dBuildingCladdingPerimeterWithoutDoors -= door.fDoorsWidth;
+
+                    if (door.sDoorType == "Roller Door")
+                    {
+                        dRollerDoorTrimmerLengh += door.fDoorsHeight * 2;
+                        dRollerDoorHeaderLengh += door.fDoorsWidth;
+                        iNumberOfRollerDoorTrimmers += 2;
+                    }
+                    else
+                    {
+                        dPADoorHeaderLengh += door.fDoorsWidth;
+                    }
+                }
 
                 // Damp proof course
                 item = new CCladdingAccessories_Item("Damp proof course beneath angle", dBuildingCladdingPerimeterWithoutDoors); // TODO - prerobit na double
@@ -522,7 +546,155 @@ namespace PFD
                 item = new CCladdingAccessories_Item("Corner flashing rivet 73AS6.4", iNumberOfFixingPoints);
                 claddingAccessoriesItems.Add(item);
 
-                // 23 - Fibreglass wall lite
+                // 23 - Fibreglass walllite
+
+                int iNumberOfSupportBracketBetweenGirts;
+                double supportBracketBetweenGirtsLengthTotal = 0;
+                int iNumberOfSupportBracketBetweenGirtsFixingPoints = 0;
+                int iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints = 0; // 12gx20 - 4 pcs per bracket
+
+                if (model.fDist_Purlin <= 1.8)
+                    iNumberOfSupportBracketBetweenGirts = 0;
+                if (model.fDist_Purlin <= 5.4)
+                    iNumberOfSupportBracketBetweenGirts = 1;
+                else
+                    iNumberOfSupportBracketBetweenGirts = 2;
+
+                double dLapSealantBead_TotalLength = 0;
+
+                // Sposob A
+                ribWidth = _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m;
+                fixingPointTributaryArea = (ribWidth / (float)profileFactor) * model.fDist_Girt;
+
+                double fWallCladdingAreaFibreglass = 12; // Todo napojit
+                iNumberOfFixingPoints = (int)(fWallCladdingAreaFibreglass / fixingPointTributaryArea);
+
+                // Sposob B
+
+                iNumberOfFixingPoints2 = 0;
+                iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji sheet, TODO doriesit ak su 2 fibreglass sheets vedla seba
+                dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
+
+                if (model.m_arrGOCladding[0].listOfFibreGlassSheetsWallLeft != null)
+                {
+                    foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfFibreGlassSheetsWallLeft)
+                    {
+                        iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                        iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
+                        int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1);
+                        iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
+                        supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                        iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
+                        dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                    }
+                }
+
+                if (model.m_arrGOCladding[0].listOfFibreGlassSheetsWallFront != null)
+                {
+                    foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfFibreGlassSheetsWallFront)
+                    {
+                        iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                        iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
+                        int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1);
+                        iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
+                        supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                        iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
+                        dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                    }
+                }
+
+                if (model.m_arrGOCladding[0].listOfFibreGlassSheetsWallRight != null)
+                {
+                    foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfFibreGlassSheetsWallRight)
+                    {
+                        iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                        iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
+                        int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1);
+                        iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
+                        supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                        iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
+                        dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                    }
+                }
+
+                if (model.m_arrGOCladding[0].listOfFibreGlassSheetsWallBack != null)
+                {
+                    foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfFibreGlassSheetsWallBack)
+                    {
+                        iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                        iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
+                        int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1);
+                        iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
+                        supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                        iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
+                        dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                    }
+                }
+
+                // Pan fibreglass sheet fixing
+                item = new CCladdingAccessories_Item("Smartdek TEK screw 12gx20 (neo and bonded washer)", iNumberOfFixingPoints2);
+                claddingAccessoriesItems.Add(item);
+
+                // Lapstitch fixing
+                item = new CCladdingAccessories_Item("Lap stitching TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+                // Support bracket
+                item = new CCladdingAccessories_Item("U bracket 40x30x1400 - 1 mm", supportBracketBetweenGirtsLengthTotal);
+                claddingAccessoriesItems.Add(item);
+
+                // Support bracket fixing
+                item = new CCladdingAccessories_Item("Smartdek TEK screw 12gx20 (neo and bonded washer)", iNumberOfSupportBracketBetweenGirtsFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+                // Support bracket fixing to cladding
+                item = new CCladdingAccessories_Item("Smartdek TEK screw 12gx20 (neo washer)", iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+                // 24 - Cladding lap
+
+                // Silicone sealant bead
+                item = new CCladdingAccessories_Item("Silicone sealand bead", dLapSealantBead_TotalLength);
+                claddingAccessoriesItems.Add(item);
+
+                // 26 - Roller door trim
+
+                // TODO Header cap flashing - pridat ku flashing list
+                // TODO Header packer - pridat ku flashing list
+
+                // Roller door trim flashing fixing
+
+                double dRollerDoorflashingFixingSpacing = 0.3f; // DB
+                iNumberOfFixingPoints = 2 * (int)(dRollerDoorTrimmerLengh / dRollerDoorflashingFixingSpacing); // 2 sides resp. top and bottom
+                iNumberOfFixingPoints+= 5 * (int)(dRollerDoorHeaderLengh / dRollerDoorflashingFixingSpacing);
+
+                item = new CCladdingAccessories_Item("Flashing rivet 73AS6.4", iNumberOfFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+                // 27 - Roller door mounting
+                // Roller door extension plate
+                item = new CCladdingAccessories_Item("Roller door extension plate", iNumberOfRollerDoorTrimmers);
+                claddingAccessoriesItems.Add(item);
+
+                // Roller door extension plate fixing
+                int iNumberOfFixingPointsPerPlate = 6; // DB
+                iNumberOfFixingPoints = iNumberOfRollerDoorTrimmers * iNumberOfFixingPointsPerPlate;
+                item = new CCladdingAccessories_Item("Roller door extension plate TEK screw 14gx22", iNumberOfFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+                // 29 - PA door trim
+                // PA door header cap flashing - TODO - skontrolovat ci je v zozname flashing list
+                // PA door header cap flashing fixing
+
+                double dPADoorflashingFixingSpacing = 0.3f; // DB
+                iNumberOfFixingPoints = 2 * (int)(dPADoorHeaderLengh / dPADoorflashingFixingSpacing);
+                item = new CCladdingAccessories_Item("Flashing rivet 73AS6.4", iNumberOfFixingPoints);
+                claddingAccessoriesItems.Add(item);
+
+
+
+
+
 
 
 
