@@ -488,7 +488,7 @@ namespace PFD
                     }
                 }
 
-                item = new CCladdingAccessories_Item("Smartdek TEK screw 12gx20 (neo washer)", iNumberOfFixingPoints2);
+                item = new CCladdingAccessories_Item("TEK screw 12gx20 (neo washer)", iNumberOfFixingPoints2);
                 claddingAccessoriesItems.Add(item);
 
                 // Fixing between wall cladding sheets
@@ -632,7 +632,7 @@ namespace PFD
                 }
 
                 // Pan fibreglass sheet fixing
-                item = new CCladdingAccessories_Item("Smartdek TEK screw 12gx20 (neo and bonded washer)", iNumberOfFixingPoints2);
+                item = new CCladdingAccessories_Item("TEK screw 12gx20 (neo and bonded washer)", iNumberOfFixingPoints2);
                 claddingAccessoriesItems.Add(item);
 
                 // Lapstitch fixing
@@ -644,17 +644,17 @@ namespace PFD
                 claddingAccessoriesItems.Add(item);
 
                 // Support bracket fixing
-                item = new CCladdingAccessories_Item("Smartdek TEK screw 12gx20 (neo and bonded washer)", iNumberOfSupportBracketBetweenGirtsFixingPoints);
+                item = new CCladdingAccessories_Item("TEK screw 12gx20 (neo and bonded washer)", iNumberOfSupportBracketBetweenGirtsFixingPoints);
                 claddingAccessoriesItems.Add(item);
 
                 // Support bracket fixing to cladding
-                item = new CCladdingAccessories_Item("Smartdek TEK screw 12gx20 (neo washer)", iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints);
+                item = new CCladdingAccessories_Item("TEK screw 12gx20 (neo washer)", iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints);
                 claddingAccessoriesItems.Add(item);
 
                 // 24 - Cladding lap
 
                 // Silicone sealant bead
-                item = new CCladdingAccessories_Item("Silicone sealand bead", dLapSealantBead_TotalLength);
+                item = new CCladdingAccessories_Item("Silicone sealant bead", dLapSealantBead_TotalLength);
                 claddingAccessoriesItems.Add(item);
 
                 // 26 - Roller door trim
