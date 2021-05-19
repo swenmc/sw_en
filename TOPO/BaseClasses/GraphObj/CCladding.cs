@@ -923,6 +923,9 @@ namespace BaseClasses.GraphObj
                 }
             }
 
+            bool isOrigSheetLast = true;
+            if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed) isOrigSheetLast = false;
+
             if (bGenerateRoofCladding)
             {
                 if (bIndividualCladdingSheets)
@@ -958,7 +961,7 @@ namespace BaseClasses.GraphObj
                                     originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                     originalsheet.Update();
 
-                                    CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic);
+                                    CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic, isOrigSheetLast);
                                     //System.Diagnostics.Trace.WriteLine("CutCanopySheet: " + originalsheet.ID);
 
                                     if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed || (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && !canopy.Left))
@@ -1032,7 +1035,7 @@ namespace BaseClasses.GraphObj
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                         originalsheet.Update();
 
-                                        CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic);
+                                        CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic, isOrigSheetLast);
 
                                         breakIndex = cIndex + 1;
                                     }
@@ -1321,7 +1324,7 @@ namespace BaseClasses.GraphObj
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                         originalsheet.Update();
 
-                                        CutCanopySheet(originalsheet, true, ref iSheetIndex, length_left_basic);
+                                        CutCanopySheet(originalsheet, true, ref iSheetIndex, length_left_basic, isOrigSheetLast);
 
                                         breakIndex = cIndex + 1;
                                     }
@@ -2148,7 +2151,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private void CutCanopySheet(CCladdingOrFibreGlassSheet originalsheet, bool isRoofLeft, ref int iSheetIndex, double length_left_basic)
+        private void CutCanopySheet(CCladdingOrFibreGlassSheet originalsheet, bool isRoofLeft, ref int iSheetIndex, double length_left_basic, bool isOrigSheetLast)
         {
             List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
             while (originalsheet.LengthTotal > maxSheetLegth_RoofCladding)
@@ -2162,7 +2165,9 @@ namespace BaseClasses.GraphObj
                 else listOfCladdingSheetsRoofRight.Add(cuttedSheet);
             }
             originalsheet.Update();
-            sheets.Add(originalsheet);
+
+            if (isOrigSheetLast) sheets.Add(originalsheet);
+            else sheets.Insert(0, originalsheet);
 
             if (!originalsheet.HasOverlap) SetCuttedSheetsOverlaps(sheets);
 
