@@ -87,6 +87,11 @@ namespace PFD
             }
             else if (sender is CAccessories_LengthItemProperties)
             {
+                if (e.PropertyName == "CoatingColor")
+                {
+                    CAccessories_LengthItemProperties flashing = sender as CAccessories_LengthItemProperties;
+                    _pfdVM._doorsAndWindowsVM.SetFlashingsCoatingColorAccordingTo(flashing);
+                }
                 DoorsAndWindowsOptionsChanged = true;
             }
             else if (sender is CAccessories_DownpipeProperties)

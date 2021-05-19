@@ -137,6 +137,7 @@ namespace PFD
                     item.PropertyChanged += FlashingsItem_PropertyChanged;
                 }
 
+                CheckFlashingsColors();
                 NotifyPropertyChanged("Flashings");
             }
         }
@@ -1073,7 +1074,6 @@ namespace PFD
                 if (!Flashings.Any(f => f.Name == "Roller Door Trimmer")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", 0, 4));
                 if (!Flashings.Any(f => f.Name == "Roller Door Header")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", 0, 4));
                 if (!Flashings.Any(f => f.Name == "Roller Door Header Cap")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", 0, 4));
-
             }
 
             if (ModelHasPersonelDoor())
@@ -1087,15 +1087,55 @@ namespace PFD
                 if (!Flashings.Any(f => f.Name == "Window")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("Window", "Flashings", 0, 9));
             }
 
-
             if (flashingsToAdd.Count > 0)
             {
                 flashingsToAdd.InsertRange(0, Flashings);
-                Flashings = new ObservableCollection<CAccessories_LengthItemProperties>(flashingsToAdd.OrderBy(f=>f.ID));
+                Flashings = new ObservableCollection<CAccessories_LengthItemProperties>(flashingsToAdd.OrderBy(f=>f.ID));                
                 changed = true;
             }
 
             return changed;
+        }
+
+        private void CheckFlashingsColors()
+        {
+            IEnumerable<int> rollerDoorColors = Flashings.Where(f => f.Name.Contains("Roller Door")).Select(f=>f.CoatingColor.ID).Distinct();
+            if (rollerDoorColors.Count() > 1)
+            {
+                CoatingColour coatingColour = Flashings.Where(f => f.Name.Contains("Roller Door")).Select(f => f.CoatingColor).FirstOrDefault();
+                foreach (CAccessories_LengthItemProperties item in Flashings.Where(f => f.Name.Contains("Roller Door")))
+                {
+                    if(item.CoatingColor != coatingColour) item.CoatingColor = coatingColour;
+                }
+            }
+
+            IEnumerable<int> personelDoorColors = Flashings.Where(f => f.Name.Contains("PA Door")).Select(f => f.CoatingColor.ID).Distinct();
+            if (personelDoorColors.Count() > 1)
+            {
+                CoatingColour coatingColour = Flashings.Where(f => f.Name.Contains("PA Door")).Select(f => f.CoatingColor).FirstOrDefault();
+                foreach (CAccessories_LengthItemProperties item in Flashings.Where(f => f.Name.Contains("PA Door")))
+                {
+                    if(item.CoatingColor != coatingColour) item.CoatingColor = coatingColour;
+                }
+            }
+        }
+
+        public void SetFlashingsCoatingColorAccordingTo(CAccessories_LengthItemProperties item)
+        {
+            if (item.Name.Contains("Roller Door"))
+            {
+                foreach (CAccessories_LengthItemProperties flashingRD in Flashings.Where(f => f.Name.Contains("Roller Door")))
+                {
+                    if(flashingRD.CoatingColor != item.CoatingColor) flashingRD.CoatingColor = item.CoatingColor;
+                }
+            }
+            if (item.Name.Contains("PA Door"))
+            {
+                foreach (CAccessories_LengthItemProperties flashingPD in Flashings.Where(f => f.Name.Contains("PA Door")))
+                {
+                    if(flashingPD.CoatingColor != item.CoatingColor) flashingPD.CoatingColor = item.CoatingColor;
+                }
+            }
         }
 
     }
