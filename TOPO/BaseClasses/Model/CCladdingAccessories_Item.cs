@@ -11,6 +11,8 @@ namespace BaseClasses
     {
         public int m_count;
 
+        public double m_length;
+
         public DATABASE.DTO.CCladdingAccessories_Item_Properties m_ItemProp;
 
         public CCladdingAccessories_Item()
@@ -29,6 +31,14 @@ namespace BaseClasses
             m_ItemProp = new DATABASE.DTO.CCladdingAccessories_Item_Properties();
             m_ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties(name);
             m_count = count;
+        }
+
+        public CCladdingAccessories_Item(string name, double length)
+        {
+            Name = name;
+            m_ItemProp = new DATABASE.DTO.CCladdingAccessories_Item_Properties();
+            m_ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties(name);
+            m_length = length;
         }
     }
 }
