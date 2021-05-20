@@ -219,8 +219,6 @@ namespace PFD
                 int iNumberOfFGSheetsRidge = 5; // Todo napojit
                 double dTotalLengthFGSheetsRidge = 20.15; // Todo napojit
 
-                // Todo pridat do DB capFlashingFibreglass_Ridge // Flashing List
-
                 int iNumberOfSupportBracketBetweenPurlins;
                 double supportBracketBetweenPurlinsLengthTotal = 0;
                 int iNumberOfSupportBracketBetweenPurlinsFixingPoints = 0;
@@ -340,6 +338,22 @@ namespace PFD
                         itemPiece = new CCladdingAccessories_Item_Piece("Ridge TEK screw 12gx20 (neo washer)", iNumberOfFixingPoints);
                         claddingAccessoriesItems_Piece.Add(itemPiece);
                     }
+
+                    // TODO
+                    // Apex brace - malo by to byt samostatne pri plates
+                    double dApexBraceSpacing = 1; // 1 m???
+
+                    int iNumberOfRidgeApexBracePoints = (int)(_pfdVM.Length / dApexBraceSpacing) + 1;
+                    int iNumberOfRidgeApexBracePlates = 2 * iNumberOfRidgeApexBracePoints;
+                    iNumberOfFixingPoints = 4 * iNumberOfRidgeApexBracePlates; // 4 TEK screws per brace
+
+                    // Apex brace
+                    itemPiece = new CCladdingAccessories_Item_Piece("Apex brace Angle L30/1-650", iNumberOfRidgeApexBracePoints);
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                    // Apex brace TEK screws 10g
+                    itemPiece = new CCladdingAccessories_Item_Piece("Apex brace wafer TEK screw 10g", iNumberOfFixingPoints);
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
                 }
 
                 // 17 - Barge
@@ -396,8 +410,6 @@ namespace PFD
 
                 // TODO - dopracovat podmienky
                 // Pouzit ak su front a back wall
-                // TODO Bird proof flashing - pridat ku flashing list
-
 
                 // Barge flashing fixing - Rivets
                 itemPiece = new CCladdingAccessories_Item_Piece("Barge flashing rivet 73AS6.4", iNumberOfFixingPoints);
@@ -415,10 +427,8 @@ namespace PFD
 
                 // 18 - Gutter
 
-                // TODO Bird proof flashing - pridat ku flashing .... Eave purlin birdproof flashing
-
                 // Eave purlin bird proof flashing fixing
-                itemPiece = new CCladdingAccessories_Item_Piece("Birdproof strip wafer TEK 10g", iNumberEavePurlinBirdProofFixingPoints);
+                itemPiece = new CCladdingAccessories_Item_Piece("Birdproof strip wafer TEK screw 10g", iNumberEavePurlinBirdProofFixingPoints);
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Eave purlin bird proof plastic blocks
