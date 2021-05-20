@@ -204,8 +204,9 @@ namespace PFD
         {
             get
             {
-                return new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
+                return new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Barge Birdproof", "Eave Purlin Birdproof Strip",
+                    "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+                        /*"PA Door Trimmer",*/  "PA Door Header Cap", "Window", "Fibreglass Roof Ridge Cap"};
             }
         }
         public List<string> GuttersNames
@@ -1078,8 +1079,8 @@ namespace PFD
 
             if (ModelHasPersonelDoor())
             {
-                if (!Flashings.Any(f => f.Name == "PA Door Trimmer")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", 0, 18));
-                if (!Flashings.Any(f => f.Name == "PA Door Header")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", 0, 18));
+                //if (!Flashings.Any(f => f.Name == "PA Door Trimmer")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", 0, 18));
+                if (!Flashings.Any(f => f.Name == "PA Door Header Cap")) flashingsToAdd.Add(new CAccessories_LengthItemProperties("PA Door Header Cap", "Flashings", 0, 18));
             }
 
             if (ModelHasWindow())
@@ -1090,7 +1091,7 @@ namespace PFD
             if (flashingsToAdd.Count > 0)
             {
                 flashingsToAdd.InsertRange(0, Flashings);
-                Flashings = new ObservableCollection<CAccessories_LengthItemProperties>(flashingsToAdd.OrderBy(f=>f.ID));                
+                Flashings = new ObservableCollection<CAccessories_LengthItemProperties>(flashingsToAdd.OrderBy(f=>f.ID));
                 changed = true;
             }
 

@@ -258,8 +258,6 @@ namespace BaseClasses
             }
         }
 
-        
-
         public CAccessories_LengthItemProperties()
         {
         }
@@ -269,7 +267,7 @@ namespace BaseClasses
             //m_ID = id;
             m_Name = databaseName;
             m_DatabaseTable = databaseTable;
-            m_length_total = totalLength;            
+            m_length_total = totalLength;
             m_coatingColor = CoatingColors[colorIndex];
             SetParametersFromDatabase();
         }
@@ -315,6 +313,5 @@ namespace BaseClasses
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
