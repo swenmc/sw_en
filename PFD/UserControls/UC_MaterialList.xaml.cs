@@ -176,7 +176,7 @@ namespace PFD
             CCladdingAccessories_Item_Piece itemPiece;
             CCladdingAccessories_Item_Length itemLength;
 
-            if (model.m_arrGOCladding[0] != null)
+            if (model.m_arrGOCladding != null && model.m_arrGOCladding.Count > 0)
             {
                 // 11 - Standard Roofing
                 // Sposob A
