@@ -207,7 +207,7 @@ namespace PFD
                     }
                 }
 
-                itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115(platic profile washer and galvanized cap)", iNumberOfFixingPoints);
+                itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints);
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // 12 - Fibreglass rooflites
@@ -270,7 +270,7 @@ namespace PFD
                 }
 
                 // Crown roof fixing
-                itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (platic profile washer and galvanized cap)", iNumberOfFixingPoints);
+                itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints);
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Lapstitch fixing
@@ -296,7 +296,7 @@ namespace PFD
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Support bracket fixing
-                itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (platic profile washer and galvanized cap)", iNumberOfSupportBracketBetweenPurlinsFixingPoints);
+                itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfSupportBracketBetweenPurlinsFixingPoints);
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // 14 - Roofing lap
@@ -702,14 +702,183 @@ namespace PFD
                 itemPiece = new CCladdingAccessories_Item_Piece("Flashing rivet 73AS6.4", iNumberOfFixingPoints);
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
+                // TODO - zobrazit zoznamy items v tabulkach
 
+                // Items - Length
+                DataSet ds = GetTableCladdingAccessories_Items_Length(claddingAccessoriesItems_Length, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+                if (ds == null) return;
 
+                Datagrid_CladdingAccessories_Items_Length.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+                Datagrid_CladdingAccessories_Items_Length.Loaded += Datagrid_CladdingAccessories_Items_Length_Loaded;
 
+                // Items - Piece
+                ds = null;
+                ds = GetTableCladdingAccessories_Items_Piece(claddingAccessoriesItems_Piece, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+                if (ds == null) return;
 
-
-
-
+                Datagrid_CladdingAccessories_Items_Piece.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+                Datagrid_CladdingAccessories_Items_Piece.Loaded += Datagrid_CladdingAccessories_Items_Piece_Loaded;
             }
+        }
+
+        public static DataSet GetTableCladdingAccessories_Items_Length(List<CCladdingAccessories_Item_Length> claddingAccessoriesItems_Length, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
+        {
+            // IN WORK - rozpracovane
+
+            // TODO - Dopracovat
+            double dTotalItemsMass_Table = 0;
+            double dTotalItemsPrice_Table = 0;
+
+            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docanse - upravit 
+            foreach(CCladdingAccessories_Item_Length item in claddingAccessoriesItems_Length)
+            {
+                QuotationItem qitem = new QuotationItem();
+
+                qitem.Name = item.Name;
+                qitem.Length = (float)item.m_length;
+
+                quotation.Add(qitem);
+
+                //dTotalItemsMass_Table += item.Mass;
+                //dTotalItemsPrice_Table += item.Price_NZD;
+            }
+
+            dBuildingMass += dTotalItemsMass_Table;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalItemsPrice_Table;
+
+            // Create Table
+            DataTable table = new DataTable("CladdingAccessories_Items_Length");
+            // Create Table Rows
+            table.Columns.Add(QuotationHelper.colProp_Name.ColumnName, QuotationHelper.colProp_Name.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Length_m.ColumnName, QuotationHelper.colProp_Length_m.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitMass_LM.ColumnName, QuotationHelper.colProp_UnitMass_LM.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_LM_NZD.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
+
+            // Set Table Column Properties
+            QuotationHelper.SetDataTableColumnProperties(table);
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table);
+
+            DataRow row = null;
+            foreach (QuotationItem item in quotation)
+            {
+                row = table.NewRow();
+
+                try
+                {
+                    row[QuotationHelper.colProp_Name.ColumnName] = item.Name;
+                    row[QuotationHelper.colProp_Length_m.ColumnName] = item.Length.ToString("F2");
+                    row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = 0; // TODO //item.UnitMassLength.ToString("F2");
+                    row[QuotationHelper.colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
+                    row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = 0; // TODO //item.UnitPrice_Length_NZD.ToString("F2");
+                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table.Rows.Add(row);
+            }
+
+            // Last row
+            row = table.NewRow();
+            row[QuotationHelper.colProp_Name.ColumnName] = "Total:";
+            row[QuotationHelper.colProp_Length_m.ColumnName] = "";
+            row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalMass.ColumnName] = dTotalItemsMass_Table.ToString("F2");
+            row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = dTotalItemsPrice_Table.ToString("F2");
+            table.Rows.Add(row);
+
+            return ds;
+        }
+
+        public static DataSet GetTableCladdingAccessories_Items_Piece(List<CCladdingAccessories_Item_Piece> claddingAccessoriesItems_Piece, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
+        {
+            // IN WORK - rozpracovane
+
+            // TODO - Dopracovat
+            double dTotalItemsMass_Table = 0;
+            double dTotalItemsPrice_Table = 0;
+            int iTotalItemsNumber_Table = 0;
+
+            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docanse - upravit 
+            foreach (CCladdingAccessories_Item_Piece item in claddingAccessoriesItems_Piece)
+            {
+                QuotationItem qitem = new QuotationItem();
+
+                qitem.Name = item.Name;
+                qitem.Quantity = item.m_count;
+
+                quotation.Add(qitem);
+
+                //dTotalItemsMass_Table += item.Mass_per_piece;
+                //dTotalItemsPrice_Table += item.Price_PPP_NZD;
+                iTotalItemsNumber_Table += item.m_count;
+            }
+
+            dBuildingMass += dTotalItemsMass_Table;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalItemsPrice_Table;
+
+            // Create Table
+            DataTable table = new DataTable("CladdingAccessories_Items_Piece");
+            // Create Table Rows
+            table.Columns.Add(QuotationHelper.colProp_Name.ColumnName, QuotationHelper.colProp_Name.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitMass_P.ColumnName, QuotationHelper.colProp_UnitMass_P.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
+            table.Columns.Add(QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_P_NZD.DataType);
+            table.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
+
+            // Set Table Column Properties
+            QuotationHelper.SetDataTableColumnProperties(table);
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table);
+
+            DataRow row = null;
+            foreach (QuotationItem item in quotation)
+            {
+                row = table.NewRow();
+
+                try
+                {
+                    row[QuotationHelper.colProp_Name.ColumnName] = item.Name;
+                    row[QuotationHelper.colProp_Count.ColumnName] = item.Quantity;
+                    row[QuotationHelper.colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
+                    row[QuotationHelper.colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
+                    row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = item.PricePerPiece.ToString("F2");
+                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table.Rows.Add(row);
+            }
+
+            // Last row
+            row = table.NewRow();
+            row[QuotationHelper.colProp_Name.ColumnName] = "Total:";
+            row[QuotationHelper.colProp_Count.ColumnName] = iTotalItemsNumber_Table;
+            row[QuotationHelper.colProp_UnitMass_P.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalMass.ColumnName] = dTotalItemsMass_Table.ToString("F2");
+            row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = "";
+            row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = dTotalItemsPrice_Table.ToString("F2");
+            table.Rows.Add(row);
+
+            return ds;
+        }
+
+        private void Datagrid_CladdingAccessories_Items_Length_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_CladdingAccessories_Items_Length);
+        }
+
+        private void Datagrid_CladdingAccessories_Items_Piece_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_CladdingAccessories_Items_Piece);
         }
 
         private void BtnReload_Click(object sender, RoutedEventArgs e)
