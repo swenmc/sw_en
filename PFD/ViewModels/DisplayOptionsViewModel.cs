@@ -3617,6 +3617,7 @@ namespace PFD
             set
             {
                 m_CladdingSheetColoursByID = value;
+                if (m_CladdingSheetColoursByID == true && m_UseDifColorForSheetWithOverlap == true) UseDifColorForSheetWithOverlap = false;
                 NotifyPropertyChanged("CladdingSheetColoursByID");
             }
         }
@@ -4005,6 +4006,7 @@ namespace PFD
             set
             {
                 m_UseDifColorForSheetWithOverlap = value;
+                if (m_CladdingSheetColoursByID == true && m_UseDifColorForSheetWithOverlap == true) CladdingSheetColoursByID = false;
                 NotifyPropertyChanged("UseDifColorForSheetWithOverlap");
             }
         }
