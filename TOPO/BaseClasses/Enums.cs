@@ -839,6 +839,16 @@ namespace BaseClasses
         Best = 4
     }
 
+    public enum EBuildingSide
+    {
+        Left = 1,
+        Right =2,
+        Front = 3,
+        Back = 4,
+        Roof_Left_Side = 5,
+        Roof_Right_Side = 6,
+        Roof = 7
+    }
 
     // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
     public enum EGlobalPlane

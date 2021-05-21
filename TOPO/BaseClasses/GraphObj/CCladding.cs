@@ -603,7 +603,7 @@ namespace BaseClasses.GraphObj
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pback0_baseleft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, !MathF.d_equal(fgsp.Y, 0));
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
 
                         listOfFibreGlassOpenings.Add(sheet);
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -673,7 +673,7 @@ namespace BaseClasses.GraphObj
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pfront0_baseleft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, !MathF.d_equal(fgsp.Y, 0));
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -754,7 +754,7 @@ namespace BaseClasses.GraphObj
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pfront1_baseright, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, !MathF.d_equal(fgsp.Y, 0));
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -825,7 +825,7 @@ namespace BaseClasses.GraphObj
                             m_WallProps_FG.thickness_m, m_WallProps_FG.widthCoil_m, m_WallProps_FG.flatsheet_mass_kg_m2, m_WallProps_FG.price_PPSM_NZD * m_WallProps_FG.widthModular_m / m_WallProps_FG.widthCoil_m, m_WallProps_FG.widthModular_m,
                             iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                             pback1_baseright, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_WallProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, !MathF.d_equal(fgsp.Y, 0));
+                            m_ColorNameWall_FG, m_claddingShape_Wall_FG, m_claddingCoatingType_Wall_FG, m_ColorWall_FG, options.fFibreglassOpacity, m_WallProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -912,7 +912,7 @@ namespace BaseClasses.GraphObj
                              m_RoofProps_FG.thickness_m, m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.flatsheet_mass_kg_m2, m_RoofProps_FG.price_PPSM_NZD * m_RoofProps_FG.widthModular_m / m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.widthModular_m,
                              iNumberOfEdges_FG_D_W, fgsp.X, fgsp.Y,
                              pControlPoint_RoofRight, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_RoofProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                             m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, false);
+                             m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -1275,7 +1275,7 @@ namespace BaseClasses.GraphObj
                                 m_RoofProps_FG.thickness_m, m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.flatsheet_mass_kg_m2, m_RoofProps_FG.price_PPSM_NZD * m_RoofProps_FG.widthModular_m / m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.widthModular_m,
                                 iNumberOfEdges_FG_D_W, fgsp.X, Position_y,
                                 pControlPoint_RoofLeft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_RoofProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
-                                m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, !MathF.Equals(fgsp.Y + fgsp.Length, length_left_basic));
+                                m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                             listOfFibreGlassOpenings.Add(sheet);
 
                             List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
@@ -2172,6 +2172,39 @@ namespace BaseClasses.GraphObj
             if (!originalsheet.HasOverlap) SetCuttedSheetsOverlaps(sheets);
 
             CountRealLenghts(sheets, length_left_basic);
+        }
+
+        private bool SheetHasOverlap(FibreglassProperties fgsp)
+        {
+            if (fgsp.Location == EBuildingSide.Left || fgsp.Location == EBuildingSide.Right || fgsp.Location == EBuildingSide.Front || fgsp.Location == EBuildingSide.Back)
+            {
+                if (MathF.d_equal(fgsp.Y, 0)) return false;
+                else return true;
+            }
+
+            if (fgsp.Location == EBuildingSide.Roof_Right_Side)
+            {
+                if (MathF.d_equal(fgsp.Y, 0)) return false;
+                else return true;
+            }
+
+            if (fgsp.Location == EBuildingSide.Roof_Left_Side)
+            {
+                if (MathF.d_equal(fgsp.Y + fgsp.Length, fgsp.MaxHeight)) return false;
+                else return true;
+            }
+
+            //To Mato - prosim o kontrolu podmienok
+            //dost mozne,ze sa neda pouzivat fgsp.MaxHeight ale treba mat lengt_left_basic
+            if (fgsp.Location == EBuildingSide.Roof) //Monopitch
+            {
+                if (sBuildingGeomInputData.fRoofPitch_deg < 0 && MathF.d_equal(fgsp.Y, 0)) return false;
+                else if (sBuildingGeomInputData.fRoofPitch_deg > 0 && MathF.d_equal(fgsp.Y + fgsp.Length, fgsp.MaxHeight)) return false;
+                else return true;
+            }
+
+            //tu sa nema nikdy dostat
+            return true;
         }
 
         private void CountRealLenghts(List<CCladdingOrFibreGlassSheet> sheets, double height_left_basic /* celkovy rozmer y pre danu plochu wall side alebo roof side */)

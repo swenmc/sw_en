@@ -25,6 +25,7 @@ namespace BaseClasses
         private float m_X;
         private float m_Y;
         private float m_Length;
+        private EBuildingSide m_Location;
 
         private string m_Side_old;
         private float m_X_old;
@@ -66,7 +67,8 @@ namespace BaseClasses
             set
             {
                 Side_old = m_Side;
-                m_Side = value;                
+                m_Side = value;
+                SetLocation();
                 NotifyPropertyChanged("Side");
                 InitXValuesAndSetX();
             }
@@ -398,6 +400,19 @@ namespace BaseClasses
             }
         }
 
+        public EBuildingSide Location
+        {
+            get
+            {
+                return m_Location;
+            }
+
+            set
+            {
+                m_Location = value;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -634,6 +649,16 @@ namespace BaseClasses
             Length = Length_old;
         }
 
+        private void SetLocation()
+        {
+            if (Side == "Left") Location = EBuildingSide.Left;
+            else if (Side == "Right") Location = EBuildingSide.Right;
+            else if (Side == "Front") Location = EBuildingSide.Front;
+            else if (Side == "Back") Location = EBuildingSide.Back;
+            else if (Side == "Roof") Location = EBuildingSide.Roof;
+            else if (Side == "Roof-Left Side") Location = EBuildingSide.Roof_Left_Side;
+            else if (Side == "Roof-Right Side") Location = EBuildingSide.Roof_Right_Side;
+        }
 
         public override bool Equals(object obj)
         {
