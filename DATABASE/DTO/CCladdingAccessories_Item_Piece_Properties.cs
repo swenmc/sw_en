@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DATABASE.DTO
 {
-    public class CCladdingAccessories_Item_Properties
+    public class CCladdingAccessories_Item_Piece_Properties
     {
         private int m_ID;
         private string m_Name;
@@ -206,6 +206,6 @@ namespace DATABASE.DTO
             }
         }
 
-        public CCladdingAccessories_Item_Properties(){}
+        public CCladdingAccessories_Item_Piece_Properties(){}
     }
 }

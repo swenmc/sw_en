@@ -2222,18 +2222,25 @@ namespace PFD
             float fRoofRidgeFlashing_TotalLength = 0;
             float fWallCornerFlashing_TotalLength = 0;
             float fBargeFlashing_TotalLength = 0;
+            float fEdgePurlinBirdproofStrip_TotalLength = 0;
+
+            float fFibreglassRoofRidgeCap_TotalLength = 0;
 
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 fRoofRidgeFlashing_TotalLength = 0;
                 fWallCornerFlashing_TotalLength = 2 * WallHeightOverall + 2 * Height_H2_Overall;
                 fBargeFlashing_TotalLength = 2 * fRoofSideLength;
+                fEdgePurlinBirdproofStrip_TotalLength = RoofLength_Y;
             }
             else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
-                fRoofRidgeFlashing_TotalLength = LengthOverall;
+                fRoofRidgeFlashing_TotalLength = RoofLength_Y;
                 fWallCornerFlashing_TotalLength = 4 * WallHeightOverall;
                 fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+                fEdgePurlinBirdproofStrip_TotalLength = 2 * RoofLength_Y;
+
+                fFibreglassRoofRidgeCap_TotalLength = 0; // TODO - Ondrej dopracovat zistit podla polohy fibreglass sheets, ktore zacinaju resp koncia v ridge +/- 200 mm
             }
             else
             {
@@ -2241,12 +2248,13 @@ namespace PFD
                 fRoofRidgeFlashing_TotalLength = 0;
                 fWallCornerFlashing_TotalLength = 0;
                 fBargeFlashing_TotalLength = 0;
+                fEdgePurlinBirdproofStrip_TotalLength = 0;
             }
 
             float fRollerDoorTrimmerFlashing_TotalLength = 0;
             float fRollerDoorLintelFlashing_TotalLength = 0;
             float fRollerDoorLintelCapFlashing_TotalLength = 0;
-            float fPADoorTrimmerFlashing_TotalLength = 0;
+            //float fPADoorTrimmerFlashing_TotalLength = 0; // Neexistuje
             float fPADoorLintelFlashing_TotalLength = 0;
             float fWindowFlashing_TotalLength = 0;
 
@@ -2259,12 +2267,15 @@ namespace PFD
 
             flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
             flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
+            flashings.Add(new CAccessories_LengthItemProperties("Barge Birdproof", "Flashings", fBargeFlashing_TotalLength, 2));
+            flashings.Add(new CAccessories_LengthItemProperties("Eave Purlin Birdproof Strip", "Flashings", fEdgePurlinBirdproofStrip_TotalLength, 2));
             flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
             flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
             flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
-            flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
-            flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
+            //flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18)); // Neexistuje v GCD - ram dveri je hlinikovy
+            flashings.Add(new CAccessories_LengthItemProperties("PA Door Header Cap", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
+            flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9)); // TODO - doriesit ???? Asi tiez neexistuje, nie je v detailoch, ale len lintel/header cap
+            flashings.Add(new CAccessories_LengthItemProperties("Fibreglass Roof Ridge Cap", "Flashings", fFibreglassRoofRidgeCap_TotalLength, 2));
 
             return flashings;
         }
@@ -2306,13 +2317,15 @@ namespace PFD
         {
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
-                _doorsAndWindowsVM.FlashingsNames = new List<string>() { "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
+                _doorsAndWindowsVM.FlashingsNames = new List<string>() { "Wall Corner", "Barge", "Barge Birdproof", "Eave Purlin Birdproof Strip",
+                        "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+                        /*"PA Door Trimmer",*/  "PA Door Header Cap", "Window"};
             }
             else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
-                _doorsAndWindowsVM.FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
-                        "PA Door Trimmer",  "PA Door Header", "Window"};
+                _doorsAndWindowsVM.FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Barge Birdproof", "Eave Purlin Birdproof Strip",
+                        "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+                        /*"PA Door Trimmer",*/ "PA Door Header Cap", "Window", "Fibreglass Roof Ridge Cap"};
             }
             else
             {
@@ -2332,11 +2345,11 @@ namespace PFD
 
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
-                fGuttersTotalLength = LengthOverall; // na jednom okraji strechy
+                fGuttersTotalLength = RoofLength_Y; // na jednom okraji strechy
             }
             else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
-                fGuttersTotalLength = 2 * LengthOverall; // na dvoch okrajoch strechy
+                fGuttersTotalLength = 2 * RoofLength_Y; // na dvoch okrajoch strechy
             }
             else
             {

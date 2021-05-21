@@ -2181,6 +2181,8 @@ namespace BaseClasses.GraphObj
             {
                 // TODO 783 - Ondrej
                 // Je potrebne doladit podla specifickych podmienok kedy sa nema jednat o overlap
+
+                // TO Ondrej - pre canopies je potrebne uvazovat okraje canopy, teda suradnice 0 a height_left_basic je potrebne upravovat podla sirky canopies a skutocnej suradnice y zaciatku prveho a konca posledneho sheet na canopy
                 if (    /*i == 0*/
                     (eModelType == EModelType_FS.eKitsetGableRoofEnclosed && (sheets[i].Name != "Fibreglass - Roof-Left Side" && sheets[i].Name != "Cladding - Roof-Left Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
                     ((sheets[i].Name == "Fibreglass - Roof-Left Side" || sheets[i].Name == "Cladding - Roof-Left Side") && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic))) ||

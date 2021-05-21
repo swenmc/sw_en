@@ -1883,7 +1883,7 @@ namespace PFD
 
                     if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sDoorType == "Personnel Door")
                     {
-                        CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "PA Door Trimmer");
+                        CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "PA Door Header Cap");
                         if (prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fPersonnelDoorFrameThickness;
                         frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
