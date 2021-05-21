@@ -15,6 +15,7 @@ namespace BaseClasses.GraphObj
         string m_ColorName;
         Color m_Color;
         float m_fOpacity;
+        EBuildingSide m_Location;
 
         private float m_ft; // Thickness
 
@@ -554,6 +555,19 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public EBuildingSide Location
+        {
+            get
+            {
+                return m_Location;
+            }
+
+            set
+            {
+                m_Location = value;
+            }
+        }
+
         public int iVectorOverFactor_LCS;
         public int iVectorUpFactor_LCS;
 
@@ -562,7 +576,7 @@ namespace BaseClasses.GraphObj
 
         }
 
-        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, string name, MATERIAL.CMat claddingMaterial,
+        public CCladdingOrFibreGlassSheet(int iCladdingSheet_ID, string prefix, string name, EBuildingSide location, MATERIAL.CMat claddingMaterial,
         double thickness, double coilWidth, double coilMass_kg_m2, double coilPrice_PPSM_NZD,
         double basicModularWidth,
         int numberOfCorners, double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
@@ -573,6 +587,7 @@ namespace BaseClasses.GraphObj
             ID = iCladdingSheet_ID;
             Prefix = prefix;
             Name = name;
+            Location = location;
             m_Mat = claddingMaterial; // Vseobecny material lebo FG nemusi byt steel
 
             Ft = (float)thickness;
