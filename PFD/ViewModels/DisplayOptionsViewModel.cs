@@ -352,6 +352,7 @@ namespace PFD
 
         private bool m_UseTextures;
         private bool m_UseTexturesMembers;
+        private bool m_UseTexturesPlates;
         private bool m_UseTexturesCladding;
 
         #region Loads
@@ -4095,6 +4096,19 @@ namespace PFD
                 NotifyPropertyChanged("UseTexturesMembers");
             }
         }
+        public bool UseTexturesPlates
+        {
+            get
+            {
+                return m_UseTexturesPlates;
+            }
+
+            set
+            {
+                m_UseTexturesPlates = value;
+                NotifyPropertyChanged("UseTexturesPlates");
+            }
+        }
 
         public bool UseTexturesCladding
         {
@@ -4109,6 +4123,8 @@ namespace PFD
                 NotifyPropertyChanged("UseTexturesCladding");
             }
         }
+
+        
 
 
         #endregion Properties
@@ -4226,6 +4242,7 @@ namespace PFD
             CladdingSheetColoursByID = false;
             UseTextures = false;
             UseTexturesMembers = false;
+            UseTexturesPlates = false;
             UseTexturesCladding = false;
 
             if (bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
@@ -4628,6 +4645,7 @@ namespace PFD
 
             UseTextures = newVM.UseTextures;
             UseTexturesMembers = newVM.UseTexturesMembers;
+            UseTexturesPlates = newVM.UseTexturesPlates;
             UseTexturesCladding = newVM.UseTexturesCladding;
             ColoredCenterlines = newVM.ColoredCenterlines;
             CladdingSheetColoursByID = newVM.CladdingSheetColoursByID;

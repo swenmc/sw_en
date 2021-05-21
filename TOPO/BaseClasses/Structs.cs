@@ -219,6 +219,7 @@ namespace BaseClasses
         public bool bCladdingSheetColoursByID;
         public bool bUseTextures;
         public bool bUseTexturesMembers;
+        public bool bUseTexturesPlates;
         public bool bUseTexturesCladding;
         public bool bUseDistColorOfSheetWithoutOverlap;
 

@@ -833,6 +833,7 @@
                         <StackPanel Grid.Row="29" Grid.Column="2" Grid.RowSpan="2">
                             <CheckBox Name="chbUseTextures" IsChecked="{Binding Path=UseTextures}">Use Textures</CheckBox>
                             <CheckBox Name="chbUseTexturesMembers" IsChecked="{Binding Path=UseTexturesMembers}" Margin="25 0 0 0">Members</CheckBox>
+                            <CheckBox Name="chbUseTexturesPlates" IsChecked="{Binding Path=UseTexturesPlates}" Margin="25 0 0 0">Plates</CheckBox>
                             <CheckBox Name="chbUseTexturesCladding" IsChecked="{Binding Path=UseTexturesCladding}" Margin="25 0 0 0">Cladding</CheckBox>
                         </StackPanel>
                         

@@ -3190,6 +3190,7 @@ namespace PFD
             sDisplayOptions.bCladdingSheetColoursByID = _displayOptionsVM.CladdingSheetColoursByID;
             sDisplayOptions.bUseTextures = _displayOptionsVM.UseTextures;
             sDisplayOptions.bUseTexturesMembers = _displayOptionsVM.UseTexturesMembers;
+            sDisplayOptions.bUseTexturesPlates = _displayOptionsVM.UseTexturesPlates;
             sDisplayOptions.bUseTexturesCladding = _displayOptionsVM.UseTexturesCladding;
             sDisplayOptions.bUseDistColorOfSheetWithoutOverlap = _displayOptionsVM.UseDifColorForSheetWithOverlap;
             sDisplayOptions.CladdingSheetNoOverlapColor = _displayOptionsVM.CladdingSheetColor;

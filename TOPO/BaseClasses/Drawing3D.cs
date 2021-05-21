@@ -1827,7 +1827,7 @@ namespace BaseClasses
                                 cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
                                 {
                                     GeometryModel3D plateGeom = null;
-                                    if (opts.bUseTextures && opts.bUseTexturesMembers) plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3DWithTexture(opts.fPlateSolidModelOpacity);
+                                    if (opts.bUseTextures && opts.bUseTexturesPlates) plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3DWithTexture(opts.fPlateSolidModelOpacity);
                                     else plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
                                     cmodel.m_arrConnectionJoints[i].m_arrPlates[l].Visual_Plate = plateGeom;
 

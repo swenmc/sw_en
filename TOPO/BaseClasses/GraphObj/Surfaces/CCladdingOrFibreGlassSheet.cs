@@ -699,7 +699,7 @@ namespace BaseClasses.GraphObj
             pfront4_topleft.X += CoordinateInPlane_x;
             pfront4_topleft.Z += CoordinateInPlane_y;
 
-            if (options.bCladdingSheetColoursByID && !options.bUseTexturesCladding) // Ak je zapnuta textura, tak je nadradena solid brush farbam
+            if (options.bCladdingSheetColoursByID && (!options.bUseTextures || !options.bUseTexturesCladding)) // Ak je zapnuta textura, tak je nadradena solid brush farbam
             {
                 // TODO Ondrej - pouzije sa farba priradena objektu
                 // Chcelo by to nejako vylepsit, aby sme tu farbu a material nastavovali len raz a nemuselo sa to tu prepisovat
@@ -709,7 +709,7 @@ namespace BaseClasses.GraphObj
             }
 
             // TODO 783 - Ondrej
-            if (options.bUseDistColorOfSheetWithoutOverlap)
+            if (options.bUseDistColorOfSheetWithoutOverlap && (!options.bUseTextures || !options.bUseTexturesCladding)) // Ak je zapnuta textura, tak je nadradena solid brush farbam
             {
                 // Testovanie
                 // TODO 783 - Ondrej                
