@@ -9,7 +9,7 @@ namespace BaseClasses
     [Serializable]
     public class CCladdingAccessories_Item_Piece : CEntity3D
     {
-        public double m_count;
+        public int m_count;
 
         public DATABASE.DTO.CCladdingAccessories_Item_Piece_Properties m_ItemProp;
 

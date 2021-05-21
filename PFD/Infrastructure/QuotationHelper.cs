@@ -248,7 +248,7 @@ namespace PFD
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
             // Plates
-            List<QuotationItem> quotation = GetPlatesQuotation(model, fCFS_PricePerKg_Plates_Total);            
+            List<QuotationItem> quotation = GetPlatesQuotation(model, fCFS_PricePerKg_Plates_Total);
 
             //System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
 
