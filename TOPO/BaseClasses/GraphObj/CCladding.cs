@@ -1938,13 +1938,20 @@ namespace BaseClasses.GraphObj
                     // 5. Pridame nove sheets do zoznamu
                     for (int j = 0; j < iNumberOfNewSheets; j++)
                     {
-                        if (j == 0) hasOverlap = false;
-                        else hasOverlap = true;
-
+                        if (location == EBuildingSide.Roof_Left_Side)  //lava roof je proste speci
+                        {
+                            if (j == iNumberOfNewSheets - 1 && !isFibreglassFirst && !isFibreglassLast) hasOverlap = false;
+                            else hasOverlap = true;
+                        }
+                        else
+                        {
+                            if (j == 0 && !isFibreglassFirst && !isFibreglassLast) hasOverlap = false;
+                            else hasOverlap = true;
+                        }
+                        
                         if (j == iNumberOfNewSheets - 1) // Last segment of original sheet
                         {
-                            if (isFibreglassFirst) openingIndex = j;
-                            else if (isFibreglassLast) openingIndex = j;
+                            if (isFibreglassFirst || isFibreglassLast) { openingIndex = j; }
                             else openingIndex = j - 1;
 
                             double coordinateInPlane_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
@@ -2127,7 +2134,11 @@ namespace BaseClasses.GraphObj
 
             sheet.Update();
 
-            if(sheet.Location == EBuildingSide.Roof) sheets.Insert(0, sheet);
+            if (sheet.Location == EBuildingSide.Roof)
+            {
+                if(sBuildingGeomInputData.fRoofPitch_deg > 0) sheets.Insert(0, sheet);
+                else sheets.Add(sheet);
+            } 
             else if(sheet.IsFibreglass && sheet.Location == EBuildingSide.Roof_Left_Side) sheets.Insert(0, sheet);
             else sheets.Add(sheet);            
 
