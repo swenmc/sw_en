@@ -915,6 +915,9 @@ namespace BaseClasses.GraphObj
                              m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                         listOfFibreGlassOpenings.Add(sheet);
 
+                        if (!sheet.HasOverlap && IsAnyCanopyOnSide(fgsp.Location, sheet.ConvertToOpening(), column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic))
+                            sheet.HasOverlap = true;
+
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                         CountRealLenghts(sheets, length_left_basic);
                         listOfFibreGlassSheetsRoofRight.AddRange(sheets);
@@ -1280,6 +1283,9 @@ namespace BaseClasses.GraphObj
                                 pControlPoint_RoofLeft, fgsp.X >= dWidthOfWholeSheets ? dPartialSheet_End : m_RoofProps_FG.widthModular_m, fgsp.Length, fgsp.Length, 0, 0,
                                 m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                             listOfFibreGlassOpenings.Add(sheet);
+
+                            if (!sheet.HasOverlap && IsAnyCanopyOnSide(fgsp.Location, sheet.ConvertToOpening(), column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic))
+                                sheet.HasOverlap = true;
 
                             List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
                             CountRealLenghts(sheets, length_left_basic);
