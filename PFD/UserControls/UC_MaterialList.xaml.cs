@@ -545,6 +545,9 @@ namespace PFD
 
                     iNumberOfFixingPoints2 = 0;
 
+                    // TO Ondrej - mam podozrenie ze tieto zoznamy obsahuju sheet pred nadelenim !!!!!!!
+                    // TODO Ondrej - potrebujeme zaistit aby to sem voslo az ked je vsetko nadelene !!!!!
+
                     if (model.m_arrGOCladding[0].listOfCladdingSheetsLeftWall != null)
                     {
                         int iSeamFixingPointsPerSheetWidth = 1;
