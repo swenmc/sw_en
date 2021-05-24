@@ -652,9 +652,29 @@ namespace BaseClasses.GraphObj
             //      /
 
             if (NumberOfEdges == 4)
-            { LengthTotal = Math.Max(LengthTopLeft, LengthTopRight); LengthTotal_Real = Math.Max(LengthTopLeft_Real, LengthTopRight_Real); }
+            {
+                LengthTotal = Math.Max(LengthTopLeft, LengthTopRight);
+
+                if (LengthTopLeft_Real <= 0 || LengthTopRight_Real <= 0) // Nastavime defaultne rovnake hodnoty ako bez overlap
+                {
+                    LengthTopLeft_Real = LengthTopLeft;
+                    LengthTopRight_Real = LengthTopRight;
+                }
+
+                LengthTotal_Real = Math.Max(LengthTopLeft_Real, LengthTopRight_Real); }
             else
-            { LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip); LengthTotal_Real = Math.Max(Math.Max(LengthTopLeft_Real, LengthTopRight_Real), LengthTopTip_Real); }
+            {
+                LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
+
+                if (LengthTopLeft_Real <= 0 || LengthTopRight_Real <= 0 || LengthTopTip_Real <=0) // Nastavime defaultne rovnake hodnoty ako bez overlap
+                {
+                    LengthTopLeft_Real = LengthTopLeft;
+                    LengthTopRight_Real = LengthTopRight;
+                    LengthTopTip_Real = LengthTopTip;
+                }
+
+                LengthTotal_Real = Math.Max(Math.Max(LengthTopLeft_Real, LengthTopRight_Real), LengthTopTip_Real);
+            }
 
             Width_flat = Width / m_BasicModularWidth * m_CoilOrFlatSheetWidth;
             Price_PPKG_NZD = m_CoilOrFlatSheetPrice_PPSM_NZD / m_CoilOrFlatSheetMass_kg_m2;
@@ -727,7 +747,7 @@ namespace BaseClasses.GraphObj
             if (options.bUseDistColorOfSheetWithoutOverlap && (!options.bUseTextures || !options.bUseTexturesCladding)) // Ak je zapnuta textura, tak je nadradena solid brush farbam
             {
                 // Testovanie
-                // TODO 783 - Ondrej                
+                // TODO 783 - Ondrej
                 // Pre tie sheets ktore maju sadu real lengths rovnaku ako lengths nastavime specificku farbu
                 // Malo by sa tym dat vizualne skontrolovat, ktore sheet maju pripocitany overlap a ktore nie
 

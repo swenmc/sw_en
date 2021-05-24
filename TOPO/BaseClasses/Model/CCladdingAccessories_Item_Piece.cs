@@ -9,7 +9,13 @@ namespace BaseClasses
     [Serializable]
     public class CCladdingAccessories_Item_Piece : CEntity3D
     {
-        public int m_count;
+        private int count;
+
+        public int Count { get => count; set => count = value; }
+
+        private string note;
+
+        public string Note { get => note; set => note = value; }
 
         public DATABASE.DTO.CCladdingAccessories_Item_Piece_Properties m_ItemProp;
 
@@ -23,12 +29,13 @@ namespace BaseClasses
             m_ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties_ItemPiece(name);
         }
 
-        public CCladdingAccessories_Item_Piece(string name, int count)
+        public CCladdingAccessories_Item_Piece(string name, int count, string note = "")
         {
             Name = name;
             m_ItemProp = new DATABASE.DTO.CCladdingAccessories_Item_Piece_Properties();
             m_ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties_ItemPiece(name);
-            m_count = count;
+            Count = count;
+            Note = note;
         }
     }
 }

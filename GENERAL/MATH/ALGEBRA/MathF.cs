@@ -187,6 +187,18 @@ namespace MATH
             if ((a - limit) < b && (a + limit) > b) return true;
             else return false;
         }
+
+        // Super speci funkcia, ktora porovna hodnoty int a vrati true ak je rozdiel mensi ako 1% z vacsej absolutnej hodnoty alebo zadany limit
+        public static bool i_approxequal(int a, int b, double limitPercentage = 1)
+        {
+            int limit;
+            if (Math.Abs(b) > 0)
+                limit = (int)(limitPercentage / 100 * Math.Abs(b));
+            else limit = 0;
+
+            if ((a - limit) < b && (a + limit) > b) return true;
+            else return false;
+        }
         #endregion
         //----------------------------------------------------------------------------------------------------------------------------
         // Power / Mocniny
@@ -379,6 +391,23 @@ public double RombergIntegration(Function y, double a, double b, int n)
         }
 
         public static float Average(params float[] data)
+        {
+            return Sum(data) / data.Length;
+        }
+
+        public static double Sum(params double[] data)
+        {
+            double result = 0;
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                result += data[i];
+            }
+
+            return result;
+        }
+
+        public static double Average(params double[] data)
         {
             return Sum(data) / data.Length;
         }

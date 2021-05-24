@@ -237,6 +237,7 @@
                     <DataGridTextColumn Binding="{Binding Count}" Header="Count [-]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass_P}" Header="Unit Mass [kg/piece]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Note}" Header="Note [-]" Width="100" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

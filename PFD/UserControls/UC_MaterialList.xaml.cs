@@ -198,13 +198,16 @@ namespace PFD
 
                     iNumberOfFixingPoints = (int)(fRoofCladdingArea_WithoutFibreglass / fixingPointTributaryArea);
 
+                    // Pridavok
+                    iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 1.1478f); // Navysime pocet o rezervu
+
                     // Sposob B
 
                     if (model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight != null)
                     {
                         foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight)
                         {
-                            iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                            iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
                         }
                     }
 
@@ -212,11 +215,18 @@ namespace PFD
                     {
                         foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsRoofLeft)
                         {
-                            iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
+                            iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
                         }
                     }
 
-                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints);
+                    // Kontrola - priblizna
+                    if(!MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 15))
+                    {
+                        // Exception
+                        throw new Exception("Algorithm error. Different count of items!");
+                    }
+
+                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints2, "Roof Cladding");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
 
                     if ((model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofRight != null && model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofRight.Count > 0) ||
@@ -282,11 +292,11 @@ namespace PFD
                         }
 
                         // Crown roof fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints, "Roof Fibreglass");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // Lapstitch fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("Lapstitch with TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("Lapstitch with TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints, "Roof Fibreglass");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // Protection strip
@@ -304,17 +314,17 @@ namespace PFD
                         // 13 - Rooflite support bracket
 
                         // Support bracket
-                        itemPiece = new CCladdingAccessories_Item_Piece("Fibreglass support bracket 30x40x1400-1 mm", (int)(supportBracketBetweenPurlinsLengthTotal / 1.4f) + 1);
+                        itemPiece = new CCladdingAccessories_Item_Piece("Fibreglass support bracket 30x40x1400-1 mm", (int)(supportBracketBetweenPurlinsLengthTotal / 1.4f) + 1, "Roof Fibreglass Support Bracket");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // Support bracket fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfSupportBracketBetweenPurlinsFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfSupportBracketBetweenPurlinsFixingPoints, "Roof Fibreglass Support Bracket");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // 14 - Roofing lap
 
                         // Continuous closed cell foam packer
-                        itemLength = new CCladdingAccessories_Item_Length("Continuous closed cell foam packer 10x12 mm", dLapFoamPacker_TotalLength);
+                        itemLength = new CCladdingAccessories_Item_Length("Continuous closed cell foam packer 10x12 mm", dLapFoamPacker_TotalLength/*, "Roof Fibreglass"*/);
                         claddingAccessoriesItems_Length.Add(itemLength);
 
                         if (_pfdVM.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) // Gable Roof Only
@@ -432,21 +442,21 @@ namespace PFD
                 // TODO - dopracovat podmienky
                 // Pouzit ak su front a back wall
                 // Bird proof flashing fixing - Rivets
-                itemPiece = new CCladdingAccessories_Item_Piece("Birdgproof flashing rivet 73AS6.4", iNumberOfFixingPointsBirdProofFlashing);
+                itemPiece = new CCladdingAccessories_Item_Piece("Birdgproof flashing rivet 73AS6.4", iNumberOfFixingPointsBirdProofFlashing, "Barge");
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Barge cladding sheet edge fixing - TEK screws 12gx42
-                itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx42 (bonded washer)", iNumberOfFixingPointsBirdProofFlashing);
+                itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx42 (bonded washer)", iNumberOfFixingPointsBirdProofFlashing, "Barge");
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // 18 - Gutter
 
                 // Eave purlin bird proof flashing fixing
-                itemPiece = new CCladdingAccessories_Item_Piece("Birdproof strip wafer TEK screw 10g", iNumberEavePurlinBirdProofFixingPoints);
+                itemPiece = new CCladdingAccessories_Item_Piece("Birdproof strip wafer TEK screw 10g", iNumberEavePurlinBirdProofFixingPoints, "Eave purlin");
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Eave purlin bird proof plastic blocks
-                itemPiece = new CCladdingAccessories_Item_Piece("Plastic gutter block", iNumberEavePurlinBirdProofFixingPoints);
+                itemPiece = new CCladdingAccessories_Item_Piece("Plastic gutter block", iNumberEavePurlinBirdProofFixingPoints, "Eave purlin");
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Gutter brackets
@@ -466,69 +476,14 @@ namespace PFD
                     (model.m_arrGOCladding[0].listOfCladdingSheetsRightWall != null && model.m_arrGOCladding[0].listOfCladdingSheetsRightWall.Count > 0) ||
                     (model.m_arrGOCladding[0].listOfCladdingSheetsBackWall != null && model.m_arrGOCladding[0].listOfCladdingSheetsBackWall.Count > 0))
                 {
-                    // 21 - Cladding
-
-                    int profileFactor = 1; // 1 - Smartdek, 2 - Purlindek and Speedclad
-
-                    double dCladdingSeamFixingSpacing = 0.6; // DB
-                    int iNumberCladdingSeamFixingPoints = 0;
-
-                    // Sposob A
-                    double ribWidthWall = _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m;
-                    fixingPointTributaryArea = (ribWidthWall / (float)profileFactor) * model.fDist_Girt;
-
-                    double fWallCladdingArea_WithoutFibreglassAndOpenings = 200; // Todo napojit
-                    iNumberOfFixingPoints = (int)(fWallCladdingArea_WithoutFibreglassAndOpenings / fixingPointTributaryArea);
-
-                    // Sposob B
-
-                    iNumberOfFixingPoints2 = 0;
-
-                    if (model.m_arrGOCladding[0].listOfCladdingSheetsLeftWall != null)
-                    {
-                        foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsLeftWall)
-                        {
-                            iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                            iNumberCladdingSeamFixingPoints += ((int)(sheet.LengthTotal_Real / dCladdingSeamFixingSpacing) + 1); // One sheet side only
-                        }
-                    }
-
-                    if (model.m_arrGOCladding[0].listOfCladdingSheetsFrontWall != null)
-                    {
-                        foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsFrontWall)
-                        {
-                            iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                            iNumberCladdingSeamFixingPoints += ((int)(sheet.LengthTotal_Real / dCladdingSeamFixingSpacing) + 1); // One sheet side only
-                        }
-                    }
-
-                    if (model.m_arrGOCladding[0].listOfCladdingSheetsRightWall != null)
-                    {
-                        foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsRightWall)
-                        {
-                            iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                            iNumberCladdingSeamFixingPoints += ((int)(sheet.LengthTotal_Real / dCladdingSeamFixingSpacing) + 1); // One sheet side only
-                        }
-                    }
-
-                    if (model.m_arrGOCladding[0].listOfCladdingSheetsBackWall != null)
-                    {
-                        foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsBackWall)
-                        {
-                            iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                            iNumberCladdingSeamFixingPoints += ((int)(sheet.LengthTotal_Real / dCladdingSeamFixingSpacing) + 1); // One sheet side only
-                        }
-                    }
-
-                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo washer)", iNumberOfFixingPoints2);
-                    claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                    // Fixing between wall cladding sheets
-                    itemPiece = new CCladdingAccessories_Item_Piece("Seam fix cladding rivet 73AS6.4", iNumberCladdingSeamFixingPoints);
-                    claddingAccessoriesItems_Piece.Add(itemPiece);
+                    // Openings
+                    // Urcime zakladne parametre, mohli by sem uz prist pripravene
 
                     double dBuildingPerimeter = 2 * (_pfdVM.LengthOverall + _pfdVM.WidthOverall);
                     double dBuildingCladdingPerimeterWithoutDoors = dBuildingPerimeter; // Obvod budovy bez sirky dveri
+
+                    // Wall Fibreglass Area
+                    double fWallCladdingAreaFibreglass = _pfdVM._claddingOptionsVM.FibreglassAreaWallRatio / 100 * _pfdVM.TotalWallArea; // Todo skontrolovat
 
                     double dRollerDoorTrimmerLengh = 0;
                     double dRollerDoorHeaderLengh = 0;
@@ -538,6 +493,9 @@ namespace PFD
 
                     bool bAnyRollerDoorExists = false;
                     bool bAnyPADoorExists = false;
+
+                    // Wall Doors and Windows Area
+                    double dDoorsAndWindowsOpeningArea = 0; // !!!! Tu su dvere a okna zo vsetkych stien, je potrebne doriesit ak sa niektora stena nerata, aby sa neuvazovali doors a windows z danej steny
 
                     foreach (DoorProperties door in _pfdVM._doorsAndWindowsVM.DoorBlocksProperties)
                     {
@@ -557,24 +515,138 @@ namespace PFD
 
                             bAnyPADoorExists = true;
                         }
+
+                        dDoorsAndWindowsOpeningArea += door.fDoorsWidth * door.fDoorsHeight;
                     }
 
+                    foreach (WindowProperties window in _pfdVM._doorsAndWindowsVM.WindowBlocksProperties)
+                    {
+                        dDoorsAndWindowsOpeningArea += window.fWindowsWidth * window.fWindowsHeight;
+                    }
+
+                    // 21 - Cladding
+
+                    int profileFactor = 1; // 1 - Smartdek, 2 - Purlindek and Speedclad
+
+                    double dCladdingSeamFixingSpacing = 0.6; // DB
+                    int iNumberCladdingSeamFixingPoints = 0;
+
+                    // Sposob A
+                    double ribWidthWall = _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m;
+                    fixingPointTributaryArea = (ribWidthWall / (float)profileFactor) * model.fDist_Girt;
+
+                    double fWallCladdingArea_WithoutFibreglassAndOpenings = _pfdVM.TotalWallArea - fWallCladdingAreaFibreglass - dDoorsAndWindowsOpeningArea; // Todo skontrolovat ak nie su aktivne vsetky steny !!!
+                    iNumberOfFixingPoints = (int)(fWallCladdingArea_WithoutFibreglassAndOpenings / fixingPointTributaryArea);
+
+                    // Pridavok
+                    iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 1.2645f); // Navysime pocet o rezervu
+
+                    // Sposob B
+
+                    iNumberOfFixingPoints2 = 0;
+
+                    if (model.m_arrGOCladding[0].listOfCladdingSheetsLeftWall != null)
+                    {
+                        int iSeamFixingPointsPerSheetWidth = 1;
+
+                        foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsLeftWall)
+                        {
+                            if (!_pfdVM._modelOptionsVM.IndividualCladdingSheets)
+                                iSeamFixingPointsPerSheetWidth = (int)(sheet.Width / sheet.BasicModularWidth) + 1; // Nemusime uvazovat okraj, tam je corner flashing, ale uvazujem to ako rezervu a aby sedel pocet s individual sheet
+
+                            iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                            iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(sheet.LengthTotal_Real / dCladdingSeamFixingSpacing) + 1); // One sheet side only
+                        }
+                    }
+
+                    if (model.m_arrGOCladding[0].listOfCladdingSheetsFrontWall != null)
+                    {
+                        int iSeamFixingPointsPerSheetWidth = 1;
+
+                        foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsFrontWall)
+                        {
+                            double dSheetLength = sheet.LengthTotal_Real;
+                            if (!_pfdVM._modelOptionsVM.IndividualCladdingSheets)
+                            {
+                                if (sheet.NumberOfEdges == 5)
+                                    dSheetLength = MathF.Average(sheet.LengthTopLeft_Real, sheet.LengthTopTip_Real);
+                                else
+                                    dSheetLength = MathF.Average(sheet.LengthTopLeft_Real, sheet.LengthTopRight_Real);
+
+                                iSeamFixingPointsPerSheetWidth = (int)(sheet.Width / sheet.BasicModularWidth) + 1; // Nemusime uvazovat okraj, tam je corner flashing, ale uvazujem to ako rezervu a aby sedel pocet s individual sheet
+                            }
+
+                            iNumberOfFixingPoints2 += profileFactor * ((int)(dSheetLength / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                            iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(dSheetLength / dCladdingSeamFixingSpacing) + 1); // One sheet side only
+                        }
+                    }
+
+                    if (model.m_arrGOCladding[0].listOfCladdingSheetsRightWall != null)
+                    {
+                        int iSeamFixingPointsPerSheetWidth = 1;
+
+                        foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsRightWall)
+                        {
+                            if (!_pfdVM._modelOptionsVM.IndividualCladdingSheets)
+                                iSeamFixingPointsPerSheetWidth = (int)(sheet.Width / sheet.BasicModularWidth) + 1; // Nemusime uvazovat okraj, tam je corner flashing, ale uvazujem to ako rezervu a aby sedel pocet s individual sheet
+
+                            iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                            iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(sheet.LengthTotal_Real / dCladdingSeamFixingSpacing)/* + 1*/); // One sheet side only
+                        }
+                    }
+
+                    if (model.m_arrGOCladding[0].listOfCladdingSheetsBackWall != null)
+                    {
+                        int iSeamFixingPointsPerSheetWidth = 1;
+
+                        foreach (CCladdingOrFibreGlassSheet sheet in model.m_arrGOCladding[0].listOfCladdingSheetsBackWall)
+                        {
+                            double dSheetLength = sheet.LengthTotal_Real;
+                            if (!_pfdVM._modelOptionsVM.IndividualCladdingSheets)
+                            {
+                                if (sheet.NumberOfEdges == 5)
+                                    dSheetLength = MathF.Average(sheet.LengthTopLeft_Real, sheet.LengthTopTip_Real);
+                                else
+                                    dSheetLength = MathF.Average(sheet.LengthTopLeft_Real, sheet.LengthTopRight_Real);
+
+                                iSeamFixingPointsPerSheetWidth = (int)(sheet.Width / sheet.BasicModularWidth) + 1; // Nemusime uvazovat okraj, tam je corner flashing, ale uvazujem to ako rezervu a aby sedel pocet s individual sheet
+                            }
+
+                            iNumberOfFixingPoints2 += profileFactor * ((int)(dSheetLength / model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                            iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(dSheetLength / dCladdingSeamFixingSpacing) + 1); // One sheet side only
+                        }
+                    }
+
+                    // Kontrola - priblizna
+                    if (!MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 15))
+                    {
+                        // Exception
+                        throw new Exception("Algorithm error. Different count of items!");
+                    }
+
+                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo washer)", iNumberOfFixingPoints2, "Wall Cladding");
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                    // Fixing between wall cladding sheets
+                    itemPiece = new CCladdingAccessories_Item_Piece("Seam fix cladding rivet 73AS6.4", iNumberCladdingSeamFixingPoints, "Wall Cladding");
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
+
                     // Damp proof course
-                    itemLength = new CCladdingAccessories_Item_Length("Damp proof course beneath angle", dBuildingCladdingPerimeterWithoutDoors);
+                    itemLength = new CCladdingAccessories_Item_Length("Damp proof course beneath angle", dBuildingCladdingPerimeterWithoutDoors/*, "Wall Cladding"*/);
                     claddingAccessoriesItems_Length.Add(itemLength);
 
                     // Angle
-                    itemLength = new CCladdingAccessories_Item_Length("Angle 50x50x1 mm", dBuildingCladdingPerimeterWithoutDoors);
+                    itemLength = new CCladdingAccessories_Item_Length("Angle 50x50x1 mm", dBuildingCladdingPerimeterWithoutDoors/*, "Wall Cladding"*/);
                     claddingAccessoriesItems_Length.Add(itemLength);
 
                     // Foam bird proof strip
-                    itemLength = new CCladdingAccessories_Item_Length("Foam birdproof strip", dBuildingCladdingPerimeterWithoutDoors);
+                    itemLength = new CCladdingAccessories_Item_Length("Foam birdproof strip", dBuildingCladdingPerimeterWithoutDoors/*, "Wall Cladding"*/);
                     claddingAccessoriesItems_Length.Add(itemLength);
 
                     // Angle fixing
                     double dAngleFixingPointsSpacing = 0.6; // DB
                     iNumberOfFixingPoints = (int)(dBuildingCladdingPerimeterWithoutDoors / dAngleFixingPointsSpacing) + 4; // 4 strany - len priblizne
-                    itemPiece = new CCladdingAccessories_Item_Piece("Angle suredrive concrete anchor 6.5x50", iNumberOfFixingPoints);
+                    itemPiece = new CCladdingAccessories_Item_Piece("Angle suredrive concrete anchor 6.5x50", iNumberOfFixingPoints, "Wall Cladding");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
 
                     // 22 - Cladding corner
@@ -582,7 +654,7 @@ namespace PFD
                     double dCornerFlashingFixingPointsSpacing = 0.3; // DB (kotvenie dvoch stran flashing)
                     iNumberOfFixingPoints = 2 * ((int)(dCornerFlashingLength / dCornerFlashingFixingPointsSpacing) + 4); // 4 rohy - len priblizne
 
-                    itemPiece = new CCladdingAccessories_Item_Piece("Corner flashing rivet 73AS6.4", iNumberOfFixingPoints);
+                    itemPiece = new CCladdingAccessories_Item_Piece("Corner flashing rivet 73AS6.4", iNumberOfFixingPoints, "Wall Cladding");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
 
                     if ((model.m_arrGOCladding[0].listOfFibreGlassSheetsWallLeft != null && model.m_arrGOCladding[0].listOfFibreGlassSheetsWallLeft.Count > 0) ||
@@ -610,7 +682,6 @@ namespace PFD
                         ribWidthWall = _pfdVM._claddingOptionsVM.WallCladdingProps.widthRib_m;
                         fixingPointTributaryArea = (ribWidthWall / (float)profileFactor) * model.fDist_Girt;
 
-                        double fWallCladdingAreaFibreglass = _pfdVM._claddingOptionsVM.FibreglassAreaWallRatio / 100 * _pfdVM.TotalWallArea; // Todo skontrolovat
                         iNumberOfFixingPoints = (int)(fWallCladdingAreaFibreglass / fixingPointTributaryArea);
 
                         // Sposob B
@@ -676,23 +747,23 @@ namespace PFD
                         }
 
                         // Pan fibreglass sheet fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo and bonded washer)", iNumberOfFixingPoints2);
+                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo and bonded washer)", iNumberOfFixingPoints2, "Wall Fibreglass");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // Lapstitch fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("Lap stitching TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("Lap stitching TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints, "Wall Fibreglass");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // Support bracket
-                        itemPiece = new CCladdingAccessories_Item_Piece("U bracket 40x30x1400 - 1 mm", (int)(supportBracketBetweenGirtsLengthTotal / 1.4) + 1);
+                        itemPiece = new CCladdingAccessories_Item_Piece("U bracket 40x30x1400 - 1 mm", (int)(supportBracketBetweenGirtsLengthTotal / 1.4) + 1, "Wall Fibreglass Support Bracket");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // Support bracket fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo and bonded washer)", iNumberOfSupportBracketBetweenGirtsFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo and bonded washer)", iNumberOfSupportBracketBetweenGirtsFixingPoints, "Wall Fibreglass Support Bracket");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // Support bracket fixing to cladding
-                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo washer)", iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo washer)", iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints, "Wall Fibreglass Support Bracket");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // 24 - Cladding lap
@@ -714,18 +785,18 @@ namespace PFD
                         iNumberOfFixingPoints = 2 * (int)(dRollerDoorTrimmerLengh / dRollerDoorflashingFixingSpacing); // 2 sides resp. top and bottom
                         iNumberOfFixingPoints += 5 * (int)(dRollerDoorHeaderLengh / dRollerDoorflashingFixingSpacing);
 
-                        itemPiece = new CCladdingAccessories_Item_Piece("Flashing rivet 73AS6.4", iNumberOfFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("Flashing rivet 73AS6.4", iNumberOfFixingPoints, "Roller Door");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // 27 - Roller door mounting
                         // Roller door extension plate
-                        itemPiece = new CCladdingAccessories_Item_Piece("Roller door extension plate", iNumberOfRollerDoorTrimmers);
+                        itemPiece = new CCladdingAccessories_Item_Piece("Roller door extension plate", iNumberOfRollerDoorTrimmers, "Roller Door");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // Roller door extension plate fixing
                         int iNumberOfFixingPointsPerPlate = 2 * 6; // DB
                         iNumberOfFixingPoints = iNumberOfRollerDoorTrimmers * iNumberOfFixingPointsPerPlate;
-                        itemPiece = new CCladdingAccessories_Item_Piece("Roller door extension plate TEK screw 14gx22", iNumberOfFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("Roller door extension plate TEK screw 14gx22", iNumberOfFixingPoints, "Roller Door");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
                     }
 
@@ -736,7 +807,7 @@ namespace PFD
 
                         double dPADoorflashingFixingSpacing = 0.3f; // DB
                         iNumberOfFixingPoints = 2 * (int)(dPADoorHeaderLengh / dPADoorflashingFixingSpacing);
-                        itemPiece = new CCladdingAccessories_Item_Piece("Flashing rivet 73AS6.4", iNumberOfFixingPoints);
+                        itemPiece = new CCladdingAccessories_Item_Piece("Flashing rivet 73AS6.4", iNumberOfFixingPoints, "Personnel Door");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
                     }
                 }
@@ -848,14 +919,16 @@ namespace PFD
             {
                 QuotationItem qitem = new QuotationItem();
 
+                // Nastavime parametre z CCladdingAccessories_Item_Piece do QuotationItem (TO Ondrej, toto je asi zbytocny krok ???)
                 qitem.Name = item.Name;
-                qitem.Quantity = item.m_count;
+                qitem.Quantity = item.Count;
+                qitem.Note = item.Note;
 
                 quotation.Add(qitem);
 
                 //dTotalItemsMass_Table += item.Mass_per_piece;
                 //dTotalItemsPrice_Table += item.Price_PPP_NZD;
-                iTotalItemsNumber_Table += item.m_count;
+                iTotalItemsNumber_Table += item.Count;
             }
 
             dBuildingMass += dTotalItemsMass_Table;
@@ -870,6 +943,7 @@ namespace PFD
             table.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
             table.Columns.Add(QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_P_NZD.DataType);
             table.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
+            table.Columns.Add(QuotationHelper.colProp_Note.ColumnName, QuotationHelper.colProp_Note.DataType);
 
             // Set Table Column Properties
             QuotationHelper.SetDataTableColumnProperties(table);
@@ -892,6 +966,7 @@ namespace PFD
                     row[QuotationHelper.colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
                     row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = item.PricePerPiece.ToString("F2");
                     row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
+                    row[QuotationHelper.colProp_Note.ColumnName] = item.Note;
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
@@ -905,6 +980,7 @@ namespace PFD
             row[QuotationHelper.colProp_TotalMass.ColumnName] = dTotalItemsMass_Table.ToString("F2");
             row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = "";
             row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = dTotalItemsPrice_Table.ToString("F2");
+            row[QuotationHelper.colProp_Note.ColumnName] = "";
             table.Rows.Add(row);
 
             return ds;

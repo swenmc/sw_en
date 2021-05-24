@@ -25,6 +25,7 @@ namespace BaseClasses
         float m_PricePerPiece;
         float m_TotalPrice;
 
+        string m_Note;
 
         public string Prefix
         {
@@ -218,6 +219,19 @@ namespace BaseClasses
             set
             {
                 m_Length = value;
+            }
+        }
+
+        public string Note
+        {
+            get
+            {
+                return m_Note;
+            }
+
+            set
+            {
+                m_Note = value;
             }
         }
 

@@ -60,6 +60,7 @@ namespace PFD
         public static ColumnProperties colProp_TotalArea_m2 = new ColumnProperties(typeof(Decimal), "TotalArea_m2", "Total Area", 10f, "[m²]", AlignmentX.Right);
         public static ColumnProperties colProp_TotalMass = new ColumnProperties(typeof(String), "TotalMass", "Total Mass", 10f, "[kg]", AlignmentX.Right);
         public static ColumnProperties colProp_TotalPrice_NZD = new ColumnProperties(typeof(String), "TotalPrice_NZD", "Price", 0f, "[NZD]", AlignmentX.Right);
+        public static ColumnProperties colProp_Note = new ColumnProperties(typeof(String), "Note", "Note", 20f, "[-]", AlignmentX.Left);
 
         static List<ColumnProperties> colPropList = new List<ColumnProperties>()
         {
@@ -99,7 +100,9 @@ namespace PFD
                 colProp_TotalLength_m,
                 colProp_TotalArea_m2,
                 colProp_TotalMass,
-                colProp_TotalPrice_NZD
+                colProp_TotalPrice_NZD,
+
+                colProp_Note
         };
 
         private const float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece / !!! priblizna cena - nezohladnuje priemer skrutky
