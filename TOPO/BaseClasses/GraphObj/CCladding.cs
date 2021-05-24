@@ -1772,6 +1772,89 @@ namespace BaseClasses.GraphObj
         //}
 
 
+        public bool IsAnyCanopyOnSide(EBuildingSide side, COpening opening, double column_crsc_y_minus_temp, double column_crsc_y_plus_temp, double column_crsc_z_plus_temp, float fRoofEdgeOffsetFromCenterline, double length_left_basic)
+        {
+            foreach (CCanopiesInfo canopy in canopyCollection)
+            {
+                if (IsCanopyOnSide(side, opening, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic))
+                    return true;
+            }
+            return false;
+        }
+        private bool IsCanopyOnSide(EBuildingSide side, COpening opening, CCanopiesInfo canopy, double column_crsc_y_minus_temp, double column_crsc_y_plus_temp, double column_crsc_z_plus_temp, float fRoofEdgeOffsetFromCenterline, double length_left_basic)
+        {
+            if (side == EBuildingSide.Roof_Right_Side) return IsCanopyOnRight(opening, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline);
+            else if (side == EBuildingSide.Roof_Left_Side) return IsCanopyOnLeft(opening, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic);
+            else if (side == EBuildingSide.Roof)
+            {
+                if (MathF.d_equal(opening.CoordinateInPlane_y, 0, 0.002))
+                {
+                    return IsCanopyOnRight(opening, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline);
+                }
+                return IsCanopyOnLeft(opening, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic);
+            }
+            else return false;  //throw new Exception("Error in IsCanopyOnSide.");
+            
+        }
+
+        private bool IsCanopyOnRight(COpening opening, CCanopiesInfo canopy, double column_crsc_y_minus_temp, double column_crsc_y_plus_temp, double column_crsc_z_plus_temp, float fRoofEdgeOffsetFromCenterline)
+        {
+            bool hasNextCanopyRight = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1));
+            bool hasPreviousCanopyRight = ModelHelper.IsNeighboringRightCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex - 1));
+
+            float fCanopyBayStartOffsetRight = hasPreviousCanopyRight ? 0f : ((canopy.BayIndex == 0 ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
+            float fCanopyBayEndOffsetRight = hasNextCanopyRight ? 0f : (((canopy.BayIndex == canopyCollection.Count - 1) ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
+
+            float fBayStartCoordinate_Y_Right = ModelHelper.GetBaysWidthUntil(canopy.BayIndex, bayWidthCollection) - fCanopyBayStartOffsetRight;
+            float fBayEndCoordinate_Y_Right = ModelHelper.GetBaysWidthUntil(canopy.BayIndex + 1, bayWidthCollection) + fCanopyBayEndOffsetRight;
+
+            // Musime menit len tie sheets ktore maju zaciatok na hrane strechy
+            if (MathF.d_equal(opening.CoordinateInPlane_y, 0, 0.002))
+            {
+                // Zistime ci je plocha originalsheet v kolizii s nejakym canopy - right                
+                if (canopy.Right && (
+                   (fBayStartCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline <= opening.CoordinateInPlane_x &&
+                   fBayEndCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline >= (opening.CoordinateInPlane_x + opening.Width)) ||
+                   (fBayStartCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline >= opening.CoordinateInPlane_x &&
+                   fBayStartCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline <= (opening.CoordinateInPlane_x + opening.Width)) ||
+                   (fBayEndCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline >= opening.CoordinateInPlane_x &&
+                   fBayEndCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline <= (opening.CoordinateInPlane_x + opening.Width))))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsCanopyOnLeft(COpening opening, CCanopiesInfo canopy, double column_crsc_y_minus_temp, double column_crsc_y_plus_temp, double column_crsc_z_plus_temp, float fRoofEdgeOffsetFromCenterline, double length_left_basic)
+        {
+            bool hasNextCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex + 1));
+            bool hasPreviousCanopyLeft = ModelHelper.IsNeighboringLeftCanopy(canopyCollection.ElementAtOrDefault(canopy.BayIndex - 1));
+
+            float fCanopyBayStartOffsetLeft = hasPreviousCanopyLeft ? 0f : ((canopy.BayIndex == 0 ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
+            float fCanopyBayEndOffsetLeft = hasNextCanopyLeft ? 0f : (((canopy.BayIndex == canopyCollection.Count - 1) ? (float)roofEdgeOverhang_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
+
+            float fBayStartCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopy.BayIndex, bayWidthCollection) - fCanopyBayStartOffsetLeft;
+            float fBayEndCoordinate_Y_Left = ModelHelper.GetBaysWidthUntil(canopy.BayIndex + 1, bayWidthCollection) + fCanopyBayEndOffsetLeft;
+
+            // Musime menit len tie sheets ktore maju koniec na hrane strechy
+            if (MATH.MathF.d_equal(opening.CoordinateInPlane_y + opening.LengthTotal, length_left_basic, 0.002))
+            {
+                // Zistime ci je canopy v kolizii s plechom                
+                if (canopy.Left && (
+                   (fBayStartCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline <= opening.CoordinateInPlane_x &&
+                   fBayEndCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline >= (opening.CoordinateInPlane_x + opening.Width)) ||
+                   (fBayStartCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline >= opening.CoordinateInPlane_x &&
+                   fBayStartCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline <= (opening.CoordinateInPlane_x + opening.Width)) ||
+                   (fBayEndCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline >= opening.CoordinateInPlane_x &&
+                   fBayEndCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline <= (opening.CoordinateInPlane_x + opening.Width))))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void GenerateCladdingSheets(bool bCladdingSheetColoursByID,
             string side,
             EBuildingSide location,
@@ -1801,6 +1884,13 @@ namespace BaseClasses.GraphObj
             ref int iSheetIndex, out List<CCladdingOrFibreGlassSheet> listOfSheets)
         {
             listOfSheets = new List<CCladdingOrFibreGlassSheet>(); // Pole kombinovane z povodnych aj nadelenych sheets
+
+            //Dolne riadky vyrabam Mato len kvoli tomu ze nie je dostupne fRoofEdgeOffsetFromCenterline
+            double additionalOffset = 0.001;  // 5 mm Aby nekolidovali plochy cladding s members
+            // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
+            double column_crsc_y_minus_temp = column_crsc_y_minus - additionalOffset;
+            // Roof edge offset from centerline in Y-direction
+            float fRoofEdgeOffsetFromCenterline = -(float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y;
 
             for (int i = 0; i < iNumberOfOriginalSheetsOnSide; i++)
             {
@@ -1928,8 +2018,13 @@ namespace BaseClasses.GraphObj
                     // Skontrolovat podla suradnic ci objekt zacina alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
                     foreach (COpening o in objectInColision_In_Local_x)
                     {
-                        if (MathF.d_equal(o.CoordinateInPlane_y, 0)) { iNumberOfNewSheets--; isFibreglassFirst = true; }
-                        if (MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic)) { iNumberOfNewSheets--; isFibreglassLast = true; }
+                        if (MathF.d_equal(o.CoordinateInPlane_y, 0) || MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic))
+                        {
+                            bool isCanopyOnSide = IsAnyCanopyOnSide(location, o, column_crsc_y_minus, column_crsc_y_plus, column_crsc_z_plus, fRoofEdgeOffsetFromCenterline, height_left_basic);
+                            if (MathF.d_equal(o.CoordinateInPlane_y, 0) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassFirst = true; }
+                            if (MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassLast = true; }
+                        }
+                            
                     }
 
                     List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
