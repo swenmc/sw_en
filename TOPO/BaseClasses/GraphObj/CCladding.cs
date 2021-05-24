@@ -2039,9 +2039,10 @@ namespace BaseClasses.GraphObj
                     // 5. Pridame nove sheets do zoznamu
                     for (int j = 0; j < iNumberOfNewSheets; j++)
                     {
-                        if (location == EBuildingSide.Roof_Left_Side)  //lava roof je proste speci
+                        if (location == EBuildingSide.Roof_Left_Side || //lava roof je proste speci
+                            location == EBuildingSide.Roof && sBuildingGeomInputData.fRoofPitch_deg > 0) //monopitch roof a roofPitch deg > 0
                         {
-                            if (j == iNumberOfNewSheets - 1 && !isFibreglassFirst && !isFibreglassLast) hasOverlap = false;
+                            if (j == iNumberOfNewSheets - 1 && /*!isFibreglassFirst && */!isFibreglassLast) hasOverlap = false;
                             else hasOverlap = true;
                         }
                         else
@@ -2291,8 +2292,17 @@ namespace BaseClasses.GraphObj
 
         private bool SheetHasOverlap(FibreglassProperties fgsp)
         {
-            if (MathF.d_equal(fgsp.Y, 0)) return false;
-            else return true;
+            if (fgsp.Location == EBuildingSide.Roof && sBuildingGeomInputData.fRoofPitch_deg > 0)
+            {
+                if (MathF.d_equal(fgsp.Y, fgsp.MaxHeight)) return false; //To Mato - POZOR tato podmienka volajako nikdy nenastane
+                else return true;
+            }
+            else
+            {
+                if (MathF.d_equal(fgsp.Y, 0)) return false;
+                else return true;
+            }
+
 
             //if (fgsp.Location == EBuildingSide.Left || fgsp.Location == EBuildingSide.Right || fgsp.Location == EBuildingSide.Front || fgsp.Location == EBuildingSide.Back)
             //{
