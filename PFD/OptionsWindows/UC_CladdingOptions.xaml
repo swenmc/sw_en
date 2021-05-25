@@ -10,7 +10,7 @@
         <System:Double x:Key="theTextBoxWidth">120</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
         <Style x:Key="RightAligned" TargetType="TextBlock">
-        <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
         <Style x:Key="LeftAligned" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -102,7 +102,7 @@
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
             <TextBlock Grid.Row="0" Grid.Column="3" FontWeight="Bold" Text="Wall Cladding:" HorizontalAlignment="Left" />
-                        
+
             <TextBlock Grid.Row="1" Grid.Column="3" Text="Profile:" HorizontalAlignment="Left"  />
             <ComboBox Grid.Row="1" Grid.Column="4" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Claddings}" SelectedIndex="{Binding Path=WallCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
@@ -128,7 +128,7 @@
             <ComboBox Grid.Row="4" Grid.Column="4" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                       VerticalAlignment="Top" ItemsSource="{Binding WallCladdingsThicknessTypes}" 
                       SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            
+
             <TextBlock Grid.Row="5" Grid.Column="3" Text="Maximum Sheet Length:" HorizontalAlignment="Left"  Grid.ColumnSpan="3"/>
             <TextBox Grid.Row="5" Grid.Column="4" Name ="TextBox_MaxSheetLengthWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
@@ -157,7 +157,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            
+
             <TextBlock Grid.Row="9" Grid.Column="0" Text="Thickness:" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
             <ComboBox Grid.Row="9" Grid.Column="1" Name ="Combobox_RoofFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding RoofFibreglassThicknessTypes}" SelectedIndex="{Binding Path=RoofFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
@@ -169,7 +169,7 @@
                          Text="{Binding Path=FibreglassRoofSurfaceMass, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                 <TextBlock HorizontalAlignment="Left" Margin="10 0 0 0" TextWrapping="Wrap" Text="[g/m²]" VerticalAlignment="Top"/>
             </StackPanel>
-            
+
 
             <TextBlock Grid.Row="11" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
             <ComboBox Grid.Row="11" Grid.Column="1" Name ="Combobox_RoofFibreglassType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -211,7 +211,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            
+
             <TextBlock Grid.Row="9" Grid.Column="3" Text="Thickness:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
             <ComboBox Grid.Row="9" Grid.Column="4" Name ="Combobox_WallFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding WallFibreglassThicknessTypes}" SelectedIndex="{Binding Path=WallFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
@@ -223,7 +223,7 @@
                          Text="{Binding Path=FibreglassWallSurfaceMass, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                 <TextBlock HorizontalAlignment="Left" Margin="10 0 0 0" TextWrapping="Wrap" Text="[g/m²]" VerticalAlignment="Top"/>
             </StackPanel>
-            
+
             <TextBlock Grid.Row="11" Grid.Column="3" Text="Type:" HorizontalAlignment="Left" TextWrapping="Wrap"/>
             <ComboBox Grid.Row="11" Grid.Column="4" Name ="Combobox_WallFibreglassType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding WallFibreglassTypes}" SelectedIndex="{Binding Path=WallFibreglassTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
@@ -296,6 +296,26 @@
                       ItemsSource="{Binding Path=FibreglassProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
                       HorizontalAlignment="Left" IsReadOnly="false" CanUserAddRows="True" AutoGenerateColumns="False" 
                       VerticalAlignment="Top" CanUserSortColumns="False" >
+                <DataGrid.RowValidationErrorTemplate>
+                    <ControlTemplate>
+                        <Grid Margin="0,-2,0,-2" ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}},Path=(Validation.Errors)[0].ErrorContent}">
+                            <Ellipse StrokeThickness="0" Fill="Red"  Width="{TemplateBinding FontSize}" Height="{TemplateBinding FontSize}" />
+                            <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"  />
+                        </Grid>
+                    </ControlTemplate>
+                </DataGrid.RowValidationErrorTemplate>
+                <DataGrid.Resources>
+                    <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                        <Setter Property="Padding" Value="-2"/>
+                        <Style.Triggers>
+                            <Trigger Property="Validation.HasError" Value="True">
+                                <Setter Property="Background" Value="Red"/>
+                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+                
                 <DataGrid.Columns>
                     <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side" Width="1.5*" SelectedValueBinding="{Binding Side, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>
@@ -330,9 +350,9 @@
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
                     </DataGridComboBoxColumn>
-                    <DataGridTextColumn Header="Y [m]" ToolTipService.ToolTip="Enter y" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Y, ValidatesOnExceptions=True, StringFormat={}{0:0.00}}"/>
-                    <DataGridTextColumn Header="Length [m]" ToolTipService.ToolTip="Enter length" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Length, ValidatesOnExceptions=True, StringFormat={}{0:0.00}}"/>
-                    
+                    <DataGridTextColumn Header="Y [m]" ToolTipService.ToolTip="Enter y" Width="*" EditingElementStyle="{StaticResource errorStyle}" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Y, ValidatesOnExceptions=True, StringFormat={}{0:0.00}}"/>
+                    <DataGridTextColumn Header="Length [m]" ToolTipService.ToolTip="Enter length" Width="*" EditingElementStyle="{StaticResource errorStyle}" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Length, ValidatesOnExceptions=True, StringFormat={}{0:0.00}}"/>
+
                     <!--<DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding FibreglassColor, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>
                             <Style TargetType="ComboBox">

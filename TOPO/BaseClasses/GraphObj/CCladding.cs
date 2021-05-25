@@ -927,7 +927,7 @@ namespace BaseClasses.GraphObj
             }
 
             bool isOrigSheetLast = true;
-            if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed) isOrigSheetLast = false;
+            if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && sBuildingGeomInputData.fRoofPitch_deg > 0) isOrigSheetLast = false;
 
             if (bGenerateRoofCladding)
             {
@@ -2029,8 +2029,7 @@ namespace BaseClasses.GraphObj
                             bool isCanopyOnSide = IsAnyCanopyOnSide(location, o, column_crsc_y_minus, column_crsc_y_plus, column_crsc_z_plus, fRoofEdgeOffsetFromCenterline, height_left_basic);
                             if (MathF.d_equal(o.CoordinateInPlane_y, 0) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassFirst = true; }
                             if (MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassLast = true; }
-                        }
-                            
+                        }   
                     }
 
                     List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();

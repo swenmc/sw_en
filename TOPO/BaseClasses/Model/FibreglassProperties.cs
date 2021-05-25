@@ -70,7 +70,7 @@ namespace BaseClasses
                 m_Side = value;
                 SetLocation();
                 NotifyPropertyChanged("Side");
-                InitXValuesAndSetX();
+                InitXValuesAndSetX();                
             }
         }
 
@@ -84,7 +84,7 @@ namespace BaseClasses
             set
             {
                 X_old = m_X;
-                m_X = value;
+                m_X = value;                
                 NotifyPropertyChanged("X");
             }
         }
@@ -100,6 +100,7 @@ namespace BaseClasses
             {
                 Y_old = m_Y;
                 m_Y = value;
+                ValidateY();
                 NotifyPropertyChanged("Y");
             }
         }
@@ -115,6 +116,7 @@ namespace BaseClasses
             {
                 Length_old = m_Length;
                 m_Length = value;
+                ValidateLength();
                 NotifyPropertyChanged("Length");
             }
         }
@@ -489,6 +491,23 @@ namespace BaseClasses
 
             if (Y + Length > MaxHeight) return false;
             else return true;
+        }
+
+        private void ValidateY()
+        {
+            if (IsSetFromCode) return;
+
+            if (Y < 0) throw new Exception("Y could not be less than 0.");
+            ValidateMaxHeight();
+            if (Y > MaxHeight - Length) throw new Exception($"Y max value is {MaxHeight - Length}");
+        }
+        private void ValidateLength()
+        {
+            if (IsSetFromCode) return;
+
+            if (Length < 0.5) throw new Exception("Length could not be less than 0.5");
+            ValidateMaxHeight();
+            if (Length > MaxHeight - Y) throw new Exception($"Length out of range. Max length total [{MaxHeight}]. Max Length - Y: [{MaxHeight - Y}]");
         }
 
         //-------------------------------------------------------------------------------------------------------------
