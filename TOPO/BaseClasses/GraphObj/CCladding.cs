@@ -2076,6 +2076,15 @@ namespace BaseClasses.GraphObj
                                     lengthTopRight = originalsheetLengthTopRight - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
                                     lengthTopTip = originalsheetLengthTopTip - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
                                 }
+
+                                if(isFibreglassFirst && isFibreglassLast) // Dva otvory - first a last, jeden cladding sheet medzi nimi
+                                {
+                                    iNumberOfEdges = 4;
+                                    coordinateInPlane_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                    lengthTopLeft = objectInColision_In_Local_x[openingIndex + 1].CoordinateInPlane_y - coordinateInPlane_y;
+                                    lengthTopRight = objectInColision_In_Local_x[openingIndex + 1].CoordinateInPlane_y - coordinateInPlane_y;
+                                    lengthTopTip = objectInColision_In_Local_x[openingIndex + 1].CoordinateInPlane_y - coordinateInPlane_y;
+                                }
                             }
 
                             // To Ondrej, mrkni na tieto dve podmienky ci sa to neda zapisat nejako jednoduchsie
