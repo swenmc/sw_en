@@ -1890,6 +1890,7 @@ namespace BaseClasses.GraphObj
             ref int iSheetIndex, out List<CCladdingOrFibreGlassSheet> listOfSheets)
         {
             listOfSheets = new List<CCladdingOrFibreGlassSheet>(); // Pole kombinovane z povodnych aj nadelenych sheets
+            double eq_limit = 0.001; //1mm
 
             //Dolne riadky vyrabam Mato len kvoli tomu ze nie je dostupne fRoofEdgeOffsetFromCenterline
             double additionalOffset = 0.001;  // 5 mm Aby nekolidovali plochy cladding s members
@@ -2024,11 +2025,11 @@ namespace BaseClasses.GraphObj
                     // Skontrolovat podla suradnic ci objekt zacina alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
                     foreach (COpening o in objectInColision_In_Local_x)
                     {
-                        if (MathF.d_equal(o.CoordinateInPlane_y, 0) || MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic))
+                        if (MathF.d_equal(o.CoordinateInPlane_y, 0) || MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic, eq_limit))
                         {
                             bool isCanopyOnSide = IsAnyCanopyOnSide(location, o, column_crsc_y_minus, column_crsc_y_plus, column_crsc_z_plus, fRoofEdgeOffsetFromCenterline, height_left_basic);
                             if (MathF.d_equal(o.CoordinateInPlane_y, 0) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassFirst = true; }
-                            if (MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassLast = true; }
+                            else if (MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic, eq_limit) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassLast = true; }
                         }   
                     }
 
