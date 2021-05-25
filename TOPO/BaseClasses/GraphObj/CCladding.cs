@@ -607,7 +607,7 @@ namespace BaseClasses.GraphObj
 
                         listOfFibreGlassOpenings.Add(sheet);
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets, height_left_basic);
+                        CountRealLenghts(sheets);
                         listOfFibreGlassSheetsWallLeft.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -677,7 +677,7 @@ namespace BaseClasses.GraphObj
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets, height_left_basic);
+                        //CountRealLenghts(sheets, height_left_basic);
                         listOfFibreGlassSheetsWallFront.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -758,7 +758,7 @@ namespace BaseClasses.GraphObj
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets, height_left_basic);
+                        //CountRealLenghts(sheets, height_left_basic);
                         listOfFibreGlassSheetsWallRight.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -829,7 +829,7 @@ namespace BaseClasses.GraphObj
                         listOfFibreGlassOpenings.Add(sheet);
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets, height_left_basic);
+                        //CountRealLenghts(sheets, height_left_basic);
                         listOfFibreGlassSheetsWallBack.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -919,7 +919,7 @@ namespace BaseClasses.GraphObj
                             sheet.HasOverlap = true;
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        CountRealLenghts(sheets, length_left_basic);
+                        //CountRealLenghts(sheets, length_left_basic);
                         listOfFibreGlassSheetsRoofRight.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -1288,7 +1288,7 @@ namespace BaseClasses.GraphObj
                                 sheet.HasOverlap = true;
 
                             List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                            CountRealLenghts(sheets, length_left_basic);
+                            //CountRealLenghts(sheets, length_left_basic);
                             listOfFibreGlassSheetsRoofLeft.AddRange(sheets);
                             iSheet_FG_Index += sheets.Count;
                         }
@@ -1586,6 +1586,7 @@ namespace BaseClasses.GraphObj
                 if (bGenerateRoofFibreglass && (options.bDisplayFibreglass || options.bDisplayFibreglassWireFrame))
                     AddSheet3DModelsToModelGroup(listOfFibreGlassSheetsRoofLeft, options, brushRoof_FG, material_Roof_FG, m_RoofProps_FG.widthRib_m, rotationAboutX, 0, 90, ref model_gr/*, fibreglassWireframe*/, outOffPlaneOffset_FG);
             }
+            CountRealLenghts();
             return model_gr;
         }
 
@@ -1988,7 +1989,7 @@ namespace BaseClasses.GraphObj
                     colorName, claddingShape, claddingCoatingType, color, fOpacity, claddingWidthRibModular, true, 0, false);
 
                     List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                    CountRealLenghts(sheets, height_left_basic);
+                    //CountRealLenghts(sheets, height_left_basic);
                     listOfSheets.AddRange(sheets);
 
                     // Nie je potrebne delit sheet - pridame teda "originalsheet"
@@ -2209,9 +2210,8 @@ namespace BaseClasses.GraphObj
                             //iSheetIndex++;
                         }
                     }
-                    CountRealLenghts(sheets, height_left_basic);  //az na konci sa prepocitaju 
+                    //CountRealLenghts(sheets, height_left_basic);  //az na konci sa prepocitaju 
                     listOfSheets.AddRange(sheets); //a potom sa pridaju do kolekcie listOfSheets
-
                 }
             }
         }
@@ -2313,7 +2313,7 @@ namespace BaseClasses.GraphObj
 
             if (!originalsheet.HasOverlap) SetCuttedSheetsOverlaps(sheets);
 
-            CountRealLenghts(sheets, length_left_basic);
+            //CountRealLenghts(sheets, length_left_basic);
         }
 
         private bool SheetHasOverlap(FibreglassProperties fgsp)
@@ -2331,46 +2331,76 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private void CountRealLenghts(List<CCladdingOrFibreGlassSheet> sheets, double height_left_basic /* celkovy rozmer y pre danu plochu wall side alebo roof side */)
+        private void CountRealLenghts()
+        {
+            CountRealLenghts(GetCladdingSheets());
+            CountRealLenghts(GetFibreglassSheets());
+        }
+        private void CountRealLenghts(List<CCladdingOrFibreGlassSheet> sheets)
         {
             float overlap = 0f;
-            for (int i = 0; i < sheets.Count; i++)
+            foreach (CCladdingOrFibreGlassSheet sheet in sheets)
             {
-                // TODO 783 - Ondrej
-                // Je potrebne doladit podla specifickych podmienok kedy sa nema jednat o overlap
-
-                // TO Ondrej - pre canopies je potrebne uvazovat okraje canopy, teda suradnice 0 a height_left_basic je potrebne upravovat podla sirky canopies a skutocnej suradnice y zaciatku prveho a konca posledneho sheet na canopy
-                if (    /*i == 0*/
-                    (eModelType == EModelType_FS.eKitsetGableRoofEnclosed && (sheets[i].Name != "Fibreglass - Roof-Left Side" && sheets[i].Name != "Cladding - Roof-Left Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
-                    ((sheets[i].Name == "Fibreglass - Roof-Left Side" || sheets[i].Name == "Cladding - Roof-Left Side") && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic))) ||
-                    (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && 
-                        (sheets[i].Name != "Fibreglass - Roof-Right Side" && sheets[i].Name != "Cladding - Roof-Right Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0) ||
-                        ((sheets[i].Name == "Fibreglass - Roof-Right Side" || sheets[i].Name == "Cladding - Roof-Right Side") && sBuildingGeomInputData.fRoofPitch_deg < 0 && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
-                        ((sheets[i].Name == "Fibreglass - Roof-Right Side" || sheets[i].Name == "Cladding - Roof-Right Side") && sBuildingGeomInputData.fRoofPitch_deg > 0 && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic))))
-                   )
+                if(sheet.HasOverlap)
                 {
-                    // Nemusi platit pre prvy sheet zo zoznamu, ale skor by tu mala byt podmienka pre sheet, ktory je na spodnom okraji steny, pripadne na okraji strechy kde je gutter
-                    // alebo je to prvy sheet nad otvorom v stene
-                    // Pre sheets ktore su na gable roof, left side sa ma uvazovat ze nie prvy ale posledny sheet v smere y je pri gutter a nema mat pripocitane overlap
-                    // podobne pre monopitch roof treba zohladnit sklon strechy
-                    sheets[i].LengthTopLeft_Real = sheets[i].LengthTopLeft;
-                    sheets[i].LengthTopRight_Real = sheets[i].LengthTopRight;
-                    sheets[i].LengthTopTip_Real = sheets[i].LengthTopTip;
-                    sheets[i].LengthTotal_Real = sheets[i].LengthTotal;
+                    if (sheet.IsWallCladding) overlap = overlap_WallCladding;
+                    else if (sheet.IsRoofCladding) overlap = overlap_RoofCladding;
+                    else if (sheet.IsWalllFibreglass) overlap = overlap_WallFibreglass;
+                    else if (sheet.IsRoofFibreglass) overlap = overlap_RoofFibreglass;
+
+                    sheet.LengthTopLeft_Real = sheet.LengthTopLeft + overlap;
+                    sheet.LengthTopRight_Real = sheet.LengthTopRight + overlap;
+                    sheet.LengthTopTip_Real = sheet.LengthTopTip + overlap;
+                    sheet.LengthTotal_Real = sheet.LengthTotal + overlap;
                 }
                 else
                 {
-                    if (sheets[i].IsWallCladding) overlap = overlap_WallCladding;
-                    else if (sheets[i].IsRoofCladding) overlap = overlap_RoofCladding;
-                    else if (sheets[i].IsWalllFibreglass) overlap = overlap_WallFibreglass;
-                    else if (sheets[i].IsRoofFibreglass) overlap = overlap_RoofFibreglass;
-
-                    sheets[i].LengthTopLeft_Real = sheets[i].LengthTopLeft + overlap;
-                    sheets[i].LengthTopRight_Real = sheets[i].LengthTopRight + overlap;
-                    sheets[i].LengthTopTip_Real = sheets[i].LengthTopTip + overlap;
-                    sheets[i].LengthTotal_Real = sheets[i].LengthTotal + overlap;
+                    sheet.LengthTopLeft_Real = sheet.LengthTopLeft;
+                    sheet.LengthTopRight_Real = sheet.LengthTopRight;
+                    sheet.LengthTopTip_Real = sheet.LengthTopTip;
+                    sheet.LengthTotal_Real = sheet.LengthTotal;
                 }
             }
+
+            //refaktoring
+            //float overlap = 0f;
+            //for (int i = 0; i < sheets.Count; i++)
+            //{
+            //    // TODO 783 - Ondrej
+            //    // Je potrebne doladit podla specifickych podmienok kedy sa nema jednat o overlap
+
+            //    // TO Ondrej - pre canopies je potrebne uvazovat okraje canopy, teda suradnice 0 a height_left_basic je potrebne upravovat podla sirky canopies a skutocnej suradnice y zaciatku prveho a konca posledneho sheet na canopy
+            //    if (    /*i == 0*/
+            //        (eModelType == EModelType_FS.eKitsetGableRoofEnclosed && (sheets[i].Name != "Fibreglass - Roof-Left Side" && sheets[i].Name != "Cladding - Roof-Left Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
+            //        ((sheets[i].Name == "Fibreglass - Roof-Left Side" || sheets[i].Name == "Cladding - Roof-Left Side") && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic))) ||
+            //        (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && 
+            //            (sheets[i].Name != "Fibreglass - Roof-Right Side" && sheets[i].Name != "Cladding - Roof-Right Side" && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0) ||
+            //            ((sheets[i].Name == "Fibreglass - Roof-Right Side" || sheets[i].Name == "Cladding - Roof-Right Side") && sBuildingGeomInputData.fRoofPitch_deg < 0 && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y, 0)) ||
+            //            ((sheets[i].Name == "Fibreglass - Roof-Right Side" || sheets[i].Name == "Cladding - Roof-Right Side") && sBuildingGeomInputData.fRoofPitch_deg > 0 && MATH.MathF.d_equal(sheets[i].CoordinateInPlane_y + sheets[i].LengthTotal, height_left_basic))))
+            //       )
+            //    {
+            //        // Nemusi platit pre prvy sheet zo zoznamu, ale skor by tu mala byt podmienka pre sheet, ktory je na spodnom okraji steny, pripadne na okraji strechy kde je gutter
+            //        // alebo je to prvy sheet nad otvorom v stene
+            //        // Pre sheets ktore su na gable roof, left side sa ma uvazovat ze nie prvy ale posledny sheet v smere y je pri gutter a nema mat pripocitane overlap
+            //        // podobne pre monopitch roof treba zohladnit sklon strechy
+            //        sheets[i].LengthTopLeft_Real = sheets[i].LengthTopLeft;
+            //        sheets[i].LengthTopRight_Real = sheets[i].LengthTopRight;
+            //        sheets[i].LengthTopTip_Real = sheets[i].LengthTopTip;
+            //        sheets[i].LengthTotal_Real = sheets[i].LengthTotal;
+            //    }
+            //    else
+            //    {
+            //        if (sheets[i].IsWallCladding) overlap = overlap_WallCladding;
+            //        else if (sheets[i].IsRoofCladding) overlap = overlap_RoofCladding;
+            //        else if (sheets[i].IsWalllFibreglass) overlap = overlap_WallFibreglass;
+            //        else if (sheets[i].IsRoofFibreglass) overlap = overlap_RoofFibreglass;
+
+            //        sheets[i].LengthTopLeft_Real = sheets[i].LengthTopLeft + overlap;
+            //        sheets[i].LengthTopRight_Real = sheets[i].LengthTopRight + overlap;
+            //        sheets[i].LengthTopTip_Real = sheets[i].LengthTopTip + overlap;
+            //        sheets[i].LengthTotal_Real = sheets[i].LengthTotal + overlap;
+            //    }
+            //}
         }
 
         private CCladdingOrFibreGlassSheet GetCuttedSheetAndShortenOriginal(ref CCladdingOrFibreGlassSheet originalSheet, float maxLength, bool changeOriginalID = true)
