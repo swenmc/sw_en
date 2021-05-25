@@ -383,7 +383,8 @@ namespace PFD
             }
             CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties(flashingName, "Flashings", 0, colorIndex);
             item.PropertyChanged += _pfdVM._doorsAndWindowsVM.FlashingsItem_PropertyChanged;
-            _pfdVM._doorsAndWindowsVM.Flashings.Add(item);            
+            _pfdVM._doorsAndWindowsVM.Flashings.Add(item);
+            _pfdVM._doorsAndWindowsVM.CheckFlashingsColors();
         }
         private string FindNotUsedFlashingName()
         {

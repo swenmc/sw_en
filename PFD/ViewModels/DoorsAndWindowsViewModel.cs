@@ -1098,7 +1098,7 @@ namespace PFD
             return changed;
         }
 
-        private void CheckFlashingsColors()
+        public void CheckFlashingsColors()
         {
             IEnumerable<int> rollerDoorColors = Flashings.Where(f => f.Name.Contains("Roller Door")).Select(f=>f.CoatingColor.ID).Distinct();
             if (rollerDoorColors.Count() > 1)
