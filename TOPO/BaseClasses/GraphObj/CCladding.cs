@@ -2293,7 +2293,7 @@ namespace BaseClasses.GraphObj
         {
             if (fgsp.Location == EBuildingSide.Roof && sBuildingGeomInputData.fRoofPitch_deg > 0)
             {
-                if (MathF.d_equal(fgsp.Y, fgsp.MaxHeight)) return false; //To Mato - POZOR tato podmienka volajako nikdy nenastane
+                if (MathF.d_equal(fgsp.Y, fgsp.MaxHeight)) return false; //To Mato - POZOR tato podmienka volajako nikdy nenastane // To Ondrej - Ta čo mi píšeš pozor, jakou jsi v spěchu napsal taková tam je :-) (MathF.d_equal(fgsp.Y + fgsp.Length, fgsp.MaxHeight))
                 else return true;
             }
             else
