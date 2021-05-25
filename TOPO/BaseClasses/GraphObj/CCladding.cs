@@ -2293,7 +2293,8 @@ namespace BaseClasses.GraphObj
         {
             if (fgsp.Location == EBuildingSide.Roof && sBuildingGeomInputData.fRoofPitch_deg > 0)
             {
-                if (MathF.d_equal(fgsp.Y, fgsp.MaxHeight)) return false; //To Mato - POZOR tato podmienka volajako nikdy nenastane // To Ondrej - Ta čo mi píšeš pozor, jakou jsi v spěchu napsal taková tam je :-) (MathF.d_equal(fgsp.Y + fgsp.Length, fgsp.MaxHeight))
+                //tolerancia 1mm
+                if (MathF.d_equal(fgsp.Y, fgsp.MaxHeight, 0.00099)) return false;
                 else return true;
             }
             else
@@ -2301,37 +2302,6 @@ namespace BaseClasses.GraphObj
                 if (MathF.d_equal(fgsp.Y, 0)) return false;
                 else return true;
             }
-
-
-            //if (fgsp.Location == EBuildingSide.Left || fgsp.Location == EBuildingSide.Right || fgsp.Location == EBuildingSide.Front || fgsp.Location == EBuildingSide.Back)
-            //{
-            //    if (MathF.d_equal(fgsp.Y, 0)) return false;
-            //    else return true;
-            //}
-
-            //if (fgsp.Location == EBuildingSide.Roof_Right_Side)
-            //{
-            //    if (MathF.d_equal(fgsp.Y, 0)) return false;
-            //    else return true;
-            //}
-
-            //if (fgsp.Location == EBuildingSide.Roof_Left_Side)
-            //{
-            //    if (MathF.d_equal(fgsp.Y + fgsp.Length, fgsp.MaxHeight)) return false;
-            //    else return true;
-            //}
-
-            ////To Mato - prosim o kontrolu podmienok
-            ////dost mozne,ze sa neda pouzivat fgsp.MaxHeight ale treba mat lengt_left_basic
-            //if (fgsp.Location == EBuildingSide.Roof) //Monopitch
-            //{
-            //    if (sBuildingGeomInputData.fRoofPitch_deg < 0 && MathF.d_equal(fgsp.Y, 0)) return false;
-            //    else if (sBuildingGeomInputData.fRoofPitch_deg > 0 && MathF.d_equal(fgsp.Y + fgsp.Length, fgsp.MaxHeight)) return false;
-            //    else return true;
-            //}
-
-            ////tu sa nema nikdy dostat
-            //return true;
         }
 
         private void CountRealLenghts(List<CCladdingOrFibreGlassSheet> sheets, double height_left_basic /* celkovy rozmer y pre danu plochu wall side alebo roof side */)

@@ -350,8 +350,8 @@
                             </Style>
                         </DataGridComboBoxColumn.EditingElementStyle>
                     </DataGridComboBoxColumn>
-                    <DataGridTextColumn Header="Y [m]" ToolTipService.ToolTip="Enter y" Width="*" EditingElementStyle="{StaticResource errorStyle}" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Y, ValidatesOnExceptions=True, StringFormat={}{0:0.00}}"/>
-                    <DataGridTextColumn Header="Length [m]" ToolTipService.ToolTip="Enter length" Width="*" EditingElementStyle="{StaticResource errorStyle}" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Length, ValidatesOnExceptions=True, StringFormat={}{0:0.00}}"/>
+                    <DataGridTextColumn Header="Y [m]" ToolTipService.ToolTip="Enter y" Width="*" EditingElementStyle="{StaticResource errorStyle}" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Y, ValidatesOnExceptions=True, StringFormat={}{0:0.000}}"/>
+                    <DataGridTextColumn Header="Length [m]" ToolTipService.ToolTip="Enter length" Width="*" EditingElementStyle="{StaticResource errorStyle}" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Length, ValidatesOnExceptions=True, StringFormat={}{0:0.000}}"/>
 
                     <!--<DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding FibreglassColor, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>
