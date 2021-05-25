@@ -828,6 +828,8 @@ namespace PFD
         public FibreglassProperties GetFibreglass()
         {
             FibreglassProperties f = new FibreglassProperties();
+            f.IsSetFromCode = true;
+
             f.ModelType = ModelType;
             f.ModelTotalLengthLeft = ModelTotalLengthLeft;
             f.ModelTotalLengthFront = ModelTotalLengthFront;
@@ -849,7 +851,7 @@ namespace PFD
             f.XValues = XValues;
             f.Y = Y;
             f.Length = Length;
-
+                        
             return f;
         }
     }
