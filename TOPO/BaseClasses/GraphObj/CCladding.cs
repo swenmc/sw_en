@@ -2051,7 +2051,7 @@ namespace BaseClasses.GraphObj
                             else hasOverlap = true;
                         }
                         
-                        if (j == iNumberOfNewSheets - 1) // Last segment of original sheet
+                        if (j == iNumberOfNewSheets - 1) // Last segment of original sheet or first segment of original sheet (Nastane vtedy ked zaciname s FG)
                         {
                             if (isFibreglassFirst || isFibreglassLast) { openingIndex = j; }
                             else openingIndex = j - 1;
@@ -2060,6 +2060,23 @@ namespace BaseClasses.GraphObj
                             double lengthTopLeft = originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
                             double lengthTopRight = originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
                             double lengthTopTip = originalsheetLengthTopTip - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+
+                            if(isFibreglassLast) // Koncime s FG sheet
+                            {
+                                iNumberOfEdges = 4;
+                                coordinateInPlane_y = height_left_basic - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                lengthTopLeft = originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                lengthTopRight = originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                lengthTopTip = originalsheetLengthTopTip - objectInColision_In_Local_x[openingIndex].LengthTotal;
+
+                                if (!isFibreglassFirst && objectInColision_In_Local_x.Count > 1)
+                                {
+                                    coordinateInPlane_y = objectInColision_In_Local_x[openingIndex - 1].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex - 1].LengthTotal;
+                                    lengthTopLeft = originalsheetLengthTopLeft - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                    lengthTopRight = originalsheetLengthTopRight - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                    lengthTopTip = originalsheetLengthTopTip - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
+                                }
+                            }
 
                             // To Ondrej, mrkni na tieto dve podmienky ci sa to neda zapisat nejako jednoduchsie
                             if (side == "Roof-left" && isFibreglassLast)
@@ -2125,7 +2142,7 @@ namespace BaseClasses.GraphObj
                             double lengthTopLeft = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
                             double lengthTopRight = objectInColision_In_Local_x[j].CoordinateInPlane_y - coordinateInPlane_y;
 
-                            if ((isFibreglassFirst || isFibreglassLast) && objectInColision_In_Local_x.Count > 1)
+                            if (isFibreglassFirst && objectInColision_In_Local_x.Count > 1)
                             {
                                 lengthTopLeft = objectInColision_In_Local_x[j + 1].CoordinateInPlane_y - coordinateInPlane_y;
                                 lengthTopRight = objectInColision_In_Local_x[j + 1].CoordinateInPlane_y - coordinateInPlane_y;
