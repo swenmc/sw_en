@@ -506,8 +506,7 @@ namespace BaseClasses
             if (IsSetFromCode) return;
 
             if (Length < 0.5) throw new Exception("Length could not be less than 0.5 [m]");
-            ValidateMaxHeight();
-            //if (Length > MaxHeight - Y) throw new Exception($"Length out of range. Max length total [{(Math.Floor(MaxHeight * 1000) / 1000).ToString("F3")}]. Max Length - Y: [{(Math.Floor((MaxHeight - Y) * 1000) / 1000).ToString("F3")}] [m]");
+            ValidateMaxHeight();            
             // Upravene - zobrazime len maximalnu dlzku ktoru je mozne zadat pre zadane Y
             if (Length > MaxHeight - Y) throw new Exception($"Length out of range. Maximum available length is {(Math.Floor((MaxHeight - Y) * 1000) / 1000).ToString("F3")} [m]");
         }

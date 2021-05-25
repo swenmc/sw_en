@@ -2042,12 +2042,12 @@ namespace BaseClasses.GraphObj
                         if (location == EBuildingSide.Roof_Left_Side || //lava roof je proste speci
                             location == EBuildingSide.Roof && sBuildingGeomInputData.fRoofPitch_deg > 0) //monopitch roof a roofPitch deg > 0
                         {
-                            if (j == iNumberOfNewSheets - 1 && /*!isFibreglassFirst && */!isFibreglassLast) hasOverlap = false;
+                            if (j == iNumberOfNewSheets - 1 && !isFibreglassLast) hasOverlap = false;
                             else hasOverlap = true;
                         }
                         else
                         {
-                            if (j == 0 && !isFibreglassFirst && !isFibreglassLast) hasOverlap = false;
+                            if (j == 0 && !isFibreglassFirst) hasOverlap = false;
                             else hasOverlap = true;
                         }
                         
@@ -2321,7 +2321,7 @@ namespace BaseClasses.GraphObj
             if (fgsp.Location == EBuildingSide.Roof && sBuildingGeomInputData.fRoofPitch_deg > 0)
             {
                 //tolerancia 1mm
-                if (MathF.d_equal(fgsp.Y, fgsp.MaxHeight, 0.00099)) return false;
+                if (MathF.d_equal(fgsp.Y + fgsp.Length, fgsp.MaxHeight, 0.001)) return false;
                 else return true;
             }
             else
