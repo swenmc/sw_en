@@ -146,6 +146,7 @@ namespace PFD
                 {
                     FibreglassProperties fg = vm.GetFibreglass();
                     fg.X = vm.XValues[i];
+                    fg.IsSetFromCode = false;
                     if (fg.ValidateMaxHeight()) items.Add(fg);
                     else isValidMaxHeight = false;
                 }
@@ -176,7 +177,7 @@ namespace PFD
                             fg.Y = /*vm.EqualSpacing ? (vm.Y4 + vm.Spacing) :*/ vm.Y5;                            
                             fg.Length = vm.Length5;
                         }
-
+                        fg.IsSetFromCode = false;
                         if (fg.ValidateMaxHeight()) items.Add(fg);
                         else isValidMaxHeight = false;
                     } //end rows count
