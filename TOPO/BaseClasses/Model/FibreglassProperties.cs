@@ -499,15 +499,17 @@ namespace BaseClasses
 
             if (Y < 0) throw new Exception("Y could not be less than 0.");
             ValidateMaxHeight();
-            if (Y > MaxHeight - Length) throw new Exception($"Y max value is {MaxHeight - Length}");
+            //tolerancia 1 mm
+            if (Y - 0.001 > MaxHeight - Length) throw new Exception($"Y max value is {(MaxHeight - Length).ToString("F3")}");
         }
         private void ValidateLength()
         {
             if (IsSetFromCode) return;
 
-            if (Length < 0.5) throw new Exception("Length could not be less than 0.5");
+            if (Length < 0.5) throw new Exception("Length could not be less than 0.5m");
             ValidateMaxHeight();
-            if (Length > MaxHeight - Y) throw new Exception($"Length out of range. Max length total [{MaxHeight}]. Max Length - Y: [{MaxHeight - Y}]");
+            //tolerancia 1 mm
+            if (Length - 0.001 > MaxHeight - Y) throw new Exception($"Length out of range. Max length total [{MaxHeight.ToString("F3")}]. Max Length - Y: [{(MaxHeight - Y).ToString("F3")}]");
         }
 
         //-------------------------------------------------------------------------------------------------------------
