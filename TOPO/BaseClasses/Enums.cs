@@ -850,6 +850,13 @@ namespace BaseClasses
         Roof = 7
     }
 
+    public enum EOpeningType
+    {
+        Doors = 1,
+        Windows = 2,
+        Fibreglass = 3
+    }
+
     // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
     public enum EGlobalPlane
     {

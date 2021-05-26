@@ -2116,6 +2116,8 @@ namespace BaseClasses.GraphObj
                                 }
                             }
 
+                            if (objectInColision_In_Local_x[openingIndex].OpeningType == EOpeningType.Doors || objectInColision_In_Local_x[openingIndex].OpeningType == EOpeningType.Windows) hasOverlap = false;
+
                             CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, location, material,
                             thicknessCore_m, widthCoil, coilMass_kg_m2, coilPrice_PPSM_NZD, claddingWidthModular,
                             originalsheetNumberOfEdges, // 4 alebo 5 vrcholov
@@ -2157,6 +2159,8 @@ namespace BaseClasses.GraphObj
                             if (isFibreglassFirst) openingIndex = j;
                             else openingIndex = j - 1;
 
+                            if (openingIndex < 0) openingIndex = 0;
+
                             if (j > 0)
                                 coordinateInPlane_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
 
@@ -2186,6 +2190,8 @@ namespace BaseClasses.GraphObj
                                     lengthTopRight = height_left_basic - coordinateInPlane_y;
                                 }
                             }
+
+                            if (objectInColision_In_Local_x[openingIndex].OpeningType == EOpeningType.Doors || objectInColision_In_Local_x[openingIndex].OpeningType == EOpeningType.Windows) hasOverlap = false;
 
                             iNumberOfEdges = 4;
                             CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheetIndex + 1, prefix, name, location, material,
@@ -2473,7 +2479,7 @@ namespace BaseClasses.GraphObj
                             doorPosition_x = width - doorPosition_x_Input_GUI - door.fDoorsWidth;
 
                         listOfOpenings_All.Add(new COpening(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, doorPosition_x, 0,
-                        pControlPoint, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0, true, 0));
+                        pControlPoint, door.fDoorsWidth, door.fDoorsHeight, door.fDoorsHeight, 0, 0, true, 0, EOpeningType.Doors));
                         iOpeningIndex++;
                     }
                 }
@@ -2501,7 +2507,7 @@ namespace BaseClasses.GraphObj
                             windowPosition_x = width - windowPosition_x_Input_GUI - window.fWindowsWidth;
 
                         listOfOpenings_All.Add(new COpening(iOpeningIndex + 1, iNumberOfEdges_FG_D_W, windowPosition_x, -bottomEdge_z + window.fWindowCoordinateZinBay,
-                        pControlPoint, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0, true, 0));
+                        pControlPoint, window.fWindowsWidth, window.fWindowsHeight, window.fWindowsHeight, 0, 0, true, 0, EOpeningType.Windows));
                         iOpeningIndex++;
                     }
                 }
