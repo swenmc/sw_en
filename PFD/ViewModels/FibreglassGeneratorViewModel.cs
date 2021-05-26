@@ -845,13 +845,13 @@ namespace PFD
             f.AdditionalOffsetWall = AdditionalOffsetWall;
             f.RoofEdgeOverhang_X = RoofEdgeOverhang_X;
             f.RoofEdgeOverhang_Y = RoofEdgeOverhang_Y;
-            
+
             f.Sides = Sides;
             f.Side = Side;
             f.XValues = XValues;
             f.Y = Y;
             f.Length = Length;
-                        
+
             return f;
         }
     }
