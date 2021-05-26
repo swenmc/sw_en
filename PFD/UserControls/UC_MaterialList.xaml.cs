@@ -61,7 +61,7 @@ namespace PFD
 
             // Cladding Accessories
             // IN WORK
-            CreateTableCladdingAccessories(pfdVM.Model);
+            //CreateTableCladdingAccessories(pfdVM.Model);
 
             SetControlsVisibility();
         }
