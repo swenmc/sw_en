@@ -480,7 +480,7 @@ namespace BaseClasses
                 double height_left_basic = (ModelType == EModelType_FS.eKitsetGableRoofEnclosed || Side == "Front") ? height_1_final_edge_FB_Wall_temp : height_2_final_edge_FB_Wall_temp;
                 MaxHeight = ModelHelper.GetMaximumAvailable_FG_SheetTopCoordinate(Side, ModelType, RoofPitch_deg, ModelTotalLengthFront + 2 * AdditionalOffsetWall, height_2_final_edge_FB_Wall_temp, height_left_basic, CladdingWidthModular_Wall, (int)(X / CladdingWidthModular_Wall));
             }
-            else if (Side == "Roof") //roof MONO
+            else if (Side == "Roof") // Monopitch Roof
             {
                 MaxHeight = (ModelTotalLengthFront + 2 * AdditionalOffsetWall + 2 * RoofEdgeOverhang_X) / Math.Cos(RoofPitch_deg * Math.PI / 180);
             }
@@ -506,7 +506,7 @@ namespace BaseClasses
             if (IsSetFromCode) return;
 
             if (Length < 0.5) throw new Exception("Length could not be less than 0.5 [m]");
-            ValidateMaxHeight();            
+            ValidateMaxHeight();
             // Upravene - zobrazime len maximalnu dlzku ktoru je mozne zadat pre zadane Y
             if (Length > MaxHeight - Y) throw new Exception($"Length out of range. Maximum available length is {(Math.Floor((MaxHeight - Y) * 1000) / 1000).ToString("F3")} [m]");
         }
@@ -693,6 +693,5 @@ namespace BaseClasses
 
             return true; //all params same => objects equal
         }
-
     }
 }

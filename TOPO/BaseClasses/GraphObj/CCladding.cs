@@ -2026,12 +2026,13 @@ namespace BaseClasses.GraphObj
                     // Skontrolovat podla suradnic ci objekt zacina alebo konci priamo na hrane a podla toho upravit pocet novych, ktore treba vytvorit
                     foreach (COpening o in objectInColision_In_Local_x)
                     {
-                        if (MathF.d_equal(o.CoordinateInPlane_y, 0) || MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic, eq_limit))
+                        if (MathF.d_equal(o.CoordinateInPlane_y, 0, eq_limit) || MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic, eq_limit))
                         {
                             bool isCanopyOnSide = IsAnyCanopyOnSide(location, o, column_crsc_y_minus, column_crsc_y_plus, column_crsc_z_plus, fRoofEdgeOffsetFromCenterline, height_left_basic);
-                            if (MathF.d_equal(o.CoordinateInPlane_y, 0) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassFirst = true; }
+
+                            if (MathF.d_equal(o.CoordinateInPlane_y, 0, eq_limit) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassFirst = true; }
                             else if (MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic, eq_limit) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassLast = true; }
-                        }   
+                        }
                     }
 
                     List<CCladdingOrFibreGlassSheet> sheets = new List<CCladdingOrFibreGlassSheet>();
@@ -2051,7 +2052,7 @@ namespace BaseClasses.GraphObj
                             if (j == 0 && !isFibreglassFirst) hasOverlap = false;
                             else hasOverlap = true;
                         }
-                        
+
                         if (j == iNumberOfNewSheets - 1) // Last segment of original sheet or first segment of original sheet (Nastane vtedy ked zaciname s FG)
                         {
                             if (isFibreglassFirst || isFibreglassLast) { openingIndex = j; }
@@ -2091,17 +2092,27 @@ namespace BaseClasses.GraphObj
                             // To Ondrej, mrkni na tieto dve podmienky ci sa to neda zapisat nejako jednoduchsie
                             if (side == "Roof-left" && isFibreglassLast)
                             {
+                                iNumberOfEdges = 4;
                                 coordinateInPlane_y = height_left_basic - objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
                                 lengthTopLeft = originalsheetLengthTopLeft - objectInColision_In_Local_x[openingIndex].LengthTotal;
                                 lengthTopRight = originalsheetLengthTopRight - objectInColision_In_Local_x[openingIndex].LengthTotal;
                                 lengthTopTip = originalsheetLengthTopTip - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
 
-                                if (objectInColision_In_Local_x.Count > 1)
+                                if (!isFibreglassFirst && objectInColision_In_Local_x.Count > 1)
                                 {
                                     coordinateInPlane_y = objectInColision_In_Local_x[openingIndex - 1].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex - 1].LengthTotal;
                                     lengthTopLeft = originalsheetLengthTopLeft - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
                                     lengthTopRight = originalsheetLengthTopRight - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal;
                                     lengthTopTip = originalsheetLengthTopTip - coordinateInPlane_y - objectInColision_In_Local_x[openingIndex].LengthTotal; // ??? Pre reverzny smer je to asi nezmyselne
+                                }
+
+                                if (isFibreglassFirst && isFibreglassLast) // Dva otvory - first a last, jeden cladding sheet medzi nimi
+                                {
+                                    iNumberOfEdges = 4;
+                                    coordinateInPlane_y = objectInColision_In_Local_x[openingIndex].CoordinateInPlane_y + objectInColision_In_Local_x[openingIndex].LengthTotal;
+                                    lengthTopLeft = objectInColision_In_Local_x[openingIndex + 1].CoordinateInPlane_y - coordinateInPlane_y;
+                                    lengthTopRight = objectInColision_In_Local_x[openingIndex + 1].CoordinateInPlane_y - coordinateInPlane_y;
+                                    lengthTopTip = objectInColision_In_Local_x[openingIndex + 1].CoordinateInPlane_y - coordinateInPlane_y;
                                 }
                             }
 
@@ -2158,7 +2169,7 @@ namespace BaseClasses.GraphObj
                                 lengthTopRight = objectInColision_In_Local_x[j + 1].CoordinateInPlane_y - coordinateInPlane_y;
                             }
 
-                            if (side == "Roof-left" && isFibreglassLast)
+                            if (side == "Roof-left" && isFibreglassLast && !isFibreglassFirst)
                             {
                                 if (j > 0)
                                     coordinateInPlane_y = objectInColision_In_Local_x[j - 1].CoordinateInPlane_y + objectInColision_In_Local_x[j - 1].LengthTotal;
