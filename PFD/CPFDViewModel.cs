@@ -3018,7 +3018,7 @@ namespace PFD
             sDisplayOptions.bDisplayFoundationsWireFrame = _displayOptionsVM.DisplayFoundationsWireFrame;
             sDisplayOptions.bDisplayReinforcementBarsWireFrame = _displayOptionsVM.DisplayReinforcementBarsWireFrame;
             sDisplayOptions.bDisplayFloorSlabWireFrame = _displayOptionsVM.DisplayFloorSlabWireFrame;
-            sDisplayOptions.bDisplayCladdingWireFrame = _displayOptionsVM.DisplayCladdingWireFrame;
+            sDisplayOptions.bDisplayCladdingWireFrame = _displayOptionsVM.DisplayCladdingWireFrame && _modelOptionsVM.EnableCladding;//bug 835 (pokial nie je EnableCladding tak ani bDisplayCladdingWireframe nemoze byt)
             sDisplayOptions.bDisplayFibreglassWireFrame = _displayOptionsVM.DisplayFibreglassWireFrame;
             sDisplayOptions.bDisplayDoorsWireFrame = _displayOptionsVM.DisplayDoorsWireFrame;
             sDisplayOptions.bDisplayWindowsWireFrame = _displayOptionsVM.DisplayWindowsWireFrame;
