@@ -244,7 +244,7 @@ namespace BaseClasses.GraphObj
             if (opts.bDoorsSimpleWireframe)
             {
                 // GCS -system plane XZ
-                double offset = 0.010;
+                double offset = 0.000;
 
                 // One rectangle for window
 
