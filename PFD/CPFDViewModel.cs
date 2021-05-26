@@ -3353,8 +3353,8 @@ namespace PFD
         {
             if (_claddingOptionsVM == null) return;
 
-            AdditionalOffsetWall = 0.001; // 1 mm Aby nekolidovali plochy cladding s members
-            AdditionalOffsetRoof = 0.001; // 1 mm Aby nekolidovali plochy cladding s members (cross-bracing) na streche
+            AdditionalOffsetWall = 0.010; // 10 mm Aby nekolidovali plochy cladding s members
+            AdditionalOffsetRoof = 0.010; // 10 mm Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
             double column_crsc_y_minus_temp = EdgeColumnCrsc_y_minus - AdditionalOffsetWall;

@@ -248,7 +248,7 @@ namespace BaseClasses.GraphObj
 
                 // One rectangle for window
 
-                if (opts.bWindowOutlineOnly && iSegm == 0) // Cele okno je len jeden ram, pridame len pre prvy segment
+                if (opts.bWindowOutlineOnly && iSegm == 0) // Cele okno je len jeden ram, pridame len pre prvy segment reprezentujuci cele okno
                 {
                     // One rectangle for whole window
                     WireFramePoints.Add(new Point3D(0, offset, 0));
@@ -263,7 +263,7 @@ namespace BaseClasses.GraphObj
                     WireFramePoints.Add(new Point3D(0, offset, m_fDim2));
                     WireFramePoints.Add(new Point3D(0, offset, 0));
                 }
-                else
+                else if(!opts.bWindowOutlineOnly) // Kreslime obrys pre kazdy segment okna
                 {
                     // One rectangle for segment
                     WireFramePoints.Add(new Point3D(iSegm * fL_X + 0, offset, 0));

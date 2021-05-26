@@ -238,8 +238,8 @@ namespace BaseClasses.GraphObj
             // TO Ondrej - toto cele by sme potrebovali dat do CPFDViewModel, resp do nejakeho helpera
             // Start
             //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-            double additionalOffset = 0.001;  // 5 mm Aby nekolidovali plochy cladding s members
-            double additionalOffsetRoof = 0.001; // Aby nekolidovali plochy cladding s members (cross-bracing) na streche
+            double additionalOffset = 0.010;  // 10 mm Aby nekolidovali plochy cladding s members
+            double additionalOffsetRoof = 0.010; // 10 mm Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
             double column_crsc_y_minus_temp = column_crsc_y_minus - additionalOffset;
@@ -619,7 +619,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateLeftSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Left", EBuildingSide.Left, "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall, pback0_baseleft, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, column_crsc_y_minus_temp, "Left", EBuildingSide.Left, "WCL", "Cladding - Left Wall", m_MaterialCladding_Wall, pback0_baseleft, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseLength_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
@@ -690,7 +690,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateFrontSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Front", EBuildingSide.Front, "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall, pfront0_baseleft, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, column_crsc_y_minus_temp, "Front", EBuildingSide.Front, "WCF", "Cladding - Front Wall", m_MaterialCladding_Wall, pfront0_baseleft, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity,
                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseWidth_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
@@ -770,7 +770,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateRightSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Right", EBuildingSide.Right, "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall, pfront1_baseright, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, column_crsc_y_minus_temp, "Right", EBuildingSide.Right, "WCR", "Cladding - Right Wall", m_MaterialCladding_Wall, pfront1_baseright, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fLeftCladdingOpacity,
                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseLength_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_left_basic,
@@ -841,7 +841,7 @@ namespace BaseClasses.GraphObj
             if (bGenerateBackSideCladding)
             {
                 if (bIndividualCladdingSheets)
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Back", EBuildingSide.Back, "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall, pback1_baseright, m_ColorNameWall,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, column_crsc_y_minus_temp, "Back", EBuildingSide.Back, "WCB", "Cladding - Back Wall", m_MaterialCladding_Wall, pback1_baseright, m_ColorNameWall,
                     m_claddingShape_Wall, m_claddingCoatingType_Wall, m_ColorWall, options.fFrontCladdingOpacity,
                     m_WallProps.thicknessCore_m, m_WallCoilProps.widthCoil, m_WallCoilProps.coilmass_kg_m2, m_WallCoilProps.price_PPSM_NZD, baseWidth_Overall_for3D,
                     m_WallProps.widthRib_m, m_WallProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, height_left_basic, height_2_final_edge_FB_Wall,
@@ -936,7 +936,7 @@ namespace BaseClasses.GraphObj
                     EBuildingSide sheetLoc = EBuildingSide.Roof_Right_Side;
                     if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed) sheetLoc = EBuildingSide.Roof;
 
-                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Roof-right", sheetLoc, "RC", "Cladding - Roof-Right Side", m_MaterialCladding_Roof, pControlPoint_RoofRight, m_ColorNameRoof,
+                    GenerateCladdingSheets(options.bCladdingSheetColoursByID, column_crsc_y_minus_temp, "Roof-right", sheetLoc, "RC", "Cladding - Roof-Right Side", m_MaterialCladding_Roof, pControlPoint_RoofRight, m_ColorNameRoof,
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                     m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, RoofLength_Y,
                     m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
@@ -1299,7 +1299,7 @@ namespace BaseClasses.GraphObj
                 {
                     if (bIndividualCladdingSheets)
                     {
-                        GenerateCladdingSheets(options.bCladdingSheetColoursByID, "Roof-left", EBuildingSide.Roof_Left_Side, "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
+                        GenerateCladdingSheets(options.bCladdingSheetColoursByID, column_crsc_y_minus_temp, "Roof-left", EBuildingSide.Roof_Left_Side, "RC", "Cladding - Roof-Left Side", m_MaterialCladding_Roof,
                         pControlPoint_RoofLeft, m_ColorNameRoof,
                         m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD,
@@ -1863,6 +1863,7 @@ namespace BaseClasses.GraphObj
         }
 
         public void GenerateCladdingSheets(bool bCladdingSheetColoursByID,
+            double column_crsc_y_minus_temp,
             string side,
             EBuildingSide location,
             string prefix,
@@ -1891,12 +1892,8 @@ namespace BaseClasses.GraphObj
             ref int iSheetIndex, out List<CCladdingOrFibreGlassSheet> listOfSheets)
         {
             listOfSheets = new List<CCladdingOrFibreGlassSheet>(); // Pole kombinovane z povodnych aj nadelenych sheets
-            double eq_limit = 0.001; //1mm
+            double eq_limit = 0.001; // 1 mm
 
-            //Dolne riadky vyrabam Mato len kvoli tomu ze nie je dostupne fRoofEdgeOffsetFromCenterline
-            double additionalOffset = 0.001;  // 5 mm Aby nekolidovali plochy cladding s members
-            // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
-            double column_crsc_y_minus_temp = column_crsc_y_minus - additionalOffset;
             // Roof edge offset from centerline in Y-direction
             float fRoofEdgeOffsetFromCenterline = -(float)column_crsc_y_minus_temp + (float)roofEdgeOverhang_Y;
 
