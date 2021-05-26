@@ -3026,7 +3026,7 @@ namespace PFD
             sDisplayOptions.bDoorsSimpleWireframe = _displayOptionsVM.DoorsSimpleWireframe;
             sDisplayOptions.bWindowOutlineOnly = _displayOptionsVM.WindowOutlineOnly;
 
-            sDisplayOptions.bDisplayCladding = _displayOptionsVM.DisplayCladding;
+            sDisplayOptions.bDisplayCladding = _displayOptionsVM.DisplayCladding && _modelOptionsVM.EnableCladding; //bug 835 (pokial nie je EnableCladding tak ani bDisplayCladding nemoze byt)
             sDisplayOptions.bDisplayCladdingLeftWall = _displayOptionsVM.DisplayCladdingLeftWall;
             sDisplayOptions.bDisplayCladdingRightWall = _displayOptionsVM.DisplayCladdingRightWall;
             sDisplayOptions.bDisplayCladdingFrontWall = _displayOptionsVM.DisplayCladdingFrontWall;

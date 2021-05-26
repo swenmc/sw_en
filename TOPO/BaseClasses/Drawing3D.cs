@@ -322,17 +322,17 @@ namespace BaseClasses
                     Drawing3D.CreateCladdingDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplayFibreglass && sDisplayOptions.bDisplayFibreglassDescription)
+                if (sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayFibreglass && sDisplayOptions.bDisplayFibreglassDescription)
                 {
                     Drawing3D.CreateFibreglassDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplayDoors && sDisplayOptions.bDisplayDoorDescription)
+                if (sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayDoors && sDisplayOptions.bDisplayDoorDescription)
                 {
                     Drawing3D.CreateDoorDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplayWindows && sDisplayOptions.bDisplayWindowDescription)
+                if (sDisplayOptions.bDisplayCladding && sDisplayOptions.bDisplayWindows && sDisplayOptions.bDisplayWindowDescription)
                 {
                     Drawing3D.CreateWindowDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
