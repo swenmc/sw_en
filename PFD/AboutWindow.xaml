@@ -24,7 +24,7 @@
 
         <Image Grid.Column="0" Grid.Row="0" Name="aboutImage" Source ="/Resources/fs-screen.jpg" Width="400"/>
         <TextBlock Margin="5 0 0 0" FontWeight="Bold" Grid.Column="0" Grid.Row="1" FontStyle="Normal" Foreground="CadetBlue" FontSize="32">Engenius Professional</TextBlock>
-        <TextBlock Margin="5 0 0 0" FontWeight="Bold" Grid.Column="0" Grid.Row="2" FontStyle="Oblique" FontSize="20">Version: 2.0.1</TextBlock>
+        <TextBlock Margin="5 0 0 0" FontWeight="Bold" Grid.Column="0" Grid.Row="2" FontStyle="Oblique" FontSize="20">Version: 2.0.2</TextBlock>
 
         <StackPanel Margin="5 0 0 0" Grid.Column="0" Grid.Row="3" Orientation="Vertical" Width="auto">
             <TextBlock FontWeight="Bold" FontStyle="Normal"> Warning:</TextBlock>

@@ -411,6 +411,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1B2465D9DF6F4161BB0D025B9E7FFE90"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1CB94EFD6BB048AD9C286413273951DF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1186,6 +1192,18 @@
         "Entry"
         {
         "MsmKey" = "8:_565AF228E43F42E59AA05C18510CBF80"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5681178B798647F6BBCA4420ED03D027"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_56990E55F29D48A1AE21DBD8222A6BDC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2069,6 +2087,12 @@
         {
         "MsmKey" = "8:_970CDB525F30B9228652637472652449"
         "OwnerKey" = "8:_C77164A3D1944E48904BA09127581287"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_97351A8DC7A8401BA6132995FF81663D"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -6002,6 +6026,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1B2465D9DF6F4161BB0D025B9E7FFE90"
+            {
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\apply_changes.png"
+            "TargetName" = "8:apply_changes.png"
+            "Tag" = "8:"
+            "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1CB94EFD6BB048AD9C286413273951DF"
             {
             "SourcePath" = "8:D:\\Private\\PFD\\Resources\\Textures\\Speedclad\\Speedclad_Indigo Blue.jpg"
@@ -7992,7 +8036,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7745.22527, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7803.18899, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5131E559A61AF5BF33E8E890703090C0"
@@ -8256,6 +8300,46 @@
             "TargetName" = "8:Purlindek_Windsor Grey.jpg"
             "Tag" = "8:"
             "Folder" = "8:_73CDC9B89B194C61B69396AC9058B0C7"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5681178B798647F6BBCA4420ED03D027"
+            {
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\list_cladding_sheets.png"
+            "TargetName" = "8:list_cladding_sheets.png"
+            "Tag" = "8:"
+            "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_56990E55F29D48A1AE21DBD8222A6BDC"
+            {
+            "SourcePath" = "8:D:\\Private\\PFD\\Resources\\list_fibreglass_sheets.png"
+            "TargetName" = "8:list_fibreglass_sheets.png"
+            "Tag" = "8:"
+            "Folder" = "8:_7DD99C70EF814595B61F068424B6FFF9"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -10949,6 +11033,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_97351A8DC7A8401BA6132995FF81663D"
+            {
+            "SourcePath" = "8:D:\\Private\\PFD\\DATABASE\\Resources\\MDBCladdingAccessories.db3"
+            "TargetName" = "8:MDBCladdingAccessories.db3"
+            "Tag" = "8:"
+            "Folder" = "8:_ED655410F0F344F996571FB6365FEC04"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9741E000E5C64D2C9D68D2388246BB51"
@@ -13711,7 +13815,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7745.22527, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:3DTools, Version=1.0.7803.18899, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_DC854C5FE59B4089A0231BCB2772AF4D"
@@ -15691,15 +15795,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Engenius"
-        "ProductCode" = "8:{A98930C3-95AB-467E-9D7C-90F503124FF8}"
-        "PackageCode" = "8:{3071262C-5240-43FE-AD3A-F5F2E048208D}"
-        "UpgradeCode" = "8:{AF16CF31-B9CC-4F07-9519-0B6AEAFA08CB}"
+        "ProductCode" = "8:{96E69912-E7CA-4751-8C65-4A16703CBA5F}"
+        "PackageCode" = "8:{147D0372-5EEF-445A-8E59-4F2FE2C5CA81}"
+        "UpgradeCode" = "8:{22419484-C880-44DE-B080-6BFBC6334E53}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.3"
+        "ProductVersion" = "8:2.0.2"
         "Manufacturer" = "8:OPMC"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
