@@ -11,6 +11,9 @@ namespace BaseClasses.GraphObj
         // TO Ondrej - zaviedol som objekt COpening, ale kedze ma rovnake parametre ako CSurfaceComponent, tak asi nie je velmi ucelne ho teraz
         // pouzivat, skor su momentalne zbytocne problemy s pretypovanim a je to zbytocne spomalenie
 
+        private EOpeningType m_OpeningType;
+
+
         public COpening()
         {
 
@@ -19,7 +22,7 @@ namespace BaseClasses.GraphObj
         public COpening(int compID, int numberOfCorners,
         double coordinateInPlane_x, double coordinateInPlane_y, Point3D controlPoint_GCS,
         double width, double lengthTopLeft, double lengthTopRight, double tipCoordinate_x, double lengthTopTip,
-        bool bIsDisplayed, float fTime)
+        bool bIsDisplayed, float fTime, EOpeningType openingType)
         {
             ID = compID;
             NumberOfEdges = numberOfCorners;
@@ -40,6 +43,20 @@ namespace BaseClasses.GraphObj
                 LengthTotal = Math.Max(Math.Max(LengthTopLeft, LengthTopRight), LengthTopTip);
 
             Area_brutto = Width * LengthTotal;
+            m_OpeningType = openingType;
+        }
+
+        public EOpeningType OpeningType
+        {
+            get
+            {
+                return m_OpeningType;
+            }
+
+            set
+            {
+                m_OpeningType = value;
+            }
         }
     }
 }
