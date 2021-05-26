@@ -1425,7 +1425,7 @@ namespace PFD
                         UpdateFibreglassProperties();
                     }
                 }
-            }            
+            }
         }
 
         private void UpdateFibreglassPropertiesWall()
