@@ -39,7 +39,8 @@ namespace PFD
             if (!pfdVM._quotationDisplayOptionsVM.DisplayGutters) chckDisplayGutters.Visibility = Visibility.Collapsed;
             if (!pfdVM._quotationDisplayOptionsVM.DisplayDownpipe) chckDisplayDownpipe.Visibility = Visibility.Collapsed;
             if (!pfdVM._quotationDisplayOptionsVM.DisplayFlashing) chckDisplayFlashing.Visibility = Visibility.Collapsed;
-            
+            if (!pfdVM._quotationDisplayOptionsVM.DisplayPackers) chckDisplayPackers.Visibility = Visibility.Collapsed;
+
             //pfdVM._quotationExportOptionsVM = pfdVM._quotationDisplayOptionsVM.Clone();
 
             pfdVM._quotationExportOptionsVM.PropertyChanged += HandleExportOptionsPropertyChangedEvent;

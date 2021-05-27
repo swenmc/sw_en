@@ -1139,5 +1139,12 @@ namespace PFD
             }
         }
 
+        public bool AreAnyRollerDoorFlashings()
+        {
+            if (Flashings == null) return false;
+            if (Flashings.Any(f => f.Name.Contains("Roller Door"))) return true;
+            else return false;            
+        }
+
     }
 }

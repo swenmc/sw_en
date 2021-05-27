@@ -26,6 +26,7 @@ namespace PFD
         private bool m_DisplayGutters;
         private bool m_DisplayDownpipe;
         private bool m_DisplayFlashing;
+        private bool m_DisplayPackers;
 
         public bool DisplayMembers
         {
@@ -181,6 +182,20 @@ namespace PFD
             }
         }
 
+        public bool DisplayPackers
+        {
+            get
+            {
+                return m_DisplayPackers;
+            }
+
+            set
+            {
+                m_DisplayPackers = value;
+                NotifyPropertyChanged("DisplayPackers");
+            }
+        }
+
         public QuotationDisplayOptionsViewModel() { }
 
         public QuotationDisplayOptionsViewModel(bool checkAll)
@@ -196,6 +211,7 @@ namespace PFD
             DisplayGutters = checkAll;
             DisplayDownpipe = checkAll;
             DisplayFlashing = checkAll;
+            DisplayPackers = checkAll;
         }
 
 
@@ -220,6 +236,7 @@ namespace PFD
             DisplayGutters = vm.DisplayGutters;
             DisplayDownpipe = vm.DisplayDownpipe;
             DisplayFlashing = vm.DisplayFlashing;
+            DisplayPackers = vm.DisplayPackers;
         }
 
     }

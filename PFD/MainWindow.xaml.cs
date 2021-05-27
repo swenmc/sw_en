@@ -1958,6 +1958,12 @@ namespace PFD
                 dw = dataGrid.ItemsSource as DataView;
                 if (dw != null) tables.Add(dw.Table);
             }
+            if (vm._quotationExportOptionsVM.DisplayPackers)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Packers") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
             try
             {

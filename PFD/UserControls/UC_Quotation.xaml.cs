@@ -187,6 +187,18 @@ namespace PFD
                 Datagrid_Flashing.Visibility = Visibility.Collapsed;
             }
 
+            // DG 12
+            // Packers
+            if (vm._quotationDisplayOptionsVM.DisplayPackers && QuotationHelper.DisplayPackersTable(vm))
+            {
+                CreateTablePackers(fRollerDoorLintelFlashing_TotalLength);
+            }
+            else
+            {
+                TextBlock_Packers.Visibility = Visibility.Collapsed;
+                Datagrid_Packers.Visibility = Visibility.Collapsed;
+            }
+
             // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
 
             double dMarginPercentage = 40; // Default
@@ -1268,6 +1280,78 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_Flashing);
         }
+
+        private void CreateTablePackers(float fRollerDoorLintelFlashing_TotalLength)
+        {
+            // Create Table
+            DataTable dt = new DataTable("Packers");
+            // Create Table Rows
+            dt.Columns.Add(QuotationHelper.colProp_Packer.ColumnName, QuotationHelper.colProp_Packer.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_Color.ColumnName, QuotationHelper.colProp_Color.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_ColorName.ColumnName, QuotationHelper.colProp_ColorName.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_TotalLength_m.ColumnName, QuotationHelper.colProp_TotalLength_m.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_UnitMass_LM.ColumnName, QuotationHelper.colProp_UnitMass_LM.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_LM_NZD.DataType);
+            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
+
+            // Set Table Column Properties
+            QuotationHelper.SetDataTableColumnProperties(dt);
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            double SumTotalLength = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+            
+            CAccessories_LengthItemProperties packer = new CAccessories_LengthItemProperties("Roller Door Channel Packer 70x1 mm", "Packers", fRollerDoorLintelFlashing_TotalLength, 23);
+
+            AddLengthItemRow(dt,
+                            QuotationHelper.colProp_Packer.ColumnName,
+                            packer.Name,
+                            packer.Thickness / 1000, //from [mm] to [m]
+                            packer.Width_total,
+                            packer.CoatingColor,
+                            packer.Length_total,
+                            packer.Mass_kg_lm,
+                            packer.Mass_kg_lm * packer.Length_total,
+                            packer.Price_PPLM_NZD,
+                            packer.Price_PPLM_NZD * packer.Length_total,
+                            ref SumTotalLength,
+                            ref SumTotalMass,
+                            ref SumTotalPrice);
+
+            dBuildingMass += SumTotalMass;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
+
+            //// Last row
+            //DataRow row;
+            //row = dt.NewRow();
+            //row[QuotationHelper.colProp_Packer.ColumnName] = "Total:";
+            //row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
+            //row[QuotationHelper.colProp_Width_m.ColumnName] = "";
+            //row[QuotationHelper.colProp_Color.ColumnName] = "";
+            //row[QuotationHelper.colProp_ColorName.ColumnName] = "";
+            //row[QuotationHelper.colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
+            //row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = "";
+            //row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
+            //row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = "";
+            //row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
+            //dt.Rows.Add(row);
+
+            Datagrid_Packers.ItemsSource = ds.Tables[0].AsDataView();
+            //Datagrid_Packers.Loaded += Datagrid_Packers_Loaded;
+        }
+
+        //private void Datagrid_Packers_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    SetLastRowBold(Datagrid_Flashing);
+        //}
 
         private void CreateTableGutters(CModel model)
         {
