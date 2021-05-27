@@ -133,7 +133,7 @@ namespace PFD
             // DG 7
             // Gutters
             if (vm._quotationDisplayOptionsVM.DisplayGutters && QuotationHelper.DisplayGuttersTable(vm) &&
-                _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Gutters.Count > 0) CreateTableGutters(model);
+                _pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.Gutters.Count > 0) CreateTableGutters(vm);
             else
             {
                 TextBlock_Gutters.Visibility = Visibility.Collapsed;
@@ -143,7 +143,7 @@ namespace PFD
             // DG 8
             // Downpipes
             if (vm._quotationDisplayOptionsVM.DisplayDownpipe && QuotationHelper.DisplayDownpipesTable(vm) &&
-                vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.Downpipes.Count > 0) CreateTableDownpipes(model);
+                vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.Downpipes.Count > 0) CreateTableDownpipes(vm);
             else
             {
                 TextBlock_Downpipes.Visibility = Visibility.Collapsed;
@@ -634,144 +634,12 @@ namespace PFD
             }
         }
 
-        private void CreateTableCladding(CPFDViewModel vm,
-             float fTotalAreaOfOpennings,
-             float fFibreGlassArea_Walls,
-             float fFibreGlassArea_Roof
-            )
+        private void CreateTableCladding(CPFDViewModel vm, float fTotalAreaOfOpennings, float fFibreGlassArea_Walls, float fFibreGlassArea_Roof)
         {
-            // Plocha stien bez otvorov a fibre glass
-            float fWallArea_Total_Netto = vm.TotalWallArea - fTotalAreaOfOpennings - fFibreGlassArea_Walls;  //float fWallArea_Total,
+            DataSet ds = QuotationHelper.GetTableCladding(vm, fTotalAreaOfOpennings, fFibreGlassArea_Walls, fFibreGlassArea_Roof, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
 
-            // Plocha strechy bez fibre glass
-            float fRoofArea_Total_Netto = vm.TotalRoofAreaInclCanopies - fFibreGlassArea_Roof;    //float fRoofArea,
-
-            CoatingColour prop_RoofCladdingColor = vm._claddingOptionsVM.RoofCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.RoofCladdingColorIndex);
-            CoatingColour prop_WallCladdingColor = vm._claddingOptionsVM.WallCladdingColors.ElementAtOrDefault(vm._claddingOptionsVM.WallCladdingColorIndex);
-
-            float fRoofCladdingUnitMass_kg_m2 = (float)(vm._claddingOptionsVM.RoofCladdingCoilProps.mass_kg_lm / vm._claddingOptionsVM.RoofCladdingProps.widthModular_m);
-            float fWallCladdingUnitMass_kg_m2 = (float)(vm._claddingOptionsVM.WallCladdingCoilProps.mass_kg_lm / vm._claddingOptionsVM.WallCladdingProps.widthModular_m);
-
-            float fRoofCladdingPrice_PSM_NZD = (float)(vm._claddingOptionsVM.RoofCladdingCoilProps.price_PPLM_NZD / vm._claddingOptionsVM.RoofCladdingProps.widthModular_m);
-            float fWallCladdingPrice_PSM_NZD = (float)(vm._claddingOptionsVM.WallCladdingCoilProps.price_PPLM_NZD / vm._claddingOptionsVM.WallCladdingProps.widthModular_m);
-
-            float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
-            float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
-
-            // Create Table
-            DataTable dt = new DataTable("Cladding");
-            // Create Table Rows
-            dt.Columns.Add(QuotationHelper.colProp_Cladding.ColumnName, QuotationHelper.colProp_Cladding.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Coating.ColumnName, QuotationHelper.colProp_Coating.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Color.ColumnName, QuotationHelper.colProp_Color.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_ColorName.ColumnName, QuotationHelper.colProp_ColorName.DataType);
-            //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
-            dt.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitMass_SM.ColumnName, QuotationHelper.colProp_UnitMass_SM.DataType); // kg / m^2
-            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_SM_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
-
-            // Set Table Column Properties
-            QuotationHelper.SetDataTableColumnProperties(dt);
-
-            // Create Datases
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(dt);
-
-            // double SumTotalLength = 0;
-            double SumTotalArea = 0;
-            double SumTotalMass = 0;
-            double SumTotalPrice = 0;
-
-            DataRow row;
-
-            if (fRoofArea_Total_Netto > 0 && vm.ModelHasRoof()) // Roof Cladding   //CModelHelper.ModelHasCladding_Roof(vm.Model)
-            {
-                row = dt.NewRow();
-
-                float fUnitMass = fRoofCladdingUnitMass_kg_m2;
-                float totalMass = fRoofArea_Total_Netto * fUnitMass;
-                try
-                {
-                    row[QuotationHelper.colProp_Cladding.ColumnName] = vm._claddingOptionsVM.RoofCladding;
-                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (vm._claddingOptionsVM.RoofCladdingProps.thicknessCore_m * 1000).ToString("F2"); // mm
-                    row[QuotationHelper.colProp_Coating.ColumnName] = vm._claddingOptionsVM.RoofCladdingCoating;
-                    row[QuotationHelper.colProp_Color.ColumnName] = prop_RoofCladdingColor.CodeHEX;
-                    row[QuotationHelper.colProp_ColorName.ColumnName] = prop_RoofCladdingColor.Name;
-                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = fRoofArea_Total_Netto.ToString("F2");
-                    SumTotalArea += fRoofArea_Total_Netto;
-
-                    row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = fUnitMass.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
-                    SumTotalMass += totalMass;
-
-                    row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = fRoofCladdingPrice_PSM_NZD.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = fRoofCladdingPrice_Total_NZD.ToString("F2");
-                    SumTotalPrice += fRoofCladdingPrice_Total_NZD;
-                }
-                catch (ArgumentOutOfRangeException) { }
-                dt.Rows.Add(row);
-            }
-
-            if (fWallArea_Total_Netto > 0 && vm.ModelHasWalls()) // Wall Cladding  // CModelHelper.ModelHasCladding_Wall(vm.Model)
-            {
-                row = dt.NewRow();
-
-                float fUnitMass = fWallCladdingUnitMass_kg_m2;
-                float totalMass = fWallArea_Total_Netto * fUnitMass;
-                try
-                {
-                    row[QuotationHelper.colProp_Cladding.ColumnName] = vm._claddingOptionsVM.WallCladding;
-                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (vm._claddingOptionsVM.WallCladdingProps.thicknessCore_m * 1000).ToString("F2"); // mm
-                    row[QuotationHelper.colProp_Coating.ColumnName] = vm._claddingOptionsVM.WallCladdingCoating;
-                    row[QuotationHelper.colProp_Color.ColumnName] = prop_WallCladdingColor.CodeHEX;
-                    row[QuotationHelper.colProp_ColorName.ColumnName] = prop_WallCladdingColor.Name;
-
-                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = fWallArea_Total_Netto.ToString("F2");
-                    SumTotalArea += fWallArea_Total_Netto;
-
-                    row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = fUnitMass.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
-                    SumTotalMass += totalMass;
-
-                    row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = fWallCladdingPrice_PSM_NZD.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = fWallCladdingPrice_Total_NZD.ToString("F2");
-                    SumTotalPrice += fWallCladdingPrice_Total_NZD;
-                }
-                catch (ArgumentOutOfRangeException) { }
-                dt.Rows.Add(row);
-            }
-
-            if (SumTotalPrice > 0)
-            {
-                dBuildingMass += SumTotalMass;
-                dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
-
-                // Last row
-                row = dt.NewRow();
-                row[QuotationHelper.colProp_Cladding.ColumnName] = "Total:";
-                row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
-                row[QuotationHelper.colProp_Coating.ColumnName] = "";
-                row[QuotationHelper.colProp_Color.ColumnName] = "";
-                row[QuotationHelper.colProp_ColorName.ColumnName] = "";
-                //row["TotalLength"] = SumTotalLength.ToString("F2");
-                row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = SumTotalArea.ToString("F2");
-                row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
-                row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
-                dt.Rows.Add(row);
-
-                Datagrid_Cladding.ItemsSource = ds.Tables[0].AsDataView();
-                Datagrid_Cladding.Loaded += Datagrid_Cladding_Loaded;
-            }
+            Datagrid_Cladding.ItemsSource = ds.Tables[0].AsDataView();
+            Datagrid_Cladding.Loaded += Datagrid_Cladding_Loaded;            
         }
 
         private void Datagrid_Cladding_Loaded(object sender, RoutedEventArgs e)
@@ -792,137 +660,12 @@ namespace PFD
 
         private void CreateTableDoorsAndWindows(CPFDViewModel vm)
         {
-            fTotalAreaOfOpennings = 0;
+            DataSet ds = QuotationHelper.GetTableDoorsAndWindows(vm, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST, out fTotalAreaOfOpennings, 
+                out fRollerDoorTrimmerFlashing_TotalLength, out fRollerDoorLintelFlashing_TotalLength, out fRollerDoorLintelCapFlashing_TotalLength, 
+                out fPADoorTrimmerFlashing_TotalLength, out fPADoorLintelFlashing_TotalLength, out fWindowFlashing_TotalLength);
 
-            fRollerDoorTrimmerFlashing_TotalLength = 0;
-            fRollerDoorLintelFlashing_TotalLength = 0;
-            fRollerDoorLintelCapFlashing_TotalLength = 0;
-            fPADoorTrimmerFlashing_TotalLength = 0;
-            fPADoorLintelFlashing_TotalLength = 0;
-            fWindowFlashing_TotalLength = 0;
-
-            List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
-
-            if (vm._doorsAndWindowsVM != null && QuotationHelper.DisplayDoorsAndWindowsTable(vm))
+            if (ds != null)
             {
-                foreach (DoorProperties dp in vm._doorsAndWindowsVM.DoorBlocksProperties)
-                {
-                    fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
-
-                    if (dp.sDoorType == "Roller Door")
-                    {
-                        fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
-                        fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
-                        fRollerDoorLintelCapFlashing_TotalLength += dp.fDoorsWidth;
-                    }
-                    else
-                    {
-                        fPADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
-                        fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
-                    }
-
-                    listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight, dp.CoatingColor.ID, dp.Serie));
-                }
-
-                foreach (WindowProperties wp in vm._doorsAndWindowsVM.WindowBlocksProperties)
-                {
-                    fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
-
-                    fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
-
-                    listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight, wp.CoatingColor.ID, null));
-                }
-            }
-
-            // TODO Ondrej
-
-            // Refaktorovat kody
-            // Skus to popozerat a pripadne nejako zautomatizovat
-            // V principe mame 2 typy poloziek
-            // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
-            // 2 - definovene plochou (doors, windows, roof netting)
-
-            List<COpeningProperties> groupedOpenings = new List<COpeningProperties>();
-            foreach (COpeningProperties op in listOfOpenings)
-            {
-                if (groupedOpenings.Contains(op))
-                {
-                    COpeningProperties grOP = groupedOpenings[groupedOpenings.IndexOf(op)];
-                    grOP.Count++;
-                }
-                else groupedOpenings.Add(op);
-            }
-
-            // Create Table
-            DataTable dt = new DataTable("Doors and Windows");
-            // Create Table Rows
-            dt.Columns.Add(QuotationHelper.colProp_Opening.ColumnName, QuotationHelper.colProp_Opening.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Height_m.ColumnName, QuotationHelper.colProp_Height_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Count.ColumnName, QuotationHelper.colProp_Count.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Area_m2.ColumnName, QuotationHelper.colProp_Area_m2.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitMass_SM.ColumnName, QuotationHelper.colProp_UnitMass_SM.DataType); // kg / m^2
-            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_SM_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_P_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
-
-            // Set Table Column Properties
-            QuotationHelper.SetDataTableColumnProperties(dt);
-
-            // Create Datases
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(dt);
-
-            int SumCount = 0;
-            double SumTotalArea = 0;
-            double SumTotalMass = 0;
-            double SumTotalPrice = 0;
-
-            foreach (COpeningProperties prop in groupedOpenings)
-            {
-                AddOpeningItemRow(dt,
-                            QuotationHelper.colProp_Opening.ColumnName,
-                            prop.Type,
-                            prop.fWidth,
-                            prop.fHeight,
-                            prop.Count,
-                            prop.Area,
-                            prop.Area * prop.Count,
-                            prop.UnitMass_SM,
-                            prop.UnitMass_SM * prop.Area,
-                            prop.Price_PPSM_NZD,
-                            prop.Price_PPP_NZD,
-                            prop.Price_PPSM_NZD * prop.Area * prop.Count,
-                            ref SumCount,
-                            ref SumTotalArea,
-                            ref SumTotalMass,
-                            ref SumTotalPrice);
-            }
-
-            DataRow row;
-            if (SumTotalPrice > 0)
-            {
-                dBuildingMass += SumTotalMass;
-                dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
-
-                // Last row
-                row = dt.NewRow();
-                row[QuotationHelper.colProp_Opening.ColumnName] = "Total:";
-                row[QuotationHelper.colProp_Width_m.ColumnName] = "";
-                row[QuotationHelper.colProp_Height_m.ColumnName] = "";
-                row[QuotationHelper.colProp_Count.ColumnName] = SumCount.ToString();
-                row[QuotationHelper.colProp_Area_m2.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = SumTotalArea.ToString("F2");
-                row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
-                row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = "";
-                row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
-                dt.Rows.Add(row);
-
                 Datagrid_DoorsAndWindows.ItemsSource = ds.Tables[0].AsDataView();
                 Datagrid_DoorsAndWindows.Loaded += Datagrid_DoorsAndWindows_Loaded;
             }
@@ -941,138 +684,12 @@ namespace PFD
             SetLastRowBold(Datagrid_DoorsAndWindows);
         }
 
-        private void CreateTableFibreglass(CPFDViewModel vm,
-            float fFibreGlassArea_Roof,
-            float fFibreGlassArea_Walls)
+        private void CreateTableFibreglass(CPFDViewModel vm, float fFibreGlassArea_Roof, float fFibreGlassArea_Walls)
         {
-            string roofFibreglassThickness = vm._claddingOptionsVM.RoofFibreglassThicknessTypes.ElementAtOrDefault(vm._claddingOptionsVM.RoofFibreglassThicknessIndex);
-            string wallFibreglassThickness = vm._claddingOptionsVM.WallFibreglassThicknessTypes.ElementAtOrDefault(vm._claddingOptionsVM.WallFibreglassThicknessIndex);
+            DataSet ds = QuotationHelper.GetTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
 
-            CFibreglassProperties prop_RoofFibreglass = new CFibreglassProperties();
-            prop_RoofFibreglass = CFibreglassManager.GetFibreglassProperties($"{vm._claddingOptionsVM.RoofCladding}-{roofFibreglassThickness}");
-
-            CFibreglassProperties prop_WallFibreglass = new CFibreglassProperties();
-            prop_WallFibreglass = CFibreglassManager.GetFibreglassProperties($"{vm._claddingOptionsVM.WallCladding}-{wallFibreglassThickness}");
-
-            float fRoofFibreGlassPrice_PSM_NZD = (float)prop_RoofFibreglass.price_PPSM_NZD; // Cena roof fibreglass za 1 m^2
-            float fWallFibreGlassPrice_PSM_NZD = (float)prop_WallFibreglass.price_PPSM_NZD; // Cena wall fibreglass za 1 m^2
-
-            float fRoofFibreGlassUnitMass_SM = (float)prop_RoofFibreglass.mass_kg_m2;
-            float fWallFibreGlassUnitMass_SM = (float)prop_WallFibreglass.mass_kg_m2;
-
-            float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD;
-            float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD;
-
-            // Create Table
-            DataTable dt = new DataTable("Fibreglass");
-            // Create Table Rows
-            dt.Columns.Add(QuotationHelper.colProp_Fibreglass.ColumnName, QuotationHelper.colProp_Fibreglass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalLength_m.ColumnName, QuotationHelper.colProp_TotalLength_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitMass_SM.ColumnName, QuotationHelper.colProp_UnitMass_SM.DataType); // kg / m^2
-            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_SM_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
-
-            // Set Table Column Properties
-            QuotationHelper.SetDataTableColumnProperties(dt);
-
-            // Create Datases
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(dt);
-
-            double SumTotalLength = 0;
-            double SumTotalArea = 0;
-            double SumTotalMass = 0;
-            double SumTotalPrice = 0;
-
-            DataRow row;
-
-            if (fFibreGlassArea_Roof > 0 && vm.ModelHasRoof()) // Roof Cladding  //CModelHelper.ModelHasFibreglass_Roof(vm.Model)
-            {
-                row = dt.NewRow();
-
-                float totalLength = fFibreGlassArea_Roof / (float)prop_RoofFibreglass.widthModular_m;
-                float fUnitMass = fRoofFibreGlassUnitMass_SM;
-                float totalMass = fFibreGlassArea_Roof * fUnitMass;
-                try
-                {
-                    row[QuotationHelper.colProp_Fibreglass.ColumnName] = vm._claddingOptionsVM.RoofCladding;
-                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (prop_RoofFibreglass.thickness_m * 1000).ToString("F2"); // mm
-                    row[QuotationHelper.colProp_Width_m.ColumnName] = prop_RoofFibreglass.widthModular_m.ToString("F2");
-                    row[QuotationHelper.colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
-                    SumTotalLength += totalLength;
-
-                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = fFibreGlassArea_Roof.ToString("F2");
-                    SumTotalArea += fFibreGlassArea_Roof;
-
-                    row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = fUnitMass.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
-                    SumTotalMass += totalMass;
-
-                    row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = fRoofFibreGlassPrice_PSM_NZD.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = fRoofFibreGlassPrice_Total_NZD.ToString("F2");
-                    SumTotalPrice += fRoofFibreGlassPrice_Total_NZD;
-                }
-                catch (ArgumentOutOfRangeException) { }
-                dt.Rows.Add(row);
-            }
-
-            if (fFibreGlassArea_Walls > 0 && vm.ModelHasWalls()) // Wall Cladding  //CModelHelper.ModelHasFibreglass_Wall(vm.Model)
-            {
-                row = dt.NewRow();
-
-                float totalLength = fFibreGlassArea_Walls / (float)prop_WallFibreglass.widthModular_m;
-                float fUnitMass = fWallFibreGlassUnitMass_SM;
-                float totalMass = fFibreGlassArea_Walls * fUnitMass;
-                try
-                {
-                    row[QuotationHelper.colProp_Fibreglass.ColumnName] = vm._claddingOptionsVM.WallCladding;
-                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (prop_WallFibreglass.thickness_m * 1000).ToString("F2"); // mm
-                    row[QuotationHelper.colProp_Width_m.ColumnName] = prop_WallFibreglass.widthModular_m.ToString("F2");
-                    row[QuotationHelper.colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
-                    SumTotalLength += totalLength;
-
-                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = fFibreGlassArea_Walls.ToString("F2");
-                    SumTotalArea += fFibreGlassArea_Walls;
-
-                    row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = fUnitMass.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
-                    SumTotalMass += totalMass;
-
-                    row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = fWallFibreGlassPrice_PSM_NZD.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = fWallFibreGlassPrice_Total_NZD.ToString("F2");
-                    SumTotalPrice += fWallFibreGlassPrice_Total_NZD;
-                }
-                catch (ArgumentOutOfRangeException) { }
-                dt.Rows.Add(row);
-            }
-
-            if (SumTotalPrice > 0)
-            {
-                dBuildingMass += SumTotalMass;
-                dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
-
-                // Last row
-                row = dt.NewRow();
-                row[QuotationHelper.colProp_Fibreglass.ColumnName] = "Total:";
-                row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
-                row[QuotationHelper.colProp_Width_m.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
-                row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = SumTotalArea.ToString("F2");
-                row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
-                row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
-                dt.Rows.Add(row);
-
+            if (ds != null)
+            {                
                 Datagrid_Fibreglass.ItemsSource = ds.Tables[0].AsDataView();
                 Datagrid_Fibreglass.Loaded += Datagrid_Fibreglass_Loaded;
             }
@@ -1085,7 +702,6 @@ namespace PFD
                 Datagrid_Fibreglass.Visibility = Visibility.Collapsed;
             }
         }
-
         private void Datagrid_Fibreglass_Loaded(object sender, RoutedEventArgs e)
         {
             SetLastRowBold(Datagrid_Fibreglass);
@@ -1093,89 +709,11 @@ namespace PFD
 
         private void CreateTableRoofNetting(float fRoofArea)
         {
-            List<CPlaneItemProperties> listOfProperties = CPlaneItemManager.LoadPlaneItemsProperties("RoofNetting");
+            DataSet ds = QuotationHelper.GetTableRoofNetting(fRoofArea, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
 
-            // Roof Netting and Sisalation
-            // Roof Sisalation Foil
-            // Roof Safe Net
-            float fRoofSisalationFoilPrice_PSM_NZD = (float)listOfProperties[0].Price1_PPSM_NZD; // Cena roof foil za 1 m^2
-            float fRoofSafeNetPrice_PSM_NZD = (float)listOfProperties[1].Price1_PPSM_NZD; // Cena roof net za 1 m^2
-
-            float fRoofSisalationFoilUnitMass_SM = (float)listOfProperties[0].Mass_kg_m2;
-            float fRoofSafeNetUnitMass_SM = (float)listOfProperties[1].Mass_kg_m2;
-
-            float fRoofSisalationFoilPrice_Total_NZD = fRoofArea * fRoofSisalationFoilPrice_PSM_NZD;
-            float fRoofSafeNetPrice_Total_NZD = fRoofArea * fRoofSafeNetPrice_PSM_NZD;
-
-            // Create Table
-            DataTable dt = new DataTable("Roof Netting");
-            // Create Table Rows
-            dt.Columns.Add(QuotationHelper.colProp_Component.ColumnName, QuotationHelper.colProp_Component.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalArea_m2.ColumnName, QuotationHelper.colProp_TotalArea_m2.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitMass_SM.ColumnName, QuotationHelper.colProp_UnitMass_SM.DataType); // kg / m^2
-            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_SM_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
-
-            // Set Table Column Properties
-            QuotationHelper.SetDataTableColumnProperties(dt);
-
-            // Create Datases
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(dt);
-
-            // double SumTotalLength = 0;
-            double SumTotalArea = 0;
-            double SumTotalMass = 0;
-            double SumTotalPrice = 0;
-
-            AddSurfaceItemRow(dt,
-                        QuotationHelper.colProp_Component.ColumnName,
-                        listOfProperties[0].Name,
-                        fRoofArea,
-                        fRoofSisalationFoilUnitMass_SM,
-                        fRoofSisalationFoilUnitMass_SM * fRoofArea,
-                        fRoofSisalationFoilPrice_PSM_NZD,
-                        fRoofSisalationFoilPrice_Total_NZD,
-                        ref SumTotalArea,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddSurfaceItemRow(dt,
-                        QuotationHelper.colProp_Component.ColumnName,
-                        listOfProperties[1].Name,
-                        fRoofArea,
-                        fRoofSafeNetUnitMass_SM,
-                        fRoofSafeNetUnitMass_SM * fRoofArea,
-                        fRoofSafeNetPrice_PSM_NZD,
-                        fRoofSafeNetPrice_Total_NZD,
-                        ref SumTotalArea,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            DataRow row;
-            if (SumTotalPrice > 0)
-            {
-                dBuildingMass += SumTotalMass;
-                dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
-
-                // Last row
-                row = dt.NewRow();
-                row[QuotationHelper.colProp_Component.ColumnName] = "Total:";
-                //row["TotalLength"] = SumTotalLength.ToString("F2");
-                row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = SumTotalArea.ToString("F2");
-                row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
-                row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = "";
-                row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
-                dt.Rows.Add(row);
-
-                Datagrid_RoofNetting.ItemsSource = ds.Tables[0].AsDataView();
-                Datagrid_RoofNetting.Loaded += Datagrid_RoofNetting_Loaded;
-            }
+            Datagrid_RoofNetting.ItemsSource = ds.Tables[0].AsDataView();
+            Datagrid_RoofNetting.Loaded += Datagrid_RoofNetting_Loaded;            
         }
-
         private void Datagrid_RoofNetting_Loaded(object sender, RoutedEventArgs e)
         {
             SetLastRowBold(Datagrid_RoofNetting);
@@ -1189,88 +727,9 @@ namespace PFD
             float fPADoorLintelFlashing_TotalLength,
             float fWindowFlashing_TotalLength)
         {
-            _pfdVM.CountFlashings();
-
-            CAccessories_LengthItemProperties flashing = null;
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[4]);
-            if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
-
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[5]);
-            if (flashing != null) flashing.Length_total = fRollerDoorLintelFlashing_TotalLength;
-
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[6]);
-            if (flashing != null) flashing.Length_total = fRollerDoorLintelCapFlashing_TotalLength;
-
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[7]);
-            if (flashing != null) flashing.Length_total = fPADoorTrimmerFlashing_TotalLength;
-
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[8]);
-            if (flashing != null) flashing.Length_total = fPADoorLintelFlashing_TotalLength;
-
-            flashing = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM._doorsAndWindowsVM.AllFlashingsNames[9]);
-            if (flashing != null) flashing.Length_total = fWindowFlashing_TotalLength;
-            
-            // Create Table
-            DataTable dt = new DataTable("Flashings");
-            // Create Table Rows
-            dt.Columns.Add(QuotationHelper.colProp_Flashing.ColumnName, QuotationHelper.colProp_Flashing.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Color.ColumnName, QuotationHelper.colProp_Color.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_ColorName.ColumnName, QuotationHelper.colProp_ColorName.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalLength_m.ColumnName, QuotationHelper.colProp_TotalLength_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitMass_LM.ColumnName, QuotationHelper.colProp_UnitMass_LM.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_LM_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
-
-            // Set Table Column Properties
-            QuotationHelper.SetDataTableColumnProperties(dt);
-
-            // Create Datases
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(dt);
-
-            double SumTotalLength = 0;
-            double SumTotalMass = 0;
-            double SumTotalPrice = 0;
-
-            foreach (CAccessories_LengthItemProperties fl in _pfdVM._doorsAndWindowsVM.Flashings)
-            {
-                AddLengthItemRow(dt,
-                            QuotationHelper.colProp_Flashing.ColumnName,
-                            fl.Name,
-                            fl.Thickness / 1000, //from [mm] to [m]
-                            fl.Width_total,
-                            fl.CoatingColor,
-                            fl.Length_total,
-                            fl.Mass_kg_lm,
-                            fl.Mass_kg_lm * fl.Length_total,
-                            fl.Price_PPLM_NZD,
-                            fl.Price_PPLM_NZD * fl.Length_total,
-                            ref SumTotalLength,
-                            ref SumTotalMass,
-                            ref SumTotalPrice);
-            }
-
-            dBuildingMass += SumTotalMass;
-            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
-
-            // Last row
-            DataRow row;
-            row = dt.NewRow();
-            row[QuotationHelper.colProp_Flashing.ColumnName] = "Total:";
-            row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
-            row[QuotationHelper.colProp_Width_m.ColumnName] = "";
-            row[QuotationHelper.colProp_Color.ColumnName] = "";
-            row[QuotationHelper.colProp_ColorName.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
-            row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
-            row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
-            dt.Rows.Add(row);
+            DataSet ds = QuotationHelper.GetTableFlashing(_pfdVM, fRollerDoorTrimmerFlashing_TotalLength, fRollerDoorLintelFlashing_TotalLength, fRollerDoorLintelCapFlashing_TotalLength,
+                fPADoorTrimmerFlashing_TotalLength, fPADoorLintelFlashing_TotalLength, fWindowFlashing_TotalLength,
+                ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
 
             Datagrid_Flashing.ItemsSource = ds.Tables[0].AsDataView();
             Datagrid_Flashing.Loaded += Datagrid_Flashing_Loaded;
@@ -1283,69 +742,9 @@ namespace PFD
 
         private void CreateTablePackers(float fRollerDoorLintelFlashing_TotalLength)
         {
-            // Create Table
-            DataTable dt = new DataTable("Packers");
-            // Create Table Rows
-            dt.Columns.Add(QuotationHelper.colProp_Packer.ColumnName, QuotationHelper.colProp_Packer.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Color.ColumnName, QuotationHelper.colProp_Color.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_ColorName.ColumnName, QuotationHelper.colProp_ColorName.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalLength_m.ColumnName, QuotationHelper.colProp_TotalLength_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitMass_LM.ColumnName, QuotationHelper.colProp_UnitMass_LM.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_LM_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
+            DataSet ds = QuotationHelper.GetTablePackers(fRollerDoorLintelFlashing_TotalLength, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
 
-            // Set Table Column Properties
-            QuotationHelper.SetDataTableColumnProperties(dt);
-
-            // Create Datases
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(dt);
-
-            double SumTotalLength = 0;
-            double SumTotalMass = 0;
-            double SumTotalPrice = 0;
-            
-            CAccessories_LengthItemProperties packer = new CAccessories_LengthItemProperties("Roller Door Channel Packer 70x1 mm", "Packers", fRollerDoorLintelFlashing_TotalLength, 23);
-
-            AddLengthItemRow(dt,
-                            QuotationHelper.colProp_Packer.ColumnName,
-                            packer.Name,
-                            packer.Thickness / 1000, //from [mm] to [m]
-                            packer.Width_total,
-                            packer.CoatingColor,
-                            packer.Length_total,
-                            packer.Mass_kg_lm,
-                            packer.Mass_kg_lm * packer.Length_total,
-                            packer.Price_PPLM_NZD,
-                            packer.Price_PPLM_NZD * packer.Length_total,
-                            ref SumTotalLength,
-                            ref SumTotalMass,
-                            ref SumTotalPrice);
-
-            dBuildingMass += SumTotalMass;
-            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
-
-            //// Last row
-            //DataRow row;
-            //row = dt.NewRow();
-            //row[QuotationHelper.colProp_Packer.ColumnName] = "Total:";
-            //row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
-            //row[QuotationHelper.colProp_Width_m.ColumnName] = "";
-            //row[QuotationHelper.colProp_Color.ColumnName] = "";
-            //row[QuotationHelper.colProp_ColorName.ColumnName] = "";
-            //row[QuotationHelper.colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
-            //row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = "";
-            //row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
-            //row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = "";
-            //row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
-            //dt.Rows.Add(row);
-
-            Datagrid_Packers.ItemsSource = ds.Tables[0].AsDataView();
-            //Datagrid_Packers.Loaded += Datagrid_Packers_Loaded;
+            Datagrid_Packers.ItemsSource = ds.Tables[0].AsDataView();            
         }
 
         //private void Datagrid_Packers_Loaded(object sender, RoutedEventArgs e)
@@ -1353,95 +752,9 @@ namespace PFD
         //    SetLastRowBold(Datagrid_Flashing);
         //}
 
-        private void CreateTableGutters(CModel model)
+        private void CreateTableGutters(CPFDViewModel vm)
         {
-            float fGuttersTotalLength = 0;
-
-            if (model is CModel_PFD_01_MR)
-            {
-                fGuttersTotalLength = 1 * _pfdVM.LengthOverall; // na jednej hrane strechy (podla toho ci je mensia H1 alebo H2), ale pre dlzku gutter to nehra rolu
-            }
-            else if (model is CModel_PFD_01_GR)
-            {
-                fGuttersTotalLength = 2 * _pfdVM.LengthOverall; // na dvoch okrajoch strechy
-            }
-            else
-            {
-                // Exception - not implemented
-                fGuttersTotalLength = 0;
-            }
-
-            //toto tu je len preto ak by sa nahodou neupdatoval gutters total length pri zmene modelu (mozno je aj lepsie to mat az tu)
-            //_pfdVM.Gutters[0].Length_total = fGuttersTotalLength;
-
-            // Create Table
-            DataTable dt = new DataTable("Gutters");
-            // Create Table Rows
-            dt.Columns.Add(QuotationHelper.colProp_Gutter.ColumnName, QuotationHelper.colProp_Gutter.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Thickness_mm.ColumnName, QuotationHelper.colProp_Thickness_mm.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Width_m.ColumnName, QuotationHelper.colProp_Width_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Color.ColumnName, QuotationHelper.colProp_Color.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_ColorName.ColumnName, QuotationHelper.colProp_ColorName.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalLength_m.ColumnName, QuotationHelper.colProp_TotalLength_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitMass_LM.ColumnName, QuotationHelper.colProp_UnitMass_LM.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_LM_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
-
-            // Set Table Column Properties
-            QuotationHelper.SetDataTableColumnProperties(dt);
-
-            // Create Datases
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(dt);
-
-            double SumTotalLength = 0;
-            double SumTotalMass = 0;
-            double SumTotalPrice = 0;
-
-            foreach (CAccessories_LengthItemProperties gutter in _pfdVM._doorsAndWindowsVM.Gutters)
-            {
-                //TO Mato - tu neviem co s tymto
-                gutter.Length_total = fGuttersTotalLength;
-
-                AddLengthItemRow(dt,
-                        QuotationHelper.colProp_Gutter.ColumnName,
-                        gutter.Name,
-                        gutter.Thickness / 1000, // from [mm] to [m]
-                        gutter.Width_total,
-                        gutter.CoatingColor,
-                        gutter.Length_total,
-                        gutter.Mass_kg_lm,
-                        gutter.Mass_kg_lm * gutter.Length_total,
-                        gutter.Price_PPLM_NZD,
-                        gutter.Price_PPLM_NZD * gutter.Length_total,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            }
-
-            dBuildingMass += SumTotalMass;
-            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
-
-            //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy gutters // Zatial komentujem, dal by sa tym usetrit jeden riadok
-            //{
-            // Last row
-            DataRow row;
-            row = dt.NewRow();
-            row[QuotationHelper.colProp_Gutter.ColumnName] = "Total:";
-            row[QuotationHelper.colProp_Thickness_mm.ColumnName] = "";
-            row[QuotationHelper.colProp_Width_m.ColumnName] = "";
-            row[QuotationHelper.colProp_Color.ColumnName] = "";
-            row[QuotationHelper.colProp_ColorName.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
-            row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
-            row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
-            dt.Rows.Add(row);
-            //}
+            DataSet ds = QuotationHelper.GetTableGutters(vm, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
 
             Datagrid_Gutters.ItemsSource = ds.Tables[0].AsDataView();
             Datagrid_Gutters.Loaded += Datagrid_Gutters_Loaded;
@@ -1452,104 +765,10 @@ namespace PFD
             SetLastRowBold(Datagrid_Gutters);
         }
 
-        private void CreateTableDownpipes(CModel model)
+        private void CreateTableDownpipes(CPFDViewModel vm)
         {
-            // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-            CAccessories_DownpipeProperties downpipe = _pfdVM._doorsAndWindowsVM.Downpipes[0];
-            float fDownpipesTotalLength = 0;
-
-            if (model is CModel_PFD_01_MR)
-            {
-                fDownpipesTotalLength = downpipe.CountOfDownpipePoints * Math.Min(_pfdVM.WallHeightOverall, _pfdVM.Height_H2_Overall); // Pocet zvodov krat mensia z vysok stien vlavo a vpravo (H1 alebo H2)
-            }
-            else if (model is CModel_PFD_01_GR)
-            {
-                fDownpipesTotalLength = downpipe.CountOfDownpipePoints * _pfdVM.WallHeightOverall; // Pocet zvodov krat vyska steny
-            }
-            else
-            {
-                // Exception - not implemented
-                fDownpipesTotalLength = 0;
-            }
-
-            downpipe.Length_total = fDownpipesTotalLength;
-
-            double fDownpipesTotalMass = fDownpipesTotalLength * downpipe.Mass_kg_lm;
-            double fDownpipesTotalPrice = fDownpipesTotalLength * downpipe.Price_PPLM_NZD;
-
-            // Create Table
-            DataTable dt = new DataTable("Downpipes");
-            // Create Table Rows
-            dt.Columns.Add(QuotationHelper.colProp_Downpipe.ColumnName, QuotationHelper.colProp_Downpipe.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Diameter_mm.ColumnName, QuotationHelper.colProp_Diameter_mm.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_Color.ColumnName, QuotationHelper.colProp_Color.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_ColorName.ColumnName, QuotationHelper.colProp_ColorName.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalLength_m.ColumnName, QuotationHelper.colProp_TotalLength_m.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitMass_LM.ColumnName, QuotationHelper.colProp_UnitMass_LM.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalMass.ColumnName, QuotationHelper.colProp_TotalMass.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName, QuotationHelper.colProp_UnitPrice_LM_NZD.DataType);
-            dt.Columns.Add(QuotationHelper.colProp_TotalPrice_NZD.ColumnName, QuotationHelper.colProp_TotalPrice_NZD.DataType);
-
-            // Set Table Column Properties
-            QuotationHelper.SetDataTableColumnProperties(dt);
-
-            // Create Datases
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(dt);
-
-            double SumTotalLength = 0;
-            double SumTotalMass = 0;
-            double SumTotalPrice = 0;
-
-            DataRow row;
-
-            if (fDownpipesTotalLength > 0 && fDownpipesTotalPrice > 0) // Add new row only if length and price are more than zero
-            {
-                row = dt.NewRow();
-
-                try
-                {
-                    row[QuotationHelper.colProp_Downpipe.ColumnName] = downpipe.Name;
-                    row[QuotationHelper.colProp_Diameter_mm.ColumnName] = (downpipe.Diameter * 1000f).ToString("F2"); // mm
-                    row[QuotationHelper.colProp_Color.ColumnName] = downpipe.CoatingColor.CodeHEX;
-                    row[QuotationHelper.colProp_ColorName.ColumnName] = downpipe.CoatingColor.Name;
-                    row[QuotationHelper.colProp_TotalLength_m.ColumnName] = fDownpipesTotalLength.ToString("F2");
-                    SumTotalLength += fDownpipesTotalLength;
-
-                    row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = downpipe.Mass_kg_lm.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalMass.ColumnName] = fDownpipesTotalMass.ToString("F2");
-                    SumTotalMass += fDownpipesTotalMass;
-
-                    row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = downpipe.Price_PPLM_NZD.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = fDownpipesTotalPrice.ToString("F2");
-                    SumTotalPrice += fDownpipesTotalPrice;
-                }
-                catch (ArgumentOutOfRangeException) { }
-                dt.Rows.Add(row);
-            }
-
-            dBuildingMass += SumTotalMass;
-            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
-
-            //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy downpipes // Zatial komentujem, dal by sa tym usetrit jeden riadok
-            //{
-            // Last row
-            row = dt.NewRow();
-            row[QuotationHelper.colProp_Downpipe.ColumnName] = "Total:";
-            row[QuotationHelper.colProp_Diameter_mm.ColumnName] = "";
-            row[QuotationHelper.colProp_Color.ColumnName] = "";
-            row[QuotationHelper.colProp_ColorName.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
-            row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
-            row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = "";
-            row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
-            dt.Rows.Add(row);
-            //}
-
+            DataSet ds = QuotationHelper.GetTableDownpipes(vm, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            
             Datagrid_Downpipes.ItemsSource = ds.Tables[0].AsDataView();
             Datagrid_Downpipes.Loaded += Datagrid_Downpipes_Loaded;
         }
@@ -1559,145 +778,9 @@ namespace PFD
             SetLastRowBold(Datagrid_Downpipes);
         }
 
-        private void AddLengthItemRow(DataTable dt,
-            string itemColumnName,
-            string itemName,
-            double thickness_m,
-            double width,
-            CoatingColour coatingColor,
-            double totalLength,
-            double unitMass,
-            double totalMass,
-            double unitPrice,
-            double price,
-            ref double SumTotalLength,
-            ref double SumTotalMass,
-            ref double SumTotalPrice)
-        {
-            if (totalLength > 0 && price > 0) // Add new row only if length and price are more than zero
-            {
-                DataRow row;
+        
 
-                row = dt.NewRow();
-
-                try
-                {
-                    row[itemColumnName] = itemName;
-                    row[QuotationHelper.colProp_Thickness_mm.ColumnName] = (thickness_m * 1000).ToString("F2"); // mm
-                    row[QuotationHelper.colProp_Width_m.ColumnName] = width.ToString("F2");
-                    row[QuotationHelper.colProp_Color.ColumnName] = coatingColor.CodeHEX;
-                    row[QuotationHelper.colProp_ColorName.ColumnName] = coatingColor.Name;
-                    row[QuotationHelper.colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
-                    SumTotalLength += totalLength;
-
-                    row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = unitMass.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
-                    SumTotalMass += totalMass;
-
-                    row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = unitPrice.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = price.ToString("F2");
-                    SumTotalPrice += price;
-                }
-                catch (ArgumentOutOfRangeException) { }
-                dt.Rows.Add(row);
-            }
-        }
-
-        private void AddSurfaceItemRow(DataTable dt,
-            string itemColumnName,
-            string itemName,
-            double totalArea,
-            double unitMass,
-            double totalMass,
-            double unitPrice,
-            double price,
-            ref double SumTotalArea,
-            ref double SumTotalMass,
-            ref double SumTotalPrice)
-        {
-            if (totalArea > 0 && price > 0) // Add new row only if area and price are more than zero
-            {
-                DataRow row;
-
-                row = dt.NewRow();
-
-                try
-                {
-                    row[itemColumnName] = itemName;
-
-                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = totalArea.ToString("F2");
-                    SumTotalArea += totalArea;
-
-                    row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = unitMass.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
-                    SumTotalMass += totalMass;
-
-                    row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = unitPrice.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = price.ToString("F2");
-                    SumTotalPrice += price;
-                }
-                catch (ArgumentOutOfRangeException) { }
-                dt.Rows.Add(row);
-            }
-        }
-
-        private void AddOpeningItemRow(DataTable dt,
-                string itemColumnName,
-                string itemName,
-                double width,
-                double height,
-                int count,
-                double area,
-                double totalArea,
-                double unitMass,
-                double totalMass,
-                double unitPrice_PPSM,
-                double unitPrice_PPP,
-                double price,
-                ref int SumCount,
-                ref double SumTotalArea,
-                ref double SumTotalMass,
-                ref double SumTotalPrice)
-        {
-            if (totalArea > 0 && price > 0) // Add new row only if area and price are more than zero
-            {
-                DataRow row;
-
-                row = dt.NewRow();
-
-                try
-                {
-                    row[itemColumnName] = itemName;
-
-                    row[QuotationHelper.colProp_Width_m.ColumnName] = width.ToString("F2");
-                    row[QuotationHelper.colProp_Height_m.ColumnName] = height.ToString("F2");
-                    row[QuotationHelper.colProp_Count.ColumnName] = count.ToString();
-                    SumCount += count;
-
-                    row[QuotationHelper.colProp_Area_m2.ColumnName] = area.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalArea_m2.ColumnName] = totalArea.ToString("F2");
-                    SumTotalArea += totalArea;
-
-                    row[QuotationHelper.colProp_UnitMass_SM.ColumnName] = unitMass.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
-                    SumTotalMass += totalMass;
-
-                    row[QuotationHelper.colProp_UnitPrice_SM_NZD.ColumnName] = unitPrice_PPSM.ToString("F2");
-                    row[QuotationHelper.colProp_UnitPrice_P_NZD.ColumnName] = unitPrice_PPP.ToString("F2");
-
-                    row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = price.ToString("F2");
-                    SumTotalPrice += price;
-                }
-                catch (ArgumentOutOfRangeException) { }
-                dt.Rows.Add(row);
-            }
-        }
+        
 
         private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
         {
