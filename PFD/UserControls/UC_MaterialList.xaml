@@ -467,7 +467,7 @@
                         </Style>
                     </DataGrid.ColumnHeaderStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Packer}" Header="Flashing" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Packer}" Header="Packer" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
                         <DataGridTextColumn Binding="{Binding Thickness_mm}" Header="Thickness [mm]" Width="66" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                         <DataGridTextColumn Binding="{Binding Width_m}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Colour" Width="50">

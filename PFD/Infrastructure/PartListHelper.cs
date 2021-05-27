@@ -50,7 +50,7 @@ namespace PFD
         }
         public static bool DisplayPackersTable(CPFDViewModel vm)
         {
-            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.AreAnyRollerDoorFlashings();
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.ModelHasRollerDoor() && vm._doorsAndWindowsVM.AreBothRollerDoorHeaderFlashings();
         }
     }
 }

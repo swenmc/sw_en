@@ -1139,10 +1139,11 @@ namespace PFD
             }
         }
 
-        public bool AreAnyRollerDoorFlashings()
+        public bool AreBothRollerDoorHeaderFlashings()
         {
             if (Flashings == null) return false;
-            if (Flashings.Any(f => f.Name.Contains("Roller Door"))) return true;
+
+            if (Flashings.Any(f => f.Name == "Roller Door Header") && Flashings.Any(f => f.Name == "Roller Door Header Cap")) return true;
             else return false;            
         }
 

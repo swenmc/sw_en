@@ -37,8 +37,8 @@ namespace PFD
         public static ColumnProperties colProp_Opening = new ColumnProperties(typeof(String), "Opening", "Opening", 12.5f, null, AlignmentX.Left);
         public static ColumnProperties colProp_Gutter = new ColumnProperties(typeof(String), "Gutter", "Gutter", 12.5f, null, AlignmentX.Left);
         public static ColumnProperties colProp_Downpipe = new ColumnProperties(typeof(String), "Downpipe", "Downpipe", 12.5f, null, AlignmentX.Left);
-        public static ColumnProperties colProp_Flashing = new ColumnProperties(typeof(String), "Flashing", "Flashing", 20f, null, AlignmentX.Left);
-        public static ColumnProperties colProp_Packer = new ColumnProperties(typeof(String), "Packer", "Packer", 20f, null, AlignmentX.Left);
+        public static ColumnProperties colProp_Flashing = new ColumnProperties(typeof(String), "Flashing", "Flashing", 22f, null, AlignmentX.Left);
+        public static ColumnProperties colProp_Packer = new ColumnProperties(typeof(String), "Packer", "Packer", 22f, null, AlignmentX.Left);
         public static ColumnProperties colProp_Material = new ColumnProperties(typeof(String), "Material", "Material", 12.5f, null, AlignmentX.Left);
         public static ColumnProperties colProp_Coating = new ColumnProperties(typeof(String), "Coating", "Coating", 10f, null, AlignmentX.Left);
         public static ColumnProperties colProp_Color = new ColumnProperties(typeof(String), "Color", "Colour", 10f, null, AlignmentX.Left);
@@ -2106,7 +2106,7 @@ namespace PFD
         }
         public static bool DisplayPackersTable(CPFDViewModel vm)
         {
-            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.AreAnyRollerDoorFlashings();
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.ModelHasRollerDoor() && vm._doorsAndWindowsVM.AreBothRollerDoorHeaderFlashings();
         }
     }
 }
