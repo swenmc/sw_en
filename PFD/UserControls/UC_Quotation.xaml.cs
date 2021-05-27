@@ -743,8 +743,13 @@ namespace PFD
         private void CreateTablePackers(float fRollerDoorLintelFlashing_TotalLength)
         {
             DataSet ds = QuotationHelper.GetTablePackers(fRollerDoorLintelFlashing_TotalLength, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
-
-            Datagrid_Packers.ItemsSource = ds.Tables[0].AsDataView();            
+            if (ds != null)
+                Datagrid_Packers.ItemsSource = ds.Tables[0].AsDataView();
+            else
+            {
+                TextBlock_Packers.Visibility = Visibility.Collapsed;
+                Datagrid_Packers.Visibility = Visibility.Collapsed;
+            }
         }
 
         //private void Datagrid_Packers_Loaded(object sender, RoutedEventArgs e)

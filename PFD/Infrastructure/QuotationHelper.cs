@@ -1886,8 +1886,8 @@ namespace PFD
             //row[QuotationHelper.colProp_UnitPrice_LM_NZD.ColumnName] = "";
             //row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
             //dt.Rows.Add(row);
-
-            return ds;
+            if (SumTotalLength > 0 && SumTotalPrice > 0) return ds;
+            else return null;
         }
 
         private static void AddSurfaceItemRow(DataTable dt,
