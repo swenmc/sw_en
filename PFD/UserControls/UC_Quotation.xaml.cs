@@ -199,6 +199,18 @@ namespace PFD
                 Datagrid_Packers.Visibility = Visibility.Collapsed;
             }
 
+            // Cladding Accessories
+            if (vm._quotationDisplayOptionsVM.DisplayCladdingAccesories && QuotationHelper.DisplayCladdingAccesoriesTable(vm))
+            {
+                CreateTableCladdingAccessories(vm);
+            }
+            else
+            {
+                TxtCladdingAccessories.Visibility = Visibility.Collapsed;
+                Datagrid_CladdingAccessories_Items_Length.Visibility = Visibility.Collapsed;
+                Datagrid_CladdingAccessories_Items_Piece.Visibility = Visibility.Collapsed;
+            }
+
             // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
 
             double dMarginPercentage = 40; // Default
@@ -783,9 +795,50 @@ namespace PFD
             SetLastRowBold(Datagrid_Downpipes);
         }
 
-        
+        private void CreateTableCladdingAccessories(CPFDViewModel vm)
+        {
+            List<CCladdingAccessories_Item_Piece> claddingAccessoriesItems_Piece = null;
+            List<CCladdingAccessories_Item_Length> claddingAccessoriesItems_Length = null;
+            PartListHelper.GetTableCladdingAccessoriesLists(vm, out claddingAccessoriesItems_Piece, out claddingAccessoriesItems_Length);
 
-        
+            List<CCladdingAccessories_Item_Piece> claddingAccessoriesItems_Piece_Quotation = QuotationHelper.GetQuotationCladdingAccessoriesItems_Piece(claddingAccessoriesItems_Piece);
+
+            // Items - Length
+            DataSet ds1 = PartListHelper.GetTableCladdingAccessories_Items_Length(claddingAccessoriesItems_Length, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            if (ds1 != null)
+            {
+                Datagrid_CladdingAccessories_Items_Length.ItemsSource = ds1.Tables[0].AsDataView();  //draw the table to datagridview
+                Datagrid_CladdingAccessories_Items_Length.Loaded += Datagrid_CladdingAccessories_Items_Length_Loaded;
+            }
+            else
+            {
+                Datagrid_CladdingAccessories_Items_Length.Visibility = Visibility.Collapsed;
+            }
+
+            // Items - Piece            
+            DataSet ds2 = PartListHelper.GetTableCladdingAccessories_Items_Piece(claddingAccessoriesItems_Piece_Quotation, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            if (ds2 != null)
+            {
+                Datagrid_CladdingAccessories_Items_Piece.ItemsSource = ds2.Tables[0].AsDataView();  //draw the table to datagridview
+                Datagrid_CladdingAccessories_Items_Piece.Loaded += Datagrid_CladdingAccessories_Items_Piece_Loaded;
+            }
+            else
+            {
+                Datagrid_CladdingAccessories_Items_Piece.Visibility = Visibility.Collapsed;
+            }
+
+            if (ds1 == null && ds2 == null) TxtCladdingAccessories.Visibility = Visibility.Collapsed;
+        }
+
+        private void Datagrid_CladdingAccessories_Items_Length_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_CladdingAccessories_Items_Length);
+        }
+        private void Datagrid_CladdingAccessories_Items_Piece_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_CladdingAccessories_Items_Piece);
+        }
+
 
         private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
         {

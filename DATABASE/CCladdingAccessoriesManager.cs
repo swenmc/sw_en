@@ -215,12 +215,33 @@ namespace DATABASE
         }
 
         // Cladding Accessories Fixing Manager
+        private static Dictionary<int, CCladdingAccessories_Fixing_Properties> m_Dict_Fixings;
+
+        public static Dictionary<int, CCladdingAccessories_Fixing_Properties> GetFixingPropertiesDict()
+        {
+            if (m_Dict_Fixings != null) return m_Dict_Fixings;
+
+            CCladdingAccessories_Fixing_Properties item;
+            m_Dict_Fixings = new Dictionary<int, CCladdingAccessories_Fixing_Properties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["CladdingAccessoriesSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from Fixing", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        item = GetFixingProperties(reader);
+                        m_Dict_Fixings.Add(item.ID, item);
+                    }
+                }
+            }
+            return m_Dict_Fixings;
+        }
 
         public static List<CCladdingAccessories_Fixing_Properties> LoadFixingProperties()
         {
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-
             CCladdingAccessories_Fixing_Properties item;
             List<CCladdingAccessories_Fixing_Properties> items = new List<CCladdingAccessories_Fixing_Properties>();
 

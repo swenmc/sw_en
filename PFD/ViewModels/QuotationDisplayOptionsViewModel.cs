@@ -27,6 +27,7 @@ namespace PFD
         private bool m_DisplayDownpipe;
         private bool m_DisplayFlashing;
         private bool m_DisplayPackers;
+        private bool m_DisplayCladdingAccesories;
 
         public bool DisplayMembers
         {
@@ -196,6 +197,20 @@ namespace PFD
             }
         }
 
+        public bool DisplayCladdingAccesories
+        {
+            get
+            {
+                return m_DisplayCladdingAccesories;
+            }
+
+            set
+            {
+                m_DisplayCladdingAccesories = value;
+                NotifyPropertyChanged("DisplayCladdingAccesories");
+            }
+        }
+
         public QuotationDisplayOptionsViewModel() { }
 
         public QuotationDisplayOptionsViewModel(bool checkAll)
@@ -212,6 +227,7 @@ namespace PFD
             DisplayDownpipe = checkAll;
             DisplayFlashing = checkAll;
             DisplayPackers = checkAll;
+            DisplayCladdingAccesories = checkAll;
         }
 
 
@@ -237,6 +253,7 @@ namespace PFD
             DisplayDownpipe = vm.DisplayDownpipe;
             DisplayFlashing = vm.DisplayFlashing;
             DisplayPackers = vm.DisplayPackers;
+            DisplayCladdingAccesories = vm.DisplayCladdingAccesories;
         }
 
     }

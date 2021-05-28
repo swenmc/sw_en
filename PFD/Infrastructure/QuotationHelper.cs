@@ -1890,6 +1890,8 @@ namespace PFD
             else return null;
         }
 
+
+
         private static void AddSurfaceItemRow(DataTable dt,
             string itemColumnName,
             string itemName,
@@ -2032,6 +2034,35 @@ namespace PFD
 
 
 
+        public static List<CCladdingAccessories_Item_Piece> GetQuotationCladdingAccessoriesItems_Piece(List<CCladdingAccessories_Item_Piece> claddingAccessoriesItems_PieceFromPartList)
+        {
+            List<CCladdingAccessories_Item_Piece> items = new List<CCladdingAccessories_Item_Piece>();
+
+            Dictionary<int, CCladdingAccessories_Fixing_Properties> dict_Fixings = CCladdingAccessoriesManager.GetFixingPropertiesDict();
+            foreach (CCladdingAccessories_Item_Piece item in claddingAccessoriesItems_PieceFromPartList)
+            {
+                if (item.ItemProp.IsFixingItem)
+                {
+                    foreach (int fixingID in item.ItemProp.FixingIDsArray)
+                    {
+                        CCladdingAccessories_Fixing_Properties f = null;
+                        dict_Fixings.TryGetValue(fixingID, out f);
+                        if (f != null)
+                        {
+                            CCladdingAccessories_Item_Piece fixingExists = items.FirstOrDefault(i => i.Name == f.Name);
+                            if (fixingExists == null) items.Add(new CCladdingAccessories_Item_Piece(f, item.Count));
+                            else fixingExists.Count += item.Count;
+                        }                        
+                    }
+                }
+                else items.Add(item);
+            }
+
+            return items;
+        }
+
+
+
         // Add cladding or fibreglass sheet
         public static void AddSheetToQuotation(CCladdingOrFibreGlassSheet sheet, List<QuotationItem> quotation, int iQuantity, float fCFS_PricePerKg_CladdingSheets_Total)
         {
@@ -2107,6 +2138,11 @@ namespace PFD
         public static bool DisplayPackersTable(CPFDViewModel vm)
         {
             return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._doorsAndWindowsVM != null && vm._doorsAndWindowsVM.ModelHasRollerDoor() && vm._doorsAndWindowsVM.AreBothRollerDoorHeaderFlashings();
+        }
+
+        public static bool DisplayCladdingAccesoriesTable(CPFDViewModel vm)
+        {
+            return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._doorsAndWindowsVM != null;
         }
     }
 }

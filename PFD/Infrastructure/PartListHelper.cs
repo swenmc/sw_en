@@ -362,7 +362,7 @@ namespace PFD
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Gutter bracket fixing
-                itemPiece = new CCladdingAccessories_Item_Piece("Gutter TEK screw 12gx20(neo washer)", iNumberOfGutterBracketFixingPoints);
+                itemPiece = new CCladdingAccessories_Item_Piece("Gutter TEK screw 12gx20 (neo washer)", iNumberOfGutterBracketFixingPoints);
                 claddingAccessoriesItems_Piece.Add(itemPiece);
 
                 // Gutter fixing

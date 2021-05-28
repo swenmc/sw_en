@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DATABASE.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace BaseClasses
         private int m_Count;
         private string m_Note;
 
-        public DATABASE.DTO.CCladdingAccessories_Item_Piece_Properties m_ItemProp;
+        private CCladdingAccessories_Item_Piece_Properties m_ItemProp;
 
         public int Count
         {
@@ -40,23 +41,48 @@ namespace BaseClasses
             }
         }
 
+        public CCladdingAccessories_Item_Piece_Properties ItemProp
+        {
+            get
+            {
+                return m_ItemProp;
+            }
+
+            set
+            {
+                m_ItemProp = value;
+            }
+        }
+
         public CCladdingAccessories_Item_Piece()
         { }
 
         public CCladdingAccessories_Item_Piece(string name)
         {
-            Name = name;
-            m_ItemProp = new DATABASE.DTO.CCladdingAccessories_Item_Piece_Properties();
-            m_ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties_ItemPiece(name);
+            Name = name;            
+            ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties_ItemPiece(name);
         }
 
         public CCladdingAccessories_Item_Piece(string name, int count, string note = "")
         {
-            Name = name;
-            m_ItemProp = new DATABASE.DTO.CCladdingAccessories_Item_Piece_Properties();
-            m_ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties_ItemPiece(name);
+            Name = name;            
+            ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties_ItemPiece(name);
             Count = count;
             Note = note;
+        }
+        public CCladdingAccessories_Item_Piece(CCladdingAccessories_Fixing_Properties fixing, int count)
+        {
+            Name = fixing.Name;
+            ItemProp = new CCladdingAccessories_Item_Piece_Properties()
+            {
+                ID = fixing.ID,
+                Mass_kg = fixing.Mass_kg,
+                Name = fixing.Name,
+                Price_PPKG_NZD = fixing.Price_PPKG_NZD,
+                Price_PPP_NZD = fixing.Price_PPP_NZD,
+                Standard = fixing.Standard
+            };
+            Count = count;
         }
     }
 }
