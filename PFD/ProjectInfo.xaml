@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Project Information" Height="520" Width="400">
+        Title="Project Information" Height="525" Width="410">
     <!--<Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -94,7 +94,7 @@
                      Text="{Binding Path=SalesPersonEmail, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
             <StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
-                <Button Width="75" Height="25" Name="BtnDistance" Content="Distance" Margin="0 0 20 0"
+                <Button Width="75" Height="25" Name="BtnDistance" Content="Geo Location" Margin="0 0 25 0"
                  Click="BtnDistance_Click"/>
                 <Button Width="80" Height="25" Name="BtnSaveProjectInfo" Content="Save" Margin="0 0 10 0"
                  Click="BtnSaveProjectInfo_Click"/>

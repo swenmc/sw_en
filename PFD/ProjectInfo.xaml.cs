@@ -101,59 +101,10 @@ namespace PFD
 
         private void BtnDistance_Click(object sender, RoutedEventArgs e)
         {
-            RunAsync().GetAwaiter().GetResult();
-
+            CProjectInfoVM vm = this.DataContext as CProjectInfoVM;
+            GeoLocationInfo gli = new GeoLocationInfo(vm.Site);
+            gli.ShowDialog();
         }
-
-
-        static HttpClient client = new HttpClient();
-        static async Task RunAsync()
-        {
-            // Update port # in the following line.
-            client.BaseAddress = new Uri("https://geocode.search.hereapi.com/v1/geocode");
-            client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Accept.Add(
-            //    new MediaTypeWithQualityHeaderValue("application/json"));
-
-            try
-            {
-
-                // Get the product
-                //HttpResponseMessage msg = await GetResponseAsync("https://geocode.search.hereapi.com/v1/geocode?apiKey=7IG_k7xRWzWLgFG2eLDoGcu9yo-49DCPFBj1tu-aqfA&q=Lubotin,Slovensko");
-
-                //MessageBox.Show(msg.ToString());
-                HttpResponseMessage msg2 = await GetResponseAsync("?apiKey=7IG_k7xRWzWLgFG2eLDoGcu9yo-49DCPFBj1tu-aqfA&q=Lubotin,Slovensko");
-                MessageBox.Show(msg2.ToString());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            Console.ReadLine();
-        }
-
-        //static async Task<Product> GetProductAsync(string path)
-        //{
-        //    Product product = null;
-        //    HttpResponseMessage response = await client.GetAsync(path);
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        product = await response.Content.ReadAsAsync<Product>();
-        //    }
-        //    return product;
-        //}
-
-        static async Task<HttpResponseMessage> GetResponseAsync(string path)
-        {
-            HttpResponseMessage response = await client.GetAsync(path);
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    product = await response.Content.ReadAsAsync<Product>();
-            //}
-            return response;
-        }
-
 
     }
 }

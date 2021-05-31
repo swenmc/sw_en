@@ -1,0 +1,173 @@
+﻿<Window x:Class="PFD.GeoLocationInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        Title="Geo location info" Height="820" Width="600">
+    <!--<Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+    </Window.Resources>-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Name="GeoLocationInfoGrid" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>                
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Title:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="0" Grid.Column="1" Name="TextBox_Title" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Result Type:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="1" Grid.Column="1" Name="TextBox_resultType" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="House Number Type:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="2" Grid.Column="1" Name="TextBox_houseNumberType" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Address Block Type:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="3" Grid.Column="1" Name="TextBox_addressBlockType" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="LocalityType:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="4" Grid.Column="1" Name="TextBox_localityType" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="AdministrativeAreaType:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="5" Grid.Column="1" Name="TextBox_administrativeAreaType" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="0" FontWeight="Bold" Text="Address:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="label:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="7" Grid.Column="1" Name="TextBox_label" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="countryCode:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="8" Grid.Column="1" Name="TextBox_countryCode" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="countryName:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="9" Grid.Column="1" Name="TextBox_countryName" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="10" Grid.Column="0" Text="stateCode:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="10" Grid.Column="1" Name="TextBox_stateCode" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="11" Grid.Column="0" Text="state:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="11" Grid.Column="1" Name="TextBox_state" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+            
+            <TextBlock Grid.Row="12" Grid.Column="0" Text="county:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="12" Grid.Column="1" Name="TextBox_county" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="13" Grid.Column="0" Text="city:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="13" Grid.Column="1" Name="TextBox_city" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="14" Grid.Column="0" Text="district:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="14" Grid.Column="1" Name="TextBox_district" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+            
+            <TextBlock Grid.Row="15" Grid.Column="0" Text="subdistrict:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="15" Grid.Column="1" Name="TextBox_subdistrict" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+            
+            <TextBlock Grid.Row="16" Grid.Column="0" Text="street:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="16" Grid.Column="1" Name="TextBox_street" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="17" Grid.Column="0" Text="block:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="17" Grid.Column="1" Name="TextBox_block" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="18" Grid.Column="0" Text="subblock:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="18" Grid.Column="1" Name="TextBox_subblock" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="19" Grid.Column="0" Text="postalCode:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="19" Grid.Column="1" Name="TextBox_postalCode" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="20" Grid.Column="0" Text="houseNumber:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="20" Grid.Column="1" Name="TextBox_houseNumber" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="21" Grid.Column="0" FontWeight="Bold" Text="Position:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="22" Grid.Column="0" Text="lat:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="22" Grid.Column="1" Name="TextBox_lat" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="23" Grid.Column="0" Text="lng:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="23" Grid.Column="1" Name="TextBox_lng" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+
+            <StackPanel Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                
+                <Button  Width="80" Height="25" Name="btnOK" Margin="0 0 0 0"
+                         Click="btnOK_Click">OK</Button>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>
