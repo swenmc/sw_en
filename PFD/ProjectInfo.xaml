@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Project Information" Height="525" Width="410">
+        Title="Project Information" Height="525" Width="520">
     <!--<Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -41,6 +41,9 @@
             
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Project Site:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
+            <Button Grid.Row="1" Grid.Column="0" Name="btnShowOnMap" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Show on map" Margin="100 0 0 0" Width="20" Height="20" Cursor="Hand" Click="BtnShowOnMap_Click">
+                <Image Source="Resources/info.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+            </Button>
             <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Site" HorizontalAlignment="Stretch" 
                      TextWrapping="Wrap" VerticalAlignment="Top"
                      Text="{Binding Path=Site, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>

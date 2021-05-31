@@ -3,10 +3,12 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,12 +30,19 @@ namespace PFD
     {
         static string m_projectSite;
         static GeoResponse m_data;
+        static string m_lat;
+        static string m_lng;
+
+        static RoutingResponse m_routing;
         static HttpClient client;
+        static HttpClient clientRouting;
         public GeoLocationInfo(string projectSite)
         {
             InitializeComponent();
 
             m_projectSite = projectSite;
+
+            if (string.IsNullOrEmpty(projectSite)) { MessageBox.Show("Address is empty!"); return; }
 
             try
             {
@@ -45,7 +54,17 @@ namespace PFD
                 client.Dispose();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
-            
+
+            try
+            {
+                clientRouting = new HttpClient();
+                RunAsyncRouting().ConfigureAwait(false).GetAwaiter().GetResult();
+
+                ShowRoutingResponseData(m_routing);
+
+                clientRouting.Dispose();
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -85,7 +104,7 @@ namespace PFD
             TextBox_countryCode.Text = data.address.countryCode;
             TextBox_countryName.Text = data.address.countryName;
             TextBox_stateCode.Text = data.address.stateCode;
-            TextBox_state.Text = data.address.state;            
+            TextBox_state.Text = data.address.state;
             TextBox_county.Text = data.address.county;
             TextBox_city.Text = data.address.city;
             TextBox_district.Text = data.address.district;
@@ -97,6 +116,15 @@ namespace PFD
             TextBox_houseNumber.Text = data.address.houseNumber;
             TextBox_lat.Text = data.position.lat;
             TextBox_lng.Text = data.position.lng;
+
+            m_lat = data.position.lat;
+            m_lng = data.position.lng;
+
+            //webBrowser.Source = new Uri($"https://www.google.sk/maps/place/{data.address.label}");
+            //dynamic activeX = this.webBrowser.GetType().InvokeMember("ActiveXInstance",
+            //        BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+            //        null, this.webBrowser, new object[] { });
+            //activeX.Silent = true;
         }
 
         static async Task<GeoResponse> GetGeoResponseAsync(string path)
@@ -110,7 +138,70 @@ namespace PFD
             return res;
         }
 
+        static async Task RunAsyncRouting()
+        {
+            // Update port # in the following line.
+            clientRouting.BaseAddress = new Uri("https://router.hereapi.com/v8/routes");
+            clientRouting.DefaultRequestHeaders.Accept.Clear();
+            clientRouting.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
 
+            //NumberFormatInfo nfi = new NumberFormatInfo();
+            //nfi.NumberDecimalSeparator = ".";
+
+            try
+            {
+                string url = $"?apiKey=7IG_k7xRWzWLgFG2eLDoGcu9yo-49DCPFBj1tu-aqfA&transportMode=car&origin=-36.979182055684475,174.82199048707665&destination={m_lat},{m_lng}&return=summary";
+                m_routing = await GetRoutingResponseAsync(url).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        static async Task<RoutingResponse> GetRoutingResponseAsync(string path)
+        {
+            RoutingResponse res = null;
+            HttpResponseMessage response = await clientRouting.GetAsync(path).ConfigureAwait(false);
+            if (response.IsSuccessStatusCode)
+            {
+                res = await response.Content.ReadAsAsync<RoutingResponse>().ConfigureAwait(false);
+            }
+            return res;
+        }
+
+        private void ShowRoutingResponseData(RoutingResponse data)
+        {
+            if (data == null) { TextBox_routesFound.Text = $"Number of routes found: {0}"; return; }
+            if (data.routes == null) { TextBox_routesFound.Text = $"Number of routes found: {0}"; return; }
+
+            TextBox_routesFound.Text = $"Number of routes found: {data.routes.Length}";
+
+            Route route = data.routes.FirstOrDefault();
+            if (route == null) return;
+            TextBox_Duration.Text = (int.Parse(route.sections.FirstOrDefault().summary.duration) / 60) + " min";
+            TextBox_Length.Text = route.sections.FirstOrDefault().summary.length + " m";
+
+        }
+
+        private void BtnShowOnMap_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start($"https://www.google.sk/maps/place/{m_data.items.FirstOrDefault().address.label}");
+            }
+            catch (Exception) { /* Do Nothing */ }
+        }
+
+        private void BtnShowRoute_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start($"https://www.google.com/maps/dir/4-6+Waokauri+Place,+Māngere,+Auckland+2022,+Nový+Zéland/{m_data.items.FirstOrDefault().address.label}");
+            }
+            catch (Exception) { /* Do Nothing */ }
+        }
     }
 
     public class ResponseItem
@@ -155,5 +246,31 @@ namespace PFD
     public class GeoResponse
     {
         public ResponseItem[] items { get; set; }
+    }
+
+
+
+    public class RoutingResponse
+    {
+        public Route[] routes { get; set; }
+    }
+
+    public class Route
+    {
+        public string id { get; set; }
+        public RouteSection[] sections { get; set; }
+    }
+
+    public class RouteSection
+    {
+        public string type { get; set; }
+        public RouteSummary summary { get; set; }
+
+    }
+    public class RouteSummary
+    {
+        public string duration { get; set; }
+        public string length { get; set; }
+        public string baseDuration { get; set; }
     }
 }

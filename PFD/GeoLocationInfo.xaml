@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Geo location info" Height="820" Width="600">
+        Title="Geo location info" Height="920" Width="600">
     <!--<Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -15,7 +15,8 @@
         <Grid Name="GeoLocationInfoGrid" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+                <!--<ColumnDefinition Width="4*"/>-->
                 
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -38,7 +39,10 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>                
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
@@ -81,6 +85,9 @@
 
             <TextBlock Grid.Row="7" Grid.Column="0" Text="label:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
+            <Button Grid.Row="7" Grid.Column="0" Name="btnShowOnMap" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Show on map" Margin="100 0 0 0" Width="20" Height="20" Cursor="Hand" Click="BtnShowOnMap_Click">
+                <Image Source="Resources/info.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+            </Button>
             <TextBox Grid.Row="7" Grid.Column="1" Name="TextBox_label" HorizontalAlignment="Stretch" 
                      TextWrapping="Wrap" VerticalAlignment="Top"/>
 
@@ -162,8 +169,27 @@
             <TextBox Grid.Row="23" Grid.Column="1" Name="TextBox_lng" HorizontalAlignment="Stretch" 
                      TextWrapping="Wrap" VerticalAlignment="Top"/>
 
+            <TextBlock Grid.Row="24" Grid.Column="0" FontWeight="Bold" Text="Routes:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <Button Grid.Row="24" Grid.Column="0" Name="btnShowRoute" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Show on map" Margin="100 0 0 0" Width="20" Height="20" Cursor="Hand" Click="BtnShowRoute_Click">
+                <Image Source="Resources/info.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+            </Button>
+            <TextBox Grid.Row="24" Grid.Column="1" Name="TextBox_routesFound" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
 
-            <StackPanel Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+            <TextBlock Grid.Row="25" Grid.Column="0" Text="Duration:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="25" Grid.Column="1" Name="TextBox_Duration" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="26" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="26" Grid.Column="1" Name="TextBox_Length" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <!--<WebBrowser Name="webBrowser" Grid.Row="0" Grid.RowSpan="25" Grid.Column="2" />-->
+
+            <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
                 
                 <Button  Width="80" Height="25" Name="btnOK" Margin="0 0 0 0"
                          Click="btnOK_Click">OK</Button>

@@ -102,9 +102,16 @@ namespace PFD
         private void BtnDistance_Click(object sender, RoutedEventArgs e)
         {
             CProjectInfoVM vm = this.DataContext as CProjectInfoVM;
+            if (string.IsNullOrEmpty(vm.Site)) { MessageBox.Show("Address is empty!"); return; }
+
             GeoLocationInfo gli = new GeoLocationInfo(vm.Site);
             gli.ShowDialog();
         }
 
+        private void BtnShowOnMap_Click(object sender, RoutedEventArgs e)
+        {
+            CProjectInfoVM vm = this.DataContext as CProjectInfoVM;
+            System.Diagnostics.Process.Start($"https://www.google.sk/maps/place/{vm.Site}");
+        }
     }
 }
