@@ -403,10 +403,10 @@ namespace PFD
             }
             else
             {
-                Datagrid_CladdingAccessories_Items_Length.Visibility = Visibility.Collapsed;                
+                Datagrid_CladdingAccessories_Items_Length.Visibility = Visibility.Collapsed;
             }
 
-            // Items - Piece            
+            // Items - Piece
             DataSet ds2 = PartListHelper.GetTableCladdingAccessories_Items_Piece(claddingAccessoriesItems_Piece, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
             if (ds2 != null)
             {
@@ -414,7 +414,7 @@ namespace PFD
                 Datagrid_CladdingAccessories_Items_Piece.Loaded += Datagrid_CladdingAccessories_Items_Piece_Loaded;
             }
             else
-            {                
+            {
                 Datagrid_CladdingAccessories_Items_Piece.Visibility = Visibility.Collapsed;
             }
 
