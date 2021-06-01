@@ -18,15 +18,13 @@ namespace BaseClasses
 
         public CCladdingAccessories_Item_Length(string name)
         {
-            Name = name;
-            m_ItemProp = new DATABASE.DTO.CCladdingAccessories_Item_Length_Properties();
+            Name = name;            
             m_ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties_ItemLength(name);
         }
 
         public CCladdingAccessories_Item_Length(string name, double length)
         {
-            Name = name;
-            m_ItemProp = new DATABASE.DTO.CCladdingAccessories_Item_Length_Properties();
+            Name = name;            
             m_ItemProp = DATABASE.CCladdingAccessoriesManager.GetItemProperties_ItemLength(name);
             m_length = length;
         }
