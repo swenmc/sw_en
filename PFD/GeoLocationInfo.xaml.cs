@@ -148,10 +148,11 @@ namespace PFD
 
             //NumberFormatInfo nfi = new NumberFormatInfo();
             //nfi.NumberDecimalSeparator = ".";
-
+            //string transportMode = "car";
+            string transportMode = "truck";
             try
             {
-                string url = $"?apiKey=7IG_k7xRWzWLgFG2eLDoGcu9yo-49DCPFBj1tu-aqfA&transportMode=car&origin=-36.979182055684475,174.82199048707665&destination={m_lat},{m_lng}&return=summary";
+                string url = $"?apiKey=7IG_k7xRWzWLgFG2eLDoGcu9yo-49DCPFBj1tu-aqfA&transportMode={transportMode}&origin=-36.979182055684475,174.82199048707665&destination={m_lat},{m_lng}&return=summary";
                 m_routing = await GetRoutingResponseAsync(url).ConfigureAwait(false);
             }
             catch (Exception e)
@@ -180,9 +181,45 @@ namespace PFD
 
             Route route = data.routes.FirstOrDefault();
             if (route == null) return;
-            TextBox_Duration.Text = (int.Parse(route.sections.FirstOrDefault().summary.duration) / 60) + " min";
-            TextBox_Length.Text = route.sections.FirstOrDefault().summary.length + " m";
 
+            TextBox_routesFound.Text += $", Number of sections: {route.sections.Length}";
+
+            TextBox_Duration.Text = GetRouteDuration(route);
+            TextBox_Length.Text = GetRouteLength(route);
+            TextBox_Transport.Text = GetRouteTransport(route);
+        }
+
+        private string GetRouteDuration(Route route)
+        {
+            int duration = 0;
+            foreach (RouteSection s in route.sections)
+            {
+                duration += int.Parse(s.summary.duration);
+            }
+
+            int hours = duration / 3600;
+            int min = (duration % 3600) / 60;
+            return $"{hours} h {min} min.";
+        }
+        private string GetRouteLength(Route route)
+        {
+            int length = 0;
+            foreach (RouteSection s in route.sections)
+            {
+                length += int.Parse(s.summary.length);
+            }
+
+            return $"{(int)Math.Round(length / 1000.0)} km";
+        }
+        private string GetRouteTransport(Route route)
+        {
+            List<string> transports =  new List<string>();
+            foreach (RouteSection s in route.sections)
+            {
+                transports.Add(s.transport.mode);                
+            }
+
+            return string.Join(" - ", transports);            
         }
 
         private void BtnShowOnMap_Click(object sender, RoutedEventArgs e)
@@ -265,6 +302,7 @@ namespace PFD
     {
         public string type { get; set; }
         public RouteSummary summary { get; set; }
+        public Transport transport { get; set; }
 
     }
     public class RouteSummary
@@ -272,5 +310,10 @@ namespace PFD
         public string duration { get; set; }
         public string length { get; set; }
         public string baseDuration { get; set; }
+    }
+    public class Transport
+    {
+        public string name { get; set; }
+        public string mode { get; set; }        
     }
 }

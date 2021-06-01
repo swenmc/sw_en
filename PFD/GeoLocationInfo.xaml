@@ -186,6 +186,11 @@
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="26" Grid.Column="1" Name="TextBox_Length" HorizontalAlignment="Stretch" 
                      TextWrapping="Wrap" VerticalAlignment="Top"/>
+            
+            <TextBlock Grid.Row="27" Grid.Column="0" Text="Transport:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="27" Grid.Column="1" Name="TextBox_Transport" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>
 
             <!--<WebBrowser Name="webBrowser" Grid.Row="0" Grid.RowSpan="25" Grid.Column="2" />-->
 
