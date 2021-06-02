@@ -99,19 +99,20 @@ namespace PFD
                 iNumberOfFixingPoints = (int)(fRoofCladdingArea_WithoutFibreglass / fixingPointTributaryArea);
 
                 // Pridavok
-                iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 1.1478f); // Navysime pocet o rezervu
+                iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 0.8571f); // Navysime pocet o rezervu
 
                 if (vm._modelOptionsVM.IndividualCladdingSheets)
                 {
-                    int iNumberOfFixingPoints2 = 0;
                     // Sposob B
+
+                    int iNumberOfFixingPoints2 = 0;
 
                     if (cladding.HasCladdingSheets_RoofRight())
                     {
                         foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfCladdingSheetsRoofRight)
                         {
                             if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
-                                iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/); // Nepripocitavame 1, pretoze plechy sa prekryvaju
                         }
                     }
 
@@ -120,7 +121,7 @@ namespace PFD
                         foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfCladdingSheetsRoofLeft)
                         {
                             if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
-                                iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/); // Nepripocitavame 1, pretoze plechy sa prekryvaju
                         }
                     }
 
@@ -168,6 +169,9 @@ namespace PFD
 
                     iNumberOfFixingPoints = (int)(fRoofCladdingAreaFibreglass / fixingPointTributaryArea);
 
+                    // Pridavok
+                    iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 0.700f); // Navysime pocet o rezervu
+
                     // Sposob B
 
                     int iNumberOfFixingPoints2 = 0;
@@ -180,9 +184,9 @@ namespace PFD
                         {
                             if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                             {
-                                iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                                iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
-                                int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenPurlins * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Purlin) + 1);
+                                iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenPurlins * ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin) + 1);
                                 supportBracketBetweenPurlinsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                 iNumberOfSupportBracketBetweenPurlinsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 + 2); // Pridany jeden bod pre koncove rebro FG + 2 pre rebra cladding sheet
                                 dLapFoamPacker_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
@@ -196,9 +200,9 @@ namespace PFD
                         {
                             if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                             {
-                                iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Purlin) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                                iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
-                                int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenPurlins * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Purlin) + 1);
+                                iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenPurlins * ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin) + 1);
                                 supportBracketBetweenPurlinsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                 iNumberOfSupportBracketBetweenPurlinsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 + 2); // Pridany jeden bod pre koncove rebro FG + 2 pre rebra cladding sheet
                                 dLapFoamPacker_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
@@ -470,12 +474,13 @@ namespace PFD
                 iNumberOfFixingPoints = (int)(fWallCladdingArea_WithoutFibreglassAndOpenings / fixingPointTributaryArea);
 
                 // Pridavok
-                iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 1.2645f); // Navysime pocet o rezervu
+                iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 0.8506f); // Navysime pocet o rezervu
 
                 if (vm._modelOptionsVM.IndividualCladdingSheets)
                 {
-                    int iNumberOfFixingPoints2 = 0;
                     // Sposob B
+
+                    int iNumberOfFixingPoints2 = 0;
                     // TO Ondrej - mam podozrenie ze tieto zoznamy obsahuju sheet pred nadelenim !!!!!!!
                     // TODO Ondrej - potrebujeme zaistit aby to sem voslo az ked je vsetko nadelene !!!!!
 
@@ -490,8 +495,8 @@ namespace PFD
                                 if (!vm._modelOptionsVM.IndividualCladdingSheets)
                                     iSeamFixingPointsPerSheetWidth = (int)(sheet.Width / sheet.BasicModularWidth) + 1; // Nemusime uvazovat okraj, tam je corner flashing, ale uvazujem to ako rezervu a aby sedel pocet s individual sheet
 
-                                iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
-                                iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(sheet.LengthTotal_Real / dCladdingSeamFixingSpacing) + 1); // One sheet side only
+                                iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(sheet.LengthTotal / dCladdingSeamFixingSpacing) + 1); // One sheet side only
                             }
                         }
                     }
@@ -504,18 +509,18 @@ namespace PFD
                         {
                             if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                             {
-                                double dSheetLength = sheet.LengthTotal_Real;
+                                double dSheetLength = sheet.LengthTotal;
                                 if (!vm._modelOptionsVM.IndividualCladdingSheets)
                                 {
                                     if (sheet.NumberOfEdges == 5)
-                                        dSheetLength = MathF.Average(sheet.LengthTopLeft_Real, sheet.LengthTopTip_Real);
+                                        dSheetLength = MathF.Average(sheet.LengthTopLeft, sheet.LengthTopTip);
                                     else
-                                        dSheetLength = MathF.Average(sheet.LengthTopLeft_Real, sheet.LengthTopRight_Real);
+                                        dSheetLength = MathF.Average(sheet.LengthTopLeft, sheet.LengthTopRight);
 
                                     iSeamFixingPointsPerSheetWidth = (int)(sheet.Width / sheet.BasicModularWidth) + 1; // Nemusime uvazovat okraj, tam je corner flashing, ale uvazujem to ako rezervu a aby sedel pocet s individual sheet
                                 }
 
-                                iNumberOfFixingPoints2 += profileFactor * ((int)(dSheetLength / vm.Model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                iNumberOfFixingPoints2 += profileFactor * ((int)(dSheetLength / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
                                 iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(dSheetLength / dCladdingSeamFixingSpacing) + 1); // One sheet side only
                             }
                         }
@@ -532,8 +537,8 @@ namespace PFD
                                 if (!vm._modelOptionsVM.IndividualCladdingSheets)
                                     iSeamFixingPointsPerSheetWidth = (int)(sheet.Width / sheet.BasicModularWidth) + 1; // Nemusime uvazovat okraj, tam je corner flashing, ale uvazujem to ako rezervu a aby sedel pocet s individual sheet
 
-                                iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
-                                iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(sheet.LengthTotal_Real / dCladdingSeamFixingSpacing)/* + 1*/); // One sheet side only
+                                iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(sheet.LengthTotal / dCladdingSeamFixingSpacing) + 1); // One sheet side only
                             }
                         }
                     }
@@ -546,18 +551,18 @@ namespace PFD
                         {
                             if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                             {
-                                double dSheetLength = sheet.LengthTotal_Real;
+                                double dSheetLength = sheet.LengthTotal;
                                 if (!vm._modelOptionsVM.IndividualCladdingSheets)
                                 {
                                     if (sheet.NumberOfEdges == 5)
-                                        dSheetLength = MathF.Average(sheet.LengthTopLeft_Real, sheet.LengthTopTip_Real);
+                                        dSheetLength = MathF.Average(sheet.LengthTopLeft, sheet.LengthTopTip);
                                     else
-                                        dSheetLength = MathF.Average(sheet.LengthTopLeft_Real, sheet.LengthTopRight_Real);
+                                        dSheetLength = MathF.Average(sheet.LengthTopLeft, sheet.LengthTopRight);
 
                                     iSeamFixingPointsPerSheetWidth = (int)(sheet.Width / sheet.BasicModularWidth) + 1; // Nemusime uvazovat okraj, tam je corner flashing, ale uvazujem to ako rezervu a aby sedel pocet s individual sheet
                                 }
 
-                                iNumberOfFixingPoints2 += profileFactor * ((int)(dSheetLength / vm.Model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                iNumberOfFixingPoints2 += profileFactor * ((int)(dSheetLength / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
                                 iNumberCladdingSeamFixingPoints += iSeamFixingPointsPerSheetWidth * ((int)(dSheetLength / dCladdingSeamFixingSpacing) + 1); // One sheet side only
                             }
                         }
@@ -657,6 +662,9 @@ namespace PFD
 
                     iNumberOfFixingPoints = (int)(fWallCladdingAreaFibreglass / fixingPointTributaryArea);
 
+                    // Pridavok
+                    iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 0.700f); // Navysime pocet o rezervu
+
                     if (vm._modelOptionsVM.IndividualCladdingSheets)
                     {
                         // Sposob B
@@ -671,9 +679,9 @@ namespace PFD
                             {
                                 if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                                 {
-                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
-                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1);
+                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
                                     iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
                                     supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                     iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
@@ -688,9 +696,9 @@ namespace PFD
                             {
                                 if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                                 {
-                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
-                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1);
+                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
                                     iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
                                     supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                     iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
@@ -705,9 +713,9 @@ namespace PFD
                             {
                                 if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                                 {
-                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
-                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1);
+                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
                                     iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
                                     supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                     iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
@@ -722,9 +730,9 @@ namespace PFD
                             {
                                 if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                                 {
-                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1) * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1);
-                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal_Real / dLapstitchFixingPointsSpacing);
-                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal_Real / vm.Model.fDist_Girt) + 1);
+                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
                                     iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
                                     supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                     iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
