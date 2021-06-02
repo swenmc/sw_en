@@ -119,7 +119,7 @@ namespace PFD
                     }
 
                     // Kontrola - priblizna
-                    if (!MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
+                    if (vm.debugging && !MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
                     {
                         // Exception
                         throw new Exception("Algorithm error. Different count of items!");
@@ -195,7 +195,7 @@ namespace PFD
                     }
 
                     // Kontrola - priblizna
-                    if (!MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
+                    if (vm.debugging && !MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
                     {
                         // Exception
                         throw new Exception("Algorithm error. Different count of items!");
@@ -229,7 +229,7 @@ namespace PFD
                     // 13 - Rooflite support bracket
 
                     // Support bracket
-                    itemPiece = new CCladdingAccessories_Item_Piece("Fibreglass support bracket 30x40x1400-1 mm", (int)(supportBracketBetweenPurlinsLengthTotal / 1.4f) + 1, "Roof Fibreglass Support Bracket");
+                    itemPiece = new CCladdingAccessories_Item_Piece("Fibreglass support bracket 30x40x1400 - 1 mm", (int)(supportBracketBetweenPurlinsLengthTotal / 1.4f) + 1, "Roof Fibreglass Support Bracket");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
 
                     // Support bracket fixing
@@ -575,7 +575,7 @@ namespace PFD
                     }
 
                     // Kontrola - priblizna
-                    if (!MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
+                    if (vm.debugging && !MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
                     {
                         // Exception
                         throw new Exception("Algorithm error. Different count of items!");
@@ -748,7 +748,7 @@ namespace PFD
                         }
 
                         // Kontrola - priblizna
-                        if (!MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
+                        if (vm.debugging && !MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
                         {
                             // Exception
                             throw new Exception("Algorithm error. Different count of items!");
