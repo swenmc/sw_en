@@ -7,18 +7,31 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         Title="Freight Details" Height="920" Width="600">
-    <!--<Window.Resources>
+    <Window.Resources>
+        <Style x:Key="RightAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="LeftAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="CenterAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="MainColumn" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
-    </Window.Resources>-->
+    </Window.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Name="FreightDetailsGrid" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>                
-                
+                <ColumnDefinition Width="*"/>
+
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -30,7 +43,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
@@ -50,23 +63,89 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Title:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="0" Grid.Column="1" Name="TextBox_Title" HorizontalAlignment="Stretch" 
-                     TextWrapping="Wrap" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Result Type:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="From:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="TextBox_Origin" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="4-6 Waokauri Place, Māngere, Auckland 2022, New Zealand"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Latitude Y:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="1" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="-36.979182055684475"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Longitude X:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="2" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="174.82199048707665"/>
+
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="To:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Name="TextBox_Destination" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" Text="4-6 Waokauri Place, Māngere, Auckland 2022, New Zealand"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Latitude Y:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="5" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="-36.979182055684475"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Longitude X:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="6" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="174.82199048707665"/>
+
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Route Segments:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+
+            <DataGrid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Name ="Datagrid_RouteSegments" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+                IsReadOnly="True"  CanUserSortColumns="False">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding ID}" Header="No." Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TransportType}" Header="Type" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Distance}" Header="Distance [km]" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
+                    <DataGridTextColumn Binding="{Binding Time}" Header="Time" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitPrice_NZD}" Header="Unit Price [NZD / km]" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
+                    <DataGridTextColumn Binding="{Binding TotalPrice_NZD}" Header="Price [NZD]" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum truck load:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="10" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="18000 kg"/>
+
+            <TextBlock Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length (basic):" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="11" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="18 m"/>
+
+            <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length (oversize):" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="12" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="30 m"/>
+
+            <TextBlock Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Text="Total transported mass:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="13" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="3500 kg"/>
+
+            <TextBlock Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2" Text="Number of trucks:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="14" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="1"/>
+
+            <TextBlock Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Text="Road unit price (18 m):" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="15" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="6 NZD / km"/>
+            <TextBlock Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2" Text="Road unit price (18 m)::" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="16" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="8 NZD / km"/>
+            <TextBlock Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Text="Ferry unit price:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="17" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="10 NZD / km"/>
+
+            <TextBlock Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="2" Text="Total freight costs:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="19" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" Text="8260 NZD"/>
+
+            <!--<TextBlock Grid.Row="1" Grid.Column="0" Text="Latitude:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="1" Grid.Column="1" Name="TextBox_resultType" HorizontalAlignment="Stretch" 
-                     TextWrapping="Wrap" VerticalAlignment="Top"/>
+                     TextWrapping="Wrap" VerticalAlignment="Top"/>-->
 
-            
 
-            
+
+
 
             <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
-                
+
                 <Button  Width="80" Height="25" Name="btnOK" Margin="0 0 0 0"
                          Click="btnOK_Click">OK</Button>
             </StackPanel>
