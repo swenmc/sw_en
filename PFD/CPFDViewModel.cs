@@ -3272,18 +3272,27 @@ namespace PFD
             float fRoofRidgeFlashing_TotalLength = 0;
             float fWallCornerFlashing_TotalLength = 0;
             float fBargeFlashing_TotalLength = 0;
+            float fBargeBirdProofFlashing_TotalLength = 0;
+            float fGutterEavePurlinBirdProofStrip_TotalLength = 0;
+            float fFibreglassRoofRidgeCapFlashing_TotalLength = 0;
 
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
                 fRoofRidgeFlashing_TotalLength = 0;
                 fWallCornerFlashing_TotalLength = 2 * WallHeightOverall + 2 * Height_H2_Overall;
                 fBargeFlashing_TotalLength = 2 * RoofSideLength;
+                fBargeBirdProofFlashing_TotalLength = 2 * RoofSideLength;
+                fGutterEavePurlinBirdProofStrip_TotalLength = RoofLength_Y;
             }
             else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
-                fRoofRidgeFlashing_TotalLength = LengthOverall;
+                fRoofRidgeFlashing_TotalLength = RoofLength_Y;
                 fWallCornerFlashing_TotalLength = 4 * WallHeightOverall;
                 fBargeFlashing_TotalLength = 4 * RoofSideLength;
+                fBargeBirdProofFlashing_TotalLength = 4 * RoofSideLength;
+                fGutterEavePurlinBirdProofStrip_TotalLength = 2 * RoofLength_Y;
+
+                fFibreglassRoofRidgeCapFlashing_TotalLength = 0; // TODO - zistit ktore FG sheet koncia na hrane strechy a spocitat ich sirku
             }
             else
             {
@@ -3291,6 +3300,9 @@ namespace PFD
                 fRoofRidgeFlashing_TotalLength = 0;
                 fWallCornerFlashing_TotalLength = 0;
                 fBargeFlashing_TotalLength = 0;
+                fBargeBirdProofFlashing_TotalLength = 0;
+                fGutterEavePurlinBirdProofStrip_TotalLength = 0;
+                fFibreglassRoofRidgeCapFlashing_TotalLength = 0;
             }
 
             //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
@@ -3298,25 +3310,28 @@ namespace PFD
 
             //Tab Accesories: tam su vsetky Flashings, aby bolo vidno co vsetko je na vyber pre dany typ budovy
             //Tab Quotation: tu sa uz konkretne riesi ktore Flashings su na danej budove(vypinaju sa tie,ktore nie su pouzite)
+
+            // TO Ondrej - TOTO tu budeme musiet poupravovat podobne ako je to Cladding Accessories, nepocitalo sa s tym ze niektore casti budovy sa mozu vypinat
+
             if (_modelOptionsVM.EnableCladding) //to Mato-zaroven neviem coho vsetkeho sa to tyka
             {
-                if (MathF.d_equal(TotalRoofArea, 0)) //only if roof exists
+                if (MathF.d_equal(TotalRoofArea, 0)) // if roof doesn't exist
                 {
                     fRoofRidgeFlashing_TotalLength = 0;
+                    fBargeFlashing_TotalLength = 0;
+                    fBargeBirdProofFlashing_TotalLength = 0;
+                    fGutterEavePurlinBirdProofStrip_TotalLength = 0;
+                    fFibreglassRoofRidgeCapFlashing_TotalLength = 0;
                 }
 
-                if (MathF.d_equal(TotalWallArea, 0)) //only if walls exists
+                if (MathF.d_equal(TotalWallArea, 0)) // if walls doen't exist
                 {
                     fWallCornerFlashing_TotalLength = 0;
+                    fBargeBirdProofFlashing_TotalLength = 0;
                 }
                 else
                 {
                     fWallCornerFlashing_TotalLength = fWallCornerFlashing_TotalLength / 4.0f * GetCornersCount();
-                }
-
-                if (MathF.d_equal(WallAreaFront, 0) && MathF.d_equal(WallAreaBack, 0) && MathF.d_equal(TotalRoofArea, 0)) //only if front/back walls or roof exists
-                {
-                    fBargeFlashing_TotalLength = 0;
                 }
             }
             else
@@ -3324,19 +3339,31 @@ namespace PFD
                 fRoofRidgeFlashing_TotalLength = 0;
                 fWallCornerFlashing_TotalLength = 0;
                 fBargeFlashing_TotalLength = 0;
+                fBargeBirdProofFlashing_TotalLength = 0;
+                fGutterEavePurlinBirdProofStrip_TotalLength = 0;
+                fFibreglassRoofRidgeCapFlashing_TotalLength = 0;
             }
 
-            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidge);
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidge); // Roof Ridge
             if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidgeSoftEdge);
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidgeSoftEdge); // Roof Ridge - Soft Edge
             if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.WallCorner); //Wall Corner
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.WallCorner); // Wall Corner
             if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
 
-            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.Barge); //Barge
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.Barge); // Barge
             if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.BargeBirdproof); // Barge BirdProof
+            if (flashing != null) flashing.Length_total = fBargeBirdProofFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.EavePurlinBirdproofStrip); // Eave Purlin Birdproof Strip
+            if (flashing != null) flashing.Length_total = fGutterEavePurlinBirdProofStrip_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.FibreglassRoofRidgeCap); // Fibreglass Roof Ridge Cap
+            if (flashing != null) flashing.Length_total = fFibreglassRoofRidgeCapFlashing_TotalLength;
         }
 
         private int GetCornersCount()
