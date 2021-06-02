@@ -135,7 +135,7 @@ namespace PFD
                 {
                     // 12 - Fibreglass rooflites
 
-                    // Todo napojit
+                    // Todo 841 napojit
                     // Zistit kolko FG sheets (resp ich sirku) konci na hrane alebo tesne pod hranou strechy pre gable roof (napriklad < 0.3 m
                     // Podla suradnice y a hodnoty length v porovnani s length_left_basic (right side) a hodnoty y = 0 (left side)
                     // To Ondrej - mam pocit ze cladding sheets prichadzaju do tohoto vypoctu nenadelene
@@ -310,6 +310,7 @@ namespace PFD
                 double dEavePurlinBirdProofFixingPointSpacing = 1; // DB
                 int iNumberEavePurlinBirdProofFixingPoints = 0;
 
+                // TODO 840
                 // TODO  // pridat CANOPIES ???? !!!!!!!!!!!!!!
                 // Asi bude potrebne prechadzat zoznam canopies ...
 
