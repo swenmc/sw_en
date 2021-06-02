@@ -121,13 +121,14 @@ namespace PFD
             // Flashing
             if (PartListHelper.DisplayFlashingsTable(pfdVM))
             {
-                CreateTableFlashing(
-                    fRollerDoorTrimmerFlashing_TotalLength,
-                    fRollerDoorLintelFlashing_TotalLength,
-                    fRollerDoorLintelCapFlashing_TotalLength,
-                    fPADoorTrimmerFlashing_TotalLength,
-                    fPADoorLintelFlashing_TotalLength,
-                    fWindowFlashing_TotalLength);
+                //CreateTableFlashing(
+                //    fRollerDoorTrimmerFlashing_TotalLength,
+                //    fRollerDoorLintelFlashing_TotalLength,
+                //    fRollerDoorLintelCapFlashing_TotalLength,
+                //    fPADoorTrimmerFlashing_TotalLength,
+                //    fPADoorLintelFlashing_TotalLength,
+                //    fWindowFlashing_TotalLength);
+                CreateTableFlashing();
             }
             else
             {
@@ -344,17 +345,9 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_Downpipes);
         }
-        private void CreateTableFlashing(
-            float fRollerDoorTrimmerFlashing_TotalLength,
-            float fRollerDoorLintelFlashing_TotalLength,
-            float fRollerDoorLintelCapFlashing_TotalLength,
-            float fPADoorTrimmerFlashing_TotalLength,
-            float fPADoorLintelFlashing_TotalLength,
-            float fWindowFlashing_TotalLength)
+        private void CreateTableFlashing()
         {
-            DataSet ds = QuotationHelper.GetTableFlashing(_pfdVM, fRollerDoorTrimmerFlashing_TotalLength, fRollerDoorLintelFlashing_TotalLength, fRollerDoorLintelCapFlashing_TotalLength,
-                fPADoorTrimmerFlashing_TotalLength, fPADoorLintelFlashing_TotalLength, fWindowFlashing_TotalLength,
-                ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            DataSet ds = QuotationHelper.GetTableFlashing(_pfdVM, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
 
             Datagrid_Flashing.ItemsSource = ds.Tables[0].AsDataView();
             Datagrid_Flashing.Loaded += Datagrid_Flashing_Loaded;

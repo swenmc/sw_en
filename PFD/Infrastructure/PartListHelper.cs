@@ -314,7 +314,7 @@ namespace PFD
                 // TODO 840
                 // TODO  // pridat CANOPIES ???? !!!!!!!!!!!!!!
                 // Asi bude potrebne prechadzat zoznam canopies ...
-
+                
                 int iRoofSidesCount = 0;
 
                 if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)

@@ -122,6 +122,18 @@ namespace PFD
 
         private bool m_OptionsLoaded;
 
+        private float m_RoofRidgeFlashing_TotalLength;
+        private float m_WallCornerFlashing_TotalLength;
+        private float m_BargeFlashing_TotalLength;
+        private float m_BargeBirdProofFlashing_TotalLength;
+        private float m_GutterEavePurlinBirdProofStrip_TotalLength;
+        private float m_FibreglassRoofRidgeCapFlashing_TotalLength;
+        private float m_RollerDoorTrimmerFlashing_TotalLength;
+        private float m_RollerDoorLintelFlashing_TotalLength;
+        private float m_RollerDoorLintelCapFlashing_TotalLength;
+        private float m_PADoorLintelFlashing_TotalLength;
+        private float m_WindowFlashing_TotalLength;
+
         // Loads - generate options
         private bool MGenerateNodalLoads;
         private bool MGenerateLoadsOnGirts;
@@ -2091,6 +2103,149 @@ namespace PFD
             }
         }
 
+        public float RoofRidgeFlashing_TotalLength
+        {
+            get
+            {
+                return m_RoofRidgeFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_RoofRidgeFlashing_TotalLength = value;
+            }
+        }
+
+        public float WallCornerFlashing_TotalLength
+        {
+            get
+            {
+                return m_WallCornerFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_WallCornerFlashing_TotalLength = value;
+            }
+        }
+
+        public float BargeFlashing_TotalLength
+        {
+            get
+            {
+                return m_BargeFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_BargeFlashing_TotalLength = value;
+            }
+        }
+
+        public float BargeBirdProofFlashing_TotalLength
+        {
+            get
+            {
+                return m_BargeBirdProofFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_BargeBirdProofFlashing_TotalLength = value;
+            }
+        }
+
+        public float GutterEavePurlinBirdProofStrip_TotalLength
+        {
+            get
+            {
+                return m_GutterEavePurlinBirdProofStrip_TotalLength;
+            }
+
+            set
+            {
+                m_GutterEavePurlinBirdProofStrip_TotalLength = value;
+            }
+        }
+
+        public float FibreglassRoofRidgeCapFlashing_TotalLength
+        {
+            get
+            {
+                return m_FibreglassRoofRidgeCapFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_FibreglassRoofRidgeCapFlashing_TotalLength = value;
+            }
+        }
+
+        public float RollerDoorTrimmerFlashing_TotalLength
+        {
+            get
+            {
+                return m_RollerDoorTrimmerFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_RollerDoorTrimmerFlashing_TotalLength = value;
+            }
+        }
+
+        public float RollerDoorLintelFlashing_TotalLength
+        {
+            get
+            {
+                return m_RollerDoorLintelFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_RollerDoorLintelFlashing_TotalLength = value;
+            }
+        }
+
+        public float RollerDoorLintelCapFlashing_TotalLength
+        {
+            get
+            {
+                return m_RollerDoorLintelCapFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_RollerDoorLintelCapFlashing_TotalLength = value;
+            }
+        }
+
+        public float PADoorLintelFlashing_TotalLength
+        {
+            get
+            {
+                return m_PADoorLintelFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_PADoorLintelFlashing_TotalLength = value;
+            }
+        }
+
+        public float WindowFlashing_TotalLength
+        {
+            get
+            {
+                return m_WindowFlashing_TotalLength;
+            }
+
+            set
+            {
+                m_WindowFlashing_TotalLength = value;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -3266,6 +3421,7 @@ namespace PFD
 
         public void CountFlashings()
         {
+            //TO Mato - tu treba podoplnat vsetky vypocty pre vsetky Properties ktore sa pouzivaju v metode nizsie SetFlashingsLengths
             if (_doorsAndWindowsVM == null) return;
             if (_doorsAndWindowsVM.Flashings == null) return;
 
@@ -3304,10 +3460,7 @@ namespace PFD
                 fGutterEavePurlinBirdProofStrip_TotalLength = 0;
                 fFibreglassRoofRidgeCapFlashing_TotalLength = 0;
             }
-
-            //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
-            CAccessories_LengthItemProperties flashing = null;
-
+            
             //Tab Accesories: tam su vsetky Flashings, aby bolo vidno co vsetko je na vyber pre dany typ budovy
             //Tab Quotation: tu sa uz konkretne riesi ktore Flashings su na danej budove(vypinaju sa tie,ktore nie su pouzite)
 
@@ -3342,28 +3495,50 @@ namespace PFD
                 fBargeBirdProofFlashing_TotalLength = 0;
                 fGutterEavePurlinBirdProofStrip_TotalLength = 0;
                 fFibreglassRoofRidgeCapFlashing_TotalLength = 0;
-            }
+            }            
+        }
 
+        public void SetFlashingsLengths()
+        {
+            if (_doorsAndWindowsVM == null) return;
+            if (_doorsAndWindowsVM.Flashings == null) return;
+            
+            CAccessories_LengthItemProperties flashing = null;
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidge); // Roof Ridge
-            if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = RoofRidgeFlashing_TotalLength;
 
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidgeSoftEdge); // Roof Ridge - Soft Edge
-            if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = RoofRidgeFlashing_TotalLength;
 
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.WallCorner); // Wall Corner
-            if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = WallCornerFlashing_TotalLength;
 
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.Barge); // Barge
-            if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = BargeFlashing_TotalLength;
 
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.BargeBirdproof); // Barge BirdProof
-            if (flashing != null) flashing.Length_total = fBargeBirdProofFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = BargeBirdProofFlashing_TotalLength;
 
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.EavePurlinBirdproofStrip); // Eave Purlin Birdproof Strip
-            if (flashing != null) flashing.Length_total = fGutterEavePurlinBirdProofStrip_TotalLength;
+            if (flashing != null) flashing.Length_total = GutterEavePurlinBirdProofStrip_TotalLength;
 
             flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.FibreglassRoofRidgeCap); // Fibreglass Roof Ridge Cap
-            if (flashing != null) flashing.Length_total = fFibreglassRoofRidgeCapFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = FibreglassRoofRidgeCapFlashing_TotalLength;
+            
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RollerDoorTrimmer);
+            if (flashing != null) flashing.Length_total = RollerDoorTrimmerFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RollerDoorHeader);
+            if (flashing != null) flashing.Length_total = RollerDoorLintelFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RollerDoorHeaderCap);
+            if (flashing != null) flashing.Length_total = RollerDoorLintelCapFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.PADoorHeaderCap);
+            if (flashing != null) flashing.Length_total = PADoorLintelFlashing_TotalLength;
+
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.Window);
+            if (flashing != null) flashing.Length_total = WindowFlashing_TotalLength;
         }
 
         private int GetCornersCount()
