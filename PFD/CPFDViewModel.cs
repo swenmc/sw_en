@@ -133,6 +133,7 @@ namespace PFD
         private float m_RollerDoorLintelCapFlashing_TotalLength;
         private float m_PADoorLintelFlashing_TotalLength;
         private float m_WindowFlashing_TotalLength;
+        
 
         // Loads - generate options
         private bool MGenerateNodalLoads;
@@ -2358,79 +2359,81 @@ namespace PFD
 
         public ObservableCollection<CAccessories_LengthItemProperties> GetDefaultFlashings()
         {
-            float fRoofSideLength = 0;
+            //float fRoofSideLength = 0;
 
-            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-            {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(WidthOverall)); // Dlzka hrany strechy
-            }
-            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
-            {
-                fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(0.5f * WidthOverall)); // Dlzka hrany strechy
-            }
-            else
-            {
-                // Exception - not implemented
-                fRoofSideLength = 0;
-            }
+            //if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            //{
+            //    fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(WidthOverall)); // Dlzka hrany strechy
+            //}
+            //else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
+            //{
+            //    fRoofSideLength = MathF.Sqrt(MathF.Pow2(Height_H2_Overall - WallHeightOverall) + MathF.Pow2(0.5f * WidthOverall)); // Dlzka hrany strechy
+            //}
+            //else
+            //{
+            //    // Exception - not implemented
+            //    fRoofSideLength = 0;
+            //}
 
-            float fRoofRidgeFlashing_TotalLength = 0;
-            float fWallCornerFlashing_TotalLength = 0;
-            float fBargeFlashing_TotalLength = 0;
-            float fEdgePurlinBirdproofStrip_TotalLength = 0;
+            //float fRoofRidgeFlashing_TotalLength = 0;
+            //float fWallCornerFlashing_TotalLength = 0;
+            //float fBargeFlashing_TotalLength = 0;
+            //float fEdgePurlinBirdproofStrip_TotalLength = 0;
 
-            float fFibreglassRoofRidgeCap_TotalLength = 0;
+            //float fFibreglassRoofRidgeCap_TotalLength = 0;
 
-            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-            {
-                fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 2 * WallHeightOverall + 2 * Height_H2_Overall;
-                fBargeFlashing_TotalLength = 2 * fRoofSideLength;
-                fEdgePurlinBirdproofStrip_TotalLength = RoofLength_Y;
-            }
-            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
-            {
-                fRoofRidgeFlashing_TotalLength = RoofLength_Y;
-                fWallCornerFlashing_TotalLength = 4 * WallHeightOverall;
-                fBargeFlashing_TotalLength = 4 * fRoofSideLength;
-                fEdgePurlinBirdproofStrip_TotalLength = 2 * RoofLength_Y;
+            //if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            //{
+            //    fRoofRidgeFlashing_TotalLength = 0;
+            //    fWallCornerFlashing_TotalLength = 2 * WallHeightOverall + 2 * Height_H2_Overall;
+            //    fBargeFlashing_TotalLength = 2 * fRoofSideLength;
+            //    fEdgePurlinBirdproofStrip_TotalLength = RoofLength_Y;
+            //}
+            //else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
+            //{
+            //    fRoofRidgeFlashing_TotalLength = RoofLength_Y;
+            //    fWallCornerFlashing_TotalLength = 4 * WallHeightOverall;
+            //    fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+            //    fEdgePurlinBirdproofStrip_TotalLength = 2 * RoofLength_Y;
 
-                fFibreglassRoofRidgeCap_TotalLength = 0; // TODO - Ondrej dopracovat zistit podla polohy fibreglass sheets, ktore zacinaju resp koncia v ridge +/- 200 mm
-            }
-            else
-            {
-                // Exception - not implemented
-                fRoofRidgeFlashing_TotalLength = 0;
-                fWallCornerFlashing_TotalLength = 0;
-                fBargeFlashing_TotalLength = 0;
-                fEdgePurlinBirdproofStrip_TotalLength = 0;
-            }
+            //    fFibreglassRoofRidgeCap_TotalLength = 0; // TODO - Ondrej dopracovat zistit podla polohy fibreglass sheets, ktore zacinaju resp koncia v ridge +/- 200 mm
+            //}
+            //else
+            //{
+            //    // Exception - not implemented
+            //    fRoofRidgeFlashing_TotalLength = 0;
+            //    fWallCornerFlashing_TotalLength = 0;
+            //    fBargeFlashing_TotalLength = 0;
+            //    fEdgePurlinBirdproofStrip_TotalLength = 0;
+            //}
 
-            float fRollerDoorTrimmerFlashing_TotalLength = 0;
-            float fRollerDoorLintelFlashing_TotalLength = 0;
-            float fRollerDoorLintelCapFlashing_TotalLength = 0;
-            //float fPADoorTrimmerFlashing_TotalLength = 0; // Neexistuje
-            float fPADoorLintelFlashing_TotalLength = 0;
-            float fWindowFlashing_TotalLength = 0;
+            //float fRollerDoorTrimmerFlashing_TotalLength = 0;
+            //float fRollerDoorLintelFlashing_TotalLength = 0;
+            //float fRollerDoorLintelCapFlashing_TotalLength = 0;
+            ////float fPADoorTrimmerFlashing_TotalLength = 0; // Neexistuje
+            //float fPADoorLintelFlashing_TotalLength = 0;
+            //float fWindowFlashing_TotalLength = 0;
+
+            CountFlashings();
 
             ObservableCollection<CAccessories_LengthItemProperties> flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
 
             if (KitsetTypeIndex != (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
-                flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
+                flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", RoofRidgeFlashing_TotalLength, 2));
             }
 
-            flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
-            flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
-            flashings.Add(new CAccessories_LengthItemProperties("Barge Birdproof", "Flashings", fBargeFlashing_TotalLength, 2));
-            flashings.Add(new CAccessories_LengthItemProperties("Eave Purlin Birdproof Strip", "Flashings", fEdgePurlinBirdproofStrip_TotalLength, 2));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
-            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
+            flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", WallCornerFlashing_TotalLength, 2));
+            flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", BargeFlashing_TotalLength, 2));
+            flashings.Add(new CAccessories_LengthItemProperties("Barge Birdproof", "Flashings", BargeFlashing_TotalLength, 2));
+            flashings.Add(new CAccessories_LengthItemProperties("Eave Purlin Birdproof Strip", "Flashings", BargeBirdProofFlashing_TotalLength, 2));  //EdgePurlinBirdproofStrip_TotalLength - To Mato: Dobre som Mato nastavil?
+            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", RollerDoorTrimmerFlashing_TotalLength, 4));
+            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", RollerDoorLintelFlashing_TotalLength, 4));
+            flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", RollerDoorLintelCapFlashing_TotalLength, 4));
             //flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18)); // Neexistuje v GCD - ram dveri je hlinikovy
-            flashings.Add(new CAccessories_LengthItemProperties("PA Door Header Cap", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
-            flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9)); // TODO - doriesit ???? Asi tiez neexistuje, nie je v detailoch, ale len lintel/header cap
-            flashings.Add(new CAccessories_LengthItemProperties("Fibreglass Roof Ridge Cap", "Flashings", fFibreglassRoofRidgeCap_TotalLength, 2));
+            flashings.Add(new CAccessories_LengthItemProperties("PA Door Header Cap", "Flashings", PADoorLintelFlashing_TotalLength, 18));
+            flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", WindowFlashing_TotalLength, 9)); // TODO - doriesit ???? Asi tiez neexistuje, nie je v detailoch, ale len lintel/header cap
+            flashings.Add(new CAccessories_LengthItemProperties("Fibreglass Roof Ridge Cap", "Flashings", FibreglassRoofRidgeCapFlashing_TotalLength, 2));
 
             return flashings;
         }
