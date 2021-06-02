@@ -189,6 +189,9 @@
     <Compile Include="OptionsWindows\CladdingSheetsValidation.xaml.cs">
       <DependentUpon>CladdingSheetsValidation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\FreightDetailsWindow.xaml.cs">
+      <DependentUpon>FreightDetailsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsWindows\UC_CladdingOptions.xaml.cs">
       <DependentUpon>UC_CladdingOptions.xaml</DependentUpon>
     </Compile>
@@ -249,10 +252,10 @@
     <Compile Include="OptionsWindows\ModelOptionsWindow.xaml.cs">
       <DependentUpon>ModelOptionsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="QuotationExportOptionsWindow.xaml.cs">
+    <Compile Include="OptionsWindows\QuotationExportOptionsWindow.xaml.cs">
       <DependentUpon>QuotationExportOptionsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="QuotationDisplayOptionsWindow.xaml.cs">
+    <Compile Include="OptionsWindows\QuotationDisplayOptionsWindow.xaml.cs">
       <DependentUpon>QuotationDisplayOptionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UC_Quotation.xaml.cs">
@@ -434,6 +437,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="OptionsWindows\FreightDetailsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="OptionsWindows\UC_CladdingOptions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -502,11 +509,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="QuotationExportOptionsWindow.xaml">
+    <Page Include="OptionsWindows\QuotationExportOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="QuotationDisplayOptionsWindow.xaml">
+    <Page Include="OptionsWindows\QuotationDisplayOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -497,7 +497,11 @@
             <TextBlock Grid.Row="5" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Freight:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <TextBox   Grid.Row="5" Text="{Binding Freight, StringFormat={}{0:0.00}}" Name="Freight" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="5" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
-            
+            <Button Grid.Row="5" Name="btnFreightDetails" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Freight Details" Margin="305 0 0 0" Width="25" Height="25" Click="btnFreightDetails_Click">
+                <Image Source="..\Resources\details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+            </Button>
+
+
             <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Subtotal Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="6" Text="{Binding BuildingPrice_WithMargin_WithoutGST, StringFormat={}{0:0.00}}" Name="SubTotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>

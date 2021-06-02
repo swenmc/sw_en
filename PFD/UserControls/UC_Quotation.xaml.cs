@@ -861,6 +861,12 @@ namespace PFD
             
         }
 
+        private void btnFreightDetails_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO open window
+
+        }
+
 
 
 

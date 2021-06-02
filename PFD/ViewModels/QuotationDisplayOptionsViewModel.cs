@@ -28,6 +28,8 @@ namespace PFD
         private bool m_DisplayFlashing;
         private bool m_DisplayPackers;
         private bool m_DisplayCladdingAccesories;
+        private bool m_CalculateFreightAuto;
+        
 
         public bool DisplayMembers
         {
@@ -211,6 +213,20 @@ namespace PFD
             }
         }
 
+        public bool CalculateFreightAuto
+        {
+            get
+            {
+                return m_CalculateFreightAuto;
+            }
+
+            set
+            {
+                m_CalculateFreightAuto = value;
+                NotifyPropertyChanged("CalculateFreightAuto");
+            }
+        }
+
         public QuotationDisplayOptionsViewModel() { }
 
         public QuotationDisplayOptionsViewModel(bool checkAll)
@@ -228,6 +244,8 @@ namespace PFD
             DisplayFlashing = checkAll;
             DisplayPackers = checkAll;
             DisplayCladdingAccesories = checkAll;
+
+            CalculateFreightAuto = checkAll;
         }
 
 
@@ -254,6 +272,7 @@ namespace PFD
             DisplayFlashing = vm.DisplayFlashing;
             DisplayPackers = vm.DisplayPackers;
             DisplayCladdingAccesories = vm.DisplayCladdingAccesories;
+            CalculateFreightAuto = vm.CalculateFreightAuto;
         }
 
     }

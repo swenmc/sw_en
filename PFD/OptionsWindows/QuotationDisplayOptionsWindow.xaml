@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Quotation Options" Height="345" Width="400">
+        Title="Quotation Options" Height="365" Width="400">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -35,7 +35,8 @@
                 <CheckBox Margin="0 0 0 5" IsChecked="{Binding DisplayDownpipe, UpdateSourceTrigger=PropertyChanged}">Downpipes</CheckBox>
                 <CheckBox Margin="0 0 0 5" IsChecked="{Binding DisplayFlashing, UpdateSourceTrigger=PropertyChanged}">Flashing</CheckBox>
                 <CheckBox Margin="0 0 0 5" IsChecked="{Binding DisplayPackers, UpdateSourceTrigger=PropertyChanged}">Packers</CheckBox>
-                <CheckBox Margin="0 0 0 0" IsChecked="{Binding DisplayCladdingAccesories, UpdateSourceTrigger=PropertyChanged}">Cladding Accesories</CheckBox>
+                <CheckBox Margin="0 0 0 20" IsChecked="{Binding DisplayCladdingAccesories, UpdateSourceTrigger=PropertyChanged}">Cladding Accesories</CheckBox>
+                <CheckBox Margin="0 0 0 0" IsChecked="{Binding CalculateFreightAuto, UpdateSourceTrigger=PropertyChanged}">Calculate freight automatically</CheckBox>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
