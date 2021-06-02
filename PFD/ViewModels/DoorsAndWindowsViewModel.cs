@@ -1147,5 +1147,13 @@ namespace PFD
             else return false;            
         }
 
+
+        public bool HasFlashing(EFlashingType flashingType)
+        {
+            if (Flashings == null) return false;
+
+            return Flashings.Any(f => f.ID == (int)flashingType);
+        }
+
     }
 }

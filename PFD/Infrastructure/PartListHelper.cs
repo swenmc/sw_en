@@ -70,6 +70,8 @@ namespace PFD
             CCladdingAccessories_Item_Piece itemPiece;
             CCladdingAccessories_Item_Length itemLength;
 
+            CCladding cladding = vm.Model.m_arrGOCladding[0];
+
             if (vm.Model.m_arrGOCladding != null && vm.Model.m_arrGOCladding.Count > 0 && vm._modelOptionsVM.EnableCladding)
             {
                 int iNumberOfFixingPoints = 0;
@@ -212,12 +214,8 @@ namespace PFD
                         // CAccessories_LengthItemProperties - asi by bolo dobre pouzit
                         itemLength = new CCladdingAccessories_Item_Length("Fibreglass protection strip 80 mm wide", fLengthProtectionstrip);
                         claddingAccessoriesItems_Length.Add(itemLength);
-
-                        // TO Ondrej - podmienka bool Roof Fibreglass Ridge Cap Exists
-                        // ci je vo flashings "Roof Fibreglass Ridge Cap"
-
-                        //vm._doorsAndWindowsVM.FlashingsNames
-                        if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed && true) // Gable Roof Only
+                        
+                        if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed && vm._doorsAndWindowsVM.HasFlashing(EFlashingType.FibreglassRoofRidgeCap)) // Gable Roof Only
                         {
                             // Plastic blocks - Ridge - Fibreglass edge cap
                             int iNumberOfRidgePlasticBlocks = (int)(dTotalLengthFGSheetsRidge / ribWidthRoof);
@@ -296,156 +294,163 @@ namespace PFD
 
                 // 17 - Barge
 
-                double dBargeFlashing_TotalLength = 0;
-                double dBargeflashingFixingSpacing = 0.3f; // DB
-                int iNumberOfFixingPointsBirdProofFlashing = 0;
-                double dFixingPointsBargeCladdingSheetEdge = 2; // DB
-                int iNumberOfFixingPointsBargeCladdingSheetEdge = 0;
-
-                double dGutter_TotalLength = 0;
-                double dGutterBracketSpacing = 2 * vm._claddingOptionsVM.RoofCladdingProps.widthRib_m; // DB
-                int iNumberOfGutterBrackets = 0;
-                int iNumberOfGutterBracketFixingPoints = 0;
-                int iNumberOfGutterFixingPoints = 0;
-                double dEavePurlinBirdProofFixingPointSpacing = 1; // DB
-                int iNumberEavePurlinBirdProofFixingPoints = 0;
-
-                // TODO  // pridat CANOPIES ???? !!!!!!!!!!!!!!
-                // Asi bude potrebne prechadzat zoznam canopies ...
-
-                int iRoofSidesCount = 0;
-
-                if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+                if (cladding.HasCladdingSheets_Roof())
                 {
-                    // TO Ondrej - podmienka bool bRoofCladdingExists bool bFrontWallCladding Exists bBackWallCladding Exists, podla toho je pocet Roof Side 1 alebo 2
-                    if (true)
-                        iRoofSidesCount = 1; // Front or Back Wall
-                    else
-                        iRoofSidesCount = 2; // Front and Back Wall
+                    double dBargeFlashing_TotalLength = 0;
+                    double dBargeflashingFixingSpacing = 0.3f; // DB
+                    int iNumberOfFixingPointsBirdProofFlashing = 0;
+                    double dFixingPointsBargeCladdingSheetEdge = 2; // DB
+                    int iNumberOfFixingPointsBargeCladdingSheetEdge = 0;
 
-                    // TO Ondrej - podmienka bool bBargeFlashingExists (tab Accessories)
+                    double dGutter_TotalLength = 0;
+                    double dGutterBracketSpacing = 2 * vm._claddingOptionsVM.RoofCladdingProps.widthRib_m; // DB
+                    int iNumberOfGutterBrackets = 0;
+                    int iNumberOfGutterBracketFixingPoints = 0;
+                    int iNumberOfGutterFixingPoints = 0;
+                    double dEavePurlinBirdProofFixingPointSpacing = 1; // DB
+                    int iNumberEavePurlinBirdProofFixingPoints = 0;
+
+                    // TODO  // pridat CANOPIES ???? !!!!!!!!!!!!!!
+                    // Asi bude potrebne prechadzat zoznam canopies ...
+
+                    int iRoofSidesCount = 0;
+
+                    if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+                    {
+                        if (cladding.HasCladdingSheets_WallFront() && cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 2;
+                        else if (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 1;
+                        else iRoofSidesCount = 0;
+
+                        // TO Ondrej - podmienka bool bBargeFlashingExists (tab Accessories)
+                        if (true)
+                        {
+                            dBargeFlashing_TotalLength = iRoofSidesCount * vm.RoofSideLength;
+                            iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
+                            iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
+
+                            // TO Ondrej - podmienka bool bFrontOrBackWallCladdingExists a Barge BirdProof Flashing Exists
+                            if (true)
+                                iNumberOfFixingPointsBirdProofFlashing = iRoofSidesCount * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.WallCladdingProps.widthRib_m) + 1);
+                        }
+
+                        // TO Ondrej - podmienka bool bGutterExists (tab Accessories)
+                        if (true)
+                        {
+                            dGutter_TotalLength = vm.RoofSideLength;
+                            iNumberOfGutterBrackets = (int)(vm.RoofSideLength / dGutterBracketSpacing) + 1;
+                            iNumberOfGutterBracketFixingPoints = 2 * iNumberOfGutterBrackets;
+
+                            iNumberOfGutterFixingPoints = (int)(vm.RoofSideLength / vm._claddingOptionsVM.RoofCladdingProps.widthRib_m) + 1; // Each pan
+                            iNumberOfGutterFixingPoints += iNumberOfGutterBrackets;
+                        }
+
+                        // TO Ondrej - podmienka bool Eave purlin bird proof flashing Exists (tab Accessories)
+                        if (true)
+                            iNumberEavePurlinBirdProofFixingPoints = (int)(vm.RoofSideLength / dEavePurlinBirdProofFixingPointSpacing) + 1;
+                    }
+                    else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
+                    {
+                        if (cladding.HasCladdingSheets_WallFront() && cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 4;
+                        else if (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 2;
+                        else iRoofSidesCount = 0;
+
+                        // TO Ondrej - podmienka bool bBargeFlashingExists (tab Accessories)
+                        if (true)
+                        {
+                            dBargeFlashing_TotalLength = iRoofSidesCount * vm.RoofSideLength;
+                            iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
+                            iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
+
+                            // TO Ondrej - podmienka bool bFrontOrBackWallCladdingExists a Barge BirdProof Flashing Exists
+                            if (true)
+                                iNumberOfFixingPointsBirdProofFlashing = iRoofSidesCount * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.WallCladdingProps.widthRib_m) + 1);
+                        }
+
+                        // TO Ondrej - podmienka bool bGutterExists (tab Accessories)
+                        if (true)
+                        {
+                            dGutter_TotalLength = 2 * vm.RoofSideLength;
+                            iNumberOfGutterBrackets = 2 * ((int)(vm.RoofSideLength / dGutterBracketSpacing) + 1);
+                            iNumberOfGutterBracketFixingPoints = 2 * iNumberOfGutterBrackets;
+
+                            iNumberOfGutterFixingPoints = 2 * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.RoofCladdingProps.widthRib_m) + 1); // Each pan
+                            iNumberOfGutterFixingPoints += iNumberOfGutterBrackets;
+                        }
+
+                        // TO Ondrej - podmienka bool Eave purlin bird proof flashing Exists (tab Accessories)
+                        if (true)
+                            iNumberEavePurlinBirdProofFixingPoints = 2 * ((int)(vm.RoofSideLength / dEavePurlinBirdProofFixingPointSpacing) + 1);
+                    }
+
+
+
+                    // TODO - dopracovat podmienky
+                    // Pouzit ak su front a back wall
+
+                    // TO Ondrej - podmienka bool RoofCladding Exists a (bool bFrontWallCladding Exists alebo bBackWallCladding Exists)
                     if (true)
                     {
-                        dBargeFlashing_TotalLength = iRoofSidesCount * vm.RoofSideLength;
-                        iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
-                        iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
+                        // Barge flashing fixing - Rivets
+                        itemPiece = new CCladdingAccessories_Item_Piece("Barge flashing rivet 73AS6.4", iNumberOfFixingPoints);
+                        claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                        // Barge cladding sheet edge fixing - TEK screws 12gx42
+                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx42 (bonded washer)", iNumberOfFixingPointsBirdProofFlashing, "Barge");
+                        claddingAccessoriesItems_Piece.Add(itemPiece);
 
                         // TO Ondrej - podmienka bool bFrontOrBackWallCladdingExists a Barge BirdProof Flashing Exists
                         if (true)
-                            iNumberOfFixingPointsBirdProofFlashing = iRoofSidesCount * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.WallCladdingProps.widthRib_m) + 1);
+                        {
+                            // TODO - dopracovat podmienky
+                            // Pouzit ak su front a back wall
+                            // Bird proof flashing fixing - Rivets
+                            itemPiece = new CCladdingAccessories_Item_Piece("Birdgproof flashing rivet 73AS6.4", iNumberOfFixingPointsBirdProofFlashing, "Barge");
+                            claddingAccessoriesItems_Piece.Add(itemPiece);
+                        }
                     }
 
-                    // TO Ondrej - podmienka bool bGutterExists (tab Accessories)
-                    if (true)
-                    {
-                        dGutter_TotalLength = vm.RoofSideLength;
-                        iNumberOfGutterBrackets = (int)(vm.RoofSideLength / dGutterBracketSpacing) + 1;
-                        iNumberOfGutterBracketFixingPoints = 2 * iNumberOfGutterBrackets;
-
-                        iNumberOfGutterFixingPoints = (int)(vm.RoofSideLength / vm._claddingOptionsVM.RoofCladdingProps.widthRib_m) + 1; // Each pan
-                        iNumberOfGutterFixingPoints += iNumberOfGutterBrackets;
-                    }
-
-                    // TO Ondrej - podmienka bool Eave purlin bird proof flashing Exists (tab Accessories)
-                    if (true)
-                        iNumberEavePurlinBirdProofFixingPoints = (int)(vm.RoofSideLength / dEavePurlinBirdProofFixingPointSpacing) + 1;
-                }
-                else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
-                {
-                    // TO Ondrej - podmienka bool bRoofCladdingExists bool bFrontWallCladding Exists bBackWallCladding Exists, podla toho je pocet Roof Side 2 alebo 4
-                    if (true)
-                        iRoofSidesCount = 2; // Front or Back Wall
-                    else
-                        iRoofSidesCount = 4; // Front and Back Wall
-
-                    // TO Ondrej - podmienka bool bBargeFlashingExists (tab Accessories)
-                    if (true)
-                    {
-                        dBargeFlashing_TotalLength = iRoofSidesCount * vm.RoofSideLength;
-                        iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
-                        iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
-
-                        // TO Ondrej - podmienka bool bFrontOrBackWallCladdingExists a Barge BirdProof Flashing Exists
-                        if (true)
-                            iNumberOfFixingPointsBirdProofFlashing = iRoofSidesCount * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.WallCladdingProps.widthRib_m) + 1);
-                    }
-
-                    // TO Ondrej - podmienka bool bGutterExists (tab Accessories)
-                    if (true)
-                    {
-                        dGutter_TotalLength = 2 * vm.RoofSideLength;
-                        iNumberOfGutterBrackets = 2 * ((int)(vm.RoofSideLength / dGutterBracketSpacing) + 1);
-                        iNumberOfGutterBracketFixingPoints = 2 * iNumberOfGutterBrackets;
-
-                        iNumberOfGutterFixingPoints = 2 * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.RoofCladdingProps.widthRib_m) + 1); // Each pan
-                        iNumberOfGutterFixingPoints += iNumberOfGutterBrackets;
-                    }
-
-                    // TO Ondrej - podmienka bool Eave purlin bird proof flashing Exists (tab Accessories)
-                    if (true)
-                        iNumberEavePurlinBirdProofFixingPoints = 2 * ((int)(vm.RoofSideLength / dEavePurlinBirdProofFixingPointSpacing) + 1);
-                }
-
-                // TODO - dopracovat podmienky
-                // Pouzit ak su front a back wall
-
-                // TO Ondrej - podmienka bool RoofCladding Exists a (bool bFrontWallCladding Exists alebo bBackWallCladding Exists)
-                if (true)
-                {
-                    // Barge flashing fixing - Rivets
-                    itemPiece = new CCladdingAccessories_Item_Piece("Barge flashing rivet 73AS6.4", iNumberOfFixingPoints);
-                    claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                    // Barge cladding sheet edge fixing - TEK screws 12gx42
-                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx42 (bonded washer)", iNumberOfFixingPointsBirdProofFlashing, "Barge");
-                    claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                    // TO Ondrej - podmienka bool bFrontOrBackWallCladdingExists a Barge BirdProof Flashing Exists
-                    if (true)
-                    {
-                        // TODO - dopracovat podmienky
-                        // Pouzit ak su front a back wall
-                        // Bird proof flashing fixing - Rivets
-                        itemPiece = new CCladdingAccessories_Item_Piece("Birdgproof flashing rivet 73AS6.4", iNumberOfFixingPointsBirdProofFlashing, "Barge");
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
-                    }
-                }
-
-                // TO Ondrej - podmienka bool RoofCladding Exists
-                if (true)
-                {
-                    // 18 - Gutter
-
-                    // TO Ondrej - podmienka bool Eave purlin bird proof flashing Exists (tab Accessories)
-                    if (true)
-                    {
-                        // Eave purlin bird proof flashing fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("Birdproof strip wafer TEK screw 10g", iNumberEavePurlinBirdProofFixingPoints, "Eave purlin");
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                        // Eave purlin bird proof plastic blocks
-                        itemPiece = new CCladdingAccessories_Item_Piece("Plastic gutter block", iNumberEavePurlinBirdProofFixingPoints, "Eave purlin");
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
-                    }
- 
-                    // TO Ondrej - podmienka bool RoofCladding Exists a bGuttersExist (tab Accessories)
+                    // TO Ondrej - podmienka bool RoofCladding Exists
                     if (true)
                     {
                         // 18 - Gutter
 
-                        // Gutter brackets
-                        itemPiece = new CCladdingAccessories_Item_Piece("Gutter bracket 300x26x15 mm", iNumberOfGutterBrackets);
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
+                        // TO Ondrej - podmienka bool Eave purlin bird proof flashing Exists (tab Accessories)
+                        if (true)
+                        {
+                            // Eave purlin bird proof flashing fixing
+                            itemPiece = new CCladdingAccessories_Item_Piece("Birdproof strip wafer TEK screw 10g", iNumberEavePurlinBirdProofFixingPoints, "Eave purlin");
+                            claddingAccessoriesItems_Piece.Add(itemPiece);
 
-                        // Gutter bracket fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("Gutter TEK screw 12gx20 (neo washer)", iNumberOfGutterBracketFixingPoints);
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
+                            // Eave purlin bird proof plastic blocks
+                            itemPiece = new CCladdingAccessories_Item_Piece("Plastic gutter block", iNumberEavePurlinBirdProofFixingPoints, "Eave purlin");
+                            claddingAccessoriesItems_Piece.Add(itemPiece);
+                        }
 
-                        // Gutter fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("Gutter rivet 73AS6.4", iNumberOfGutterFixingPoints);
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
+                        // TO Ondrej - podmienka bool RoofCladding Exists a bGuttersExist (tab Accessories)
+                        if (true)
+                        {
+                            // 18 - Gutter
+
+                            // Gutter brackets
+                            itemPiece = new CCladdingAccessories_Item_Piece("Gutter bracket 300x26x15 mm", iNumberOfGutterBrackets);
+                            claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                            // Gutter bracket fixing
+                            itemPiece = new CCladdingAccessories_Item_Piece("Gutter TEK screw 12gx20 (neo washer)", iNumberOfGutterBracketFixingPoints);
+                            claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                            // Gutter fixing
+                            itemPiece = new CCladdingAccessories_Item_Piece("Gutter rivet 73AS6.4", iNumberOfGutterFixingPoints);
+                            claddingAccessoriesItems_Piece.Add(itemPiece);
+                        }
                     }
+
                 }
+
+                
+
+
+
 
                 // TO Ondrej - podmienka bool WallCladding Exists
 

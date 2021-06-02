@@ -2578,6 +2578,19 @@ namespace BaseClasses.GraphObj
             return false;
         }
 
+        public bool HasCladdingSheets_WallFront()
+        {
+            if (listOfCladdingSheetsFrontWall != null && listOfCladdingSheetsFrontWall.Count > 0) return true;            
+
+            return false;
+        }
+        public bool HasCladdingSheets_WallBack()
+        {
+            if (listOfCladdingSheetsBackWall != null && listOfCladdingSheetsBackWall.Count > 0) return true;
+
+            return false;
+        }
+
         public bool HasCladdingSheets_Roof()
         {
             if (listOfCladdingSheetsRoofRight != null && listOfCladdingSheetsRoofRight.Count > 0) return true;
