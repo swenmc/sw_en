@@ -138,6 +138,7 @@ namespace PFD
                     // Todo napojit
                     // Zistit kolko FG sheets (resp ich sirku) konci na hrane alebo tesne pod hranou strechy pre gable roof (napriklad < 0.3 m
                     // Podla suradnice y a hodnoty length v porovnani s length_left_basic (right side) a hodnoty y = 0 (left side)
+                    // To Ondrej - mam pocit ze cladding sheets prichadzaju do tohoto vypoctu nenadelene
 
                     int iNumberOfFGSheetsRidge = 5; // Todo napojit
                     double dTotalLengthFGSheetsRidge = 20.15; // Todo napojit
@@ -248,7 +249,7 @@ namespace PFD
 
                         iNumberOfFixingPoints = 2 * ((int)(vm.RoofLength_Y / ribWidthRoof) + 1);
 
-                        bool bStandardRidge = true; // TODO - napojit - accessories flashings
+                        bool bStandardRidge = vm._doorsAndWindowsVM.HasFlashing(EFlashingType.RoofRidge); // TODO - napojit - accessories flashings, neviem ci je infill ridge  odpovedajuce soft edge alebo tym myslia nieco ine - Otazka na NZ
 
                         if (bStandardRidge)
                         {
@@ -276,7 +277,7 @@ namespace PFD
                         }
 
                         // TODO
-                        // Apex brace - malo by to byt samostatne pri plates
+                        // Apex brace - malo by to byt samostatne pri plates // Otazka na Zeland - ake je spacing
                         double dApexBraceSpacing = 1; // 1 m???
 
                         int iNumberOfRidgeApexBracePoints = (int)(vm.Length / dApexBraceSpacing) + 1;
