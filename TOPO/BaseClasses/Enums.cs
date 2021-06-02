@@ -857,6 +857,25 @@ namespace BaseClasses
         Fibreglass = 3
     }
 
+    public enum EFlashingType
+    {
+        RoofRidge = 1, 
+        RoofRidgeSoftEdge = 2,
+        WallCorner = 3,
+        Barge = 4,
+        BargeBirdproof = 5,
+        EavePurlinBirdproofStrip = 6,
+        RollerDoorTrimmer = 7,
+        RollerDoorHeader = 8,
+        RollerDoorHeaderCap = 9,
+        /*"PA Door Trimmer",*/
+        PADoorHeaderCap = 10,
+        Window = 11,
+        FibreglassRoofRidgeCap = 12
+    }
+
+    
+
     // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
     public enum EGlobalPlane
     {

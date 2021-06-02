@@ -3326,16 +3326,16 @@ namespace PFD
                 fBargeFlashing_TotalLength = 0;
             }
 
-            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[0]);
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidge);
             if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[1]);
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RoofRidgeSoftEdge);
             if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
-            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[2]); //Wall Corner
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.WallCorner); //Wall Corner
             if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
 
-            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == _doorsAndWindowsVM.AllFlashingsNames[3]); //Barge
+            flashing = _doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.Barge); //Barge
             if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
         }
 

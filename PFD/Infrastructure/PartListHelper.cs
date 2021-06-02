@@ -77,9 +77,8 @@ namespace PFD
 
                 int iNumberLapstitchFixingPoints = 0;
                 double dLapstitchFixingPointsSpacing = 0;
-
-                // TO Ondrej - podmienka bool Roof Cladding Exists
-                if (vm.Model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight != null && vm.Model.m_arrGOCladding[0].listOfCladdingSheetsRoofRight.Count > 0)
+                
+                if (vm.Model.m_arrGOCladding[0].HasCladdingSheets_Roof())
                 {
                     // 11 - Standard Roofing
                     // Sposob A
@@ -127,10 +126,8 @@ namespace PFD
 
                     itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints, "Roof Cladding");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                    // TO Ondrej - podmienka bool Roof Fibreglass Sheets Exist
-                    if (true && ((vm.Model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofRight != null && vm.Model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofRight.Count > 0) ||
-                        (vm.Model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofLeft != null && vm.Model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofLeft.Count > 0)))
+                    
+                    if (vm.Model.m_arrGOCladding[0].HasFibreglassSheets_Roof())
                     {
                         // 12 - Fibreglass rooflites
 
@@ -217,6 +214,9 @@ namespace PFD
                         claddingAccessoriesItems_Length.Add(itemLength);
 
                         // TO Ondrej - podmienka bool Roof Fibreglass Ridge Cap Exists
+                        // ci je vo flashings "Roof Fibreglass Ridge Cap"
+
+                        //vm._doorsAndWindowsVM.FlashingsNames
                         if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed && true) // Gable Roof Only
                         {
                             // Plastic blocks - Ridge - Fibreglass edge cap

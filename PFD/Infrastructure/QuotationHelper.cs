@@ -1741,22 +1741,22 @@ namespace PFD
             vm.CountFlashings();
 
             CAccessories_LengthItemProperties flashing = null;
-            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == vm._doorsAndWindowsVM.AllFlashingsNames[4]);
+            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RollerDoorTrimmer);
             if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
 
-            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == vm._doorsAndWindowsVM.AllFlashingsNames[5]);
+            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RollerDoorHeader);
             if (flashing != null) flashing.Length_total = fRollerDoorLintelFlashing_TotalLength;
 
-            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == vm._doorsAndWindowsVM.AllFlashingsNames[6]);
+            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.RollerDoorHeaderCap);
             if (flashing != null) flashing.Length_total = fRollerDoorLintelCapFlashing_TotalLength;
 
-            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == vm._doorsAndWindowsVM.AllFlashingsNames[7]);
-            if (flashing != null) flashing.Length_total = fPADoorTrimmerFlashing_TotalLength;
+            //flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == vm._doorsAndWindowsVM.AllFlashingsNames[7]);
+            //if (flashing != null) flashing.Length_total = fPADoorTrimmerFlashing_TotalLength;
 
-            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == vm._doorsAndWindowsVM.AllFlashingsNames[8]);
+            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.PADoorHeaderCap);
             if (flashing != null) flashing.Length_total = fPADoorLintelFlashing_TotalLength;
 
-            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == vm._doorsAndWindowsVM.AllFlashingsNames[9]);
+            flashing = vm._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.ID == (int)EFlashingType.Window);
             if (flashing != null) flashing.Length_total = fWindowFlashing_TotalLength;
 
             // Create Table
