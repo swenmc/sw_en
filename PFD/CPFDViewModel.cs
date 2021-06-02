@@ -3651,12 +3651,9 @@ namespace PFD
 
             float fWallArea_Left = 0; float fWallArea_Right = 0;
 
-            CComponentInfo girtLeft = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (girtLeft != null && girtLeft.Generate.Value == true)
-                fWallArea_Left = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);
+            if(ModelHasLeftWall()) fWallArea_Left = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_1_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);
 
-            CComponentInfo girtRight = ComponentList.LastOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (girtRight != null && girtRight.Generate.Value == true)
+            if(ModelHasRightWall())
             {
                 if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
                     fWallArea_Right = (float)(LengthOverall + 2 * AdditionalOffsetWall) * (float)(Height_2_final_edge_LR_Wall - _claddingOptionsVM.WallBottomOffset_Z);
@@ -3665,14 +3662,10 @@ namespace PFD
             }
 
             float fWallArea_Front = 0;
-            CComponentInfo girtFS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
-            if (girtFS != null && girtFS.Generate.Value == true)
-                fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_FrontOrBack_Cladding.ToArray());
+            if (ModelHasFrontWall()) fWallArea_Front = Geom2D.PolygonArea(WallDefinitionPoints_FrontOrBack_Cladding.ToArray());
 
             float fWallArea_Back = 0;
-            CComponentInfo girtBS = ComponentList.FirstOrDefault(x => x.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
-            if (girtBS != null && girtBS.Generate.Value == true)
-                fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_FrontOrBack_Cladding.ToArray());
+            if (ModelHasBackWall()) fWallArea_Back = Geom2D.PolygonArea(WallDefinitionPoints_FrontOrBack_Cladding.ToArray());
 
             BuildingArea_Gross = WidthOverall * LengthOverall;
             BuildingVolume_Gross = Geom2D.PolygonArea(WallDefinitionPoints_FrontOrBack_Netto.ToArray()) * LengthOverall; // Bez bottom offset pre cladding

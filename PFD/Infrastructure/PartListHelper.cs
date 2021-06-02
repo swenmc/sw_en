@@ -1,6 +1,7 @@
 ﻿using BaseClasses;
 using BaseClasses.GraphObj;
 using MATH;
+using PFD.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -443,7 +444,7 @@ namespace PFD
                 bool bAnyPADoorExists = vm._doorsAndWindowsVM.ModelHasPersonelDoor();
 
                 // Wall Doors and Windows Area
-                double dDoorsAndWindowsOpeningArea = 0; // !!!! Tu su dvere a okna zo vsetkych stien, je potrebne doriesit ak sa niektora stena nerata, aby sa neuvazovali doors a windows z danej steny
+                double dDoorsAndWindowsOpeningArea = CDoorsAndWindowsHelper.GetDoorsAndWindowsOpeningArea(vm);
 
                 if (vm._doorsAndWindowsVM.ModelHasDoor())
                 {
@@ -465,18 +466,9 @@ namespace PFD
                         {
                             dPADoorHeaderLengh += door.fDoorsWidth;
                         }
-
-                        dDoorsAndWindowsOpeningArea += door.fDoorsWidth * door.fDoorsHeight;
                     }
                 }
-
-                if (vm._doorsAndWindowsVM.ModelHasWindow())
-                {
-                    foreach (WindowProperties window in vm._doorsAndWindowsVM.WindowBlocksProperties)
-                    {
-                        dDoorsAndWindowsOpeningArea += window.fWindowsWidth * window.fWindowsHeight;
-                    }
-                }
+                
 
                 // 21 - Cladding
 

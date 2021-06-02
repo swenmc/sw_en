@@ -149,5 +149,40 @@ namespace PFD.Infrastructure
             
             return true;
         }
+
+
+        public static double GetDoorsAndWindowsOpeningArea(CPFDViewModel vm)
+        {
+            List<string> ignoreBuildingSides = new List<string>();
+            if (!vm.ModelHasRightWall()) ignoreBuildingSides.Add("Right");
+            if (!vm.ModelHasLeftWall()) ignoreBuildingSides.Add("Left");
+            if (!vm.ModelHasFrontWall()) ignoreBuildingSides.Add("Front");
+            if (!vm.ModelHasBackWall()) ignoreBuildingSides.Add("Back");
+
+            // Wall Doors and Windows Area
+            double dDoorsAndWindowsOpeningArea = 0;
+
+            if (vm._doorsAndWindowsVM.ModelHasDoor())
+            {
+                foreach (DoorProperties door in vm._doorsAndWindowsVM.DoorBlocksProperties)
+                {
+                    if (ignoreBuildingSides.Count > 0 && ignoreBuildingSides.Contains(door.sBuildingSide)) continue; // do not count
+                    
+                    dDoorsAndWindowsOpeningArea += door.fDoorsWidth * door.fDoorsHeight;
+                }
+            }
+
+            if (vm._doorsAndWindowsVM.ModelHasWindow())
+            {
+                foreach (WindowProperties window in vm._doorsAndWindowsVM.WindowBlocksProperties)
+                {
+                    if (ignoreBuildingSides.Count > 0 && ignoreBuildingSides.Contains(window.sBuildingSide)) continue; // do not count
+
+                    dDoorsAndWindowsOpeningArea += window.fWindowsWidth * window.fWindowsHeight;
+                }
+            }
+
+            return dDoorsAndWindowsOpeningArea;
+        }
     }
 }
