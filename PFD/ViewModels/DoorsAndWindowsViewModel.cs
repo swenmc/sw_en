@@ -927,6 +927,10 @@ namespace PFD
             return col;
         }
 
+        public bool ModelHasDoor()
+        {
+            return (ModelHasRollerDoor() || ModelHasPersonelDoor());
+        }
 
         public bool ModelHasPersonelDoor()
         {
@@ -1154,6 +1158,67 @@ namespace PFD
 
             return Flashings.Any(f => f.ID == (int)flashingType);
         }
+
+        public bool HasGutter()
+        {
+            if (Gutters == null) return false;
+
+            return Gutters.Count > 0;
+        }
+
+
+
+        public float GetTotalModelDoorsWidth()
+        {
+            float totalW = 0f;
+            foreach (DoorProperties door in DoorBlocksProperties)
+            {
+                totalW += door.fDoorsWidth;
+            }
+            return totalW;
+        }
+
+        public double GetRollerDoorTrimmerLengh()
+        {
+            double dRollerDoorTrimmerLengh = 0;
+            foreach (DoorProperties door in DoorBlocksProperties)
+            {                
+                if (door.sDoorType == "Roller Door")
+                {
+                    dRollerDoorTrimmerLengh += door.fDoorsHeight * 2;                    
+                }                
+            }
+            return dRollerDoorTrimmerLengh;
+        }
+
+        public double GetRollerDoorHeaderLengh()
+        {
+            double dRollerDoorHeaderLengh = 0;
+            foreach (DoorProperties door in DoorBlocksProperties)
+            {
+
+                if (door.sDoorType == "Roller Door")
+                {                    
+                    dRollerDoorHeaderLengh += door.fDoorsWidth;                    
+                }                
+            }
+            return dRollerDoorHeaderLengh;
+        }
+
+        public double GetNumberOfRollerDoorTrimmers()
+        {
+            int iNumberOfRollerDoorTrimmers = 0;
+            foreach (DoorProperties door in DoorBlocksProperties)
+            {
+                if (door.sDoorType == "Roller Door")
+                {
+                    
+                    iNumberOfRollerDoorTrimmers += 2;
+                }                
+            }
+            return iNumberOfRollerDoorTrimmers;
+        }
+
 
     }
 }
