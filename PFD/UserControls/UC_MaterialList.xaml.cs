@@ -299,9 +299,7 @@ namespace PFD
 
         private void CreateTableDoorsAndWindows(CPFDViewModel vm)
         {
-            DataSet ds = QuotationHelper.GetTableDoorsAndWindows(vm, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST, out fTotalAreaOfOpennings,
-                out fRollerDoorTrimmerFlashing_TotalLength, out fRollerDoorLintelFlashing_TotalLength, out fRollerDoorLintelCapFlashing_TotalLength,
-                out fPADoorTrimmerFlashing_TotalLength, out fPADoorLintelFlashing_TotalLength, out fWindowFlashing_TotalLength);
+            DataSet ds = QuotationHelper.GetTableDoorsAndWindows(vm, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST, out fTotalAreaOfOpennings);
 
             if (ds != null)
             {

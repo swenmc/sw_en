@@ -142,7 +142,7 @@ namespace PFD
                     // To Ondrej - mam pocit ze cladding sheets prichadzaju do tohoto vypoctu nenadelene
 
                     int iNumberOfFGSheetsRidge = 5; // Todo napojit
-                    double dTotalLengthFGSheetsRidge = 20.15; // Todo napojit
+                    //double dTotalLengthFGSheetsRidge = 20.15; // Todo napojit
 
                     int iNumberOfSupportBracketBetweenPurlins;
                     double supportBracketBetweenPurlinsLengthTotal = 0;
@@ -222,7 +222,7 @@ namespace PFD
                     if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed && vm._doorsAndWindowsVM.HasFlashing(EFlashingType.FibreglassRoofRidgeCap)) // Gable Roof Only
                     {
                         // Plastic blocks - Ridge - Fibreglass edge cap
-                        int iNumberOfRidgePlasticBlocks = (int)(dTotalLengthFGSheetsRidge / ribWidthRoof);
+                        int iNumberOfRidgePlasticBlocks = (int)(vm.FibreglassRoofRidgeCapFlashing_TotalLength / ribWidthRoof);
                         itemPiece = new CCladdingAccessories_Item_Piece("Plastic ridge block - fibreglass", iNumberOfRidgePlasticBlocks);
                         claddingAccessoriesItems_Piece.Add(itemPiece);
                     }
@@ -245,9 +245,6 @@ namespace PFD
 
                     if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed) // Gable Roof Only
                     {
-                        // Roof ridge length
-                        // Rovnake ako ridge flashing length
-
                         iNumberOfFixingPoints = 2 * ((int)(vm.RoofLength_Y / ribWidthRoof) + 1);
 
                         bool bStandardRidge = vm._doorsAndWindowsVM.HasFlashing(EFlashingType.RoofRidge); // TODO - napojit - accessories flashings, neviem ci je infill ridge  odpovedajuce soft edge alebo tym myslia nieco ine - Otazka na NZ
@@ -297,13 +294,11 @@ namespace PFD
 
                 // 17 - Barge
 
-                double dBargeFlashing_TotalLength = 0;
                 double dBargeflashingFixingSpacing = 0.3f; // DB
                 int iNumberOfFixingPointsBirdProofFlashing = 0;
                 double dFixingPointsBargeCladdingSheetEdge = 2; // DB
                 int iNumberOfFixingPointsBargeCladdingSheetEdge = 0;
 
-                double dGutter_TotalLength = 0;
                 double dGutterBracketSpacing = 2 * vm._claddingOptionsVM.RoofCladdingProps.widthRib_m; // DB
                 int iNumberOfGutterBrackets = 0;
                 int iNumberOfGutterBracketFixingPoints = 0;
@@ -314,7 +309,7 @@ namespace PFD
                 // TODO 840
                 // TODO  // pridat CANOPIES ???? !!!!!!!!!!!!!!
                 // Asi bude potrebne prechadzat zoznam canopies ...
-                
+
                 int iRoofSidesCount = 0;
 
                 if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
@@ -325,7 +320,6 @@ namespace PFD
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
                     {
-                        dBargeFlashing_TotalLength = iRoofSidesCount * vm.RoofSideLength;
                         iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
                         iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
 
@@ -335,16 +329,15 @@ namespace PFD
 
                     if (vm._doorsAndWindowsVM.HasGutter())
                     {
-                        dGutter_TotalLength = vm.RoofSideLength;
-                        iNumberOfGutterBrackets = (int)(vm.RoofSideLength / dGutterBracketSpacing) + 1;
+                        iNumberOfGutterBrackets = (int)(vm.RoofLength_Y / dGutterBracketSpacing) + 1;
                         iNumberOfGutterBracketFixingPoints = 2 * iNumberOfGutterBrackets;
 
-                        iNumberOfGutterFixingPoints = (int)(vm.RoofSideLength / vm._claddingOptionsVM.RoofCladdingProps.widthRib_m) + 1; // Each pan
+                        iNumberOfGutterFixingPoints = (int)(vm.RoofLength_Y / vm._claddingOptionsVM.RoofCladdingProps.widthRib_m) + 1; // Each pan
                         iNumberOfGutterFixingPoints += iNumberOfGutterBrackets;
                     }
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.EavePurlinBirdproofStrip))
-                        iNumberEavePurlinBirdProofFixingPoints = (int)(vm.RoofSideLength / dEavePurlinBirdProofFixingPointSpacing) + 1;
+                        iNumberEavePurlinBirdProofFixingPoints = (int)(vm.RoofLength_Y / dEavePurlinBirdProofFixingPointSpacing) + 1;
                 }
                 else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
                 {
@@ -354,7 +347,6 @@ namespace PFD
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
                     {
-                        dBargeFlashing_TotalLength = iRoofSidesCount * vm.RoofSideLength;
                         iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
                         iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
 
@@ -364,16 +356,15 @@ namespace PFD
 
                     if (vm._doorsAndWindowsVM.HasGutter())
                     {
-                        dGutter_TotalLength = 2 * vm.RoofSideLength;
-                        iNumberOfGutterBrackets = 2 * ((int)(vm.RoofSideLength / dGutterBracketSpacing) + 1);
+                        iNumberOfGutterBrackets = 2 * ((int)(vm.RoofLength_Y / dGutterBracketSpacing) + 1);
                         iNumberOfGutterBracketFixingPoints = 2 * iNumberOfGutterBrackets;
 
-                        iNumberOfGutterFixingPoints = 2 * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.RoofCladdingProps.widthRib_m) + 1); // Each pan
+                        iNumberOfGutterFixingPoints = 2 * ((int)(vm.RoofLength_Y / vm._claddingOptionsVM.RoofCladdingProps.widthRib_m) + 1); // Each pan
                         iNumberOfGutterFixingPoints += iNumberOfGutterBrackets;
                     }
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.EavePurlinBirdproofStrip))
-                        iNumberEavePurlinBirdProofFixingPoints = 2 * ((int)(vm.RoofSideLength / dEavePurlinBirdProofFixingPointSpacing) + 1);
+                        iNumberEavePurlinBirdProofFixingPoints = 2 * ((int)(vm.RoofLength_Y / dEavePurlinBirdProofFixingPointSpacing) + 1);
                 }
 
                 if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
@@ -434,11 +425,7 @@ namespace PFD
                 // Wall Fibreglass Area
                 double fWallCladdingAreaFibreglass = vm._claddingOptionsVM.FibreglassAreaWallRatio / 100 * vm.TotalWallArea; // Todo skontrolovat
 
-                double dRollerDoorTrimmerLengh = 0;
-                double dRollerDoorHeaderLengh = 0;
                 int iNumberOfRollerDoorTrimmers = 0; // Trimmers or extension plates
-
-                double dPADoorHeaderLengh = 0;
 
                 bool bAnyRollerDoorExists = vm._doorsAndWindowsVM.ModelHasRollerDoor();
                 bool bAnyPADoorExists = vm._doorsAndWindowsVM.ModelHasPersonelDoor();
@@ -448,27 +435,14 @@ namespace PFD
 
                 if (vm._doorsAndWindowsVM.ModelHasDoor())
                 {
-                    //To Mato - dalo by sa to takto pouzit 
-                    //dRollerDoorTrimmerLengh = vm._doorsAndWindowsVM.GetRollerDoorTrimmerLengh();
-                    //dRollerDoorHeaderLengh = vm._doorsAndWindowsVM.GetRollerDoorHeaderLengh();
-
                     foreach (DoorProperties door in vm._doorsAndWindowsVM.DoorBlocksProperties)
                     {
                         dBuildingCladdingPerimeterWithoutDoors -= door.fDoorsWidth;
 
                         if (door.sDoorType == "Roller Door")
-                        {
-                            dRollerDoorTrimmerLengh += door.fDoorsHeight * 2;
-                            dRollerDoorHeaderLengh += door.fDoorsWidth;
                             iNumberOfRollerDoorTrimmers += 2;
-                        }
-                        else
-                        {
-                            dPADoorHeaderLengh += door.fDoorsWidth;
-                        }
                     }
                 }
-                
 
                 // 21 - Cladding
 
@@ -627,24 +601,9 @@ namespace PFD
                 if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.WallCorner))
                 {
                     // 22 - Cladding corner
-                    double dAverageWallHeight = 0;
 
-                    // Priemerna vyska steny - Dalo by sa pocitat presne podla toho co je zapnute, ale znamena to vela podmienok
-                    if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
-                        dAverageWallHeight = vm.WallHeightOverall;
-                    else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-                    {
-                        if (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack())
-                            dAverageWallHeight = MathF.Average(vm.WallHeightOverall, vm.Height_H2_Overall);
-                        else if (cladding.HasCladdingSheets_WallLeft())
-                            dAverageWallHeight = vm.WallHeightOverall;
-                        else if (cladding.HasCladdingSheets_WallRight())
-                            dAverageWallHeight = vm.Height_H2_Overall;
-                    }
-
-                    double dCornerFlashingLength = iNumberOfCorners * dAverageWallHeight;
                     double dCornerFlashingFixingPointsSpacing = 0.3; // DB (kotvenie dvoch stran flashing)
-                    iNumberOfFixingPoints = 2 * ((int)(dCornerFlashingLength / dCornerFlashingFixingPointsSpacing) + iNumberOfCorners); // Len priblizne
+                    iNumberOfFixingPoints = 2 * ((int)(vm.WallCornerFlashing_TotalLength / dCornerFlashingFixingPointsSpacing) + iNumberOfCorners); // Len priblizne
 
                     itemPiece = new CCladdingAccessories_Item_Piece("Corner flashing rivet 73AS6.4", iNumberOfFixingPoints, "Wall Cladding");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
@@ -785,10 +744,10 @@ namespace PFD
                     double dRollerDoorflashingFixingSpacing = 0.3f; // DB
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.RollerDoorTrimmer))
-                        iNumberOfFixingPoints = 2 * (int)(dRollerDoorTrimmerLengh / dRollerDoorflashingFixingSpacing); // 2 sides resp. top and bottom
+                        iNumberOfFixingPoints = 2 * (int)(vm.RollerDoorTrimmerFlashing_TotalLength / dRollerDoorflashingFixingSpacing); // 2 sides resp. top and bottom
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.RollerDoorHeader))
-                        iNumberOfFixingPoints += 5 * (int)(dRollerDoorHeaderLengh / dRollerDoorflashingFixingSpacing);
+                        iNumberOfFixingPoints += 5 * (int)(vm.RollerDoorLintelFlashing_TotalLength / dRollerDoorflashingFixingSpacing);
 
                     itemPiece = new CCladdingAccessories_Item_Piece("Flashing rivet 73AS6.4", iNumberOfFixingPoints, "Roller Door");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
@@ -813,7 +772,7 @@ namespace PFD
                         // PA door header cap flashing fixing
 
                         double dPADoorflashingFixingSpacing = 0.3f; // DB
-                        iNumberOfFixingPoints = 2 * (int)(dPADoorHeaderLengh / dPADoorflashingFixingSpacing);
+                        iNumberOfFixingPoints = 2 * (int)(vm.PADoorLintelFlashing_TotalLength / dPADoorflashingFixingSpacing);
                         itemPiece = new CCladdingAccessories_Item_Piece("Flashing rivet 73AS6.4", iNumberOfFixingPoints, "Personnel Door");
                         claddingAccessoriesItems_Piece.Add(itemPiece);
                     }

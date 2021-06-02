@@ -1124,17 +1124,10 @@ namespace PFD
             return ds;
         }
 
-        public static DataSet GetTableDoorsAndWindows(CPFDViewModel vm,  ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST, 
-            out float fTotalAreaOfOpennings, out float fRollerDoorTrimmerFlashing_TotalLength, out float fRollerDoorLintelFlashing_TotalLength, out float fRollerDoorLintelCapFlashing_TotalLength, 
-            out float fPADoorTrimmerFlashing_TotalLength, out float fPADoorLintelFlashing_TotalLength, out float fWindowFlashing_TotalLength)
+        public static DataSet GetTableDoorsAndWindows(CPFDViewModel vm, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST, 
+            out float fTotalAreaOfOpennings)
         {
             fTotalAreaOfOpennings = 0;
-            fRollerDoorTrimmerFlashing_TotalLength = 0;
-            fRollerDoorLintelFlashing_TotalLength = 0;
-            fRollerDoorLintelCapFlashing_TotalLength = 0;
-            fPADoorTrimmerFlashing_TotalLength = 0;
-            fPADoorLintelFlashing_TotalLength = 0;
-            fWindowFlashing_TotalLength = 0;
 
             List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
 
@@ -1144,26 +1137,12 @@ namespace PFD
                 {
                     fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
 
-                    if (dp.sDoorType == "Roller Door")
-                    {
-                        fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
-                        fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
-                        fRollerDoorLintelCapFlashing_TotalLength += dp.fDoorsWidth;
-                    }
-                    else
-                    {
-                        fPADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
-                        fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
-                    }
-
                     listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight, dp.CoatingColor.ID, dp.Serie));
                 }
 
                 foreach (WindowProperties wp in vm._doorsAndWindowsVM.WindowBlocksProperties)
                 {
                     fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
-
-                    fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
 
                     listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight, wp.CoatingColor.ID, null));
                 }
@@ -1258,7 +1237,7 @@ namespace PFD
                 row[QuotationHelper.colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
                 dt.Rows.Add(row);
 
-                return ds;                
+                return ds;
             }
             else // Tabulka je prazdna - nezobrazime ju
             {
@@ -1538,18 +1517,19 @@ namespace PFD
             }
         }
 
-
         public static DataSet GetTableGutters(CPFDViewModel vm, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
+            //-----------------------------------------------------------------------------------
+            // TO Ondrej - toto by som presunul do CPFDViewModel
             float fGuttersTotalLength = 0;
 
             if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
             {
-                fGuttersTotalLength = 1 * vm.LengthOverall; // na jednej hrane strechy (podla toho ci je mensia H1 alebo H2), ale pre dlzku gutter to nehra rolu
+                fGuttersTotalLength = 1 * vm.RoofLength_Y; // na jednej hrane strechy (podla toho ci je mensia H1 alebo H2), ale pre dlzku gutter to nehra rolu
             }
             else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
             {
-                fGuttersTotalLength = 2 * vm.LengthOverall; // na dvoch okrajoch strechy
+                fGuttersTotalLength = 2 * vm.RoofLength_Y; // na dvoch okrajoch strechy
             }
             else
             {
@@ -1559,6 +1539,7 @@ namespace PFD
 
             //toto tu je len preto ak by sa nahodou neupdatoval gutters total length pri zmene modelu (mozno je aj lepsie to mat az tu)
             //_pfdVM.Gutters[0].Length_total = fGuttersTotalLength;
+            //-----------------------------------------------------------------------------------
 
             // Create Table
             DataTable dt = new DataTable("Gutters");
@@ -1588,8 +1569,7 @@ namespace PFD
 
             foreach (CAccessories_LengthItemProperties gutter in vm._doorsAndWindowsVM.Gutters)
             {
-                //TO Mato - tu neviem co s tymto
-                gutter.Length_total = fGuttersTotalLength;
+                gutter.Length_total = fGuttersTotalLength; // To Ondrej - moze to byt takto?
 
                 AddLengthItemRow(dt,
                         QuotationHelper.colProp_Gutter.ColumnName,
@@ -1634,6 +1614,8 @@ namespace PFD
 
         public static DataSet GetTableDownpipes(CPFDViewModel vm, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
+            //-----------------------------------------------------------------------------------
+            // TO Ondrej - toto by som presunul do CPFDViewModel
             // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
             CAccessories_DownpipeProperties downpipe = vm._doorsAndWindowsVM.Downpipes[0];
             float fDownpipesTotalLength = 0;
@@ -1653,6 +1635,7 @@ namespace PFD
             }
 
             downpipe.Length_total = fDownpipesTotalLength;
+            //------------------------------------------------------------------------------------
 
             double fDownpipesTotalMass = fDownpipesTotalLength * downpipe.Mass_kg_lm;
             double fDownpipesTotalPrice = fDownpipesTotalLength * downpipe.Price_PPLM_NZD;
@@ -1733,11 +1716,7 @@ namespace PFD
             return ds;
         }
 
-
-        public static DataSet GetTableFlashing(CPFDViewModel vm, 
-            //float fRollerDoorTrimmerFlashing_TotalLength, float fRollerDoorLintelFlashing_TotalLength, 
-            //float fRollerDoorLintelCapFlashing_TotalLength, float fPADoorTrimmerFlashing_TotalLength, float fPADoorLintelFlashing_TotalLength, float fWindowFlashing_TotalLength, 
-            ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
+        public static DataSet GetTableFlashing(CPFDViewModel vm, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
             vm.CountFlashings();
             vm.SetFlashingsLengths();

@@ -673,9 +673,7 @@ namespace PFD
 
         private void CreateTableDoorsAndWindows(CPFDViewModel vm)
         {
-            DataSet ds = QuotationHelper.GetTableDoorsAndWindows(vm, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST, out fTotalAreaOfOpennings, 
-                out fRollerDoorTrimmerFlashing_TotalLength, out fRollerDoorLintelFlashing_TotalLength, out fRollerDoorLintelCapFlashing_TotalLength, 
-                out fPADoorTrimmerFlashing_TotalLength, out fPADoorLintelFlashing_TotalLength, out fWindowFlashing_TotalLength);
+            DataSet ds = QuotationHelper.GetTableDoorsAndWindows(vm, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST, out fTotalAreaOfOpennings);
 
             if (ds != null)
             {
@@ -725,7 +723,7 @@ namespace PFD
             DataSet ds = QuotationHelper.GetTableRoofNetting(fRoofArea, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
 
             Datagrid_RoofNetting.ItemsSource = ds.Tables[0].AsDataView();
-            Datagrid_RoofNetting.Loaded += Datagrid_RoofNetting_Loaded;            
+            Datagrid_RoofNetting.Loaded += Datagrid_RoofNetting_Loaded;
         }
         private void Datagrid_RoofNetting_Loaded(object sender, RoutedEventArgs e)
         {
