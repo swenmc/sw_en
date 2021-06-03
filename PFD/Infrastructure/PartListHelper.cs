@@ -177,7 +177,7 @@ namespace PFD
 
                                 // TO Ondrej - zistit ci existuje nejaky iny susediaci sheet s rovnakou suradnicou Y, ktory je o v pozicii i+1
                                 // Ak ano, ak by sme mali pouzit pre iNumberLapstitchFixingPoints namiesto 2 * len 1 * maximum z sheet[i].LengthTotal a sheet[i+1].LengthTotal
-                                iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
                                 int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenPurlins * ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin) + 1);
                                 supportBracketBetweenPurlinsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                 iNumberOfSupportBracketBetweenPurlinsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 + 2); // Pridany jeden bod pre koncove rebro FG + 2 pre rebra cladding sheet
@@ -191,11 +191,17 @@ namespace PFD
                         // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
                         // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
                         // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
-                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties[0].XValues;
+
+                        // to Mato - a toto je ako co? myslim ten index = 0
+                        //List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties[0].XValues; 
+                        //myslel si toto? 
+                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Roof" || f.Side == "Roof-Right Side").XValues;
+
                         double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsRoofRight, xpositions, vm.RoofLength_Y);
 
                         // Tuto dlzku odpocitame od dLapstitchLengthTotal
                         dLapstitchLengthTotal -= dIntersectionLengthTotal;
+                        iNumberLapstitchFixingPoints += (int)Math.Round(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
                     }
 
                     if (cladding.HasFibreglassSheets_RoofLeft())
@@ -205,7 +211,7 @@ namespace PFD
                             if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                             {
                                 iNumberOfFixingPoints2 += ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
-                                iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
                                 int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenPurlins * ((int)(sheet.LengthTotal / vm.Model.fDist_Purlin) + 1);
                                 supportBracketBetweenPurlinsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                 iNumberOfSupportBracketBetweenPurlinsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 + 2); // Pridany jeden bod pre koncove rebro FG + 2 pre rebra cladding sheet
@@ -219,11 +225,14 @@ namespace PFD
                         // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
                         // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
                         // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
-                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties[0].XValues;
+                        //List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties[0].XValues;
+                        //Mato - myslel si toto?
+                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Roof-Left Side").XValues;
                         double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsRoofLeft, xpositions, vm.RoofLength_Y);
 
                         // Tuto dlzku odpocitame od dLapstitchLengthTotal
                         dLapstitchLengthTotal -= dIntersectionLengthTotal;
+                        iNumberLapstitchFixingPoints += (int)Math.Round(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
                     }
 
                     // Kontrola - priblizna

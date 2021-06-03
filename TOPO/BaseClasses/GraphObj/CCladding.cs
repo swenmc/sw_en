@@ -2728,27 +2728,48 @@ namespace BaseClasses.GraphObj
             if (intervals == null || intervals.Count < 2)
                 return length;
 
-            double l = intervals[0].S;
-            double r = intervals[0].E;
+            //double l = intervals[0].S;
+            //double r = intervals[0].E;
 
-            for (int i = 1; i < intervals.Count; i++)
+            //for (int i = 1; i < intervals.Count; i++)
+            //{
+            //    // TO Ondrej - tu je este chyba, malo by sa porovnat prekryvanie list item "kazdy s kazdym" zo zoznamu intervalov
+
+            //    if (intervals[i].S > r || intervals[i].E < l)
+            //    {
+            //        // No intersection;
+            //    }
+            //    else
+            //    {
+            //        l = Math.Max(l, intervals[i].S);
+            //        r = Math.Min(r, intervals[i].E);
+            //        length += (r - l);
+            //    }
+            //}
+
+            double l;double r;
+            for (int i = 0; i < intervals.Count; i++)
             {
-                // TO Ondrej - tu je este chyba, malo by sa porovnat prekryvanie list item "kazdy s kazdym" zo zoznamu intervalov
+                l = intervals[i].S;
+                r = intervals[i].E;
 
-                if (intervals[i].S > r || intervals[i].E < l)
+                for (int j = i + 1; j < intervals.Count; j++)
                 {
-                    // No intersection;
-                }
-                else
-                {
-                    l = Math.Max(l, intervals[i].S);
-                    r = Math.Min(r, intervals[i].E);
-                    length += (r - l);
+                    if (intervals[j].S > r || intervals[j].E < l)
+                    {
+                        // No intersection;
+                    }
+                    else
+                    {
+                        l = Math.Max(l, intervals[j].S);
+                        r = Math.Min(r, intervals[j].E);
+                        length += (r - l);
+                    }
                 }
             }
-
             return length;
         }
+
     }
 
     public class CInterval
