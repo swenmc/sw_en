@@ -135,6 +135,7 @@ namespace PFD
         private float m_WindowFlashing_TotalLength;
 
         private float m_Gutters_TotalLength;
+        private float m_DownpipesTotalLength;
 
         // Loads - generate options
         private bool MGenerateNodalLoads;
@@ -2261,6 +2262,19 @@ namespace PFD
             }
         }
 
+        public float DownpipesTotalLength
+        {
+            get
+            {
+                return m_DownpipesTotalLength;
+            }
+
+            set
+            {
+                m_DownpipesTotalLength = value;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -3537,6 +3551,62 @@ namespace PFD
             if (flashing != null) flashing.Length_total = WindowFlashing_TotalLength;
         }
 
+        public void CountGutters()
+        {
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            {
+                Gutters_TotalLength = 1 * RoofLength_Y; // na jednej hrane strechy (podla toho ci je mensia H1 alebo H2), ale pre dlzku gutter to nehra rolu
+            }
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
+            {
+                Gutters_TotalLength = 2 * RoofLength_Y; // na dvoch okrajoch strechy
+            }
+            else
+            {
+                // Exception - not implemented
+                Gutters_TotalLength = 0;
+            }
+        }
+        public void SetGuttersLengths()
+        {
+            if (_doorsAndWindowsVM == null) return;
+            if (_doorsAndWindowsVM.Gutters == null) return;
+
+            if(_doorsAndWindowsVM.Gutters.FirstOrDefault() != null) _doorsAndWindowsVM.Gutters.First().Length_total = Gutters_TotalLength;
+        }
+
+        public void CountDownpipes()
+        {
+            if (_doorsAndWindowsVM == null) return;
+            if (_doorsAndWindowsVM.Downpipes == null) return;
+
+            CAccessories_DownpipeProperties downpipe = _doorsAndWindowsVM.Downpipes.FirstOrDefault();
+            if (downpipe == null) return;
+
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            {
+                DownpipesTotalLength = downpipe.CountOfDownpipePoints * Math.Min(WallHeightOverall, Height_H2_Overall); // Pocet zvodov krat mensia z vysok stien vlavo a vpravo (H1 alebo H2)
+            }
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
+            {
+                DownpipesTotalLength = downpipe.CountOfDownpipePoints * WallHeightOverall; // Pocet zvodov krat vyska steny
+            }
+            else
+            {
+                // Exception - not implemented
+                DownpipesTotalLength = 0;
+            }
+        }
+
+        public void SetDownpipesLengths()
+        {
+            if (_doorsAndWindowsVM == null) return;
+            if (_doorsAndWindowsVM.Downpipes == null) return;
+
+            if (_doorsAndWindowsVM.Downpipes.FirstOrDefault() != null) _doorsAndWindowsVM.Downpipes.First().Length_total = DownpipesTotalLength;
+        }
+
+
         /*
         private int GetCornersCount()
         {
@@ -3548,6 +3618,9 @@ namespace PFD
             return count;
         }
         */
+
+
+
 
         public void CalculateCladdingParameters_Mato()
         {

@@ -1519,28 +1519,9 @@ namespace PFD
 
         public static DataSet GetTableGutters(CPFDViewModel vm, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
-            //-----------------------------------------------------------------------------------
-            // TO Ondrej - toto by som presunul do CPFDViewModel
-            float fGuttersTotalLength = 0;
-
-            if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-            {
-                fGuttersTotalLength = 1 * vm.RoofLength_Y; // na jednej hrane strechy (podla toho ci je mensia H1 alebo H2), ale pre dlzku gutter to nehra rolu
-            }
-            else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
-            {
-                fGuttersTotalLength = 2 * vm.RoofLength_Y; // na dvoch okrajoch strechy
-            }
-            else
-            {
-                // Exception - not implemented
-                fGuttersTotalLength = 0;
-            }
-
-            //toto tu je len preto ak by sa nahodou neupdatoval gutters total length pri zmene modelu (mozno je aj lepsie to mat az tu)
-            //_pfdVM.Gutters[0].Length_total = fGuttersTotalLength;
-            //-----------------------------------------------------------------------------------
-
+            vm.CountGutters();
+            vm.SetGuttersLengths();
+            
             // Create Table
             DataTable dt = new DataTable("Gutters");
             // Create Table Rows
@@ -1569,8 +1550,6 @@ namespace PFD
 
             foreach (CAccessories_LengthItemProperties gutter in vm._doorsAndWindowsVM.Gutters)
             {
-                gutter.Length_total = fGuttersTotalLength; // To Ondrej - moze to byt takto?
-
                 AddLengthItemRow(dt,
                         QuotationHelper.colProp_Gutter.ColumnName,
                         gutter.Name,
@@ -1585,7 +1564,6 @@ namespace PFD
                         ref SumTotalLength,
                         ref SumTotalMass,
                         ref SumTotalPrice);
-
             }
 
             dBuildingMass += SumTotalMass;
@@ -1614,31 +1592,13 @@ namespace PFD
 
         public static DataSet GetTableDownpipes(CPFDViewModel vm, ref double dBuildingMass, ref double dBuildingNetPrice_WithoutMargin_WithoutGST)
         {
-            //-----------------------------------------------------------------------------------
-            // TO Ondrej - toto by som presunul do CPFDViewModel
-            // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-            CAccessories_DownpipeProperties downpipe = vm._doorsAndWindowsVM.Downpipes[0];
-            float fDownpipesTotalLength = 0;
+            vm.CountDownpipes();
+            vm.SetDownpipesLengths();
 
-            if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
-            {
-                fDownpipesTotalLength = downpipe.CountOfDownpipePoints * Math.Min(vm.WallHeightOverall, vm.Height_H2_Overall); // Pocet zvodov krat mensia z vysok stien vlavo a vpravo (H1 alebo H2)
-            }
-            else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
-            {
-                fDownpipesTotalLength = downpipe.CountOfDownpipePoints * vm.WallHeightOverall; // Pocet zvodov krat vyska steny
-            }
-            else
-            {
-                // Exception - not implemented
-                fDownpipesTotalLength = 0;
-            }
-
-            downpipe.Length_total = fDownpipesTotalLength;
-            //------------------------------------------------------------------------------------
-
-            double fDownpipesTotalMass = fDownpipesTotalLength * downpipe.Mass_kg_lm;
-            double fDownpipesTotalPrice = fDownpipesTotalLength * downpipe.Price_PPLM_NZD;
+            CAccessories_DownpipeProperties downpipe = vm._doorsAndWindowsVM.Downpipes.FirstOrDefault();
+            if (downpipe == null) return null;
+            double fDownpipesTotalMass = vm.DownpipesTotalLength * downpipe.Mass_kg_lm;
+            double fDownpipesTotalPrice = vm.DownpipesTotalLength * downpipe.Price_PPLM_NZD;
 
             // Create Table
             DataTable dt = new DataTable("Downpipes");
@@ -1667,7 +1627,7 @@ namespace PFD
 
             DataRow row;
 
-            if (fDownpipesTotalLength > 0 && fDownpipesTotalPrice > 0) // Add new row only if length and price are more than zero
+            if (vm.DownpipesTotalLength > 0 && fDownpipesTotalPrice > 0) // Add new row only if length and price are more than zero
             {
                 row = dt.NewRow();
 
@@ -1677,8 +1637,8 @@ namespace PFD
                     row[QuotationHelper.colProp_Diameter_mm.ColumnName] = (downpipe.Diameter * 1000f).ToString("F2"); // mm
                     row[QuotationHelper.colProp_Color.ColumnName] = downpipe.CoatingColor.CodeHEX;
                     row[QuotationHelper.colProp_ColorName.ColumnName] = downpipe.CoatingColor.Name;
-                    row[QuotationHelper.colProp_TotalLength_m.ColumnName] = fDownpipesTotalLength.ToString("F2");
-                    SumTotalLength += fDownpipesTotalLength;
+                    row[QuotationHelper.colProp_TotalLength_m.ColumnName] = vm.DownpipesTotalLength.ToString("F2");
+                    SumTotalLength += vm.DownpipesTotalLength;
 
                     row[QuotationHelper.colProp_UnitMass_LM.ColumnName] = downpipe.Mass_kg_lm.ToString("F2");
 
