@@ -511,26 +511,29 @@ namespace PFD
                 {
                     CCanopiesInfo previousCanopy = GetPreviousNeighboringCanopyLeft(canopy);
                     if (previousCanopy == null)
-                        len += canopy.WidthLeft;
+                        len += canopy.WidthLeft; // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
 
                     CCanopiesInfo nextCanopy = GetNextNeighboringCanopyLeft(canopy);
                     if (nextCanopy == null)
-                        len += canopy.WidthLeft;
+                        // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
+                        len += canopy.WidthLeft; // canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
+
                     else
-                        len += Math.Abs(nextCanopy.WidthLeft - canopy.WidthLeft);
+                        len += Math.Abs(nextCanopy.WidthLeft - canopy.WidthLeft); // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
                 }
 
                 if (canopy.Right)
                 {
                     CCanopiesInfo previousCanopy = GetPreviousNeighboringCanopyRight(canopy);
                     if (previousCanopy == null)
-                        len += canopy.WidthRight;
+                        // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
+                        len += canopy.WidthRight; // canopyNext.WidthRight + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X
 
                     CCanopiesInfo nextCanopy = GetNextNeighboringCanopyRight(canopy);
                     if (nextCanopy == null)
-                        len += canopy.WidthRight;
+                        len += canopy.WidthRight; // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
                     else
-                        len += Math.Abs(nextCanopy.WidthRight - canopy.WidthRight);
+                        len += Math.Abs(nextCanopy.WidthRight - canopy.WidthRight); // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
                 }
             }
             return len;

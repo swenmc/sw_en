@@ -1667,7 +1667,7 @@ namespace BaseClasses.GraphObj
             // Musime menit len tie sheets ktore maju zaciatok na hrane strechy
             if (MathF.d_equal(opening.CoordinateInPlane_y, 0, 0.002))
             {
-                // Zistime ci je plocha originalsheet v kolizii s nejakym canopy - right                
+                // Zistime ci je plocha originalsheet v kolizii s nejakym canopy - right
                 if (canopy.Right && (
                    (fBayStartCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline <= opening.CoordinateInPlane_x &&
                    fBayEndCoordinate_Y_Right + fRoofEdgeOffsetFromCenterline >= (opening.CoordinateInPlane_x + opening.Width)) ||
@@ -1696,7 +1696,7 @@ namespace BaseClasses.GraphObj
             // Musime menit len tie sheets ktore maju koniec na hrane strechy
             if (MATH.MathF.d_equal(opening.CoordinateInPlane_y + opening.LengthTotal, length_left_basic, 0.002))
             {
-                // Zistime ci je canopy v kolizii s plechom                
+                // Zistime ci je canopy v kolizii s plechom
                 if (canopy.Left && (
                    (fBayStartCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline <= opening.CoordinateInPlane_x &&
                    fBayEndCoordinate_Y_Left + fRoofEdgeOffsetFromCenterline >= (opening.CoordinateInPlane_x + opening.Width)) ||
