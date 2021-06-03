@@ -234,9 +234,12 @@ namespace PFD
                     if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed && vm._doorsAndWindowsVM.HasFlashing(EFlashingType.FibreglassRoofRidgeCap)) // Gable Roof Only
                     {
                         // Plastic blocks - Ridge - Fibreglass edge cap
-                        int iNumberOfRidgePlasticBlocks = (int)(vm.FibreglassRoofRidgeCapFlashing_TotalLength / ribWidthRoof);
-                        itemPiece = new CCladdingAccessories_Item_Piece("Plastic ridge block - fibreglass", iNumberOfRidgePlasticBlocks);
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
+                        if (vm.FibreglassRoofRidgeCapFlashing_TotalLength > 0)
+                        {
+                            int iNumberOfRidgePlasticBlocks = (int)(vm.FibreglassRoofRidgeCapFlashing_TotalLength / ribWidthRoof);
+                            itemPiece = new CCladdingAccessories_Item_Piece("Plastic ridge block - fibreglass", iNumberOfRidgePlasticBlocks);
+                            claddingAccessoriesItems_Piece.Add(itemPiece);
+                        }
                     }
 
                     // 13 - Rooflite support bracket
