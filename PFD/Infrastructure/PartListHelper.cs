@@ -184,6 +184,18 @@ namespace PFD
                                 dLapFoamPacker_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
                             }
                         }
+
+                        // TO Ondrej - spocitam celkovu maximalnu dlzku
+                        double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsRoofRight.Sum(item => item.LengthTotal);
+
+                        // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
+                        // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
+                        // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
+                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties[0].XValues;
+                        double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsRoofRight, xpositions, vm.RoofLength_Y);
+
+                        // Tuto dlzku odpocitame od dLapstitchLengthTotal
+                        dLapstitchLengthTotal -= dIntersectionLengthTotal;
                     }
 
                     if (cladding.HasFibreglassSheets_RoofLeft())
@@ -200,6 +212,18 @@ namespace PFD
                                 dLapFoamPacker_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
                             }
                         }
+
+                        // TO Ondrej - spocitam celkovu maximalnu dlzku
+                        double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsRoofLeft.Sum(item => item.LengthTotal);
+
+                        // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
+                        // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
+                        // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
+                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties[0].XValues;
+                        double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsRoofLeft, xpositions, vm.RoofLength_Y);
+
+                        // Tuto dlzku odpocitame od dLapstitchLengthTotal
+                        dLapstitchLengthTotal -= dIntersectionLengthTotal;
                     }
 
                     // Kontrola - priblizna

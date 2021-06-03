@@ -1157,7 +1157,7 @@ namespace PFD
 
             set
             {
-                m_WallFibreglassType = value;                
+                m_WallFibreglassType = value;
             }
         }
 
@@ -1217,7 +1217,7 @@ namespace PFD
             }
         }
 
-        
+
 
 
 
@@ -1268,7 +1268,7 @@ namespace PFD
                 f.X = f.XValues[i];
                 if (!list.Exists(fp => fp.IsInCollisionWith(f))) return;
             }
-                        
+
             for (int s = 1; s < f.Sides.Count; s++)
             {
                 f.Side = f.Sides[s];
@@ -1278,7 +1278,7 @@ namespace PFD
                     f.X = f.XValues[i];
                     if (!list.Exists(fp => fp.IsInCollisionWith(f))) return;
                 }
-            }            
+            }
         }
 
         private void HandleFibreglassPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -1343,7 +1343,7 @@ namespace PFD
             ConsiderRoofCladdingFor_FB_WallHeight = true;
 
             FibreglassProperties = new ObservableCollection<FibreglassProperties>();
-            
+
             IsSetFromCode = false;
         }
 
@@ -1389,7 +1389,7 @@ namespace PFD
 
         //To Mato 755 - zamysli sa, ci treba kontrolovat,updatovat atd aj RoofEdgeOverHang_LR_X, RoofEdgeOverHang_FB_Y
         private void UpdateFibreglassProperties()
-        {            
+        {
             foreach (FibreglassProperties f in this.FibreglassProperties)
             {
                 //tuto property ze treba vracat mam otestovane, tie dalsie 2 dole si uz isty nie som,ci je nutne takto osetrit

@@ -2693,5 +2693,70 @@ namespace BaseClasses.GraphObj
 
             return false;
         }
+
+        public double GetSheetCollectionLongitudinalIntersectionLength(List<CCladdingOrFibreGlassSheet> sheets, List<float> positions_X, float sideLength)
+        {
+            positions_X.Add(sideLength); // Pridame koncovu suradnicu
+
+            double totalIntersectionLength = 0;
+
+            for(int i = 0; i < positions_X.Count; i++) // Kazde x miesto
+            {
+                List<CInterval> intervals_Y = new List<CInterval>();
+
+                for (int j = 0; j < sheets.Count; j++) // Kazdy sheet
+                {
+                    // sheet konci alebo zacina v pozicii X
+                    if (MathF.d_equal(sheets[j].CoordinateInPlane_x, positions_X[i]) ||
+                      MathF.d_equal(sheets[j].CoordinateInPlane_x + sheets[j].Width, positions_X[i]))
+                        intervals_Y.Add(new CInterval(sheets[j].CoordinateInPlane_y, sheets[j].CoordinateInPlane_y + sheets[j].LengthTotal));
+                }
+
+                // Get intersection length for in current X for intervals Y
+                double intersectionLength_inXCoord = GetIntersectionLength(intervals_Y);
+                // Pridame dlzku presahov v mieste X k celkovej dlzke pre celu kolekciu
+                totalIntersectionLength += intersectionLength_inXCoord;
+            }
+
+            return totalIntersectionLength;
+        }
+
+        private double GetIntersectionLength(List<CInterval> intervals)
+        {
+            double length = 0;
+
+            if (intervals == null || intervals.Count < 2)
+                return length;
+
+            double l = intervals[0].S;
+            double r = intervals[0].E;
+
+            for (int i = 1; i < intervals.Count; i++)
+            {
+                if (intervals[i].S > r || intervals[i].E < l)
+                {
+                    // No intersection;
+                }
+                else
+                {
+                    l = Math.Max(l, intervals[i].S);
+                    r = Math.Min(r, intervals[i].E);
+                    length += (r - l);
+                }
+            }
+
+            return length;
+        }
+    }
+
+    public class CInterval
+    {
+        public double S;
+        public double E;
+        public CInterval(double start, double end)
+        {
+            S = start;
+            E = end;
+        }
     }
 }
