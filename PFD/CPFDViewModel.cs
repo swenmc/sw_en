@@ -3517,7 +3517,13 @@ namespace PFD
             WallCornerFlashing_TotalLength = iNumberOfCorners * fAverageWallHeight;
 
             BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
-            double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList);
+
+            double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList, 
+                _claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,
+                _claddingOptionsVM.RoofEdgeOverHang_LR_X,
+                MainColumnCrsc_z_plus, //To Mato je tento parameter spravny?
+                RoofPitch_radians);
+
             BargeFlashing_TotalLength += (float)canopiesBargeFlashing_TotalLength;
 
             BargeBirdProofFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
@@ -3638,7 +3644,11 @@ namespace PFD
             if (_doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
             {
                 BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
-                double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList);
+                double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList, 
+                    _claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,
+                    _claddingOptionsVM.RoofEdgeOverHang_LR_X,
+                    MainColumnCrsc_z_plus, //To Mato je tento parameter spravny?
+                    RoofPitch_radians);
                 BargeFlashing_TotalLength += (float)canopiesBargeFlashing_TotalLength;
             }
 

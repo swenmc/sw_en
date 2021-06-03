@@ -26,9 +26,9 @@ namespace BaseClasses.GraphObj
         float m_fFrontColumnDistance; // Vzdialenost front columns
         float m_fBackColumnDistance; // Vzdialenost back columns
 
-        double column_crsc_z_plus;
-        double column_crsc_y_minus;
-        double column_crsc_y_plus;
+        double m_column_crsc_z_plus;
+        double m_column_crsc_y_minus;
+        double m_column_crsc_y_plus;
 
         string m_claddingShape_Wall;
         string m_claddingCoatingType_Wall;
@@ -118,6 +118,45 @@ namespace BaseClasses.GraphObj
 
         public double dRoofSide_length; // Roof Side Length
 
+        public double Column_crsc_z_plus
+        {
+            get
+            {
+                return m_column_crsc_z_plus;
+            }
+
+            set
+            {
+                m_column_crsc_z_plus = value;
+            }
+        }
+
+        public double Column_crsc_y_minus
+        {
+            get
+            {
+                return m_column_crsc_y_minus;
+            }
+
+            set
+            {
+                m_column_crsc_y_minus = value;
+            }
+        }
+
+        public double Column_crsc_y_plus
+        {
+            get
+            {
+                return m_column_crsc_y_plus;
+            }
+
+            set
+            {
+                m_column_crsc_y_plus = value;
+            }
+        }
+
         public CCladding()
         {
             canopyCollection = new System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo>(); //nechce sa nam stale kontrolovat na null
@@ -168,9 +207,9 @@ namespace BaseClasses.GraphObj
             fibreglassSheetCollection = fibreglassProp;
             doorPropCollection = doorProp;
             windowPropCollection = windowProp;
-            column_crsc_z_plus = columnSection.z_max;
-            column_crsc_y_minus = columnSection.y_min;
-            column_crsc_y_plus = columnSection.y_max;
+            Column_crsc_z_plus = columnSection.z_max;
+            Column_crsc_y_minus = columnSection.y_min;
+            Column_crsc_y_plus = columnSection.y_max;
             m_fFrontColumnDistance = fFrontColumnDistance;
             m_fBackColumnDistance = fBackColumnDistance;
 
@@ -244,15 +283,15 @@ namespace BaseClasses.GraphObj
             double additionalOffsetRoof = 0.010; // 10 mm Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
-            double column_crsc_y_minus_temp = column_crsc_y_minus - additionalOffset;
-            double column_crsc_y_plus_temp = column_crsc_y_plus + additionalOffset;
-            double column_crsc_z_plus_temp = column_crsc_z_plus + additionalOffset;
+            double column_crsc_y_minus_temp = Column_crsc_y_minus - additionalOffset;
+            double column_crsc_y_plus_temp = Column_crsc_y_plus + additionalOffset;
+            double column_crsc_z_plus_temp = Column_crsc_z_plus + additionalOffset;
 
             //----------------------------------------
             // To Ondrej - toto by sme mali nahradit funkciou
             // CalculateWallHeightsForCladding
-            double height_1_final = sBuildingGeomInputData.fH_1_centerline + column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
-            double height_2_final = sBuildingGeomInputData.fH_2_centerline + column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
+            double height_1_final = sBuildingGeomInputData.fH_1_centerline + Column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon - prevziat z vypoctu polohy edge purlin
+            double height_2_final = sBuildingGeomInputData.fH_2_centerline + Column_crsc_z_plus / Math.Cos(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180); // TODO - dopocitat presne, zohladnit edge purlin a sklon
 
             double height_1_final_edge_LR_Wall = height_1_final - column_crsc_z_plus_temp * Math.Tan(sBuildingGeomInputData.fRoofPitch_deg * Math.PI / 180);
             double height_2_final_edge_LR_Wall = height_2_final;
@@ -1874,7 +1913,7 @@ namespace BaseClasses.GraphObj
                     {
                         if (MathF.d_equal(o.CoordinateInPlane_y, 0, eq_limit) || MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic, eq_limit))
                         {
-                            bool isCanopyOnSide = IsAnyCanopyOnSide(location, o, column_crsc_y_minus, column_crsc_y_plus, column_crsc_z_plus, fRoofEdgeOffsetFromCenterline, height_left_basic);
+                            bool isCanopyOnSide = IsAnyCanopyOnSide(location, o, Column_crsc_y_minus, Column_crsc_y_plus, Column_crsc_z_plus, fRoofEdgeOffsetFromCenterline, height_left_basic);
 
                             if (MathF.d_equal(o.CoordinateInPlane_y, 0, eq_limit) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassFirst = true; }
                             else if (MathF.d_equal(o.CoordinateInPlane_y + o.LengthTotal, height_left_basic, eq_limit) && !isCanopyOnSide) { iNumberOfNewSheets--; isFibreglassLast = true; }
