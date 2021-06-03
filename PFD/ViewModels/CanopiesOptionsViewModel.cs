@@ -513,9 +513,7 @@ namespace PFD
                     CCanopiesInfo previousCanopy = GetPreviousNeighboringCanopyLeft(canopy);
                     if (previousCanopy == null)
                         len += canopy.WidthLeft;
-                    else
-                        len += Math.Abs(previousCanopy.WidthLeft - canopy.WidthLeft);
-
+                    
                     CCanopiesInfo nextCanopy = GetNextNeighboringCanopyLeft(canopy);
                     if (nextCanopy == null)
                         len += canopy.WidthLeft;
@@ -528,9 +526,7 @@ namespace PFD
                     CCanopiesInfo previousCanopy = GetPreviousNeighboringCanopyRight(canopy);
                     if (previousCanopy == null)
                         len += canopy.WidthRight;
-                    else
-                        len += Math.Abs(previousCanopy.WidthRight - canopy.WidthRight);
-
+                    
                     CCanopiesInfo nextCanopy = GetNextNeighboringCanopyRight(canopy);
                     if (nextCanopy == null)
                         len += canopy.WidthRight;
