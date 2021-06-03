@@ -2733,6 +2733,8 @@ namespace BaseClasses.GraphObj
 
             for (int i = 1; i < intervals.Count; i++)
             {
+                // TO Ondrej - tu je este chyba, malo by sa porovnat prekryvanie list item "kazdy s kazdym" zo zoznamu intervalov
+
                 if (intervals[i].S > r || intervals[i].E < l)
                 {
                     // No intersection;
