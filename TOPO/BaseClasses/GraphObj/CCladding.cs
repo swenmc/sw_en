@@ -116,6 +116,8 @@ namespace BaseClasses.GraphObj
 
         bool bUseTop20Colors = true; // Pouzit vsetky farby v zozname (141) alebo striedat len vybrane (20)
 
+        public double dRoofSide_length; // Roof Side Length
+
         public CCladding()
         {
             canopyCollection = new System.Collections.ObjectModel.ObservableCollection<CCanopiesInfo>(); //nechce sa nam stale kontrolovat na null
@@ -877,12 +879,11 @@ namespace BaseClasses.GraphObj
             float RoofLength_Y = (float)(fRoofEdgeOffsetFromCenterline + sBuildingGeomInputData.fL_centerline + column_crsc_y_plus_temp + roofEdgeOverhang_Y);
 
             // Roof - Right Side
-            double length_left_basic;
 
             if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed)
-                length_left_basic = Drawing3D.GetPoint3DDistanceDouble(pRoof_front2_heightright, pRoof_front4_top);
+                dRoofSide_length = Drawing3D.GetPoint3DDistanceDouble(pRoof_front2_heightright, pRoof_front4_top);
             else
-                length_left_basic = Drawing3D.GetPoint3DDistanceDouble(pRoof_front3_heightleft, pRoof_front2_heightright);
+                dRoofSide_length = Drawing3D.GetPoint3DDistanceDouble(pRoof_front3_heightleft, pRoof_front2_heightright);
 
             pControlPoint_RoofRight = new Point3D(pRoof_front2_heightright.X, pRoof_front2_heightright.Y, pRoof_front2_heightright.Z);
 
@@ -907,11 +908,11 @@ namespace BaseClasses.GraphObj
                              m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                         listOfFibreGlassOpenings.Add(sheet);
 
-                        if (!sheet.HasOverlap && IsAnyCanopyOnSide(fgsp.Location, sheet.ConvertToOpening(), column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic))
+                        if (!sheet.HasOverlap && IsAnyCanopyOnSide(fgsp.Location, sheet.ConvertToOpening(), column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, dRoofSide_length))
                             sheet.HasOverlap = true;
 
                         List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                        //CountRealLenghts(sheets, length_left_basic);
+                        //CountRealLenghts(sheets, dRoofSide_length);
                         listOfFibreGlassSheetsRoofRight.AddRange(sheets);
                         iSheet_FG_Index += sheets.Count;
                     }
@@ -931,7 +932,7 @@ namespace BaseClasses.GraphObj
                     GenerateCladdingSheets(options.bCladdingSheetColoursByID, column_crsc_y_minus_temp, "Roof-right", sheetLoc, "RC", "Cladding - Roof-Right Side", m_MaterialCladding_Roof, pControlPoint_RoofRight, m_ColorNameRoof,
                     m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                     m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, RoofLength_Y,
-                    m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
+                    m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, dRoofSide_length, dRoofSide_length,
                     SheetListToOpeningListConverter(listOfFibreGlassOpenings), ref iSheetIndex, out listOfCladdingSheetsRoofRight);
 
                     // TODO - upravit plechy pre canopies
@@ -958,7 +959,7 @@ namespace BaseClasses.GraphObj
                                     originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                     originalsheet.Update();
 
-                                    CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic, isOrigSheetLast);
+                                    CutCanopySheet(originalsheet, false, ref iSheetIndex, dRoofSide_length, isOrigSheetLast);
                                     
 
                                     if (eModelType == EModelType_FS.eKitsetGableRoofEnclosed || (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed && !canopy.Left))
@@ -969,7 +970,7 @@ namespace BaseClasses.GraphObj
                                 if (eModelType == EModelType_FS.eKitsetMonoRoofEnclosed)
                                 {
                                     double CanopyCladdingWidth_Left = 0;
-                                    if (LeftSheetNeedsToBeExtendedToCanopy(originalsheet, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic, out CanopyCladdingWidth_Left))
+                                    if (LeftSheetNeedsToBeExtendedToCanopy(originalsheet, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, dRoofSide_length, out CanopyCladdingWidth_Left))
                                     {
                                         //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth; // Ostava povodne
                                         originalsheet.LengthTopLeft += CanopyCladdingWidth_Left;
@@ -978,7 +979,7 @@ namespace BaseClasses.GraphObj
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                         originalsheet.Update();
 
-                                        CutCanopySheet(originalsheet, false, ref iSheetIndex, length_left_basic, isOrigSheetLast);
+                                        CutCanopySheet(originalsheet, false, ref iSheetIndex, dRoofSide_length, isOrigSheetLast);
 
                                         breakIndex = cIndex + 1;
                                     }
@@ -995,7 +996,7 @@ namespace BaseClasses.GraphObj
                     listOfCladdingSheetsRoofRight.Add(new CCladdingOrFibreGlassSheet(5, "RC", "Cladding - Roof", EBuildingSide.Roof, m_MaterialCladding_Roof,
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                         4, 0, 0,
-                        pControlPoint_RoofRight, RoofLength_Y, length_left_basic, length_left_basic, 0.5 * RoofLength_Y, length_left_basic,
+                        pControlPoint_RoofRight, RoofLength_Y, dRoofSide_length, dRoofSide_length, 0.5 * RoofLength_Y, dRoofSide_length,
                         m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, options.bDisplayCladdingRoof, 0, false));
                     /* Mono
                     CAreaPolygonal area = new CAreaPolygonal(4, new List<Point3D>() { pRoof_front2_heightright, pRoof_back2_heightright, pRoof_back3_heightleft, pRoof_front3_heightleft }, 0);
@@ -1167,10 +1168,10 @@ namespace BaseClasses.GraphObj
                     {
                         if (fgsp.Side == "Roof-Left Side")
                         {
-                            length_left_basic = Drawing3D.GetPoint3DDistanceDouble(pRoof_front3_heightleft, pRoof_front4_top);
+                            dRoofSide_length = Drawing3D.GetPoint3DDistanceDouble(pRoof_front3_heightleft, pRoof_front4_top);
 
                             // Pre Left side prevratime suradnice v LCS y, aby boli vstupy na oboch stranach brane od spodnej hrany H1
-                            double Position_y = length_left_basic - fgsp.Y - fgsp.Length;
+                            double Position_y = dRoofSide_length - fgsp.Y - fgsp.Length;
 
                             CCladdingOrFibreGlassSheet sheet = new CCladdingOrFibreGlassSheet(iSheet_FG_Index + 1, "RF", "Fibreglass - Roof-Left Side", fgsp.Location, m_MaterialFibreglass_Roof,
                                 m_RoofProps_FG.thickness_m, m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.flatsheet_mass_kg_m2, m_RoofProps_FG.price_PPSM_NZD * m_RoofProps_FG.widthModular_m / m_RoofProps_FG.widthCoil_m, m_RoofProps_FG.widthModular_m,
@@ -1179,11 +1180,11 @@ namespace BaseClasses.GraphObj
                                 m_ColorNameRoof_FG, m_claddingShape_Roof_FG, m_claddingCoatingType_Roof_FG, m_ColorRoof_FG, options.fFibreglassOpacity, m_RoofProps_FG.widthRib_m, true, 0, SheetHasOverlap(fgsp));
                             listOfFibreGlassOpenings.Add(sheet);
 
-                            if (!sheet.HasOverlap && IsAnyCanopyOnSide(fgsp.Location, sheet.ConvertToOpening(), column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic))
+                            if (!sheet.HasOverlap && IsAnyCanopyOnSide(fgsp.Location, sheet.ConvertToOpening(), column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, dRoofSide_length))
                                 sheet.HasOverlap = true;
 
                             List<CCladdingOrFibreGlassSheet> sheets = CutSheetAccordingToMaxLength(sheet);
-                            //CountRealLenghts(sheets, length_left_basic);
+                            //CountRealLenghts(sheets, dRoofSide_length);
                             listOfFibreGlassSheetsRoofLeft.AddRange(sheets);
                             iSheet_FG_Index += sheets.Count;
                         }
@@ -1199,7 +1200,7 @@ namespace BaseClasses.GraphObj
                         m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity,
                         m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD,
                         RoofLength_Y,
-                        m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, length_left_basic, length_left_basic,
+                        m_RoofProps.widthRib_m, m_RoofProps.widthModular_m, iNumberOfSheets, dPartialSheet_End, dRoofSide_length, dRoofSide_length,
                         SheetListToOpeningListConverter(listOfFibreGlassOpenings), ref iSheetIndex, out listOfCladdingSheetsRoofLeft);
 
                         // TODO - upravit plechy pre canopies
@@ -1213,9 +1214,9 @@ namespace BaseClasses.GraphObj
                                 int breakIndex = canopyCollection.Count;
                                 foreach (CCanopiesInfo canopy in canopyCollection)
                                 {
-                                    double CanopyCladdingWidth_Left = 0;                                    
-                                    if (LeftSheetNeedsToBeExtendedToCanopy(originalsheet, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, length_left_basic, out CanopyCladdingWidth_Left))
-                                    {                                        
+                                    double CanopyCladdingWidth_Left = 0;
+                                    if (LeftSheetNeedsToBeExtendedToCanopy(originalsheet, canopy, column_crsc_y_minus_temp, column_crsc_y_plus_temp, column_crsc_z_plus_temp, fRoofEdgeOffsetFromCenterline, dRoofSide_length, out CanopyCladdingWidth_Left))
+                                    {
                                         //originalsheet.CoordinateInPlane_y -= fCanopyCladdingWidth; // Ostava povodne
                                         originalsheet.LengthTopLeft += CanopyCladdingWidth_Left;
                                         originalsheet.LengthTopRight += CanopyCladdingWidth_Left;
@@ -1223,7 +1224,7 @@ namespace BaseClasses.GraphObj
                                         originalsheet.LengthTotal = Math.Max(originalsheet.LengthTopLeft, originalsheet.LengthTopRight);
                                         originalsheet.Update();
 
-                                        CutCanopySheet(originalsheet, true, ref iSheetIndex, length_left_basic, isOrigSheetLast);
+                                        CutCanopySheet(originalsheet, true, ref iSheetIndex, dRoofSide_length, isOrigSheetLast);
 
                                         breakIndex = cIndex + 1;
                                     }
@@ -1241,7 +1242,7 @@ namespace BaseClasses.GraphObj
                         listOfCladdingSheetsRoofLeft.Add(new CCladdingOrFibreGlassSheet(6, "RC", "Cladding - Roof-Left Side", EBuildingSide.Roof_Left_Side, m_MaterialCladding_Roof,
                             m_RoofProps.thicknessCore_m, m_RoofCoilProps.widthCoil, m_RoofCoilProps.coilmass_kg_m2, m_RoofCoilProps.price_PPSM_NZD, m_RoofProps.widthModular_m,
                             4, 0, 0,
-                            pControlPoint_RoofLeft, RoofLength_Y, length_left_basic, length_left_basic, 0.5 * RoofLength_Y, length_left_basic,
+                            pControlPoint_RoofLeft, RoofLength_Y, dRoofSide_length, dRoofSide_length, 0.5 * RoofLength_Y, dRoofSide_length,
                             m_ColorNameRoof, m_claddingShape_Roof, m_claddingCoatingType_Roof, m_ColorRoof, options.fRoofCladdingOpacity, m_RoofProps.widthRib_m, options.bDisplayCladdingRoof, 0, false));
 
                         /*

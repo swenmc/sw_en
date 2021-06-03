@@ -3393,6 +3393,46 @@ namespace PFD
             return sDisplayOptions;
         }
 
+        // TODO 841 - pokus
+        public float GetRidgeFibreglassEdgeCap_Length()
+        {
+            if (MKitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed || !Model.m_arrGOCladding[0].HasFibreglassSheets_Roof())
+                return 0; // Monopitch Roof nema Ridge Flashing, Nie je zapnute cladding pre roof
+
+            // TODO - prevziat ako parameter funkcie
+            double dLimitSheetLengthToConsider = 0.20; // Neuvazovat kratsie plechy ako je tento limit
+            double dLimitSheetWidthToConsider = 0.10; // Neuvazovat uzsie plechy ako je tento limit
+            double dLimitLength = 0.001; // 1 mm
+
+            float fRidgeFibreglassEdgeCap_Length = 0;
+
+            if (Model.m_arrGOCladding[0].HasFibreglassSheets_RoofRight())
+            {
+                foreach (BaseClasses.GraphObj.CCladdingOrFibreGlassSheet sheet in Model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofRight)
+                {
+                    if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
+                    {
+                        if (MathF.d_equal(sheet.CoordinateInPlane_y + sheet.LengthTotal, Model.m_arrGOCladding[0].dRoofSide_length, dLimitLength))
+                            fRidgeFibreglassEdgeCap_Length += (float)sheet.Width;
+                    }
+                }
+            }
+
+            if (Model.m_arrGOCladding[0].HasFibreglassSheets_RoofLeft())
+            {
+                foreach (BaseClasses.GraphObj.CCladdingOrFibreGlassSheet sheet in Model.m_arrGOCladding[0].listOfFibreGlassSheetsRoofLeft)
+                {
+                    if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
+                    {
+                        if (MathF.d_equal(sheet.CoordinateInPlane_y, 0, dLimitLength))
+                            fRidgeFibreglassEdgeCap_Length += (float)sheet.Width;
+                    }
+                }
+            }
+
+            return fRidgeFibreglassEdgeCap_Length;
+        }
+
         public void CountFlashings()
         {
             if (_doorsAndWindowsVM == null) return;
@@ -3432,9 +3472,8 @@ namespace PFD
 
                 GutterEavePurlinBirdProofStrip_TotalLength = 2 * RoofLength_Y;
 
-                FibreglassRoofRidgeCapFlashing_TotalLength = 0; // TODO 841 - zistit ktore FG sheet koncia na hrane strechy a spocitat ich sirku
+                FibreglassRoofRidgeCapFlashing_TotalLength = GetRidgeFibreglassEdgeCap_Length(); // TODO 841 - zistit ktore FG sheet koncia na hrane strechy a spocitat ich sirku
             }
-
 
             // TO Ondrej - nastavit spravne pocet rohov, default je 4 kedze predpokladame ze existuju vsetky steny,
             // ak je niektora zo stien wall cladding deaktivovana tak je pocet rohov 2, ak su deaktivovane 2 (nie protilahle),
@@ -3549,7 +3588,7 @@ namespace PFD
                     GutterEavePurlinBirdProofStrip_TotalLength = 2 * RoofLength_Y;
 
                 if (_doorsAndWindowsVM.HasFlashing(EFlashingType.FibreglassRoofRidgeCap))
-                    FibreglassRoofRidgeCapFlashing_TotalLength = 0; // TODO 841 - zistit ktore FG sheet koncia na hrane strechy a spocitat ich sirku
+                    FibreglassRoofRidgeCapFlashing_TotalLength = GetRidgeFibreglassEdgeCap_Length(); // TODO 841 - zistit ktore FG sheet koncia na hrane strechy a spocitat ich sirku
             }
 
             if (_doorsAndWindowsVM.HasFlashing(EFlashingType.WallCorner))

@@ -59,9 +59,6 @@ namespace PFD
             return vm._modelOptionsVM.EnableCladding && vm.ModelHasPurlinsOrGirts() && vm._doorsAndWindowsVM != null;
         }
 
-
-
-
         public static void GetTableCladdingAccessoriesLists(CPFDViewModel vm, out List<CCladdingAccessories_Item_Piece> claddingAccessoriesItems_Piece, out List<CCladdingAccessories_Item_Length> claddingAccessoriesItems_Length)
         {
             // Cladding Accessories Item and Fixing - IN WORK
@@ -147,7 +144,7 @@ namespace PFD
                     // Podla suradnice y a hodnoty length v porovnani s length_left_basic (right side) a hodnoty y = 0 (left side)
                     // To Ondrej - mam pocit ze cladding sheets prichadzaju do tohoto vypoctu nenadelene
 
-                    int iNumberOfFGSheetsRidge = 5; // Todo napojit
+                    //int iNumberOfFGSheetsRidge = 5; // Todo napojit
                     //double dTotalLengthFGSheetsRidge = 20.15; // Todo napojit
 
                     int iNumberOfSupportBracketBetweenPurlins;
