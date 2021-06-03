@@ -3471,7 +3471,11 @@ namespace PFD
             }
 
             if (_doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
-                BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength; // TODO 840
+            {
+                BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
+                double canopiesBargeFlashing_TotalLength = _canopiesOptionsVM.CalculateCanopiesBargeLength();
+                BargeFlashing_TotalLength += (float)canopiesBargeFlashing_TotalLength;
+            }
 
             if (_doorsAndWindowsVM.HasFlashing(EFlashingType.BargeBirdproof))
                 BargeBirdProofFlashing_TotalLength = iRoofSidesCount * RoofSideLength;

@@ -503,5 +503,67 @@ namespace PFD
             DefaultWidth = vm.DefaultWidth;
         }
 
+        public double CalculateCanopiesBargeLength()
+        {
+            double len = 0;
+            foreach (CCanopiesInfo canopy in CanopiesList)
+            {
+                if (canopy.Left)
+                {
+                    CCanopiesInfo previousCanopy = GetPreviousNeighboringCanopyLeft(canopy);
+                    if (previousCanopy == null)
+                        len += canopy.WidthLeft;
+                    else
+                        len += Math.Abs(previousCanopy.WidthLeft - canopy.WidthLeft);
+
+                    CCanopiesInfo nextCanopy = GetNextNeighboringCanopyLeft(canopy);
+                    if (nextCanopy == null)
+                        len += canopy.WidthLeft;
+                    else
+                        len += Math.Abs(nextCanopy.WidthLeft - canopy.WidthLeft);
+                }
+
+                if (canopy.Right)
+                {
+                    CCanopiesInfo previousCanopy = GetPreviousNeighboringCanopyRight(canopy);
+                    if (previousCanopy == null)
+                        len += canopy.WidthRight;
+                    else
+                        len += Math.Abs(previousCanopy.WidthRight - canopy.WidthRight);
+
+                    CCanopiesInfo nextCanopy = GetNextNeighboringCanopyRight(canopy);
+                    if (nextCanopy == null)
+                        len += canopy.WidthRight;
+                    else
+                        len += Math.Abs(nextCanopy.WidthRight - canopy.WidthRight);
+                }
+            }
+            return len;
+        }
+        private CCanopiesInfo GetPreviousNeighboringCanopyLeft(CCanopiesInfo canopy)
+        {
+            bool hasPreviousCanopy = ModelHelper.IsNeighboringLeftCanopy(CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1));
+            if (hasPreviousCanopy) return CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1);
+            else return null;            
+        }
+        private CCanopiesInfo GetPreviousNeighboringCanopyRight(CCanopiesInfo canopy)
+        {
+            bool hasPreviousCanopy = ModelHelper.IsNeighboringRightCanopy(CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1));
+            if (hasPreviousCanopy) return CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1);
+            else return null;            
+        }
+        private CCanopiesInfo GetNextNeighboringCanopyLeft(CCanopiesInfo canopy)
+        {
+            bool hasNextCanopy = ModelHelper.IsNeighboringLeftCanopy(CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1));
+            if (hasNextCanopy) return CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1);
+            else return null;            
+        }
+        private CCanopiesInfo GetNextNeighboringCanopyRight(CCanopiesInfo canopy)
+        {
+            bool hasNextCanopy = ModelHelper.IsNeighboringRightCanopy(CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1));
+            if (hasNextCanopy) return CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1);
+            else return null;            
+        }
+
     }
 }
