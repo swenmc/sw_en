@@ -502,68 +502,7 @@ namespace PFD
             DefaultWidth = vm.DefaultWidth;
         }
 
-        public double CalculateCanopiesBargeLength()
-        {
-            double len = 0;
-            foreach (CCanopiesInfo canopy in CanopiesList)
-            {
-                if (canopy.Left)
-                {
-                    CCanopiesInfo previousCanopy = GetPreviousNeighboringCanopyLeft(canopy);
-                    if (previousCanopy == null)
-                        len += canopy.WidthLeft; // (canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X) / Math.Cos(Math.Abs(Roof_Pitch_rad);
-
-                    CCanopiesInfo nextCanopy = GetNextNeighboringCanopyLeft(canopy);
-                    if (nextCanopy == null)
-                        // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
-                        len += canopy.WidthLeft; // canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X;
-                    // Horizontalny rozmer canopy este treba previest na sikmu dlzku takze cely vyraz podelit Math.Cos(Math.Abs(Roof_Pitch_rad) 
-
-                    else
-                        len += Math.Abs(nextCanopy.WidthLeft - canopy.WidthLeft); // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
-                }
-
-                if (canopy.Right)
-                {
-                    CCanopiesInfo previousCanopy = GetPreviousNeighboringCanopyRight(canopy);
-                    if (previousCanopy == null)
-                        // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
-                        // Horizontalny rozmer canopy este treba previest na sikmu dlzku takze cely vyraz podelit Math.Cos(Math.Abs(Roof_Pitch_rad) 
-                        len += canopy.WidthRight; // canopyNext.WidthRight + canopyOverhangOffset_x - column_crsc_z_plus_temp - roofEdgeOverhang_X
-
-                    CCanopiesInfo nextCanopy = GetNextNeighboringCanopyRight(canopy);
-                    if (nextCanopy == null)
-                        len += canopy.WidthRight; // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
-                    // Horizontalny rozmer canopy este treba previest na sikmu dlzku takze cely vyraz podelit Math.Cos(Math.Abs(Roof_Pitch_rad) 
-                    else
-                        len += Math.Abs(nextCanopy.WidthRight - canopy.WidthRight); // TO Ondrej, ako sirku canopy by sme mali uvazovat to co je v komentari (cely vyraz)
-                }
-            }
-            return len;
-        }
-        private CCanopiesInfo GetPreviousNeighboringCanopyLeft(CCanopiesInfo canopy)
-        {
-            bool hasPreviousCanopy = ModelHelper.IsNeighboringLeftCanopy(CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1));
-            if (hasPreviousCanopy) return CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1);
-            else return null;
-        }
-        private CCanopiesInfo GetPreviousNeighboringCanopyRight(CCanopiesInfo canopy)
-        {
-            bool hasPreviousCanopy = ModelHelper.IsNeighboringRightCanopy(CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1));
-            if (hasPreviousCanopy) return CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1);
-            else return null;
-        }
-        private CCanopiesInfo GetNextNeighboringCanopyLeft(CCanopiesInfo canopy)
-        {
-            bool hasNextCanopy = ModelHelper.IsNeighboringLeftCanopy(CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1));
-            if (hasNextCanopy) return CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1);
-            else return null;
-        }
-        private CCanopiesInfo GetNextNeighboringCanopyRight(CCanopiesInfo canopy)
-        {
-            bool hasNextCanopy = ModelHelper.IsNeighboringRightCanopy(CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1));
-            if (hasNextCanopy) return CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1);
-            else return null;
-        }
+        
+        
     }
 }

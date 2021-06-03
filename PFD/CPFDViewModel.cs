@@ -3517,7 +3517,7 @@ namespace PFD
             WallCornerFlashing_TotalLength = iNumberOfCorners * fAverageWallHeight;
 
             BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
-            double canopiesBargeFlashing_TotalLength = _canopiesOptionsVM.CalculateCanopiesBargeLength();
+            double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList);
             BargeFlashing_TotalLength += (float)canopiesBargeFlashing_TotalLength;
 
             BargeBirdProofFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
@@ -3638,7 +3638,7 @@ namespace PFD
             if (_doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
             {
                 BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
-                double canopiesBargeFlashing_TotalLength = _canopiesOptionsVM.CalculateCanopiesBargeLength();
+                double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList);
                 BargeFlashing_TotalLength += (float)canopiesBargeFlashing_TotalLength;
             }
 
@@ -3981,8 +3981,8 @@ namespace PFD
 
                 if (canopy.Right)
                 {
-                    bool hasNextCanopy = ModelHelper.IsNeighboringRightCanopy(_canopiesOptionsVM.CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1));
-                    bool hasPreviousCanopy = ModelHelper.IsNeighboringRightCanopy(_canopiesOptionsVM.CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1));
+                    bool hasNextCanopy = CanopiesHelper.IsNeighboringRightCanopy(_canopiesOptionsVM.CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1));
+                    bool hasPreviousCanopy = CanopiesHelper.IsNeighboringRightCanopy(_canopiesOptionsVM.CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1));
 
                     float fCanopyBayStartOffset = hasPreviousCanopy ? 0f : ((canopy.BayIndex == 0 ? _claddingOptionsVM.RoofEdgeOverHang_FB_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
                     float fCanopyBayEndOffset = hasNextCanopy ? 0f : (((canopy.BayIndex == _canopiesOptionsVM.CanopiesList.Count - 1) ? _claddingOptionsVM.RoofEdgeOverHang_FB_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);
@@ -4032,8 +4032,8 @@ namespace PFD
                     //  |______|
                     // 3        0
 
-                    bool hasNextCanopy = ModelHelper.IsNeighboringLeftCanopy(_canopiesOptionsVM.CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1));
-                    bool hasPreviousCanopy = ModelHelper.IsNeighboringLeftCanopy(_canopiesOptionsVM.CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1));
+                    bool hasNextCanopy = CanopiesHelper.IsNeighboringLeftCanopy(_canopiesOptionsVM.CanopiesList.ElementAtOrDefault(canopy.BayIndex + 1));
+                    bool hasPreviousCanopy = CanopiesHelper.IsNeighboringLeftCanopy(_canopiesOptionsVM.CanopiesList.ElementAtOrDefault(canopy.BayIndex - 1));
 
                     float fCanopyBayStartOffset = hasPreviousCanopy ? 0f : ((canopy.BayIndex == 0 ? _claddingOptionsVM.RoofEdgeOverHang_FB_Y : (float)canopyOverhangOffset_y) - (float)column_crsc_y_minus_temp); // Positive value
                     float fCanopyBayEndOffset = hasNextCanopy ? 0f : (((canopy.BayIndex == _canopiesOptionsVM.CanopiesList.Count - 1) ? _claddingOptionsVM.RoofEdgeOverHang_FB_Y : (float)canopyOverhangOffset_y) + (float)column_crsc_y_plus_temp);

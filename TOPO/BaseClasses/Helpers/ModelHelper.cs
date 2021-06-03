@@ -582,20 +582,7 @@ namespace BaseClasses.Helpers
 
 
 
-        public static bool IsNeighboringLeftCanopy(CCanopiesInfo canopiesInfo)
-        {
-            if (canopiesInfo == null) return false;
-
-            if (canopiesInfo.Left == true) return true;
-            else return false;
-        }
-        public static bool IsNeighboringRightCanopy(CCanopiesInfo canopiesInfo)
-        {
-            if (canopiesInfo == null) return false;
-
-            if (canopiesInfo.Right == true) return true;
-            else return false;
-        }
+        
 
         public static float GetBaysWidthUntil(int bayIndex, IList<CBayInfo> bayWidths)
         {
