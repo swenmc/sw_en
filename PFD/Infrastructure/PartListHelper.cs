@@ -139,14 +139,6 @@ namespace PFD
                 {
                     // 12 - Fibreglass rooflites
 
-                    // Todo 841 napojit
-                    // Zistit kolko FG sheets (resp ich sirku) konci na hrane alebo tesne pod hranou strechy pre gable roof (napriklad < 0.3 m
-                    // Podla suradnice y a hodnoty length v porovnani s length_left_basic (right side) a hodnoty y = 0 (left side)
-                    // To Ondrej - mam pocit ze cladding sheets prichadzaju do tohoto vypoctu nenadelene
-
-                    //int iNumberOfFGSheetsRidge = 5; // Todo napojit
-                    //double dTotalLengthFGSheetsRidge = 20.15; // Todo napojit
-
                     int iNumberOfSupportBracketBetweenPurlins;
                     double supportBracketBetweenPurlinsLengthTotal = 0;
                     int iNumberOfSupportBracketBetweenPurlinsFixingPoints = 0;
@@ -172,7 +164,7 @@ namespace PFD
                     // Sposob B
 
                     int iNumberOfFixingPoints2 = 0;
-                    iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji sheet, TODO doriesit ak su 2 fibreglass sheets vedla seba
+                    iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji sheet, To Ondrej - TODO doriesit ak su 2 fibreglass sheets vedla seba, asi by sme vedeli osetrit aspon ciastocne podla pozicie X a Y zobrat okraj len raz resp max. dlzku ak su ine
                     dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
 
                     if (cladding.HasFibreglassSheets_RoofRight())
@@ -236,6 +228,7 @@ namespace PFD
                         // Plastic blocks - Ridge - Fibreglass edge cap
                         if (vm.FibreglassRoofRidgeCapFlashing_TotalLength > 0)
                         {
+                            // Todo 841 - napojit - To Ondrej - prosim skontrolovat
                             int iNumberOfRidgePlasticBlocks = (int)(vm.FibreglassRoofRidgeCapFlashing_TotalLength / ribWidthRoof);
                             itemPiece = new CCladdingAccessories_Item_Piece("Plastic ridge block - fibreglass", iNumberOfRidgePlasticBlocks);
                             claddingAccessoriesItems_Piece.Add(itemPiece);
@@ -321,9 +314,7 @@ namespace PFD
                 double dEavePurlinBirdProofFixingPointSpacing = 1; // DB
                 int iNumberEavePurlinBirdProofFixingPoints = 0;
 
-                // TODO 840
-                // TODO  // pridat CANOPIES ???? !!!!!!!!!!!!!!
-                // Asi bude potrebne prechadzat zoznam canopies ...
+                // TODO 840 - Barge Flashing Length - To Ondrej
 
                 int iRoofSidesCount = 0;
 
@@ -481,8 +472,6 @@ namespace PFD
                     // Sposob B
 
                     int iNumberOfFixingPoints2 = 0;
-                    // TO Ondrej - mam podozrenie ze tieto zoznamy obsahuju sheet pred nadelenim !!!!!!!
-                    // TODO Ondrej - potrebujeme zaistit aby to sem voslo az ked je vsetko nadelene !!!!!
 
                     if (cladding.HasCladdingSheets_WallLeft())
                     {
@@ -608,6 +597,7 @@ namespace PFD
                 // tak jedna a ked je zapnuta len jedna, dve protilahle alebo ziadna tak 0
                 // vtedy sme nemali tento riadok zobrazit vobec, vseobecne by bolo dobre pridat podmienku ze ak je item count = 0 alebo item length = 0 m, tak sa do
                 // tabuliek part list nepridaju
+                // TO Ondrej - prosim skontrolovat tieto podmienky
 
                 int iNumberOfCorners = 0;
 
@@ -670,7 +660,7 @@ namespace PFD
                         // Sposob B
 
                         int iNumberOfFixingPoints2 = 0;
-                        iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji sheet, TODO doriesit ak su 2 fibreglass sheets vedla seba
+                        iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji sheet, To Ondrej - TODO doriesit ak su 2 fibreglass sheets vedla seba, asi by sme vedeli osetrit aspon ciastocne podla pozicie X a Y zobrat okraj len raz resp max. dlzku ak su ine
                         dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
 
                         if (cladding.HasFibreglass_WallLeft())
@@ -834,7 +824,7 @@ namespace PFD
             double dTotalItemsMass_Table = 0;
             double dTotalItemsPrice_Table = 0;
 
-            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docanse - upravit 
+            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docanse - upravit
             foreach (CCladdingAccessories_Item_Length item in claddingAccessoriesItems_Length)
             {
                 QuotationItem qitem = new QuotationItem();
@@ -911,7 +901,7 @@ namespace PFD
             double dTotalItemsPrice_Table = 0;
             int iTotalItemsNumber_Table = 0;
 
-            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docanse - upravit 
+            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docanse - upravit
             foreach (CCladdingAccessories_Item_Piece item in claddingAccessoriesItems_Piece)
             {
                 QuotationItem qitem = new QuotationItem();
