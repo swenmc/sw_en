@@ -3420,7 +3420,121 @@ namespace PFD
                 else if (Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() || Model.m_arrGOCladding[0].HasCladdingSheets_WallBack()) iRoofSidesCount = 1;
                 else iRoofSidesCount = 0;
 
-                if(_doorsAndWindowsVM.HasFlashing(EFlashingType.EavePurlinBirdproofStrip))
+                GutterEavePurlinBirdProofStrip_TotalLength = RoofLength_Y;
+            }
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
+            {
+                RoofRidgeFlashing_TotalLength = RoofLength_Y;
+
+                if (Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() && Model.m_arrGOCladding[0].HasCladdingSheets_WallBack()) iRoofSidesCount = 4;
+                else if (Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() || Model.m_arrGOCladding[0].HasCladdingSheets_WallBack()) iRoofSidesCount = 2;
+                else iRoofSidesCount = 0;
+
+                GutterEavePurlinBirdProofStrip_TotalLength = 2 * RoofLength_Y;
+
+                FibreglassRoofRidgeCapFlashing_TotalLength = 0; // TODO 841 - zistit ktore FG sheet koncia na hrane strechy a spocitat ich sirku
+            }
+
+
+            // TO Ondrej - nastavit spravne pocet rohov, default je 4 kedze predpokladame ze existuju vsetky steny,
+            // ak je niektora zo stien wall cladding deaktivovana tak je pocet rohov 2, ak su deaktivovane 2 (nie protilahle),
+            // tak jedna a ked je zapnuta len jedna, dve protilahle alebo ziadna tak 0
+            // vtedy sme nemali tento riadok zobrazit vobec, vseobecne by bolo dobre pridat podmienku ze ak je item count = 0 alebo item length = 0 m, tak sa do
+            // tabuliek part list nepridaju
+
+            int iNumberOfCorners = 0;
+
+            if (Model.m_arrGOCladding[0].HasCladdingSheets_WallLeft() && Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() && Model.m_arrGOCladding[0].HasCladdingSheets_WallRight() && Model.m_arrGOCladding[0].HasCladdingSheets_WallBack())
+                iNumberOfCorners = 4; // Styri steny
+            else if ((Model.m_arrGOCladding[0].HasCladdingSheets_WallLeft() && Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() && Model.m_arrGOCladding[0].HasCladdingSheets_WallRight()) ||
+                (Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() && Model.m_arrGOCladding[0].HasCladdingSheets_WallRight() && Model.m_arrGOCladding[0].HasCladdingSheets_WallBack()) ||
+                (Model.m_arrGOCladding[0].HasCladdingSheets_WallRight() && Model.m_arrGOCladding[0].HasCladdingSheets_WallBack() && Model.m_arrGOCladding[0].HasCladdingSheets_WallLeft()) ||
+                (Model.m_arrGOCladding[0].HasCladdingSheets_WallBack() && Model.m_arrGOCladding[0].HasCladdingSheets_WallLeft() && Model.m_arrGOCladding[0].HasCladdingSheets_WallFront()))
+                iNumberOfCorners = 2; // Len tri steny, ktore tvoria dva rohy
+            else if ((Model.m_arrGOCladding[0].HasCladdingSheets_WallLeft() && Model.m_arrGOCladding[0].HasCladdingSheets_WallFront()) ||
+                (Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() && Model.m_arrGOCladding[0].HasCladdingSheets_WallRight()) ||
+                (Model.m_arrGOCladding[0].HasCladdingSheets_WallRight() && Model.m_arrGOCladding[0].HasCladdingSheets_WallBack()) ||
+                (Model.m_arrGOCladding[0].HasCladdingSheets_WallBack() && Model.m_arrGOCladding[0].HasCladdingSheets_WallLeft()))
+                iNumberOfCorners = 1; // Len dve steny, ktore tvoria jeden roh
+            else
+                iNumberOfCorners = 0; // Dve protilahle steny, jedna stena, alebo ziadna stena
+
+            // Cladding corner
+            float fAverageWallHeight = 0;
+
+            // Priemerna vyska steny - Dalo by sa pocitat presne podla toho co je zapnute, ale znamena to vela podmienok
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
+                fAverageWallHeight = WallHeightOverall;
+            else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            {
+                if (Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() || Model.m_arrGOCladding[0].HasCladdingSheets_WallBack())
+                    fAverageWallHeight = MathF.Average(WallHeightOverall, Height_H2_Overall);
+                else if (Model.m_arrGOCladding[0].HasCladdingSheets_WallLeft())
+                    fAverageWallHeight = WallHeightOverall;
+                else if (Model.m_arrGOCladding[0].HasCladdingSheets_WallRight())
+                    fAverageWallHeight = Height_H2_Overall;
+            }
+
+            WallCornerFlashing_TotalLength = iNumberOfCorners * fAverageWallHeight;
+
+            BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
+            double canopiesBargeFlashing_TotalLength = _canopiesOptionsVM.CalculateCanopiesBargeLength();
+            BargeFlashing_TotalLength += (float)canopiesBargeFlashing_TotalLength;
+
+            BargeBirdProofFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
+
+            if (_doorsAndWindowsVM != null)
+            {
+                foreach (DoorProperties dp in _doorsAndWindowsVM.DoorBlocksProperties)
+                {
+                    if (dp.sDoorType == "Roller Door")
+                    {
+                        RollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
+                        RollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                        RollerDoorLintelCapFlashing_TotalLength += dp.fDoorsWidth;
+                    }
+                    else
+                    {
+                        //PADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
+                        PADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                    }
+                }
+
+                foreach (WindowProperties wp in _doorsAndWindowsVM.WindowBlocksProperties)
+                    WindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
+            }
+        }
+
+
+        // Zaloha funkcie CountFlashings - obsahuje podmienky pre vypocet dlzky
+        public void CountFlashings_ZalohaSPodmienkami()
+        {
+            if (_doorsAndWindowsVM == null) return;
+            if (_doorsAndWindowsVM.Flashings == null) return;
+
+            RoofRidgeFlashing_TotalLength = 0;
+            WallCornerFlashing_TotalLength = 0;
+            BargeFlashing_TotalLength = 0;
+            BargeBirdProofFlashing_TotalLength = 0;
+            GutterEavePurlinBirdProofStrip_TotalLength = 0;
+            FibreglassRoofRidgeCapFlashing_TotalLength = 0;
+            RollerDoorTrimmerFlashing_TotalLength = 0;
+            RollerDoorLintelFlashing_TotalLength = 0;
+            RollerDoorLintelCapFlashing_TotalLength = 0;
+            PADoorLintelFlashing_TotalLength = 0;
+            WindowFlashing_TotalLength = 0;
+
+            int iRoofSidesCount = 0;
+
+            if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
+            {
+                RoofRidgeFlashing_TotalLength = 0;
+
+                if (Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() && Model.m_arrGOCladding[0].HasCladdingSheets_WallBack()) iRoofSidesCount = 2;
+                else if (Model.m_arrGOCladding[0].HasCladdingSheets_WallFront() || Model.m_arrGOCladding[0].HasCladdingSheets_WallBack()) iRoofSidesCount = 1;
+                else iRoofSidesCount = 0;
+
+                if (_doorsAndWindowsVM.HasFlashing(EFlashingType.EavePurlinBirdproofStrip))
                     GutterEavePurlinBirdProofStrip_TotalLength = RoofLength_Y;
             }
             else if (KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
@@ -3434,7 +3548,7 @@ namespace PFD
                 if (_doorsAndWindowsVM.HasFlashing(EFlashingType.EavePurlinBirdproofStrip))
                     GutterEavePurlinBirdProofStrip_TotalLength = 2 * RoofLength_Y;
 
-                if(_doorsAndWindowsVM.HasFlashing(EFlashingType.FibreglassRoofRidgeCap))
+                if (_doorsAndWindowsVM.HasFlashing(EFlashingType.FibreglassRoofRidgeCap))
                     FibreglassRoofRidgeCapFlashing_TotalLength = 0; // TODO 841 - zistit ktore FG sheet koncia na hrane strechy a spocitat ich sirku
             }
 
@@ -3479,7 +3593,7 @@ namespace PFD
                         fAverageWallHeight = Height_H2_Overall;
                 }
 
-               WallCornerFlashing_TotalLength = iNumberOfCorners * fAverageWallHeight;
+                WallCornerFlashing_TotalLength = iNumberOfCorners * fAverageWallHeight;
             }
 
             if (_doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
