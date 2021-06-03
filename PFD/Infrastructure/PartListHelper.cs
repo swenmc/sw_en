@@ -785,6 +785,7 @@ namespace PFD
                     // Roller door trim flashing fixing
 
                     double dRollerDoorflashingFixingSpacing = 0.3f; // DB
+                    iNumberOfFixingPoints = 0;
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.RollerDoorTrimmer))
                         iNumberOfFixingPoints = 2 * (int)(vm.RollerDoorTrimmerFlashing_TotalLength / dRollerDoorflashingFixingSpacing); // 2 sides resp. top and bottom

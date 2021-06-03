@@ -3398,6 +3398,18 @@ namespace PFD
             if (_doorsAndWindowsVM == null) return;
             if (_doorsAndWindowsVM.Flashings == null) return;
 
+            RoofRidgeFlashing_TotalLength = 0;
+            WallCornerFlashing_TotalLength = 0;
+            BargeFlashing_TotalLength = 0;
+            BargeBirdProofFlashing_TotalLength = 0;
+            GutterEavePurlinBirdProofStrip_TotalLength = 0;
+            FibreglassRoofRidgeCapFlashing_TotalLength = 0;
+            RollerDoorTrimmerFlashing_TotalLength = 0;
+            RollerDoorLintelFlashing_TotalLength = 0;
+            RollerDoorLintelCapFlashing_TotalLength = 0;
+            PADoorLintelFlashing_TotalLength = 0;
+            WindowFlashing_TotalLength = 0;
+
             int iRoofSidesCount = 0;
 
             if (KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
