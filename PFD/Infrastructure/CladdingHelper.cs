@@ -17,7 +17,7 @@ namespace PFD.Infrastructure
     {
         public static CCladding GetCladding(int claddingIndex, CPFDViewModel vm, BuildingGeometryDataInput sGeometryInputData)
         {
-            CCladding cladding = new CCladding(claddingIndex, (EModelType_FS)vm.KitsetTypeIndex, 
+            CCladding cladding = new CCladding(claddingIndex, (EModelType_FS)vm.KitsetTypeIndex,
                 sGeometryInputData,
                 vm._modelOptionsVM.IndividualCladdingSheets,
                 vm._componentVM.ComponentList,
@@ -57,7 +57,8 @@ namespace PFD.Infrastructure
                 vm._claddingOptionsVM.RoofCladdingOverlap,
                 vm._claddingOptionsVM.WallCladdingOverlap,
                 vm._claddingOptionsVM.RoofFibreglassOverlap,
-                vm._claddingOptionsVM.WallFibreglassOverlap
+                vm._claddingOptionsVM.WallFibreglassOverlap,
+                vm.GetDisplayOptions()
                 );
 
             return cladding;
