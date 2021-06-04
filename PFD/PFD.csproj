@@ -231,6 +231,7 @@
     <Compile Include="ViewModels\BayWidthOptionsViewModel.cs" />
     <Compile Include="ViewModels\CJointsVarMemCrscVM.cs" />
     <Compile Include="ViewModels\CanopiesOptionsViewModel.cs" />
+    <Compile Include="ViewModels\RouteSegmentsViewModel.cs" />
     <Compile Include="ViewModels\FreightDetailsViewModel.cs" />
     <Compile Include="ViewModels\DoorsAndWindowsViewModel.cs" />
     <Compile Include="ViewModels\DesignSummaryViewModel.cs" />

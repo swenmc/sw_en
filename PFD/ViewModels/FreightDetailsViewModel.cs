@@ -35,7 +35,7 @@ namespace PFD
         private float m_FerryUnitPrice;
         private float m_TotalFreightCost;
         
-        //private List<RouteSegments> m_RouteSegments;
+        private List<RouteSegmentsViewModel> m_RouteSegments;
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -206,6 +206,19 @@ namespace PFD
             {
                 m_TotalFreightCost = value;
                 NotifyPropertyChanged("TotalFreightCost");
+            }
+        }
+
+        public List<RouteSegmentsViewModel> RouteSegments
+        {
+            get
+            {
+                return m_RouteSegments;
+            }
+
+            set
+            {
+                m_RouteSegments = value;
             }
         }
 
