@@ -125,6 +125,14 @@ namespace PFD
             
         }
 
+        public RouteSegmentsViewModel(string id, string transportType, string distance, string duration)
+        {
+            ID = id;
+            TransportType = transportType;
+            Distance = distance;
+            Time = duration;
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {

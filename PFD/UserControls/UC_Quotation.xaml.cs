@@ -42,13 +42,9 @@ namespace PFD
 
         float fTotalAreaOfOpennings = 0;
 
-        float fRollerDoorTrimmerFlashing_TotalLength = 0;
+        //aj toto treba dat prec
         float fRollerDoorLintelFlashing_TotalLength = 0;
-        float fRollerDoorLintelCapFlashing_TotalLength = 0;
-        float fPADoorTrimmerFlashing_TotalLength = 0;
-        float fPADoorLintelFlashing_TotalLength = 0;
-        float fWindowFlashing_TotalLength = 0;
-
+        
         private CPFDViewModel _pfdVM;
 
         public UC_Quotation(CPFDViewModel vm)
@@ -300,6 +296,10 @@ namespace PFD
 
             // DG 22
             // Control Joints
+
+
+            Freight.IsEnabled = !vm._quotationDisplayOptionsVM.CalculateFreightAuto;
+            btnFreightDetails.IsEnabled = vm._quotationDisplayOptionsVM.CalculateFreightAuto;
         }
 
         private void QVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -854,8 +854,8 @@ namespace PFD
 
         private void btnFreightDetails_Click(object sender, RoutedEventArgs e)
         {
-            //TODO open window
-
+            FreightDetailsWindow window = new FreightDetailsWindow();
+            window.ShowDialog();
         }
 
 

@@ -1,34 +1,20 @@
-﻿using BaseClasses;
-using Microsoft.Win32;
+﻿using _3DTools;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.Linq;
 
-namespace PFD
+namespace PFD.Infrastructure
 {
-    /// <summary>
-    /// Interaction logic for ProjectInfo.xaml
-    /// </summary>
-    public partial class GeoLocationInfo : Window
+    public class GeoLocationInfo
     {
-        static string m_projectSite;        
+        static string m_projectSite;
         static string m_lat;
         static string m_lng;
 
@@ -38,11 +24,36 @@ namespace PFD
         static HttpClient client;
         static HttpClient clientRouting;
 
+        private FreightDetailsViewModel freightDetails;
+
+        public GeoResponse Data
+        {
+            get
+            {
+                return m_data;
+            }
+
+            set
+            {
+                m_data = value;
+            }
+        }
+
+        public RoutingResponse Routing
+        {
+            get
+            {
+                return m_routing;
+            }
+
+            set
+            {
+                m_routing = value;
+            }
+        }
 
         public GeoLocationInfo(string projectSite)
         {
-            InitializeComponent();
-
             m_projectSite = projectSite;
 
             if (string.IsNullOrEmpty(projectSite)) { MessageBox.Show("Address is empty!"); return; }
@@ -50,9 +61,11 @@ namespace PFD
             try
             {
                 client = new HttpClient();
+
                 RunAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
-                ShowGeoResponseData(m_data.items.FirstOrDefault());
+                m_lat = Data.items.FirstOrDefault().position.lat;
+                m_lng = Data.items.FirstOrDefault().position.lng;
 
                 client.Dispose();
             }
@@ -61,19 +74,40 @@ namespace PFD
             try
             {
                 clientRouting = new HttpClient();
-                RunAsyncRouting().ConfigureAwait(false).GetAwaiter().GetResult();
 
-                ShowRoutingResponseData(m_routing);
+                RunAsyncRouting().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 clientRouting.Dispose();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
-        private void btnOK_Click(object sender, RoutedEventArgs e)
+
+        public void GetFreightDetails(FreightDetailsViewModel vm)
         {
-            this.Close();
+            vm.RouteSegments = new List<RouteSegmentsViewModel>();
+
+            ResponseItem item = Data.items.FirstOrDefault();
+            vm.Destination = item.address.label;
+            vm.Lat = item.position.lat;
+            vm.Lng = item.position.lng;
+
+            if (Routing != null)
+            {                
+                RouteSegmentsViewModel routeSegment = null;
+
+                Route route = Routing.routes.FirstOrDefault();
+                if (route == null) return;
+
+                int i = 1;
+                foreach (RouteSection s in route.sections)
+                {
+                    routeSegment = new RouteSegmentsViewModel(i.ToString(), GetRouteTransport(s), GetRouteLength(s), GetRouteDuration(s));
+                }
+            }
         }
+
+
 
         static async Task RunAsync()
         {
@@ -92,44 +126,7 @@ namespace PFD
                 MessageBox.Show(e.Message);
             }
         }
-        private void ShowGeoResponseData(ResponseItem data)
-        {
-            if (data == null) return;
-
-            TextBox_Title.Text = data.title;
-            TextBox_resultType.Text = data.resultType;
-            TextBox_houseNumberType.Text = data.houseNumberType;
-            TextBox_addressBlockType.Text = data.addressBlockType;
-            TextBox_localityType.Text = data.localityType;
-            TextBox_administrativeAreaType.Text = data.administrativeAreaType;
-
-            TextBox_label.Text = data.address.label;
-            TextBox_countryCode.Text = data.address.countryCode;
-            TextBox_countryName.Text = data.address.countryName;
-            TextBox_stateCode.Text = data.address.stateCode;
-            TextBox_state.Text = data.address.state;
-            TextBox_county.Text = data.address.county;
-            TextBox_city.Text = data.address.city;
-            TextBox_district.Text = data.address.district;
-            TextBox_subdistrict.Text = data.address.subdistrict;
-            TextBox_street.Text = data.address.street;
-            TextBox_block.Text = data.address.block;
-            TextBox_subblock.Text = data.address.subblock;
-            TextBox_postalCode.Text = data.address.postalCode;
-            TextBox_houseNumber.Text = data.address.houseNumber;
-            TextBox_lat.Text = data.position.lat;
-            TextBox_lng.Text = data.position.lng;
-
-            m_lat = data.position.lat;
-            m_lng = data.position.lng;
-
-            //webBrowser.Source = new Uri($"https://www.google.sk/maps/place/{data.address.label}");
-            //dynamic activeX = this.webBrowser.GetType().InvokeMember("ActiveXInstance",
-            //        BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
-            //        null, this.webBrowser, new object[] { });
-            //activeX.Silent = true;
-        }
-
+        
         static async Task<GeoResponse> GetGeoResponseAsync(string path)
         {
             GeoResponse res = null;
@@ -175,23 +172,6 @@ namespace PFD
             return res;
         }
 
-        private void ShowRoutingResponseData(RoutingResponse data)
-        {
-            if (data == null) { TextBox_routesFound.Text = $"Number of routes found: {0}"; return; }
-            if (data.routes == null) { TextBox_routesFound.Text = $"Number of routes found: {0}"; return; }
-
-            TextBox_routesFound.Text = $"Number of routes found: {data.routes.Length}";
-
-            Route route = data.routes.FirstOrDefault();
-            if (route == null) return;
-
-            TextBox_routesFound.Text += $", Number of sections: {route.sections.Length}";
-
-            TextBox_Duration.Text = GetRouteDuration(route);
-            TextBox_Length.Text = GetRouteLength(route);
-            TextBox_Transport.Text = GetRouteTransport(route);
-        }
-
         private string GetRouteDuration(Route route)
         {
             int duration = 0;
@@ -216,31 +196,32 @@ namespace PFD
         }
         private string GetRouteTransport(Route route)
         {
-            List<string> transports =  new List<string>();
+            List<string> transports = new List<string>();
             foreach (RouteSection s in route.sections)
             {
-                transports.Add(s.transport.mode);                
+                transports.Add(s.transport.mode);
             }
 
-            return string.Join(" - ", transports);            
+            return string.Join(" - ", transports);
         }
 
-        private void BtnShowOnMap_Click(object sender, RoutedEventArgs e)
+        private string GetRouteDuration(RouteSection section)
         {
-            try
-            {
-                System.Diagnostics.Process.Start($"https://www.google.sk/maps/place/{m_data.items.FirstOrDefault().address.label}");
-            }
-            catch (Exception) { /* Do Nothing */ }
+            int duration = int.Parse(section.summary.duration);
+            
+            int hours = duration / 3600;
+            int min = (duration % 3600) / 60;
+            return $"{hours} h {min} min.";
         }
-
-        private void BtnShowRoute_Click(object sender, RoutedEventArgs e)
+        private string GetRouteLength(RouteSection section)
         {
-            try
-            {
-                System.Diagnostics.Process.Start($"https://www.google.com/maps/dir/4-6+Waokauri+Place,+Māngere,+Auckland+2022,+Nový+Zéland/{m_data.items.FirstOrDefault().address.label}");
-            }
-            catch (Exception) { /* Do Nothing */ }
+            int length = int.Parse(section.summary.length);
+            
+            return $"{(int)Math.Round(length / 1000.0)} km";
+        }
+        private string GetRouteTransport(RouteSection section)
+        {
+            return section.transport.mode;            
         }
     }
 
@@ -315,6 +296,6 @@ namespace PFD
     public class Transport
     {
         public string name { get; set; }
-        public string mode { get; set; }        
+        public string mode { get; set; }
     }
 }

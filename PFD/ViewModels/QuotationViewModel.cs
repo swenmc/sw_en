@@ -38,7 +38,9 @@ namespace PFD
         double m_BuildingPrice_PPKG;
 
         double m_Freight;
-        
+        bool m_FreightIsValid;
+
+
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -271,6 +273,19 @@ namespace PFD
                     throw new ArgumentException("Freight must be between 0.0 and 1000000 NZD");
                 m_Freight = value;
                 NotifyPropertyChanged("Freight");
+            }
+        }
+
+        public bool FreightIsValid
+        {
+            get
+            {
+                return m_FreightIsValid;
+            }
+
+            set
+            {
+                m_FreightIsValid = value;
             }
         }
 
