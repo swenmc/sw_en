@@ -1432,6 +1432,7 @@ namespace PFD
         public CrossBracingOptionsViewModel _crossBracingOptionsVM;
         public CanopiesOptionsViewModel _canopiesOptionsVM;
         public BayWidthOptionsViewModel _baysWidthOptionsVM;
+        public FreightDetailsViewModel _freightDetailsVM;
 
         [NonSerialized]
         public QuotationViewModel _quotationViewModel;

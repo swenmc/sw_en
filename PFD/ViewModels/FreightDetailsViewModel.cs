@@ -28,7 +28,7 @@ namespace PFD
         private int m_MaxTruckLoad;
         private int m_MaxItemLengthBasic;
         private int m_MaxItemLengthOversize;
-        private int m_TotalTransportedMass;
+        private double m_TotalTransportedMass;
         private int m_NumberOfTrucks;
         private float m_RoadUnitPrice1;
         private float m_RoadUnitPrice2;
@@ -94,6 +94,7 @@ namespace PFD
             {
                 m_MaxTruckLoad = value;
                 if (m_MaxTruckLoad < 500 || m_MaxTruckLoad > 40000) throw new Exception($"Value out of range <500; 40000>");
+                CalculateNumeberOfTrucks();
                 NotifyPropertyChanged("MaxTruckLoad");
             }
         }
@@ -108,7 +109,7 @@ namespace PFD
             set
             {
                 m_MaxItemLengthBasic = value;
-                if (m_MaxTruckLoad < 1 || m_MaxTruckLoad > 40) throw new Exception($"Value out of range <1; 40>");
+                if (m_MaxItemLengthBasic < 1 || m_MaxItemLengthBasic > 40) throw new Exception($"Value out of range <1; 40>");
                 NotifyPropertyChanged("MaxItemLengthBasic");
             }
         }
@@ -123,12 +124,12 @@ namespace PFD
             set
             {
                 m_MaxItemLengthOversize = value;
-                if (m_MaxTruckLoad < 1 || m_MaxTruckLoad > 40) throw new Exception($"Value out of range <1; 40>");
+                if (m_MaxItemLengthOversize < 1 || m_MaxItemLengthOversize > 40) throw new Exception($"Value out of range <1; 40>");
                 NotifyPropertyChanged("MaxItemLengthOversize");
             }
         }
 
-        public int TotalTransportedMass
+        public double TotalTransportedMass
         {
             get
             {
@@ -229,13 +230,19 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public FreightDetailsViewModel()
+        public FreightDetailsViewModel(double buildingMass)
         {
+            TotalTransportedMass = buildingMass;
             //defaults
             MaxTruckLoad = 1800;
             MaxItemLengthBasic = 18;
             MaxItemLengthOversize = 30;
-            
+
+            RoadUnitPrice1 = 6;
+            RoadUnitPrice2 = 8;
+            FerryUnitPrice = 10;
+
+            CountFreightCosts();
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -253,16 +260,40 @@ namespace PFD
 
             Destination = vm.Destination;
             Lat = vm.Lat;
-            Lng = vm.Lng;
-            MaxTruckLoad = vm.MaxTruckLoad;
+            Lng = vm.Lng;            
             MaxItemLengthBasic = vm.MaxItemLengthBasic;
             MaxItemLengthOversize = vm.MaxItemLengthOversize;
             TotalTransportedMass = vm.TotalTransportedMass;
+            MaxTruckLoad = vm.MaxTruckLoad;
             NumberOfTrucks = vm.NumberOfTrucks;
             RoadUnitPrice1 = vm.RoadUnitPrice1;
             RoadUnitPrice2 = vm.RoadUnitPrice2;
             FerryUnitPrice = vm.FerryUnitPrice;
             TotalFreightCost = vm.TotalFreightCost;
-        }        
+        }
+
+        public void CalculateNumeberOfTrucks()
+        {
+            NumberOfTrucks = (int)Math.Ceiling(TotalTransportedMass / MaxTruckLoad);
+        }
+
+        public int PricePerTruck()
+        {
+            int price = 0;
+            if (RouteSegments == null) return price;
+            if (RouteSegments.Count == 0) return price;
+
+            foreach (RouteSegmentsViewModel rs in RouteSegments)
+                price += int.Parse(rs.Price);
+
+            return price;
+        }
+
+        public void CountFreightCosts()
+        {
+            TotalFreightCost = PricePerTruck() * NumberOfTrucks;
+        }
+
+        
     }
 }

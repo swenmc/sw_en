@@ -60,11 +60,12 @@ namespace PFD
 
             _pfdVM = pfdVM;
 
-            FreightDetailsViewModel vm = new FreightDetailsViewModel();
+            //if (pfdVM._freightDetailsVM == null) pfdVM._freightDetailsVM = new FreightDetailsViewModel(_pfdVM._quotationViewModel.BuildingMass);
+            pfdVM._freightDetailsVM = new FreightDetailsViewModel(_pfdVM._quotationViewModel.BuildingMass);
 
-            vm.PropertyChanged += HandleFreightDetails_PropertyChanged;
+            pfdVM._freightDetailsVM.PropertyChanged += HandleFreightDetails_PropertyChanged;
 
-            this.DataContext = vm;
+            this.DataContext = pfdVM._freightDetailsVM;
 
             //m_projectSite = projectSite;
 
@@ -98,6 +99,12 @@ namespace PFD
             if (sender == null) return;
             if (sender is FreightDetailsViewModel)
             {
+                FreightDetailsViewModel vm = sender as FreightDetailsViewModel;
+                if (e.PropertyName == "RoadUnitPrice1")
+                {
+                    Text_RoadUnitPriceBasic.Text = $"Road unit price (≤{vm.RoadUnitPrice1} m):";
+                    Text_RoadUnitPriceOversize.Text = $"Road unit price (>{vm.RoadUnitPrice1} m):";
+                }
                 FreightDetailsChanged = true;
             }
         }
