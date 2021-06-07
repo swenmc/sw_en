@@ -71,15 +71,15 @@
 
 
             <TextBlock Grid.Row="4" Grid.Column="0" Text="To:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+            <TextBlock Grid.Row="4" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Destination}"/>
 
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Latitude Y:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+            <TextBlock Grid.Row="5" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Lat}"/>
 
             <TextBlock Grid.Row="6" Grid.Column="0" Text="Longitude X:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+            <TextBlock Grid.Row="6" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Lng}"/>
 
             <TextBlock Grid.Row="8" Grid.Column="0" Text="Route Segments:" HorizontalAlignment="Left" VerticalAlignment="Top" />

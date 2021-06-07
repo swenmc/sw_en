@@ -110,12 +110,7 @@ namespace PFD.Infrastructure
         public List<RouteSegmentsViewModel> GetRouteSegments()
         {
             List<RouteSegmentsViewModel>  routeSegments = new List<RouteSegmentsViewModel>();
-
-            //ResponseItem item = Data.items.FirstOrDefault();
-            //vm.Destination = item.address.label;
-            //vm.Lat = item.position.lat;
-            //vm.Lng = item.position.lng;
-
+            
             if (Routing != null)
             {
                 RouteSegmentsViewModel routeSegment = null;
@@ -128,6 +123,7 @@ namespace PFD.Infrastructure
                 {
                     routeSegment = new RouteSegmentsViewModel(i.ToString(), GetRouteTransport(s), GetRouteLength(s), GetRouteDuration(s));
                     routeSegments.Add(routeSegment);
+                    i++;
                 }
             }
             return routeSegments;
@@ -231,13 +227,9 @@ namespace PFD.Infrastructure
             return string.Join(" - ", transports);
         }
 
-        private string GetRouteDuration(RouteSection section)
+        private int GetRouteDuration(RouteSection section)
         {
-            int duration = int.Parse(section.summary.duration);
-            
-            int hours = duration / 3600;
-            int min = (duration % 3600) / 60;
-            return $"{hours} h {min} min.";
+            return int.Parse(section.summary.duration);
         }
 
         //To Mato - moze to tak byt,ze zaokruhlime na cele km? ci radsej dame Ceiling? alebo budeme pouzivat desatinne aj pre km?

@@ -25,7 +25,7 @@ namespace PFD
         private string m_ID;
         private string m_TransportType;
         private int m_Distance;
-        private string m_Time;
+        private int m_Time;
         private float m_UnitPrice;
         private float m_Price;
         
@@ -74,7 +74,7 @@ namespace PFD
             }
         }
 
-        public string Time
+        public int Time
         {
             get
             {
@@ -126,7 +126,7 @@ namespace PFD
             
         }
 
-        public RouteSegmentsViewModel(string id, string transportType, int distance, string duration)
+        public RouteSegmentsViewModel(string id, string transportType, int distance, int duration)
         {
             ID = id;
             TransportType = transportType;
