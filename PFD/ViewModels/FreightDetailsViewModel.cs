@@ -22,10 +22,12 @@ namespace PFD
         [field: NonSerializedAttribute()]
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private string m_ProjectSite;
         private string m_Destination;
         private string m_Lat;
         private string m_Lng;
         private int m_MaxTruckLoad;
+        private float m_MaxItemLength;
         private int m_MaxItemLengthBasic;
         private int m_MaxItemLengthOversize;
         private double m_TotalTransportedMass;
@@ -94,7 +96,7 @@ namespace PFD
             {
                 m_MaxTruckLoad = value;
                 if (m_MaxTruckLoad < 500 || m_MaxTruckLoad > 40000) throw new Exception($"Value out of range <500; 40000>");
-                CalculateNumeberOfTrucks();
+                CalculateNumberOfTrucks();
                 NotifyPropertyChanged("MaxTruckLoad");
             }
         }
@@ -138,7 +140,7 @@ namespace PFD
 
             set
             {
-                m_TotalTransportedMass = value;
+                m_TotalTransportedMass = value;                
                 NotifyPropertyChanged("TotalTransportedMass");
             }
         }
@@ -223,6 +225,33 @@ namespace PFD
             set
             {
                 m_RouteSegments = value;
+                SetRouteSegmentsPrices();
+            }
+        }
+
+        public string ProjectSite
+        {
+            get
+            {
+                return m_ProjectSite;
+            }
+
+            set
+            {
+                m_ProjectSite = value;
+            }
+        }
+
+        public float MaxItemLength
+        {
+            get
+            {
+                return m_MaxItemLength;
+            }
+
+            set
+            {
+                m_MaxItemLength = value;
             }
         }
 
@@ -230,8 +259,12 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public FreightDetailsViewModel(double buildingMass)
+        public FreightDetailsViewModel(string projectSite, double buildingMass, List<RouteSegmentsViewModel> routeSegments, string destination, string lat, string lng, float maxItemLength)
         {
+            ProjectSite = projectSite;
+
+            MaxItemLength = maxItemLength;
+
             TotalTransportedMass = buildingMass;
             //defaults
             MaxTruckLoad = 1800;
@@ -241,6 +274,11 @@ namespace PFD
             RoadUnitPrice1 = 6;
             RoadUnitPrice2 = 8;
             FerryUnitPrice = 10;
+
+            Destination = destination;
+            Lat = lat;
+            Lng = lng;
+            RouteSegments = routeSegments; //vypocitaju sa prices
 
             CountFreightCosts();
         }
@@ -252,6 +290,17 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private void SetRouteSegmentsPrices()
+        {
+            if (RouteSegments == null) return;
+
+            foreach (RouteSegmentsViewModel rs in RouteSegments)
+            {
+                if (rs.TransportType == "truck") rs.UnitPrice = (MaxItemLength > MaxItemLengthBasic ? m_RoadUnitPrice2 : m_RoadUnitPrice1);
+                else if (rs.TransportType == "ferry") rs.UnitPrice = FerryUnitPrice;
+                else throw new Exception("TransportType not recognized: {rs.TransportType}");
+            }
+        }
         
 
         public void SetViewModel(FreightDetailsViewModel vm)
@@ -272,20 +321,21 @@ namespace PFD
             TotalFreightCost = vm.TotalFreightCost;
         }
 
-        public void CalculateNumeberOfTrucks()
+        public void CalculateNumberOfTrucks()
         {
             NumberOfTrucks = (int)Math.Ceiling(TotalTransportedMass / MaxTruckLoad);
         }
 
-        public int PricePerTruck()
+        public float PricePerTruck()
         {
-            int price = 0;
+            float price = 0;
             if (RouteSegments == null) return price;
             if (RouteSegments.Count == 0) return price;
 
             foreach (RouteSegmentsViewModel rs in RouteSegments)
-                price += int.Parse(rs.Price);
-
+            {
+                price += rs.Price;
+            }
             return price;
         }
 
@@ -294,6 +344,10 @@ namespace PFD
             TotalFreightCost = PricePerTruck() * NumberOfTrucks;
         }
 
-        
+        public void Update()
+        {
+            CalculateNumberOfTrucks();
+            CountFreightCosts();
+        }
     }
 }

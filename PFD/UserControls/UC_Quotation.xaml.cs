@@ -300,15 +300,7 @@ namespace PFD
 
             if (!vm.IsFreightActual)
             {
-                string site = vm._projectInfoVM.Site;
-                if (string.IsNullOrEmpty(site)) MessageBox.Show("Address is required for freight calculations. Set project site please.");
-                else
-                {
-                    GeoLocation info = new GeoLocation(site);
-                    info.GetRouteSegments();
-                }
-
-                //vm._freightDetailsVM.Update();
+                UpdateFreightDetails();
             }
 
             Freight.IsEnabled = !vm._quotationDisplayOptionsVM.CalculateFreightAuto;
@@ -317,8 +309,50 @@ namespace PFD
 
         private void UpdateFreightDetails()
         {
-            //_pfdVM
+            string site = _pfdVM._projectInfoVM.Site;
+            if (string.IsNullOrEmpty(site)) { MessageBox.Show("Address is required for freight calculations. Set project site please."); return; }
 
+            if (_pfdVM._freightDetailsVM != null)
+            {
+                if (site != _pfdVM._freightDetailsVM.ProjectSite) //Site was changed
+                {
+                    GeoLocation info = new GeoLocation(site);
+                    _pfdVM._freightDetailsVM.RouteSegments = info.GetRouteSegments();
+
+                    Infrastructure.ResponseItem item = info.Data.items.FirstOrDefault();
+                    _pfdVM._freightDetailsVM.Destination = item.address.label;
+                    _pfdVM._freightDetailsVM.Lat = item.position.lat;
+                    _pfdVM._freightDetailsVM.Lng = item.position.lng;
+                }
+
+                _pfdVM._freightDetailsVM.MaxItemLength = GetMaxItemLength();
+                _pfdVM._freightDetailsVM.TotalTransportedMass = _pfdVM._quotationViewModel.BuildingMass;
+                _pfdVM._freightDetailsVM.Update();
+            }
+            else
+            {
+                GeoLocation info = new GeoLocation(site);
+                List<RouteSegmentsViewModel> routeSegments = info.GetRouteSegments();
+                Infrastructure.ResponseItem item = info.Data.items.FirstOrDefault();
+                string destination = item.address.label;
+                string lat = item.position.lat;
+                string lng = item.position.lng;
+
+                _pfdVM._freightDetailsVM = new FreightDetailsViewModel(site, _pfdVM._quotationViewModel.BuildingMass, routeSegments, destination, lat, lng, GetMaxItemLength());
+            }
+
+            if (_pfdVM._quotationDisplayOptionsVM.CalculateFreightAuto) _pfdVM._quotationViewModel.Freight = _pfdVM._freightDetailsVM.TotalFreightCost;
+
+
+        }
+
+        private float GetMaxItemLength()
+        {
+            //TODO:
+            //treba este implementovat
+
+            float maxLen = MathF.Max(_pfdVM._claddingOptionsVM.MaxSheetLengthRoof, _pfdVM._claddingOptionsVM.MaxSheetLengthWall, _pfdVM._claddingOptionsVM.MaxSheetLengthRoofFibreglass, _pfdVM._claddingOptionsVM.MaxSheetLengthWallFibreglass);
+            return maxLen;
         }
 
         private void QVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

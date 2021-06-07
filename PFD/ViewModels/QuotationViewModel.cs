@@ -38,8 +38,6 @@ namespace PFD
         double m_BuildingPrice_PPKG;
 
         double m_Freight;
-        bool m_FreightIsValid;
-
 
         public bool IsSetFromCode = false;
 
@@ -276,18 +274,6 @@ namespace PFD
             }
         }
 
-        public bool FreightIsValid
-        {
-            get
-            {
-                return m_FreightIsValid;
-            }
-
-            set
-            {
-                m_FreightIsValid = value;
-            }
-        }
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------

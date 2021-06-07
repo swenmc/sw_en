@@ -24,10 +24,10 @@ namespace PFD
 
         private string m_ID;
         private string m_TransportType;
-        private string m_Distance;
+        private int m_Distance;
         private string m_Time;
-        private string m_UnitPrice;
-        private string m_Price;
+        private float m_UnitPrice;
+        private float m_Price;
         
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ namespace PFD
             }
         }
 
-        public string Distance
+        public int Distance
         {
             get
             {
@@ -69,7 +69,7 @@ namespace PFD
 
             set
             {
-                m_Distance = value;
+                m_Distance = value;                
                 NotifyPropertyChanged("Distance");
             }
         }
@@ -88,7 +88,7 @@ namespace PFD
             }
         }
 
-        public string UnitPrice
+        public float UnitPrice
         {
             get
             {
@@ -98,11 +98,12 @@ namespace PFD
             set
             {
                 m_UnitPrice = value;
+                UpdatePrice();
                 NotifyPropertyChanged("UnitPrice");
             }
         }
 
-        public string Price
+        public float Price
         {
             get
             {
@@ -125,7 +126,7 @@ namespace PFD
             
         }
 
-        public RouteSegmentsViewModel(string id, string transportType, string distance, string duration)
+        public RouteSegmentsViewModel(string id, string transportType, int distance, string duration)
         {
             ID = id;
             TransportType = transportType;
@@ -152,6 +153,11 @@ namespace PFD
             Time = vm.Time;
             UnitPrice = vm.UnitPrice;
             Price = vm.Price;
-        }        
+        }
+
+        private void UpdatePrice()
+        {
+            Price = UnitPrice * Distance;
+        }
     }
 }

@@ -239,11 +239,13 @@ namespace PFD.Infrastructure
             int min = (duration % 3600) / 60;
             return $"{hours} h {min} min.";
         }
-        private string GetRouteLength(RouteSection section)
+
+        //To Mato - moze to tak byt,ze zaokruhlime na cele km? ci radsej dame Ceiling? alebo budeme pouzivat desatinne aj pre km?
+        private int GetRouteLength(RouteSection section)
         {
             int length = int.Parse(section.summary.length);
             
-            return $"{(int)Math.Round(length / 1000.0)} km";
+            return (int)Math.Round(length / 1000.0);
         }
         private string GetRouteTransport(RouteSection section)
         {
