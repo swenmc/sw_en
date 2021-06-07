@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PFD.Infrastructure
 {
-    public class GeoLocationInfo
+    public class GeoLocation
     {
         static string m_projectSite;
         static string m_lat;
@@ -52,7 +52,7 @@ namespace PFD.Infrastructure
             }
         }
 
-        public GeoLocationInfo(string projectSite)
+        public GeoLocation(string projectSite)
         {
             m_projectSite = projectSite;
 
@@ -83,28 +83,54 @@ namespace PFD.Infrastructure
         }
 
 
-        public void GetFreightDetails(FreightDetailsViewModel vm)
-        {
-            vm.RouteSegments = new List<RouteSegmentsViewModel>();
+        //public void GetFreightDetails(FreightDetailsViewModel vm)
+        //{
+        //    vm.RouteSegments = new List<RouteSegmentsViewModel>();
 
-            ResponseItem item = Data.items.FirstOrDefault();
-            vm.Destination = item.address.label;
-            vm.Lat = item.position.lat;
-            vm.Lng = item.position.lng;
+        //    ResponseItem item = Data.items.FirstOrDefault();
+        //    vm.Destination = item.address.label;
+        //    vm.Lat = item.position.lat;
+        //    vm.Lng = item.position.lng;
+
+        //    if (Routing != null)
+        //    {                
+        //        RouteSegmentsViewModel routeSegment = null;
+
+        //        Route route = Routing.routes.FirstOrDefault();
+        //        if (route == null) return;
+
+        //        int i = 1;
+        //        foreach (RouteSection s in route.sections)
+        //        {
+        //            routeSegment = new RouteSegmentsViewModel(i.ToString(), GetRouteTransport(s), GetRouteLength(s), GetRouteDuration(s));
+        //        }
+        //    }
+        //}
+
+        public List<RouteSegmentsViewModel> GetRouteSegments()
+        {
+            List<RouteSegmentsViewModel>  routeSegments = new List<RouteSegmentsViewModel>();
+
+            //ResponseItem item = Data.items.FirstOrDefault();
+            //vm.Destination = item.address.label;
+            //vm.Lat = item.position.lat;
+            //vm.Lng = item.position.lng;
 
             if (Routing != null)
-            {                
+            {
                 RouteSegmentsViewModel routeSegment = null;
 
                 Route route = Routing.routes.FirstOrDefault();
-                if (route == null) return;
+                if (route == null) return routeSegments;
 
                 int i = 1;
                 foreach (RouteSection s in route.sections)
                 {
                     routeSegment = new RouteSegmentsViewModel(i.ToString(), GetRouteTransport(s), GetRouteLength(s), GetRouteDuration(s));
+                    routeSegments.Add(routeSegment);
                 }
             }
+            return routeSegments;
         }
 
 

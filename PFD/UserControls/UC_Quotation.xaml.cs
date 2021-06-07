@@ -19,6 +19,7 @@ using BaseClasses;
 using System.Data;
 using CRSC;
 using BaseClasses.Helpers;
+using PFD.Infrastructure;
 
 namespace PFD
 {
@@ -297,9 +298,27 @@ namespace PFD
             // DG 22
             // Control Joints
 
+            if (!vm.IsFreightActual)
+            {
+                string site = vm._projectInfoVM.Site;
+                if (string.IsNullOrEmpty(site)) MessageBox.Show("Address is required for freight calculations. Set project site please.");
+                else
+                {
+                    GeoLocation info = new GeoLocation(site);
+                    info.GetRouteSegments();
+                }
+
+                //vm._freightDetailsVM.Update();
+            }
 
             Freight.IsEnabled = !vm._quotationDisplayOptionsVM.CalculateFreightAuto;
             btnFreightDetails.IsEnabled = vm._quotationDisplayOptionsVM.CalculateFreightAuto;
+        }
+
+        private void UpdateFreightDetails()
+        {
+            //_pfdVM
+
         }
 
         private void QVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

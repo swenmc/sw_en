@@ -49,7 +49,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         private bool MIsRelease;
-
+        
         private int MKitsetTypeIndex;
         private int MModelIndex;
         private float MWidth;
@@ -73,6 +73,7 @@ namespace PFD
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
 
+        private bool m_IsFreightActual;
         private float m_TotalRoofArea;
         private float m_TotalRoofAreaInclCanopies;
         private float m_TotalWallArea;
@@ -2276,6 +2277,19 @@ namespace PFD
             }
         }
 
+        public bool IsFreightActual
+        {
+            get
+            {
+                return m_IsFreightActual;
+            }
+
+            set
+            {
+                m_IsFreightActual = value;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -2348,7 +2362,9 @@ namespace PFD
 
             _quotationDisplayOptionsVM = new QuotationDisplayOptionsViewModel(true);
 
+            IsFreightActual = false;
             IsSetFromCode = false;
+
 
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
