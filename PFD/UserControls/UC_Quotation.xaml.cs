@@ -854,7 +854,7 @@ namespace PFD
 
         private void btnFreightDetails_Click(object sender, RoutedEventArgs e)
         {
-            FreightDetailsWindow window = new FreightDetailsWindow();
+            FreightDetailsWindow window = new FreightDetailsWindow(_pfdVM);
             window.ShowDialog();
         }
 

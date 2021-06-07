@@ -93,6 +93,7 @@ namespace PFD
             set
             {
                 m_MaxTruckLoad = value;
+                if (m_MaxTruckLoad < 500 || m_MaxTruckLoad > 40000) throw new Exception($"Value out of range <500; 40000>");
                 NotifyPropertyChanged("MaxTruckLoad");
             }
         }
@@ -107,6 +108,7 @@ namespace PFD
             set
             {
                 m_MaxItemLengthBasic = value;
+                if (m_MaxTruckLoad < 1 || m_MaxTruckLoad > 40) throw new Exception($"Value out of range <1; 40>");
                 NotifyPropertyChanged("MaxItemLengthBasic");
             }
         }
@@ -121,6 +123,7 @@ namespace PFD
             set
             {
                 m_MaxItemLengthOversize = value;
+                if (m_MaxTruckLoad < 1 || m_MaxTruckLoad > 40) throw new Exception($"Value out of range <1; 40>");
                 NotifyPropertyChanged("MaxItemLengthOversize");
             }
         }
@@ -228,6 +231,10 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public FreightDetailsViewModel()
         {
+            //defaults
+            MaxTruckLoad = 1800;
+            MaxItemLengthBasic = 18;
+            MaxItemLengthOversize = 30;
             
         }
 

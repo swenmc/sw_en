@@ -36,9 +36,35 @@ namespace PFD
         static RoutingResponse m_routing;
         static HttpClient client;
         static HttpClient clientRouting;
-        public FreightDetailsWindow()
+
+        private CPFDViewModel _pfdVM;
+
+        private bool m_FreightDetailsChanged;
+
+        public bool FreightDetailsChanged
+        {
+            get
+            {
+                return m_FreightDetailsChanged;
+            }
+
+            set
+            {
+                m_FreightDetailsChanged = value;
+            }
+        }
+
+        public FreightDetailsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
+
+            _pfdVM = pfdVM;
+
+            FreightDetailsViewModel vm = new FreightDetailsViewModel();
+
+            vm.PropertyChanged += HandleFreightDetails_PropertyChanged;
+
+            this.DataContext = vm;
 
             //m_projectSite = projectSite;
 
@@ -65,6 +91,15 @@ namespace PFD
             //    clientRouting.Dispose();
             //}
             //catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private void HandleFreightDetails_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            if (sender is FreightDetailsViewModel)
+            {
+                FreightDetailsChanged = true;
+            }
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
