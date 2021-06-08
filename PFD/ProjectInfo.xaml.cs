@@ -26,9 +26,40 @@ namespace PFD
     /// </summary>
     public partial class ProjectInfo : Window
     {
+        private bool m_ProjectInfoChanged;
+        private bool m_ProjectSiteChanged;
+
+        public bool ProjectInfoChanged
+        {
+            get
+            {
+                return m_ProjectInfoChanged;
+            }
+
+            set
+            {
+                m_ProjectInfoChanged = value;
+            }
+        }
+
+        public bool ProjectSiteChanged
+        {
+            get
+            {
+                return m_ProjectSiteChanged;
+            }
+
+            set
+            {
+                m_ProjectSiteChanged = value;
+            }
+        }
+
         public ProjectInfo(CProjectInfoVM vm)
         {
             InitializeComponent();
+            ProjectInfoChanged = false;
+            ProjectSiteChanged = false;
 
             vm.PropertyChanged += HandleProjectInfoPropertyChangedEvent;
             this.DataContext = vm;
@@ -38,8 +69,11 @@ namespace PFD
         {
             if (sender == null) return;
             //CProjectInfoVM vm = sender as CProjectInfoVM;
-
-
+            if (e.PropertyName == "Site")
+            {
+                ProjectSiteChanged = true;
+            }
+            ProjectInfoChanged = true;
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -79,6 +113,8 @@ namespace PFD
             if (ofd.ShowDialog() == true)
             {
                 OpenFile(ofd.FileName);
+                ProjectInfoChanged = true;
+                ProjectSiteChanged = true;
             }
         }
 

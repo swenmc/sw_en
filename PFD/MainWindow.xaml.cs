@@ -1712,6 +1712,9 @@ namespace PFD
         {
             ProjectInfo pi = new ProjectInfo(projectInfoVM);
             pi.ShowDialog();
+
+
+            if (pi.ProjectInfoChanged) { vm.IsFreightActual = false; }
         }
 
         //int actualPreview = 0;
@@ -2168,6 +2171,7 @@ namespace PFD
             vm.SupportTypeIndex = newVM.SupportTypeIndex;            
 
             vm._doorsAndWindowsVM.SetViewModel(newVM._doorsAndWindowsVM);
+            vm._freightDetailsVM.SetViewModel(newVM._freightDetailsVM);
 
             vm._displayOptionsVM.SetViewModel(newVM._displayOptionsVM);
             vm._modelOptionsVM.SetViewModel(newVM._modelOptionsVM);
@@ -2186,6 +2190,7 @@ namespace PFD
             vm.RecreateFoundations = true;
             vm.RecreateFloorSlab = true;
             vm.RecreateQuotation = true;
+            vm.IsFreightActual = false;
 
             vm.IsSetFromCode = false;
             //just to fire some change
@@ -2318,6 +2323,13 @@ namespace PFD
                         if (vm._layoutsExportOptionsVM == null) vm._layoutsExportOptionsVM = new LayoutsExportOptionsViewModel();
                         if (leoVM != null) vm._layoutsExportOptionsVM.SetViewModel(leoVM);
                     }
+
+                    if (optionsList.Count > 9)
+                    {
+                        FreightDetailsViewModel fdVM = optionsList[9] as FreightDetailsViewModel;
+                        if (vm._freightDetailsVM == null) vm._freightDetailsVM = new FreightDetailsViewModel();
+                        if (fdVM != null) vm._freightDetailsVM.SetViewModel(fdVM);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2370,6 +2382,8 @@ namespace PFD
             optionsToSave.Add(vm._quotationExportOptionsVM);
             optionsToSave.Add(vm._documentationExportOptionsVM);
             optionsToSave.Add(vm._layoutsExportOptionsVM);
+
+            optionsToSave.Add(vm._freightDetailsVM); //tu si nie som isty, ci to chceme ukladat ako default options
 
             return optionsToSave;
         }

@@ -120,6 +120,7 @@ namespace PFD
         private bool m_CanopiesOptionsChanged;
         private bool m_CladdingOptionsChanged;
         private bool m_DoorsAndWindowsChanged;
+        private bool m_ProjectInfoChanged;
 
         private bool m_OptionsLoaded;
 
@@ -2290,6 +2291,21 @@ namespace PFD
             }
         }
 
+        public bool ProjectInfoChanged
+        {
+            get
+            {
+                return m_ProjectInfoChanged;
+            }
+
+            set
+            {
+                m_ProjectInfoChanged = value;
+                IsFreightActual = false;
+                NotifyPropertyChanged("ProjectInfoChanged");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -2773,6 +2789,7 @@ namespace PFD
         private void SetResultsAreNotValid()
         {
             ModelCalculatedResultsValid = false;
+            IsFreightActual = false; //ak nie su vysledky validne, tak davam,ze ani Freight nie je aktualne
         }
 
         //-------------------------------------------------------------------------------------------------------------

@@ -2519,7 +2519,19 @@ namespace BaseClasses.GraphObj
             return length;
         }
 
-
+        public double GetMaxItemLength()
+        {
+            double maxLen = 0;
+            foreach (CCladdingOrFibreGlassSheet sheet in GetCladdingSheets())
+            {
+                if (maxLen < sheet.LengthTotal_Real) maxLen = sheet.LengthTotal_Real;
+            }
+            foreach (CCladdingOrFibreGlassSheet sheet in GetFibreglassSheets())
+            {
+                if (maxLen < sheet.LengthTotal_Real) maxLen = sheet.LengthTotal_Real;
+            }
+            return maxLen;
+        }
 
         
     }

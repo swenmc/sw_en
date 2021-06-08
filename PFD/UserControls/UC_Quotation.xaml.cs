@@ -20,6 +20,7 @@ using System.Data;
 using CRSC;
 using BaseClasses.Helpers;
 using PFD.Infrastructure;
+using BaseClasses.GraphObj;
 
 namespace PFD
 {
@@ -346,12 +347,30 @@ namespace PFD
 
         }
 
+        //To Mato - tu by si mohol skontrolovat, ci je vypocet MaxLen spravny
+        //Najpr sa berie iba z cladding view modelu max sheet length
+        //potom sa beru vsetky sheets a ich MaxLengthReal
+        //nakoniec sa beru do uvahy vsetky generovane members a ich FLength_real
         private float GetMaxItemLength()
         {
-            //TODO:
-            //treba este implementovat
-
             float maxLen = MathF.Max(_pfdVM._claddingOptionsVM.MaxSheetLengthRoof, _pfdVM._claddingOptionsVM.MaxSheetLengthWall, _pfdVM._claddingOptionsVM.MaxSheetLengthRoofFibreglass, _pfdVM._claddingOptionsVM.MaxSheetLengthWallFibreglass);
+
+            if (_pfdVM.Model == null) return maxLen;
+
+            CCladding cladding = _pfdVM.Model.m_arrGOCladding.FirstOrDefault();
+            if (cladding != null)
+            {
+                double maxCladdingLen = cladding.GetMaxItemLength();
+                if (maxLen < maxCladdingLen) maxLen = (float)maxCladdingLen;
+            }
+
+            foreach (CMember m in _pfdVM.Model.m_arrMembers)
+            {
+                if (m.BIsGenerated == false) continue;
+
+                if (maxLen < m.FLength_real) maxLen = m.FLength_real;
+            }
+            
             return maxLen;
         }
 

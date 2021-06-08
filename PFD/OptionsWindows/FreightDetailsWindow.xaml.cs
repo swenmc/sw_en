@@ -60,6 +60,9 @@ namespace PFD
             this.DataContext = pfdVM._freightDetailsVM;
 
             CreateTableRouteSegments();
+
+            Text_RoadUnitPriceBasic.Text = $"Road unit price (≤{pfdVM._freightDetailsVM.MaxItemLengthBasic} m):";
+            Text_RoadUnitPriceOversize.Text = $"Road unit price (>{pfdVM._freightDetailsVM.MaxItemLengthBasic} m):";
         }
 
         private void CreateTableRouteSegments()
@@ -153,10 +156,10 @@ namespace PFD
             if (sender is FreightDetailsViewModel)
             {
                 FreightDetailsViewModel vm = sender as FreightDetailsViewModel;
-                if (e.PropertyName == "RoadUnitPrice1")
+                if (e.PropertyName == "MaxItemLengthBasic")
                 {
-                    Text_RoadUnitPriceBasic.Text = $"Road unit price (≤{vm.RoadUnitPrice1} m):";
-                    Text_RoadUnitPriceOversize.Text = $"Road unit price (>{vm.RoadUnitPrice1} m):";
+                    Text_RoadUnitPriceBasic.Text = $"Road unit price (≤{vm.MaxItemLengthBasic} m):";
+                    Text_RoadUnitPriceOversize.Text = $"Road unit price (>{vm.MaxItemLengthBasic} m):";
                 }
                 FreightDetailsChanged = true;
             }

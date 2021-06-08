@@ -259,6 +259,9 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        public FreightDetailsViewModel()
+        { }
+
         public FreightDetailsViewModel(string projectSite, double buildingMass, List<RouteSegmentsViewModel> routeSegments, string destination, string lat, string lng, float maxItemLength)
         {
             ProjectSite = projectSite;
@@ -307,9 +310,11 @@ namespace PFD
         {
             if (vm == null) return;
 
+            ProjectSite = vm.ProjectSite;
             Destination = vm.Destination;
             Lat = vm.Lat;
-            Lng = vm.Lng;            
+            Lng = vm.Lng;
+            MaxItemLength = vm.MaxItemLength;
             MaxItemLengthBasic = vm.MaxItemLengthBasic;
             MaxItemLengthOversize = vm.MaxItemLengthOversize;
             TotalTransportedMass = vm.TotalTransportedMass;
@@ -318,6 +323,9 @@ namespace PFD
             RoadUnitPrice1 = vm.RoadUnitPrice1;
             RoadUnitPrice2 = vm.RoadUnitPrice2;
             FerryUnitPrice = vm.FerryUnitPrice;
+
+            RouteSegments = vm.RouteSegments;
+
             TotalFreightCost = vm.TotalFreightCost;
         }
 
