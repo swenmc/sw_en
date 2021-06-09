@@ -27,7 +27,7 @@ namespace BaseClasses.Helpers
                         len += (canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus - roofEdgeOverhang_X) / Math.Cos(Math.Abs(Roof_Pitch_rad));
 
                     CCanopiesInfo nextCanopy = CanopiesHelper.GetNextNeighboringCanopyLeft(canopy, CanopiesList);
-                    if (nextCanopy == null)                        
+                    if (nextCanopy == null)
                         len += (canopy.WidthLeft + canopyOverhangOffset_x - column_crsc_z_plus - roofEdgeOverhang_X) / Math.Cos(Math.Abs(Roof_Pitch_rad));
                     else
                         len += Math.Abs(nextCanopy.WidthLeft - canopy.WidthLeft) / Math.Cos(Math.Abs(Roof_Pitch_rad));
