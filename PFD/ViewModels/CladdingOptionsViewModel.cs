@@ -15,6 +15,7 @@ using System.Windows.Media.Media3D;
 using System.Globalization;
 using System.Collections.ObjectModel;
 using System.Windows;
+using PFD.Infrastructure;
 
 namespace PFD
 {
@@ -1240,6 +1241,7 @@ namespace PFD
                         RoofEdgeOverHang_LR_X, RoofEdgeOverHang_FB_Y,
                         _pfdVM._claddingOptionsVM.WallCladdingProps.widthModular_m, _pfdVM._claddingOptionsVM.RoofCladdingProps.widthModular_m);
                     ChangeToBeUnique(f);
+                    ChangeToBeNotInCollisionWithDoorsOrWindow(f);                    
                     f.PropertyChanged += HandleFibreglassPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("FibreglassProperties_Add");
                 }
@@ -1279,6 +1281,50 @@ namespace PFD
                     if (!list.Exists(fp => fp.IsInCollisionWith(f))) return;
                 }
             }
+        }
+
+        private bool ChangeToBeNotInCollisionWithDoorsOrWindow(FibreglassProperties f)
+        {
+            bool isInCollision = CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyDoorsOrWindows(_pfdVM, f);
+
+            if (!isInCollision) return isInCollision;
+
+            for (int i = 1; i < f.XValues.Count; i++)
+            {
+                f.X = f.XValues[i];
+                isInCollision = CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyDoorsOrWindows(_pfdVM, f);
+                if (!isInCollision) return isInCollision;
+            }
+
+            for (int s = 1; s < f.Sides.Count; s++)
+            {
+                f.Side = f.Sides[s];
+                isInCollision = CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyDoorsOrWindows(_pfdVM, f);
+                if (!isInCollision) return isInCollision;
+                for (int i = 0; i < f.XValues.Count; i++)
+                {
+                    f.X = f.XValues[i];
+                    isInCollision = CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyDoorsOrWindows(_pfdVM, f);
+                    if (!isInCollision) return isInCollision;
+                }
+            }
+
+            f.Y = 2.5f;
+            f.Length = 0.5f;
+            for (int s = 1; s < f.Sides.Count; s++)
+            {
+                f.Side = f.Sides[s];
+                isInCollision = CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyDoorsOrWindows(_pfdVM, f);
+                if (!isInCollision) return isInCollision;
+                for (int i = 0; i < f.XValues.Count; i++)
+                {
+                    f.X = f.XValues[i];
+                    isInCollision = CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyDoorsOrWindows(_pfdVM, f);
+                    if (!isInCollision) return isInCollision;
+                }
+            }
+
+            return isInCollision;
         }
 
         private void HandleFibreglassPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)

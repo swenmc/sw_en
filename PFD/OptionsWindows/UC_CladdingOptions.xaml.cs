@@ -77,7 +77,7 @@ namespace PFD
                 else if (CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyDoors(_pfdVM, f))
                 {
                     ErrorDetected = true;
-                    MessageBox.Show("Fibreglass is in collison with doors.");
+                    MessageBox.Show("Fibreglass is in collision with doors.");
 
                     if (e.PropertyName == "X") f.UndoX();
                     else if (e.PropertyName == "Y") f.UndoY();
@@ -87,7 +87,7 @@ namespace PFD
                 else if (CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyWindow(_pfdVM, f))
                 {
                     ErrorDetected = true;
-                    MessageBox.Show("Fibreglass is in collison with window.");
+                    MessageBox.Show("Fibreglass is in colliison with window.");
 
                     if (e.PropertyName == "X") f.UndoX();
                     else if (e.PropertyName == "Y") f.UndoY();
@@ -137,7 +137,7 @@ namespace PFD
                 if (collisions.Count > 0)
                 {
                     MessageBox.Show($"We found {collisions.Count} collisions with doors or windows. Fibreglass in collision will be removed.", "Attention");
-                    foreach (FibreglassProperties collision_fp in collisions) mergedLists.Remove(collision_fp);                    
+                    foreach (FibreglassProperties collision_fp in collisions) mergedLists.Remove(collision_fp);
                 }
 
                 _pfdVM._claddingOptionsVM.FibreglassProperties = new ObservableCollection<FibreglassProperties>(mergedLists);

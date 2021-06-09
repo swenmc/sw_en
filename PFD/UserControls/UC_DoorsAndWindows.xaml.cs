@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using BaseClasses;
 using DATABASE.DTO;
 using MATH;
+using PFD.Infrastructure;
 
 namespace PFD
 {
@@ -71,6 +72,14 @@ namespace PFD
                 {
                     Datagrid_DoorsAndGates_SelectionChanged(null, null);
                 }
+
+                List<FibreglassProperties> collisions = CDoorsAndWindowsHelper.GetFibreglassCollisionsWithDoors(_pfdVM, doorProperties);
+                if (collisions.Count > 0)
+                {
+                    MessageBox.Show($"We found {collisions.Count} collisions with doors. Fibreglass in collision will be removed.", "Attention");
+                    foreach (FibreglassProperties collision_fp in collisions) _pfdVM._claddingOptionsVM.FibreglassProperties.Remove(collision_fp);
+                }
+
                 DoorsAndWindowsOptionsChanged = true;
             }
             else if (sender is WindowProperties)
@@ -82,6 +91,13 @@ namespace PFD
                 Datagrid_Windows_SelectionChanged(null, null);
                 //_pfdVM.RecreateModel = true;
                 //_pfdVM.RecreateJoints = true;
+
+                List<FibreglassProperties> collisions = CDoorsAndWindowsHelper.GetFibreglassCollisionsWithWindows(_pfdVM, wProperties);
+                if (collisions.Count > 0)
+                {
+                    MessageBox.Show($"We found {collisions.Count} collisions with windows. Fibreglass in collision will be removed.", "Attention");
+                    foreach (FibreglassProperties collision_fp in collisions) _pfdVM._claddingOptionsVM.FibreglassProperties.Remove(collision_fp);
+                }
 
                 DoorsAndWindowsOptionsChanged = true;
             }
@@ -272,9 +288,16 @@ namespace PFD
                     _pfdVM._doorsAndWindowsVM.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
                     _pfdVM.IsSetFromCode = false;
                 }
-
+                
                 _pfdVM._doorsAndWindowsVM.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
                 if (_pfdVM._modelOptionsVM.SameColorsDoor) _pfdVM._doorsAndWindowsVM.SetAllDoorCoatingColorToSame();
+
+                List<FibreglassProperties> collisionsWithFG = CDoorsAndWindowsHelper.GetCollisionsWithDoorsOrWindows(_pfdVM);                
+                if (collisionsWithFG.Count > 0)
+                {
+                    MessageBox.Show($"We found {collisionsWithFG.Count} collisions with doors or windows. Fibreglass in collision will be removed.", "Attention");
+                    foreach (FibreglassProperties collision_fp in collisionsWithFG) _pfdVM._claddingOptionsVM.FibreglassProperties.Remove(collision_fp);
+                }
             }
             else if (doorGeneratorViewModel.DeleteDoors)
             {
@@ -344,6 +367,13 @@ namespace PFD
                 }
 
                 _pfdVM._doorsAndWindowsVM.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
+
+                List<FibreglassProperties> collisionsWithFG = CDoorsAndWindowsHelper.GetCollisionsWithDoorsOrWindows(_pfdVM);
+                if (collisionsWithFG.Count > 0)
+                {
+                    MessageBox.Show($"We found {collisionsWithFG.Count} collisions with doors or windows. Fibreglass in collision will be removed.", "Attention");
+                    foreach (FibreglassProperties collision_fp in collisionsWithFG) _pfdVM._claddingOptionsVM.FibreglassProperties.Remove(collision_fp);
+                }
             }
             else if (windowGeneratorViewModel.DeleteWindows)
             {

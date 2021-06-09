@@ -127,12 +127,12 @@ namespace PFD.Infrastructure
 
 
         public static bool IsEnoughtPlaceForDoors(int bayNum, float width, ObservableCollection<DoorProperties> doors)
-        {            
+        {
             foreach (DoorProperties d in doors)
             {
                 if (d.sBuildingSide != "Left" && d.sBuildingSide != "Right") continue;
                 if (d.iBayNumber != bayNum) continue;
-                
+
                 if (width < d.fDoorsWidth + d.fDoorCoordinateXinBlock) return false;
             }
 
@@ -147,7 +147,7 @@ namespace PFD.Infrastructure
 
                 if (width < w.fWindowsWidth + w.fWindowCoordinateXinBay) return false;
             }
-            
+
             return true;
         }
 
@@ -168,7 +168,7 @@ namespace PFD.Infrastructure
                 foreach (DoorProperties door in vm._doorsAndWindowsVM.DoorBlocksProperties)
                 {
                     if (ignoreBuildingSides.Count > 0 && ignoreBuildingSides.Contains(door.sBuildingSide)) continue; // do not count
-                    
+
                     dDoorsAndWindowsOpeningArea += door.fDoorsWidth * door.fDoorsHeight;
                 }
             }
@@ -201,7 +201,7 @@ namespace PFD.Infrastructure
 
             float fpX2 = fp.X + fp.CladdingWidthModular_Wall;
             if (fpX2 > doorX1 && fpX2 < doorX2) return true;
-                        
+
             return false;
         }
 
@@ -217,12 +217,12 @@ namespace PFD.Infrastructure
 
             if (windowY1 > fp.Y + fp.Length) return false; // window above fibreglass
             if (windowY2 < fp.Y) return false; //window below fibreglass
-            
+
             if (fp.X > windowX1 && fp.X < windowX2) return true;
 
             float fpX2 = fp.X + fp.CladdingWidthModular_Wall;
             if (fpX2 > windowX1 && fpX2 < windowX2) return true;
-            
+
             return false;
         }
 
@@ -230,13 +230,13 @@ namespace PFD.Infrastructure
         public static List<FibreglassProperties> GetCollisionsWithDoorsOrWindows(CPFDViewModel vm, List<FibreglassProperties> fibreglassList)
         {
             List<FibreglassProperties> fpInCollisionList = new List<FibreglassProperties>();
-            
+
             foreach (DoorProperties door in vm._doorsAndWindowsVM.DoorBlocksProperties)
             {
                 foreach (FibreglassProperties fp in fibreglassList)
                 {
                     if (CDoorsAndWindowsHelper.DoorsAreInCollisionWithFibreglass(vm, door, fp)) fpInCollisionList.Add(fp);
-                }                
+                }
             }
 
             foreach (WindowProperties window in vm._doorsAndWindowsVM.WindowBlocksProperties)
@@ -248,6 +248,56 @@ namespace PFD.Infrastructure
             }
 
             return fpInCollisionList;
+        }
+        public static List<FibreglassProperties> GetCollisionsWithDoorsOrWindows(CPFDViewModel vm)
+        {
+            List<FibreglassProperties> fpInCollisionList = new List<FibreglassProperties>();
+
+            foreach (DoorProperties door in vm._doorsAndWindowsVM.DoorBlocksProperties)
+            {
+                foreach (FibreglassProperties fp in vm._claddingOptionsVM.FibreglassProperties)
+                {
+                    if (CDoorsAndWindowsHelper.DoorsAreInCollisionWithFibreglass(vm, door, fp)) fpInCollisionList.Add(fp);
+                }
+            }
+
+            foreach (WindowProperties window in vm._doorsAndWindowsVM.WindowBlocksProperties)
+            {
+                foreach (FibreglassProperties fp in vm._claddingOptionsVM.FibreglassProperties)
+                {
+                    if (CDoorsAndWindowsHelper.WindowIsInCollisionWithFibreglass(vm, window, fp)) fpInCollisionList.Add(fp);
+                }
+            }
+
+            return fpInCollisionList;
+        }
+
+        public static List<FibreglassProperties> GetFibreglassCollisionsWithDoors(CPFDViewModel vm, DoorProperties door)
+        {
+            List<FibreglassProperties> fpInCollisionList = new List<FibreglassProperties>();
+
+            foreach (FibreglassProperties fp in vm._claddingOptionsVM.FibreglassProperties)
+            {
+                if (CDoorsAndWindowsHelper.DoorsAreInCollisionWithFibreglass(vm, door, fp)) fpInCollisionList.Add(fp);
+            }
+
+            return fpInCollisionList;
+        }
+        public static List<FibreglassProperties> GetFibreglassCollisionsWithWindows(CPFDViewModel vm, WindowProperties window)
+        {
+            List<FibreglassProperties> fpInCollisionList = new List<FibreglassProperties>();
+
+            foreach (FibreglassProperties fp in vm._claddingOptionsVM.FibreglassProperties)
+            {
+                if (CDoorsAndWindowsHelper.WindowIsInCollisionWithFibreglass(vm, window, fp)) fpInCollisionList.Add(fp);
+            }
+
+            return fpInCollisionList;
+        }
+
+        public static bool IsFibreglassInCollisionWithAnyDoorsOrWindows(CPFDViewModel vm, FibreglassProperties fp)
+        {
+            return IsFibreglassInCollisionWithAnyDoors(vm, fp) || IsFibreglassInCollisionWithAnyWindow(vm, fp);
         }
 
         public static bool IsFibreglassInCollisionWithAnyDoors(CPFDViewModel vm, FibreglassProperties fp)
