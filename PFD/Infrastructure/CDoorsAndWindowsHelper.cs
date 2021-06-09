@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using BaseClasses.Helpers;
 using DATABASE;
 using System;
 using System.Collections.Generic;
@@ -184,5 +185,29 @@ namespace PFD.Infrastructure
 
             return dDoorsAndWindowsOpeningArea;
         }
+
+
+        public static bool DoorsAreInCollisionWithFibreglass(CPFDViewModel vm, DoorProperties door, FibreglassProperties fp)
+        {
+            if (door.sBuildingSide != fp.Side) return false;
+
+            float doorX1 = ModelHelper.GetBaysWidthUntil(door.iBayNumber - 1, vm._baysWidthOptionsVM.BayWidthList) + door.fDoorCoordinateXinBlock;
+            float doorX2 = doorX1 + door.fDoorsWidth;
+            float doorY = door.fDoorsHeight;
+
+            if (doorY < fp.Y) return false; //fp above doors
+
+            if (fp.X > doorX1 && fp.X < doorX2) return true;
+
+            float fpX2 = fp.X + fp.CladdingWidthModular_Wall;
+            if (fpX2 > doorX1 && fpX2 < doorX2) return true;
+
+            
+            return false;
+        }
+
+        
+
+
     }
 }
