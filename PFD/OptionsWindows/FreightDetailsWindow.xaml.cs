@@ -95,7 +95,7 @@ namespace PFD
 
             DataRow row;
             foreach (RouteSegmentsViewModel rs in _pfdVM._freightDetailsVM.RouteSegments)
-            {                
+            {
                 row = dt.NewRow();
 
                 try
@@ -115,7 +115,7 @@ namespace PFD
                 dt.Rows.Add(row);
             }
 
-            // Last row            
+            // Last row
             row = dt.NewRow();
             row["ID"] = "Total:";
             row["TransportType"] = "";
@@ -132,6 +132,7 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_RouteSegments);
         }
+
         private void SetLastRowBold(DataGrid datagrid)
         {
             DataGridRow dtrow = (DataGridRow)datagrid.ItemContainerGenerator.ContainerFromIndex(datagrid.Items.Count - 1);
@@ -169,7 +170,5 @@ namespace PFD
         {
             this.Close();
         }
-
-       
     }
 }
