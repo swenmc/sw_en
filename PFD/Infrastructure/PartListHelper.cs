@@ -77,7 +77,7 @@ namespace PFD
             int iNumberOfFixingPoints = 0;
             double fixingPointTributaryArea = 0;
 
-            int iNumberLapstitchFixingPoints = 0;
+            int iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji fibreglass sheet, pre susediace fibreglass sheets sa zapocitava spolocna hrana len raz
             double dLapstitchFixingPointsSpacing = 0;
 
             double dLimitSheetLengthToConsider = 0.20; // Neuvazovat kratsie plechy ako je tento limit
@@ -164,7 +164,7 @@ namespace PFD
                     // Sposob B
 
                     int iNumberOfFixingPoints2 = 0;
-                    iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji sheet, To Ondrej - TODO doriesit ak su 2 fibreglass sheets vedla seba, asi by sme vedeli osetrit aspon ciastocne podla pozicie X a Y zobrat okraj len raz resp max. dlzku ak su ine
+                    iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji fibreglass sheet, pre susediace fibreglass sheets sa zapocitava spolocna hrana len raz
                     dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
 
                     if (cladding.HasFibreglassSheets_RoofRight())
@@ -344,23 +344,38 @@ namespace PFD
                 double dEavePurlinBirdProofFixingPointSpacing = 1; // DB
                 int iNumberEavePurlinBirdProofFixingPoints = 0;
 
-                // TODO 840 - Barge Flashing Length - To Ondrej
-
                 int iRoofSidesCount = 0;
 
                 if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
                 {
-                    if (cladding.HasCladdingSheets_WallFront() && cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 2;
-                    else if (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 1;
-                    else iRoofSidesCount = 0;
+                    iRoofSidesCount = 2; // Monopitch - nie je zohladnene generovanie walls
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
                     {
+                        // Pocet prvkov fixing bez canopies
                         iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
                         iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
 
+                        if (vm._modelOptionsVM.EnableCanopies && vm._canopiesOptionsVM.HasCanopies())
+                        {
+                            // Pocet prvkov fixing vratane canopies
+                            iNumberOfFixingPoints = 2 * (int)(vm.BargeFlashing_TotalLength / dBargeflashingFixingSpacing); // Top and bottom
+                            iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, (int)(vm.BargeFlashing_TotalLength / dFixingPointsBargeCladdingSheetEdge));
+                        }
+
                         if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.BargeBirdproof) && (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()))
+                        {
+                            // Birdproof flashing sa uvazuje len ak je zapnuty front alebo back wall. Nastavime pocet side podla toho ci su zapnute
+                            if (cladding.HasCladdingSheets_WallFront() && cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 2;
+                            else if (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 1;
+                            else iRoofSidesCount = 0;
+
                             iNumberOfFixingPointsBirdProofFlashing = iRoofSidesCount * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.WallCladdingProps.widthRib_m) + 1);
+
+                            // Birdproof flashing pozdlz barge pre canopies neuvazujeme, takze nie je potrebne menit pocet
+                            //if (vm._modelOptionsVM.EnableCanopies && vm._canopiesOptionsVM.HasCanopies())
+                            //    iNumberOfFixingPointsBirdProofFlashing = (int)(vm.BargeFlashing_TotalLength / vm._claddingOptionsVM.WallCladdingProps.widthRib_m);
+                        }
                     }
 
                     if (vm._doorsAndWindowsVM.HasGutter())
@@ -377,17 +392,34 @@ namespace PFD
                 }
                 else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
                 {
-                    if (cladding.HasCladdingSheets_WallFront() && cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 4;
-                    else if (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 2;
-                    else iRoofSidesCount = 0;
+                    iRoofSidesCount = 4; // Gable - nie je zohladnene generovanie walls
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
                     {
+                        // Pocet prvkov fixing bez canopies
                         iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
                         iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
 
+                        if (vm._modelOptionsVM.EnableCanopies && vm._canopiesOptionsVM.HasCanopies())
+                        {
+                            // Pocet prvkov fixing vratane canopies
+                            iNumberOfFixingPoints = 2 * (int)(vm.BargeFlashing_TotalLength / dBargeflashingFixingSpacing); // Top and bottom
+                            iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, (int)(vm.BargeFlashing_TotalLength / dFixingPointsBargeCladdingSheetEdge));
+                        }
+
                         if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.BargeBirdproof) && (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()))
+                        {
+                            // Birdproof flashing sa uvazuje len ak je zapnuty front alebo back wall. Nastavime pocet side podla toho ci su zapnute
+                            if (cladding.HasCladdingSheets_WallFront() && cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 4;
+                            else if (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()) iRoofSidesCount = 2;
+                            else iRoofSidesCount = 0;
+
                             iNumberOfFixingPointsBirdProofFlashing = iRoofSidesCount * ((int)(vm.RoofSideLength / vm._claddingOptionsVM.WallCladdingProps.widthRib_m) + 1);
+
+                            // Birdproof flashing pozdlz barge pre canopies neuvazujeme, takze nie je potrebne menit pocet
+                            //if (vm._modelOptionsVM.EnableCanopies && vm._canopiesOptionsVM.HasCanopies())
+                            //    iNumberOfFixingPointsBirdProofFlashing = (int)(vm.BargeFlashing_TotalLength / vm._claddingOptionsVM.WallCladdingProps.widthRib_m);
+                        }
                     }
 
                     if (vm._doorsAndWindowsVM.HasGutter())
@@ -456,6 +488,16 @@ namespace PFD
                 // Urcime zakladne parametre, mohli by sem uz prist pripravene
 
                 double dBuildingPerimeter = 2 * (vm.LengthOverall + vm.WidthOverall);
+
+                if (!cladding.HasCladdingSheets_WallLeft())
+                    dBuildingPerimeter -= vm.LengthOverall;
+                if (!cladding.HasCladdingSheets_WallRight())
+                    dBuildingPerimeter -= vm.LengthOverall;
+                if (!cladding.HasCladdingSheets_WallFront())
+                    dBuildingPerimeter -= vm.WidthOverall;
+                if (!cladding.HasCladdingSheets_WallBack())
+                    dBuildingPerimeter -= vm.WidthOverall;
+
                 double dBuildingCladdingPerimeterWithoutDoors = dBuildingPerimeter; // Obvod budovy bez sirky dveri
 
                 // Wall Fibreglass Area
@@ -690,7 +732,7 @@ namespace PFD
                         // Sposob B
 
                         int iNumberOfFixingPoints2 = 0;
-                        iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji sheet, To Ondrej - TODO doriesit ak su 2 fibreglass sheets vedla seba, asi by sme vedeli osetrit aspon ciastocne podla pozicie X a Y zobrat okraj len raz resp max. dlzku ak su ine
+                        iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji fibreglass sheet, pre susediace fibreglass sheets sa zapocitava spolocna hrana len raz
                         dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
 
                         if (cladding.HasFibreglass_WallLeft())
@@ -766,8 +808,7 @@ namespace PFD
                                 if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                                 {
                                     iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
-                                    // TO Ondrej - zistit ci existuje nejaky iny susediaci sheet
-                                    iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                    //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
                                     int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
                                     iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
                                     supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
@@ -919,7 +960,7 @@ namespace PFD
             double dTotalItemsMass_Table = 0;
             double dTotalItemsPrice_Table = 0;
 
-            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docanse - upravit
+            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docasne - upravit
             foreach (CCladdingAccessories_Item_Length item in claddingAccessoriesItems_Length)
             {
                 QuotationItem qitem = new QuotationItem();
@@ -996,7 +1037,7 @@ namespace PFD
             double dTotalItemsPrice_Table = 0;
             int iTotalItemsNumber_Table = 0;
 
-            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docanse - upravit
+            List<QuotationItem> quotation = new List<QuotationItem>(); // TODO Docasne - upravit
             foreach (CCladdingAccessories_Item_Piece item in claddingAccessoriesItems_Piece)
             {
                 QuotationItem qitem = new QuotationItem();

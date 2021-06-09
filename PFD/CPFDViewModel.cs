@@ -3570,7 +3570,7 @@ namespace PFD
 
             BargeFlashing_TotalLength += (float)canopiesBargeFlashing_TotalLength;
 
-            BargeBirdProofFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
+            BargeBirdProofFlashing_TotalLength = iRoofSidesCount * RoofSideLength; // Neuvazujeme pre canopies, takze ostava zakladna dlzka
 
             if (_doorsAndWindowsVM != null)
             {
