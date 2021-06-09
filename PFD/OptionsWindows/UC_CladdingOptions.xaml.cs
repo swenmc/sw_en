@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BaseClasses;
 using MATH;
+using PFD.Infrastructure;
 
 namespace PFD
 {
@@ -63,10 +64,30 @@ namespace PFD
                     else if (e.PropertyName == "Length") f.UndoLength();
                 }
                 //748 - toto treba zapnut ak bude validacia v poriadku
-                else if(!f.ValidateMaxHeight()) //ak sa nezmesti
+                else if (!f.ValidateMaxHeight()) //ak sa nezmesti
                 {
                     ErrorDetected = true;
                     MessageBox.Show("Fibreglass is outside of building dimensions.");
+
+                    if (e.PropertyName == "X") f.UndoX();
+                    else if (e.PropertyName == "Y") f.UndoY();
+                    else if (e.PropertyName == "Side") f.UndoSide();
+                    else if (e.PropertyName == "Length") f.UndoLength();
+                }
+                else if (CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyDoors(_pfdVM, f))
+                {
+                    ErrorDetected = true;
+                    MessageBox.Show("Fibreglass is in collison with doors.");
+
+                    if (e.PropertyName == "X") f.UndoX();
+                    else if (e.PropertyName == "Y") f.UndoY();
+                    else if (e.PropertyName == "Side") f.UndoSide();
+                    else if (e.PropertyName == "Length") f.UndoLength();
+                }
+                else if (CDoorsAndWindowsHelper.IsFibreglassInCollisionWithAnyWindow(_pfdVM, f))
+                {
+                    ErrorDetected = true;
+                    MessageBox.Show("Fibreglass is in collison with window.");
 
                     if (e.PropertyName == "X") f.UndoX();
                     else if (e.PropertyName == "Y") f.UndoY();
@@ -110,6 +131,13 @@ namespace PFD
                 {
                     MessageBoxResult res = MessageBox.Show("Collisions were detected. Do you want to solve them automatically?", "Attention", MessageBoxButton.YesNo);
                     if (res == MessageBoxResult.No) return; //do not add, do not do anything, do not add new generated items
+                }
+
+                List<FibreglassProperties> collisions = CDoorsAndWindowsHelper.GetCollisionsWithDoorsOrWindows(_pfdVM, mergedLists);
+                if (collisions.Count > 0)
+                {
+                    MessageBox.Show($"We found {collisions.Count} collisions with doors or windows. Fibreglass in collision will be removed.", "Attention");
+                    foreach (FibreglassProperties collision_fp in collisions) mergedLists.Remove(collision_fp);                    
                 }
 
                 _pfdVM._claddingOptionsVM.FibreglassProperties = new ObservableCollection<FibreglassProperties>(mergedLists);
