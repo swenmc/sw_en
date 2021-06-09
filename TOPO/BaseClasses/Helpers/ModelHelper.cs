@@ -595,6 +595,16 @@ namespace BaseClasses.Helpers
             return w;
         }
 
+        public static float GetBaysWidthUntil(int bayIndex, float bayWidth)
+        {
+            float w = 0;
+            for (int i = 0; i < bayIndex; i++)
+            {
+                w += bayWidth;
+            }
+            return w;
+        }
+
         public static double GetVerticalCoordinate(string sBuildingSide, EModelType_FS eKitset, double width, double leftHeight, double x, float fRoofPitch_deg)
         {
             if(sBuildingSide == "Front" || sBuildingSide == "Back")

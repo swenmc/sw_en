@@ -417,7 +417,7 @@ namespace PFD
                     //MRoofPitch_deg = (RoofPitch_radians * 180f / MathF.fPI);
                     // Recalculate roof height
 
-                    if (MKitsetTypeIndex == 0)
+                    if (MKitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed)
                     {
                         Height_H2 = MWallHeight + MWidth * (float)Math.Tan(RoofPitch_radians);
                         Height_H2_Overall = GetOverallHeight_H2();
@@ -426,7 +426,7 @@ namespace PFD
                         int iOneRafterFrontColumnNo = Math.Max(1, (int)((MWidth - 0.95 * MColumnDistance) / MColumnDistance));
                         IFrontColumnNoInOneFrame = 1 * iOneRafterFrontColumnNo;
                     }
-                    else if (MKitsetTypeIndex == 1)
+                    else if (MKitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
                     {
                         Height_H2 = MWallHeight + 0.5f * MWidth * (float)Math.Tan(RoofPitch_radians);
                         Height_H2_Overall = GetOverallHeight_H2();

@@ -187,21 +187,52 @@ namespace PFD.Infrastructure
         }
 
 
+        //TO Mato - toto treba aby si prezrel, ci je to spravne
         public static bool DoorsAreInCollisionWithFibreglass(CPFDViewModel vm, DoorProperties door, FibreglassProperties fp)
         {
             if (door.sBuildingSide != fp.Side) return false;
 
-            float doorX1 = ModelHelper.GetBaysWidthUntil(door.iBayNumber - 1, vm._baysWidthOptionsVM.BayWidthList) + door.fDoorCoordinateXinBlock;
+            float doorX1 = 0;
+            
+            if (door.sBuildingSide == "Front" || door.sBuildingSide == "Back")
+            {
+                //tu si snad niekto srandu zo mna robi
+                float columnDistanceOverall = vm.WidthOverall / (vm.IFrontColumnNoInOneFrame + 1);
+                doorX1 = ModelHelper.GetBaysWidthUntil(door.iBayNumber - 1, columnDistanceOverall) + door.fDoorCoordinateXinBlock;
+            }
+            else
+            {
+                doorX1 = ModelHelper.GetBaysWidthUntil(door.iBayNumber - 1, vm._baysWidthOptionsVM.BayWidthList) + door.fDoorCoordinateXinBlock;
+            }
+
             float doorX2 = doorX1 + door.fDoorsWidth;
             float doorY = door.fDoorsHeight;
-
+            
             if (doorY < fp.Y) return false; //fp above doors
+            
+            if (door.sBuildingSide == "Left") //specialitka, lebo ide z opacnej strany ako dvere
+            {
+                float fpX1 = vm.LengthOverall - (fp.X + fp.CladdingWidthModular_Wall);
+                float fpX2 = vm.LengthOverall - fp.X;
+                
+                if (fpX1 > doorX1 && fpX1 < doorX2) return true;                
+                if (fpX2 > doorX1 && fpX2 < doorX2) return true;
+            }
+            else if (door.sBuildingSide == "Back") //specialitka, lebo ide z opacnej strany ako dvere
+            {
+                float fpX1 = vm.WidthOverall - (fp.X + fp.CladdingWidthModular_Wall);
+                float fpX2 = vm.WidthOverall - fp.X;
 
-            if (fp.X > doorX1 && fp.X < doorX2) return true;
-
-            float fpX2 = fp.X + fp.CladdingWidthModular_Wall;
-            if (fpX2 > doorX1 && fpX2 < doorX2) return true;
-
+                if (fpX1 > doorX1 && fpX1 < doorX2) return true;
+                if (fpX2 > doorX1 && fpX2 < doorX2) return true;
+            }
+            else
+            {
+                if (fp.X > doorX1 && fp.X < doorX2) return true;
+                float fpX2 = fp.X + fp.CladdingWidthModular_Wall;
+                if (fpX2 > doorX1 && fpX2 < doorX2) return true;
+            }
+            
             return false;
         }
 
