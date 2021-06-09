@@ -201,12 +201,32 @@ namespace PFD.Infrastructure
 
             float fpX2 = fp.X + fp.CladdingWidthModular_Wall;
             if (fpX2 > doorX1 && fpX2 < doorX2) return true;
+                        
+            return false;
+        }
 
+        public static bool WindowIsInCollisionWithFibreglass(CPFDViewModel vm, WindowProperties window, FibreglassProperties fp)
+        {
+            if (window.sBuildingSide != fp.Side) return false;
+
+            float windowX1 = ModelHelper.GetBaysWidthUntil(window.iBayNumber - 1, vm._baysWidthOptionsVM.BayWidthList) + window.fWindowCoordinateXinBay;
+            float windowX2 = windowX1 + window.fWindowsWidth;
+
+            float windowY1 = window.fWindowCoordinateZinBay;
+            float windowY2 = windowY1 + window.fWindowsHeight;
+
+            if (windowY1 > fp.Y + fp.Length) return false; // window above fibreglass
+            if (windowY2 < fp.Y) return false; //window below fibreglass
+            
+            if (fp.X > windowX1 && fp.X < windowX2) return true;
+
+            float fpX2 = fp.X + fp.CladdingWidthModular_Wall;
+            if (fpX2 > windowX1 && fpX2 < windowX2) return true;
             
             return false;
         }
 
-        
+
 
 
     }
