@@ -1983,8 +1983,6 @@ namespace PFD
             return items;
         }
 
-
-
         // Add cladding or fibreglass sheet
         public static void AddSheetToQuotation(CCladdingOrFibreGlassSheet sheet, List<QuotationItem> quotation, int iQuantity, float fCFS_PricePerKg_CladdingSheets_Total)
         {

@@ -2532,8 +2532,6 @@ namespace BaseClasses.GraphObj
             }
             return maxLen;
         }
-
-        
     }
 
     public class CInterval
