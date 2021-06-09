@@ -299,7 +299,7 @@ namespace PFD
             // DG 22
             // Control Joints
 
-            if (!vm.IsFreightActual)
+            if (!vm.IsFreightActual && vm._quotationDisplayOptionsVM.CalculateFreightAuto)
             {
                 UpdateFreightDetails();
             }
