@@ -2316,6 +2316,10 @@ namespace PFD
 
             IsSetFromCode = true;
 
+            // TO Ondrej - toto su len nase interne konstanty, maju to byt properties?
+            m_AdditionalOffsetWall = 0.010;
+            m_AdditionalOffsetRoof = 0.010;
+
             _doorsAndWindowsVM = new DoorsAndWindowsViewModel(doorBlocksProperties, windowBlocksProperties);
 
             _componentVM = componentVM;
@@ -2380,7 +2384,6 @@ namespace PFD
 
             IsFreightActual = false;
             IsSetFromCode = false;
-
 
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
@@ -3552,10 +3555,17 @@ namespace PFD
 
             BargeFlashing_TotalLength = iRoofSidesCount * RoofSideLength;
 
+            // Todo - presunut vyssie a refaktorovat
+
+            // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
+            //double column_crsc_y_minus_temp = EdgeColumnCrsc_y_minus - AdditionalOffsetWall;
+            //double column_crsc_y_plus_temp = EdgeColumnCrsc_y_plus + AdditionalOffsetWall;
+            double column_crsc_z_plus_temp = MainColumnCrsc_z_plus + AdditionalOffsetWall;
+
             double canopiesBargeFlashing_TotalLength = CalculationsHelper.CalculateCanopiesBargeLength(_canopiesOptionsVM.CanopiesList, 
                 _claddingOptionsVM.CanopyRoofEdgeOverHang_LR_X,
                 _claddingOptionsVM.RoofEdgeOverHang_LR_X,
-                MainColumnCrsc_z_plus, //To Mato je tento parameter spravny?
+                (float)column_crsc_z_plus_temp,
                 RoofPitch_radians);
 
             BargeFlashing_TotalLength += (float)canopiesBargeFlashing_TotalLength;
@@ -3838,9 +3848,6 @@ namespace PFD
         public void CalculateCladdingParameters_Mato()
         {
             if (_claddingOptionsVM == null) return;
-
-            AdditionalOffsetWall = 0.010; // 10 mm Aby nekolidovali plochy cladding s members
-            AdditionalOffsetRoof = 0.010; // 10 mm Aby nekolidovali plochy cladding s members (cross-bracing) na streche
 
             // Pridame odsadenie aby prvky ramov konstrukcie vizualne nekolidovali s povrchom cladding
             double column_crsc_y_minus_temp = EdgeColumnCrsc_y_minus - AdditionalOffsetWall;

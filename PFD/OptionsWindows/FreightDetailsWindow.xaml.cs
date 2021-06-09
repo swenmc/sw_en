@@ -83,11 +83,15 @@ namespace PFD
             dt.Columns.Add("Time");
             dt.Columns.Add("UnitPrice_NZD");
             dt.Columns.Add("TotalPrice_NZD");
-            
+
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
             ds.Tables.Add(dt);
+
+            // To Ondrej - docasne, ak nie co nie je naplnene opustam funkciu
+            if (_pfdVM._freightDetailsVM == null || _pfdVM._freightDetailsVM.RouteSegments == null || _pfdVM._freightDetailsVM.RouteSegments.Count == 0)
+                return null;
 
             int totalDistance = 0;
             int totalTime = 0;
