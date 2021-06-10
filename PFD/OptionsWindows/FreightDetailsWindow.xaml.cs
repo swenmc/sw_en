@@ -169,6 +169,13 @@ namespace PFD
                     Text_RoadUnitPriceBasic.Text = $"Road unit price (≤{vm.MaxItemLengthBasic} m):";
                     Text_RoadUnitPriceOversize.Text = $"Road unit price (>{vm.MaxItemLengthBasic} m):";
                 }
+
+                if (e.PropertyName == "RoadUnitPrice1" || e.PropertyName == "RoadUnitPrice2" || e.PropertyName == "FerryUnitPrice" || e.PropertyName == "MaxItemLengthBasic")
+                {
+                    vm.SetRouteSegmentsPrices();
+                    CreateTableRouteSegments();
+                }
+
                 FreightDetailsChanged = true;
             }
         }

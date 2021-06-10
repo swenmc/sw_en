@@ -126,7 +126,7 @@ namespace PFD
             set
             {
                 m_MaxItemLengthOversize = value;
-                if (m_MaxItemLengthOversize < 1 || m_MaxItemLengthOversize > 40) throw new Exception($"Value out of range <1; 40>");
+                if (m_MaxItemLengthOversize < m_MaxItemLengthBasic || m_MaxItemLengthOversize > 40) throw new Exception($"Value out of range <{m_MaxItemLengthBasic}; 40>");
                 NotifyPropertyChanged("MaxItemLengthOversize");
             }
         }
@@ -169,6 +169,7 @@ namespace PFD
             set
             {
                 m_RoadUnitPrice1 = value;
+                if (m_RoadUnitPrice1 < 2 || m_RoadUnitPrice1 > 30) throw new Exception($"Value out of range <2; 30>");
                 NotifyPropertyChanged("RoadUnitPrice1");
             }
         }
@@ -183,6 +184,7 @@ namespace PFD
             set
             {
                 m_RoadUnitPrice2 = value;
+                if (m_RoadUnitPrice2 < 2 || m_RoadUnitPrice2 > 30) throw new Exception($"Value out of range <2; 30>");
                 NotifyPropertyChanged("RoadUnitPrice2");
             }
         }
@@ -197,6 +199,7 @@ namespace PFD
             set
             {
                 m_FerryUnitPrice = value;
+                if (m_FerryUnitPrice < 2 || m_FerryUnitPrice > 30) throw new Exception($"Value out of range <2; 30>");
                 NotifyPropertyChanged("FerryUnitPrice");
             }
         }
@@ -293,7 +296,7 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void SetRouteSegmentsPrices()
+        public void SetRouteSegmentsPrices()
         {
             if (RouteSegments == null) return;
 
