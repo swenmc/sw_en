@@ -69,6 +69,9 @@ namespace PFD
         {
             DataSet ds = GetTableRouteSegments();
 
+            // To Ondrej - docasna uprava
+            if (ds == null || ds.Tables == null || ds.Tables.Count == 0) return;
+
             Datagrid_RouteSegments.ItemsSource = ds.Tables[0].AsDataView();
             Datagrid_RouteSegments.Loaded += Datagrid_RouteSegments_Loaded;
         }
