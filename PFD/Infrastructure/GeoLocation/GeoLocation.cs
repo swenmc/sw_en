@@ -81,32 +81,7 @@ namespace PFD.Infrastructure
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
-
-
-        //public void GetFreightDetails(FreightDetailsViewModel vm)
-        //{
-        //    vm.RouteSegments = new List<RouteSegmentsViewModel>();
-
-        //    ResponseItem item = Data.items.FirstOrDefault();
-        //    vm.Destination = item.address.label;
-        //    vm.Lat = item.position.lat;
-        //    vm.Lng = item.position.lng;
-
-        //    if (Routing != null)
-        //    {                
-        //        RouteSegmentsViewModel routeSegment = null;
-
-        //        Route route = Routing.routes.FirstOrDefault();
-        //        if (route == null) return;
-
-        //        int i = 1;
-        //        foreach (RouteSection s in route.sections)
-        //        {
-        //            routeSegment = new RouteSegmentsViewModel(i.ToString(), GetRouteTransport(s), GetRouteLength(s), GetRouteDuration(s));
-        //        }
-        //    }
-        //}
-
+        
         public List<RouteSegmentsViewModel> GetRouteSegments()
         {
             List<RouteSegmentsViewModel>  routeSegments = new List<RouteSegmentsViewModel>();
