@@ -1713,8 +1713,7 @@ namespace PFD
             ProjectInfo pi = new ProjectInfo(projectInfoVM);
             pi.ShowDialog();
 
-
-            if (pi.ProjectInfoChanged) { vm.IsFreightActual = false; }
+            if (pi.ProjectSiteChanged) { vm.IsFreightActual = false; vm.RecreateQuotation = true; }
         }
 
         //int actualPreview = 0;
@@ -2383,6 +2382,7 @@ namespace PFD
             optionsToSave.Add(vm._documentationExportOptionsVM);
             optionsToSave.Add(vm._layoutsExportOptionsVM);
 
+            if(vm._freightDetailsVM == null) vm._freightDetailsVM = new FreightDetailsViewModel(null, 0, null, "", "", "", 0);
             optionsToSave.Add(vm._freightDetailsVM); //tu si nie som isty, ci to chceme ukladat ako default options
 
             return optionsToSave;

@@ -245,7 +245,7 @@ namespace PFD
             DisplayPackers = checkAll;
             DisplayCladdingAccesories = checkAll;
 
-            CalculateFreightAuto = checkAll;
+            CalculateFreightAuto = false;
         }
 
 

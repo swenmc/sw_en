@@ -155,6 +155,7 @@ namespace PFD
             set
             {
                 m_NumberOfTrucks = value;
+                CountFreightCosts();
                 NotifyPropertyChanged("NumberOfTrucks");
             }
         }

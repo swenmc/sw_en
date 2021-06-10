@@ -52,6 +52,8 @@ namespace PFD
 
             _pfdVM = pfdVM;
 
+            FreightDetailsChanged = false;
+
             if (pfdVM._freightDetailsVM == null) return;
 
             pfdVM._freightDetailsVM.PropertyChanged -= HandleFreightDetails_PropertyChanged;
@@ -174,6 +176,7 @@ namespace PFD
                 {
                     vm.SetRouteSegmentsPrices();
                     CreateTableRouteSegments();
+                    vm.CountFreightCosts();
                 }
 
                 FreightDetailsChanged = true;
@@ -182,6 +185,7 @@ namespace PFD
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            if (FreightDetailsChanged) _pfdVM._quotationViewModel.Freight = _pfdVM._freightDetailsVM.TotalFreightCost;
             this.Close();
         }
     }
