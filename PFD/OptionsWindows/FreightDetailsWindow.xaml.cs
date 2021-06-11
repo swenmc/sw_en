@@ -65,6 +65,8 @@ namespace PFD
 
             Text_RoadUnitPriceBasic.Text = $"Road unit price (≤{pfdVM._freightDetailsVM.MaxItemLengthBasic} m):";
             Text_RoadUnitPriceOversize.Text = $"Road unit price (>{pfdVM._freightDetailsVM.MaxItemLengthBasic} m):";
+
+            pfdVM._freightDetailsVM.Validate();
         }
 
         private void CreateTableRouteSegments()

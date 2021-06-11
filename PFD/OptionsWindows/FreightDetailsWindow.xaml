@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Freight Details" Height="780" Width="440">
+        Title="Freight Details" Height="820" Width="460">
     <Window.Resources>
         <Style x:Key="RightAligned" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -44,6 +44,7 @@
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
@@ -113,53 +114,59 @@
                          Text="{Binding Path=MaxTruckLoad, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="10" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="kg"/>
 
-            <TextBlock Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length (basic):" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="11" Grid.Column="2" Name="TextBox_MaxItemLengthBasic" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="11" Grid.Column="2" Name="TextBox_MaxItemLength" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right" IsEnabled="False"
+                         Text="{Binding Path=MaxItemLength, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="11" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="m"/>
+            
+            <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length (basic):" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="12" Grid.Column="2" Name="TextBox_MaxItemLengthBasic" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right"
                          Text="{Binding Path=MaxItemLengthBasic, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="11" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="m"/>
-
-            <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length (oversize):" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="12" Grid.Column="2" Name="TextBox_MaxItemLengthOversize" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right"
-                         Text="{Binding Path=MaxItemLengthOversize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="12" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="m"/>
 
-            <TextBlock Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Text="Total transported mass:" HorizontalAlignment="Left" VerticalAlignment="Top" />            
-            <TextBox Grid.Row="13" Grid.Column="2" Name="TextBox_TotalTransportedMass" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length (oversize):" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="13" Grid.Column="2" Name="TextBox_MaxItemLengthOversize" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right"
+                         Text="{Binding Path=MaxItemLengthOversize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="13" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="m"/>
+
+            <TextBlock Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2" Text="Total transported mass:" HorizontalAlignment="Left" VerticalAlignment="Top" />            
+            <TextBox Grid.Row="14" Grid.Column="2" Name="TextBox_TotalTransportedMass" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right" IsEnabled="False"
                          Text="{Binding Path=TotalTransportedMass, StringFormat=F3}"/>
-            <TextBlock Grid.Row="13" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="kg"/>
+            <TextBlock Grid.Row="14" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="kg"/>
 
-            <TextBlock Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2" Text="Number of trucks:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="14" Grid.Column="2" Name="TextBox_NumberOfTrucks" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Text="Number of trucks:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="15" Grid.Column="2" Name="TextBox_NumberOfTrucks" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right" IsEnabled="False"
                          Text="{Binding Path=NumberOfTrucks, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             
 
-            <TextBlock Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Name="Text_RoadUnitPriceBasic" Text="Road unit price (≤18 m):" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="15" Grid.Column="2" Name="TextBox_RoadUnitPrice1" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2" Name="Text_RoadUnitPriceBasic" Text="Road unit price (≤18 m):" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="16" Grid.Column="2" Name="TextBox_RoadUnitPrice1" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right"
                          Text="{Binding Path=RoadUnitPrice1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="15" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="NZD / km"/>
-            
-            <TextBlock Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2" Name="Text_RoadUnitPriceOversize" Text="Road unit price (>18 m):" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="16" Grid.Column="2" Name="TextBox_RoadUnitPrice2" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right"
-                         Text="{Binding Path=RoadUnitPrice2, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="16" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="NZD / km"/>
             
-            <TextBlock Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Text="Ferry unit price:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="17" Grid.Column="2" Name="TextBox_FerryUnitPrice" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Name="Text_RoadUnitPriceOversize" Text="Road unit price (>18 m):" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="17" Grid.Column="2" Name="TextBox_RoadUnitPrice2" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right"
+                         Text="{Binding Path=RoadUnitPrice2, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="17" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="NZD / km"/>
+            
+            <TextBlock Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="2" Text="Ferry unit price:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="18" Grid.Column="2" Name="TextBox_FerryUnitPrice" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right"
                          Text="{Binding Path=FerryUnitPrice, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="17" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="NZD / km"/>
+            <TextBlock Grid.Row="18" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="NZD / km"/>
 
-            <TextBlock Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="2" Text="Total freight costs:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBlock Grid.Row="19" Grid.Column="2" Width="{StaticResource theTextBoxWidth}" TextAlignment="Right"
+            <TextBlock Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="2" Text="Total freight costs:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="20" Grid.Column="2" Width="{StaticResource theTextBoxWidth}" TextAlignment="Right"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"
                          Text="{Binding Path=TotalFreightCost, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="19" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="NZD"/>
+            <TextBlock Grid.Row="20" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="NZD"/>
 
             
             <StackPanel Grid.Row="21" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
