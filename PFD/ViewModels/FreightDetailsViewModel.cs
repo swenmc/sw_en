@@ -274,7 +274,7 @@ namespace PFD
 
             TotalTransportedMass = buildingMass;
             //defaults
-            MaxTruckLoad = 1800;
+            MaxTruckLoad = 20000; // 20 000 kg = 20 ton
             MaxItemLengthBasic = 18;
             MaxItemLengthOversize = 30;
 

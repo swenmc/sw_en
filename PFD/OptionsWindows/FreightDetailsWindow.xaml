@@ -98,11 +98,11 @@
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ID}" Header="No." Width="30" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ID}" Header="No." Width="35" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TransportType}" Header="Type" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Distance}" Header="Distance [km]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
                     <DataGridTextColumn Binding="{Binding Time}" Header="Time" Width="90" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding UnitPrice_NZD}" Header="Unit Price [NZD / km]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
+                    <DataGridTextColumn Binding="{Binding UnitPrice_NZD}" Header="Unit Price [NZD / km]" Width="75" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
                     <DataGridTextColumn Binding="{Binding TotalPrice_NZD}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
