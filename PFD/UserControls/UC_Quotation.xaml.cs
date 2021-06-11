@@ -46,7 +46,8 @@ namespace PFD
 
         //aj toto treba dat prec
         float fRollerDoorLintelFlashing_TotalLength = 0;
-        
+        bool addressValid = false;
+
         private CPFDViewModel _pfdVM;
 
         public UC_Quotation(CPFDViewModel vm)
@@ -310,6 +311,7 @@ namespace PFD
 
         private void UpdateFreightDetails()
         {
+            addressValid = false;
             string site = _pfdVM._projectInfoVM.Site;
             if (string.IsNullOrEmpty(site)) { MessageBox.Show("Address is required for freight calculations. Set project site please."); return; }
 
@@ -320,7 +322,10 @@ namespace PFD
                     GeoLocation info = new GeoLocation(site);
                     _pfdVM._freightDetailsVM.RouteSegments = info.GetRouteSegments();
 
+                    if (_pfdVM._freightDetailsVM.RouteSegments.Count == 0) return;
+
                     Infrastructure.ResponseItem item = info.Data.items.FirstOrDefault();
+                    if (item == null) return;
                     _pfdVM._freightDetailsVM.Destination = item.address.label;
                     _pfdVM._freightDetailsVM.Lat = item.position.lat;
                     _pfdVM._freightDetailsVM.Lng = item.position.lng;
@@ -329,17 +334,21 @@ namespace PFD
                 _pfdVM._freightDetailsVM.MaxItemLength = GetMaxItemLength();
                 _pfdVM._freightDetailsVM.TotalTransportedMass = _pfdVM._quotationViewModel.BuildingMass;
                 _pfdVM._freightDetailsVM.Update();
+                addressValid = true;
             }
             else
             {
                 GeoLocation info = new GeoLocation(site);
                 List<RouteSegmentsViewModel> routeSegments = info.GetRouteSegments();
+                if (routeSegments.Count == 0) return;
                 Infrastructure.ResponseItem item = info.Data.items.FirstOrDefault();
+                if (item == null) return;
                 string destination = item.address.label;
                 string lat = item.position.lat;
                 string lng = item.position.lng;
 
                 _pfdVM._freightDetailsVM = new FreightDetailsViewModel(site, _pfdVM._quotationViewModel.BuildingMass, routeSegments, destination, lat, lng, GetMaxItemLength());
+                addressValid = true;
             }
 
             if (_pfdVM._quotationDisplayOptionsVM.CalculateFreightAuto) _pfdVM._quotationViewModel.Freight = _pfdVM._freightDetailsVM.TotalFreightCost;
@@ -922,6 +931,9 @@ namespace PFD
 
         private void btnFreightDetails_Click(object sender, RoutedEventArgs e)
         {
+            string site = _pfdVM._projectInfoVM.Site;
+            if (string.IsNullOrEmpty(site)) { MessageBox.Show("Address is required for freight calculations. Set project site please."); return; }
+            if(!addressValid) { MessageBox.Show("Address is not valid. Change address format please."); return; }
             FreightDetailsWindow window = new FreightDetailsWindow(_pfdVM);
             window.ShowDialog();
         }

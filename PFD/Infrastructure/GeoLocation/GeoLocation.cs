@@ -64,10 +64,17 @@ namespace PFD.Infrastructure
 
                 RunAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
-                m_lat = Data.items.FirstOrDefault().position.lat;
-                m_lng = Data.items.FirstOrDefault().position.lng;
-
-                client.Dispose();
+                if (Data.items.FirstOrDefault() != null)
+                {
+                    m_lat = Data.items.FirstOrDefault().position.lat;
+                    m_lng = Data.items.FirstOrDefault().position.lng;
+                    client.Dispose();
+                }
+                else
+                {
+                    client.Dispose();
+                    return;
+                }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
 
