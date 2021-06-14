@@ -122,6 +122,8 @@ namespace PFD
         private bool m_DoorsAndWindowsChanged;
         private bool m_ProjectInfoChanged;
 
+        private bool m_ApplyChangesToModel;
+
         private bool m_OptionsLoaded;
 
         private float m_RoofRidgeFlashing_TotalLength;
@@ -1533,7 +1535,7 @@ namespace PFD
                 CalculateCladdingParameters_Mato();
                 //to mato a co vysledky? treba vymazat ak sa zmenil Cladding options?
                 //SetResultsAreNotValid();
-
+                
                 if (MSynchronizeGUI) NotifyPropertyChanged("CladdingOptionsChanged");
             }
         }
@@ -2303,6 +2305,21 @@ namespace PFD
                 m_ProjectInfoChanged = value;
                 IsFreightActual = false;
                 NotifyPropertyChanged("ProjectInfoChanged");
+            }
+        }
+
+        public bool ApplyChangesToModel
+        {
+            get
+            {
+                return m_ApplyChangesToModel;
+            }
+
+            set
+            {
+                m_ApplyChangesToModel = value;
+
+                if(!_modelOptionsVM.UpdateAutomatically) NotifyPropertyChanged("ApplyChangesToModel");
             }
         }
 

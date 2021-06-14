@@ -204,6 +204,7 @@ namespace PFD
             if (CladdingOptionsChanged)
             {
                 _pfdVM.CladdingOptionsChanged = true;
+                _pfdVM.ApplyChangesToModel = true;
             }
             CladdingOptionsChanged = false;
         }

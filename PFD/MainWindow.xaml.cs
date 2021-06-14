@@ -443,6 +443,10 @@ namespace PFD
             {
                 UpdateModelAndGUI();
             }
+            else if (e.PropertyName == "ApplyChangesToModel")
+            {
+                UpdateModelAndGUI();
+            }
             else if (vm.SynchronizeGUI)
             {
                 DisplayMainModel();
