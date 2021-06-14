@@ -128,7 +128,7 @@ namespace PFD
             {
                 m_MaxItemLengthOversize = value;
                 if (m_MaxItemLengthOversize < m_MaxItemLengthBasic || m_MaxItemLengthOversize > 40) throw new Exception($"Value out of range <{m_MaxItemLengthBasic}; 40>");
-                if(m_MaxItemLengthOversize < MaxItemLength) throw new Exception($"Minimal oversize length is {m_MaxItemLength} m.");
+                if(m_MaxItemLengthOversize < MaxItemLength) throw new Exception($"Minimal oversize length is {m_MaxItemLength.ToString("F3")} m.");
                 NotifyPropertyChanged("MaxItemLengthOversize");
             }
         }
@@ -368,7 +368,7 @@ namespace PFD
         {
             if (MaxItemLength > MaxItemLengthOversize)
             {
-                MessageBox.Show($"Minimal oversize length is {MaxItemLength} m. It will be changed automatically.");
+                MessageBox.Show($"Minimal oversize length is {MaxItemLength.ToString("F3")} m. It will be changed automatically.");
                 MaxItemLengthOversize = (int)Math.Ceiling(MaxItemLength);
             } 
         }

@@ -60,7 +60,15 @@ namespace PFD.Infrastructure
 
             try
             {
-                client = new HttpClient();
+                //na firemnej sieti dotazy neprechadzali cez proxy, to moze byt dost problem ked nevieme odkial pojdu dotazy na API
+                var handler = new HttpClientHandler();
+                handler.DefaultProxyCredentials = System.Net.CredentialCache.DefaultCredentials;
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                
+                //System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+                client = new HttpClient(handler, true);
+                
 
                 RunAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
@@ -80,7 +88,11 @@ namespace PFD.Infrastructure
 
             try
             {
-                clientRouting = new HttpClient();
+                var handler = new HttpClientHandler();
+                handler.DefaultProxyCredentials = System.Net.CredentialCache.DefaultCredentials;
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
+                clientRouting = new HttpClient(handler, true);
 
                 RunAsyncRouting().ConfigureAwait(false).GetAwaiter().GetResult();
 
@@ -120,7 +132,7 @@ namespace PFD.Infrastructure
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-
+            
             try
             {
                 m_data = await GetGeoResponseAsync($"?apiKey=7IG_k7xRWzWLgFG2eLDoGcu9yo-49DCPFBj1tu-aqfA&q={m_projectSite}").ConfigureAwait(false);

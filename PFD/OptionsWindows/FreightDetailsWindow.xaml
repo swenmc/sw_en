@@ -117,7 +117,7 @@
             <TextBlock Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="11" Grid.Column="2" Name="TextBox_MaxItemLength" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right" IsEnabled="False"
-                         Text="{Binding Path=MaxItemLength, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=MaxItemLength, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="11" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="m"/>
             
             <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2" Text="Maximum item length (basic):" HorizontalAlignment="Left" VerticalAlignment="Top" />
@@ -135,7 +135,7 @@
             <TextBlock Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2" Text="Total transported mass:" HorizontalAlignment="Left" VerticalAlignment="Top" />            
             <TextBox Grid.Row="14" Grid.Column="2" Name="TextBox_TotalTransportedMass" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Right" IsEnabled="False"
-                         Text="{Binding Path=TotalTransportedMass, StringFormat=F3}"/>
+                         Text="{Binding Path=TotalTransportedMass, StringFormat=F0}"/>
             <TextBlock Grid.Row="14" Grid.Column="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="kg"/>
 
             <TextBlock Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Text="Number of trucks:" HorizontalAlignment="Left" VerticalAlignment="Top" />
