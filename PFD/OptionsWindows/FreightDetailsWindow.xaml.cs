@@ -187,6 +187,8 @@ namespace PFD
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            if (!_pfdVM._freightDetailsVM.IsValid()) { MessageBox.Show("Form is not valid. Correct invalid data please."); return; }
+
             if (FreightDetailsChanged) _pfdVM._quotationViewModel.Freight = _pfdVM._freightDetailsVM.TotalFreightCost;
             this.Close();
         }

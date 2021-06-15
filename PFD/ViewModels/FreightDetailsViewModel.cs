@@ -372,5 +372,20 @@ namespace PFD
                 MaxItemLengthOversize = (int)Math.Ceiling(MaxItemLength);
             } 
         }
+
+
+        public bool IsValid()
+        {
+            if (m_MaxTruckLoad < 500 || m_MaxTruckLoad > 40000) return false;
+            if (m_MaxItemLengthBasic < 1 || m_MaxItemLengthBasic > 40) return false;
+            if (m_MaxItemLengthOversize < m_MaxItemLengthBasic || m_MaxItemLengthOversize > 40) return false;
+            if (MaxItemLength > MaxItemLengthOversize) return false;
+            
+            if (m_RoadUnitPrice1 < 2 || m_RoadUnitPrice1 > 30) return false;
+            if (m_RoadUnitPrice2 < 2 || m_RoadUnitPrice2 > 30) return false;
+            if (m_FerryUnitPrice < 2 || m_FerryUnitPrice > 30) return false;
+
+            return true;
+        }
     }
 }
