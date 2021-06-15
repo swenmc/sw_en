@@ -76,8 +76,8 @@ namespace PFD
             // To Ondrej - docasna uprava
             if (ds == null || ds.Tables == null || ds.Tables.Count == 0) return;
 
-            Datagrid_RouteSegments.ItemsSource = ds.Tables[0].AsDataView();
-            Datagrid_RouteSegments.Loaded += Datagrid_RouteSegments_Loaded;
+            Datagrid_RouteSegments.ItemsSource = ds.Tables[0].AsDataView();            
+            Datagrid_RouteSegments_Loaded();
         }
 
         public DataSet GetTableRouteSegments()
@@ -126,22 +126,25 @@ namespace PFD
                 dt.Rows.Add(row);
             }
 
-            // Last row
-            row = dt.NewRow();
-            row["ID"] = "Total:";
-            row["TransportType"] = "";
-            row["Distance"] = totalDistance;
-            row["Time"] = GetRouteDuration(totalTime);
-            row["UnitPrice_NZD"] = "";
-            row["TotalPrice_NZD"] = totalPrice;
-            dt.Rows.Add(row);
+            if (_pfdVM._freightDetailsVM.RouteSegments.Count > 1)
+            {
+                // Last row
+                row = dt.NewRow();
+                row["ID"] = "Total:";
+                row["TransportType"] = "";
+                row["Distance"] = totalDistance;
+                row["Time"] = GetRouteDuration(totalTime);
+                row["UnitPrice_NZD"] = "";
+                row["TotalPrice_NZD"] = totalPrice;
+                dt.Rows.Add(row);
+            }
 
             return ds;
         }
 
-        private void Datagrid_RouteSegments_Loaded(object sender, RoutedEventArgs e)
+        private void Datagrid_RouteSegments_Loaded()
         {
-            SetLastRowBold(Datagrid_RouteSegments);
+            if(Datagrid_RouteSegments.Items.Count > 1) SetLastRowBold(Datagrid_RouteSegments);
         }
 
         private void SetLastRowBold(DataGrid datagrid)
