@@ -189,7 +189,9 @@ namespace PFD
                         // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
                         // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
 
-                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Roof" || f.Side == "Roof-Right Side").XValues;
+                        List<float> xpositions = new List<float>();
+                        FibreglassProperties roofFG = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Roof" || f.Side == "Roof-Right Side");
+                        if(roofFG != null) xpositions = roofFG.XValues;
 
                         double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsRoofRight, xpositions, vm.RoofLength_Y);
 
