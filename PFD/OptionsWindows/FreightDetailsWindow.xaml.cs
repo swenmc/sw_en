@@ -72,12 +72,9 @@ namespace PFD
         private void CreateTableRouteSegments()
         {
             DataSet ds = GetTableRouteSegments();
-
-            // To Ondrej - docasna uprava
             if (ds == null || ds.Tables == null || ds.Tables.Count == 0) return;
 
-            Datagrid_RouteSegments.ItemsSource = ds.Tables[0].AsDataView();            
-            Datagrid_RouteSegments_Loaded();
+            Datagrid_RouteSegments.ItemsSource = ds.Tables[0].AsDataView();
         }
 
         public DataSet GetTableRouteSegments()
@@ -142,21 +139,21 @@ namespace PFD
             return ds;
         }
 
-        private void Datagrid_RouteSegments_Loaded()
-        {
-            if(Datagrid_RouteSegments.Items.Count > 1) SetLastRowBold(Datagrid_RouteSegments);
-        }
+        //private void Datagrid_RouteSegments_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    if(Datagrid_RouteSegments.Items.Count > 1) SetLastRowBold(Datagrid_RouteSegments);
+        //}
 
-        private void SetLastRowBold(DataGrid datagrid)
-        {
-            DataGridRow dtrow = (DataGridRow)datagrid.ItemContainerGenerator.ContainerFromIndex(datagrid.Items.Count - 1);
-            if (dtrow == null) return;
-            Setter bold = new Setter(TextBlock.FontWeightProperty, FontWeights.Bold, null);
-            Style newStyle = new Style(dtrow.GetType());
+        //private void SetLastRowBold(DataGrid datagrid)
+        //{
+        //    DataGridRow dtrow = (DataGridRow)datagrid.ItemContainerGenerator.ContainerFromIndex(datagrid.Items.Count - 1);
+        //    if (dtrow == null) return;
+        //    Setter bold = new Setter(TextBlock.FontWeightProperty, FontWeights.Bold, null);
+        //    Style newStyle = new Style(dtrow.GetType());
 
-            newStyle.Setters.Add(bold);
-            dtrow.Style = newStyle;
-        }
+        //    newStyle.Setters.Add(bold);
+        //    dtrow.Style = newStyle;
+        //}
 
         private string GetRouteDuration(int duration)
         {
@@ -193,5 +190,6 @@ namespace PFD
             if (FreightDetailsChanged) _pfdVM._quotationViewModel.Freight = _pfdVM._freightDetailsVM.TotalFreightCost;
             this.Close();
         }
+
     }
 }
