@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options" Height="1040" Width="800" Loaded="Window_Loaded">
+        Title="Display Options" Height="1040" Width="950" Loaded="Window_Loaded">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -15,14 +15,47 @@
 
     <Grid Name="GridMain" Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
+        <TreeView Grid.Column="0">
+            <TreeViewItem Header="GUI" IsExpanded="True">
+                <TreeViewItem Header="3D scene" IsSelected="True"></TreeViewItem>
+                <TreeViewItem Header="Joint Preview"></TreeViewItem>
+                <TreeViewItem Header="Foundation Preview"></TreeViewItem>
+                <TreeViewItem Header="Accessories Preview"></TreeViewItem>
+            </TreeViewItem>
+            <TreeViewItem Header="Report" IsExpanded="True">
+                <TreeViewItem Header="3D scene"></TreeViewItem>
+                <TreeViewItem Header="Joints"></TreeViewItem>
+                <TreeViewItem Header="Foundations"></TreeViewItem>
+            </TreeViewItem>
+            <TreeViewItem Header="Layouts" IsExpanded="True">
+                <TreeViewItem Header="3D scene"></TreeViewItem>
+                <TreeViewItem Header="Frame Views" IsExpanded="True">
+                    <TreeViewItem Header="Elevations"></TreeViewItem>
+                    <TreeViewItem Header="Roof"></TreeViewItem>
+                    <TreeViewItem Header="Frames"></TreeViewItem>
+                    <TreeViewItem Header="Columns"></TreeViewItem>
+                    <TreeViewItem Header="Foundations"></TreeViewItem>
+                    <TreeViewItem Header="Floor"></TreeViewItem>
+                </TreeViewItem>
+                <TreeViewItem Header="Cladding Views" IsExpanded="True">
+                    <TreeViewItem Header="Elevations"></TreeViewItem>
+                    <TreeViewItem Header="Roof"></TreeViewItem>                    
+                </TreeViewItem>
+                <TreeViewItem Header="Joints"></TreeViewItem>
+                <TreeViewItem Header="Foundations"></TreeViewItem>
+            </TreeViewItem>
+            
+            
+        </TreeView>
 
-        <TabControl Margin="5,5,0,0" Name="MainTabControl">
+        <TabControl Grid.Column="1" Margin="5,5,0,0" Name="MainTabControl">
             <TabItem Name ="General">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -1144,7 +1177,7 @@
             </TabItem>
 
         </TabControl>
-        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
             <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
         </StackPanel>
     </Grid>
