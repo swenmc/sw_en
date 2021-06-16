@@ -857,6 +857,31 @@ namespace BaseClasses
         Fibreglass = 3
     }
 
+    public enum EDisplayOptionsTypes
+    {
+        GUI_3D_Scene = 0,
+        GUI_Joint_Preview = 1,
+        GUI_Foundation_Preview = 2,
+        GUI_Accessories_Preview = 3,
+
+        Report_3DScene = 4,
+        Report_Joints = 5,
+        Report_Foundations = 6,
+
+        Layouts_3D_Scene = 7,
+        Layouts_FW_Elevations = 8,
+        Layouts_FW_Roof = 9,
+        Layouts_FW_Frames = 10,
+        Layouts_FW_Columns = 11,
+        Layouts_FW_Foundations = 12,
+        Layouts_FW_Floor = 13,
+        Layouts_CW_Elevations = 14,
+        Layouts_CW_Roof = 15,
+        Layouts_Joints = 16,
+        Layouts_Foundations = 17
+    }
+
+
     public enum EFlashingType
     {
         RoofRidge = 1, 
