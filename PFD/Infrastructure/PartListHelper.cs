@@ -167,6 +167,8 @@ namespace PFD
                     iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji fibreglass sheet, pre susediace fibreglass sheets sa zapocitava spolocna hrana len raz
                     dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
 
+                    int iNumberLapstitchFixingPoints_Perpendicular = 0; // Priecne medzi fibreglass sheet a cladding sheets alebo medzi viacerymi fibreglass sheets
+
                     if (cladding.HasFibreglassSheets_RoofRight())
                     {
                         foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsRoofRight)
@@ -179,6 +181,9 @@ namespace PFD
                                 supportBracketBetweenPurlinsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                 iNumberOfSupportBracketBetweenPurlinsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 + 2); // Pridany jeden bod pre koncove rebro FG + 2 pre rebra cladding sheet
                                 dLapFoamPacker_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                                // TODO - priblizne - nezohladnuje ze pre FG za sebou sa ma uvazovat len raz, nezohladnuje ze kraje su zaratane v longitudinal lapstitch
+                                //double dWidthForOverlap = cladding.GetSheet_OverlappingWidth(sheet, vm.RoofSideLength); // Sirka fibreglass sheets, kde sa stykaju s cladding sheets alebo s inymi fibreglass sheets
+                                iNumberLapstitchFixingPoints_Perpendicular += cladding.GetSheet_OverlappingWidthFixingPoints(sheet, vm.RoofSideLength);
                             }
                         }
 
@@ -213,6 +218,9 @@ namespace PFD
                                 supportBracketBetweenPurlinsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
                                 iNumberOfSupportBracketBetweenPurlinsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 + 2); // Pridany jeden bod pre koncove rebro FG + 2 pre rebra cladding sheet
                                 dLapFoamPacker_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                                // TODO - priblizne - nezohladnuje ze pre FG za sebou sa ma uvazovat len raz, nezohladnuje ze kraje su zaratane v longitudinal lapstitch
+                                //double dWidthForOverlap = cladding.GetSheet_OverlappingWidth(sheet, vm.RoofSideLength); // Sirka fibreglass sheets, kde sa stykaju s cladding sheets alebo s inymi fibreglass sheets
+                                iNumberLapstitchFixingPoints_Perpendicular += cladding.GetSheet_OverlappingWidthFixingPoints(sheet, vm.RoofSideLength);
                             }
                         }
 
@@ -240,18 +248,22 @@ namespace PFD
 
                     iNumberOfFixingPoints = iNumberOfFixingPoints2; // Pouzijeme vysledky zo sheets
 
-                    // Crown roof fixing
-                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints, "Roof Fibreglass");
-                    claddingAccessoriesItems_Piece.Add(itemPiece);
+                    // Zobrazime len ak je pocet vacsi ako 0, to znamena ze aspon jeden fibreglass sheet je dlhsi nez purlin spacing
+                    if (cladding.GetMaxItemLength_RoofFibreglass() > vm.PurlinDistance)
+                    {
+                        // Crown roof fixing
+                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx115 (plastic profile washer and galvanized cap)", iNumberOfFixingPoints, "Roof Fibreglass");
+                        claddingAccessoriesItems_Piece.Add(itemPiece);
+                    }
 
-                    // Lapstitch fixing
+                    // Lapstitch fixing - longitudinal
                     itemPiece = new CCladdingAccessories_Item_Piece("Lapstitch with TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints, "Roof Fibreglass");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
 
                     // Protection strip
                     double fLengthProtectionstrip = iNumberOfFixingPoints2 * ribWidthRoof;
 
-                    // CAccessories_LengthItemProperties - asi by bolo dobre pouzit
+                    // Fibreglass protection strip
                     itemLength = new CCladdingAccessories_Item_Length("Fibreglass protection strip 80 mm wide", fLengthProtectionstrip);
                     claddingAccessoriesItems_Length.Add(itemLength);
 
@@ -331,6 +343,10 @@ namespace PFD
                         itemPiece = new CCladdingAccessories_Item_Piece("Apex brace wafer TEK screw 10g", iNumberOfFixingPoints);
                         claddingAccessoriesItems_Piece.Add(itemPiece);
                     }
+
+                    // Pan fibreglass sheet fixing to the cladding - perpendicular
+                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints_Perpendicular, "Roof Fibreglass");
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
                 }
 
                 // 17 - Barge
@@ -723,9 +739,9 @@ namespace PFD
                     int iNumberOfSupportBracketBetweenGirtsFixingPoints = 0;
                     int iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints = 0; // 12gx20 - 4 pcs per bracket
 
-                    if (vm.Model.fDist_Purlin <= 1.8)
+                    if (vm.Model.fDist_Girt <= 1.8)
                         iNumberOfSupportBracketBetweenGirts = 0;
-                    if (vm.Model.fDist_Purlin <= 5.4)
+                    if (vm.Model.fDist_Girt <= 3.0)
                         iNumberOfSupportBracketBetweenGirts = 1;
                     else
                         iNumberOfSupportBracketBetweenGirts = 2;
@@ -742,180 +758,199 @@ namespace PFD
                     // Pridavok
                     iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 0.700f); // Navysime pocet o rezervu
 
-                    if (vm._modelOptionsVM.IndividualCladdingSheets)
+                    // Sposob B
+
+                    int iNumberOfFixingPoints2 = 0;
+                    iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji fibreglass sheet, pre susediace fibreglass sheets sa zapocitava spolocna hrana len raz
+                    dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
+
+                    int iNumberLapstitchFixingPoints_Perpendicular = 0; // Priecne medzi fibreglass sheet a cladding sheets alebo medzi viacerymi fibreglass sheets
+
+                    if (cladding.HasFibreglass_WallLeft())
                     {
-                        // Sposob B
-
-                        int iNumberOfFixingPoints2 = 0;
-                        iNumberLapstitchFixingPoints = 0; // Pozdlzne na okraji fibreglass sheet, pre susediace fibreglass sheets sa zapocitava spolocna hrana len raz
-                        dLapstitchFixingPointsSpacing = 0.6; // TODO napojit na DB - hodnota je v DB
-
-                        if (cladding.HasFibreglass_WallLeft())
+                        foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsWallLeft)
                         {
-                            foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsWallLeft)
+                            if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
                             {
-                                if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
-                                {
-                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
-                                    //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
-                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
-                                    iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
-                                    supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
-                                    iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
-                                    dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
-                                }
+                                iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
+                                iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
+                                supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                                iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
+                                dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                                // TODO - priblizne - nezohladnuje ze pre FG za sebou sa ma uvazovat len raz, nezohladnuje ze kraje su zaratane v longitudinal lapstitch
+                                //double dWidthForOverlap = cladding.GetSheet_OverlappingWidth(sheet, vm.); // Sirka fibreglass sheets, kde sa stykaju s cladding sheets alebo s inymi fibreglass sheets
+                                iNumberLapstitchFixingPoints_Perpendicular += profileFactor * cladding.GetSheet_OverlappingWidthFixingPoints(sheet, vm.Height_1_final_edge_FB_Wall);
                             }
-
-                            // Spocitam celkovu maximalnu dlzku
-                            double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsWallLeft.Sum(item => item.LengthTotal);
-
-                            // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
-                            // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
-                            // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
-
-                            List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Left").XValues;
-
-                            double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsWallLeft, xpositions, vm.LengthOverall);
-
-                            // Tuto dlzku odpocitame od dLapstitchLengthTotal
-                            dLapstitchLengthTotal -= dIntersectionLengthTotal;
-                            // Spocitame pocet lapstitch fixing points - body kde su spojene jednotlive fibreglass sheets a cladding sheets alebo dva fibreglass sheets
-                            iNumberLapstitchFixingPoints += (int)(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
                         }
 
-                        if (cladding.HasFibreglass_WallFront())
-                        {
-                            foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsWallFront)
-                            {
-                                if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
-                                {
-                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
-                                    //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
-                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
-                                    iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
-                                    supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
-                                    iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
-                                    dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
-                                }
-                            }
+                        // Spocitam celkovu maximalnu dlzku
+                        double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsWallLeft.Sum(item => item.LengthTotal);
 
-                            // Spocitam celkovu maximalnu dlzku
-                            double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsWallFront.Sum(item => item.LengthTotal);
+                        // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
+                        // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
+                        // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
 
-                            // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
-                            // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
-                            // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
+                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Left").XValues;
 
-                            List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Front").XValues;
+                        double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsWallLeft, xpositions, vm.LengthOverall);
 
-                            double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsWallFront, xpositions, vm.WidthOverall);
-
-                            // Tuto dlzku odpocitame od dLapstitchLengthTotal
-                            dLapstitchLengthTotal -= dIntersectionLengthTotal;
-                            // Spocitame pocet lapstitch fixing points - body kde su spojene jednotlive fibreglass sheets a cladding sheets alebo dva fibreglass sheets
-                            iNumberLapstitchFixingPoints += (int)(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
-                        }
-
-                        if (cladding.HasFibreglass_WallRight())
-                        {
-                            foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsWallRight)
-                            {
-                                if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
-                                {
-                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
-                                    //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
-                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
-                                    iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
-                                    supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
-                                    iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
-                                    dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
-                                }
-                            }
-
-                            // Spocitam celkovu maximalnu dlzku
-                            double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsWallRight.Sum(item => item.LengthTotal);
-
-                            // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
-                            // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
-                            // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
-
-                            List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Right").XValues;
-
-                            double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsWallRight, xpositions, vm.LengthOverall);
-
-                            // Tuto dlzku odpocitame od dLapstitchLengthTotal
-                            dLapstitchLengthTotal -= dIntersectionLengthTotal;
-                            // Spocitame pocet lapstitch fixing points - body kde su spojene jednotlive fibreglass sheets a cladding sheets alebo dva fibreglass sheets
-                            iNumberLapstitchFixingPoints += (int)(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
-                        }
-
-                        if (cladding.HasFibreglass_WallBack())
-                        {
-                            foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsWallBack)
-                            {
-                                if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
-                                {
-                                    iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
-                                    //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
-                                    int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
-                                    iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
-                                    supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
-                                    iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
-                                    dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
-                                }
-                            }
-
-                            // Spocitam celkovu maximalnu dlzku
-                            double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsWallBack.Sum(item => item.LengthTotal);
-
-                            // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
-                            // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
-                            // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
-
-                            List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Back").XValues;
-
-                            double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsWallBack, xpositions, vm.WidthOverall);
-
-                            // Tuto dlzku odpocitame od dLapstitchLengthTotal
-                            dLapstitchLengthTotal -= dIntersectionLengthTotal;
-                            // Spocitame pocet lapstitch fixing points - body kde su spojene jednotlive fibreglass sheets a cladding sheets alebo dva fibreglass sheets
-                            iNumberLapstitchFixingPoints += (int)(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
-                        }
-
-                        // Kontrola - priblizna
-                        if (vm.debugging && !MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
-                        {
-                            // Exception
-                            throw new Exception("Algorithm error. Different count of items!");
-                        }
-
-                        iNumberOfFixingPoints = iNumberOfFixingPoints2; // Pouzijeme vysledky zo sheets
-
-                        // Lapstitch fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("Lap stitching TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints, "Wall Fibreglass");
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                        // Support bracket
-                        itemPiece = new CCladdingAccessories_Item_Piece("U bracket 40x30x1400 - 1 mm", (int)(supportBracketBetweenGirtsLengthTotal / 1.4) + 1, "Wall Fibreglass Support Bracket");
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                        // Support bracket fixing
-                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo and bonded washer)", iNumberOfSupportBracketBetweenGirtsFixingPoints, "Wall Fibreglass Support Bracket");
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                        // Support bracket fixing to cladding
-                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo washer)", iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints, "Wall Fibreglass Support Bracket");
-                        claddingAccessoriesItems_Piece.Add(itemPiece);
-
-                        // 24 - Cladding lap
-
-                        // Silicone sealant bead
-                        itemLength = new CCladdingAccessories_Item_Length("Silicone sealant bead", dLapSealantBead_TotalLength);
-                        claddingAccessoriesItems_Length.Add(itemLength);
+                        // Tuto dlzku odpocitame od dLapstitchLengthTotal
+                        dLapstitchLengthTotal -= dIntersectionLengthTotal;
+                        // Spocitame pocet lapstitch fixing points - body kde su spojene jednotlive fibreglass sheets a cladding sheets alebo dva fibreglass sheets
+                        iNumberLapstitchFixingPoints += (int)(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
                     }
 
-                    // Pan fibreglass sheet fixing
-                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo and bonded washer)", iNumberOfFixingPoints, "Wall Fibreglass");
+                    if (cladding.HasFibreglass_WallFront())
+                    {
+                        foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsWallFront)
+                        {
+                            if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
+                            {
+                                iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
+                                iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
+                                supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                                iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
+                                dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                                // TODO - priblizne - nezohladnuje ze pre FG za sebou sa ma uvazovat len raz, nezohladnuje ze kraje su zaratane v longitudinal lapstitch
+                                //double dWidthForOverlap = cladding.GetSheet_OverlappingWidth(sheet, vm.); // Sirka fibreglass sheets, kde sa stykaju s cladding sheets alebo s inymi fibreglass sheets
+                                iNumberLapstitchFixingPoints_Perpendicular += profileFactor * cladding.GetSheet_OverlappingWidthFixingPoints(sheet, vm.Height_1_final_edge_FB_Wall);
+                            }
+                        }
+
+                        // Spocitam celkovu maximalnu dlzku
+                        double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsWallFront.Sum(item => item.LengthTotal);
+
+                        // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
+                        // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
+                        // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
+
+                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Front").XValues;
+
+                        double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsWallFront, xpositions, vm.WidthOverall);
+
+                        // Tuto dlzku odpocitame od dLapstitchLengthTotal
+                        dLapstitchLengthTotal -= dIntersectionLengthTotal;
+                        // Spocitame pocet lapstitch fixing points - body kde su spojene jednotlive fibreglass sheets a cladding sheets alebo dva fibreglass sheets
+                        iNumberLapstitchFixingPoints += (int)(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
+                    }
+
+                    if (cladding.HasFibreglass_WallRight())
+                    {
+                        foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsWallRight)
+                        {
+                            if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
+                            {
+                                iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
+                                iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
+                                supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                                iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
+                                dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                                // TODO - priblizne - nezohladnuje ze pre FG za sebou sa ma uvazovat len raz, nezohladnuje ze kraje su zaratane v longitudinal lapstitch
+                                //double dWidthForOverlap = cladding.GetSheet_OverlappingWidth(sheet, vm.); // Sirka fibreglass sheets, kde sa stykaju s cladding sheets alebo s inymi fibreglass sheets
+                                iNumberLapstitchFixingPoints_Perpendicular += profileFactor * cladding.GetSheet_OverlappingWidthFixingPoints(sheet, vm.Height_1_final_edge_FB_Wall);
+                            }
+                        }
+
+                        // Spocitam celkovu maximalnu dlzku
+                        double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsWallRight.Sum(item => item.LengthTotal);
+
+                        // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
+                        // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
+                        // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
+
+                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Right").XValues;
+
+                        double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsWallRight, xpositions, vm.LengthOverall);
+
+                        // Tuto dlzku odpocitame od dLapstitchLengthTotal
+                        dLapstitchLengthTotal -= dIntersectionLengthTotal;
+                        // Spocitame pocet lapstitch fixing points - body kde su spojene jednotlive fibreglass sheets a cladding sheets alebo dva fibreglass sheets
+                        iNumberLapstitchFixingPoints += (int)(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
+                    }
+
+                    if (cladding.HasFibreglass_WallBack())
+                    {
+                        foreach (CCladdingOrFibreGlassSheet sheet in cladding.listOfFibreGlassSheetsWallBack)
+                        {
+                            if (sheet.LengthTotal_Real > dLimitSheetLengthToConsider && sheet.Width > dLimitSheetWidthToConsider)
+                            {
+                                iNumberOfFixingPoints2 += profileFactor * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt)/* + 1*/) * ((int)(sheet.Width / sheet.CladdingWidthRibModular)/* + 1*/);
+                                //iNumberLapstitchFixingPoints += 2 * (int)(sheet.LengthTotal / dLapstitchFixingPointsSpacing);
+                                int iNumberOfSupportBracketsPerSheet = iNumberOfSupportBracketBetweenGirts * ((int)(sheet.LengthTotal / vm.Model.fDist_Girt) + 1);
+                                iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints += 4 * iNumberOfSupportBracketsPerSheet;
+                                supportBracketBetweenGirtsLengthTotal += iNumberOfSupportBracketsPerSheet * sheet.Width;
+                                iNumberOfSupportBracketBetweenGirtsFixingPoints += iNumberOfSupportBracketsPerSheet * ((int)(sheet.Width / sheet.CladdingWidthRibModular) + 1); // Pridany jeden bod pre koncove rebro FG
+                                dLapSealantBead_TotalLength += sheet.Width / sheet.BasicModularWidth * sheet.CoilOrFlatSheetWidth;
+                                // TODO - priblizne - nezohladnuje ze pre FG za sebou sa ma uvazovat len raz, nezohladnuje ze kraje su zaratane v longitudinal lapstitch
+                                //double dWidthForOverlap = cladding.GetSheet_OverlappingWidth(sheet, vm.); // Sirka fibreglass sheets, kde sa stykaju s cladding sheets alebo s inymi fibreglass sheets
+                                iNumberLapstitchFixingPoints_Perpendicular += profileFactor * cladding.GetSheet_OverlappingWidthFixingPoints(sheet, vm.Height_1_final_edge_FB_Wall);
+                            }
+                        }
+
+                        // Spocitam celkovu maximalnu dlzku
+                        double dLapstitchLengthTotal = 2 * cladding.listOfFibreGlassSheetsWallBack.Sum(item => item.LengthTotal);
+
+                        // Pre kazdu poziciu X a RoofLength_Y prejdeme sheets ktore v danom X koncia a ktore zacinaju 
+                        // Vytvorime si nejaky zoznam intervalov Y kde sheet zacina a konci
+                        // V danom mieste X porovname tieto intervaly a zistime na akej dlzke sa vzajomne prekryvaju
+
+                        List<float> xpositions = vm._claddingOptionsVM.FibreglassProperties.FirstOrDefault(f => f.Side == "Back").XValues;
+
+                        double dIntersectionLengthTotal = cladding.GetSheetCollectionLongitudinalIntersectionLength(cladding.listOfFibreGlassSheetsWallBack, xpositions, vm.WidthOverall);
+
+                        // Tuto dlzku odpocitame od dLapstitchLengthTotal
+                        dLapstitchLengthTotal -= dIntersectionLengthTotal;
+                        // Spocitame pocet lapstitch fixing points - body kde su spojene jednotlive fibreglass sheets a cladding sheets alebo dva fibreglass sheets
+                        iNumberLapstitchFixingPoints += (int)(dLapstitchLengthTotal / dLapstitchFixingPointsSpacing);
+                    }
+
+                    // Kontrola - priblizna
+                    if (vm.debugging && !MathF.i_approxequal(iNumberOfFixingPoints, iNumberOfFixingPoints2, 25))
+                    {
+                        // Exception
+                        throw new Exception("Algorithm error. Different count of items!");
+                    }
+
+                    iNumberOfFixingPoints = iNumberOfFixingPoints2; // Pouzijeme vysledky zo sheets
+
+                    // Zobrazime len ak je pocet vacsi ako 0, to znamena ze aspon jeden fibreglass sheet je dlhsi nez girt spacing
+                    if (cladding.GetMaxItemLength_WallFibreglass() > vm.GirtDistance)
+                    {
+                        // Pan fibreglass sheet fixing to the girt or bracket
+                        itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo and bonded washer)", iNumberOfFixingPoints, "Wall Fibreglass");
+                        claddingAccessoriesItems_Piece.Add(itemPiece);
+                    }
+
+                    // Lapstitch fixing - longitudinal
+                    itemPiece = new CCladdingAccessories_Item_Piece("Lap stitching TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints, "Wall Fibreglass to Cladding");
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                    // Support bracket
+                    itemPiece = new CCladdingAccessories_Item_Piece("U bracket 40x30x1400 - 1 mm", (int)(supportBracketBetweenGirtsLengthTotal / 1.4) + 1, "Wall Fibreglass Support Bracket");
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                    // Support bracket fixing
+                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo and bonded washer)", iNumberOfSupportBracketBetweenGirtsFixingPoints, "Wall Fibreglass Support Bracket");
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                    // Support bracket fixing to cladding
+                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo washer)", iNumberOfSupportBracketBetweenGirtsToCladdingFixingPoints, "Wall Fibreglass Support Bracket");
+                    claddingAccessoriesItems_Piece.Add(itemPiece);
+
+                    // 24 - Cladding lap
+
+                    // Silicone sealant bead
+                    itemLength = new CCladdingAccessories_Item_Length("Silicone sealant bead", dLapSealantBead_TotalLength);
+                    claddingAccessoriesItems_Length.Add(itemLength);
+
+                    // Pan fibreglass sheet fixing to the cladding
+                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 12gx20 (neo washer)", iNumberLapstitchFixingPoints_Perpendicular, "Wall Fibreglass to Cladding");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
                 }
 
@@ -1123,6 +1158,5 @@ namespace PFD
 
             return ds;
         }
-
     }
 }

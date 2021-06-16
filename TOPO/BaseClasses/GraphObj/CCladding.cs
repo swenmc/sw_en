@@ -2532,6 +2532,84 @@ namespace BaseClasses.GraphObj
             }
             return maxLen;
         }
+
+        public double GetMaxItemLength_RoofFibreglass()
+        {
+            double maxLen = 0;
+            foreach (CCladdingOrFibreGlassSheet sheet in GetFibreglassSheets_Roof())
+            {
+                if (maxLen < sheet.LengthTotal_Real) maxLen = sheet.LengthTotal_Real;
+            }
+            return maxLen;
+        }
+
+        public double GetMaxItemLength_WallFibreglass()
+        {
+            double maxLen = 0;
+            foreach (CCladdingOrFibreGlassSheet sheet in GetFibreglassSheets_Wall())
+            {
+                if (maxLen < sheet.LengthTotal_Real) maxLen = sheet.LengthTotal_Real;
+            }
+            return maxLen;
+        }
+
+        public double GetSheet_OverlappingWidth(CCladdingOrFibreGlassSheet sheet, double side_length)
+        {
+            // Funkcia vrati kontaktnu sirku pre sheet, ktory je v kontakte s inym sheet
+            // To znamena ze do sirky sa nezahrna rozmer width ak je zaciatok alebo koniec na okraji strechy alebo steny
+            // Defaultne je width pre overlap 2x width
+            double dLimitLength = 0.001; // 1 mm
+
+            double doverlapwidth = 2 * sheet.Width;
+
+            if (sheet.Width > sheet.CladdingWidthRibModular)
+            {
+                // End without overlap with other sheet - edge of side
+                if (MathF.d_equal(sheet.CoordinateInPlane_y + sheet.LengthTotal, side_length, dLimitLength))
+                    doverlapwidth -= sheet.Width;
+
+                // Start without overlap with other sheet - edge of side
+                if (MathF.d_equal(sheet.CoordinateInPlane_y, 0, dLimitLength))
+                    doverlapwidth -= sheet.Width;
+
+                // Podmienka neplati ak su na cladding sheet len 2 rebra
+                if (sheet.HasOverlap && MathF.d_equal(doverlapwidth, 0.0001))
+                    throw new Exception("Incompatible sheet properties."); // Overlap width nie je nulova ale sheet ma overlap = true ????
+
+                return doverlapwidth;
+            }
+            else
+                return 0;
+        }
+
+        public int GetSheet_OverlappingWidthFixingPoints(CCladdingOrFibreGlassSheet sheet, double side_length)
+        {
+            // Funkcia vrati kontaktnu sirku pre sheet, ktory je v kontakte s inym sheet
+            // To znamena ze do sirky sa nezahrna rozmer width ak je zaciatok alebo koniec na okraji strechy alebo steny
+            // Defaultne je width pre overlap 2x width
+            double dLimitLength = 0.001; // 1 mm
+
+            int doverlapwidthFixingPoints = 2 * Math.Max(0, (int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 - 2);
+
+            if (sheet.Width > sheet.CladdingWidthRibModular)
+            {
+                // End without overlap with other sheet - edge of side
+                if (MathF.d_equal(sheet.CoordinateInPlane_y + sheet.LengthTotal, side_length, dLimitLength))
+                    doverlapwidthFixingPoints -= Math.Max(0, (int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 - 2);
+
+                // Start without overlap with other sheet - edge of side
+                if (MathF.d_equal(sheet.CoordinateInPlane_y, 0, dLimitLength))
+                    doverlapwidthFixingPoints -= Math.Max(0, (int)(sheet.Width / sheet.CladdingWidthRibModular) + 1 - 2);
+
+                // Podmienka neplati ak su na cladding sheet len 2 rebra
+                if (sheet.HasOverlap && doverlapwidthFixingPoints < 1)
+                    throw new Exception("Incompatible sheet properties."); // Overlap width fixing points je nula ale sheet ma overlap = true ????
+
+                return doverlapwidthFixingPoints;
+            }
+            else
+                return 0;
+        }
     }
 
     public class CInterval

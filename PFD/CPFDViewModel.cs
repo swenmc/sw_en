@@ -3447,7 +3447,6 @@ namespace PFD
             return sDisplayOptions;
         }
 
-        // TODO 841 - pokus
         public float GetRidgeFibreglassEdgeCap_Length()
         {
             if (MKitsetTypeIndex == (int)EModelType_FS.eKitsetMonoRoofEnclosed || !Model.m_arrGOCladding[0].HasFibreglassSheets_Roof())
