@@ -53,8 +53,8 @@ namespace PFD
         public DisplayOptionsAllViewModel()
         {
             IsSetFromCode = true;
-            
 
+            CreateAllViewModelsWithDefaults();
 
             IsSetFromCode = false;
         }
@@ -75,6 +75,28 @@ namespace PFD
             IsSetFromCode = false;
         }
 
-        
+
+        private void CreateAllViewModelsWithDefaults()
+        {
+            m_DisplayOptionsList = new List<DisplayOptionsViewModel>();
+
+            for (int i = 0; i <= (int)EDisplayOptionsTypes.Layouts_Foundations; i++)
+            {
+                m_DisplayOptionsList.Add(new DisplayOptionsViewModel());
+            }
+
+            InitViewModelsDefaults();
+        }
+
+        private void InitViewModelsDefaults()
+        {
+            //TODO Mato - 701
+            //tu sa budu nastavovat defaulty pre vsetky displayOptions
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LightAmbient = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LightAmbient = true;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].LightAmbient = true;
+
+        }
+
     }
 }

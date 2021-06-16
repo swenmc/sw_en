@@ -63,8 +63,8 @@ namespace PFD
             {
                 if (MemberOptionsChanged)
                 {
-                    if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPosition) _pfdVM._componentVM.SetColorsAccordingToPosition();
-                    else if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPrefix) _pfdVM._componentVM.SetColorsAccordingToPrefixes();                    
+                    if(_pfdVM._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPosition) _pfdVM._componentVM.SetColorsAccordingToPosition();
+                    else if(_pfdVM._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPrefix) _pfdVM._componentVM.SetColorsAccordingToPrefixes();                    
                 }
 
                 _pfdVM.RecreateModel = RecreateModelRequired;
