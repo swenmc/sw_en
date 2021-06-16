@@ -22,34 +22,34 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <TreeView Grid.Column="0">
+        <TreeView Name="MainTreeView"  Grid.Column="0" SelectedItemChanged="MainTreeView_SelectedItemChanged">
             <TreeViewItem Header="GUI" IsExpanded="True">
-                <TreeViewItem Header="3D scene" IsSelected="True"></TreeViewItem>
-                <TreeViewItem Header="Joint Preview"></TreeViewItem>
-                <TreeViewItem Header="Foundation Preview"></TreeViewItem>
-                <TreeViewItem Header="Accessories Preview"></TreeViewItem>
+                <TreeViewItem Name="twiGUI_3D_scene" Header="3D scene" IsSelected="True"></TreeViewItem>
+                <TreeViewItem Name="twiGUI_Joint_Preview" Header="Joint Preview"></TreeViewItem>
+                <TreeViewItem Name="twiGUI_Foundation_Preview" Header="Foundation Preview"></TreeViewItem>
+                <TreeViewItem Name="twiGUI_Accessories_Preview" Header="Accessories Preview"></TreeViewItem>
             </TreeViewItem>
             <TreeViewItem Header="Report" IsExpanded="True">
-                <TreeViewItem Header="3D scene"></TreeViewItem>
-                <TreeViewItem Header="Joints"></TreeViewItem>
-                <TreeViewItem Header="Foundations"></TreeViewItem>
+                <TreeViewItem Name="twiReport_3D_scene" Header="3D scene"></TreeViewItem>
+                <TreeViewItem Name="twiReport_Joints" Header="Joints"></TreeViewItem>
+                <TreeViewItem Name="twiReport_Foundations" Header="Foundations"></TreeViewItem>
             </TreeViewItem>
             <TreeViewItem Header="Layouts" IsExpanded="True">
-                <TreeViewItem Header="3D scene"></TreeViewItem>
+                <TreeViewItem Name="twiLayouts_3D_scene" Header="3D scene"></TreeViewItem>
                 <TreeViewItem Header="Frame Views" IsExpanded="True">
-                    <TreeViewItem Header="Elevations"></TreeViewItem>
-                    <TreeViewItem Header="Roof"></TreeViewItem>
-                    <TreeViewItem Header="Frames"></TreeViewItem>
-                    <TreeViewItem Header="Columns"></TreeViewItem>
-                    <TreeViewItem Header="Foundations"></TreeViewItem>
-                    <TreeViewItem Header="Floor"></TreeViewItem>
+                    <TreeViewItem Name="twiLayouts_FW_Elevations" Header="Elevations"></TreeViewItem>
+                    <TreeViewItem Name="twiLayouts_FW_Roof" Header="Roof"></TreeViewItem>
+                    <TreeViewItem Name="twiLayouts_FW_Frames" Header="Frames"></TreeViewItem>
+                    <TreeViewItem Name="twiLayouts_FW_Columns" Header="Columns"></TreeViewItem>
+                    <TreeViewItem Name="twiLayouts_FW_Foundations" Header="Foundations"></TreeViewItem>
+                    <TreeViewItem Name="twiLayouts_FW_Floor" Header="Floor"></TreeViewItem>
                 </TreeViewItem>
                 <TreeViewItem Header="Cladding Views" IsExpanded="True">
-                    <TreeViewItem Header="Elevations"></TreeViewItem>
-                    <TreeViewItem Header="Roof"></TreeViewItem>                    
+                    <TreeViewItem Name="twiLayouts_CW_Elevations" Header="Elevations"></TreeViewItem>
+                    <TreeViewItem Name="twiLayouts_CW_Roof" Header="Roof"></TreeViewItem>                    
                 </TreeViewItem>
-                <TreeViewItem Header="Joints"></TreeViewItem>
-                <TreeViewItem Header="Foundations"></TreeViewItem>
+                <TreeViewItem Name="twiLayouts_Joints" Header="Joints"></TreeViewItem>
+                <TreeViewItem Name="twiLayouts_Foundations" Header="Foundations"></TreeViewItem>
             </TreeViewItem>
             
             

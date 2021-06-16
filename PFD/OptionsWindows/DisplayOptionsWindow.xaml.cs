@@ -32,7 +32,7 @@ namespace PFD
             
             pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
             
-            this.DataContext = pfdVM._displayOptionsVM;
+            this.DataContext = pfdVM._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene];
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
@@ -40,6 +40,10 @@ namespace PFD
         private void HandleDisplayOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
+            if (sender is DisplayOptionsAllViewModel)
+            {
+
+            }
             if (sender is DisplayOptionsViewModel)
             {
                 if (e.PropertyName == "DisplayCladding" || e.PropertyName == "DisplayDoors" || e.PropertyName == "DisplayWindows" ||
@@ -80,6 +84,37 @@ namespace PFD
             //radioColorsIn3DMembers.IsChecked = _pfdVM._displayOptionsVM.ColorsAccordingToMembers;
 
 
+        }
+
+        private void MainTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            MessageBox.Show(((TreeViewItem)e.NewValue).Header.ToString());
+
+            int selectedIndex = 0;            
+
+            switch (((TreeViewItem)e.NewValue).Name.ToString())
+            {
+                case "twiGUI_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.GUI_3D_Scene; break;
+                case "twiGUI_Joint_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Joint_Preview; break;
+                case "twiGUI_Foundation_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Foundation_Preview; break;
+                case "twiGUI_Accessories_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Accessories_Preview; break;
+                case "twiReport_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Report_3DScene; break;
+                case "twiReport_Joints": selectedIndex = (int)EDisplayOptionsTypes.Report_Joints; break;
+                case "twiReport_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Report_Foundations; break;
+                case "twiLayouts_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_3D_Scene; break;
+                case "twiLayouts_FW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Elevations; break;
+                case "twiLayouts_FW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Roof; break;
+                case "twiLayouts_FW_Frames": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Frames; break;
+                case "twiLayouts_FW_Columns": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Columns; break;
+                case "twiLayouts_FW_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Foundations; break;
+                case "twiLayouts_FW_Floor": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Floor; break;
+                case "twiLayouts_CW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Elevations; break;
+                case "twiLayouts_CW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Roof; break;
+                case "twiLayouts_Joints": selectedIndex = (int)EDisplayOptionsTypes.Layouts_Joints; break;
+                case "twiLayouts_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_Foundations; break;                
+            }
+
+            this.DataContext = _pfdVM._displayOptionsVM.DisplayOptionsList[selectedIndex];            
         }
     }
 }
