@@ -302,7 +302,8 @@ namespace PFD
                             // 16 - Infill ridge
 
                             // TEK screws 14gx115
-                            itemPiece = new CCladdingAccessories_Item_Piece("Apex ridge flashing TEK screw 14gx115  (neo washer)", iNumberOfFixingPoints, "Infill Ridge");
+                            // Without galvanized cap and plastic washer
+                            itemPiece = new CCladdingAccessories_Item_Piece("Apex ridge flashing TEK screw 14gx115 (neo washer)", iNumberOfFixingPoints, "Infill Ridge");
                             claddingAccessoriesItems_Piece.Add(itemPiece);
 
                             // Plastic ridge blocks
@@ -345,6 +346,7 @@ namespace PFD
                 int iNumberOfGutterFixingPoints = 0;
                 double dEavePurlinBirdProofFixingPointSpacing = 1; // DB
                 int iNumberEavePurlinBirdProofFixingPoints = 0;
+                int iNumberEavePurlinBirdProofPlasticBlockCount = 0;
 
                 int iRoofSidesCount = 0;
 
@@ -356,13 +358,13 @@ namespace PFD
                     {
                         // Pocet prvkov fixing bez canopies
                         iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
-                        iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
+                        iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Max(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
 
                         if (vm._modelOptionsVM.EnableCanopies && vm._canopiesOptionsVM.HasCanopies())
                         {
                             // Pocet prvkov fixing vratane canopies
                             iNumberOfFixingPoints = 2 * (int)(vm.BargeFlashing_TotalLength / dBargeflashingFixingSpacing); // Top and bottom
-                            iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, (int)(vm.BargeFlashing_TotalLength / dFixingPointsBargeCladdingSheetEdge));
+                            iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Max(2, (int)(vm.BargeFlashing_TotalLength / dFixingPointsBargeCladdingSheetEdge));
                         }
 
                         if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.BargeBirdproof) && (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()))
@@ -390,7 +392,10 @@ namespace PFD
                     }
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.EavePurlinBirdproofStrip))
+                    {
                         iNumberEavePurlinBirdProofFixingPoints = (int)(vm.RoofLength_Y / dEavePurlinBirdProofFixingPointSpacing) + 1;
+                        iNumberEavePurlinBirdProofPlasticBlockCount = (int)(vm.RoofLength_Y / ribWidthRoof) + 1;
+                    }
                 }
                 else if (vm.KitsetTypeIndex == (int)EModelType_FS.eKitsetGableRoofEnclosed)
                 {
@@ -400,13 +405,13 @@ namespace PFD
                     {
                         // Pocet prvkov fixing bez canopies
                         iNumberOfFixingPoints = 2 * (iRoofSidesCount * ((int)(vm.RoofSideLength / dBargeflashingFixingSpacing) + 1)); // Top and bottom
-                        iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
+                        iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Max(2, iRoofSidesCount * ((int)(vm.RoofSideLength / dFixingPointsBargeCladdingSheetEdge) + 1));
 
                         if (vm._modelOptionsVM.EnableCanopies && vm._canopiesOptionsVM.HasCanopies())
                         {
                             // Pocet prvkov fixing vratane canopies
                             iNumberOfFixingPoints = 2 * (int)(vm.BargeFlashing_TotalLength / dBargeflashingFixingSpacing); // Top and bottom
-                            iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Min(2, (int)(vm.BargeFlashing_TotalLength / dFixingPointsBargeCladdingSheetEdge));
+                            iNumberOfFixingPointsBargeCladdingSheetEdge = Math.Max(2, (int)(vm.BargeFlashing_TotalLength / dFixingPointsBargeCladdingSheetEdge));
                         }
 
                         if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.BargeBirdproof) && (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()))
@@ -434,7 +439,10 @@ namespace PFD
                     }
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.EavePurlinBirdproofStrip))
+                    {
                         iNumberEavePurlinBirdProofFixingPoints = 2 * ((int)(vm.RoofLength_Y / dEavePurlinBirdProofFixingPointSpacing) + 1);
+                        iNumberEavePurlinBirdProofPlasticBlockCount = 2 * ((int)(vm.RoofLength_Y / ribWidthRoof) + 1);
+                    }
                 }
 
                 if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.Barge))
@@ -444,7 +452,7 @@ namespace PFD
                     claddingAccessoriesItems_Piece.Add(itemPiece);
 
                     // Barge cladding sheet edge fixing - TEK screws 12gx42
-                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx42 (bonded washer)", iNumberOfFixingPointsBirdProofFlashing, "Barge");
+                    itemPiece = new CCladdingAccessories_Item_Piece("TEK screw 14gx42 (bonded washer)", iNumberOfFixingPointsBargeCladdingSheetEdge, "Barge");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
 
                     if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.BargeBirdproof) && (cladding.HasCladdingSheets_WallFront() || cladding.HasCladdingSheets_WallBack()))
@@ -462,7 +470,7 @@ namespace PFD
                     claddingAccessoriesItems_Piece.Add(itemPiece);
 
                     // Eave purlin bird proof plastic blocks
-                    itemPiece = new CCladdingAccessories_Item_Piece("Plastic gutter block", iNumberEavePurlinBirdProofFixingPoints, "Eave purlin");
+                    itemPiece = new CCladdingAccessories_Item_Piece("Plastic gutter block", iNumberEavePurlinBirdProofPlasticBlockCount, "Eave purlin");
                     claddingAccessoriesItems_Piece.Add(itemPiece);
                 }
 
@@ -538,6 +546,10 @@ namespace PFD
                 double fWallCladdingArea_WithoutFibreglassAndOpenings = vm.TotalWallArea - fWallCladdingAreaFibreglass - dDoorsAndWindowsOpeningArea; // Todo skontrolovat ak nie su aktivne vsetky steny !!!
                 iNumberOfFixingPoints = (int)(fWallCladdingArea_WithoutFibreglassAndOpenings / fixingPointTributaryArea);
 
+                // Priblizna dlzka pozdlznych dotykovych hran cladding sheet
+                double dCladdingSeamFixingLength = fWallCladdingArea_WithoutFibreglassAndOpenings / vm._claddingOptionsVM.WallCladdingProps.widthModular_m;
+                iNumberCladdingSeamFixingPoints = (int)(dCladdingSeamFixingLength / dCladdingSeamFixingSpacing);
+
                 // Pridavok
                 iNumberOfFixingPoints = (int)(iNumberOfFixingPoints * 0.8506f); // Navysime pocet o rezervu
 
@@ -546,6 +558,7 @@ namespace PFD
                     // Sposob B
 
                     int iNumberOfFixingPoints2 = 0;
+                    iNumberCladdingSeamFixingPoints = 0; // Vymazeme predchadzajuci pocet - nastavime na nulu a pocitame znova
 
                     if (cladding.HasCladdingSheets_WallLeft())
                     {
@@ -690,7 +703,7 @@ namespace PFD
                 else
                     iNumberOfCorners = 0; // Dve protilahle steny, jedna stena, alebo ziadna stena
 
-                if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.WallCorner))
+                if (vm._doorsAndWindowsVM.HasFlashing(EFlashingType.WallCorner) && iNumberOfCorners > 0) // Existuje corner flashing (susediacich stien) a pocet rohov cladding je vacsi nez 0
                 {
                     // 22 - Cladding corner
 
