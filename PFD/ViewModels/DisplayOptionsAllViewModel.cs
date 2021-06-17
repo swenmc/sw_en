@@ -635,6 +635,33 @@ namespace PFD
             17.0 PT     23 PX     6.2 MM     1.50 EM     150 %
             */
 
+            //-----------------------------------------------------------
+            // TODO 701 - Pridane
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].WireFrameLineThickness = 2;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].NodeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].NodeDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CladdingTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FibreglassTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].DoorTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].WindowTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].PlateColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ScrewColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].AnchorColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].WasherColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].NutColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].ColoredCenterlines = false;
+
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].CladdingSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].FibreglassSheetColorIndex = CComboBoxHelper.GetColorIndex(Colors.White);
+            //-----------------------------------------------------------
+
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].MemberDescriptionTextFontSize = 14; // Font 14 znamena 0.14 m v 3D grafike, takze hodnota / 100f
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations].MemberDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkGreen);
 
