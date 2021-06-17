@@ -988,7 +988,7 @@ namespace EXPIMP
                 sTitle = "";
                 opts.bUseOrtographicCamera = false;
             }
-                        
+
             CModel filteredModel = null;
             Trackport3D trackport = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, fZoomFactor, out filteredModel, out trackport);
