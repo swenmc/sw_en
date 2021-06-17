@@ -1,16 +1,8 @@
 ﻿using BaseClasses;
-using BaseClasses.GraphObj;
-using BaseClasses.Helpers;
-using DATABASE;
-using DATABASE.DTO;
-using MATH;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Media;
-using System.Windows.Controls;
-using System.Windows.Media.Media3D;
 
 namespace PFD
 {
@@ -469,7 +461,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayPlatesWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayConnectorsWireFrame = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].WireframeColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black); // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             #endregion JOINTS
             #region FOUNDATIONS
@@ -499,7 +491,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayPlatesWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayConnectorsWireFrame = false;
 
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].WireframeColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black); // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             // Foundations
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayFoundations = true;
@@ -912,7 +904,7 @@ namespace PFD
 
             // Defaultne hodnoty pre vsetky pohlady
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].TransformScreenLines3DToCylinders3D = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].WireframeColor = System.Windows.Media.Colors.Red;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Red);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayMembers = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].DisplayJoints = false;
@@ -964,7 +956,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations];
 
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].TransformScreenLines3DToCylinders3D = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColor = System.Windows.Media.Colors.Red;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Red);
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayMembers = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayJoints = false;
@@ -1068,7 +1060,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayJointsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayPlatesWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].DisplayConnectorsWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].WireframeColor = System.Windows.Media.Colors.Black;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
 
             #endregion JOINTS
@@ -1106,7 +1098,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayJointsWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayPlatesWireFrame = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayConnectorsWireFrame = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].WireframeColor = System.Windows.Media.Colors.Black;
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             // Foundations
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].DisplayFoundations = true;
