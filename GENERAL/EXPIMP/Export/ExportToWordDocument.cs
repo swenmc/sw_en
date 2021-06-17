@@ -927,7 +927,8 @@ namespace EXPIMP
             DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES, view, filter);
 
             //toto nastavenie by mohlo byt inde, ale zase nechcem to rozbit inde
-            opts.ExportMembersDescriptionSize = 1f / 60f;
+            //opts.ExportMembersDescriptionSize = 1f / 60f;
+            opts.GUIMembersDescriptionSize = 1f / 60f;  //??? tu je zmena k tasku 701 - zrusene bolo ExportMembersDescriptionSize
             opts.ViewsPageSize = EPageSizes.A4;
             opts.bCreateHorizontalGridlines = false;
             opts.bCreateVerticalGridlinesFront = false;

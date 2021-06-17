@@ -948,7 +948,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="5"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
@@ -978,8 +978,8 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="GUI:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Text="Export:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <!--<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="GUI:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />-->
+                        <!--<TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Text="Export:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />-->
 
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="GUI Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
@@ -1078,7 +1078,7 @@
                          Text="{Binding Path=GUIWindowDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
 
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <!--<TextBlock Grid.Row="1" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <TextBox Grid.Row="1" Grid.Column="3" Name ="ExportFloorSlabTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ExportFloorSlabTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
@@ -1171,7 +1171,7 @@
                         <TextBlock Grid.Row="19" Grid.Column="2" Text="Export Window Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
                         <TextBox Grid.Row="19" Grid.Column="3" Name ="ExportWindowDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=ExportWindowDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=ExportWindowDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>-->
                     </Grid>
                 </ScrollViewer>
             </TabItem>

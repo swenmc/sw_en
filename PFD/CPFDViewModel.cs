@@ -3689,27 +3689,28 @@ namespace PFD
             sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
 
             sDisplayOptions.IsExport = false;
-            //To Mato tu sa daju ponastavovat velkosti relativne podla velkosti modelu
-            sDisplayOptions.ExportFloorSlabTextSize = do_vm.ExportFloorSlabTextSize;
-            sDisplayOptions.ExportGridlinesSize = do_vm.ExportGridlinesSize;
-            sDisplayOptions.ExportGridLineLabelSize = do_vm.ExportGridLineLabelSize;
-            sDisplayOptions.ExportSectionSymbolsSize = do_vm.ExportSectionSymbolsSize;
-            sDisplayOptions.ExportSectionSymbolLabelSize = do_vm.ExportSectionSymbolLabelSize;
-            sDisplayOptions.ExportDetailSymbolSize = do_vm.ExportDetailSymbolSize;
-            sDisplayOptions.ExportDetailSymbolLabelSize = do_vm.ExportDetailSymbolLabelSize;
-            sDisplayOptions.ExportMembersDescriptionSize = do_vm.ExportMembersDescriptionSize;
-            sDisplayOptions.ExportNodesDescriptionSize = do_vm.ExportNodesDescriptionSize;
-            sDisplayOptions.ExportSawCutTextSize = do_vm.ExportSawCutTextSize;
-            sDisplayOptions.ExportControlJointTextSize = do_vm.ExportControlJointTextSize;
-            sDisplayOptions.ExportFoundationTextSize = do_vm.ExportFoundationTextSize;
-            sDisplayOptions.ExportDimensionsTextSize = do_vm.ExportDimensionsTextSize;
-            sDisplayOptions.ExportDimensionsLineRadius = do_vm.ExportDimensionsLineRadius;
-            sDisplayOptions.ExportDimensionsScale = do_vm.ExportDimensionsScale;
-            sDisplayOptions.ExportDescriptionTextWidthScaleFactor = do_vm.ExportDescriptionTextWidthScaleFactor;
-            sDisplayOptions.ExportCladdingDescriptionSize = do_vm.ExportCladdingDescriptionSize;
-            sDisplayOptions.ExportFibreglassDescriptionSize = do_vm.ExportFibreglassDescriptionSize;
-            sDisplayOptions.ExportDoorDescriptionSize = do_vm.ExportDoorDescriptionSize;
-            sDisplayOptions.ExportWindowDescriptionSize = do_vm.ExportWindowDescriptionSize;
+            
+            ////To Mato tu sa daju ponastavovat velkosti relativne podla velkosti modelu
+            //sDisplayOptions.ExportFloorSlabTextSize = do_vm.ExportFloorSlabTextSize;
+            //sDisplayOptions.ExportGridlinesSize = do_vm.ExportGridlinesSize;
+            //sDisplayOptions.ExportGridLineLabelSize = do_vm.ExportGridLineLabelSize;
+            //sDisplayOptions.ExportSectionSymbolsSize = do_vm.ExportSectionSymbolsSize;
+            //sDisplayOptions.ExportSectionSymbolLabelSize = do_vm.ExportSectionSymbolLabelSize;
+            //sDisplayOptions.ExportDetailSymbolSize = do_vm.ExportDetailSymbolSize;
+            //sDisplayOptions.ExportDetailSymbolLabelSize = do_vm.ExportDetailSymbolLabelSize;
+            //sDisplayOptions.ExportMembersDescriptionSize = do_vm.ExportMembersDescriptionSize;
+            //sDisplayOptions.ExportNodesDescriptionSize = do_vm.ExportNodesDescriptionSize;
+            //sDisplayOptions.ExportSawCutTextSize = do_vm.ExportSawCutTextSize;
+            //sDisplayOptions.ExportControlJointTextSize = do_vm.ExportControlJointTextSize;
+            //sDisplayOptions.ExportFoundationTextSize = do_vm.ExportFoundationTextSize;
+            //sDisplayOptions.ExportDimensionsTextSize = do_vm.ExportDimensionsTextSize;
+            //sDisplayOptions.ExportDimensionsLineRadius = do_vm.ExportDimensionsLineRadius;
+            //sDisplayOptions.ExportDimensionsScale = do_vm.ExportDimensionsScale;
+            //sDisplayOptions.ExportDescriptionTextWidthScaleFactor = do_vm.ExportDescriptionTextWidthScaleFactor;
+            //sDisplayOptions.ExportCladdingDescriptionSize = do_vm.ExportCladdingDescriptionSize;
+            //sDisplayOptions.ExportFibreglassDescriptionSize = do_vm.ExportFibreglassDescriptionSize;
+            //sDisplayOptions.ExportDoorDescriptionSize = do_vm.ExportDoorDescriptionSize;
+            //sDisplayOptions.ExportWindowDescriptionSize = do_vm.ExportWindowDescriptionSize;
 
             sDisplayOptions.GUIFloorSlabTextSize = do_vm.GUIFloorSlabTextSize;
             sDisplayOptions.GUIGridlinesSize = do_vm.GUIGridlinesSize;

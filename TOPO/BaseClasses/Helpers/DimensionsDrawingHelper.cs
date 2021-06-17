@@ -1843,8 +1843,8 @@ namespace BaseClasses.Helpers
                 return null;            
 
             float maxModelLength = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z);
-            float fLineRadius = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsLineRadius, displayOptions.ExportDimensionsLineRadius, displayOptions);
-            float scale = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsScale, displayOptions.ExportDimensionsScale, displayOptions);
+            float fLineRadius = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsLineRadius, displayOptions);
+            float scale = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsScale, displayOptions);
             
             // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
             // Draw 3D objects (cylinder as a line)
@@ -1879,7 +1879,7 @@ namespace BaseClasses.Helpers
             tb.FontFamily = new FontFamily("Arial");
 
             float maxModelLength = MathF.Max(Drawing3D.fModel_Length_X, Drawing3D.fModel_Length_Y, Drawing3D.fModel_Length_Z);
-            float fTextBlockVerticalSize = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsTextSize, displayOptions.ExportDimensionsTextSize, displayOptions);
+            float fTextBlockVerticalSize = Drawing3D.GetSizeIn3D(maxModelLength, displayOptions.GUIDimensionsTextSize, displayOptions);
             
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;

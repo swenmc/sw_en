@@ -1221,6 +1221,11 @@ namespace PFD
             sDisplayOptions.bDisplayNodes = vm.DrawPoints3D;
             sDisplayOptions.bDisplayNodesDescription = vm.DrawPoint3DNumbers3D;
             sDisplayOptions.bMirrorPlate3D = vm.MirrorPlate3D;
+
+            sDisplayOptions.NodeColor = Colors.Red;            
+            sDisplayOptions.GUINodesDescriptionSize = 1f / 5;  //tu je zmeneny riadok vyssie kvoli 701
+            sDisplayOptions.NodeDescriptionTextColor = Colors.Red;
+
             page3D = new Page3Dmodel(plate, sDisplayOptions);
 
             // Display model in 3D preview frame

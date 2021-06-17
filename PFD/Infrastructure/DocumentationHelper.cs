@@ -86,6 +86,10 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayWireFrameModel = true;
 
+            sDisplayOptions.NodeColor = Colors.Red;            
+            sDisplayOptions.GUINodesDescriptionSize = 1f / 5;  //tu je zmeneny riadok vyssie kvoli 701
+            sDisplayOptions.NodeDescriptionTextColor = Colors.Red;
+
             foreach (CPlate plate in plates)
             {
                 Page3Dmodel page3D = new Page3Dmodel(plate, sDisplayOptions);

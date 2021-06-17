@@ -298,26 +298,26 @@ namespace PFD
         private float m_WindowPanelOpacity;
         private float m_FibreglassOpacity;
 
-        private float m_ExportFloorSlabTextSize;
-        private float m_ExportGridlinesSize;
-        private float m_ExportGridLineLabelSize;
-        private float m_ExportSectionSymbolsSize;
-        private float m_ExportSectionSymbolLabelSize;
-        private float m_ExportDetailSymbolSize;
-        private float m_ExportDetailSymbolLabelSize;
-        private float m_ExportMembersDescriptionSize;
-        private float m_ExportNodesDescriptionSize;
-        private float m_ExportSawCutTextSize;
-        private float m_ExportControlJointTextSize;
-        private float m_ExportFoundationTextSize;
-        private float m_ExportDimensionsTextSize;
-        private float m_ExportDimensionsLineRadius;
-        private float m_ExportDimensionsScale;
-        private float m_ExportDescriptionTextWidthScaleFactor;
-        private float m_ExportCladdingDescriptionSize;
-        private float m_ExportFibreglassDescriptionSize;
-        private float m_ExportDoorDescriptionSize;
-        private float m_ExportWindowDescriptionSize;
+        //private float m_ExportFloorSlabTextSize;
+        //private float m_ExportGridlinesSize;
+        //private float m_ExportGridLineLabelSize;
+        //private float m_ExportSectionSymbolsSize;
+        //private float m_ExportSectionSymbolLabelSize;
+        //private float m_ExportDetailSymbolSize;
+        //private float m_ExportDetailSymbolLabelSize;
+        //private float m_ExportMembersDescriptionSize;
+        //private float m_ExportNodesDescriptionSize;
+        //private float m_ExportSawCutTextSize;
+        //private float m_ExportControlJointTextSize;
+        //private float m_ExportFoundationTextSize;
+        //private float m_ExportDimensionsTextSize;
+        //private float m_ExportDimensionsLineRadius;
+        //private float m_ExportDimensionsScale;
+        //private float m_ExportDescriptionTextWidthScaleFactor;
+        //private float m_ExportCladdingDescriptionSize;
+        //private float m_ExportFibreglassDescriptionSize;
+        //private float m_ExportDoorDescriptionSize;
+        //private float m_ExportWindowDescriptionSize;
 
         private float m_GUIFloorSlabTextSize;
         private float m_GUIGridlinesSize;
@@ -2939,229 +2939,287 @@ namespace PFD
             }
         }
 
-        public float ExportFloorSlabTextSize
-        {
-            get
-            {
-                return m_ExportFloorSlabTextSize;
-            }
+        #region Export Options commnented
 
-            set
-            {
-                m_ExportFloorSlabTextSize = value;
-                NotifyPropertyChanged("ExportFloorSlabTextSize");
-            }
-        }
+        //public float ExportFloorSlabTextSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportFloorSlabTextSize;
+        //    }
 
-        public float ExportGridlinesSize
-        {
-            get
-            {
-                return m_ExportGridlinesSize;
-            }
+        //    set
+        //    {
+        //        m_ExportFloorSlabTextSize = value;
+        //        NotifyPropertyChanged("ExportFloorSlabTextSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportGridlinesSize = value;
-                NotifyPropertyChanged("ExportGridlinesSize");
-            }
-        }
+        //public float ExportGridlinesSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportGridlinesSize;
+        //    }
 
-        public float ExportGridLineLabelSize
-        {
-            get
-            {
-                return m_ExportGridLineLabelSize;
-            }
+        //    set
+        //    {
+        //        m_ExportGridlinesSize = value;
+        //        NotifyPropertyChanged("ExportGridlinesSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportGridLineLabelSize = value;
-                NotifyPropertyChanged("ExportGridLineLabelSize");
-            }
-        }
+        //public float ExportGridLineLabelSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportGridLineLabelSize;
+        //    }
 
-        public float ExportSectionSymbolsSize
-        {
-            get
-            {
-                return m_ExportSectionSymbolsSize;
-            }
+        //    set
+        //    {
+        //        m_ExportGridLineLabelSize = value;
+        //        NotifyPropertyChanged("ExportGridLineLabelSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportSectionSymbolsSize = value;
-                NotifyPropertyChanged("ExportSectionSymbolsSize");
-            }
-        }
+        //public float ExportSectionSymbolsSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportSectionSymbolsSize;
+        //    }
 
-        public float ExportSectionSymbolLabelSize
-        {
-            get
-            {
-                return m_ExportSectionSymbolLabelSize;
-            }
+        //    set
+        //    {
+        //        m_ExportSectionSymbolsSize = value;
+        //        NotifyPropertyChanged("ExportSectionSymbolsSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportSectionSymbolLabelSize = value;
-                NotifyPropertyChanged("ExportSectionSymbolLabelSize");
-            }
-        }
+        //public float ExportSectionSymbolLabelSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportSectionSymbolLabelSize;
+        //    }
 
-        public float ExportDetailSymbolSize
-        {
-            get
-            {
-                return m_ExportDetailSymbolSize;
-            }
+        //    set
+        //    {
+        //        m_ExportSectionSymbolLabelSize = value;
+        //        NotifyPropertyChanged("ExportSectionSymbolLabelSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportDetailSymbolSize = value;
-                NotifyPropertyChanged("ExportDetailSymbolSize");
-            }
-        }
+        //public float ExportDetailSymbolSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportDetailSymbolSize;
+        //    }
 
-        public float ExportDetailSymbolLabelSize
-        {
-            get
-            {
-                return m_ExportDetailSymbolLabelSize;
-            }
+        //    set
+        //    {
+        //        m_ExportDetailSymbolSize = value;
+        //        NotifyPropertyChanged("ExportDetailSymbolSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportDetailSymbolLabelSize = value;
-                NotifyPropertyChanged("ExportDetailSymbolLabelSize");
-            }
-        }
+        //public float ExportDetailSymbolLabelSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportDetailSymbolLabelSize;
+        //    }
 
-        public float ExportMembersDescriptionSize
-        {
-            get
-            {
-                return m_ExportMembersDescriptionSize;
-            }
+        //    set
+        //    {
+        //        m_ExportDetailSymbolLabelSize = value;
+        //        NotifyPropertyChanged("ExportDetailSymbolLabelSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportMembersDescriptionSize = value;
-                NotifyPropertyChanged("ExportMembersDescriptionSize");
-            }
-        }
+        //public float ExportMembersDescriptionSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportMembersDescriptionSize;
+        //    }
 
-        public float ExportNodesDescriptionSize
-        {
-            get
-            {
-                return m_ExportNodesDescriptionSize;
-            }
+        //    set
+        //    {
+        //        m_ExportMembersDescriptionSize = value;
+        //        NotifyPropertyChanged("ExportMembersDescriptionSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportNodesDescriptionSize = value;
-                NotifyPropertyChanged("ExportNodesDescriptionSize");
-            }
-        }
+        //public float ExportNodesDescriptionSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportNodesDescriptionSize;
+        //    }
 
-        public float ExportSawCutTextSize
-        {
-            get
-            {
-                return m_ExportSawCutTextSize;
-            }
+        //    set
+        //    {
+        //        m_ExportNodesDescriptionSize = value;
+        //        NotifyPropertyChanged("ExportNodesDescriptionSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportSawCutTextSize = value;
-                NotifyPropertyChanged("ExportSawCutTextSize");
-            }
-        }
+        //public float ExportSawCutTextSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportSawCutTextSize;
+        //    }
 
-        public float ExportControlJointTextSize
-        {
-            get
-            {
-                return m_ExportControlJointTextSize;
-            }
+        //    set
+        //    {
+        //        m_ExportSawCutTextSize = value;
+        //        NotifyPropertyChanged("ExportSawCutTextSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportControlJointTextSize = value;
-                NotifyPropertyChanged("ExportControlJointTextSize");
-            }
-        }
+        //public float ExportControlJointTextSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportControlJointTextSize;
+        //    }
 
-        public float ExportFoundationTextSize
-        {
-            get
-            {
-                return m_ExportFoundationTextSize;
-            }
+        //    set
+        //    {
+        //        m_ExportControlJointTextSize = value;
+        //        NotifyPropertyChanged("ExportControlJointTextSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportFoundationTextSize = value;
-                NotifyPropertyChanged("ExportFoundationTextSize");
-            }
-        }
+        //public float ExportFoundationTextSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportFoundationTextSize;
+        //    }
 
-        public float ExportCladdingDescriptionSize
-        {
-            get
-            {
-                return m_ExportCladdingDescriptionSize;
-            }
+        //    set
+        //    {
+        //        m_ExportFoundationTextSize = value;
+        //        NotifyPropertyChanged("ExportFoundationTextSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportCladdingDescriptionSize = value;
-                NotifyPropertyChanged("ExportCladdingDescriptionSize");
-            }
-        }
+        //public float ExportCladdingDescriptionSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportCladdingDescriptionSize;
+        //    }
 
-        public float ExportFibreglassDescriptionSize
-        {
-            get
-            {
-                return m_ExportFibreglassDescriptionSize;
-            }
+        //    set
+        //    {
+        //        m_ExportCladdingDescriptionSize = value;
+        //        NotifyPropertyChanged("ExportCladdingDescriptionSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportFibreglassDescriptionSize = value;
-                NotifyPropertyChanged("ExportFibreglassDescriptionSize");
-            }
-        }
+        //public float ExportFibreglassDescriptionSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportFibreglassDescriptionSize;
+        //    }
 
-        public float ExportDoorDescriptionSize
-        {
-            get
-            {
-                return m_ExportDoorDescriptionSize;
-            }
+        //    set
+        //    {
+        //        m_ExportFibreglassDescriptionSize = value;
+        //        NotifyPropertyChanged("ExportFibreglassDescriptionSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportDoorDescriptionSize = value;
-                NotifyPropertyChanged("ExportDoorDescriptionSize");
-            }
-        }
+        //public float ExportDoorDescriptionSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportDoorDescriptionSize;
+        //    }
 
-        public float ExportWindowDescriptionSize
-        {
-            get
-            {
-                return m_ExportWindowDescriptionSize;
-            }
+        //    set
+        //    {
+        //        m_ExportDoorDescriptionSize = value;
+        //        NotifyPropertyChanged("ExportDoorDescriptionSize");
+        //    }
+        //}
 
-            set
-            {
-                m_ExportWindowDescriptionSize = value;
-                NotifyPropertyChanged("ExportWindowDescriptionSize");
-            }
-        }
+        //public float ExportWindowDescriptionSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportWindowDescriptionSize;
+        //    }
+
+        //    set
+        //    {
+        //        m_ExportWindowDescriptionSize = value;
+        //        NotifyPropertyChanged("ExportWindowDescriptionSize");
+        //    }
+        //}
+
+        //public float ExportDimensionsTextSize
+        //{
+        //    get
+        //    {
+        //        return m_ExportDimensionsTextSize;
+        //    }
+
+        //    set
+        //    {
+        //        m_ExportDimensionsTextSize = value;
+        //        NotifyPropertyChanged("ExportDimensionsTextSize");
+        //    }
+        //}
+
+        //public float ExportDimensionsLineRadius
+        //{
+        //    get
+        //    {
+        //        return m_ExportDimensionsLineRadius;
+        //    }
+
+        //    set
+        //    {
+        //        m_ExportDimensionsLineRadius = value;
+        //        NotifyPropertyChanged("ExportDimensionsLineRadius");
+        //    }
+        //}
+
+        //public float ExportDimensionsScale
+        //{
+        //    get
+        //    {
+        //        return m_ExportDimensionsScale;
+        //    }
+
+        //    set
+        //    {
+        //        m_ExportDimensionsScale = value;
+        //        NotifyPropertyChanged("ExportDimensionsScale");
+        //    }
+        //}
+        //public float ExportDescriptionTextWidthScaleFactor
+        //{
+        //    get
+        //    {
+        //        return m_ExportDescriptionTextWidthScaleFactor;
+        //    }
+
+        //    set
+        //    {
+        //        m_ExportDescriptionTextWidthScaleFactor = value;
+        //    }
+        //}
+
+        #endregion
 
         public float GUIFloorSlabTextSize
         {
@@ -3401,47 +3459,7 @@ namespace PFD
             }
         }
 
-        public float ExportDimensionsTextSize
-        {
-            get
-            {
-                return m_ExportDimensionsTextSize;
-            }
-
-            set
-            {
-                m_ExportDimensionsTextSize = value;
-                NotifyPropertyChanged("ExportDimensionsTextSize");
-            }
-        }
-
-        public float ExportDimensionsLineRadius
-        {
-            get
-            {
-                return m_ExportDimensionsLineRadius;
-            }
-
-            set
-            {
-                m_ExportDimensionsLineRadius = value;
-                NotifyPropertyChanged("ExportDimensionsLineRadius");
-            }
-        }
-
-        public float ExportDimensionsScale
-        {
-            get
-            {
-                return m_ExportDimensionsScale;
-            }
-
-            set
-            {
-                m_ExportDimensionsScale = value;
-                NotifyPropertyChanged("ExportDimensionsScale");
-            }
-        }
+       
 
         public float GUIDimensionsLineRadius
         {
@@ -3568,18 +3586,6 @@ namespace PFD
             }
         }
         
-        public float ExportDescriptionTextWidthScaleFactor
-        {
-            get
-            {
-                return m_ExportDescriptionTextWidthScaleFactor;
-            }
-
-            set
-            {
-                m_ExportDescriptionTextWidthScaleFactor = value;
-            }
-        }
 
         public float GUIDescriptionTextWidthScaleFactor
         {
@@ -4362,30 +4368,30 @@ namespace PFD
 
             BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
-            // Text 7.0 mm
-            ExportGridlinesSize = 1f / 20f;
-            ExportGridLineLabelSize = 1f / 40f;
+            //// Text 7.0 mm
+            //ExportGridlinesSize = 1f / 20f;
+            //ExportGridLineLabelSize = 1f / 40f;
 
-            ExportSectionSymbolsSize = 1f / 20f;
-            ExportSectionSymbolLabelSize = 1f / 40f;
-            ExportDetailSymbolSize = 1f / 20f;
-            ExportDetailSymbolLabelSize = 1 / 40f;
+            //ExportSectionSymbolsSize = 1f / 20f;
+            //ExportSectionSymbolLabelSize = 1f / 40f;
+            //ExportDetailSymbolSize = 1f / 20f;
+            //ExportDetailSymbolLabelSize = 1 / 40f;
 
-            // Text 2.5 - 3.0 mm
-            ExportFloorSlabTextSize = 1f / 20f; // 4 riadky + 3 medzery
-            ExportMembersDescriptionSize = 1f / 100f;
-            ExportNodesDescriptionSize = 1f / 100f;
-            ExportSawCutTextSize = 1f / 100f;
-            ExportControlJointTextSize = 1f / 100f;
-            ExportFoundationTextSize = 1f / 100f;
-            ExportDimensionsTextSize = 1f / 100f;
-            ExportDimensionsLineRadius = 1f / 1500f;
-            ExportDimensionsScale = 1f / 10f;
-            ExportDescriptionTextWidthScaleFactor = 0.6f;
-            ExportCladdingDescriptionSize = 1f / 100f;
-            ExportFibreglassDescriptionSize = 1f / 100f;
-            ExportDoorDescriptionSize = 1f / 100f;
-            ExportWindowDescriptionSize = 1f / 100f;
+            //// Text 2.5 - 3.0 mm
+            //ExportFloorSlabTextSize = 1f / 20f; // 4 riadky + 3 medzery
+            //ExportMembersDescriptionSize = 1f / 100f;
+            //ExportNodesDescriptionSize = 1f / 100f;
+            //ExportSawCutTextSize = 1f / 100f;
+            //ExportControlJointTextSize = 1f / 100f;
+            //ExportFoundationTextSize = 1f / 100f;
+            //ExportDimensionsTextSize = 1f / 100f;
+            //ExportDimensionsLineRadius = 1f / 1500f;
+            //ExportDimensionsScale = 1f / 10f;
+            //ExportDescriptionTextWidthScaleFactor = 0.6f;
+            //ExportCladdingDescriptionSize = 1f / 100f;
+            //ExportFibreglassDescriptionSize = 1f / 100f;
+            //ExportDoorDescriptionSize = 1f / 100f;
+            //ExportWindowDescriptionSize = 1f / 100f;
 
             GUIGridlinesSize = 1f / 20f;
             GUIGridLineLabelSize = 1f / 40f;
@@ -4609,22 +4615,22 @@ namespace PFD
 
             BackgroundColorIndex = newVM.BackgroundColorIndex;
 
-            ExportFloorSlabTextSize = newVM.ExportFloorSlabTextSize;
-            ExportGridlinesSize = newVM.ExportGridlinesSize;
-            ExportGridLineLabelSize = newVM.ExportGridLineLabelSize;
-            ExportSectionSymbolsSize = newVM.ExportSectionSymbolsSize;
-            ExportSectionSymbolLabelSize = newVM.ExportSectionSymbolLabelSize;
-            ExportDetailSymbolSize = newVM.ExportDetailSymbolSize;
-            ExportDetailSymbolLabelSize = newVM.ExportDetailSymbolLabelSize;
-            ExportMembersDescriptionSize = newVM.ExportMembersDescriptionSize;
-            ExportNodesDescriptionSize = newVM.ExportNodesDescriptionSize;
-            ExportSawCutTextSize = newVM.ExportSawCutTextSize;
-            ExportControlJointTextSize = newVM.ExportControlJointTextSize;
-            ExportFoundationTextSize = newVM.ExportFoundationTextSize;
-            ExportDimensionsTextSize = newVM.ExportDimensionsTextSize;
-            ExportDimensionsLineRadius = newVM.ExportDimensionsLineRadius;
-            ExportDimensionsScale = newVM.ExportDimensionsScale;
-            ExportDescriptionTextWidthScaleFactor = newVM.ExportDescriptionTextWidthScaleFactor;
+            //ExportFloorSlabTextSize = newVM.ExportFloorSlabTextSize;
+            //ExportGridlinesSize = newVM.ExportGridlinesSize;
+            //ExportGridLineLabelSize = newVM.ExportGridLineLabelSize;
+            //ExportSectionSymbolsSize = newVM.ExportSectionSymbolsSize;
+            //ExportSectionSymbolLabelSize = newVM.ExportSectionSymbolLabelSize;
+            //ExportDetailSymbolSize = newVM.ExportDetailSymbolSize;
+            //ExportDetailSymbolLabelSize = newVM.ExportDetailSymbolLabelSize;
+            //ExportMembersDescriptionSize = newVM.ExportMembersDescriptionSize;
+            //ExportNodesDescriptionSize = newVM.ExportNodesDescriptionSize;
+            //ExportSawCutTextSize = newVM.ExportSawCutTextSize;
+            //ExportControlJointTextSize = newVM.ExportControlJointTextSize;
+            //ExportFoundationTextSize = newVM.ExportFoundationTextSize;
+            //ExportDimensionsTextSize = newVM.ExportDimensionsTextSize;
+            //ExportDimensionsLineRadius = newVM.ExportDimensionsLineRadius;
+            //ExportDimensionsScale = newVM.ExportDimensionsScale;
+            //ExportDescriptionTextWidthScaleFactor = newVM.ExportDescriptionTextWidthScaleFactor;
 
             GUIFloorSlabTextSize = newVM.GUIFloorSlabTextSize;
             GUIGridlinesSize = newVM.GUIGridlinesSize;

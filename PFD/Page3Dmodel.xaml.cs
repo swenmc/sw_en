@@ -193,17 +193,12 @@ namespace PFD
                                         
                     if (sDisplayOptions.bDisplayNodes)
                     {
-                        //todo Nodes
-                        sDisplayOptions.NodeColor = Colors.Red;
                         Model3DGroup nodes3DGroup = null;
                         if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model, sDisplayOptions);
                         if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);                        
                     }
                     if (sDisplayOptions.bDisplayNodesDescription)
-                    {
-                        //todo Nodes Description
-                        sDisplayOptions.ExportNodesDescriptionSize = 1f / 5;
-                        sDisplayOptions.NodeDescriptionTextColor = Colors.Red;
+                    {   
                         Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                     }
 

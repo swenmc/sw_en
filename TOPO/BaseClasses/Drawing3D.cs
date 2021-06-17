@@ -658,7 +658,7 @@ namespace BaseClasses
             Model3DGroup gridlines3DGroup = null;
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, sDisplayOptions.GUIGridlinesSize, sDisplayOptions.ExportGridlinesSize, sDisplayOptions);
+            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, sDisplayOptions.GUIGridlinesSize, sDisplayOptions);
 
             // Create gridlines
             List<CGridLine> listOfGridlines = new List<CGridLine>();
@@ -966,10 +966,10 @@ namespace BaseClasses
             List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
 
             //vsetko sa nastavuje podla max rozmeru modelu a ten upravime podla velkosti strany v PDF
-            float fSymbolLineLength_basic = GetSizeIn3D(MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z), sDisplayOptions.GUISectionSymbolsSize, sDisplayOptions.ExportSectionSymbolsSize, sDisplayOptions);
+            float fSymbolLineLength_basic = GetSizeIn3D(MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z), sDisplayOptions.GUISectionSymbolsSize, sDisplayOptions);
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float textSize = GetSizeIn3D(maxModelLength, sDisplayOptions.GUISectionSymbolLabelSize, sDisplayOptions.ExportSectionSymbolLabelSize, sDisplayOptions);
+            float textSize = GetSizeIn3D(maxModelLength, sDisplayOptions.GUISectionSymbolLabelSize, sDisplayOptions);
 
             //    ——  ▪▪▪▪ ▪ ▪▪▪▪       ○      ○       ▪▪▪▪ ▪ ▪▪▪▪
             // D |    /|\                                     /|\
@@ -1206,7 +1206,7 @@ namespace BaseClasses
             if (model.m_arrConnectionJoints == null) return detailSymbols;
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, opts.GUIDetailSymbolSize, opts.ExportDetailSymbolSize, opts);
+            float fMarkCircleDiameter = GetSizeIn3D(maxModelLength, opts.GUIDetailSymbolSize, opts);
 
             float fOffsetLineLength = fMarkCircleDiameter / 3; //0.2f;
 
@@ -3441,7 +3441,7 @@ namespace BaseClasses
         public static void CreateMembersDescriptionModel3D_POKUS_MC(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             double descriptionTextWidthScaleFactor = displayOptions.GUIDescriptionTextWidthScaleFactor;
-            if (displayOptions.IsExport) descriptionTextWidthScaleFactor = displayOptions.ExportDescriptionTextWidthScaleFactor;
+            //if (displayOptions.IsExport) descriptionTextWidthScaleFactor = displayOptions.ExportDescriptionTextWidthScaleFactor;
 
             // Members
             if (model.m_arrMembers != null)
@@ -3452,7 +3452,7 @@ namespace BaseClasses
                 //GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIMembersDescriptionSize, displayOptions.ExportMembersDescriptionSize, displayOptions);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIMembersDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3785,7 +3785,7 @@ namespace BaseClasses
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
 
                 float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions.ExportNodesDescriptionSize, displayOptions);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3838,7 +3838,7 @@ namespace BaseClasses
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
 
                 float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions.ExportNodesDescriptionSize, displayOptions);
+                float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUINodesDescriptionSize, displayOptions);
 
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
@@ -3888,7 +3888,7 @@ namespace BaseClasses
             //float fTextBlockHorizontalSizeFactor = 0.5f;
 
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIGridLineLabelSize, displayOptions.ExportGridLineLabelSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIGridLineLabelSize, displayOptions);
 
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
@@ -4071,7 +4071,7 @@ namespace BaseClasses
         public static void DrawSectionSymbolLabelText3D(CSectionSymbol sectionSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISectionSymbolLabelSize, displayOptions.ExportSectionSymbolLabelSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISectionSymbolLabelSize, displayOptions);
 
             Vector3D over = new Vector3D(1f * sectionSymbol.iVectorOverFactor_LCS, 0, 0);
             Vector3D up = new Vector3D(0, 1f * sectionSymbol.iVectorUpFactor_LCS, 0);
@@ -4083,7 +4083,7 @@ namespace BaseClasses
         public static void DrawDetailSymbolLabelText3D(CDetailSymbol detailSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDetailSymbolLabelSize, displayOptions.ExportDetailSymbolLabelSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDetailSymbolLabelSize, displayOptions);
 
             Vector3D over = new Vector3D(1f, 0, 0);
             Vector3D up = new Vector3D(0, 0, 1f);
@@ -4097,7 +4097,7 @@ namespace BaseClasses
         public static void DrawSawCutText3D(CSawCut sawcut, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISawCutTextSize, displayOptions.ExportSawCutTextSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUISawCutTextSize, displayOptions);
             sawcut.OffsetFromLine = fTextBlockVerticalSize / 2;  //toto vyzera ze sa pouziva kvoli TextPoint
 
             Vector3D over = new Vector3D(1f * sawcut.iVectorOverFactor_LCS, 0, 0);
@@ -4110,7 +4110,7 @@ namespace BaseClasses
         public static void DrawControlJointText3D(CControlJoint controlJoint, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIControlJointTextSize, displayOptions.ExportControlJointTextSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIControlJointTextSize, displayOptions);
             controlJoint.OffsetFromLine = fTextBlockVerticalSize / 2;
 
             Vector3D over = new Vector3D(1f * controlJoint.iVectorOverFactor_LCS, 0, 0);
@@ -4123,7 +4123,7 @@ namespace BaseClasses
         public static void DrawFoundationText3D(CFoundation foundation, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFoundationTextSize, displayOptions.ExportFoundationTextSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFoundationTextSize, displayOptions);
             foundation.SetTextPoint(fTextBlockVerticalSize);
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
             Vector3D over = new Vector3D(0, 1f, 0);
@@ -4137,7 +4137,7 @@ namespace BaseClasses
         public static void DrawFloorSlabText3D(CSlab slab, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFloorSlabTextSize, displayOptions.ExportFloorSlabTextSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFloorSlabTextSize, displayOptions);
 
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
             Vector3D over = new Vector3D(0, 1f, 0);
@@ -4193,12 +4193,12 @@ namespace BaseClasses
                     //tu este view ma asi ine velkosti treba pozriet kde sa nastavuje ViewPageSize
                     if (s.IsFibreglass)
                     {
-                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions.ExportFibreglassDescriptionSize, displayOptions);
+                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIFibreglassDescriptionSize, displayOptions);
                         widthScaleFactor = displayOptions.bDisplayFibreglassLengthWidth ? 0.4 : 0.6;
                     }
                     else
                     {
-                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions.ExportCladdingDescriptionSize, displayOptions);
+                        fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUICladdingDescriptionSize, displayOptions);
                         widthScaleFactor = displayOptions.bDisplayCladdingLengthWidth ? 0.4 : 0.6;
                     }
 
@@ -4240,7 +4240,7 @@ namespace BaseClasses
             int maxRowLength = 0;
             string text = Drawing3DHelper.GetDoorDisplayText(displayOptions, door, out rowsCount, out maxRowLength);
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDoorDescriptionSize, displayOptions.ExportDoorDescriptionSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIDoorDescriptionSize, displayOptions);
             
             // Nastavujeme pre GCS (rovina XZ - text v smere X)
             Vector3D over = new Vector3D(1f, 0, 0);
@@ -4257,7 +4257,7 @@ namespace BaseClasses
             int maxRowLength = 0;
             string text = Drawing3DHelper.GetWindowDisplayText(displayOptions, window, out rowsCount, out maxRowLength);
             float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIWindowDescriptionSize, displayOptions.ExportWindowDescriptionSize, displayOptions);
+            float fTextBlockVerticalSize = GetSizeIn3D(maxModelLength, displayOptions.GUIWindowDescriptionSize, displayOptions);
 
             // Nastavujeme pre GCS (rovina XZ - text v smere X)
             Vector3D over = new Vector3D(1f, 0, 0);
@@ -6072,6 +6072,8 @@ namespace BaseClasses
             return gm3D;
         }
 
+
+        //tato metoda bude deprecated lebo rusime display options pre Export
         public static float GetSizeIn3D(float maxModelLength, float sizeFactorGUI, float sizeFactorExport, DisplayOptions displayOptions)
         {
             float value = 0;
@@ -6083,6 +6085,21 @@ namespace BaseClasses
             else
             {
                 value = maxModelLength * sizeFactorGUI;
+            }
+            return value;
+        }
+
+        public static float GetSizeIn3D(float maxModelLength, float sizeFactor, DisplayOptions displayOptions)
+        {
+            float value = 0;
+            if (displayOptions.IsExport)
+            {
+                value = maxModelLength * sizeFactor;
+                value = GetSizeBasedOnPageSize(displayOptions, value);
+            }
+            else
+            {
+                value = maxModelLength * sizeFactor;
             }
             return value;
         }
