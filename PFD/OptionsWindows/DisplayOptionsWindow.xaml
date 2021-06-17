@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options" Height="1040" Width="950" Loaded="Window_Loaded">
+        Title="Display Options" Height="1050" Width="1000" Loaded="Window_Loaded">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -982,100 +982,100 @@
                         <!--<TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Text="Export:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" />-->
 
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="GUI Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="1" Grid.Column="1" Name ="GUIFloorSlabTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Name ="FloorSlabTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIFloorSlabTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=FloorSlabTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="GUI Gridline Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="2" Grid.Column="1" Name ="GUIGridlinesSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Gridline Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Name ="GridlinesSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIGridlinesSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=GridlinesSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="GUI Gridline Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="3" Grid.Column="1" Name ="GUIGridLineLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Gridline Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Name ="GridLineLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIGridLineLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=GridLineLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="GUI Section Symbol Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="4" Grid.Column="1" Name ="GUISectionSymbolsSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Section Symbol Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Name ="SectionSymbolsSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUISectionSymbolsSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=SectionSymbolsSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="GUI Section Symbol Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="5" Grid.Column="1" Name ="GUISectionSymbolLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Section Symbol Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="5" Grid.Column="1" Name ="SectionSymbolLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUISectionSymbolLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=SectionSymbolLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="GUI Detail Symbol Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="6" Grid.Column="1" Name ="GUIDetailSymbolSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Detail Symbol Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="6" Grid.Column="1" Name ="DetailSymbolSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIDetailSymbolSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=DetailSymbolSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="7" Grid.Column="0" Text="GUI Detail Symbol Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="7" Grid.Column="1" Name ="GUIDetailSymbolLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Detail Symbol Label Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="7" Grid.Column="1" Name ="DetailSymbolLabelSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIDetailSymbolLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=DetailSymbolLabelSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="8" Grid.Column="0" Text="GUI Member Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="8" Grid.Column="1" Name ="GUIMembersDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Member Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="8" Grid.Column="1" Name ="MembersDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIMembersDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=MembersDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="9" Grid.Column="0" Text="GUI Node Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="9" Grid.Column="1" Name ="GUINodesDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Node Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="9" Grid.Column="1" Name ="NodesDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUINodesDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=NodesDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="10" Grid.Column="0" Text="GUI Saw Cut Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="10" Grid.Column="1" Name ="GUISawCutTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="10" Grid.Column="0" Text="Saw Cut Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="10" Grid.Column="1" Name ="SawCutTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUISawCutTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=SawCutTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="11" Grid.Column="0" Text="GUI Control Joint Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="11" Grid.Column="1" Name ="GUIControlJointTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="11" Grid.Column="0" Text="Control Joint Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="11" Grid.Column="1" Name ="ControlJointTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIControlJointTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=ControlJointTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="12" Grid.Column="0" Text="GUI Foundation Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="12" Grid.Column="1" Name ="GUIFoundationTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="12" Grid.Column="0" Text="Foundation Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="12" Grid.Column="1" Name ="FoundationTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIFoundationTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=FoundationTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="13" Grid.Column="0" Text="GUI Dimensions Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="13" Grid.Column="1" Name ="GUIDimensionsTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Dimensions Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="13" Grid.Column="1" Name ="DimensionsTextSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIDimensionsTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=DimensionsTextSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="14" Grid.Column="0" Text="GUI Dimensions Line Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="14" Grid.Column="1" Name ="GUIDimensionsLineRadius" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Dimensions Line Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="14" Grid.Column="1" Name ="DimensionsLineRadius" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIDimensionsLineRadius, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F5}"/>
+                         Text="{Binding Path=DimensionsLineRadius, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F5}"/>
 
-                        <TextBlock Grid.Row="15" Grid.Column="0" Text="GUI Dimensions Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="15" Grid.Column="1" Name ="GUIDimensionsScale" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Dimensions Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="15" Grid.Column="1" Name ="DimensionsScale" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIDimensionsScale, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=DimensionsScale, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="16" Grid.Column="0" Text="GUI Cladding Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="16" Grid.Column="1" Name ="GUICladdingDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Cladding Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="16" Grid.Column="1" Name ="CladdingDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUICladdingDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=CladdingDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="17" Grid.Column="0" Text="GUI Fibreglass Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="17" Grid.Column="1" Name ="GUIFibreglassDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Fibreglass Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="17" Grid.Column="1" Name ="FibreglassDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIFibreglassDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=FibreglassDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="18" Grid.Column="0" Text="GUI Door Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="18" Grid.Column="1" Name ="GUIDoorDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Door Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="18" Grid.Column="1" Name ="DoorDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIDoorDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=DoorDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
-                        <TextBlock Grid.Row="19" Grid.Column="0" Text="GUI Window Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="19" Grid.Column="1" Name ="GUIWindowDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Window Description Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="19" Grid.Column="1" Name ="WindowDescriptionSize" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=GUIWindowDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
+                         Text="{Binding Path=WindowDescriptionSize, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, StringFormat=F3}"/>
 
 
                         <!--<TextBlock Grid.Row="1" Grid.Column="2" Text="Export Floor Slab Text Size:" HorizontalAlignment="Left" VerticalAlignment="Top" />

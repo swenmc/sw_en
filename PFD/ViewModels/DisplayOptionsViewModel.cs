@@ -319,26 +319,26 @@ namespace PFD
         //private float m_ExportDoorDescriptionSize;
         //private float m_ExportWindowDescriptionSize;
 
-        private float m_GUIFloorSlabTextSize;
-        private float m_GUIGridlinesSize;
-        private float m_GUIGridLineLabelSize;
-        private float m_GUISectionSymbolsSize;
-        private float m_GUISectionSymbolLabelSize;
-        private float m_GUIDetailSymbolSize;
-        private float m_GUIDetailSymbolLabelSize;
-        private float m_GUIMembersDescriptionSize;
-        private float m_GUINodesDescriptionSize;
-        private float m_GUISawCutTextSize;
-        private float m_GUIControlJointTextSize;
-        private float m_GUIFoundationTextSize;
-        private float m_GUIDimensionsTextSize;
-        private float m_GUIDimensionsLineRadius;
-        private float m_GUIDimensionsScale;
-        private float m_GUIDescriptionTextWidthScaleFactor;
-        private float m_GUICladdingDescriptionSize;
-        private float m_GUIFibreglassDescriptionSize;
-        private float m_GUIDoorDescriptionSize;
-        private float m_GUIWindowDescriptionSize;
+        private float m_FloorSlabTextSize;
+        private float m_GridlinesSize;
+        private float m_GridLineLabelSize;
+        private float m_SectionSymbolsSize;
+        private float m_SectionSymbolLabelSize;
+        private float m_DetailSymbolSize;
+        private float m_DetailSymbolLabelSize;
+        private float m_MembersDescriptionSize;
+        private float m_NodesDescriptionSize;
+        private float m_SawCutTextSize;
+        private float m_ControlJointTextSize;
+        private float m_FoundationTextSize;
+        private float m_DimensionsTextSize;
+        private float m_DimensionsLineRadius;
+        private float m_DimensionsScale;
+        private float m_DescriptionTextWidthScaleFactor;
+        private float m_CladdingDescriptionSize;
+        private float m_FibreglassDescriptionSize;
+        private float m_DoorDescriptionSize;
+        private float m_WindowDescriptionSize;
 
         private bool m_CladdingSheetColoursByID;
 
@@ -3221,271 +3221,271 @@ namespace PFD
 
         #endregion
 
-        public float GUIFloorSlabTextSize
+        public float FloorSlabTextSize
         {
             get
             {
-                return m_GUIFloorSlabTextSize;
+                return m_FloorSlabTextSize;
             }
 
             set
             {
-                m_GUIFloorSlabTextSize = value;
-                NotifyPropertyChanged("GUIFloorSlabTextSize");
+                m_FloorSlabTextSize = value;
+                NotifyPropertyChanged("FloorSlabTextSize");
             }
         }
 
-        public float GUIGridlinesSize
+        public float GridlinesSize
         {
             get
             {
-                return m_GUIGridlinesSize;
+                return m_GridlinesSize;
             }
 
             set
             {
-                m_GUIGridlinesSize = value;
-                NotifyPropertyChanged("GUIGridlinesSize");
+                m_GridlinesSize = value;
+                NotifyPropertyChanged("GridlinesSize");
             }
         }
 
-        public float GUIGridLineLabelSize
+        public float GridLineLabelSize
         {
             get
             {
-                return m_GUIGridLineLabelSize;
+                return m_GridLineLabelSize;
             }
 
             set
             {
-                m_GUIGridLineLabelSize = value;
-                NotifyPropertyChanged("GUIGridLineLabelSize");
+                m_GridLineLabelSize = value;
+                NotifyPropertyChanged("GridLineLabelSize");
             }
         }
 
-        public float GUISectionSymbolsSize
+        public float SectionSymbolsSize
         {
             get
             {
-                return m_GUISectionSymbolsSize;
+                return m_SectionSymbolsSize;
             }
 
             set
             {
-                m_GUISectionSymbolsSize = value;
-                NotifyPropertyChanged("GUISectionSymbolsSize");
+                m_SectionSymbolsSize = value;
+                NotifyPropertyChanged("SectionSymbolsSize");
             }
         }
 
-        public float GUISectionSymbolLabelSize
+        public float SectionSymbolLabelSize
         {
             get
             {
-                return m_GUISectionSymbolLabelSize;
+                return m_SectionSymbolLabelSize;
             }
 
             set
             {
-                m_GUISectionSymbolLabelSize = value;
-                NotifyPropertyChanged("GUISectionSymbolLabelSize");
+                m_SectionSymbolLabelSize = value;
+                NotifyPropertyChanged("SectionSymbolLabelSize");
             }
         }
 
-        public float GUIDetailSymbolSize
+        public float DetailSymbolSize
         {
             get
             {
-                return m_GUIDetailSymbolSize;
+                return m_DetailSymbolSize;
             }
 
             set
             {
-                m_GUIDetailSymbolSize = value;
-                NotifyPropertyChanged("GUIDetailSymbolSize");
+                m_DetailSymbolSize = value;
+                NotifyPropertyChanged("DetailSymbolSize");
             }
         }
 
-        public float GUIDetailSymbolLabelSize
+        public float DetailSymbolLabelSize
         {
             get
             {
-                return m_GUIDetailSymbolLabelSize;
+                return m_DetailSymbolLabelSize;
             }
 
             set
             {
-                m_GUIDetailSymbolLabelSize = value;
-                NotifyPropertyChanged("GUIDetailSymbolLabelSize");
+                m_DetailSymbolLabelSize = value;
+                NotifyPropertyChanged("DetailSymbolLabelSize");
             }
         }
 
-        public float GUIMembersDescriptionSize
+        public float MembersDescriptionSize
         {
             get
             {
-                return m_GUIMembersDescriptionSize;
+                return m_MembersDescriptionSize;
             }
 
             set
             {
-                m_GUIMembersDescriptionSize = value;
-                NotifyPropertyChanged("GUIMembersDescriptionSize");
+                m_MembersDescriptionSize = value;
+                NotifyPropertyChanged("MembersDescriptionSize");
             }
         }
 
-        public float GUINodesDescriptionSize
+        public float NodesDescriptionSize
         {
             get
             {
-                return m_GUINodesDescriptionSize;
+                return m_NodesDescriptionSize;
             }
 
             set
             {
-                m_GUINodesDescriptionSize = value;
-                NotifyPropertyChanged("GUINodesDescriptionSize");
+                m_NodesDescriptionSize = value;
+                NotifyPropertyChanged("NodesDescriptionSize");
             }
         }
 
-        public float GUISawCutTextSize
+        public float SawCutTextSize
         {
             get
             {
-                return m_GUISawCutTextSize;
+                return m_SawCutTextSize;
             }
 
             set
             {
-                m_GUISawCutTextSize = value;
-                NotifyPropertyChanged("GUISawCutTextSize");
+                m_SawCutTextSize = value;
+                NotifyPropertyChanged("SawCutTextSize");
             }
         }
 
-        public float GUIControlJointTextSize
+        public float ControlJointTextSize
         {
             get
             {
-                return m_GUIControlJointTextSize;
+                return m_ControlJointTextSize;
             }
 
             set
             {
-                m_GUIControlJointTextSize = value;
-                NotifyPropertyChanged("GUIControlJointTextSize");
+                m_ControlJointTextSize = value;
+                NotifyPropertyChanged("ControlJointTextSize");
             }
         }
 
-        public float GUIFoundationTextSize
+        public float FoundationTextSize
         {
             get
             {
-                return m_GUIFoundationTextSize;
+                return m_FoundationTextSize;
             }
 
             set
             {
-                m_GUIFoundationTextSize = value;
-                NotifyPropertyChanged("GUIFoundationTextSize");
+                m_FoundationTextSize = value;
+                NotifyPropertyChanged("FoundationTextSize");
             }
         }
 
-        public float GUIDimensionsTextSize
+        public float DimensionsTextSize
         {
             get
             {
-                return m_GUIDimensionsTextSize;
+                return m_DimensionsTextSize;
             }
 
             set
             {
-                m_GUIDimensionsTextSize = value;
-                NotifyPropertyChanged("GUIDimensionsTextSize");
+                m_DimensionsTextSize = value;
+                NotifyPropertyChanged("DimensionsTextSize");
             }
         }
 
-        public float GUICladdingDescriptionSize
+        public float CladdingDescriptionSize
         {
             get
             {
-                return m_GUICladdingDescriptionSize;
+                return m_CladdingDescriptionSize;
             }
 
             set
             {
-                m_GUICladdingDescriptionSize = value;
-                NotifyPropertyChanged("GUICladdingDescriptionSize");
+                m_CladdingDescriptionSize = value;
+                NotifyPropertyChanged("CladdingDescriptionSize");
             }
         }
 
-        public float GUIFibreglassDescriptionSize
+        public float FibreglassDescriptionSize
         {
             get
             {
-                return m_GUIFibreglassDescriptionSize;
+                return m_FibreglassDescriptionSize;
             }
 
             set
             {
-                m_GUIFibreglassDescriptionSize = value;
-                NotifyPropertyChanged("GUIFibreglassDescriptionSize");
+                m_FibreglassDescriptionSize = value;
+                NotifyPropertyChanged("FibreglassDescriptionSize");
             }
         }
 
-        public float GUIDoorDescriptionSize
+        public float DoorDescriptionSize
         {
             get
             {
-                return m_GUIDoorDescriptionSize;
+                return m_DoorDescriptionSize;
             }
 
             set
             {
-                m_GUIDoorDescriptionSize = value;
-                NotifyPropertyChanged("GUIDoorDescriptionSize");
+                m_DoorDescriptionSize = value;
+                NotifyPropertyChanged("DoorDescriptionSize");
             }
         }
 
-        public float GUIWindowDescriptionSize
+        public float WindowDescriptionSize
         {
             get
             {
-                return m_GUIWindowDescriptionSize;
+                return m_WindowDescriptionSize;
             }
 
             set
             {
-                m_GUIWindowDescriptionSize = value;
-                NotifyPropertyChanged("GUIWindowDescriptionSize");
+                m_WindowDescriptionSize = value;
+                NotifyPropertyChanged("WindowDescriptionSize");
             }
         }
 
        
 
-        public float GUIDimensionsLineRadius
+        public float DimensionsLineRadius
         {
             get
             {
-                return m_GUIDimensionsLineRadius;
+                return m_DimensionsLineRadius;
             }
 
             set
             {
-                m_GUIDimensionsLineRadius = value;
-                NotifyPropertyChanged("GUIDimensionsLineRadius");
+                m_DimensionsLineRadius = value;
+                NotifyPropertyChanged("DimensionsLineRadius");
             }
         }
 
-        public float GUIDimensionsScale
+        public float DimensionsScale
         {
             get
             {
-                return m_GUIDimensionsScale;
+                return m_DimensionsScale;
             }
 
             set
             {
-                m_GUIDimensionsScale = value;
-                NotifyPropertyChanged("GUIDimensionsScale");
+                m_DimensionsScale = value;
+                NotifyPropertyChanged("DimensionsScale");
             }
         }
 
@@ -3591,12 +3591,12 @@ namespace PFD
         {
             get
             {
-                return m_GUIDescriptionTextWidthScaleFactor;
+                return m_DescriptionTextWidthScaleFactor;
             }
 
             set
             {
-                m_GUIDescriptionTextWidthScaleFactor = value;
+                m_DescriptionTextWidthScaleFactor = value;
             }
         }
 
@@ -4393,26 +4393,26 @@ namespace PFD
             //ExportDoorDescriptionSize = 1f / 100f;
             //ExportWindowDescriptionSize = 1f / 100f;
 
-            GUIGridlinesSize = 1f / 20f;
-            GUIGridLineLabelSize = 1f / 40f;
-            GUISectionSymbolsSize = 1f / 20f;
-            GUISectionSymbolLabelSize = 1f / 40f;
-            GUIDetailSymbolSize = 1f / 20f;
-            GUIDetailSymbolLabelSize = 1 / 40f;
-            GUIFloorSlabTextSize = 1f / 20f;
-            GUIMembersDescriptionSize = 1f / 100f;
-            GUINodesDescriptionSize = 1f / 100f;
-            GUISawCutTextSize = 1f / 100f;
-            GUIControlJointTextSize = 1f / 100f;
-            GUIFoundationTextSize = 1f / 100f;
-            GUIDimensionsTextSize = 1f / 100f;
-            GUIDimensionsLineRadius = 1f / 1500f;
-            GUIDimensionsScale = 1f / 10f;
+            GridlinesSize = 1f / 20f;
+            GridLineLabelSize = 1f / 40f;
+            SectionSymbolsSize = 1f / 20f;
+            SectionSymbolLabelSize = 1f / 40f;
+            DetailSymbolSize = 1f / 20f;
+            DetailSymbolLabelSize = 1 / 40f;
+            FloorSlabTextSize = 1f / 20f;
+            MembersDescriptionSize = 1f / 100f;
+            NodesDescriptionSize = 1f / 100f;
+            SawCutTextSize = 1f / 100f;
+            ControlJointTextSize = 1f / 100f;
+            FoundationTextSize = 1f / 100f;
+            DimensionsTextSize = 1f / 100f;
+            DimensionsLineRadius = 1f / 1500f;
+            DimensionsScale = 1f / 10f;
             GUIDescriptionTextWidthScaleFactor = 0.3f;
-            GUICladdingDescriptionSize = 1f / 100f;
-            GUIFibreglassDescriptionSize = 1f / 100f;
-            GUIDoorDescriptionSize = 1f / 100f;
-            GUIWindowDescriptionSize = 1f / 100f;
+            CladdingDescriptionSize = 1f / 100f;
+            FibreglassDescriptionSize = 1f / 100f;
+            DoorDescriptionSize = 1f / 100f;
+            WindowDescriptionSize = 1f / 100f;
 
             IsSetFromCode = false;
         }
@@ -4632,21 +4632,21 @@ namespace PFD
             //ExportDimensionsScale = newVM.ExportDimensionsScale;
             //ExportDescriptionTextWidthScaleFactor = newVM.ExportDescriptionTextWidthScaleFactor;
 
-            GUIFloorSlabTextSize = newVM.GUIFloorSlabTextSize;
-            GUIGridlinesSize = newVM.GUIGridlinesSize;
-            GUIGridLineLabelSize = newVM.GUIGridLineLabelSize;
-            GUISectionSymbolsSize = newVM.GUISectionSymbolsSize;
-            GUISectionSymbolLabelSize = newVM.GUISectionSymbolLabelSize;
-            GUIDetailSymbolSize = newVM.GUIDetailSymbolSize;
-            GUIDetailSymbolLabelSize = newVM.GUIDetailSymbolLabelSize;
-            GUIMembersDescriptionSize = newVM.GUIMembersDescriptionSize;
-            GUINodesDescriptionSize = newVM.GUINodesDescriptionSize;
-            GUISawCutTextSize = newVM.GUISawCutTextSize;
-            GUIControlJointTextSize = newVM.GUIControlJointTextSize;
-            GUIFoundationTextSize = newVM.GUIFoundationTextSize;
-            GUIDimensionsTextSize = newVM.GUIDimensionsTextSize;
-            GUIDimensionsLineRadius = newVM.GUIDimensionsLineRadius;
-            GUIDimensionsScale = newVM.GUIDimensionsScale;
+            FloorSlabTextSize = newVM.FloorSlabTextSize;
+            GridlinesSize = newVM.GridlinesSize;
+            GridLineLabelSize = newVM.GridLineLabelSize;
+            SectionSymbolsSize = newVM.SectionSymbolsSize;
+            SectionSymbolLabelSize = newVM.SectionSymbolLabelSize;
+            DetailSymbolSize = newVM.DetailSymbolSize;
+            DetailSymbolLabelSize = newVM.DetailSymbolLabelSize;
+            MembersDescriptionSize = newVM.MembersDescriptionSize;
+            NodesDescriptionSize = newVM.NodesDescriptionSize;
+            SawCutTextSize = newVM.SawCutTextSize;
+            ControlJointTextSize = newVM.ControlJointTextSize;
+            FoundationTextSize = newVM.FoundationTextSize;
+            DimensionsTextSize = newVM.DimensionsTextSize;
+            DimensionsLineRadius = newVM.DimensionsLineRadius;
+            DimensionsScale = newVM.DimensionsScale;
             GUIDescriptionTextWidthScaleFactor = newVM.GUIDescriptionTextWidthScaleFactor;
 
             UseTextures = newVM.UseTextures;

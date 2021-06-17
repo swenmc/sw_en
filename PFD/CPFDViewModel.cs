@@ -3712,26 +3712,26 @@ namespace PFD
             //sDisplayOptions.ExportDoorDescriptionSize = do_vm.ExportDoorDescriptionSize;
             //sDisplayOptions.ExportWindowDescriptionSize = do_vm.ExportWindowDescriptionSize;
 
-            sDisplayOptions.GUIFloorSlabTextSize = do_vm.GUIFloorSlabTextSize;
-            sDisplayOptions.GUIGridlinesSize = do_vm.GUIGridlinesSize;
-            sDisplayOptions.GUIGridLineLabelSize = do_vm.GUIGridLineLabelSize;
-            sDisplayOptions.GUISectionSymbolsSize = do_vm.GUISectionSymbolsSize;
-            sDisplayOptions.GUISectionSymbolLabelSize = do_vm.GUISectionSymbolLabelSize;
-            sDisplayOptions.GUIDetailSymbolSize = do_vm.GUIDetailSymbolSize;
-            sDisplayOptions.GUIDetailSymbolLabelSize = do_vm.GUIDetailSymbolLabelSize;
-            sDisplayOptions.GUIMembersDescriptionSize = do_vm.GUIMembersDescriptionSize;
-            sDisplayOptions.GUINodesDescriptionSize = do_vm.GUINodesDescriptionSize;
-            sDisplayOptions.GUISawCutTextSize = do_vm.GUISawCutTextSize;
-            sDisplayOptions.GUIControlJointTextSize = do_vm.GUIControlJointTextSize;
-            sDisplayOptions.GUIFoundationTextSize = do_vm.GUIFoundationTextSize;
-            sDisplayOptions.GUIDimensionsTextSize = do_vm.GUIDimensionsTextSize;
-            sDisplayOptions.GUIDimensionsLineRadius = do_vm.GUIDimensionsLineRadius;
-            sDisplayOptions.GUIDimensionsScale = do_vm.GUIDimensionsScale;
+            sDisplayOptions.GUIFloorSlabTextSize = do_vm.FloorSlabTextSize;
+            sDisplayOptions.GUIGridlinesSize = do_vm.GridlinesSize;
+            sDisplayOptions.GUIGridLineLabelSize = do_vm.GridLineLabelSize;
+            sDisplayOptions.GUISectionSymbolsSize = do_vm.SectionSymbolsSize;
+            sDisplayOptions.GUISectionSymbolLabelSize = do_vm.SectionSymbolLabelSize;
+            sDisplayOptions.GUIDetailSymbolSize = do_vm.DetailSymbolSize;
+            sDisplayOptions.GUIDetailSymbolLabelSize = do_vm.DetailSymbolLabelSize;
+            sDisplayOptions.GUIMembersDescriptionSize = do_vm.MembersDescriptionSize;
+            sDisplayOptions.GUINodesDescriptionSize = do_vm.NodesDescriptionSize;
+            sDisplayOptions.GUISawCutTextSize = do_vm.SawCutTextSize;
+            sDisplayOptions.GUIControlJointTextSize = do_vm.ControlJointTextSize;
+            sDisplayOptions.GUIFoundationTextSize = do_vm.FoundationTextSize;
+            sDisplayOptions.GUIDimensionsTextSize = do_vm.DimensionsTextSize;
+            sDisplayOptions.GUIDimensionsLineRadius = do_vm.DimensionsLineRadius;
+            sDisplayOptions.GUIDimensionsScale = do_vm.DimensionsScale;
             sDisplayOptions.GUIDescriptionTextWidthScaleFactor = do_vm.GUIDescriptionTextWidthScaleFactor;
-            sDisplayOptions.GUICladdingDescriptionSize = do_vm.GUICladdingDescriptionSize;
-            sDisplayOptions.GUIFibreglassDescriptionSize = do_vm.GUIFibreglassDescriptionSize;
-            sDisplayOptions.GUIDoorDescriptionSize = do_vm.GUIDoorDescriptionSize;
-            sDisplayOptions.GUIWindowDescriptionSize = do_vm.GUIWindowDescriptionSize;
+            sDisplayOptions.GUICladdingDescriptionSize = do_vm.CladdingDescriptionSize;
+            sDisplayOptions.GUIFibreglassDescriptionSize = do_vm.FibreglassDescriptionSize;
+            sDisplayOptions.GUIDoorDescriptionSize = do_vm.DoorDescriptionSize;
+            sDisplayOptions.GUIWindowDescriptionSize = do_vm.WindowDescriptionSize;
 
             return sDisplayOptions;
         }
