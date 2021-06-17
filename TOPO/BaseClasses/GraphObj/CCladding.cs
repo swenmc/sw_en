@@ -2477,42 +2477,28 @@ namespace BaseClasses.GraphObj
             if (intervals == null || intervals.Count < 2)
                 return length;
 
-            //double l = intervals[0].S;
-            //double r = intervals[0].E;
-
-            //for (int i = 1; i < intervals.Count; i++)
-            //{
-            //    // TO Ondrej - tu je este chyba, malo by sa porovnat prekryvanie list item "kazdy s kazdym" zo zoznamu intervalov
-
-            //    if (intervals[i].S > r || intervals[i].E < l)
-            //    {
-            //        // No intersection;
-            //    }
-            //    else
-            //    {
-            //        l = Math.Max(l, intervals[i].S);
-            //        r = Math.Min(r, intervals[i].E);
-            //        length += (r - l);
-            //    }
-            //}
-
             double l;double r;
             for (int i = 0; i < intervals.Count; i++)
             {
                 l = intervals[i].S;
                 r = intervals[i].E;
 
-                for (int j = i + 1; j < intervals.Count; j++)
+                for (int j = 0; j < intervals.Count; j++)
                 {
-                    if (intervals[j].S > r || intervals[j].E < l)
+                    if (i != j) // Porovnavame kazdy s kazdym okrem pripadu ked sa porovnava ten isty interval so sebou samym
                     {
-                        // No intersection;
-                    }
-                    else
-                    {
-                        l = Math.Max(l, intervals[j].S);
-                        r = Math.Min(r, intervals[j].E);
-                        length += (r - l);
+                        // BUG 853
+                        // TODO - potrebujeme osetrit pripad ked sa uvazuje napr. index i = 1 a j = 2 a potom znova i = 2 a j = 1, dlzku pre tieto dve moznosti chceme zohladnit len raz
+                        if (intervals[j].S > r || intervals[j].E < l)
+                        {
+                            // No intersection;
+                        }
+                        else
+                        {
+                            l = Math.Max(l, intervals[j].S);
+                            r = Math.Min(r, intervals[j].E);
+                            length += (r - l);
+                        }
                     }
                 }
             }

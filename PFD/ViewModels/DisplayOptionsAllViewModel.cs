@@ -956,7 +956,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations];
 
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].TransformScreenLines3DToCylinders3D = true;
-            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Red);
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Blue); // Pokus
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayMembers = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].DisplayJoints = false;
