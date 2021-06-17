@@ -1864,6 +1864,8 @@ namespace PFD
             {
                 m_arrGOStrDoors = new List<BaseClasses.GraphObj.CStructure_Door>();
 
+                bool doorsSimpleSolidModel = vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DoorsSimpleSolidModel;
+
                 for (int i = 0; i < _pfdVM._doorsAndWindowsVM.DoorBlocksProperties.Count; i++)
                 {
                     if (_pfdVM._doorsAndWindowsVM.DoorBlocksProperties[i].sBuildingSide == "Left" && !bGenerateLeftSideCladding) continue;
@@ -1886,10 +1888,10 @@ namespace PFD
                         CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "PA Door Header Cap");
                         if (prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fPersonnelDoorFrameThickness;
-                        frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
-                        frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
+                        frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (doorsSimpleSolidModel ? 0 : fDoorFrameThickness);
+                        frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (doorsSimpleSolidModel ? 0 : fDoorFrameThickness);
 
-                        if (!vm.GetDisplayOptions().bDoorsSimpleSolidModel)
+                        if (!doorsSimpleSolidModel)
                         {
                             leftEdge += frameEdgeToCladdingOffsetExteriorBackLeft;
                             frontEdge -= frameEdgeToCladdingOffsetExteriorFrontRight;
@@ -1902,10 +1904,10 @@ namespace PFD
                         CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "Roller Door Trimmer");
                         if(prop != null) doorFlashingColor = (Color)ColorConverter.ConvertFromString(prop.CoatingColor.CodeHEX);
                         fDoorFrameThickness = fRollerDoorFrameThickness;
-                        frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
-                        frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fDoorFrameThickness);
+                        frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (doorsSimpleSolidModel ? 0 : fDoorFrameThickness);
+                        frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (doorsSimpleSolidModel ? 0 : fDoorFrameThickness);
 
-                        if (!vm.GetDisplayOptions().bDoorsSimpleSolidModel)
+                        if (!doorsSimpleSolidModel)
                         {
                             leftEdge += frameEdgeToCladdingOffsetExteriorBackLeft;
                             frontEdge -= frameEdgeToCladdingOffsetExteriorFrontRight;
@@ -1950,6 +1952,7 @@ namespace PFD
             if (_pfdVM._doorsAndWindowsVM != null && _pfdVM._doorsAndWindowsVM.WindowBlocksProperties != null)
             {
                 m_arrGOStrWindows = new List<BaseClasses.GraphObj.CStructure_Window>();
+                bool doorsSimpleSolidModel = vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].DoorsSimpleSolidModel;
 
                 Color windowFlashingColor = Colors.White;
                 CAccessories_LengthItemProperties prop = _pfdVM._doorsAndWindowsVM.Flashings.FirstOrDefault(f => f.Name == "Window");
@@ -1962,8 +1965,8 @@ namespace PFD
                     if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Front" && !bGenerateFrontSideCladding) continue;
                     if (_pfdVM._doorsAndWindowsVM.WindowBlocksProperties[i].sBuildingSide == "Back" && !bGenerateBackSideCladding) continue;
 
-                    double frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fWindowFrameThickness);
-                    double frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (vm.GetDisplayOptions().bDoorsSimpleSolidModel ? 0 : fWindowFrameThickness);
+                    double frameEdgeToCladdingOffsetExteriorFrontRight = 0.6f * (doorsSimpleSolidModel ? 0 : fWindowFrameThickness);
+                    double frameEdgeToCladdingOffsetExteriorBackLeft = 0.4f * (doorsSimpleSolidModel ? 0 : fWindowFrameThickness);
                     double leftEdge = -column_crsc_z_plus /* - claddingThickness_Wall*/ + frameEdgeToCladdingOffsetExteriorBackLeft;
                     double frontEdge = column_crsc_y_minus - frameEdgeToCladdingOffsetExteriorFrontRight;
                     double rightEdge = fW_frame_centerline + column_crsc_z_plus /* + claddingThickness_Wall*/ + frameEdgeToCladdingOffsetExteriorFrontRight;
