@@ -366,6 +366,7 @@ namespace PFD
 
             #endregion 3D SCENE
             #region JOINT PREVIEW
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview] = DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene];
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].DisplayNodes = false;
@@ -379,6 +380,7 @@ namespace PFD
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview].DisplayConnectors = true;
             #endregion JOINT PREVIEW
             #region FOUNDATION PREVIEW
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview] = DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene];
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowGlobalAxis = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].ShowMemberDescription = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview].DisplayNodes = false;
@@ -403,6 +405,7 @@ namespace PFD
             #endregion FOUNDATION PREVIEW
             #region ACCESSORIES PREVIEW
             // TODO
+            DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview] = DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene];
             DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Accessories_Preview].DisplaySolidModel = true;
 
             #endregion ACCESSORIES PREVIEW
@@ -439,6 +442,7 @@ namespace PFD
 
             #endregion 3D SCENE
             #region JOINTS
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints] = DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview];
 
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].IsExport = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Joints].DisplayMembersCenterLines = false;
@@ -469,6 +473,7 @@ namespace PFD
 
             #endregion JOINTS
             #region FOUNDATIONS
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations] = DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview];
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].IsExport = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplayMembersCenterLines = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Report_Foundations].DisplaySolidModel = true;
@@ -764,6 +769,7 @@ namespace PFD
             #endregion ELEVATIONS
             // TODO Pre nasledujuce options Frame Views treba doplnit vsade to co je pre elevations
             #region ROOF
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].ShowMemberPrefix = true;
@@ -777,6 +783,7 @@ namespace PFD
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Roof].CreateHorizontalGridlines = true;
             #endregion ROOF
             #region FRAMES
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].ShowMemberPrefix = true;
@@ -795,6 +802,7 @@ namespace PFD
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Frames].CreateVerticalGridlinesFront = true;
             #endregion FRAMES
             #region COLUMNS
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
 
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].ShowMemberDescription = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Columns].ShowMemberPrefix = true;
@@ -819,6 +827,7 @@ namespace PFD
 
             #endregion COLUMNS
             #region FOUNDATIONS
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
 
             // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Foundations].DisplayWireFrameModel = true;
@@ -842,6 +851,8 @@ namespace PFD
 
             #endregion FOUNDATIONS
             #region FLOOR
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
+
             // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayWireFrameModel = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Floor].DisplayFoundationsWireFrame = true;
@@ -870,6 +881,7 @@ namespace PFD
             #endregion FRAME VIEWS
             #region CLADDING VIEWS
             #region ELEVATIONS
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_FW_Elevations];
 
             // Defaultne hodnoty pre vsetky pohlady
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations].TransformScreenLines3DToCylinders3D = true;
@@ -922,6 +934,7 @@ namespace PFD
 
             #endregion ELEVATIONS
             #region ROOF
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof] = DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Elevations];
 
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].TransformScreenLines3DToCylinders3D = true;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_CW_Roof].WireframeColor = System.Windows.Media.Colors.Red;
@@ -995,6 +1008,7 @@ namespace PFD
             #endregion ROOF
             #endregion CLADDING VIEWS
             #region JOINTS
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints] = DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Joint_Preview];
 
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Joints].ColorsAccordingToMembersPrefix = false;
@@ -1032,6 +1046,7 @@ namespace PFD
 
             #endregion JOINTS
             #region FOUNDATIONS
+            DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations] = DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_Foundation_Preview];
 
             // TODO 701 - zakomentovane DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].UseOrtographicCamera = false;
             DisplayOptionsList[(int)EDisplayOptionsTypes.Layouts_Foundations].ColorsAccordingToMembersPrefix = false;
