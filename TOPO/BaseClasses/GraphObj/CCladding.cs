@@ -2485,7 +2485,7 @@ namespace BaseClasses.GraphObj
 
                 for (int j = 0; j < intervals.Count; j++)
                 {
-                    if (i != j) // Porovnavame kazdy s kazdym okrem pripadu ked sa porovnava ten isty interval so sebou samym
+                    if (i != j) // Porovnavame kazdy s kazdym okrem pripadu, ked sa porovnava ten isty interval so sebou samym
                     {
                         // BUG 853
                         // TODO - potrebujeme osetrit pripad ked sa uvazuje napr. index i = 1 a j = 2 a potom znova i = 2 a j = 1, dlzku pre tieto dve moznosti chceme zohladnit len raz
