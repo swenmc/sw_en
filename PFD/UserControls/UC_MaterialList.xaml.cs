@@ -139,7 +139,7 @@ namespace PFD
             // Packers
             if (PartListHelper.DisplayPackersTable(pfdVM))
             {
-                CreateTablePackers(fRollerDoorLintelFlashing_TotalLength);
+                CreateTablePackers();
             }
             else
             {
@@ -356,9 +356,9 @@ namespace PFD
             SetLastRowBold(Datagrid_Flashing);
         }
 
-        private void CreateTablePackers(float fRollerDoorLintelFlashing_TotalLength)
+        private void CreateTablePackers()
         {
-            DataSet ds = QuotationHelper.GetTablePackers(fRollerDoorLintelFlashing_TotalLength, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
+            DataSet ds = QuotationHelper.GetTablePackers(_pfdVM.RollerDoorLintelFlashing_TotalLength, ref dBuildingMass, ref dBuildingNetPrice_WithoutMargin_WithoutGST);
             if (ds != null)
                 Datagrid_Packers.ItemsSource = ds.Tables[0].AsDataView();
             else

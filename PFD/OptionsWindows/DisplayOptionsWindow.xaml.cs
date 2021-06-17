@@ -24,15 +24,15 @@ namespace PFD
         private bool RecreateModelRequired = false;
         public DisplayOptionsWindow(CPFDViewModel pfdVM)
         {
-            InitializeComponent();
-
             _pfdVM = pfdVM;
+
+            InitializeComponent();
 
             DisplayOptionsChanged = false;
             
             pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
             
-            this.DataContext = pfdVM._displayOptionsVM;
+            this.DataContext = pfdVM._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene];
 
             if (this.Height > System.Windows.SystemParameters.PrimaryScreenHeight - 30) this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - 30;
         }
@@ -40,6 +40,10 @@ namespace PFD
         private void HandleDisplayOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
+            if (sender is DisplayOptionsAllViewModel)
+            {
+
+            }
             if (sender is DisplayOptionsViewModel)
             {
                 if (e.PropertyName == "DisplayCladding" || e.PropertyName == "DisplayDoors" || e.PropertyName == "DisplayWindows" ||
@@ -63,8 +67,8 @@ namespace PFD
             {
                 if (MemberOptionsChanged)
                 {
-                    if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPosition) _pfdVM._componentVM.SetColorsAccordingToPosition();
-                    else if(_pfdVM._displayOptionsVM.ColorsAccordingToMembersPrefix) _pfdVM._componentVM.SetColorsAccordingToPrefixes();                    
+                    if(_pfdVM._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPosition) _pfdVM._componentVM.SetColorsAccordingToPosition();
+                    else if(_pfdVM._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPrefix) _pfdVM._componentVM.SetColorsAccordingToPrefixes();                    
                 }
 
                 _pfdVM.RecreateModel = RecreateModelRequired;
@@ -81,5 +85,49 @@ namespace PFD
 
 
         }
+
+        private void MainTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            //MessageBox.Show(((TreeViewItem)e.NewValue).Header.ToString());
+
+            int selectedIndex = -1;            
+
+            switch (((TreeViewItem)e.NewValue).Name.ToString())
+            {
+                case "twiGUI_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.GUI_3D_Scene; Title = "Display Options - GUI 3D scene"; break;
+                case "twiGUI_Joint_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Joint_Preview; Title = "Display Options - GUI - Joint Preview"; break;
+                case "twiGUI_Foundation_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Foundation_Preview; Title = "Display Options - GUI - Foundation Preview"; break;
+                case "twiGUI_Accessories_Preview": selectedIndex = (int)EDisplayOptionsTypes.GUI_Accessories_Preview; Title = "Display Options - GUI Accessories Preview"; break;
+                case "twiReport_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Report_3DScene; Title = "Display Options - Report 3D scene"; break;
+                case "twiReport_Joints": selectedIndex = (int)EDisplayOptionsTypes.Report_Joints; Title = "Display Options - Report - Joints"; break;
+                case "twiReport_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Report_Foundations; Title = "Display Options - Report - Foundations"; break;
+                case "twiLayouts_3D_scene": selectedIndex = (int)EDisplayOptionsTypes.Layouts_3D_Scene; Title = "Display Options - Layouts 3D scene"; break;
+                case "twiLayouts_FW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Elevations; Title = "Display Options - Layouts - Frame Views - Elevations"; break;
+                case "twiLayouts_FW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Roof; Title = "Display Options - Layouts - Frame Views - Roof"; break;
+                case "twiLayouts_FW_Frames": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Frames; Title = "Display Options - Layouts - Frame Views - Frames"; break;
+                case "twiLayouts_FW_Columns": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Columns; Title = "Display Options - Layouts - Frame Views - Columns"; break;
+                case "twiLayouts_FW_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Foundations; Title = "Display Options - Layouts - Frame Views - Foundations"; break;
+                case "twiLayouts_FW_Floor": selectedIndex = (int)EDisplayOptionsTypes.Layouts_FW_Floor; Title = "Display Options - Layouts - Frame Views - Floor"; break;
+                case "twiLayouts_CW_Elevations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Elevations; Title = "Display Options - Layouts - Cladding Views - Elevations"; break;
+                case "twiLayouts_CW_Roof": selectedIndex = (int)EDisplayOptionsTypes.Layouts_CW_Roof; Title = "Display Options - Layouts - Cladding Views - Roof"; break;
+                case "twiLayouts_Joints": selectedIndex = (int)EDisplayOptionsTypes.Layouts_Joints; Title = "Display Options - Layouts - Joints"; break;
+                case "twiLayouts_Foundations": selectedIndex = (int)EDisplayOptionsTypes.Layouts_Foundations; Title = "Display Options - Layouts - Foundations"; break;
+            }
+
+            if (selectedIndex != -1)
+            {
+                this.DataContext = _pfdVM._displayOptionsVM.DisplayOptionsList[selectedIndex];
+                ChangeControlsVisibilityBasedOnSelectedTreeViewItem((EDisplayOptionsTypes)selectedIndex);
+            }
+        }
+
+        private void ChangeControlsVisibilityBasedOnSelectedTreeViewItem(EDisplayOptionsTypes optsType)
+        {
+            if (!IsLoaded) return;
+
+            if (optsType != EDisplayOptionsTypes.GUI_3D_Scene) Loads.Visibility = Visibility.Collapsed;
+            else Loads.Visibility = Visibility.Visible;
+        }
+
     }
 }

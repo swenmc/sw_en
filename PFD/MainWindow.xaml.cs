@@ -959,7 +959,7 @@ namespace PFD
                 UpdateUC_MaterialList();
             }            
 
-            bool generateSurfaceLoads = vm._displayOptionsVM.ShowSurfaceLoadsAxis ||
+            bool generateSurfaceLoads = vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||
                                         vm.GenerateLoadsOnGirts ||
                                         vm.GenerateLoadsOnPurlins ||
@@ -2276,18 +2276,18 @@ namespace PFD
                     CProjectInfoVM piVM = (optionsList[0] as CProjectInfoVM);
                     if (piVM != null) vm._projectInfoVM.SetViewModel(piVM.GetProjectInfo());
 
-                    DisplayOptionsViewModel doVM = optionsList[1] as DisplayOptionsViewModel;
+                    DisplayOptionsAllViewModel doVM = optionsList[1] as DisplayOptionsAllViewModel;
                     if (doVM != null)
                     {
-                        bool memberOptionsChanged = (vm._displayOptionsVM.ColorsAccordingToMembersPosition != doVM.ColorsAccordingToMembersPosition ||
-                            vm._displayOptionsVM.ColorsAccordingToMembersPrefix != doVM.ColorsAccordingToMembersPrefix);
+                        bool memberOptionsChanged = (vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPosition != doVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPosition ||
+                            vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPrefix != doVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPrefix);
 
                         vm._displayOptionsVM.SetViewModel(doVM);
 
                         if (memberOptionsChanged)
                         {
-                            if (vm._displayOptionsVM.ColorsAccordingToMembersPosition) vm._componentVM.SetColorsAccordingToPosition();
-                            else if (vm._displayOptionsVM.ColorsAccordingToMembersPrefix) vm._componentVM.SetColorsAccordingToPrefixes();
+                            if (vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPosition) vm._componentVM.SetColorsAccordingToPosition();
+                            else if (vm._displayOptionsVM.DisplayOptionsList[(int)EDisplayOptionsTypes.GUI_3D_Scene].ColorsAccordingToMembersPrefix) vm._componentVM.SetColorsAccordingToPrefixes();
                         }
                     }
 
