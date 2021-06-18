@@ -121,6 +121,7 @@ namespace PFD
             {
                 foreach (DisplayOptionsViewModel destVM in destVMs)
                 {
+                    //tu sa treba trosku zamysliet, lebo pokial setnem viewmodel pre GUI na IsExport = true a neda sa to nastavit potom inak, tak je to vlastne pruser
                     destVM.SetViewModel(sourceVM);
 
                     OptionsChanged = true;
