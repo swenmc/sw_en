@@ -1,0 +1,170 @@
+﻿<Window x:Class="PFD.DisplayOptionsCopyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Display Options Copying" Height="450" Width="500" Loaded="Window_Loaded">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+    </Window.Resources>
+
+    <Grid Name="GridMain" Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <TreeView Name="TreeViewSource"  Grid.Column="0">
+            <TreeViewItem Header="GUI" IsExpanded="True">
+                <TreeViewItem Name="twiSourceGUI_3D_scene" Header="3D scene" IsSelected="True"></TreeViewItem>
+                <TreeViewItem Name="twiSourceGUI_Joint_Preview" Header="Joint Preview"></TreeViewItem>
+                <TreeViewItem Name="twiSourceGUI_Foundation_Preview" Header="Foundation Preview"></TreeViewItem>
+                <TreeViewItem Name="twiSourceGUI_Accessories_Preview" Header="Accessories Preview"></TreeViewItem>
+            </TreeViewItem>
+            <TreeViewItem Header="Report" IsExpanded="True">
+                <TreeViewItem Name="twiSourceReport_3D_scene" Header="3D scene"></TreeViewItem>
+                <TreeViewItem Name="twiSourceReport_Joints" Header="Joints"></TreeViewItem>
+                <TreeViewItem Name="twiSourceReport_Foundations" Header="Foundations"></TreeViewItem>
+            </TreeViewItem>
+            <TreeViewItem Header="Layouts" IsExpanded="True">
+                <TreeViewItem Name="twiSourceLayouts_3D_scene" Header="3D scene"></TreeViewItem>
+                <TreeViewItem Header="Frame Views" IsExpanded="True">
+                    <TreeViewItem Name="twiSourceLayouts_FW_Elevations" Header="Elevations"></TreeViewItem>
+                    <TreeViewItem Name="twiSourceLayouts_FW_Roof" Header="Roof"></TreeViewItem>
+                    <TreeViewItem Name="twiSourceLayouts_FW_Frames" Header="Frames"></TreeViewItem>
+                    <TreeViewItem Name="twiSourceLayouts_FW_Columns" Header="Columns"></TreeViewItem>
+                    <TreeViewItem Name="twiSourceLayouts_FW_Foundations" Header="Foundations"></TreeViewItem>
+                    <TreeViewItem Name="twiSourceLayouts_FW_Floor" Header="Floor"></TreeViewItem>
+                </TreeViewItem>
+                <TreeViewItem Header="Cladding Views" IsExpanded="True">
+                    <TreeViewItem Name="twiSourceLayouts_CW_Elevations" Header="Elevations"></TreeViewItem>
+                    <TreeViewItem Name="twiSourceLayouts_CW_Roof" Header="Roof"></TreeViewItem>                    
+                </TreeViewItem>
+                <TreeViewItem Name="twiSourceLayouts_Joints" Header="Joints"></TreeViewItem>
+                <TreeViewItem Name="twiSourceLayouts_Foundations" Header="Foundations"></TreeViewItem>
+            </TreeViewItem>
+            
+            
+        </TreeView>
+        <Button Grid.Column="1" Name="BtnCopy" Width="80" Height="30" Click="BtnCopy_Click">Copy</Button>
+        <TreeView Name="TreeViewDestination"  Grid.Column="2">
+            <TreeViewItem Header="GUI" IsExpanded="True">
+                <TreeViewItem Name="twiDestGUI_3D_scene">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chGUI_3D_scene" Content="3D scene"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem Name="twiDestGUI_Joint_Preview">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chGUI_Joint_Preview" Content="Joint Preview"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem Name="twiDestGUI_Foundation_Preview">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chGUI_Foundation_Preview" Content="Foundation Preview"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem Name="twiDestGUI_Accessories_Preview">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chGUI_Accessories_Preview" Content="Accessories Preview"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+            </TreeViewItem>
+            <TreeViewItem Header="Report" IsExpanded="True">
+                <TreeViewItem Name="twiDestReport_3D_scene">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chReport_3D_scene" Content="3D scene"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem Name="twiDestReport_Joints">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chReport_Joints" Content="Joints"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem Name="twiDestReport_Foundations">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chReport_Foundations" Content="Foundations"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+            </TreeViewItem>
+            <TreeViewItem Header="Layouts" IsExpanded="True">
+                <TreeViewItem Name="twiDestLayouts_3D_scene">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chLayouts_3D_scene" Content="3D scene"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem Header="Frame Views" IsExpanded="True">
+                    <TreeViewItem Name="twiDestLayouts_FW_Elevations">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_FW_Elevations" Content="Elevations"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Name="twiDestLayouts_FW_Roof">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_FW_Roof" Content="Roof"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Name="twiDestLayouts_FW_Frames">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_FW_Frames" Content="Frames"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Name="twiDestLayouts_FW_Columns">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_FW_Columns" Content="Columns"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Name="twiDestLayouts_FW_Foundations">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_FW_Foundations" Content="Foundations"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Name="twiDestLayouts_FW_Floor">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_FW_Floor" Content="Floor"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                </TreeViewItem>
+                <TreeViewItem Header="Cladding Views" IsExpanded="True">
+                    <TreeViewItem Name="twiDestLayouts_CW_Elevations">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_CW_Elevations" Content="Elevations"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Name="twiDestLayouts_CW_Roof">
+                        <TreeViewItem.Header>
+                            <CheckBox Name="chLayouts_CW_Roof" Content="Roof"></CheckBox>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                </TreeViewItem>
+                <TreeViewItem Name="twiDestLayouts_Joints">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chLayouts_Joints" Content="Joints"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem Name="twiDestLayouts_Foundations">
+                    <TreeViewItem.Header>
+                        <CheckBox Name="chLayouts_Foundations" Content="Foundations"></CheckBox>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+            </TreeViewItem>
+
+        </TreeView>
+
+        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
+        </StackPanel>
+    </Grid>
+
+
+
+</Window>

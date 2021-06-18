@@ -184,6 +184,9 @@
     <Compile Include="DocumentationExportOptionsWindow.xaml.cs">
       <DependentUpon>DocumentationExportOptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindows\DisplayOptionsCopyWindow.xaml.cs">
+      <DependentUpon>DisplayOptionsCopyWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsWindows\FibreglassSheetsValidation.xaml.cs">
       <DependentUpon>FibreglassSheetsValidation.xaml</DependentUpon>
     </Compile>
@@ -430,6 +433,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DocumentationExportOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\DisplayOptionsCopyWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
